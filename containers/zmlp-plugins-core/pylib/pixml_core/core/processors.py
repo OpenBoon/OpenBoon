@@ -1,5 +1,6 @@
 import logging
 import os
+from zlib import adler32
 
 from pixml.analysis import AssetBuilder, Argument, PixmlUnrecoverableProcessorException
 from pixml.analysis.storage import file_cache
@@ -25,13 +26,31 @@ class PreCacheSourceFileProcessor(AssetBuilder):
     def process(self, frame):
         asset = frame.asset
         try:
-            logger.info("precaching Asset: {}".format(asset))
+            logger.info('precaching Asset: {}'.format(asset))
             path = file_cache.localize_remote_file(asset)
-            if not asset.attr_exists("source.filesize"):
-                asset.set_attr("source.filesize", os.path.getsize(path))
+            if not asset.attr_exists('source.filesize'):
+                asset.set_attr('source.filesize', os.path.getsize(path))
+                asset.set_attr('source.checksum', self.calculate_checksum(path))
+
         except Exception as e:
-            logger.exception("Failed to pre-cache source file")
-            raise PixmlUnrecoverableProcessorException("Failed to pre-cache source file", e)
+            logger.exception('Failed to pre-cache source file')
+            raise PixmlUnrecoverableProcessorException('Failed to pre-cache source file', e)
+
+    def calculate_checksum(self, path):
+        checksum = 0
+        # This looks wonky but it calculates the
+        # same checksum a reading in all the bytes
+        with open(path, 'rb') as fp:
+            chunk = fp.read(8192)
+            if chunk:
+                checksum = adler32(chunk)
+                while True:
+                    chunk = fp.read(8192)
+                    if chunk:
+                        checksum = adler32(chunk, checksum)
+                    else:
+                        break
+        return checksum
 
 
 class AssertAttributesProcessor(AssetBuilder):

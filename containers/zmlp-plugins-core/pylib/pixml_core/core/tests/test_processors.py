@@ -60,3 +60,4 @@ class PreCacheSourceFileProcessorTests(PluginUnitTestCase):
         ih = self.init_processor(PreCacheSourceFileProcessor())
         ih.process(frame)
         assert frame.asset.get_attr("source.filesize") == 97221
+        assert frame.asset.get_attr("source.checksum") == 1582911032
