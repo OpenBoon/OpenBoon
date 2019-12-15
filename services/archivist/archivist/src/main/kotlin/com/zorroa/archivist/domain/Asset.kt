@@ -178,6 +178,46 @@ class Clip(
      * Calculate the clip length.  If the length is 0 then make it 1
      */
     val length = if (stop - start == 0f) { 1f } else { stop - start}
+
+    /**
+     * Generate a clip group id.  The group id is built using:
+     *
+     * - type
+     * - timeline
+     * - source.path
+     * - source.filesize
+     * - media.timeCreated
+     *
+     * If any of these values are null then they are skipped.
+     */
+    fun generatePileId(asset: Asset) : String {
+        val path = asset.getAttr<String?>("source.path")
+        val size = asset.getAttr<Int?>("source.filesize")
+        val time = asset.getAttr<String?>("media.timeCreated")
+
+        /**
+         * Modifying this logic may break clip grouping
+         */
+        val digester = MessageDigest.getInstance("SHA")
+        digester.update(type.toByteArray())
+        timeline?.let {
+            digester.update(it.toByteArray())
+        }
+
+        path?.let {
+            digester.update(path.toByteArray())
+        }
+        size?.let {
+            val buf = ByteBuffer.allocate(4)
+            buf.putInt(it)
+            digester.update(buf.array())
+        }
+        time?.let {
+            digester.update(it.toByteArray())
+        }
+        return Base64.getUrlEncoder()
+            .encodeToString(digester.digest()).trim('=')
+    }
 }
 
 

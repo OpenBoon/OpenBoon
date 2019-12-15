@@ -177,7 +177,11 @@ class AssetServiceImpl : AssetService {
             }
         }
 
-        asset.setAttr("clip", spec.clip)
+        spec.clip?.let {
+            asset.setAttr("clip", it)
+            asset.setAttr("clip.pile", it.generatePileId(asset))
+        }
+
         asset.setAttr("source.path", spec.uri)
         asset.setAttr("source.filename", FileUtils.filename(spec.uri))
         asset.setAttr("source.extension", FileUtils.extension(spec.uri))

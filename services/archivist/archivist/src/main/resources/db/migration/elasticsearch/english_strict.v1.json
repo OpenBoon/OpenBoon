@@ -163,6 +163,9 @@
             },
             "timeline": {
               "type": "keyword"
+            },
+            "pile": {
+              "type": "keyword"
             }
           }
         },

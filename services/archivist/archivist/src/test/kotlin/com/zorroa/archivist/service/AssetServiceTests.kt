@@ -114,6 +114,7 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(3f, rsp.assets[0].getAttr<Float?>("clip.stop"))
         assertEquals("page", rsp.assets[0].getAttr<String?>("clip.type"))
         assertEquals("pages", rsp.assets[0].getAttr<String?>("clip.timeline"))
+        assertEquals("gIjnIgVCxeoDkrc6DrUzT_lA1ws", rsp.assets[0].getAttr<String?>("clip.pile"))
     }
 
     /**
