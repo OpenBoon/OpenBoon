@@ -3,6 +3,7 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
+import com.google.common.hash.Hashing
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.Json
 import com.zorroa.archivist.util.randomString
@@ -155,70 +156,6 @@ class AssetCounters(
     @ApiModelProperty("Total number of assets replaced")
     val replaced: Int = 0
 )
-
-@ApiModel("Clip", description = "Defines a subsection of an Asset to process, " +
-    "for example a page of a document.")
-class Clip(
-
-    @ApiModelProperty("The type of clip, this is typically 'page' or 'scene' but can be anything")
-    val type: String,
-
-    @ApiModelProperty("The starting point of the clip")
-    val start: Float,
-
-    @ApiModelProperty("The ending point of a clip.")
-    val stop: Float,
-
-    @ApiModelProperty("The type of clip, this is typically 'page' or 'scene' but can be anything")
-    val timeline: String? = null
-)
-{
-
-    /**
-     * Calculate the clip length.  If the length is 0 then make it 1
-     */
-    val length = if (stop - start == 0f) { 1f } else { stop - start}
-
-    /**
-     * Generate a clip group id.  The group id is built using:
-     *
-     * - type
-     * - timeline
-     * - source.path
-     * - source.filesize
-     * - media.timeCreated
-     *
-     * If any of these values are null then they are skipped.
-     */
-    fun generatePileId(asset: Asset) : String {
-        val path = asset.getAttr<String?>("source.path")
-        val size = asset.getAttr<Int?>("source.filesize")
-        val time = asset.getAttr<String?>("media.timeCreated")
-
-        /**
-         * Modifying this logic may break clip grouping
-         */
-        val digester = MessageDigest.getInstance("SHA")
-        digester.update(type.toByteArray())
-        timeline?.let {
-            digester.update(it.toByteArray())
-        }
-
-        path?.let {
-            digester.update(path.toByteArray())
-        }
-        size?.let {
-            val buf = ByteBuffer.allocate(4)
-            buf.putInt(it)
-            digester.update(buf.array())
-        }
-        time?.let {
-            digester.update(it.toByteArray())
-        }
-        return Base64.getUrlEncoder()
-            .encodeToString(digester.digest()).trim('=')
-    }
-}
 
 
 @ApiModel("Asset",
@@ -413,12 +350,20 @@ object Attr {
     }
 }
 
-class AssetIdBuilder(val spec: AssetSpec, val randomness: String? = null) {
+/**
+ * A utility class for building unique Asset ids.
+ *
+ * @property spec: The AssetSpec
+ */
+class AssetIdBuilder(val spec: AssetSpec) {
 
-    private val projectId = getProjectId()
-    private var dataSourceId: UUID? = null
-    private var length = 32
+    val projectId = getProjectId()
+    var length = 32
+    var checksum: Int? = null
 
+    /**
+     * Convert the givne UUID into a byte array.
+     */
     private fun uuidToByteArray(uuid: UUID): ByteBuffer {
         val bb: ByteBuffer = ByteBuffer.wrap(ByteArray(16))
         bb.putLong(uuid.mostSignificantBits)
@@ -426,11 +371,18 @@ class AssetIdBuilder(val spec: AssetSpec, val randomness: String? = null) {
         return bb.asReadOnlyBuffer()
     }
 
-    fun dataSource(dataSource: UUID?): AssetIdBuilder {
-        dataSource?.let { this.dataSourceId = it }
+    /**
+     * Apply a checksum to ID generation.
+     */
+    fun checksum(bytes: ByteArray): AssetIdBuilder {
+        val hf = Hashing.adler32()
+        checksum = hf.hashBytes(bytes).asInt()
         return this
     }
 
+    /**
+     * Build and return the unique ID.
+     */
     fun build(): String {
         if (spec.id != null) {
             return spec.id
@@ -456,12 +408,10 @@ class AssetIdBuilder(val spec: AssetSpec, val randomness: String? = null) {
             digester.update(buf.array())
         }
 
-        dataSourceId?.let {
-            digester.update(uuidToByteArray(it))
-        }
-
-        randomness?.let {
-            digester.update(it.toByteArray())
+        checksum?.let {
+            val buf = ByteBuffer.allocate(4)
+            buf.putInt(it)
+            digester.update(buf.array())
         }
         // Clamp the size to 32, 48 is bit much and you still
         // get much better resolution than a UUID.  We could

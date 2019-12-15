@@ -12,6 +12,7 @@ import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
+import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.FileCategory
 import com.zorroa.archivist.domain.FileGroup
 import com.zorroa.archivist.domain.FileStorageLocator
@@ -21,12 +22,11 @@ import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.STANDARD_PIPELINE
 import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.util.ElasticSearchErrorTranslator
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.FileStorageService
+import com.zorroa.archivist.util.ElasticSearchErrorTranslator
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.Json
-import com.zorroa.archivist.util.randomString
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
@@ -178,8 +178,8 @@ class AssetServiceImpl : AssetService {
         }
 
         spec.clip?.let {
+            it.setGeneratedProperties(asset)
             asset.setAttr("clip", it)
-            asset.setAttr("clip.pile", it.generatePileId(asset))
         }
 
         asset.setAttr("source.path", spec.uri)
@@ -215,9 +215,12 @@ class AssetServiceImpl : AssetService {
 
         for ((idx, mpfile) in req.files.withIndex()) {
             val spec = req.assets[idx]
-            val id = AssetIdBuilder(spec, randomString(24)).build()
+            val idgen = AssetIdBuilder(spec)
+                .checksum(mpfile.bytes)
+            val id = idgen.build()
             val asset = assetSpecToAsset(id, spec)
             asset.setAttr("source.filesize", mpfile.size)
+            asset.setAttr("source.checksum", idgen.checksum)
 
             val locator = FileStorageLocator(
                 FileGroup.ASSET,
@@ -272,7 +275,7 @@ class AssetServiceImpl : AssetService {
         bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
 
         val assets = request.assets.map { spec ->
-            val id = AssetIdBuilder(spec).dataSource(request.task?.dataSourceId).build()
+            val id = AssetIdBuilder(spec).build()
             assetSpecToAsset(id, spec, request.task)
         }
 
@@ -331,6 +334,13 @@ class AssetServiceImpl : AssetService {
                 // Remove these which are used for temp attrs
                 removeFieldsOnUpdate.forEach {
                     asset.removeAttr(it)
+                }
+
+                // Set the server side clip properties if needed.
+                if (asset.attrExists("clip") && !asset.attrExists("clip.pile")) {
+                    val clip = asset.getAttr("clip", Clip::class.java)
+                    clip?.setGeneratedProperties(asset)
+                    asset.setAttr("clip", clip)
                 }
 
                 // Update various system properties.

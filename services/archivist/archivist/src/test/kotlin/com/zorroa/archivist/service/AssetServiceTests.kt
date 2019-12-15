@@ -170,6 +170,32 @@ class AssetServiceTests : AbstractTest() {
         assertFalse(asset.attrExists("tmp"))
     }
 
+    @Test
+    fun testBatchUpdateAssetsWithClip() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        var asset = assetService.getAsset(createRsp.status[0].assetId)
+        asset.setAttr("clip", mapOf("type" to "page", "start" to 2f, "stop" to 2f))
+
+        val batchIndex = BatchUpdateAssetsRequest(assets = listOf(asset))
+        assetService.batchUpdate(batchIndex)
+
+        asset = assetService.getAsset(createRsp.status[0].assetId)
+        assertEquals("page", asset.getAttr<String?>("clip.type"))
+        assertEquals(2.0, asset.getAttr<Double?>("clip.start"))
+        assertEquals(2.0, asset.getAttr<Double?>("clip.stop"))
+        assertEquals(1.0, asset.getAttr<Double?>("clip.length"))
+        assertEquals("h_mv_VYvSyP3ViYiffJKiJD6Pvg", asset.getAttr<String?>("clip.pile"))
+
+        val clip = asset.getAttr("clip", Clip::class.java)
+        assertEquals("page", clip?.type)
+        assertEquals(2.0f, clip?.start)
+        assertEquals(2.0f, clip?.stop)
+        assertEquals(1.0f, clip?.length)
+        assertEquals("h_mv_VYvSyP3ViYiffJKiJD6Pvg", clip?.pile)
+    }
 
     /**
      * Trying to update assets that don't exist should fail.
@@ -222,6 +248,8 @@ class AssetServiceTests : AbstractTest() {
 
         val rsp = assetService.batchUpload(batchUpload)
         assertEquals("toucan.jpg", rsp.assets[0].getAttr("source.filename", String::class.java))
+        assertEquals(1582911032, rsp.assets[0].getAttr("source.checksum", Int::class.java))
+        assertEquals(97221, rsp.assets[0].getAttr("source.filesize", Long::class.java))
         assertFalse(rsp.status[0].failed)
     }
 
