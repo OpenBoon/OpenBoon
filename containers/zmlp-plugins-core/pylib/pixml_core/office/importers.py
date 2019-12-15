@@ -74,9 +74,8 @@ class OfficeImporter(AssetBuilder):
         asset.set_attr('media', media)
 
         if not has_clip:
-            # Since there is no clip, then set a clip, as all pages
-            # need to have a clip.
-            asset.set_attr('clip', Clip('page', 1, 1))
+            # Since there is no clip, then set a clip
+            asset.set_attr('clip', Clip.page(1))
 
             # Iterate the pages and expand
             num_pages = int(asset.get_attr('media.length') or 1)

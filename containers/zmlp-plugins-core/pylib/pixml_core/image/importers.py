@@ -28,10 +28,9 @@ class ImageImporter(AssetBuilder):
                    'Exif.DateTime', 'IPTC.DateCreated', 'IPTC.TimeCreated', 'DateTime',
                    'File.FileModifiedDate', 'Date']
 
-    file_types = ["jpg", "jpeg", "png", "tif", "tiff", "gif", "bmp", "cin", "dds", "dpx",
-                  "fits", "hdr", "ico", "iff", "exr", "pnm", "psd", "psb", "rla", "sgi", "pic",
-                  "tga", "dpx", "raw", "kdc", "mrw", "srw", "pef", "raf", "srf", "arw", "orf",
-                  "nef", "cr2", "dng", "crw", "zfile"]
+    file_types = ["bmp", "cin", "dds", "dicom", "dpx", "gif", "hdr", "ico", "iff",
+                  "jpeg", "jpg", "jp2", "exr", "png", "pnm", "psd", "raw", "rla", "sgi",
+                  "tiff", "tif"]
 
     def __init__(self):
         super(ImageImporter, self).__init__()
@@ -45,13 +44,20 @@ class ImageImporter(AssetBuilder):
         metadata = get_image_metadata(path)
         set_resolution_attrs(asset, int(metadata.get('full_width')),
                              int(metadata.get('full_height')))
+
         self.set_media_type(asset)
         self.set_location(asset, metadata)
         self.set_date(asset, metadata)
         self.set_metadata(asset, metadata)
-        if (self.arg_value('extract_pages') and not asset.get_attr('media.clip') and
-                metadata.get('subimages')):
-            self.extract_pages(asset, metadata, frame)
+
+        has_clip = asset.attr_exists('clip')
+        if not has_clip:
+            # Since there is no clip, then set a clip, as all pages
+            # need to have a clip.
+            asset.set_attr('clip', Clip.page(1))
+
+            if self.arg_value('extract_pages') and metadata.get('subimages'):
+                self.extract_pages(asset, metadata, frame)
 
     def set_date(self, document, metadata):
         """Extracts the date from the metadata and sets it on the document.
@@ -61,7 +67,6 @@ class ImageImporter(AssetBuilder):
             metadata(dict): Metadata to parse a date from.
 
         """
-        self.logger.info('Extracting date info from image.')
         for field in self.date_fields:
             try:
                 date_str = reduce(operator.getitem, field.split('.'), metadata)
@@ -75,7 +80,7 @@ class ImageImporter(AssetBuilder):
                     _datetime = dateutil.parser.parse(date_str)
                 except ValueError:
                     continue
-            document.set_attr('media.timeCreated', _datetime)
+            document.set_attr('media.timeCreated', _datetime.isoformat())
             break
 
     def set_location(self, document, metadata):
@@ -87,7 +92,6 @@ class ImageImporter(AssetBuilder):
             metadata(dict): Metadata to parse for GPS location info.
 
         """
-        self.logger.info('Extracting location info from image.')
         gps_data = metadata.get('GPS', {})
         required_keys = ['LatitudeRef', 'Latitude', 'LongitudeRef', 'Longitude']
         if all(key in gps_data for key in required_keys):
@@ -132,12 +136,10 @@ class ImageImporter(AssetBuilder):
             frame(Frame): Parent to add derived frames to.
 
         """
-        self.logger.debug('Extracting pages from image.')
         subimages = int(metadata.get('subimages'))
-        document.set_attr('media.pages', subimages)
         source_path = document.get_attr('source.path')
-        for i in range(1, subimages + 1):
-            clip = Clip('image', i, i)
+        for i in range(2, subimages + 1):
+            clip = Clip.page(i)
             expand = ExpandFrame(FileImport(source_path, clip=clip))
             self.expand(frame, expand)
 
@@ -167,6 +169,9 @@ class ImageImporter(AssetBuilder):
 
             if isinstance(value, dict):
                 self.set_metadata(document, value, namespace=field)
+        # Set the length of the image
+        subimages = int(metadata.get('subimages', 1))
+        document.set_attr('media.length', subimages)
 
     def set_media_type(self, asset):
         """
