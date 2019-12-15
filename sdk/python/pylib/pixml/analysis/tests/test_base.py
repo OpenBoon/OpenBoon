@@ -1,8 +1,8 @@
 import unittest
 
-from pixml.asset import FileImport
-from pixml.analysis.testing import TestEventEmitter, TestAsset
 from pixml.analysis.base import ExpandFrame, Frame, Reactor
+from pixml.analysis.testing import TestEventEmitter, TestAsset
+from pixml.asset import FileImport
 
 
 class ReactorTests(unittest.TestCase):

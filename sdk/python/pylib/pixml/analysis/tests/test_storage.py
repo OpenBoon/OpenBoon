@@ -68,7 +68,6 @@ class LocalFileCacheTests(TestCase):
             'assetId': 'bingo'
         }
         post_patch.return_value = '/tmp/cat.jpg'
-        path = self.lfc.localize_pixml_file(TestAsset(id='123456'), pfile)
         assert "assets/bingo/files" in post_patch.call_args_list[0][0][0]
 
     @patch.object(PixmlClient, 'stream')
