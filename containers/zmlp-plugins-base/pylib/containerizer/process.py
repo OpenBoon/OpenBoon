@@ -263,7 +263,7 @@ class ProcessorWrapper(object):
         try:
             self.instance.teardown()
             # When the processor tears down then force an expand check.
-            self.reactor.check_expand(True)
+            self.reactor.check_expand(force=True)
             self.reactor.emitter.write({"type": "stats", "payload": [self.stats]})
         except Exception as e:
             self.reactor.error(None, self.instance, e, False, "teardown", sys.exc_info()[2])
