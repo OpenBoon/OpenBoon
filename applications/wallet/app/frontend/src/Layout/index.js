@@ -13,21 +13,17 @@ import { constants } from '../Styles'
 import Navbar from '../Navbar'
 import Sidebar from '../Sidebar'
 
-import { getJobId } from './helpers'
-
 const Layout = ({ user, results, logout, children }) => {
   const sidebarRef = useRef()
 
   const [isSidebarOpen, setSidebarOpen] = useState(false)
 
   const [selectedProject, setSelectedProject] = useState({
-    id: getJobId({ url: results[0].url }),
+    id: results[0].id,
     name: results[0].name,
   })
 
-  const projects = results.map(({ url, name }) => {
-    const id = getJobId({ url })
-
+  const projects = results.map(({ id, name }) => {
     return {
       id,
       name,
@@ -66,7 +62,7 @@ const Layout = ({ user, results, logout, children }) => {
 Layout.propTypes = {
   results: PropTypes.arrayOf(
     PropTypes.shape({
-      url: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     }),
   ).isRequired,
