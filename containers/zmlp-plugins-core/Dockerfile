@@ -1,4 +1,4 @@
-FROM zmlp-plugins-base:latest
+FROM zmlp/plugins-base:latest
 USER root
 
 RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
