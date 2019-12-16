@@ -124,7 +124,7 @@
     "http-proxy-middleware": "0.20.0",
     "husky": "3.1.0",
     "jest": "24.9.0",
-    "jest-emotion": "10.0.17",
+    "jest-emotion": "10.0.26",
     "jest-fetch-mock": "2.1.2",
     "lint-staged": "9.4.3",
     "morgan": "1.9.1",
