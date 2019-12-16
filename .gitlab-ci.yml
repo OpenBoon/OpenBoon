@@ -129,8 +129,8 @@ sdk-unit-tests:
   before_script:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
-#  only:
-#      - development
+  only:
+      - development
 
 docker_hub_push_archivist:
   extends: .docker_hub_push_base
