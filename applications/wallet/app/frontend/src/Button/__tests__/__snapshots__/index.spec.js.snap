@@ -1,0 +1,282 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Button /> should have a type "button" and be aria-disabled, and not clickable 1`] = `
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  color: #fff;
+  background-color: #82be3c;
+}
+
+.emotion-0:hover {
+  background-color: #a7d374;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<button
+  aria-disabled={true}
+  className="emotion-0"
+  onClick={[Function]}
+  type="button"
+>
+  Hello
+</button>
+`;
+
+exports[`<Button /> should have a type "button", pass additional props, and be clickable 1`] = `
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  color: #fff;
+  background-color: #82be3c;
+}
+
+.emotion-0:hover {
+  background-color: #a7d374;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<button
+  className="emotion-0"
+  onClick={[Function]}
+  type="button"
+>
+  Hello
+</button>
+`;
+
+exports[`<Button /> should render a link as an anchor tag with no onClick 1`] = `
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  color: #fff;
+  background-color: #82be3c;
+}
+
+.emotion-0:hover {
+  background-color: #a7d374;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<a
+  className="emotion-0"
+  href="http://www.aspiration.com"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  Hello
+</a>
+`;
+
+exports[`<Button /> should render properly for PRIMARY Button 1`] = `
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  color: #fff;
+  background-color: #82be3c;
+}
+
+.emotion-0:hover {
+  background-color: #a7d374;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<button
+  className="emotion-0"
+  onClick={[Function]}
+  type="button"
+>
+  Hello
+</button>
+`;
+
+exports[`<Button /> should render properly for PRIMARY Link 1`] = `
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  color: #fff;
+  background-color: #82be3c;
+}
+
+.emotion-0:hover {
+  background-color: #a7d374;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<a
+  className="emotion-0"
+  href="/hello"
+>
+  Hello
+</a>
+`;
