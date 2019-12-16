@@ -10,7 +10,7 @@ jest.mock('../../Layout')
 const noop = () => () => {}
 
 describe('<Projects />', () => {
-  it('should render properly without data', () => {
+  it('should render properly while loading', () => {
     const component = TestRenderer.create(
       <Projects user={mockUser} logout={noop}>
         {() => `Hello World`}

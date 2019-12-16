@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Table /> should render properly 1`] = `
+.emotion-0 {
+  width: 100%;
+  border-spacing: 0;
+}
+
+.emotion-0 th {
+  color: #b3b3b3;
+  background-color: #2e2e2e;
+  padding: 12px 16px;
+  border-bottom: 1px solid #4d4948;
+}
+
+.emotion-0 th:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-0 th:not(:last-child) {
+  border-right: 1px solid #4d4948;
+}
+
+.emotion-0 tr {
+  background-color: #121212;
+}
+
+.emotion-0 tr:hover {
+  background-color: #2e2e2e;
+}
+
+.emotion-0 tr:hover td {
+  border: 1px solid #4d4948;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-0 tr:hover td:first-of-type {
+  border: 1px solid #4d4948;
+  border-right: 0;
+}
+
+.emotion-0 tr:hover td:last-of-type {
+  border: 1px solid #4d4948;
+  border-left: 0;
+}
+
+.emotion-0 td {
+  white-space: nowrap;
+  color: #b3b3b3;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-0 td:first-of-type {
+  border: 1px solid transparent;
+  border-right: 0;
+}
+
+.emotion-0 td:last-of-type {
+  border: 1px solid transparent;
+  border-left: 0;
+}
+
+<table
+  className="emotion-0"
+>
+  <thead>
+    <tr />
+  </thead>
+  <tbody />
+</table>
+`;
