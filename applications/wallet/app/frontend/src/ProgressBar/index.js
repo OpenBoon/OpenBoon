@@ -1,47 +1,18 @@
 import PropTypes from 'prop-types'
-import { keyframes } from '@emotion/core'
-import { colors, constants, spacing } from '../Styles'
-import GeneratingSvg from './generating.svg'
+import { colors, constants } from '../Styles'
 
 const CONTAINER_HEIGHT = 16
 const CONTAINER_WIDTH = 200
 const STATUS_COLORS = {
-  succeeded: colors.green1,
-  failed: colors.error,
-  running: colors.blue1,
-  pending: colors.grey6,
+  tasksSuccess: colors.green1,
+  tasksFailure: colors.error,
+  tasksRunning: colors.blue1,
+  tasksWaiting: colors.grey6,
 }
 
-const ProgressBar = ({ status }) => {
-  const { isGenerating, isCanceled, canceledBy } = status
-
-  if (isGenerating) {
-    const spinAnimation = keyframes`
-      0% { transform: rotate(0deg) }
-      100% { transform: rotate(360deg) }
-    `
-    return (
-      <div
-        css={{
-          display: 'flex',
-          alignItems: 'center',
-          color: colors.blue1,
-        }}>
-        <GeneratingSvg
-          css={{
-            color: colors.blue1,
-            animation: `${spinAnimation} 2s linear infinite`,
-          }}
-        />
-        <div css={{ paddingLeft: spacing.base }}>Generating</div>
-      </div>
-    )
-  }
-
-  if (isCanceled) {
-    return (
-      <div css={{ color: colors.grey5 }}>{`Canceled by: ${canceledBy}`}</div>
-    )
+const ProgressBar = ({ state, taskCounts }) => {
+  if (state === 'Canceled') {
+    return <div css={{ color: colors.grey5 }}>Canceled</div>
   }
 
   return (
@@ -51,18 +22,18 @@ const ProgressBar = ({ status }) => {
         height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
       }}>
-      {['succeeded', 'failed', 'running', 'pending']
-        .filter(statusName => {
-          return status[statusName] > 0
+      {Object.keys(STATUS_COLORS)
+        .filter(taskStatus => {
+          return taskCounts[taskStatus] > 0
         })
-        .map(statusName => {
+        .map(taskStatus => {
           return (
             <div
-              key={statusName}
+              key={taskStatus}
               css={{
                 height: '100%',
-                flex: `${status[statusName]} 0 auto`,
-                backgroundColor: STATUS_COLORS[statusName],
+                flex: `${taskCounts[taskStatus]} 0 auto`,
+                backgroundColor: STATUS_COLORS[taskStatus],
                 '&:first-of-type': {
                   borderTopLeftRadius: constants.borderRadius.small,
                   borderBottomLeftRadius: constants.borderRadius.small,
@@ -80,14 +51,12 @@ const ProgressBar = ({ status }) => {
 }
 
 ProgressBar.propTypes = {
-  status: PropTypes.shape({
-    isGenerating: PropTypes.bool,
-    isCanceled: PropTypes.bool,
-    canceledBy: PropTypes.string,
-    succeeded: PropTypes.number,
-    failed: PropTypes.number,
-    running: PropTypes.number,
-    pending: PropTypes.number,
+  state: PropTypes.string.isRequired,
+  taskCounts: PropTypes.shape({
+    tasksSuccess: PropTypes.number,
+    tasksFailure: PropTypes.number,
+    tasksRunning: PropTypes.number,
+    tasksWaiting: PropTypes.number,
   }).isRequired,
 }
 
