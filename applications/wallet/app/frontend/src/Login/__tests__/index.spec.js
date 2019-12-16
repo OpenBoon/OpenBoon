@@ -52,4 +52,24 @@ describe('<Login />', () => {
     expect(mockOnSubmit).not.toHaveBeenCalled()
     expect(mockFn).toHaveBeenCalled()
   })
+
+  it('should show and hide the password', () => {
+    const component = TestRenderer.create(
+      <Login errorMessage="" setErrorMessage={noop} onSubmit={noop} />,
+    )
+
+    expect(component.root.findByProps({ id: 'password' }).props.type).toBe(
+      'password',
+    )
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Show password' })
+        .props.onClick()
+    })
+
+    expect(component.root.findByProps({ id: 'password' }).props.type).toBe(
+      'text',
+    )
+  })
 })
