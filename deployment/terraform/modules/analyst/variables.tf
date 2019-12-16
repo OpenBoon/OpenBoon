@@ -3,6 +3,7 @@ variable "zone" {}
 variable "container-cluster-name" {}
 variable "image-pull-secret" {}
 variable "archivist-url" {}
+
 variable "container-tag" {default = "development"}
 variable "machine-type" {default = "custom-6-18176"}
 variable "memory-request" {default = "4Gi"}

@@ -14,28 +14,12 @@ resource "google_storage_bucket" "data" {
   }
 }
 
-resource "google_storage_bucket" "configuration" {
-  name     = "${var.project}-${var.config-bucket-name}"
-  storage_class = "REGIONAL"
-  location = "${var.region}"
-  versioning {
-    enabled = true
-  }
-}
-
+## SQL Instance
 resource "random_string" "sql-password" {
   length = 16
   special = false
 }
 
-
-//resource "google_storage_bucket_object" "archivist-data-credentials" {
-//  bucket = "${google_storage_bucket.configuration.name}"
-//  name = "zorroa-archivist-config/data-credentials.json"
-//  content = "${var.sql-service-account-key}"
-//}
-
-## SQL Instance
 resource "google_project_service" "sqladmin" {
   service = "sqladmin.googleapis.com"
   disable_on_destroy = false
@@ -55,22 +39,6 @@ resource "google_sql_user" "zorroa" {
 
 
 ## K8S Deployment
-
-resource "kubernetes_config_map" "archivist" {
-  metadata {
-    name = "archivist-config"
-    namespace = "${var.namespace}"
-    labels {
-      app = "archivist"
-    }
-  }
-  data {
-    GCS_CONFIGURATION_BUCKET = "${google_storage_bucket.configuration.name}/zorroa-archivist-config"
-    ZORROA_USER = "admin"
-    ZORROA_ARCHIVIST_EXT = "${var.extensions}"
-  }
-}
-
 resource "kubernetes_deployment" "archivist" {
   provider = "kubernetes"
   metadata {
@@ -256,14 +224,3 @@ resource "kubernetes_service" "archivist" {
     type = "ClusterIP"
   }
 }
-
-resource "kubernetes_secret" "sql-credentials" {
-  metadata {
-    name = "sql-credentials"
-  }
-  data {
-    username = "${google_sql_user.zorroa.name}"
-    password = "${random_string.sql-password.result}"
-  }
-}
-

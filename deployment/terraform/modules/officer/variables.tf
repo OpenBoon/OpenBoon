@@ -5,6 +5,7 @@ variable "image-pull-secret" {}
 variable "minio-url" {}
 variable "minio-access-key" {}
 variable "minio-secret-key" {}
+
 variable "container-tag" {default = "development"}
 variable "machine-type" {default = "custom-6-18176"}
 variable "memory-request" {default = "4Gi"}

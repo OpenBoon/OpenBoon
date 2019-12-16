@@ -1,4 +1,3 @@
-
 resource "google_container_node_pool" "officer" {
   name = "${var.node-pool-name}"
   cluster = "${var.container-cluster-name}"

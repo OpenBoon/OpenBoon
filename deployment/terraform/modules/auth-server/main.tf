@@ -1,8 +1,4 @@
-//resource "random_string" "sql-password" {
-//  length = 16
-//  special = false
-//}
-
+## SQl Instance
 resource "random_string" "sql-password" {
   length = 16
   special = false
@@ -19,6 +15,7 @@ resource "google_sql_database" "auth" {
   instance  = "${var.sql-instance-name}"
 }
 
+## K8S Deployment
 resource "kubernetes_deployment" "auth-server" {
   provider = "kubernetes"
   depends_on = ["google_sql_user.auth-server"]

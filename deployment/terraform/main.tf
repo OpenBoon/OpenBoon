@@ -1,4 +1,4 @@
-## Configuration
+## Store state in GCS. ###################################################################
 terraform {
   backend "gcs" {
     project = "zorroa-deploy"
@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-## Providers
+## Providers #############################################################################
 provider "google" {
   credentials = "${var.terraform-credentials}"
   project = "${var.project}"
@@ -34,22 +34,27 @@ provider "kubernetes" {
   version = ">= 1.6.0"
 }
 
-## GKE Cluster.
+## GCP Infrastructure ###################################################################
 module "gke-cluster" {
   source = "./modules/gke-cluster"
   zone = "${local.zone}"
-  initial-node-count = "${var.initial-node-count}"
 }
 
-## Postgres DB
 module "postgres" {
   source = "./modules/postgres"
   project = "${var.project}"
   region = "${local.region}"
-  sql-tier = "${var.sql-tier}"
 }
 
-## Local variables.
+module "redis" {
+  source = "./modules/redis"
+}
+
+module "minio" {
+  source = "./modules/minio"
+}
+
+## Secrets ###############################################################################
 resource "random_string" "shared-key" {
   length = 64
   special = false
@@ -88,24 +93,14 @@ resource "kubernetes_secret" "dockerhub" {
   type = "kubernetes.io/dockerconfigjson"
 }
 
-## Redis DB
-module "redis" {
-  source = "./modules/redis"
-}
 
-## MinIO File Object Server
-module "minio" {
-  source = "./modules/minio"
-}
-
-## Elasticsearch DB
+## pixelML Services ######################################################################
 module "elasticsearch" {
   source = "./modules/elasticsearch"
   container-cluster-name = "${module.gke-cluster.name}"
   image-pull-secret = "${kubernetes_secret.dockerhub.metadata.0.name}"
 }
 
-## Archivist
 module "archivist" {
   source = "modules/archivist"
   project = "${var.project}"
@@ -119,7 +114,6 @@ module "archivist" {
   minio-secret-key = "${module.minio.secret-key}"
 }
 
-## Auth-Server
 module "auth-server" {
   source = "./modules/auth-server"
   sql-instance-name = "${module.postgres.instance-name}"
@@ -128,7 +122,6 @@ module "auth-server" {
   inception-key-b64 = "${base64encode(local.inception-key)}"
 }
 
-## API Gateway
 module "api-gateway" {
   source = "./modules/api-gateway"
   image-pull-secret = "${kubernetes_secret.dockerhub.metadata.0.name}"
@@ -136,7 +129,6 @@ module "api-gateway" {
   auth_server_host = "${module.auth-server.ip-address}"
 }
 
-## Officer
 module "officer" {
   source = "./modules/officer"
   project = "${var.project}"
@@ -148,7 +140,6 @@ module "officer" {
   minio-secret-key = "${module.minio.secret-key}"
 }
 
-## Analyst
 module "analyst" {
   source = "./modules/analyst"
   project = "${var.project}"
@@ -158,7 +149,6 @@ module "analyst" {
   archivist-url = "http://${module.archivist.ip-address}"
 }
 
-## Wallet
 module "wallet" {
   source = "./modules/wallet"
   project = "${var.project}"
@@ -169,4 +159,3 @@ module "wallet" {
   sql-service-account-key = "${module.postgres.sql-service-account-key}"
   sql-connection-name = "${module.postgres.connection-name}"
 }
-

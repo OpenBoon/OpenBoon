@@ -1,5 +1,5 @@
 resource "kubernetes_storage_class" "redis" {
-  "metadata" {
+  metadata {
     name = "${var.storage-class-name}"
   }
   storage_provisioner = "kubernetes.io/gce-pd"
@@ -92,14 +92,14 @@ resource "kubernetes_stateful_set" "redis" {
 }
 
 resource "kubernetes_service" "redis" {
-  "metadata" {
+  metadata {
     name = "redis"
     namespace = "${var.namespace}"
     labels {
       app = "redis"
     }
   }
-  "spec" {
+  spec {
     cluster_ip = "${var.ip-address}"
     port {
       name = "6379-to-6379-tcp"

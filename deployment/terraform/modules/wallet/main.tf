@@ -133,14 +133,14 @@ resource "kubernetes_deployment" "wallet" {
 }
 
 resource "kubernetes_service" "wallet" {
-  "metadata" {
+  metadata {
     name = "wallet-service"
     namespace = "${var.namespace}"
     labels {
       app = "wallet"
     }
   }
-  "spec" {
+  spec {
     port {
       name = "http"
       protocol = "TCP"

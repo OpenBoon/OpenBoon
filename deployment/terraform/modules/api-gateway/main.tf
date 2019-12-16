@@ -68,16 +68,14 @@ resource "kubernetes_deployment" "api-gateway" {
               cpu = 0.2
             }
           }
-          env = [
-            {
-              name = "ARCHIVIST_HOST"
-              value = "${var.archivist_host}"
-            },
-            {
-              name = "AUTH_SERVER_HOST"
-              value = "${var.auth_server_host}"
-            }
-          ]
+          env {
+            name = "ARCHIVIST_HOST"
+            value = "${var.archivist_host}"
+          }
+          env {
+            name = "AUTH_SERVER_HOST"
+            value = "${var.auth_server_host}"
+          }
         }
       }
     }

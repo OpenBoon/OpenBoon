@@ -1,13 +1,3 @@
-//resource "kubernetes_storage_class" "minio" {
-//  "metadata" {
-//    name = "${var.storage-class-name}"
-//  }
-//  storage_provisioner = "kubernetes.io/gce-pd"
-//  parameters {
-//    type = "pd-ssd"
-//  }
-//}
-
 resource "kubernetes_persistent_volume_claim" "minio" {
   metadata {
     name = "minio-pv-claim"
