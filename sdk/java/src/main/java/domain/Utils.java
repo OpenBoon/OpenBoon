@@ -89,10 +89,7 @@ public class Utils {
         String json = new ObjectMapper().writeValueAsString(bodyParams);
 
         // json request body
-        RequestBody body = RequestBody.create(
-                json,
-                MediaType.parse("application/json")
-        );
+        RequestBody body = RequestBody.create(JSON, json);
 
         Request.Builder builder = new Request.Builder();
 
@@ -119,7 +116,6 @@ public class Utils {
         Field field = env.getClass().getDeclaredField("m");
         field.setAccessible(true);
         ((Map<String, String>) field.get(env)).put(name, val);
-
     }
 
 }
