@@ -14,7 +14,7 @@ const Table = ({ columns, rows }) => {
         th: {
           fontWeight: typography.weight.extraLight,
           color: colors.grey2,
-          backgroundColor: colors.grey1,
+          backgroundColor: colors.structure.iron,
           padding: `${spacing.moderate}px ${spacing.normal}px`,
           borderBottom: constants.borders.default,
           ':nth-of-type(2)': {

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
-import { spacing } from '../Styles'
+import { spacing, typography } from '../Styles'
 
 import Table from '../Table'
 import Pagination from '../Pagination'
@@ -30,8 +30,15 @@ const DataQueue = ({ selectedProject }) => {
   if (results.length === 0) return 'You have 0 jobs'
 
   return (
-    <div css={{ padding: spacing.spacious }}>
-      <h2>Data Queue</h2>
+    <div css={{ padding: `${spacing.comfy}px ${spacing.spacious}px` }}>
+      <div
+        css={{
+          fontSize: typography.size.mega,
+          lineHeight: '21px',
+          paddingBottom: spacing.normal,
+        }}>
+        Data Queue
+      </div>
 
       <Table columns={COLUMNS} rows={results} />
 
