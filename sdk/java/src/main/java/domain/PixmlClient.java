@@ -21,7 +21,8 @@ public class PixmlClient {
     String projectId;
     Integer maxRetries;
 
-    private final String DEFAULT_SERVER_URL = "https://api.pixelml.com";
+    //    private final String DEFAULT_SERVER_URL = "https://api.pixelml.com";
+    private final String DEFAULT_SERVER_URL = "http://localhost:8080";
 
     /**
      * PixmlClient is used to communicate to a Pixml API server.
@@ -89,7 +90,7 @@ public class PixmlClient {
     public Map<String, String> headers(String contentType) {
 
         String authorization = null;
-        authorization = "Bearer %s".format(signRequest());
+        authorization = String.format("Bearer %s", signRequest());
         Map header = new HashMap<String, String>();
         header.put("Authorization", authorization);
 
@@ -179,15 +180,20 @@ public class PixmlClient {
 
     /**
      * Performs a put request.
-     * @param url An archivist URI path.
+     *
+     * @param url  An archivist URI path.
      * @param body The request body which will be serialized to json.
      * @return The http response object or an object deserialized from the response json if the ``json`` argument is true.
-     * @throws IOException An error occurred making the request or parsing the JSON response
+     * @throws IOException          An error occurred making the request or parsing the JSON response
      * @throws InterruptedException
      */
 
     public Map put(String url, Map body) throws IOException, InterruptedException {
 
         return this.makeRequest("put", url, body);
+    }
+
+    public JsonNode getApiKey() {
+        return apiKey;
     }
 }
