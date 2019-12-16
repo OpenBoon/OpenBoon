@@ -59,7 +59,7 @@ const ProgressBar = ({ status, duration, showKeyInfo }) => {
                   borderTopLeftRadius: constants.borderRadius.small,
                   borderBottomLeftRadius: constants.borderRadius.small,
                 },
-                '&:last-of-type': {
+                '&:nth-last-of-type(2)': {
                   borderTopRightRadius: constants.borderRadius.small,
                   borderBottomRightRadius: constants.borderRadius.small,
                 },
