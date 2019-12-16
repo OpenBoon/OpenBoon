@@ -83,7 +83,10 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
               aria-label={showPassword ? 'Hide password' : 'Show password'}
               variant={VARIANTS.NEUTRAL}
               onClick={() => setShowPassword(!showPassword)}
-              style={{ '&:hover': { color: colors.primary } }}>
+              style={{
+                outlineOffset: -2,
+                '&:hover': { color: colors.primary },
+              }}>
               {showPassword ? (
                 <VisibleSvg width={20} />
               ) : (

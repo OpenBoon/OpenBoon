@@ -124,6 +124,7 @@ exports[`<Login /> should render properly 1`] = `
   border: none;
   cursor: pointer;
   padding: 12px;
+  outline-offset: -2px;
 }
 
 .emotion-11:hover {
