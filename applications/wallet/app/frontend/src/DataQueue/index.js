@@ -30,7 +30,7 @@ const DataQueue = ({ selectedProject }) => {
   if (results.length === 0) return 'You have 0 jobs'
 
   return (
-    <div css={{ padding: spacing.normal }}>
+    <div css={{ padding: spacing.spacious }}>
       <h2>Data Queue</h2>
 
       <Table columns={COLUMNS} rows={results} />

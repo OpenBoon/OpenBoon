@@ -4,7 +4,7 @@ exports[`<DataQueue /> should render properly while loading 1`] = `"Loading..."`
 
 exports[`<DataQueue /> should render properly with jobs 1`] = `
 .emotion-60 {
-  padding: 16px;
+  padding: 32px;
 }
 
 .emotion-59 {
