@@ -17,6 +17,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 .emotion-60 {
   width: 100%;
   border-spacing: 0;
+  box-shadow: 0 0 5px 0 #000000;
 }
 
 .emotion-60 th {
