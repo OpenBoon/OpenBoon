@@ -29,7 +29,6 @@ exports[`<Button /> should have a type "button" and be aria-disabled, and not cl
   font-weight: 500;
   border: none;
   cursor: not-allowed;
-  opacity: 0.4;
 }
 
 .emotion-0,
@@ -87,7 +86,6 @@ exports[`<Button /> should have a type "button", pass additional props, and be c
   font-weight: 500;
   border: none;
   cursor: pointer;
-  opacity: 1;
 }
 
 .emotion-0,
@@ -144,7 +142,6 @@ exports[`<Button /> should render a link as an anchor tag with no onClick 1`] = 
   font-weight: 500;
   border: none;
   cursor: pointer;
-  opacity: 1;
 }
 
 .emotion-0,
@@ -202,7 +199,6 @@ exports[`<Button /> should render properly for PRIMARY Button 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
-  opacity: 1;
 }
 
 .emotion-0,
@@ -259,7 +255,6 @@ exports[`<Button /> should render properly for PRIMARY Link 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
-  opacity: 1;
 }
 
 .emotion-0,

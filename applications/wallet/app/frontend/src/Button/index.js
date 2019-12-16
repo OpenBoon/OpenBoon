@@ -19,7 +19,6 @@ const BASE = ({ isDisabled }) => ({
   fontWeight: typography.weight.medium,
   border: 'none',
   cursor: isDisabled ? 'not-allowed' : 'pointer',
-  opacity: isDisabled ? 0.4 : 1,
 })
 
 const STYLES = {
