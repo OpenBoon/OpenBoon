@@ -110,9 +110,7 @@ public class Utils {
             return response.body().string();
 
         }
-
     }
-
     public static void updateEnvVariables(String name, String val) throws ReflectiveOperationException {
         Map<String, String> env = System.getenv();
         Field field = env.getClass().getDeclaredField("m");
