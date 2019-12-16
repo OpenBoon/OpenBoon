@@ -34,7 +34,7 @@ const DataQueue = ({ selectedProject }) => {
       <h2
         css={{
           fontSize: typography.size.mega,
-          lineHeight: '21px',
+          lineHeight: typography.height.mega,
           fontWeight: typography.weight.regular,
           paddingTop: spacing.comfy,
           paddingBottom: spacing.normal,
