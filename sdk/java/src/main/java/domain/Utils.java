@@ -5,7 +5,13 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -78,7 +84,8 @@ public class Utils {
      * @throws IOException HTTP Fail
      */
 
-/*    public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map body) throws IOException {
+/*
+    public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map body) throws IOException {
         StringBuilder response = new StringBuilder();
 
         URL url = new URL(urlParam);
@@ -113,10 +120,12 @@ public class Utils {
 
 
         return response.toString();
-    }*/
+    }
+*/
 
 
     private static final OkHttpClient HTTP_CLIENT_INSTANCE = new OkHttpClient();
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map bodyParams) throws IOException {
 
@@ -126,10 +135,7 @@ public class Utils {
         String json = new ObjectMapper().writeValueAsString(bodyParams);
 
         // json request body
-        RequestBody body = RequestBody.create(
-                json,
-                MediaType.parse("application/json")
-        );
+        RequestBody body = RequestBody.create(JSON, json);
 
         Request.Builder builder = new Request.Builder();
 
@@ -150,6 +156,15 @@ public class Utils {
             return response.body().string();
 
         }
+
+    }
+
+    public static void updateEnvVariables(String name, String val) throws ReflectiveOperationException {
+
+        Map<String, String> env = System.getenv();
+        Field field = env.getClass().getDeclaredField("m");
+        field.setAccessible(true);
+        ((Map<String, String>) field.get(env)).put(name, val);
 
     }
 

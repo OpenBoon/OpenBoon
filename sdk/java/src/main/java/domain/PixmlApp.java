@@ -68,4 +68,7 @@ public class PixmlApp {
         this.dataSource = new DataSourceApp(this);
     }
 
+    public PixmlClient getPixmlClient() {
+        return pixmlClient;
+    }
 }
