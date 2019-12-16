@@ -156,7 +156,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-12:last-of-type {
+.emotion-12:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -174,7 +174,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-13:last-of-type {
+.emotion-13:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -192,7 +192,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-14:last-of-type {
+.emotion-14:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -210,7 +210,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-15:last-of-type {
+.emotion-15:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -236,7 +236,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-22:last-of-type {
+.emotion-22:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -302,7 +302,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-59:last-of-type {
+.emotion-59:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -320,7 +320,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-85:last-of-type {
+.emotion-85:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -338,7 +338,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-87:last-of-type {
+.emotion-87:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -356,7 +356,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-88:last-of-type {
+.emotion-88:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -1218,7 +1218,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-12:last-of-type {
+.emotion-12:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -1236,7 +1236,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-13:last-of-type {
+.emotion-13:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -1254,7 +1254,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-14:last-of-type {
+.emotion-14:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -1272,7 +1272,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-15:last-of-type {
+.emotion-15:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -1298,7 +1298,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-22:last-of-type {
+.emotion-22:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -1364,7 +1364,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-59:last-of-type {
+.emotion-59:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -1382,7 +1382,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-85:last-of-type {
+.emotion-85:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -1400,7 +1400,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-87:last-of-type {
+.emotion-87:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -1418,7 +1418,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-88:last-of-type {
+.emotion-88:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
