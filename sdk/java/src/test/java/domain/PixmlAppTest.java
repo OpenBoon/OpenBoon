@@ -7,10 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import static domain.Utils.updateEnvVariables;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -83,8 +83,8 @@ public class PixmlAppTest {
         //When
         // Setting up Environment Variables
         // It is valid just at this runtime
-        updateEnv("PIXML_APIKEY", keyString);
-        updateEnv("PIXML_SERVER", server);
+        updateEnvVariables("PIXML_APIKEY", keyString);
+        updateEnvVariables("PIXML_SERVER", server);
 
         PixmlApp pixmlApp = new PixmlApp();
 
@@ -105,8 +105,8 @@ public class PixmlAppTest {
         //When
         // Setting up Environment Variables
         // It is valid just at this runtime
-        updateEnv("PIXML_APIKEY_FILE", "src/test/resources/testkey.json");
-        updateEnv("PIXML_SERVER", server);
+        updateEnvVariables("PIXML_APIKEY_FILE", "src/test/resources/testkey.json");
+        updateEnvVariables("PIXML_SERVER", server);
 
         PixmlApp pixmlApp = new PixmlApp();
 
@@ -114,15 +114,6 @@ public class PixmlAppTest {
         assertNotNull(pixmlApp.pixmlClient);
         assertNotNull(pixmlApp.pixmlClient.apiKey);
         assertNotNull(pixmlApp.pixmlClient.headers());
-    }
-
-
-
-    private void updateEnv(String name, String val) throws ReflectiveOperationException {
-        Map<String, String> env = System.getenv();
-        Field field = env.getClass().getDeclaredField("m");
-        field.setAccessible(true);
-        ((Map<String, String>) field.get(env)).put(name, val);
     }
 
 
