@@ -21,7 +21,7 @@ const TabsLink = ({ title, href }) => {
             paddingBottom: spacing.base,
             textTransform: 'uppercase',
             fontSize: typography.size.kilo,
-            lineHeight: typography.height.giga,
+            lineHeight: typography.height.kilo,
             fontWeight: typography.weight.bold,
             ':hover': {
               textDecoration: 'none',

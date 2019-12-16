@@ -4,6 +4,8 @@ import { formatFullDate } from '../Date/helpers'
 import Status from '../Status'
 import ProgressBar from '../ProgressBar'
 
+const BORDER_RADIUS = 32
+
 const Table = ({ columns, rows }) => {
   return (
     <table
@@ -111,9 +113,9 @@ const Table = ({ columns, rows }) => {
                         color: colors.signal.warning.base,
                         fontWeight: typography.weight.bold,
                         fontSize: typography.size.kilo,
-                        lineHeight: typography.height.mega,
+                        lineHeight: typography.height.kilo,
                         padding: spacing.base,
-                        borderRadius: 32,
+                        borderRadius: BORDER_RADIUS,
                         backgroundColor: colors.structure.coal,
                       }}>
                       {taskCounts.tasksFailure}
@@ -129,7 +131,7 @@ const Table = ({ columns, rows }) => {
                         color: colors.signal.warning.base,
                         fontWeight: typography.weight.bold,
                         fontSize: typography.size.kilo,
-                        lineHeight: typography.height.mega,
+                        lineHeight: typography.height.kilo,
                         padding: spacing.base,
                         borderRadius: 32,
                         backgroundColor: colors.structure.coal,

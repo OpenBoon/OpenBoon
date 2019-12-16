@@ -121,7 +121,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   color: #c92300;
   font-weight: 700;
   font-size: 16px;
-  line-height: 21px;
+  line-height: 20px;
   padding: 8px;
   border-radius: 32px;
   background-color: #191919;
