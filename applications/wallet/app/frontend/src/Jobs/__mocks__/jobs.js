@@ -4,18 +4,22 @@ export const newJob = ({ job }) => {
     jobName: job.name,
     createdBy: job.createdUser.username,
     priority: job.priority,
-    createdDateTime: job.timeCreated,
+    timeCreated: job.timeCreated,
     failed: job.taskCounts.tasksFailure,
     errors: job.assetCounts.assetErrorCount,
-    numAssets: 'numAsets',
+    numAssets: Object.values(job.assetCounts).reduce(
+      (sum, current) => sum + current,
+    ),
+    timeStarted: job.timeStarted,
     progress: {
-      isGenerating: job.jobId === '1585ca03-4db0-14d1-8edd-0a580a000926',
+      isGenerating: undefined,
       isCanceled: job.state === 'Canceled',
       canceledBy: job.createdUser.username,
       failed: job.taskCounts.tasksFailure,
-      pending: job.taskCounts.tasksWaiting,
-      running: job.taskCounts.tasksRunning,
+      skipped: job.taskCounts.tasksSkipped,
       succeeded: job.taskCounts.tasksSuccess,
+      running: job.taskCounts.tasksRunning,
+      pending: job.taskCounts.tasksWaiting + job.taskCounts.tasksQueued,
     },
   }
 }
@@ -30,7 +34,7 @@ export const jobs = {
       state: 'Active',
       assetCounts: {
         assetCreatedCount: 0,
-        assetReplacedCount: 0,
+        assetReplacedCount: 90,
         assetWarningCount: 0,
         assetErrorCount: 4,
       },
@@ -39,7 +43,7 @@ export const jobs = {
         tasksWaiting: 5,
         tasksRunning: 5,
         tasksSuccess: 5,
-        tasksFailure: 1,
+        tasksFailure: 100,
         tasksSkipped: 0,
         tasksQueued: 0,
       },
@@ -436,12 +440,12 @@ export const jobs = {
       },
       taskCounts: {
         tasksTotal: 2,
-        tasksWaiting: 0,
-        tasksRunning: 0,
+        tasksWaiting: 1,
+        tasksRunning: 1,
         tasksSuccess: 1,
         tasksFailure: 1,
-        tasksSkipped: 0,
-        tasksQueued: 0,
+        tasksSkipped: 1,
+        tasksQueued: 1,
       },
       createdUser: {
         id: '00000000-7b0b-480e-8c36-f06f04aed2f1',
@@ -482,28 +486,28 @@ export const jobColumns = [
   'Progress',
 ]
 
-export const jobRows = jobs.list.map(job => {
+export const __mockJobRows = jobs.list.map(job => {
   const { id } = job
   const status = job.paused ? 'Paused' : job.state
   const jobName = job.name
   const createdBy = job.createdUser.username
   const { priority } = job
-  const createdDateTime = job.timeCreated
-  const failed = job.taskCounts.tasksFailure > 0 && (
-    <div style={{ color: 'red' }}>{job.taskCounts.tasksFailure}</div>
+  const { timeCreated } = job
+  const failed = job.taskCounts.tasksFailure
+  const errors = job.assetCounts.assetErrorCount
+  const numAssets = Object.values(job.assetCounts).reduce(
+    (sum, current) => sum + current,
   )
-  const errors = job.assetCounts.assetErrorCount > 0 && (
-    <div style={{ color: 'red' }}>{job.assetCounts.assetErrorCount}</div>
-  )
-  const numAssets = 'numAsets'
+  const { timeStarted } = job
   const progress = {
-    isGenerating: job.jobId === '1585ca03-4db0-14d1-8edd-0a580a000926',
+    isGenerating: undefined,
     isCanceled: job.state === 'Canceled',
     canceledBy: job.createdUser.username,
     failed: job.taskCounts.tasksFailure,
-    pending: job.taskCounts.tasksWaiting,
-    running: job.taskCounts.tasksRunning,
+    skipped: job.taskCounts.tasksSkipped,
     succeeded: job.taskCounts.tasksSuccess,
+    running: job.taskCounts.tasksRunning,
+    pending: job.taskCounts.tasksWaiting + job.taskCounts.tasksQueued,
   }
 
   return {
@@ -512,10 +516,11 @@ export const jobRows = jobs.list.map(job => {
     jobName,
     createdBy,
     priority,
-    createdDateTime,
+    timeCreated,
     failed,
     errors,
     numAssets,
+    timeStarted,
     progress,
   }
 })

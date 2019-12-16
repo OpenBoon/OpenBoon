@@ -1,83 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Jobs /> should render properly with data 1`] = `
-@keyframes animation-0 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
+.emotion-93 {
+  padding: 32px;
 }
 
-.emotion-61 {
-  padding: 16px;
-}
-
-.emotion-60 {
+.emotion-92 {
   width: 100%;
   border-spacing: 0;
+  box-shadow: 0 0 5px 0 #000000;
 }
 
-.emotion-60 th {
-  color: #b3b3b3;
-  background-color: #2e2e2e;
+.emotion-92 th {
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
   padding: 12px 16px;
-  border-bottom: 1px solid #4d4948;
+  border-bottom: 1px solid #2e2e2e;
+  white-space: nowrap;
 }
 
-.emotion-60 th:nth-of-type(2) {
+.emotion-92 th:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-60 th:not(:last-child) {
-  border-right: 1px solid #4d4948;
+.emotion-92 th:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
 }
 
-.emotion-60 tr {
-  background-color: #121212;
+.emotion-92 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-60 tr:hover {
-  background-color: #2e2e2e;
-}
-
-.emotion-60 tr:hover td {
-  border: 1px solid #4d4948;
+.emotion-92 tr:hover td {
+  border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-60 tr:hover td:first-of-type {
-  border: 1px solid #4d4948;
+.emotion-92 tr:hover td:first-of-type {
+  border: 1px solid #808080;
   border-right: 0;
 }
 
-.emotion-60 tr:hover td:last-of-type {
-  border: 1px solid #4d4948;
+.emotion-92 tr:hover td:last-of-type {
+  border: 1px solid #808080;
   border-left: 0;
 }
 
-.emotion-60 td {
+.emotion-92 td {
   white-space: nowrap;
-  color: #b3b3b3;
+  color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-60 td:first-of-type {
+.emotion-92 td:first-of-type {
   border: 1px solid transparent;
   border-right: 0;
 }
 
-.emotion-60 td:last-of-type {
+.emotion-92 td:last-of-type {
   border: 1px solid transparent;
   border-left: 0;
 }
@@ -89,12 +75,12 @@ exports[`<Jobs /> should render properly with data 1`] = `
   display: flex;
 }
 
-.emotion-15 {
-  background-color: #121212;
+.emotion-18 {
+  background-color: #252525;
 }
 
-.emotion-15:nth-of-type(2n) {
-  background-color: #1d1d1d;
+.emotion-18:nth-of-type(2n) {
+  background-color: #2e2e2e;
 }
 
 .emotion-9 {
@@ -109,61 +95,60 @@ exports[`<Jobs /> should render properly with data 1`] = `
   padding: 8px;
   height: 24px;
   border-radius: 2px;
-  color: #fff;
-  background-color: #4a90e2;
+  color: #f5a623;
+  background-color: #191919;
 }
 
-.emotion-14 {
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #fa2a00;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 18px;
+  padding: 8px;
+  border-radius: 32px;
+  background-color: #191919;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #fa2a00;
+  font-weight: 700;
+  padding: 8px;
+  border-radius: 32px;
+  background-color: #191919;
+}
+
+.emotion-17 {
+  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   height: 16px;
-  width: 200px;
-}
-
-.emotion-10 {
-  height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #4ac565;
-}
-
-.emotion-10:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-10:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-11 {
-  height: 100%;
-  -webkit-flex: 1 0 auto;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
-  background-color: #ce2d3f;
-}
-
-.emotion-11:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-11:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  width: 212px;
 }
 
 .emotion-12 {
   height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #4a90e2;
+  -webkit-flex: 100 0 auto;
+  -ms-flex: 100 0 auto;
+  flex: 100 0 auto;
+  background-color: #c92300;
 }
 
 .emotion-12:first-of-type {
@@ -171,7 +156,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-12:last-of-type {
+.emotion-12:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -181,7 +166,7 @@ exports[`<Jobs /> should render properly with data 1`] = `
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
-  background-color: #404040;
+  background-color: #4ac565;
 }
 
 .emotion-13:first-of-type {
@@ -189,28 +174,74 @@ exports[`<Jobs /> should render properly with data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-13:last-of-type {
+.emotion-13:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-23 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px;
-  height: 24px;
-  border-radius: 2px;
-  color: #fff;
-  background-color: #f5a623;
+.emotion-14 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #ebb52e;
 }
 
-.emotion-27 {
+.emotion-14:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-14:nth-last-of-type(2) {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-15 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-15:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-15:nth-last-of-type(2) {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-16 {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  z-index: 70;
+}
+
+.emotion-22 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-22:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-22:nth-last-of-type(2) {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-29 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -223,14 +254,10 @@ exports[`<Jobs /> should render properly with data 1`] = `
   height: 24px;
   border-radius: 2px;
   color: #000000;
-  background-color: #b3b3b3;
+  background-color: #f5a623;
 }
 
-.emotion-28 {
-  color: #4d4948;
-}
-
-.emotion-30 {
+.emotion-36 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -242,33 +269,27 @@ exports[`<Jobs /> should render properly with data 1`] = `
   padding: 8px;
   height: 24px;
   border-radius: 2px;
-  color: #fff;
-  background-color: #4ac565;
+  color: #808080;
+  background-color: #191919;
 }
 
-.emotion-41 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+.emotion-43 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  color: #4a90e2;
+  padding: 8px;
+  height: 24px;
+  border-radius: 2px;
+  color: #4ac565;
+  background-color: #191919;
 }
 
-.emotion-39 {
-  color: #4a90e2;
-  -webkit-animation: animation-0 2s linear infinite;
-  animation: animation-0 2s linear infinite;
-}
-
-.emotion-40 {
-  padding-left: 8px;
-}
-
-.emotion-56 {
+.emotion-59 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -276,24 +297,78 @@ exports[`<Jobs /> should render properly with data 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-56:first-of-type {
+.emotion-59:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-56:last-of-type {
+.emotion-59:nth-last-of-type(2) {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-85 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #b3b3b3;
+}
+
+.emotion-85:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-85:nth-last-of-type(2) {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-87 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #ebb52e;
+}
+
+.emotion-87:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-87:nth-last-of-type(2) {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-88 {
+  height: 100%;
+  -webkit-flex: 2 0 auto;
+  -ms-flex: 2 0 auto;
+  flex: 2 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-88:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-88:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
 <div
-  className="emotion-61"
+  className="emotion-93"
 >
   <h2>
     Data Queue
   </h2>
   <table
-    className="emotion-60"
+    className="emotion-92"
   >
     <thead>
       <tr>
@@ -364,7 +439,9 @@ exports[`<Jobs /> should render properly with data 1`] = `
     </thead>
     <tbody>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -387,50 +464,47 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
-            1
+            100
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             4
           </div>
         </td>
         <td>
-          numAsets
+          94
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
-            <div
-              className="emotion-10"
-            />
-            <div
-              className="emotion-11"
-            />
             <div
               className="emotion-12"
             />
             <div
               className="emotion-13"
             />
+            <div
+              className="emotion-14"
+            />
+            <div
+              className="emotion-15"
+            />
+            <div
+              className="emotion-16"
+            />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -453,54 +527,51 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             4
           </div>
         </td>
         <td>
-          numAsets
+          4
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-10"
-            />
-            <div
-              className="emotion-11"
-            />
-            <div
-              className="emotion-12"
+              className="emotion-22"
             />
             <div
               className="emotion-13"
+            />
+            <div
+              className="emotion-14"
+            />
+            <div
+              className="emotion-15"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
-            className="emotion-23"
+            className="emotion-29"
           >
             Paused
           </div>
@@ -519,45 +590,42 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             4
           </div>
         </td>
         <td>
-          numAsets
+          4
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-11"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
-            className="emotion-27"
+            className="emotion-36"
           >
             Canceled
           </div>
@@ -576,43 +644,42 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             4
           </div>
         </td>
         <td>
-          numAsets
+          4
         </td>
         <td>
           <div
-            className="emotion-28"
+            className="emotion-17"
           >
-            Canceled by: admin
+            <div
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
+            />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
-            className="emotion-30"
+            className="emotion-43"
           >
             Finished
           </div>
@@ -631,41 +698,38 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             4
           </div>
         </td>
         <td>
-          numAsets
+          4
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-11"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -688,41 +752,38 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             3
           </div>
         </td>
         <td>
-          numAsets
+          3
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-11"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -746,36 +807,31 @@ exports[`<Jobs /> should render properly with data 1`] = `
         <td />
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             3
           </div>
         </td>
         <td>
-          numAsets
+          3
         </td>
         <td>
           <div
-            className="emotion-41"
+            className="emotion-17"
           >
-            <svg
-              className="emotion-39"
-              data-file-name="generating.svg"
+            <div
+              className="emotion-59"
             />
             <div
-              className="emotion-40"
-            >
-              Generating
-            </div>
+              className="emotion-16"
+            />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -798,31 +854,32 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td />
         <td>
-          numAsets
+          0
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-11"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -845,31 +902,32 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td />
         <td>
-          numAsets
+          0
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-11"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -892,31 +950,32 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td />
         <td>
-          numAsets
+          0
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-11"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -939,38 +998,42 @@ exports[`<Jobs /> should render properly with data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             49
           </div>
         </td>
         <td>
-          numAsets
+          49
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-56"
+              className="emotion-22"
             />
             <div
-              className="emotion-11"
+              className="emotion-85"
+            />
+            <div
+              className="emotion-59"
+            />
+            <div
+              className="emotion-87"
+            />
+            <div
+              className="emotion-88"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
@@ -1000,83 +1063,69 @@ exports[`<Jobs /> should render properly with data 1`] = `
 `;
 
 exports[`<Jobs /> should render properly without data 1`] = `
-@keyframes animation-0 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
+.emotion-93 {
+  padding: 32px;
 }
 
-.emotion-61 {
-  padding: 16px;
-}
-
-.emotion-60 {
+.emotion-92 {
   width: 100%;
   border-spacing: 0;
+  box-shadow: 0 0 5px 0 #000000;
 }
 
-.emotion-60 th {
-  color: #b3b3b3;
-  background-color: #2e2e2e;
+.emotion-92 th {
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
   padding: 12px 16px;
-  border-bottom: 1px solid #4d4948;
+  border-bottom: 1px solid #2e2e2e;
+  white-space: nowrap;
 }
 
-.emotion-60 th:nth-of-type(2) {
+.emotion-92 th:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-60 th:not(:last-child) {
-  border-right: 1px solid #4d4948;
+.emotion-92 th:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
 }
 
-.emotion-60 tr {
-  background-color: #121212;
+.emotion-92 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-60 tr:hover {
-  background-color: #2e2e2e;
-}
-
-.emotion-60 tr:hover td {
-  border: 1px solid #4d4948;
+.emotion-92 tr:hover td {
+  border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-60 tr:hover td:first-of-type {
-  border: 1px solid #4d4948;
+.emotion-92 tr:hover td:first-of-type {
+  border: 1px solid #808080;
   border-right: 0;
 }
 
-.emotion-60 tr:hover td:last-of-type {
-  border: 1px solid #4d4948;
+.emotion-92 tr:hover td:last-of-type {
+  border: 1px solid #808080;
   border-left: 0;
 }
 
-.emotion-60 td {
+.emotion-92 td {
   white-space: nowrap;
-  color: #b3b3b3;
+  color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-60 td:first-of-type {
+.emotion-92 td:first-of-type {
   border: 1px solid transparent;
   border-right: 0;
 }
 
-.emotion-60 td:last-of-type {
+.emotion-92 td:last-of-type {
   border: 1px solid transparent;
   border-left: 0;
 }
@@ -1088,12 +1137,12 @@ exports[`<Jobs /> should render properly without data 1`] = `
   display: flex;
 }
 
-.emotion-15 {
-  background-color: #121212;
+.emotion-18 {
+  background-color: #252525;
 }
 
-.emotion-15:nth-of-type(2n) {
-  background-color: #1d1d1d;
+.emotion-18:nth-of-type(2n) {
+  background-color: #2e2e2e;
 }
 
 .emotion-9 {
@@ -1108,61 +1157,60 @@ exports[`<Jobs /> should render properly without data 1`] = `
   padding: 8px;
   height: 24px;
   border-radius: 2px;
-  color: #fff;
-  background-color: #4a90e2;
+  color: #f5a623;
+  background-color: #191919;
 }
 
-.emotion-14 {
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #fa2a00;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 18px;
+  padding: 8px;
+  border-radius: 32px;
+  background-color: #191919;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #fa2a00;
+  font-weight: 700;
+  padding: 8px;
+  border-radius: 32px;
+  background-color: #191919;
+}
+
+.emotion-17 {
+  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   height: 16px;
-  width: 200px;
-}
-
-.emotion-10 {
-  height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #4ac565;
-}
-
-.emotion-10:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-10:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-11 {
-  height: 100%;
-  -webkit-flex: 1 0 auto;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
-  background-color: #ce2d3f;
-}
-
-.emotion-11:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-11:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  width: 212px;
 }
 
 .emotion-12 {
   height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #4a90e2;
+  -webkit-flex: 100 0 auto;
+  -ms-flex: 100 0 auto;
+  flex: 100 0 auto;
+  background-color: #c92300;
 }
 
 .emotion-12:first-of-type {
@@ -1170,7 +1218,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-12:last-of-type {
+.emotion-12:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -1180,7 +1228,7 @@ exports[`<Jobs /> should render properly without data 1`] = `
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
-  background-color: #404040;
+  background-color: #4ac565;
 }
 
 .emotion-13:first-of-type {
@@ -1188,28 +1236,74 @@ exports[`<Jobs /> should render properly without data 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-13:last-of-type {
+.emotion-13:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-23 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px;
-  height: 24px;
-  border-radius: 2px;
-  color: #fff;
-  background-color: #f5a623;
+.emotion-14 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #ebb52e;
 }
 
-.emotion-27 {
+.emotion-14:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-14:nth-last-of-type(2) {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-15 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-15:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-15:nth-last-of-type(2) {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-16 {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  z-index: 70;
+}
+
+.emotion-22 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-22:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-22:nth-last-of-type(2) {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-29 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -1222,14 +1316,10 @@ exports[`<Jobs /> should render properly without data 1`] = `
   height: 24px;
   border-radius: 2px;
   color: #000000;
-  background-color: #b3b3b3;
+  background-color: #f5a623;
 }
 
-.emotion-28 {
-  color: #4d4948;
-}
-
-.emotion-30 {
+.emotion-36 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -1241,33 +1331,27 @@ exports[`<Jobs /> should render properly without data 1`] = `
   padding: 8px;
   height: 24px;
   border-radius: 2px;
-  color: #fff;
-  background-color: #4ac565;
+  color: #808080;
+  background-color: #191919;
 }
 
-.emotion-41 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+.emotion-43 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  color: #4a90e2;
+  padding: 8px;
+  height: 24px;
+  border-radius: 2px;
+  color: #4ac565;
+  background-color: #191919;
 }
 
-.emotion-39 {
-  color: #4a90e2;
-  -webkit-animation: animation-0 2s linear infinite;
-  animation: animation-0 2s linear infinite;
-}
-
-.emotion-40 {
-  padding-left: 8px;
-}
-
-.emotion-56 {
+.emotion-59 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -1275,24 +1359,78 @@ exports[`<Jobs /> should render properly without data 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-56:first-of-type {
+.emotion-59:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-56:last-of-type {
+.emotion-59:nth-last-of-type(2) {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-85 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #b3b3b3;
+}
+
+.emotion-85:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-85:nth-last-of-type(2) {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-87 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #ebb52e;
+}
+
+.emotion-87:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-87:nth-last-of-type(2) {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-88 {
+  height: 100%;
+  -webkit-flex: 2 0 auto;
+  -ms-flex: 2 0 auto;
+  flex: 2 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-88:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-88:nth-last-of-type(2) {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
 <div
-  className="emotion-61"
+  className="emotion-93"
 >
   <h2>
     Data Queue
   </h2>
   <table
-    className="emotion-60"
+    className="emotion-92"
   >
     <thead>
       <tr>
@@ -1363,7 +1501,9 @@ exports[`<Jobs /> should render properly without data 1`] = `
     </thead>
     <tbody>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1386,50 +1526,47 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
-            1
+            100
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             4
           </div>
         </td>
         <td>
-          numAsets
+          94
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
-            <div
-              className="emotion-10"
-            />
-            <div
-              className="emotion-11"
-            />
             <div
               className="emotion-12"
             />
             <div
               className="emotion-13"
             />
+            <div
+              className="emotion-14"
+            />
+            <div
+              className="emotion-15"
+            />
+            <div
+              className="emotion-16"
+            />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1452,54 +1589,51 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             4
           </div>
         </td>
         <td>
-          numAsets
+          4
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-10"
-            />
-            <div
-              className="emotion-11"
-            />
-            <div
-              className="emotion-12"
+              className="emotion-22"
             />
             <div
               className="emotion-13"
+            />
+            <div
+              className="emotion-14"
+            />
+            <div
+              className="emotion-15"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
-            className="emotion-23"
+            className="emotion-29"
           >
             Paused
           </div>
@@ -1518,45 +1652,42 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             4
           </div>
         </td>
         <td>
-          numAsets
+          4
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-11"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
-            className="emotion-27"
+            className="emotion-36"
           >
             Canceled
           </div>
@@ -1575,43 +1706,42 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             4
           </div>
         </td>
         <td>
-          numAsets
+          4
         </td>
         <td>
           <div
-            className="emotion-28"
+            className="emotion-17"
           >
-            Canceled by: admin
+            <div
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
+            />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
-            className="emotion-30"
+            className="emotion-43"
           >
             Finished
           </div>
@@ -1630,41 +1760,38 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             4
           </div>
         </td>
         <td>
-          numAsets
+          4
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-11"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1687,41 +1814,38 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             3
           </div>
         </td>
         <td>
-          numAsets
+          3
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-11"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1745,36 +1869,31 @@ exports[`<Jobs /> should render properly without data 1`] = `
         <td />
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             3
           </div>
         </td>
         <td>
-          numAsets
+          3
         </td>
         <td>
           <div
-            className="emotion-41"
+            className="emotion-17"
           >
-            <svg
-              className="emotion-39"
-              data-file-name="generating.svg"
+            <div
+              className="emotion-59"
             />
             <div
-              className="emotion-40"
-            >
-              Generating
-            </div>
+              className="emotion-16"
+            />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1797,31 +1916,32 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td />
         <td>
-          numAsets
+          0
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-11"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1844,31 +1964,32 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td />
         <td>
-          numAsets
+          0
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-11"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1891,31 +2012,32 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td />
         <td>
-          numAsets
+          0
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-11"
+              className="emotion-22"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>
       </tr>
       <tr
-        className="emotion-15"
+        className="emotion-18"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <td>
           <div
@@ -1938,38 +2060,42 @@ exports[`<Jobs /> should render properly without data 1`] = `
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-10"
           >
             1
           </div>
         </td>
         <td>
           <div
-            style={
-              Object {
-                "color": "red",
-              }
-            }
+            className="emotion-11"
           >
             49
           </div>
         </td>
         <td>
-          numAsets
+          49
         </td>
         <td>
           <div
-            className="emotion-14"
+            className="emotion-17"
           >
             <div
-              className="emotion-56"
+              className="emotion-22"
             />
             <div
-              className="emotion-11"
+              className="emotion-85"
+            />
+            <div
+              className="emotion-59"
+            />
+            <div
+              className="emotion-87"
+            />
+            <div
+              className="emotion-88"
+            />
+            <div
+              className="emotion-16"
             />
           </div>
         </td>

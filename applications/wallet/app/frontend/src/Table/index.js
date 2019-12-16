@@ -1,22 +1,25 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { colors, constants, spacing, typography } from '../Styles'
-import { formatFullDate } from '../Date/helpers'
+import { formatFullDate, convertDuration } from '../Date/helpers'
 import Status from '../Status'
 import ProgressBar from '../ProgressBar'
 
 const Table = ({ columns, rows }) => {
+  const [showKeyInfoId, setShowKeyInfoId] = useState('')
   return (
     <table
       css={{
         width: '100%',
         borderSpacing: 0,
-        boxShadow: constants.boxShadows.dark,
+        boxShadow: constants.boxShadows.table,
         th: {
-          fontWeight: typography.weight.extraLight,
-          color: colors.grey2,
-          backgroundColor: colors.grey1,
+          fontWeight: typography.weight.medium,
+          color: colors.structureShades.pebble,
+          backgroundColor: colors.structureShades.iron,
           padding: `${spacing.moderate}px ${spacing.normal}px`,
           borderBottom: constants.borders.default,
+          whiteSpace: 'nowrap',
           ':nth-of-type(2)': {
             width: '100%',
           },
@@ -25,19 +28,19 @@ const Table = ({ columns, rows }) => {
           },
         },
         tr: {
-          backgroundColor: colors.grey4,
           ':hover': {
-            backgroundColor: colors.grey1,
+            backgroundColor: colors.structureShades.iron,
+            boxShadow: constants.boxShadows.tableRow,
             td: {
-              border: constants.borders.default,
+              border: constants.borders.tableRow,
               borderLeft: '0',
               borderRight: '0',
               '&:first-of-type': {
-                border: constants.borders.default,
+                border: constants.borders.tableRow,
                 borderRight: '0',
               },
               '&:last-of-type': {
-                border: constants.borders.default,
+                border: constants.borders.tableRow,
                 borderLeft: '0',
               },
             },
@@ -46,7 +49,7 @@ const Table = ({ columns, rows }) => {
         td: {
           whiteSpace: 'nowrap',
           fontWeight: typography.weight.extraLight,
-          color: colors.grey2,
+          color: colors.structureShades.pebble,
           padding: `${spacing.base}px ${spacing.normal}px`,
           border: constants.borders.transparent,
           borderLeft: '0',
@@ -78,10 +81,16 @@ const Table = ({ columns, rows }) => {
             <tr
               key={row.id}
               css={{
-                backgroundColor: colors.grey4,
+                backgroundColor: colors.structureShades.lead,
                 '&:nth-of-type(2n)': {
-                  backgroundColor: colors.grey3,
+                  backgroundColor: colors.structureShades.mattGrey,
                 },
+              }}
+              onMouseEnter={() => {
+                setShowKeyInfoId(row.id)
+              }}
+              onMouseLeave={() => {
+                setShowKeyInfoId('')
               }}>
               <td>
                 <Status jobStatus={row.status} />
@@ -89,12 +98,50 @@ const Table = ({ columns, rows }) => {
               <td>{row.jobName}</td>
               <td>{row.createdBy}</td>
               <td>{row.priority}</td>
-              <td>{formatFullDate({ timestamp: row.createdDateTime })}</td>
-              <td>{row.failed}</td>
-              <td>{row.errors}</td>
+              <td>{formatFullDate({ timestamp: row.timeCreated })}</td>
+              <td>
+                {row.failed > 0 && (
+                  <div
+                    css={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      color: colors.failed,
+                      fontWeight: typography.weight.bold,
+                      fontSize: typography.size.kilo,
+                      lineHeight: `${typography.size.mega}px`,
+                      padding: spacing.base,
+                      borderRadius: 32,
+                      backgroundColor: colors.structureShades.coal,
+                    }}>
+                    {row.failed}
+                  </div>
+                )}
+              </td>
+              <td>
+                {row.errors > 0 && (
+                  <div
+                    css={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      color: colors.failed,
+                      fontWeight: typography.weight.bold,
+                      fontSize: typography.kilo,
+                      lineHeight: typography.mega,
+                      padding: spacing.base,
+                      borderRadius: 32,
+                      backgroundColor: colors.structureShades.coal,
+                    }}>
+                    {row.errors}
+                  </div>
+                )}
+              </td>
               <td>{row.numAssets}</td>
               <td>
-                <ProgressBar status={row.progress} />
+                <ProgressBar
+                  status={row.progress}
+                  duration={convertDuration({ timestamp: row.timeStarted })}
+                  showKeyInfo={showKeyInfoId === row.id}
+                />
               </td>
             </tr>
           )
@@ -113,10 +160,11 @@ Table.propTypes = {
       jobName: PropTypes.string,
       createdBy: PropTypes.string,
       priority: PropTypes.number,
-      createdDateTime: PropTypes.number,
+      timeCreated: PropTypes.number,
       failed: PropTypes.node,
       errors: PropTypes.node,
-      numAssets: PropTypes.string,
+      numAssets: PropTypes.number,
+      timeStarted: PropTypes.number,
       progress: PropTypes.shape({
         isGenerating: PropTypes.bool,
         isCanceled: PropTypes.bool,

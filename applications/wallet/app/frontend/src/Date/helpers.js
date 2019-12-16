@@ -23,3 +23,24 @@ export const formatFullDate = ({ timestamp }) => {
 
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`
 }
+
+export const convertDuration = ({ timestamp }) => {
+  const currentTime = Date.now()
+  const timeStarted = timestamp
+  const durationInSeconds = Math.floor((currentTime - timeStarted) / 1000)
+  const durationInMinutes = Math.floor(durationInSeconds / 60)
+  const durationInHours = Math.floor(durationInMinutes / 60)
+  const durationInDays = Math.floor(durationInHours / 24)
+
+  const seconds = durationInSeconds % 60
+  const minutes = durationInMinutes % 60
+  const hours = durationInHours % 24
+  const days = durationInDays
+
+  return {
+    days,
+    hours,
+    minutes,
+    seconds,
+  }
+}

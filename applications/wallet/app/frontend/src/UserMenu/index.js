@@ -32,7 +32,7 @@ const UserMenu = ({
           width: SIZE,
           height: SIZE,
           borderRadius: SIZE,
-          color: colors.rocks.white,
+          color: colors.structureShades.white,
           backgroundColor: colors.rocks.charcoal,
           fontWeight: typography.weight.bold,
           ':hover': {
@@ -46,7 +46,7 @@ const UserMenu = ({
           css={{
             position: 'absolute',
             zIndex: zIndex.reset,
-            backgroundColor: colors.rocks.iron,
+            backgroundColor: colors.structureShades.steel,
             top: SIZE + spacing.base,
             right: 0,
             borderRadius: constants.borderRadius.small,
