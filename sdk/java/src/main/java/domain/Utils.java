@@ -78,7 +78,6 @@ public class Utils {
      * @return String response for the request
      * @throws IOException HTTP Fail
      */
-
     private static final OkHttpClient HTTP_CLIENT_INSTANCE = new OkHttpClient();
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -119,7 +118,6 @@ public class Utils {
         Field field = env.getClass().getDeclaredField("m");
         field.setAccessible(true);
         ((Map<String, String>) field.get(env)).put(name, val);
-
     }
 
 }
