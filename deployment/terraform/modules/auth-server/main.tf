@@ -107,11 +107,11 @@ resource "kubernetes_deployment" "auth-server" {
           }
           resources {
             limits {
-              memory = "512Mi"
+              memory = "1Gi"
               cpu = 0.5
             }
             requests {
-              memory = "256Mi"
+              memory = "512Mi"
               cpu = 0.2
             }
           }
@@ -169,7 +169,7 @@ resource "kubernetes_horizontal_pod_autoscaler" "auth-server" {
     }
   }
   spec {
-    max_replicas = 10
+    max_replicas = 2
     min_replicas = 2
     scale_target_ref {
       api_version = "apps/v1"

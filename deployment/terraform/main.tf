@@ -136,6 +136,28 @@ module "api-gateway" {
   auth_server_host = "${module.auth-server.ip-address}"
 }
 
+## Officer
+module "officer" {
+  source = "./modules/officer"
+  project = "${var.project}"
+  zone = "${var.zone}"
+  container-cluster-name = "${module.gke-cluster.name}"
+  image-pull-secret = "${kubernetes_secret.dockerhub.metadata.0.name}"
+  minio-url = "http://${module.minio.ip-address}:9000"
+  minio-access-key = "${module.minio.access-key}"
+  minio-secret-key = "${module.minio.secret-key}"
+}
+
+## Analyst
+module "analyst" {
+  source = "./modules/analyst"
+  project = "${var.project}"
+  zone = "${var.zone}"
+  container-cluster-name = "${module.gke-cluster.name}"
+  image-pull-secret = "${kubernetes_secret.dockerhub.metadata.0.name}"
+  archivist-url = "http://${module.archivist.ip-address}"
+}
+
 ## Wallet
 module "wallet" {
   source = "./modules/wallet"

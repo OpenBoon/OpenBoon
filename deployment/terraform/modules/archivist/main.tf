@@ -147,25 +147,25 @@ resource "kubernetes_deployment" "archivist" {
               cpu = 0.5
             }
           }
-//          liveness_probe = {
-//            initial_delay_seconds = 120
-//            period_seconds = 30
-//            http_get {
-//              scheme = "HTTP"
-//              path = "/monitor/health"
-//              port = "8080"
-//            }
-//          }
-//          readiness_probe = {
-//            failure_threshold = 6
-//            initial_delay_seconds = 90
-//            period_seconds = 30
-//            http_get {
-//              scheme = "HTTP"
-//              path = "/monitor/health"
-//              port = "8080"
-//            }
-//          }
+          liveness_probe = {
+            initial_delay_seconds = 120
+            period_seconds = 30
+            http_get {
+              scheme = "HTTP"
+              path = "/monitor/health"
+              port = "8080"
+            }
+          }
+          readiness_probe = {
+            failure_threshold = 6
+            initial_delay_seconds = 90
+            period_seconds = 30
+            http_get {
+              scheme = "HTTP"
+              path = "/monitor/health"
+              port = "8080"
+            }
+          }
           env = [
             {
               name = "SPRING_PROFILES_ACTIVE"

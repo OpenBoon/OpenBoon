@@ -36,35 +36,35 @@ resource "kubernetes_deployment" "api-gateway" {
           name = "api-gateway"
           image = "zmlp/apigateway:${var.container-tag}"
           image_pull_policy = "Always"
-//          liveness_probe = {
-//            initial_delay_seconds = 120
-//            period_seconds = 5
-//            http_get {
-//              scheme = "HTTP"
-//              path = "/monitor/health"
-//              port = "80"
-//            }
-//          }
-//          readiness_probe = {
-//            failure_threshold = 6
-//            initial_delay_seconds = 30
-//            period_seconds = 30
-//            http_get {
-//              scheme = "HTTP"
-//              path = "/monitor/health"
-//              port = "80"
-//            }
-//          }
+          liveness_probe = {
+            initial_delay_seconds = 120
+            period_seconds = 5
+            http_get {
+              scheme = "HTTP"
+              path = "/monitor/health"
+              port = "80"
+            }
+          }
+          readiness_probe = {
+            failure_threshold = 6
+            initial_delay_seconds = 30
+            period_seconds = 30
+            http_get {
+              scheme = "HTTP"
+              path = "/monitor/health"
+              port = "80"
+            }
+          }
           port {
             container_port = "80"
           }
           resources {
             limits {
-              memory = "1Gi"
+              memory = "2Gi"
               cpu = 0.5
             }
             requests {
-              memory = "256Mi"
+              memory = "512Mi"
               cpu = 0.2
             }
           }
