@@ -48,7 +48,7 @@ const Table = ({ columns, rows }) => {
         td: {
           whiteSpace: 'nowrap',
           fontWeight: typography.weight.extraLight,
-          color: colors.grey2,
+          color: colors.structure.pebble,
           padding: `${spacing.base}px ${spacing.normal}px`,
           border: constants.borders.transparent,
           borderLeft: '0',

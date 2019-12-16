@@ -47,7 +47,7 @@ exports[`<Table /> should render properly 1`] = `
 
 .emotion-0 td {
   white-space: nowrap;
-  color: #b3b3b3;
+  color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
   border-left: 0;
