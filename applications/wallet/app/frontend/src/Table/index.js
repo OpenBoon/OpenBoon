@@ -12,8 +12,10 @@ const Table = ({ columns, rows }) => {
         borderSpacing: 0,
         boxShadow: constants.boxShadows.dark,
         th: {
-          fontWeight: typography.weight.extraLight,
-          color: colors.grey2,
+          fontSize: '15px',
+          fontWeight: typography.weight.medium,
+          lineHeight: typography.height.mega,
+          color: colors.structure.pebble,
           backgroundColor: colors.structure.iron,
           padding: `${spacing.moderate}px ${spacing.normal}px`,
           borderBottom: constants.borders.default,
