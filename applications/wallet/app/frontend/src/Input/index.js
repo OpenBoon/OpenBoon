@@ -26,6 +26,7 @@ const Input = ({
         value={value}
         onChange={onChange}
         css={{
+          outlineOffset: 0,
           padding: PADDING,
           borderRadius: constants.borderRadius.small,
           boxShadow: constants.boxShadows.input,
