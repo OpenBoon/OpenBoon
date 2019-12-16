@@ -24,7 +24,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 .emotion-74 th {
   font-size: 15px;
   font-weight: 500;
-  line-height: 18px;
+  line-height: 21px;
   color: #e0e0e0;
   background-color: #4a4a4a;
   padding: 12px 16px;
@@ -120,7 +120,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   color: #c92300;
   font-weight: 700;
   font-size: 16px;
-  line-height: 18px;
+  line-height: 21px;
   padding: 8px;
   border-radius: 32px;
   background-color: #191919;
@@ -262,11 +262,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 <div
   className="emotion-75"
 >
-  <div
+  <h2
     className="emotion-0"
   >
     Data Queue
-  </div>
+  </h2>
   <table
     className="emotion-74"
   >

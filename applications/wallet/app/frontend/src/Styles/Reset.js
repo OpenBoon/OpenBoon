@@ -22,7 +22,7 @@ const StylesReset = () => (
         body: {
           fontFamily: `Roboto, Avenir, "sans-serif"`,
           fontSize: typography.size.hecto,
-          lineHeight: typography.height.kilo,
+          lineHeight: typography.height.hecto,
           fontWeight: typography.weight.regular,
           color: colors.primaryFont,
           backgroundColor: colors.primaryBackground,
@@ -30,14 +30,10 @@ const StylesReset = () => (
         'input, textarea, select, button': {
           fontFamily: 'inherit',
         },
-        h3: {
-          fontSize: typography.size.kilo,
-          lineHeight: typography.height.giga,
-          fontWeight: typography.weight.regular,
-        },
+        'h1, h2, h3, h4': { margin: 0, padding: 0 },
         small: {
           fontSize: typography.size.uno,
-          lineHeight: typography.height.hecto,
+          lineHeight: typography.height.uno,
         },
         a: {
           color: colors.primaryFont,

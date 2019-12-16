@@ -51,7 +51,7 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
           css={{
             textAlign: 'center',
             fontSize: typography.size.mega,
-            lineHeight: typography.height.terra,
+            lineHeight: typography.height.mega,
             margin: 0,
             paddingTop: spacing.moderate,
             paddingBottom: spacing.moderate,

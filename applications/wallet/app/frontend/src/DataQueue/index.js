@@ -31,7 +31,7 @@ const DataQueue = ({ selectedProject }) => {
 
   return (
     <div css={{ padding: `0 ${spacing.spacious}px` }}>
-      <div
+      <h2
         css={{
           fontSize: typography.size.mega,
           lineHeight: '21px',
@@ -39,7 +39,7 @@ const DataQueue = ({ selectedProject }) => {
           paddingBottom: spacing.normal,
         }}>
         Data Queue
-      </div>
+      </h2>
 
       <Table columns={COLUMNS} rows={results} />
 

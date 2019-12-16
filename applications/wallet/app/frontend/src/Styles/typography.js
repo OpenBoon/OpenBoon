@@ -11,10 +11,9 @@ const typography = {
   },
   height: {
     uno: '14px',
-    kilo: '16px',
-    mega: '18px',
-    giga: '20px',
-    terra: '21px',
+    hecto: '16px',
+    kilo: '20px',
+    mega: '21px',
   },
   weight: {
     light: 300,
