@@ -8,6 +8,7 @@ const borders = {
   default: `1px solid ${colors.grey5}`,
   transparent: `1px solid transparent`,
   separator: `1px solid ${colors.rocks.pewter}`,
+  error: `1px solid ${colors.signal.warning.base}`,
 }
 
 const opacity = {

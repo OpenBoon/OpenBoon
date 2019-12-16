@@ -2,10 +2,8 @@ import PropTypes from 'prop-types'
 
 import { constants, spacing } from '../Styles'
 
-const HEIGHT = 39
-
-const Input = ({ id, type, label, value, onChange }) => (
-  <div>
+const Input = ({ id, type, label, value, onChange, hasError, ...props }) => (
+  <div css={{ paddingTop: spacing.moderate, paddingBottom: spacing.moderate }}>
     <label
       htmlFor={id}
       css={{ display: 'block', paddingBottom: spacing.moderate }}>
@@ -18,11 +16,16 @@ const Input = ({ id, type, label, value, onChange }) => (
       value={value}
       onChange={onChange}
       css={{
-        height: HEIGHT,
+        padding: spacing.moderate,
         borderRadius: constants.borderRadius.small,
         boxShadow: constants.boxShadows.input,
         width: '100%',
+        border: hasError
+          ? constants.borders.error
+          : constants.borders.transparent,
       }}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
     />
   </div>
 )
@@ -33,6 +36,7 @@ Input.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  hasError: PropTypes.bool.isRequired,
 }
 
 export default Input

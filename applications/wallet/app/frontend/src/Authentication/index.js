@@ -9,6 +9,7 @@ import { getUser, authenticateUser, logout, fetcher } from './helpers'
 
 const Authentication = ({ children }) => {
   const [hasLoaded, setHasLoaded] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState({})
 
   useEffect(() => {
@@ -23,7 +24,13 @@ const Authentication = ({ children }) => {
   if (!hasLoaded) return null
 
   if (!user.id) {
-    return <Login onSubmit={authenticateUser({ setUser })} />
+    return (
+      <Login
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
+        onSubmit={authenticateUser({ setErrorMessage, setUser })}
+      />
+    )
   }
 
   return (
