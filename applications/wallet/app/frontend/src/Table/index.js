@@ -13,9 +13,9 @@ const Table = ({ columns, rows }) => {
         boxShadow: constants.boxShadows.table,
         whiteSpace: 'nowrap',
         th: {
-          fontSize: '15px',
+          fontSize: typography.size.kilo,
+          lineHeight: typography.height.kilo,
           fontWeight: typography.weight.medium,
-          lineHeight: typography.height.mega,
           color: colors.structure.pebble,
           backgroundColor: colors.structure.iron,
           padding: `${spacing.moderate}px ${spacing.normal}px`,

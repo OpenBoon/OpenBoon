@@ -23,9 +23,9 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 }
 
 .emotion-74 th {
-  font-size: 15px;
+  font-size: 16px;
+  line-height: 20px;
   font-weight: 500;
-  line-height: 21px;
   color: #e0e0e0;
   background-color: #4a4a4a;
   padding: 12px 16px;
