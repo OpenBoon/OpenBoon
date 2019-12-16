@@ -3,6 +3,7 @@ const typography = {
     uno: 12,
     hecto: 14,
     kilo: 16,
+    mega: 18,
     giga: 20,
     tera: 24,
     zetta: 32,
@@ -12,6 +13,7 @@ const typography = {
     uno: '14px',
     hecto: '16px',
     kilo: '20px',
+    mega: '21px',
   },
   weight: {
     light: 300,

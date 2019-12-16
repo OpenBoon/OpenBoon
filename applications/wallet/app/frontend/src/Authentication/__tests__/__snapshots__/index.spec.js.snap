@@ -30,6 +30,8 @@ exports[`<Authentication /> should render properly when user is logged out 1`] =
 
 exports[`<Authentication /> should render properly when user is logged out 2`] = `
 <Login
+  errorMessage=""
   onSubmit={[Function]}
+  setErrorMessage={[Function]}
 />
 `;
