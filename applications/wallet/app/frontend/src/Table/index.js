@@ -105,14 +105,38 @@ const Table = ({ columns, rows }) => {
                 <td>{formatFullDate({ timestamp: timeCreated })}</td>
                 <td>
                   {taskCounts.tasksFailure > 0 && (
-                    <div style={{ color: colors.error }}>
+                    <div
+                      css={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        color: colors.signal.warning.base,
+                        fontWeight: typography.weight.bold,
+                        fontSize: typography.size.kilo,
+                        lineHeight: typography.height.mega,
+                        padding: spacing.base,
+                        borderRadius: 32,
+                        backgroundColor: colors.structure.coal,
+                      }}>
                       {taskCounts.tasksFailure}
                     </div>
                   )}
                 </td>
                 <td>
                   {assetErrorCount > 0 && (
-                    <div style={{ color: colors.error }}>{assetErrorCount}</div>
+                    <div
+                      css={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        color: colors.signal.warning.base,
+                        fontWeight: typography.weight.bold,
+                        fontSize: typography.size.kilo,
+                        lineHeight: typography.height.mega,
+                        padding: spacing.base,
+                        borderRadius: 32,
+                        backgroundColor: colors.structure.coal,
+                      }}>
+                      {assetErrorCount}
+                    </div>
                   )}
                 </td>
                 <td>numAssets</td>
