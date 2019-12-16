@@ -22,7 +22,7 @@ const StylesReset = () => (
         body: {
           fontFamily: `Roboto, Avenir, "sans-serif"`,
           fontSize: typography.size.hecto,
-          lineHeight: typography.height.hecto,
+          lineHeight: typography.height.kilo,
           fontWeight: typography.weight.regular,
           color: colors.primaryFont,
           backgroundColor: colors.primaryBackground,
@@ -32,12 +32,12 @@ const StylesReset = () => (
         },
         h3: {
           fontSize: typography.size.kilo,
-          lineHeight: typography.height.kilo,
+          lineHeight: typography.height.giga,
           fontWeight: typography.weight.regular,
         },
         small: {
           fontSize: typography.size.uno,
-          lineHeight: typography.height.uno,
+          lineHeight: typography.height.hecto,
         },
         a: {
           color: colors.primaryFont,

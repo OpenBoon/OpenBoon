@@ -15,7 +15,7 @@ const BASE = ({ isDisabled }) => ({
   padding: `${spacing.moderate}px ${spacing.spacious}px`,
   whiteSpace: 'nowrap',
   fontSize: typography.size.hecto,
-  lineHeight: typography.height.hecto,
+  lineHeight: typography.height.kilo,
   fontWeight: typography.weight.medium,
   border: 'none',
   cursor: isDisabled ? 'not-allowed' : 'pointer',

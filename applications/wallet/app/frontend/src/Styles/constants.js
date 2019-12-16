@@ -9,6 +9,7 @@ const borders = {
   transparent: `1px solid transparent`,
   separator: `1px solid ${colors.rocks.pewter}`,
   error: `1px solid ${colors.signal.warning.base}`,
+  tableRow: `1px solid ${colors.structure.steel}`,
 }
 
 const opacity = {
@@ -22,6 +23,7 @@ const boxShadows = {
   navBar: `0 0 4px 0 rgba(0, 0, 0, ${opacity.half})`,
   dropdown: `0 2px 6px 0 ${colors.rocks.black}`,
   modal: `0 0 8px 5px rgba(0, 0, 0, ${opacity.half})`,
+  tableRow: `0 0 5px 0 rgba(0, 0, 0, ${opacity.half})`,
 }
 
 const constants = {

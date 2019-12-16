@@ -27,19 +27,19 @@ const Table = ({ columns, rows }) => {
           },
         },
         tr: {
-          backgroundColor: colors.grey4,
           ':hover': {
-            backgroundColor: colors.grey1,
+            backgroundColor: colors.structure.iron,
+            boxShadow: constants.boxShadows.tableRow,
             td: {
-              border: constants.borders.default,
+              border: constants.borders.tableRow,
               borderLeft: '0',
               borderRight: '0',
               '&:first-of-type': {
-                border: constants.borders.default,
+                border: constants.borders.tableRow,
                 borderRight: '0',
               },
               '&:last-of-type': {
-                border: constants.borders.default,
+                border: constants.borders.tableRow,
                 borderLeft: '0',
               },
             },
