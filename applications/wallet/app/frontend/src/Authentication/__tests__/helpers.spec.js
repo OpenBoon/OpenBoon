@@ -82,7 +82,7 @@ describe('<Authentication /> helpers', () => {
       expect(mockRemoveItem).toHaveBeenCalledWith(USER)
 
       expect(fetch.mock.calls.length).toEqual(1)
-      expect(fetch.mock.calls[0][0]).toEqual('/api/v1/logout')
+      expect(fetch.mock.calls[0][0]).toEqual('/api/v1/logout/')
       expect(fetch.mock.calls[0][1]).toEqual({
         headers: {
           'X-CSRFToken': 'CSRF_TOKEN',

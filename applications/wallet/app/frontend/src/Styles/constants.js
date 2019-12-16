@@ -11,7 +11,7 @@ const borders = {
 }
 
 const opacity = {
-  half: 0.59,
+  half: 0.5,
 }
 
 const boxShadows = {
@@ -20,6 +20,7 @@ const boxShadows = {
   menu: `0 4px 7px 0 ${colors.rocks.black}`,
   navBar: `0 0 4px 0 rgba(0, 0, 0, ${opacity.half})`,
   dropdown: `0 2px 6px 0 ${colors.rocks.black}`,
+  modal: `0 0 8px 5px rgba(0, 0, 0, ${opacity.half})`,
 }
 
 const constants = {

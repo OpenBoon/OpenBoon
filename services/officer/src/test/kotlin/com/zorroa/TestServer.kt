@@ -1,6 +1,10 @@
 package com.zorroa
 
 import com.github.kevinsawicki.http.HttpRequest
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.spy
+import com.nhaarman.mockito_kotlin.whenever
 import java.io.File
 import kotlin.test.assertEquals
 import org.junit.AfterClass
@@ -27,8 +31,19 @@ class TestServer {
 
     @Test
     fun testStatus() {
-        val rsp = HttpRequest.get("http://localhost:9876/status")
+        val rsp = HttpRequest.get("http://localhost:9876/monitor/health")
         assertEquals(rsp.code(), 200)
+        assertEquals("{\"status\": \"UP\"}", rsp.body())
+    }
+
+    @Test
+    fun testStatusFailure() {
+        val minioSpy = spy(StorageManager.minioClient)
+        doReturn(false).whenever(minioSpy).bucketExists(any())
+
+        val rsp = HttpRequest.get("http://localhost:9876/monitor/health")
+        assertEquals(rsp.code(), 200)
+        assertEquals("{\"status\": \"UP\"}", rsp.body())
     }
 
     @Test

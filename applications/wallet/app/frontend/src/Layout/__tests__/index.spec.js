@@ -1,5 +1,8 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import mockUser from '../../User/__mocks__/user'
+import projects from '../../Projects/__mocks__/projects'
+
 import Layout from '..'
 
 jest.mock('../../ProjectSwitcher', () => 'ProjectSwitcher')
@@ -10,7 +13,9 @@ const noop = () => () => {}
 describe('<Layout />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
-      <Layout logout={noop}>{() => `Hello World`}</Layout>,
+      <Layout user={mockUser} results={projects.results} logout={noop}>
+        {() => `Hello World`}
+      </Layout>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

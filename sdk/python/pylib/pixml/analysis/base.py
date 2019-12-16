@@ -289,6 +289,8 @@ class Reactor(object):
         proc_name = None
         if isinstance(processor, str):
             proc_name = processor
+        elif isinstance(processor, dict):
+            proc_name = processor.get("className", "UnknownClass")
         elif processor:
             try:
                 proc_name = processor.__class__.__name__

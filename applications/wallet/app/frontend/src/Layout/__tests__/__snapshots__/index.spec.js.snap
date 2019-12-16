@@ -24,7 +24,7 @@ exports[`<Layout /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.59);
+  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
   z-index: 100;
   padding-left: 16px;
   padding-right: 16px;
@@ -117,18 +117,13 @@ exports[`<Layout /> should render properly 1`] = `
         projects={
           Array [
             Object {
-              "id": "1",
-              "name": "Zorroa ABC",
+              "id": "76917058-b147-4556-987a-0a0f11e46d9b",
+              "name": "qwerty",
               "selected": true,
             },
             Object {
-              "id": "2",
-              "name": "Zorroa EasyAs123",
-              "selected": false,
-            },
-            Object {
-              "id": "3",
-              "name": "Zorroa JustYouAndMe",
+              "id": "76917058-b147-4556-987a-0a0f11e46d9c",
+              "name": "asdf",
               "selected": false,
             },
           ]
@@ -145,7 +140,7 @@ exports[`<Layout /> should render properly 1`] = `
         onClick={[Function]}
         type="button"
       >
-        DT
+        JD
       </button>
     </div>
   </div>
@@ -185,7 +180,7 @@ exports[`<Layout /> should render properly 2`] = `
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.59);
+  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
   z-index: 100;
   padding-left: 16px;
   padding-right: 16px;
@@ -278,18 +273,13 @@ exports[`<Layout /> should render properly 2`] = `
         projects={
           Array [
             Object {
-              "id": "1",
-              "name": "Zorroa ABC",
+              "id": "76917058-b147-4556-987a-0a0f11e46d9b",
+              "name": "qwerty",
               "selected": true,
             },
             Object {
-              "id": "2",
-              "name": "Zorroa EasyAs123",
-              "selected": false,
-            },
-            Object {
-              "id": "3",
-              "name": "Zorroa JustYouAndMe",
+              "id": "76917058-b147-4556-987a-0a0f11e46d9c",
+              "name": "asdf",
               "selected": false,
             },
           ]
@@ -306,7 +296,7 @@ exports[`<Layout /> should render properly 2`] = `
         onClick={[Function]}
         type="button"
       >
-        DT
+        JD
       </button>
     </div>
   </div>
