@@ -5,6 +5,7 @@ exports[`<Table /> should render properly 1`] = `
   width: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
+  white-space: nowrap;
 }
 
 .emotion-0 th {
@@ -47,7 +48,6 @@ exports[`<Table /> should render properly 1`] = `
 }
 
 .emotion-0 td {
-  white-space: nowrap;
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;

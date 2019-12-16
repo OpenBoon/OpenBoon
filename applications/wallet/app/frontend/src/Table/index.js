@@ -11,6 +11,7 @@ const Table = ({ columns, rows }) => {
         width: '100%',
         borderSpacing: 0,
         boxShadow: constants.boxShadows.table,
+        whiteSpace: 'nowrap',
         th: {
           fontSize: '15px',
           fontWeight: typography.weight.medium,
@@ -46,7 +47,6 @@ const Table = ({ columns, rows }) => {
           },
         },
         td: {
-          whiteSpace: 'nowrap',
           fontWeight: typography.weight.extraLight,
           color: colors.structure.pebble,
           padding: `${spacing.base}px ${spacing.normal}px`,
@@ -78,12 +78,11 @@ const Table = ({ columns, rows }) => {
         {rows.map(
           ({
             id,
-            paused,
             state,
             name,
             createdUser: { username },
             taskCounts,
-            assetCounts: { assetErrorCount },
+            assetCounts,
             priority,
             timeCreated,
           }) => {
@@ -97,7 +96,7 @@ const Table = ({ columns, rows }) => {
                   },
                 }}>
                 <td>
-                  <Status jobStatus={paused ? 'Paused' : state} />
+                  <Status jobStatus={state} />
                 </td>
                 <td>{name}</td>
                 <td>{username}</td>
@@ -122,7 +121,7 @@ const Table = ({ columns, rows }) => {
                   )}
                 </td>
                 <td>
-                  {assetErrorCount > 0 && (
+                  {assetCounts.assetErrorCount > 0 && (
                     <div
                       css={{
                         display: 'flex',
@@ -135,11 +134,15 @@ const Table = ({ columns, rows }) => {
                         borderRadius: 32,
                         backgroundColor: colors.structure.coal,
                       }}>
-                      {assetErrorCount}
+                      {assetCounts.assetErrorCount}
                     </div>
                   )}
                 </td>
-                <td>numAssets</td>
+                <td>
+                  {Object.values(assetCounts).reduce(
+                    (total, count) => total + count,
+                  )}
+                </td>
                 <td>
                   <ProgressBar state={state} taskCounts={taskCounts} />
                 </td>
@@ -157,7 +160,6 @@ Table.propTypes = {
   rows: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
-      paused: PropTypes.bool,
       state: PropTypes.string,
       name: PropTypes.string,
       createdUser: PropTypes.shape({
@@ -170,6 +172,9 @@ Table.propTypes = {
         tasksSuccess: PropTypes.number,
       }),
       assetCounts: PropTypes.shape({
+        assetCreatedCount: PropTypes.number,
+        assetReplacedCount: PropTypes.number,
+        assetWarningCount: PropTypes.number,
         assetErrorCount: PropTypes.number,
       }),
       priority: PropTypes.number,
