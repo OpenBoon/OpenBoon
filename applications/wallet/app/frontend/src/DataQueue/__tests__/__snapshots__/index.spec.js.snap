@@ -85,11 +85,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 }
 
 .emotion-16 {
-  background-color: #121212;
+  background-color: #252525;
 }
 
 .emotion-16:nth-of-type(2n) {
-  background-color: #1d1d1d;
+  background-color: #2e2e2e;
 }
 
 .emotion-10 {

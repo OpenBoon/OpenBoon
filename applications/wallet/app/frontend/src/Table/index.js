@@ -91,9 +91,9 @@ const Table = ({ columns, rows }) => {
               <tr
                 key={id}
                 css={{
-                  backgroundColor: colors.grey4,
+                  backgroundColor: colors.structure.lead,
                   '&:nth-of-type(2n)': {
-                    backgroundColor: colors.grey3,
+                    backgroundColor: colors.structure.mattGrey,
                   },
                 }}>
                 <td>
