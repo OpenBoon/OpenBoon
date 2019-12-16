@@ -133,7 +133,7 @@ const Table = ({ columns, rows }) => {
                         fontSize: typography.size.kilo,
                         lineHeight: typography.height.kilo,
                         padding: spacing.base,
-                        borderRadius: 32,
+                        borderRadius: BORDER_RADIUS,
                         backgroundColor: colors.structure.coal,
                       }}>
                       {assetCounts.assetErrorCount}
