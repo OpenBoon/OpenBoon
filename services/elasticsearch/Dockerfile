@@ -4,11 +4,14 @@ COPY es-similarity es-similarity
 COPY pom.xml pom.xml
 RUN mvn clean install -Dmaven.test.skip=true
 
-
 FROM docker.elastic.co/elasticsearch/elasticsearch-oss:6.4.3
-
 COPY --from=mvn_build ./es-kwconf/target/releases/es-kwconf.zip /usr/share/elasticsearch/plugins/es-kwconf.zip
 COPY --from=mvn_build ./es-similarity/target/releases/es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip
+
+COPY --from=mvn_build /usr/local/openjdk-11 /usr/local/openjdk-11
+
+ENV PATH="/usr/local/openjdk-11/bin:${PATH}"
+RUN rm -rf /opt/jdk-10.0.2
 
 WORKDIR /usr/share/elasticsearch/plugins
 
