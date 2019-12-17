@@ -7,7 +7,7 @@ import Input from '../Input'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS } from '../Button'
 
-export const reducer = (state, action) => ({ ...state, ...action })
+const reducer = (state, action) => ({ ...state, ...action })
 
 const ApiKeysAddForm = ({ onSubmit }) => {
   const [state, dispatch] = useReducer(reducer, { name: '' })
