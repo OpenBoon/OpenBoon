@@ -133,5 +133,8 @@ class FileStorage(
     val size: Long,
 
     @ApiModelProperty("Arbitrary attributes for the file")
-    var attrs: Map<String, Any>
+    var attrs: Map<String, Any>,
+
+    @ApiModelProperty("Overrides which Asset")
+    var sourceAssetId: String? = null
 )

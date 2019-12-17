@@ -21,8 +21,8 @@ class ClipTests() {
         """.trimIndent()
         val clip = Clip("page", 1f, 1f)
         val asset = Asset("abc123", Json.Mapper.readValue(doc, Json.GENERIC_MAP))
-        val pileId = clip.generatePileId(asset)
-        assertEquals("zrWlYyy9ji3_WoWn5oEQGxD4248", pileId)
+        val pileId = clip.putInPile(asset.id)
+        assertEquals("vsUEh_BWG35e4H6pZMC0h9LKjwI", pileId)
     }
 
     @Test
@@ -40,46 +40,21 @@ class ClipTests() {
         """.trimIndent()
         val clip = Clip("page", 1f, 1f, "pages")
         val asset = Asset("abc123", Json.Mapper.readValue(doc, Json.GENERIC_MAP))
-        val pileId = clip.generatePileId(asset)
-        assertEquals("JVazbqBuS2mprozn3ZGB6Ao6oDc", pileId)
+        val pileId = clip.putInPile(asset.id)
+        assertEquals("CtMU6JAcYwmAMi9lZ1Apth40fjw", pileId)
     }
 
     @Test
-    fun testGeneratePileIdWithNoTime() {
-        val doc = """
-            {
-                "source" : {
-                  "path" : "/foo/bar.jpg",
-                  "filesize" : 100
-                }
-              }
-        """.trimIndent()
-        val clip = Clip("page", 1f, 1f, "pages")
-        val asset = Asset("abc123", Json.Mapper.readValue(doc, Json.GENERIC_MAP))
-        val pileId = clip.generatePileId(asset)
-        assertEquals("2yZvYnWZoEjM0SszzuDvj49O2GE", pileId)
+    fun testClipLength() {
+        val clip = Clip("scene", 1023.23f, 1056.86f)
+        assertEquals(33.64f, clip.length)
+        assertEquals(1023.23f, clip.start)
+        assertEquals(1056.86f, clip.stop)
     }
 
-    @Test
-    fun testGeneratePileIdWithNoSize() {
-        val doc = """
-            {
-                "source" : {
-                  "path" : "/foo/bar.jpg"
-                }
-              }
-        """.trimIndent()
-        val clip = Clip("page", 1f, 1f, "pages")
-        val asset = Asset("abc123", Json.Mapper.readValue(doc, Json.GENERIC_MAP))
-        val pileId = clip.generatePileId(asset)
-        assertEquals("iK9CAQlvboR1LXr3oqheFoWRhWM", pileId)
-    }
+    @Test(expected = IllegalStateException::class)
+    fun testIllegalClip() {
+        Clip("scene", 1023.23f, 1f)
 
-    @Test
-    fun testGeneratePileIdWithNoPath() {
-        val clip = Clip("page", 1f, 1f, "pages")
-        val asset = Asset("abc123", mapOf())
-        val pileId = clip.generatePileId(asset)
-        assertEquals("gIjnIgVCxeoDkrc6DrUzT_lA1ws", pileId)
     }
 }

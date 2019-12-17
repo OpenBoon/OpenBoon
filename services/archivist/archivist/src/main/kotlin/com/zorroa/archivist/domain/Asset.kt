@@ -131,7 +131,7 @@ class AssetSpec(
     @ApiModelProperty("Additional metadata fields to add to the Asset in key/value format.")
     var attrs: Map<String, Any>? = null,
 
-    @ApiModelProperty("Optional clip metdata specifies the portion of the asset to process.")
+    @ApiModelProperty("Optional clip metadata specifies the portion of the asset to process.")
     var clip: Clip? = null,
 
     @ApiModelProperty("An optional unique ID for the asset to override the auto-generated ID.")
@@ -239,7 +239,7 @@ open class Asset(
      * @param <T>
      * @return
     </T> */
-    fun <T> getAttr(attr: String, type: TypeReference<T>): T {
+    fun <T> getAttr(attr: String, type: TypeReference<T>): T? {
         val current = getContainer(attr, false)
         return Json.Mapper.convertValue(getChild(current, Attr.name(attr)), type)
     }

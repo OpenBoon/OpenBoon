@@ -169,6 +169,9 @@
             },
             "pile": {
               "type": "keyword"
+            },
+            "sourceAssetId": {
+              "type": "keyword"
             }
           }
         },

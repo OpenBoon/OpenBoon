@@ -10,6 +10,7 @@ import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.util.Json
 import org.junit.Test
 import org.springframework.mock.web.MockMultipartFile
 import java.io.File
@@ -114,7 +115,7 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(3f, rsp.assets[0].getAttr<Float?>("clip.stop"))
         assertEquals("page", rsp.assets[0].getAttr<String?>("clip.type"))
         assertEquals("pages", rsp.assets[0].getAttr<String?>("clip.timeline"))
-        assertEquals("gIjnIgVCxeoDkrc6DrUzT_lA1ws", rsp.assets[0].getAttr<String?>("clip.pile"))
+        assertEquals("esHEPyVV-VhnmgHcS_Dynkqn3rA", rsp.assets[0].getAttr<String?>("clip.pile"))
     }
 
     /**
@@ -187,14 +188,14 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(2.0, asset.getAttr<Double?>("clip.start"))
         assertEquals(2.0, asset.getAttr<Double?>("clip.stop"))
         assertEquals(1.0, asset.getAttr<Double?>("clip.length"))
-        assertEquals("h_mv_VYvSyP3ViYiffJKiJD6Pvg", asset.getAttr<String?>("clip.pile"))
+        assertEquals("wU5f6DK02InzXUC600cqI5L8vGM", asset.getAttr<String?>("clip.pile"))
 
         val clip = asset.getAttr("clip", Clip::class.java)
         assertEquals("page", clip?.type)
         assertEquals(2.0f, clip?.start)
         assertEquals(2.0f, clip?.stop)
         assertEquals(1.0f, clip?.length)
-        assertEquals("h_mv_VYvSyP3ViYiffJKiJD6Pvg", clip?.pile)
+        assertEquals("wU5f6DK02InzXUC600cqI5L8vGM", clip?.pile)
     }
 
     /**
@@ -270,5 +271,49 @@ class AssetServiceTests : AbstractTest() {
         val rsp = assetService.search(search)
         assertEquals(1, rsp.hits.hits.size)
         assertNull(rsp.scrollId)
+    }
+
+    @Test
+    fun testDeriveClipFromExistingAsset() {
+
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
+        )
+        val sourceAsset = assetService.batchCreate(batchCreate).assets[0]
+
+        val spec = AssetSpec(
+            "asset:${sourceAsset.id}",
+            clip=Clip("scene", 10.24f, 12.48f))
+
+        val newAsset = Asset()
+        val clip = assetService.deriveClip(newAsset, spec)
+
+        assertEquals("scene", clip.type)
+        assertEquals(10.24f, clip.start)
+        assertEquals(12.48f, clip.stop)
+        assertEquals(2.24f, clip.length)
+        assertEquals("oZ4r3vjXTNtopNSx_AHN-1WBbQk", clip.pile)
+        assertEquals("As2tgiN-NU29FxKczfB8alEvdAuQqgXr", clip.sourceAssetId)
+        assertEquals(sourceAsset.id, clip.sourceAssetId)
+    }
+
+    @Test
+    fun testDeriveClipFromSelf() {
+
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v", clip=Clip("scene", 10.24f, 12.48f)))
+        )
+        val sourceAsset = assetService.batchCreate(batchCreate).assets[0]
+        val clip = sourceAsset.getAttr("clip", Clip::class.java) ?: throw IllegalStateException(
+            "Missing clip"
+        )
+
+        assertEquals("scene", clip.type)
+        assertEquals(10.24f, clip.start)
+        assertEquals(12.48f, clip.stop)
+        assertEquals(2.24f, clip.length)
+        assertEquals("muKpp62pcm44V24o9Wi4OqbtbLI", clip.pile)
+        assertEquals("G_a8WhqsycLyQurCCCUgVu3t2TbPJHSr", clip.sourceAssetId)
+        assertEquals(sourceAsset.id, clip.sourceAssetId)
     }
 }

@@ -101,6 +101,7 @@ fun runServer(port: Int) {
         } else {
             this.response.status(404)
         }
+        Json.mapper.writeValueAsString(mapOf("location" to ioHandler.getOutputUri()))
     }
 
     post("/render") {
@@ -120,7 +121,7 @@ fun runServer(port: Int) {
                 val req = Json.mapper.readValue<RenderRequest>(body.inputStream)
                 val doc = extract(req, file.inputStream)
                 this.response.status(201)
-                Json.mapper.writeValueAsString(mapOf("output" to doc.ioHandler.getOutputUri()))
+                Json.mapper.writeValueAsString(mapOf("location" to doc.ioHandler.getOutputUri()))
             }
         } catch (e: Exception) {
             logger.warn("failed to process", e)
