@@ -35,6 +35,9 @@ const STYLES = {
       backgroundColor: colors.rocks.iron,
     },
   },
+  NEUTRAL: {
+    padding: spacing.moderate,
+  },
 }
 
 export const VARIANTS = Object.keys(STYLES).reduce(
