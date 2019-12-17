@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from pixml import analysis
 from pixml.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from pixml_core.image.importers import ImageImporter
