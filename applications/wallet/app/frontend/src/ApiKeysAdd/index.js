@@ -1,5 +1,6 @@
 import Head from 'next/head'
 
+import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
 
 import ApiKeysAddForm from './Form'
@@ -12,17 +13,21 @@ const ApiKeysAdd = () => {
       <Head>
         <title>Create API key</title>
       </Head>
-      <h2>Project API Keys</h2>
+
+      <PageTitle>Project API Keys</PageTitle>
+
       <Tabs
         tabs={[
           { title: 'View all', href: '/api-keys' },
           { title: 'Create API key', href: '/api-keys/add' },
         ]}
       />
+
       <p>
         Name your project and fill in the details and we will generate a
         personal key for you to download and keep in a safe place.
       </p>
+
       <ApiKeysAddForm onSubmit={console.warn} />
     </div>
   )

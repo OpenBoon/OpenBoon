@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ApiKeys /> should render properly 1`] = `
-.emotion-5 {
-  padding: 16px;
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
 }
 
-.emotion-4 {
+.emotion-5 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -15,11 +19,11 @@ exports[`<ApiKeys /> should render properly 1`] = `
   display: flex;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 16px;
 }
 
-.emotion-0 {
+.emotion-1 {
   border: 0 #b8d652 solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -38,12 +42,12 @@ exports[`<ApiKeys /> should render properly 1`] = `
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-1:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2 {
+.emotion-3 {
   border: 0 #b8d652 solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -63,27 +67,27 @@ exports[`<ApiKeys /> should render properly 1`] = `
   font-weight: 700;
 }
 
-.emotion-2:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
-<div
-  className="emotion-5"
->
-  <h2>
+<div>
+  <h2
+    className="emotion-0"
+  >
     Project API Keys
   </h2>
   <nav>
     <ul
-      className="emotion-4"
+      className="emotion-5"
     >
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-0"
+          className="emotion-1"
           href="/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -92,10 +96,10 @@ exports[`<ApiKeys /> should render properly 1`] = `
         </a>
       </li>
       <li
-        className="emotion-1"
+        className="emotion-2"
       >
         <a
-          className="emotion-2"
+          className="emotion-3"
           href="/api-keys/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
