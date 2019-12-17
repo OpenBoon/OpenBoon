@@ -1,14 +1,11 @@
 import PropTypes from 'prop-types'
 import { colors, spacing, constants } from '../Styles'
 
-const BACKGROUND_COLORS = {
-  Active: colors.blue1,
-  Paused: colors.yellow1,
-  Canceled: colors.grey2,
-  Finished: colors.green1,
+const STATUS_COLORS = {
+  Active: colors.signal.canary.base,
+  Canceled: colors.structure.steel,
+  Finished: colors.signal.grass.base,
 }
-
-const BUTTON_HEIGHT = 24
 
 const Status = ({ jobStatus }) => {
   return (
@@ -17,11 +14,9 @@ const Status = ({ jobStatus }) => {
         display: 'inline-flex',
         alignItems: 'center',
         padding: spacing.base,
-        height: BUTTON_HEIGHT,
         borderRadius: constants.borderRadius.small,
-        color:
-          jobStatus === 'Canceled' ? colors.rocks.black : colors.primaryFont,
-        backgroundColor: BACKGROUND_COLORS[jobStatus],
+        color: STATUS_COLORS[jobStatus],
+        backgroundColor: colors.structure.coal,
       }}>
       {jobStatus}
     </div>
@@ -29,7 +24,7 @@ const Status = ({ jobStatus }) => {
 }
 
 Status.propTypes = {
-  jobStatus: PropTypes.oneOf(Object.keys(BACKGROUND_COLORS)).isRequired,
+  jobStatus: PropTypes.oneOf(Object.keys(STATUS_COLORS)).isRequired,
 }
 
 export default Status
