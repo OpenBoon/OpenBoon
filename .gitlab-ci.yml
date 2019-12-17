@@ -188,13 +188,13 @@ deploy_development:
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} analyst ${NAMESPACE}
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} api-gateway ${NAMESPACE}
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} archivist ${NAMESPACE}
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} auth-server ${NAMESPACE}
-    - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch ${NAMESPACE}
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer ${NAMESPACE}
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet ${NAMESPACE}
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} analyst default
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} api-gateway default
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} archivist default
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} auth-server default
+    - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch default
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer default
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet default
 
 # Kotlin services - Unit tests - Step 1
 services_build_artifacts:
