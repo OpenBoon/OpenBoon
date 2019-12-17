@@ -1,5 +1,8 @@
 const jobs = {
-  list: [
+  count: 11,
+  next: null,
+  previous: null,
+  results: [
     {
       id: '82d5308b-67c2-1433-8fef-0a580a000956',
       organizationId: '00000000-9998-8888-7777-666666666666',

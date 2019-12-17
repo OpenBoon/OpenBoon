@@ -1,5 +1,5 @@
 const projects = {
-  count: 1,
+  count: 2,
   next: null,
   previous: null,
   results: [

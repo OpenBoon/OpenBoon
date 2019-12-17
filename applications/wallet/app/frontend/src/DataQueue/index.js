@@ -21,19 +21,19 @@ const COLUMNS = [
 ]
 
 const DataQueue = ({ selectedProject }) => {
-  const { data: { list } = {} } = useSWR(
+  const { data: { results } = {} } = useSWR(
     `api/v1/projects/${selectedProject.id}/jobs/`,
   )
 
-  if (!Array.isArray(list)) return 'Loading...'
+  if (!Array.isArray(results)) return 'Loading...'
 
-  if (list.length === 0) return 'You have 0 jobs'
+  if (results.length === 0) return 'You have 0 jobs'
 
   return (
     <div css={{ padding: spacing.normal }}>
       <h2>Data Queue</h2>
 
-      <Table columns={COLUMNS} rows={list} />
+      <Table columns={COLUMNS} rows={results} />
 
       <div>&nbsp;</div>
 
