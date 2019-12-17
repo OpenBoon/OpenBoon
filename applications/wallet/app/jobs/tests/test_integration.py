@@ -27,22 +27,8 @@ class TestJobViewSet:
         response = api_client.get(reverse('job-list', kwargs={'project_pk': project.id}))
         assert response.status_code == 200
         content = response.json()
-        assert len(content['list']) == 1
-
-    def test_get_list_actions(self, pixml_project_user, project, api_client, monkeypatch):
-
-        def mock_api_response(*args, **kwargs):
-            response = Response()
-            response._content = b'{"list": [{"id": "82d53089-67c2-1433-8fef-0a580a000955", "organizationId": "00000000-9998-8888-7777-666666666666", "name": "test-whitespace.json", "type": "Import", "state": "Active", "assetCounts": {"assetCreatedCount": 0, "assetReplacedCount": 0, "assetWarningCount": 0, "assetErrorCount": 4}, "taskCounts": {"tasksTotal": 1, "tasksWaiting": 0, "tasksRunning": 0, "tasksSuccess": 0, "tasksFailure": 1, "tasksSkipped": 0, "tasksQueued": 0}, "createdUser": {"id": "00000000-7b0b-480e-8c36-f06f04aed2f1", "username": "admin", "email": "admin@zorroa.com", "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0", "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53", "organizationId": "00000000-9998-8888-7777-666666666666"}, "timeStarted": 1573090540886, "timeUpdated": 1573090536003, "timeCreated": 1573090536003, "priority": 100, "paused": false, "timePauseExpired": -1, "maxRunningTasks": 1024, "jobId": "82d53089-67c2-1433-8fef-0a580a000955"}], "page": {"from": 0, "size": 10, "totalCount": 1}}'  # noqa
-            return response
-
-        monkeypatch.setattr(PixmlClient, 'post', mock_api_response)
-        api_client.force_authenticate(pixml_project_user)
-        api_client.force_login(pixml_project_user)
-        response = api_client.get(reverse('job-list', kwargs={'project_pk': project.id}))
-        content = response.json()
-        assert 'actions' in content
-        # Currently no list-based actions, so nothing else to check to not break future additions.
+        assert len(content['results']) == 1
+        assert len(content['results'][0]) > 0
 
     def test_get_detail(self, pixml_project_user, project, api_client, monkeypatch, job_pk):
 
@@ -83,8 +69,6 @@ class TestJobViewSet:
     def test_get_errors(self, pixml_project_user, project, api_client, monkeypatch, job_pk):
 
         def mock_api_response(*args, **kwargs):
-            body = args[-1]
-            assert body == {'jobIds': [job_pk]}
             response = Response()
             response._content = b'{"list": [{"id": "2b9619f9-6943-1ab4-8b95-0242ac120007", "taskId": "d4752304-68f5-1ab4-976d-0242ac120007", "jobId": "b8ec649d-67bc-1ab4-a0ae-0242ac120007", "assetId": "1b2f7537-3bcc-50b6-bd88-77f269b2394b", "path": "/zorroa-test-data/video/Search.mp4", "message": "CalledProcessError: Command \'[\'ffprobe\', \'-v\', \'quiet\', \'-print_format\', \'json\', \'-show_streams\', \'-show_format\', \'/zorroa-test-data/video/Search.mp4\']\' returned non-zero exit status 1.", "processor": "VideoImporter", "fatal": false, "analyst": "https://2d068888aadd:5000", "phase": "execute", "timeCreated": 1574891430542, "stackTrace": [{"file": "/opt/app-root/lib/python2.7/site-packages/zsdk/zpsgo/executor.py", "lineNumber": 284, "className": "process", "methodName": "proc.process(frame)"}, {"file": "/opt/app-root/lib/python2.7/site-packages/zsdk/processor.py", "lineNumber": 746, "className": "process", "methodName": "self._process(frame)"}, {"file": "/opt/app-root/src/analyst/pylib/zplugins/video/importers.py", "lineNumber": 73, "className": "_process", "methodName": "self._set_media_metadata(asset)"}, {"file": "/opt/app-root/src/analyst/pylib/zplugins/video/importers.py", "lineNumber": 92, "className": "_set_media_metadata", "methodName": "ffprobe_info = ffprobe(path)"}, {"file": "/opt/app-root/src/analyst/pylib/zplugins/util/media.py", "lineNumber": 158, "className": "ffprobe", "methodName": "ffprobe_result = check_output(cmd, shell=False)"}, {"file": "/opt/app-root/lib/python2.7/site-packages/subprocess32.py", "lineNumber": 343, "className": "check_output", "methodName": "raise CalledProcessError(retcode, process.args, output=output)"}]}], "page": {"from": 0, "size": 50, "totalCount": 1}}'  # noqa
             return response
@@ -96,7 +80,7 @@ class TestJobViewSet:
                                           kwargs={'project_pk': project.id, 'pk': job_pk}))
         assert response.status_code == 200
         content = response.json()
-        assert len(content['list']) == 1
+        assert len(content['results']) == 1
 
     def test_put_pause(self, pixml_project_user, project, api_client, monkeypatch, job_pk):
         updated_info_return = {
