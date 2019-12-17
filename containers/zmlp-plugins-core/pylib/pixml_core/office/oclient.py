@@ -1,6 +1,6 @@
 import json
-import os
 import logging
+import os
 
 import backoff
 import requests
@@ -17,7 +17,9 @@ class OfficerClient(object):
     A Python client for the Officer service.
     """
 
-    tmp_loc_attr = 'tmp.office_output_dir'
+    # An attribute which stores an officer page cache location.  This is needed
+    # because the page cache isn't always under the current asset's id.
+    tmp_loc_attr = 'tmp.officer_page_cache_location'
 
     def __init__(self, url=None):
         """
@@ -57,7 +59,7 @@ class OfficerClient(object):
             rsp = requests.post(self.render_url,
                                 files=post_files)
             rsp.raise_for_status()
-            return rsp.json()['output']
+            return rsp.json()['location']
 
         except requests.RequestException as e:
             logger.warning('RequestException: %s' % e)
@@ -70,9 +72,10 @@ class OfficerClient(object):
                 'Storage failure {}, unable to localize asset id={} uri={}'.format(
                     ex, asset.id, asset.uri))
 
-    def exists(self, asset, page):
+    @backoff.on_exception(backoff.expo, requests.exceptions.HTTPError, max_time=5 * 60)
+    def get_cache_location(self, asset, page):
         """
-        Return true if the cached pdata data exists for the given asset and page.
+        Return the location of the cached page or None if one is not cached.
 
         Args:
             asset (Asset): The asset to check
@@ -81,7 +84,8 @@ class OfficerClient(object):
         Returns:
             bool: True if the both the metadata and proxy file exist for the page.
         """
-        # Look at the tmp_loc_attr first.
+        # Look at the tmp_loc_attr first because it won't
+        # always have the current asset Id.
         tmp_loc = asset.get_attr(self.tmp_loc_attr)
         asset_id = asset.id
         if tmp_loc:
@@ -94,9 +98,9 @@ class OfficerClient(object):
         rsp = requests.post(self.exists_url, json=body,
                             headers={'Content-Type': 'application/json'})
         if rsp.status_code == 200:
-            return True
+            return rsp.json().get('location')
         elif rsp.status_code == 404:
-            return False
+            return None
         else:
             rsp.raise_for_status()
 

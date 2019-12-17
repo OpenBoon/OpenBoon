@@ -1,7 +1,7 @@
 import json
 
 from pixml import FileImport, Clip
-from pixml.analysis import AssetBuilder, ExpandFrame, PixmlUnrecoverableProcessorException
+from pixml.analysis import AssetBuilder, Argument, ExpandFrame, PixmlUnrecoverableProcessorException
 from pixml.analysis.storage import file_cache, PixmlStorageException
 from .oclient import OfficerClient
 
@@ -16,11 +16,9 @@ class OfficeImporter(AssetBuilder):
 
     def __init__(self):
         super(OfficeImporter, self).__init__()
+        self.add_arg(Argument('extract_pages', 'bool', default=False,
+                              toolTip='Extract all pages from document as separate assets'))
         self.oclient = OfficerClient()
-
-    def _needs_rerender(self, asset, page):
-        """Make sure the rendered proxy and metadata still exists."""
-        return not self.oclient.exists(asset, page)
 
     def get_metadata(self, uri, page):
         """
@@ -65,11 +63,10 @@ class OfficeImporter(AssetBuilder):
             frame (Frame): The Frame to process
         """
         asset = frame.asset
-
         has_clip = asset.attr_exists('clip')
         page = max(int(asset.get_attr('clip.start') or 1), 1)
-        output_uri = self.render_pages(asset, has_clip, page)
 
+        output_uri = self.render_pages(asset, page, not has_clip)
         media = self.get_metadata(output_uri, page)
         asset.set_attr('media', media)
 
@@ -77,55 +74,56 @@ class OfficeImporter(AssetBuilder):
             # Since there is no clip, then set a clip
             asset.set_attr('clip', Clip.page(1))
 
-            # Iterate the pages and expand
-            num_pages = int(asset.get_attr('media.length') or 1)
-            if num_pages > 1:
-                # Start on page 2 since we just processed page 1
-                for page_num in range(2, num_pages + 1):
-                    clip = Clip('page', page_num, page_num)
-                    new_page = FileImport(asset.get_attr('source.path'), clip=clip)
-                    new_page.attrs[self.tmp_loc_attr] = output_uri
-                    expand = ExpandFrame(new_page)
-                    self.expand(frame, expand)
+            if self.arg_value('extract_pages'):
+                # Iterate the pages and expand
+                num_pages = int(asset.get_attr('media.length') or 1)
+                if num_pages > 1:
+                    # Start on page 2 since we just processed page 1
+                    for page_num in range(2, num_pages + 1):
+                        clip = Clip('page', page_num, page_num)
+                        file_import = FileImport("asset:{}".format(asset.id), clip=clip)
+                        file_import.attrs[self.tmp_loc_attr] = output_uri
+                        expand = ExpandFrame(file_import)
+                        self.expand(frame, expand)
 
-    def render_pages(self, asset, has_clip, page):
+    def render_pages(self, asset, page, all_pages):
         """
-        Render the given pages to for the given asset and clip settings.  Utilize
-        cached pages from previous renders if necessary.
+        Render the specific page image and metadata if it is not already cached.
+        Also applies the 'tmp.proxy_source_image' attribute to the rendered page.
+        If the asset containers no clip the extract_pages is enabled, then all
+        pages will be rendered.
 
         Args:
-            asset (Asset): The asset
-            has_clip (bool): True if the asset provided a clip.
-            page (int): The page number to render.
+            asset (Asset): The Asset
+            page (int): The page number to render
+            all_pages (bool): Set to true if the request should render all pages.
+                This assumes extract_pages is enabled.
 
         Returns:
-            str: The output URI
+            str: The base output URI.
 
         Raises:
-            PixmlUnrecoverableProcessorException: upon invalid arguments.
+            PixmlUnrecoverableProcessorException if no files can be rendered or found.
 
         """
-
-        # If we don't have a clip, then render whole thing.
-        if not has_clip:
-            output_uri = self.oclient.render(asset, -1)
-            self.logger.info('FULL render of proxy and metadata outputs to: {}'.format(
-                page, output_uri))
-        # checking wrong url
-        elif self._needs_rerender(asset, page):
-            # If the page doesn't exist in cache, maybe it was cleared out
-            # so re-render just the page.
-            output_uri = self.oclient.render(asset, page)
-            self.logger.info('SINGLE render page "{}" proxy and metadata outputs to: {}'.format(
-                page, output_uri))
-        elif asset.get_attr(self.tmp_loc_attr):
-            output_uri = asset.get_attr(self.tmp_loc_attr)
-            self.logger.info('CACHED proxy and metadata outputs: {}'.format(output_uri))
-        else:
-            raise PixmlUnrecoverableProcessorException("Unable to determine page number or output")
-
-        asset.set_attr('tmp.proxy_source_image', self.get_image_uri(output_uri, page))
-        return output_uri
+        try:
+            cache_loc = self.oclient.get_cache_location(asset, page)
+            if cache_loc:
+                self.logger.info('CACHED proxy and metadata outputs: {}'.format(cache_loc))
+            else:
+                if all_pages and self.arg_value('extract_pages'):
+                    cache_loc = self.oclient.render(asset, -1)
+                    self.logger.info(
+                        'ALL render of proxy and metadata outputs to: {}'.format(cache_loc))
+                else:
+                    cache_loc = self.oclient.render(asset, page)
+                    self.logger.info(
+                        'SINGLE render of proxy and metadata outputs to: {}'.format(cache_loc))
+            asset.set_attr('tmp.proxy_source_image', self.get_image_uri(cache_loc, page))
+            return cache_loc
+        except Exception as e:
+            raise PixmlUnrecoverableProcessorException('Unable to determine page cache location {}'
+                                                       .format(asset.id), e)
 
 
 def _content_sanitizer(metadata):
