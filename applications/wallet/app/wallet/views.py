@@ -49,7 +49,6 @@ class LoginView(APIView):
     authentication_classes = []
     permission_classes = []
 
-
     def post(self, request, *args, **kwargs):
         user = authenticate(username=request.data['username'],
                             password=request.data['password'])
