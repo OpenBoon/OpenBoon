@@ -8,7 +8,7 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
       type: 'Import',
-      state: 'Active',
+      state: 'Canceled',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
