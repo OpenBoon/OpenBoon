@@ -1,4 +1,4 @@
-FROM zmlp-py3-base:latest
+FROM zmlp/py3-base:latest
 
 RUN mkdir /build
 COPY ./ /build

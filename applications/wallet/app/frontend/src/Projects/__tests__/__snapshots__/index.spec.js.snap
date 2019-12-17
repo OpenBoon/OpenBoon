@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Projects /> should render properly while loading 1`] = `"Loading..."`;
+
+exports[`<Projects /> should render properly with no projects 1`] = `"You have 0 projects"`;
+
+exports[`<Projects /> should render properly with projects 1`] = `
+<Layout
+  logout={[Function]}
+  results={
+    Array [
+      Object {
+        "id": "76917058-b147-4556-987a-0a0f11e46d9b",
+        "jobs": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/",
+        "name": "qwerty",
+        "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/",
+        "users": Array [
+          "http://localhost/api/v1/users/1/",
+        ],
+      },
+      Object {
+        "id": "76917058-b147-4556-987a-0a0f11e46d9c",
+        "jobs": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9c/jobs/",
+        "name": "asdf",
+        "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9c/",
+        "users": Array [
+          "http://localhost/api/v1/users/1/",
+        ],
+      },
+    ]
+  }
+  user={
+    Object {
+      "email": "jane.doe@zorroa.com",
+      "first_name": "Jane",
+      "id": 1,
+      "last_name": "Doe",
+      "username": "jane.doe",
+    }
+  }
+>
+  Hello World
+</Layout>
+`;

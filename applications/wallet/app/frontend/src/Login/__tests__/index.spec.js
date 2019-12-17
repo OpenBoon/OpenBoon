@@ -8,7 +8,9 @@ describe('<Login />', () => {
   it('should render properly', () => {
     const mockFn = jest.fn()
 
-    const component = TestRenderer.create(<Login onSubmit={mockFn} />)
+    const component = TestRenderer.create(
+      <Login errorMessage="" setErrorMessage={noop} onSubmit={mockFn} />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -33,5 +35,41 @@ describe('<Login />', () => {
       username: 'username',
       password: 'password',
     })
+  })
+
+  it('should not POST the form', () => {
+    const mockFn = jest.fn()
+    const mockOnSubmit = jest.fn()
+
+    const component = TestRenderer.create(
+      <Login errorMessage="" setErrorMessage={noop} onSubmit={mockOnSubmit} />,
+    )
+
+    component.root
+      .findByProps({ method: 'post' })
+      .props.onSubmit({ preventDefault: mockFn })
+
+    expect(mockOnSubmit).not.toHaveBeenCalled()
+    expect(mockFn).toHaveBeenCalled()
+  })
+
+  it('should show and hide the password', () => {
+    const component = TestRenderer.create(
+      <Login errorMessage="" setErrorMessage={noop} onSubmit={noop} />,
+    )
+
+    expect(component.root.findByProps({ id: 'password' }).props.type).toBe(
+      'password',
+    )
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Show password' })
+        .props.onClick()
+    })
+
+    expect(component.root.findByProps({ id: 'password' }).props.type).toBe(
+      'text',
+    )
   })
 })

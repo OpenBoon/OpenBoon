@@ -19,4 +19,5 @@ COPY --from=build /build/target/officer.jar /service/service.jar
 USER analyst
 # run application with this command line
 
+EXPOSE 7078
 CMD ["./run_server.sh"]

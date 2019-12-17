@@ -3,12 +3,13 @@ import PropTypes from 'prop-types'
 import { SWRConfig } from 'swr'
 
 import Login from '../Login'
-import Layout from '../Layout'
+import Projects from '../Projects'
 
 import { getUser, authenticateUser, logout, fetcher } from './helpers'
 
 const Authentication = ({ children }) => {
   const [hasLoaded, setHasLoaded] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState({})
 
   useEffect(() => {
@@ -23,12 +24,18 @@ const Authentication = ({ children }) => {
   if (!hasLoaded) return null
 
   if (!user.id) {
-    return <Login onSubmit={authenticateUser({ setUser })} />
+    return (
+      <Login
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
+        onSubmit={authenticateUser({ setErrorMessage, setUser })}
+      />
+    )
   }
 
   return (
     <SWRConfig value={{ fetcher: fetcher({ setUser }) }}>
-      <Layout logout={logout({ setUser })}>
+      <Projects user={user} logout={logout({ setUser })}>
         {({ selectedProject }) =>
           children({
             user,
@@ -36,7 +43,7 @@ const Authentication = ({ children }) => {
             selectedProject,
           })
         }
-      </Layout>
+      </Projects>
     </SWRConfig>
   )
 }

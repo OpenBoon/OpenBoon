@@ -34,6 +34,7 @@ describe('<Authentication /> helpers', () => {
     it('should authenticate the user', async () => {
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
+      const mockSetErrorMessage = jest.fn()
       const mockSetUser = jest.fn()
       const mockSetItem = jest.fn()
 
@@ -44,16 +45,39 @@ describe('<Authentication /> helpers', () => {
         },
       })
 
-      await authenticateUser({ setUser: mockSetUser })({
+      await authenticateUser({
+        setErrorMessage: mockSetErrorMessage,
+        setUser: mockSetUser,
+      })({
         username: 'username',
         password: 'password',
       })
+
+      expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
       expect(mockSetUser).toHaveBeenCalledWith({ id: 12345 })
 
       expect(mockSetItem).toHaveBeenCalledWith(
         USER,
         JSON.stringify({ id: 12345 }),
+      )
+    })
+
+    it('should display an alert for incorrect email/password', async () => {
+      const mockSetErrorMessage = jest.fn()
+
+      fetch.mockResponseOnce('Access Denied', { status: 401 })
+
+      await authenticateUser({
+        setErrorMessage: mockSetErrorMessage,
+        setUser: noop,
+      })({
+        username: 'username',
+        password: 'password',
+      })
+
+      expect(mockSetErrorMessage).toHaveBeenCalledWith(
+        'Invalid email or password.',
       )
     })
   })
@@ -82,7 +106,7 @@ describe('<Authentication /> helpers', () => {
       expect(mockRemoveItem).toHaveBeenCalledWith(USER)
 
       expect(fetch.mock.calls.length).toEqual(1)
-      expect(fetch.mock.calls[0][0]).toEqual('/api/v1/logout')
+      expect(fetch.mock.calls[0][0]).toEqual('/api/v1/logout/')
       expect(fetch.mock.calls[0][1]).toEqual({
         headers: {
           'X-CSRFToken': 'CSRF_TOKEN',

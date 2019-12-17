@@ -1,11 +1,111 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Login /> should render properly 1`] = `
-.emotion-10 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.emotion-17 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 16px 64px;
+  width: 440px;
+  background-color: #2d2d2d;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-0 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.emotion-1 {
+  text-align: center;
+  font-size: 18px;
+  line-height: 21px;
+  margin: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-3 {
+  padding: 12px;
+}
+
+.emotion-2 {
+  height: 20px;
+}
+
+.emotion-8 {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-5 {
+  display: block;
+  padding-bottom: 12px;
+}
+
+.emotion-7 {
+  position: relative;
+}
+
+.emotion-6 {
+  outline-offset: 0;
+  padding: 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  border: 1px solid transparent;
+}
+
+.emotion-12 {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-11 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -14,10 +114,39 @@ exports[`<Login /> should render properly 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 100%;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  padding: 12px;
+  outline-offset: -2px;
 }
 
-.emotion-9 {
+.emotion-11:hover {
+  color: #82be3c;
+}
+
+.emotion-16 {
+  padding: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-15 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -25,70 +154,48 @@ exports[`<Login /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: space-evenly;
-  -webkit-justify-content: space-evenly;
-  -ms-flex-pack: space-evenly;
-  justify-content: space-evenly;
-  padding: 32px 64px;
-  width: 440px;
-  height: 580px;
-  background-color: #2d2d2d;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.59);
-}
-
-.emotion-0 {
-  margin: 0 auto;
-}
-
-.emotion-1 {
-  text-align: center;
-  font-weight: 500;
-  padding-bottom: 32px;
-}
-
-.emotion-2 {
-  display: block;
-  padding-bottom: 12px;
-}
-
-.emotion-3 {
-  height: 39px;
-  border-radius: 2px;
-  box-shadow: inset 0 1px 3px 0 transparent;
-  width: 100%;
-}
-
-.emotion-7 {
-  padding: 32px;
-  text-align: center;
-}
-
-.emotion-6 {
-  background-color: #82be3c;
-  color: #fff;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
   font-size: 14px;
   line-height: 16px;
   font-weight: 500;
-  border-radius: 2px;
-  padding: 12px 32px;
-  border: 0;
-  cursor: pointer;
+  border: none;
+  cursor: not-allowed;
 }
 
-.emotion-6:hover {
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
+  color: #fff;
+  background-color: #82be3c;
+}
+
+.emotion-15:hover {
   background-color: #a7d374;
 }
 
-.emotion-8 {
-  text-align: center;
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
-  className="emotion-10"
+  className="emotion-18"
 >
   <form
-    className="emotion-9"
+    className="emotion-17"
+    method="post"
+    onSubmit={[Function]}
   >
     <svg
       className="emotion-0"
@@ -100,55 +207,89 @@ exports[`<Login /> should render properly 1`] = `
     >
       Welcome. Please login.
     </h3>
-    <div>
+    <div
+      className="emotion-3"
+    >
+      <div
+        className="emotion-3"
+      >
+        <div
+          className="emotion-2"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-8"
+    >
       <label
-        className="emotion-2"
+        className="emotion-5"
         htmlFor="username"
       >
-        Username
+        Email
       </label>
-      <input
-        className="emotion-3"
-        id="username"
-        name="username"
-        onChange={[Function]}
-        type="text"
-        value=""
-      />
+      <div
+        className="emotion-7"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-6"
+          id="username"
+          name="username"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
     </div>
-    <div>
+    <div
+      className="emotion-8"
+    >
       <label
-        className="emotion-2"
+        className="emotion-5"
         htmlFor="password"
       >
         Password
       </label>
-      <input
-        className="emotion-3"
-        id="password"
-        name="password"
-        onChange={[Function]}
-        type="password"
-        value=""
-      />
+      <div
+        className="emotion-7"
+      >
+        <input
+          className="emotion-6"
+          id="password"
+          name="password"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+        <div
+          className="emotion-12"
+        >
+          <button
+            aria-label="Show password"
+            className="emotion-11"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="hidden.svg"
+              width={20}
+            />
+          </button>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-7"
+      className="emotion-16"
     >
       <button
-        className="emotion-6"
+        aria-disabled={true}
+        className="emotion-15"
         onClick={[Function]}
         type="submit"
       >
         Login
       </button>
     </div>
-    <a
-      className="emotion-8"
-      href="/"
-    >
-      Forgot Password? Need login help?
-    </a>
   </form>
 </div>
 `;

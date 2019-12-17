@@ -1,0 +1,881 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DataQueue /> should render properly while loading 1`] = `"Loading..."`;
+
+exports[`<DataQueue /> should render properly with jobs 1`] = `
+.emotion-75 {
+  padding: 0 32px;
+}
+
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+.emotion-74 {
+  width: 100%;
+  border-spacing: 0;
+  box-shadow: 0 0 5px 0 #000000;
+  white-space: nowrap;
+}
+
+.emotion-74 th {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-74 th:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-74 th:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-74 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-74 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-74 tr:hover td:first-of-type {
+  border: 1px solid #808080;
+  border-right: 0;
+}
+
+.emotion-74 tr:hover td:last-of-type {
+  border: 1px solid #808080;
+  border-left: 0;
+}
+
+.emotion-74 td {
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-74 td:first-of-type {
+  border: 1px solid transparent;
+  border-right: 0;
+}
+
+.emotion-74 td:last-of-type {
+  border: 1px solid transparent;
+  border-left: 0;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-14 {
+  background-color: #252525;
+}
+
+.emotion-14:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-10 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  border-radius: 2px;
+  color: #808080;
+  background-color: #191919;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #c92300;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 8px;
+  border-radius: 32px;
+  background-color: #191919;
+}
+
+.emotion-13 {
+  color: #4d4948;
+}
+
+.emotion-15 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  border-radius: 2px;
+  color: #ebb52e;
+  background-color: #191919;
+}
+
+.emotion-22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 200px;
+}
+
+.emotion-18 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #4ac565;
+}
+
+.emotion-18:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-18:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-19 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #ce2d3f;
+}
+
+.emotion-19:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-19:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-20 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-20:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-20:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-21 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #404040;
+}
+
+.emotion-21:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-21:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-35 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  border-radius: 2px;
+  color: #4ac565;
+  background-color: #191919;
+}
+
+.emotion-49 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #4ac565;
+}
+
+.emotion-49:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-49:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+<div
+  className="emotion-75"
+>
+  <h2
+    className="emotion-0"
+  >
+    Data Queue
+  </h2>
+  <table
+    className="emotion-74"
+  >
+    <thead>
+      <tr>
+        <th>
+          <div
+            className="emotion-1"
+          >
+            Status
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-1"
+          >
+            Job Name
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-1"
+          >
+            Created By
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-1"
+          >
+            Priority
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-1"
+          >
+            Created
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-1"
+          >
+            Failed
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-1"
+          >
+            Errors
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-1"
+          >
+            # Assets
+          </div>
+        </th>
+        <th>
+          <div
+            className="emotion-1"
+          >
+            Progress
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        className="emotion-14"
+      >
+        <td>
+          <div
+            className="emotion-10"
+          >
+            Canceled
+          </div>
+        </td>
+        <td>
+          test-whitespace.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-11-07 01:38:36
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            4
+          </div>
+        </td>
+        <td>
+          4
+        </td>
+        <td>
+          <div
+            className="emotion-13"
+          >
+            Canceled
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-14"
+      >
+        <td>
+          <div
+            className="emotion-15"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          test-whitespace.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-11-07 01:38:36
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            4
+          </div>
+        </td>
+        <td>
+          4
+        </td>
+        <td>
+          <div
+            className="emotion-22"
+          >
+            <div
+              className="emotion-18"
+            />
+            <div
+              className="emotion-19"
+            />
+            <div
+              className="emotion-20"
+            />
+            <div
+              className="emotion-21"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-14"
+      >
+        <td>
+          <div
+            className="emotion-15"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          test-whitespace.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-11-07 01:36:29
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            4
+          </div>
+        </td>
+        <td>
+          4
+        </td>
+        <td>
+          <div
+            className="emotion-22"
+          >
+            <div
+              className="emotion-19"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-14"
+      >
+        <td>
+          <div
+            className="emotion-10"
+          >
+            Canceled
+          </div>
+        </td>
+        <td>
+          test-whitespace.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-11-07 01:35:36
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            4
+          </div>
+        </td>
+        <td>
+          4
+        </td>
+        <td>
+          <div
+            className="emotion-13"
+          >
+            Canceled
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-14"
+      >
+        <td>
+          <div
+            className="emotion-35"
+          >
+            Finished
+          </div>
+        </td>
+        <td>
+          test_officer
+        </td>
+        <td>
+          zach@zorroa.com
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-10-11 21:11:03
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            4
+          </div>
+        </td>
+        <td>
+          4
+        </td>
+        <td>
+          <div
+            className="emotion-22"
+          >
+            <div
+              className="emotion-19"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-14"
+      >
+        <td>
+          <div
+            className="emotion-15"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          test_officer
+        </td>
+        <td>
+          zach@zorroa.com
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-10-11 21:03:27
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            3
+          </div>
+        </td>
+        <td>
+          3
+        </td>
+        <td>
+          <div
+            className="emotion-22"
+          >
+            <div
+              className="emotion-19"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-14"
+      >
+        <td>
+          <div
+            className="emotion-15"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          flipbook_export_1
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          1
+        </td>
+        <td>
+          2019-08-01 22:52:19
+        </td>
+        <td />
+        <td>
+          <div
+            className="emotion-11"
+          >
+            3
+          </div>
+        </td>
+        <td>
+          3
+        </td>
+        <td>
+          <div
+            className="emotion-22"
+          >
+            <div
+              className="emotion-49"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-14"
+      >
+        <td>
+          <div
+            className="emotion-15"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          export_7_8_2019
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          1
+        </td>
+        <td>
+          2019-07-08 18:53:44
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            1
+          </div>
+        </td>
+        <td />
+        <td>
+          0
+        </td>
+        <td>
+          <div
+            className="emotion-22"
+          >
+            <div
+              className="emotion-19"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-14"
+      >
+        <td>
+          <div
+            className="emotion-15"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          export_7_8_2019___
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          1
+        </td>
+        <td>
+          2019-07-08 18:43:03
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            1
+          </div>
+        </td>
+        <td />
+        <td>
+          0
+        </td>
+        <td>
+          <div
+            className="emotion-22"
+          >
+            <div
+              className="emotion-19"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-14"
+      >
+        <td>
+          <div
+            className="emotion-15"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          sdlc-testdata-import.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-07-03 16:49:15
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            1
+          </div>
+        </td>
+        <td />
+        <td>
+          0
+        </td>
+        <td>
+          <div
+            className="emotion-22"
+          >
+            <div
+              className="emotion-19"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr
+        className="emotion-14"
+      >
+        <td>
+          <div
+            className="emotion-15"
+          >
+            Active
+          </div>
+        </td>
+        <td>
+          sdlc-testdata-import.json
+        </td>
+        <td>
+          admin
+        </td>
+        <td>
+          100
+        </td>
+        <td>
+          2019-07-03 01:29:41
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            1
+          </div>
+        </td>
+        <td>
+          <div
+            className="emotion-11"
+          >
+            49
+          </div>
+        </td>
+        <td>
+          49
+        </td>
+        <td>
+          <div
+            className="emotion-22"
+          >
+            <div
+              className="emotion-49"
+            />
+            <div
+              className="emotion-19"
+            />
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+     
+  </div>
+  <Pagination
+    currentPage={1}
+    legend="Jobs: 1–17 of 415"
+    nextLink="/?page=2"
+    onClick={[Function]}
+    prevLink="/"
+    totalPages={2}
+  />
+</div>
+`;
+
+exports[`<DataQueue /> should render properly with no jobs 1`] = `"You have 0 jobs"`;

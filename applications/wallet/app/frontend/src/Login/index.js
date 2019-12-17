@@ -2,94 +2,121 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { colors, constants, typography, spacing } from '../Styles'
-import LogoSvg from '../Icons/logo.svg'
 
+import LogoSvg from '../Icons/logo.svg'
+import HiddenSvg from '../Icons/hidden.svg'
+import VisibleSvg from '../Icons/visible.svg'
+
+import FormAlert from '../FormAlert'
 import Input from '../Input'
+import Button, { VARIANTS } from '../Button'
 
 const WIDTH = 440
-const HEIGHT = 580
 const LOGO_WIDTH = 143
 
-const Login = ({ onSubmit }) => {
+const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   return (
     <div
       css={{
         display: 'flex',
-        alignItems: 'center',
         justifyContent: 'center',
-        height: '100%',
+        alignItems: 'center',
+        height: '100vh',
       }}>
       <form
+        method="post"
+        onSubmit={event => event.preventDefault()}
         css={{
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-evenly',
-          padding: `${spacing.spacious}px ${spacing.colossal}px`,
+          padding: `${spacing.normal}px ${spacing.colossal}px`,
           width: WIDTH,
-          height: HEIGHT,
           backgroundColor: colors.secondaryBackground,
           borderRadius: constants.borderRadius.small,
           boxShadow: constants.boxShadows.default,
         }}>
-        <LogoSvg width={LOGO_WIDTH} css={{ margin: '0 auto' }} />
+        <LogoSvg
+          width={LOGO_WIDTH}
+          css={{
+            alignSelf: 'center',
+            paddingTop: spacing.comfy,
+            paddingBottom: spacing.comfy,
+          }}
+        />
         <h3
           css={{
             textAlign: 'center',
-            fontWeight: typography.weight.medium,
-            paddingBottom: spacing.spacious,
+            fontSize: typography.size.mega,
+            lineHeight: typography.height.mega,
+            margin: 0,
+            paddingTop: spacing.moderate,
+            paddingBottom: spacing.moderate,
           }}>
           Welcome. Please login.
         </h3>
+        <FormAlert
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
+        />
         <Input
+          autoFocus
           id="username"
-          label="Username"
+          label="Email"
           type="text"
           value={username}
           onChange={({ target: { value } }) => setUsername(value)}
+          hasError={!!errorMessage}
         />
         <Input
           id="password"
           label="Password"
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           value={password}
           onChange={({ target: { value } }) => setPassword(value)}
+          hasError={!!errorMessage}
+          after={
+            <Button
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              variant={VARIANTS.NEUTRAL}
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                outlineOffset: -2,
+                '&:hover': { color: colors.primary },
+              }}>
+              {showPassword ? (
+                <VisibleSvg width={20} />
+              ) : (
+                <HiddenSvg width={20} />
+              )}
+            </Button>
+          }
         />
-        <div css={{ padding: spacing.spacious, textAlign: 'center' }}>
-          <button
+        <div
+          css={{
+            padding: spacing.comfy,
+            display: 'flex',
+            justifyContent: 'center',
+          }}>
+          <Button
             type="submit"
-            onClick={event => {
-              event.preventDefault()
-              onSubmit({ username, password })
-            }}
-            css={{
-              backgroundColor: colors.primary,
-              color: colors.primaryFont,
-              fontSize: typography.size.hecto,
-              lineHeight: typography.height.hecto,
-              fontWeight: typography.weight.medium,
-              borderRadius: constants.borderRadius.small,
-              padding: `${spacing.moderate}px ${spacing.spacious}px`,
-              border: 0,
-              cursor: 'pointer',
-              ':hover': {
-                backgroundColor: colors.primaryHover,
-              },
-            }}>
+            variant={VARIANTS.PRIMARY}
+            onClick={() => onSubmit({ username, password })}
+            isDisabled={!username || !password}>
             Login
-          </button>
+          </Button>
         </div>
-        <a href="/" css={{ textAlign: 'center' }}>
-          Forgot Password? Need login help?
-        </a>
       </form>
     </div>
   )
 }
 
 Login.propTypes = {
+  errorMessage: PropTypes.string.isRequired,
+  setErrorMessage: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 }
 

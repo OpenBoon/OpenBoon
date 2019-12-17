@@ -57,7 +57,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
   align-items: center;
   padding: 8px 12px;
   background-color: #4d4948;
-  border: 1px solid #4d4948;
+  border: 1px solid #2e2e2e;
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
   border-top-right-radius: 0;
@@ -79,7 +79,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 
 .emotion-4 {
   padding: 8px 12px;
-  border: 1px solid #4d4948;
+  border: 1px solid #2e2e2e;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -115,7 +115,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
   align-items: center;
   padding: 8px 12px;
   background-color: #4d4948;
-  border: 1px solid #4d4948;
+  border: 1px solid #2e2e2e;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 2px;
@@ -123,7 +123,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 }
 
 .emotion-7:hover {
-  opacity: 0.59;
+  opacity: 0.5;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
@@ -243,7 +243,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 
 .emotion-4 {
   padding: 8px 12px;
-  border: 1px solid #4d4948;
+  border: 1px solid #2e2e2e;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -286,7 +286,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
   align-items: center;
   padding: 8px 12px;
   background-color: #4d4948;
-  border: 1px solid #4d4948;
+  border: 1px solid #2e2e2e;
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
   border-top-right-radius: 0;
@@ -294,7 +294,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 }
 
 .emotion-3:hover {
-  opacity: 0.59;
+  opacity: 0.5;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
@@ -310,7 +310,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
   align-items: center;
   padding: 8px 12px;
   background-color: #4d4948;
-  border: 1px solid #4d4948;
+  border: 1px solid #2e2e2e;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 2px;

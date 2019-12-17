@@ -6,17 +6,14 @@ import {
   clearAllBodyScrollLocks,
 } from 'body-scroll-lock'
 
-import mockProjects from '../ProjectSwitcher/__mocks__/projects'
+import userShape from '../User/shape'
 
 import { constants } from '../Styles'
 
+import Navbar from '../Navbar'
 import Sidebar from '../Sidebar'
 
-import LayoutNavBar from './NavBar'
-
-const Layout = ({ logout, children }) => {
-  const results = mockProjects.list
-
+const Layout = ({ user, results, logout, children }) => {
   const sidebarRef = useRef()
 
   const [isSidebarOpen, setSidebarOpen] = useState(false)
@@ -26,19 +23,24 @@ const Layout = ({ logout, children }) => {
     name: results[0].name,
   })
 
+  const projects = results.map(({ id, name }) => {
+    return {
+      id,
+      name,
+      selected: selectedProject.id === id,
+    }
+  })
+
   useEffect(() => {
     if (isSidebarOpen) disableBodyScroll(sidebarRef.current)
     if (!isSidebarOpen) enableBodyScroll(sidebarRef.current)
     return clearAllBodyScrollLocks
   }, [isSidebarOpen, sidebarRef])
 
-  const projects = results.map(({ id, name }) => {
-    return { id, name, selected: selectedProject.id === id }
-  })
-
   return (
     <div css={{ height: '100%' }}>
-      <LayoutNavBar
+      <Navbar
+        user={user}
         isSidebarOpen={isSidebarOpen}
         projects={projects}
         setSidebarOpen={setSidebarOpen}
@@ -58,6 +60,13 @@ const Layout = ({ logout, children }) => {
 }
 
 Layout.propTypes = {
+  results: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  user: PropTypes.shape(userShape).isRequired,
   logout: PropTypes.func.isRequired,
   children: PropTypes.func.isRequired,
 }

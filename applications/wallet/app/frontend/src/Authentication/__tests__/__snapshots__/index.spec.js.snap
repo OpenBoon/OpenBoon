@@ -10,9 +10,19 @@ exports[`<Authentication /> should render properly when user is logged in 2`] = 
     }
   }
 >
-  <Layout>
+  <Projects
+    user={
+      Object {
+        "email": "jane.doe@zorroa.com",
+        "first_name": "Jane",
+        "id": 1,
+        "last_name": "Doe",
+        "username": "jane.doe",
+      }
+    }
+  >
     Hello World
-  </Layout>
+  </Projects>
 </SWRConfig>
 `;
 
@@ -20,6 +30,8 @@ exports[`<Authentication /> should render properly when user is logged out 1`] =
 
 exports[`<Authentication /> should render properly when user is logged out 2`] = `
 <Login
+  errorMessage=""
   onSubmit={[Function]}
+  setErrorMessage={[Function]}
 />
 `;

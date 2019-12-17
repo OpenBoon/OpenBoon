@@ -16,21 +16,27 @@ export const storeUser = ({ user }) => {
   localStorage.setItem(USER, JSON.stringify(user))
 }
 
-export const authenticateUser = ({ setUser }) => async ({
+export const authenticateUser = ({ setErrorMessage, setUser }) => async ({
   username,
   password,
 }) => {
-  const response = await fetch('/api/v1/login', {
+  setErrorMessage('')
+
+  const response = await fetch('/api/v1/login/', {
     method: 'POST',
     headers: { 'content-type': 'application/json;charset=UTF-8' },
     body: JSON.stringify({ username, password }),
   })
 
+  if (response.status === 401) {
+    return setErrorMessage('Invalid email or password.')
+  }
+
   const user = await response.json()
 
   storeUser({ user })
 
-  setUser(user)
+  return setUser(user)
 }
 
 export const logout = ({ setUser }) => async () => {
@@ -41,7 +47,7 @@ export const logout = ({ setUser }) => async () => {
     }),
   )
 
-  await fetch('/api/v1/logout', {
+  await fetch('/api/v1/logout/', {
     method: 'POST',
     headers: {
       'content-type': 'application/json;charset=UTF-8',
