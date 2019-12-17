@@ -180,8 +180,8 @@ deploy_development:
     DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
     PROJECT: zmlp-258901
   stage: deploy
-#  only:
-#    - development
+  only:
+    - development
   before_script:
     - echo $SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
