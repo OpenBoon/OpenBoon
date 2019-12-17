@@ -21,7 +21,7 @@ describe('<DataQueue />', () => {
 
   it('should render properly with no jobs', () => {
     require('swr').__setMockUseSWRResponse({
-      data: { list: [] },
+      data: { results: [] },
     })
 
     const component = TestRenderer.create(
@@ -33,7 +33,7 @@ describe('<DataQueue />', () => {
 
   it('should render properly with jobs', () => {
     require('swr').__setMockUseSWRResponse({
-      data: { list: jobs.list },
+      data: jobs,
     })
 
     const component = TestRenderer.create(
