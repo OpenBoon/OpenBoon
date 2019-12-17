@@ -177,7 +177,9 @@ docker_hub_push_sdk:
 deploy_development:
   image: google/cloud-sdk
   variables:
+    DEPLOY_SCRIPT: ./deployment/bin/k8s-deploy
     PROJECT: zmlp-258901
+    NAMESPACE: default
   stage: deploy
 #  only:
 #    - development
@@ -186,13 +188,13 @@ deploy_development:
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
-    - ./k8s-deploy deployment ${PROJECT} analyst default
-    - ./k8s-deploy deployment ${PROJECT} api-gateway default
-    - ./k8s-deploy deployment ${PROJECT} archivist default
-    - ./k8s-deploy deployment ${PROJECT} auth-server default
-    - ./k8s-deploy statefulset ${PROJECT} elasticsearch default
-    - ./k8s-deploy deployment ${PROJECT} officer default
-    - ./k8s-deploy deployment ${PROJECT} wallet default
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} analyst ${NAMESPACE}
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} api-gateway ${NAMESPACE}
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} archivist ${NAMESPACE}
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} auth-server ${NAMESPACE}
+    - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch ${NAMESPACE}
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer ${NAMESPACE}
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet ${NAMESPACE}
 
 # Kotlin services - Unit tests - Step 1
 services_build_artifacts:
