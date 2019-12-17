@@ -11,6 +11,7 @@ stages:
   - pretest
   - test
   - push
+  - deploy
 
 ## Wallet Jobs
 .wallet-base:
@@ -173,6 +174,26 @@ docker_hub_push_sdk:
     - docker tag zmlp/plugins-analysis:latest zmlp/plugins-analysis:development; docker push zmlp/plugins-analysis:development
     - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
 
+deploy_development:
+  image: google/cloud-sdk
+  variables:
+    DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
+    PROJECT: zmlp-258901
+  stage: deploy
+  only:
+    - development
+  before_script:
+    - echo $SA_JSON > ./sa.json
+    - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
+    - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
+  script:
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} analyst
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} api-gateway
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} archivist
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} auth-server
+    - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
 
 # Kotlin services - Unit tests - Step 1
 services_build_artifacts:
