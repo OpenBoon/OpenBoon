@@ -1,0 +1,513 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ApiKeysAdd /> should render properly 1`] = `
+.emotion-47 {
+  max-width: 546px;
+}
+
+.emotion-4 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+}
+
+.emotion-0 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+.emotion-2 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-46 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-8 {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-5 {
+  display: block;
+  padding-bottom: 12px;
+}
+
+.emotion-7 {
+  position: relative;
+}
+
+.emotion-6 {
+  outline-offset: 0;
+  padding: 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  border: 1px solid transparent;
+}
+
+.emotion-43 {
+  border: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+}
+
+.emotion-9 {
+  float: left;
+  padding: 0;
+  padding-bottom: 12px;
+}
+
+.emotion-10 {
+  clear: both;
+}
+
+.emotion-18 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  cursor: pointer;
+  padding-bottom: 12px;
+}
+
+.emotion-14 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-11 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: #82be3c;
+  border: 2px solid #82be3c;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-13 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-12 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+}
+
+.emotion-17 {
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-15 {
+  color: #b3b3b3;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 700;
+}
+
+.emotion-16 {
+  color: #808080;
+}
+
+.emotion-19 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-20 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-45 {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-44 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+}
+
+.emotion-44,
+.emotion-44:hover,
+.emotion-44:visited {
+  color: #fff;
+  background-color: #82be3c;
+}
+
+.emotion-44:hover {
+  background-color: #a7d374;
+}
+
+.emotion-44[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-47"
+>
+  <h2>
+    Project API Keys
+  </h2>
+  <nav>
+    <ul
+      className="emotion-4"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/api-keys"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          href="/api-keys/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create API key
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <p>
+    Name your project and fill in the details and we will generate a personal key for you to download and keep in a safe place.
+  </p>
+  <form
+    className="emotion-46"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-8"
+    >
+      <label
+        className="emotion-5"
+        htmlFor="name"
+      >
+        Name
+      </label>
+      <div
+        className="emotion-7"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-6"
+          id="name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <fieldset
+      className="emotion-43"
+    >
+      <legend
+        className="emotion-9"
+      >
+        Permissions
+      </legend>
+      <div
+        className="emotion-10"
+      />
+      <label
+        className="emotion-18"
+      >
+        <div
+          className="emotion-14"
+        >
+          <input
+            className="emotion-11"
+            defaultChecked={true}
+            onClick={[Function]}
+            type="checkbox"
+          />
+          <div
+            className="emotion-13"
+          >
+            <svg
+              className="emotion-12"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-17"
+        >
+          <span
+            className="emotion-15"
+          >
+            API
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Dude You're Getting A Telescope
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-18"
+      >
+        <div
+          className="emotion-14"
+        >
+          <input
+            className="emotion-19"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+          />
+          <div
+            className="emotion-13"
+          >
+            <svg
+              className="emotion-20"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-17"
+        >
+          <span
+            className="emotion-15"
+          >
+            Kuphalfort
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Space The Final Frontier
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-18"
+      >
+        <div
+          className="emotion-14"
+        >
+          <input
+            className="emotion-19"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+          />
+          <div
+            className="emotion-13"
+          >
+            <svg
+              className="emotion-20"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-17"
+        >
+          <span
+            className="emotion-15"
+          >
+            West Courtney
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Astronomy Binoculars A Great Alternative
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-18"
+      >
+        <div
+          className="emotion-14"
+        >
+          <input
+            className="emotion-19"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+          />
+          <div
+            className="emotion-13"
+          >
+            <svg
+              className="emotion-20"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-17"
+        >
+          <span
+            className="emotion-15"
+          >
+            Murphyside
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Asteroids
+          </span>
+        </div>
+      </label>
+    </fieldset>
+    <div
+      className="emotion-45"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-44"
+        onClick={[Function]}
+        type="submit"
+      >
+        Generate Key & Download
+      </button>
+    </div>
+  </form>
+</div>
+`;

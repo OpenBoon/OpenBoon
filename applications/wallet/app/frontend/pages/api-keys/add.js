@@ -1,3 +1,3 @@
-import ApiKeys from '../../src/ApiKeys'
+import ApiKeysAdd from '../../src/ApiKeysAdd'
 
-export default ApiKeys
+export default ApiKeysAdd
