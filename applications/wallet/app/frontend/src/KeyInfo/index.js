@@ -67,11 +67,11 @@ const InfoKey = ({ tasksProgress, timeStarted }) => {
 
 InfoKey.propTypes = {
   tasksProgress: PropTypes.shape({
-    failed: PropTypes.number,
-    skipped: PropTypes.number,
-    succeeded: PropTypes.number,
-    running: PropTypes.number,
-    pending: PropTypes.number,
+    Failed: PropTypes.number,
+    Skipped: PropTypes.number,
+    Succeeded: PropTypes.number,
+    Running: PropTypes.number,
+    Pending: PropTypes.number,
   }).isRequired,
   timeStarted: PropTypes.number.isRequired,
 }
