@@ -73,32 +73,54 @@ const Table = ({ columns, rows }) => {
         </tr>
       </thead>
       <tbody>
-        {rows.map(row => {
-          return (
-            <tr
-              key={row.id}
-              css={{
-                backgroundColor: colors.grey4,
-                '&:nth-of-type(2n)': {
-                  backgroundColor: colors.grey3,
-                },
-              }}>
-              <td>
-                <Status jobStatus={row.status} />
-              </td>
-              <td>{row.jobName}</td>
-              <td>{row.createdBy}</td>
-              <td>{row.priority}</td>
-              <td>{formatFullDate({ timestamp: row.createdDateTime })}</td>
-              <td>{row.failed}</td>
-              <td>{row.errors}</td>
-              <td>{row.numAssets}</td>
-              <td>
-                <ProgressBar status={row.progress} />
-              </td>
-            </tr>
-          )
-        })}
+        {rows.map(
+          ({
+            id,
+            paused,
+            state,
+            name,
+            createdUser: { username },
+            taskCounts,
+            assetCounts: { assetErrorCount },
+            priority,
+            timeCreated,
+          }) => {
+            return (
+              <tr
+                key={id}
+                css={{
+                  backgroundColor: colors.grey4,
+                  '&:nth-of-type(2n)': {
+                    backgroundColor: colors.grey3,
+                  },
+                }}>
+                <td>
+                  <Status jobStatus={paused ? 'Paused' : state} />
+                </td>
+                <td>{name}</td>
+                <td>{username}</td>
+                <td>{priority}</td>
+                <td>{formatFullDate({ timestamp: timeCreated })}</td>
+                <td>
+                  {taskCounts.tasksFailure > 0 && (
+                    <div style={{ color: colors.error }}>
+                      {taskCounts.tasksFailure}
+                    </div>
+                  )}
+                </td>
+                <td>
+                  {assetErrorCount > 0 && (
+                    <div style={{ color: colors.error }}>{assetErrorCount}</div>
+                  )}
+                </td>
+                <td>numAsets</td>
+                <td>
+                  <ProgressBar state={state} taskCounts={taskCounts} />
+                </td>
+              </tr>
+            )
+          },
+        )}
       </tbody>
     </table>
   )
@@ -109,23 +131,23 @@ Table.propTypes = {
   rows: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
-      status: PropTypes.string,
-      jobName: PropTypes.string,
-      createdBy: PropTypes.string,
-      priority: PropTypes.number,
-      createdDateTime: PropTypes.number,
-      failed: PropTypes.node,
-      errors: PropTypes.node,
-      numAssets: PropTypes.string,
-      progress: PropTypes.shape({
-        isGenerating: PropTypes.bool,
-        isCanceled: PropTypes.bool,
-        canceledBy: PropTypes.string,
-        succeeded: PropTypes.number,
-        failed: PropTypes.number,
-        running: PropTypes.number,
-        pending: PropTypes.number,
+      paused: PropTypes.bool,
+      state: PropTypes.string,
+      name: PropTypes.string,
+      createdUser: PropTypes.shape({
+        username: PropTypes.string,
       }),
+      taskCounts: PropTypes.shape({
+        tasksFailure: PropTypes.number,
+        tasksWaiting: PropTypes.number,
+        tasksRunning: PropTypes.number,
+        tasksSuccess: PropTypes.number,
+      }),
+      assetCounts: PropTypes.shape({
+        assetErrorCount: PropTypes.number,
+      }),
+      priority: PropTypes.number,
+      timeCreated: PropTypes.number,
     }),
   ).isRequired,
 }

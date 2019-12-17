@@ -3,20 +3,27 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 
 from projects.views import BaseProjectViewSet
+from wallet.paginators import FromSizePagination
 
 
 class JobsViewSet(BaseProjectViewSet):
 
+    pagination_class = FromSizePagination
+
     def list(self, request, project_pk, client):
-        current_url = request.build_absolute_uri(request.get_full_path())
         payload = {'page': {'from': request.GET.get('from', 0),
-                            'size': request.GET.get('size', 25)}}
+                            'size': request.GET.get('size', self.pagination_class.default_limit)}}
         response = client.post('/api/v1/jobs/_search', payload)
         content = response.json()
+
+        current_url = request.build_absolute_uri(request.path)
         for item in content['list']:
             item['url'] = f'{current_url}{item["id"]}/'
-        content['actions'] = self._get_action_links(request)
-        return Response(content)
+            item['actions'] = self._get_action_links(request, item['url'], detail=True)
+
+        paginator = self.pagination_class()
+        paginator.prep_pagination_for_api_response(content, request)
+        return paginator.get_paginated_response(content['list'])
 
     def retrieve(self, request, project_pk, client, pk):
         response = client.get(f'/api/v1/jobs/{pk}')
@@ -24,27 +31,32 @@ class JobsViewSet(BaseProjectViewSet):
         content['actions'] = self._get_action_links(request)
         return Response(content)
 
-    def _get_action_links(self, request):
+    def _get_action_links(self, request, current_url=None, detail=None):
         """
         Determines the appropriate hyperlinks for all the available actions on a specific
         detailed job view.
 
+        The `current_url` argument is useful when generating the urls for a list of IDs.
+
         Args:
             request (Request): Incoming request
-            project_pk (str): UUID of the given Project
-            job_pk (str): UUID of the given Job
-            detail (bool): Whether to return `detail` actions or not
+            current_url (str): Optional URL to use as the base for actions
+            detail (bool): Whether to include detail actions or or list actions
 
         Returns:
             (dict): Hyperlinks to the available actions to include in the Response
 
         """
-        current_url = request.build_absolute_uri(request.get_full_path())
+        if current_url is not None:
+            item_url = current_url
+        else:
+            item_url = request.build_absolute_uri(request.path)
         actions = self.get_extra_actions()
         action_map = {}
+        is_detail = detail if detail is not None else self.detail
         for _action in actions:
-            if _action.detail == self.detail:
-                action_map[_action.url_name] = f'{current_url}{_action.url_path}/'
+            if _action.detail == is_detail:
+                action_map[_action.url_name] = f'{item_url}{_action.url_path}/'
         return action_map
 
     @action(detail=True, methods=['get'])
@@ -53,11 +65,14 @@ class JobsViewSet(BaseProjectViewSet):
         Retrieves all the errors that the tasks of the given job may have triggered.
 
         """
-        request_body = {
-            'jobIds': [pk],
-        }
-        response = client.post(f'/api/v1/taskerrors/_search', request_body)
-        return Response(response.json())
+        payload = {'jobIds': [pk],
+                   'page': {'from': request.GET.get('from', 0),
+                            'size': request.GET.get('size', self.pagination_class.default_limit)}}
+        response = client.post(f'/api/v1/taskerrors/_search', payload)
+        content = response.json()
+        paginator = self.pagination_class()
+        paginator.prep_pagination_for_api_response(content, request)
+        return paginator.get_paginated_response(content['list'])
 
     @action(detail=True, methods=['put'])
     def pause(self, request, project_pk, client, pk):
