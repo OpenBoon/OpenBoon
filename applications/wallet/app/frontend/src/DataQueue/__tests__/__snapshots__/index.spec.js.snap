@@ -26,7 +26,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   white-space: nowrap;
 }
 
-.emotion-74 th {
+.emotion-81 th {
   font-size: 16px;
   line-height: 20px;
   font-weight: 500;
@@ -36,36 +36,36 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-74 th:nth-of-type(2) {
+.emotion-81 th:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-74 th:not(:last-child) {
+.emotion-81 th:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-74 tr:hover {
+.emotion-81 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-74 tr:hover td {
+.emotion-81 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-74 tr:hover td:first-of-type {
+.emotion-81 tr:hover td:first-of-type {
   border: 1px solid #808080;
   border-right: 0;
 }
 
-.emotion-74 tr:hover td:last-of-type {
+.emotion-81 tr:hover td:last-of-type {
   border: 1px solid #808080;
   border-left: 0;
 }
 
-.emotion-74 td {
+.emotion-81 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -73,12 +73,12 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-right: 0;
 }
 
-.emotion-74 td:first-of-type {
+.emotion-81 td:first-of-type {
   border: 1px solid transparent;
   border-right: 0;
 }
 
-.emotion-74 td:last-of-type {
+.emotion-81 td:last-of-type {
   border: 1px solid transparent;
   border-left: 0;
 }
@@ -90,11 +90,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   display: flex;
 }
 
-.emotion-14 {
+.emotion-18 {
   background-color: #252525;
 }
 
-.emotion-14:nth-of-type(2n) {
+.emotion-18:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
@@ -131,11 +131,89 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
+.emotion-17 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+}
+
 .emotion-13 {
-  color: #4d4948;
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-13:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-13:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-14 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #4ac565;
+}
+
+.emotion-14:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-14:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
 .emotion-15 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #ebb52e;
+}
+
+.emotion-15:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-15:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-16 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-16:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-16:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-19 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -150,88 +228,61 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-22 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 16px;
-  width: 200px;
-}
-
-.emotion-18 {
+.emotion-25 {
   height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #4ac565;
-}
-
-.emotion-18:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-18:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-19 {
-  height: 100%;
-  -webkit-flex: 1 0 auto;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
-  background-color: #ce2d3f;
-}
-
-.emotion-19:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-19:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-20 {
-  height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
+  -webkit-flex: 14 0 auto;
+  -ms-flex: 14 0 auto;
+  flex: 14 0 auto;
   background-color: #4a90e2;
 }
 
-.emotion-20:first-of-type {
+.emotion-25:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-20:last-of-type {
+.emotion-25:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-21 {
+.emotion-32 {
   height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #404040;
+  -webkit-flex: 8 0 auto;
+  -ms-flex: 8 0 auto;
+  flex: 8 0 auto;
+  background-color: #4ac565;
 }
 
-.emotion-21:first-of-type {
+.emotion-32:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-21:last-of-type {
+.emotion-32:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-35 {
+.emotion-33 {
+  height: 100%;
+  -webkit-flex: 4 0 auto;
+  -ms-flex: 4 0 auto;
+  flex: 4 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-33:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-33:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-42 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -246,7 +297,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-49 {
+.emotion-56 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -254,12 +305,12 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-49:first-of-type {
+.emotion-56:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-49:last-of-type {
+.emotion-56:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }

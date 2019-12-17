@@ -24,7 +24,7 @@ export const formatFullDate = ({ timestamp }) => {
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`
 }
 
-export const convertDuration = ({ timestamp }) => {
+export const calculateDuration = ({ timestamp }) => {
   const currentTime = Date.now()
   const timeStarted = timestamp
   const durationInSeconds = Math.floor((currentTime - timeStarted) / 1000)
