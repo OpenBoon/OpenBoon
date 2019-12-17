@@ -113,7 +113,7 @@ const Table = ({ columns, rows }) => {
                     <div style={{ color: colors.error }}>{assetErrorCount}</div>
                   )}
                 </td>
-                <td>numAsets</td>
+                <td>numAssets</td>
                 <td>
                   <ProgressBar state={state} taskCounts={taskCounts} />
                 </td>

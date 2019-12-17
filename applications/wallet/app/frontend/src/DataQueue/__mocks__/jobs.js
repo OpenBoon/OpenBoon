@@ -444,11 +444,6 @@ const jobs = {
         'http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd9153f-08c1-199f-b899-0a580a00091e/',
     },
   ],
-  page: {
-    from: 0,
-    size: 25,
-    totalCount: 10,
-  },
 }
 
 export default jobs
