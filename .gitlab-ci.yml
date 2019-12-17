@@ -193,7 +193,7 @@ deploy_development:
     - ./k8s-deploy statefulset ${PROJECT} elasticsearch default
     - ./k8s-deploy deployment ${PROJECT} officer default
     - ./k8s-deploy deployment ${PROJECT} wallet default
-`
+
 # Kotlin services - Unit tests - Step 1
 services_build_artifacts:
   image: maven:3.6.2-jdk-11-slim
