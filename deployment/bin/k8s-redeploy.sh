@@ -4,7 +4,6 @@ TYPE=$1
 PROJECT=$2
 DEPLOYMENT=$3
 VERSION=$4
-NAMESPACE=$5
 
 set -e
 echo 'Patching $DEPLOYMENT in $PROJECT'

@@ -179,7 +179,6 @@ deploy_development:
   variables:
     DEPLOY_SCRIPT: ./deployment/bin/k8s-redeploy.sh
     PROJECT: zmlp-258901
-    NAMESPACE: default
   stage: deploy
 #  only:
 #    - development
@@ -188,13 +187,13 @@ deploy_development:
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
     - gcloud container clusters get-credentials zmlp --zone us-central1-a --project ${PROJECT}
   script:
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} analyst default
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} api-gateway default
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} archivist default
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} auth-server default
-    - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch default
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer default
-    - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet default
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} analyst
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} api-gateway
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} archivist
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} auth-server
+    - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
 
 # Kotlin services - Unit tests - Step 1
 services_build_artifacts:
