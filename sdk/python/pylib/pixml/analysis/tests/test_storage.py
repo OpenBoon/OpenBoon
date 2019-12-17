@@ -65,7 +65,7 @@ class LocalFileCacheTests(TestCase):
         pfile = {
             'name': 'cat.jpg',
             'category': 'proxy',
-            'assetId': 'bingo'
+            'sourceAssetId': 'bingo'
         }
         post_patch.return_value = '/tmp/cat.jpg'
         asset = TestAsset(id='123456')

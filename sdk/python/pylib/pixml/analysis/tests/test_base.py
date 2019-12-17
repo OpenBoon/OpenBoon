@@ -33,20 +33,3 @@ class ReactorTests(unittest.TestCase):
             self.reactor.add_expand_frame(frame, ExpandFrame(FileImport(frame.asset.uri)))
         expand = self.emitter.get_events('expand')[0]
         assert 5 == len(expand["payload"]["assets"])
-
-    def test_reactor_expand_copy_source_file(self):
-        """Source file definitions get propagated to derived assets."""
-        asset = TestAsset(id='12345')
-        asset.set_attr('files', [{
-            'category': 'source'
-        }])
-
-        frame = Frame(asset)
-        for i in range(0, 5):
-            self.reactor.add_expand_frame(frame, ExpandFrame(FileImport(frame.asset.uri)))
-        self.reactor.check_expand(5, force=True)
-
-        expands = self.emitter.get_events('expand')[0]
-        for expand in expands['payload']['assets']:
-            assert len(expand['attrs']['files']) == 1
-            assert expand['attrs']['files'][0]['assetId'] == '12345'

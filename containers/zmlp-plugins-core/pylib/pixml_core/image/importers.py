@@ -57,7 +57,7 @@ class ImageImporter(AssetBuilder):
             asset.set_attr('clip', Clip.page(1))
 
             if self.arg_value('extract_pages') and metadata.get('subimages'):
-                self.extract_pages(asset, metadata, frame)
+                self.extract_pages(frame, metadata)
 
     def set_date(self, document, metadata):
         """Extracts the date from the metadata and sets it on the document.
@@ -127,20 +127,18 @@ class ImageImporter(AssetBuilder):
         seconds = float(coordinates[2])
         return degrees + (minutes / 60) + (seconds / 3600)
 
-    def extract_pages(self, document, metadata, frame):
+    def extract_pages(self, frame, metadata):
         """Extract pages from multi-page images. Each page is added as a derived frame.
 
         Args:
-            document(Document): Document that contains parent image.
-            metadata(dict): Metadata describing the parent image.
             frame(Frame): Parent to add derived frames to.
-
+            metadata(dict): Metadata describing the parent image.
         """
         subimages = int(metadata.get('subimages'))
-        source_path = document.get_attr('source.path')
+        source_asset = "asset:{}".format(frame.asset.id)
         for i in range(2, subimages + 1):
             clip = Clip.page(i)
-            expand = ExpandFrame(FileImport(source_path, clip=clip))
+            expand = ExpandFrame(FileImport(source_asset, clip=clip))
             self.expand(frame, expand)
 
     def set_metadata(self, document, metadata, namespace=None):
