@@ -177,7 +177,7 @@ docker_hub_push_sdk:
 deploy_development:
   image: google/cloud-sdk
   variables:
-    DEPLOY_SCRIPT: ./deployment/bin/k8s-deploy
+    DEPLOY_SCRIPT: ./deployment/bin/k8s-deploy.sh
     PROJECT: zmlp-258901
     NAMESPACE: default
   stage: deploy
