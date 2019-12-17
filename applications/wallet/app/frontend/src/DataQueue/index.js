@@ -22,7 +22,7 @@ const COLUMNS = [
 
 const DataQueue = ({ selectedProject }) => {
   const { data: { results } = {} } = useSWR(
-    `api/v1/projects/${selectedProject.id}/jobs/`,
+    `/api/v1/projects/${selectedProject.id}/jobs/`,
   )
 
   if (!Array.isArray(results)) return 'Loading...'
