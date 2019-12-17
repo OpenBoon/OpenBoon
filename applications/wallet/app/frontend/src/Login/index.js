@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import { colors, constants, typography, spacing } from '../Styles'
 
 import LogoSvg from '../Icons/logo.svg'
+import HiddenSvg from '../Icons/hidden.svg'
+import VisibleSvg from '../Icons/visible.svg'
 
 import FormAlert from '../FormAlert'
 import Input from '../Input'
@@ -15,6 +17,7 @@ const LOGO_WIDTH = 143
 const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   return (
     <div
@@ -71,10 +74,26 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
         <Input
           id="password"
           label="Password"
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           value={password}
           onChange={({ target: { value } }) => setPassword(value)}
           hasError={!!errorMessage}
+          after={
+            <Button
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              variant={VARIANTS.NEUTRAL}
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                outlineOffset: -2,
+                '&:hover': { color: colors.primary },
+              }}>
+              {showPassword ? (
+                <VisibleSvg width={20} />
+              ) : (
+                <HiddenSvg width={20} />
+              )}
+            </Button>
+          }
         />
         <div
           css={{
