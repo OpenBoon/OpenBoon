@@ -8,4 +8,4 @@ NAMESPACE=$5
 
 set -e
 echo 'Patching $DEPLOYMENT in $PROJECT'
-kubectl patch $TYPE $DEPLOYMENT -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"ci-job-id\":\"$CI_JOB_ID\"}}}}}" --namespace=$NAMESPACE
+kubectl patch $TYPE $DEPLOYMENT -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"ci-job-id\":\"$CI_JOB_ID\"}}}}}" --namespace=default
