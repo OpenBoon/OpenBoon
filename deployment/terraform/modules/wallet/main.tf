@@ -124,6 +124,10 @@ resource "kubernetes_deployment" "wallet" {
             {
               name = "PG_PASSWORD"
               value = "${random_string.sql-password.result}"
+            },
+            {
+              name = "ARCHIVIST_URL"
+              value = "${var.archivist-url}"
             }
           ]
         }

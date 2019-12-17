@@ -5,6 +5,7 @@ variable "sql-service-account-key" {}
 variable "sql-connection-name" {}
 variable "container-cluster-name" {}
 variable "image-pull-secret" {}
+variable "archivist-url" {}
 
 variable "container-tag" {default = "development"}
 variable "namespace" {default = "default"}
