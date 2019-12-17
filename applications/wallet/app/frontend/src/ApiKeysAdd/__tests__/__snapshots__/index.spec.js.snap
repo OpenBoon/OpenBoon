@@ -1,0 +1,256 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ApiKeysAdd /> should render properly 1`] = `
+.emotion-15 {
+  padding: 16px;
+  max-width: 546px;
+}
+
+.emotion-4 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+}
+
+.emotion-0 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+.emotion-2 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-14 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-7 {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-5 {
+  display: block;
+  padding-bottom: 12px;
+}
+
+.emotion-6 {
+  padding: 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  border: 1px solid transparent;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-8 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: #82be3c;
+  border: 2px solid #82be3c;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-10 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-9 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+}
+
+.emotion-12 {
+  padding-left: 12px;
+}
+
+<div
+  className="emotion-15"
+>
+  <h2>
+    Project API Keys
+  </h2>
+  <nav>
+    <ul
+      className="emotion-4"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/api-keys"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          href="/api-keys/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create API key
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <p>
+    Name your project and fill in the details and we will generate a personal key for you to download and keep in a safe place.
+  </p>
+  <form
+    className="emotion-14"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-7"
+    >
+      <label
+        className="emotion-5"
+        htmlFor="username"
+      >
+        Email
+      </label>
+      <input
+        autoFocus={true}
+        className="emotion-6"
+        id="username"
+        name="username"
+        onChange={[Function]}
+        type="text"
+        value=""
+      />
+    </div>
+    <label
+      className="emotion-13"
+    >
+      <div
+        className="emotion-11"
+      >
+        <input
+          className="emotion-8"
+          defaultChecked={true}
+          onClick={[Function]}
+          type="checkbox"
+        />
+        <div
+          className="emotion-10"
+        >
+          <svg
+            className="emotion-9"
+            data-file-name="checkmark.svg"
+            width={14}
+          />
+        </div>
+      </div>
+      <span
+        className="emotion-12"
+      >
+        Permissions
+      </span>
+    </label>
+  </form>
+</div>
+`;
