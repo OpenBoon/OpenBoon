@@ -154,7 +154,7 @@ class LocalFileCache(object):
         name = pfile['name']
         category = pfile['category']
         # handle the pfile referencing another asset.
-        asset_id = pfile.get("assetId", asset.id)
+        asset_id = pfile.get("sourceAssetId", asset.id)
         key = ''.join((asset_id, name, category))
 
         cache_path = self.get_path(key, suffix)

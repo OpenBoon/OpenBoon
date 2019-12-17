@@ -28,7 +28,9 @@ class PreCacheSourceFileProcessor(AssetBuilder):
         try:
             logger.info('precaching Asset: {}'.format(asset))
             path = file_cache.localize_remote_file(asset)
-            if not asset.attr_exists('source.filesize'):
+            # Virtual clip assets don't get a file size or checksum.
+            if not asset.attr_exists('source.filesize') and \
+                    not asset.attr_exists('clip.sourceAssetId'):
                 asset.set_attr('source.filesize', os.path.getsize(path))
                 asset.set_attr('source.checksum', self.calculate_checksum(path))
 
@@ -39,7 +41,7 @@ class PreCacheSourceFileProcessor(AssetBuilder):
     def calculate_checksum(self, path):
         checksum = 0
         # This looks wonky but it calculates the
-        # same checksum a reading in all the bytes
+        # same checksum reading in all the bytes
         with open(path, 'rb') as fp:
             chunk = fp.read(8192)
             if chunk:

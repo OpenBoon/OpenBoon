@@ -234,20 +234,13 @@ class Reactor(object):
         for group in grouper(batch_size, self.expand_frames):
             batch_count += 1
             over = []
-
-            # Copy data between the asset frame and expand_frame
-            # Note that, at the time of the parent asset won't
+            # Note that, at the time of the expand the clip source
+            # asset is likely not fully processed, so trying to do
+            # a bunch of attr copying here isn't going to do what you
+            # want.
             for parent_frame, expand_frame in group:
-                # For the child assets to process they will need source file
-                # information.
-                parent_source = copy.deepcopy(parent_frame.asset["source"])
-                expand_frame.asset["source"] = parent_source
+                over.append(expand_frame.asset.for_json())
 
-                source_files = copy.deepcopy(parent_frame.asset.get_files(category="source") or [])
-                for source_file in source_files:
-                    source_file["assetId"] = parent_frame.asset.id
-                expand_frame.asset.attrs["files"] = source_files
-            over.append(expand_frame.asset.for_json())
             self.expand(over)
 
         self.clear_expand_frames()
