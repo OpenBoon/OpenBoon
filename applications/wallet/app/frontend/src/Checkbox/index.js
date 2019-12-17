@@ -1,20 +1,23 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { colors, spacing } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 
 import CheckboxIcon from './Icon'
 
-const Checkbox = ({ label, onClick, initialValue }) => {
+const Checkbox = ({ label, legend, initialValue, onClick }) => {
   const [isChecked, setIsChecked] = useState(initialValue)
 
   return (
     <label
       css={{
         display: 'flex',
-        alignItems: 'center',
+        alignItems: legend ? 'flex-start' : 'center',
         color: colors.white,
         cursor: 'pointer',
+        paddingBottom: spacing.moderate,
       }}>
       <CheckboxIcon
         isChecked={isChecked}
@@ -23,13 +26,32 @@ const Checkbox = ({ label, onClick, initialValue }) => {
           onClick(!isChecked)
         }}
       />
-      <span css={{ paddingLeft: spacing.moderate }}>{label}</span>
+      <div
+        css={{
+          paddingLeft: spacing.moderate,
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+        <span
+          css={{
+            color: colors.structure.zinc,
+            fontSize: typography.size.hecto,
+            lineHeight: typography.height.hecto,
+            fontWeight: typography.weight.bold,
+          }}>
+          {label}
+        </span>
+        {!!legend && (
+          <span css={{ color: colors.structure.steel }}>{legend}</span>
+        )}
+      </div>
     </label>
   )
 }
 
 Checkbox.propTypes = {
   label: PropTypes.string.isRequired,
+  legend: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   initialValue: PropTypes.bool.isRequired,
 }

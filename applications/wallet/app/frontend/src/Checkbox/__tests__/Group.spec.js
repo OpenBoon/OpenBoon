@@ -1,17 +1,23 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import Checkbox from '..'
+import CheckboxGroup from '../Group'
 
-describe('<Checkbox />', () => {
+describe('<CheckboxGroup />', () => {
   it('should render properly', () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
-      <Checkbox
-        label="Checkbox"
-        legend=""
+      <CheckboxGroup
+        legend="Permissions"
         onClick={mockFn}
-        initialValue={false}
+        options={[
+          {
+            key: 'api',
+            label: 'API',
+            legend: "Dude You're Getting A Telescope",
+            initialValue: true,
+          },
+        ]}
       />,
     )
 
@@ -23,6 +29,6 @@ describe('<Checkbox />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    expect(mockFn).toHaveBeenCalledWith(true)
+    expect(mockFn).toHaveBeenCalledWith({ api: false })
   })
 })

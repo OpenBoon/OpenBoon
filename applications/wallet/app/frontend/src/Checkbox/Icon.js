@@ -22,7 +22,7 @@ const CheckboxIcon = ({ isChecked, onClick }) => (
         backgroundColor: isChecked ? colors.primary : colors.transparent,
         border: isChecked
           ? `2px solid ${colors.primary}`
-          : `2px solid ${colors.rocks.marble}`,
+          : `2px solid ${colors.structure.steel}`,
         borderRadius: constants.borderRadius.small,
         cursor: 'pointer',
       }}
