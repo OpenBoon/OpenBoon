@@ -1,5 +1,4 @@
 import unittest
-from unittest.mock import patch
 
 from pixml.analysis.base import ExpandFrame, Frame, Reactor
 from pixml.analysis.testing import TestEventEmitter, TestAsset
