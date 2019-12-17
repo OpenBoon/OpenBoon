@@ -20,16 +20,6 @@ resource "google_sql_user" "wallet" {
   password = "${random_string.sql-password.result}"
 }
 
-resource "kubernetes_secret" "cloud-sql-sa-key" {
-  metadata {
-    name = "cloud-sql-sa-key"
-    namespace = "${var.namespace}"
-  }
-  data {
-    "credentials.json" = "${var.sql-service-account-key}"
-  }
-}
-
 resource "kubernetes_deployment" "wallet" {
   provider = "kubernetes"
   depends_on = ["google_sql_user.wallet"]
@@ -119,7 +109,7 @@ resource "kubernetes_deployment" "wallet" {
           resources {
             limits {
               memory = "512Mi"
-              cpu = 0.5
+              cpu = 1.0
             }
             requests {
               memory = "256Mi"
@@ -134,6 +124,10 @@ resource "kubernetes_deployment" "wallet" {
             {
               name = "PG_PASSWORD"
               value = "${random_string.sql-password.result}"
+            },
+            {
+              name = "ARCHIVIST_URL"
+              value = "${var.archivist-url}"
             }
           ]
         }
@@ -143,14 +137,14 @@ resource "kubernetes_deployment" "wallet" {
 }
 
 resource "kubernetes_service" "wallet" {
-  "metadata" {
+  metadata {
     name = "wallet-service"
     namespace = "${var.namespace}"
     labels {
       app = "wallet"
     }
   }
-  "spec" {
+  spec {
     port {
       name = "http"
       protocol = "TCP"
