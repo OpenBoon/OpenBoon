@@ -1,8 +1,6 @@
-# Terraform Deployment of the Zorroa Machine Learning PLatform (ZMLP) on Google Kubernetes Engine (GKE)
+# Terraform Deployment of the Zorroa Machine Learning Platform (ZMLP) on Google Kubernetes Engine (GKE)
 This directory contains terraform modules for each of the individual services
 required by ZMLP and a main script that imports all services and deploys them.
-
-### NOTE: Deployment is a work-in-progress and currently only deploys the wallet service.
 
 ## Deploying a new instance of ZMLP to GKE
 Below is a step-by-step guide to deploying a new instance of ZMLP on GKE.
@@ -22,13 +20,6 @@ to adjust the deployment. The syntax is `variable-name = "value"`, one per line.
 1. Store your <PROJECT>.auto.tfvars file in gs://zorroa-deploy-state/terraform/tfvars 
 bucket so that other team members are able to manage the state of the deployment.
  
-## Creating Custom Deployments
-If you need to customize your plan with additional modules/services that were created for 
-your deployment, use the root `main.tf` in this directory as a reference, and create 
-your own under the `plans` directory.
-
-As-is, the `main.tf` right here creates a basic ZMLP deployment in GCP. 
-
 ## Re-Pulling images for services.
 You will likely want your services to repull an image tag such as `development` or `qa`.
 Kubernetes does not offer a standard way of doing this but you can trigger a repull of the
