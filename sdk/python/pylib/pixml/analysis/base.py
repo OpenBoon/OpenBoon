@@ -4,7 +4,6 @@ import logging
 import os
 import stat
 import traceback
-import copy
 from shutil import copyfile
 
 from ..app import app_from_env
