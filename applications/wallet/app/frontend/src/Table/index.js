@@ -4,17 +4,22 @@ import { formatFullDate } from '../Date/helpers'
 import Status from '../Status'
 import ProgressBar from '../ProgressBar'
 
+const BORDER_RADIUS = 32
+
 const Table = ({ columns, rows }) => {
   return (
     <table
       css={{
         width: '100%',
         borderSpacing: 0,
-        boxShadow: constants.boxShadows.dark,
+        boxShadow: constants.boxShadows.table,
+        whiteSpace: 'nowrap',
         th: {
-          fontWeight: typography.weight.extraLight,
-          color: colors.grey2,
-          backgroundColor: colors.grey1,
+          fontSize: typography.size.kilo,
+          lineHeight: typography.height.kilo,
+          fontWeight: typography.weight.medium,
+          color: colors.structure.pebble,
+          backgroundColor: colors.structure.iron,
           padding: `${spacing.moderate}px ${spacing.normal}px`,
           borderBottom: constants.borders.default,
           ':nth-of-type(2)': {
@@ -25,28 +30,27 @@ const Table = ({ columns, rows }) => {
           },
         },
         tr: {
-          backgroundColor: colors.grey4,
           ':hover': {
-            backgroundColor: colors.grey1,
+            backgroundColor: colors.structure.iron,
+            boxShadow: constants.boxShadows.tableRow,
             td: {
-              border: constants.borders.default,
+              border: constants.borders.tableRow,
               borderLeft: '0',
               borderRight: '0',
               '&:first-of-type': {
-                border: constants.borders.default,
+                border: constants.borders.tableRow,
                 borderRight: '0',
               },
               '&:last-of-type': {
-                border: constants.borders.default,
+                border: constants.borders.tableRow,
                 borderLeft: '0',
               },
             },
           },
         },
         td: {
-          whiteSpace: 'nowrap',
           fontWeight: typography.weight.extraLight,
-          color: colors.grey2,
+          color: colors.structure.pebble,
           padding: `${spacing.base}px ${spacing.normal}px`,
           border: constants.borders.transparent,
           borderLeft: '0',
@@ -76,12 +80,11 @@ const Table = ({ columns, rows }) => {
         {rows.map(
           ({
             id,
-            paused,
             state,
             name,
             createdUser: { username },
             taskCounts,
-            assetCounts: { assetErrorCount },
+            assetCounts,
             priority,
             timeCreated,
           }) => {
@@ -89,13 +92,13 @@ const Table = ({ columns, rows }) => {
               <tr
                 key={id}
                 css={{
-                  backgroundColor: colors.grey4,
+                  backgroundColor: colors.structure.lead,
                   '&:nth-of-type(2n)': {
-                    backgroundColor: colors.grey3,
+                    backgroundColor: colors.structure.mattGrey,
                   },
                 }}>
                 <td>
-                  <Status jobStatus={paused ? 'Paused' : state} />
+                  <Status jobStatus={state} />
                 </td>
                 <td>{name}</td>
                 <td>{username}</td>
@@ -103,17 +106,45 @@ const Table = ({ columns, rows }) => {
                 <td>{formatFullDate({ timestamp: timeCreated })}</td>
                 <td>
                   {taskCounts.tasksFailure > 0 && (
-                    <div style={{ color: colors.error }}>
+                    <div
+                      css={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        color: colors.signal.warning.base,
+                        fontWeight: typography.weight.bold,
+                        fontSize: typography.size.kilo,
+                        lineHeight: typography.height.kilo,
+                        padding: spacing.base,
+                        borderRadius: BORDER_RADIUS,
+                        backgroundColor: colors.structure.coal,
+                      }}>
                       {taskCounts.tasksFailure}
                     </div>
                   )}
                 </td>
                 <td>
-                  {assetErrorCount > 0 && (
-                    <div style={{ color: colors.error }}>{assetErrorCount}</div>
+                  {assetCounts.assetErrorCount > 0 && (
+                    <div
+                      css={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        color: colors.signal.warning.base,
+                        fontWeight: typography.weight.bold,
+                        fontSize: typography.size.kilo,
+                        lineHeight: typography.height.kilo,
+                        padding: spacing.base,
+                        borderRadius: BORDER_RADIUS,
+                        backgroundColor: colors.structure.coal,
+                      }}>
+                      {assetCounts.assetErrorCount}
+                    </div>
                   )}
                 </td>
-                <td>numAssets</td>
+                <td>
+                  {Object.values(assetCounts).reduce(
+                    (total, count) => total + count,
+                  )}
+                </td>
                 <td>
                   <ProgressBar state={state} taskCounts={taskCounts} />
                 </td>
@@ -131,7 +162,6 @@ Table.propTypes = {
   rows: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
-      paused: PropTypes.bool,
       state: PropTypes.string,
       name: PropTypes.string,
       createdUser: PropTypes.shape({
@@ -144,6 +174,9 @@ Table.propTypes = {
         tasksSuccess: PropTypes.number,
       }),
       assetCounts: PropTypes.shape({
+        assetCreatedCount: PropTypes.number,
+        assetReplacedCount: PropTypes.number,
+        assetWarningCount: PropTypes.number,
         assetErrorCount: PropTypes.number,
       }),
       priority: PropTypes.number,

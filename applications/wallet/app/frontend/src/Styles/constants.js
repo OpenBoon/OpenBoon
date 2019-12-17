@@ -5,10 +5,11 @@ const borderRadius = {
 }
 
 const borders = {
-  default: `1px solid ${colors.grey5}`,
+  default: `1px solid ${colors.structure.mattGrey}`,
   transparent: `1px solid transparent`,
   separator: `1px solid ${colors.rocks.pewter}`,
   error: `1px solid ${colors.signal.warning.base}`,
+  tableRow: `1px solid ${colors.structure.steel}`,
 }
 
 const opacity = {
@@ -18,10 +19,12 @@ const opacity = {
 const boxShadows = {
   default: `0 2px 4px 0 rgba(0, 0, 0, ${opacity.half})`,
   input: `inset 0 1px 3px 0 transparent`,
-  menu: `0 4px 7px 0 ${colors.rocks.black}`,
+  menu: `0 4px 7px 0 ${colors.structure.black}`,
   navBar: `0 0 4px 0 rgba(0, 0, 0, ${opacity.half})`,
-  dropdown: `0 2px 6px 0 ${colors.rocks.black}`,
+  dropdown: `0 2px 6px 0 ${colors.structure.black}`,
   modal: `0 0 8px 5px rgba(0, 0, 0, ${opacity.half})`,
+  table: `0 0 5px 0 ${colors.structure.black}`,
+  tableRow: `0 0 5px 0 rgba(0, 0, 0, ${opacity.half})`,
 }
 
 const constants = {
