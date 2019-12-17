@@ -184,7 +184,7 @@ deploy_development:
   before_script:
     - echo $SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
-    - gcloud container clusters get-credentials ${project} --zone us-central1-a --project zmlp
+    - gcloud container clusters get-credentials ${PROJECT} --zone us-central1-a --project zmlp
   script:
     - ./k8s-deploy deployment ${PROJECT} analyst default
     - ./k8s-deploy deployment ${PROJECT} api-gateway default
