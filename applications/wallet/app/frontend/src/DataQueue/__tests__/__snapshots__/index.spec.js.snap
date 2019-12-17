@@ -374,7 +374,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           </div>
         </td>
         <td>
-          numAsets
+          numAssets
         </td>
         <td>
           <div
@@ -440,7 +440,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           </div>
         </td>
         <td>
-          numAsets
+          numAssets
         </td>
         <td>
           <div
@@ -506,7 +506,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           </div>
         </td>
         <td>
-          numAsets
+          numAssets
         </td>
         <td>
           <div
@@ -563,7 +563,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           </div>
         </td>
         <td>
-          numAsets
+          numAssets
         </td>
         <td>
           <div
@@ -618,7 +618,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           </div>
         </td>
         <td>
-          numAsets
+          numAssets
         </td>
         <td>
           <div
@@ -675,7 +675,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           </div>
         </td>
         <td>
-          numAsets
+          numAssets
         </td>
         <td>
           <div
@@ -722,7 +722,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           </div>
         </td>
         <td>
-          numAsets
+          numAssets
         </td>
         <td>
           <div
@@ -769,7 +769,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         </td>
         <td />
         <td>
-          numAsets
+          numAssets
         </td>
         <td>
           <div
@@ -816,7 +816,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         </td>
         <td />
         <td>
-          numAsets
+          numAssets
         </td>
         <td>
           <div
@@ -863,7 +863,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         </td>
         <td />
         <td>
-          numAsets
+          numAssets
         </td>
         <td>
           <div
@@ -920,7 +920,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           </div>
         </td>
         <td>
-          numAsets
+          numAssets
         </td>
         <td>
           <div
