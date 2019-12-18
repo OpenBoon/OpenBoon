@@ -84,48 +84,8 @@ public class Utils {
      * @throws IOException HTTP Fail
      */
 
-/*
-    public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map body) throws IOException {
-        StringBuilder response = new StringBuilder();
-
-        URL url = new URL(urlParam);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setDoOutput(true);
-        conn.setRequestMethod(httpMethod.toUpperCase());
-
-        // Request Header Setup
-        header.entrySet().forEach((entry) -> conn.setRequestProperty(entry.getKey(), entry.getValue()));
-
-        // Request body Setup
-        body = Optional.ofNullable(body).orElse(new HashMap());
-        String input = new ObjectMapper().writeValueAsString(body);
-
-        OutputStream os = conn.getOutputStream();
-        os.write(input.getBytes());
-        os.flush(); // request
-
-        if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-            throw new RuntimeException("Failed : HTTP error code : "
-                    + conn.getResponseCode());
-        }
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(
-                (conn.getInputStream())));
-
-        String output;
-        while ((output = br.readLine()) != null) {
-            response.append(output);
-        }
-        conn.disconnect();
-
-
-        return response.toString();
-    }
-*/
-
-
     private static final OkHttpClient HTTP_CLIENT_INSTANCE = new OkHttpClient();
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    public static final MediaType JSON = MediaType.parse("application/json");
 
     public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map bodyParams) throws IOException {
 
@@ -145,7 +105,7 @@ public class Utils {
 
         Request request = builder
                 .url(urlParam)
-                .method(httpMethod, body)
+                .method(httpMethod.toUpperCase(), body)
                 .build();
 
         try (Response response = Utils.HTTP_CLIENT_INSTANCE.newCall(request).execute()) {

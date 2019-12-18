@@ -5,9 +5,9 @@ import java.util.Optional;
 
 public class PixmlApp {
 
-    PixmlClient pixmlClient;
-    AssetApp assetApp;
-    DataSourceApp dataSource;
+    private PixmlClient pixmlClient;
+    private AssetApp assetApp;
+    private DataSourceApp dataSourceApp;
 
     /**
      * Exposes the main PixelML API.
@@ -21,7 +21,7 @@ public class PixmlApp {
 
         this.pixmlClient = new PixmlClient(apikey, Optional.ofNullable(server).orElse(envServer), null);
         this.assetApp = new AssetApp();
-        this.dataSource = new DataSourceApp(this);
+        this.dataSourceApp = new DataSourceApp(this);
     }
 
     public PixmlApp(Object apikey) {
@@ -65,10 +65,30 @@ public class PixmlApp {
         // load Variables
         this.pixmlClient = new PixmlClient(apiKey, System.getenv("PIXML_SERVER"), null);
         this.assetApp = new AssetApp();
-        this.dataSource = new DataSourceApp(this);
+        this.dataSourceApp = new DataSourceApp(this);
     }
 
     public PixmlClient getPixmlClient() {
         return pixmlClient;
+    }
+
+    public void setPixmlClient(PixmlClient pixmlClient) {
+        this.pixmlClient = pixmlClient;
+    }
+
+    public AssetApp getAssetApp() {
+        return assetApp;
+    }
+
+    public void setAssetApp(AssetApp assetApp) {
+        this.assetApp = assetApp;
+    }
+
+    public DataSourceApp getDataSourceApp() {
+        return dataSourceApp;
+    }
+
+    public void setDataSourceApp(DataSourceApp dataSourceApp) {
+        this.dataSourceApp = dataSourceApp;
     }
 }
