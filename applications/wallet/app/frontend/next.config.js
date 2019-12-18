@@ -1,8 +1,13 @@
 const withSourceMaps = require('@zeit/next-source-maps')()
 
-const { ANALYZE } = process.env
+require('dotenv').config()
+
+const { ANALYZE, GOOGLE_OAUTH_API_KEY } = process.env
 
 module.exports = withSourceMaps({
+  publicRuntimeConfig: {
+    GOOGLE_OAUTH_API_KEY,
+  },
   webpack: (config, { isServer }) => {
     if (ANALYZE && !isServer) {
       const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
