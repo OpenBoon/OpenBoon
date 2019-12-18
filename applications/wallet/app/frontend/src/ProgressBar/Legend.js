@@ -15,12 +15,7 @@ const TASK_STATUS_LABELS = {
   tasksPending: 'Pending',
 }
 
-const ProgressBarLegend = ({
-  state,
-  tasksProgress,
-  timeStarted,
-  timeUpdated,
-}) => {
+const ProgressBarLegend = ({ state, taskCounts, timeStarted, timeUpdated }) => {
   const currentTime = Date.now()
   const timeEnded = getTimeEnded({ state, currentTime, timeUpdated })
   const duration = getDuration({ timeStarted, timeEnded })
@@ -72,7 +67,7 @@ const ProgressBarLegend = ({
                     color: colors.structure.white,
                     fontWeight: typography.weight.bold,
                   }}>
-                  {tasksProgress[statusName]}
+                  {taskCounts[statusName]}
                 </div>
               </div>
             </div>
@@ -87,7 +82,7 @@ ProgressBarLegend.propTypes = {
   state: PropTypes.string.isRequired,
   timeStarted: PropTypes.number.isRequired,
   timeUpdated: PropTypes.number.isRequired,
-  tasksProgress: PropTypes.shape({
+  taskCounts: PropTypes.shape({
     Failed: PropTypes.number,
     Skipped: PropTypes.number,
     Succeeded: PropTypes.number,

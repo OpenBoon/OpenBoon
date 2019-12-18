@@ -7,7 +7,7 @@ describe('<ProgressBarLegend />', () => {
     const component = TestRenderer.create(
       <ProgressBarLegend
         state="Active"
-        tasksProgress={{
+        taskCounts={{
           Failed: 1,
           Skipped: 0,
           Succeeded: 0,
