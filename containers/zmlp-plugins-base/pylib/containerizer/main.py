@@ -6,6 +6,7 @@ from .daemon import PixmlContainerDaemon
 
 logger = logging.getLogger(__file__)
 
+
 def main():
     parser = argparse.ArgumentParser(prog='containerized')
     parser.add_argument("-p", "--port",

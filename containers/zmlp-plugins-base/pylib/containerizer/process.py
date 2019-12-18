@@ -53,7 +53,8 @@ class ProcessorExecutor(object):
         obj = request.get("asset")
         frame = Frame(Asset(obj))
 
-        logger.info('Executing processor=\'{}\' on assetId=\'{}\''.format(ref['className'], obj['id']))
+        logger.info('Executing processor=\'{}\' on assetId=\'{}\''.format(
+            ref['className'], obj['id']))
         wrapper = self.get_processor_wrapper(ref)
         wrapper.process(frame)
         return frame
