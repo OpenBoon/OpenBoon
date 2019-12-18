@@ -41,5 +41,5 @@ urlpatterns = [
     path('api/v1/', include(router.urls)),
     path('api/v1/', include(projects_router.urls)),
     path('health/', include('health_check.urls')),
-    re_path('', ensure_csrf_cookie(wallet_views.FrontendAppView.as_view()))
+    re_path('', ensure_csrf_cookie(wallet_views.FrontendAppView.as_view()), name='index')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

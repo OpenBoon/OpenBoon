@@ -24,6 +24,7 @@ uritools = "*"
 flake8 = "*"
 pixml = {path = "./../../sdk/python"}
 markdown = "*"
+google-auth = "*"
 
 [requires]
 python_version = "3.6"

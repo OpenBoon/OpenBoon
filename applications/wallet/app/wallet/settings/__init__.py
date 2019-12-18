@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'health_check',
     'health_check.db',
     'health_check.cache',
-    'health_check.storage'
+    'health_check.storage',
 ]
 
 MIDDLEWARE = [
@@ -167,3 +167,6 @@ REST_FRAMEWORK = {
 # General Application Configuration
 ARCHIVIST_URL = os.environ.get('ARCHIVIST_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
+
+# Google OAUTH2
+GOOGLE_OAUTH_CLIENT_ID = '683985502197-140kfdlheorkbc6e9vo748v5260df3pf.apps.googleusercontent.com'

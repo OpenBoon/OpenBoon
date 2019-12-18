@@ -44,7 +44,8 @@ const LoginWithGoogle = () => {
 
             console.warn(idToken)
 
-            await fetch('/api/v1/projects/', {
+            await fetch('/api/v1/login/', {
+              method: 'POST',
               headers: {
                 'content-type': 'application/json;charset=UTF-8',
                 Authorization: `Bearer ${idToken}`,
