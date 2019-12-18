@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import Head from 'next/head'
 
 import { colors, constants, typography, spacing } from '../Styles'
 
@@ -10,6 +11,8 @@ import VisibleSvg from '../Icons/visible.svg'
 import FormAlert from '../FormAlert'
 import Input from '../Input'
 import Button, { VARIANTS } from '../Button'
+
+import LoginWithGoogle from './WithGoogle'
 
 const WIDTH = 440
 const LOGO_WIDTH = 143
@@ -27,6 +30,9 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
         alignItems: 'center',
         height: '100vh',
       }}>
+      <Head>
+        <title>Login</title>
+      </Head>
       <form
         method="post"
         onSubmit={event => event.preventDefault()}
@@ -58,6 +64,7 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
           }}>
           Welcome. Please login.
         </h3>
+        <LoginWithGoogle />
         <FormAlert
           errorMessage={errorMessage}
           setErrorMessage={setErrorMessage}
