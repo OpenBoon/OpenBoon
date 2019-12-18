@@ -1,11 +1,23 @@
 import PropTypes from 'prop-types'
-import { calculateDuration } from '../Date/helpers'
+
 import { colors, constants, spacing, typography } from '../Styles'
+
+import { getDuration } from '../Date/helpers'
 import { TASK_STATUS_COLORS } from '../ProgressBar/helpers'
+
 import ClockSvg from '../Icons/clock.svg'
 
-const InfoKey = ({ tasksProgress, timeStarted }) => {
-  const duration = calculateDuration({ timestamp: timeStarted })
+const TASK_STATUS_LABELS = {
+  tasksFailure: 'Failed',
+  tasksSkipped: 'Skipped',
+  tasksSuccess: 'Succeeded',
+  tasksRunning: 'Running',
+  tasksPending: 'Pending',
+}
+
+const InfoKey = ({ state, tasksProgress, timeStarted, timeUpdated }) => {
+  const timeEnded = state === 'In Progress' ? Date.now() : timeUpdated
+  const duration = getDuration({ timeStarted, timeEnded })
 
   return (
     <div
@@ -48,7 +60,7 @@ const InfoKey = ({ tasksProgress, timeStarted }) => {
                   color: colors.structure.pebble,
                   paddingLeft: spacing.base,
                 }}>
-                <div>{`${statusName}:`}</div>
+                <div>{`${TASK_STATUS_LABELS[statusName]}:`}</div>
                 <div
                   css={{
                     color: colors.structure.white,
@@ -66,6 +78,9 @@ const InfoKey = ({ tasksProgress, timeStarted }) => {
 }
 
 InfoKey.propTypes = {
+  state: PropTypes.string.isRequired,
+  timeStarted: PropTypes.number.isRequired,
+  timeUpdated: PropTypes.number.isRequired,
   tasksProgress: PropTypes.shape({
     Failed: PropTypes.number,
     Skipped: PropTypes.number,
@@ -73,7 +88,6 @@ InfoKey.propTypes = {
     Running: PropTypes.number,
     Pending: PropTypes.number,
   }).isRequired,
-  timeStarted: PropTypes.number.isRequired,
 }
 
 export default InfoKey

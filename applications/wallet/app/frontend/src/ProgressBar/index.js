@@ -7,15 +7,17 @@ import ProgressBarLegend from './Legend'
 
 import { TASK_STATUS_COLORS } from './helpers'
 
+import { TASK_STATUS_COLORS } from './helpers'
+
 const CONTAINER_HEIGHT = 16
 const CONTAINER_WIDTH = 212
 
-const ProgressBar = ({ state, taskCounts: tC, timeStarted, timeUpdated }) => {
-  const taskCounts = {
-    ...tC,
-    tasksPending: tC.tasksWaiting + tC.tasksQueued,
+const ProgressBar = ({ state, taskCounts, timeStarted, timeUpdated }) => {
+  const tasksProgress = {
+    ...taskCounts,
+    tasksPending: taskCounts.tasksWaiting + taskCounts.tasksQueued,
   }
-  const [showLegend, setShowLegend] = useState()
+  const [showKeyInfo, setShowKeyInfo] = useState()
 
   return (
     <div

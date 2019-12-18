@@ -1,9 +1,9 @@
 import { colors } from '../Styles'
 
 export const TASK_STATUS_COLORS = {
-  Failed: colors.signal.warning.base,
-  Skipped: colors.structure.zinc,
-  Succeeded: colors.signal.grass.base,
-  Running: colors.signal.canary.base,
-  Pending: colors.signal.sky.base,
+  tasksFailure: colors.signal.warning.base,
+  tasksSkipped: colors.structure.zinc,
+  tasksSuccess: colors.signal.grass.base,
+  tasksRunning: colors.signal.canary.base,
+  tasksPending: colors.signal.sky.base,
 }
