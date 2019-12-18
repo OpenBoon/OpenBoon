@@ -439,7 +439,7 @@ class DockerContainerProcess(object):
         """
         try:
             asset_id = event["payload"]["asset"]["id"]
-        except KeyError as e:
+        except KeyError:
             asset_id = None
 
         logger.info('Analyst received event =\'{}\' from image=\'{}\' assetId=\'{}\''.format(
