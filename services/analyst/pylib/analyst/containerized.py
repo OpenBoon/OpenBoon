@@ -284,7 +284,8 @@ class DockerContainerProcess(object):
         total_wait_time = 0
 
         uri = "tcp://localhost:{}".format(CONTAINER_PORT)
-        logger.info("Waiting for container '{}' on '{}' to come to life....".format(self.image, uri))
+        logger.info("Waiting for container '{}' on '{}' to come to life....".format(
+            self.image, uri))
 
         while True:
             self.socket.connect(uri)
@@ -294,13 +295,15 @@ class DockerContainerProcess(object):
                 event = self.socket.recv_json()
                 self.log_event(event)
                 if event["type"] != "ok":
-                    raise RuntimeError("Container {} in bad state, did not send ready event: {}".format(
-                        self.image, event))
+                    raise RuntimeError(
+                        "Container {} in bad state, did not send ready event: {}".format(
+                            self.image, event))
                 break
             time.sleep(0.25)
             total_wait_time = total_wait_time + 1000
             if total_wait_time > max_wait_time:
-                raise RuntimeError("Container {} in bad state, did not send ready event.".format(self.image))
+                raise RuntimeError("Container {} in bad state, did not send ready event.".format(
+                    self.image))
 
         logger.info("Container '{}' is ready to accept commands.".format(self.image))
 
