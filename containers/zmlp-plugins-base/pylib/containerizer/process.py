@@ -21,13 +21,15 @@ class ProcessorExecutor(object):
         self.processors = {}
 
     def execute_generator(self, request):
-        logger.info('--Generating------------')
-        logger.info(json.dumps(request, indent=4))
-        logger.info('------------------------')
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug('--Generating------------')
+            logger.debug(json.dumps(request, indent=4))
+            logger.debug('------------------------')
 
         ref = request["ref"]
         settings = request.get("settings", {})
 
+        logger.info('Executing generator=\'{}\''.format(ref['className']))
         wrapper = self.get_processor_wrapper(ref)
         wrapper.generate(settings)
 
@@ -42,14 +44,16 @@ class ProcessorExecutor(object):
         Returns:
             The processed data object.
         """
-        logger.info('--Processing------------')
-        logger.info(json.dumps(request, indent=4))
-        logger.info('------------------------')
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug('--Processing------------')
+            logger.debug(json.dumps(request, indent=4))
+            logger.debug('------------------------')
 
         ref = request["ref"]
         obj = request.get("asset")
         frame = Frame(Asset(obj))
 
+        logger.info('Executing processor=\'{}\' on assetId=\'{}\''.format(ref['className'], obj['id']))
         wrapper = self.get_processor_wrapper(ref)
         wrapper.process(frame)
         return frame
