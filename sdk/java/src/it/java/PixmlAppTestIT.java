@@ -8,10 +8,10 @@ import java.util.*;
 
 import static domain.Utils.updateEnvVariables;
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PixmlAppTestIT {
 
     PixmlApp pixmlApp;
@@ -20,7 +20,6 @@ public class PixmlAppTestIT {
     UUID projectId = UUID.fromString("00000000-0000-0000-0000-000000000000");
     ObjectMapper mapper;
     DataSource dsTest;
-
 
     @BeforeAll
     public void setup() throws ReflectiveOperationException {
@@ -31,7 +30,6 @@ public class PixmlAppTestIT {
         updateEnvVariables("PIXML_SERVER", server);
         pixmlApp = new PixmlApp();
         mapper = new ObjectMapper();
-
     }
 
     @Test
@@ -97,7 +95,6 @@ public class PixmlAppTestIT {
 
     }
 
-
     @Test
     @Order(5)
     public void getDataSource() throws IOException, InterruptedException {
@@ -126,7 +123,7 @@ public class PixmlAppTestIT {
         Map response = pixmlApp.getDataSourceApp().importDataSource(ds);
 
         assertEquals(response.get("dataSourceId"), dsTest.getId().toString());
-        assert(((String)response.get("name")).contains(dsTest.getName()));
+        assert (((String) response.get("name")).contains(dsTest.getName()));
     }
 
     @Test
