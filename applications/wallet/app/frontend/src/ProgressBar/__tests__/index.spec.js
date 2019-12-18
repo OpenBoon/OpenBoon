@@ -28,7 +28,7 @@ describe('<ProgressBar />', () => {
 
 describe('setShowKeyInfo()', () => {
   describe('when user is using mouse', () => {
-    it('should show KeyInfo on mouseenter', () => {
+    it('should show Legend on mouseenter', () => {
       const component = TestRenderer.create(
         <ProgressBar
           state="Active"
@@ -66,7 +66,7 @@ describe('setShowKeyInfo()', () => {
   })
 
   describe('when user is using keyboard', () => {
-    it('should show KeyInfo on keyPress', () => {
+    it('should show Legend on keyPress', () => {
       const component = TestRenderer.create(
         <ProgressBar
           state="Active"
