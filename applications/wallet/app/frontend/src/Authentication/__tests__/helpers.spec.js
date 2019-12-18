@@ -149,6 +149,7 @@ describe('<Authentication /> helpers', () => {
 
   describe('logout()', () => {
     it('should logout the user', async () => {
+      const mockSignOut = jest.fn()
       const mockSetUser = jest.fn()
       const mockRemoveItem = jest.fn()
 
@@ -165,9 +166,11 @@ describe('<Authentication /> helpers', () => {
       })
 
       await logout({
-        googleAuth: { signOut: noop },
+        googleAuth: { signOut: mockSignOut },
         setUser: mockSetUser,
       })()
+
+      expect(mockSignOut).toHaveBeenCalledWith()
 
       expect(mockSetUser).toHaveBeenCalledWith({})
 
