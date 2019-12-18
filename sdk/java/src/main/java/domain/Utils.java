@@ -68,18 +68,19 @@ public class Utils {
         return new String(Files.readAllBytes(Paths.get(filePath)));
     }
 
+    private static final OkHttpClient HTTP_CLIENT_INSTANCE = new OkHttpClient();
+    public static final MediaType JSON = MediaType.parse("application/json");
+
     /**
      * Execute an HTTP request based on the args
      *
      * @param httpMethod Any HttpMethod name in string format
      * @param urlParam   Endpoint URL
      * @param header     Requests Header
-     * @param body       Requests Body
+     * @param bodyParams       Requests Body
      * @return String response for the request
      * @throws IOException HTTP Fail
      */
-    private static final OkHttpClient HTTP_CLIENT_INSTANCE = new OkHttpClient();
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map bodyParams) throws IOException {
 
@@ -99,7 +100,7 @@ public class Utils {
 
         Request request = builder
                 .url(urlParam)
-                .method(httpMethod, body)
+                .method(httpMethod.toUpperCase(), body)
                 .build();
 
         try (Response response = Utils.HTTP_CLIENT_INSTANCE.newCall(request).execute()) {

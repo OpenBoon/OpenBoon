@@ -1,10 +1,7 @@
 package domain;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataSourceApp {
 
@@ -43,7 +40,7 @@ public class DataSourceApp {
 
         // TODO - Implement Analysis
         final String url = "/api/v1/data-sources";
-        return new DataSource(app.pixmlClient.post(url, body));
+        return new DataSource(app.getPixmlClient().post(url, body));
 
     }
 
@@ -62,13 +59,13 @@ public class DataSourceApp {
 
         Map body = new HashMap();
         if (Utils.isValidUUI(name)) {
-            body.put("ids", Arrays.asList(name));
+            body.put("ids", Arrays.asList(UUID.fromString(name)));
         } else {
             body.put("names", Arrays.asList(name));
         }
 
 
-        return new DataSource(this.app.pixmlClient.post(url, body));
+        return new DataSource(this.app.getPixmlClient().post(url, body));
 
     }
 
@@ -88,7 +85,7 @@ public class DataSourceApp {
 
         String url = String.format("/api/v1/data-sources/%s/_import", ds.getId());
 
-        return this.app.pixmlClient.post(url, null);
+        return this.app.getPixmlClient().post(url, null);
 
     }
 
@@ -109,7 +106,7 @@ public class DataSourceApp {
         Map body = new HashMap();
         body.put("blob", blob);
 
-        return this.app.pixmlClient.put(url, body);
+        return this.app.getPixmlClient().put(url, body);
 
     }
 }
