@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import { getTimeEnded, TASK_STATUS_COLORS } from '../ProgressBar/helpers'
+import { getTimeEnded, TASK_STATUS_COLORS } from './helpers'
 import { getDuration } from '../Date/helpers'
 
 import ClockSvg from '../Icons/clock.svg'
@@ -15,7 +15,12 @@ const TASK_STATUS_LABELS = {
   tasksPending: 'Pending',
 }
 
-const InfoKey = ({ state, tasksProgress, timeStarted, timeUpdated }) => {
+const ProgressBarLegend = ({
+  state,
+  tasksProgress,
+  timeStarted,
+  timeUpdated,
+}) => {
   const currentTime = Date.now()
   const timeEnded = getTimeEnded({ state, currentTime, timeUpdated })
   const duration = getDuration({ timeStarted, timeEnded })
@@ -78,7 +83,7 @@ const InfoKey = ({ state, tasksProgress, timeStarted, timeUpdated }) => {
   )
 }
 
-InfoKey.propTypes = {
+ProgressBarLegend.propTypes = {
   state: PropTypes.string.isRequired,
   timeStarted: PropTypes.number.isRequired,
   timeUpdated: PropTypes.number.isRequired,
@@ -91,4 +96,4 @@ InfoKey.propTypes = {
   }).isRequired,
 }
 
-export default InfoKey
+export default ProgressBarLegend

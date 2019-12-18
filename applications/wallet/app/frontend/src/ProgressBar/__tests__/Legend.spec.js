@@ -1,11 +1,11 @@
 import TestRenderer from 'react-test-renderer'
 
-import KeyInfo from '..'
+import ProgressBarLegend from '../Legend'
 
-describe('<KeyInfo />', () => {
+describe('<ProgressBarLegend />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
-      <KeyInfo
+      <ProgressBarLegend
         state="Active"
         tasksProgress={{
           Failed: 1,
