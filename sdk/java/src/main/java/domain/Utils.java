@@ -99,7 +99,7 @@ public class Utils {
 
         Request request = builder
                 .url(urlParam)
-                .method(httpMethod, body)
+                .method(httpMethod.toUpperCase(), body)
                 .build();
 
         try (Response response = Utils.HTTP_CLIENT_INSTANCE.newCall(request).execute()) {
