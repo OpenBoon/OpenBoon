@@ -62,7 +62,6 @@ describe('<Authentication />', () => {
     // useEffect loads Google SDK
     await act(async () => {})
 
-    // display `Hello World!`
     expect(component.root.findByType('Login').props.hasGoogleLoaded).toBe(true)
   })
 
