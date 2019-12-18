@@ -14,16 +14,11 @@ logging.basicConfig(level=logging.DEBUG)
 class PixmlContainerDaemonTests(unittest.TestCase):
 
     def tearDown(self):
-        self.server.close()
         self.zpsd.stop()
 
     def setUp(self):
         self.emitter = TestEventEmitter()
-        self.zpsd = PixmlContainerDaemon(None, Reactor(self.emitter))
-
-        context = zmq.Context()
-        self.server = context.socket(zmq.PAIR)
-        self.server.bind("tcp://*:9999")
+        self.zpsd = PixmlContainerDaemon(9999, Reactor(self.emitter))
 
     def test_event_handler_generate(self):
         event = {
@@ -87,34 +82,3 @@ class PixmlContainerDaemonTests(unittest.TestCase):
         }
         self.zpsd.handle_event(event)
         assert self.emitter.event_count("error") == 1
-
-    def test_receive_event(self):
-
-        context = zmq.Context()
-        socket = context.socket(zmq.PAIR)
-        socket.connect("tcp://localhost:9999")
-
-        event = {
-            "type": "execute",
-            "payload": {
-                "ref": {
-                    "className": "pixml.testing.TestProcessor",
-                    "image": "zmlp-plugins-base",
-                    "args": {}
-                },
-                "asset": {
-                    "id": "123"
-                }
-            }
-        }
-        self.server.send_json(event)
-        tries = 0
-        while True:
-            tries += 1
-            poll = socket.poll(timeout=1000)
-            if poll == 1:
-                tries = -1
-                break
-            else:
-                time.sleep(0.25)
-        assert tries == -1

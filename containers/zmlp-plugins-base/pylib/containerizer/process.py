@@ -64,7 +64,11 @@ class ProcessorExecutor(object):
             True if the processor was torn down.
 
         """
-        ref = request["ref"]
+        ref = request.get("ref")
+        if not ref:
+            self.warning("Invalid teardown request, missing a processor ref.")
+            return
+
         logger.info("tearing down processor='{}'".format(ref["className"]))
 
         key = self.get_processor_key(ref)
@@ -74,7 +78,7 @@ class ProcessorExecutor(object):
             del self.processors[key]
             return True
         else:
-            logger.warning("Failed to teardown processor, missing from cache {}".format(ref))
+            self.warning("Failed to teardown processor, missing from cache {}".format(ref))
         return False
 
     def get_processor_key(self, ref):
@@ -144,6 +148,20 @@ class ProcessorExecutor(object):
             # where the 'final' event is emitted.
             return None
 
+    def warning(self, msg):
+        """
+        Log and emit a warning message.
+
+        Args:
+            msg (str): The warning message.
+
+        """
+        logger.warning(msg)
+        self.reactor.emitter.write({
+            "type": "warning",
+            "payload": {"message": msg}
+        })
+
 
 class ProcessorWrapper(object):
     """
@@ -157,7 +175,7 @@ class ProcessorWrapper(object):
 
     def __init__(self, instance, ref, reactor):
         self.instance = instance
-        self.ref = ref
+        self.ref = ref or {}
         self.reactor = reactor
         self.stats = {
             "processor": ref["className"],
