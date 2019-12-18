@@ -83,11 +83,11 @@ ProgressBarLegend.propTypes = {
   timeStarted: PropTypes.number.isRequired,
   timeUpdated: PropTypes.number.isRequired,
   taskCounts: PropTypes.shape({
-    Failed: PropTypes.number,
-    Skipped: PropTypes.number,
-    Succeeded: PropTypes.number,
-    Running: PropTypes.number,
-    Pending: PropTypes.number,
+    tasksFailure: PropTypes.number.isRequired,
+    tasksSkipped: PropTypes.number.isRequired,
+    tasksSuccess: PropTypes.number.isRequired,
+    tasksRunning: PropTypes.number.isRequired,
+    tasksPending: PropTypes.number.isRequired,
   }).isRequired,
 }
 

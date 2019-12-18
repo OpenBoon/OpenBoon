@@ -81,12 +81,12 @@ ProgressBar.propTypes = {
   timeStarted: PropTypes.number.isRequired,
   timeUpdated: PropTypes.number.isRequired,
   taskCounts: PropTypes.shape({
-    tasksFailure: PropTypes.number,
-    tasksSkipped: PropTypes.number,
-    tasksSuccess: PropTypes.number,
-    tasksRunning: PropTypes.number,
-    tasksWaiting: PropTypes.number,
-    tasksQueued: PropTypes.number,
+    tasksFailure: PropTypes.number.isRequired,
+    tasksSkipped: PropTypes.number.isRequired,
+    tasksSuccess: PropTypes.number.isRequired,
+    tasksRunning: PropTypes.number.isRequired,
+    tasksWaiting: PropTypes.number.isRequired,
+    tasksQueued: PropTypes.number.isRequired,
   }).isRequired,
 }
 
