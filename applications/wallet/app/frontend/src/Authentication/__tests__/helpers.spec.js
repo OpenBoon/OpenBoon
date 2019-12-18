@@ -110,7 +110,7 @@ describe('<Authentication /> helpers', () => {
       expect(fetch.mock.calls[0][1]).toEqual({
         headers: {
           'X-CSRFToken': 'CSRF_TOKEN',
-          'content-type': 'application/json;charset=UTF-8',
+          'Content-Type': 'application/json;charset=UTF-8',
         },
         method: 'POST',
       })

@@ -64,7 +64,7 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
           }}>
           Welcome. Please login.
         </h3>
-        <LoginWithGoogle />
+        <LoginWithGoogle onSubmit={onSubmit} />
         <FormAlert
           errorMessage={errorMessage}
           setErrorMessage={setErrorMessage}

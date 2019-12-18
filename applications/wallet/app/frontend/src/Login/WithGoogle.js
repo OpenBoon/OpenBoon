@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import getConfig from 'next/config'
 import Head from 'next/head'
 
@@ -10,7 +11,7 @@ const {
 
 let GoogleAuth
 
-const LoginWithGoogle = () => {
+const LoginWithGoogle = ({ onSubmit }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
@@ -39,24 +40,22 @@ const LoginWithGoogle = () => {
             setIsLoggedIn(false)
           } else {
             const response = await GoogleAuth.signIn()
+
+            const { id_token: idToken } = response?.Zi || {}
+
             setIsLoggedIn(true)
-            const idToken = response.Zi.id_token
 
-            console.warn(idToken)
-
-            await fetch('/api/v1/login/', {
-              method: 'POST',
-              headers: {
-                'content-type': 'application/json;charset=UTF-8',
-                Authorization: `Bearer ${idToken}`,
-              },
-            })
+            onSubmit({ idToken })
           }
         }}>
         {isLoggedIn ? 'Sign Out' : 'Sign In with Google'}
       </Button>
     </>
   )
+}
+
+LoginWithGoogle.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 }
 
 export default LoginWithGoogle
