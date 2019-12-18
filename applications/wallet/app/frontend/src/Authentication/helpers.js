@@ -47,7 +47,9 @@ export const authenticateUser = ({ setErrorMessage, setUser }) => async ({
   return setUser(user)
 }
 
-export const logout = ({ setUser }) => async () => {
+export const logout = ({ googleAuth, setUser }) => async () => {
+  googleAuth.signOut()
+
   const { csrftoken } = Object.fromEntries(
     document.cookie.split(/; */).map(c => {
       const [key, ...v] = c.split('=')

@@ -1,60 +1,31 @@
-import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import getConfig from 'next/config'
-import Head from 'next/head'
 
 import Button, { VARIANTS } from '../Button'
 
-const {
-  publicRuntimeConfig: { GOOGLE_OAUTH_API_KEY },
-} = getConfig()
-
-let GoogleAuth
-
-const LoginWithGoogle = ({ onSubmit }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  useEffect(() => {
-    window.onload = () => {
-      window.gapi.load('auth2', async () => {
-        GoogleAuth = await window.gapi.auth2.init({
-          client_id: `${GOOGLE_OAUTH_API_KEY}.apps.googleusercontent.com`,
-        })
-        setIsLoggedIn(GoogleAuth.isSignedIn.get())
-      })
-    }
-  })
-
+const LoginWithGoogle = ({ googleAuth, hasGoogleLoaded, onSubmit }) => {
   return (
     <>
-      <Head>
-        <script src="https://apis.google.com/js/platform.js" async defer />
-      </Head>
-
       <Button
         variant={VARIANTS.PRIMARY}
-        isDisabled={false}
+        isDisabled={!hasGoogleLoaded}
         onClick={async () => {
-          if (isLoggedIn) {
-            await GoogleAuth.signOut()
-            setIsLoggedIn(false)
-          } else {
-            const response = await GoogleAuth.signIn()
+          const response = await googleAuth.signIn()
 
-            const { id_token: idToken } = response?.Zi || {}
+          const { id_token: idToken } = response?.Zi || {}
 
-            setIsLoggedIn(true)
-
-            onSubmit({ idToken })
-          }
+          onSubmit({ idToken })
         }}>
-        {isLoggedIn ? 'Sign Out' : 'Sign In with Google'}
+        Sign In with Google
       </Button>
     </>
   )
 }
 
 LoginWithGoogle.propTypes = {
+  googleAuth: PropTypes.shape({
+    signIn: PropTypes.func.isRequired,
+  }).isRequired,
+  hasGoogleLoaded: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
 }
 

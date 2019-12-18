@@ -17,7 +17,13 @@ import LoginWithGoogle from './WithGoogle'
 const WIDTH = 440
 const LOGO_WIDTH = 143
 
-const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
+const Login = ({
+  googleAuth,
+  hasGoogleLoaded,
+  errorMessage,
+  setErrorMessage,
+  onSubmit,
+}) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -64,7 +70,11 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
           }}>
           Welcome. Please login.
         </h3>
-        <LoginWithGoogle onSubmit={onSubmit} />
+        <LoginWithGoogle
+          googleAuth={googleAuth}
+          hasGoogleLoaded={hasGoogleLoaded}
+          onSubmit={onSubmit}
+        />
         <FormAlert
           errorMessage={errorMessage}
           setErrorMessage={setErrorMessage}
@@ -122,6 +132,10 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
 }
 
 Login.propTypes = {
+  googleAuth: PropTypes.shape({
+    signIn: PropTypes.func.isRequired,
+  }).isRequired,
+  hasGoogleLoaded: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string.isRequired,
   setErrorMessage: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import getConfig from 'next/config'
 import { SWRConfig } from 'swr'
 
 import Login from '../Login'
@@ -7,25 +8,52 @@ import Projects from '../Projects'
 
 import { getUser, authenticateUser, logout, fetcher } from './helpers'
 
+const {
+  publicRuntimeConfig: { GOOGLE_OAUTH_API_KEY },
+} = getConfig()
+
+export const noop = () => () => {}
+
+let googleAuth = { signIn: noop, signOut: noop }
+
 const Authentication = ({ children }) => {
-  const [hasLoaded, setHasLoaded] = useState(false)
+  const [hasLocalStorageLoaded, setHasLocalStorageLoaded] = useState(false)
+  const [hasGoogleLoaded, setHasGoogleLoaded] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState({})
 
   useEffect(() => {
-    if (hasLoaded) return
+    window.onload = () => {
+      window.gapi.load('auth2', () => {
+        window.gapi.auth2
+          .init({
+            client_id: `${GOOGLE_OAUTH_API_KEY}.apps.googleusercontent.com`,
+          })
+          .then(GoogleAuth => {
+            googleAuth = GoogleAuth
+            setHasGoogleLoaded(true)
+          })
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    if (hasLocalStorageLoaded) return
 
     const storedUser = getUser()
 
     setUser(storedUser)
-    setHasLoaded(true)
-  }, [hasLoaded, user])
 
-  if (!hasLoaded) return null
+    setHasLocalStorageLoaded(true)
+  }, [hasLocalStorageLoaded, user])
+
+  if (!hasLocalStorageLoaded) return null
 
   if (!user.id) {
     return (
       <Login
+        googleAuth={googleAuth}
+        hasGoogleLoaded={hasGoogleLoaded}
         errorMessage={errorMessage}
         setErrorMessage={setErrorMessage}
         onSubmit={authenticateUser({ setErrorMessage, setUser })}
@@ -35,11 +63,11 @@ const Authentication = ({ children }) => {
 
   return (
     <SWRConfig value={{ fetcher: fetcher({ setUser }) }}>
-      <Projects user={user} logout={logout({ setUser })}>
+      <Projects user={user} logout={logout({ googleAuth, setUser })}>
         {({ selectedProject }) =>
           children({
             user,
-            logout: logout({ setUser }),
+            logout: logout({ googleAuth, setUser }),
             selectedProject,
           })
         }

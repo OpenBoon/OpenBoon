@@ -31,6 +31,13 @@ exports[`<Authentication /> should render properly when user is logged out 1`] =
 exports[`<Authentication /> should render properly when user is logged out 2`] = `
 <Login
   errorMessage=""
+  googleAuth={
+    Object {
+      "signIn": [Function],
+      "signOut": [Function],
+    }
+  }
+  hasGoogleLoaded={false}
   onSubmit={[Function]}
   setErrorMessage={[Function]}
 />

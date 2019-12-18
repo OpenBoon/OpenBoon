@@ -164,7 +164,10 @@ describe('<Authentication /> helpers', () => {
         },
       })
 
-      await logout({ setUser: mockSetUser })()
+      await logout({
+        googleAuth: { signOut: noop },
+        setUser: mockSetUser,
+      })()
 
       expect(mockSetUser).toHaveBeenCalledWith({})
 
