@@ -9,9 +9,9 @@ const LoginWithGoogle = ({ googleAuth, hasGoogleLoaded, onSubmit }) => {
         variant={VARIANTS.PRIMARY}
         isDisabled={!hasGoogleLoaded}
         onClick={async () => {
-          const response = await googleAuth.signIn()
+          const googleUser = await googleAuth.signIn()
 
-          const { id_token: idToken } = response?.Zi || {}
+          const { id_token: idToken } = googleUser.getAuthResponse()
 
           onSubmit({ idToken })
         }}>
