@@ -1,0 +1,751 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProgressBar /> should render properly 1`] = `
+.emotion-1 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-1"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+</div>
+`;
+
+exports[`setShowKeyInfo() when user is using keyboard should show KeyInfo on keyPress 1`] = `
+.emotion-1 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-1"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+</div>
+`;
+
+exports[`setShowKeyInfo() when user is using keyboard should show KeyInfo on keyPress 2`] = `
+.emotion-29 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-28 {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  z-index: 70;
+}
+
+.emotion-27 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 12px;
+  background-color: #4a4a4a;
+  border-radius: 2px;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  padding-right: 8px;
+}
+
+.emotion-4 {
+  padding-right: 24px;
+}
+
+.emotion-3 {
+  color: #e0e0e0;
+}
+
+.emotion-2 {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 24px;
+}
+
+.emotion-6 {
+  width: 2px;
+  height: 100%;
+  background-color: #c92300;
+}
+
+.emotion-8 {
+  color: #e0e0e0;
+  padding-left: 8px;
+}
+
+.emotion-10 {
+  width: 2px;
+  height: 100%;
+  background-color: #b3b3b3;
+}
+
+.emotion-14 {
+  width: 2px;
+  height: 100%;
+  background-color: #4ac565;
+}
+
+.emotion-18 {
+  width: 2px;
+  height: 100%;
+  background-color: #ebb52e;
+}
+
+.emotion-22 {
+  width: 2px;
+  height: 100%;
+  background-color: #4a90e2;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-29"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+  <div
+    className="emotion-28"
+  >
+    <div
+      className="emotion-27"
+    >
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-5"
+        >
+          <div
+            className="emotion-1"
+          >
+            <svg
+              color="#808080"
+              data-file-name="clock.svg"
+              width={20}
+            />
+          </div>
+          <div
+            className="emotion-4"
+          >
+            <div
+              className="emotion-3"
+            >
+              <div>
+                Duration:
+              </div>
+              <div
+                className="emotion-2"
+              >
+                21 hr / 57 m
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-6"
+          />
+          <div
+            className="emotion-8"
+          >
+            <div>
+              Failed:
+            </div>
+            <div
+              className="emotion-2"
+            >
+              1
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-10"
+          />
+          <div
+            className="emotion-8"
+          >
+            <div>
+              Skipped:
+            </div>
+            <div
+              className="emotion-2"
+            >
+              0
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-14"
+          />
+          <div
+            className="emotion-8"
+          >
+            <div>
+              Succeeded:
+            </div>
+            <div
+              className="emotion-2"
+            >
+              0
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-18"
+          />
+          <div
+            className="emotion-8"
+          >
+            <div>
+              Running:
+            </div>
+            <div
+              className="emotion-2"
+            >
+              0
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-22"
+          />
+          <div
+            className="emotion-8"
+          >
+            <div>
+              Pending:
+            </div>
+            <div
+              className="emotion-2"
+            >
+              0
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`setShowKeyInfo() when user is using keyboard should show KeyInfo on keyPress 3`] = `
+.emotion-1 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-1"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+</div>
+`;
+
+exports[`setShowKeyInfo() when user is using mouse should show KeyInfo on mouseenter 1`] = `
+.emotion-1 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-1"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+</div>
+`;
+
+exports[`setShowKeyInfo() when user is using mouse should show KeyInfo on mouseenter 2`] = `
+.emotion-29 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-28 {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  z-index: 70;
+}
+
+.emotion-27 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 12px;
+  background-color: #4a4a4a;
+  border-radius: 2px;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  padding-right: 8px;
+}
+
+.emotion-4 {
+  padding-right: 24px;
+}
+
+.emotion-3 {
+  color: #e0e0e0;
+}
+
+.emotion-2 {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 24px;
+}
+
+.emotion-6 {
+  width: 2px;
+  height: 100%;
+  background-color: #c92300;
+}
+
+.emotion-8 {
+  color: #e0e0e0;
+  padding-left: 8px;
+}
+
+.emotion-10 {
+  width: 2px;
+  height: 100%;
+  background-color: #b3b3b3;
+}
+
+.emotion-14 {
+  width: 2px;
+  height: 100%;
+  background-color: #4ac565;
+}
+
+.emotion-18 {
+  width: 2px;
+  height: 100%;
+  background-color: #ebb52e;
+}
+
+.emotion-22 {
+  width: 2px;
+  height: 100%;
+  background-color: #4a90e2;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-29"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+  <div
+    className="emotion-28"
+  >
+    <div
+      className="emotion-27"
+    >
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-5"
+        >
+          <div
+            className="emotion-1"
+          >
+            <svg
+              color="#808080"
+              data-file-name="clock.svg"
+              width={20}
+            />
+          </div>
+          <div
+            className="emotion-4"
+          >
+            <div
+              className="emotion-3"
+            >
+              <div>
+                Duration:
+              </div>
+              <div
+                className="emotion-2"
+              >
+                21 hr / 57 m
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-6"
+          />
+          <div
+            className="emotion-8"
+          >
+            <div>
+              Failed:
+            </div>
+            <div
+              className="emotion-2"
+            >
+              1
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-10"
+          />
+          <div
+            className="emotion-8"
+          >
+            <div>
+              Skipped:
+            </div>
+            <div
+              className="emotion-2"
+            >
+              0
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-14"
+          />
+          <div
+            className="emotion-8"
+          >
+            <div>
+              Succeeded:
+            </div>
+            <div
+              className="emotion-2"
+            >
+              0
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-18"
+          />
+          <div
+            className="emotion-8"
+          >
+            <div>
+              Running:
+            </div>
+            <div
+              className="emotion-2"
+            >
+              0
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-22"
+          />
+          <div
+            className="emotion-8"
+          >
+            <div>
+              Pending:
+            </div>
+            <div
+              className="emotion-2"
+            >
+              0
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`setShowKeyInfo() when user is using mouse should show KeyInfo on mouseenter 3`] = `
+.emotion-1 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-1"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+</div>
+`;
