@@ -1,15 +1,16 @@
+import json
 import logging
 import os
-import socket
-import subprocess
 import threading
 import time
-import json
 
 import docker
 import zmq
 
 logger = logging.getLogger(__name__)
+
+# The default container port
+CONTAINER_PORT = 5001
 
 
 class ContainerizedZpsExecutor(object):
@@ -17,30 +18,15 @@ class ContainerizedZpsExecutor(object):
     This class is responsible for iteration and interpretation of
     ZPS scripts along with plugin container life cycle.
     """
+
     def __init__(self, task, client):
         self.task = task
         self.client = client
         self.is_killed = False
-        self.is_started = False
         self.new_state = None
         self.container = None
         self.script = self.task.get("script", {})
         self.event_counts = {}
-
-        self.socket, self.port = self.__setup_zpsd_socket()
-
-    def __setup_zpsd_socket(self):
-        """
-        Open and listen on a random TCP port for ZPSD to connect.
-
-        Returns:
-            socket, int: A tuple of the ZMQ socket and port/
-
-        """
-        ctx = zmq.Context()
-        zsock = ctx.socket(zmq.PAIR)
-        port = zsock.bind_to_random_port("tcp://*", min_port=2000, max_port=10000)
-        return zsock, port
 
     def kill(self, reason="manually killed"):
         """
@@ -104,6 +90,8 @@ class ContainerizedZpsExecutor(object):
                 # Run containerized generator
                 if not self.container:
                     self.container = DockerContainerProcess(self, self.task, proc["image"])
+                    self.container.wait_for_container()
+
                 self.container.execute_generator(proc, settings)
 
                 # Tear down the processor, optionally keeping the container
@@ -188,6 +176,7 @@ class ContainerizedZpsExecutor(object):
         results = []
         if not self.container:
             self.container = DockerContainerProcess(self, self.task, ref["image"])
+            self.container.wait_for_container()
 
         if assets:
             for asset in assets:
@@ -203,6 +192,7 @@ class ContainerizedZpsExecutor(object):
         Stops the current container instance and sets the
         container property to None.
         """
+        # TODO: The container might not have started yet when this gets run.
         if not self.container:
             logger.warning("stop_container did not have a container instance to stop.")
             return
@@ -227,20 +217,29 @@ class DockerContainerProcess(object):
         self.task = task
         self.image = image
         self.client = executor.client
-        self.socket = executor.socket
-        self.port = executor.port
         self.zpsd_ready = False
         self.docker_client = docker.from_env()
         self.container = self.__setup_container()
         self.event_counts = {}
 
         # Sets up a thread which iterates the container logs.
-        self.log_thread = threading.Thread(target=self.__iterate_logs)
+        self.log_thread = threading.Thread(target=self.__dump_container_logs)
         self.log_thread.daemon = True
         self.log_thread.start()
 
-        # Wait for the container to fully initialized
-        self.__wait_for_container()
+        self.socket = self.__setup_zpsd_socket()
+
+    def __setup_zpsd_socket(self):
+        """
+        Open and listen on a random TCP port for ZPSD to connect.
+
+        Returns:
+            socket, int: A tuple of the ZMQ socket and port/
+
+        """
+        ctx = zmq.Context()
+        zsock = ctx.socket(zmq.DEALER)
+        return zsock
 
     def __setup_container(self):
         """
@@ -250,49 +249,62 @@ class DockerContainerProcess(object):
             Container: A running docker Container
 
         """
-        network = os.environ.get("ZMLP_NETWORK", "zmlp_default")
-
-        if in_container():
-            host = socket.gethostbyname(socket.gethostname())
-        else:
-            host = "host.docker.internal"
-
         volumes = {
-            '/tmp':  {'bind': '/tmp', 'mode': 'rw'}
+            '/tmp': {'bind': '/tmp', 'mode': 'rw'}
         }
+
+        network = self.get_network_id()
+        if not network:
+            ports = {'{}/tcp'.format(CONTAINER_PORT): CONTAINER_PORT}
+        else:
+            ports = None
 
         env = self.task.get("env", {})
         env.update({
-            'ZMLP_EVENT_HOST': 'tcp://{}:{}'.format(host, self.port),
             'PIXML_SERVER': os.environ.get("PIXML_SERVER")
         })
 
-        logger.info("starting container {}".format(self.image))
+        name = "{}-{}".format(self.image.replace("/", "_"), int(time.time()))
+        logger.info("starting container {}".format(name))
         return self.docker_client.containers.run(self.image, detach=True,
                                                  environment=env, volumes=volumes,
-                                                 entrypoint="/usr/local/bin/entrypoint",
+                                                 entrypoint="/usr/local/bin/server",
+                                                 name=name,
                                                  network=network,
+                                                 ports=ports,
                                                  labels=["containerizer"])
 
-    def __wait_for_container(self):
+    def wait_for_container(self):
         """
         Block until  the container to sends a ready event. This lets us
         know the container is up and operational.
 
         """
-        logger.info("Waiting for container to connect....")
+        max_wait_time = 60 * 5 * 1000
+        total_wait_time = 0
+
+        uri = "tcp://localhost:{}".format(CONTAINER_PORT)
+        logger.info("Waiting for container '{}' on '{}' to come to life....".format(self.image, uri))
+
         while True:
-            # Timeout is in millis
-            poll = self.socket.poll(timeout=5000)
-            if poll == 1:
+            self.socket.connect(uri)
+            self.socket.send_json({"type": "ready", "payload": {}})
+            poll = self.socket.poll(timeout=1000)
+            if poll > 0:
                 event = self.socket.recv_json()
-                if event["type"] != "ready":
-                    raise RuntimeError("Container in bad state, did not send ready event")
+                self.log_event(event)
+                if event["type"] != "ok":
+                    raise RuntimeError("Container {} in bad state, did not send ready event: {}".format(
+                        self.image, event))
                 break
             time.sleep(0.25)
-        logger.info("Container is ready to accept commands")
+            total_wait_time = total_wait_time + 1000
+            if total_wait_time > max_wait_time:
+                raise RuntimeError("Container {} in bad state, did not send ready event.".format(self.image))
 
-    def __iterate_logs(self):
+        logger.info("Container '{}' is ready to accept commands.".format(self.image))
+
+    def __dump_container_logs(self):
         """
         Iterate and print the docker container log stream. This is run from
         within the log_thread.
@@ -300,7 +312,7 @@ class DockerContainerProcess(object):
         """
         logs = self.container.logs(stream=True)
         for line in logs:
-            line = line.decode("utf-8").strip()
+            line = line.decode("utf-8").rstrip()
             logger.info("CONTAINER:%s" % line)
 
     def stop(self):
@@ -355,7 +367,6 @@ class DockerContainerProcess(object):
 
         while True:
             event = self.receive_event()
-            log_event(event)
             event_type = event["type"]
             if event_type == "finished":
                 break
@@ -388,7 +399,6 @@ class DockerContainerProcess(object):
         self.socket.send_json(request)
         while True:
             event = self.receive_event()
-            log_event(event)
             # Once we find the resulting object, return it back ou
             # so it can be passed into the next processor.
             event_type = event["type"]
@@ -411,50 +421,47 @@ class DockerContainerProcess(object):
             dict: the last event from ZPSD.
         """
         event = self.socket.recv_json()
-        log_event(event)
+        self.log_event(event)
+
+        if event["type"] == "hardfailure":
+            raise RuntimeError("Container failure, exiting event='{}'".format(event))
+        return event
+
+    def log_event(self, event):
+        """
+        Log the given event structure.
+
+        Args:
+            event (dict): An event sent from ZMQ.
+        """
+        try:
+            asset_id = event["payload"]["asset"]["id"]
+        except KeyError as e:
+            asset_id = None
+
+        logger.info('Analyst received event =\'{}\' from image=\'{}\' assetId=\'{}\''.format(
+            event["type"], self.image, asset_id))
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug('------------------------------------------------------')
+            logger.debug(json.dumps(event, indent=4))
+            logger.debug('------------------------------------------------------')
 
         # Update the event counts, mainly for testing.
         key = event["type"] + "_events"
         c = self.event_counts.get(key, 0)
         self.event_counts[key] = c + 1
 
-        if event["type"] == "hardfailure":
-            raise RuntimeError("Container failure, exiting event='{}'".format(event))
-        return event
+    def get_network_id(self):
+        """
+        Return the current containers network Id.  Plugin containers are given the same ID
+        so they act like a form of side car container.
 
-
-def log_event(event):
-    """
-    Log the given event structure.
-
-    Args:
-        event (dict): An event sent from ZMQ.
-    """
-    logger.info('--Event [{}]------------'.format(event["type"]))
-    logger.info(json.dumps(event["payload"], indent=4))
-    logger.info('------------------------')
-
-
-def in_container():
-    """
-    Return true if we're running from within a docker container.
-
-    Returns:
-        bool: True if we're running from within a docker container.
-    """
-    try:
-        out = subprocess.check_output('cat /proc/1/sched', shell=True)
-        out = out.decode('utf-8').lower()
-    except Exception as e:
-        logger.debug("Not in a container", e)
-        return False
-
-    checks = [
-        'docker' in out,
-        '/lxc/' in out,
-        out.split()[0] not in ('systemd', 'init',),
-        os.path.exists('/.dockerenv'),
-        os.path.exists('/.dockerinit'),
-        os.getenv('container', None) is not None
-    ]
-    return any(checks)
+        Returns:
+            str: The network Id.
+        """
+        try:
+            with open("/proc/self/cgroup") as fp:
+                return "container:{}".format(fp.readline().rstrip().split("/")[-1])
+        except Exception as e:
+            logger.debug("'{}' not running in docker: {}".format(self.image, e))
+        return None
