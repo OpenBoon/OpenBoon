@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import { getTimeEnded, TASK_STATUS_COLORS } from '../ProgressBar/helpers'
 import { getDuration } from '../Date/helpers'
-import { TASK_STATUS_COLORS } from '../ProgressBar/helpers'
 
 import ClockSvg from '../Icons/clock.svg'
 
@@ -16,7 +16,8 @@ const TASK_STATUS_LABELS = {
 }
 
 const InfoKey = ({ state, tasksProgress, timeStarted, timeUpdated }) => {
-  const timeEnded = state === 'In Progress' ? Date.now() : timeUpdated
+  const currentTime = Date.now()
+  const timeEnded = getTimeEnded({ state, currentTime, timeUpdated })
   const duration = getDuration({ timeStarted, timeEnded })
 
   return (
