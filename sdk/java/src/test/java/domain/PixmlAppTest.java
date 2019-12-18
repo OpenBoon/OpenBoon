@@ -44,9 +44,9 @@ public class PixmlAppTest {
         PixmlApp pixmlApp = new PixmlApp(keyDict, null);
 
         assertNotNull(pixmlApp);
-        assertNotNull(pixmlApp.pixmlClient);
-        assertNotNull(pixmlApp.pixmlClient.apiKey);
-        assertNotNull(pixmlApp.pixmlClient.headers());
+        assertNotNull(pixmlApp.getPixmlClient());
+        assertNotNull(pixmlApp.getPixmlClient().apiKey);
+        assertNotNull(pixmlApp.getPixmlClient().headers());
 
     }
 
@@ -57,9 +57,9 @@ public class PixmlAppTest {
         PixmlApp pixmlApp = new PixmlApp(keyString, null);
 
         assertNotNull(pixmlApp);
-        assertNotNull(pixmlApp.pixmlClient);
-        assertNotNull(pixmlApp.pixmlClient.apiKey);
-        assertNotNull(pixmlApp.pixmlClient.headers());
+        assertNotNull(pixmlApp.getPixmlClient());
+        assertNotNull(pixmlApp.getPixmlClient().apiKey);
+        assertNotNull(pixmlApp.getPixmlClient().headers());
     }
 
     @DisplayName("Create app with Key String.Byte[]")
@@ -68,9 +68,9 @@ public class PixmlAppTest {
         PixmlApp pixmlApp = new PixmlApp(keyStrByteArr, null);
 
         assertNotNull(pixmlApp);
-        assertNotNull(pixmlApp.pixmlClient);
-        assertNotNull(pixmlApp.pixmlClient.apiKey);
-        assertNotNull(pixmlApp.pixmlClient.headers());
+        assertNotNull(pixmlApp.getPixmlClient());
+        assertNotNull(pixmlApp.getPixmlClient().apiKey);
+        assertNotNull(pixmlApp.getPixmlClient().headers());
     }
 
     @DisplayName("Create app with ENV Variables")
@@ -89,9 +89,9 @@ public class PixmlAppTest {
         PixmlApp pixmlApp = new PixmlApp();
 
         assertNotNull(pixmlApp);
-        assertNotNull(pixmlApp.pixmlClient);
-        assertNotNull(pixmlApp.pixmlClient.apiKey);
-        assertNotNull(pixmlApp.pixmlClient.headers());
+        assertNotNull(pixmlApp.getPixmlClient());
+        assertNotNull(pixmlApp.getPixmlClient().apiKey);
+        assertNotNull(pixmlApp.getPixmlClient().headers());
     }
 
 
@@ -111,9 +111,9 @@ public class PixmlAppTest {
         PixmlApp pixmlApp = new PixmlApp();
 
         assertNotNull(pixmlApp);
-        assertNotNull(pixmlApp.pixmlClient);
-        assertNotNull(pixmlApp.pixmlClient.apiKey);
-        assertNotNull(pixmlApp.pixmlClient.headers());
+        assertNotNull(pixmlApp.getPixmlClient());
+        assertNotNull(pixmlApp.getPixmlClient().apiKey);
+        assertNotNull(pixmlApp.getPixmlClient().headers());
     }
 
 

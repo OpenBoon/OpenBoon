@@ -60,7 +60,7 @@ public class PixmlDataSourceAppTests {
                 .willReturn(mapper.writeValueAsString(value));
 
         //run real method with static mocked method with http request inside
-        DataSource ds = app.dataSource.createDataSource("test", "gs://test/test", null, null, null);
+        DataSource ds = app.getDataSourceApp().createDataSource("test", "gs://test/test", null, null, null);
 
         assertEquals(value.get("id"), ds.getId());
         assertEquals(value.get("name"), ds.getName());
@@ -86,7 +86,7 @@ public class PixmlDataSourceAppTests {
                 .willReturn(mapper.writeValueAsString(value));
 
         //run real method with static mocked method with http request inside
-        DataSource ds = app.dataSource.getDataSource("test");
+        DataSource ds = app.getDataSourceApp().getDataSource("test");
 
 
         assertEquals(value.get("id"), ds.getId());
@@ -112,7 +112,7 @@ public class PixmlDataSourceAppTests {
         dataSourceParam.put("id", "123");
         DataSource ds = new DataSource(dataSourceParam);
 
-        Map response = this.app.dataSource.importDataSource(ds);
+        Map response = this.app.getDataSourceApp().importDataSource(ds);
 
         assertEquals(value.get("id"), response.get("id"));
         assertEquals(value.get("name"), response.get("name"));
@@ -137,7 +137,7 @@ public class PixmlDataSourceAppTests {
         dataSourceParam.put("id", "123");
 
         DataSource ds = new DataSource(dataSourceParam);
-        Map status = this.app.dataSource.updateCredentials(ds, "ABC123");
+        Map status = this.app.getDataSourceApp().updateCredentials(ds, "ABC123");
 
         assertEquals(status.get("type"), "DATASOURCE");
         assertEquals(status.get("id"), "ABC");
