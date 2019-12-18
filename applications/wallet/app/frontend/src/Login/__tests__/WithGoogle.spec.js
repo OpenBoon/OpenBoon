@@ -23,10 +23,31 @@ describe('<LoginWithGoogle />', () => {
         .props.onClick()
     })
 
-    expect(component.toJSON()).toMatchSnapshot()
-
     expect(mockSignIn).toHaveBeenCalledWith()
 
     expect(mockOnSubmit).toHaveBeenCalledWith({ idToken: 'ID_TOKEN' })
+  })
+
+  it('should render properly with an erroneous response', async () => {
+    const mockSignIn = jest.fn(() => Promise.resolve(null))
+    const mockOnSubmit = jest.fn()
+
+    const component = TestRenderer.create(
+      <LoginWithGoogle
+        googleAuth={{ signIn: mockSignIn }}
+        hasGoogleLoaded
+        onSubmit={mockOnSubmit}
+      />,
+    )
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Sign In with Google' })
+        .props.onClick()
+    })
+
+    expect(mockSignIn).toHaveBeenCalledWith()
+
+    expect(mockOnSubmit).toHaveBeenCalledWith({ idToken: undefined })
   })
 })
