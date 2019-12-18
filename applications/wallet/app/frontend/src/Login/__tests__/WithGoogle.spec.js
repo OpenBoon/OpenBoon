@@ -4,9 +4,10 @@ import LoginWithGoogle from '../WithGoogle'
 
 describe('<LoginWithGoogle />', () => {
   it('should render properly', async () => {
-    const mockGetAuthResponse = jest.fn(() => ({ id_token: 'ID_TOKEN' }))
     const mockSignIn = jest.fn(() =>
-      Promise.resolve({ getAuthResponse: mockGetAuthResponse }),
+      Promise.resolve({
+        getAuthResponse: () => ({ id_token: 'ID_TOKEN' }),
+      }),
     )
     const mockOnSubmit = jest.fn()
 
