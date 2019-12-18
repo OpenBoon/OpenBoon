@@ -8,7 +8,7 @@ import {
 
 import userShape from '../User/shape'
 
-import { constants } from '../Styles'
+import { constants, spacing } from '../Styles'
 
 import Navbar from '../Navbar'
 import Sidebar from '../Sidebar'
@@ -52,7 +52,13 @@ const Layout = ({ user, results, logout, children }) => {
         setSidebarOpen={setSidebarOpen}
         ref={sidebarRef}
       />
-      <div css={{ paddingTop: constants.navbar.height }}>
+      <div
+        css={{
+          marginTop: constants.navbar.height,
+          padding: spacing.comfy,
+          paddingLeft: spacing.spacious,
+          paddingRight: spacing.spacious,
+        }}>
         {children({ selectedProject })}
       </div>
     </div>
