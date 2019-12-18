@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 umask 0002
 
 if [ -f "config/service.env" ]

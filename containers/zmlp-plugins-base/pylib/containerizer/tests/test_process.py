@@ -1,8 +1,8 @@
 import logging
 import unittest
+from unittest.mock import patch
 
 from containerizer.process import ProcessorExecutor, AssetConsumer, is_file_type_allowed
-
 from pixml.analysis import Reactor
 from pixml.analysis.testing import TestEventEmitter, TestAsset
 
@@ -73,7 +73,8 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert error["payload"]["phase"] == "execute"
         assert error["payload"]["path"] == "/foo/bing.jpg"
 
-    def test_teardown_processor(self):
+    @patch.object(Reactor, 'check_expand')
+    def test_teardown_processor(self, react_patch):
         req = {
             "ref": {
                 "className": "pixml.analysis.testing.TestProcessor",
@@ -88,6 +89,8 @@ class ProcessorExecutorTests(unittest.TestCase):
         self.pe.teardown_processor(req)
         stats = self.emitter.get_events("stats")
         assert len(stats) == 1
+
+        react_patch.assert_called_with(force=True)
 
     def test_get_processor_wrapper(self):
         ref = {

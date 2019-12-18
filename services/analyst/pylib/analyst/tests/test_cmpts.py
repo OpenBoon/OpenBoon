@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 import socket
@@ -8,9 +7,8 @@ import time
 import unittest
 import uuid
 from threading import Lock
-
-
 from unittest.mock import patch, MagicMock
+
 from requests import Response
 
 from analyst import main
@@ -19,7 +17,7 @@ from analyst.components import ClusterClient, \
 from analyst.containerized import ContainerizedZpsExecutor
 from analyst.main import setup_routes
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
@@ -50,7 +48,7 @@ def test_task(event_type=None, attrs=None):
                         "send_event": event_type,
                         "attrs": attrs
                     },
-                    "image": "zmlp-plugins-base"
+                    "image": "zmlp/plugins-base"
                 }
             ]
         },
@@ -235,18 +233,3 @@ class TestExecutor(unittest.TestCase):
         assert final_event["manualKill"]
         assert final_event["exitStatus"] == -9
         assert final_event["newState"] == "skipped"
-
-
-class TestContainerizedZpsExecutor(unittest.TestCase):
-
-    def test_run(self):
-        task = test_task("--expand")
-
-        temp_dir = tempfile.mkdtemp("zorroa_temp")
-        script = os.path.join(temp_dir, "script.zps")
-
-        with open(script, "w") as fp:
-            fp.write(json.dumps(task["script"]))
-
-        wrapper = ContainerizedZpsExecutor(test_task("--sleep 1"), MockArchivistClient())
-        wrapper.run()

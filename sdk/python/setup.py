@@ -9,11 +9,16 @@ from datetime import datetime
 # python3 -m pip install --user --upgrade setuptools wheel
 # python3 setup.py sdist bdist_wheel
 
-
-# External pip dependencies are loaded from the requirements-zsdk.txt file. If any
-# additional pip installs are required add them to that file.
-with open('requirements.txt') as f:
-    reqs = f.read().strip().splitlines()
+requirements = [
+    "requests",
+    "pyOpenSSL",
+    "PyJWT",
+    "google-cloud-storage>=1.20.0",
+    "pathlib2>=2.3.0",
+    "backoff",
+    "pytest",
+    "minio"
+]
 
 setup(
     name='pixml',
@@ -32,5 +37,5 @@ setup(
     ],
 
     include_package_data=True,
-    install_requires=reqs
+    install_requires=requirements
 )

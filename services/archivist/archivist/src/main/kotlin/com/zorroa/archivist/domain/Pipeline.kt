@@ -112,6 +112,7 @@ data class PipelineFilter(
  * get into the Analysis dev phase.
  */
 val STANDARD_PIPELINE = listOf(
+    ProcessorRef("pixml_core.core.processors.PreCacheSourceFileProcessor", "zmlp-plugins-core"),
     ProcessorRef("pixml_core.image.importers.ImageImporter", "zmlp-plugins-core"),
     ProcessorRef("pixml_core.office.importers.OfficeImporter", "zmlp-plugins-core"),
     ProcessorRef("pixml_core.core.processors.AssertAttributesProcessor", "zmlp-plugins-core",

@@ -48,8 +48,7 @@ class TestServer {
 
     @Test
     fun testExistsFailure() {
-        val opts = Options("src/test/resources/CPB7_WEB.pdf")
-        opts.page = 1
+        val opts = ExistsRequest(19, "foo")
 
         val rsp = HttpRequest.post("http://localhost:9876/exists")
             .send(Json.mapper.writeValueAsString(opts))
@@ -58,7 +57,7 @@ class TestServer {
 
     @Test
     fun testRender() {
-        val opts = Options("src/test/resources/CPB7_WEB.pdf")
+        val opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
         opts.page = 1
         opts.outputDir = "render_test"
         val rsp = HttpRequest.post("http://localhost:9876/render")
@@ -69,7 +68,7 @@ class TestServer {
 
         val content = Json.mapper.readValue(rsp.body(), Map::class.java)
         val prefix = IOHandler.PREFIX
-        assertEquals("pixml://ml-storage/$prefix/render_test", content["output"])
+        assertEquals("pixml://ml-storage/$prefix/render_test", content["location"])
 
         val exists = HttpRequest.post("http://localhost:9876/exists")
             .send(Json.mapper.writeValueAsString(opts))
@@ -78,7 +77,7 @@ class TestServer {
 
     @Test
     fun testServerFailure() {
-        val opts = Options("src/test/resources/boom.pdf")
+        val opts = RenderRequest("src/test/resources/boom.pdf")
         val rsp = HttpRequest.post("http://localhost:9876/render")
             .send(Json.mapper.writeValueAsString(opts))
             .code()

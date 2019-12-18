@@ -12,7 +12,7 @@ import org.junit.Test
 
 class TestIOHandler {
 
-    val options = Options("foo.docx")
+    val options = RenderRequest("foo.docx")
     val handler = IOHandler(options)
 
     @Test

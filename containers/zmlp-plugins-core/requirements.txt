@@ -4,3 +4,4 @@ backoff
 opencv-python-headless
 opencv-contrib-python-headless
 Pillow
+file-magic

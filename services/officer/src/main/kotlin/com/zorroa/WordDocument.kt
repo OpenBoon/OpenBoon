@@ -1,23 +1,14 @@
 package com.zorroa
 
-import com.aspose.words.FontSettings
 import com.aspose.words.ImageSaveOptions
 import com.aspose.words.PdfSaveOptions
-import java.awt.Color
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import kotlin.system.measureTimeMillis
 
-class WordDocument(options: Options, inputStream: InputStream) : Document(options) {
+class WordDocument(options: RenderRequest, inputStream: InputStream) : Document(options) {
 
     private val doc = com.aspose.words.Document(inputStream)
-
-    init {
-        if (options.verbose) {
-            logFontsUsed()
-            logAvailableFonts()
-        }
-    }
 
     private fun logFontsUsed() {
         logger.info("Fonts used in document:")
@@ -28,23 +19,12 @@ class WordDocument(options: Options, inputStream: InputStream) : Document(option
         }
     }
 
-    private fun logAvailableFonts() {
-        logger.info("Fonts available from default font source:")
-        for (fontInfo in FontSettings.getDefaultInstance().fontsSources[0].availableFonts) {
-            logger.info("*** FontFamilyName : " + fontInfo.fontFamilyName)
-            logger.info("*** FullFontName  : " + fontInfo.fullFontName)
-            logger.info("*** Version  : " + fontInfo.version)
-            logger.info("*** FilePath : " + fontInfo.filePath)
-        }
-    }
-
     override fun renderAllImages(): Int {
         val pageCount = doc.pageCount
         for (page in 1..pageCount) {
             renderImage(page)
         }
-        renderImage(0)
-        return doc.pageCount + 1
+        return doc.pageCount
     }
 
     override fun renderAllMetadata(): Int {
@@ -53,8 +33,7 @@ class WordDocument(options: Options, inputStream: InputStream) : Document(option
         for (page in 1..pageCount) {
             renderMetadata(page)
         }
-        renderMetadata(0)
-        return doc.pageCount + 1
+        return doc.pageCount
     }
 
     override fun renderImage(page: Int) {
@@ -67,16 +46,7 @@ class WordDocument(options: Options, inputStream: InputStream) : Document(option
 
             val output = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
             doc.save(output, imageSaveOptions)
-            if (page == 0) {
-                val render = StackRender(
-                    "MSWord", Color(52, 84, 148),
-                    output.toInputStream()
-                )
-
-                ioHandler.writeImage(page, render.render())
-            } else {
-                ioHandler.writeImage(page, output)
-            }
+            ioHandler.writeImage(page, output)
         }
         logImageTime(page, time)
     }
@@ -86,24 +56,18 @@ class WordDocument(options: Options, inputStream: InputStream) : Document(option
             val props = doc.builtInDocumentProperties
             val metadata = mutableMapOf<String, Any?>()
 
-            if (page == 0) {
-                metadata["type"] = "document"
-                metadata["title"] = props.title
-                metadata["author"] = props.author
-                metadata["keywords"] = props.keywords
-                metadata["timeCreated"] = convertDate(props.createdTime)
-                metadata["length"] = doc.pageCount
-            }
+            metadata["type"] = "document"
+            metadata["title"] = props.title
+            metadata["author"] = props.author
+            metadata["keywords"] = props.keywords
+            metadata["timeCreated"] = convertDate(props.createdTime)
+            metadata["length"] = doc.pageCount
 
             val pageInfo = doc.getPageInfo((page - 1).coerceAtLeast(0))
-
             metadata["height"] = pageInfo.heightInPoints
             metadata["width"] = pageInfo.widthInPoints
             metadata["orientation"] = if (pageInfo.landscape) "landscape" else "portrait"
-
-            if (page > 0) {
-                metadata["content"] = extractPageContent(page)
-            }
+            metadata["content"] = extractPageContent(page)
 
             val output = ReversibleByteArrayOutputStream()
             Json.mapper.writeValue(output, metadata)
