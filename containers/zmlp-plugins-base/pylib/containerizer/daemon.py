@@ -56,7 +56,7 @@ class PixmlContainerDaemon(object):
         elif etype == "teardown":
             self.executor.teardown_processor(event["payload"])
         elif etype == "stop":
-            logger.info("Exiting ZPSD via stop event")
+            logger.warning("Exiting container via stop event")
             sys.exit(event["payload"].get("status", 0))
 
 
