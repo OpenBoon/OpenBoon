@@ -16,8 +16,6 @@ app = Flask(__name__)
 
 
 def main():
-    logging.basicConfig(level=logging.INFO)
-
     parser = argparse.ArgumentParser(prog='analyst')
     parser.add_argument("-a", "--archivist", help="The URL of the Archivist server.",
                         default=os.environ.get("ZORROA_ARCHIVIST_URL", "http://archivist:8080"))
@@ -26,8 +24,15 @@ def main():
     parser.add_argument("-l", "--poll", default=5,
                         help="Seconds to wait before polling for a new task. 0 to disable")
     parser.add_argument("-g", "--ping", default=30,
-                        help="Seconds to wait between each ping, 0 to disable",)
+                        help="Seconds to wait between each ping, 0 to disable")
+    parser.add_argument("-v", "--verbose", action="store_true", default=False,
+                        help="Enable verbose logging")
     args = parser.parse_args()
+
+    if os.environ.get("ZMLP_DEBUG") or args.verbose:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
 
     api = components.ApiComponents(args)
     setup_routes(api)

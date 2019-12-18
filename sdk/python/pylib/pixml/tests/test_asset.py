@@ -5,7 +5,7 @@ from unittest.mock import patch
 from pixml import Asset
 from pixml import PixmlClient, app_from_env
 from pixml.analysis.testing import zorroa_test_data
-from pixml.asset import FileImport, FileUpload
+from pixml.asset import FileImport, FileUpload, Clip
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -113,6 +113,11 @@ class AssetTests(unittest.TestCase):
 
     def test_equal(self):
         assert Asset({"id": "123"}) == Asset({"id": "123"})
+
+    def test_get_item_and_set_item(self):
+        asset = Asset({"id": "123"})
+        asset["foo.bar.bing"] = "123"
+        assert asset["foo.bar.bing"] == "123"
 
 
 class AssetAppTests(unittest.TestCase):
@@ -241,3 +246,34 @@ class AssetAppTests(unittest.TestCase):
         for item in rsp:
             count += 1
         assert count == 2
+
+
+class FileImportTests(unittest.TestCase):
+
+    def test_get_item_and_set_item(self):
+        imp = FileImport("gs://zorroa-dev-data/image/pluto.png")
+        imp["foo"] = "bar"
+        assert imp["foo"] == "bar"
+
+
+class ClipTests(unittest.TestCase):
+
+    def test_page_clip(self):
+        clip = Clip.page(10)
+        assert clip.start == 10
+        assert clip.stop == 10
+        assert clip.type == 'page'
+
+    def test_scene_clip(self):
+        clip = Clip.scene(1.44, 2.25, "shot")
+        assert clip.start == 1.44
+        assert clip.stop == 2.25
+        assert clip.type == 'scene'
+        assert clip.timeline == 'shot'
+
+    def test_create_clip(self):
+        clip = Clip("scene", 1, 2, "faces")
+        assert clip.start == 1
+        assert clip.stop == 2
+        assert clip.type == 'scene'
+        assert clip.timeline == 'faces'

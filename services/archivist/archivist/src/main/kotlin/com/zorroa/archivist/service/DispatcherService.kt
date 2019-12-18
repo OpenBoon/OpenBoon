@@ -368,6 +368,7 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     override fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task {
+
         val result = assetService.batchCreate(
             BatchCreateAssetsRequest(event.assets, analyze = false, task=parentTask)
         )
@@ -384,6 +385,7 @@ class DispatcherServiceImpl @Autowired constructor(
         logger.event(
             LogObject.JOB, LogAction.EXPAND,
             mapOf(
+                "assetCount" to event.assets.size,
                 "parentTaskId" to parentTask.taskId,
                 "taskId" to newTask.id,
                 "jobId" to newTask.jobId
