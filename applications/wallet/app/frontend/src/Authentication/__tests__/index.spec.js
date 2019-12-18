@@ -10,7 +10,21 @@ jest.mock('../../Projects')
 jest.mock('../helpers')
 
 describe('<Authentication />', () => {
-  it('should render properly when user is logged out', () => {
+  Object.defineProperty(window, 'onload', {
+    set: cb => cb(),
+  })
+
+  Object.defineProperty(window, 'gapi', {
+    writable: true,
+    value: {
+      load: (_, cb) => cb(),
+      auth2: {
+        init: () => ({ signIn: noop, signOut: noop }),
+      },
+    },
+  })
+
+  it('should render properly when user is logged out', async () => {
     const mockFn = jest.fn()
     require('../helpers').__setMockAuthenticateUser(mockFn)
 
@@ -22,7 +36,7 @@ describe('<Authentication />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     // useEffect reads from localStorage
-    act(() => {})
+    await act(async () => {})
 
     // display <Login />
     expect(component.toJSON()).toMatchSnapshot()
@@ -40,35 +54,19 @@ describe('<Authentication />', () => {
     })
   })
 
-  it('should load the Google SDK', () => {
-    Object.defineProperty(window, 'onload', {
-      set: cb => cb(),
-    })
-
-    Object.defineProperty(window, 'gapi', {
-      writable: true,
-      value: {
-        load: (_, cb) => cb(),
-        auth2: {
-          init: () => ({
-            then: cb => act(cb),
-          }),
-        },
-      },
-    })
-
+  it('should load the Google SDK', async () => {
     const component = TestRenderer.create(
       <Authentication>{() => 'Hello World'}</Authentication>,
     )
 
     // useEffect loads Google SDK
-    act(() => {})
+    await act(async () => {})
 
     // display `Hello World!`
     expect(component.root.findByType('Login').props.hasGoogleLoaded).toBe(true)
   })
 
-  it('should render properly when user is logged in', () => {
+  it('should render properly when user is logged in', async () => {
     require('../helpers').__setMockUser(mockUser)
 
     const component = TestRenderer.create(
@@ -79,7 +77,7 @@ describe('<Authentication />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     // useEffect reads from localStorage
-    act(() => {})
+    await act(async () => {})
 
     // display `Hello World!`
     expect(component.toJSON()).toMatchSnapshot()

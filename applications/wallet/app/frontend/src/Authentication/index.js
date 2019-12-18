@@ -24,15 +24,11 @@ const Authentication = ({ children }) => {
 
   useEffect(() => {
     window.onload = () => {
-      window.gapi.load('auth2', () => {
-        window.gapi.auth2
-          .init({
-            client_id: `${GOOGLE_OAUTH_API_KEY}.apps.googleusercontent.com`,
-          })
-          .then(GoogleAuth => {
-            googleAuth = GoogleAuth
-            setHasGoogleLoaded(true)
-          })
+      window.gapi.load('auth2', async () => {
+        googleAuth = window.gapi.auth2.init({
+          client_id: `${GOOGLE_OAUTH_API_KEY}.apps.googleusercontent.com`,
+        })
+        setHasGoogleLoaded(true)
       })
     }
   }, [])
