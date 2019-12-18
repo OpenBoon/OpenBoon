@@ -1,0 +1,203 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProgressBarLegend /> should render properly 1`] = `
+.emotion-26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 12px;
+  background-color: #4a4a4a;
+  border-radius: 2px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  padding-right: 8px;
+}
+
+.emotion-3 {
+  padding-right: 24px;
+}
+
+.emotion-2 {
+  color: #e0e0e0;
+}
+
+.emotion-1 {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 24px;
+}
+
+.emotion-5 {
+  width: 2px;
+  height: 100%;
+  background-color: #c92300;
+}
+
+.emotion-7 {
+  color: #e0e0e0;
+  padding-left: 8px;
+}
+
+.emotion-9 {
+  width: 2px;
+  height: 100%;
+  background-color: #b3b3b3;
+}
+
+.emotion-13 {
+  width: 2px;
+  height: 100%;
+  background-color: #4ac565;
+}
+
+.emotion-17 {
+  width: 2px;
+  height: 100%;
+  background-color: #ebb52e;
+}
+
+.emotion-21 {
+  width: 2px;
+  height: 100%;
+  background-color: #4a90e2;
+}
+
+<div
+  className="emotion-26"
+>
+  <div
+    className="emotion-4"
+  >
+    <div
+      className="emotion-4"
+    >
+      <div
+        className="emotion-0"
+      >
+        <svg
+          color="#808080"
+          data-file-name="clock.svg"
+          width={20}
+        />
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <div
+          className="emotion-2"
+        >
+          <div>
+            Duration:
+          </div>
+          <div
+            className="emotion-1"
+          >
+            21 hr / 57 m
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-8"
+    >
+      <div
+        className="emotion-5"
+      />
+      <div
+        className="emotion-7"
+      >
+        <div>
+          Failed:
+        </div>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-8"
+    >
+      <div
+        className="emotion-9"
+      />
+      <div
+        className="emotion-7"
+      >
+        <div>
+          Skipped:
+        </div>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-8"
+    >
+      <div
+        className="emotion-13"
+      />
+      <div
+        className="emotion-7"
+      >
+        <div>
+          Succeeded:
+        </div>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-8"
+    >
+      <div
+        className="emotion-17"
+      />
+      <div
+        className="emotion-7"
+      >
+        <div>
+          Running:
+        </div>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-8"
+    >
+      <div
+        className="emotion-21"
+      />
+      <div
+        className="emotion-7"
+      >
+        <div>
+          Pending:
+        </div>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
