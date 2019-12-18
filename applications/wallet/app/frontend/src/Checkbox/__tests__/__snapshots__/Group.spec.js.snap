@@ -1,0 +1,301 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CheckboxGroup /> should render properly 1`] = `
+.emotion-10 {
+  border: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+}
+
+.emotion-0 {
+  float: left;
+  padding: 0;
+  padding-bottom: 12px;
+}
+
+.emotion-1 {
+  clear: both;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  cursor: pointer;
+  padding-bottom: 12px;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-2 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: #82be3c;
+  border: 2px solid #82be3c;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+}
+
+.emotion-8 {
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-6 {
+  color: #b3b3b3;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 700;
+}
+
+.emotion-7 {
+  color: #808080;
+}
+
+<fieldset
+  className="emotion-10"
+>
+  <legend
+    className="emotion-0"
+  >
+    Permissions
+  </legend>
+  <div
+    className="emotion-1"
+  />
+  <label
+    className="emotion-9"
+  >
+    <div
+      className="emotion-5"
+    >
+      <input
+        className="emotion-2"
+        defaultChecked={true}
+        onClick={[Function]}
+        type="checkbox"
+      />
+      <div
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-3"
+          data-file-name="checkmark.svg"
+          width={14}
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-8"
+    >
+      <span
+        className="emotion-6"
+      >
+        API
+      </span>
+      <span
+        className="emotion-7"
+      >
+        Dude You're Getting A Telescope
+      </span>
+    </div>
+  </label>
+</fieldset>
+`;
+
+exports[`<CheckboxGroup /> should render properly 2`] = `
+.emotion-10 {
+  border: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+}
+
+.emotion-0 {
+  float: left;
+  padding: 0;
+  padding-bottom: 12px;
+}
+
+.emotion-1 {
+  clear: both;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  cursor: pointer;
+  padding-bottom: 12px;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-8 {
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-6 {
+  color: #b3b3b3;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 700;
+}
+
+.emotion-7 {
+  color: #808080;
+}
+
+.emotion-2 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-3 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+<fieldset
+  className="emotion-10"
+>
+  <legend
+    className="emotion-0"
+  >
+    Permissions
+  </legend>
+  <div
+    className="emotion-1"
+  />
+  <label
+    className="emotion-9"
+  >
+    <div
+      className="emotion-5"
+    >
+      <input
+        className="emotion-2"
+        defaultChecked={false}
+        onClick={[Function]}
+        type="checkbox"
+      />
+      <div
+        className="emotion-4"
+      >
+        <svg
+          className="emotion-3"
+          data-file-name="checkmark.svg"
+          width={14}
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-8"
+    >
+      <span
+        className="emotion-6"
+      >
+        API
+      </span>
+      <span
+        className="emotion-7"
+      >
+        Dude You're Getting A Telescope
+      </span>
+    </div>
+  </label>
+</fieldset>
+`;
