@@ -35,14 +35,21 @@ const LoginWithGoogle = () => {
         isDisabled={false}
         onClick={async () => {
           if (isLoggedIn) {
-            const response = await GoogleAuth.signOut()
+            await GoogleAuth.signOut()
             setIsLoggedIn(false)
-            console.warn(response)
           } else {
             const response = await GoogleAuth.signIn()
             setIsLoggedIn(true)
-            console.warn(response.Zi)
-            console.warn(GoogleAuth.currentUser.get())
+            const idToken = response.Zi.id_token
+
+            console.warn(idToken)
+
+            await fetch('/api/v1/projects/', {
+              headers: {
+                'content-type': 'application/json;charset=UTF-8',
+                Authorization: `Bearer ${idToken}`,
+              },
+            })
           }
         }}>
         {isLoggedIn ? 'Sign Out' : 'Sign In with Google'}
