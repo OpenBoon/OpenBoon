@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Simple scripts that handles the startup of the server. The first argument is the
+# Simple script that handles the startup of the servers. The first argument is the
 # hostname of the postgres instance to wait for.
 
 # Wait for postgres database to be ready.
@@ -13,4 +13,6 @@ python3 ./manage.py migrate --no-input
 
 # Start the server.
 gunicorn -b :8080 wallet.wsgi &
+cd frontend
+npm run prod &
 nginx -g "daemon off;"
