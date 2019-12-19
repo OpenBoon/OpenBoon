@@ -8,11 +8,11 @@ describe('<ProgressBarLegend />', () => {
       <ProgressBarLegend
         state="Active"
         taskCounts={{
-          Failed: 1,
-          Skipped: 0,
-          Succeeded: 0,
-          Running: 0,
-          Pending: 0,
+          tasksFailure: 1,
+          tasksSkipped: 0,
+          tasksSuccess: 0,
+          tasksRunning: 0,
+          tasksPending: 0,
         }}
         timeStarted={1564699941318}
         timeUpdated={1565211006581}
