@@ -1,3 +1,4 @@
+import datetime
 import logging
 import os
 import random
@@ -5,12 +6,9 @@ import socket
 import tempfile
 import threading
 import time
-import datetime
-import jwt
-import docker
-
 from sys import platform
 
+import jwt
 import psutil
 import requests
 
@@ -18,11 +16,12 @@ from .containerized import ContainerizedZpsExecutor
 
 if platform == "darwin":
     from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 else:
     import urllib3
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +38,6 @@ __all__ = [
 class ApiComponents(object):
 
     def __init__(self, args):
-
         shared_key = None
         if args.credentials:
             with open(args.credentials) as fp:
@@ -57,13 +55,11 @@ class ClusterClient(object):
     endpoints on the Archivist.
 
     """
+
     def __init__(self, remote_url, shared_key, my_port=5000):
         self.remote_url = remote_url or os.environ.get("PIXML_SERVER")
         self.shared_key = shared_key or os.environ.get("ANALYST_SHAREDKEY")
-<<<<<<< HEAD
         self.version = get_sdk_version()
-=======
->>>>>>> b805b2921e0fe3cf2c419dccc4aea05d719804b7
 
         if not self.remote_url:
             raise ValueError("No archivist URL has been set, try setting the PIXML_SERVER env var")
@@ -191,6 +187,7 @@ class Executor(object):
     shells out to ZpsGo, reads it's events from STDIN, and emits them back to the Archivist.
 
     """
+
     def __init__(self, client, ping_timer_seconds=0, poll_timer_seconds=0):
         """
         Create a new Executor.

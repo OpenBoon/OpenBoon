@@ -1,6 +1,5 @@
 import logging
 import os
-import socket
 import tempfile
 import threading
 import time
