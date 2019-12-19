@@ -20,7 +20,7 @@ const COLUMNS = [
   'Progress',
 ]
 
-const JobQueue = ({ selectedProject }) => {
+const DataQueue = ({ selectedProject }) => {
   const { data: { results } = {} } = useSWR(
     `/api/v1/projects/${selectedProject.id}/jobs/`,
   )
@@ -53,11 +53,11 @@ const JobQueue = ({ selectedProject }) => {
   )
 }
 
-JobQueue.propTypes = {
+DataQueue.propTypes = {
   selectedProject: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
 }
 
-export default JobQueue
+export default DataQueue

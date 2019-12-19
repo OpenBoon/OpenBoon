@@ -1,6 +1,6 @@
 import TestRenderer from 'react-test-renderer'
 
-import JobQueue, { noop } from '..'
+import DataQueue, { noop } from '..'
 
 import mockProjects from '../../Projects/__mocks__/projects'
 import jobs from '../__mocks__/jobs'
@@ -8,12 +8,12 @@ import jobs from '../__mocks__/jobs'
 jest.mock('../../Pagination', () => 'Pagination')
 jest.mock('../../UserMenu', () => 'UserMenu')
 
-describe('<JobQueue />', () => {
+describe('<DataQueue />', () => {
   const selectedProject = mockProjects.results[0]
 
   it('should render properly while loading', () => {
     const component = TestRenderer.create(
-      <JobQueue logout={noop} selectedProject={selectedProject} />,
+      <DataQueue logout={noop} selectedProject={selectedProject} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -25,7 +25,7 @@ describe('<JobQueue />', () => {
     })
 
     const component = TestRenderer.create(
-      <JobQueue logout={noop} selectedProject={selectedProject} />,
+      <DataQueue logout={noop} selectedProject={selectedProject} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -37,7 +37,7 @@ describe('<JobQueue />', () => {
     })
 
     const component = TestRenderer.create(
-      <JobQueue logout={noop} selectedProject={selectedProject} />,
+      <DataQueue logout={noop} selectedProject={selectedProject} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

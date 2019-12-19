@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<JobQueue /> should render properly while loading 1`] = `"Loading..."`;
+exports[`<DataQueue /> should render properly while loading 1`] = `"Loading..."`;
 
-exports[`<JobQueue /> should render properly with jobs 1`] = `
+exports[`<DataQueue /> should render properly with jobs 1`] = `
 .emotion-0 {
   font-size: 18px;
   line-height: 21px;
@@ -1001,4 +1001,4 @@ exports[`<JobQueue /> should render properly with jobs 1`] = `
 </div>
 `;
 
-exports[`<JobQueue /> should render properly with no jobs 1`] = `"You have 0 jobs"`;
+exports[`<DataQueue /> should render properly with no jobs 1`] = `"You have 0 jobs"`;

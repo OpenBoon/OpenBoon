@@ -16,6 +16,7 @@ const SidebarLink = ({ title, href, children }) => {
             alignItems: 'center',
             padding: spacing.moderate,
             fontSize: typography.size.kilo,
+            lineHeight: typography.height.kilo,
             backgroundColor:
               href === pathname ? colors.structure.smoke : 'none',
             color: href === pathname ? colors.key.one : colors.structure.steel,

@@ -38,6 +38,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   align-items: center;
   padding: 12px;
   font-size: 16px;
+  line-height: 20px;
   background-color: none;
   color: #808080;
 }
@@ -142,6 +143,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   align-items: center;
   padding: 12px;
   font-size: 16px;
+  line-height: 20px;
   background-color: none;
   color: #808080;
 }

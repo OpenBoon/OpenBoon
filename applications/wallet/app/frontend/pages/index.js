@@ -1,3 +1,3 @@
-import JobQueue from '../src/JobQueue'
+import DataQueue from '../src/DataQueue'
 
-export default JobQueue
+export default DataQueue
