@@ -1,7 +1,7 @@
 import { forwardRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 
 import { colors, spacing, zIndex, constants, typography } from '../Styles'
 
@@ -14,6 +14,7 @@ const WIDTH = 240
 const ICON_WIDTH = 20
 
 const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
+  const { pathname } = useRouter()
   useEffect(() => {
     const handleRouteChange = () => {
       setSidebarOpen(false)
@@ -49,33 +50,51 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
             listStyleType: 'none',
             padding: 0,
             margin: 0,
+            li: {
+              borderBottom: constants.borders.transparent,
+            },
             a: {
               display: 'flex',
               alignItems: 'center',
               padding: spacing.moderate,
               fontSize: typography.size.kilo,
-              color: colors.grey2,
               svg: {
                 marginRight: spacing.moderate,
               },
               ':hover': {
                 textDecoration: 'none',
-                color: colors.plants.clover,
-                backgroundColor: colors.grey1,
+                color: colors.structure.pebble,
+                backgroundColor: colors.structure.smoke,
               },
             },
           }}>
           <li>
             <Link href="/">
-              <a>
+              <a
+                css={{
+                  backgroundColor:
+                    pathname === '/' ? colors.structure.smoke : 'none',
+                  color:
+                    pathname === '/'
+                      ? colors.plants.clover
+                      : colors.structure.steel,
+                }}>
                 <QueueSvg width={ICON_WIDTH} aria-hidden />
-                Data Queue
+                Job Queue
               </a>
             </Link>
           </li>
           <li>
             <Link href="/api-keys">
-              <a>
+              <a
+                css={{
+                  backgroundColor:
+                    pathname === '/api-keys' ? colors.structure.smoke : 'none',
+                  color:
+                    pathname === '/api-keys'
+                      ? colors.plants.clover
+                      : colors.structure.steel,
+                }}>
                 <KeySvg width={ICON_WIDTH} aria-hidden />
                 API Keys
               </a>
