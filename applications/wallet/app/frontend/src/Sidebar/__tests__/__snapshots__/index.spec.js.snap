@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Sidebar /> should render properly closed 1`] = `
-.emotion-3 {
+.emotion-5 {
   width: 240px;
   position: fixed;
   height: calc(100% - 44px);
@@ -17,17 +17,17 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   padding-top: 12px;
 }
 
-.emotion-2 {
+.emotion-4 {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-.emotion-2 li {
+.emotion-1 {
   border-bottom: 1px solid transparent;
 }
 
-.emotion-2 a {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -38,25 +38,22 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   align-items: center;
   padding: 12px;
   font-size: 16px;
+  background-color: none;
+  color: #808080;
 }
 
-.emotion-2 a svg {
+.emotion-0 svg {
   margin-right: 12px;
 }
 
-.emotion-2 a:hover {
+.emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #e0e0e0;
   background-color: #3b3b3b;
 }
 
-.emotion-0 {
-  background-color: none;
-  color: #808080;
-}
-
-.emotion-4 {
+.emotion-6 {
   position: fixed;
   top: 0;
   left: 0;
@@ -71,14 +68,17 @@ exports[`<Sidebar /> should render properly closed 1`] = `
 
 <div>
   <nav
-    className="emotion-3"
+    className="emotion-5"
   >
     <ul
-      className="emotion-2"
+      className="emotion-4"
     >
-      <li>
+      <li
+        className="emotion-1"
+      >
         <a
           className="emotion-0"
+          href="/"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -90,9 +90,12 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           Job Queue
         </a>
       </li>
-      <li>
+      <li
+        className="emotion-1"
+      >
         <a
           className="emotion-0"
+          href="/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -108,7 +111,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   </nav>
   <div
     aria-label="Close Sidebar Menu"
-    className="emotion-4"
+    className="emotion-6"
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"
@@ -118,17 +121,17 @@ exports[`<Sidebar /> should render properly closed 1`] = `
 `;
 
 exports[`<Sidebar /> should render properly opened 1`] = `
-.emotion-2 {
+.emotion-4 {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-.emotion-2 li {
+.emotion-1 {
   border-bottom: 1px solid transparent;
 }
 
-.emotion-2 a {
+.emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -139,25 +142,22 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   align-items: center;
   padding: 12px;
   font-size: 16px;
+  background-color: none;
+  color: #808080;
 }
 
-.emotion-2 a svg {
+.emotion-0 svg {
   margin-right: 12px;
 }
 
-.emotion-2 a:hover {
+.emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #e0e0e0;
   background-color: #3b3b3b;
 }
 
-.emotion-0 {
-  background-color: none;
-  color: #808080;
-}
-
-.emotion-3 {
+.emotion-5 {
   width: 240px;
   position: fixed;
   height: calc(100% - 44px);
@@ -173,7 +173,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   padding-top: 12px;
 }
 
-.emotion-4 {
+.emotion-6 {
   position: fixed;
   top: 0;
   left: 0;
@@ -188,14 +188,17 @@ exports[`<Sidebar /> should render properly opened 1`] = `
 
 <div>
   <nav
-    className="emotion-3"
+    className="emotion-5"
   >
     <ul
-      className="emotion-2"
+      className="emotion-4"
     >
-      <li>
+      <li
+        className="emotion-1"
+      >
         <a
           className="emotion-0"
+          href="/"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -207,9 +210,12 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           Job Queue
         </a>
       </li>
-      <li>
+      <li
+        className="emotion-1"
+      >
         <a
           className="emotion-0"
+          href="/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -225,7 +231,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   </nav>
   <div
     aria-label="Close Sidebar Menu"
-    className="emotion-4"
+    className="emotion-6"
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"

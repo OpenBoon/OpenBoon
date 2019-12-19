@@ -1,10 +1,10 @@
 import { forwardRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import Link from 'next/link'
-import Router, { useRouter } from 'next/router'
+import Router from 'next/router'
 
-import { colors, spacing, zIndex, constants, typography } from '../Styles'
+import { colors, spacing, zIndex, constants } from '../Styles'
 
+import SidebarLink from './Link'
 import SidebarOverlay from './Overlay'
 
 import QueueSvg from './icons/queue.svg'
@@ -14,7 +14,6 @@ const WIDTH = 240
 const ICON_WIDTH = 20
 
 const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
-  const { pathname } = useRouter()
   useEffect(() => {
     const handleRouteChange = () => {
       setSidebarOpen(false)
@@ -50,54 +49,14 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
             listStyleType: 'none',
             padding: 0,
             margin: 0,
-            li: {
-              borderBottom: constants.borders.transparent,
-            },
-            a: {
-              display: 'flex',
-              alignItems: 'center',
-              padding: spacing.moderate,
-              fontSize: typography.size.kilo,
-              svg: {
-                marginRight: spacing.moderate,
-              },
-              ':hover': {
-                textDecoration: 'none',
-                color: colors.structure.pebble,
-                backgroundColor: colors.structure.smoke,
-              },
-            },
           }}>
-          <li>
-            <Link href="/">
-              <a
-                css={{
-                  backgroundColor:
-                    pathname === '/' ? colors.structure.smoke : 'none',
-                  color:
-                    pathname === '/' ? colors.key.one : colors.structure.steel,
-                }}>
-                <QueueSvg width={ICON_WIDTH} aria-hidden />
-                Job Queue
-              </a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/api-keys">
-              <a
-                css={{
-                  backgroundColor:
-                    pathname === '/api-keys' ? colors.structure.smoke : 'none',
-                  color:
-                    pathname === '/api-keys'
-                      ? colors.key.one
-                      : colors.structure.steel,
-                }}>
-                <KeySvg width={ICON_WIDTH} aria-hidden />
-                API Keys
-              </a>
-            </Link>
-          </li>
+          <SidebarLink title="Job Queue" href="/">
+            <QueueSvg width={ICON_WIDTH} aria-hidden />
+          </SidebarLink>
+
+          <SidebarLink title="API Keys" href="/api-keys">
+            <KeySvg width={ICON_WIDTH} aria-hidden />
+          </SidebarLink>
         </ul>
       </nav>
       <SidebarOverlay
