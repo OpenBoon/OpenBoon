@@ -479,6 +479,6 @@ class DockerContainerProcess(object):
         try:
             with open("/proc/self/cgroup") as fp:
                 return "container:{}".format(fp.readline().rstrip().split("/")[-1])
-        except IOError as e:
+        except IOError:
             pass
         return None
