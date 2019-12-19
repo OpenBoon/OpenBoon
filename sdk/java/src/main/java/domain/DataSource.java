@@ -1,9 +1,6 @@
 package domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class DataSource {
 
@@ -21,15 +18,15 @@ public class DataSource {
     }
 
     /**
-     *
      * @return The id of the DataSource
      */
-    public String getId() {
-        return (String) this.data.get("id");
+    public UUID getId() {
+        if (this.data.get("id") instanceof UUID)
+            return (UUID) this.data.get("id");
+        return UUID.fromString((String) this.data.get("id"));
     }
 
     /**
-     *
      * @return The name of the DataSource
      */
     public String getName() {
@@ -37,7 +34,6 @@ public class DataSource {
     }
 
     /**
-     *
      * @return The URI of the DataSource
      */
     public String getUri() {
@@ -45,7 +41,6 @@ public class DataSource {
     }
 
     /**
-     *
      * @return The file type filter for the DataSource
      */
     public List<String> getFileTypes() {
@@ -53,7 +48,6 @@ public class DataSource {
     }
 
     /**
-     *
      * @return The type of analysis done to the DataSource
      */
 
