@@ -92,7 +92,7 @@ class ApiComponents(object):
 
 class TestClusterClient(unittest.TestCase):
     def setUp(self):
-        self.client = ClusterClient("http://localhost:8080", 5000)
+        self.client = ClusterClient("http://localhost:8080", "12345", 5000)
 
     @patch("requests.post")
     def test_send_ping(self, mock_post):
@@ -131,11 +131,10 @@ class TestClusterClient(unittest.TestCase):
         arg, kwargs = mock_post.call_args
         self.assertEqual("burp!", kwargs["json"]["payload"]["message"])
 
-    def test_check_headers(self):
-        header = self.client.headers
+    def test_headers(self):
+        header = self.client._headers()
         assert header["Content-Type"] == "application/json"
-        assert header["X-Analyst-Port"] == "5000"
-        assert header["X-Analyst-Host"] == socket.gethostname()
+        assert header["Authorization"].startswith("Bearer")
 
 
 class ApiUnitTestCases(unittest.TestCase):
