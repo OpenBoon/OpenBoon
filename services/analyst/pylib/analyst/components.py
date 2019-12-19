@@ -60,7 +60,10 @@ class ClusterClient(object):
     def __init__(self, remote_url, shared_key, my_port=5000):
         self.remote_url = remote_url or os.environ.get("PIXML_SERVER")
         self.shared_key = shared_key or os.environ.get("ANALYST_SHAREDKEY")
+<<<<<<< HEAD
         self.version = get_sdk_version()
+=======
+>>>>>>> b805b2921e0fe3cf2c419dccc4aea05d719804b7
 
         if not self.remote_url:
             raise ValueError("No archivist URL has been set, try setting the PIXML_SERVER env var")
