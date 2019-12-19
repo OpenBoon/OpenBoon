@@ -1,24 +1,28 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+import domain.DataSource;
 import domain.PixmlApp;
-import org.junit.Before;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 import java.util.*;
 
 import static domain.Utils.updateEnvVariables;
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PixmlAppTestIT {
 
     PixmlApp pixmlApp;
     String server = "http://localhost:8080";
+    String projectName = "ProjectZERO";
+    UUID projectId = UUID.fromString("00000000-0000-0000-0000-000000000000");
+    ObjectMapper mapper;
+    DataSource dsTest;
 
-    String projectName = "ProjectTEST";
-    UUID projectId = UUID.fromString("00000000-0000-0000-0000-1111111111111");
 
-
-    @BeforeEach
+    @BeforeAll
     public void setup() throws ReflectiveOperationException {
         //When
         // Setting up Environment Variables
@@ -26,6 +30,8 @@ public class PixmlAppTestIT {
         updateEnvVariables("PIXML_APIKEY_FILE", "../../dev/config/keys/inception-key.json");
         updateEnvVariables("PIXML_SERVER", server);
         pixmlApp = new PixmlApp();
+        mapper = new ObjectMapper();
+
     }
 
     @Test
@@ -75,5 +81,65 @@ public class PixmlAppTestIT {
         assertEquals(response.get("actorModified"), "admin-key");
     }
 
+    @Test
+    @Order(4)
+    public void createDataSource() throws IOException, InterruptedException {
 
+        Map value = new HashMap();
+
+        value.put("name", "test");
+        value.put("uri", "gs://test/test");
+
+        dsTest = pixmlApp.getDataSourceApp().createDataSource("test", "gs://test/test", null, null, null);
+
+        assertEquals(value.get("name"), dsTest.getName());
+        assertEquals(value.get("uri"), dsTest.getUri());
+
+    }
+
+
+    @Test
+    @Order(5)
+    public void getDataSource() throws IOException, InterruptedException {
+
+        Map value = new HashMap();
+
+        value.put("name", "test");
+        value.put("uri", "gs://test/test");
+
+        //run real method with static mocked method with http request inside
+        DataSource ds = pixmlApp.getDataSourceApp().getDataSource("test");
+
+        assertEquals(value.get("name"), ds.getName());
+        assertEquals(value.get("uri"), ds.getUri());
+
+    }
+
+    @Test
+    @Order(6)
+    public void importDataSource() throws IOException, InterruptedException {
+
+        Map dataSourceParam = new HashMap();
+        dataSourceParam.put("id", dsTest.getId());
+        DataSource ds = new DataSource(dataSourceParam);
+
+        Map response = pixmlApp.getDataSourceApp().importDataSource(ds);
+
+        assertEquals(response.get("dataSourceId"), dsTest.getId().toString());
+        assert(((String)response.get("name")).contains(dsTest.getName()));
+    }
+
+    @Test
+    @Order(7)
+    public void updateCredentials() throws IOException, InterruptedException {
+
+        Map status = this.pixmlApp.getDataSourceApp().updateCredentials(dsTest, "ABC123");
+
+        Map dataSourceParam = new HashMap();
+        dataSourceParam.put("id", projectId);
+        DataSource ds = new DataSource(dataSourceParam);
+
+        assertEquals(status.get("op"), "update");
+        assertEquals(status.get("id"), dsTest.getId().toString());
+    }
 }
