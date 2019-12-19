@@ -39,8 +39,8 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
     override fun create(spec: AnalystSpec): Analyst {
         val id = uuid1.generate()
         val endpoint = spec.endpoint ?: getAnalystEndpoint()
-        if (!endpoint.startsWith("https://")) {
-            throw IllegalArgumentException("The analyst endpoint must be an https URL.")
+        if (!endpoint.startsWith("http://")) {
+            throw IllegalArgumentException("The analyst endpoint must be an http URL.")
         }
         val time = System.currentTimeMillis()
         jdbc.update(INSERT, id, spec.taskId, time, time, endpoint,
