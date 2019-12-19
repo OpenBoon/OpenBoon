@@ -143,13 +143,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 # The static files are built in the static_server directory in the root of the repo.
 # These files are then built into the nginx static file server container.
-STATIC_URL = '/wallet/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-# Add the React app build location to staticfiles
-STATICFILES_DIRS = [
-    os.path.join(REACT_APP_DIR, 'build'),
-]
 
 
 # Rest Framework Specific Settings
