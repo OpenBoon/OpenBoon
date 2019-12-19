@@ -2,7 +2,6 @@
 
 exports[`<ProgressBar /> should render properly 1`] = `
 .emotion-1 {
-  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -46,7 +45,6 @@ exports[`<ProgressBar /> should render properly 1`] = `
 
 exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyPress 1`] = `
 .emotion-1 {
-  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -90,7 +88,6 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
 
 exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyPress 2`] = `
 .emotion-29 {
-  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -119,8 +116,8 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
 
 .emotion-28 {
   position: absolute;
-  top: 24px;
-  right: 0;
+  margin-top: 24px;
+  right: 16px;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
   z-index: 70;
 }
@@ -355,7 +352,6 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
 
 exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyPress 3`] = `
 .emotion-1 {
-  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -399,7 +395,6 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
 
 exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseenter 1`] = `
 .emotion-1 {
-  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -443,7 +438,6 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
 
 exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseenter 2`] = `
 .emotion-29 {
-  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -472,8 +466,8 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
 
 .emotion-28 {
   position: absolute;
-  top: 24px;
-  right: 0;
+  margin-top: 24px;
+  right: 16px;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
   z-index: 70;
 }
@@ -708,7 +702,6 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
 
 exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseenter 3`] = `
 .emotion-1 {
-  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
