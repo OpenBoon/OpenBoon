@@ -217,31 +217,38 @@ class DockerContainerProcess(object):
         self.task = task
         self.image = image
         self.client = executor.client
-        self.zpsd_ready = False
         self.docker_client = docker.from_env()
-        self.container = self.__setup_container()
         self.event_counts = {}
 
-        # Sets up a thread which iterates the container logs.
-        self.log_thread = threading.Thread(target=self.__dump_container_logs)
-        self.log_thread.daemon = True
-        self.log_thread.start()
+        self.container = None
+        self.log_thread = None
 
-        self.socket = self.__setup_zpsd_socket()
-
-    def __setup_zpsd_socket(self):
-        """
-        Open and listen on a random TCP port for ZPSD to connect.
-
-        Returns:
-            socket, int: A tuple of the ZMQ socket and port/
-
-        """
         ctx = zmq.Context()
-        zsock = ctx.socket(zmq.DEALER)
-        return zsock
+        self.socket = ctx.socket(zmq.DEALER)
 
-    def __setup_container(self):
+    def _pull_image(self):
+        """
+        Attempt to pull the docker image if the version does not exist locally.  Return
+        the docker Image instance or the image name if the ANALYST_DOCKER_PULL
+        env var is set to "false"
+
+        Returns: The docker Image record.
+            docker.Image
+        """
+        if os.environ.get("ANALYST_DOCKER_PULL", "true") == "false":
+            return self.image
+
+        if ":" in self.image:
+            full_name = self.image
+        else:
+            full_name = "{}:{}".format(self.image, os.environ.get("CLUSTER_TAG", "development"))
+
+        logger.info('Checking for new image: {}'.format(full_name))
+        image = self.docker_client.images.pull(full_name)
+        logger.info("Docker image {} ID:{} loaded".format(self.image, image.id))
+        return image
+
+    def __start_container(self):
         """
         Sets up the docker container.
 
@@ -249,6 +256,8 @@ class DockerContainerProcess(object):
             Container: A running docker Container
 
         """
+        image_id = self._pull_image()
+
         volumes = {
             '/tmp': {'bind': '/tmp', 'mode': 'rw'}
         }
@@ -264,22 +273,25 @@ class DockerContainerProcess(object):
             'PIXML_SERVER': os.environ.get("PIXML_SERVER")
         })
 
-        name = "{}-{}".format(self.image.replace("/", "_"), int(time.time()))
-        logger.info("starting container {}".format(name))
-        return self.docker_client.containers.run(self.image, detach=True,
-                                                 environment=env, volumes=volumes,
-                                                 entrypoint="/usr/local/bin/server",
-                                                 name=name,
-                                                 network=network,
-                                                 ports=ports,
-                                                 labels=["containerizer"])
+        logger.info("starting container {}".format(self.image))
+        self.container = self.docker_client.containers.run(image_id, detach=True,
+                                                           environment=env, volumes=volumes,
+                                                           entrypoint="/usr/local/bin/server",
+                                                           network=network,
+                                                           ports=ports,
+                                                           labels=["containerizer"])
+
+        # Sets up a thread which iterates the container logs.
+        self.log_thread = threading.Thread(target=self.__tail_container_logs)
+        self.log_thread.daemon = True
+        self.log_thread.start()
 
     def wait_for_container(self):
         """
-        Block until  the container to sends a ready event. This lets us
-        know the container is up and operational.
-
+        Start container and block until the process completes.
         """
+        self.__start_container()
+
         max_wait_time = 60 * 5 * 1000
         total_wait_time = 0
 
@@ -307,7 +319,7 @@ class DockerContainerProcess(object):
 
         logger.info("Container '{}' is ready to accept commands.".format(self.image))
 
-    def __dump_container_logs(self):
+    def __tail_container_logs(self):
         """
         Iterate and print the docker container log stream. This is run from
         within the log_thread.
@@ -323,8 +335,10 @@ class DockerContainerProcess(object):
         Stop the underlying docker Container.
 
         """
-        logger.info("stopping container id='{}' image='{}'".format(self.container.id, self.image))
-        self.container.kill(9)
+        if self.container:
+            logger.info(
+                "stopping container id='{}' image='{}'".format(self.container.id, self.image))
+            self.container.kill(9)
 
     def run_teardown(self, ref):
         """
@@ -465,6 +479,6 @@ class DockerContainerProcess(object):
         try:
             with open("/proc/self/cgroup") as fp:
                 return "container:{}".format(fp.readline().rstrip().split("/")[-1])
-        except Exception as e:
-            logger.debug("'{}' not running in docker: {}".format(self.image, e))
+        except IOError:
+            pass
         return None

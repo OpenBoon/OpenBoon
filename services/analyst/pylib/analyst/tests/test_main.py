@@ -20,8 +20,7 @@ class AnalystMainUnitTestCase(unittest.TestCase):
         with patch.object(sys, 'argv', testargs):
             main.main()
             mock_op.assert_called_with((
-                '0.0.0.0', 5000), main.app,
-                certfile='certs/analyst.cert', keyfile='certs/analyst.key')
+                '0.0.0.0', 5000), main.app)
 
     @patch('analyst.main.WSGIServer.serve_forever')
     @patch('analyst.main.setup_routes')
@@ -37,8 +36,7 @@ class AnalystMainUnitTestCase(unittest.TestCase):
                 os.environ["ZORROA_ANALYST_PORT"] = "5500"
                 main.main()
                 mock_op.assert_called_with((
-                    '0.0.0.0', 5500), main.app,
-                    certfile='certs/analyst.cert', keyfile='certs/analyst.key')
+                    '0.0.0.0', 5500), main.app)
             finally:
                 del os.environ["ZORROA_ANALYST_PORT"]
 
@@ -54,5 +52,4 @@ class AnalystMainUnitTestCase(unittest.TestCase):
         with patch.object(sys, 'argv', testargs):
             main.main()
             mock_op.assert_called_with((
-                '0.0.0.0', 6000), main.app,
-                certfile='certs/analyst.cert', keyfile='certs/analyst.key')
+                '0.0.0.0', 6000), main.app)

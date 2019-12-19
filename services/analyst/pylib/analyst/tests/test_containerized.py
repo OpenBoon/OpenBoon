@@ -1,6 +1,7 @@
 import logging
 import tempfile
 import unittest
+import os
 
 from analyst.containerized import ContainerizedZpsExecutor, DockerContainerProcess
 from .test_cmpts import test_task, MockArchivistClient
@@ -80,3 +81,15 @@ class TestDockerContainerProcess(unittest.TestCase):
         event = {"type": "ok", "payload": {}}
         self.container.log_event(event)
         assert self.container.event_counts["ok_events"] == 1
+
+    def test_docker_pull(self):
+        image = self.container._pull_image()
+        assert "zmlp/plugins-base:development" in image.tags
+
+    def test_docker_pull_no_repo(self):
+        os.environ["ANALYST_DOCKER_PULL"] = "false"
+        try:
+            image = self.container._pull_image()
+            assert "zmlp/plugins-base" == image
+        finally:
+            del os.environ["ANALYST_DOCKER_PULL"]
