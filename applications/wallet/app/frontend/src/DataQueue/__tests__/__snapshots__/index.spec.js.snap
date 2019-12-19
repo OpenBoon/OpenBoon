@@ -132,7 +132,6 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 }
 
 .emotion-17 {
-  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

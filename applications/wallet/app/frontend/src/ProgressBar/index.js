@@ -15,7 +15,7 @@ const ProgressBar = ({ state, taskCounts: tC, timeStarted, timeUpdated }) => {
     ...tC,
     tasksPending: tC.tasksWaiting + tC.tasksQueued,
   }
-  const [showLegend, setShowLegend] = useState()
+  const [showLegend, setShowLegend] = useState(false)
 
   return (
     <div
@@ -26,7 +26,6 @@ const ProgressBar = ({ state, taskCounts: tC, timeStarted, timeUpdated }) => {
       onMouseEnter={() => setShowLegend(true)}
       onMouseLeave={() => setShowLegend(false)}
       css={{
-        position: 'relative',
         display: 'flex',
         height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
@@ -59,8 +58,8 @@ const ProgressBar = ({ state, taskCounts: tC, timeStarted, timeUpdated }) => {
         <div
           css={{
             position: 'absolute',
-            top: CONTAINER_HEIGHT + spacing.base,
-            right: 0,
+            marginTop: CONTAINER_HEIGHT + spacing.base,
+            right: spacing.normal,
             boxShadow: constants.boxShadows.tableRow,
             zIndex: zIndex.layout.dropdown,
           }}>
