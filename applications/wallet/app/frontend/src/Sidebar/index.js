@@ -50,12 +50,14 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
             padding: 0,
             margin: 0,
           }}>
-          <SidebarLink title="Job Queue" href="/">
+          <SidebarLink href="/">
             <QueueSvg width={ICON_WIDTH} aria-hidden />
+            Job Queue
           </SidebarLink>
 
-          <SidebarLink title="API Keys" href="/api-keys">
+          <SidebarLink href="/api-keys">
             <KeySvg width={ICON_WIDTH} aria-hidden />
+            API Keys
           </SidebarLink>
         </ul>
       </nav>

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-const SidebarLink = ({ title, href, children }) => {
+const SidebarLink = ({ href, children }) => {
   const { pathname } = useRouter()
 
   return (
@@ -31,7 +31,6 @@ const SidebarLink = ({ title, href, children }) => {
             },
           }}>
           {children}
-          {title}
         </a>
       </Link>
     </li>
@@ -39,7 +38,6 @@ const SidebarLink = ({ title, href, children }) => {
 }
 
 SidebarLink.propTypes = {
-  title: PropTypes.string.isRequired,
   href: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 }
