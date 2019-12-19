@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class AnalystServiceTests : AbstractTest() {
 
@@ -17,7 +16,8 @@ class AnalystServiceTests : AbstractTest() {
 
     @Test
     fun testUpsert() {
-        SecurityContextHolder.getContext().authentication = AnalystAuthentication("https://127.0.0.1:5000")
+        SecurityContextHolder.getContext().authentication =
+            AnalystAuthentication("http://127.0.0.1:5000", "unittest")
         val spec1 = AnalystSpec(
                 1024,
                 648,

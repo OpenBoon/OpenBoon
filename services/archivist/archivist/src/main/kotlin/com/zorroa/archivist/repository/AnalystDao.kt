@@ -7,12 +7,13 @@ import com.zorroa.archivist.domain.AnalystState
 import com.zorroa.archivist.domain.LockState
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.security.getAnalystEndpoint
+import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils.insert
 import com.zorroa.archivist.util.JdbcUtils.update
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
+import java.net.URI
 import java.time.Duration
 import java.util.UUID
 
@@ -38,22 +39,25 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
 
     override fun create(spec: AnalystSpec): Analyst {
         val id = uuid1.generate()
-        val endpoint = spec.endpoint ?: getAnalystEndpoint()
-        if (!endpoint.startsWith("http://")) {
+        val endpoint = spec.endpoint ?: getAnalyst().endpoint
+        if (!URI(endpoint).scheme.startsWith("http")) {
             throw IllegalArgumentException("The analyst endpoint must be an http URL.")
         }
         val time = System.currentTimeMillis()
-        jdbc.update(INSERT, id, spec.taskId, time, time, endpoint,
-                spec.totalRamMb, spec.freeRamMb, spec.freeDiskMb, spec.load, AnalystState.Up.ordinal)
+        jdbc.update(
+            INSERT, id, spec.taskId, time, time, endpoint,
+            spec.totalRamMb, spec.freeRamMb, spec.freeDiskMb, spec.load,
+            AnalystState.Up.ordinal, spec.version
+        )
         return get(id)
     }
 
     override fun update(spec: AnalystSpec): Boolean {
         val time = System.currentTimeMillis()
-        val endpoint = getAnalystEndpoint()
+        val endpoint = getAnalyst().endpoint
         return jdbc.update(UPDATE, spec.taskId, time, spec.totalRamMb,
                 spec.freeRamMb, spec.freeDiskMb, spec.load, AnalystState.Up.ordinal,
-                endpoint) == 1
+                spec.version, endpoint) == 1
     }
 
     override fun findOne(filter: AnalystFilter): Analyst {
@@ -137,7 +141,8 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
                     rs.getLong("time_ping"),
                     rs.getLong("time_created"),
                     AnalystState.values()[rs.getInt("int_state")],
-                    LockState.values()[rs.getInt("int_lock_state")])
+                    LockState.values()[rs.getInt("int_lock_state")],
+                    rs.getString("str_version"))
         }
 
         private const val GET = "SELECT * FROM analyst"
@@ -157,7 +162,8 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
                 "int_free_ram",
                 "int_free_disk",
                 "flt_load",
-                "int_state")
+                "int_state",
+                "str_version")
 
         private val UPDATE = update("analyst",
                 "str_endpoint",
@@ -167,6 +173,7 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
                 "int_free_ram",
                 "int_free_disk",
                 "flt_load",
-                "int_state")
+                "int_state",
+                "str_version")
     }
 }

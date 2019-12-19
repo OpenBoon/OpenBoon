@@ -144,7 +144,7 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Test
     fun testGetNextWithInteractivePriortity() {
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
 
         // Standard job is launched first, which should go first
         launchJob(JobPriority.Standard)
@@ -167,7 +167,7 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Test
     fun testGetNext() {
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val spec = JobSpec(
             "test_job",
             emptyZpsScript("foo"),
@@ -193,7 +193,7 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Test
     fun testGetNextFailureMaxRunningJob() {
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val spec = JobSpec(
             "test_job",
             emptyZpsScript("foo"),
@@ -216,7 +216,7 @@ class DispatcherServiceTests : AbstractTest() {
         jobService.create(spec)
 
         authenticateAsAnalyst()
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val aspec = AnalystSpec(
             1024,
             648,
@@ -242,7 +242,7 @@ class DispatcherServiceTests : AbstractTest() {
         jobService.create(spec)
 
         authenticateAsAnalyst()
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val aspec = AnalystSpec(
             1024,
             648,
@@ -288,7 +288,7 @@ class DispatcherServiceTests : AbstractTest() {
         jobService.create(spec)
 
         authenticateAsAnalyst()
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val aspec = AnalystSpec(
             1024,
             648,
@@ -331,7 +331,7 @@ class DispatcherServiceTests : AbstractTest() {
         jobService.create(spec)
 
         authenticateAsAnalyst()
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val aspec = AnalystSpec(
             1024,
             648,
@@ -374,7 +374,7 @@ class DispatcherServiceTests : AbstractTest() {
         jobService.create(spec)
 
         authenticateAsAnalyst()
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val aspec = AnalystSpec(
             1024,
             648,

@@ -73,12 +73,13 @@ fun getProjectId() : UUID {
     return getZmlpActor().projectId
 }
 
-fun getAnalystEndpoint(): String {
+fun getAnalyst() : AnalystAuthentication {
     val auth = SecurityContextHolder.getContext().authentication
-    return if (auth == null) {
+    return if (auth is AnalystAuthentication) {
+        auth
+    }
+    else {
         throw AuthenticationCredentialsNotFoundException("No login credentials specified for cluster node")
-    } else {
-        return SecurityContextHolder.getContext().authentication.principal as String
     }
 }
 
