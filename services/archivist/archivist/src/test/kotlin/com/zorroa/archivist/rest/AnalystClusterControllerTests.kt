@@ -305,7 +305,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 .andReturn()
 
         val analyst = Json.Mapper.readValue<Analyst>(result.response.contentAsString)
-        assertEquals("https://$host:5000", analyst.endpoint)
+        assertEquals("http://$host:5000", analyst.endpoint)
     }
 
     @Test

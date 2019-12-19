@@ -62,7 +62,7 @@ const jobs = {
         tasksSuccess: 5,
         tasksFailure: 1,
         tasksSkipped: 0,
-        tasksQueued: 0,
+        tasksQueued: 9,
       },
       createdUser: {
         id: '00000000-7b0b-480e-8c36-f06f04aed2f1',
@@ -97,12 +97,12 @@ const jobs = {
       },
       taskCounts: {
         tasksTotal: 1,
-        tasksWaiting: 0,
+        tasksWaiting: 1,
         tasksRunning: 0,
-        tasksSuccess: 0,
+        tasksSuccess: 8,
         tasksFailure: 1,
         tasksSkipped: 0,
-        tasksQueued: 0,
+        tasksQueued: 3,
       },
       createdUser: {
         id: '00000000-7b0b-480e-8c36-f06f04aed2f1',

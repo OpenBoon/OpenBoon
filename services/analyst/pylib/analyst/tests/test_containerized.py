@@ -1,8 +1,9 @@
 import logging
 import tempfile
 import unittest
+import os
 
-from analyst.containerized import ContainerizedZpsExecutor
+from analyst.containerized import ContainerizedZpsExecutor, DockerContainerProcess
 from .test_cmpts import test_task, MockArchivistClient
 
 logging.basicConfig(level=logging.DEBUG)
@@ -41,7 +42,7 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
                         "args": {
                             "files": ["/test-data/images/set01/toucan.jpg"]
                         },
-                        "image": "zmlp-plugins-base"
+                        "image": "zmlp/plugins-base"
                     }
                 ]
             }
@@ -55,3 +56,40 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
         assert self.client.event_count("expand") == 1
         assert self.client.event_count("stats") == 1
         assert self.client.event_count("index") == 0
+
+
+class TestDockerContainerProcess(unittest.TestCase):
+
+    def setUp(self):
+        self.client = MockArchivistClient()
+        task = test_task()
+        wrapper = ContainerizedZpsExecutor(task, self.client)
+        self.container = DockerContainerProcess(wrapper, task, "zmlp/plugins-base")
+
+    def tearDown(self):
+        self.container.stop()
+
+    def test_get_network_id(self):
+        # Running locally this is false, running in CI/CD it's true
+        self.container.get_network_id()
+
+    def test_wait_for_container(self):
+        self.container.wait_for_container()
+        assert self.container.event_counts["ok_events"] == 1
+
+    def test_log_event(self):
+        event = {"type": "ok", "payload": {}}
+        self.container.log_event(event)
+        assert self.container.event_counts["ok_events"] == 1
+
+    def test_docker_pull(self):
+        image = self.container._pull_image()
+        assert "zmlp/plugins-base:development" in image.tags
+
+    def test_docker_pull_no_repo(self):
+        os.environ["ANALYST_DOCKER_PULL"] = "false"
+        try:
+            image = self.container._pull_image()
+            assert "zmlp/plugins-base" == image
+        finally:
+            del os.environ["ANALYST_DOCKER_PULL"]

@@ -1,6 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Table /> should render properly 1`] = `
+.emotion-2 {
+  position: relative;
+}
+
+.emotion-1 {
+  overflow: auto;
+}
+
 .emotion-0 {
   width: 100%;
   border-spacing: 0;
@@ -65,12 +73,20 @@ exports[`<Table /> should render properly 1`] = `
   border-left: 0;
 }
 
-<table
-  className="emotion-0"
+<div
+  className="emotion-2"
 >
-  <thead>
-    <tr />
-  </thead>
-  <tbody />
-</table>
+  <div
+    className="emotion-1"
+  >
+    <table
+      className="emotion-0"
+    >
+      <thead>
+        <tr />
+      </thead>
+      <tbody />
+    </table>
+  </div>
+</div>
 `;
