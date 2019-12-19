@@ -77,10 +77,11 @@ public class Utils {
      * @param httpMethod Any HttpMethod name in string format
      * @param urlParam   Endpoint URL
      * @param header     Requests Header
-     * @param bodyParams       Requests Body
+     * @param bodyParams Requests Body
      * @return String response for the request
      * @throws IOException HTTP Fail
      */
+
 
     public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map bodyParams) throws IOException {
 
@@ -91,9 +92,7 @@ public class Utils {
 
         // json request body
         RequestBody body = RequestBody.create(JSON, json);
-
         Request.Builder builder = new Request.Builder();
-
         header.entrySet().forEach((entry) -> {
             builder.addHeader(entry.getKey(), entry.getValue());
         });
@@ -104,14 +103,10 @@ public class Utils {
                 .build();
 
         try (Response response = Utils.HTTP_CLIENT_INSTANCE.newCall(request).execute()) {
-
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
             // Get response body
             return response.body().string();
-
         }
-
     }
 
     public static void updateEnvVariables(String name, String val) throws ReflectiveOperationException {
