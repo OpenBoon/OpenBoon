@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PixmlAppTestIT {
 
     PixmlApp pixmlApp;
@@ -111,7 +112,6 @@ public class PixmlAppTestIT {
         assertEquals(value.get("uri"), ds.getUri());
 
     }
-
     @Test
     @Order(6)
     public void importDataSource() throws IOException, InterruptedException {
@@ -129,7 +129,6 @@ public class PixmlAppTestIT {
     @Test
     @Order(7)
     public void updateCredentials() throws IOException, InterruptedException {
-
         Map status = this.pixmlApp.getDataSourceApp().updateCredentials(dsTest, "ABC123");
 
         Map dataSourceParam = new HashMap();
