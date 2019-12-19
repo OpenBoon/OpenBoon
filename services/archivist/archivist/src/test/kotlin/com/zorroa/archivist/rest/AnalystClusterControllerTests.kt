@@ -1,6 +1,5 @@
 package com.zorroa.archivist.rest
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Analyst
 import com.zorroa.archivist.domain.AnalystSpec

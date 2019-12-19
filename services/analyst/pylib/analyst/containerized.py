@@ -432,7 +432,7 @@ class DockerContainerProcess(object):
     def receive_event(self):
         """
         Wait and receive events from ZPSD.   Blocks forever until
-        and event is receieved.
+        and event is received.
 
         Returns:
             dict: the last event from ZPSD.
