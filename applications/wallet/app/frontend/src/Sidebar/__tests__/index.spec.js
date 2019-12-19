@@ -14,6 +14,8 @@ describe('<Sidebar />', () => {
   })
 
   it('should render properly opened', () => {
+    require('next/router').__setUseRouter({ pathname: '/' })
+
     const component = TestRenderer.create(
       <Sidebar isSidebarOpen setSidebarOpen={noop} />,
     )
