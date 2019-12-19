@@ -75,9 +75,7 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
                   backgroundColor:
                     pathname === '/' ? colors.structure.smoke : 'none',
                   color:
-                    pathname === '/'
-                      ? colors.plants.clover
-                      : colors.structure.steel,
+                    pathname === '/' ? colors.key.one : colors.structure.steel,
                 }}>
                 <QueueSvg width={ICON_WIDTH} aria-hidden />
                 Job Queue
@@ -92,7 +90,7 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
                     pathname === '/api-keys' ? colors.structure.smoke : 'none',
                   color:
                     pathname === '/api-keys'
-                      ? colors.plants.clover
+                      ? colors.key.one
                       : colors.structure.steel,
                 }}>
                 <KeySvg width={ICON_WIDTH} aria-hidden />
