@@ -1,11 +1,11 @@
-import { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
 import userShape from '../User/shape'
 
-import { colors, typography, spacing, constants, zIndex } from '../Styles'
+import { colors, typography, spacing, constants } from '../Styles'
 
-import { onBlur as onBlurHelper } from './helpers'
+import Menu from '../Menu'
+import Button, { VARIANTS } from '../Button'
 
 const SIZE = 28
 
@@ -13,45 +13,32 @@ const UserMenu = ({
   user: { first_name: firstName, last_name: lastName, email },
   logout,
 }) => {
-  const container = useRef(null)
-
-  const [isMenuOpen, setMenuOpen] = useState(false)
-
-  const onBlur = onBlurHelper({ container, setMenuOpen })
-
   return (
-    <div ref={container} css={{ position: 'relative' }}>
-      <button
-        type="button"
-        onBlur={onBlur}
-        onClick={() => setMenuOpen(!isMenuOpen)}
-        css={{
-          border: 0,
-          margin: 0,
-          padding: 0,
-          width: SIZE,
-          height: SIZE,
-          borderRadius: SIZE,
-          color: colors.rocks.white,
-          backgroundColor: colors.rocks.charcoal,
-          fontWeight: typography.weight.bold,
-          ':hover': {
-            cursor: 'pointer',
-          },
-        }}>
-        {`${firstName[0]}${lastName[0]}`}
-      </button>
-      {isMenuOpen && (
-        <div
+    <Menu
+      button={({ onBlur, onClick }) => (
+        <button
+          type="button"
+          onBlur={onBlur}
+          onClick={onClick}
           css={{
-            position: 'absolute',
-            zIndex: zIndex.reset,
-            backgroundColor: colors.rocks.iron,
-            top: SIZE + spacing.base,
-            right: 0,
-            borderRadius: constants.borderRadius.small,
-            boxShadow: constants.boxShadows.menu,
+            border: 0,
+            margin: 0,
+            padding: 0,
+            width: SIZE,
+            height: SIZE,
+            borderRadius: SIZE,
+            color: colors.rocks.white,
+            backgroundColor: colors.rocks.charcoal,
+            fontWeight: typography.weight.bold,
+            ':hover': {
+              cursor: 'pointer',
+            },
           }}>
+          {`${firstName[0]}${lastName[0]}`}
+        </button>
+      )}>
+      {({ onBlur }) => (
+        <div>
           <div
             css={{
               padding: spacing.normal,
@@ -62,35 +49,20 @@ const UserMenu = ({
             </div>
             <div>{email}</div>
           </div>
-          <div
-            css={{
-              padding: spacing.normal,
-              display: 'flex',
-              flexDirection: 'column',
-            }}>
-            <button
-              type="button"
-              onBlur={onBlur}
-              onClick={logout}
-              css={{
-                border: 0,
-                margin: 0,
-                padding: 0,
-                backgroundColor: 'transparent',
-                fontSize: 'inherit',
-                textAlign: 'inherit',
-                color: 'inherit',
-                ':hover': {
-                  color: colors.green2,
-                  cursor: 'pointer',
-                },
-              }}>
-              Sign Out
-            </button>
-          </div>
+          <ul>
+            <li>
+              <Button
+                variant={VARIANTS.MENU_ITEM}
+                onBlur={onBlur}
+                onClick={logout}
+                isDisabled={false}>
+                Sign Out
+              </Button>
+            </li>
+          </ul>
         </div>
       )}
-    </div>
+    </Menu>
   )
 }
 

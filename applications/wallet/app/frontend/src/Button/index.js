@@ -19,6 +19,7 @@ const BASE = ({ isDisabled }) => ({
   fontWeight: typography.weight.medium,
   border: 'none',
   cursor: isDisabled ? 'not-allowed' : 'pointer',
+  backgroundColor: colors.transparent,
 })
 
 const STYLES = {
@@ -37,6 +38,16 @@ const STYLES = {
   },
   NEUTRAL: {
     padding: spacing.moderate,
+  },
+  MENU_ITEM: {
+    flex: '1',
+    alignItems: 'flex-start',
+    color: colors.structure.white,
+    padding: `${spacing.base}px ${spacing.normal}px`,
+    fontWeight: typography.weight.regular,
+    ':hover': {
+      backgroundColor: colors.structure.iron,
+    },
   },
 }
 

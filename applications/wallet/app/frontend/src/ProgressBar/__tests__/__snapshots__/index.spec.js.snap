@@ -8,6 +8,7 @@ exports[`<ProgressBar /> should render properly 1`] = `
   display: flex;
   height: 16px;
   width: 212px;
+  position: relative;
 }
 
 .emotion-0 {
@@ -51,6 +52,7 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   display: flex;
   height: 16px;
   width: 212px;
+  position: relative;
 }
 
 .emotion-0 {
@@ -94,6 +96,7 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   display: flex;
   height: 16px;
   width: 212px;
+  position: relative;
 }
 
 .emotion-0 {
@@ -116,10 +119,10 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
 
 .emotion-28 {
   position: absolute;
-  margin-top: 24px;
-  right: 16px;
+  top: 24px;
+  right: 0;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
-  z-index: 70;
+  z-index: 1;
 }
 
 .emotion-27 {
@@ -358,6 +361,7 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   display: flex;
   height: 16px;
   width: 212px;
+  position: relative;
 }
 
 .emotion-0 {
@@ -401,6 +405,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   display: flex;
   height: 16px;
   width: 212px;
+  position: relative;
 }
 
 .emotion-0 {
@@ -444,6 +449,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   display: flex;
   height: 16px;
   width: 212px;
+  position: relative;
 }
 
 .emotion-0 {
@@ -466,10 +472,10 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
 
 .emotion-28 {
   position: absolute;
-  margin-top: 24px;
-  right: 16px;
+  top: 24px;
+  right: 0;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
-  z-index: 70;
+  z-index: 1;
 }
 
 .emotion-27 {
@@ -708,6 +714,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   display: flex;
   height: 16px;
   width: 212px;
+  position: relative;
 }
 
 .emotion-0 {
