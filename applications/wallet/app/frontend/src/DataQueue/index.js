@@ -32,10 +32,10 @@ const DataQueue = ({ selectedProject }) => {
   return (
     <div>
       <Head>
-        <title>Job Queue</title>
+        <title>Data Queue</title>
       </Head>
 
-      <PageTitle>Job Queue</PageTitle>
+      <PageTitle>Data Queue</PageTitle>
 
       <Table columns={COLUMNS} rows={results} />
 

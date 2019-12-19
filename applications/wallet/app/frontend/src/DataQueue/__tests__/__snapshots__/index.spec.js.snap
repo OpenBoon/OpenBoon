@@ -318,7 +318,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   <h2
     className="emotion-0"
   >
-    Job Queue
+    Data Queue
   </h2>
   <div
     className="emotion-83"
