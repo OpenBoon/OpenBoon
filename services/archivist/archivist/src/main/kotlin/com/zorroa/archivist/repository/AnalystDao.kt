@@ -13,6 +13,7 @@ import com.zorroa.archivist.util.JdbcUtils.insert
 import com.zorroa.archivist.util.JdbcUtils.update
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
+import java.net.URI
 import java.time.Duration
 import java.util.UUID
 
@@ -39,7 +40,7 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
     override fun create(spec: AnalystSpec): Analyst {
         val id = uuid1.generate()
         val endpoint = spec.endpoint ?: getAnalystEndpoint()
-        if (!endpoint.startsWith("http://")) {
+        if (!URI(endpoint).scheme.startsWith("http")) {
             throw IllegalArgumentException("The analyst endpoint must be an http URL.")
         }
         val time = System.currentTimeMillis()
