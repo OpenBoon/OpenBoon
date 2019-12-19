@@ -1,11 +1,17 @@
-import { spacing } from '../Styles'
+import Head from 'next/head'
 
+import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
 
 const ApiKeys = () => {
   return (
-    <div css={{ padding: spacing.normal }}>
-      <h2>Project API Keys</h2>
+    <div>
+      <Head>
+        <title>API Keys</title>
+      </Head>
+
+      <PageTitle>Project API Keys</PageTitle>
+
       <Tabs
         tabs={[
           { title: 'View all', href: '/api-keys' },

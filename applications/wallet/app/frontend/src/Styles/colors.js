@@ -83,6 +83,8 @@ const colors = {
     two: '#b8d652',
     three: '#5c8f1b',
   },
+
+  transparent: 'transparent',
 }
 
 export default colors
