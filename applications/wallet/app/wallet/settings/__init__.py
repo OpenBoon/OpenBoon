@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'health_check',
     'health_check.db',
     'health_check.cache',
-    'health_check.storage'
+    'health_check.storage',
 ]
 
 MIDDLEWARE = [
@@ -156,9 +156,21 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    'DEFAULT_RENDERER_CLASSES': (
+        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+        'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'djangorestframework_camel_case.parser.CamelCaseFormParser',
+        'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
+        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+    ),
 }
 
 # General Application Configuration
 ARCHIVIST_URL = os.environ.get('ARCHIVIST_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
+
+# Google OAUTH2
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get('GOOGLE_OAUTH_CLIENT_ID')
