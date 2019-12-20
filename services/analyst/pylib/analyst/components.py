@@ -231,10 +231,8 @@ class Executor(object):
         """
         try:
             return self.current_task.kill(task_id, new_state, reason)
-        except AttributeError as e1:
-            logger.warning("Failed to kill task %s, current task was null, %s" % (task_id, e1))
         except Exception as e:
-            logger.warning("Failed to kill task %s, was not current task: %s" % (task_id, e))
+            logger.warning("Failed to kill task %s, %s" % (task_id, e))
         return False
 
     def run_task(self, task):

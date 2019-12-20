@@ -1,9 +1,11 @@
 import logging
-import tempfile
-import unittest
 import os
+import tempfile
+import threading
+import unittest
+import time
 
-from analyst.containerized import ContainerizedZpsExecutor, DockerContainerProcess
+from analyst.containerized import ContainerizedZpsExecutor, DockerContainerWrapper
 from .test_cmpts import test_task, MockArchivistClient
 
 logging.basicConfig(level=logging.DEBUG)
@@ -13,6 +15,20 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
 
     def setUp(self):
         self.client = MockArchivistClient()
+
+    def test_kill(self):
+        task = test_task(sleep=30)
+
+        wrapper = ContainerizedZpsExecutor(task, self.client)
+
+        def threaded_function():
+            time.sleep(8)
+            wrapper.kill(task["id"], "skipped", "manual kill")
+
+        thread = threading.Thread(target=threaded_function)
+        thread.start()
+        wrapper.run()
+        thread.join()
 
     def test_run(self):
         task = test_task()
@@ -64,7 +80,7 @@ class TestDockerContainerProcess(unittest.TestCase):
         self.client = MockArchivistClient()
         task = test_task()
         wrapper = ContainerizedZpsExecutor(task, self.client)
-        self.container = DockerContainerProcess(wrapper, task, "zmlp/plugins-base")
+        self.container = DockerContainerWrapper(wrapper, task, "zmlp/plugins-base")
 
     def tearDown(self):
         self.container.stop()
@@ -84,7 +100,7 @@ class TestDockerContainerProcess(unittest.TestCase):
 
     def test_docker_pull(self):
         image = self.container._pull_image()
-        assert "zmlp/plugins-base:development" in image.tags
+        assert "zmlp/plugins-base:development" == image
 
     def test_docker_pull_no_repo(self):
         os.environ["ANALYST_DOCKER_PULL"] = "false"
@@ -93,3 +109,14 @@ class TestDockerContainerProcess(unittest.TestCase):
             assert "zmlp/plugins-base" == image
         finally:
             del os.environ["ANALYST_DOCKER_PULL"]
+
+    def test_receive_event_with_timeout(self):
+        event = self.container.receive_event(250)
+        assert event["type"] == "timeout"
+        assert event["payload"]["timeout"] == 250
+
+    def test_receive_event_with_timeout(self):
+        event = self.container.receive_event(250)
+        assert event["type"] == "timeout"
+        assert event["payload"]["timeout"] == 250
+

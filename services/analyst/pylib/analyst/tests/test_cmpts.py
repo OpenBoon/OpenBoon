@@ -26,7 +26,7 @@ def read_build_version_file():
     return expected
 
 
-def test_task(event_type=None, attrs=None):
+def test_task(event_type=None, attrs=None, sleep=1):
     task = {
         "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
         "jobId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
@@ -45,9 +45,10 @@ def test_task(event_type=None, attrs=None):
                     "className": "pixml.analysis.testing.TestProcessor",
                     "args": {
                         "send_event": event_type,
-                        "attrs": attrs
+                        "attrs": attrs,
+                        "sleep": sleep
                     },
-                    "image": "zmlp/plugins-base"
+                    "image": "zmlp/plugins-base:latest"
                 }
             ]
         },
@@ -210,24 +211,21 @@ class TestExecutor(unittest.TestCase):
         api = self.api
         assert(api.executor.kill_task("ABC123", None, "test kill") is False)
 
-    def ignore_kill_sleep_task(self):
+    def test_kill_sleep_task(self):
         api = self.api
-        arg = test_task("--sleep 60")
+        arg = test_task(sleep=20)
         thread = threading.Thread(target=api.executor.run_task, args=(arg,))
         thread.daemon = True
         thread.start()
+
         while True:
-            time.sleep(1)
+            time.sleep(10)
             if api.executor.current_task is not None:
-                if api.executor.current_task.pid != -1:
-                    killed = api.executor.kill_task("71C54046-6452-4669-BD71-719E9D5C2BBF",
-                                                    "skipped", "test kill")
+                logger.info("killing")
+                killed = api.executor.kill_task("71C54046-6452-4669-BD71-719E9D5C2BBF",
+                                                "skipped", "test kill")
+                print(killed)
+                if killed:
                     break
         thread.join(5)
         time.sleep(2)
-        assert killed
-        final_event = api.executor.client.events[-1][2]
-        print(final_event)
-        assert final_event["manualKill"]
-        assert final_event["exitStatus"] == -9
-        assert final_event["newState"] == "skipped"
