@@ -3,14 +3,11 @@
 import argparse
 import logging
 import os
-import socket
-import subprocess
 
 from flask import Flask, jsonify, request, abort
 from gevent.pywsgi import WSGIServer
-from pathlib2 import Path
 
-import analyst.components as components
+import analyst.service as service
 
 app = Flask(__name__)
 
@@ -18,9 +15,11 @@ app = Flask(__name__)
 def main():
     parser = argparse.ArgumentParser(prog='analyst')
     parser.add_argument("-a", "--archivist", help="The URL of the Archivist server.",
-                        default=os.environ.get("ZORROA_ARCHIVIST_URL", "http://archivist:8080"))
+                        default=os.environ.get("PIXML_SERVER", "http://archivist:8080"))
     parser.add_argument("-p", "--port", help="The port to listen on",
-                        default=os.environ.get("ZORROA_ANALYST_PORT", "5000"))
+                        default=os.environ.get("ANALYST_PORT", "5000"))
+    parser.add_argument("-c", "--credentials",
+                        help="The path to a file storing archivist cluster credentials")
     parser.add_argument("-l", "--poll", default=5,
                         help="Seconds to wait before polling for a new task. 0 to disable")
     parser.add_argument("-g", "--ping", default=30,
@@ -34,46 +33,12 @@ def main():
     else:
         logging.basicConfig(level=logging.INFO)
 
-    api = components.ApiComponents(args)
+    api = service.ServiceComponents(args)
     setup_routes(api)
 
-    create_ssl_files()
-
     print("Listening on port {}".format(args.port))
-    server = WSGIServer(('0.0.0.0', int(args.port)), app,
-                        certfile='certs/analyst.cert', keyfile='certs/analyst.key')
+    server = WSGIServer(('0.0.0.0', int(args.port)), app)
     server.serve_forever()
-
-
-def create_ssl_files():
-    """Creates self signed ssl files that use the analyst's ip and domain as valid hosts."""
-    hostname = socket.gethostname()
-    ip = socket.gethostbyname(hostname)
-    config = u"""[ req ]
-req_extensions     = req_ext
-distinguished_name = req_distinguished_name
-prompt             = no
-
-[req_distinguished_name]
-commonName=%s
-
-[req_ext]
-subjectAltName   = @alt_names
-
-[alt_names]
-DNS.1  = %s
-DNS.2  = %s
-DNS.2  = localhost
-""" % (ip, hostname, ip)
-    config_path = Path('certs/config').resolve()
-    if not config_path.parent.exists():
-        config_path.parent.mkdir()
-    with config_path.open('w') as f:
-        f.write(config)
-    subprocess.call(['openssl', 'req', '-new', '-newkey', 'rsa:4096', '-days', '365',
-                     '-nodes', '-x509', '-subj', '/C=US/ST=Denial/L=Springfield/O=Dis/CN=localhost',
-                     '-extensions', 'req_ext', '-config', str(config_path),
-                     '-keyout', 'certs/analyst.key',  '-out', 'certs/analyst.cert'])
 
 
 def setup_routes(api):
@@ -91,4 +56,4 @@ def setup_routes(api):
 
     @app.route('/info', methods=['GET'])
     def info():
-        return jsonify({"version": components.get_sdk_version()})
+        return jsonify({"version": service.get_sdk_version()})

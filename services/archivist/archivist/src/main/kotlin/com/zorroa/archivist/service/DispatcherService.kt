@@ -40,7 +40,7 @@ import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.security.Perm
-import com.zorroa.archivist.security.getAnalystEndpoint
+import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
@@ -137,8 +137,8 @@ class DispatchQueueManager @Autowired constructor(
      */
     fun getNext(): DispatchTask? {
 
-        val analyst = getAnalystEndpoint()
-        if (analystService.isLocked(analyst)) {
+        val analyst = getAnalyst()
+        if (analystService.isLocked(analyst.endpoint)) {
             return null
         }
 
@@ -155,7 +155,7 @@ class DispatchQueueManager @Autowired constructor(
         ).increment(tasks.size.toDouble())
 
         for (task in tasks) {
-            if (queueAndDispatchTask(task, analyst)) {
+            if (queueAndDispatchTask(task, analyst.endpoint)) {
                 return task
             }
         }
@@ -175,7 +175,7 @@ class DispatchQueueManager @Autowired constructor(
             ).increment(tasks.size.toDouble())
 
             for (task in waitingTasks) {
-                if (queueAndDispatchTask(task, analyst)) {
+                if (queueAndDispatchTask(task, analyst.endpoint)) {
                     return task
                 }
             }
@@ -337,7 +337,7 @@ class DispatcherServiceImpl @Autowired constructor(
         if (stopped) {
             taskDao.setExitStatus(task, event.exitStatus)
             try {
-                val endpoint = getAnalystEndpoint()
+                val endpoint = getAnalyst().endpoint
                 analystDao.setTaskId(endpoint, null)
             } catch (e: Exception) {
                 logger.warn("Failed to clear taskId from Analyst")

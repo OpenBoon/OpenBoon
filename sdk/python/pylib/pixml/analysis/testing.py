@@ -6,11 +6,11 @@ import tempfile
 import time
 import unittest
 import uuid
-import requests
-
 from urllib.parse import urlparse
 
-from pixml.analysis.base import Reactor, Context, AssetBuilder, Generator, Argument, \
+import requests
+
+from pixml.analysis.base import Context, AssetBuilder, Generator, Argument, \
     PixmlUnrecoverableProcessorException
 from pixml.asset import FileImport, Asset
 
@@ -23,8 +23,10 @@ class TestProcessor(AssetBuilder):
     processor in the SDK allows us to use the core image for
     testing the execution module.
     """
+
     def __init__(self):
         super(TestProcessor, self).__init__()
+        self.add_arg(Argument('sleep', 'int', default=1))
         self.add_arg(Argument('attrs', 'struct', default=None))
         self.add_arg(Argument('send_event', 'str', default=None))
         self.add_arg(Argument('raise_fatal', 'bool', default=False,
@@ -45,7 +47,9 @@ class TestProcessor(AssetBuilder):
         if event_type:
             self.logger.info('emitting event: {}'.format(event_type))
             self.reactor.emitter.write({'type': event_type, 'payload': {'ding': 'dong'}})
-        time.sleep(1)
+
+        self.logger.info("Sleeping {}".format(self.arg_value('sleep')))
+        time.sleep(self.arg_value('sleep'))
 
     def teardown(self):
         self.logger.info('Running TestProcessor teardown()')
@@ -56,6 +60,7 @@ class TestGenerator(Generator):
     A test generator which generates frames from a supplied array
     of files paths.
     """
+
     def __init__(self):
         super(TestGenerator, self).__init__()
         self.add_arg(Argument('files', 'list', default=[]))
@@ -74,6 +79,7 @@ class PluginUnitTestCase(unittest.TestCase):
     A base class for unit-testing Processor Plugins.
 
     """
+
     @classmethod
     def setUpClass(cls):
         """
@@ -103,7 +109,7 @@ class PluginUnitTestCase(unittest.TestCase):
            (:obj:`Processor`): The configured processor.
 
         """
-        reactor = Reactor(TestEventEmitter())
+        reactor = TestReactor(TestEventEmitter())
         processor.set_context(Context(reactor, args, global_args or {}))
         processor.init()
         return processor
@@ -131,6 +137,7 @@ class TestEventEmitter(object):
     This is an emitter class used for dumping Processor execution
     events to stdout.
     """
+
     def __init__(self):
         self.events = []
 
@@ -229,6 +236,31 @@ class TestAsset(Asset):
                 self.set_attr(k, v)
 
 
+class TestReactor(object):
+    """
+    A TestReactor class for testing expand frame generation.
+    """
+
+    def __init__(self, emitter):
+        self.emitter = emitter
+        self.expand_frames = []
+
+    def add_expand_frame(self, parent_frame, expand_frame, batch_size=None, force=False):
+        self.expand_frames.append((parent_frame, expand_frame))
+
+    def check_expand(self, *args, **kwargs):
+        pass
+
+    def expand(self, *args):
+        pass
+
+    def error(self, *args, **kwargs):
+        pass
+
+    def performance_report(self, *args):
+        pass
+
+
 def zorroa_test_data(rel_path="", uri=True):
     """
     Return the absolute path to the given test file.
@@ -266,6 +298,7 @@ class MockRequestsResponse:
         https://requests.readthedocs.io/en/master/
 
     """
+
     def __init__(self, json_data, status_code):
         self.json_data = json_data
         self.status_code = status_code

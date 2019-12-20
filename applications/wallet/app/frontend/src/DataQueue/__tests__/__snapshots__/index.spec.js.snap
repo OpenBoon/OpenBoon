@@ -11,14 +11,58 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-81 {
+.emotion-136 {
   width: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
   white-space: nowrap;
 }
 
-.emotion-81 th {
+.emotion-136 tr {
+  background-color: #252525;
+}
+
+.emotion-136 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-136 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-136 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-136 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-136 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-136 td {
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-136 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-136 td:last-of-type {
+  border-right: 1px solid transparent;
+}
+
+.emotion-1 {
+  text-align: left;
   font-size: 16px;
   line-height: 20px;
   font-weight: 500;
@@ -28,69 +72,15 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-81 th:nth-of-type(2) {
+.emotion-1:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-81 th:not(:last-child) {
+.emotion-1:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-81 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
-}
-
-.emotion-81 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-81 tr:hover td:first-of-type {
-  border: 1px solid #808080;
-  border-right: 0;
-}
-
-.emotion-81 tr:hover td:last-of-type {
-  border: 1px solid #808080;
-  border-left: 0;
-}
-
-.emotion-81 td {
-  color: #e0e0e0;
-  padding: 8px 16px;
-  border: 1px solid transparent;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-81 td:first-of-type {
-  border: 1px solid transparent;
-  border-right: 0;
-}
-
-.emotion-81 td:last-of-type {
-  border: 1px solid transparent;
-  border-left: 0;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-18 {
-  background-color: #252525;
-}
-
-.emotion-18:nth-of-type(2n) {
-  background-color: #2e2e2e;
-}
-
-.emotion-10 {
+.emotion-9 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -105,7 +95,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-11 {
+.emotion-10 {
+  text-align: center;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -123,40 +117,33 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-17 {
-  position: relative;
+.emotion-22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   height: 16px;
   width: 212px;
+  position: relative;
 }
 
-.emotion-13 {
+.emotion-14 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
   flex: 1 0 auto;
   background-color: #c92300;
-}
-
-.emotion-13:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-13:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-14 {
-  height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #4ac565;
 }
 
 .emotion-14:first-of-type {
@@ -174,7 +161,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
-  background-color: #ebb52e;
+  background-color: #4ac565;
 }
 
 .emotion-15:first-of-type {
@@ -192,7 +179,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
-  background-color: #4a90e2;
+  background-color: #ebb52e;
 }
 
 .emotion-16:first-of-type {
@@ -205,7 +192,71 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-bottom-right-radius: 2px;
 }
 
+.emotion-17 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-17:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.emotion-17:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
 .emotion-19 {
+  width: 8px;
+}
+
+.emotion-21 {
+  position: relative;
+}
+
+.emotion-20 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  padding: 12px;
+  padding: 6px;
+  border-radius: 32px;
+}
+
+.emotion-20:hover {
+  background-color: #808080;
+}
+
+.emotion-23 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -220,7 +271,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-25 {
+.emotion-31 {
   height: 100%;
   -webkit-flex: 14 0 auto;
   -ms-flex: 14 0 auto;
@@ -228,17 +279,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4a90e2;
 }
 
-.emotion-25:first-of-type {
+.emotion-31:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-25:last-of-type {
+.emotion-31:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-32 {
+.emotion-43 {
   height: 100%;
   -webkit-flex: 8 0 auto;
   -ms-flex: 8 0 auto;
@@ -246,17 +297,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-32:first-of-type {
+.emotion-43:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-32:last-of-type {
+.emotion-43:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-33 {
+.emotion-44 {
   height: 100%;
   -webkit-flex: 4 0 auto;
   -ms-flex: 4 0 auto;
@@ -264,17 +315,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4a90e2;
 }
 
-.emotion-33:first-of-type {
+.emotion-44:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-33:last-of-type {
+.emotion-44:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-42 {
+.emotion-61 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -289,7 +340,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-56 {
+.emotion-88 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -297,12 +348,12 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-56:first-of-type {
+.emotion-88:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-56:last-of-type {
+.emotion-88:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -311,85 +362,60 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   <h2
     className="emotion-0"
   >
-    Data Queue
+    Job Queue
   </h2>
   <table
-    className="emotion-81"
+    className="emotion-136"
   >
     <thead>
       <tr>
-        <th>
-          <div
-            className="emotion-1"
-          >
-            Status
-          </div>
+        <th
+          className="emotion-1"
+        >
+          Status
         </th>
-        <th>
-          <div
-            className="emotion-1"
-          >
-            Job Name
-          </div>
+        <th
+          className="emotion-1"
+        >
+          Job Name
         </th>
-        <th>
-          <div
-            className="emotion-1"
-          >
-            Created By
-          </div>
+        <th
+          className="emotion-1"
+        >
+          Created By
         </th>
-        <th>
-          <div
-            className="emotion-1"
-          >
-            Priority
-          </div>
+        <th
+          className="emotion-1"
+        >
+          Priority
         </th>
-        <th>
-          <div
-            className="emotion-1"
-          >
-            Created
-          </div>
+        <th
+          className="emotion-1"
+        >
+          Created
         </th>
-        <th>
-          <div
-            className="emotion-1"
-          >
-            Failed
-          </div>
+        <th
+          className="emotion-1"
+        >
+          # Assets
         </th>
-        <th>
-          <div
-            className="emotion-1"
-          >
-            Errors
-          </div>
+        <th
+          className="emotion-1"
+        >
+          Errors
         </th>
-        <th>
-          <div
-            className="emotion-1"
-          >
-            # Assets
-          </div>
-        </th>
-        <th>
-          <div
-            className="emotion-1"
-          >
-            Progress
-          </div>
+        <th
+          className="emotion-1"
+        >
+          Task Progress
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr
-        className="emotion-18"
-      >
+      <tr>
         <td>
           <div
-            className="emotion-10"
+            className="emotion-9"
           >
             Canceled
           </div>
@@ -397,61 +423,83 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test-whitespace.json
         </td>
-        <td />
         <td>
+          admin
+        </td>
+        <td
+          className="emotion-10"
+        >
           100
         </td>
         <td>
           2019-11-07 01:38:36
         </td>
-        <td>
-          <div
-            className="emotion-11"
-          >
-            1
-          </div>
+        <td
+          className="emotion-10"
+        >
+          4
         </td>
-        <td>
+        <td
+          className="emotion-10"
+        >
           <div
-            className="emotion-11"
+            className="emotion-12"
           >
             4
           </div>
         </td>
         <td>
-          4
-        </td>
-        <td>
           <div
-            aria-label="Progress Bar"
-            className="emotion-17"
-            onKeyPress={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            role="button"
-            tabIndex="0"
+            className="emotion-22"
           >
             <div
-              className="emotion-13"
+              aria-label="Progress Bar"
+              className="emotion-18"
+              onKeyPress={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              role="button"
+              tabIndex="0"
+            >
+              <div
+                className="emotion-14"
+              />
+              <div
+                className="emotion-15"
+              />
+              <div
+                className="emotion-16"
+              />
+              <div
+                className="emotion-17"
+              />
+            </div>
+            <div
+              className="emotion-19"
             />
             <div
-              className="emotion-14"
-            />
-            <div
-              className="emotion-15"
-            />
-            <div
-              className="emotion-16"
-            />
+              className="emotion-21"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-20"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
           </div>
         </td>
       </tr>
-      <tr
-        className="emotion-18"
-      >
+      <tr>
         <td>
           <div
-            className="emotion-19"
+            className="emotion-23"
           >
             Active
           </div>
@@ -459,61 +507,83 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test-whitespace.json
         </td>
-        <td />
         <td>
+          admin
+        </td>
+        <td
+          className="emotion-10"
+        >
           100
         </td>
         <td>
           2019-11-07 01:38:36
         </td>
-        <td>
-          <div
-            className="emotion-11"
-          >
-            1
-          </div>
+        <td
+          className="emotion-10"
+        >
+          4
         </td>
-        <td>
+        <td
+          className="emotion-10"
+        >
           <div
-            className="emotion-11"
+            className="emotion-12"
           >
             4
           </div>
         </td>
         <td>
-          4
-        </td>
-        <td>
           <div
-            aria-label="Progress Bar"
-            className="emotion-17"
-            onKeyPress={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            role="button"
-            tabIndex="0"
+            className="emotion-22"
           >
             <div
-              className="emotion-13"
+              aria-label="Progress Bar"
+              className="emotion-18"
+              onKeyPress={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              role="button"
+              tabIndex="0"
+            >
+              <div
+                className="emotion-14"
+              />
+              <div
+                className="emotion-15"
+              />
+              <div
+                className="emotion-16"
+              />
+              <div
+                className="emotion-31"
+              />
+            </div>
+            <div
+              className="emotion-19"
             />
             <div
-              className="emotion-14"
-            />
-            <div
-              className="emotion-15"
-            />
-            <div
-              className="emotion-25"
-            />
+              className="emotion-21"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-20"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
           </div>
         </td>
       </tr>
-      <tr
-        className="emotion-18"
-      >
+      <tr>
         <td>
           <div
-            className="emotion-19"
+            className="emotion-23"
           >
             Active
           </div>
@@ -521,58 +591,80 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test-whitespace.json
         </td>
-        <td />
         <td>
+          admin
+        </td>
+        <td
+          className="emotion-10"
+        >
           100
         </td>
         <td>
           2019-11-07 01:36:29
         </td>
-        <td>
-          <div
-            className="emotion-11"
-          >
-            1
-          </div>
+        <td
+          className="emotion-10"
+        >
+          4
         </td>
-        <td>
+        <td
+          className="emotion-10"
+        >
           <div
-            className="emotion-11"
+            className="emotion-12"
           >
             4
           </div>
         </td>
         <td>
-          4
-        </td>
-        <td>
           <div
-            aria-label="Progress Bar"
-            className="emotion-17"
-            onKeyPress={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            role="button"
-            tabIndex="0"
+            className="emotion-22"
           >
             <div
-              className="emotion-13"
+              aria-label="Progress Bar"
+              className="emotion-18"
+              onKeyPress={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              role="button"
+              tabIndex="0"
+            >
+              <div
+                className="emotion-14"
+              />
+              <div
+                className="emotion-43"
+              />
+              <div
+                className="emotion-44"
+              />
+            </div>
+            <div
+              className="emotion-19"
             />
             <div
-              className="emotion-32"
-            />
-            <div
-              className="emotion-33"
-            />
+              className="emotion-21"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-20"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
           </div>
         </td>
       </tr>
-      <tr
-        className="emotion-18"
-      >
+      <tr>
         <td>
           <div
-            className="emotion-10"
+            className="emotion-9"
           >
             Canceled
           </div>
@@ -580,52 +672,74 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test-whitespace.json
         </td>
-        <td />
         <td>
+          admin
+        </td>
+        <td
+          className="emotion-10"
+        >
           100
         </td>
         <td>
           2019-11-07 01:35:36
         </td>
-        <td>
-          <div
-            className="emotion-11"
-          >
-            1
-          </div>
+        <td
+          className="emotion-10"
+        >
+          4
         </td>
-        <td>
+        <td
+          className="emotion-10"
+        >
           <div
-            className="emotion-11"
+            className="emotion-12"
           >
             4
           </div>
         </td>
         <td>
-          4
-        </td>
-        <td>
           <div
-            aria-label="Progress Bar"
-            className="emotion-17"
-            onKeyPress={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            role="button"
-            tabIndex="0"
+            className="emotion-22"
           >
             <div
-              className="emotion-13"
+              aria-label="Progress Bar"
+              className="emotion-18"
+              onKeyPress={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              role="button"
+              tabIndex="0"
+            >
+              <div
+                className="emotion-14"
+              />
+            </div>
+            <div
+              className="emotion-19"
             />
+            <div
+              className="emotion-21"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-20"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
           </div>
         </td>
       </tr>
-      <tr
-        className="emotion-18"
-      >
+      <tr>
         <td>
           <div
-            className="emotion-42"
+            className="emotion-61"
           >
             Finished
           </div>
@@ -633,52 +747,74 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test_officer
         </td>
-        <td />
         <td>
+          zach@zorroa.com
+        </td>
+        <td
+          className="emotion-10"
+        >
           100
         </td>
         <td>
           2019-10-11 21:11:03
         </td>
-        <td>
-          <div
-            className="emotion-11"
-          >
-            1
-          </div>
+        <td
+          className="emotion-10"
+        >
+          4
         </td>
-        <td>
+        <td
+          className="emotion-10"
+        >
           <div
-            className="emotion-11"
+            className="emotion-12"
           >
             4
           </div>
         </td>
         <td>
-          4
-        </td>
-        <td>
           <div
-            aria-label="Progress Bar"
-            className="emotion-17"
-            onKeyPress={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            role="button"
-            tabIndex="0"
+            className="emotion-22"
           >
             <div
-              className="emotion-13"
+              aria-label="Progress Bar"
+              className="emotion-18"
+              onKeyPress={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              role="button"
+              tabIndex="0"
+            >
+              <div
+                className="emotion-14"
+              />
+            </div>
+            <div
+              className="emotion-19"
             />
+            <div
+              className="emotion-21"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-20"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
           </div>
         </td>
       </tr>
-      <tr
-        className="emotion-18"
-      >
+      <tr>
         <td>
           <div
-            className="emotion-19"
+            className="emotion-23"
           >
             Active
           </div>
@@ -686,52 +822,74 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           test_officer
         </td>
-        <td />
         <td>
+          zach@zorroa.com
+        </td>
+        <td
+          className="emotion-10"
+        >
           100
         </td>
         <td>
           2019-10-11 21:03:27
         </td>
-        <td>
-          <div
-            className="emotion-11"
-          >
-            1
-          </div>
+        <td
+          className="emotion-10"
+        >
+          3
         </td>
-        <td>
+        <td
+          className="emotion-10"
+        >
           <div
-            className="emotion-11"
+            className="emotion-12"
           >
             3
           </div>
         </td>
         <td>
-          3
-        </td>
-        <td>
           <div
-            aria-label="Progress Bar"
-            className="emotion-17"
-            onKeyPress={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            role="button"
-            tabIndex="0"
+            className="emotion-22"
           >
             <div
-              className="emotion-13"
+              aria-label="Progress Bar"
+              className="emotion-18"
+              onKeyPress={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              role="button"
+              tabIndex="0"
+            >
+              <div
+                className="emotion-14"
+              />
+            </div>
+            <div
+              className="emotion-19"
             />
+            <div
+              className="emotion-21"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-20"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
           </div>
         </td>
       </tr>
-      <tr
-        className="emotion-18"
-      >
+      <tr>
         <td>
           <div
-            className="emotion-19"
+            className="emotion-23"
           >
             Active
           </div>
@@ -739,46 +897,74 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           flipbook_export_1
         </td>
-        <td />
         <td>
+          admin
+        </td>
+        <td
+          className="emotion-10"
+        >
           1
         </td>
         <td>
           2019-08-01 22:52:19
         </td>
-        <td />
-        <td>
+        <td
+          className="emotion-10"
+        >
+          3
+        </td>
+        <td
+          className="emotion-10"
+        >
           <div
-            className="emotion-11"
+            className="emotion-12"
           >
             3
           </div>
         </td>
         <td>
-          3
-        </td>
-        <td>
           <div
-            aria-label="Progress Bar"
-            className="emotion-17"
-            onKeyPress={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            role="button"
-            tabIndex="0"
+            className="emotion-22"
           >
             <div
-              className="emotion-56"
+              aria-label="Progress Bar"
+              className="emotion-18"
+              onKeyPress={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              role="button"
+              tabIndex="0"
+            >
+              <div
+                className="emotion-88"
+              />
+            </div>
+            <div
+              className="emotion-19"
             />
+            <div
+              className="emotion-21"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-20"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
           </div>
         </td>
       </tr>
-      <tr
-        className="emotion-18"
-      >
+      <tr>
         <td>
           <div
-            className="emotion-19"
+            className="emotion-23"
           >
             Active
           </div>
@@ -786,46 +972,68 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           export_7_8_2019
         </td>
-        <td />
         <td>
+          admin
+        </td>
+        <td
+          className="emotion-10"
+        >
           1
         </td>
         <td>
           2019-07-08 18:53:44
         </td>
-        <td>
-          <div
-            className="emotion-11"
-          >
-            1
-          </div>
-        </td>
-        <td />
-        <td>
+        <td
+          className="emotion-10"
+        >
           0
         </td>
+        <td
+          className="emotion-10"
+        />
         <td>
           <div
-            aria-label="Progress Bar"
-            className="emotion-17"
-            onKeyPress={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            role="button"
-            tabIndex="0"
+            className="emotion-22"
           >
             <div
-              className="emotion-13"
+              aria-label="Progress Bar"
+              className="emotion-18"
+              onKeyPress={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              role="button"
+              tabIndex="0"
+            >
+              <div
+                className="emotion-14"
+              />
+            </div>
+            <div
+              className="emotion-19"
             />
+            <div
+              className="emotion-21"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-20"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
           </div>
         </td>
       </tr>
-      <tr
-        className="emotion-18"
-      >
+      <tr>
         <td>
           <div
-            className="emotion-19"
+            className="emotion-23"
           >
             Active
           </div>
@@ -833,46 +1041,68 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           export_7_8_2019___
         </td>
-        <td />
         <td>
+          admin
+        </td>
+        <td
+          className="emotion-10"
+        >
           1
         </td>
         <td>
           2019-07-08 18:43:03
         </td>
-        <td>
-          <div
-            className="emotion-11"
-          >
-            1
-          </div>
-        </td>
-        <td />
-        <td>
+        <td
+          className="emotion-10"
+        >
           0
         </td>
+        <td
+          className="emotion-10"
+        />
         <td>
           <div
-            aria-label="Progress Bar"
-            className="emotion-17"
-            onKeyPress={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            role="button"
-            tabIndex="0"
+            className="emotion-22"
           >
             <div
-              className="emotion-13"
+              aria-label="Progress Bar"
+              className="emotion-18"
+              onKeyPress={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              role="button"
+              tabIndex="0"
+            >
+              <div
+                className="emotion-14"
+              />
+            </div>
+            <div
+              className="emotion-19"
             />
+            <div
+              className="emotion-21"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-20"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
           </div>
         </td>
       </tr>
-      <tr
-        className="emotion-18"
-      >
+      <tr>
         <td>
           <div
-            className="emotion-19"
+            className="emotion-23"
           >
             Active
           </div>
@@ -880,46 +1110,68 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           sdlc-testdata-import.json
         </td>
-        <td />
         <td>
+          admin
+        </td>
+        <td
+          className="emotion-10"
+        >
           100
         </td>
         <td>
           2019-07-03 16:49:15
         </td>
-        <td>
-          <div
-            className="emotion-11"
-          >
-            1
-          </div>
-        </td>
-        <td />
-        <td>
+        <td
+          className="emotion-10"
+        >
           0
         </td>
+        <td
+          className="emotion-10"
+        />
         <td>
           <div
-            aria-label="Progress Bar"
-            className="emotion-17"
-            onKeyPress={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            role="button"
-            tabIndex="0"
+            className="emotion-22"
           >
             <div
-              className="emotion-13"
+              aria-label="Progress Bar"
+              className="emotion-18"
+              onKeyPress={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              role="button"
+              tabIndex="0"
+            >
+              <div
+                className="emotion-14"
+              />
+            </div>
+            <div
+              className="emotion-19"
             />
+            <div
+              className="emotion-21"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-20"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
           </div>
         </td>
       </tr>
-      <tr
-        className="emotion-18"
-      >
+      <tr>
         <td>
           <div
-            className="emotion-19"
+            className="emotion-23"
           >
             Active
           </div>
@@ -927,46 +1179,70 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td>
           sdlc-testdata-import.json
         </td>
-        <td />
         <td>
+          admin
+        </td>
+        <td
+          className="emotion-10"
+        >
           100
         </td>
         <td>
           2019-07-03 01:29:41
         </td>
-        <td>
-          <div
-            className="emotion-11"
-          >
-            1
-          </div>
+        <td
+          className="emotion-10"
+        >
+          49
         </td>
-        <td>
+        <td
+          className="emotion-10"
+        >
           <div
-            className="emotion-11"
+            className="emotion-12"
           >
             49
           </div>
         </td>
         <td>
-          49
-        </td>
-        <td>
           <div
-            aria-label="Progress Bar"
-            className="emotion-17"
-            onKeyPress={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            role="button"
-            tabIndex="0"
+            className="emotion-22"
           >
             <div
-              className="emotion-13"
+              aria-label="Progress Bar"
+              className="emotion-18"
+              onKeyPress={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              role="button"
+              tabIndex="0"
+            >
+              <div
+                className="emotion-14"
+              />
+              <div
+                className="emotion-88"
+              />
+            </div>
+            <div
+              className="emotion-19"
             />
             <div
-              className="emotion-56"
-            />
+              className="emotion-21"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-20"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
           </div>
         </td>
       </tr>

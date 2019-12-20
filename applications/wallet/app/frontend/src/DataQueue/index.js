@@ -8,19 +8,9 @@ import PageTitle from '../PageTitle'
 import Table from '../Table'
 import Pagination from '../Pagination'
 
-export const noop = () => () => {}
+import DataQueueRow from './Row'
 
-const COLUMNS = [
-  'Status',
-  'Job Name',
-  'Created By',
-  'Priority',
-  'Created',
-  'Failed',
-  'Errors',
-  '# Assets',
-  'Progress',
-]
+export const noop = () => () => {}
 
 const SIZE = 3
 
@@ -51,12 +41,25 @@ const DataQueue = ({ selectedProject }) => {
   return (
     <div>
       <Head>
-        <title>Data Queue</title>
+        <title>Job Queue</title>
       </Head>
 
-      <PageTitle>Data Queue</PageTitle>
+      <PageTitle>Job Queue</PageTitle>
 
-      <Table columns={COLUMNS} rows={results} />
+      <Table
+        columns={[
+          'Status',
+          'Job Name',
+          'Created By',
+          'Priority',
+          'Created',
+          '# Assets',
+          'Errors',
+          'Task Progress',
+        ]}
+        items={results}
+        renderRow={job => <DataQueueRow key={job.id} job={job} />}
+      />
 
       <div>&nbsp;</div>
 

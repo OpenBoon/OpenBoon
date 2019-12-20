@@ -6,7 +6,6 @@ RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y i
     build-essential
 
 RUN mkdir /service
-RUN mkdir /service/certs
 COPY . /service
 WORKDIR /service
 
@@ -15,7 +14,7 @@ RUN pip install -r /service/requirements.txt
 RUN python3 -c "import time; v = open('VERSION').read().strip(); print('{}-{}'.format(v, int(time.time())))" > ./BUILD
 RUN rm /service/requirements.txt
 
-RUN groupadd -r analyst && useradd --no-log-init -r -g analyst analyst; chown analyst:analyst /service/certs
+RUN groupadd -r analyst && useradd --no-log-init -r -g analyst analyst
 # Need to run as root for now for docker.
 # USER analyst
 
