@@ -5,6 +5,7 @@ import DataQueue, { noop } from '..'
 import mockProjects from '../../Projects/__mocks__/projects'
 import jobs from '../__mocks__/jobs'
 
+jest.mock('../../Pagination', () => 'Pagination')
 jest.mock('../../UserMenu', () => 'UserMenu')
 
 describe('<DataQueue />', () => {
