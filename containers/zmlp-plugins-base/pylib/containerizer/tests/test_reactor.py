@@ -1,6 +1,7 @@
 import unittest
 
-from pixml.analysis.base import ExpandFrame, Frame, Reactor
+from containerizer.reactor import Reactor
+from pixml.analysis.base import ExpandFrame, Frame
 from pixml.analysis.testing import TestEventEmitter, TestAsset
 from pixml.asset import FileImport
 

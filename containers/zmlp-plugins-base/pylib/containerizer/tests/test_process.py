@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import patch
 
 from containerizer.process import ProcessorExecutor, AssetConsumer, is_file_type_allowed
-from pixml.analysis import Reactor
+from containerizer.reactor import Reactor
 from pixml.analysis.testing import TestEventEmitter, TestAsset
 
 logging.basicConfig(level=logging.DEBUG)
