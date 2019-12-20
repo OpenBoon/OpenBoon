@@ -4,6 +4,7 @@ import DataQueue, { noop } from '..'
 
 import jobs from '../__mocks__/jobs'
 
+jest.mock('../../Table', () => 'Table')
 jest.mock('../../Pagination', () => 'Pagination')
 jest.mock('../../UserMenu', () => 'UserMenu')
 
@@ -54,4 +55,21 @@ describe('<DataQueue />', () => {
   it('should do nothing on noop', () => {
     expect(noop()()).toBeUndefined()
   })
+
+  // describe('', () => {
+  //   it('should properly render DataQueueRow', () => {
+  //     require('swr').__setMockUseSWRResponse({
+  //       data: jobs,
+  //     })
+
+  //     const component = TestRenderer.create(
+  //       <DataQueue logout={noop} selectedProject={selectedProject} />,
+  //     )
+
+  //     const mockJob = jobs.results[0]
+  //     expect(
+  //       component.root.findByType('Table').props.renderRow(mockJob),
+  //     ).toBeInstanceOf(<DataQueueRow key={mockJob.id} job={mockJob} />)
+  //   })
+  // })
 })

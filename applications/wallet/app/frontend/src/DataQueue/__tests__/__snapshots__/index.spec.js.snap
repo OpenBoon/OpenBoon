@@ -11,1230 +11,460 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-124 {
-  width: 100%;
-  border-spacing: 0;
-  box-shadow: 0 0 5px 0 #000000;
-  white-space: nowrap;
-}
-
-.emotion-124 tr {
-  background-color: #252525;
-}
-
-.emotion-124 tr:nth-of-type(2n) {
-  background-color: #2e2e2e;
-}
-
-.emotion-124 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
-}
-
-.emotion-124 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-124 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-124 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
-.emotion-124 td {
-  color: #e0e0e0;
-  padding: 8px 16px;
-  border: 1px solid transparent;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-124 td:first-of-type {
-  border-left: 1px solid transparent;
-}
-
-.emotion-124 td:last-of-type {
-  border-right: 1px solid transparent;
-}
-
-.emotion-1 {
-  text-align: left;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-}
-
-.emotion-1:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-1:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-9 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px;
-  border-radius: 2px;
-  color: #808080;
-  background-color: #191919;
-}
-
-.emotion-10 {
-  text-align: center;
-}
-
-.emotion-12 {
-  margin: 0 auto;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  min-width: 32px;
-  height: 32px;
-  padding: 8px;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 20px;
-  border-radius: 32px;
-  color: #c92300;
-  background-color: #191919;
-}
-
-.emotion-21 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-17 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 16px;
-  width: 212px;
-  position: relative;
-}
-
-.emotion-13 {
-  height: 100%;
-  -webkit-flex: 1 0 auto;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
-  background-color: #c92300;
-}
-
-.emotion-13:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-13:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-14 {
-  height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #4ac565;
-}
-
-.emotion-14:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-14:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-15 {
-  height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #ebb52e;
-}
-
-.emotion-15:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-15:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-16 {
-  height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #4a90e2;
-}
-
-.emotion-16:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-16:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-18 {
-  width: 8px;
-}
-
-.emotion-20 {
-  position: relative;
-}
-
-.emotion-19 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 14px;
-  line-height: 16px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  background-color: transparent;
-  padding: 12px;
-  padding: 6px;
-  border-radius: 32px;
-}
-
-.emotion-19:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-19:hover {
-  background-color: #808080;
-}
-
-.emotion-22 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px;
-  border-radius: 2px;
-  color: #ebb52e;
-  background-color: #191919;
-}
-
-.emotion-29 {
-  height: 100%;
-  -webkit-flex: 14 0 auto;
-  -ms-flex: 14 0 auto;
-  flex: 14 0 auto;
-  background-color: #4a90e2;
-}
-
-.emotion-29:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-29:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-40 {
-  height: 100%;
-  -webkit-flex: 8 0 auto;
-  -ms-flex: 8 0 auto;
-  flex: 8 0 auto;
-  background-color: #4ac565;
-}
-
-.emotion-40:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-40:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-41 {
-  height: 100%;
-  -webkit-flex: 4 0 auto;
-  -ms-flex: 4 0 auto;
-  flex: 4 0 auto;
-  background-color: #4a90e2;
-}
-
-.emotion-41:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-41:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-57 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px;
-  border-radius: 2px;
-  color: #4ac565;
-  background-color: #191919;
-}
-
-.emotion-80 {
-  height: 100%;
-  -webkit-flex: 1 0 auto;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
-  background-color: #4ac565;
-}
-
-.emotion-80:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
-
-.emotion-80:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
 <div>
   <h2
     className="emotion-0"
   >
     Job Queue
   </h2>
-  <table
-    className="emotion-124"
-  >
-    <thead>
-      <tr>
-        <th
-          className="emotion-1"
-        >
-          Status
-        </th>
-        <th
-          className="emotion-1"
-        >
-          Job Name
-        </th>
-        <th
-          className="emotion-1"
-        >
-          Created By
-        </th>
-        <th
-          className="emotion-1"
-        >
-          Priority
-        </th>
-        <th
-          className="emotion-1"
-        >
-          Created
-        </th>
-        <th
-          className="emotion-1"
-        >
-          # Assets
-        </th>
-        <th
-          className="emotion-1"
-        >
-          Errors
-        </th>
-        <th
-          className="emotion-1"
-        >
-          Task Progress
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <div
-            className="emotion-9"
-          >
-            Cancelled
-          </div>
-        </td>
-        <td>
-          test-whitespace.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-11-07 01:38:36
-        </td>
-        <td
-          className="emotion-10"
-        >
-          4
-        </td>
-        <td>
-          <div
-            className="emotion-12"
-          >
-            4
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-21"
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-17"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-13"
-              />
-              <div
-                className="emotion-14"
-              />
-              <div
-                className="emotion-15"
-              />
-              <div
-                className="emotion-16"
-              />
-            </div>
-            <div
-              className="emotion-18"
-            />
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-22"
-          >
-            Active
-          </div>
-        </td>
-        <td>
-          test-whitespace.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-11-07 01:38:36
-        </td>
-        <td
-          className="emotion-10"
-        >
-          40
-        </td>
-        <td>
-          <div
-            className="emotion-12"
-          >
-            40
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-21"
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-17"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-13"
-              />
-              <div
-                className="emotion-14"
-              />
-              <div
-                className="emotion-15"
-              />
-              <div
-                className="emotion-29"
-              />
-            </div>
-            <div
-              className="emotion-18"
-            />
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-22"
-          >
-            Active
-          </div>
-        </td>
-        <td>
-          test-whitespace.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-11-07 01:36:29
-        </td>
-        <td
-          className="emotion-10"
-        >
-          400
-        </td>
-        <td>
-          <div
-            className="emotion-12"
-          >
-            400
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-21"
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-17"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-13"
-              />
-              <div
-                className="emotion-40"
-              />
-              <div
-                className="emotion-41"
-              />
-            </div>
-            <div
-              className="emotion-18"
-            />
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-9"
-          >
-            Cancelled
-          </div>
-        </td>
-        <td>
-          test-whitespace.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-11-07 01:35:36
-        </td>
-        <td
-          className="emotion-10"
-        >
-          4000
-        </td>
-        <td>
-          <div
-            className="emotion-12"
-          >
-            4000
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-21"
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-17"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-13"
-              />
-            </div>
-            <div
-              className="emotion-18"
-            />
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-57"
-          >
-            Finished
-          </div>
-        </td>
-        <td>
-          test_officer
-        </td>
-        <td>
-          zach@zorroa.com
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-10-11 21:11:03
-        </td>
-        <td
-          className="emotion-10"
-        >
-          40000
-        </td>
-        <td>
-          <div
-            className="emotion-12"
-          >
-            40000
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-21"
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-17"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-13"
-              />
-            </div>
-            <div
-              className="emotion-18"
-            />
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-22"
-          >
-            Active
-          </div>
-        </td>
-        <td>
-          test_officer
-        </td>
-        <td>
-          zach@zorroa.com
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-10-11 21:03:27
-        </td>
-        <td
-          className="emotion-10"
-        >
-          400000
-        </td>
-        <td>
-          <div
-            className="emotion-12"
-          >
-            400000
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-21"
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-17"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-13"
-              />
-            </div>
-            <div
-              className="emotion-18"
-            />
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-22"
-          >
-            Active
-          </div>
-        </td>
-        <td>
-          flipbook_export_1
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          1
-        </td>
-        <td>
-          2019-08-01 22:52:19
-        </td>
-        <td
-          className="emotion-10"
-        >
-          0
-        </td>
-        <td />
-        <td>
-          <div
-            className="emotion-21"
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-17"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-80"
-              />
-            </div>
-            <div
-              className="emotion-18"
-            />
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-22"
-          >
-            Active
-          </div>
-        </td>
-        <td>
-          export_7_8_2019
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          1
-        </td>
-        <td>
-          2019-07-08 18:53:44
-        </td>
-        <td
-          className="emotion-10"
-        >
-          0
-        </td>
-        <td />
-        <td>
-          <div
-            className="emotion-21"
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-17"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-13"
-              />
-            </div>
-            <div
-              className="emotion-18"
-            />
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-22"
-          >
-            Active
-          </div>
-        </td>
-        <td>
-          export_7_8_2019___
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          1
-        </td>
-        <td>
-          2019-07-08 18:43:03
-        </td>
-        <td
-          className="emotion-10"
-        >
-          0
-        </td>
-        <td />
-        <td>
-          <div
-            className="emotion-21"
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-17"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-13"
-              />
-            </div>
-            <div
-              className="emotion-18"
-            />
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-22"
-          >
-            Active
-          </div>
-        </td>
-        <td>
-          sdlc-testdata-import.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-07-03 16:49:15
-        </td>
-        <td
-          className="emotion-10"
-        >
-          0
-        </td>
-        <td />
-        <td>
-          <div
-            className="emotion-21"
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-17"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-13"
-              />
-            </div>
-            <div
-              className="emotion-18"
-            />
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-22"
-          >
-            Active
-          </div>
-        </td>
-        <td>
-          sdlc-testdata-import.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-07-03 01:29:41
-        </td>
-        <td
-          className="emotion-10"
-        >
-          49
-        </td>
-        <td>
-          <div
-            className="emotion-12"
-          >
-            49
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-21"
-          >
-            <div
-              aria-label="Progress Bar"
-              className="emotion-17"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
-            >
-              <div
-                className="emotion-13"
-              />
-              <div
-                className="emotion-80"
-              />
-            </div>
-            <div
-              className="emotion-18"
-            />
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <Table
+    columns={
+      Array [
+        "Status",
+        "Job Name",
+        "Created By",
+        "Priority",
+        "Created",
+        "# Assets",
+        "Errors",
+        "Task Progress",
+      ]
+    }
+    items={
+      Array [
+        Object {
+          "assetCounts": Object {
+            "assetCreatedCount": 0,
+            "assetErrorCount": 4,
+            "assetReplacedCount": 0,
+            "assetWarningCount": 0,
+          },
+          "createdUser": Object {
+            "email": "admin@zorroa.com",
+            "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53",
+            "id": "00000000-7b0b-480e-8c36-f06f04aed2f1",
+            "organizationId": "00000000-9998-8888-7777-666666666666",
+            "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0",
+            "username": "admin",
+          },
+          "id": "82d5308b-67c2-1433-8fef-0a580a000956",
+          "jobId": "82d5308b-67c2-1433-8fef-0a580a000955",
+          "maxRunningTasks": 1024,
+          "name": "test-whitespace.json",
+          "organizationId": "00000000-9998-8888-7777-666666666666",
+          "paused": false,
+          "priority": 100,
+          "state": "Cancelled",
+          "taskCounts": Object {
+            "tasksFailure": 1,
+            "tasksQueued": 0,
+            "tasksRunning": 5,
+            "tasksSkipped": 0,
+            "tasksSuccess": 5,
+            "tasksTotal": 16,
+            "tasksWaiting": 5,
+          },
+          "timeCreated": 1573090716083,
+          "timePauseExpired": -1,
+          "timeStarted": 1573090717162,
+          "timeUpdated": 1573090716083,
+          "type": "Import",
+          "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000955/",
+        },
+        Object {
+          "assetCounts": Object {
+            "assetCreatedCount": 0,
+            "assetErrorCount": 40,
+            "assetReplacedCount": 0,
+            "assetWarningCount": 0,
+          },
+          "createdUser": Object {
+            "email": "admin@zorroa.com",
+            "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53",
+            "id": "00000000-7b0b-480e-8c36-f06f04aed2f1",
+            "organizationId": "00000000-9998-8888-7777-666666666666",
+            "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0",
+            "username": "admin",
+          },
+          "id": "82d5308b-67c2-1433-8fef-0a580a000955",
+          "jobId": "82d5308b-67c2-1433-8fef-0a580a000955",
+          "maxRunningTasks": 1024,
+          "name": "test-whitespace.json",
+          "organizationId": "00000000-9998-8888-7777-666666666666",
+          "paused": false,
+          "priority": 100,
+          "state": "Active",
+          "taskCounts": Object {
+            "tasksFailure": 1,
+            "tasksQueued": 9,
+            "tasksRunning": 5,
+            "tasksSkipped": 0,
+            "tasksSuccess": 5,
+            "tasksTotal": 16,
+            "tasksWaiting": 5,
+          },
+          "timeCreated": 1573090716083,
+          "timePauseExpired": -1,
+          "timeStarted": 1573090717162,
+          "timeUpdated": 1573090716083,
+          "type": "Import",
+          "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000955/",
+        },
+        Object {
+          "assetCounts": Object {
+            "assetCreatedCount": 0,
+            "assetErrorCount": 400,
+            "assetReplacedCount": 0,
+            "assetWarningCount": 0,
+          },
+          "createdUser": Object {
+            "email": "admin@zorroa.com",
+            "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53",
+            "id": "00000000-7b0b-480e-8c36-f06f04aed2f1",
+            "organizationId": "00000000-9998-8888-7777-666666666666",
+            "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0",
+            "username": "admin",
+          },
+          "id": "82d5308a-67c2-1433-8fef-0a580a000955",
+          "jobId": "82d5308a-67c2-1433-8fef-0a580a000955",
+          "maxRunningTasks": 1024,
+          "name": "test-whitespace.json",
+          "organizationId": "00000000-9998-8888-7777-666666666666",
+          "paused": true,
+          "priority": 100,
+          "state": "Active",
+          "taskCounts": Object {
+            "tasksFailure": 1,
+            "tasksQueued": 3,
+            "tasksRunning": 0,
+            "tasksSkipped": 0,
+            "tasksSuccess": 8,
+            "tasksTotal": 1,
+            "tasksWaiting": 1,
+          },
+          "timeCreated": 1573090589586,
+          "timePauseExpired": -1,
+          "timeStarted": 1573090591364,
+          "timeUpdated": 1573090589586,
+          "type": "Import",
+          "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308a-67c2-1433-8fef-0a580a000955/",
+        },
+        Object {
+          "assetCounts": Object {
+            "assetCreatedCount": 0,
+            "assetErrorCount": 4000,
+            "assetReplacedCount": 0,
+            "assetWarningCount": 0,
+          },
+          "createdUser": Object {
+            "email": "admin@zorroa.com",
+            "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53",
+            "id": "00000000-7b0b-480e-8c36-f06f04aed2f1",
+            "organizationId": "00000000-9998-8888-7777-666666666666",
+            "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0",
+            "username": "admin",
+          },
+          "id": "82d53089-67c2-1433-8fef-0a580a000955",
+          "jobId": "82d53089-67c2-1433-8fef-0a580a000955",
+          "maxRunningTasks": 1024,
+          "name": "test-whitespace.json",
+          "organizationId": "00000000-9998-8888-7777-666666666666",
+          "paused": false,
+          "priority": 100,
+          "state": "Cancelled",
+          "taskCounts": Object {
+            "tasksFailure": 1,
+            "tasksQueued": 0,
+            "tasksRunning": 0,
+            "tasksSkipped": 0,
+            "tasksSuccess": 0,
+            "tasksTotal": 1,
+            "tasksWaiting": 0,
+          },
+          "timeCreated": 1573090536003,
+          "timePauseExpired": -1,
+          "timeStarted": 1573090540886,
+          "timeUpdated": 1573090536003,
+          "type": "Import",
+          "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d53089-67c2-1433-8fef-0a580a000955/",
+        },
+        Object {
+          "assetCounts": Object {
+            "assetCreatedCount": 0,
+            "assetErrorCount": 40000,
+            "assetReplacedCount": 0,
+            "assetWarningCount": 0,
+          },
+          "createdUser": Object {
+            "email": "zach@zorroa.com",
+            "homeFolderId": "51d21ea1-8088-14d1-a7c5-0a580a000926",
+            "id": "afaf5bff-7ca9-14d1-afd3-0a580a000926",
+            "organizationId": "00000000-9998-8888-7777-666666666666",
+            "permissionId": "10600cee-7e93-14d1-bf12-0a580a000926",
+            "username": "zach@zorroa.com",
+          },
+          "id": "c0975970-62ef-1f81-83f8-0a580a000954",
+          "jobId": "c0975970-62ef-1f81-83f8-0a580a000954",
+          "maxRunningTasks": 1024,
+          "name": "test_officer",
+          "organizationId": "00000000-9998-8888-7777-666666666666",
+          "paused": false,
+          "priority": 100,
+          "state": "Finished",
+          "taskCounts": Object {
+            "tasksFailure": 1,
+            "tasksQueued": 0,
+            "tasksRunning": 0,
+            "tasksSkipped": 0,
+            "tasksSuccess": 0,
+            "tasksTotal": 1,
+            "tasksWaiting": 0,
+          },
+          "timeCreated": 1570828263275,
+          "timePauseExpired": -1,
+          "timeStarted": 1570828267677,
+          "timeUpdated": 1570828263275,
+          "type": "Import",
+          "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c0975970-62ef-1f81-83f8-0a580a000954/",
+        },
+        Object {
+          "assetCounts": Object {
+            "assetCreatedCount": 0,
+            "assetErrorCount": 400000,
+            "assetReplacedCount": 0,
+            "assetWarningCount": 0,
+          },
+          "createdUser": Object {
+            "email": "zach@zorroa.com",
+            "homeFolderId": "51d21ea1-8088-14d1-a7c5-0a580a000926",
+            "id": "afaf5bff-7ca9-14d1-afd3-0a580a000926",
+            "organizationId": "00000000-9998-8888-7777-666666666666",
+            "permissionId": "10600cee-7e93-14d1-bf12-0a580a000926",
+            "username": "zach@zorroa.com",
+          },
+          "id": "c097596f-62ef-1f81-83f8-0a580a000954",
+          "jobId": "c097596f-62ef-1f81-83f8-0a580a000954",
+          "maxRunningTasks": 1024,
+          "name": "test_officer",
+          "organizationId": "00000000-9998-8888-7777-666666666666",
+          "paused": false,
+          "priority": 100,
+          "state": "Active",
+          "taskCounts": Object {
+            "tasksFailure": 1,
+            "tasksQueued": 0,
+            "tasksRunning": 0,
+            "tasksSkipped": 0,
+            "tasksSuccess": 0,
+            "tasksTotal": 1,
+            "tasksWaiting": 0,
+          },
+          "timeCreated": 1570827807692,
+          "timePauseExpired": -1,
+          "timeStarted": 1570827912488,
+          "timeUpdated": 1570827807692,
+          "type": "Import",
+          "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/",
+        },
+        Object {
+          "assetCounts": Object {
+            "assetCreatedCount": 0,
+            "assetErrorCount": 0,
+            "assetReplacedCount": 0,
+            "assetWarningCount": 0,
+          },
+          "createdUser": Object {
+            "email": "admin@zorroa.com",
+            "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53",
+            "id": "00000000-7b0b-480e-8c36-f06f04aed2f1",
+            "organizationId": "00000000-9998-8888-7777-666666666666",
+            "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0",
+            "username": "admin",
+          },
+          "id": "1585ca03-4db0-14d1-8edd-0a580a000926",
+          "jobId": "1585ca03-4db0-14d1-8edd-0a580a000926",
+          "maxRunningTasks": 1024,
+          "name": "flipbook_export_1",
+          "organizationId": "00000000-9998-8888-7777-666666666666",
+          "paused": false,
+          "priority": 1,
+          "state": "Active",
+          "taskCounts": Object {
+            "tasksFailure": 0,
+            "tasksQueued": 0,
+            "tasksRunning": 0,
+            "tasksSkipped": 0,
+            "tasksSuccess": 1,
+            "tasksTotal": 1,
+            "tasksWaiting": 0,
+          },
+          "timeCreated": 1564699939781,
+          "timePauseExpired": -1,
+          "timeStarted": 1564699941318,
+          "timeUpdated": 1565211006581,
+          "type": "Export",
+          "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/1585ca03-4db0-14d1-8edd-0a580a000926/",
+        },
+        Object {
+          "assetCounts": Object {
+            "assetCreatedCount": 0,
+            "assetErrorCount": 0,
+            "assetReplacedCount": 0,
+            "assetWarningCount": 0,
+          },
+          "createdUser": Object {
+            "email": "admin@zorroa.com",
+            "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53",
+            "id": "00000000-7b0b-480e-8c36-f06f04aed2f1",
+            "organizationId": "00000000-9998-8888-7777-666666666666",
+            "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0",
+            "username": "admin",
+          },
+          "id": "be47702d-cbd6-1cce-a096-0a580a000920",
+          "jobId": "be47702d-cbd6-1cce-a096-0a580a000920",
+          "maxRunningTasks": 1024,
+          "name": "export_7_8_2019",
+          "organizationId": "00000000-9998-8888-7777-666666666666",
+          "paused": false,
+          "priority": 1,
+          "state": "Active",
+          "taskCounts": Object {
+            "tasksFailure": 1,
+            "tasksQueued": 0,
+            "tasksRunning": 0,
+            "tasksSkipped": 0,
+            "tasksSuccess": 0,
+            "tasksTotal": 1,
+            "tasksWaiting": 0,
+          },
+          "timeCreated": 1562612024983,
+          "timePauseExpired": -1,
+          "timeStarted": 1562612025804,
+          "timeUpdated": 1562612024983,
+          "type": "Export",
+          "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/be47702d-cbd6-1cce-a096-0a580a000920/",
+        },
+        Object {
+          "assetCounts": Object {
+            "assetCreatedCount": 0,
+            "assetErrorCount": 0,
+            "assetReplacedCount": 0,
+            "assetWarningCount": 0,
+          },
+          "createdUser": Object {
+            "email": "admin@zorroa.com",
+            "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53",
+            "id": "00000000-7b0b-480e-8c36-f06f04aed2f1",
+            "organizationId": "00000000-9998-8888-7777-666666666666",
+            "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0",
+            "username": "admin",
+          },
+          "id": "be47702c-cbd6-1cce-a096-0a580a000920",
+          "jobId": "be47702c-cbd6-1cce-a096-0a580a000920",
+          "maxRunningTasks": 1024,
+          "name": "export_7_8_2019___",
+          "organizationId": "00000000-9998-8888-7777-666666666666",
+          "paused": false,
+          "priority": 1,
+          "state": "Active",
+          "taskCounts": Object {
+            "tasksFailure": 1,
+            "tasksQueued": 0,
+            "tasksRunning": 0,
+            "tasksSkipped": 0,
+            "tasksSuccess": 0,
+            "tasksTotal": 1,
+            "tasksWaiting": 0,
+          },
+          "timeCreated": 1562611383791,
+          "timePauseExpired": -1,
+          "timeStarted": 1562611386716,
+          "timeUpdated": 1562611383791,
+          "type": "Export",
+          "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/be47702c-cbd6-1cce-a096-0a580a000920/",
+        },
+        Object {
+          "assetCounts": Object {
+            "assetCreatedCount": 0,
+            "assetErrorCount": 0,
+            "assetReplacedCount": 0,
+            "assetWarningCount": 0,
+          },
+          "createdUser": Object {
+            "email": "admin@zorroa.com",
+            "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53",
+            "id": "00000000-7b0b-480e-8c36-f06f04aed2f1",
+            "organizationId": "00000000-9998-8888-7777-666666666666",
+            "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0",
+            "username": "admin",
+          },
+          "id": "acd91540-08c1-199f-b899-0a580a00091e",
+          "jobId": "acd91540-08c1-199f-b899-0a580a00091e",
+          "maxRunningTasks": 1024,
+          "name": "sdlc-testdata-import.json",
+          "organizationId": "00000000-9998-8888-7777-666666666666",
+          "paused": false,
+          "priority": 100,
+          "state": "Active",
+          "taskCounts": Object {
+            "tasksFailure": 1,
+            "tasksQueued": 0,
+            "tasksRunning": 0,
+            "tasksSkipped": 0,
+            "tasksSuccess": 0,
+            "tasksTotal": 1,
+            "tasksWaiting": 0,
+          },
+          "timeCreated": 1562172555491,
+          "timePauseExpired": -1,
+          "timeStarted": 1562172556974,
+          "timeUpdated": 1562172555491,
+          "type": "Import",
+          "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd91540-08c1-199f-b899-0a580a00091e/",
+        },
+        Object {
+          "assetCounts": Object {
+            "assetCreatedCount": 0,
+            "assetErrorCount": 49,
+            "assetReplacedCount": 0,
+            "assetWarningCount": 0,
+          },
+          "createdUser": Object {
+            "email": "admin@zorroa.com",
+            "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53",
+            "id": "00000000-7b0b-480e-8c36-f06f04aed2f1",
+            "organizationId": "00000000-9998-8888-7777-666666666666",
+            "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0",
+            "username": "admin",
+          },
+          "id": "acd9153f-08c1-199f-b899-0a580a00091e",
+          "jobId": "acd9153f-08c1-199f-b899-0a580a00091e",
+          "maxRunningTasks": 1024,
+          "name": "sdlc-testdata-import.json",
+          "organizationId": "00000000-9998-8888-7777-666666666666",
+          "paused": false,
+          "priority": 100,
+          "state": "Active",
+          "taskCounts": Object {
+            "tasksFailure": 1,
+            "tasksQueued": 0,
+            "tasksRunning": 0,
+            "tasksSkipped": 0,
+            "tasksSuccess": 1,
+            "tasksTotal": 2,
+            "tasksWaiting": 0,
+          },
+          "timeCreated": 1562117381276,
+          "timePauseExpired": -1,
+          "timeStarted": 1562117385132,
+          "timeUpdated": 1562117381276,
+          "type": "Import",
+          "url": "http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd9153f-08c1-199f-b899-0a580a00091e/",
+        },
+      ]
+    }
+    renderRow={[Function]}
+  />
   <div>
      
   </div>

@@ -87,7 +87,6 @@ const DataQueueRow = ({
 DataQueueRow.propTypes = {
   projectId: PropTypes.string.isRequired,
   job: PropTypes.shape({
-    id: PropTypes.string.isRequired,
     state: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     createdUser: PropTypes.shape({
