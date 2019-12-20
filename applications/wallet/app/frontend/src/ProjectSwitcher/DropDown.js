@@ -36,8 +36,8 @@ const ProjectSwitcherDropDown = ({ projects, onSelect }) => {
             width: '100%',
             textAlign: 'left',
             ':hover': {
-              backgroundColor: colors.rocks.iron,
-              color: colors.rocks.white,
+              backgroundColor: colors.structure.steel,
+              color: colors.structure.white,
               cursor: 'pointer',
             },
           }}>

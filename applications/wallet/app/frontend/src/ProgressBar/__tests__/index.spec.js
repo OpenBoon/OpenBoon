@@ -18,6 +18,7 @@ describe('<ProgressBar />', () => {
           tasksRunning: 0,
           tasksWaiting: 0,
           tasksQueued: 0,
+          tasksPending: 0,
         }}
       />,
     )
@@ -41,6 +42,7 @@ describe('setShowKeyInfo()', () => {
             tasksRunning: 0,
             tasksWaiting: 0,
             tasksQueued: 0,
+            tasksPending: 0,
           }}
         />,
       )
@@ -79,6 +81,7 @@ describe('setShowKeyInfo()', () => {
             tasksRunning: 0,
             tasksWaiting: 0,
             tasksQueued: 0,
+            tasksPending: 0,
           }}
         />,
       )

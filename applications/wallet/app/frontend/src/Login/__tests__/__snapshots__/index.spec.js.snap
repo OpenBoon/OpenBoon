@@ -123,6 +123,7 @@ exports[`<Login /> should render properly 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  background-color: transparent;
   padding: 12px;
   outline-offset: -2px;
 }
@@ -171,6 +172,7 @@ exports[`<Login /> should render properly 1`] = `
   font-weight: 500;
   border: none;
   cursor: not-allowed;
+  background-color: transparent;
 }
 
 .emotion-15,
