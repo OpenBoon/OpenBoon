@@ -88,7 +88,7 @@ exports[`<ApiKeys /> should render properly 1`] = `
       >
         <a
           className="emotion-1"
-          href="/api-keys"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -100,7 +100,7 @@ exports[`<ApiKeys /> should render properly 1`] = `
       >
         <a
           className="emotion-3"
-          href="/api-keys/add"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >

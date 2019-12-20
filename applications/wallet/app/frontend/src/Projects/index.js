@@ -1,27 +1,28 @@
 import PropTypes from 'prop-types'
+import Router, { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import userShape from '../User/shape'
+const Projects = ({ children }) => {
+  const {
+    query: { projectId },
+  } = useRouter()
 
-import Layout from '../Layout'
+  const { data: { results: projects } = {} } = useSWR('/api/v1/projects/')
 
-const Projects = ({ user, logout, children }) => {
-  const { data: { results } = {} } = useSWR('/api/v1/projects/')
+  if (!Array.isArray(projects)) return 'Loading...'
 
-  if (!Array.isArray(results)) return 'Loading...'
+  if (projects.length === 0) return 'You have 0 projects'
 
-  if (results.length === 0) return 'You have 0 projects'
+  if (!projectId || !projects.find(({ id }) => projectId === id)) {
+    Router.push('/[projectId]/jobs', `/${projects[0].id}/jobs`)
 
-  return (
-    <Layout user={user} logout={logout} results={results}>
-      {children}
-    </Layout>
-  )
+    return null
+  }
+
+  return children({ projectId })
 }
 
 Projects.propTypes = {
-  user: PropTypes.shape(userShape).isRequired,
-  logout: PropTypes.func.isRequired,
   children: PropTypes.func.isRequired,
 }
 

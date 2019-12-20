@@ -5,6 +5,7 @@ import { SWRConfig } from 'swr'
 
 import Login from '../Login'
 import Projects from '../Projects'
+import Layout from '../Layout'
 
 import { initialize } from '../Fetch/helpers'
 
@@ -49,7 +50,7 @@ const Authentication = ({ children }) => {
 
   if (!hasLocalStorageLoaded) return null
 
-  if (!user.id) {
+  if (!user.username) {
     return (
       <Login
         googleAuth={googleAuth}
@@ -64,13 +65,15 @@ const Authentication = ({ children }) => {
   return (
     <SWRConfig value={{ fetcher }}>
       <Projects user={user} logout={logout({ googleAuth, setUser })}>
-        {({ selectedProject }) =>
-          children({
-            user,
-            logout: logout({ googleAuth, setUser }),
-            selectedProject,
-          })
-        }
+        {({ projectId }) => (
+          <Layout user={user} logout={logout}>
+            {children({
+              user,
+              logout: logout({ googleAuth, setUser }),
+              projectId,
+            })}
+          </Layout>
+        )}
       </Projects>
     </SWRConfig>
   )

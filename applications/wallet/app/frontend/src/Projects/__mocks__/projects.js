@@ -18,7 +18,7 @@ const projects = {
         'http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9c/',
       jobs:
         'http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9c/jobs/',
-      name: 'asdf',
+      name: 'azerty',
       users: ['http://localhost/api/v1/users/1/'],
     },
   ],

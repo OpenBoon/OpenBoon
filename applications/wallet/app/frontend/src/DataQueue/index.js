@@ -13,11 +13,10 @@ export const noop = () => () => {}
 
 const SIZE = 20
 
-const DataQueue = ({ selectedProject: { id: projectId } }) => {
-  const router = useRouter()
+const DataQueue = ({ projectId }) => {
   const {
     query: { page = 1 },
-  } = router
+  } = useRouter()
 
   const parsedPage = parseInt(page, 10)
   const from = parsedPage * SIZE - SIZE
@@ -76,10 +75,7 @@ const DataQueue = ({ selectedProject: { id: projectId } }) => {
 }
 
 DataQueue.propTypes = {
-  selectedProject: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  }).isRequired,
+  projectId: PropTypes.string.isRequired,
 }
 
 export default DataQueue

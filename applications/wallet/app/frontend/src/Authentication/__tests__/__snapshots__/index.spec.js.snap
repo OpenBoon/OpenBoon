@@ -21,7 +21,20 @@ exports[`<Authentication /> should render properly when user is logged in 2`] = 
       }
     }
   >
-    Hello World
+    <Layout
+      logout={[Function]}
+      user={
+        Object {
+          "email": "jane.doe@zorroa.com",
+          "firstName": "Jane",
+          "id": 1,
+          "lastName": "Doe",
+          "username": "jane.doe",
+        }
+      }
+    >
+      Hello World
+    </Layout>
   </Projects>
 </SWRConfig>
 `;

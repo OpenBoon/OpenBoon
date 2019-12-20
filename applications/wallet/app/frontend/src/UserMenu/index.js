@@ -15,6 +15,7 @@ const UserMenu = ({
 }) => {
   return (
     <Menu
+      open="left"
       button={({ onBlur, onClick }) => (
         <button
           type="button"

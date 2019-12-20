@@ -6,6 +6,7 @@ import Authentication, { noop } from '..'
 
 jest.mock('../../Login', () => 'Login')
 jest.mock('../../Projects')
+jest.mock('../../Layout', () => 'Layout')
 
 jest.mock('../helpers')
 

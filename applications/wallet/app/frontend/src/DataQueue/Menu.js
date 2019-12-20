@@ -35,6 +35,7 @@ const ACTIONS = [
 const DataQueueMenu = ({ projectId, jobId, revalidate }) => {
   return (
     <Menu
+      open="left"
       button={({ onBlur, onClick }) => (
         <Button
           aria-label="Toggle Actions Menu"

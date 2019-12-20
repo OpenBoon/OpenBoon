@@ -79,7 +79,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
       >
         <a
           className="emotion-0"
-          href="/"
+          href="/undefined/jobs"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -96,7 +96,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
       >
         <a
           className="emotion-0"
-          href="/api-keys"
+          href="/undefined/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -227,7 +227,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
       >
         <a
           className="emotion-0"
-          href="/"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -244,7 +244,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
       >
         <a
           className="emotion-2"
-          href="/api-keys"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >

@@ -133,6 +133,11 @@ exports[`<UserMenu /> should render properly 2`] = `
 }
 
 .emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3:hover {
   background-color: #4a4a4a;
 }
 
