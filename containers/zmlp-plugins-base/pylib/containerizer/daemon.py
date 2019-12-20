@@ -5,8 +5,8 @@ import sys
 import zmq
 
 from containerizer.process import ProcessorExecutor
-from pixml.analysis import Reactor
 from pixml.rest import PixmlJsonEncoder
+from .reactor import Reactor
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +15,7 @@ class PixmlContainerDaemon(object):
     """Starts a ZMQ server which allows us to run the processors contained
     in the image on asset metadata.
     """
+
     def __init__(self, port, reactor=None):
         self.port = port
         self.socket = self.__setup_zmq_socket(port)
@@ -64,6 +65,7 @@ class ZmqEventEmitter(object):
     """
     An event emitter that emits to a ZMQ socket.
     """
+
     def __init__(self, socket):
         """
         Initialize a new ZmqEventEmitter.
