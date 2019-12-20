@@ -11,41 +11,41 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-124 {
+.emotion-135 {
   width: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
   white-space: nowrap;
 }
 
-.emotion-124 tr {
+.emotion-135 tr {
   background-color: #252525;
 }
 
-.emotion-124 tr:nth-of-type(2n) {
+.emotion-135 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-124 tr:hover {
+.emotion-135 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-124 tr:hover td {
+.emotion-135 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-124 tr:hover td:first-of-type {
+.emotion-135 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-124 tr:hover td:last-of-type {
+.emotion-135 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-124 td {
+.emotion-135 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -53,11 +53,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-right: 0;
 }
 
-.emotion-124 td:first-of-type {
+.emotion-135 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-124 td:last-of-type {
+.emotion-135 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
@@ -127,7 +127,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-21 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -138,14 +138,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   align-items: center;
 }
 
+.emotion-18 {
+  width: 212px;
+  position: relative;
+}
+
 .emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   height: 16px;
-  width: 212px;
-  position: relative;
 }
 
 .emotion-13 {
@@ -220,15 +223,15 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-bottom-right-radius: 4px;
 }
 
-.emotion-18 {
+.emotion-19 {
   width: 8px;
 }
 
-.emotion-20 {
+.emotion-21 {
   position: relative;
 }
 
-.emotion-19 {
+.emotion-20 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -262,16 +265,16 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-radius: 32px;
 }
 
-.emotion-19:hover {
+.emotion-20:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-19:hover {
+.emotion-20:hover {
   background-color: #808080;
 }
 
-.emotion-22 {
+.emotion-23 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -286,7 +289,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-29 {
+.emotion-30 {
   height: 100%;
   -webkit-flex: 14 0 auto;
   -ms-flex: 14 0 auto;
@@ -294,17 +297,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4a90e2;
 }
 
-.emotion-29:first-of-type {
+.emotion-30:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-29:last-of-type {
+.emotion-30:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-40 {
+.emotion-42 {
   height: 100%;
   -webkit-flex: 8 0 auto;
   -ms-flex: 8 0 auto;
@@ -312,17 +315,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-40:first-of-type {
+.emotion-42:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-40:last-of-type {
+.emotion-42:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-41 {
+.emotion-43 {
   height: 100%;
   -webkit-flex: 4 0 auto;
   -ms-flex: 4 0 auto;
@@ -330,17 +333,17 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4a90e2;
 }
 
-.emotion-41:first-of-type {
+.emotion-43:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-41:last-of-type {
+.emotion-43:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-57 {
+.emotion-61 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -355,7 +358,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-80 {
+.emotion-86 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -363,12 +366,12 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-80:first-of-type {
+.emotion-86:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-80:last-of-type {
+.emotion-86:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
@@ -380,7 +383,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
     Job Queue
   </h2>
   <table
-    className="emotion-124"
+    className="emotion-135"
   >
     <thead>
       <tr>
@@ -463,11 +466,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         </td>
         <td>
           <div
-            className="emotion-21"
+            className="emotion-22"
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-17"
+              className="emotion-18"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -475,27 +478,31 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
               tabIndex="0"
             >
               <div
-                className="emotion-13"
-              />
-              <div
-                className="emotion-14"
-              />
-              <div
-                className="emotion-15"
-              />
-              <div
-                className="emotion-16"
-              />
+                className="emotion-17"
+              >
+                <div
+                  className="emotion-13"
+                />
+                <div
+                  className="emotion-14"
+                />
+                <div
+                  className="emotion-15"
+                />
+                <div
+                  className="emotion-16"
+                />
+              </div>
             </div>
             <div
-              className="emotion-18"
+              className="emotion-19"
             />
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -512,7 +519,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
       <tr>
         <td>
           <div
-            className="emotion-22"
+            className="emotion-23"
           >
             Active
           </div>
@@ -545,11 +552,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         </td>
         <td>
           <div
-            className="emotion-21"
+            className="emotion-22"
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-17"
+              className="emotion-18"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -557,27 +564,31 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
               tabIndex="0"
             >
               <div
-                className="emotion-13"
-              />
-              <div
-                className="emotion-14"
-              />
-              <div
-                className="emotion-15"
-              />
-              <div
-                className="emotion-29"
-              />
+                className="emotion-17"
+              >
+                <div
+                  className="emotion-13"
+                />
+                <div
+                  className="emotion-14"
+                />
+                <div
+                  className="emotion-15"
+                />
+                <div
+                  className="emotion-30"
+                />
+              </div>
             </div>
             <div
-              className="emotion-18"
+              className="emotion-19"
             />
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -594,7 +605,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
       <tr>
         <td>
           <div
-            className="emotion-22"
+            className="emotion-23"
           >
             Active
           </div>
@@ -627,11 +638,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         </td>
         <td>
           <div
-            className="emotion-21"
+            className="emotion-22"
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-17"
+              className="emotion-18"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -639,24 +650,28 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
               tabIndex="0"
             >
               <div
-                className="emotion-13"
-              />
-              <div
-                className="emotion-40"
-              />
-              <div
-                className="emotion-41"
-              />
+                className="emotion-17"
+              >
+                <div
+                  className="emotion-13"
+                />
+                <div
+                  className="emotion-42"
+                />
+                <div
+                  className="emotion-43"
+                />
+              </div>
             </div>
             <div
-              className="emotion-18"
+              className="emotion-19"
             />
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -706,11 +721,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         </td>
         <td>
           <div
-            className="emotion-21"
+            className="emotion-22"
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-17"
+              className="emotion-18"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -718,18 +733,22 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
               tabIndex="0"
             >
               <div
-                className="emotion-13"
-              />
+                className="emotion-17"
+              >
+                <div
+                  className="emotion-13"
+                />
+              </div>
             </div>
             <div
-              className="emotion-18"
+              className="emotion-19"
             />
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -746,7 +765,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
       <tr>
         <td>
           <div
-            className="emotion-57"
+            className="emotion-61"
           >
             Finished
           </div>
@@ -779,11 +798,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         </td>
         <td>
           <div
-            className="emotion-21"
+            className="emotion-22"
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-17"
+              className="emotion-18"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -791,18 +810,22 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
               tabIndex="0"
             >
               <div
-                className="emotion-13"
-              />
+                className="emotion-17"
+              >
+                <div
+                  className="emotion-13"
+                />
+              </div>
             </div>
             <div
-              className="emotion-18"
+              className="emotion-19"
             />
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -819,7 +842,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
       <tr>
         <td>
           <div
-            className="emotion-22"
+            className="emotion-23"
           >
             Active
           </div>
@@ -852,11 +875,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         </td>
         <td>
           <div
-            className="emotion-21"
+            className="emotion-22"
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-17"
+              className="emotion-18"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -864,18 +887,22 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
               tabIndex="0"
             >
               <div
-                className="emotion-13"
-              />
+                className="emotion-17"
+              >
+                <div
+                  className="emotion-13"
+                />
+              </div>
             </div>
             <div
-              className="emotion-18"
+              className="emotion-19"
             />
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -892,7 +919,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
       <tr>
         <td>
           <div
-            className="emotion-22"
+            className="emotion-23"
           >
             Active
           </div>
@@ -919,11 +946,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td />
         <td>
           <div
-            className="emotion-21"
+            className="emotion-22"
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-17"
+              className="emotion-18"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -931,18 +958,22 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
               tabIndex="0"
             >
               <div
-                className="emotion-80"
-              />
+                className="emotion-17"
+              >
+                <div
+                  className="emotion-86"
+                />
+              </div>
             </div>
             <div
-              className="emotion-18"
+              className="emotion-19"
             />
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -959,7 +990,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
       <tr>
         <td>
           <div
-            className="emotion-22"
+            className="emotion-23"
           >
             Active
           </div>
@@ -986,11 +1017,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td />
         <td>
           <div
-            className="emotion-21"
+            className="emotion-22"
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-17"
+              className="emotion-18"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -998,18 +1029,22 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
               tabIndex="0"
             >
               <div
-                className="emotion-13"
-              />
+                className="emotion-17"
+              >
+                <div
+                  className="emotion-13"
+                />
+              </div>
             </div>
             <div
-              className="emotion-18"
+              className="emotion-19"
             />
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -1026,7 +1061,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
       <tr>
         <td>
           <div
-            className="emotion-22"
+            className="emotion-23"
           >
             Active
           </div>
@@ -1053,11 +1088,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td />
         <td>
           <div
-            className="emotion-21"
+            className="emotion-22"
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-17"
+              className="emotion-18"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -1065,18 +1100,22 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
               tabIndex="0"
             >
               <div
-                className="emotion-13"
-              />
+                className="emotion-17"
+              >
+                <div
+                  className="emotion-13"
+                />
+              </div>
             </div>
             <div
-              className="emotion-18"
+              className="emotion-19"
             />
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -1093,7 +1132,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
       <tr>
         <td>
           <div
-            className="emotion-22"
+            className="emotion-23"
           >
             Active
           </div>
@@ -1120,11 +1159,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td />
         <td>
           <div
-            className="emotion-21"
+            className="emotion-22"
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-17"
+              className="emotion-18"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -1132,18 +1171,22 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
               tabIndex="0"
             >
               <div
-                className="emotion-13"
-              />
+                className="emotion-17"
+              >
+                <div
+                  className="emotion-13"
+                />
+              </div>
             </div>
             <div
-              className="emotion-18"
+              className="emotion-19"
             />
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -1160,7 +1203,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
       <tr>
         <td>
           <div
-            className="emotion-22"
+            className="emotion-23"
           >
             Active
           </div>
@@ -1193,11 +1236,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         </td>
         <td>
           <div
-            className="emotion-21"
+            className="emotion-22"
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-17"
+              className="emotion-18"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -1205,21 +1248,25 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
               tabIndex="0"
             >
               <div
-                className="emotion-13"
-              />
-              <div
-                className="emotion-80"
-              />
+                className="emotion-17"
+              >
+                <div
+                  className="emotion-13"
+                />
+                <div
+                  className="emotion-86"
+                />
+              </div>
             </div>
             <div
-              className="emotion-18"
+              className="emotion-19"
             />
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
