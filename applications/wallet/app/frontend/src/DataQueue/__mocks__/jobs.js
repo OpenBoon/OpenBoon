@@ -13,7 +13,7 @@ const jobs = {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 4,
+        assetErrorCount: 4000,
       },
       taskCounts: {
         tasksTotal: 16,
@@ -53,7 +53,7 @@ const jobs = {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 4,
+        assetErrorCount: 4000000,
       },
       taskCounts: {
         tasksTotal: 16,
