@@ -12,7 +12,9 @@ import DataQueueMenu from './Menu'
 const ERROR_COUNT_HEIGHT = 32
 
 const DataQueueRow = ({
+  projectId,
   job: {
+    id: jobId,
     state,
     name,
     createdUser: { username },
@@ -23,6 +25,7 @@ const DataQueueRow = ({
     timeUpdated,
     taskCounts: tC,
   },
+  revalidate,
 }) => {
   const taskCounts = { ...tC, tasksPending: tC.tasksWaiting + tC.tasksQueued }
 
@@ -69,7 +72,11 @@ const DataQueueRow = ({
             timeUpdated={timeUpdated}
           />
           <div css={{ width: spacing.base }} />
-          <DataQueueMenu />
+          <DataQueueMenu
+            projectId={projectId}
+            jobId={jobId}
+            revalidate={revalidate}
+          />
         </div>
       </td>
     </tr>
@@ -77,6 +84,7 @@ const DataQueueRow = ({
 }
 
 DataQueueRow.propTypes = {
+  projectId: PropTypes.string.isRequired,
   job: PropTypes.shape({
     id: PropTypes.string.isRequired,
     state: PropTypes.string.isRequired,
@@ -101,6 +109,7 @@ DataQueueRow.propTypes = {
       tasksRunning: PropTypes.number.isRequired,
     }).isRequired,
   }).isRequired,
+  revalidate: PropTypes.func.isRequired,
 }
 
 export default DataQueueRow

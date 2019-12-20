@@ -3,7 +3,7 @@ import { colors, spacing, constants } from '../Styles'
 
 const STATUS_COLORS = {
   Active: colors.signal.canary.base,
-  Canceled: colors.structure.steel,
+  Cancelled: colors.structure.steel,
   Finished: colors.signal.grass.base,
 }
 

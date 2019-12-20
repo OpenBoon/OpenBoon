@@ -437,7 +437,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             className="emotion-9"
           >
-            Canceled
+            Cancelled
           </div>
         </td>
         <td>
@@ -686,7 +686,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             className="emotion-9"
           >
-            Canceled
+            Cancelled
           </div>
         </td>
         <td>

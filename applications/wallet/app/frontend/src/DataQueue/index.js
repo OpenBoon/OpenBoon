@@ -13,7 +13,7 @@ export const noop = () => () => {}
 
 const SIZE = 20
 
-const DataQueue = ({ selectedProject }) => {
+const DataQueue = ({ selectedProject: { id: projectId } }) => {
   const router = useRouter()
   const {
     query: { page = 1 },
@@ -22,8 +22,8 @@ const DataQueue = ({ selectedProject }) => {
   const parsedPage = parseInt(page, 10)
   const from = parsedPage * SIZE - SIZE
 
-  const { data: { count = null, results } = {} } = useSWR(
-    `/api/v1/projects/${selectedProject.id}/jobs/?from=${from}&size=${SIZE}`,
+  const { data: { count = 0, results } = {}, revalidate } = useSWR(
+    `/api/v1/projects/${projectId}/jobs/?from=${from}&size=${SIZE}`,
   )
 
   if (!Array.isArray(results)) return 'Loading...'
@@ -52,7 +52,14 @@ const DataQueue = ({ selectedProject }) => {
           'Task Progress',
         ]}
         items={results}
-        renderRow={job => <DataQueueRow key={job.id} job={job} />}
+        renderRow={job => (
+          <DataQueueRow
+            key={job.id}
+            projectId={projectId}
+            job={job}
+            revalidate={revalidate}
+          />
+        )}
       />
 
       <div>&nbsp;</div>

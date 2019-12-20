@@ -15,7 +15,7 @@ describe('getTimeEnded()', () => {
 
   describe('when state is not In Progress', () => {
     it('should return timeUpdated', () => {
-      const state = 'Canceled'
+      const state = 'Cancelled'
       const currentTime = 1565211006590
       const timeUpdated = 1565211006580
       getTimeEnded({ state, timeUpdated })
