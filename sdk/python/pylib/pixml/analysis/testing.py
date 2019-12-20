@@ -25,6 +25,7 @@ class TestProcessor(AssetBuilder):
     """
     def __init__(self):
         super(TestProcessor, self).__init__()
+        self.add_arg(Argument('sleep', 'int', default=1))
         self.add_arg(Argument('attrs', 'struct', default=None))
         self.add_arg(Argument('send_event', 'str', default=None))
         self.add_arg(Argument('raise_fatal', 'bool', default=False,
@@ -45,7 +46,9 @@ class TestProcessor(AssetBuilder):
         if event_type:
             self.logger.info('emitting event: {}'.format(event_type))
             self.reactor.emitter.write({'type': event_type, 'payload': {'ding': 'dong'}})
-        time.sleep(1)
+
+        self.logger.info("Sleeping {}".format(self.arg_value('sleep')))
+        time.sleep(self.arg_value('sleep'))
 
     def teardown(self):
         self.logger.info('Running TestProcessor teardown()')
