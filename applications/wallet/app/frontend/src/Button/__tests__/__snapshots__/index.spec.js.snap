@@ -29,6 +29,7 @@ exports[`<Button /> should have a type "button" and be aria-disabled, and not cl
   font-weight: 500;
   border: none;
   cursor: not-allowed;
+  background-color: transparent;
 }
 
 .emotion-0,
@@ -86,6 +87,7 @@ exports[`<Button /> should have a type "button", pass additional props, and be c
   font-weight: 500;
   border: none;
   cursor: pointer;
+  background-color: transparent;
 }
 
 .emotion-0,
@@ -142,6 +144,7 @@ exports[`<Button /> should render a link as an anchor tag with no onClick 1`] = 
   font-weight: 500;
   border: none;
   cursor: pointer;
+  background-color: transparent;
 }
 
 .emotion-0,
@@ -165,6 +168,115 @@ exports[`<Button /> should render a link as an anchor tag with no onClick 1`] = 
   href="http://www.aspiration.com"
   rel="noopener noreferrer"
   target="_blank"
+>
+  Hello
+</a>
+`;
+
+exports[`<Button /> should render properly for MENU_ITEM Button 1`] = `
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  color: #ffffff;
+  padding: 8px 16px;
+  font-weight: 400;
+}
+
+.emotion-0:hover {
+  background-color: #4a4a4a;
+}
+
+<button
+  className="emotion-0"
+  onClick={[Function]}
+  type="button"
+>
+  Hello
+</button>
+`;
+
+exports[`<Button /> should render properly for MENU_ITEM Link 1`] = `
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  color: #ffffff;
+  padding: 8px 16px;
+  font-weight: 400;
+}
+
+.emotion-0:hover {
+  background-color: #4a4a4a;
+}
+
+<a
+  className="emotion-0"
+  href="/hello"
 >
   Hello
 </a>
@@ -199,6 +311,7 @@ exports[`<Button /> should render properly for NEUTRAL Button 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  background-color: transparent;
   padding: 12px;
 }
 
@@ -240,6 +353,7 @@ exports[`<Button /> should render properly for NEUTRAL Link 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  background-color: transparent;
   padding: 12px;
 }
 
@@ -280,6 +394,7 @@ exports[`<Button /> should render properly for PRIMARY Button 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  background-color: transparent;
 }
 
 .emotion-0,
@@ -336,6 +451,7 @@ exports[`<Button /> should render properly for PRIMARY Link 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  background-color: transparent;
 }
 
 .emotion-0,

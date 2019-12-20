@@ -259,6 +259,7 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   font-weight: 500;
   border: none;
   cursor: not-allowed;
+  background-color: transparent;
 }
 
 .emotion-45,
