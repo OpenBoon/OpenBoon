@@ -157,13 +157,13 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 }
 
 .emotion-13:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .emotion-13:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .emotion-14 {
@@ -175,13 +175,13 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 }
 
 .emotion-14:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .emotion-14:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .emotion-15 {
@@ -193,13 +193,13 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 }
 
 .emotion-15:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .emotion-15:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .emotion-16 {
@@ -211,13 +211,13 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 }
 
 .emotion-16:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .emotion-16:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .emotion-18 {
@@ -295,13 +295,13 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 }
 
 .emotion-29:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .emotion-29:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .emotion-40 {
@@ -313,13 +313,13 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 }
 
 .emotion-40:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .emotion-40:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .emotion-41 {
@@ -331,13 +331,13 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 }
 
 .emotion-41:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .emotion-41:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .emotion-57 {
@@ -364,13 +364,13 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
 }
 
 .emotion-80:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .emotion-80:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 <div>
