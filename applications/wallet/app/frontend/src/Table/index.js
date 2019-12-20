@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import NoJobsSvg from '../Icons/noJobs.svg'
+
 const Table = ({ columns, items, renderRow }) => {
   return (
     <table
@@ -70,7 +72,32 @@ const Table = ({ columns, items, renderRow }) => {
           ))}
         </tr>
       </thead>
-      <tbody>{items.map(item => renderRow(item))}</tbody>
+      <tbody>
+        {items.length === 0 ? (
+          <tr>
+            <td colSpan="8">
+              <div
+                css={{
+                  height: '300px',
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  color: 'red',
+                  fontSize: typography.size.kilo,
+                  lineHeight: typography.height.kilo,
+                }}>
+                <NoJobsSvg width={40} color="red" />
+                <div>There are currently no jobs in the queue.</div>
+                <div>Any new job will appear here.</div>
+              </div>
+            </td>
+          </tr>
+        ) : (
+          items.map(item => renderRow(item))
+        )}
+      </tbody>
     </table>
   )
 }
