@@ -81,8 +81,8 @@ class ClusterClient(object):
         Send a ping to the Archivist. The ping keeps the analyst record in the "Up"
         state.
 
-        :param ping:
-        :return:
+        Args:
+            ping (dict): The ping to send.
         """
         return requests.post(self.remote_url + "/cluster/_ping",
                              verify=False, json=ping, headers=self._headers()).json()
@@ -91,7 +91,6 @@ class ClusterClient(object):
         """
         Returns the highest priority task from the Archivist. The Task on the
         Archivist is set to the Queued state.
-        :return:
         """
         data = {}
         try:
