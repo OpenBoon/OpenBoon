@@ -2,8 +2,6 @@ import TestRenderer from 'react-test-renderer'
 
 import Pagination from '..'
 
-const noop = () => () => {}
-
 describe('<Pagination />', () => {
   it('should render properly on first page', () => {
     const component = TestRenderer.create(
@@ -13,7 +11,6 @@ describe('<Pagination />', () => {
         totalPages={2}
         prevLink="/"
         nextLink="/?page=2"
-        onClick={noop}
       />,
     )
 
@@ -28,7 +25,6 @@ describe('<Pagination />', () => {
         totalPages={2}
         prevLink="/"
         nextLink="/?page=2"
-        onClick={noop}
       />,
     )
 
