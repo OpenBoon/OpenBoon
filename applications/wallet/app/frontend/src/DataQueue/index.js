@@ -22,7 +22,7 @@ const DataQueue = ({ selectedProject: { id: projectId } }) => {
   const parsedPage = parseInt(page, 10)
   const from = parsedPage * SIZE - SIZE
 
-  const { data: { count = null, results } = {} } = useSWR(
+  const { data: { count = 0, results } = {}, revalidate } = useSWR(
     `/api/v1/projects/${projectId}/jobs/?from=${from}&size=${SIZE}`,
   )
 
@@ -53,7 +53,12 @@ const DataQueue = ({ selectedProject: { id: projectId } }) => {
         ]}
         items={results}
         renderRow={job => (
-          <DataQueueRow key={job.id} projectId={projectId} job={job} />
+          <DataQueueRow
+            key={job.id}
+            projectId={projectId}
+            job={job}
+            revalidate={revalidate}
+          />
         )}
       />
 

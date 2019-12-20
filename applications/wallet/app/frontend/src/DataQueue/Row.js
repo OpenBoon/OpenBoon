@@ -25,6 +25,7 @@ const DataQueueRow = ({
     timeUpdated,
     taskCounts: tC,
   },
+  revalidate,
 }) => {
   const taskCounts = { ...tC, tasksPending: tC.tasksWaiting + tC.tasksQueued }
 
@@ -71,7 +72,11 @@ const DataQueueRow = ({
             timeUpdated={timeUpdated}
           />
           <div css={{ width: spacing.base }} />
-          <DataQueueMenu projectId={projectId} jobId={jobId} />
+          <DataQueueMenu
+            projectId={projectId}
+            jobId={jobId}
+            revalidate={revalidate}
+          />
         </div>
       </td>
     </tr>
@@ -104,6 +109,7 @@ DataQueueRow.propTypes = {
       tasksRunning: PropTypes.number.isRequired,
     }).isRequired,
   }).isRequired,
+  revalidate: PropTypes.func.isRequired,
 }
 
 export default DataQueueRow
