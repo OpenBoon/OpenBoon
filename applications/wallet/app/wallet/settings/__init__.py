@@ -164,4 +164,4 @@ ARCHIVIST_URL = os.environ.get('ARCHIVIST_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
 
 # Google OAUTH2
-GOOGLE_OAUTH_CLIENT_ID = '683985502197-140kfdlheorkbc6e9vo748v5260df3pf.apps.googleusercontent.com'
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get('GOOGLE_OAUTH_CLIENT_ID')

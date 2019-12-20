@@ -1,7 +1,13 @@
+import logging
+import os
+
+from django.conf import settings
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.models import Group, User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, JsonResponse
+from google.auth.transport import requests
+from google.oauth2 import id_token
 from rest_framework import viewsets
 from rest_framework.views import APIView
 
@@ -21,11 +27,19 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 class LoginView(APIView):
-    """Basic login view that authenticates the user and returns the user's info."""
+    """Login view that supports Google OAuth bearer tokens passed in the "Authorization"
+    header or a username and password sent in the json payload.
+
+    """
     authentication_classes = []
     permission_classes = []
 
     def post(self, request, *args, **kwargs):
+
+        # If the Authorization header is included attempt to authenticate using
+        # Google OAuth.
+        # The code below was taken from the Google OAuth docs -
+        # https://developers.google.com/identity/sign-in/web/backend-auth
         if request.headers.get('Authorization'):
             token = request.headers.get('Authorization').split()[1]
             try:
@@ -43,25 +57,20 @@ class LoginView(APIView):
                                                first_name=idinfo.get('given_name'),
                                                last_name=idinfo.get('family_name'))
                 login(request, user)
-                return JsonResponse({'id': user.id,
-                                     'username': user.username,
-                                     'email': user.email,
-                                     'first_name': user.first_name,
-                                     'last_name': user.last_name})
             except ValueError as e:
                 return HttpResponse('Unauthorized: Bearer token invalid.', status=401)
+
+        # Attempt to authenticate using username and password.
         else:
             user = authenticate(username=request.data['username'],
                                 password=request.data['password'])
             if user:
                 login(request, user)
-                return JsonResponse({'id': user.id,
-                                     'username': user.username,
-                                     'email': user.email,
-                                     'first_name': user.first_name,
-                                     'last_name': user.last_name})
+
             else:
                 return HttpResponse('Unauthorized: Username & password invalid.', status=401)
+
+        return JsonResponse(UserSerializer(user, context={'request': request}).data)
 
 
 class LogoutView(APIView):

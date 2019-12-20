@@ -130,6 +130,7 @@ services:
       DJANGO_SETTINGS_MODULE: wallet.settings
       PG_HOST: postgres
       ARCHIVIST_URL: http://api-gateway:8080
+      GOOGLE_OAUTH_CLIENT_ID: '683985502197-140kfdlheorkbc6e9vo748v5260df3pf.apps.googleusercontent.com'
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s

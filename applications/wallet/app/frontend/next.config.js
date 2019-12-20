@@ -2,11 +2,11 @@ const withSourceMaps = require('@zeit/next-source-maps')()
 
 require('dotenv').config()
 
-const { ANALYZE, GOOGLE_OAUTH_API_KEY } = process.env
+const { ANALYZE, GOOGLE_OAUTH_CLIENT_ID } = process.env
 
 module.exports = withSourceMaps({
   publicRuntimeConfig: {
-    GOOGLE_OAUTH_API_KEY,
+    GOOGLE_OAUTH_CLIENT_ID,
   },
   webpack: (config, { isServer }) => {
     if (ANALYZE && !isServer) {

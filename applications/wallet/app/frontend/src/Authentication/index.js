@@ -9,7 +9,7 @@ import Projects from '../Projects'
 import { getUser, authenticateUser, logout, fetcher } from './helpers'
 
 const {
-  publicRuntimeConfig: { GOOGLE_OAUTH_API_KEY },
+  publicRuntimeConfig: { GOOGLE_OAUTH_CLIENT_ID },
 } = getConfig()
 
 export const noop = () => () => {}
@@ -26,7 +26,7 @@ const Authentication = ({ children }) => {
     window.onload = () => {
       window.gapi.load('auth2', async () => {
         googleAuth = window.gapi.auth2.init({
-          client_id: `${GOOGLE_OAUTH_API_KEY}.apps.googleusercontent.com`,
+          client_id: `${GOOGLE_OAUTH_CLIENT_ID}`,
         })
         setHasGoogleLoaded(true)
       })
