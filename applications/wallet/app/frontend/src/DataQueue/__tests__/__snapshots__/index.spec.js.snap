@@ -1253,10 +1253,10 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   </div>
   <Pagination
     currentPage={1}
-    legend="Jobs: 1–3 of 11"
+    legend="Jobs: 1–11 of 11"
     nextLink="/?page=2"
     prevLink="/?page=0"
-    totalPages={4}
+    totalPages={1}
   />
 </div>
 `;

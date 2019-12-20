@@ -34,7 +34,7 @@ const PaginationLink = ({ currentPage, totalPages, direction, href }) => {
   return (
     <>
       {isDisabled ? (
-        <button type="button" css={styles} disabled={isDisabled}>
+        <button type="button" css={styles} disabled>
           <ChevronSvg
             width={16}
             css={{

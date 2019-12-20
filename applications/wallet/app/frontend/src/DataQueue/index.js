@@ -11,7 +11,7 @@ import DataQueueRow from './Row'
 
 export const noop = () => () => {}
 
-const SIZE = 3
+const SIZE = 20
 
 const DataQueue = ({ selectedProject }) => {
   const router = useRouter()
