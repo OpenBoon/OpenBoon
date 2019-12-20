@@ -28,9 +28,11 @@ const PaginationLink = ({
     : {
         href,
         rel: direction,
-        onClick: onClick({
-          page: isPrev ? currentPage - 1 : currentPage + 1,
-        }),
+        onClick: () => {
+          onClick({
+            newPage: isPrev ? currentPage - 1 : currentPage + 1,
+          })
+        },
       }
 
   return (

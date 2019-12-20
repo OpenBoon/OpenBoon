@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
 import PageTitle from '../PageTitle'
@@ -20,14 +22,31 @@ const COLUMNS = [
   'Progress',
 ]
 
+const SIZE = 3
+
 const DataQueue = ({ selectedProject }) => {
-  const { data: { results } = {} } = useSWR(
-    `/api/v1/projects/${selectedProject.id}/jobs/`,
+  const router = useRouter()
+  const {
+    query: { page },
+  } = router
+  const [paginationParams, setPaginationParams] = useState({
+    currentPage: parseInt(page, 10) || 1,
+  })
+
+  const { currentPage } = paginationParams
+  const from = currentPage * SIZE - SIZE
+
+  const {
+    data: { count = null, previous = null, next = null, results } = {},
+  } = useSWR(
+    `/api/v1/projects/${selectedProject.id}/jobs/?from=${from}&size=${SIZE}`,
   )
 
   if (!Array.isArray(results)) return 'Loading...'
 
   if (results.length === 0) return 'You have 0 jobs'
+
+  const to = Math.min(currentPage * SIZE, count)
 
   return (
     <div>
@@ -42,12 +61,16 @@ const DataQueue = ({ selectedProject }) => {
       <div>&nbsp;</div>
 
       <Pagination
-        legend="Jobs: 1–17 of 415"
-        currentPage={1}
-        totalPages={2}
-        prevLink="/"
-        nextLink="/?page=2"
-        onClick={noop}
+        legend={`Jobs: ${from + 1}–${to} of ${count}`}
+        currentPage={currentPage}
+        totalPages={Math.ceil(count / SIZE)}
+        prevLink={previous ? `/?page=${currentPage - 1}` : '/'}
+        nextLink={next ? `/?page=${currentPage + 1}` : `/`}
+        onClick={({ newPage }) =>
+          setPaginationParams({
+            currentPage: newPage,
+          })
+        }
       />
     </div>
   )
