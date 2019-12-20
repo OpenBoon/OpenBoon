@@ -14,9 +14,9 @@ exports[`<Authentication /> should render properly when user is logged in 2`] = 
     user={
       Object {
         "email": "jane.doe@zorroa.com",
-        "first_name": "Jane",
+        "firstName": "Jane",
         "id": 1,
-        "last_name": "Doe",
+        "lastName": "Doe",
         "username": "jane.doe",
       }
     }
