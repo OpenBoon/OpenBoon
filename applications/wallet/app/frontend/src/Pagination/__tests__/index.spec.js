@@ -1,11 +1,10 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import Pagination from '..'
 
-const noop = () => () => {}
-
 describe('<Pagination />', () => {
   it('should render properly on first page', () => {
+    const mockOnClickFn = jest.fn()
     const component = TestRenderer.create(
       <Pagination
         legend="Jobs: 1–17 of 415"
@@ -13,14 +12,22 @@ describe('<Pagination />', () => {
         totalPages={2}
         prevLink="/"
         nextLink="/?page=2"
-        onClick={noop}
+        onClick={mockOnClickFn}
       />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root.findByProps({ rel: 'next' }).props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+    expect(mockOnClickFn).toHaveBeenCalledWith({ newPage: 2 })
   })
 
   it('should render properly on last page', () => {
+    const mockOnClickFn = jest.fn()
     const component = TestRenderer.create(
       <Pagination
         legend="Jobs: 1–17 of 415"
@@ -28,10 +35,17 @@ describe('<Pagination />', () => {
         totalPages={2}
         prevLink="/"
         nextLink="/?page=2"
-        onClick={noop}
+        onClick={mockOnClickFn}
       />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root.findByProps({ rel: 'prev' }).props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+    expect(mockOnClickFn).toHaveBeenCalledWith({ newPage: 1 })
   })
 })
