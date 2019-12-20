@@ -5,7 +5,6 @@ import DataQueue, { noop } from '..'
 import mockProjects from '../../Projects/__mocks__/projects'
 import jobs from '../__mocks__/jobs'
 
-jest.mock('../../Pagination', () => 'Pagination')
 jest.mock('../../UserMenu', () => 'UserMenu')
 
 describe('<DataQueue />', () => {
@@ -21,7 +20,12 @@ describe('<DataQueue />', () => {
 
   it('should render properly with no jobs', () => {
     require('swr').__setMockUseSWRResponse({
-      data: { results: [] },
+      data: {
+        count: 0,
+        next: null,
+        previous: null,
+        results: [],
+      },
     })
 
     const component = TestRenderer.create(

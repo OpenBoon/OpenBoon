@@ -358,6 +358,140 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-bottom-right-radius: 2px;
 }
 
+.emotion-146 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.emotion-137 {
+  color: #4d4948;
+  padding: 8px 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-138 {
+  color: #4d4948;
+  padding: 8px 12px;
+  padding-left: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-145 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-140 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #4d4948;
+  border: 1px solid #2e2e2e;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.emotion-140:hover {
+  opacity: 1;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-139 {
+  color: #b3b3b3;
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-141 {
+  padding: 8px 12px;
+  border: 1px solid #2e2e2e;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #b3b3b3;
+}
+
+.emotion-142 {
+  padding: 8px 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #4d4948;
+}
+
+.emotion-144 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #4d4948;
+  border: 1px solid #2e2e2e;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-144:hover {
+  opacity: 0.5;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-143 {
+  color: #b3b3b3;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
 <div>
   <h2
     className="emotion-0"
@@ -1251,14 +1385,59 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   <div>
      
   </div>
-  <Pagination
-    currentPage={1}
-    legend="Jobs: 1–3 of 11"
-    nextLink="/"
-    onClick={[Function]}
-    prevLink="/"
-    totalPages={4}
-  />
+  <div
+    className="emotion-146"
+  >
+    <div
+      className="emotion-137"
+    >
+      Jobs: 1–3 of 11
+    </div>
+    <div
+      className="emotion-138"
+    >
+      Page:
+    </div>
+    <div
+      className="emotion-145"
+    >
+      <button
+        className="emotion-140"
+        disabled={true}
+        type="button"
+      >
+        <svg
+          className="emotion-139"
+          data-file-name="chevron.svg"
+          width={16}
+        />
+      </button>
+      <div
+        className="emotion-141"
+      >
+        1
+      </div>
+      <div
+        className="emotion-142"
+      >
+        of 
+        4
+      </div>
+      <a
+        className="emotion-144"
+        href="/?page=2"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        rel="next"
+      >
+        <svg
+          className="emotion-143"
+          data-file-name="chevron.svg"
+          width={16}
+        />
+      </a>
+    </div>
+  </div>
 </div>
 `;
 

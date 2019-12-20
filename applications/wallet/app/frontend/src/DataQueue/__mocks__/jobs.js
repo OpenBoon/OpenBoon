@@ -1,7 +1,9 @@
 const jobs = {
   count: 11,
-  next: null,
-  previous: null,
+  next:
+    'http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/?from=3&size=3',
+  previous:
+    'http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/?from=0&size=3',
   results: [
     {
       id: '82d5308b-67c2-1433-8fef-0a580a000956',

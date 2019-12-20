@@ -13,7 +13,6 @@ const Pagination = ({
   totalPages,
   prevLink,
   nextLink,
-  onClick,
 }) => {
   return (
     <div css={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -44,7 +43,6 @@ const Pagination = ({
           totalPages={totalPages}
           direction="prev"
           href={prevLink}
-          onClick={onClick}
         />
         <div
           css={{
@@ -70,7 +68,6 @@ const Pagination = ({
           totalPages={totalPages}
           direction="next"
           href={nextLink}
-          onClick={onClick}
         />
       </div>
     </div>
@@ -83,7 +80,6 @@ Pagination.propTypes = {
   totalPages: PropTypes.number.isRequired,
   prevLink: PropTypes.string.isRequired,
   nextLink: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
 }
 
 export default Pagination
