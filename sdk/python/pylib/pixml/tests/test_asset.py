@@ -130,7 +130,7 @@ class AssetAppTests(unittest.TestCase):
             "took": 4,
             "timed_out": False,
             "hits": {
-                "total": 2,
+                "total": {"value": 2},
                 "max_score": 0.2876821,
                 "hits": [
                     {

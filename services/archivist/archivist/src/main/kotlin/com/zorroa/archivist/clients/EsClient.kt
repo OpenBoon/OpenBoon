@@ -127,7 +127,7 @@ class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient)
      * a success or the mapping already existed.s
      */
     fun updateMapping(body: Map<String, Any>): Boolean {
-        val url = "${route.indexUrl}/_mapping/asset"
+        val url = "${route.indexUrl}/_mapping"
         val req = Request("PUT", url)
         req.setJsonEntity(Json.serializeToString(body))
 

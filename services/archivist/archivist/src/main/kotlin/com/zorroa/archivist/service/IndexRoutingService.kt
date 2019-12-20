@@ -16,7 +16,6 @@ import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.util.Json
 import org.apache.http.HttpHost
-import org.elasticsearch.action.admin.indices.close.CloseIndexRequest
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest
@@ -24,6 +23,7 @@ import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.client.indices.CloseIndexRequest
 import org.elasticsearch.common.xcontent.DeprecationHandler
 import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory

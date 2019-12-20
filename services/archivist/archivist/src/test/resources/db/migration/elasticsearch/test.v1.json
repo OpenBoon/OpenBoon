@@ -1,9 +1,4 @@
 {
-  "migration": {
-    "reindex": true,
-    "reingest": false,
-    "patch": 0
-  },
   "settings": {
     "index": {
       "mapping": {

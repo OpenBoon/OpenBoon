@@ -1,7 +1,6 @@
 package com.zorroa.es.similarity;
 
 import org.apache.lucene.index.LeafReaderContext;
-import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.fielddata.ScriptDocValues;
 import org.elasticsearch.plugins.Plugin;
@@ -9,7 +8,6 @@ import org.elasticsearch.plugins.ScriptPlugin;
 import org.elasticsearch.script.ScoreScript;
 import org.elasticsearch.script.ScriptContext;
 import org.elasticsearch.script.ScriptEngine;
-import org.elasticsearch.script.SearchScript;
 
 import java.io.IOException;
 import java.util.*;
@@ -145,8 +143,7 @@ public class SimilarityPlugin extends Plugin implements ScriptPlugin {
                         return new ScoreScript(p, lookup, ctx) {
 
                             @Override
-                            public double execute() {
-
+                            public double execute(ExplanationHolder explanationHolder) {
                                 ScriptDocValues.Strings strings;
 
                                 if (getDoc().containsKey(field)) {

@@ -62,7 +62,7 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
              */
             return object : ScoreScript(params, lookup, ctx) {
 
-                override fun execute(): Double {
+                override fun execute(explanationHolder: ExplanationHolder): Double {
                     var score = 0.0
 
                     try {
