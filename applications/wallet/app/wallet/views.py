@@ -1,6 +1,3 @@
-import logging
-import os
-
 from django.conf import settings
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.models import Group, User
@@ -57,7 +54,7 @@ class LoginView(APIView):
                                                first_name=idinfo.get('given_name'),
                                                last_name=idinfo.get('family_name'))
                 login(request, user)
-            except ValueError as e:
+            except ValueError:
                 return HttpResponse('Unauthorized: Bearer token invalid.', status=401)
 
         # Attempt to authenticate using username and password.
@@ -66,10 +63,8 @@ class LoginView(APIView):
                                 password=request.data['password'])
             if user:
                 login(request, user)
-
             else:
                 return HttpResponse('Unauthorized: Username & password invalid.', status=401)
-
         return JsonResponse(UserSerializer(user, context={'request': request}).data)
 
 
