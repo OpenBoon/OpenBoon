@@ -1,11 +1,15 @@
+import PropTypes from 'prop-types'
+
 import { colors, spacing, constants } from '../Styles'
+
+import { fetcher } from '../Fetch/helpers'
 
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
 
 import GearSvg from '../Icons/gear.svg'
 
-const DataQueueMenu = () => {
+const DataQueueMenu = ({ projectId, jobId }) => {
   return (
     <Menu
       button={({ onBlur, onClick }) => (
@@ -30,7 +34,12 @@ const DataQueueMenu = () => {
               <Button
                 variant={VARIANTS.MENU_ITEM}
                 onBlur={onBlur}
-                onClick={onClick}
+                onClick={async () => {
+                  await fetcher(
+                    `/api/v1/projects/${projectId}/jobs/${jobId}/pause/`,
+                    { method: 'PUT' },
+                  )
+                }}
                 isDisabled={false}>
                 Pause
               </Button>
@@ -76,6 +85,11 @@ const DataQueueMenu = () => {
       )}
     </Menu>
   )
+}
+
+DataQueueMenu.propTypes = {
+  projectId: PropTypes.string.isRequired,
+  jobId: PropTypes.string.isRequired,
 }
 
 export default DataQueueMenu

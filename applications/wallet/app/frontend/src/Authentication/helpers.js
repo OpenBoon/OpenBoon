@@ -59,17 +59,3 @@ export const logout = ({ setUser }) => async () => {
 
   setUser({})
 }
-
-export const fetcher = ({ setUser }) => async (...args) => {
-  const response = await fetch(...args)
-
-  if (response.status === 401) {
-    clearUser()
-
-    setUser({})
-
-    return {}
-  }
-
-  return response.json()
-}

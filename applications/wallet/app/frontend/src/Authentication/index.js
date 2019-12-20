@@ -5,12 +5,16 @@ import { SWRConfig } from 'swr'
 import Login from '../Login'
 import Projects from '../Projects'
 
-import { getUser, authenticateUser, logout, fetcher } from './helpers'
+import { initialize } from '../Fetch/helpers'
+
+import { getUser, authenticateUser, logout } from './helpers'
 
 const Authentication = ({ children }) => {
   const [hasLoaded, setHasLoaded] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState({})
+
+  const fetcher = initialize({ setUser })
 
   useEffect(() => {
     if (hasLoaded) return
@@ -23,7 +27,7 @@ const Authentication = ({ children }) => {
 
   if (!hasLoaded) return null
 
-  if (!user.id) {
+  if (!user.username) {
     return (
       <Login
         errorMessage={errorMessage}
@@ -34,7 +38,7 @@ const Authentication = ({ children }) => {
   }
 
   return (
-    <SWRConfig value={{ fetcher: fetcher({ setUser }) }}>
+    <SWRConfig value={{ fetcher }}>
       <Projects user={user} logout={logout({ setUser })}>
         {({ selectedProject }) =>
           children({

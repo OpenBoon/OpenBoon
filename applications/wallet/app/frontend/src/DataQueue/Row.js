@@ -12,7 +12,9 @@ import DataQueueMenu from './Menu'
 const ERROR_COUNT_HEIGHT = 32
 
 const DataQueueRow = ({
+  projectId,
   job: {
+    id: jobId,
     state,
     name,
     createdUser: { username },
@@ -69,7 +71,7 @@ const DataQueueRow = ({
             timeUpdated={timeUpdated}
           />
           <div css={{ width: spacing.base }} />
-          <DataQueueMenu />
+          <DataQueueMenu projectId={projectId} jobId={jobId} />
         </div>
       </td>
     </tr>
@@ -77,6 +79,7 @@ const DataQueueRow = ({
 }
 
 DataQueueRow.propTypes = {
+  projectId: PropTypes.string.isRequired,
   job: PropTypes.shape({
     id: PropTypes.string.isRequired,
     state: PropTypes.string.isRequired,
