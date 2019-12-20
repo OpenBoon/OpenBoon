@@ -6,7 +6,7 @@ import userShape from '../User/shape'
 import Layout from '../Layout'
 
 const Projects = ({ user, logout, children }) => {
-  const { data: { results } = {} } = useSWR('api/v1/projects/')
+  const { data: { results } = {} } = useSWR('/api/v1/projects/')
 
   if (!Array.isArray(results)) return 'Loading...'
 

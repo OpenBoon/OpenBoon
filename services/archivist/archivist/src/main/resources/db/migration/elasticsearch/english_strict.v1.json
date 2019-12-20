@@ -50,12 +50,6 @@
     "asset": {
       "dynamic": "strict",
       "properties": {
-        "element": {
-          "type": "join",
-          "relations": {
-            "asset": "clip"
-          }
-        },
         "source": {
           "dynamic": "strict",
           "properties": {
@@ -102,6 +96,9 @@
             },
             "filesize": {
               "type": "long"
+            },
+            "checksum": {
+              "type": "long"
             }
           }
         },
@@ -109,6 +106,7 @@
           "dynamic": "strict",
           "properties": {
             "pixelml": {
+              "dynamic": "strict",
               "properties": {
                 "tinyProxy": {
                   "type": "object",
@@ -167,6 +165,12 @@
               "type": "keyword"
             },
             "timeline": {
+              "type": "keyword"
+            },
+            "pile": {
+              "type": "keyword"
+            },
+            "sourceAssetId": {
               "type": "keyword"
             }
           }
@@ -230,10 +234,18 @@
                   "analyzer": "default"
                 }
               }
+            },
+            "content": {
+              "type": "text",
+              "analyzer": "default"
             }
           }
         },
         "aux": {
+          "type": "object",
+          "enabled": false
+        },
+        "tmp": {
           "type": "object",
           "enabled": false
         },

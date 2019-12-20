@@ -2,10 +2,12 @@
   "private": true,
   "scripts": {
     "analyze": "ANALYZE=1 next build",
-    "build": "next build && next export -o build",
+    "build": "next build",
+    "dev": "node -r esm devServer.js",
     "lint": "eslint '{pages,src}/**/*.js'",
+    "prod": "next build && next start",
     "size": "rimraf .next && next build && bundlesize",
-    "start": "node -r esm devServer.js",
+    "start": "next start",
     "test": "TZ=UTC jest --watch --notify --verbose",
     "test:cover": "TZ=UTC jest --coverage --verbose",
     "test:hook": "TZ=UTC jest --bail --findRelatedTests"
@@ -69,7 +71,7 @@
     {
       "//": "app",
       "path": ".next/static/**/pages/_app.js",
-      "maxSize": "30 kB"
+      "maxSize": "32 kB"
     },
     {
       "//": "main runtime",

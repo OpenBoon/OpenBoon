@@ -108,7 +108,6 @@ sdk-unit-tests:
   script:
     - python -m pip install pipenv pytest
     - cd sdk/python
-    - pip install -r requirements.txt
     - python setup.py install
     - pytest
     - cd ../../containers/zmlp-plugins-base

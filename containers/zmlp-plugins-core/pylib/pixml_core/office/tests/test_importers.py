@@ -1,13 +1,13 @@
-import os
 import json
-import pytest
-from pathlib2 import Path
+import os
 from unittest.mock import patch
 
-from pixml.analysis.storage import file_cache
-from pixml.analysis import Frame, PixmlUnrecoverableProcessorException
-from pixml.analysis.testing import PluginUnitTestCase, TestAsset
+import pytest
+from pathlib2 import Path
 
+from pixml.analysis import Frame, PixmlUnrecoverableProcessorException
+from pixml.analysis.storage import file_cache
+from pixml.analysis.testing import PluginUnitTestCase, TestAsset
 from pixml_core.office.importers import OfficeImporter, _content_sanitizer
 from pixml_core.office.oclient import OfficerClient
 
@@ -18,7 +18,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         self.path = Path('/tmp/path/file.pdf')
         self.asset = TestAsset(str(self.path))
 
-    def test_bad_extension(self):
+    @patch.object(OfficerClient, 'get_cache_location', return_value=None)
+    def test_bad_extension(self, _):
         path = Path('/tmp/file.bad')
         try:
             path.touch()
@@ -26,7 +27,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
             processor = self.init_processor(OfficeImporter(), {})
             with pytest.raises(PixmlUnrecoverableProcessorException) as error:
                 processor.process(frame)
-            assert 'Storage failure Invalid URI' in error.value.args[0]
+            assert 'Unable to determine page cache location' in error.value.args[0]
             processor.teardown()
         finally:
             if path.exists():
@@ -39,24 +40,32 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         metadata = json.loads('{"content": "%s"}' % has_nulls, object_hook=_content_sanitizer)
         self.assertDictEqual({'content': null_removed}, metadata)
 
-    @patch.object(OfficerClient, 'exists')
-    def test_needs_rerender(self, patch_exists):
-        patch_exists.return_value = False
-        asset = TestAsset('some_file.docx')
+    @patch.object(OfficerClient, 'render', return_value='/fake')
+    @patch.object(OfficerClient, 'get_cache_location', return_value=None)
+    def test_render_pagesno_clip_page_1(self, _, __):
         processor = self.init_processor(OfficeImporter(), {})
-        assert processor._needs_rerender(asset, 1) is True
+        processor.render_pages(self.asset, 1, False)
+        assert self.asset.get_attr('tmp.proxy_source_image') == '/fake/proxy.1.jpg'
 
-    @patch.object(OfficerClient, 'exists')
-    def test_needs_rerender_all_exist(self, patch_exists):
-        patch_exists.return_value = True
+    @patch.object(OfficerClient, 'get_cache_location', return_value=None)
+    @patch.object(OfficerClient, 'render', return_value='/fake')
+    def test_render_page_clip_page_2_not_exist(self, _, __):
         processor = self.init_processor(OfficeImporter(), {})
-        assert processor._needs_rerender(self.asset, 1) is False
+        processor.render_pages(self.asset, 2, False)
+        assert self.asset.get_attr('tmp.proxy_source_image') == '/fake/proxy.2.jpg'
+
+    @patch.object(OfficerClient, 'get_cache_location', return_value="/cached")
+    def test_render_page_clip_cached(self, _):
+        processor = self.init_processor(OfficeImporter(), {})
+        processor.render_pages(self.asset, 3, False)
+        assert self.asset.get_attr('tmp.proxy_source_image') == '/cached/proxy.3.jpg'
 
     @patch.object(OfficeImporter, 'get_metadata',
                   return_value={'author': 'Zach', 'content': 'temp'})
     @patch.object(OfficerClient, 'render', return_value='/fake')
-    def test_process_loads_metadata_to_asset(self, _, __):
-        processor = self.init_processor(OfficeImporter(), {'extract_pages': False})
+    @patch.object(OfficerClient, 'get_cache_location', return_value=None)
+    def test_process_loads_metadata_to_asset(self, _, __, ___):
+        processor = self.init_processor(OfficeImporter())
         processor.process(Frame(self.asset))
         assert self.asset.get_attr('media.author') == 'Zach'
         assert self.asset.get_attr('media.content') == 'temp'
@@ -64,40 +73,52 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
     @patch.object(OfficeImporter, 'get_metadata',
                   return_value={'author': 'Zach'})
     @patch.object(OfficerClient, 'render', return_value='/fake')
-    def test_process_loads_metadata(self, _, __):
-        processor = self.init_processor(OfficeImporter(), {'extract_pages': False})
+    @patch.object(OfficerClient, 'get_cache_location', return_value=None)
+    def test_process_loads_metadata(self, _, __, ___):
+        processor = self.init_processor(OfficeImporter())
         processor.process(Frame(self.asset))
         assert self.asset.get_attr('media.author') == 'Zach'
         assert self.asset.get_attr('media.content') is None
-        assert self.asset.get_attr('tmp.proxy_source_image').endswith("proxy.0.jpg")
+        assert self.asset.get_attr('tmp.proxy_source_image').endswith("proxy.1.jpg")
 
+    @patch.object(OfficerClient, 'get_cache_location', return_value=None)
     @patch.object(OfficeImporter, 'expand')
     @patch.object(OfficeImporter, 'get_metadata', return_value={'length': 3})
     @patch.object(OfficerClient, 'render', return_value='/fake')
-    def test_process_expands_children(self, _, __, expand_patch):
-        processor = self.init_processor(OfficeImporter(), {'extract_pages': True})
+    def test_process_expands_children(self, _, __, expand_patch, ___):
+        processor = self.init_processor(OfficeImporter(), {"extract_pages": True})
         processor.process(Frame(self.asset))
-        assert expand_patch.call_count == 3
+        assert expand_patch.call_count == 2
 
     @patch.object(file_cache, 'localize_uri')
     def test_get_metadata(self, cache_patch):
         path = os.path.dirname(__file__) + '/test_metadata.json'
         cache_patch.return_value = path
-        processor = self.init_processor(OfficeImporter(), {'extract_pages': True})
+        processor = self.init_processor(OfficeImporter())
         md = processor.get_metadata(self.asset, 1)
         assert md['title'] == 'PhD Thesis on \'Die Hard\''
         assert md['type'] == 'document'
         assert md['length'] == 6
 
     def test_get_image_uri(self):
-        processor = self.init_processor(OfficeImporter(), {'extract_pages': True})
+        processor = self.init_processor(OfficeImporter())
         md = processor.get_image_uri("pixml://ml-storage/tmp-files/officer/foo/bar", 1)
         assert md.startswith("pixml://")
         assert md.endswith('proxy.1.jpg')
 
     @patch.object(OfficerClient, '_get_render_request_body', return_value={})
     @patch.object(OfficerClient, 'render')
-    def test_render_outputs_exception(self, _, __):
+    @patch.object(OfficerClient, 'get_cache_location', return_value=None)
+    def test_render_outputs_exception(self, _, __, ___):
         processor = self.init_processor(OfficeImporter(), {})
         with pytest.raises(PixmlUnrecoverableProcessorException):
             processor.process(Frame(self.asset))
+
+    @patch.object(OfficerClient, '_get_render_request_body', return_value={})
+    @patch.object(OfficerClient, 'render', return_value='pixml://foo/bar')
+    @patch.object(OfficerClient, 'get_cache_location', return_value=None)
+    def test_render_pages(self, _, __, ___):
+        processor = self.init_processor(OfficeImporter(), {})
+        output_uri = processor.render_pages(self.asset, 1, True)
+        assert 'pixml://foo/bar' == output_uri
+        assert self.asset["tmp.proxy_source_image"] == 'pixml://foo/bar/proxy.1.jpg'

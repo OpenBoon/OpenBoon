@@ -122,7 +122,7 @@ class ClusterClient(object):
 
         Args:
             etype (str): The event type.
-            task (dict): A dictionary of task propertites.
+            task (dict): A dictionary of task properties
             payload (dict): An event payload.
 
         Returns:

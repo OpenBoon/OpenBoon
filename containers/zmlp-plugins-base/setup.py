@@ -13,7 +13,7 @@ setup(
     license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
     package_dir={'': 'pylib'},
     packages=['containerizer'],
-    scripts=['entrypoint'],
+    scripts=['server'],
 
     classifiers=[
         "Programming Language :: Python :: 3",
