@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { colors, spacing, typography, constants } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 
 import { formatFullDate } from '../Date/helpers'
 
@@ -8,6 +8,8 @@ import Status from '../Status'
 import ProgressBar from '../ProgressBar'
 
 import DataQueueMenu from './Menu'
+
+const ERROR_COUNT_HEIGHT = 32
 
 const DataQueueRow = ({
   job: {
@@ -36,18 +38,22 @@ const DataQueueRow = ({
       <td css={{ textAlign: 'center' }}>
         {Object.values(assetCounts).reduce((total, count) => total + count)}
       </td>
-      <td css={{ textAlign: 'center' }}>
+      <td css={{ display: 'flex', justifyContent: 'center' }}>
         {assetCounts.assetErrorCount > 0 && (
           <div
             css={{
               display: 'flex',
+              alignItems: 'center',
               justifyContent: 'center',
-              color: colors.signal.warning.base,
+              width: 'fit-content',
+              minWidth: ERROR_COUNT_HEIGHT,
+              height: ERROR_COUNT_HEIGHT,
+              padding: spacing.base,
               fontWeight: typography.weight.bold,
               fontSize: typography.size.kilo,
               lineHeight: typography.height.kilo,
-              padding: spacing.base,
-              borderRadius: constants.borderRadius.round,
+              borderRadius: ERROR_COUNT_HEIGHT,
+              color: colors.signal.warning.base,
               backgroundColor: colors.structure.coal,
             }}>
             {assetCounts.assetErrorCount}

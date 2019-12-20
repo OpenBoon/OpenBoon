@@ -11,41 +11,41 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-136 {
+.emotion-135 {
   width: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
   white-space: nowrap;
 }
 
-.emotion-136 tr {
+.emotion-135 tr {
   background-color: #252525;
 }
 
-.emotion-136 tr:nth-of-type(2n) {
+.emotion-135 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-136 tr:hover {
+.emotion-135 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-136 tr:hover td {
+.emotion-135 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-136 tr:hover td:first-of-type {
+.emotion-135 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-136 tr:hover td:last-of-type {
+.emotion-135 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-136 td {
+.emotion-135 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -53,11 +53,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-right: 0;
 }
 
-.emotion-136 td:first-of-type {
+.emotion-135 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-136 td:last-of-type {
+.emotion-135 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
@@ -99,7 +99,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   text-align: center;
 }
 
-.emotion-12 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -108,12 +108,32 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  color: #c92300;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  min-width: 32px;
+  height: 32px;
+  padding: 8px;
   font-weight: 700;
   font-size: 16px;
   line-height: 20px;
-  padding: 8px;
   border-radius: 32px;
+  color: #c92300;
   background-color: #191919;
 }
 
@@ -340,7 +360,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-88 {
+.emotion-87 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -348,12 +368,12 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-88:first-of-type {
+.emotion-87:first-of-type {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
-.emotion-88:last-of-type {
+.emotion-87:last-of-type {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
@@ -365,7 +385,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
     Job Queue
   </h2>
   <table
-    className="emotion-136"
+    className="emotion-135"
   >
     <thead>
       <tr>
@@ -440,7 +460,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           4
         </td>
         <td
-          className="emotion-10"
+          className="emotion-13"
         >
           <div
             className="emotion-12"
@@ -521,15 +541,15 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td
           className="emotion-10"
         >
-          4
+          40
         </td>
         <td
-          className="emotion-10"
+          className="emotion-13"
         >
           <div
             className="emotion-12"
           >
-            4
+            40
           </div>
         </td>
         <td>
@@ -605,15 +625,15 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td
           className="emotion-10"
         >
-          4
+          400
         </td>
         <td
-          className="emotion-10"
+          className="emotion-13"
         >
           <div
             className="emotion-12"
           >
-            4
+            400
           </div>
         </td>
         <td>
@@ -686,15 +706,15 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td
           className="emotion-10"
         >
-          4
+          4000
         </td>
         <td
-          className="emotion-10"
+          className="emotion-13"
         >
           <div
             className="emotion-12"
           >
-            4
+            4000
           </div>
         </td>
         <td>
@@ -761,15 +781,15 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td
           className="emotion-10"
         >
-          4
+          40000
         </td>
         <td
-          className="emotion-10"
+          className="emotion-13"
         >
           <div
             className="emotion-12"
           >
-            4
+            40000
           </div>
         </td>
         <td>
@@ -836,15 +856,15 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td
           className="emotion-10"
         >
-          3
+          400000
         </td>
         <td
-          className="emotion-10"
+          className="emotion-13"
         >
           <div
             className="emotion-12"
           >
-            3
+            400000
           </div>
         </td>
         <td>
@@ -911,17 +931,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
         <td
           className="emotion-10"
         >
-          3
+          0
         </td>
         <td
-          className="emotion-10"
-        >
-          <div
-            className="emotion-12"
-          >
-            3
-          </div>
-        </td>
+          className="emotion-13"
+        />
         <td>
           <div
             className="emotion-22"
@@ -936,7 +950,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
               tabIndex="0"
             >
               <div
-                className="emotion-88"
+                className="emotion-87"
               />
             </div>
             <div
@@ -989,7 +1003,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           0
         </td>
         <td
-          className="emotion-10"
+          className="emotion-13"
         />
         <td>
           <div
@@ -1058,7 +1072,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           0
         </td>
         <td
-          className="emotion-10"
+          className="emotion-13"
         />
         <td>
           <div
@@ -1127,7 +1141,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           0
         </td>
         <td
-          className="emotion-10"
+          className="emotion-13"
         />
         <td>
           <div
@@ -1196,7 +1210,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           49
         </td>
         <td
-          className="emotion-10"
+          className="emotion-13"
         >
           <div
             className="emotion-12"
@@ -1221,7 +1235,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
                 className="emotion-14"
               />
               <div
-                className="emotion-88"
+                className="emotion-87"
               />
             </div>
             <div
