@@ -87,11 +87,6 @@ describe('<Authentication /> helpers', () => {
       const mockSetUser = jest.fn()
       const mockRemoveItem = jest.fn()
 
-      Object.defineProperty(document, 'cookie', {
-        writable: true,
-        value: 'csrftoken=CSRF_TOKEN',
-      })
-
       Object.defineProperty(window, 'localStorage', {
         writable: true,
         value: {
