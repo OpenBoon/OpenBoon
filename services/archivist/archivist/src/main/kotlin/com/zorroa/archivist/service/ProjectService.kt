@@ -60,7 +60,12 @@ interface ProjectService {
      * key, any stored data would first have to be decrypted with the
      * old key.
      */
-    fun getCredentialsKey() : String
+    fun getCredentialsKey(): String
+
+    /**
+     * Delete project by unique Id.
+     */
+    fun delete(id: UUID)
 }
 
 @Service
@@ -108,8 +113,10 @@ class ProjectServiceImpl constructor(
         val mapping = properties.getString("archivist.es.default-mapping-type")
         val ver = properties.getInt("archivist.es.default-mapping-version")
         indexRoutingService.createIndexRoute(
-            IndexRouteSpec(mapping, ver, projectId = project.id,
-                state = IndexRouteState.CURRENT)
+            IndexRouteSpec(
+                mapping, ver, projectId = project.id,
+                state = IndexRouteState.CURRENT
+            )
         )
     }
 
@@ -142,9 +149,13 @@ class ProjectServiceImpl constructor(
         fileStorageService.store(spec)
     }
 
-    override fun getCredentialsKey() : String {
+    override fun getCredentialsKey(): String {
         val loc = FileStorageLocator(FileGroup.INTERNAL, "project", FileCategory.KEYS, "project.key")
         return String(fileStorageService.fetch(loc))
+    }
+
+    override fun delete(id: UUID){
+        projectDao.deleteById(id)
     }
 
     override fun get(id: UUID): Project {

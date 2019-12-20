@@ -1,5 +1,6 @@
 package com.zorroa.archivist.rest
 
+import com.google.common.collect.ImmutableMap
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectSpec
@@ -80,5 +81,24 @@ class ProjectControllerTests : MockMvcTest() {
             .andExpect(jsonPath("$.timeCreated", CoreMatchers.anything()))
             .andExpect(jsonPath("$.timeModified", CoreMatchers.anything()))
             .andReturn()
+    }
+
+
+    @Test
+    fun testDelete() {
+
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/api/v1/projects/${testProject.id}")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.type", CoreMatchers.equalTo("projects")))
+            .andExpect(jsonPath("$.id", CoreMatchers.equalTo(testProject.id.toString())))
+            .andExpect(jsonPath("$.op", CoreMatchers.equalTo("delete")))
+            .andExpect(jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+
+
     }
 }
