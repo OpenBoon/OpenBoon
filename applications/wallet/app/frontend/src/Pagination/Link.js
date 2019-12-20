@@ -31,32 +31,32 @@ const PaginationLink = ({ currentPage, totalPages, direction, href }) => {
     },
   }
 
+  if (isDisabled) {
+    return (
+      <button type="button" css={styles} disabled>
+        <ChevronSvg
+          width={16}
+          css={{
+            color: colors.grey2,
+            transform: `rotate(${isPrev ? '' : '-'}90deg)`,
+          }}
+        />
+      </button>
+    )
+  }
+
   return (
-    <>
-      {isDisabled ? (
-        <button type="button" css={styles} disabled>
-          <ChevronSvg
-            width={16}
-            css={{
-              color: colors.grey2,
-              transform: `rotate(${isPrev ? '' : '-'}90deg)`,
-            }}
-          />
-        </button>
-      ) : (
-        <Link href={href} passHref>
-          <a css={styles} rel={direction}>
-            <ChevronSvg
-              width={16}
-              css={{
-                color: colors.grey2,
-                transform: `rotate(${isPrev ? '' : '-'}90deg)`,
-              }}
-            />
-          </a>
-        </Link>
-      )}
-    </>
+    <Link href={href} passHref>
+      <a css={styles} rel={direction}>
+        <ChevronSvg
+          width={16}
+          css={{
+            color: colors.grey2,
+            transform: `rotate(${isPrev ? '' : '-'}90deg)`,
+          }}
+        />
+      </a>
+    </Link>
   )
 }
 
