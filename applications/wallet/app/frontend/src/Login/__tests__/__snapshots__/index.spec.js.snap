@@ -77,6 +77,7 @@ exports[`<Login /> should render properly 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  background-color: transparent;
 }
 
 .emotion-2,
