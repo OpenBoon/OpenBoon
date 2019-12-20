@@ -1405,7 +1405,7 @@ exports[`<DataQueue /> should render properly with no jobs 1`] = `
     <tbody>
       <tr>
         <td
-          colSpan="8"
+          colSpan={8}
         >
           <div
             className="emotion-9"
