@@ -186,7 +186,7 @@ class AssetControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.hits.total", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.hits.total.value", CoreMatchers.equalTo(1)))
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$.hits.hits[0]._source.source.path",
@@ -219,7 +219,7 @@ class AssetControllerTests : MockMvcTest() {
                 .content(search)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.hits.total", CoreMatchers.equalTo(2)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.hits.total.value", CoreMatchers.equalTo(2)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.hits.hits.length()", CoreMatchers.equalTo(1)))
             .andReturn()
     }
