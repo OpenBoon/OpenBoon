@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.AnalystState
 import com.zorroa.archivist.domain.LockState
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.security.getAnalystEndpoint
+import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils.insert
 import com.zorroa.archivist.util.JdbcUtils.update
@@ -39,22 +39,27 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
 
     override fun create(spec: AnalystSpec): Analyst {
         val id = uuid1.generate()
-        val endpoint = spec.endpoint ?: getAnalystEndpoint()
+        val endpoint = spec.endpoint ?: getAnalyst().endpoint
         if (!URI(endpoint).scheme.startsWith("http")) {
             throw IllegalArgumentException("The analyst endpoint must be an http URL.")
         }
         val time = System.currentTimeMillis()
-        jdbc.update(INSERT, id, spec.taskId, time, time, endpoint,
-                spec.totalRamMb, spec.freeRamMb, spec.freeDiskMb, spec.load, AnalystState.Up.ordinal)
+        jdbc.update(
+            INSERT, id, spec.taskId, time, time, endpoint,
+            spec.totalRamMb, spec.freeRamMb, spec.freeDiskMb, spec.load,
+            AnalystState.Up.ordinal, spec.version
+        )
         return get(id)
     }
 
     override fun update(spec: AnalystSpec): Boolean {
         val time = System.currentTimeMillis()
-        val endpoint = getAnalystEndpoint()
-        return jdbc.update(UPDATE, spec.taskId, time, spec.totalRamMb,
-                spec.freeRamMb, spec.freeDiskMb, spec.load, AnalystState.Up.ordinal,
-                endpoint) == 1
+        val endpoint = getAnalyst().endpoint
+        return jdbc.update(
+            UPDATE, spec.taskId, time, spec.totalRamMb,
+            spec.freeRamMb, spec.freeDiskMb, spec.load, AnalystState.Up.ordinal,
+            spec.version, endpoint
+        ) == 1
     }
 
     override fun findOne(filter: AnalystFilter): Analyst {
@@ -76,23 +81,31 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
     }
 
     override fun setState(analyst: Analyst, state: AnalystState): Boolean {
-        val result = jdbc.update("UPDATE analyst SET int_state=? WHERE pk_analyst=? AND int_state != ?",
-                state.ordinal, analyst.id, state.ordinal) == 1
+        val result = jdbc.update(
+            "UPDATE analyst SET int_state=? WHERE pk_analyst=? AND int_state != ?",
+            state.ordinal, analyst.id, state.ordinal
+        ) == 1
         if (result) {
-            logger.event(LogObject.ANALYST, LogAction.STATE_CHANGE,
-                    mapOf("newState" to state, "oldState" to analyst.state))
+            logger.event(
+                LogObject.ANALYST, LogAction.STATE_CHANGE,
+                mapOf("newState" to state, "oldState" to analyst.state)
+            )
         }
         return result
     }
 
     override fun setLockState(analyst: Analyst, state: LockState): Boolean {
-        return jdbc.update("UPDATE analyst SET int_lock_state=? WHERE pk_analyst=? AND int_lock_state != ?",
-                state.ordinal, analyst.id, state.ordinal) == 1
+        return jdbc.update(
+            "UPDATE analyst SET int_lock_state=? WHERE pk_analyst=? AND int_lock_state != ?",
+            state.ordinal, analyst.id, state.ordinal
+        ) == 1
     }
 
     override fun isInLockState(endpoint: String, state: LockState): Boolean {
-        return jdbc.queryForObject("SELECT COUNT(1) FROM analyst WHERE str_endpoint=? AND int_lock_state=?",
-                Int::class.java, endpoint, state.ordinal) == 1
+        return jdbc.queryForObject(
+            "SELECT COUNT(1) FROM analyst WHERE str_endpoint=? AND int_lock_state=?",
+            Int::class.java, endpoint, state.ordinal
+        ) == 1
     }
 
     override fun setTaskId(endpoint: String, taskId: UUID?): Boolean {
@@ -128,46 +141,54 @@ class AnalystDaoImpl : AbstractDao(), AnalystDao {
 
         private val MAPPER = RowMapper { rs, _ ->
             Analyst(
-                    rs.getObject("pk_analyst") as UUID,
-                    rs.getObject("pk_task") as UUID?,
-                    rs.getString("str_endpoint"),
-                    rs.getInt("int_total_ram"),
-                    rs.getInt("int_free_ram"),
-                    rs.getInt("int_free_disk"),
-                    rs.getFloat("flt_load"),
-                    rs.getLong("time_ping"),
-                    rs.getLong("time_created"),
-                    AnalystState.values()[rs.getInt("int_state")],
-                    LockState.values()[rs.getInt("int_lock_state")])
+                rs.getObject("pk_analyst") as UUID,
+                rs.getObject("pk_task") as UUID?,
+                rs.getString("str_endpoint"),
+                rs.getInt("int_total_ram"),
+                rs.getInt("int_free_ram"),
+                rs.getInt("int_free_disk"),
+                rs.getFloat("flt_load"),
+                rs.getLong("time_ping"),
+                rs.getLong("time_created"),
+                AnalystState.values()[rs.getInt("int_state")],
+                LockState.values()[rs.getInt("int_lock_state")],
+                rs.getString("str_version")
+            )
         }
 
         private const val GET = "SELECT * FROM analyst"
 
         private const val GET_DOWN = "SELECT * FROM analyst " +
-                "WHERE int_state=? AND time_ping < ?"
+            "WHERE int_state=? AND time_ping < ?"
 
         private const val COUNT = "SELECT COUNT(1) FROM analyst"
 
-        private val INSERT = insert("analyst",
-                "pk_analyst",
-                "pk_task",
-                "time_created",
-                "time_ping",
-                "str_endpoint",
-                "int_total_ram",
-                "int_free_ram",
-                "int_free_disk",
-                "flt_load",
-                "int_state")
+        private val INSERT = insert(
+            "analyst",
+            "pk_analyst",
+            "pk_task",
+            "time_created",
+            "time_ping",
+            "str_endpoint",
+            "int_total_ram",
+            "int_free_ram",
+            "int_free_disk",
+            "flt_load",
+            "int_state",
+            "str_version"
+        )
 
-        private val UPDATE = update("analyst",
-                "str_endpoint",
-                "pk_task",
-                "time_ping",
-                "int_total_ram",
-                "int_free_ram",
-                "int_free_disk",
-                "flt_load",
-                "int_state")
+        private val UPDATE = update(
+            "analyst",
+            "str_endpoint",
+            "pk_task",
+            "time_ping",
+            "int_total_ram",
+            "int_free_ram",
+            "int_free_disk",
+            "flt_load",
+            "int_state",
+            "str_version"
+        )
     }
 }

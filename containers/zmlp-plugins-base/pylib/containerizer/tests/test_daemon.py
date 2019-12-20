@@ -1,9 +1,10 @@
 import logging
-import pytest
 import unittest
 
+import pytest
+
 from containerizer.daemon import PixmlContainerDaemon
-from pixml.analysis import Reactor
+from containerizer.reactor import Reactor
 from pixml.analysis.testing import TestEventEmitter
 
 logging.basicConfig(level=logging.DEBUG)

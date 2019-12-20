@@ -1,4 +1,4 @@
-import { USER, getUser, authenticateUser, logout, fetcher } from '../helpers'
+import { USER, getUser, authenticateUser, logout } from '../helpers'
 
 const noop = () => () => {}
 
@@ -153,11 +153,6 @@ describe('<Authentication /> helpers', () => {
       const mockSetUser = jest.fn()
       const mockRemoveItem = jest.fn()
 
-      Object.defineProperty(document, 'cookie', {
-        writable: true,
-        value: 'csrftoken=CSRF_TOKEN',
-      })
-
       Object.defineProperty(window, 'localStorage', {
         writable: true,
         value: {
@@ -185,38 +180,6 @@ describe('<Authentication /> helpers', () => {
         },
         method: 'POST',
       })
-    })
-  })
-
-  describe('fetcher()', () => {
-    it('should fetch data', async () => {
-      fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
-
-      const data = await fetcher({ setUser: noop })()
-
-      expect(data).toEqual({ id: 12345 })
-    })
-
-    it('should logout the user', async () => {
-      const mockSetUser = jest.fn()
-      const mockRemoveItem = jest.fn()
-
-      fetch.mockResponseOnce('Access Denied', { status: 401 })
-
-      Object.defineProperty(window, 'localStorage', {
-        writable: true,
-        value: {
-          removeItem: mockRemoveItem,
-        },
-      })
-
-      const data = await fetcher({ setUser: mockSetUser })()
-
-      expect(data).toEqual({})
-
-      expect(mockSetUser).toHaveBeenCalledWith({})
-
-      expect(mockRemoveItem).toHaveBeenCalledWith(USER)
     })
   })
 })

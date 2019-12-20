@@ -13,42 +13,44 @@ logger = logging.getLogger(__name__)
 CONTAINER_PORT = 5001
 
 
-class ContainerizedZpsExecutor(object):
+class ZpsExecutor(object):
     """
     This class is responsible for iteration and interpretation of
     ZPS scripts along with plugin container life cycle.
+
+    Attributes:
+        task (dict): The task tp execute.
+        client (ClusterClient): A client for talking back to Archivist.
+        killed (bool): If the script has been manually killed.
+        new_state (string): A new task state set by a kill command.
+        exit_status (int): The exit status of the task, >0 failure.
+        container (DockerContainerWrapper): A docker container wrapper.
+        script (dict): The script to execute
+        event_counts (dict): Counters for event messages by type.
     """
 
     def __init__(self, task, client):
+        """
+        Create a new ContainerizedZpsExecutor.
+
+        Args:
+            task (dict): A task.
+            client (ClusterClient): An archivist client,.
+        """
         self.task = task
         self.client = client
-        self.is_killed = False
+        self.killed = False
         self.new_state = None
+        self.exit_status = 0
         self.container = None
         self.script = self.task.get("script", {})
         self.event_counts = {}
-
-    def kill(self, reason="manually killed"):
-        """
-        Stop the execution of the task by closing the event socket
-        and killing the container.
-
-        Args:
-            reason (str): Why the task is being killed.
-
-        Returns:
-            bool: True if the task was actually killed, False if not.
-
-        """
-        # TODO: need to figure out how to kill
-        raise RuntimeError("Not Implemented")
 
     def run(self):
         """
         Execute the full ZPS script.
         """
         self.client.emit_event(self.task, "started", {})
-        exit_status = 0
         try:
             if self.script.get("generate"):
                 self.generate()
@@ -59,13 +61,17 @@ class ContainerizedZpsExecutor(object):
                         self.task, "index", {"assets": assets})
         except Exception as e:
             logger.warning("Failed to execute ZPS script, {}".format(e))
-            exit_status = 1
+            self.exit_status = 1
         finally:
             # Emit a task stopped to the archivist.
-            self.client.emit_event(self.task,  "stopped", {"exit_status": exit_status})
+            self.client.emit_event(self.task, "stopped", {
+                "exitStatus": self.exit_status,
+                "newState": self.new_state,
+                "manualKill": self.killed
+            })
 
         result = self.event_counts.copy()
-        result["exit_status"] = exit_status
+        result["exit_status"] = self.exit_status
         return result
 
     def generate(self):
@@ -89,7 +95,7 @@ class ContainerizedZpsExecutor(object):
 
                 # Run containerized generator
                 if not self.container:
-                    self.container = DockerContainerProcess(self, self.task, proc["image"])
+                    self.container = DockerContainerWrapper(self.client, self.task, proc["image"])
                     self.container.wait_for_container()
 
                 self.container.execute_generator(proc, settings)
@@ -101,8 +107,10 @@ class ContainerizedZpsExecutor(object):
         except Exception as e:
             # If any exceptions bubble out here, then the task is a hard failure
             # and the container is immediately stopped.
-            logger.warning("Failed to execute script, unexpected {}".format(e))
-            self.stop_container()
+            msg = "Exception during generation, reason: {}".format(e)
+            logger.exception(msg)
+            self.stop_container(msg)
+            self.exit_status = 1
 
     def process(self):
         """
@@ -139,8 +147,10 @@ class ContainerizedZpsExecutor(object):
         except Exception as e:
             # If any exceptions bubble out here, then the task is a hard failure
             # and the container is immediately stopped.
-            logger.warning("Failed to execute script, unexpected {}".format(e))
-            self.stop_container()
+            msg = "Exception during processing: {}".format(e)
+            logger.exception(msg)
+            self.stop_container(msg)
+            self.exit_status = 2
 
         return assets
 
@@ -157,7 +167,7 @@ class ContainerizedZpsExecutor(object):
         self.container.run_teardown(ref)
         # Destroy container if we don't need it for next iteration
         if not keep_container:
-            self.stop_container()
+            self.stop_container("switching containers")
         else:
             logger.info("keeping container {}".format(ref["image"]))
 
@@ -175,7 +185,7 @@ class ContainerizedZpsExecutor(object):
         """
         results = []
         if not self.container:
-            self.container = DockerContainerProcess(self, self.task, ref["image"])
+            self.container = DockerContainerWrapper(self.client, self.task, ref["image"])
             self.container.wait_for_container()
 
         if assets:
@@ -187,38 +197,71 @@ class ContainerizedZpsExecutor(object):
                     results.append(result["asset"])
         return results
 
-    def stop_container(self):
+    def kill(self, task_id, new_state, reason="manually killed"):
+        """
+        Stop the execution of the task by closing the event socket
+        and killing the container.
+
+        Args:
+            task_id (str): The task id.
+            new_state: (str): The new state of the task once the kill occurs.
+            reason (str): Why the task is being killed.
+
+        Returns:
+            bool: True if the task was actually killed, False if not.
+
+        """
+        if self.task["id"] == task_id:
+            if self.stop_container(reason):
+                self.new_state = new_state
+                return True
+        return False
+
+    def stop_container(self, reason):
         """
         Stops the current container instance and sets the
         container property to None.
         """
-        # TODO: The container might not have started yet when this gets run.
         if not self.container:
             logger.warning("stop_container did not have a container instance to stop.")
-            return
+            return False
 
+        logger.warning("Stopping container, reason: {}".format(reason))
         for k, v in self.container.event_counts.items():
             if k in self.event_counts:
                 self.event_counts[k] += v
             else:
                 self.event_counts[k] = v
 
-        self.container.stop()
-        self.container = None
+        killed = self.container.stop()
+        if killed:
+            self.container = None
+        return killed
 
 
-class DockerContainerProcess(object):
+class DockerContainerWrapper(object):
     """
-    Wraps a docker Container object and communicates with the
-    containerized ZPSD process.
+    DockerContainerWrapper wraps a docker Container instance.
+
+    Attributes:
+        task (dict): The task we're executing.
+        image: (str): the
 
     """
-    def __init__(self, executor, task, image):
+    def __init__(self, client, task, image):
+        """
+
+        Args:
+            executor:
+            task:
+            image:
+        """
         self.task = task
         self.image = image
-        self.client = executor.client
+        self.client = client
         self.docker_client = docker.from_env()
         self.event_counts = {}
+        self.killed = False
 
         self.container = None
         self.log_thread = None
@@ -244,9 +287,14 @@ class DockerContainerProcess(object):
             full_name = "{}:{}".format(self.image, os.environ.get("CLUSTER_TAG", "development"))
 
         logger.info('Checking for new image: {}'.format(full_name))
-        image = self.docker_client.images.pull(full_name)
-        logger.info("Docker image {} ID:{} loaded".format(self.image, image.id))
-        return image
+        try:
+            remote_img = self.docker_client.images.pull(full_name)
+            logger.info("loaded new image {} id={}".format(full_name, remote_img.id))
+        except docker.errors.APIError:
+            # Image wasn't found in remote repo.
+            pass
+
+        return full_name
 
     def __start_container(self):
         """
@@ -256,7 +304,8 @@ class DockerContainerProcess(object):
             Container: A running docker Container
 
         """
-        image_id = self._pull_image()
+        self.check_killed()
+        image = self._pull_image()
 
         volumes = {
             '/tmp': {'bind': '/tmp', 'mode': 'rw'}
@@ -274,7 +323,7 @@ class DockerContainerProcess(object):
         })
 
         logger.info("starting container {}".format(self.image))
-        self.container = self.docker_client.containers.run(image_id, detach=True,
+        self.container = self.docker_client.containers.run(image, detach=True,
                                                            environment=env, volumes=volumes,
                                                            entrypoint="/usr/local/bin/server",
                                                            network=network,
@@ -290,33 +339,22 @@ class DockerContainerProcess(object):
         """
         Start container and block until the process completes.
         """
+        self.check_killed()
         self.__start_container()
-
-        max_wait_time = 60 * 5 * 1000
-        total_wait_time = 0
 
         uri = "tcp://localhost:{}".format(CONTAINER_PORT)
         logger.info("Waiting for container '{}' on '{}' to come to life....".format(
             self.image, uri))
 
-        while True:
-            self.socket.connect(uri)
-            self.socket.send_json({"type": "ready", "payload": {}})
-            poll = self.socket.poll(timeout=1000)
-            if poll > 0:
-                event = self.socket.recv_json()
-                self.log_event(event)
-                if event["type"] != "ok":
-                    raise RuntimeError(
-                        "Container {} in bad state, did not send ready event: {}".format(
-                            self.image, event))
-                break
-            time.sleep(0.25)
-            total_wait_time = total_wait_time + 1000
-            if total_wait_time > max_wait_time:
-                raise RuntimeError("Container {} in bad state, did not send ready event.".format(
-                    self.image))
+        self.socket.connect(uri)
+        self.socket.send_json({"type": "ready", "payload": {}})
 
+        # Give us 20 seconds to start.
+        event = self.receive_event(20000)
+        if event["type"] != "ok":
+            raise RuntimeError(
+                "Container {} in bad state, did not send ok event: {}".format(
+                    self.image, event))
         logger.info("Container '{}' is ready to accept commands.".format(self.image))
 
     def __tail_container_logs(self):
@@ -335,10 +373,13 @@ class DockerContainerProcess(object):
         Stop the underlying docker Container.
 
         """
-        if self.container:
+        if not self.killed and self.container:
             logger.info(
                 "stopping container id='{}' image='{}'".format(self.container.id, self.image))
             self.container.kill(9)
+            self.killed = True
+            return True
+        return False
 
     def run_teardown(self, ref):
         """
@@ -355,7 +396,7 @@ class DockerContainerProcess(object):
             }
         }
         self.socket.send_json(request)
-        rsp = self.socket.recv_json()
+        rsp = self.receive_event(10000)
 
         # Emit the teardown event.
         self.client.emit_event(self.task, rsp["type"], rsp["payload"])
@@ -373,6 +414,7 @@ class DockerContainerProcess(object):
             settings (list): A dictionary of global script settings.
 
         """
+        self.check_killed()
         request = {
             "type": "generate",
             "payload": {
@@ -411,38 +453,51 @@ class DockerContainerProcess(object):
                 "asset": asset
             }
         }
-        response = None
-
+        self.check_killed()
         self.socket.send_json(request)
         while True:
             event = self.receive_event()
-            # Once we find the resulting object, return it back ou
-            # so it can be passed into the next processor.
             event_type = event["type"]
             if event_type == "asset":
                 response = event["payload"]
             elif event_type == "finished":
-                break
+                return response
             else:
                 # Echo back to archivist.
                 self.client.emit_event(self.task, event_type, event["payload"])
 
-        return response
-
-    def receive_event(self):
+    def receive_event(self, timeout=None):
         """
         Wait and receive events from ZPSD.   Blocks forever until
-        and event is receieved.
+        and event is received or the socket is closed.
+
+        Args:
+            timeout (int): The amount of time to wait for an event to
+                happen, None for infinite time.
 
         Returns:
-            dict: the last event from ZPSD.
+            dict: an event dict
         """
-        event = self.socket.recv_json()
-        self.log_event(event)
+        timeout_time = int(time.time() * 1000) + (timeout or 0)
+        while True:
+            poll = self.socket.poll(timeout or 1000)
+            if poll > 0:
+                try:
+                    event = self.socket.recv_json()
+                except Exception as e:
+                    logger.warning("event socket recv failed {} {}", type(e), e)
+                    raise RuntimeError("ZMQ socket failure", e)
 
-        if event["type"] == "hardfailure":
-            raise RuntimeError("Container failure, exiting event='{}'".format(event))
-        return event
+                self.log_event(event)
+                if event["type"] == "hardfailure":
+                    raise RuntimeError("Container failure, exiting event='{}'".format(event))
+                if self.killed:
+                    raise RuntimeError("Container was killed, exiting event='{}'".format(event))
+                return event
+            elif self.killed:
+                raise RuntimeError("Container was killed")
+            elif timeout and (time.time() * 1000) > timeout_time:
+                return {"type": "timeout", "payload": {"timeout": timeout}}
 
     def log_event(self, event):
         """
@@ -453,7 +508,7 @@ class DockerContainerProcess(object):
         """
         try:
             asset_id = event["payload"]["asset"]["id"]
-        except KeyError:
+        except (KeyError, TypeError):
             asset_id = None
 
         logger.info('Analyst received event =\'{}\' from image=\'{}\' assetId=\'{}\''.format(
@@ -482,3 +537,7 @@ class DockerContainerProcess(object):
         except IOError:
             pass
         return None
+
+    def check_killed(self):
+        if self.killed:
+            raise RuntimeError("Container was killed")

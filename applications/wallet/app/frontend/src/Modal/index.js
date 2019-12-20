@@ -45,7 +45,7 @@ const Modal = () => {
                 padding: spacing.normal,
                 textTransform: 'uppercase',
               }}>
-              <div css={{ color: colors.rocks.steel }}>Delete</div>
+              <div css={{ color: colors.structure.zinc }}>Delete</div>
               <div
                 role="button"
                 aria-label="Close Modal"
@@ -56,7 +56,7 @@ const Modal = () => {
                 onKeyDown={() => {
                   setShowModal(false)
                 }}>
-                <CrossSvg width={20} color={colors.rocks.steel} />
+                <CrossSvg width={20} color={colors.structure.zinc} />
               </div>
             </header>
 
@@ -92,7 +92,7 @@ const Modal = () => {
                 <button
                   type="button"
                   css={{
-                    backgroundColor: colors.rocks.iron,
+                    backgroundColor: colors.structure.steel,
                     color: colors.rocks.granite,
                     marginRight: spacing.normal,
                   }}

@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskErrorFilter
-import com.zorroa.archivist.security.getAnalystEndpoint
+import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.warnEvent
@@ -42,6 +42,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
 
         val id = uuid1.generate()
         val time = System.currentTimeMillis()
+        val analyst = getAnalyst()
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
@@ -52,7 +53,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
             ps.setString(5, spec.message)
             ps.setString(6, spec.path)
             ps.setString(7, spec.processor)
-            ps.setString(8, getAnalystEndpoint())
+            ps.setString(8, analyst.endpoint)
             ps.setString(9, FileUtils.extension(spec.path))
             ps.setBoolean(10, spec.fatal)
             ps.setString(11, spec.phase)
@@ -74,7 +75,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 spec.message,
                 spec.processor,
                 spec.fatal,
-                getAnalystEndpoint(),
+                analyst.endpoint,
                 spec.phase,
                 time,
                 spec.stackTrace)
@@ -84,7 +85,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
         if (specs.isEmpty()) {
             return 0
         }
-
+        val analyst = getAnalyst()
         val time = System.currentTimeMillis()
         val result = jdbc.batchUpdate(INSERT, object : BatchPreparedStatementSetter {
 
@@ -99,7 +100,7 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
                 ps.setString(5, spec.message)
                 ps.setString(6, spec.path)
                 ps.setString(7, spec.processor)
-                ps.setString(8, getAnalystEndpoint())
+                ps.setString(8, analyst.endpoint)
                 ps.setString(9, FileUtils.extension(spec.path))
                 ps.setBoolean(10, spec.fatal)
                 ps.setString(11, spec.phase)

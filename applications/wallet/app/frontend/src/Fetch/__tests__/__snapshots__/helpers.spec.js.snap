@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Fetch /> helpers fetcher() should return the raw response in case of error 1`] = `
+Response {
+  "size": 0,
+  "timeout": 0,
+  Symbol(Body internals): Object {
+    "body": "Internal Server Error",
+    "disturbed": false,
+    "error": null,
+  },
+  Symbol(Response internals): Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+    "status": 500,
+    "statusText": "Internal Server Error",
+    "url": undefined,
+  },
+}
+`;

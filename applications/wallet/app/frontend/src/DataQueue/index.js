@@ -1,53 +1,75 @@
 import PropTypes from 'prop-types'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
 import PageTitle from '../PageTitle'
 import Table from '../Table'
 import Pagination from '../Pagination'
 
+import DataQueueRow from './Row'
+
 export const noop = () => () => {}
 
-const COLUMNS = [
-  'Status',
-  'Job Name',
-  'Created By',
-  'Priority',
-  'Created',
-  'Failed',
-  'Errors',
-  '# Assets',
-  'Progress',
-]
+const SIZE = 20
 
-const DataQueue = ({ selectedProject }) => {
-  const { data: { results } = {} } = useSWR(
-    `/api/v1/projects/${selectedProject.id}/jobs/`,
+const DataQueue = ({ selectedProject: { id: projectId } }) => {
+  const router = useRouter()
+  const {
+    query: { page = 1 },
+  } = router
+
+  const parsedPage = parseInt(page, 10)
+  const from = parsedPage * SIZE - SIZE
+
+  const { data: { count = 0, results } = {}, revalidate } = useSWR(
+    `/api/v1/projects/${projectId}/jobs/?from=${from}&size=${SIZE}`,
   )
 
   if (!Array.isArray(results)) return 'Loading...'
 
   if (results.length === 0) return 'You have 0 jobs'
 
+  const to = Math.min(parsedPage * SIZE, count)
+
   return (
     <div>
       <Head>
-        <title>Data Queue</title>
+        <title>Job Queue</title>
       </Head>
 
-      <PageTitle>Data Queue</PageTitle>
+      <PageTitle>Job Queue</PageTitle>
 
-      <Table columns={COLUMNS} rows={results} />
+      <Table
+        columns={[
+          'Status',
+          'Job Name',
+          'Created By',
+          'Priority',
+          'Created',
+          '# Assets',
+          'Errors',
+          'Task Progress',
+        ]}
+        items={results}
+        renderRow={job => (
+          <DataQueueRow
+            key={job.id}
+            projectId={projectId}
+            job={job}
+            revalidate={revalidate}
+          />
+        )}
+      />
 
       <div>&nbsp;</div>
 
       <Pagination
-        legend="Jobs: 1–17 of 415"
-        currentPage={1}
-        totalPages={2}
-        prevLink="/"
-        nextLink="/?page=2"
-        onClick={noop}
+        legend={`Jobs: ${from + 1}–${to} of ${count}`}
+        currentPage={parsedPage}
+        totalPages={Math.ceil(count / SIZE)}
+        prevLink={`/?page=${parsedPage - 1}`}
+        nextLink={`/?page=${parsedPage + 1}`}
       />
     </div>
   )

@@ -46,7 +46,7 @@ const Navbar = ({
           css={{
             border: 0,
             backgroundColor: 'inherit',
-            color: colors.rocks.iron,
+            color: colors.structure.steel,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',

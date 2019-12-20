@@ -10,11 +10,7 @@ import { TASK_STATUS_COLORS } from './helpers'
 const CONTAINER_HEIGHT = 16
 const CONTAINER_WIDTH = 212
 
-const ProgressBar = ({ state, taskCounts: tC, timeStarted, timeUpdated }) => {
-  const taskCounts = {
-    ...tC,
-    tasksPending: tC.tasksWaiting + tC.tasksQueued,
-  }
+const ProgressBar = ({ state, taskCounts, timeStarted, timeUpdated }) => {
   const [showLegend, setShowLegend] = useState(false)
 
   return (
@@ -29,11 +25,10 @@ const ProgressBar = ({ state, taskCounts: tC, timeStarted, timeUpdated }) => {
         display: 'flex',
         height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
+        position: 'relative',
       }}>
       {Object.keys(TASK_STATUS_COLORS)
-        .filter(taskStatus => {
-          return taskCounts[taskStatus] > 0
-        })
+        .filter(taskStatus => taskCounts[taskStatus] > 0)
         .map(taskStatus => {
           return (
             <div
@@ -58,10 +53,10 @@ const ProgressBar = ({ state, taskCounts: tC, timeStarted, timeUpdated }) => {
         <div
           css={{
             position: 'absolute',
-            marginTop: CONTAINER_HEIGHT + spacing.base,
-            right: spacing.normal,
+            top: CONTAINER_HEIGHT + spacing.base,
+            right: 0,
             boxShadow: constants.boxShadows.tableRow,
-            zIndex: zIndex.layout.dropdown,
+            zIndex: zIndex.reset,
           }}>
           <ProgressBarLegend
             state={state}

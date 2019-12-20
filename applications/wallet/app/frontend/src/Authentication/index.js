@@ -6,7 +6,9 @@ import { SWRConfig } from 'swr'
 import Login from '../Login'
 import Projects from '../Projects'
 
-import { getUser, authenticateUser, logout, fetcher } from './helpers'
+import { initialize } from '../Fetch/helpers'
+
+import { getUser, authenticateUser, logout } from './helpers'
 
 const {
   publicRuntimeConfig: { GOOGLE_OAUTH_CLIENT_ID },
@@ -21,6 +23,8 @@ const Authentication = ({ children }) => {
   const [hasGoogleLoaded, setHasGoogleLoaded] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState({})
+
+  const fetcher = initialize({ setUser })
 
   useEffect(() => {
     window.onload = () => {
@@ -58,7 +62,7 @@ const Authentication = ({ children }) => {
   }
 
   return (
-    <SWRConfig value={{ fetcher: fetcher({ setUser }) }}>
+    <SWRConfig value={{ fetcher }}>
       <Projects user={user} logout={logout({ googleAuth, setUser })}>
         {({ selectedProject }) =>
           children({

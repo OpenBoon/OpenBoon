@@ -83,6 +83,7 @@ services:
       MLSTORAGE_ACCESSKEY: qwerty123
       MLSTORAGE_SECRETKEY: 123qwerty
       MLSTORAGE_URL: http://minio:9000
+      ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
     build:
       context: services/archivist
     volumes:
@@ -116,6 +117,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
       ANALYST_DOCKER_PULL: "false"
+      ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
       PIXML_SERVER: http://archivist:8080
 
   # Console web application.

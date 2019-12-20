@@ -1,21 +1,19 @@
+import collections
 import logging
 import os
-import socket
 import tempfile
 import threading
 import time
 import unittest
 import uuid
-from threading import Lock
 from unittest.mock import patch, MagicMock
 
 from requests import Response
 
 from analyst import main
-from analyst.components import ClusterClient, \
-    get_sdk_version, Executor
-from analyst.containerized import ContainerizedZpsExecutor
+from analyst.executor import ZpsExecutor
 from analyst.main import setup_routes
+from analyst.service import ClusterClient, get_sdk_version, ServiceComponents
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -27,7 +25,7 @@ def read_build_version_file():
     return expected
 
 
-def test_task(event_type=None, attrs=None):
+def test_task(event_type=None, attrs=None, sleep=1):
     task = {
         "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
         "jobId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
@@ -46,9 +44,10 @@ def test_task(event_type=None, attrs=None):
                     "className": "pixml.analysis.testing.TestProcessor",
                     "args": {
                         "send_event": event_type,
-                        "attrs": attrs
+                        "attrs": attrs,
+                        "sleep": sleep
                     },
-                    "image": "zmlp/plugins-base"
+                    "image": "zmlp/plugins-base:latest"
                 }
             ]
         },
@@ -57,46 +56,12 @@ def test_task(event_type=None, attrs=None):
     return task
 
 
-class MockArchivistClient:
-    def __init__(self):
-        self.lock = Lock()
-        self.pings = []
-        self.events = []
-        self.remote_url = "https://127.0.0.1:8066"
-
-    def ping(self, ping):
-        self.pings.append(ping)
-
-    def get_next_task(self):
-        return test_task()
-
-    def emit_event(self, task, etype, payload):
-        logger.info("ANALYST EVENT: {} {}".format(etype, payload))
-        self.events.append((etype, task, payload))
-
-    def event_count(self, event_type):
-        return len(self.get_events(event_type))
-
-    def get_events(self, event_type):
-        return [e for e in self.events if e[0] == event_type]
-
-    def event_types(self):
-        return {e[0] for e in self.events}
-
-
-class ApiComponents(object):
-    def __init__(self, ping_timer=0, poll_timer=0):
-        self.client = MockArchivistClient()
-        self.executor = Executor(self.client, ping_timer, poll_timer)
-
-
 class TestClusterClient(unittest.TestCase):
     def setUp(self):
-        self.client = ClusterClient("http://localhost:8080", 5000)
+        self.client = ClusterClient("http://localhost:8080", "12345", 5000)
 
     @patch("requests.post")
     def test_send_ping(self, mock_post):
-
         ping = {
             "freeRamMb": 1000,
             "totalRamMb": 5000,
@@ -131,11 +96,10 @@ class TestClusterClient(unittest.TestCase):
         arg, kwargs = mock_post.call_args
         self.assertEqual("burp!", kwargs["json"]["payload"]["message"])
 
-    def test_check_headers(self):
-        header = self.client.headers
+    def test_headers(self):
+        header = self.client._headers()
         assert header["Content-Type"] == "application/json"
-        assert header["X-Analyst-Port"] == "5000"
-        assert header["X-Analyst-Host"] == socket.gethostname()
+        assert header["Authorization"].startswith("Bearer")
 
 
 class ApiUnitTestCases(unittest.TestCase):
@@ -168,19 +132,24 @@ class TestFunctions(unittest.TestCase):
 
 class TestExecutor(unittest.TestCase):
     def setUp(self):
-        self.api = ApiComponents()
-        self.api.client = MockArchivistClient()
+        creds_file = os.path.join(os.path.dirname(__file__), "creds.txt")
+        ArgTuple = collections.namedtuple('ArgTuple', 'credentials archivist ping poll port')
+        args = ArgTuple(credentials=creds_file, archivist="https://localhost:8080",
+                        ping=0, poll=0, port=5000)
 
-    def test_send_ping(self):
+        self.api = ServiceComponents(args)
+
+    @patch("requests.post")
+    def test_send_ping(self, port_patch):
         api = self.api
         ping = api.executor.send_ping()
-        assert("freeRamMb" in ping)
-        assert("totalRamMb" in ping)
-        assert("freeDiskMb" in ping)
-        assert("load" in ping)
-        assert("taskId" not in ping)
+        assert ("freeRamMb" in ping)
+        assert ("totalRamMb" in ping)
+        assert ("freeDiskMb" in ping)
+        assert ("load" in ping)
+        assert ("taskId" not in ping)
 
-        api.executor.current_task = ContainerizedZpsExecutor({
+        api.executor.current_task = ZpsExecutor({
             "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
             "jobId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
             "organizationId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
@@ -188,48 +157,51 @@ class TestExecutor(unittest.TestCase):
         }, api.client)
 
         ping = api.executor.send_ping()
-        assert("taskId" in ping)
+        assert ("taskId" in ping)
 
-    def test_emit_error(self):
+    @patch("requests.post")
+    def test_emit_error(self, post_patch):
         api = self.api
         result = api.executor.run_task(test_task("error"))
-        assert(result["exit_status"] == 0)
-        assert(result["error_events"] == 1)
-        assert(api.executor.current_task is None)
+        assert (result["exit_status"] == 0)
+        assert (result["error_events"] == 1)
+        assert (api.executor.current_task is None)
 
-    def test_emit_expand(self):
+    @patch("requests.post")
+    def test_emit_expand(self, post_patch):
         api = self.api
         result = api.executor.run_task(test_task("expand"))
-        assert(result["exit_status"] == 0)
-        assert(result["expand_events"] == 1)
-        assert(api.executor.current_task is None)
+        assert (result["exit_status"] == 0)
+        assert (result["expand_events"] == 1)
+        assert (api.executor.current_task is None)
 
-    def test_queue_next_task(self):
+    @patch.object(ClusterClient, "get_next_task")
+    def test_queue_next_task(self, put_patch):
+        put_patch.return_value = test_task()
         api = self.api
-        assert(api.executor.queue_next_task())
+        assert (api.executor.queue_next_task())
 
-    def test_kill_no_task(self):
+    @patch("requests.post")
+    def test_kill_no_task(self, post_patch):
         api = self.api
-        assert(api.executor.kill_task("ABC123", None, "test kill") is False)
+        assert (api.executor.kill_task("ABC123", None, "test kill") is False)
 
-    def ignore_kill_sleep_task(self):
+    @patch("requests.post")
+    def test_kill_sleep_task(self, post_patch):
         api = self.api
-        arg = test_task("--sleep 60")
+        arg = test_task(sleep=20)
         thread = threading.Thread(target=api.executor.run_task, args=(arg,))
         thread.daemon = True
         thread.start()
+
         while True:
-            time.sleep(1)
+            time.sleep(10)
             if api.executor.current_task is not None:
-                if api.executor.current_task.pid != -1:
-                    killed = api.executor.kill_task("71C54046-6452-4669-BD71-719E9D5C2BBF",
-                                                    "skipped", "test kill")
+                logger.info("killing")
+                killed = api.executor.kill_task("71C54046-6452-4669-BD71-719E9D5C2BBF",
+                                                "skipped", "test kill")
+                print(killed)
+                if killed:
                     break
         thread.join(5)
         time.sleep(2)
-        assert killed
-        final_event = api.executor.client.events[-1][2]
-        print(final_event)
-        assert final_event["manualKill"]
-        assert final_event["exitStatus"] == -9
-        assert final_event["newState"] == "skipped"

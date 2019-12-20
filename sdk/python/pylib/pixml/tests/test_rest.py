@@ -12,7 +12,7 @@ class SearchResultTests(unittest.TestCase):
             "took": 4,
             "timed_out": False,
             "hits": {
-                "total": 100,
+                "total": {"value": 100},
                 "max_score": 0.2876821,
                 "hits": [
                     {

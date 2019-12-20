@@ -154,6 +154,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
     <button
       className="emotion-3"
       disabled={true}
+      type="button"
     >
       <svg
         className="emotion-2"
@@ -176,6 +177,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
       className="emotion-7"
       href="/?page=2"
       onClick={[Function]}
+      onMouseEnter={[Function]}
       rel="next"
     >
       <svg
@@ -343,6 +345,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
       className="emotion-3"
       href="/"
       onClick={[Function]}
+      onMouseEnter={[Function]}
       rel="prev"
     >
       <svg
@@ -365,6 +368,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
     <button
       className="emotion-7"
       disabled={true}
+      type="button"
     >
       <svg
         className="emotion-6"

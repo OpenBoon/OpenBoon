@@ -160,7 +160,7 @@ class AnalystDaoTests : AbstractTest() {
                     1024,
                     i.toFloat(),
                     "unknown",
-                    null).apply { endpoint = "https://analyst$i:5000" })
+                    null).apply { endpoint = "http://analyst$i:5000" })
         }
         var last = 0.0f
         for (analyst in analystDao.getAll(AnalystFilter().apply { sort = listOf("load:a") })) {

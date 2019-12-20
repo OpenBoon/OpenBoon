@@ -3,7 +3,7 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.domain.AnalystSpec
 import com.zorroa.archivist.domain.DispatchTask
 import com.zorroa.archivist.domain.TaskEvent
-import com.zorroa.archivist.security.getAnalystEndpoint
+import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.DispatchQueueManager
 import com.zorroa.archivist.service.DispatcherService
@@ -40,7 +40,7 @@ class AnalystClusterController @Autowired constructor(
     @Throws(IOException::class)
     fun queue(): ResponseEntity<DispatchTask> {
         // Will throw if not a valid Analyst
-        getAnalystEndpoint()
+        getAnalyst()
 
         val task = dispatchQueueManager.getNext()
         return if (task == null) {

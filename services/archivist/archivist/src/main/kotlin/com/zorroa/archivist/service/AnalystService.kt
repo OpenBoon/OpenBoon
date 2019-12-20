@@ -12,7 +12,7 @@ import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskDao
-import com.zorroa.archivist.security.getAnalystEndpoint
+import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -46,13 +46,13 @@ class AnalystServicImpl @Autowired constructor(
 ) : AnalystService {
 
     override fun upsert(spec: AnalystSpec): Analyst {
-        val endpoint = getAnalystEndpoint()
+        val analyst = getAnalyst()
         spec.taskId?.let {
-            taskDao.updatePingTime(it, endpoint)
+            taskDao.updatePingTime(it, analyst.endpoint)
         }
 
         return if (analystDao.update(spec)) {
-            analystDao.get(endpoint)
+            analystDao.get(analyst.endpoint)
         } else {
             val analyst = analystDao.create(spec)
             logger.info("Created analyst: {}", analyst.endpoint)

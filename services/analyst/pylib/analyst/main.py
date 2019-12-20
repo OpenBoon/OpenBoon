@@ -7,7 +7,7 @@ import os
 from flask import Flask, jsonify, request, abort
 from gevent.pywsgi import WSGIServer
 
-import analyst.components as components
+import analyst.service as service
 
 app = Flask(__name__)
 
@@ -15,9 +15,11 @@ app = Flask(__name__)
 def main():
     parser = argparse.ArgumentParser(prog='analyst')
     parser.add_argument("-a", "--archivist", help="The URL of the Archivist server.",
-                        default=os.environ.get("ZORROA_ARCHIVIST_URL", "http://archivist:8080"))
+                        default=os.environ.get("PIXML_SERVER", "http://archivist:8080"))
     parser.add_argument("-p", "--port", help="The port to listen on",
-                        default=os.environ.get("ZORROA_ANALYST_PORT", "5000"))
+                        default=os.environ.get("ANALYST_PORT", "5000"))
+    parser.add_argument("-c", "--credentials",
+                        help="The path to a file storing archivist cluster credentials")
     parser.add_argument("-l", "--poll", default=5,
                         help="Seconds to wait before polling for a new task. 0 to disable")
     parser.add_argument("-g", "--ping", default=30,
@@ -31,7 +33,7 @@ def main():
     else:
         logging.basicConfig(level=logging.INFO)
 
-    api = components.ApiComponents(args)
+    api = service.ServiceComponents(args)
     setup_routes(api)
 
     print("Listening on port {}".format(args.port))
@@ -54,4 +56,4 @@ def setup_routes(api):
 
     @app.route('/info', methods=['GET'])
     def info():
-        return jsonify({"version": components.get_sdk_version()})
+        return jsonify({"version": service.get_sdk_version()})

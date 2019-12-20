@@ -1,3 +1,4 @@
+import datetime
 import logging
 import os
 import random
@@ -7,18 +8,20 @@ import threading
 import time
 from sys import platform
 
+import jwt
 import psutil
 import requests
 
-from .containerized import ContainerizedZpsExecutor
+from .executor import ZpsExecutor
 
 if platform == "darwin":
     from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 else:
     import urllib3
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = logging.getLogger(__name__)
 
@@ -26,16 +29,21 @@ ZpsHeader = "######## BEGIN ########"
 ZpsFooter = "######## END ##########"
 
 __all__ = [
-    "ApiComponents",
+    "ServiceComponents",
     "ClusterClient",
     "Executor"
 ]
 
 
-class ApiComponents(object):
+class ServiceComponents(object):
 
     def __init__(self, args):
-        self.client = ClusterClient(args.archivist, args.port)
+        shared_key = None
+        if args.credentials:
+            with open(args.credentials) as fp:
+                shared_key = fp.read()
+
+        self.client = ClusterClient(args.archivist, shared_key, args.port)
         self.executor = Executor(self.client,
                                  ping_timer_seconds=args.ping,
                                  poll_timer_seconds=args.poll)
@@ -43,22 +51,28 @@ class ApiComponents(object):
 
 class ClusterClient(object):
     """
-    The ArchivistClient is the client side implementation of the /cluster
-    endpoit on the Archivist.  Communication to these endpoints are currently
-    authorized via IP filter.  In the future this client may use JWT tokens.
+    The ClusterClient is the client side implementation of the /cluster
+    endpoints on the Archivist.
 
     """
-    def __init__(self, remote_url, my_port=8089):
+
+    def __init__(self, remote_url, shared_key, my_port=5000):
         self.remote_url = remote_url or os.environ.get("PIXML_SERVER")
-        self.headers = {
-            "Content-Type": "application/json",
-            "X-Analyst-Port": str(my_port)
-        }
+        self.shared_key = shared_key or os.environ.get("ANALYST_SHAREDKEY")
+        self.version = get_sdk_version()
+
+        if not self.remote_url:
+            raise ValueError("No archivist URL has been set, try setting the PIXML_SERVER env var")
+
+        if not self.shared_key:
+            raise ValueError("No shared key has been setting the ANALYST_SHAREDKEY env var")
+
+        self.my_port = my_port
+
         try:
-            hostname = socket.gethostname()
-            self.headers["X-Analyst-Host"] = hostname
+            self.hostname = socket.gethostname()
         except socket.gaierror as e:
-            logger.warn("Unable to determine his machines hostname, %s" % e)
+            logger.warning("Unable to determine his machines hostname, %s" % e)
 
         logger.info("Remote URL: %s" % self.remote_url)
 
@@ -67,27 +81,26 @@ class ClusterClient(object):
         Send a ping to the Archivist. The ping keeps the analyst record in the "Up"
         state.
 
-        :param ping:
-        :return:
+        Args:
+            ping (dict): The ping to send.
         """
         return requests.post(self.remote_url + "/cluster/_ping",
-                             verify=False, json=ping, headers=self.headers).json()
+                             verify=False, json=ping, headers=self._headers()).json()
 
     def get_next_task(self):
         """
         Returns the highest priority task from the Archivist. The Task on the
         Archivist is set to the Queued state.
-        :return:
         """
         data = {}
         try:
             rsp = requests.put(self.remote_url + "/cluster/_queue",
-                               verify=False, json=data, headers=self.headers)
+                               verify=False, json=data, headers=self._headers())
             if rsp.ok:
                 return rsp.json()
         except requests.exceptions.ConnectionError as e:
-            logger.warn("Connection error, failed to obtain next task %s, %s" %
-                        (self.remote_url, e))
+            logger.warning(
+                 "Connection error, failed to obtain next task %s, %s" % (self.remote_url, e))
         return None
 
     def emit_event(self, task, etype, payload):
@@ -110,7 +123,7 @@ class ClusterClient(object):
         while True:
             try:
                 rsp = requests.post(self.remote_url + "/cluster/_event", verify=False,
-                                    json=data, headers=self.headers)
+                                    json=data, headers=self._headers())
                 return rsp.status_code
             except requests.exceptions.ConnectionError:
                 time.sleep(random.randint(1, min(60, backoff)))
@@ -147,6 +160,22 @@ class ClusterClient(object):
             finally:
                 self.queue.task_done()
 
+    def _headers(self):
+        claims = {
+            "aud": self.remote_url,
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=60),
+            "port": self.my_port,
+            "host": self.hostname,
+            "version": self.version
+        }
+        token = jwt.encode(claims, self.shared_key, algorithm='HS256').decode("utf-8")
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(token)
+        }
+        return headers
+
 
 class Executor(object):
     """
@@ -157,6 +186,7 @@ class Executor(object):
     shells out to ZpsGo, reads it's events from STDIN, and emits them back to the Archivist.
 
     """
+
     def __init__(self, client, ping_timer_seconds=0, poll_timer_seconds=0):
         """
         Create a new Executor.
@@ -200,10 +230,8 @@ class Executor(object):
         """
         try:
             return self.current_task.kill(task_id, new_state, reason)
-        except AttributeError as e1:
-            logger.warning("Failed to kill task %s, current task was null, %s" % (task_id, e1))
         except Exception as e:
-            logger.warning("Failed to kill task %s, was not current task: %s" % (task_id, e))
+            logger.warning("Failed to kill task %s, %s" % (task_id, e))
         return False
 
     def run_task(self, task):
@@ -213,7 +241,7 @@ class Executor(object):
         :param task:
         :return:
         """
-        self.current_task = ContainerizedZpsExecutor(task, self.client)
+        self.current_task = ZpsExecutor(task, self.client)
         try:
             # blocks until completed or killed
             return self.current_task.run()
@@ -326,12 +354,8 @@ def get_sdk_version():
     Returns (str): The version.
     """
     try:
-        vf = os.environ.get("ZORROA_BUILD_FILE")
-        if vf:
-            with open(os.environ["ZORROA_BUILD_FILE"]) as fp:
-                return fp.read().strip()
-        else:
-            raise IOError("ZORROA_VERSION_FILE env var not set")
+        with open("BUILD", "r") as fp:
+            return fp.read().strip()
     except IOError as e:
-        logger.warning("Failed to open processors.json, %s" % e)
+        logger.warning("Failed to read build file, %s" % e)
         return "unknown"

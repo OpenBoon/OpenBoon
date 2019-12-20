@@ -73,7 +73,7 @@ class AnalystControllerTests : MockMvcTest() {
     @Test
     fun testFindOneFailsWhenMultipleFound() {
         val spec2 = defaultAnalystSpec()
-        spec2.endpoint = "https://127.0.0.1:5001"
+        spec2.endpoint = "http://127.0.0.1:5001"
         analystDao.create(spec2)
 
         assertClientErrorForPostContent(
