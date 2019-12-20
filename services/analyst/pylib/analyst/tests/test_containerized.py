@@ -6,15 +6,37 @@ import unittest
 import time
 
 from analyst.containerized import ContainerizedZpsExecutor, DockerContainerWrapper
-from .test_cmpts import test_task, MockArchivistClient
+from .test_cmpts import test_task
 
 logging.basicConfig(level=logging.DEBUG)
+
+
+class MockClusterClient:
+    """
+    A pretend ClusterClient which simply counts events types.
+    """
+    def __init__(self):
+        self.pings = []
+        self.events = []
+        self.remote_url = "https://127.0.0.1:8066"
+
+    def emit_event(self, task, etype, payload):
+        self.events.append((etype, task, payload))
+
+    def event_count(self, event_type):
+        return len(self.get_events(event_type))
+
+    def get_events(self, event_type):
+        return [e for e in self.events if e[0] == event_type]
+
+    def event_types(self):
+        return {e[0] for e in self.events}
 
 
 class TestContainerizedZpsExecutor(unittest.TestCase):
 
     def setUp(self):
-        self.client = MockArchivistClient()
+        self.client = MockClusterClient()
 
     def test_kill(self):
         task = test_task(sleep=30)
@@ -77,7 +99,7 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
 class TestDockerContainerProcess(unittest.TestCase):
 
     def setUp(self):
-        self.client = MockArchivistClient()
+        self.client = MockClusterClient()
         task = test_task()
         wrapper = ContainerizedZpsExecutor(task, self.client)
         self.container = DockerContainerWrapper(wrapper, task, "zmlp/plugins-base")

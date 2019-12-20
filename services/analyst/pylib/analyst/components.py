@@ -100,7 +100,7 @@ class ClusterClient(object):
             if rsp.ok:
                 return rsp.json()
         except requests.exceptions.ConnectionError as e:
-            logger.warn("Connection error, failed to obtain next task %s, %s" %
+            logger.warning("Connection error, failed to obtain next task %s, %s" %
                         (self.remote_url, e))
         return None
 
