@@ -61,7 +61,10 @@ class Analyst(
     val state: AnalystState,
 
     @ApiModelProperty("Lock status of the Analyst", allowableValues = "locked,unlocked")
-    val lock: LockState
+    val lock: LockState,
+
+    @ApiModelProperty("The version of the analyst.")
+    val version: String
 
 ) {
     override fun toString(): String {

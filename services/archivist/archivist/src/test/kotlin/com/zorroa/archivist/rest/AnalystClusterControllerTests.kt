@@ -1,6 +1,5 @@
 package com.zorroa.archivist.rest
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Analyst
 import com.zorroa.archivist.domain.AnalystSpec
@@ -16,8 +15,6 @@ import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.AnalystAuthenticationFilter.Companion.ANALYST_HEADER_HOST
-import com.zorroa.archivist.security.AnalystAuthenticationFilter.Companion.ANALYST_HEADER_PORT
 import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.DispatchQueueManager
 import com.zorroa.archivist.service.DispatcherService
@@ -53,10 +50,12 @@ class AnalystClusterControllerTests : MockMvcTest() {
     lateinit var taskErrorDao: TaskErrorDao
 
     fun launchJob(): Job {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
         return jobService.create(spec)
     }
 
@@ -69,17 +68,19 @@ class AnalystClusterControllerTests : MockMvcTest() {
         if (task != null) {
             val te = TaskEvent(
                 TaskEventType.STARTED,
-                    task.id,
-                    job.id,
-                    emptyMap<String, String>())
+                task.id,
+                job.id,
+                emptyMap<String, String>()
+            )
 
-            mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
-                    .session(analyst())
+            mvc.perform(
+                MockMvcRequestBuilders.post("/cluster/_event")
+                    .headers(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .header(ANALYST_HEADER_PORT, "5000")
-                    .content(Json.serialize(te)))
-                    .andExpect(MockMvcResultMatchers.status().isOk)
-                    .andReturn()
+                    .content(Json.serialize(te))
+            )
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
 
             val rtask = jobService.getTask(task.id)
             assertEquals(TaskState.Running, rtask.state)
@@ -96,19 +97,21 @@ class AnalystClusterControllerTests : MockMvcTest() {
 
         if (task != null) {
             assertTrue(dispatcherService.startTask(task))
-            val te = TaskEvent(TaskEventType.STOPPED,
-                    task.id,
-                    job.id,
-                    TaskStoppedEvent(0, null)
+            val te = TaskEvent(
+                TaskEventType.STOPPED,
+                task.id,
+                job.id,
+                TaskStoppedEvent(0, null)
             )
 
-            mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
-                    .session(analyst())
+            mvc.perform(
+                MockMvcRequestBuilders.post("/cluster/_event")
+                    .headers(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .header(ANALYST_HEADER_PORT, "5000")
-                    .content(Json.serialize(te)))
-                    .andExpect(MockMvcResultMatchers.status().isOk)
-                    .andReturn()
+                    .content(Json.serialize(te))
+            )
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
 
             val rtask = jobService.getTask(task.id)
             assertEquals(TaskState.Success, rtask.state)
@@ -126,18 +129,21 @@ class AnalystClusterControllerTests : MockMvcTest() {
         if (task != null) {
             assertTrue(dispatcherService.startTask(task))
             jdbc.update("UPDATE task SET int_run_count=100 WHERE pk_task=?", task.id)
-            val te = TaskEvent(TaskEventType.STOPPED,
-                    task.id,
-                    job.id,
-                    TaskStoppedEvent(1, null))
+            val te = TaskEvent(
+                TaskEventType.STOPPED,
+                task.id,
+                job.id,
+                TaskStoppedEvent(1, null)
+            )
 
-            mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
-                    .session(analyst())
+            mvc.perform(
+                MockMvcRequestBuilders.post("/cluster/_event")
+                    .headers(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .header(ANALYST_HEADER_PORT, "5000")
-                    .content(Json.serialize(te)))
-                    .andExpect(MockMvcResultMatchers.status().isOk)
-                    .andReturn()
+                    .content(Json.serialize(te))
+            )
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
 
             val rtask = jobService.getTask(task.id)
             assertEquals(TaskState.Failure, rtask.state)
@@ -155,21 +161,26 @@ class AnalystClusterControllerTests : MockMvcTest() {
         if (task != null) {
 
             assertTrue(dispatcherService.startTask(task))
-            val te = TaskEvent(TaskEventType.EXPAND,
-                    task.id,
-                    job.id,
-                    TaskExpandEvent(listOf(AssetSpec("http://foo/bar/dog.jpg"))))
+            val te = TaskEvent(
+                TaskEventType.EXPAND,
+                task.id,
+                job.id,
+                TaskExpandEvent(listOf(AssetSpec("http://foo/bar/dog.jpg")))
+            )
 
-            mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
-                    .session(analyst())
+            mvc.perform(
+                MockMvcRequestBuilders.post("/cluster/_event")
+                    .headers(analyst())
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .header(ANALYST_HEADER_PORT, "5000")
-                    .content(Json.serialize(te)))
-                    .andExpect(MockMvcResultMatchers.status().isOk)
-                    .andReturn()
+                    .content(Json.serialize(te))
+            )
+                .andExpect(MockMvcResultMatchers.status().isOk)
+                .andReturn()
 
-            val count = jdbc.queryForObject("SELECT COUNT(1) FROM task WHERE pk_job=?",
-                    Int::class.java, task.jobId)
+            val count = jdbc.queryForObject(
+                "SELECT COUNT(1) FROM task WHERE pk_job=?",
+                Int::class.java, task.jobId
+            )
             assertEquals(2, count)
         } else {
             assertNotNull(task)
@@ -196,11 +207,12 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 tev
             )
 
-            mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
-                .session(analyst())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(ANALYST_HEADER_PORT, "5000")
-                .content(Json.serialize(te)))
+            mvc.perform(
+                MockMvcRequestBuilders.post("/cluster/_event")
+                    .headers(analyst())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(Json.serialize(te))
+            )
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
@@ -238,11 +250,12 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 tev
             )
 
-            mvc.perform(MockMvcRequestBuilders.post("/cluster/_event")
-                .session(analyst())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(ANALYST_HEADER_PORT, "5000")
-                .content(Json.serialize(te)))
+            mvc.perform(
+                MockMvcRequestBuilders.post("/cluster/_event")
+                    .headers(analyst())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(Json.serialize(te))
+            )
                 .andExpect(MockMvcResultMatchers.status().isOk)
                 .andReturn()
 
@@ -250,10 +263,10 @@ class AnalystClusterControllerTests : MockMvcTest() {
             val terr = taskErrorDao.getLast()
             val stack = terr.stackTrace?.get(0)
             assertNotNull(stack)
-            assertEquals(stack?.file, "Unknown File")
-            assertEquals(stack?.className, "Unknown Class")
-            assertEquals(stack?.methodName, "Unknown Method")
-            assertEquals(stack?.lineNumber, 0)
+            assertEquals(stack.file, "Unknown File")
+            assertEquals(stack.className, "Unknown Class")
+            assertEquals(stack.methodName, "Unknown Method")
+            assertEquals(stack.lineNumber, 0)
         } else {
             assertNotNull(task)
         }
@@ -264,84 +277,64 @@ class AnalystClusterControllerTests : MockMvcTest() {
         authenticateAsAnalyst()
 
         val spec = AnalystSpec(
-                1024,
-                648,
-                1024,
-                0.5f,
-                "0.41.0",
-                null)
+            1024,
+            648,
+            1024,
+            0.5f,
+            "0.41.0",
+            null
+        )
 
-        val result = mvc.perform(MockMvcRequestBuilders.post("/cluster/_ping")
-                .session(analyst())
+        val result = mvc.perform(
+            MockMvcRequestBuilders.post("/cluster/_ping")
+                .headers(analyst())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(ANALYST_HEADER_PORT, "5000")
-                .content(Json.serialize(spec)))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+                .content(Json.serialize(spec))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
         val analyst = Json.Mapper.readValue<Analyst>(result.response.contentAsString, Analyst::class.java)
         assertTrue(analystService.exists(analyst.endpoint))
     }
 
     @Test
-    fun testPingWithHostname() {
-
-        val spec = AnalystSpec(
-                1024,
-                648,
-                1024,
-                0.5f,
-                "0.41.0",
-                null)
-
-        val host = "vrack2022"
-        val result = mvc.perform(MockMvcRequestBuilders.post("/cluster/_ping")
-
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(ANALYST_HEADER_PORT, "5000")
-                .header(ANALYST_HEADER_HOST, host)
-                .content(Json.serialize(spec)))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
-
-        val analyst = Json.Mapper.readValue<Analyst>(result.response.contentAsString)
-        assertEquals("http://$host:5000", analyst.endpoint)
-    }
-
-    @Test
     fun testQueue() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
 
         jobService.create(spec)
 
         authenticateAsAnalyst()
         val aspec = AnalystSpec(
-                1024,
-                648,
-                1024,
-                0.5f,
-                "0.41.0",
-                null)
+            1024,
+            648,
+            1024,
+            0.5f,
+            "0.41.0",
+            null
+        )
 
         analystService.upsert(aspec)
-        val analyst = analyst()
 
-        mvc.perform(MockMvcRequestBuilders.put("/cluster/_queue")
-                .session(analyst)
+        mvc.perform(
+            MockMvcRequestBuilders.put("/cluster/_queue")
+                .headers(analyst())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(ANALYST_HEADER_PORT, "5000"))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
-        // This should be 404
-        mvc.perform(MockMvcRequestBuilders.put("/cluster/_queue")
-                .session(analyst)
+        mvc.perform(
+            MockMvcRequestBuilders.put("/cluster/_queue")
+                .headers(analyst())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(ANALYST_HEADER_PORT, "5000"))
-                .andExpect(MockMvcResultMatchers.status().isNotFound)
-                .andReturn()
+        )
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            .andReturn()
     }
 }

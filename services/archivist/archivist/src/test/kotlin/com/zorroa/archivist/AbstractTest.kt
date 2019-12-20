@@ -156,7 +156,7 @@ abstract class AbstractTest {
 
     fun authenticateAsAnalyst() {
         SecurityContextHolder.getContext().authentication =
-            AnalystAuthentication("https://127.0.0.1:5000")
+            AnalystAuthentication("http://127.0.0.1:5000", "unittest")
     }
 
     fun setupAuthServerMocks() {
