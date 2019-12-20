@@ -1,23 +1,63 @@
 import logging
-import tempfile
-import unittest
 import os
+import tempfile
+import threading
+import unittest
+import time
 
-from analyst.containerized import ContainerizedZpsExecutor, DockerContainerProcess
-from .test_cmpts import test_task, MockArchivistClient
+from analyst.executor import ZpsExecutor, DockerContainerWrapper
+from .test_service import test_task
 
 logging.basicConfig(level=logging.DEBUG)
 
 
-class TestContainerizedZpsExecutor(unittest.TestCase):
+class MockClusterClient:
+    """
+    A pretend ClusterClient which simply counts events types.
+    """
+    def __init__(self):
+        self.pings = []
+        self.events = []
+        self.remote_url = "https://127.0.0.1:8066"
 
+    def emit_event(self, task, etype, payload):
+        self.events.append((etype, task, payload))
+
+    def event_count(self, event_type):
+        return len(self.get_events(event_type))
+
+    def get_events(self, event_type):
+        return [e for e in self.events if e[0] == event_type]
+
+    def event_types(self):
+        return {e[0] for e in self.events}
+
+
+class TestZpsExecutor(unittest.TestCase):
+    """
+
+    """
     def setUp(self):
-        self.client = MockArchivistClient()
+        self.client = MockClusterClient()
+
+    def test_kill(self):
+        task = test_task(sleep=30)
+
+        wrapper = ZpsExecutor(task, self.client)
+
+        def threaded_function():
+            time.sleep(8)
+            wrapper.kill(task["id"], "skipped", "manual kill")
+
+        thread = threading.Thread(target=threaded_function)
+        thread.start()
+        wrapper.run()
+        thread.join()
 
     def test_run(self):
         task = test_task()
 
-        wrapper = ContainerizedZpsExecutor(task, self.client)
+        wrapper = ZpsExecutor(task, self.client)
         wrapper.run()
 
         assert self.client.event_count("started") == 1
@@ -48,7 +88,7 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
             }
         }
 
-        wrapper = ContainerizedZpsExecutor(task, self.client)
+        wrapper = ZpsExecutor(task, self.client)
         wrapper.run()
 
         assert self.client.event_count("started") == 1
@@ -58,13 +98,13 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
         assert self.client.event_count("index") == 0
 
 
-class TestDockerContainerProcess(unittest.TestCase):
+class TestDockerContainerWrapper(unittest.TestCase):
 
     def setUp(self):
-        self.client = MockArchivistClient()
+        self.client = MockClusterClient()
         task = test_task()
-        wrapper = ContainerizedZpsExecutor(task, self.client)
-        self.container = DockerContainerProcess(wrapper, task, "zmlp/plugins-base")
+        wrapper = ZpsExecutor(task, self.client)
+        self.container = DockerContainerWrapper(wrapper, task, "zmlp/plugins-base")
 
     def tearDown(self):
         self.container.stop()
@@ -84,7 +124,7 @@ class TestDockerContainerProcess(unittest.TestCase):
 
     def test_docker_pull(self):
         image = self.container._pull_image()
-        assert "zmlp/plugins-base:development" in image.tags
+        assert "zmlp/plugins-base:development" == image
 
     def test_docker_pull_no_repo(self):
         os.environ["ANALYST_DOCKER_PULL"] = "false"
@@ -93,3 +133,8 @@ class TestDockerContainerProcess(unittest.TestCase):
             assert "zmlp/plugins-base" == image
         finally:
             del os.environ["ANALYST_DOCKER_PULL"]
+
+    def test_receive_event_with_timeout(self):
+        event = self.container.receive_event(250)
+        assert event["type"] == "timeout"
+        assert event["payload"]["timeout"] == 250

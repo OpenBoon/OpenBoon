@@ -7,7 +7,7 @@ import os
 from flask import Flask, jsonify, request, abort
 from gevent.pywsgi import WSGIServer
 
-import analyst.components as components
+import analyst.service as service
 
 app = Flask(__name__)
 
@@ -33,7 +33,7 @@ def main():
     else:
         logging.basicConfig(level=logging.INFO)
 
-    api = components.ApiComponents(args)
+    api = service.ServiceComponents(args)
     setup_routes(api)
 
     print("Listening on port {}".format(args.port))
@@ -56,4 +56,4 @@ def setup_routes(api):
 
     @app.route('/info', methods=['GET'])
     def info():
-        return jsonify({"version": components.get_sdk_version()})
+        return jsonify({"version": service.get_sdk_version()})

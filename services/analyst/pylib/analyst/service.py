@@ -12,7 +12,7 @@ import jwt
 import psutil
 import requests
 
-from .containerized import ContainerizedZpsExecutor
+from .executor import ZpsExecutor
 
 if platform == "darwin":
     from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -29,13 +29,13 @@ ZpsHeader = "######## BEGIN ########"
 ZpsFooter = "######## END ##########"
 
 __all__ = [
-    "ApiComponents",
+    "ServiceComponents",
     "ClusterClient",
     "Executor"
 ]
 
 
-class ApiComponents(object):
+class ServiceComponents(object):
 
     def __init__(self, args):
         shared_key = None
@@ -81,8 +81,8 @@ class ClusterClient(object):
         Send a ping to the Archivist. The ping keeps the analyst record in the "Up"
         state.
 
-        :param ping:
-        :return:
+        Args:
+            ping (dict): The ping to send.
         """
         return requests.post(self.remote_url + "/cluster/_ping",
                              verify=False, json=ping, headers=self._headers()).json()
@@ -91,7 +91,6 @@ class ClusterClient(object):
         """
         Returns the highest priority task from the Archivist. The Task on the
         Archivist is set to the Queued state.
-        :return:
         """
         data = {}
         try:
@@ -100,8 +99,8 @@ class ClusterClient(object):
             if rsp.ok:
                 return rsp.json()
         except requests.exceptions.ConnectionError as e:
-            logger.warn("Connection error, failed to obtain next task %s, %s" %
-                        (self.remote_url, e))
+            logger.warning(
+                "Connection error, failed to obtain next task %s, %s" % (self.remote_url, e))
         return None
 
     def emit_event(self, task, etype, payload):
@@ -231,10 +230,8 @@ class Executor(object):
         """
         try:
             return self.current_task.kill(task_id, new_state, reason)
-        except AttributeError as e1:
-            logger.warning("Failed to kill task %s, current task was null, %s" % (task_id, e1))
         except Exception as e:
-            logger.warning("Failed to kill task %s, was not current task: %s" % (task_id, e))
+            logger.warning("Failed to kill task %s, %s" % (task_id, e))
         return False
 
     def run_task(self, task):
@@ -244,7 +241,7 @@ class Executor(object):
         :param task:
         :return:
         """
-        self.current_task = ContainerizedZpsExecutor(task, self.client)
+        self.current_task = ZpsExecutor(task, self.client)
         try:
             # blocks until completed or killed
             return self.current_task.run()
