@@ -17,10 +17,12 @@ beforeEach(() => {
  * CSRF Cookie
  */
 
-Object.defineProperty(document, 'cookie', {
-  writable: true,
-  value: 'csrftoken=CSRF_TOKEN',
-})
+if (typeof document !== 'undefined') {
+  Object.defineProperty(document, 'cookie', {
+    writable: true,
+    value: 'csrftoken=CSRF_TOKEN',
+  })
+}
 
 /**
  * console

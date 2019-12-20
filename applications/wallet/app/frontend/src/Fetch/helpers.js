@@ -2,7 +2,7 @@ import { clearUser } from '../Authentication/helpers'
 
 let enhancedFetch
 
-const getCsrfToken = () => {
+export const getCsrfToken = () => {
   if (typeof document === 'undefined') return ''
 
   const { csrftoken } = Object.fromEntries(
