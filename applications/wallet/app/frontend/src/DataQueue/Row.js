@@ -38,10 +38,11 @@ const DataQueueRow = ({
       <td css={{ textAlign: 'center' }}>
         {Object.values(assetCounts).reduce((total, count) => total + count)}
       </td>
-      <td css={{ display: 'flex', justifyContent: 'center' }}>
+      <td>
         {assetCounts.assetErrorCount > 0 && (
           <div
             css={{
+              margin: '0 auto',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
