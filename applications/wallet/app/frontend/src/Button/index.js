@@ -33,7 +33,7 @@ const STYLES = {
     },
     '&[aria-disabled=true]': {
       color: colors.structure.mattGrey,
-      backgroundColor: colors.rocks.iron,
+      backgroundColor: colors.structure.steel,
     },
   },
   NEUTRAL: {

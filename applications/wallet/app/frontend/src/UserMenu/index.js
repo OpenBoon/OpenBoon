@@ -27,7 +27,7 @@ const UserMenu = ({
             width: SIZE,
             height: SIZE,
             borderRadius: SIZE,
-            color: colors.rocks.white,
+            color: colors.structure.white,
             backgroundColor: colors.rocks.charcoal,
             fontWeight: typography.weight.bold,
             ':hover': {
