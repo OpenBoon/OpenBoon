@@ -1,8 +1,6 @@
 import logging
-import time
+import pytest
 import unittest
-
-import zmq
 
 from containerizer.daemon import PixmlContainerDaemon
 from pixml.analysis import Reactor
@@ -14,16 +12,11 @@ logging.basicConfig(level=logging.DEBUG)
 class PixmlContainerDaemonTests(unittest.TestCase):
 
     def tearDown(self):
-        self.server.close()
         self.zpsd.stop()
 
     def setUp(self):
         self.emitter = TestEventEmitter()
-        self.zpsd = PixmlContainerDaemon(None, Reactor(self.emitter))
-
-        context = zmq.Context()
-        self.server = context.socket(zmq.PAIR)
-        self.server.bind("tcp://*:9999")
+        self.zpsd = PixmlContainerDaemon(9999, Reactor(self.emitter))
 
     def test_event_handler_generate(self):
         event = {
@@ -31,7 +24,7 @@ class PixmlContainerDaemonTests(unittest.TestCase):
             "payload": {
                 "ref": {
                     "className": "pixml.analysis.testing.TestGenerator",
-                    "image": "zmlp-plugins-base",
+                    "image": "zmlp/plugins-base",
                     "args": {
                         "files": [
                             "/test-data/images/set01/toucan.jpg",
@@ -52,7 +45,7 @@ class PixmlContainerDaemonTests(unittest.TestCase):
             "payload": {
                 "ref": {
                     "className": "pixml.analysis.testing.TestProcessor",
-                    "image": "zmlp-plugins-base",
+                    "image": "zmlp/plugins-base",
                     "args": {
 
                     }
@@ -77,7 +70,7 @@ class PixmlContainerDaemonTests(unittest.TestCase):
             "payload": {
                 "ref": {
                     "className": "foo.DoesNotExist",
-                    "image": "zmlp-plugins-base",
+                    "image": "zmlp/plugins-base",
                     "args": {}
                 },
                 "asset": {
@@ -88,33 +81,56 @@ class PixmlContainerDaemonTests(unittest.TestCase):
         self.zpsd.handle_event(event)
         assert self.emitter.event_count("error") == 1
 
-    def test_receive_event(self):
+    def test_handle_ready(self):
+        event = {
+            "type": "ready",
+            "payload": {}
+        }
+        self.zpsd.handle_event(event)
+        assert self.emitter.event_count("ok") == 1
 
-        context = zmq.Context()
-        socket = context.socket(zmq.PAIR)
-        socket.connect("tcp://localhost:9999")
+    def test_handle_teardown_warning(self):
+        event = {
+            "type": "teardown",
+            "payload": {}
+        }
+        self.zpsd.handle_event(event)
+        assert self.emitter.event_count("warning") == 1
+
+    def test_handle_teardown(self):
+        ref = {
+            "className": "pixml.analysis.testing.TestProcessor",
+            "image": "zmlp/plugins-base",
+            "args": {}
+        }
 
         event = {
             "type": "execute",
             "payload": {
-                "ref": {
-                    "className": "pixml.testing.TestProcessor",
-                    "image": "zmlp-plugins-base",
-                    "args": {}
-                },
+                "ref": ref,
                 "asset": {
-                    "id": "123"
+                    "id": "1234",
+                    "document": {
+                        "kirk": "spock"
+                    }
                 }
             }
         }
-        self.server.send_json(event)
-        tries = 0
-        while True:
-            tries += 1
-            poll = socket.poll(timeout=1000)
-            if poll == 1:
-                tries = -1
-                break
-            else:
-                time.sleep(0.25)
-        assert tries == -1
+        self.zpsd.handle_event(event)
+
+        event = {
+            "type": "teardown",
+            "payload": {
+                "ref": ref
+            }
+        }
+        self.zpsd.handle_event(event)
+        assert self.emitter.event_count("warning") == 0
+
+    def test_handle_stop(self):
+        event = {
+            "type": "stop",
+            "payload": {}
+        }
+        with pytest.raises(SystemExit):
+            self.zpsd.handle_event(event)

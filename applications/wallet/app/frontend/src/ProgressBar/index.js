@@ -1,28 +1,36 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { colors, constants } from '../Styles'
+
+import { constants, spacing, zIndex } from '../Styles'
+
+import ProgressBarLegend from './Legend'
+
+import { TASK_STATUS_COLORS } from './helpers'
 
 const CONTAINER_HEIGHT = 16
-const CONTAINER_WIDTH = 200
-const STATUS_COLORS = {
-  tasksSuccess: colors.green1,
-  tasksFailure: colors.error,
-  tasksRunning: colors.blue1,
-  tasksWaiting: colors.grey6,
-}
+const CONTAINER_WIDTH = 212
 
-const ProgressBar = ({ state, taskCounts }) => {
-  if (state === 'Canceled') {
-    return <div css={{ color: colors.grey5 }}>Canceled</div>
+const ProgressBar = ({ state, taskCounts: tC, timeStarted, timeUpdated }) => {
+  const taskCounts = {
+    ...tC,
+    tasksPending: tC.tasksWaiting + tC.tasksQueued,
   }
+  const [showLegend, setShowLegend] = useState(false)
 
   return (
     <div
+      aria-label="Progress Bar"
+      role="button"
+      tabIndex="0"
+      onKeyPress={() => setShowLegend(!showLegend)}
+      onMouseEnter={() => setShowLegend(true)}
+      onMouseLeave={() => setShowLegend(false)}
       css={{
         display: 'flex',
         height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
       }}>
-      {Object.keys(STATUS_COLORS)
+      {Object.keys(TASK_STATUS_COLORS)
         .filter(taskStatus => {
           return taskCounts[taskStatus] > 0
         })
@@ -33,7 +41,7 @@ const ProgressBar = ({ state, taskCounts }) => {
               css={{
                 height: '100%',
                 flex: `${taskCounts[taskStatus]} 0 auto`,
-                backgroundColor: STATUS_COLORS[taskStatus],
+                backgroundColor: TASK_STATUS_COLORS[taskStatus],
                 '&:first-of-type': {
                   borderTopLeftRadius: constants.borderRadius.small,
                   borderBottomLeftRadius: constants.borderRadius.small,
@@ -46,17 +54,38 @@ const ProgressBar = ({ state, taskCounts }) => {
             />
           )
         })}
+      {showLegend && (
+        <div
+          css={{
+            position: 'absolute',
+            marginTop: CONTAINER_HEIGHT + spacing.base,
+            right: spacing.normal,
+            boxShadow: constants.boxShadows.tableRow,
+            zIndex: zIndex.layout.dropdown,
+          }}>
+          <ProgressBarLegend
+            state={state}
+            taskCounts={taskCounts}
+            timeStarted={timeStarted}
+            timeUpdated={timeUpdated}
+          />
+        </div>
+      )}
     </div>
   )
 }
 
 ProgressBar.propTypes = {
   state: PropTypes.string.isRequired,
+  timeStarted: PropTypes.number.isRequired,
+  timeUpdated: PropTypes.number.isRequired,
   taskCounts: PropTypes.shape({
-    tasksSuccess: PropTypes.number,
-    tasksFailure: PropTypes.number,
-    tasksRunning: PropTypes.number,
-    tasksWaiting: PropTypes.number,
+    tasksFailure: PropTypes.number.isRequired,
+    tasksSkipped: PropTypes.number.isRequired,
+    tasksSuccess: PropTypes.number.isRequired,
+    tasksRunning: PropTypes.number.isRequired,
+    tasksWaiting: PropTypes.number.isRequired,
+    tasksQueued: PropTypes.number.isRequired,
   }).isRequired,
 }
 

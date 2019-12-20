@@ -12,29 +12,27 @@ logger = logging.getLogger(__name__)
 
 
 class PixmlContainerDaemon(object):
-    def __init__(self, host, reactor=None):
-        self.host = host
-        self.socket = self.__setup_zmq_socket()
+    """Starts a ZMQ server which allows us to run the processors contained
+    in the image on asset metadata.
+    """
+    def __init__(self, port, reactor=None):
+        self.port = port
+        self.socket = self.__setup_zmq_socket(port)
         self.reactor = reactor
 
         if not reactor:
             self.reactor = Reactor(ZmqEventEmitter(self.socket))
         self.executor = ProcessorExecutor(self.reactor)
 
-    def __setup_zmq_socket(self):
+    def __setup_zmq_socket(self, port):
         ctx = zmq.Context()
-        socket = ctx.socket(zmq.PAIR)
-        if self.host:
-            logger.info("Connecting to {}".format(self.host))
-            socket.connect(self.host)
-            socket.send_json({"type": "ready", "payload": {}})
-        else:
-            logger.warning("No Analyst host specified, not connecting...")
+        socket = ctx.socket(zmq.DEALER)
+        socket.bind("tcp://*:%s" % port)
         return socket
 
     def start(self):
+        logger.info("Analyst container server listening on port: %d" % self.port)
         while True:
-            logger.info("Waiting for events")
             event = self.socket.recv_json()
             try:
                 self.handle_event(event)
@@ -47,16 +45,18 @@ class PixmlContainerDaemon(object):
         self.socket.close()
 
     def handle_event(self, event):
-        logger.info("handling event: %s" % event)
         etype = event["type"]
-        if etype == "execute":
+        logger.info("handling event: {}".format(etype))
+        if etype == "ready":
+            self.reactor.emitter.write({"type": "ok", "payload": {}})
+        elif etype == "execute":
             self.executor.execute_processor(event["payload"])
         elif etype == "generate":
             self.executor.execute_generator(event["payload"])
         elif etype == "teardown":
             self.executor.teardown_processor(event["payload"])
         elif etype == "stop":
-            logger.info("Exiting ZPSD via stop event")
+            logger.warning("Exiting container via stop event")
             sys.exit(event["payload"].get("status", 0))
 
 

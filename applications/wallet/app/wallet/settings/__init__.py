@@ -143,13 +143,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 # The static files are built in the static_server directory in the root of the repo.
 # These files are then built into the nginx static file server container.
-STATIC_URL = '/wallet/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-# Add the React app build location to staticfiles
-STATICFILES_DIRS = [
-    os.path.join(REACT_APP_DIR, 'build'),
-]
 
 
 # Rest Framework Specific Settings
@@ -169,4 +164,4 @@ ARCHIVIST_URL = os.environ.get('ARCHIVIST_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
 
 # Google OAUTH2
-GOOGLE_OAUTH_CLIENT_ID = '683985502197-140kfdlheorkbc6e9vo748v5260df3pf.apps.googleusercontent.com'
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get('GOOGLE_OAUTH_CLIENT_ID')

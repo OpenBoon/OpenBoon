@@ -8,10 +8,10 @@ import os
 import random
 import sys
 import time
+from urllib.parse import urljoin
 
 import jwt
 import requests
-import uritools
 import urllib3
 
 from .exception import PixmlException
@@ -321,7 +321,7 @@ class PixmlClient(object):
         """
         Returns the full URL including the configured server part.
         """
-        url = uritools.urijoin(self.server, path)
+        url = urljoin(self.server, path)
         if logger.getEffectiveLevel() == logging.DEBUG:
             logger.debug("url: '%s' path: '%s' body: '%s'" % (url, path, body))
         return url
@@ -430,11 +430,11 @@ class PixmlJsonEncoder(json.JSONEncoder):
         elif isinstance(obj, (set, frozenset)):
             return list(obj)
         elif isinstance(obj, datetime.datetime):
-            return obj.strftime("%Y-%m-%d %H:%M:%S %z").strip()
+            return obj.isoformat()
         elif isinstance(obj, datetime.date):
-            return obj.strftime("%Y-%m-%d")
+            return obj.isoformat()
         elif isinstance(obj, datetime.time):
-            return obj.strftime("%H:%M:%S %z").strip()
+            return obj.isoformat()
         elif isinstance(obj, decimal.Decimal):
             return float(obj)
 

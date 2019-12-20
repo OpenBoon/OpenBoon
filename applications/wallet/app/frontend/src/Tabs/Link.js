@@ -25,7 +25,7 @@ const TabsLink = ({ title, href }) => {
             fontWeight: typography.weight.bold,
             ':hover': {
               textDecoration: 'none',
-              color: href === pathname ? colors.white : colors.plants.clover,
+              color: href === pathname ? colors.white : colors.key.one,
             },
           }}>
           {title}

@@ -4,12 +4,10 @@ import com.zorroa.archivist.config.ApplicationProperties
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
@@ -53,9 +51,9 @@ class AnalystAuthenticationFilter: OncePerRequestFilter() {
                     if (r.matches(remoteAddr)) {
                         val port = analystPort.toInt()
                         val endpoint = if (preferHostnames) {
-                            "https://${analystHost ?: remoteAddr}:$port"
+                            "http://${analystHost ?: remoteAddr}:$port"
                         } else {
-                            "https://$remoteAddr:$port"
+                            "http://$remoteAddr:$port"
                         }
                         SecurityContextHolder.getContext().authentication =
                                 AnalystAuthentication(endpoint)

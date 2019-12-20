@@ -12,8 +12,10 @@ import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
+import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.FileCategory
 import com.zorroa.archivist.domain.FileGroup
+import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.InternalTask
@@ -21,12 +23,11 @@ import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.STANDARD_PIPELINE
 import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.util.ElasticSearchErrorTranslator
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.FileStorageService
+import com.zorroa.archivist.util.ElasticSearchErrorTranslator
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.Json
-import com.zorroa.archivist.util.randomString
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
@@ -79,12 +80,10 @@ interface AssetService {
     /**
      * Batch create a list of assets.  Creating adds a base asset with
      * just source data to ElasticSearch.  A created asset still needs
-     * to be analyed.
+     * to be analyzed.
      *
      * @param request: A BatchCreateAssetsRequest
      * @return A BatchCreateAssetsResponse which contains the assets and their created status.
-     *
-     * TODO: handle clips
      */
     fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse
 
@@ -105,6 +104,15 @@ interface AssetService {
      * @returns a BatchCreateAssetsResponse
      */
     fun batchUpload(req: BatchUploadAssetsRequest): BatchCreateAssetsResponse
+
+    /**
+     * Augment the newAsset with the clip definition found in the [AssetSpec] used
+     * to create it.
+     *
+     * @param newAsset The [Asset] we're creating
+     * @param spec [AssetSpec] provided by the caller.
+     */
+    fun deriveClip(newAsset: Asset, spec: AssetSpec) : Clip
 }
 
 
@@ -163,8 +171,43 @@ class AssetServiceImpl : AssetService {
         }
     }
 
+    override fun deriveClip(newAsset: Asset, spec: AssetSpec) : Clip {
+
+        val clip = spec.clip ?: throw java.lang.IllegalArgumentException("Cannot derive a clip with a null clip")
+
+        // In this case we're deriving from another asset and a clip
+        // has to be set.
+        if (spec.uri.startsWith("asset:")) {
+            // Fetch the source asset and reset our source spec.uri
+            val clipSource = getAsset(spec.uri.substring(6))
+            clip.putInPile(clipSource.id)
+            spec.uri = clipSource.getAttr("source.path", String::class.java)
+                ?: throw IllegalArgumentException("The source asset for a clip cannot have a null URI")
+
+            // Copy over source files if any
+            val files = clipSource.getAttr("files", Json.LIST_OF_FILE_STORAGE) ?: listOf()
+            val sourceFiles = files.let {
+                it.filter { file->
+                    file.category == FileCategory.SOURCE.lower()
+                }
+            }
+
+            // We have to reference the source asset in the StorageFile
+            // record so the client side storage system to find the file.
+            sourceFiles.forEach { it.sourceAssetId = clipSource.id }
+
+            // Set the files property
+            newAsset.setAttr("files", sourceFiles)
+        } else {
+            clip.putInPile(newAsset.id)
+        }
+        newAsset.setAttr("clip", clip)
+        return clip
+    }
+
     fun assetSpecToAsset(id: String, spec: AssetSpec, task: InternalTask? = null): Asset {
         val asset = Asset(id)
+
         spec.attrs?.forEach { k, v ->
             val prefix = try {
                 k.substring(0, k.indexOf('.'))
@@ -174,6 +217,10 @@ class AssetServiceImpl : AssetService {
             if (prefix !in removeFieldsOnCreate) {
                 asset.setAttr(k, v)
             }
+        }
+
+        if (spec.clip != null) {
+            deriveClip(asset, spec)
         }
 
         asset.setAttr("source.path", spec.uri)
@@ -194,7 +241,6 @@ class AssetServiceImpl : AssetService {
             java.time.Clock.systemUTC().instant().toString()
         )
         asset.setAttr("system.state", AssetState.Pending.toString())
-        asset.setAttr("element.name", "asset")
 
         return asset
     }
@@ -210,9 +256,12 @@ class AssetServiceImpl : AssetService {
 
         for ((idx, mpfile) in req.files.withIndex()) {
             val spec = req.assets[idx]
-            val id = AssetIdBuilder(spec, randomString(24)).build()
+            val idgen = AssetIdBuilder(spec)
+                .checksum(mpfile.bytes)
+            val id = idgen.build()
             val asset = assetSpecToAsset(id, spec)
             asset.setAttr("source.filesize", mpfile.size)
+            asset.setAttr("source.checksum", idgen.checksum)
 
             val locator = FileStorageLocator(
                 FileGroup.ASSET,
@@ -266,8 +315,9 @@ class AssetServiceImpl : AssetService {
         val bulkRequest = BulkRequest()
         bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
 
+        // Make a list of Assets from the spec
         val assets = request.assets.map { spec ->
-            val id = AssetIdBuilder(spec).dataSource(request.task?.dataSourceId).build()
+            val id = AssetIdBuilder(spec).build()
             assetSpecToAsset(id, spec, request.task)
         }
 
@@ -328,6 +378,17 @@ class AssetServiceImpl : AssetService {
                     asset.removeAttr(it)
                 }
 
+                // Got back a clip but it has no pile which means it's in its own pile.
+                // This happens during deep analysis when a file is being clipped, the first
+                // clip/page/scene will be augmented with clip start/stop points.
+                if (asset.attrExists("clip") && (
+                        !asset.attrExists("clip.sourceAssetId") || !asset.attrExists("clip.pile"))) {
+                    val clip = asset.getAttr("clip", Clip::class.java)
+                        ?: throw IllegalArgumentException("Invalid clip data for asset ${asset.id}")
+                    clip.putInPile(asset.id)
+                    asset.setAttr("clip", clip)
+                }
+
                 // Update various system properties.
                 asset.setAttr("system.projectId", getProjectId().toString())
                 asset.setAttr("system.timeModified", time)
@@ -352,8 +413,10 @@ class AssetServiceImpl : AssetService {
                 idxPlus += 1
             }
             val status = if (item.isFailed) {
-                BatchAssetOpStatus(item.id,
-                        ElasticSearchErrorTranslator.translate(item.failureMessage))
+                BatchAssetOpStatus(
+                    item.id,
+                    ElasticSearchErrorTranslator.translate(item.failureMessage)
+                )
             } else {
                 BatchAssetOpStatus(item.id)
             }
@@ -430,9 +493,11 @@ class AssetServiceImpl : AssetService {
     companion object {
 
         /**
-         * These namespaces get removed from [AssetSpec] at creationn time.
+         * These namespaces get removed from [AssetSpec] at creation time.
+         * tmp is allowed on create only, but the data is not indexed,
+         * just stored on the document.
          */
-        val removeFieldsOnCreate = setOf("files", "tmp", "temp")
+        val removeFieldsOnCreate = setOf("system", "source", "files")
 
         /**
          * These namespaces get removed from [Asset] at update time.
