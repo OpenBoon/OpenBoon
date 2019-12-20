@@ -10,7 +10,7 @@ import { onBlur as onBlurHelper } from './helpers'
 const SIZE = 28
 
 const UserMenu = ({
-  user: { first_name: firstName, last_name: lastName, email },
+  user: { firstName: firstName, lastName: lastName, email },
   logout,
 }) => {
   const container = useRef(null)

@@ -26,8 +26,8 @@ def test_api_login_user_pass(api_client, user):
     response_data = response.json()
     assert response_data['email'] == 'user@fake.com'
     assert response_data['username'] == 'user'
-    assert response_data['first_name'] == ''
-    assert response_data['last_name'] == ''
+    assert response_data['firstName'] == ''
+    assert response_data['lastName'] == ''
 
 
 def test_api_login_fail(api_client, user):

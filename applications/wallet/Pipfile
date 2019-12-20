@@ -25,6 +25,7 @@ flake8 = "*"
 pixml = {path = "./../../sdk/python"}
 markdown = "*"
 google-auth = "*"
+djangorestframework-camel-case = "*"
 
 [requires]
 python_version = "3.6"
