@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import Head from 'next/head'
 import useSWR from 'swr'
 
+import ERROR_COMPONENT from '../ERROR_COMPONENT'
 import PageTitle from '../PageTitle'
 import Table from '../Table'
 import Pagination from '../Pagination'
@@ -11,9 +12,13 @@ import DataQueueRow from './Row'
 export const noop = () => () => {}
 
 const DataQueue = ({ selectedProject }) => {
-  const { data: { results } = {} } = useSWR(
+  const { data: { results } = {}, error } = useSWR(
     `/api/v1/projects/${selectedProject.id}/jobs/`,
   )
+
+  if (error) {
+    return <ERROR_COMPONENT error="Error!" />
+  }
 
   if (!Array.isArray(results)) return 'Loading...'
 
