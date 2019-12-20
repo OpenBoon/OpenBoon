@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 CONTAINER_PORT = 5001
 
 
-class ContainerizedZpsExecutor(object):
+class ZpsExecutor(object):
     """
     This class is responsible for iteration and interpretation of
     ZPS scripts along with plugin container life cycle.

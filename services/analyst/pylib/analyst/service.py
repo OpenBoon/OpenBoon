@@ -12,7 +12,7 @@ import jwt
 import psutil
 import requests
 
-from .containerized import ContainerizedZpsExecutor
+from .executor import ZpsExecutor
 
 if platform == "darwin":
     from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -29,13 +29,13 @@ ZpsHeader = "######## BEGIN ########"
 ZpsFooter = "######## END ##########"
 
 __all__ = [
-    "ApiComponents",
+    "ServiceComponents",
     "ClusterClient",
     "Executor"
 ]
 
 
-class ApiComponents(object):
+class ServiceComponents(object):
 
     def __init__(self, args):
         shared_key = None
@@ -242,7 +242,7 @@ class Executor(object):
         :param task:
         :return:
         """
-        self.current_task = ContainerizedZpsExecutor(task, self.client)
+        self.current_task = ZpsExecutor(task, self.client)
         try:
             # blocks until completed or killed
             return self.current_task.run()

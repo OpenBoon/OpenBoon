@@ -1,3 +1,4 @@
+import collections
 import logging
 import os
 import tempfile
@@ -5,18 +6,14 @@ import threading
 import time
 import unittest
 import uuid
-import collections
-
-from threading import Lock
 from unittest.mock import patch, MagicMock
 
 from requests import Response
 
 from analyst import main
-from analyst.components import ClusterClient, \
-    get_sdk_version, ApiComponents
-from analyst.containerized import ContainerizedZpsExecutor
+from analyst.executor import ZpsExecutor
 from analyst.main import setup_routes
+from analyst.service import ClusterClient, get_sdk_version, ServiceComponents
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -65,7 +62,6 @@ class TestClusterClient(unittest.TestCase):
 
     @patch("requests.post")
     def test_send_ping(self, mock_post):
-
         ping = {
             "freeRamMb": 1000,
             "totalRamMb": 5000,
@@ -141,19 +137,19 @@ class TestExecutor(unittest.TestCase):
         args = ArgTuple(credentials=creds_file, archivist="https://localhost:8080",
                         ping=0, poll=0, port=5000)
 
-        self.api = ApiComponents(args)
+        self.api = ServiceComponents(args)
 
     @patch("requests.post")
     def test_send_ping(self, port_patch):
         api = self.api
         ping = api.executor.send_ping()
-        assert("freeRamMb" in ping)
-        assert("totalRamMb" in ping)
-        assert("freeDiskMb" in ping)
-        assert("load" in ping)
-        assert("taskId" not in ping)
+        assert ("freeRamMb" in ping)
+        assert ("totalRamMb" in ping)
+        assert ("freeDiskMb" in ping)
+        assert ("load" in ping)
+        assert ("taskId" not in ping)
 
-        api.executor.current_task = ContainerizedZpsExecutor({
+        api.executor.current_task = ZpsExecutor({
             "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
             "jobId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
             "organizationId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
@@ -161,34 +157,34 @@ class TestExecutor(unittest.TestCase):
         }, api.client)
 
         ping = api.executor.send_ping()
-        assert("taskId" in ping)
+        assert ("taskId" in ping)
 
     @patch("requests.post")
     def test_emit_error(self, post_patch):
         api = self.api
         result = api.executor.run_task(test_task("error"))
-        assert(result["exit_status"] == 0)
-        assert(result["error_events"] == 1)
-        assert(api.executor.current_task is None)
+        assert (result["exit_status"] == 0)
+        assert (result["error_events"] == 1)
+        assert (api.executor.current_task is None)
 
     @patch("requests.post")
     def test_emit_expand(self, post_patch):
         api = self.api
         result = api.executor.run_task(test_task("expand"))
-        assert(result["exit_status"] == 0)
-        assert(result["expand_events"] == 1)
-        assert(api.executor.current_task is None)
+        assert (result["exit_status"] == 0)
+        assert (result["expand_events"] == 1)
+        assert (api.executor.current_task is None)
 
     @patch.object(ClusterClient, "get_next_task")
     def test_queue_next_task(self, put_patch):
         put_patch.return_value = test_task()
         api = self.api
-        assert(api.executor.queue_next_task())
+        assert (api.executor.queue_next_task())
 
     @patch("requests.post")
     def test_kill_no_task(self, post_patch):
         api = self.api
-        assert(api.executor.kill_task("ABC123", None, "test kill") is False)
+        assert (api.executor.kill_task("ABC123", None, "test kill") is False)
 
     @patch("requests.post")
     def test_kill_sleep_task(self, post_patch):

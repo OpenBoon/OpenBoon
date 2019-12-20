@@ -5,8 +5,8 @@ import threading
 import unittest
 import time
 
-from analyst.containerized import ContainerizedZpsExecutor, DockerContainerWrapper
-from .test_cmpts import test_task
+from analyst.executor import ZpsExecutor, DockerContainerWrapper
+from .test_service import test_task
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -33,15 +33,17 @@ class MockClusterClient:
         return {e[0] for e in self.events}
 
 
-class TestContainerizedZpsExecutor(unittest.TestCase):
+class TestZpsExecutor(unittest.TestCase):
+    """
 
+    """
     def setUp(self):
         self.client = MockClusterClient()
 
     def test_kill(self):
         task = test_task(sleep=30)
 
-        wrapper = ContainerizedZpsExecutor(task, self.client)
+        wrapper = ZpsExecutor(task, self.client)
 
         def threaded_function():
             time.sleep(8)
@@ -55,7 +57,7 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
     def test_run(self):
         task = test_task()
 
-        wrapper = ContainerizedZpsExecutor(task, self.client)
+        wrapper = ZpsExecutor(task, self.client)
         wrapper.run()
 
         assert self.client.event_count("started") == 1
@@ -86,7 +88,7 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
             }
         }
 
-        wrapper = ContainerizedZpsExecutor(task, self.client)
+        wrapper = ZpsExecutor(task, self.client)
         wrapper.run()
 
         assert self.client.event_count("started") == 1
@@ -96,12 +98,12 @@ class TestContainerizedZpsExecutor(unittest.TestCase):
         assert self.client.event_count("index") == 0
 
 
-class TestDockerContainerProcess(unittest.TestCase):
+class TestDockerContainerWrapper(unittest.TestCase):
 
     def setUp(self):
         self.client = MockClusterClient()
         task = test_task()
-        wrapper = ContainerizedZpsExecutor(task, self.client)
+        wrapper = ZpsExecutor(task, self.client)
         self.container = DockerContainerWrapper(wrapper, task, "zmlp/plugins-base")
 
     def tearDown(self):
