@@ -138,9 +138,3 @@ class TestDockerContainerWrapper(unittest.TestCase):
         event = self.container.receive_event(250)
         assert event["type"] == "timeout"
         assert event["payload"]["timeout"] == 250
-
-    def test_receive_event_with_timeout(self):
-        event = self.container.receive_event(250)
-        assert event["type"] == "timeout"
-        assert event["payload"]["timeout"] == 250
-
