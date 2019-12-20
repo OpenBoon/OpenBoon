@@ -27,7 +27,7 @@ const Authentication = ({ children }) => {
 
   if (!hasLoaded) return null
 
-  if (!user.username) {
+  if (!user.id) {
     return (
       <Login
         errorMessage={errorMessage}
