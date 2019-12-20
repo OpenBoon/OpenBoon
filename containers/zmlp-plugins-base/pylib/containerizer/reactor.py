@@ -22,7 +22,7 @@ class Reactor(object):
         """Create and return a Reactor instance.
 
         Args:
-            executor (:obj:`Executor`): An Executor implementation has a single
+            emitter (object): An Emitter implementation has a single
                 write() method which is used to write events back to whatever
                 is collecting them, usually the Analyst.
             batch_size (int): The default expand batch size.

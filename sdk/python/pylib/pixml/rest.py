@@ -401,11 +401,12 @@ class SearchResult(object):
         """
         # the "hits" key indicates its an ElasticSearch result.
         if "hits" in data:
+            hits = data["hits"]
             self.items = [clazz({"id": hit["_id"], "document": hit["_source"]})
                           for hit in data["hits"]["hits"]]
-            self.offset = data["hits"].get("offset", 0)
-            self.size = len(data["hits"]["hits"])
-            self.total = data["hits"]["total"]
+            self.offset = hits.get("offset", 0)
+            self.size = len(hits["hits"])
+            self.total = hits["total"]["value"]
         else:
             self.items = [clazz(item) for item in data["list"]]
             self.offset = data["page"]["from"]
