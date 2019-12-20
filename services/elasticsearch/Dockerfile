@@ -5,14 +5,15 @@ COPY pom.xml pom.xml
 RUN mvn clean install -Dmaven.test.skip=true
 
 FROM docker.elastic.co/elasticsearch/elasticsearch-oss:7.5.1
+
+COPY ./docker/jvm.options /usr/share/elasticsearch/config
 COPY --from=mvn_build ./es-kwconf/target/releases/es-kwconf.zip /usr/share/elasticsearch/plugins/es-kwconf.zip
 COPY --from=mvn_build ./es-similarity/target/releases/es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip
-
 COPY --from=mvn_build /usr/local/openjdk-11 /usr/local/openjdk-11
 RUN yum install -y unzip wget
 
 ENV PATH="/usr/local/openjdk-11/bin:${PATH}"
-RUN rm -rf /opt/jdk-10.0.2
+ENV JAVA_HOME="/usr/local/openjdk-11"
 
 WORKDIR /usr/share/elasticsearch/plugins
 
@@ -26,6 +27,7 @@ RUN rm es-kwconf.zip
 
 RUN yum remove -y unzip wget
 
+# Uncomment when this version comes out.
 #RUN mkdir /usr/share/elasticsearch/plugins/prometheus-exporter
 #WORKDIR /usr/share/elasticsearch/plugins/prometheus-exporter
 
