@@ -3,10 +3,15 @@ import useSWR from 'swr'
 
 import userShape from '../User/shape'
 
+import ERROR_COMPONENT from '../ERROR_COMPONENT'
 import Layout from '../Layout'
 
 const Projects = ({ user, logout, children }) => {
-  const { data: { results } = {} } = useSWR('/api/v1/projects/')
+  const { data: { results } = {}, error } = useSWR('/api/v1/projects/')
+
+  if (error) {
+    return <ERROR_COMPONENT error="Error!" />
+  }
 
   if (!Array.isArray(results)) return 'Loading...'
 
