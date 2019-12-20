@@ -2,9 +2,7 @@ import PropTypes from 'prop-types'
 
 import { typography } from '../Styles'
 
-import NoJobsSvg from '../Icons/noJobs.svg'
-
-const TableEmpty = ({ numColumns }) => {
+const TableEmpty = ({ numColumns, children }) => {
   return (
     <tr>
       <td colSpan={numColumns}>
@@ -20,9 +18,7 @@ const TableEmpty = ({ numColumns }) => {
             fontSize: typography.size.kilo,
             lineHeight: typography.height.kilo,
           }}>
-          <NoJobsSvg width={40} color="red" />
-          <div>There are currently no jobs in the queue.</div>
-          <div>Any new job will appear here.</div>
+          {children}
         </div>
       </td>
     </tr>
@@ -31,6 +27,7 @@ const TableEmpty = ({ numColumns }) => {
 
 TableEmpty.propTypes = {
   numColumns: PropTypes.number.isRequired,
+  children: PropTypes.node.isRequired,
 }
 
 export default TableEmpty

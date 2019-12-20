@@ -8,7 +8,7 @@ import Pagination from '../Pagination'
 
 import DataQueueRow from './Row'
 
-export const noop = () => () => {}
+export const noop = () => () => { }
 
 const SIZE = 20
 

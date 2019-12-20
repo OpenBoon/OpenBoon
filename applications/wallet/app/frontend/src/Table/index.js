@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types'
 
+import TableEmpty from './Empty'
+
 import { colors, constants, spacing, typography } from '../Styles'
 
-import TableEmpty from './Empty'
+import NoJobsSvg from '../Icons/noJobs.svg'
 
 const Table = ({ columns, items, renderRow }) => {
   return (
@@ -74,7 +76,11 @@ const Table = ({ columns, items, renderRow }) => {
       </thead>
       <tbody>
         {items.length === 0 ? (
-          <TableEmpty numColumns={columns.length} />
+          <TableEmpty numColumns={columns.length}>
+            <NoJobsSvg width={40} color="red" />
+            <div>There are currently no jobs in the queue.</div>
+            <div>Any new job will appear here.</div>
+          </TableEmpty>
         ) : (
           items.map(item => renderRow(item))
         )}
