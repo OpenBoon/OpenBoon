@@ -53,7 +53,7 @@ const jobs = {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 4,
+        assetErrorCount: 40,
       },
       taskCounts: {
         tasksTotal: 16,
@@ -93,7 +93,7 @@ const jobs = {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 4,
+        assetErrorCount: 400,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -133,7 +133,7 @@ const jobs = {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 4,
+        assetErrorCount: 4000,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -173,7 +173,7 @@ const jobs = {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 4,
+        assetErrorCount: 40000,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -213,7 +213,7 @@ const jobs = {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 3,
+        assetErrorCount: 400000,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -253,7 +253,7 @@ const jobs = {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 3,
+        assetErrorCount: 0,
       },
       taskCounts: {
         tasksTotal: 1,
