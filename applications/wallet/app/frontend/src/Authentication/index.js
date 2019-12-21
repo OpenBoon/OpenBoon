@@ -64,12 +64,9 @@ const Authentication = ({ children }) => {
 
   return (
     <SWRConfig value={{ fetcher }}>
-      <Projects user={user} logout={logout({ googleAuth, setUser })}>
+      <Projects>
         <Layout user={user} logout={logout({ googleAuth, setUser })}>
-          {children({
-            user,
-            logout: logout({ googleAuth, setUser }),
-          })}
+          {children}
         </Layout>
       </Projects>
     </SWRConfig>
@@ -77,7 +74,7 @@ const Authentication = ({ children }) => {
 }
 
 Authentication.propTypes = {
-  children: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 }
 
 export default Authentication
