@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Login /> should render properly 1`] = `
-.emotion-18 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -17,7 +17,7 @@ exports[`<Login /> should render properly 1`] = `
   height: 100vh;
 }
 
-.emotion-17 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -49,29 +49,76 @@ exports[`<Login /> should render properly 1`] = `
   padding-bottom: 12px;
 }
 
-.emotion-3 {
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  color: #fff;
+  background-color: #82be3c;
+}
+
+.emotion-2:hover {
+  background-color: #a7d374;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-4 {
   padding: 12px;
 }
 
-.emotion-2 {
+.emotion-3 {
   height: 20px;
 }
 
-.emotion-8 {
+.emotion-9 {
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-.emotion-5 {
+.emotion-6 {
   display: block;
   padding-bottom: 12px;
 }
 
-.emotion-7 {
+.emotion-8 {
   position: relative;
 }
 
-.emotion-6 {
+.emotion-7 {
   outline-offset: 0;
   padding: 12px;
   border-radius: 2px;
@@ -80,7 +127,7 @@ exports[`<Login /> should render properly 1`] = `
   border: 1px solid transparent;
 }
 
-.emotion-12 {
+.emotion-13 {
   position: absolute;
   right: 0;
   top: 0;
@@ -95,7 +142,7 @@ exports[`<Login /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-11 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -128,11 +175,11 @@ exports[`<Login /> should render properly 1`] = `
   outline-offset: -2px;
 }
 
-.emotion-11:hover {
+.emotion-12:hover {
   color: #82be3c;
 }
 
-.emotion-16 {
+.emotion-17 {
   padding: 24px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -144,7 +191,7 @@ exports[`<Login /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-15 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -175,27 +222,27 @@ exports[`<Login /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-15,
-.emotion-15:hover,
-.emotion-15:visited {
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited {
   color: #fff;
   background-color: #82be3c;
 }
 
-.emotion-15:hover {
+.emotion-16:hover {
   background-color: #a7d374;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   color: #2e2e2e;
   background-color: #808080;
 }
 
 <div
-  className="emotion-18"
+  className="emotion-19"
 >
   <form
-    className="emotion-17"
+    className="emotion-18"
     method="post"
     onSubmit={[Function]}
   >
@@ -209,32 +256,39 @@ exports[`<Login /> should render properly 1`] = `
     >
       Welcome. Please login.
     </h3>
+    <button
+      className="emotion-2"
+      onClick={[Function]}
+      type="button"
+    >
+      Sign In with Google
+    </button>
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
         <div
-          className="emotion-2"
+          className="emotion-3"
         />
       </div>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <label
-        className="emotion-5"
+        className="emotion-6"
         htmlFor="username"
       >
         Email
       </label>
       <div
-        className="emotion-7"
+        className="emotion-8"
       >
         <input
           autoFocus={true}
-          className="emotion-6"
+          className="emotion-7"
           id="username"
           name="username"
           onChange={[Function]}
@@ -244,19 +298,19 @@ exports[`<Login /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <label
-        className="emotion-5"
+        className="emotion-6"
         htmlFor="password"
       >
         Password
       </label>
       <div
-        className="emotion-7"
+        className="emotion-8"
       >
         <input
-          className="emotion-6"
+          className="emotion-7"
           id="password"
           name="password"
           onChange={[Function]}
@@ -264,11 +318,11 @@ exports[`<Login /> should render properly 1`] = `
           value=""
         />
         <div
-          className="emotion-12"
+          className="emotion-13"
         >
           <button
             aria-label="Show password"
-            className="emotion-11"
+            className="emotion-12"
             onClick={[Function]}
             type="button"
           >
@@ -281,11 +335,11 @@ exports[`<Login /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-16"
+      className="emotion-17"
     >
       <button
         aria-disabled={true}
-        className="emotion-15"
+        className="emotion-16"
         onClick={[Function]}
         type="submit"
       >

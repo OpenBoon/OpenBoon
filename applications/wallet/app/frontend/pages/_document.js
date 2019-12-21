@@ -10,6 +10,7 @@ class MyDocument extends Document {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta charSet="utf-8" />
+          <script src="https://apis.google.com/js/platform.js" async defer />
         </Head>
         <StylesReset />
         <body>

@@ -9,7 +9,13 @@ describe('<Login />', () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
-      <Login errorMessage="" setErrorMessage={noop} onSubmit={mockFn} />,
+      <Login
+        googleAuth={{ signIn: noop }}
+        hasGoogleLoaded
+        errorMessage=""
+        setErrorMessage={noop}
+        onSubmit={mockFn}
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -42,7 +48,13 @@ describe('<Login />', () => {
     const mockOnSubmit = jest.fn()
 
     const component = TestRenderer.create(
-      <Login errorMessage="" setErrorMessage={noop} onSubmit={mockOnSubmit} />,
+      <Login
+        googleAuth={{ signIn: noop }}
+        hasGoogleLoaded
+        errorMessage=""
+        setErrorMessage={noop}
+        onSubmit={mockOnSubmit}
+      />,
     )
 
     component.root
@@ -55,7 +67,13 @@ describe('<Login />', () => {
 
   it('should show and hide the password', () => {
     const component = TestRenderer.create(
-      <Login errorMessage="" setErrorMessage={noop} onSubmit={noop} />,
+      <Login
+        googleAuth={{ signIn: noop }}
+        hasGoogleLoaded
+        errorMessage=""
+        setErrorMessage={noop}
+        onSubmit={noop}
+      />,
     )
 
     expect(component.root.findByProps({ id: 'password' }).props.type).toBe(
