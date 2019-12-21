@@ -9,10 +9,7 @@ import Button, { VARIANTS } from '../Button'
 
 const SIZE = 28
 
-const UserMenu = ({
-  user: { firstName, lastName, email },
-  logout,
-}) => {
+const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
   return (
     <Menu
       open="left"
@@ -35,7 +32,7 @@ const UserMenu = ({
               cursor: 'pointer',
             },
           }}>
-          {`${firstName[0]}${lastName[0]}`}
+          {`${firstName[0] || ''}${lastName[0] || ''}`}
         </button>
       )}>
       {({ onBlur }) => (

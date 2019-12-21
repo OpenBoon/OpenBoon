@@ -50,7 +50,7 @@ const Authentication = ({ children }) => {
 
   if (!hasLocalStorageLoaded) return null
 
-  if (!user.username) {
+  if (!user.id) {
     return (
       <Login
         googleAuth={googleAuth}

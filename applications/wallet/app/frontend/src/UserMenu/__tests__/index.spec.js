@@ -22,4 +22,15 @@ describe('<UserMenu />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render properly without firstName/lastName', () => {
+    const component = TestRenderer.create(
+      <UserMenu
+        user={{ ...mockUser, firstName: '', lastName: '' }}
+        logout={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })
