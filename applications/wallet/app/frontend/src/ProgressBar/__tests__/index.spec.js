@@ -8,9 +8,6 @@ describe('<ProgressBar />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
       <ProgressBar
-        state="Active"
-        timeStarted={1564699941318}
-        timeUpdated={1565211006581}
         taskCounts={{
           tasksFailure: 1,
           tasksSkipped: 0,
@@ -32,9 +29,6 @@ describe('setShowKeyInfo()', () => {
     it('should show Legend on mouseenter', () => {
       const component = TestRenderer.create(
         <ProgressBar
-          state="Active"
-          timeStarted={1564699941318}
-          timeUpdated={1565211006581}
           taskCounts={{
             tasksFailure: 1,
             tasksSkipped: 0,
@@ -71,9 +65,6 @@ describe('setShowKeyInfo()', () => {
     it('should show Legend on keyPress', () => {
       const component = TestRenderer.create(
         <ProgressBar
-          state="Active"
-          timeStarted={1564699941318}
-          timeUpdated={1565211006581}
           taskCounts={{
             tasksFailure: 1,
             tasksSkipped: 0,

@@ -21,8 +21,6 @@ const DataQueueRow = ({
     assetCounts,
     priority,
     timeCreated,
-    timeStarted,
-    timeUpdated,
     taskCounts: tC,
   },
   revalidate,
@@ -66,13 +64,10 @@ const DataQueueRow = ({
       </td>
       <td>
         <div css={{ display: 'flex', alignItems: 'center' }}>
-          <ProgressBar
-            state={state}
-            taskCounts={taskCounts}
-            timeStarted={timeStarted}
-            timeUpdated={timeUpdated}
-          />
+          <ProgressBar taskCounts={taskCounts} />
+
           <div css={{ width: spacing.base }} />
+
           <DataQueueMenu
             projectId={projectId}
             jobId={jobId}
