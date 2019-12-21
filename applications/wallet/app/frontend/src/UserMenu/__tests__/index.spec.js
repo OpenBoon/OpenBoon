@@ -16,7 +16,7 @@ describe('<UserMenu />', () => {
 
     act(() => {
       component.root
-        .findByProps({ children: 'Jane Doe' })
+        .findByProps({ children: 'JD' })
         .props.onClick({ preventDefault: noop })
     })
 

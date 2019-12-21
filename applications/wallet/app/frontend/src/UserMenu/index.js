@@ -32,7 +32,7 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
               cursor: 'pointer',
             },
           }}>
-          {`${firstName[0] || ''}${lastName[0] || ''}`}
+          {`${firstName ? firstName[0] : ''}${lastName ? lastName[0] : ''}`}
         </button>
       )}>
       {({ onBlur }) => (
