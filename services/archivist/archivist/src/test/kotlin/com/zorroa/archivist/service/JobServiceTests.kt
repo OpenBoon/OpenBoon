@@ -11,6 +11,8 @@ import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskSpec
+import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -89,7 +91,7 @@ class JobServiceTests : AbstractTest() {
         // Should only have 1 job.
         assertEquals(1, jobService.getAll(
             JobFilter(
-                states = listOf(JobState.Active),
+                states = listOf(JobState.InProgress),
                 names = listOf(job1.name))
         ).size())
     }
@@ -122,11 +124,28 @@ class JobServiceTests : AbstractTest() {
     }
 
     @Test
-    fun checkAndSetJobFinished() {
+    fun checkAndSetJobFinishedSuccess() {
         assertFalse(jobService.checkAndSetJobFinished(job))
         jdbc.update("UPDATE job_count SET int_task_state_0=0, int_task_state_4=2")
         assertTrue(jobService.checkAndSetJobFinished(job))
         val job2 = jobService.get(job.jobId)
-        assertEquals(JobState.Finished, job2.state)
+        assertEquals(JobState.Success, job2.state)
+    }
+
+    @Test
+    fun checkAndSetJobFinishedFailed() {
+        assertFalse(jobService.checkAndSetJobFinished(job))
+        jdbc.update("UPDATE job_count SET int_task_state_0=0, int_task_state_3=2")
+        assertTrue(jobService.checkAndSetJobFinished(job))
+        val job2 = jobService.get(job.jobId)
+        assertEquals(JobState.Failure, job2.state)
+    }
+
+    @Test
+    fun retryAllTaskFailures() {
+        jobService.setTaskState(task, TaskState.Failure, null)
+        var updatedJob = jobService.get(job.id)
+        val count = jobService.retryAllTaskFailures(updatedJob)
+        assertEquals(1, count)
     }
 }
