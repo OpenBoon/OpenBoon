@@ -150,7 +150,7 @@ exports[`<UserMenu /> should render properly 2`] = `
     onClick={[Function]}
     type="button"
   >
-    JD
+    Jane Doe
   </button>
   <div
     className="emotion-4"

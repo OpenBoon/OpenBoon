@@ -276,12 +276,12 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-radius: 32px;
 }
 
-.emotion-20:hover {
+.emotion-21:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-20:hover {
+.emotion-21:hover {
   background-color: #808080;
 }
 
