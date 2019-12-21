@@ -1,14 +1,55 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ProjectSwitcher /> should render properly with data 1`] = `
+.emotion-3 {
+  position: relative;
+}
+
 .emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  position: relative;
-  padding-left: 16px;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 4px 8px;
+  color: #82be3c;
+  font-weight: 400;
   height: 100%;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2:hover {
+  background-color: #3b3b3b;
 }
 
 .emotion-1 {
@@ -16,20 +57,14 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  font-size: 14px;
-  border: 0;
-  margin: 0;
-  padding: 0;
-  color: #82be3c;
-  background-color: #2e2e2e;
-}
-
-.emotion-1:hover {
-  cursor: pointer;
 }
 
 .emotion-0 {
@@ -37,32 +72,78 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
 }
 
 <div
-  className="emotion-2"
+  className="emotion-3"
 >
   <button
-    className="emotion-1"
+    className="emotion-2"
+    onBlur={[Function]}
     onClick={[Function]}
     type="button"
   >
-    qwerty
-    <svg
-      className="emotion-0"
-      data-file-name="chevron.svg"
-      width={20}
-    />
+    <div
+      className="emotion-1"
+    >
+      qwerty
+      <svg
+        className="emotion-0"
+        data-file-name="chevron.svg"
+        width={20}
+      />
+    </div>
   </button>
 </div>
 `;
 
 exports[`<ProjectSwitcher /> should render properly with data 2`] = `
-.emotion-4 {
+.emotion-6 {
+  position: relative;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  position: relative;
-  padding-left: 16px;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 4px 8px;
+  color: #82be3c;
+  font-weight: 400;
   height: 100%;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2:hover {
+  background-color: #3b3b3b;
 }
 
 .emotion-1 {
@@ -70,20 +151,14 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  font-size: 14px;
-  border: 0;
-  margin: 0;
-  padding: 0;
-  color: #82be3c;
-  background-color: #2e2e2e;
-}
-
-.emotion-1:hover {
-  cursor: pointer;
 }
 
 .emotion-0 {
@@ -93,118 +168,130 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   transform: rotate(-180deg);
 }
 
-.emotion-3 {
+.emotion-5 {
   position: absolute;
   z-index: 1;
-  top: 24px;
+  top: 100%;
   left: 0;
-  min-width: 100%;
-  border-radius: 2px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: #404040;
-  box-shadow: 0 2px 6px 0 #000000;
-}
-
-.emotion-2 {
-  padding-top: 8px;
-  padding-right: 48px;
-  padding-bottom: 8px;
-  padding-left: 16px;
-  color: #b2b2b2;
-  background-color: #404040;
-  font-size: 14px;
-  border: 0;
-  width: 100%;
-  text-align: left;
-}
-
-.emotion-2:hover {
   background-color: #808080;
-  color: #ffffff;
-  cursor: pointer;
+  border-radius: 2px;
+  box-shadow: 0 4px 7px 0 #000000;
+  width: 200px;
 }
 
-<div
-  className="emotion-4"
->
-  <button
-    className="emotion-1"
-    onClick={[Function]}
-    type="button"
-  >
-    qwerty
-    <svg
-      className="emotion-0"
-      data-file-name="chevron.svg"
-      width={20}
-    />
-  </button>
-  <div
-    className="emotion-3"
-  >
-    <button
-      className="emotion-2"
-      onClick={[Function]}
-      type="button"
-    >
-      asdf
-    </button>
-  </div>
-</div>
-`;
+.emotion-5 ul {
+  list-style-type: none;
+  padding: 0;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin: 0;
+}
 
-exports[`<ProjectSwitcher /> should render properly with data 3`] = `
-.emotion-2 {
+.emotion-5 li {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  position: relative;
-  padding-left: 16px;
-  height: 100%;
 }
 
-.emotion-1 {
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  font-size: 14px;
-  border: 0;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
   margin: 0;
-  padding: 0;
-  color: #82be3c;
-  background-color: #2e2e2e;
-}
-
-.emotion-1:hover {
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
   cursor: pointer;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  color: #ffffff;
+  padding: 8px 16px;
+  font-weight: 400;
 }
 
-.emotion-0 {
-  margin-left: 8px;
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3:hover {
+  background-color: #4a4a4a;
 }
 
 <div
-  className="emotion-2"
+  className="emotion-6"
 >
   <button
-    className="emotion-1"
+    className="emotion-2"
+    onBlur={[Function]}
     onClick={[Function]}
     type="button"
   >
-    qwerty
-    <svg
-      className="emotion-0"
-      data-file-name="chevron.svg"
-      width={20}
-    />
+    <div
+      className="emotion-1"
+    >
+      qwerty
+      <svg
+        className="emotion-0"
+        data-file-name="chevron.svg"
+        width={20}
+      />
+    </div>
   </button>
+  <div
+    className="emotion-5"
+  >
+    <ul>
+      <li>
+        <a
+          className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          qwerty
+        </a>
+      </li>
+      <li>
+        <a
+          className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9c/jobs"
+          onBlur={[Function]}
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          azerty
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>
 `;
 

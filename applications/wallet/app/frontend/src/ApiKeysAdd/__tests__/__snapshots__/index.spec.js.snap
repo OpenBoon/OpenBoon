@@ -262,6 +262,11 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   background-color: transparent;
 }
 
+.emotion-45:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
 .emotion-45,
 .emotion-45:hover,
 .emotion-45:visited {
@@ -295,7 +300,7 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
       >
         <a
           className="emotion-1"
-          href="/api-keys"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -307,7 +312,7 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
       >
         <a
           className="emotion-3"
-          href="/api-keys/add"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >

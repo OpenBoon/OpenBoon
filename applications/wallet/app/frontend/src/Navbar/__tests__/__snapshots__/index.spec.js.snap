@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Navbar /> should render properly 1`] = `
-.emotion-6 {
+.emotion-5 {
   position: fixed;
   top: 0;
   left: 0;
@@ -26,15 +26,15 @@ exports[`<Navbar /> should render properly 1`] = `
   padding-right: 16px;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
 }
 
 .emotion-0 {
@@ -56,46 +56,19 @@ exports[`<Navbar /> should render properly 1`] = `
   padding: 8px;
   margin: 0;
   margin-left: -8px;
-  margin-right: 8px;
   cursor: pointer;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-  padding-left: 16px;
-  height: 100%;
 }
 
 .emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-size: 14px;
-  border: 0;
-  margin: 0;
-  padding: 0;
-  color: #82be3c;
-  background-color: #2e2e2e;
-}
-
-.emotion-1:hover {
-  cursor: pointer;
-}
-
-.emotion-5 {
-  position: relative;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .emotion-4 {
+  position: relative;
+}
+
+.emotion-3 {
   border: 0;
   margin: 0;
   padding: 0;
@@ -107,15 +80,15 @@ exports[`<Navbar /> should render properly 1`] = `
   font-weight: 700;
 }
 
-.emotion-4:hover {
+.emotion-3:hover {
   cursor: pointer;
 }
 
 <div
-  className="emotion-6"
+  className="emotion-5"
 >
   <div
-    className="emotion-3"
+    className="emotion-2"
   >
     <button
       aria-label="Open Sidebar Menu"
@@ -129,27 +102,20 @@ exports[`<Navbar /> should render properly 1`] = `
         width={20}
       />
     </button>
-    <svg
-      data-file-name="logo.svg"
-      width={110}
-    />
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
-      <button
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        project-name
-      </button>
+      <svg
+        data-file-name="logo.svg"
+        width={110}
+      />
     </div>
   </div>
   <div
-    className="emotion-5"
+    className="emotion-4"
   >
     <button
-      className="emotion-4"
+      className="emotion-3"
       onBlur={[Function]}
       onClick={[Function]}
       type="button"
