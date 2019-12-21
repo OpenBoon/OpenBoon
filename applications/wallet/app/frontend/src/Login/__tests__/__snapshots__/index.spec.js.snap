@@ -80,6 +80,11 @@ exports[`<Login /> should render properly 1`] = `
   background-color: transparent;
 }
 
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
 .emotion-2,
 .emotion-2:hover,
 .emotion-2:visited {
@@ -176,6 +181,11 @@ exports[`<Login /> should render properly 1`] = `
 }
 
 .emotion-12:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-12:hover {
   color: #82be3c;
 }
 
@@ -220,6 +230,11 @@ exports[`<Login /> should render properly 1`] = `
   border: none;
   cursor: not-allowed;
   background-color: transparent;
+}
+
+.emotion-16:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
 }
 
 .emotion-16,

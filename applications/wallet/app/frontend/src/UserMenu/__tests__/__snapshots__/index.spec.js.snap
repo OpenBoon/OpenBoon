@@ -133,6 +133,11 @@ exports[`<UserMenu /> should render properly 2`] = `
 }
 
 .emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3:hover {
   background-color: #4a4a4a;
 }
 
@@ -177,5 +182,40 @@ exports[`<UserMenu /> should render properly 2`] = `
       </ul>
     </div>
   </div>
+</div>
+`;
+
+exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
+.emotion-1 {
+  position: relative;
+}
+
+.emotion-0 {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 28px;
+  color: #ffffff;
+  background-color: #4d4948;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  cursor: pointer;
+}
+
+<div
+  className="emotion-1"
+>
+  <button
+    className="emotion-0"
+    onBlur={[Function]}
+    onClick={[Function]}
+    type="button"
+  >
+    
+  </button>
 </div>
 `;

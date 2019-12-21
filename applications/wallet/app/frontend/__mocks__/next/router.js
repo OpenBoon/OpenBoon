@@ -15,6 +15,16 @@ export const __setUseRouter = data => {
 export const useRouter = () => mockUseRouter
 
 /**
+ * push
+ */
+
+let mockPushFunction = () => {}
+
+export const __setMockPushFunction = fn => {
+  mockPushFunction = fn
+}
+
+/**
  * on
  */
 
@@ -39,6 +49,9 @@ export const __setMockOffFunction = fn => {
  */
 
 const Router = {
+  push: (...args) => {
+    mockPushFunction(...args)
+  },
   events: {
     on: (...args) => {
       mockOnFunction(...args)

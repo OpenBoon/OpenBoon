@@ -20,6 +20,9 @@ const BASE = ({ isDisabled }) => ({
   border: 'none',
   cursor: isDisabled ? 'not-allowed' : 'pointer',
   backgroundColor: colors.transparent,
+  ':hover': {
+    textDecoration: 'none',
+  },
 })
 
 const STYLES = {
@@ -38,6 +41,16 @@ const STYLES = {
   },
   NEUTRAL: {
     padding: spacing.moderate,
+  },
+  MENU: {
+    flex: 1,
+    padding: `${spacing.small}px ${spacing.base}px`,
+    color: colors.primary,
+    fontWeight: typography.weight.regular,
+    height: '100%',
+    ':hover': {
+      backgroundColor: colors.structure.smoke,
+    },
   },
   MENU_ITEM: {
     flex: '1',

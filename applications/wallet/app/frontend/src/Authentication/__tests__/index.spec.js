@@ -5,7 +5,8 @@ import mockUser from '../../User/__mocks__/user'
 import Authentication, { noop } from '..'
 
 jest.mock('../../Login', () => 'Login')
-jest.mock('../../Projects')
+jest.mock('../../Projects', () => 'Projects')
+jest.mock('../../Layout', () => 'Layout')
 
 jest.mock('../helpers')
 
@@ -29,7 +30,7 @@ describe('<Authentication />', () => {
     require('../helpers').__setMockAuthenticateUser(mockFn)
 
     const component = TestRenderer.create(
-      <Authentication>{({ user }) => `Hello ${user.email}!`}</Authentication>,
+      <Authentication>Hello World!</Authentication>,
     )
 
     // user is loading
@@ -56,7 +57,7 @@ describe('<Authentication />', () => {
 
   it('should load the Google SDK', async () => {
     const component = TestRenderer.create(
-      <Authentication>{() => 'Hello World'}</Authentication>,
+      <Authentication>Hello World!</Authentication>,
     )
 
     // useEffect loads Google SDK
@@ -69,7 +70,7 @@ describe('<Authentication />', () => {
     require('../helpers').__setMockUser(mockUser)
 
     const component = TestRenderer.create(
-      <Authentication>{() => 'Hello World'}</Authentication>,
+      <Authentication>Hello World!</Authentication>,
     )
 
     // user is loading

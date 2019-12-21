@@ -1,74 +1,82 @@
-import PropTypes from 'prop-types'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
+import Link from 'next/link'
 
-import DropDown from './DropDown'
-import { colors, typography, spacing } from '../Styles'
+import { spacing } from '../Styles'
+
 import ChevronSvg from '../Icons/chevron.svg'
+
+import Menu from '../Menu'
+import Button, { VARIANTS } from '../Button'
 
 const CHEVRON_WIDTH = 20
 
-const ProjectSwitcher = ({ projects, setSelectedProject }) => {
-  const [isDropDownOpen, setDropDownOpen] = useState(false)
-  const selectedProject = projects.find(project => project.selected) || {}
+const ProjectSwitcher = () => {
+  const {
+    pathname,
+    query: { projectId },
+  } = useRouter()
 
-  if (projects.length === 0) return null
+  const { data: { results: projects = [] } = {} } = useSWR('/api/v1/projects/')
+
+  if (!projectId || !projects.length === 0) return null
+
+  const selectedProject = projects.find(({ id }) => id === projectId)
+
+  if (!selectedProject) return null
 
   return (
-    <div
-      css={{
-        display: 'flex',
-        position: 'relative',
-        paddingLeft: spacing.normal,
-        height: '100%',
-      }}>
-      <button
-        type="button"
-        onClick={() => setDropDownOpen(!isDropDownOpen)}
-        css={{
-          display: 'flex',
-          alignItems: 'center',
-          fontSize: typography.size.hecto,
-          border: 0,
-          margin: 0,
-          padding: 0,
-          color: colors.primary,
-          backgroundColor: colors.grey1,
-          ':hover': {
-            cursor: 'pointer',
-          },
-        }}>
-        {selectedProject.name}
-        {projects.length > 1 && (
-          <ChevronSvg
-            width={CHEVRON_WIDTH}
+    <Menu
+      open="right"
+      button={({ onBlur, onClick, isMenuOpen }) => (
+        <Button
+          variant={VARIANTS.MENU}
+          onBlur={onBlur}
+          onClick={onClick}
+          isDisabled={projects.length === 1}>
+          <div
             css={{
-              marginLeft: spacing.base,
-              transform: `${isDropDownOpen ? 'rotate(-180deg)' : ''}`,
-            }}
-          />
-        )}
-      </button>
-      {isDropDownOpen && projects.length > 1 && (
-        <DropDown
-          projects={projects.filter(project => !project.selected)}
-          onSelect={project => {
-            setDropDownOpen(false)
-            setSelectedProject(project)
-          }}
-        />
-      )}
-    </div>
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {selectedProject.name}
+            {projects.length > 1 && (
+              <ChevronSvg
+                width={CHEVRON_WIDTH}
+                css={{
+                  marginLeft: spacing.base,
+                  transform: `${isMenuOpen ? 'rotate(-180deg)' : ''}`,
+                }}
+              />
+            )}
+          </div>
+        </Button>
+      )}>
+      {({ onBlur, onClick }) =>
+        projects.length > 1 && (
+          <ul>
+            {projects.map(({ id, name }) => (
+              <li key={id}>
+                <Link
+                  href={pathname}
+                  as={pathname.replace('[projectId]', id)}
+                  passHref>
+                  <Button
+                    variant={VARIANTS.MENU_ITEM}
+                    onBlur={onBlur}
+                    onClick={onClick}
+                    isDisabled={false}>
+                    {name}
+                  </Button>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </Menu>
   )
-}
-
-ProjectSwitcher.propTypes = {
-  projects: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
-  setSelectedProject: PropTypes.func.isRequired,
 }
 
 export default ProjectSwitcher

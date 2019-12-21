@@ -50,7 +50,7 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
             padding: 0,
             margin: 0,
           }}>
-          <SidebarLink href="/">
+          <SidebarLink href="/jobs">
             <QueueSvg width={ICON_WIDTH} aria-hidden />
             Job Queue
           </SidebarLink>
