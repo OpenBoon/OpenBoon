@@ -8,7 +8,7 @@ import Pagination from '../Pagination'
 
 import DataQueueRow from './Row'
 
-export const noop = () => () => { }
+export const noop = () => () => {}
 
 const SIZE = 20
 
@@ -49,7 +49,8 @@ const DataQueue = () => {
           'Errors',
           'Task Progress',
         ]}
-        items={results}
+        // items={results}
+        items={[]}
         renderRow={job => (
           <DataQueueRow
             key={job.id}

@@ -4,7 +4,7 @@ import TableEmpty from './Empty'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import NoJobsSvg from '../Icons/noJobs.svg'
+import DataQueueEmpty from '../DataQueue/Empty'
 
 const Table = ({ columns, items, renderRow }) => {
   return (
@@ -77,9 +77,7 @@ const Table = ({ columns, items, renderRow }) => {
       <tbody>
         {items.length === 0 ? (
           <TableEmpty numColumns={columns.length}>
-            <NoJobsSvg width={40} color="red" />
-            <div>There are currently no jobs in the queue.</div>
-            <div>Any new job will appear here.</div>
+            <DataQueueEmpty />
           </TableEmpty>
         ) : (
           items.map(item => renderRow(item))
