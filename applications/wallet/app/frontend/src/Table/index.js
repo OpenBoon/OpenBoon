@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types'
 
+import TableEmpty from './Empty'
+
 import { colors, constants, spacing, typography } from '../Styles'
 
-const Table = ({ columns, items, renderRow }) => {
+const Table = ({ columns, items, renderRow, renderEmpty }) => {
   return (
     <table
       css={{
@@ -70,15 +72,26 @@ const Table = ({ columns, items, renderRow }) => {
           ))}
         </tr>
       </thead>
-      <tbody>{items.map(item => renderRow(item))}</tbody>
+      <tbody>
+        {items.length === 0 ? (
+          <TableEmpty numColumns={columns.length}>{renderEmpty()}</TableEmpty>
+        ) : (
+          items.map(item => renderRow(item))
+        )}
+      </tbody>
     </table>
   )
+}
+
+Table.defaultProps = {
+  renderEmpty: undefined,
 }
 
 Table.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   renderRow: PropTypes.func.isRequired,
+  renderEmpty: PropTypes.func,
 }
 
 export default Table

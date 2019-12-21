@@ -7,6 +7,7 @@ import Table from '../Table'
 import Pagination from '../Pagination'
 
 import DataQueueRow from './Row'
+import DataQueueEmpty from './Empty'
 
 export const noop = () => () => {}
 
@@ -25,8 +26,6 @@ const DataQueue = () => {
   )
 
   if (!Array.isArray(results)) return 'Loading...'
-
-  if (results.length === 0) return 'You have 0 jobs'
 
   const to = Math.min(parsedPage * SIZE, count)
 
@@ -50,6 +49,7 @@ const DataQueue = () => {
           'Task Progress',
         ]}
         items={results}
+        renderEmpty={() => <DataQueueEmpty />}
         renderRow={job => (
           <DataQueueRow
             key={job.id}
