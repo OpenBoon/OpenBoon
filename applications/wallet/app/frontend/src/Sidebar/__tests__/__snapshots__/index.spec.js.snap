@@ -39,8 +39,8 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   padding: 12px;
   font-size: 16px;
   line-height: 20px;
-  background-color: none;
-  color: #808080;
+  background-color: #3b3b3b;
+  color: #73b61c;
 }
 
 .emotion-0 svg {
@@ -48,6 +48,33 @@ exports[`<Sidebar /> should render properly closed 1`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+  background-color: #3b3b3b;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12px;
+  font-size: 16px;
+  line-height: 20px;
+  background-color: none;
+  color: #808080;
+}
+
+.emotion-2 svg {
+  margin-right: 12px;
+}
+
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #e0e0e0;
@@ -79,7 +106,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
       >
         <a
           className="emotion-0"
-          href="/"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -95,8 +122,8 @@ exports[`<Sidebar /> should render properly closed 1`] = `
         className="emotion-1"
       >
         <a
-          className="emotion-0"
-          href="/api-keys"
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -130,6 +157,33 @@ exports[`<Sidebar /> should render properly opened 1`] = `
 
 .emotion-1 {
   border-bottom: 1px solid transparent;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12px;
+  font-size: 16px;
+  line-height: 20px;
+  background-color: #3b3b3b;
+  color: #73b61c;
+}
+
+.emotion-0 svg {
+  margin-right: 12px;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+  background-color: #3b3b3b;
 }
 
 .emotion-2 {
@@ -175,33 +229,6 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   padding-top: 12px;
 }
 
-.emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 12px;
-  font-size: 16px;
-  line-height: 20px;
-  background-color: #3b3b3b;
-  color: #73b61c;
-}
-
-.emotion-0 svg {
-  margin-right: 12px;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #73b61c;
-  background-color: #3b3b3b;
-}
-
 .emotion-6 {
   position: fixed;
   top: 0;
@@ -227,7 +254,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
       >
         <a
           className="emotion-0"
-          href="/"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -244,7 +271,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
       >
         <a
           className="emotion-2"
-          href="/api-keys"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >

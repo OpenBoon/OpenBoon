@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -13,11 +12,10 @@ export const noop = () => () => {}
 
 const SIZE = 20
 
-const DataQueue = ({ selectedProject: { id: projectId } }) => {
-  const router = useRouter()
+const DataQueue = () => {
   const {
-    query: { page = 1 },
-  } = router
+    query: { projectId, page = 1 },
+  } = useRouter()
 
   const parsedPage = parseInt(page, 10)
   const from = parsedPage * SIZE - SIZE
@@ -73,13 +71,6 @@ const DataQueue = ({ selectedProject: { id: projectId } }) => {
       />
     </div>
   )
-}
-
-DataQueue.propTypes = {
-  selectedProject: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  }).isRequired,
 }
 
 export default DataQueue

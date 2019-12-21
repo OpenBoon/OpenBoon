@@ -5,6 +5,7 @@ import { SWRConfig } from 'swr'
 
 import Login from '../Login'
 import Projects from '../Projects'
+import Layout from '../Layout'
 
 import { initialize } from '../Fetch/helpers'
 
@@ -63,21 +64,17 @@ const Authentication = ({ children }) => {
 
   return (
     <SWRConfig value={{ fetcher }}>
-      <Projects user={user} logout={logout({ googleAuth, setUser })}>
-        {({ selectedProject }) =>
-          children({
-            user,
-            logout: logout({ googleAuth, setUser }),
-            selectedProject,
-          })
-        }
+      <Projects>
+        <Layout user={user} logout={logout({ googleAuth, setUser })}>
+          {children}
+        </Layout>
       </Projects>
     </SWRConfig>
   )
 }
 
 Authentication.propTypes = {
-  children: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 }
 
 export default Authentication

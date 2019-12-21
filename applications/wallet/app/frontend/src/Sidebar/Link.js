@@ -5,11 +5,16 @@ import { useRouter } from 'next/router'
 import { colors, constants, spacing, typography } from '../Styles'
 
 const SidebarLink = ({ href, children }) => {
-  const { pathname } = useRouter()
+  const {
+    pathname,
+    query: { projectId },
+  } = useRouter()
+
+  const isCurrentPage = pathname === `/[projectId]${href}`
 
   return (
     <li css={{ borderBottom: constants.borders.transparent }}>
-      <Link href={href} passHref>
+      <Link href={`/[projectId]${href}`} as={`/${projectId}${href}`} passHref>
         <a
           css={{
             display: 'flex',
@@ -17,16 +22,14 @@ const SidebarLink = ({ href, children }) => {
             padding: spacing.moderate,
             fontSize: typography.size.kilo,
             lineHeight: typography.height.kilo,
-            backgroundColor:
-              href === pathname ? colors.structure.smoke : 'none',
-            color: href === pathname ? colors.key.one : colors.structure.steel,
+            backgroundColor: isCurrentPage ? colors.structure.smoke : 'none',
+            color: isCurrentPage ? colors.key.one : colors.structure.steel,
             svg: {
               marginRight: spacing.moderate,
             },
             ':hover': {
               textDecoration: 'none',
-              color:
-                href === pathname ? colors.key.one : colors.structure.pebble,
+              color: isCurrentPage ? colors.key.one : colors.structure.pebble,
               backgroundColor: colors.structure.smoke,
             },
           }}>

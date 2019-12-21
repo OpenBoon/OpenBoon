@@ -14,7 +14,7 @@ describe('<Layout />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
       <Layout user={mockUser} results={projects.results} logout={noop}>
-        {() => `Hello World`}
+        Hello World
       </Layout>,
     )
 
