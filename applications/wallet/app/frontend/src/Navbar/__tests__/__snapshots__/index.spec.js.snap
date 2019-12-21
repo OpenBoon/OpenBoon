@@ -100,10 +100,12 @@ exports[`<Navbar /> should render properly 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  padding: 4px 0;
+  padding: 4px 8px;
   color: #82be3c;
   font-weight: 400;
   height: 100%;
+  margin-right: -12px;
+  false: #3b3b3b;
 }
 
 .emotion-6:hover {
@@ -200,6 +202,7 @@ exports[`<Navbar /> should render properly 1`] = `
         </div>
         <svg
           className="emotion-4"
+          color="#808080"
           data-file-name="chevron.svg"
           width={20}
         />

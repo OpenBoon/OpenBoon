@@ -63,7 +63,7 @@ exports[`<DataQueueMenu /> should render properly 1`] = `
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
-  padding-bottom: 4px;
+  padding-bottom: 8px;
   margin: 0;
 }
 

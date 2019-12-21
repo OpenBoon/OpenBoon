@@ -37,10 +37,12 @@ exports[`<UserMenu /> should render properly 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  padding: 4px 0;
+  padding: 4px 8px;
   color: #82be3c;
   font-weight: 400;
   height: 100%;
+  margin-right: -12px;
+  false: #3b3b3b;
 }
 
 .emotion-3:hover {
@@ -110,6 +112,7 @@ exports[`<UserMenu /> should render properly 1`] = `
       </div>
       <svg
         className="emotion-1"
+        color="#808080"
         data-file-name="chevron.svg"
         width={20}
       />
@@ -119,11 +122,79 @@ exports[`<UserMenu /> should render properly 1`] = `
 `;
 
 exports[`<UserMenu /> should render properly 2`] = `
-.emotion-5 {
+.emotion-8 {
   position: relative;
 }
 
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 4px 8px;
+  color: #82be3c;
+  font-weight: 400;
+  height: 100%;
+  margin-right: -12px;
+  background-color: #3b3b3b;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3:hover {
+  background-color: #3b3b3b;
+}
+
 .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   border: 0;
   margin: 0;
   padding: 0;
@@ -131,7 +202,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   height: 28px;
   border-radius: 28px;
   color: #ffffff;
-  background-color: #4d4948;
+  background-color: #252525;
   font-weight: 700;
 }
 
@@ -139,42 +210,50 @@ exports[`<UserMenu /> should render properly 2`] = `
   cursor: pointer;
 }
 
-.emotion-4 {
+.emotion-1 {
+  margin-left: 8px;
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-7 {
   position: absolute;
   z-index: 1;
   top: 100%;
-  right: 0;
+  right: -12px;
   background-color: #808080;
   border-radius: 2px;
   box-shadow: 0 4px 7px 0 #000000;
   width: 200px;
 }
 
-.emotion-4 ul {
+.emotion-7 ul {
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
-  padding-bottom: 4px;
+  padding-bottom: 8px;
   margin: 0;
 }
 
-.emotion-4 li {
+.emotion-7 li {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-2 {
+.emotion-5 {
   padding: 16px;
+  padding-bottom: 24px;
   border-bottom: 1px solid #9b9b9b;
 }
 
-.emotion-1 {
+.emotion-4 {
   font-weight: 700;
 }
 
-.emotion-3 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -213,37 +292,54 @@ exports[`<UserMenu /> should render properly 2`] = `
   color: #ffffff;
   padding: 8px 16px;
   font-weight: 400;
+  padding: 8 0;
+  border-radius: 0;
+  border-bottom: 1px solid transparent;
 }
 
-.emotion-3:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-3:hover {
+.emotion-6:hover {
   background-color: #4a4a4a;
 }
 
 <div
-  className="emotion-5"
+  className="emotion-8"
 >
   <button
-    className="emotion-0"
+    className="emotion-3"
     onBlur={[Function]}
     onClick={[Function]}
     type="button"
   >
-    JD
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-0"
+      >
+        JD
+      </div>
+      <svg
+        className="emotion-1"
+        color="#808080"
+        data-file-name="chevron.svg"
+        width={20}
+      />
+    </div>
   </button>
   <div
-    className="emotion-4"
+    className="emotion-7"
   >
     <div>
       <div
-        className="emotion-2"
+        className="emotion-5"
       >
         <div
-          className="emotion-1"
+          className="emotion-4"
         >
           Jane Doe
         </div>
@@ -254,7 +350,7 @@ exports[`<UserMenu /> should render properly 2`] = `
       <ul>
         <li>
           <button
-            className="emotion-3"
+            className="emotion-6"
             onBlur={[Function]}
             onClick={[Function]}
             type="button"
@@ -305,10 +401,12 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  padding: 4px 0;
+  padding: 4px 8px;
   color: #82be3c;
   font-weight: 400;
   height: 100%;
+  margin-right: -12px;
+  false: #3b3b3b;
 }
 
 .emotion-3:hover {
@@ -378,6 +476,7 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
       </div>
       <svg
         className="emotion-1"
+        color="#808080"
         data-file-name="chevron.svg"
         width={20}
       />
