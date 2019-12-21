@@ -22,7 +22,6 @@ exports[`<Authentication /> should render properly when user is logged in 2`] = 
     }
   >
     <Layout
-      logout={[Function]}
       user={
         Object {
           "email": "jane.doe@zorroa.com",

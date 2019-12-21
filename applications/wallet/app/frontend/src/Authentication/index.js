@@ -65,7 +65,7 @@ const Authentication = ({ children }) => {
   return (
     <SWRConfig value={{ fetcher }}>
       <Projects user={user} logout={logout({ googleAuth, setUser })}>
-        <Layout user={user} logout={logout}>
+        <Layout user={user} logout={logout({ googleAuth, setUser })}>
           {children({
             user,
             logout: logout({ googleAuth, setUser }),
