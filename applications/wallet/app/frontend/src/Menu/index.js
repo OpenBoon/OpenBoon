@@ -7,7 +7,7 @@ import { onBlur as onBlurHelper } from './helpers'
 
 const WIDTH = 200
 
-const Menu = ({ button, children, open }) => {
+const Menu = ({ button, children, open, style }) => {
   const container = useRef(null)
 
   const [isMenuOpen, setMenuOpen] = useState(false)
@@ -37,6 +37,7 @@ const Menu = ({ button, children, open }) => {
               margin: 0,
             },
             li: { display: 'flex' },
+            ...style,
           }}>
           {children({ onBlur, onClick, isMenuOpen })}
         </div>
@@ -49,6 +50,7 @@ Menu.propTypes = {
   open: PropTypes.oneOf(['left', 'right']).isRequired,
   button: PropTypes.func.isRequired,
   children: PropTypes.func.isRequired,
+  style: PropTypes.instanceOf(PropTypes.object).isRequired,
 }
 
 export default Menu

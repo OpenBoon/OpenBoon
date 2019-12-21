@@ -1,7 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Navbar /> should render properly 1`] = `
+<<<<<<< HEAD
 .emotion-9 {
+=======
+.emotion-8 {
+>>>>>>> add prop validation
   position: fixed;
   top: 0;
   left: 0;
@@ -64,10 +68,13 @@ exports[`<Navbar /> should render properly 1`] = `
   padding-right: 8px;
 }
 
+<<<<<<< HEAD
 .emotion-8 {
   margin-right: -12px;
 }
 
+=======
+>>>>>>> add prop validation
 .emotion-7 {
   position: relative;
 }
@@ -104,7 +111,11 @@ exports[`<Navbar /> should render properly 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+<<<<<<< HEAD
   padding: 4px 8px;
+=======
+  padding: 4px 0;
+>>>>>>> add prop validation
   color: #82be3c;
   font-weight: 400;
   height: 100%;
@@ -119,10 +130,13 @@ exports[`<Navbar /> should render properly 1`] = `
   background-color: #3b3b3b;
 }
 
+<<<<<<< HEAD
 .emotion-6:hover {
   cursor: pointer;
 }
 
+=======
+>>>>>>> add prop validation
 .emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -158,8 +172,16 @@ exports[`<Navbar /> should render properly 1`] = `
   margin-left: 8px;
 }
 
+.emotion-4 {
+  margin-left: 8px;
+}
+
 <div
+<<<<<<< HEAD
   className="emotion-9"
+=======
+  className="emotion-8"
+>>>>>>> add prop validation
 >
   <div
     className="emotion-2"
@@ -186,6 +208,7 @@ exports[`<Navbar /> should render properly 1`] = `
     </div>
   </div>
   <div
+<<<<<<< HEAD
     className="emotion-8"
   >
     <div
@@ -215,6 +238,31 @@ exports[`<Navbar /> should render properly 1`] = `
         </div>
       </button>
     </div>
+=======
+    className="emotion-7"
+  >
+    <button
+      className="emotion-6"
+      onBlur={[Function]}
+      onClick={[Function]}
+      type="button"
+    >
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-3"
+        >
+          JD
+        </div>
+        <svg
+          className="emotion-4"
+          data-file-name="chevron.svg"
+          width={20}
+        />
+      </div>
+    </button>
+>>>>>>> add prop validation
   </div>
 </div>
 `;
