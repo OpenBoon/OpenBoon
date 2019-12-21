@@ -19,11 +19,11 @@ const Projects = ({ children }) => {
     return null
   }
 
-  return children({ projectId })
+  return children
 }
 
 Projects.propTypes = {
-  children: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 }
 
 export default Projects

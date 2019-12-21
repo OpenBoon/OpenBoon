@@ -65,15 +65,12 @@ const Authentication = ({ children }) => {
   return (
     <SWRConfig value={{ fetcher }}>
       <Projects user={user} logout={logout({ googleAuth, setUser })}>
-        {({ projectId }) => (
-          <Layout user={user} logout={logout}>
-            {children({
-              user,
-              logout: logout({ googleAuth, setUser }),
-              projectId,
-            })}
-          </Layout>
-        )}
+        <Layout user={user} logout={logout}>
+          {children({
+            user,
+            logout: logout({ googleAuth, setUser }),
+          })}
+        </Layout>
       </Projects>
     </SWRConfig>
   )

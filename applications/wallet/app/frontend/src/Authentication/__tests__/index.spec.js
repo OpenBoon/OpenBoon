@@ -5,7 +5,7 @@ import mockUser from '../../User/__mocks__/user'
 import Authentication, { noop } from '..'
 
 jest.mock('../../Login', () => 'Login')
-jest.mock('../../Projects')
+jest.mock('../../Projects', () => 'Projects')
 jest.mock('../../Layout', () => 'Layout')
 
 jest.mock('../helpers')

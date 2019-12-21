@@ -1,21 +1,14 @@
 import TestRenderer from 'react-test-renderer'
 
-import mockUser from '../../User/__mocks__/user'
 import projects from '../__mocks__/projects'
 
 import Projects from '..'
-
-const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
 describe('<Projects />', () => {
   it('should render properly while loading', () => {
-    const component = TestRenderer.create(
-      <Projects user={mockUser} logout={noop}>
-        {() => `Hello World`}
-      </Projects>,
-    )
+    const component = TestRenderer.create(<Projects>Hello World</Projects>)
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -25,11 +18,7 @@ describe('<Projects />', () => {
       data: { results: [] },
     })
 
-    const component = TestRenderer.create(
-      <Projects user={mockUser} logout={noop}>
-        {() => `Hello World`}
-      </Projects>,
-    )
+    const component = TestRenderer.create(<Projects>Hello World</Projects>)
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -44,11 +33,7 @@ describe('<Projects />', () => {
       data: projects,
     })
 
-    const component = TestRenderer.create(
-      <Projects user={mockUser} logout={noop}>
-        {() => `Hello World`}
-      </Projects>,
-    )
+    const component = TestRenderer.create(<Projects>Hello World</Projects>)
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -67,11 +52,7 @@ describe('<Projects />', () => {
       data: projects,
     })
 
-    const component = TestRenderer.create(
-      <Projects user={mockUser} logout={noop}>
-        {() => `Hello World`}
-      </Projects>,
-    )
+    const component = TestRenderer.create(<Projects>Hello World</Projects>)
 
     expect(mockFn).toHaveBeenCalledWith(
       '/[projectId]/jobs',
@@ -95,11 +76,7 @@ describe('<Projects />', () => {
       data: projects,
     })
 
-    const component = TestRenderer.create(
-      <Projects user={mockUser} logout={noop}>
-        {() => `Hello World`}
-      </Projects>,
-    )
+    const component = TestRenderer.create(<Projects>Hello World</Projects>)
 
     expect(mockFn).toHaveBeenCalledWith(
       '/[projectId]/jobs',
