@@ -112,6 +112,8 @@ exports[`<Layout /> should render properly 1`] = `
   color: #82be3c;
   font-weight: 400;
   height: 100%;
+  margin-right: -12px;
+  false: #3b3b3b;
 }
 
 .emotion-6:hover {
@@ -356,6 +358,8 @@ exports[`<Layout /> should render properly 2`] = `
   color: #82be3c;
   font-weight: 400;
   height: 100%;
+  margin-right: -12px;
+  false: #3b3b3b;
 }
 
 .emotion-6:hover {

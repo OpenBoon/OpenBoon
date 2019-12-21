@@ -46,11 +46,15 @@ const Menu = ({ button, children, open, style }) => {
   )
 }
 
+Menu.defaultProps = {
+  style: {},
+}
+
 Menu.propTypes = {
   open: PropTypes.oneOf(['left', 'right']).isRequired,
   button: PropTypes.func.isRequired,
   children: PropTypes.func.isRequired,
-  style: PropTypes.instanceOf(PropTypes.object).isRequired,
+  style: PropTypes.shape({ name: PropTypes.string, styles: PropTypes.string }),
 }
 
 export default Menu

@@ -45,6 +45,8 @@ exports[`<UserMenu /> should render properly 1`] = `
   color: #82be3c;
   font-weight: 400;
   height: 100%;
+  margin-right: -12px;
+  false: #3b3b3b;
 }
 
 .emotion-3:hover {
@@ -235,7 +237,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   position: absolute;
   z-index: 1;
   top: 100%;
-  right: 0;
+  right: -12px;
   background-color: #808080;
   border-radius: 2px;
   box-shadow: 0 4px 7px 0 #000000;
@@ -334,7 +336,7 @@ exports[`<UserMenu /> should render properly 2`] = `
       type="button"
     >
       <div
-        className="emotion-2"
+        className="emotion-5"
       >
         <div
           className="emotion-0"
@@ -428,6 +430,8 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   color: #82be3c;
   font-weight: 400;
   height: 100%;
+  margin-right: -12px;
+  false: #3b3b3b;
 }
 
 .emotion-3:hover {
