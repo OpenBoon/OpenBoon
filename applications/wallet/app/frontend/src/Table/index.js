@@ -84,7 +84,7 @@ const Table = ({ columns, items, renderRow, renderEmpty }) => {
 }
 
 Table.defaultProps = {
-  renderEmpty: () => () => '',
+  renderEmpty: undefined,
 }
 
 Table.propTypes = {

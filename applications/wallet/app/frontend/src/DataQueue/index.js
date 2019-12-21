@@ -27,8 +27,6 @@ const DataQueue = () => {
 
   if (!Array.isArray(results)) return 'Loading...'
 
-  if (results.length === 0) return 'You have 0 jobs'
-
   const to = Math.min(parsedPage * SIZE, count)
 
   return (
