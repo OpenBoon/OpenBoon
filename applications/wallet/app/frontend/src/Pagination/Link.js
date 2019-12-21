@@ -6,7 +6,7 @@ import { spacing, constants, colors } from '../Styles'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
-const DEFAULT_PADDING = `${spacing.base}px ${spacing.moderate}px`
+const DEFAULT_PADDING = `${spacing.base}px ${spacing.normal}px`
 const BORDER_RADIUS = constants.borderRadius.small
 
 const PaginationLink = ({ currentPage, totalPages, direction, href }) => {
@@ -19,8 +19,8 @@ const PaginationLink = ({ currentPage, totalPages, direction, href }) => {
     display: 'flex',
     alignItems: 'center',
     padding: DEFAULT_PADDING,
-    backgroundColor: colors.grey5,
-    border: constants.borders.default,
+    backgroundColor: colors.structure.steel,
+    border: constants.borders.transparent,
     borderTopLeftRadius: isPrev ? BORDER_RADIUS : 0,
     borderBottomLeftRadius: isPrev ? BORDER_RADIUS : 0,
     borderTopRightRadius: isPrev ? 0 : BORDER_RADIUS,
@@ -37,7 +37,7 @@ const PaginationLink = ({ currentPage, totalPages, direction, href }) => {
         <ChevronSvg
           width={16}
           css={{
-            color: colors.grey2,
+            color: colors.structure.coal,
             transform: `rotate(${isPrev ? '' : '-'}90deg)`,
           }}
         />

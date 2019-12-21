@@ -5,7 +5,7 @@ import { spacing, constants, colors } from '../Styles'
 
 import PaginationLink from './Link'
 
-const DEFAULT_PADDING = `${spacing.base}px ${spacing.moderate}px`
+const DEFAULT_PADDING = `${spacing.base}px ${spacing.normal}px`
 
 const Pagination = ({
   legend,
@@ -27,16 +27,6 @@ const Pagination = ({
           {legend}
         </div>
       )}
-      <div
-        css={{
-          color: colors.grey5,
-          padding: DEFAULT_PADDING,
-          paddingLeft: 0,
-          display: 'flex',
-          alignItems: 'center',
-        }}>
-        Page:
-      </div>
       <div css={{ display: 'flex' }}>
         <PaginationLink
           currentPage={currentPage}
@@ -47,10 +37,11 @@ const Pagination = ({
         <div
           css={{
             padding: DEFAULT_PADDING,
-            border: constants.borders.default,
+            border: constants.borders.transparent,
             display: 'flex',
             alignItems: 'center',
-            color: colors.grey2,
+            backgroundColor: colors.structure.black,
+            color: colors.structure.zinc,
           }}>
           {currentPage}
         </div>
