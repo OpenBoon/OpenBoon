@@ -109,41 +109,41 @@ exports[`<Table /> should render properly with items 1`] = `
 `;
 
 exports[`<Table /> should render properly with no items 1`] = `
-.emotion-4 {
+.emotion-3 {
   width: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
   white-space: nowrap;
 }
 
-.emotion-4 tr {
+.emotion-3 tr {
   background-color: #252525;
 }
 
-.emotion-4 tr:nth-of-type(2n) {
+.emotion-3 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-4 tr:hover {
+.emotion-3 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-4 tr:hover td {
+.emotion-3 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-4 tr:hover td:first-of-type {
+.emotion-3 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-4 tr:hover td:last-of-type {
+.emotion-3 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-4 td {
+.emotion-3 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -151,11 +151,11 @@ exports[`<Table /> should render properly with no items 1`] = `
   border-right: 0;
 }
 
-.emotion-4 td:first-of-type {
+.emotion-3 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-4 td:last-of-type {
+.emotion-3 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
@@ -178,7 +178,7 @@ exports[`<Table /> should render properly with no items 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-3 {
+.emotion-2 {
   height: 300px;
   width: 100%;
   display: -webkit-box;
@@ -201,22 +201,8 @@ exports[`<Table /> should render properly with no items 1`] = `
   line-height: 20px;
 }
 
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
 <table
-  className="emotion-4"
+  className="emotion-3"
 >
   <thead>
     <tr>
@@ -238,23 +224,9 @@ exports[`<Table /> should render properly with no items 1`] = `
         colSpan={2}
       >
         <div
-          className="emotion-3"
+          className="emotion-2"
         >
-          <div
-            className="emotion-2"
-          >
-            <svg
-              color="red"
-              data-file-name="noJobs.svg"
-              width={40}
-            />
-            <div>
-              There are currently no jobs in the queue.
-            </div>
-            <div>
-              Any new job will appear here.
-            </div>
-          </div>
+          empty
         </div>
       </td>
     </tr>

@@ -8,6 +8,7 @@ describe('<Table />', () => {
       <Table
         columns={['Foo', 'Bar']}
         items={[]}
+        renderEmpty={() => 'empty'}
         renderRow={item => (
           <tr key={item.foo}>
             <td>{item.foo}</td>

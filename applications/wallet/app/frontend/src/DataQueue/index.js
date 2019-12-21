@@ -7,6 +7,7 @@ import Table from '../Table'
 import Pagination from '../Pagination'
 
 import DataQueueRow from './Row'
+import DataQueueEmpty from './Empty'
 
 export const noop = () => () => {}
 
@@ -49,8 +50,8 @@ const DataQueue = () => {
           'Errors',
           'Task Progress',
         ]}
-        // items={results}
-        items={[]}
+        items={results}
+        renderEmpty={() => <DataQueueEmpty />}
         renderRow={job => (
           <DataQueueRow
             key={job.id}
