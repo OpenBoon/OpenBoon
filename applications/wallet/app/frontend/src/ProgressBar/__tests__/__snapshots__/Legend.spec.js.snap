@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ProgressBarLegend /> should render properly 1`] = `
-.emotion-26 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11,23 +11,33 @@ exports[`<ProgressBarLegend /> should render properly 1`] = `
   border-radius: 2px;
 }
 
-.emotion-4 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-0 {
-  padding-right: 8px;
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
-.emotion-3 {
+.emotion-3:not(:last-of-type) {
   padding-right: 24px;
+}
+
+.emotion-0 {
+  width: 2px;
+  height: 100%;
+  background-color: #c92300;
 }
 
 .emotion-2 {
   color: #e0e0e0;
+  padding-left: 8px;
 }
 
 .emotion-1 {
@@ -35,92 +45,44 @@ exports[`<ProgressBarLegend /> should render properly 1`] = `
   font-weight: 700;
 }
 
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-right: 24px;
-}
-
-.emotion-5 {
-  width: 2px;
-  height: 100%;
-  background-color: #c92300;
-}
-
-.emotion-7 {
-  color: #e0e0e0;
-  padding-left: 8px;
-}
-
-.emotion-9 {
+.emotion-4 {
   width: 2px;
   height: 100%;
   background-color: #b3b3b3;
 }
 
-.emotion-13 {
+.emotion-8 {
   width: 2px;
   height: 100%;
   background-color: #4ac565;
 }
 
-.emotion-17 {
+.emotion-12 {
   width: 2px;
   height: 100%;
   background-color: #ebb52e;
 }
 
-.emotion-21 {
+.emotion-16 {
   width: 2px;
   height: 100%;
   background-color: #4a90e2;
 }
 
 <div
-  className="emotion-26"
+  className="emotion-21"
 >
   <div
-    className="emotion-4"
+    className="emotion-20"
   >
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <div
         className="emotion-0"
-      >
-        <svg
-          color="#808080"
-          data-file-name="clock.svg"
-          width={20}
-        />
-      </div>
-      <div
-        className="emotion-3"
-      >
-        <div
-          className="emotion-2"
-        >
-          <div>
-            Duration:
-          </div>
-          <div
-            className="emotion-1"
-          >
-            21 hr / 57 m
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-8"
-    >
-      <div
-        className="emotion-5"
       />
       <div
-        className="emotion-7"
+        className="emotion-2"
       >
         <div>
           Failed:
@@ -133,13 +95,13 @@ exports[`<ProgressBarLegend /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-3"
     >
       <div
-        className="emotion-9"
+        className="emotion-4"
       />
       <div
-        className="emotion-7"
+        className="emotion-2"
       >
         <div>
           Skipped:
@@ -152,13 +114,13 @@ exports[`<ProgressBarLegend /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-3"
     >
       <div
-        className="emotion-13"
+        className="emotion-8"
       />
       <div
-        className="emotion-7"
+        className="emotion-2"
       >
         <div>
           Succeeded:
@@ -171,13 +133,13 @@ exports[`<ProgressBarLegend /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-3"
     >
       <div
-        className="emotion-17"
+        className="emotion-12"
       />
       <div
-        className="emotion-7"
+        className="emotion-2"
       >
         <div>
           Running:
@@ -190,13 +152,13 @@ exports[`<ProgressBarLegend /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-3"
     >
       <div
-        className="emotion-21"
+        className="emotion-16"
       />
       <div
-        className="emotion-7"
+        className="emotion-2"
       >
         <div>
           Pending:

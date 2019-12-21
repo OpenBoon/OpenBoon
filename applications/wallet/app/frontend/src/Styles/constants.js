@@ -2,6 +2,7 @@ import colors from './colors'
 
 const borderRadius = {
   small: 2,
+  bar: 4,
   round: 32,
 }
 

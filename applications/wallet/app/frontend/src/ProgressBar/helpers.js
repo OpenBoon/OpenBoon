@@ -7,8 +7,3 @@ export const TASK_STATUS_COLORS = {
   tasksRunning: colors.signal.canary.base,
   tasksPending: colors.signal.sky.base,
 }
-
-export const getTimeEnded = ({ state, currentTime, timeUpdated }) => {
-  const timeEnded = state === 'In Progress' ? currentTime : timeUpdated
-  return timeEnded
-}

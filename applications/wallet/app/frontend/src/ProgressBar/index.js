@@ -22,33 +22,37 @@ const ProgressBar = ({ state, taskCounts, timeStarted, timeUpdated }) => {
       onMouseEnter={() => setShowLegend(true)}
       onMouseLeave={() => setShowLegend(false)}
       css={{
-        display: 'flex',
-        height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
         position: 'relative',
       }}>
-      {Object.keys(TASK_STATUS_COLORS)
-        .filter(taskStatus => taskCounts[taskStatus] > 0)
-        .map(taskStatus => {
-          return (
-            <div
-              key={taskStatus}
-              css={{
-                height: '100%',
-                flex: `${taskCounts[taskStatus]} 0 auto`,
-                backgroundColor: TASK_STATUS_COLORS[taskStatus],
-                '&:first-of-type': {
-                  borderTopLeftRadius: constants.borderRadius.small,
-                  borderBottomLeftRadius: constants.borderRadius.small,
-                },
-                '&:last-of-type': {
-                  borderTopRightRadius: constants.borderRadius.small,
-                  borderBottomRightRadius: constants.borderRadius.small,
-                },
-              }}
-            />
-          )
-        })}
+      <div
+        css={{
+          display: 'flex',
+          height: CONTAINER_HEIGHT,
+        }}>
+        {Object.keys(TASK_STATUS_COLORS)
+          .filter(taskStatus => taskCounts[taskStatus] > 0)
+          .map(taskStatus => {
+            return (
+              <div
+                key={taskStatus}
+                css={{
+                  height: '100%',
+                  flex: `${taskCounts[taskStatus]} 0 auto`,
+                  backgroundColor: TASK_STATUS_COLORS[taskStatus],
+                  '&:first-of-type': {
+                    borderTopLeftRadius: constants.borderRadius.bar,
+                    borderBottomLeftRadius: constants.borderRadius.bar,
+                  },
+                  '&:last-of-type': {
+                    borderTopRightRadius: constants.borderRadius.bar,
+                    borderBottomRightRadius: constants.borderRadius.bar,
+                  },
+                }}
+              />
+            )
+          })}
+      </div>
       {showLegend && (
         <div
           css={{

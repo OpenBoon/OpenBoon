@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Pagination /> should render properly on first page 1`] = `
-.emotion-9 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -14,7 +14,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 
 .emotion-0 {
   color: #4d4948;
-  padding: 8px 12px;
+  padding: 8px 16px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -23,85 +23,6 @@ exports[`<Pagination /> should render properly on first page 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-}
-
-.emotion-1 {
-  color: #4d4948;
-  padding: 8px 12px;
-  padding-left: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #4d4948;
-  border: 1px solid #2e2e2e;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.emotion-3:hover {
-  opacity: 1;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2 {
-  color: #b3b3b3;
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-}
-
-.emotion-4 {
-  padding: 8px 12px;
-  border: 1px solid #2e2e2e;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #b3b3b3;
-}
-
-.emotion-5 {
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #4d4948;
 }
 
 .emotion-7 {
@@ -109,26 +30,92 @@ exports[`<Pagination /> should render properly on first page 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 8px 12px;
-  background-color: #4d4948;
-  border: 1px solid #2e2e2e;
+  padding: 8px 16px;
+  background-color: #808080;
+  border: 1px solid transparent;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.emotion-2:hover {
+  opacity: 1;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1 {
+  color: #191919;
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-3 {
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #000000;
+  color: #b3b3b3;
+}
+
+.emotion-4 {
+  padding: 8px 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #4d4948;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #808080;
+  border: 1px solid transparent;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-7:hover {
+.emotion-6:hover {
   opacity: 0.5;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6 {
+.emotion-5 {
   color: #b3b3b3;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -136,7 +123,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 }
 
 <div
-  className="emotion-9"
+  className="emotion-8"
 >
   <div
     className="emotion-0"
@@ -144,44 +131,39 @@ exports[`<Pagination /> should render properly on first page 1`] = `
     Jobs: 1–17 of 415
   </div>
   <div
-    className="emotion-1"
-  >
-    Page:
-  </div>
-  <div
-    className="emotion-8"
+    className="emotion-7"
   >
     <button
-      className="emotion-3"
+      className="emotion-2"
       disabled={true}
       type="button"
     >
       <svg
-        className="emotion-2"
+        className="emotion-1"
         data-file-name="chevron.svg"
         width={16}
       />
     </button>
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       1
     </div>
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       of 
       2
     </div>
     <a
-      className="emotion-7"
+      className="emotion-6"
       href="/?page=2"
       onClick={[Function]}
       onMouseEnter={[Function]}
       rel="next"
     >
       <svg
-        className="emotion-6"
+        className="emotion-5"
         data-file-name="chevron.svg"
         width={16}
       />
@@ -191,7 +173,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 `;
 
 exports[`<Pagination /> should render properly on last page 1`] = `
-.emotion-9 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -204,7 +186,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 
 .emotion-0 {
   color: #4d4948;
-  padding: 8px 12px;
+  padding: 8px 16px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -213,92 +195,6 @@ exports[`<Pagination /> should render properly on last page 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-}
-
-.emotion-1 {
-  color: #4d4948;
-  padding: 8px 12px;
-  padding-left: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  color: #b3b3b3;
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-}
-
-.emotion-4 {
-  padding: 8px 12px;
-  border: 1px solid #2e2e2e;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #b3b3b3;
-}
-
-.emotion-5 {
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #4d4948;
-}
-
-.emotion-6 {
-  color: #b3b3b3;
-  -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  transform: rotate(-90deg);
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #4d4948;
-  border: 1px solid #2e2e2e;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.emotion-3:hover {
-  opacity: 0.5;
-  -webkit-text-decoration: none;
-  text-decoration: none;
 }
 
 .emotion-7 {
@@ -306,27 +202,100 @@ exports[`<Pagination /> should render properly on last page 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.emotion-3 {
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 8px 12px;
-  background-color: #4d4948;
-  border: 1px solid #2e2e2e;
+  background-color: #000000;
+  color: #b3b3b3;
+}
+
+.emotion-4 {
+  padding: 8px 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #4d4948;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #808080;
+  border: 1px solid transparent;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.emotion-2:hover {
+  opacity: 0.5;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1 {
+  color: #b3b3b3;
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #808080;
+  border: 1px solid transparent;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-7:hover {
+.emotion-6:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
+.emotion-5 {
+  color: #191919;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
 <div
-  className="emotion-9"
+  className="emotion-8"
 >
   <div
     className="emotion-0"
@@ -334,44 +303,39 @@ exports[`<Pagination /> should render properly on last page 1`] = `
     Jobs: 1–17 of 415
   </div>
   <div
-    className="emotion-1"
-  >
-    Page:
-  </div>
-  <div
-    className="emotion-8"
+    className="emotion-7"
   >
     <a
-      className="emotion-3"
+      className="emotion-2"
       href="/"
       onClick={[Function]}
       onMouseEnter={[Function]}
       rel="prev"
     >
       <svg
-        className="emotion-2"
+        className="emotion-1"
         data-file-name="chevron.svg"
         width={16}
       />
     </a>
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       2
     </div>
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       of 
       2
     </div>
     <button
-      className="emotion-7"
+      className="emotion-6"
       disabled={true}
       type="button"
     >
       <svg
-        className="emotion-6"
+        className="emotion-5"
         data-file-name="chevron.svg"
         width={16}
       />
