@@ -29,7 +29,11 @@ const ProjectSwitcher = () => {
     <Menu
       open="right"
       button={({ onBlur, onClick, isMenuOpen }) => (
-        <Button variant={VARIANTS.MENU} onBlur={onBlur} onClick={onClick}>
+        <Button
+          variant={VARIANTS.MENU}
+          onBlur={onBlur}
+          onClick={onClick}
+          isDisabled={projects.length === 1}>
           <div
             css={{
               display: 'flex',
@@ -49,26 +53,28 @@ const ProjectSwitcher = () => {
           </div>
         </Button>
       )}>
-      {({ onBlur, onClick }) => (
-        <ul>
-          {projects.map(({ id, name }) => (
-            <li key={id}>
-              <Link
-                href={pathname}
-                as={pathname.replace('[projectId]', id)}
-                passHref>
-                <Button
-                  variant={VARIANTS.MENU_ITEM}
-                  onBlur={onBlur}
-                  onClick={onClick}
-                  isDisabled={false}>
-                  {name}
-                </Button>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      {({ onBlur, onClick }) =>
+        projects.length > 1 && (
+          <ul>
+            {projects.map(({ id, name }) => (
+              <li key={id}>
+                <Link
+                  href={pathname}
+                  as={pathname.replace('[projectId]', id)}
+                  passHref>
+                  <Button
+                    variant={VARIANTS.MENU_ITEM}
+                    onBlur={onBlur}
+                    onClick={onClick}
+                    isDisabled={false}>
+                    {name}
+                  </Button>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )
+      }
     </Menu>
   )
 }
