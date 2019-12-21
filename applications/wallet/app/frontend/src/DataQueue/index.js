@@ -39,6 +39,7 @@ const DataQueue = () => {
       <PageTitle>Job Queue</PageTitle>
 
       <Table
+        legend={`Jobs: ${from + 1}–${to} of ${count}`}
         columns={[
           'Status',
           'Job Name',
@@ -63,7 +64,6 @@ const DataQueue = () => {
       <div>&nbsp;</div>
 
       <Pagination
-        legend={`Jobs: ${from + 1}–${to} of ${count}`}
         currentPage={parsedPage}
         totalPages={Math.ceil(count / SIZE)}
         prevLink={`/?page=${parsedPage - 1}`}

@@ -11,41 +11,52 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-135 {
+.emotion-137 {
+  position: relative;
+}
+
+.emotion-1 {
+  position: absolute;
+  right: 0;
+  top: -32px;
+  color: #b3b3b3;
+}
+
+.emotion-136 {
   width: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
   white-space: nowrap;
 }
 
-.emotion-135 tr {
+.emotion-136 tr {
   background-color: #252525;
 }
 
-.emotion-135 tr:nth-of-type(2n) {
+.emotion-136 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-135 tr:hover {
+.emotion-136 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-135 tr:hover td {
+.emotion-136 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-135 tr:hover td:first-of-type {
+.emotion-136 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-135 tr:hover td:last-of-type {
+.emotion-136 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-135 td {
+.emotion-136 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -53,15 +64,15 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-right: 0;
 }
 
-.emotion-135 td:first-of-type {
+.emotion-136 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-135 td:last-of-type {
+.emotion-136 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
-.emotion-1 {
+.emotion-2 {
   text-align: left;
   font-size: 16px;
   line-height: 20px;
@@ -72,15 +83,15 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-1:nth-of-type(2) {
+.emotion-2:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-1:not(:last-child) {
+.emotion-2:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -95,11 +106,11 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-10 {
+.emotion-11 {
   text-align: center;
 }
 
-.emotion-12 {
+.emotion-13 {
   margin: 0 auto;
   display: -webkit-box;
   display: -webkit-flex;
@@ -127,7 +138,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-22 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -138,12 +149,12 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   align-items: center;
 }
 
-.emotion-18 {
+.emotion-19 {
   width: 212px;
   position: relative;
 }
 
-.emotion-17 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -151,30 +162,12 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   height: 16px;
 }
 
-.emotion-13 {
+.emotion-14 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
   flex: 1 0 auto;
   background-color: #c92300;
-}
-
-.emotion-13:first-of-type {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-
-.emotion-13:last-of-type {
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
-.emotion-14 {
-  height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #4ac565;
 }
 
 .emotion-14:first-of-type {
@@ -192,7 +185,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
-  background-color: #ebb52e;
+  background-color: #4ac565;
 }
 
 .emotion-15:first-of-type {
@@ -210,7 +203,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
-  background-color: #4a90e2;
+  background-color: #ebb52e;
 }
 
 .emotion-16:first-of-type {
@@ -223,15 +216,33 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-bottom-right-radius: 4px;
 }
 
-.emotion-19 {
-  width: 8px;
+.emotion-17 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #4a90e2;
 }
 
-.emotion-21 {
-  position: relative;
+.emotion-17:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-17:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .emotion-20 {
+  width: 8px;
+}
+
+.emotion-22 {
+  position: relative;
+}
+
+.emotion-21 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -274,7 +285,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #808080;
 }
 
-.emotion-23 {
+.emotion-24 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -289,7 +300,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-30 {
+.emotion-31 {
   height: 100%;
   -webkit-flex: 14 0 auto;
   -ms-flex: 14 0 auto;
@@ -297,40 +308,22 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4a90e2;
 }
 
-.emotion-30:first-of-type {
+.emotion-31:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-30:last-of-type {
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
-.emotion-42 {
-  height: 100%;
-  -webkit-flex: 8 0 auto;
-  -ms-flex: 8 0 auto;
-  flex: 8 0 auto;
-  background-color: #4ac565;
-}
-
-.emotion-42:first-of-type {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-
-.emotion-42:last-of-type {
+.emotion-31:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
 .emotion-43 {
   height: 100%;
-  -webkit-flex: 4 0 auto;
-  -ms-flex: 4 0 auto;
-  flex: 4 0 auto;
-  background-color: #4a90e2;
+  -webkit-flex: 8 0 auto;
+  -ms-flex: 8 0 auto;
+  flex: 8 0 auto;
+  background-color: #4ac565;
 }
 
 .emotion-43:first-of-type {
@@ -343,7 +336,25 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border-bottom-right-radius: 4px;
 }
 
-.emotion-61 {
+.emotion-44 {
+  height: 100%;
+  -webkit-flex: 4 0 auto;
+  -ms-flex: 4 0 auto;
+  flex: 4 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-44:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-44:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.emotion-62 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -358,7 +369,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #191919;
 }
 
-.emotion-86 {
+.emotion-87 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -366,12 +377,12 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-86:first-of-type {
+.emotion-87:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-86:last-of-type {
+.emotion-87:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
@@ -382,912 +393,920 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   >
     Job Queue
   </h2>
-  <table
-    className="emotion-135"
+  <div
+    className="emotion-137"
   >
-    <thead>
-      <tr>
-        <th
-          className="emotion-1"
-        >
-          Status
-        </th>
-        <th
-          className="emotion-1"
-        >
-          Job Name
-        </th>
-        <th
-          className="emotion-1"
-        >
-          Created By
-        </th>
-        <th
-          className="emotion-1"
-        >
-          Priority
-        </th>
-        <th
-          className="emotion-1"
-        >
-          Created
-        </th>
-        <th
-          className="emotion-1"
-        >
-          # Assets
-        </th>
-        <th
-          className="emotion-1"
-        >
-          Errors
-        </th>
-        <th
-          className="emotion-1"
-        >
-          Task Progress
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <div
-            className="emotion-9"
+    <div
+      className="emotion-1"
+    >
+      Jobs: 1–11 of 11
+    </div>
+    <table
+      className="emotion-136"
+    >
+      <thead>
+        <tr>
+          <th
+            className="emotion-2"
           >
-            Cancelled
-          </div>
-        </td>
-        <td>
-          test-whitespace.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-11-07 01:38:36
-        </td>
-        <td
-          className="emotion-10"
-        >
-          4
-        </td>
-        <td>
-          <div
-            className="emotion-12"
+            Status
+          </th>
+          <th
+            className="emotion-2"
+          >
+            Job Name
+          </th>
+          <th
+            className="emotion-2"
+          >
+            Created By
+          </th>
+          <th
+            className="emotion-2"
+          >
+            Priority
+          </th>
+          <th
+            className="emotion-2"
+          >
+            Created
+          </th>
+          <th
+            className="emotion-2"
+          >
+            # Assets
+          </th>
+          <th
+            className="emotion-2"
+          >
+            Errors
+          </th>
+          <th
+            className="emotion-2"
+          >
+            Task Progress
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div
+              className="emotion-10"
+            >
+              Cancelled
+            </div>
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-11"
+          >
+            100
+          </td>
+          <td>
+            2019-11-07 01:38:36
+          </td>
+          <td
+            className="emotion-11"
           >
             4
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-22"
-          >
+          </td>
+          <td>
             <div
-              aria-label="Progress Bar"
-              className="emotion-18"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
+              className="emotion-13"
+            >
+              4
+            </div>
+          </td>
+          <td>
+            <div
+              className="emotion-23"
             >
               <div
-                className="emotion-17"
+                aria-label="Progress Bar"
+                className="emotion-19"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <div
-                  className="emotion-13"
-                />
-                <div
-                  className="emotion-14"
-                />
-                <div
-                  className="emotion-15"
-                />
-                <div
-                  className="emotion-16"
-                />
+                  className="emotion-18"
+                >
+                  <div
+                    className="emotion-14"
+                  />
+                  <div
+                    className="emotion-15"
+                  />
+                  <div
+                    className="emotion-16"
+                  />
+                  <div
+                    className="emotion-17"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-20"
+              />
+              <div
+                className="emotion-22"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-21"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
               </div>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div
-              className="emotion-19"
-            />
-            <div
-              className="emotion-21"
+              className="emotion-24"
             >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-20"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
+              Active
             </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-23"
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-11"
           >
-            Active
-          </div>
-        </td>
-        <td>
-          test-whitespace.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-11-07 01:38:36
-        </td>
-        <td
-          className="emotion-10"
-        >
-          40
-        </td>
-        <td>
-          <div
-            className="emotion-12"
+            100
+          </td>
+          <td>
+            2019-11-07 01:38:36
+          </td>
+          <td
+            className="emotion-11"
           >
             40
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-22"
-          >
+          </td>
+          <td>
             <div
-              aria-label="Progress Bar"
-              className="emotion-18"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
+              className="emotion-13"
+            >
+              40
+            </div>
+          </td>
+          <td>
+            <div
+              className="emotion-23"
             >
               <div
-                className="emotion-17"
+                aria-label="Progress Bar"
+                className="emotion-19"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <div
-                  className="emotion-13"
-                />
-                <div
-                  className="emotion-14"
-                />
-                <div
-                  className="emotion-15"
-                />
-                <div
-                  className="emotion-30"
-                />
+                  className="emotion-18"
+                >
+                  <div
+                    className="emotion-14"
+                  />
+                  <div
+                    className="emotion-15"
+                  />
+                  <div
+                    className="emotion-16"
+                  />
+                  <div
+                    className="emotion-31"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-20"
+              />
+              <div
+                className="emotion-22"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-21"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
               </div>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div
-              className="emotion-19"
-            />
-            <div
-              className="emotion-21"
+              className="emotion-24"
             >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-20"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
+              Active
             </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-23"
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-11"
           >
-            Active
-          </div>
-        </td>
-        <td>
-          test-whitespace.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-11-07 01:36:29
-        </td>
-        <td
-          className="emotion-10"
-        >
-          400
-        </td>
-        <td>
-          <div
-            className="emotion-12"
+            100
+          </td>
+          <td>
+            2019-11-07 01:36:29
+          </td>
+          <td
+            className="emotion-11"
           >
             400
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-22"
-          >
+          </td>
+          <td>
             <div
-              aria-label="Progress Bar"
-              className="emotion-18"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
+              className="emotion-13"
+            >
+              400
+            </div>
+          </td>
+          <td>
+            <div
+              className="emotion-23"
             >
               <div
-                className="emotion-17"
+                aria-label="Progress Bar"
+                className="emotion-19"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <div
-                  className="emotion-13"
-                />
-                <div
-                  className="emotion-42"
-                />
-                <div
-                  className="emotion-43"
-                />
+                  className="emotion-18"
+                >
+                  <div
+                    className="emotion-14"
+                  />
+                  <div
+                    className="emotion-43"
+                  />
+                  <div
+                    className="emotion-44"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-20"
+              />
+              <div
+                className="emotion-22"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-21"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
               </div>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div
-              className="emotion-19"
-            />
-            <div
-              className="emotion-21"
+              className="emotion-10"
             >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-20"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
+              Cancelled
             </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-9"
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-11"
           >
-            Cancelled
-          </div>
-        </td>
-        <td>
-          test-whitespace.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-11-07 01:35:36
-        </td>
-        <td
-          className="emotion-10"
-        >
-          4000
-        </td>
-        <td>
-          <div
-            className="emotion-12"
+            100
+          </td>
+          <td>
+            2019-11-07 01:35:36
+          </td>
+          <td
+            className="emotion-11"
           >
             4000
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-22"
-          >
+          </td>
+          <td>
             <div
-              aria-label="Progress Bar"
-              className="emotion-18"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
+              className="emotion-13"
+            >
+              4000
+            </div>
+          </td>
+          <td>
+            <div
+              className="emotion-23"
             >
               <div
-                className="emotion-17"
+                aria-label="Progress Bar"
+                className="emotion-19"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <div
-                  className="emotion-13"
-                />
+                  className="emotion-18"
+                >
+                  <div
+                    className="emotion-14"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-20"
+              />
+              <div
+                className="emotion-22"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-21"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
               </div>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div
-              className="emotion-19"
-            />
-            <div
-              className="emotion-21"
+              className="emotion-62"
             >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-20"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
+              Finished
             </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-61"
+          </td>
+          <td>
+            test_officer
+          </td>
+          <td>
+            zach@zorroa.com
+          </td>
+          <td
+            className="emotion-11"
           >
-            Finished
-          </div>
-        </td>
-        <td>
-          test_officer
-        </td>
-        <td>
-          zach@zorroa.com
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-10-11 21:11:03
-        </td>
-        <td
-          className="emotion-10"
-        >
-          40000
-        </td>
-        <td>
-          <div
-            className="emotion-12"
+            100
+          </td>
+          <td>
+            2019-10-11 21:11:03
+          </td>
+          <td
+            className="emotion-11"
           >
             40000
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-22"
-          >
+          </td>
+          <td>
             <div
-              aria-label="Progress Bar"
-              className="emotion-18"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
+              className="emotion-13"
+            >
+              40000
+            </div>
+          </td>
+          <td>
+            <div
+              className="emotion-23"
             >
               <div
-                className="emotion-17"
+                aria-label="Progress Bar"
+                className="emotion-19"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <div
-                  className="emotion-13"
-                />
+                  className="emotion-18"
+                >
+                  <div
+                    className="emotion-14"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-20"
+              />
+              <div
+                className="emotion-22"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-21"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
               </div>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div
-              className="emotion-19"
-            />
-            <div
-              className="emotion-21"
+              className="emotion-24"
             >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-20"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
+              Active
             </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-23"
+          </td>
+          <td>
+            test_officer
+          </td>
+          <td>
+            zach@zorroa.com
+          </td>
+          <td
+            className="emotion-11"
           >
-            Active
-          </div>
-        </td>
-        <td>
-          test_officer
-        </td>
-        <td>
-          zach@zorroa.com
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-10-11 21:03:27
-        </td>
-        <td
-          className="emotion-10"
-        >
-          400000
-        </td>
-        <td>
-          <div
-            className="emotion-12"
+            100
+          </td>
+          <td>
+            2019-10-11 21:03:27
+          </td>
+          <td
+            className="emotion-11"
           >
             400000
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-22"
-          >
+          </td>
+          <td>
             <div
-              aria-label="Progress Bar"
-              className="emotion-18"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
+              className="emotion-13"
+            >
+              400000
+            </div>
+          </td>
+          <td>
+            <div
+              className="emotion-23"
             >
               <div
-                className="emotion-17"
+                aria-label="Progress Bar"
+                className="emotion-19"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <div
-                  className="emotion-13"
-                />
+                  className="emotion-18"
+                >
+                  <div
+                    className="emotion-14"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-20"
+              />
+              <div
+                className="emotion-22"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-21"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
               </div>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div
-              className="emotion-19"
-            />
-            <div
-              className="emotion-21"
+              className="emotion-24"
             >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-20"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
+              Active
             </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-23"
+          </td>
+          <td>
+            flipbook_export_1
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-11"
           >
-            Active
-          </div>
-        </td>
-        <td>
-          flipbook_export_1
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          1
-        </td>
-        <td>
-          2019-08-01 22:52:19
-        </td>
-        <td
-          className="emotion-10"
-        >
-          0
-        </td>
-        <td />
-        <td>
-          <div
-            className="emotion-22"
+            1
+          </td>
+          <td>
+            2019-08-01 22:52:19
+          </td>
+          <td
+            className="emotion-11"
           >
+            0
+          </td>
+          <td />
+          <td>
             <div
-              aria-label="Progress Bar"
-              className="emotion-18"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
+              className="emotion-23"
             >
               <div
-                className="emotion-17"
+                aria-label="Progress Bar"
+                className="emotion-19"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <div
-                  className="emotion-86"
-                />
+                  className="emotion-18"
+                >
+                  <div
+                    className="emotion-87"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-20"
+              />
+              <div
+                className="emotion-22"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-21"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
               </div>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div
-              className="emotion-19"
-            />
-            <div
-              className="emotion-21"
+              className="emotion-24"
             >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-20"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
+              Active
             </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-23"
+          </td>
+          <td>
+            export_7_8_2019
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-11"
           >
-            Active
-          </div>
-        </td>
-        <td>
-          export_7_8_2019
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          1
-        </td>
-        <td>
-          2019-07-08 18:53:44
-        </td>
-        <td
-          className="emotion-10"
-        >
-          0
-        </td>
-        <td />
-        <td>
-          <div
-            className="emotion-22"
+            1
+          </td>
+          <td>
+            2019-07-08 18:53:44
+          </td>
+          <td
+            className="emotion-11"
           >
+            0
+          </td>
+          <td />
+          <td>
             <div
-              aria-label="Progress Bar"
-              className="emotion-18"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
+              className="emotion-23"
             >
               <div
-                className="emotion-17"
+                aria-label="Progress Bar"
+                className="emotion-19"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <div
-                  className="emotion-13"
-                />
+                  className="emotion-18"
+                >
+                  <div
+                    className="emotion-14"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-20"
+              />
+              <div
+                className="emotion-22"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-21"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
               </div>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div
-              className="emotion-19"
-            />
-            <div
-              className="emotion-21"
+              className="emotion-24"
             >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-20"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
+              Active
             </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-23"
+          </td>
+          <td>
+            export_7_8_2019___
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-11"
           >
-            Active
-          </div>
-        </td>
-        <td>
-          export_7_8_2019___
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          1
-        </td>
-        <td>
-          2019-07-08 18:43:03
-        </td>
-        <td
-          className="emotion-10"
-        >
-          0
-        </td>
-        <td />
-        <td>
-          <div
-            className="emotion-22"
+            1
+          </td>
+          <td>
+            2019-07-08 18:43:03
+          </td>
+          <td
+            className="emotion-11"
           >
+            0
+          </td>
+          <td />
+          <td>
             <div
-              aria-label="Progress Bar"
-              className="emotion-18"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
+              className="emotion-23"
             >
               <div
-                className="emotion-17"
+                aria-label="Progress Bar"
+                className="emotion-19"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <div
-                  className="emotion-13"
-                />
+                  className="emotion-18"
+                >
+                  <div
+                    className="emotion-14"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-20"
+              />
+              <div
+                className="emotion-22"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-21"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
               </div>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div
-              className="emotion-19"
-            />
-            <div
-              className="emotion-21"
+              className="emotion-24"
             >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-20"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
+              Active
             </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-23"
+          </td>
+          <td>
+            sdlc-testdata-import.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-11"
           >
-            Active
-          </div>
-        </td>
-        <td>
-          sdlc-testdata-import.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-07-03 16:49:15
-        </td>
-        <td
-          className="emotion-10"
-        >
-          0
-        </td>
-        <td />
-        <td>
-          <div
-            className="emotion-22"
+            100
+          </td>
+          <td>
+            2019-07-03 16:49:15
+          </td>
+          <td
+            className="emotion-11"
           >
+            0
+          </td>
+          <td />
+          <td>
             <div
-              aria-label="Progress Bar"
-              className="emotion-18"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
+              className="emotion-23"
             >
               <div
-                className="emotion-17"
+                aria-label="Progress Bar"
+                className="emotion-19"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <div
-                  className="emotion-13"
-                />
+                  className="emotion-18"
+                >
+                  <div
+                    className="emotion-14"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-20"
+              />
+              <div
+                className="emotion-22"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-21"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
               </div>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div
-              className="emotion-19"
-            />
-            <div
-              className="emotion-21"
+              className="emotion-24"
             >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-20"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
+              Active
             </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div
-            className="emotion-23"
+          </td>
+          <td>
+            sdlc-testdata-import.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-11"
           >
-            Active
-          </div>
-        </td>
-        <td>
-          sdlc-testdata-import.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td
-          className="emotion-10"
-        >
-          100
-        </td>
-        <td>
-          2019-07-03 01:29:41
-        </td>
-        <td
-          className="emotion-10"
-        >
-          49
-        </td>
-        <td>
-          <div
-            className="emotion-12"
+            100
+          </td>
+          <td>
+            2019-07-03 01:29:41
+          </td>
+          <td
+            className="emotion-11"
           >
             49
-          </div>
-        </td>
-        <td>
-          <div
-            className="emotion-22"
-          >
+          </td>
+          <td>
             <div
-              aria-label="Progress Bar"
-              className="emotion-18"
-              onKeyPress={[Function]}
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-              role="button"
-              tabIndex="0"
+              className="emotion-13"
+            >
+              49
+            </div>
+          </td>
+          <td>
+            <div
+              className="emotion-23"
             >
               <div
-                className="emotion-17"
+                aria-label="Progress Bar"
+                className="emotion-19"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
               >
                 <div
-                  className="emotion-13"
-                />
-                <div
-                  className="emotion-86"
-                />
+                  className="emotion-18"
+                >
+                  <div
+                    className="emotion-14"
+                  />
+                  <div
+                    className="emotion-87"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-20"
+              />
+              <div
+                className="emotion-22"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-21"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
               </div>
             </div>
-            <div
-              className="emotion-19"
-            />
-            <div
-              className="emotion-21"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="emotion-20"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <div>
      
   </div>
   <Pagination
     currentPage={1}
-    legend="Jobs: 1–11 of 11"
     nextLink="/?page=2"
     prevLink="/?page=0"
     totalPages={1}
