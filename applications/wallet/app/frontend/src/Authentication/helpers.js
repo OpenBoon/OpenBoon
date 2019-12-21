@@ -19,17 +19,25 @@ export const storeUser = ({ user }) => {
 export const authenticateUser = ({ setErrorMessage, setUser }) => async ({
   username,
   password,
+  idToken,
 }) => {
   setErrorMessage('')
 
   const response = await fetch('/api/v1/login/', {
     method: 'POST',
-    headers: { 'content-type': 'application/json;charset=UTF-8' },
-    body: JSON.stringify({ username, password }),
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
+    },
+    ...(idToken ? {} : { body: JSON.stringify({ username, password }) }),
   })
 
   if (response.status === 401) {
     return setErrorMessage('Invalid email or password.')
+  }
+
+  if (response.status !== 200) {
+    return setErrorMessage('Network error.')
   }
 
   const user = await response.json()
@@ -39,7 +47,9 @@ export const authenticateUser = ({ setErrorMessage, setUser }) => async ({
   return setUser(user)
 }
 
-export const logout = ({ setUser }) => async () => {
+export const logout = ({ googleAuth, setUser }) => async () => {
+  googleAuth.signOut()
+
   const { csrftoken } = Object.fromEntries(
     document.cookie.split(/; */).map(c => {
       const [key, ...v] = c.split('=')
@@ -50,7 +60,7 @@ export const logout = ({ setUser }) => async () => {
   await fetch('/api/v1/logout/', {
     method: 'POST',
     headers: {
-      'content-type': 'application/json;charset=UTF-8',
+      'Content-Type': 'application/json;charset=UTF-8',
       'X-CSRFToken': csrftoken,
     },
   })

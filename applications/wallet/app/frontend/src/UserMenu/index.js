@@ -10,7 +10,7 @@ import Button, { VARIANTS } from '../Button'
 const SIZE = 28
 
 const UserMenu = ({
-  user: { first_name: firstName, last_name: lastName, email },
+  user: { firstName, lastName, email },
   logout,
 }) => {
   return (

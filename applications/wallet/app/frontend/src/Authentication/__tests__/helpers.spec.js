@@ -31,7 +31,7 @@ describe('<Authentication /> helpers', () => {
   })
 
   describe('authenticateUser()', () => {
-    it('should authenticate the user', async () => {
+    it('should authenticate the user with a username/password', async () => {
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
       const mockSetErrorMessage = jest.fn()
@@ -53,6 +53,14 @@ describe('<Authentication /> helpers', () => {
         password: 'password',
       })
 
+      expect(fetch.mock.calls.length).toEqual(1)
+      expect(fetch.mock.calls[0][0]).toEqual('/api/v1/login/')
+      expect(fetch.mock.calls[0][1]).toEqual({
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+        body: '{"username":"username","password":"password"}',
+      })
+
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
       expect(mockSetUser).toHaveBeenCalledWith({ id: 12345 })
@@ -63,7 +71,48 @@ describe('<Authentication /> helpers', () => {
       )
     })
 
-    it('should display an alert for incorrect email/password', async () => {
+    it('should authenticate the user with a Google JWT', async () => {
+      fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
+
+      const mockSetErrorMessage = jest.fn()
+      const mockSetUser = jest.fn()
+      const mockSetItem = jest.fn()
+
+      Object.defineProperty(window, 'localStorage', {
+        writable: true,
+        value: {
+          setItem: mockSetItem,
+        },
+      })
+
+      await authenticateUser({
+        setErrorMessage: mockSetErrorMessage,
+        setUser: mockSetUser,
+      })({
+        idToken: 'ID_TOKEN',
+      })
+
+      expect(fetch.mock.calls.length).toEqual(1)
+      expect(fetch.mock.calls[0][0]).toEqual('/api/v1/login/')
+      expect(fetch.mock.calls[0][1]).toEqual({
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ID_TOKEN',
+          'Content-Type': 'application/json;charset=UTF-8',
+        },
+      })
+
+      expect(mockSetErrorMessage).toHaveBeenCalledWith('')
+
+      expect(mockSetUser).toHaveBeenCalledWith({ id: 12345 })
+
+      expect(mockSetItem).toHaveBeenCalledWith(
+        USER,
+        JSON.stringify({ id: 12345 }),
+      )
+    })
+
+    it('should display an alert for incorrect username/password', async () => {
       const mockSetErrorMessage = jest.fn()
 
       fetch.mockResponseOnce('Access Denied', { status: 401 })
@@ -80,10 +129,27 @@ describe('<Authentication /> helpers', () => {
         'Invalid email or password.',
       )
     })
+
+    it('should display an alert for any other error', async () => {
+      const mockSetErrorMessage = jest.fn()
+
+      fetch.mockResponseOnce('Access Denied', { status: 500 })
+
+      await authenticateUser({
+        setErrorMessage: mockSetErrorMessage,
+        setUser: noop,
+      })({
+        username: 'username',
+        password: 'password',
+      })
+
+      expect(mockSetErrorMessage).toHaveBeenCalledWith('Network error.')
+    })
   })
 
   describe('logout()', () => {
     it('should logout the user', async () => {
+      const mockSignOut = jest.fn()
       const mockSetUser = jest.fn()
       const mockRemoveItem = jest.fn()
 
@@ -94,7 +160,12 @@ describe('<Authentication /> helpers', () => {
         },
       })
 
-      await logout({ setUser: mockSetUser })()
+      await logout({
+        googleAuth: { signOut: mockSignOut },
+        setUser: mockSetUser,
+      })()
+
+      expect(mockSignOut).toHaveBeenCalledWith()
 
       expect(mockSetUser).toHaveBeenCalledWith({})
 
@@ -105,7 +176,7 @@ describe('<Authentication /> helpers', () => {
       expect(fetch.mock.calls[0][1]).toEqual({
         headers: {
           'X-CSRFToken': 'CSRF_TOKEN',
-          'content-type': 'application/json;charset=UTF-8',
+          'Content-Type': 'application/json;charset=UTF-8',
         },
         method: 'POST',
       })
