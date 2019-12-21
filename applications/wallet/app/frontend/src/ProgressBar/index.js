@@ -10,7 +10,7 @@ import { TASK_STATUS_COLORS } from './helpers'
 const CONTAINER_HEIGHT = 16
 const CONTAINER_WIDTH = 212
 
-const ProgressBar = ({ state, taskCounts, timeStarted, timeUpdated }) => {
+const ProgressBar = ({ taskCounts }) => {
   const [showLegend, setShowLegend] = useState(false)
 
   return (
@@ -58,12 +58,7 @@ const ProgressBar = ({ state, taskCounts, timeStarted, timeUpdated }) => {
             boxShadow: constants.boxShadows.tableRow,
             zIndex: zIndex.reset,
           }}>
-          <ProgressBarLegend
-            state={state}
-            taskCounts={taskCounts}
-            timeStarted={timeStarted}
-            timeUpdated={timeUpdated}
-          />
+          <ProgressBarLegend taskCounts={taskCounts} />
         </div>
       )}
     </div>
@@ -71,9 +66,6 @@ const ProgressBar = ({ state, taskCounts, timeStarted, timeUpdated }) => {
 }
 
 ProgressBar.propTypes = {
-  state: PropTypes.string.isRequired,
-  timeStarted: PropTypes.number.isRequired,
-  timeUpdated: PropTypes.number.isRequired,
   taskCounts: PropTypes.shape({
     tasksFailure: PropTypes.number.isRequired,
     tasksSkipped: PropTypes.number.isRequired,

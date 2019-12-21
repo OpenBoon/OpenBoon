@@ -89,7 +89,7 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
 `;
 
 exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyPress 2`] = `
-.emotion-29 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -117,7 +117,7 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   border-bottom-right-radius: 2px;
 }
 
-.emotion-28 {
+.emotion-22 {
   position: absolute;
   top: 24px;
   right: 0;
@@ -125,33 +125,32 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   z-index: 1;
 }
 
-.emotion-27 {
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #4a4a4a;
+  border-radius: 2px;
+}
+
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   padding: 12px;
-  background-color: #4a4a4a;
-  border-radius: 2px;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
 }
 
 .emotion-1 {
-  padding-right: 8px;
-}
-
-.emotion-4 {
-  padding-right: 24px;
+  width: 2px;
+  height: 100%;
+  background-color: #c92300;
 }
 
 .emotion-3 {
   color: #e0e0e0;
+  padding-left: 8px;
 }
 
 .emotion-2 {
@@ -159,44 +158,25 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   font-weight: 700;
 }
 
-.emotion-9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-right: 24px;
-}
-
-.emotion-6 {
-  width: 2px;
-  height: 100%;
-  background-color: #c92300;
-}
-
-.emotion-8 {
-  color: #e0e0e0;
-  padding-left: 8px;
-}
-
-.emotion-10 {
+.emotion-5 {
   width: 2px;
   height: 100%;
   background-color: #b3b3b3;
 }
 
-.emotion-14 {
+.emotion-9 {
   width: 2px;
   height: 100%;
   background-color: #4ac565;
 }
 
-.emotion-18 {
+.emotion-13 {
   width: 2px;
   height: 100%;
   background-color: #ebb52e;
 }
 
-.emotion-22 {
+.emotion-17 {
   width: 2px;
   height: 100%;
   background-color: #4a90e2;
@@ -204,7 +184,7 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
 
 <div
   aria-label="Progress Bar"
-  className="emotion-29"
+  className="emotion-23"
   onKeyPress={[Function]}
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
@@ -215,136 +195,103 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
     className="emotion-0"
   />
   <div
-    className="emotion-28"
+    className="emotion-22"
   >
     <div
-      className="emotion-27"
+      className="emotion-21"
     >
       <div
-        className="emotion-5"
+        className="emotion-4"
+      >
+        <div
+          className="emotion-1"
+        />
+        <div
+          className="emotion-3"
+        >
+          <div>
+            Failed:
+          </div>
+          <div
+            className="emotion-2"
+          >
+            1
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-4"
       >
         <div
           className="emotion-5"
+        />
+        <div
+          className="emotion-3"
         >
-          <div
-            className="emotion-1"
-          >
-            <svg
-              color="#808080"
-              data-file-name="clock.svg"
-              width={20}
-            />
+          <div>
+            Skipped:
           </div>
           <div
-            className="emotion-4"
+            className="emotion-2"
           >
-            <div
-              className="emotion-3"
-            >
-              <div>
-                Duration:
-              </div>
-              <div
-                className="emotion-2"
-              >
-                21 hr / 57 m
-              </div>
-            </div>
+            0
           </div>
         </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
         <div
           className="emotion-9"
+        />
+        <div
+          className="emotion-3"
         >
+          <div>
+            Succeeded:
+          </div>
           <div
-            className="emotion-6"
-          />
-          <div
-            className="emotion-8"
+            className="emotion-2"
           >
-            <div>
-              Failed:
-            </div>
-            <div
-              className="emotion-2"
-            >
-              1
-            </div>
+            0
           </div>
         </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
         <div
-          className="emotion-9"
+          className="emotion-13"
+        />
+        <div
+          className="emotion-3"
         >
+          <div>
+            Running:
+          </div>
           <div
-            className="emotion-10"
-          />
-          <div
-            className="emotion-8"
+            className="emotion-2"
           >
-            <div>
-              Skipped:
-            </div>
-            <div
-              className="emotion-2"
-            >
-              0
-            </div>
+            0
           </div>
         </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
         <div
-          className="emotion-9"
+          className="emotion-17"
+        />
+        <div
+          className="emotion-3"
         >
-          <div
-            className="emotion-14"
-          />
-          <div
-            className="emotion-8"
-          >
-            <div>
-              Succeeded:
-            </div>
-            <div
-              className="emotion-2"
-            >
-              0
-            </div>
+          <div>
+            Pending:
           </div>
-        </div>
-        <div
-          className="emotion-9"
-        >
           <div
-            className="emotion-18"
-          />
-          <div
-            className="emotion-8"
+            className="emotion-2"
           >
-            <div>
-              Running:
-            </div>
-            <div
-              className="emotion-2"
-            >
-              0
-            </div>
-          </div>
-        </div>
-        <div
-          className="emotion-9"
-        >
-          <div
-            className="emotion-22"
-          />
-          <div
-            className="emotion-8"
-          >
-            <div>
-              Pending:
-            </div>
-            <div
-              className="emotion-2"
-            >
-              0
-            </div>
+            0
           </div>
         </div>
       </div>
@@ -442,7 +389,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
 `;
 
 exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseenter 2`] = `
-.emotion-29 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -470,7 +417,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   border-bottom-right-radius: 2px;
 }
 
-.emotion-28 {
+.emotion-22 {
   position: absolute;
   top: 24px;
   right: 0;
@@ -478,33 +425,32 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   z-index: 1;
 }
 
-.emotion-27 {
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #4a4a4a;
+  border-radius: 2px;
+}
+
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   padding: 12px;
-  background-color: #4a4a4a;
-  border-radius: 2px;
-}
-
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
 }
 
 .emotion-1 {
-  padding-right: 8px;
-}
-
-.emotion-4 {
-  padding-right: 24px;
+  width: 2px;
+  height: 100%;
+  background-color: #c92300;
 }
 
 .emotion-3 {
   color: #e0e0e0;
+  padding-left: 8px;
 }
 
 .emotion-2 {
@@ -512,44 +458,25 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   font-weight: 700;
 }
 
-.emotion-9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-right: 24px;
-}
-
-.emotion-6 {
-  width: 2px;
-  height: 100%;
-  background-color: #c92300;
-}
-
-.emotion-8 {
-  color: #e0e0e0;
-  padding-left: 8px;
-}
-
-.emotion-10 {
+.emotion-5 {
   width: 2px;
   height: 100%;
   background-color: #b3b3b3;
 }
 
-.emotion-14 {
+.emotion-9 {
   width: 2px;
   height: 100%;
   background-color: #4ac565;
 }
 
-.emotion-18 {
+.emotion-13 {
   width: 2px;
   height: 100%;
   background-color: #ebb52e;
 }
 
-.emotion-22 {
+.emotion-17 {
   width: 2px;
   height: 100%;
   background-color: #4a90e2;
@@ -557,7 +484,7 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
 
 <div
   aria-label="Progress Bar"
-  className="emotion-29"
+  className="emotion-23"
   onKeyPress={[Function]}
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
@@ -568,136 +495,103 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
     className="emotion-0"
   />
   <div
-    className="emotion-28"
+    className="emotion-22"
   >
     <div
-      className="emotion-27"
+      className="emotion-21"
     >
       <div
-        className="emotion-5"
+        className="emotion-4"
+      >
+        <div
+          className="emotion-1"
+        />
+        <div
+          className="emotion-3"
+        >
+          <div>
+            Failed:
+          </div>
+          <div
+            className="emotion-2"
+          >
+            1
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-4"
       >
         <div
           className="emotion-5"
+        />
+        <div
+          className="emotion-3"
         >
-          <div
-            className="emotion-1"
-          >
-            <svg
-              color="#808080"
-              data-file-name="clock.svg"
-              width={20}
-            />
+          <div>
+            Skipped:
           </div>
           <div
-            className="emotion-4"
+            className="emotion-2"
           >
-            <div
-              className="emotion-3"
-            >
-              <div>
-                Duration:
-              </div>
-              <div
-                className="emotion-2"
-              >
-                21 hr / 57 m
-              </div>
-            </div>
+            0
           </div>
         </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
         <div
           className="emotion-9"
+        />
+        <div
+          className="emotion-3"
         >
+          <div>
+            Succeeded:
+          </div>
           <div
-            className="emotion-6"
-          />
-          <div
-            className="emotion-8"
+            className="emotion-2"
           >
-            <div>
-              Failed:
-            </div>
-            <div
-              className="emotion-2"
-            >
-              1
-            </div>
+            0
           </div>
         </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
         <div
-          className="emotion-9"
+          className="emotion-13"
+        />
+        <div
+          className="emotion-3"
         >
+          <div>
+            Running:
+          </div>
           <div
-            className="emotion-10"
-          />
-          <div
-            className="emotion-8"
+            className="emotion-2"
           >
-            <div>
-              Skipped:
-            </div>
-            <div
-              className="emotion-2"
-            >
-              0
-            </div>
+            0
           </div>
         </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
         <div
-          className="emotion-9"
+          className="emotion-17"
+        />
+        <div
+          className="emotion-3"
         >
-          <div
-            className="emotion-14"
-          />
-          <div
-            className="emotion-8"
-          >
-            <div>
-              Succeeded:
-            </div>
-            <div
-              className="emotion-2"
-            >
-              0
-            </div>
+          <div>
+            Pending:
           </div>
-        </div>
-        <div
-          className="emotion-9"
-        >
           <div
-            className="emotion-18"
-          />
-          <div
-            className="emotion-8"
+            className="emotion-2"
           >
-            <div>
-              Running:
-            </div>
-            <div
-              className="emotion-2"
-            >
-              0
-            </div>
-          </div>
-        </div>
-        <div
-          className="emotion-9"
-        >
-          <div
-            className="emotion-22"
-          />
-          <div
-            className="emotion-8"
-          >
-            <div>
-              Pending:
-            </div>
-            <div
-              className="emotion-2"
-            >
-              0
-            </div>
+            0
           </div>
         </div>
       </div>
