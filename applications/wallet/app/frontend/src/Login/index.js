@@ -14,7 +14,7 @@ import Button, { VARIANTS } from '../Button'
 
 import LoginWithGoogle from './WithGoogle'
 
-const WIDTH = 440
+const WIDTH = 446
 const LOGO_WIDTH = 143
 
 const Login = ({
@@ -45,40 +45,36 @@ const Login = ({
         css={{
           display: 'flex',
           flexDirection: 'column',
-          padding: `${spacing.normal}px ${spacing.colossal}px`,
+          padding: spacing.colossal,
           width: WIDTH,
           backgroundColor: colors.secondaryBackground,
           borderRadius: constants.borderRadius.small,
           boxShadow: constants.boxShadows.default,
         }}>
-        <LogoSvg
-          width={LOGO_WIDTH}
-          css={{
-            alignSelf: 'center',
-            paddingTop: spacing.comfy,
-            paddingBottom: spacing.comfy,
-          }}
-        />
+        <LogoSvg width={LOGO_WIDTH} css={{ alignSelf: 'center' }} />
+
         <h3
           css={{
             textAlign: 'center',
             fontSize: typography.size.mega,
             lineHeight: typography.height.mega,
-            margin: 0,
-            paddingTop: spacing.moderate,
-            paddingBottom: spacing.moderate,
+            paddingTop: spacing.spacious,
+            paddingBottom: spacing.spacious,
           }}>
           Welcome. Please login.
         </h3>
+
         <LoginWithGoogle
           googleAuth={googleAuth}
           hasGoogleLoaded={hasGoogleLoaded}
           onSubmit={onSubmit}
         />
+
         <FormAlert
           errorMessage={errorMessage}
           setErrorMessage={setErrorMessage}
         />
+
         <Input
           autoFocus
           id="username"
@@ -88,6 +84,7 @@ const Login = ({
           onChange={({ target: { value } }) => setUsername(value)}
           hasError={!!errorMessage}
         />
+
         <Input
           id="password"
           label="Password"
@@ -101,6 +98,7 @@ const Login = ({
               variant={VARIANTS.NEUTRAL}
               onClick={() => setShowPassword(!showPassword)}
               style={{
+                padding: spacing.moderate,
                 outlineOffset: -2,
                 '&:hover': { color: colors.primary },
               }}>
@@ -112,9 +110,10 @@ const Login = ({
             </Button>
           }
         />
+
         <div
           css={{
-            padding: spacing.comfy,
+            paddingTop: spacing.normal,
             display: 'flex',
             justifyContent: 'center',
           }}>
