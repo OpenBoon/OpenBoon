@@ -81,20 +81,20 @@ const Button = forwardRef(
 
     const addedProps = href
       ? {
-        href,
-        onClick,
-        target,
-        rel:
-          target && target === '_blank' ? 'noopener noreferrer' : undefined,
-      }
+          href,
+          onClick,
+          target,
+          rel:
+            target && target === '_blank' ? 'noopener noreferrer' : undefined,
+        }
       : {
-        type: 'button',
-        ...disabled,
-        onClick: event => {
-          if (isDisabled) return event.preventDefault()
-          return onClick(event)
-        },
-      }
+          type: 'button',
+          ...disabled,
+          onClick: event => {
+            if (isDisabled) return event.preventDefault()
+            return onClick(event)
+          },
+        }
 
     return (
       <Element
