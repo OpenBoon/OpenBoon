@@ -2,8 +2,8 @@
 
 exports[`<FormAlert /> should render properly with an alert 1`] = `
 .emotion-3 {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 .emotion-2 {

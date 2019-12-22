@@ -5,14 +5,15 @@ import { colors, constants, typography, spacing } from '../Styles'
 import WarningSvg from '../Icons/warning.svg'
 import CrossSvg from '../Icons/cross.svg'
 
-const PADDING = spacing.moderate
+const PADDING_OUTER = spacing.base
+const PADDING_INNER = spacing.moderate
 const ICON_HEIGHT = 20
 
 const FormAlert = ({ errorMessage, setErrorMessage }) => {
   if (!errorMessage) {
     return (
-      <div css={{ padding: PADDING }}>
-        <div css={{ padding: PADDING }}>
+      <div css={{ padding: PADDING_OUTER }}>
+        <div css={{ padding: PADDING_INNER }}>
           <div css={{ height: ICON_HEIGHT }} />
         </div>
       </div>
@@ -20,14 +21,14 @@ const FormAlert = ({ errorMessage, setErrorMessage }) => {
   }
 
   return (
-    <div css={{ paddingTop: PADDING, paddingBottom: PADDING }}>
+    <div css={{ paddingTop: PADDING_OUTER, paddingBottom: PADDING_OUTER }}>
       <div
         css={{
           display: 'flex',
           alignItems: 'center',
           backgroundColor: colors.signal.warning.background,
           borderRadius: constants.borderRadius.small,
-          padding: PADDING,
+          padding: PADDING_INNER,
         }}>
         <WarningSvg height={ICON_HEIGHT} color={colors.warning} />
 
@@ -35,7 +36,7 @@ const FormAlert = ({ errorMessage, setErrorMessage }) => {
           role="alert"
           css={{
             flex: 1,
-            paddingLeft: PADDING,
+            paddingLeft: PADDING_INNER,
             color: colors.structure.black,
             fontWeight: typography.weight.medium,
           }}>

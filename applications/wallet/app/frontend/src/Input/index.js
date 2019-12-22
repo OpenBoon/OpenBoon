@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { constants, spacing } from '../Styles'
 
-const PADDING = spacing.moderate
+const PADDING = spacing.base
 
 const Input = ({
   id,
@@ -27,7 +27,7 @@ const Input = ({
         onChange={onChange}
         css={{
           outlineOffset: 0,
-          padding: PADDING,
+          padding: spacing.moderate,
           borderRadius: constants.borderRadius.small,
           boxShadow: constants.boxShadows.input,
           width: '100%',

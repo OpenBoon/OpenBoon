@@ -40,7 +40,7 @@ const STYLES = {
     },
   },
   NEUTRAL: {
-    padding: spacing.moderate,
+    padding: 0,
   },
   MENU: {
     flex: 1,

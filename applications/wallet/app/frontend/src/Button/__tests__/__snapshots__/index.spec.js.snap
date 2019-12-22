@@ -450,7 +450,7 @@ exports[`<Button /> should render properly for NEUTRAL Button 1`] = `
   border: none;
   cursor: pointer;
   background-color: transparent;
-  padding: 12px;
+  padding: 0;
 }
 
 .emotion-0:hover {
@@ -497,7 +497,7 @@ exports[`<Button /> should render properly for NEUTRAL Link 1`] = `
   border: none;
   cursor: pointer;
   background-color: transparent;
-  padding: 12px;
+  padding: 0;
 }
 
 .emotion-0:hover {

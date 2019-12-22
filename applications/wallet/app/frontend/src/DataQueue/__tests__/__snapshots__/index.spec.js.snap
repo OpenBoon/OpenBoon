@@ -256,7 +256,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   border: none;
   cursor: pointer;
   background-color: transparent;
-  padding: 12px;
+  padding: 0;
   padding: 6px;
   border-radius: 32px;
 }
