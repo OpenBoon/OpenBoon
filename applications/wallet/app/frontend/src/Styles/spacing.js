@@ -1,4 +1,5 @@
 const spacing = {
+  mini: 2,
   small: 4,
   base: 8,
   moderate: 12,
