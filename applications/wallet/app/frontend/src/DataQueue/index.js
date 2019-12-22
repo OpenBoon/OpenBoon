@@ -28,8 +28,6 @@ const DataQueue = () => {
 
   if (results.length === 0) return 'You have 0 jobs'
 
-  const to = Math.min(parsedPage * SIZE, count)
-
   return (
     <div>
       <Head>
@@ -63,11 +61,8 @@ const DataQueue = () => {
       <div>&nbsp;</div>
 
       <Pagination
-        legend={`Jobs: ${from + 1}–${to} of ${count}`}
         currentPage={parsedPage}
         totalPages={Math.ceil(count / SIZE)}
-        prevLink={`/?page=${parsedPage - 1}`}
-        nextLink={`/?page=${parsedPage + 1}`}
       />
     </div>
   )

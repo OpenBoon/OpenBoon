@@ -1,16 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import { spacing, constants, colors } from '../Styles'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
-const DEFAULT_PADDING = `${spacing.base}px ${spacing.moderate}px`
 const BORDER_RADIUS = constants.borderRadius.small
 
-const PaginationLink = ({ currentPage, totalPages, direction, href }) => {
+const PaginationLink = ({ currentPage, totalPages, direction }) => {
+  const {
+    pathname,
+    query: { projectId },
+  } = useRouter()
+
   const isPrev = direction === 'prev'
+
   const isDisabled = isPrev
     ? currentPage - 1 <= 0
     : currentPage + 1 > totalPages
@@ -18,9 +24,9 @@ const PaginationLink = ({ currentPage, totalPages, direction, href }) => {
   const styles = {
     display: 'flex',
     alignItems: 'center',
-    padding: DEFAULT_PADDING,
-    backgroundColor: colors.grey5,
-    border: constants.borders.default,
+    padding: `${spacing.base}px ${spacing.moderate}px`,
+    backgroundColor: colors.structure.steel,
+    border: 'none',
     borderTopLeftRadius: isPrev ? BORDER_RADIUS : 0,
     borderBottomLeftRadius: isPrev ? BORDER_RADIUS : 0,
     borderTopRightRadius: isPrev ? 0 : BORDER_RADIUS,
@@ -37,7 +43,7 @@ const PaginationLink = ({ currentPage, totalPages, direction, href }) => {
         <ChevronSvg
           width={16}
           css={{
-            color: colors.grey2,
+            color: colors.structure.coal,
             transform: `rotate(${isPrev ? '' : '-'}90deg)`,
           }}
         />
@@ -45,13 +51,18 @@ const PaginationLink = ({ currentPage, totalPages, direction, href }) => {
     )
   }
 
+  const queryParamPage = isPrev ? currentPage - 1 : currentPage + 1
+  const queryParam = queryParamPage === 1 ? '' : `?page=${queryParamPage}`
+  const href = `${pathname}${queryParam}`
+  const as = href.replace('[projectId]', projectId)
+
   return (
-    <Link href={href} passHref>
+    <Link href={href} as={as} passHref>
       <a css={styles} rel={direction}>
         <ChevronSvg
           width={16}
           css={{
-            color: colors.grey2,
+            color: colors.structure.coal,
             transform: `rotate(${isPrev ? '' : '-'}90deg)`,
           }}
         />
@@ -64,7 +75,6 @@ PaginationLink.propTypes = {
   currentPage: PropTypes.number.isRequired,
   totalPages: PropTypes.number.isRequired,
   direction: PropTypes.oneOf(['prev', 'next']).isRequired,
-  href: PropTypes.string.isRequired,
 }
 
 export default PaginationLink
