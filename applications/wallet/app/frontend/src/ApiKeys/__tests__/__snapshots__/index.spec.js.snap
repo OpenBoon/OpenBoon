@@ -5,7 +5,6 @@ exports[`<ApiKeys /> should render properly 1`] = `
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
-  padding-top: 24px;
   padding-bottom: 16px;
 }
 
