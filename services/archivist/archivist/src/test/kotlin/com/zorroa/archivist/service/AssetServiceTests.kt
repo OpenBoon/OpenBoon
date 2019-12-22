@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
+import com.zorroa.archivist.domain.Element
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.util.Json
@@ -196,6 +197,49 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(2.0f, clip?.stop)
         assertEquals(1.0f, clip?.length)
         assertEquals("wU5f6DK02InzXUC600cqI5L8vGM", clip?.pile)
+    }
+
+    @Test
+    fun testIndexhUpdateAssetsWithDuplicateElements() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-cat.jpg"))
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        var asset = assetService.getAsset(createRsp.status[0].assetId)
+
+        // These are considered duplicate elements
+        val element1 = Element("object", listOf("cat"), listOf(0, 0, 100, 100))
+        val element2 = Element("object", listOf("cat"), listOf(0, 0, 100, 100))
+        asset.setAttr("elements", listOf(element1, element2))
+
+        val batchIndex = BatchUpdateAssetsRequest(assets = listOf(asset))
+        assetService.batchUpdate(batchIndex)
+
+        asset = assetService.getAsset(createRsp.status[0].assetId)
+        assertEquals(1, asset.getAttr("elements", Json.SET_OF_ELEMENTS)!!.size)
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun testIndexhUpdateAssetsWithTooManyElements() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-cat.jpg"))
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        var asset = assetService.getAsset(createRsp.status[0].assetId)
+
+        val elements = mutableSetOf<Element>()
+        for (i in 0 .. AssetServiceImpl.maxElementCount + 1) {
+            elements.add(Element("object", listOf("cat$i"), listOf(i, i, 100, 100)))
+        }
+        asset.setAttr("elements", elements)
+
+        val batchIndex = BatchUpdateAssetsRequest(assets = listOf(asset))
+        assetService.batchUpdate(batchIndex)
+
+        asset = assetService.getAsset(createRsp.status[0].assetId)
+        assertEquals(1, asset.getAttr("elements", Json.SET_OF_ELEMENTS)!!.size)
     }
 
     /**

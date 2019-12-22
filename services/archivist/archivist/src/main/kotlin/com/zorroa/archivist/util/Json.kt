@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.zorroa.archivist.domain.Element
 import com.zorroa.archivist.domain.FileStorage
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -36,6 +37,7 @@ object Json {
     val GENERIC_MAP: TypeReference<Map<String, Any>> = object : TypeReference<Map<String, Any>>() {}
     val LIST_OF_GENERIC_MAP: TypeReference<List<Map<String, Any>>> = object : TypeReference<List<Map<String, Any>>>() {}
     val LIST_OF_FILE_STORAGE: TypeReference<List<FileStorage>> = object : TypeReference<List<FileStorage>>() {}
+    val SET_OF_ELEMENTS: TypeReference<Set<Element>> = object : TypeReference<Set<Element>>() {}
 
     val Mapper = ObjectMapper()
 

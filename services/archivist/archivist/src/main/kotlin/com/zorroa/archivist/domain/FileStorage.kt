@@ -19,12 +19,7 @@ enum class FileGroup {
     /**
      * The stored file is for internal use.
      */
-    INTERNAL,
-
-    /**
-     * The stored file is input for an Analysis module.
-     */
-    ANALYSIS;
+    INTERNAL;
 
     fun lower() = this.toString().toLowerCase()
 }
@@ -45,14 +40,19 @@ enum class FileCategory {
     PROXY,
 
     /**
-     * "The file is some form of metadata, text, json, etc."
+     * The file is some form of metadata, text, json, etc."
      */
     METADATA,
 
     /**
-     * "The file is a encryption key.
+     * The file is a encryption key.
      */
-    KEYS;
+    KEYS,
+
+    /**
+     * The file is elated to an element.
+     */
+    ELEMENT;
 
     fun lower() = this.toString().toLowerCase()
 }
@@ -84,7 +84,7 @@ class FileStorageLocator(
     val projectId: UUID? = null
 ) {
 
-    fun getPath() : String {
+    fun getPath(): String {
 
         if (name.lastIndexOf('.') == -1) {
             throw IllegalArgumentException("File name has no extension: $name")
@@ -107,7 +107,7 @@ class FileStorageLocator(
  * @property data The actual file data in the form of a ByteArray
  * @property mimetype The mimetype (aka MediaType) of the file which is auto detected.
  */
-class FileStorageSpec  (
+class FileStorageSpec(
     val locator: FileStorageLocator,
     var attrs: Map<String, Any>,
     val data: ByteArray
@@ -115,7 +115,6 @@ class FileStorageSpec  (
 ) {
     val mimetype = FileUtils.getMediaType(locator.name)
 }
-
 
 @ApiModel("FileStorage", description = "Describes a file stored in PixelML storage.")
 class FileStorage(

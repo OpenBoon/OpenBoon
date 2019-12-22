@@ -13,6 +13,7 @@ import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
+import com.zorroa.archivist.domain.Element
 import com.zorroa.archivist.domain.FileCategory
 import com.zorroa.archivist.domain.FileGroup
 import com.zorroa.archivist.domain.FileStorage
@@ -28,6 +29,7 @@ import com.zorroa.archivist.storage.FileStorageService
 import com.zorroa.archivist.util.ElasticSearchErrorTranslator
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.Json
+import com.zorroa.archivist.util.Json.SET_OF_ELEMENTS
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
@@ -384,9 +386,19 @@ class AssetServiceImpl : AssetService {
                 if (asset.attrExists("clip") && (
                         !asset.attrExists("clip.sourceAssetId") || !asset.attrExists("clip.pile"))) {
                     val clip = asset.getAttr("clip", Clip::class.java)
-                        ?: throw IllegalArgumentException("Invalid clip data for asset ${asset.id}")
+                        ?: throw IllegalStateException("Invalid clip data for asset ${asset.id}")
                     clip.putInPile(asset.id)
                     asset.setAttr("clip", clip)
+                }
+
+                // Uniquify the elments
+                if (asset.attrExists("elements")) {
+                    val elements = asset.getAttr("elements", SET_OF_ELEMENTS)
+                    if (elements != null && elements.size > maxElementCount) {
+                        throw IllegalStateException(
+                            "Asset ${asset.id} has to many elements, > $maxElementCount")
+                    }
+                    asset.setAttr("elements", elements)
                 }
 
                 // Update various system properties.
@@ -513,6 +525,11 @@ class AssetServiceImpl : AssetService {
             "highlight", "collapse",
             "slice", "aggs", "aggregations", "sort"
         )
+
+        /**
+         * Maximum number of elements you can have in an asset.
+         */
+        val maxElementCount = 25
 
         private val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
         val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)
