@@ -34,7 +34,7 @@ exports[`<DataQueueMenu /> should render properly 1`] = `
   border: none;
   cursor: pointer;
   background-color: transparent;
-  padding: 12px;
+  padding: 0;
   padding: 6px;
   border-radius: 32px;
 }
