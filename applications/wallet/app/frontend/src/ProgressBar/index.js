@@ -38,12 +38,12 @@ const ProgressBar = ({ taskCounts }) => {
                 flex: `${taskCounts[taskStatus]} 0 auto`,
                 backgroundColor: TASK_STATUS_COLORS[taskStatus],
                 '&:first-of-type': {
-                  borderTopLeftRadius: constants.borderRadius.small,
-                  borderBottomLeftRadius: constants.borderRadius.small,
+                  borderTopLeftRadius: constants.borderRadius.medium,
+                  borderBottomLeftRadius: constants.borderRadius.medium,
                 },
                 '&:last-of-type': {
-                  borderTopRightRadius: constants.borderRadius.small,
-                  borderBottomRightRadius: constants.borderRadius.small,
+                  borderTopRightRadius: constants.borderRadius.medium,
+                  borderBottomRightRadius: constants.borderRadius.medium,
                 },
               }}
             />
