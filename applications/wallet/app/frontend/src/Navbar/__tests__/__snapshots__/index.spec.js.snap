@@ -1,11 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Navbar /> should render properly 1`] = `
-<<<<<<< HEAD
 .emotion-9 {
-=======
-.emotion-8 {
->>>>>>> add prop validation
   position: fixed;
   top: 0;
   left: 0;
@@ -68,13 +64,10 @@ exports[`<Navbar /> should render properly 1`] = `
   padding-right: 8px;
 }
 
-<<<<<<< HEAD
 .emotion-8 {
   margin-right: -12px;
 }
 
-=======
->>>>>>> add prop validation
 .emotion-7 {
   position: relative;
 }
@@ -137,12 +130,18 @@ exports[`<Navbar /> should render properly 1`] = `
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> move hover to button
 .emotion-6:hover {
   cursor: pointer;
 }
 
+<<<<<<< HEAD
 =======
 >>>>>>> add prop validation
+=======
+>>>>>>> move hover to button
 .emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -174,10 +173,13 @@ exports[`<Navbar /> should render properly 1`] = `
   font-weight: 700;
 }
 
+<<<<<<< HEAD
 .emotion-4 {
   margin-left: 8px;
 }
 
+=======
+>>>>>>> move hover to button
 .emotion-4 {
   margin-left: 8px;
 }
