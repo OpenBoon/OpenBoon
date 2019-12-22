@@ -20,7 +20,13 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
       button={({ onBlur, onClick, isMenuOpen }) => (
         <Button
           variant={VARIANTS.MENU}
-          style={{ marginRight: -spacing.moderate, [isMenuOpen && 'backgroundColor']: colors.structure.smoke }}
+          style={{
+            marginRight: -spacing.moderate,
+            [isMenuOpen && 'backgroundColor']: colors.structure.smoke,
+            ':hover': {
+              cursor: 'pointer',
+            },
+          }}
           onBlur={onBlur}
           onClick={onClick}
           isDisabled={false}>
@@ -36,14 +42,17 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
                 width: SIZE,
                 height: SIZE,
                 borderRadius: SIZE,
-                color: isMenuOpen ? colors.structure.white : colors.structure.lead,
-                backgroundColor: isMenuOpen ? colors.structure.lead : colors.structure.steel,
+                color: isMenuOpen
+                  ? colors.structure.white
+                  : colors.structure.lead,
+                backgroundColor: isMenuOpen
+                  ? colors.structure.lead
+                  : colors.structure.steel,
                 fontWeight: typography.weight.bold,
-                ':hover': {
-                  cursor: 'pointer',
-                },
               }}>
-              {`${firstName ? firstName[0] : 'O'}${lastName ? lastName[0] : 'P'}`}
+              {`${firstName ? firstName[0] : 'O'}${
+                lastName ? lastName[0] : 'P'
+              }`}
             </div>
             <ChevronSvg
               width={CHEVRON_WIDTH}
@@ -52,7 +61,8 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
                 marginLeft: spacing.base,
                 transform: `${isMenuOpen ? 'rotate(-180deg)' : ''}`,
               }}
-            /></div>
+            />
+          </div>
         </Button>
       )}>
       {({ onBlur }) => (

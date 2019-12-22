@@ -121,6 +121,10 @@ exports[`<Layout /> should render properly 1`] = `
   background-color: #3b3b3b;
 }
 
+.emotion-6:hover {
+  cursor: pointer;
+}
+
 .emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -150,10 +154,6 @@ exports[`<Layout /> should render properly 1`] = `
   color: #252525;
   background-color: #808080;
   font-weight: 700;
-}
-
-.emotion-3:hover {
-  cursor: pointer;
 }
 
 .emotion-4 {
@@ -358,6 +358,10 @@ exports[`<Layout /> should render properly 2`] = `
   background-color: #3b3b3b;
 }
 
+.emotion-6:hover {
+  cursor: pointer;
+}
+
 .emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -387,10 +391,6 @@ exports[`<Layout /> should render properly 2`] = `
   color: #252525;
   background-color: #808080;
   font-weight: 700;
-}
-
-.emotion-3:hover {
-  cursor: pointer;
 }
 
 .emotion-4 {
