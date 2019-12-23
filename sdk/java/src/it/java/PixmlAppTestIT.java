@@ -8,8 +8,7 @@ import java.util.*;
 
 import static domain.Utils.updateEnvVariables;
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -22,6 +21,7 @@ public class PixmlAppTestIT {
     ObjectMapper mapper;
     DataSource dsTest;
 
+
     @BeforeAll
     public void setup() throws ReflectiveOperationException {
         //When
@@ -31,6 +31,7 @@ public class PixmlAppTestIT {
         updateEnvVariables("PIXML_SERVER", server);
         pixmlApp = new PixmlApp();
         mapper = new ObjectMapper();
+
     }
 
     @Test
@@ -96,6 +97,7 @@ public class PixmlAppTestIT {
 
     }
 
+
     @Test
     @Order(5)
     public void getDataSource() throws IOException, InterruptedException {
@@ -112,6 +114,7 @@ public class PixmlAppTestIT {
         assertEquals(value.get("uri"), ds.getUri());
 
     }
+
     @Test
     @Order(6)
     public void importDataSource() throws IOException, InterruptedException {
@@ -129,6 +132,7 @@ public class PixmlAppTestIT {
     @Test
     @Order(7)
     public void updateCredentials() throws IOException, InterruptedException {
+
         Map status = this.pixmlApp.getDataSourceApp().updateCredentials(dsTest, "ABC123");
 
         Map dataSourceParam = new HashMap();
@@ -137,5 +141,18 @@ public class PixmlAppTestIT {
 
         assertEquals(status.get("op"), "update");
         assertEquals(status.get("id"), dsTest.getId().toString());
+    }
+
+    @Test
+    @Order(8)
+    public void testDeleteApp() throws IOException, InterruptedException {
+
+        Map post = pixmlApp.getPixmlClient().delete("/api/v1/projects", projectId);
+
+        assertEquals(true, (Boolean)post.get("success"));
+        assertEquals("delete", post.get("op"));
+        assertEquals("projects", post.get("type"));
+        assertEquals("00000000-0000-0000-0000-000000000000", post.get("id"));
+
     }
 }
