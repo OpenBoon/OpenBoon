@@ -90,7 +90,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   align-items: center;
   padding: 8px;
   border-radius: 2px;
-  color: #808080;
+  color: #c92300;
   background-color: #191919;
 }
 
