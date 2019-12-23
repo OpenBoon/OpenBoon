@@ -33,7 +33,7 @@ const Menu = ({ button, children, open }) => {
               listStyleType: 'none',
               padding: 0,
               paddingTop: spacing.small,
-              paddingBottom: spacing.small,
+              paddingBottom: spacing.base,
               margin: 0,
             },
             li: { display: 'flex' },

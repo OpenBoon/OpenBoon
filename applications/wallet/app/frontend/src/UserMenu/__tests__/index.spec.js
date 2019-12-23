@@ -16,7 +16,8 @@ describe('<UserMenu />', () => {
 
     act(() => {
       component.root
-        .findByProps({ children: 'JD' })
+        .findByType('button')
+        .findByProps({ 'aria-label': 'Open user menu' })
         .props.onClick({ preventDefault: noop })
     })
 
