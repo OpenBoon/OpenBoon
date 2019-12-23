@@ -145,6 +145,21 @@ public class PixmlClient {
         return this.makeRequest("post", path, body);
     }
 
+    /**
+     * Performs a Delete request.
+     *
+     * @param path      An archivist URI path.
+     * @param projectId Project unique ID
+     * @return The http response object or an object deserialized from the response json if the ``json`` argument is true.
+     * @throws IOException          An error occurred making the request or parsing the JSON response
+     * @throws InterruptedException
+     */
+    public Map delete(String path, UUID projectId) throws IOException, InterruptedException {
+        path += String.format("/%s", projectId);
+        return this.makeRequest("delete", path, null);
+    }
+
+
     private Map makeRequest(String httpMethod, String path, Map body) throws InterruptedException, IOException {
 
         String httpResponseString = null;
@@ -196,4 +211,6 @@ public class PixmlClient {
     public JsonNode getApiKey() {
         return apiKey;
     }
+
+
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Order;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
@@ -16,12 +17,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Utils.class})
-@PowerMockIgnore({"javax.crypto.*","javax.net.ssl.*"})
+@PowerMockIgnore({"javax.crypto.*", "javax.net.ssl.*"})
 public class PixmlDataSourceAppTests {
 
     Map keyDict;
@@ -30,11 +32,14 @@ public class PixmlDataSourceAppTests {
     ObjectMapper mapper;
     OkHttpClient okHttpClient;
 
+    String UUIDTestValue = "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80";
+
+
     @Before
     public void setup() {
         //This is not a valid key
         keyDict = new HashMap();
-        keyDict.put("projectId", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
+        keyDict.put("projectId", UUIDTestValue);
         keyDict.put("keyId", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
         keyDict.put("sharedKey", "test123test135");
 
@@ -48,7 +53,7 @@ public class PixmlDataSourceAppTests {
 
         Map value = new HashMap();
 
-        value.put("id", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
+        value.put("id", UUIDTestValue);
         value.put("name", "test");
         value.put("uri", "gs://test/test");
         value.put("file_types", Arrays.asList("jpg"));
@@ -62,7 +67,7 @@ public class PixmlDataSourceAppTests {
         //run real method with static mocked method with http request inside
         DataSource ds = app.getDataSourceApp().createDataSource("test", "gs://test/test", null, null, null);
 
-        assertEquals(value.get("id"), ds.getId());
+        assertEquals(UUID.fromString(value.get("id").toString()), ds.getId());
         assertEquals(value.get("name"), ds.getName());
         assertEquals(value.get("uri"), ds.getUri());
         assertEquals(ds.getFileTypes(), Arrays.asList("jpg"));
@@ -75,7 +80,7 @@ public class PixmlDataSourceAppTests {
 
         Map value = new HashMap();
 
-        value.put("id", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
+        value.put("id", UUIDTestValue);
         value.put("name", "test");
         value.put("uri", "gs://test/test");
 
@@ -89,7 +94,7 @@ public class PixmlDataSourceAppTests {
         DataSource ds = app.getDataSourceApp().getDataSource("test");
 
 
-        assertEquals(value.get("id"), ds.getId());
+        assertEquals(UUID.fromString((String)value.get("id")), ds.getId());
         assertEquals(value.get("name"), ds.getName());
         assertEquals(value.get("uri"), ds.getUri());
 
@@ -99,7 +104,7 @@ public class PixmlDataSourceAppTests {
     public void importDataSource() throws IOException, InterruptedException {
 
         Map value = new HashMap();
-        value.put("id", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
+        value.put("id", UUIDTestValue);
         value.put("name", "Import DataSource");
 
         //Mocking static method
@@ -109,7 +114,7 @@ public class PixmlDataSourceAppTests {
                 .willReturn(mapper.writeValueAsString(value));
 
         Map dataSourceParam = new HashMap();
-        dataSourceParam.put("id", "123");
+        dataSourceParam.put("id", UUIDTestValue);
         DataSource ds = new DataSource(dataSourceParam);
 
         Map response = this.app.getDataSourceApp().importDataSource(ds);
@@ -134,13 +139,39 @@ public class PixmlDataSourceAppTests {
                 .willReturn(mapper.writeValueAsString(value));
 
         Map dataSourceParam = new HashMap();
-        dataSourceParam.put("id", "123");
+        dataSourceParam.put("id", UUIDTestValue);
 
         DataSource ds = new DataSource(dataSourceParam);
         Map status = this.app.getDataSourceApp().updateCredentials(ds, "ABC123");
 
         assertEquals(status.get("type"), "DATASOURCE");
         assertEquals(status.get("id"), "ABC");
+
+    }
+
+    @Test
+    public void testDeleteApp() throws IOException, InterruptedException {
+
+        Map value = new HashMap();
+        value.put("success", true);
+        value.put("op", "delete");
+        value.put("type", "projects");
+        value.put("id", "00000000-0000-0000-0000-000000000000");
+
+        //Mocking static method
+        PowerMockito.mockStatic(Utils.class);
+
+        BDDMockito.given(Utils.executeHttpRequest(Mockito.matches("delete"), Mockito.anyString(), Mockito.anyMap(), Mockito.any()))
+                .willReturn(mapper.writeValueAsString(value));
+
+        Map post = this.app.getPixmlClient().delete("/api/v1/projects", UUID.fromString(UUIDTestValue));
+
+        assertEquals(true, post.get("success"));
+        assertEquals("delete", post.get("op"));
+        assertEquals("projects", post.get("type"));
+        assertEquals("00000000-0000-0000-0000-000000000000", post.get("id"));
+
+
 
     }
 }
