@@ -84,7 +84,6 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
                   variant={VARIANTS.MENU_ITEM}
                   style={{
                     padding: `${spacing.base} 0`,
-                    borderRadius: 0,
                     borderBottom: constants.borders.transparent,
                   }}
                   onBlur={onBlur}

@@ -113,6 +113,7 @@ exports[`<DataQueueMenu /> should render properly 1`] = `
   color: #ffffff;
   padding: 8px 16px;
   font-weight: 400;
+  border-radius: 0;
 }
 
 .emotion-1:hover {

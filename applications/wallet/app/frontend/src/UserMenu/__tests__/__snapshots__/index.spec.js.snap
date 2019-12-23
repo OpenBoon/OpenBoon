@@ -303,8 +303,8 @@ exports[`<UserMenu /> should render properly 2`] = `
   color: #ffffff;
   padding: 8px 16px;
   font-weight: 400;
-  padding: 8 0;
   border-radius: 0;
+  padding: 8 0;
   border-bottom: 1px solid transparent;
 }
 

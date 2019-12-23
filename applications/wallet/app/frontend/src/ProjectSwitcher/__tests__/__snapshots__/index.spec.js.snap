@@ -233,6 +233,7 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
   color: #ffffff;
   padding: 8px 16px;
   font-weight: 400;
+  border-radius: 0;
 }
 
 .emotion-3:hover {
