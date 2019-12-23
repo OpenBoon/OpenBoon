@@ -159,4 +159,5 @@ module "wallet" {
   sql-service-account-key = "${module.postgres.sql-service-account-key}"
   sql-connection-name = "${module.postgres.connection-name}"
   archivist-url = "http://${module.archivist.ip-address}"
+  smtp-password = "${var.smtp-password}"
 }
