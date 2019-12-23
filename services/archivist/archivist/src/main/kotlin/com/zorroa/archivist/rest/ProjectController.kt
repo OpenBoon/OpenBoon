@@ -29,7 +29,12 @@ class ProjectController constructor(
     @PostMapping(value = ["/api/v1/projects"])
     @ApiOperation("Create Project.")
     fun create(@RequestBody spec: ProjectSpec): Project {
-        return projectService.create(spec)
+        try {
+            return projectService.create(spec)
+        }catch (ex: Exception){
+            ex.printStackTrace()
+            throw ex
+        }
     }
 
     @GetMapping(value = ["/api/v1/projects/{id}"])
@@ -45,6 +50,7 @@ class ProjectController constructor(
             projectService.delete(id)
             return HttpUtils.deleted("projects", id, true);
         } catch (ex: Exception) {
+            ex.printStackTrace()
             return HttpUtils.deleted("projects", id, false);
         }
     }
