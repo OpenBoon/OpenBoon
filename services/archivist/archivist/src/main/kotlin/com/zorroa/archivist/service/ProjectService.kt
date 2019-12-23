@@ -155,7 +155,7 @@ class ProjectServiceImpl constructor(
     }
 
     override fun delete(id: UUID){
-        projectDao.deleteById(id)
+        projectFilterDao.deleteByUUID(id)
     }
 
     override fun get(id: UUID): Project {

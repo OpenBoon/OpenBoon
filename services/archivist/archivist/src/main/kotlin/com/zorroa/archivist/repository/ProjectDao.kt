@@ -1,7 +1,10 @@
 package com.zorroa.archivist.repository
 
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectFilter
+import com.zorroa.archivist.service.event
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -16,6 +19,7 @@ interface ProjectFilterDao {
     fun findOne(filter: ProjectFilter): Project
     fun getAll(filter: ProjectFilter): KPagedList<Project>
     fun count(filter: ProjectFilter): Long
+    fun deleteByUUID(projectUUID: UUID): Boolean
 }
 
 @Repository
@@ -33,7 +37,7 @@ class ProjectFilterDaoImpl : ProjectFilterDao, AbstractDao() {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return throwWhenNotFound("Project not found") {
-            return KPagedList(1L, filter.page, jdbc.query(query,MAPPER, *values))[0]
+            return KPagedList(1L, filter.page, jdbc.query(query, MAPPER, *values))[0]
         }
     }
 
@@ -41,6 +45,27 @@ class ProjectFilterDaoImpl : ProjectFilterDao, AbstractDao() {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
+    }
+
+    override fun deleteByUUID(projectUUID: UUID): Boolean {
+
+        val result = listOf(
+            "DELETE FROM zorroa.job WHERE pk_project = ?",
+            "DELETE FROM zorroa.datasource WHERE pk_project = ?",
+            "DELETE FROM zorroa.index_route WHERE pk_project = ?",
+            "DELETE FROM zorroa.project WHERE pk_project = ?",
+            "DELETE FROM auth.api_key WHERE project_id = ?"
+        ).map { jdbc.update(it, projectUUID) }
+
+        val lastResult = result.last() == 1;
+        if (lastResult) {
+            logger.event(LogObject.JOB, LogAction.DELETE)
+            logger.event(LogObject.DATASOURCE, LogAction.DELETE)
+            logger.event(LogObject.INDEX_ROUTE, LogAction.DELETE)
+            logger.event(LogObject.PROJECT, LogAction.DELETE)
+        }
+
+        return lastResult
     }
 
     companion object {
