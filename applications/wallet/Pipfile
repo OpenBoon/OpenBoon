@@ -26,6 +26,7 @@ pixml = {path = "./../../sdk/python"}
 markdown = "*"
 google-auth = "*"
 djangorestframework-camel-case = "*"
+django-rest-auth = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"
