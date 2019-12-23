@@ -22,7 +22,9 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
             aria-label="Open user menu"
             variant={VARIANTS.MENU}
             style={{
-              [isMenuOpen && 'backgroundColor']: colors.structure.smoke,
+              ...(isMenuOpen
+                ? { backgroundColor: colors.structure.smoke }
+                : {}),
               ':hover': {
                 cursor: 'pointer',
               },
