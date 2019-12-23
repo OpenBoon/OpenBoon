@@ -45,7 +45,6 @@ exports[`<UserMenu /> should render properly 1`] = `
   color: #82be3c;
   font-weight: 400;
   height: 100%;
-  false: #3b3b3b;
 }
 
 .emotion-3:hover {
@@ -429,7 +428,6 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   color: #82be3c;
   font-weight: 400;
   height: 100%;
-  false: #3b3b3b;
 }
 
 .emotion-3:hover {
