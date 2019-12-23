@@ -1,16 +1,13 @@
 package com.zorroa.archivist.security
 
 import com.zorroa.archivist.clients.AuthServerClient
-import com.zorroa.archivist.clients.ZmlpUser
+import com.zorroa.archivist.clients.ZmlpActor
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AbstractAuthenticationToken
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
 import javax.servlet.FilterChain
@@ -38,20 +35,18 @@ class ApiKeyAuthorizationFilter constructor(
                 null
             }
         } ?: req.getParameter("token")
-        if (token == null) {
-            log.warn("No authentication token")
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
-            return
+        if (token != null) {
+            try {
+                val apiToken = authServerClient.authenticate(token)
+                SecurityContextHolder.getContext().authentication = ApiTokenAuthentication(apiToken)
+            } catch (e: Exception) {
+                log.warn("Invalid authentication token: ", e)
+                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
+                return
+            }
         }
 
-        try {
-            val apiToken = authServerClient.authenticate(token)
-            SecurityContextHolder.getContext().authentication = ApiTokenAuthentication(apiToken)
-            chain.doFilter(req, res)
-        } catch (e: Exception) {
-            log.warn("Invalid authentication token: ", e)
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
-        }
+        chain.doFilter(req, res)
     }
 
     companion object {
@@ -61,15 +56,15 @@ class ApiKeyAuthorizationFilter constructor(
 
 
 class ApiTokenAuthentication constructor(
-        val zmlpUser : ZmlpUser
+        val zmlpActor : ZmlpActor
 ) : AbstractAuthenticationToken(listOf()) {
 
     override fun getCredentials(): Any {
-        return zmlpUser.projectId
+        return zmlpActor.projectId
     }
 
     override fun getPrincipal(): Any {
-        return zmlpUser.projectId
+        return zmlpActor.projectId
     }
 
     override fun isAuthenticated(): Boolean = false
@@ -82,9 +77,9 @@ class ApiKeyAuthenticationProvider : AuthenticationProvider {
         val token = auth as ApiTokenAuthentication
 
         return UsernamePasswordAuthenticationToken(
-                token.zmlpUser,
+                token.zmlpActor,
                 token.credentials,
-                token.zmlpUser.getAuthorities())
+                token.zmlpActor.getAuthorities())
     }
 
     override fun supports(cls: Class<*>): Boolean {

@@ -1,0 +1,31 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+gunicorn = "*"
+psycopg2-binary = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-django = "*"
+sentry-sdk = "*"
+Django = ">2.2,<3.0"
+djangorestframework = "*"
+djangorestframework-simplejwt = "*"
+django-cors-headers = "*"
+django-health-check = "*"
+django-cryptography = "*"
+drf-nested-routers = "*"
+requests = "*"
+uritools = "*"
+flake8 = "*"
+pixml = {path = "./../../sdk/python"}
+markdown = "*"
+google-auth = "*"
+djangorestframework-camel-case = "*"
+
+[requires]
+python_version = "3.6"

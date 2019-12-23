@@ -1,0 +1,444 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Login /> should render properly 1`] = `
+.emotion-23 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.emotion-22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 64px;
+  width: 446px;
+  background-color: #2d2d2d;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-0 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-1 {
+  text-align: center;
+  font-size: 18px;
+  line-height: 21px;
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+.emotion-6 {
+  padding-bottom: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  padding: 0;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+  color: #ffffff;
+  background-color: #318AF5;
+  padding: 2px;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5:hover {
+  background-color: #0053C4;
+}
+
+.emotion-5[aria-disabled=true] {
+  opacity: 0.5;
+  background-color: #318AF5;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding: 12px;
+  background-color: #ffffff;
+  border-radius: 2px;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-9 {
+  padding: 8px;
+}
+
+.emotion-8 {
+  padding: 12px;
+}
+
+.emotion-7 {
+  height: 20px;
+}
+
+.emotion-13 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-10 {
+  display: block;
+  padding-bottom: 8px;
+}
+
+.emotion-12 {
+  position: relative;
+}
+
+.emotion-11 {
+  outline-offset: 0;
+  padding: 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  border: 1px solid transparent;
+}
+
+.emotion-17 {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-16 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  padding: 0;
+  padding: 12px;
+  outline-offset: -2px;
+}
+
+.emotion-16:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-16:hover {
+  color: #82be3c;
+}
+
+.emotion-21 {
+  padding-top: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-20 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  background-color: transparent;
+}
+
+.emotion-20:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-20,
+.emotion-20:hover,
+.emotion-20:visited {
+  color: #fff;
+  background-color: #82be3c;
+}
+
+.emotion-20:hover {
+  background-color: #a7d374;
+}
+
+.emotion-20[aria-disabled=true] {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-23"
+>
+  <form
+    className="emotion-22"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <svg
+      className="emotion-0"
+      data-file-name="logo.svg"
+      width={143}
+    />
+    <h3
+      className="emotion-1"
+    >
+      Welcome. Please login.
+    </h3>
+    <div
+      className="emotion-6"
+    >
+      <button
+        aria-label="Sign in with Google"
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-2"
+          >
+            <svg
+              data-file-name="google_logo.svg"
+              height={20}
+            />
+          </div>
+          <div
+            className="emotion-3"
+          >
+            Sign in with Google
+          </div>
+        </div>
+      </button>
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <div
+        className="emotion-8"
+      >
+        <div
+          className="emotion-7"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-13"
+    >
+      <label
+        className="emotion-10"
+        htmlFor="username"
+      >
+        Email
+      </label>
+      <div
+        className="emotion-12"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-11"
+          id="username"
+          name="username"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-13"
+    >
+      <label
+        className="emotion-10"
+        htmlFor="password"
+      >
+        Password
+      </label>
+      <div
+        className="emotion-12"
+      >
+        <input
+          className="emotion-11"
+          id="password"
+          name="password"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+        <div
+          className="emotion-17"
+        >
+          <button
+            aria-label="Show password"
+            className="emotion-16"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="hidden.svg"
+              width={20}
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-21"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-20"
+        onClick={[Function]}
+        type="submit"
+      >
+        Login
+      </button>
+    </div>
+  </form>
+</div>
+`;

@@ -58,7 +58,7 @@ class DataSourceApp(object):
 
         return DataSource(self.app.client.post(url, body=body))
 
-    def import_datasource(self, ds):
+    def import_files(self, ds):
         """
         Import or re-import all assets found at the given DataSource.  If the
         DataSource has already been imported then calling this will
@@ -134,4 +134,3 @@ class DataSource(object):
     def analysis(self):
         """The type of analysis done to the DataSource"""
         return self._data.get('analysis', [])
-

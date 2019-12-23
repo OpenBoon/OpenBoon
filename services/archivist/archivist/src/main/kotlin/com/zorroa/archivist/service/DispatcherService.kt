@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service
 
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.google.cloud.storage.HttpMethod
 import com.google.common.base.Supplier
 import com.google.common.base.Suppliers
 import com.google.common.eventbus.EventBus
@@ -41,10 +40,11 @@ import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.security.Perm
-import com.zorroa.archivist.security.getAnalystEndpoint
+import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
+import com.zorroa.archivist.storage.SharedStorageServiceConfiguration
 import com.zorroa.archivist.util.Json
 import io.micrometer.core.instrument.MeterRegistry
 import kotlinx.coroutines.Dispatchers
@@ -108,9 +108,9 @@ interface DispatcherService {
 class DispatchQueueManager @Autowired constructor(
     val dispatcherService: DispatcherService,
     val analystService: AnalystService,
-    val fileStorageService: FileStorageService,
     val properties: ApplicationProperties,
     val authServerClient: AuthServerClient,
+    val sharedStoragProperties: SharedStorageServiceConfiguration,
     val meterRegistry: MeterRegistry
 ) {
 
@@ -137,8 +137,8 @@ class DispatchQueueManager @Autowired constructor(
      */
     fun getNext(): DispatchTask? {
 
-        val analyst = getAnalystEndpoint()
-        if (analystService.isLocked(analyst)) {
+        val analyst = getAnalyst()
+        if (analystService.isLocked(analyst.endpoint)) {
             return null
         }
 
@@ -155,7 +155,7 @@ class DispatchQueueManager @Autowired constructor(
         ).increment(tasks.size.toDouble())
 
         for (task in tasks) {
-            if (queueAndDispatchTask(task, analyst)) {
+            if (queueAndDispatchTask(task, analyst.endpoint)) {
                 return task
             }
         }
@@ -175,7 +175,7 @@ class DispatchQueueManager @Autowired constructor(
             ).increment(tasks.size.toDouble())
 
             for (task in waitingTasks) {
-                if (queueAndDispatchTask(task, analyst)) {
+                if (queueAndDispatchTask(task, analyst.endpoint)) {
                     return task
                 }
             }
@@ -197,22 +197,21 @@ class DispatchQueueManager @Autowired constructor(
                 METRICS_KEY, "op", "tasks-queued"
             ).increment()
 
-            task.env["ZORROA_TASK_ID"] = task.id.toString()
-            task.env["ZORROA_JOB_ID"] = task.jobId.toString()
-            task.env["ZORROA_PROJECT_ID"] = task.projectId.toString()
-            task.env["PIXML_DATASOURCE_ID"] = task.dataSourceId.toString()
-            task.env["ZORROA_ARCHIVIST_MAX_RETRIES"] = "0"
+            task.env["PIXML_TASK_ID"] = task.id.toString()
+            task.env["PIXML_JOB_ID"] = task.jobId.toString()
+            task.env["PIXML_PROJECT_ID"] = task.projectId.toString()
+            task.dataSourceId?.let { task.env["PIXML_DATASOURCE_ID"] = it.toString() }
+            task.env["PIXML_ARCHIVIST_MAX_RETRIES"] = "0"
 
+            // So the container can make API calls as the JobRunner
             val key = authServerClient.getApiKey(task.projectId, KnownKeys.JOB_RUNNER)
             task.env["PIXML_APIKEY"] = key.toBase64()
 
-            withAuth(InternalThreadAuthentication(task.projectId, listOf(Perm.STORAGE_ADMIN))) {
-                val fs = fileStorageService.get(task.getLogSpec())
-                val logFile = fileStorageService.getSignedUrl(
-                    fs.id, HttpMethod.PUT, 1, TimeUnit.DAYS
-                )
-                task.logFile = logFile
-            }
+            // So the container can access shared
+            task.env["MLSTORAGE_URL"] = sharedStoragProperties.url
+            task.env["MLSTORAGE_ACCESSKEY"] = sharedStoragProperties.accessKey
+            task.env["MLSTORAGE_SECRETKEY"] = sharedStoragProperties.secretKey
+
             return true
         } else {
             meterRegistry.counter(METRICS_KEY, "op", "tasks-collided").increment()
@@ -262,9 +261,6 @@ class DispatcherServiceImpl @Autowired constructor(
 
     @Autowired
     lateinit var jobService: JobService
-
-    @Autowired
-    lateinit var fileStorageService: FileStorageService
 
     @Autowired
     lateinit var analystService: AnalystService
@@ -341,7 +337,7 @@ class DispatcherServiceImpl @Autowired constructor(
         if (stopped) {
             taskDao.setExitStatus(task, event.exitStatus)
             try {
-                val endpoint = getAnalystEndpoint()
+                val endpoint = getAnalyst().endpoint
                 analystDao.setTaskId(endpoint, null)
             } catch (e: Exception) {
                 logger.warn("Failed to clear taskId from Analyst")
@@ -372,6 +368,7 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     override fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task {
+
         val result = assetService.batchCreate(
             BatchCreateAssetsRequest(event.assets, analyze = false, task=parentTask)
         )
@@ -388,6 +385,7 @@ class DispatcherServiceImpl @Autowired constructor(
         logger.event(
             LogObject.JOB, LogAction.EXPAND,
             mapOf(
+                "assetCount" to event.assets.size,
                 "parentTaskId" to parentTask.taskId,
                 "taskId" to newTask.id,
                 "jobId" to newTask.jobId

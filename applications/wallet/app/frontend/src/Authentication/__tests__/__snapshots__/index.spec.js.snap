@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Authentication /> should render properly when user is logged in 1`] = `null`;
+
+exports[`<Authentication /> should render properly when user is logged in 2`] = `
+<SWRConfig
+  value={
+    Object {
+      "fetcher": [Function],
+    }
+  }
+>
+  <Projects>
+    <Layout
+      user={
+        Object {
+          "email": "jane.doe@zorroa.com",
+          "firstName": "Jane",
+          "id": 1,
+          "lastName": "Doe",
+          "username": "jane.doe",
+        }
+      }
+    >
+      Hello World!
+    </Layout>
+  </Projects>
+</SWRConfig>
+`;
+
+exports[`<Authentication /> should render properly when user is logged out 1`] = `null`;
+
+exports[`<Authentication /> should render properly when user is logged out 2`] = `
+<Login
+  errorMessage=""
+  googleAuth={
+    Object {
+      "signIn": [Function],
+      "signOut": [Function],
+    }
+  }
+  hasGoogleLoaded={true}
+  onSubmit={[Function]}
+  setErrorMessage={[Function]}
+/>
+`;

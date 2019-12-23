@@ -6,7 +6,7 @@ from functools import reduce
 import dateutil.parser
 from pathlib2 import Path
 
-from pixml import Clip, AssetImport
+from pixml import Clip, FileImport
 from pixml.analysis import AssetBuilder, Argument, ExpandFrame
 from pixml.analysis.storage import file_cache
 from ..util.media import get_image_metadata, set_resolution_attrs
@@ -28,10 +28,9 @@ class ImageImporter(AssetBuilder):
                    'Exif.DateTime', 'IPTC.DateCreated', 'IPTC.TimeCreated', 'DateTime',
                    'File.FileModifiedDate', 'Date']
 
-    file_types = ["jpg", "jpeg", "png", "tif", "tiff", "gif", "bmp", "cin", "dds", "dpx",
-                  "fits", "hdr", "ico", "iff", "exr", "pnm", "psd", "psb", "rla", "sgi", "pic",
-                  "tga", "dpx", "raw", "kdc", "mrw", "srw", "pef", "raf", "srf", "arw", "orf",
-                  "nef", "cr2", "dng", "crw", "zfile"]
+    file_types = ["bmp", "cin", "dds", "dicom", "dpx", "gif", "hdr", "ico", "iff",
+                  "jpeg", "jpg", "jp2", "exr", "png", "pnm", "psd", "raw", "rla", "sgi",
+                  "tiff", "tif"]
 
     def __init__(self):
         super(ImageImporter, self).__init__()
@@ -43,14 +42,22 @@ class ImageImporter(AssetBuilder):
         asset = frame.asset
         path = Path(file_cache.localize_remote_file(asset))
         metadata = get_image_metadata(path)
-        set_resolution_attrs(asset, int(metadata.get('full_width')), int(metadata.get('full_height')))
+        set_resolution_attrs(asset, int(metadata.get('full_width')),
+                             int(metadata.get('full_height')))
+
+        self.set_media_type(asset)
         self.set_location(asset, metadata)
         self.set_date(asset, metadata)
         self.set_metadata(asset, metadata)
-        self.fix_media_type(asset)
-        if (self.arg_value('extract_pages') and not asset.get_attr('media.clip') and
-                metadata.get('subimages')):
-            self.extract_pages(asset, metadata, frame)
+
+        has_clip = asset.attr_exists('clip')
+        if not has_clip:
+            # Since there is no clip, then set a clip, as all pages
+            # need to have a clip.
+            asset.set_attr('clip', Clip.page(1))
+
+            if self.arg_value('extract_pages') and metadata.get('subimages'):
+                self.extract_pages(frame, metadata)
 
     def set_date(self, document, metadata):
         """Extracts the date from the metadata and sets it on the document.
@@ -60,7 +67,6 @@ class ImageImporter(AssetBuilder):
             metadata(dict): Metadata to parse a date from.
 
         """
-        self.logger.info('Extracting date info from image.')
         for field in self.date_fields:
             try:
                 date_str = reduce(operator.getitem, field.split('.'), metadata)
@@ -74,7 +80,7 @@ class ImageImporter(AssetBuilder):
                     _datetime = dateutil.parser.parse(date_str)
                 except ValueError:
                     continue
-            document.set_attr('media.timeCreated', _datetime)
+            document.set_attr('media.timeCreated', _datetime.isoformat())
             break
 
     def set_location(self, document, metadata):
@@ -86,7 +92,6 @@ class ImageImporter(AssetBuilder):
             metadata(dict): Metadata to parse for GPS location info.
 
         """
-        self.logger.info('Extracting location info from image.')
         gps_data = metadata.get('GPS', {})
         required_keys = ['LatitudeRef', 'Latitude', 'LongitudeRef', 'Longitude']
         if all(key in gps_data for key in required_keys):
@@ -122,22 +127,18 @@ class ImageImporter(AssetBuilder):
         seconds = float(coordinates[2])
         return degrees + (minutes / 60) + (seconds / 3600)
 
-    def extract_pages(self, document, metadata, frame):
+    def extract_pages(self, frame, metadata):
         """Extract pages from multi-page images. Each page is added as a derived frame.
 
         Args:
-            document(Document): Document that contains parent image.
-            metadata(dict): Metadata describing the parent image.
             frame(Frame): Parent to add derived frames to.
-
+            metadata(dict): Metadata describing the parent image.
         """
-        self.logger.debug('Extracting pages from image.')
         subimages = int(metadata.get('subimages'))
-        document.set_attr('media.pages', subimages)
-        source_path = document.get_attr('source.path')
-        for i in range(1, subimages + 1):
-            clip = Clip('image', i, i)
-            expand = ExpandFrame(AssetImport(source_path, clip))
+        source_asset = "asset:{}".format(frame.asset.id)
+        for i in range(2, subimages + 1):
+            clip = Clip.page(i)
+            expand = ExpandFrame(FileImport(source_asset, clip=clip))
             self.expand(frame, expand)
 
     def set_metadata(self, document, metadata, namespace=None):
@@ -166,25 +167,18 @@ class ImageImporter(AssetBuilder):
 
             if isinstance(value, dict):
                 self.set_metadata(document, value, namespace=field)
+        # Set the length of the image
+        subimages = int(metadata.get('subimages', 1))
+        document.set_attr('media.length', subimages)
 
-    def fix_media_type(self, asset):
+    def set_media_type(self, asset):
         """
-        If the asset was processed as an image, then it's an image regardless
-        of what the mimetype magic detected, which is often application/octet-stream
-        for various HDR formats.
-
-        Reset the various media type properties so the file is handled properly downstream.
+        Set media.type to image which signals that the Asset was processed as an image.
 
         Args:
             asset (Asset): The asset to fix.
-
         """
-        current_type = asset.get_attr("source.type")
-        if current_type != "image":
-            sub_type = "x-%s" % asset.get_attr("source.extension").lower()
-            asset.set_attr("source.mediaType", "image/%s" % sub_type)
-            asset.set_attr("source.type", "image")
-            asset.set_attr("source.subType", sub_type)
+        asset.set_attr("media.type", "image")
 
     def add_keywords(self, document, item):
         """Adds the item to the asset as keywords. Simple function that allows for

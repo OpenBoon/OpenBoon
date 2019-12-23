@@ -7,7 +7,8 @@ import face_recognition
 import numpy as np
 
 from pixml.analysis import AssetBuilder, Argument
-from pixml.analysis.storage import get_proxy_file
+from pixml.analysis.storage import get_proxy_level
+
 
 class FaceRecognitionProcessor(AssetBuilder):
     """Detect and recognize faces.
@@ -37,8 +38,7 @@ class FaceRecognitionProcessor(AssetBuilder):
 
     def process(self, frame):
         asset = frame.asset
-
-        name, p_path = get_proxy_file(asset, min_width=1024, fallback=True)
+        p_path = get_proxy_level(asset, 3)
 
         img = cv2.imread(p_path)
         height, width = img.shape[:2]

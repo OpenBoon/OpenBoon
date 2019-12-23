@@ -1,32 +1,31 @@
 package com.zorroa.auth.security
 
-import com.zorroa.auth.JSON_MAPPER
 import com.zorroa.auth.domain.ApiKey
-import com.zorroa.auth.domain.KeyGenerator
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
-import org.springframework.core.io.Resource
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import java.util.UUID
 
 @Configuration
 @ConfigurationProperties("security")
 class SecurityProperties {
 
-    var serviceKey: Resource? = null
+    var serviceKey: String? = null
 }
 
 @EnableWebSecurity
@@ -60,8 +59,29 @@ class MultipleWebSecurityConfig {
     }
 
     @Configuration
-    @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @Order(Ordered.HIGHEST_PRECEDENCE + 1)
+    @EnableGlobalMethodSecurity(securedEnabled = true)
+    class ActuatorSecurityConfig : WebSecurityConfigurerAdapter() {
+
+        @Throws(Exception::class)
+        override fun configure(http: HttpSecurity) {
+            http
+                .antMatcher("/monitor/**")
+                .httpBasic()
+                .and()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .requestMatchers(EndpointRequest.to("metrics", "prometheus"))
+                .hasAuthority("MONITOR")
+                .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
+        }
+    }
+
+    @Configuration
+    @EnableGlobalMethodSecurity(securedEnabled = true)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 2)
     class SwaggerConfigSecurity : WebSecurityConfigurerAdapter() {
 
         @Value("\${swagger.isPublic}")
@@ -79,7 +99,7 @@ class MultipleWebSecurityConfig {
                     .antMatchers("/v2/api-docs").permitAll()
                     .antMatchers("/swagger-ui.html").permitAll()
                     .antMatchers("/error").permitAll()
-            }else{
+            } else {
                 http.authorizeRequests()
                     .antMatchers("/v2/api-docs").denyAll()
                     .antMatchers("/swagger-ui.html").denyAll()
@@ -88,28 +108,27 @@ class MultipleWebSecurityConfig {
         }
     }
 
+    @Value("\${management.endpoints.password}")
+    lateinit var monitorPassword: String
+
     @Autowired
     @Throws(Exception::class)
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
         auth.authenticationProvider(jwtAuthenticationProvider)
+            .inMemoryAuthentication()
+            .withUser("monitor")
+            .password(passwordEncoder().encode(monitorPassword))
+            .authorities("MONITOR")
+    }
+
+    @Bean
+    fun passwordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
     }
 
     @Bean
     fun serviceKey(): ApiKey {
-        securityProperties.serviceKey?.let {
-            val key = JSON_MAPPER.readValue(it.inputStream, ApiKey::class.java)
-            logger.info("loading external keyId: ${key.keyId}")
-            return key
-        }
-
-        // Otherwise return a random key that is impossible to use.
-        logger.warn("external key file not found, generating random key.")
-        return ApiKey(
-            UUID.randomUUID(),
-            UUID.randomUUID(),
-            KeyGenerator.generate(),
-            "random", listOf()
-        )
+        return loadServiceKey(securityProperties.serviceKey)
     }
 
     @Bean
@@ -129,6 +148,3 @@ class MultipleWebSecurityConfig {
         private val logger = LoggerFactory.getLogger(WebSecurityConfiguration::class.java)
     }
 }
-
-
-

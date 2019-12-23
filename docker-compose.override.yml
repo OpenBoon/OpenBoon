@@ -1,0 +1,9 @@
+version: "3.6"
+services:
+
+  # Console web application, with env settings to contact the ZVI Development env
+  wallet:
+    environment:
+      DJANGO_SETTINGS_MODULE: wallet.settings.local-dev
+      ARCHIVIST_URL: https://dev.zorroa.com
+      PLATFORM: zvi

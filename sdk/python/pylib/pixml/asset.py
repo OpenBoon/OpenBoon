@@ -1,12 +1,13 @@
 import logging
 import os
 
+from .rest import SearchResult
 from .util import as_collection
 
 __all__ = [
     "Asset",
-    "AssetImport",
-    "AssetUpload",
+    "FileImport",
+    "FileUpload",
     "AssetApp",
     "Clip"
 ]
@@ -14,8 +15,10 @@ __all__ = [
 logger = logging.getLogger(__name__)
 
 
-class AssetBase(object):
-
+class DocumentMixin(object):
+    """
+    A Mixin class which provides easy access to a deeply nested dictionary.
+    """
     def __init__(self):
         self.document = {}
 
@@ -130,17 +133,12 @@ class AssetBase(object):
 
     def __set_attr(self, attr, value):
         """
-        A private set_attr method that handles just the setting of the
-        attribute without any field edit protection.
-
-        This gets called from set_attr to avoid infinite looping.
+        Handles setting an attribute value.
 
         Args:
-            attr (str): The attribute name in dot notation format.
-                ex: 'foo.bar'
-            value (:obj:`object`): value: The value for the particular
-                attribute.  Can be any json serializable type.
-
+            attr (str): The attribute name in dot notation format.  ex: 'foo.bar'
+            value (mixed): The value for the particular attribute.
+                Can be any json serializable type.
         """
         doc = self.document
         parts = attr.split(".")
@@ -156,22 +154,31 @@ class AssetBase(object):
             except AttributeError:
                 doc[parts[-1]] = value
 
+    def __setitem__(self, field, value):
+        self.set_attr(field, value)
 
-class AssetImport(AssetBase):
+    def __getitem__(self, field):
+        return self.get_attr(field)
+
+
+class FileImport(object):
     """
-    An AssetImport is used to import a new Asset into PixelML.
+    An FileImport is used to import a new file and metdata into PixelML.
     """
-    def __init__(self, uri, clip=None):
+    def __init__(self, uri, attrs=None, clip=None):
         """
-        Construct an AssetImport instance which can point to a remote URI.
+        Construct an FileImport instance which can point to a remote URI.
 
         Args:
             uri (str): a URI locator to the file asset.
+            attrs (dict): A shallow key/value pair dictionary of starting point
+                attributes to set on the asset.
             clip (Clip): Defines a subset of the asset to be processed, for example a
                 page of a PDF or time code from a video.
         """
-        super(AssetImport, self).__init__()
+        super(FileImport, self).__init__()
         self.uri = uri
+        self.attrs = attrs or {}
         self.clip = clip
 
     def for_json(self):
@@ -185,29 +192,38 @@ class AssetImport(AssetBase):
         """
         return {
             "uri": self.uri,
-            "document": self.document,
+            "attrs": self.attrs,
             "clip": self.clip
         }
 
+    def __setitem__(self, field, value):
+        self.attrs[field] = value
 
-class AssetUpload(AssetImport):
+    def __getitem__(self, field):
+        return self.attrs[field]
+
+
+class FileUpload(FileImport):
     """
-    AssetUpload instances point to a local file that will be uploaded for analysis.
+    FileUpload instances point to a local file that will be uploaded for analysis.
     """
-    def __init__(self, path, clip=None):
+    def __init__(self, path, attrs=None, clip=None):
         """
-        Create a new AssetUpload instance.
+        Create a new FileUpload instance.
 
         Args:
             path (str): A path to a file, the file must exist.
+            attrs (dict): A shallow key/value pair dictionary of starting point
+                attributes to set on the asset.
             clip (Clip): Clip settings if applicable.
         """
-        super(AssetUpload, self).__init__(path, clip)
+        super(FileUpload, self).__init__(os.path.normpath(os.path.abspath(path)), attrs, clip)
+
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))
 
 
-class Asset(AssetBase):
+class Asset(DocumentMixin):
     """
     An Asset represents a single processed file or a clip/segment of a
     file. Assets start out in the 'CREATED' state, which indicates
@@ -233,16 +249,8 @@ class Asset(AssetBase):
         """
         return self.get_attr("source.path")
 
-    @property
-    def state(self):
-        """
-
-        Returns:
-
-        """
-        return self.get_attr("system.state")
-
-    def get_files(self, name=None, category=None, mimetype=None, extension=None, attrs=None):
+    def get_files(self, name=None, category=None, mimetype=None, extension=None,
+                  attrs=None, attr_keys=None, sort_func=None):
         """
         Return all stored files associated with this asset.  Optionally
         filter the results.
@@ -253,9 +261,11 @@ class Asset(AssetBase):
             mimetype (str): The mimetype must start with this string.
             extension: (str): The file name must have the given extension.
             attrs (dict): The file must have all of the given attributes.
-
+            attr_keys: (list): A list of attribute keys that must be present.
+            sort_func: (func): A lambda function for sorting the result.
         Returns:
             list of dict: A list of pixml file records.
+
         """
         result = []
         files = self.get_attr("files") or []
@@ -273,12 +283,22 @@ class Asset(AssetBase):
             if extension and not any((item for item in as_collection(extension)
                                       if fs["name"].endswith("." + item))):
                 match = False
+
+            file_attrs = fs.get("attrs", {})
+            if attr_keys:
+                if not any(key in file_attrs for key in as_collection(attr_keys)):
+                    match = False
+
             if attrs:
                 for k, v in attrs.items():
-                    if fs.get("attrs", {}).get(k) != v:
+                    if file_attrs.get(k) != v:
                         match = False
             if match:
                 result.append(fs)
+
+        if sort_func:
+            result = sorted(result, key=sort_func)
+
         return result
 
     def for_json(self):
@@ -296,7 +316,13 @@ class Asset(AssetBase):
         }
 
     def __str__(self):
-        return "<Asset id='{} uri='{}'/>".format(self.id, self.uri)
+        return "<Asset id='{}'/>".format(self.id)
+
+    def __repr__(self):
+        return "<Asset id='{}' at {}/>".format(self.id, hex(id(self)))
+
+    def __hash__(self):
+        return hash(self.id)
 
     def __eq__(self, other):
         if not getattr(other, "id"):
@@ -306,33 +332,59 @@ class Asset(AssetBase):
 
 class Clip(object):
     """
-    A Clip object is used to define some frame range
-    or sub-section of an asset.
+    A Clip object is used to define a subsection of a file/asset that should be
+    processed, for example a particular page of a PDF or a section of a movie.
+
+    Each clip of an Asset needs to have a unique type, start, stop, and optionally
+    timeline attributes fo it to be considered a unique clip.
+
     """
+
+    @staticmethod
+    def page(page_num):
+        """
+        Return a standard 'page' clip for the given page.
+
+        Args:
+            page_num (int): The page number
+
+        Returns:
+            Clip: The page clip.
+
+        """
+        return Clip('page', page_num, page_num)
+
+    @staticmethod
+    def scene(time_in, time_out, timeline):
+        """
+        Return a video scene Clip with the given in/out points and a timeline name.
+
+        Args:
+            time_in: (float): The start time of the cut.
+            time_out: (float): The end time of the cut.
+            timeline: (str): An timeline label.  Videos can be clipified multiple ways
+                by multiple types of services and labeling them with a timeline is
+                useful for differentiating them.
+        Returns:
+            Clip: A shot Clip.
+
+        """
+        return Clip('scene', time_in, time_out, timeline)
+
     def __init__(self, type, start, stop, timeline=None):
         """Initialize a new clip.
 
         Args:
-            type (str): The clip type (image, video, page)
+            type (str): The clip type, usually 'scene' or 'page' but it can be arbitrary.
             start (float): The start of the clip
-            stop (float): The end of the clip
-            timeline (str): Put the clip on 1 unique timeline in case it
-                collides with other clips with similar in/out points.
+            stop (float): The end of the clip,
+            timeline (str): Used when multiple type of clipification on a video occur.
         """
+
         self.type = type
         self.start = float(start)
         self.stop = float(stop)
-        self.length = max(1.0, self.stop - self.start + 1.0)
         self.timeline = timeline
-
-    def tokens(self):
-        """Return tokens that make the clip unique.
-
-        Returns:
-            :obj:`list` of str: A list of tokens.
-
-        """
-        return ["start=%0.3f" % self.start, "stop=%0.3f" % self.stop]
 
     def for_json(self):
         """Return a JSON serialized copy.
@@ -341,7 +393,7 @@ class Clip(object):
             :obj:`dict`: A json serializable dict.
         """
         serializable_dict = {}
-        attrs = ['type', 'start', 'stop', 'length', 'timeline']
+        attrs = ['type', 'start', 'stop', 'timeline']
         for attr in attrs:
             if getattr(self, attr, None) is not None:
                 serializable_dict[attr] = getattr(self, attr)
@@ -353,12 +405,12 @@ class AssetApp(object):
     def __init__(self, app):
         self.app = app
 
-    def batch_import_assets(self, assets):
+    def import_files(self, assets):
         """
-        Provision and process a list of AssetImport instances.
+        Import a list of FileImport instances.
 
         Args:
-            assets (list of AssetImport): The list of assets to process.
+            assets (list of FileImport): The list of files to import as Assets.
 
         Returns:
             dict: A dictionary containing the provisioning status of each asset,
@@ -368,12 +420,12 @@ class AssetApp(object):
         body = {"assets": assets}
         return self.app.client.post("/api/v3/assets/_batchCreate", body)
 
-    def batch_upload_assets(self, assets):
+    def upload_files(self, assets):
         """
-        Batch upload a list of Assets.
+        Batch upload a list of files.
 
         Args:
-            assets (list of AssetUpload):
+            assets (list of FileUpload):
 
         Returns:
 
@@ -386,19 +438,36 @@ class AssetApp(object):
         return self.app.client.upload_files("/api/v3/assets/_batchUpload",
                                             files, body)
 
-    def asset_search(self, query):
+    def search(self, search=None, deep_query=None, raw=False):
         """
-        Perform an asset search.
+        Perform an asset search using the ElasticSearch query DSL.  Note that for
+        load and security purposes, not all ElasticSearch search options are accepted.
+
+        See Also:
+            For search/query format.
+            https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-body.html
 
         Args:
-            query:
-
+            search (dict): The ElasticSearch search to execute
+            deep_query (dict): An ElasticSearch query that will be applied to deep
+                analysis elements.
+            raw (bool): Return the raw ElasticSearch dict result rather than a SearchResult
         Returns:
-
+            mixed: A SearchResult containing assets or in raw mode an
+                ElasticSearch search result dictionary.
         """
-        raise NotImplemented()
+        body = {
+            'search': search,
+            'deepQuery': deep_query
+        }
+        rsp = self.app.client.post("/api/v3/assets/_search", body)
+        if raw:
+            return rsp
+        else:
+            rsp["hits"]["offset"] = search.get("from", 0)
+            return SearchResult(rsp, Asset)
 
-    def get_asset(self, id):
+    def get_by_id(self, id):
         """
         Return the asset with the given unique Id.
 

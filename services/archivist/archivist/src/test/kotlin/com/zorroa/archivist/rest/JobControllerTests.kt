@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -142,7 +141,7 @@ class JobControllerTests : MockMvcTest() {
             .andReturn()
 
         val job = jobService.get(job.id)
-        assertEquals(JobState.Active, job.state)
+        assertEquals(JobState.InProgress, job.state)
 
         val status = deserialize(result, Json.GENERIC_MAP)
         assertEquals("Job", status["type"])
@@ -153,7 +152,12 @@ class JobControllerTests : MockMvcTest() {
     @Test
     fun testRetryAllFailures() {
         val t = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
-        assertTrue(jobService.setTaskState(t, TaskState.Failure, null))
+        jobService.getJobTasks(job.id).list.forEach {
+            assertTrue(jobService.setTaskState(it, TaskState.Failure, null))
+        }
+
+        var job = jobService.get(t.jobId)
+        assertEquals(JobState.Failure, job.state)
 
         val result = mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/jobs/${job.id}/_retryAllFailures")
@@ -170,6 +174,8 @@ class JobControllerTests : MockMvcTest() {
 
         val t2 = jobService.getTask(t.id)
         assertEquals(TaskState.Waiting, t2.state)
+        job = jobService.get(t.jobId)
+        assertEquals(JobState.InProgress, job.state)
     }
 
     @Test

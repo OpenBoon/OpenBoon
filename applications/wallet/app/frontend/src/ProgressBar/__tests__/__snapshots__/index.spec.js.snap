@@ -1,0 +1,645 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProgressBar /> should render properly 1`] = `
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+  position: relative;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-1"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+</div>
+`;
+
+exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyPress 1`] = `
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+  position: relative;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-1"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+</div>
+`;
+
+exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyPress 2`] = `
+.emotion-23 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+  position: relative;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.emotion-22 {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  z-index: 1;
+}
+
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #4a4a4a;
+  border-radius: 2px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 12px;
+}
+
+.emotion-1 {
+  width: 2px;
+  height: 100%;
+  background-color: #c92300;
+}
+
+.emotion-3 {
+  color: #e0e0e0;
+  padding-left: 8px;
+}
+
+.emotion-2 {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.emotion-5 {
+  width: 2px;
+  height: 100%;
+  background-color: #b3b3b3;
+}
+
+.emotion-9 {
+  width: 2px;
+  height: 100%;
+  background-color: #4ac565;
+}
+
+.emotion-13 {
+  width: 2px;
+  height: 100%;
+  background-color: #ebb52e;
+}
+
+.emotion-17 {
+  width: 2px;
+  height: 100%;
+  background-color: #4a90e2;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-23"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+  <div
+    className="emotion-22"
+  >
+    <div
+      className="emotion-21"
+    >
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-1"
+        />
+        <div
+          className="emotion-3"
+        >
+          <div>
+            Failed:
+          </div>
+          <div
+            className="emotion-2"
+          >
+            1
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-5"
+        />
+        <div
+          className="emotion-3"
+        >
+          <div>
+            Skipped:
+          </div>
+          <div
+            className="emotion-2"
+          >
+            0
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-9"
+        />
+        <div
+          className="emotion-3"
+        >
+          <div>
+            Succeeded:
+          </div>
+          <div
+            className="emotion-2"
+          >
+            0
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-13"
+        />
+        <div
+          className="emotion-3"
+        >
+          <div>
+            Running:
+          </div>
+          <div
+            className="emotion-2"
+          >
+            0
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-17"
+        />
+        <div
+          className="emotion-3"
+        >
+          <div>
+            Pending:
+          </div>
+          <div
+            className="emotion-2"
+          >
+            0
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyPress 3`] = `
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+  position: relative;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-1"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+</div>
+`;
+
+exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseenter 1`] = `
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+  position: relative;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-1"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+</div>
+`;
+
+exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseenter 2`] = `
+.emotion-23 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+  position: relative;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.emotion-22 {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  z-index: 1;
+}
+
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #4a4a4a;
+  border-radius: 2px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 12px;
+}
+
+.emotion-1 {
+  width: 2px;
+  height: 100%;
+  background-color: #c92300;
+}
+
+.emotion-3 {
+  color: #e0e0e0;
+  padding-left: 8px;
+}
+
+.emotion-2 {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.emotion-5 {
+  width: 2px;
+  height: 100%;
+  background-color: #b3b3b3;
+}
+
+.emotion-9 {
+  width: 2px;
+  height: 100%;
+  background-color: #4ac565;
+}
+
+.emotion-13 {
+  width: 2px;
+  height: 100%;
+  background-color: #ebb52e;
+}
+
+.emotion-17 {
+  width: 2px;
+  height: 100%;
+  background-color: #4a90e2;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-23"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+  <div
+    className="emotion-22"
+  >
+    <div
+      className="emotion-21"
+    >
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-1"
+        />
+        <div
+          className="emotion-3"
+        >
+          <div>
+            Failed:
+          </div>
+          <div
+            className="emotion-2"
+          >
+            1
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-5"
+        />
+        <div
+          className="emotion-3"
+        >
+          <div>
+            Skipped:
+          </div>
+          <div
+            className="emotion-2"
+          >
+            0
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-9"
+        />
+        <div
+          className="emotion-3"
+        >
+          <div>
+            Succeeded:
+          </div>
+          <div
+            className="emotion-2"
+          >
+            0
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-13"
+        />
+        <div
+          className="emotion-3"
+        >
+          <div>
+            Running:
+          </div>
+          <div
+            className="emotion-2"
+          >
+            0
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-17"
+        />
+        <div
+          className="emotion-3"
+        >
+          <div>
+            Pending:
+          </div>
+          <div
+            className="emotion-2"
+          >
+            0
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseenter 3`] = `
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 16px;
+  width: 212px;
+  position: relative;
+}
+
+.emotion-0 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-0:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-0:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+<div
+  aria-label="Progress Bar"
+  className="emotion-1"
+  onKeyPress={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  role="button"
+  tabIndex="0"
+>
+  <div
+    className="emotion-0"
+  />
+</div>
+`;

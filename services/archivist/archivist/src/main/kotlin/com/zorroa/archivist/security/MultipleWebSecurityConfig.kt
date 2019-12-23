@@ -102,7 +102,7 @@ class MultipleWebSecurityConfig {
         @Throws(Exception::class)
         override fun configure(http: HttpSecurity) {
             http
-                .antMatcher("/actuator/**")
+                .antMatcher("/monitor/**")
                 .httpBasic()
                 .and()
                 .csrf().disable()
@@ -169,13 +169,10 @@ class MultipleWebSecurityConfig {
     }
 
     @Bean
-    fun analystAuthenticationFilter(): AnalystAuthenticationFilter {
-        return AnalystAuthenticationFilter()
-    }
-
-    @Bean
     fun authServerClient(): AuthServerClient {
-        return AuthServerClientImpl(properties.getString("security.auth-server.url"))
+        return AuthServerClientImpl(
+            properties.getString("security.auth-server.url"),
+            properties.getString("security.service-key"))
     }
 
     @Bean
@@ -187,12 +184,15 @@ class MultipleWebSecurityConfig {
     }
 
     @Bean
-    fun analystFilterRegistration(): FilterRegistrationBean<AnalystAuthenticationFilter> {
+    @Autowired
+    fun analystFilterRegistration(analystAuthenticationFilter: AnalystAuthenticationFilter)
+        : FilterRegistrationBean<AnalystAuthenticationFilter> {
         val bean = FilterRegistrationBean<AnalystAuthenticationFilter>()
-        bean.filter = analystAuthenticationFilter()
+        bean.filter = analystAuthenticationFilter
         bean.isEnabled = false
         return bean
     }
+
     companion object {
         private val logger = LoggerFactory.getLogger(MultipleWebSecurityConfig::class.java)
     }

@@ -1,190 +1,142 @@
 import json
-import os
-import backoff
-import requests
 
-from requests import RequestException
-
-from pixml import AssetImport, Clip
+from pixml import FileImport, Clip
 from pixml.analysis import AssetBuilder, Argument, ExpandFrame, PixmlUnrecoverableProcessorException
+from pixml.analysis.storage import file_cache, PixmlStorageException
+from .oclient import OfficerClient
 
-
-__all__ = ["OfficeImporter", "_content_sanitizer"]
+__all__ = ['OfficeImporter', '_content_sanitizer']
 
 
 class OfficeImporter(AssetBuilder):
-
     file_types = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']
-    content_extractable_file_types = ['pdf', 'doc', 'docx', 'ppt', 'pptx']
-    tmp_loc_attr = "tmp.office_output_dir"
 
-    tool_tips = {
-        'extract_pages': 'If True extract each page as a derived asset',
-        'extract_content': 'If True the text content of PDF is extracted and stored in '
-                           'the metadata as a searchable field',
-        'proxy_dpi': 'Desired DPI for extracted page proxy',
-    }
+    # The tmp_loc_attribute store the pixml
+    tmp_loc_attr = OfficerClient.tmp_loc_attr
 
     def __init__(self):
         super(OfficeImporter, self).__init__()
-        arguments = [
-            Argument('extract_pages', 'boolean', default=True,
-                     toolTip=self.tool_tips['extract_pages']),
-            Argument('extract_content', 'boolean', default=True,
-                     toolTip=self.tool_tips['extract_content']),
-            Argument('proxy_dpi', 'int', default=75,
-                     toolTip=self.tool_tips['proxy_dpi']),
-        ]
-        for arg in arguments:
-            self.add_arg(arg)
+        self.add_arg(Argument('extract_pages', 'bool', default=False,
+                              toolTip='Extract all pages from document as separate assets'))
+        self.oclient = OfficerClient()
 
-    @property
-    def service_url(self):
-        url = os.environ.get('OFFICER_FQDN', 'http://officer')
-        port = os.environ.get('OFFICER_PORT', '7081')
-        return '{url}:{port}'.format(url=url, port=port)
+    def get_metadata(self, uri, page):
+        """
+        Get the rendered metadata blob for given output URI.
 
-    @property
-    def extract_url(self):
-        return '{service}/extract'.format(service=self.service_url)
+        Args:
+            uri (str): A previously created output uri.
+            page (int): The page number, 0 for the parent page.
 
-    def _is_content_extractable(self, asset_path):
-        """Filters filetypes that result in an unusable amount of content."""
-        _, ext = os.path.splitext(asset_path)
-        if ext.lstrip('.') in self.content_extractable_file_types:
-            return True
-        return False
+        Returns:
+            dict: A dict of metadata.
 
-    def _needs_rerender(self, asset):
-        """Make sure the rendered proxy and metadata still exists."""
-        output_dir = asset.get_attr(self.tmp_loc_attr)
-        page = asset.get_attr('media.clip.start')
-        proxy = os.path.join(output_dir, 'proxy.{}.jpg'.format(page))
-        metadata = os.path.join(output_dir, 'metadata.{}.json'.format(page))
+        Raises:
+            PixmlUnrecoverableProcessorException: If the file cannot be found
 
-        if not os.path.exists(proxy):
-            self.logger.warning("The proxy file '{}' does not exist, re-rendering".format(proxy))
-            return True
-
-        if not os.path.exists(metadata):
-            self.logger.warning("The metadata file '{}' does not exist, re-rendering"
-                                .format(metadata))
-            return True
-
-        return False
-
-    def _get_request_body(self, asset):
-        asset_path = asset.uri
-        page = asset.get_attr("media.clip.start")
-        # The output dir is always the parent directory.
-        output_dir = asset.get_attr("media.clip.parent") or asset.id
-        request_body = {'input_file': asset_path,
-                        'dpi': self.arg_value('proxy_dpi'),
-                        'output_dir': output_dir}
-        if self.arg_value("extract_content") and self._is_content_extractable(asset_path):
-            request_body["content"] = "true"
-
-        if page:
-            request_body["page"] = page
-
-        return request_body
-
-    def _load_metadata(self, metadata_path):
-        """Loads the metadata file. Test seam."""
-        return json.load(open(metadata_path), object_hook=_content_sanitizer)
-
-    def _render_outputs(self, asset):
-        request_body = self._get_request_body(asset)
-        self.logger.info("Making post request: %s" % request_body)
-
+        """
         try:
-            response = self._post_to_service(self.extract_url, request_body)
-        except RequestException as e:
-            self.logger.warning('RequestException: %s' % e)
-            if e.request is not None:
-                self.logger.warning('Request: %s' % e.request.body)
-            if e.response is not None:
-                self.logger.warning('Response: %s' % e.response.content)
+            pixml_uri = '{}/metadata.{}.json'.format(uri, page)
+            with open(file_cache.localize_uri(pixml_uri), 'r') as fp:
+                return json.load(fp, object_hook=_content_sanitizer)
+        except PixmlStorageException as e:
             raise PixmlUnrecoverableProcessorException(
-                'An exception was returned while communicating with the Officer service')
+                'Unable to obtain officer metadata, {} {}, {}'.format(uri, page, e))
 
-        return response.json()['output']
+    def get_image_uri(self, uri, page):
+        """
+        Return the pixml storage URL for the given page.
 
-    @backoff.on_exception(backoff.expo, requests.exceptions.HTTPError, max_time=5*60)
-    def _post_to_service(self, url, body):
-        """Sends the asset to Officer for render. Retries for 5 minutes if necessary."""
-        response = requests.post(url, json=body)
-        response.raise_for_status()
-        return response
+        Args:
+            uri (str):  A previously created output uri.
+            page (int): The page number, 0 for parent page.
+
+        Returns:
+            str: the pixml URL to the image.
+        """
+        return '{}/proxy.{}.jpg'.format(uri, max(page, 0))
 
     def process(self, frame):
         """Processes the given frame by sending it to the Officer service for render.
 
-        If a Parent asset is given, it'll be sent to Officer to have all of it's pages
-        rendered. The rendered pages are then left cached on disk. The parent will use
-        the proxy and metadata from the first page. Assuming the extract_pages arg is
-        given, each page of the doc will be expanded into it's own frame and will run
-        through the process method again.
-
-        If an expanded child asset is passed in, the cache location will be checked
-        to see if the proxy and metadata for that page exists. If not, that single page
-        will be sent for rerender. Once the proxy and metadata for that page is
-        available, everything is applied ot the page and the process completes.
-
         Args:
             frame (Frame): The Frame to process
-
         """
         asset = frame.asset
-        clip_start = asset.get_attr('media.clip.start')
-        page = int(clip_start) if clip_start else None
-        is_parent = True if not asset.get_attr('media.clip.parent') else False
+        has_clip = asset.attr_exists('clip')
+        page = max(int(asset.get_attr('clip.start') or 1), 1)
 
-        # If it's a parent or the previously rendered data is missing, rerender
-        if is_parent or self._needs_rerender(asset):
-            # Use the returned output directory
-            output_dir = self._render_outputs(asset)
-            self.logger.info("Rendered proxy and metadata outputs to: {}".format(output_dir))
-        else:
-            # Since it exists, Use the previously set output directory
-            output_dir = asset.get_attr(self.tmp_loc_attr)
-            self.logger.info("Utilizing proxy and metadata outputs: {}".format(output_dir))
+        output_uri = self.render_pages(asset, page, not has_clip)
+        media = self.get_metadata(output_uri, page)
+        asset.set_attr('media', media)
 
-        # Use the first page for the Parent img and metadata
-        if is_parent and not page:
-            page = 1
+        if not has_clip:
+            # Since there is no clip, then set a clip
+            asset.set_attr('clip', Clip.page(1))
 
-        proxy_path = os.path.join(output_dir, 'proxy.{}.jpg'.format(page))
-        metadata_path = os.path.join(output_dir, 'metadata.{}.json'.format(page))
+            if self.arg_value('extract_pages'):
+                # Iterate the pages and expand
+                num_pages = int(asset.get_attr('media.length') or 1)
+                if num_pages > 1:
+                    # Start on page 2 since we just processed page 1
+                    for page_num in range(2, num_pages + 1):
+                        clip = Clip('page', page_num, page_num)
+                        file_import = FileImport("asset:{}".format(asset.id), clip=clip)
+                        file_import.attrs[self.tmp_loc_attr] = output_uri
+                        expand = ExpandFrame(file_import)
+                        self.expand(frame, expand)
 
-        # Set frame.image for ProxyIngestor to pick up
-        asset.set_attr("tmp.proxy_source_image", proxy_path)
+    def render_pages(self, asset, page, all_pages):
+        """
+        Render the specific page image and metadata if it is not already cached.
+        Also applies the 'tmp.proxy_source_image' attribute to the rendered page.
+        If the asset containers no clip the extract_pages is enabled, then all
+        pages will be rendered.
 
-        # Load extracted metadata and restore media.clip
-        saved_clip = asset.get_attr("media.clip")
-        media = self._load_metadata(metadata_path)
-        asset.set_attr("media", media)
-        if media.get('width') and media.get('height'):
-            asset.set_resolution(media.get('width'), media.get('height'))
-        if saved_clip:
-            asset.set_attr("media.clip", saved_clip)
+        Args:
+            asset (Asset): The Asset
+            page (int): The page number to render
+            all_pages (bool): Set to true if the request should render all pages.
+                This assumes extract_pages is enabled.
 
-        # Zero content out if extract_content arg is false
-        if not self.arg_value("extract_content"):
-            asset.set_attr("media.content", None)
+        Returns:
+            str: The base output URI.
 
-        if self.arg_value("extract_pages"):
-            num_pages = asset.get_attr("media.pages")
-            if not asset.attr_exists("media.clip") and num_pages > 1:
-                for page_num in range(1, num_pages + 1):
-                    clip = Clip('page',page_num, page_num)
-                    child_asset = AssetImport(asset.get_attr('source.path'), clip)
-                    child_asset.set_attr(self.tmp_loc_attr, output_dir)
-                    expand = ExpandFrame(child_asset)
-                    self.expand(frame, expand)
+        Raises:
+            PixmlUnrecoverableProcessorException if no files can be rendered or found.
+
+        """
+        try:
+            cache_loc = self.oclient.get_cache_location(asset, page)
+            if cache_loc:
+                self.logger.info('CACHED proxy and metadata outputs: {}'.format(cache_loc))
+            else:
+                if all_pages and self.arg_value('extract_pages'):
+                    cache_loc = self.oclient.render(asset, -1)
+                    self.logger.info(
+                        'ALL render of proxy and metadata outputs to: {}'.format(cache_loc))
+                else:
+                    cache_loc = self.oclient.render(asset, page)
+                    self.logger.info(
+                        'SINGLE render of proxy and metadata outputs to: {}'.format(cache_loc))
+            asset.set_attr('tmp.proxy_source_image', self.get_image_uri(cache_loc, page))
+            return cache_loc
+        except Exception as e:
+            raise PixmlUnrecoverableProcessorException('Unable to determine page cache location {}'
+                                                       .format(asset.id), e)
 
 
 def _content_sanitizer(metadata):
+    """
+    A json deserializer object hook for cleaning up invalid characters
+    from the extracted metdata
+
+    Args:
+        metadata (dict): A metadata dictionary
+
+    Returns:
+        dict: The cleaned up metdata.
+    """
     if "content" in metadata:
         metadata["content"] = metadata["content"].replace(u"\u0000", " ")
     return metadata

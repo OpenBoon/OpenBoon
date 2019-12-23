@@ -24,16 +24,45 @@ enum class JobType {
 
 
 enum class JobState {
-    Active,
-    Cancelled,
-    Finished,
-    Archived;
+    /**
+     * The job has [TaskState.Running] or [TaskState.Queued] tasks.
+     */
+    InProgress,
 
     /**
-     * Return a Micrometer tag for tagging metrics related to this state.
+     * The job was manually canceled by the user.
      */
-    fun metricsTag(): Tag {
-        return Tag.of("job-state", this.toString())
+    Cancelled,
+
+    /**
+     * All tasks in the job are [TaskState.Success] or [TaskState.Skipped]
+     */
+    Success,
+
+    /**
+     * All task data, temp files, and logs for the job have been removed.
+     */
+    Archived,
+
+    /**
+     * All tasks in the job are [TaskState.Failure], [TaskState.Success] or [TaskState.Skipped]
+     */
+    Failure;
+
+    /**
+     * Return true if transitioning to the current state puts the job
+     * in an inactive state.
+     */
+    fun isInactiveState() : Boolean {
+        return this == Success || this == Failure || this == Cancelled
+    }
+
+    /**
+     * Return true if transitioning to the current state puts the job
+     * in an active state.
+     */
+    fun isActiveState() : Boolean {
+        return this == InProgress
     }
 }
 
@@ -149,6 +178,9 @@ class Job(
     @ApiModelProperty("Time the Job was created.")
     var timeCreated: Long,
 
+    @ApiModelProperty("Time the job went into the inactive state.")
+    var timeStopped: Long,
+
     @ApiModelProperty("Current priority of the Job,")
     var priority: Int,
 
@@ -258,3 +290,21 @@ class DispatchPriority(
     val projectId: UUID,
     val priority: Int
 )
+
+/**
+ * Provides task state counts for a particular jobs.
+ */
+class TaskStateCounts(
+    val counts: Map<TaskState, Int>,
+    val total: Int
+) {
+    fun hasPendingTasks() : Boolean {
+        return (counts.getValue(TaskState.Waiting) > 0 ||
+            counts.getValue(TaskState.Running) > 0 ||
+            counts.getValue(TaskState.Queued) > 0)
+    }
+
+    fun hasFailures() : Boolean {
+        return counts.getValue(TaskState.Failure) > 0
+    }
+}

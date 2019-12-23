@@ -16,7 +16,6 @@ import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.util.Json
 import org.apache.http.HttpHost
-import org.elasticsearch.action.admin.indices.close.CloseIndexRequest
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest
@@ -24,6 +23,7 @@ import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.client.indices.CloseIndexRequest
 import org.elasticsearch.common.xcontent.DeprecationHandler
 import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory
@@ -47,8 +47,8 @@ import java.util.concurrent.atomic.AtomicBoolean
  *
  * The ES migration files naming convention.
  *
- * Major Version: V<major version>__<name>.json
- * Minor Version: V<major version>.<year><month><day>__<name>.json
+ * Major Version: <name>.v<major version>.json
+ * Minor Version: <name>.<major version>-<year><month><day>.json
  *
  * Updating a major version will always kick off a reindex.
  *
@@ -167,6 +167,7 @@ class IndexRoutingServiceImpl @Autowired
 constructor(
     val indexRouteDao: IndexRouteDao,
     val indexClusterDao: IndexClusterDao,
+    val indexClusterService: IndexClusterService,
     val properties: ApplicationProperties
 ) : IndexRoutingService {
 
@@ -181,18 +182,20 @@ constructor(
     @Transactional
     override fun createIndexRoute(spec: IndexRouteSpec): IndexRoute {
 
-        if (!indexMappingVersionExists(spec.mapping, spec.mappingMajorVer)) {
+        if (!indexMappingVersionExists(spec.mapping, spec.majorVer)) {
             throw IllegalArgumentException(
-                "Failed to find index mapping ${spec.mapping} v${spec.mappingMajorVer}"
+                "Failed to find index mapping ${spec.mapping} v${spec.majorVer}"
             )
         }
 
         // If no cluster ID was specified, find a ES cluster to use.
-        if (spec.clusterId == null) {
-            val cluster = indexClusterDao.getNextAutoPoolCluster()
-            spec.clusterId = cluster.id
+        val cluster = if (spec.clusterId != null) {
+            indexClusterDao.get(spec.clusterId as UUID)
+        } else {
+            indexClusterService.getNextAutoPoolCluster()
         }
 
+        spec.clusterId = cluster.id
         val route = indexRouteDao.create(spec)
         syncIndexRouteVersion(route)
         return route
@@ -212,8 +215,8 @@ constructor(
         fun addMatch(filename: String) {
             val match = MAP_MAJOR_REGEX.matchEntire(filename)
             if (match != null) {
-                val majorVersion = match.groupValues[1]
-                val name = match.groupValues[2]
+                val name = match.groupValues[1]
+                val majorVersion = match.groupValues[2]
                 result.add(IndexMappingVersion(name, majorVersion.toInt()))
             }
         }
@@ -247,12 +250,12 @@ constructor(
             logger.info(
                 "Creating index:" +
                     "type: '${route.mapping}'  index: '${route.indexName}' " +
-                    "ver: '${route.mappingMajorVer}'" +
+                    "ver: '${route.majorVer}'" +
                     "shards: '${route.shards}' replicas: '${route.replicas}'"
             )
 
             val mappingFile = getMajorVersionMappingFile(
-                route.mapping, route.mappingMajorVer
+                route.mapping, route.majorVer
             )
 
             val mapping = Asset(mappingFile.mapping)
@@ -269,13 +272,13 @@ constructor(
             logger.info("Not creating ${route.indexUrl}, already exists")
         }
 
-        val patches = getMinorVersionMappingFiles(route.mapping, route.mappingMajorVer)
+        val patches = getMinorVersionMappingFiles(route.mapping, route.majorVer)
         for (patch in patches) {
             /**
              * If the index already existed, then only apply new patches. If
              * the index was just created, then apply all patches.
              */
-            if (indexExisted && route.mappingMinorVer >= patch.minorVersion) {
+            if (indexExisted && route.minorVer >= patch.minorVersion) {
                 continue
             }
             applyMinorVersionMappingFile(route, patch)
@@ -287,7 +290,7 @@ constructor(
     }
 
     override fun getMajorVersionMappingFile(mappingType: String, majorVersion: Int): ElasticMapping {
-        val path = "db/migration/elasticsearch/V${majorVersion}__$mappingType.json"
+        val path = "db/migration/elasticsearch/${mappingType}.v${majorVersion}.json"
         val resource = ClassPathResource(path)
         val mapping = Json.Mapper.readValue<MutableMap<String, Any>>(resource.inputStream)
         return ElasticMapping(mappingType, majorVersion, 0, mapping)
@@ -301,9 +304,9 @@ constructor(
         for (resource in resources) {
             val matcher = MAP_PATCH_REGEX.matchEntire(resource.filename)
             matcher?.let {
-                val major = it.groupValues[1].toInt()
-                val minor = it.groupValues[2].toInt()
-                val type = it.groupValues[3]
+                val type = it.groupValues[1]
+                val major = it.groupValues[2].toInt()
+                val minor = it.groupValues[3].toInt()
 
                 if (major == majorVersion && type == mappingType) {
                     val json = Json.Mapper.readValue<MutableMap<String, Any>>(
@@ -438,15 +441,11 @@ constructor(
     companion object {
         private val logger = LoggerFactory.getLogger(IndexRoutingServiceImpl::class.java)
 
-        /**
-         * Number of seconds to delay a reindex job, which allows users to make more selections
-         * which might kick off another reindex job to happen.
-         */
-        const val REINDEX_JOB_DELAY_SEC = 20L
+        // Matches major version file foo.v1.json
+        private val MAP_MAJOR_REGEX = Regex("^(.*?).v(\\d+).json$")
 
-        private val MAP_MAJOR_REGEX = Regex("^V(\\d+)__(.*?).json$")
-
-        private val MAP_PATCH_REGEX = Regex("^V(\\d+)\\.(\\d{8})__(.*?).json$")
+        // Matches minor version file foo.v1-02020202.json
+        private val MAP_PATCH_REGEX = Regex("^(.*?).v(\\d+)-(\\d{8}).json$")
     }
 }
 

@@ -53,5 +53,3 @@ def app_from_env():
         with open(os.environ['PIXML_APIKEY_FILE'], 'rb') as fp:
             apikey = base64.b64encode(fp.read())
     return PixmlApp(apikey, os.environ.get('PIXML_SERVER'))
-
-

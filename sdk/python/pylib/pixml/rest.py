@@ -8,10 +8,10 @@ import os
 import random
 import sys
 import time
+from urllib.parse import urljoin
 
 import jwt
 import requests
-import uritools
 import urllib3
 
 from .exception import PixmlException
@@ -321,7 +321,7 @@ class PixmlClient(object):
         """
         Returns the full URL including the configured server part.
         """
-        url = uritools.urijoin(self.server, path)
+        url = urljoin(self.server, path)
         if logger.getEffectiveLevel() == logging.DEBUG:
             logger.debug("url: '%s' path: '%s' body: '%s'" % (url, path, body))
         return url
@@ -382,6 +382,44 @@ class PixmlClient(object):
         return jwt.encode(claims, self.apikey['sharedKey'], algorithm='HS512').decode("utf-8")
 
 
+class SearchResult(object):
+    """
+    A utility class for wrapping various search result formats
+    that come back from the PixelML servers.
+    """
+
+    def __init__(self, data, clazz):
+        """
+        Create a new SearchResult instance.
+
+        Note that its possible to both iterate and index a SearchResult
+        as a list. For example
+
+        Args:
+            data (dict): A search response body from the PixelML servers.
+            clazz (mixed): A class to wrap each item in the response body.
+        """
+        # the "hits" key indicates its an ElasticSearch result.
+        if "hits" in data:
+            hits = data["hits"]
+            self.items = [clazz({"id": hit["_id"], "document": hit["_source"]})
+                          for hit in data["hits"]["hits"]]
+            self.offset = hits.get("offset", 0)
+            self.size = len(hits["hits"])
+            self.total = hits["total"]["value"]
+        else:
+            self.items = [clazz(item) for item in data["list"]]
+            self.offset = data["page"]["from"]
+            self.size = len(data["list"])
+            self.total = data["page"]["totalCount"]
+
+    def __iter__(self):
+        return iter(self.items)
+
+    def __getitem__(self, idx):
+        return self.items[idx]
+
+
 class PixmlJsonEncoder(json.JSONEncoder):
     """
     JSON encoder for with Pixml specific serialization defaults.
@@ -393,11 +431,11 @@ class PixmlJsonEncoder(json.JSONEncoder):
         elif isinstance(obj, (set, frozenset)):
             return list(obj)
         elif isinstance(obj, datetime.datetime):
-            return obj.strftime("%Y-%m-%d %H:%M:%S %z").strip()
+            return obj.isoformat()
         elif isinstance(obj, datetime.date):
-            return obj.strftime("%Y-%m-%d")
+            return obj.isoformat()
         elif isinstance(obj, datetime.time):
-            return obj.strftime("%H:%M:%S %z").strip()
+            return obj.isoformat()
         elif isinstance(obj, decimal.Decimal):
             return float(obj)
 

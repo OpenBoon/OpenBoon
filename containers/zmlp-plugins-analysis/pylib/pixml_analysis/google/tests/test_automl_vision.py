@@ -9,7 +9,6 @@ from pixml.analysis.storage import add_proxy_file
 from ..processors import AutoMLVisionModelProcessor
 
 
-
 class AutoMLVisionUnitTests(PluginUnitTestCase):
 
     # Test disabled until Travis or GitLab have latest version of zorroa-test-data

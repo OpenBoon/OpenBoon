@@ -7,7 +7,7 @@ import numpy as np
 from pathlib2 import Path
 
 from pixml.analysis import AssetBuilder, Argument
-from pixml.analysis.storage import get_proxy_file
+from pixml.analysis.storage import get_proxy_level
 
 package_directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -39,7 +39,9 @@ class ResNetClassifyProcessor(AssetBuilder):
     def process(self, frame):
         asset = frame.asset
 
-        _, p_path = get_proxy_file(asset, 384, fallback=True)
+        p_path = get_proxy_level(asset, 0)
+        if not p_path:
+            self.logger.warning("No proxy available for ResNetClassifyProcessor")
         img = cv2.imread(p_path)
         img = cv2.resize(img, (224, 224))
         img = np.swapaxes(img, 0, 2)
@@ -56,25 +58,26 @@ class ResNetClassifyProcessor(AssetBuilder):
         # the floating point probabilities attrs
         psort = np.argsort(prob)[::-1]
         kw = []
-
-        # All other values are added via debug mode only to limit ES field creation
-        struct = {}
-
         for j, i in enumerate(psort[0:5]):
-            if self.arg_value("debug"):
-                struct["pred" + str(j)] = ','.join(self.labels[i].replace(',', '').split(' ')[1:])
-                struct["prob" + str(j)] = prob[i]
             kw.extend([k.strip() for k in self.labels[i].split(',') if k])
 
-        # No need to duplicate into suggest
-        struct["keywords"] = list(set(kw))
+        struct = {
+            'keywords': list(set(kw)),
+            'score': float(prob[psort[0]])
+        }
 
-        if self.arg_value("debug"):
-            struct["type"] = "mxnet"
-            struct["model"] = os.path.basename(self.model_path)
-            struct["scores"] = prob[0]
+        # Debug info, if enabled.
+        if self.arg_value('debug'):
+            struct['debug'] = {
+                'type': 'mxnet',
+                'model': os.path.basename(self.model_path),
+            }
+            for j, i in enumerate(psort[0:5]):
+                struct['debug']['pred' + str(j)] = ','.join(
+                    self.labels[i].replace(',', '').split(' ')[1:])
+                struct['debug']['prob' + str(j)] = prob[i]
 
-        asset.add_analysis("imageClassify", struct)
+        asset.add_analysis('pixelml.labels', struct)
 
 
 class ResNetSimilarityProcessor(AssetBuilder):
@@ -103,7 +106,10 @@ class ResNetSimilarityProcessor(AssetBuilder):
 
     def process(self, frame):
         asset = frame.asset
-        _, p_path = get_proxy_file(asset, 384, fallback=True)
+        p_path = get_proxy_level(asset, 0)
+        if not p_path:
+            self.logger.warning("No proxy available for ResNetSimilarityProcessor")
+            return
         img = cv2.imread(p_path)
         img = cv2.resize(img, (224, 224))
         if img.shape == (224, 224):
@@ -125,19 +131,18 @@ class ResNetSimilarityProcessor(AssetBuilder):
         features = np.squeeze(features)
 
         mxh = np.clip((features*16).astype(int), 0, 15) + 65
-
         mxhash = "".join([chr(item) for item in mxh])
-        # Prepend the hash header
-        # char 0: the version of the hash. The plugin only compares hashes of the same version.
-        # char 1-2: (HEX) the position of the hash where the data starts.
-        # char 3-4: (HEX) the resolution of the hash.
 
-        mxhash = '0050F' + mxhash
+        mxhash = mxhash
         struct = {
-            "shash": mxhash
+            'vector': mxhash
         }
-        if self.arg_value("debug"):
-            struct["type"] = "mxnet"
-            struct["model"] = os.path.basename(self.model_path)
 
-        asset.add_analysis("imageSimilarity", struct)
+        if self.arg_value("debug"):
+            # Debug goes into a "debug" struct which doesn't create ES fields
+            struct['debug'] = {
+                'type': 'mxnet',
+                'model': os.path.basename(self.model_path)
+            }
+
+        asset.add_analysis('pixelml.similarity', struct)

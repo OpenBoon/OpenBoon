@@ -6,22 +6,20 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
-import com.zorroa.archivist.clients.ZmlpUser
-import com.zorroa.archivist.rest.MockSecurityContext
+import com.nhaarman.mockito_kotlin.whenever
+import com.zorroa.archivist.clients.ZmlpActor
 import com.zorroa.archivist.security.AnalystAuthentication
+import com.zorroa.archivist.security.AnalystTokenValidator
 import com.zorroa.archivist.security.Perm
 import com.zorroa.archivist.security.Role
 import com.zorroa.archivist.util.Json
 import org.junit.Before
-import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
-import org.springframework.mock.web.MockHttpSession
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.FilterChainProxy
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -40,6 +38,9 @@ abstract class MockMvcTest : AbstractTest() {
     @Autowired
     lateinit var springSecurityFilterChain: FilterChainProxy
 
+    @MockBean
+    lateinit var analystTokenValidator: AnalystTokenValidator
+
     lateinit var mvc: MockMvc
 
     @Before
@@ -55,8 +56,8 @@ abstract class MockMvcTest : AbstractTest() {
          * When using the 'job()' method to authenticate in a controller test,
          * this will be your PixmlActor.
          */
-        Mockito.`when`(authServerClient.authenticate(eq("JOBRUNNER"))).then {
-            ZmlpUser(
+        whenever(authServerClient.authenticate(eq("JOBRUNNER"))).then {
+            ZmlpActor(
                 UUID.fromString("00000000-0000-0000-0000-000000000001"),
                 project.id,
                 "JobRunner",
@@ -68,13 +69,17 @@ abstract class MockMvcTest : AbstractTest() {
          * When using the 'admin()' method to authenticate in a controller test,
          * this will be your PixmlActor.
          */
-        Mockito.`when`(authServerClient.authenticate(eq("ADMIN"))).then {
-            ZmlpUser(
+        whenever(authServerClient.authenticate(eq("ADMIN"))).then {
+            ZmlpActor(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 project.id,
                 "unittest-key",
                 listOf(Role.SUPERADMIN, Role.PROJADMIN, Perm.MONITOR_SERVER)
             )
+        }
+
+        whenever(analystTokenValidator.validateJwtToken(eq("ANALYST"), any())).then {
+            AnalystAuthentication("http://localhost:5000", "unittest")
         }
     }
 
@@ -121,15 +126,6 @@ abstract class MockMvcTest : AbstractTest() {
         SecurityContextHolder.getContext().authentication = savedAuthentication
     }
 
-    private fun buildSession(authentication: Authentication): MockHttpSession {
-        val session = MockHttpSession()
-        session.setAttribute(
-            HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-            MockSecurityContext(authentication)
-        )
-        return session
-    }
-
     protected fun <T> deserialize(result: MvcResult, type: Class<T>): T {
         return Json.deserialize(result.response.contentAsByteArray, type)
     }
@@ -138,9 +134,6 @@ abstract class MockMvcTest : AbstractTest() {
         return Json.deserialize(result.response.contentAsByteArray, type)
     }
 
-    /**
-     * @return a session for an admin with the id 1.
-     */
     protected fun admin(): HttpHeaders {
         val headers = HttpHeaders()
         headers["Authorization"] = "Bearer ADMIN"
@@ -153,8 +146,10 @@ abstract class MockMvcTest : AbstractTest() {
         return headers
     }
 
-
-    protected fun analyst(): MockHttpSession {
-        return buildSession(AnalystAuthentication("https://127.0.0.1:5000"))
+    protected fun analyst(): HttpHeaders {
+        val headers = HttpHeaders()
+        headers["Authorization"] = "Bearer ANALYST"
+        return headers
     }
+
 }

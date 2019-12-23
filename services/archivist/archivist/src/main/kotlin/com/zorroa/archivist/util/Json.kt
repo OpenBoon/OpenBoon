@@ -10,9 +10,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.zorroa.archivist.domain.FileStorage
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.UUID
 
 inline fun <reified T : Any> ObjectMapper.readValueOrNull(content: String?): T? {
     return if (content == null) {
@@ -22,18 +22,20 @@ inline fun <reified T : Any> ObjectMapper.readValueOrNull(content: String?): T? 
     }
 }
 
+fun printjson(any: Any) {
+    try {
+        println(Json.Mapper.writerWithDefaultPrettyPrinter().writeValueAsString(any))
+    } catch (e: JsonProcessingException) {
+        throw IllegalArgumentException(
+            "Failed to serialize object, unexpected: $e", e)
+    }
+}
+
 object Json {
 
     val GENERIC_MAP: TypeReference<Map<String, Any>> = object : TypeReference<Map<String, Any>>() {}
     val LIST_OF_GENERIC_MAP: TypeReference<List<Map<String, Any>>> = object : TypeReference<List<Map<String, Any>>>() {}
-    val STRING_MAP: TypeReference<Map<String, String>> = object : TypeReference<Map<String, String>>() {}
-    val SET_OF_INTS: TypeReference<Set<Int>> = object : TypeReference<Set<Int>>() {}
-    val SET_OF_STRINGS: TypeReference<Set<String>> = object : TypeReference<Set<String>>() {}
-    val LIST_OF_INTS: TypeReference<List<Int>> = object : TypeReference<List<Int>>() {}
-    val LIST_OF_STRINGS: TypeReference<List<String>> = object : TypeReference<List<String>>() {}
-    val LIST_OF_OBJECTS: TypeReference<List<Any>> = object : TypeReference<List<Any>>() {}
-    val SET_OF_UUIDS: TypeReference<Set<UUID>> = object : TypeReference<Set<UUID>>() {}
-    val LIST_OF_UUIDS: TypeReference<List<UUID>> = object : TypeReference<List<UUID>>() {}
+    val LIST_OF_FILE_STORAGE: TypeReference<List<FileStorage>> = object : TypeReference<List<FileStorage>>() {}
 
     val Mapper = ObjectMapper()
 

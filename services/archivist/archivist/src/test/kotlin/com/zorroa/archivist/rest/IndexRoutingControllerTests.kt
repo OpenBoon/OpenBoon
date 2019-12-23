@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
@@ -15,6 +16,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import kotlin.test.assertEquals
 
 class IndexRoutingControllerTests : MockMvcTest() {
+
+    @Value("\${archivist.es.url}")
+    lateinit var esUrl: String
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -37,9 +41,9 @@ class IndexRoutingControllerTests : MockMvcTest() {
 
         val result = Json.Mapper.readValue<IndexRoute>(rsp.response.contentAsString)
 
-        assertEquals("http://localhost:9200", result.clusterUrl)
+        assertEquals(esUrl, result.clusterUrl)
         assertEquals("test", result.mapping)
-        assertEquals(1, result.mappingMajorVer)
+        assertEquals(1, result.majorVer)
         assertEquals(0, result.replicas)
         assertEquals(2, result.shards)
     }
@@ -57,9 +61,9 @@ class IndexRoutingControllerTests : MockMvcTest() {
 
         val result = Json.Mapper.readValue<IndexRoute>(rsp.response.contentAsString)
 
-        assertEquals("http://localhost:9200", result.clusterUrl)
+        assertEquals(esUrl, result.clusterUrl)
         assertEquals("test", result.mapping)
-        assertEquals(1, result.mappingMajorVer)
+        assertEquals(1, result.majorVer)
         assertEquals(0, result.replicas)
         assertEquals(2, result.shards)
     }

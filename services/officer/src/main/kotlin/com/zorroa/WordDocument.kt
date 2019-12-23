@@ -1,21 +1,14 @@
 package com.zorroa
 
-import com.aspose.words.FontSettings
 import com.aspose.words.ImageSaveOptions
 import com.aspose.words.PdfSaveOptions
 import java.io.ByteArrayOutputStream
+import java.io.InputStream
 import kotlin.system.measureTimeMillis
 
-class WordDocument(options: Options) : Document(options) {
+class WordDocument(options: RenderRequest, inputStream: InputStream) : Document(options) {
 
-    private val doc = com.aspose.words.Document(ioHandler.getInputPath())
-
-    init {
-        if (options.verbose) {
-            logFontsUsed()
-            logAvailableFonts()
-        }
-    }
+    private val doc = com.aspose.words.Document(inputStream)
 
     private fun logFontsUsed() {
         logger.info("Fonts used in document:")
@@ -26,28 +19,21 @@ class WordDocument(options: Options) : Document(options) {
         }
     }
 
-    private fun logAvailableFonts() {
-        logger.info("Fonts available from default font source:")
-        for (fontInfo in FontSettings.getDefaultInstance().fontsSources[0].availableFonts) {
-            logger.info("*** FontFamilyName : " + fontInfo.fontFamilyName)
-            logger.info("*** FullFontName  : " + fontInfo.fullFontName)
-            logger.info("*** Version  : " + fontInfo.version)
-            logger.info("*** FilePath : " + fontInfo.filePath)
-        }
-    }
-
-    override fun renderAllImages() {
+    override fun renderAllImages(): Int {
         val pageCount = doc.pageCount
         for (page in 1..pageCount) {
             renderImage(page)
         }
+        return doc.pageCount
     }
 
-    override fun renderAllMetadata() {
+    override fun renderAllMetadata(): Int {
+
         val pageCount = doc.pageCount
         for (page in 1..pageCount) {
             renderMetadata(page)
         }
+        return doc.pageCount
     }
 
     override fun renderImage(page: Int) {
@@ -56,8 +42,11 @@ class WordDocument(options: Options) : Document(options) {
             imageSaveOptions.horizontalResolution = 96f
             imageSaveOptions.verticalResolution = 96f
             imageSaveOptions.pageCount = 1
-            imageSaveOptions.pageIndex = page - 1
-            doc.save(ioHandler.getImagePath(page).toString(), imageSaveOptions)
+            imageSaveOptions.pageIndex = (page - 1).coerceAtLeast(0)
+
+            val output = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
+            doc.save(output, imageSaveOptions)
+            ioHandler.writeImage(page, output)
         }
         logImageTime(page, time)
     }
@@ -67,32 +56,22 @@ class WordDocument(options: Options) : Document(options) {
             val props = doc.builtInDocumentProperties
             val metadata = mutableMapOf<String, Any?>()
 
+            metadata["type"] = "document"
             metadata["title"] = props.title
             metadata["author"] = props.author
             metadata["keywords"] = props.keywords
-            metadata["description"] = props.category
-            metadata["timeCreated"] = try {
-                props.createdTime
-            } catch (e: Exception) {
-                null
-            }
-            metadata["timeModified"] = try {
-                props.lastSavedTime
-            } catch (e: Exception) {
-                null
-            }
-            metadata["pages"] = doc.pageCount
+            metadata["timeCreated"] = convertDate(props.createdTime)
+            metadata["length"] = doc.pageCount
 
-            val pageInfo = doc.getPageInfo(page - 1)
+            val pageInfo = doc.getPageInfo((page - 1).coerceAtLeast(0))
             metadata["height"] = pageInfo.heightInPoints
             metadata["width"] = pageInfo.widthInPoints
             metadata["orientation"] = if (pageInfo.landscape) "landscape" else "portrait"
+            metadata["content"] = extractPageContent(page)
 
-            if (options.content) {
-                metadata["content"] = extractPageContent(page)
-            }
-
-            Json.mapper.writeValue(getMetadataFile(page), metadata)
+            val output = ReversibleByteArrayOutputStream()
+            Json.mapper.writeValue(output, metadata)
+            ioHandler.writeMetadata(page, output)
         }
         logMetadataTime(page, time)
     }

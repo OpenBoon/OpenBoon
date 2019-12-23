@@ -1,10 +1,19 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch-oss:6.4.3
+FROM maven:3.6.2-jdk-11-slim as mvn_build
+COPY es-kwconf es-kwconf
+COPY es-similarity es-similarity
+COPY pom.xml pom.xml
+RUN mvn clean install -Dmaven.test.skip=true
 
-# After running build steps locally there is no dist directory
-#COPY ./dist /usr/share/elasticsearch/plugins/
+FROM docker.elastic.co/elasticsearch/elasticsearch-oss:7.5.1
 
-COPY ./es-kwconf/target/releases/es-kwconf.zip /usr/share/elasticsearch/plugins/es-kwconf.zip
-COPY ./es-similarity/target/releases/es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip
+COPY ./docker/jvm.options /usr/share/elasticsearch/config
+COPY --from=mvn_build ./es-kwconf/target/releases/es-kwconf.zip /usr/share/elasticsearch/plugins/es-kwconf.zip
+COPY --from=mvn_build ./es-similarity/target/releases/es-similarity.zip /usr/share/elasticsearch/plugins/es-similarity.zip
+COPY --from=mvn_build /usr/local/openjdk-11 /usr/local/openjdk-11
+RUN yum install -y unzip wget
+
+ENV PATH="/usr/local/openjdk-11/bin:${PATH}"
+ENV JAVA_HOME="/usr/local/openjdk-11"
 
 WORKDIR /usr/share/elasticsearch/plugins
 
@@ -16,11 +25,14 @@ RUN unzip es-kwconf.zip
 RUN mv elasticsearch zorroa-kwconf
 RUN rm es-kwconf.zip
 
-RUN mkdir /usr/share/elasticsearch/plugins/prometheus-exporter
-WORKDIR /usr/share/elasticsearch/plugins/prometheus-exporter
+RUN yum remove -y unzip wget
 
-RUN wget https://distfiles.compuscene.net/elasticsearch/elasticsearch-prometheus-exporter-6.4.3.0.zip
-RUN unzip elasticsearch-prometheus-exporter-6.4.3.0.zip
-RUN rm elasticsearch-prometheus-exporter-6.4.3.0.zip
+# Uncomment when this version comes out.
+#RUN mkdir /usr/share/elasticsearch/plugins/prometheus-exporter
+#WORKDIR /usr/share/elasticsearch/plugins/prometheus-exporter
+
+#RUN wget https://distfiles.compuscene.net/elasticsearch/elasticsearch-prometheus-exporter-7.5.1.0.zip
+#RUN unzip elasticsearch-prometheus-exporter-7.5.1.0.zip
+#RUN rm elasticsearch-prometheus-exporter-7.5.1.0.zip
 
 WORKDIR /usr/share/elasticsearch

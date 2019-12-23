@@ -7,13 +7,14 @@ import com.aspose.cells.MemorySetting
 import com.aspose.cells.SheetRender
 import com.aspose.cells.Workbook
 import com.aspose.cells.Worksheet
+import java.io.InputStream
 import kotlin.system.measureTimeMillis
 
 const val PAGE_LIMIT = 9
 const val CELL_RANGE_MAX_COLUMNS = 10
 const val CELL_RANGE_MAX_ROWS = 25
 
-class CellsDocument(options: Options) : Document(options) {
+class CellsDocument(options: RenderRequest, inputStream: InputStream) : Document(options) {
 
     private val loadOptions = LoadOptions()
 
@@ -22,22 +23,24 @@ class CellsDocument(options: Options) : Document(options) {
         loadOptions.memorySetting = MemorySetting.MEMORY_PREFERENCE
     }
 
-    private val workbook = Workbook(ioHandler.getInputPath(), loadOptions)
+    private val workbook = Workbook(inputStream, loadOptions)
 
-    override fun renderAllImages() {
+    override fun renderAllImages(): Int {
         for (page in 0 until workbook.worksheets.count) {
             renderImage(page + 1)
         }
+        return workbook.worksheets.count
     }
 
-    override fun renderAllMetadata() {
+    override fun renderAllMetadata(): Int {
         for (page in 0 until workbook.worksheets.count) {
             renderMetadata(page + 1)
         }
+        return workbook.worksheets.count
     }
 
     override fun renderImage(page: Int) {
-        val worksheet = workbook.worksheets.get(page - 1)
+        val worksheet = workbook.worksheets.get((page - 1).coerceAtLeast(0))
         val pageCount = SheetRender(worksheet, renderingOptions(false)).pageCount
         try {
             val time = measureTimeMillis {
@@ -56,7 +59,9 @@ class CellsDocument(options: Options) : Document(options) {
 
     fun saveSheetProxy(worksheet: Worksheet, page: Int) {
         val sr = SheetRender(worksheet, renderingOptions(true))
-        sr.toImage(0, ioHandler.getImagePath(page).toString())
+        val output = ReversibleByteArrayOutputStream(IOHandler.IMG_BUFFER_SIZE)
+        sr.toImage(0, output)
+        ioHandler.writeImage(page, output)
     }
 
     fun saveSheetProxyWithCellRange(worksheet: Worksheet, page: Int) {
@@ -77,6 +82,7 @@ class CellsDocument(options: Options) : Document(options) {
         imageOrPrintOptions.verticalResolution = 100
         imageOrPrintOptions.imageType = ImageType.JPEG
         imageOrPrintOptions.onePagePerSheet = singlePage
+        imageOrPrintOptions.pageCount = 1
         return imageOrPrintOptions
     }
 
@@ -85,34 +91,30 @@ class CellsDocument(options: Options) : Document(options) {
             val props = workbook.builtInDocumentProperties
             val metadata = mutableMapOf<String, Any?>()
 
+            metadata["type"] = "document"
             metadata["title"] = props.title
             metadata["author"] = props.author
             metadata["keywords"] = props.keywords
             metadata["description"] = props.category
+            metadata["timeCreated"] = convertDate(props.createdTime?.toDate())
+            metadata["length"] = workbook.worksheets.count
 
-            metadata["timeCreated"] = try {
-                props.createdTime.toDate()
-            } catch (e: Exception) {
-                null
-            }
-            metadata["timeModified"] = try {
-                props.lastSavedTime.toDate()
-            } catch (e: Exception) {
-                null
-            }
+            val worksheet = workbook.worksheets[page.coerceAtLeast(0)]
+            metadata["description"] = worksheet.name
 
-            metadata["pages"] = workbook.worksheets.count
-
-            if (options.content) {
-                logger.warn("Option ignored, storing worksheet content is not supported.")
-            }
-            Json.mapper.writeValue(getMetadataFile(page), metadata)
+            val output = ReversibleByteArrayOutputStream()
+            Json.mapper.writeValue(output, metadata)
+            ioHandler.writeMetadata(page, output)
         }
         logMetadataTime(page, time)
     }
 
     override fun close() {
-        workbook.dispose()
+        try {
+            workbook.dispose()
+        } catch (e: Exception) {
+            // ignore
+        }
     }
 
     companion object {

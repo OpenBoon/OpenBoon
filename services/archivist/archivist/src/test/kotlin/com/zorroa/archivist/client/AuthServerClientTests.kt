@@ -18,15 +18,36 @@ import java.net.URI
 import java.util.UUID
 import kotlin.test.assertEquals
 
-@TestPropertySource(locations = ["classpath:test.properties", "classpath:jwt.properties"])
+@TestPropertySource(locations = ["classpath:jwt.properties"])
 class AuthServerClientTests : AbstractTest() {
 
     lateinit var mockServer: MockRestServiceServer
 
     @Before
     fun init() {
-        authServerClient = AuthServerClientImpl("http://localhost:9090")
+        authServerClient = AuthServerClientImpl("http://localhost:9090", null)
         mockServer = MockRestServiceServer.createServer(authServerClient.rest)
+    }
+
+    @Test
+    fun testBase64Key() {
+        val base64 = "ewogICJuYW1lIjogImFkbWluLWtleSIsCiAgInByb2plY3RJZCI6ICI1MDU1ME" +
+            "FBQy02QzVBLTQxQ0QtQjc3OS0yODIxQkI1QjUzNUYiLAogICJrZXlJZCI6ICI3NjA5NDMxNy" +
+            "1EOTY4LTQzQTgtQjlEQy1EMDY4MEE4OTlBRDciLAogICJzaGFyZWRLZXkiOiAicGNla2pEVl9" +
+            "pcFNNWEFhQnFxdHE2Snd5NUZBTW5qZWhVUXJNRWhiRzhXMDFnaVZxVkxmRU45RmRNSXZ6dTByY" +
+            "iIsCiAgInBlcm1pc3Npb25zIjogWyJTdXBlckFkbWluIl0KfQoK"
+        val client = AuthServerClientImpl("http://localhost:9090", base64)
+        val serviceKey = client.serviceKey
+        assertEquals(UUID.fromString("50550AAC-6C5A-41CD-B779-2821BB5B535F"), serviceKey?.projectId)
+        assertEquals(UUID.fromString("76094317-D968-43A8-B9DC-D0680A899AD7"), serviceKey?.keyId)
+    }
+
+    @Test
+    fun testLoadKeyFile() {
+        val client = AuthServerClientImpl("http://localhost:9090", "src/test/resources/inception-key.json")
+        val serviceKey = client.serviceKey
+        assertEquals(UUID.fromString("00000000-0000-0000-0000-000000000000"), serviceKey?.projectId)
+        assertEquals(UUID.fromString("4338a83f-a920-40ab-a251-a123b17df1ba"), serviceKey?.keyId)
     }
 
     @Test

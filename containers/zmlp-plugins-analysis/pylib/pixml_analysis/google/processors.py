@@ -18,7 +18,8 @@ from .base import GoogleApiDocumentProcessor
 from .base import AutoMLModelProcessor
 
 from pixml.analysis import Argument, PixmlUnrecoverableProcessorException
-from pixml.analysis.storage import get_proxy_file
+from pixml.analysis.storage import get_proxy_level
+
 
 class CloudVisionProcessor(GoogleApiDocumentProcessor):
     """Use Google Cloud Vision API to analyze images."""
@@ -78,7 +79,9 @@ class CloudVisionProcessor(GoogleApiDocumentProcessor):
 
     def process(self, frame):
         asset = frame.asset
-        _, path = get_proxy_file(asset, 512, fallback=True)
+        path = get_proxy_level(asset, 1)
+        if not path:
+            return
         if Path(path).stat().st_size > 10485760:
             raise PixmlUnrecoverableProcessorException(
                 'The image is too large to submit to Google ML. Image size must '
@@ -300,7 +303,7 @@ class CloudVideoIntelligenceProcessor(GoogleApiDocumentProcessor):
 
     def process(self, frame):
         asset = frame.asset
-        if not asset.is_clip():
+        if not asset.attr_exists("clip"):
             self.logger.info('Skipping this frame, it is not a video clip.')
             return
         clip_contents = self._get_clip_bytes(asset)
@@ -423,7 +426,7 @@ class CloudSpeechToTextProcessor(GoogleApiDocumentProcessor):
     def process(self, frame):
         asset = frame.asset
         analysis_field = 'google.speechRecognition'
-        if not asset.is_clip():
+        if not asset.attr_exists("clip"):
             self.logger.warning('Skipping, this asset is not a clip.')
             return
         if not self.arg_value('overwrite_existing') and asset.get_attr('analysis.%s' %
@@ -569,7 +572,7 @@ class AutoMLVisionModelProcessor(AutoMLModelProcessor):
         return 'automl_vision'
 
     def _create_payload(self, asset):
-        _, file_path = get_proxy_file(asset, 512, fallback=True)
+        file_path = get_proxy_level(asset, 1)
         with open(file_path, 'rb') as fh:
             content = fh.read()
 
@@ -624,7 +627,7 @@ class AutoMLNLPModelProcessor(AutoMLModelProcessor):
 
         #
         # TODO: a pixml search instead.
-        #archivist.AssetSearch().term_filter("media.clip.parent", asset.id)
+        # archivist.AssetSearch().term_filter("media.clip.parent", asset.id)
         #
         search = []
         for child in search:

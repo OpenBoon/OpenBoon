@@ -19,9 +19,9 @@ class AuthController {
     fun authToken(@RequestHeader headers: HttpHeaders, auth: Authentication): Map<String, Any> {
         val user = auth.principal as ZmlpActor
         return mapOf(
-                "name" to user.name,
-                "projectId" to user.projectId,
-                "keyId" to user.keyId,
-                "permissions" to auth.authorities.map { it.toString() })
+            "name" to user.name,
+            "projectId" to user.projectId,
+            "keyId" to user.keyId,
+            "permissions" to auth.authorities.map { it.toString() })
     }
 }

@@ -6,16 +6,15 @@ import com.zorroa.archivist.domain.TaskFilter
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
-import com.zorroa.archivist.util.copyInputToOuput
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -30,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController
 import java.io.IOException
 import java.util.UUID
 import java.util.concurrent.ExecutionException
-import javax.servlet.http.HttpServletResponse
 
 @PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
 @RestController
@@ -72,9 +70,13 @@ class TaskController @Autowired constructor(
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
     fun retry(@ApiParam("UUID of the Task.") @PathVariable id: UUID): Any {
-        return HttpUtils.status("Task", id, "retry",
-                dispatcherService.retryTask(jobService.getInternalTask(id),
-                        "Retried by ${getProjectId()}"))
+        val task = jobService.getInternalTask(id)
+        val result =  dispatcherService.retryTask(task,
+            "Retried by ${getZmlpActor().keyId}")
+        if (result) {
+            jobService.restartJob(task)
+        }
+        return HttpUtils.status("Task", id, "retry", result)
     }
 
     @ApiOperation("Skip a Task.")
@@ -93,21 +95,6 @@ class TaskController @Autowired constructor(
     @Throws(ExecutionException::class, IOException::class)
     fun getScript(@ApiParam("UUID of the Task.") @PathVariable id: UUID): ZpsScript {
         return jobService.getZpsScript(id)
-    }
-
-    @ApiOperation("Get the logs for a Task.")
-    @GetMapping(value = ["/api/v1/tasks/{id}/_log"])
-    @ResponseBody
-    @Throws(ExecutionException::class, IOException::class)
-    fun getLog(@ApiParam("UUID of the Task.") @PathVariable id: UUID, rsp: HttpServletResponse) {
-        val sf = jobService.getTaskLog(id)
-        if (sf.exists()) {
-            rsp.contentType = "text/plain"
-            rsp.setContentLengthLong(sf.getStat().size)
-            copyInputToOuput(sf.getInputStream(), rsp.outputStream)
-        } else {
-            rsp.status = HttpStatus.NOT_FOUND.value()
-        }
     }
 
     @ApiOperation("Get a list of the Task's errors.")

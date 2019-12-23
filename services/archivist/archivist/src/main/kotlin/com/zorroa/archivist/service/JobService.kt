@@ -14,7 +14,6 @@ import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.domain.ServableFile
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorFilter
@@ -29,7 +28,8 @@ import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.getZmlpUser
+import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.archivist.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -58,7 +58,6 @@ interface JobService {
     fun updateJob(job: Job, spec: JobUpdateSpec): Boolean
     fun getTaskErrors(filter: TaskErrorFilter): KPagedList<TaskError>
     fun deleteTaskError(id: UUID): Boolean
-    fun getTaskLog(id: UUID): ServableFile
     fun deleteJob(job: JobId): Boolean
     fun getExpiredJobs(duration: Long, unit: TimeUnit, limit: Int): List<Job>
     fun checkAndSetJobFinished(job: JobId): Boolean
@@ -81,9 +80,6 @@ class JobServiceImpl @Autowired constructor(
     @Autowired
     private lateinit var pipelineService: PipelineService
 
-    @Autowired
-    lateinit var fileStorageService: FileStorageService
-
     override fun create(spec: JobSpec): Job {
         if (spec.script != null) {
             val type = if (spec.script?.type == null) {
@@ -98,7 +94,7 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun create(spec: JobSpec, type: JobType): Job {
-        val user = getZmlpUser()
+        val user = getZmlpActor()
         if (spec.name == null) {
             val date = Date()
             spec.name = "${type.name} job launched by ${user.projectId} on $date"
@@ -119,7 +115,7 @@ class JobServiceImpl @Autowired constructor(
              */
             txevent.afterCommit(sync = false) {
                 val filter = JobFilter(
-                    states = listOf(JobState.Active),
+                    states = listOf(JobState.InProgress),
                     names = listOf(job.name)
                 )
                 val oldJobs = jobDao.getAll(filter)
@@ -198,13 +194,6 @@ class JobServiceImpl @Autowired constructor(
         return taskDao.getScript(id)
     }
 
-    @Transactional(readOnly = true)
-    override fun getTaskLog(id: UUID): ServableFile {
-        val task = getTask(id)
-        val st = fileStorageService.get(task.getLogSpec())
-        return st.getServableFile()
-    }
-
     override fun createTask(job: JobId, spec: TaskSpec): Task {
         return taskDao.create(job, spec)
     }
@@ -225,7 +214,10 @@ class JobServiceImpl @Autowired constructor(
     override fun setTaskState(task: InternalTask, newState: TaskState, oldState: TaskState?): Boolean {
         val result = taskDao.setState(task, newState, oldState)
         if (result) {
-            if (newState == TaskState.Success || newState == TaskState.Skipped) {
+            /**
+             * If the task finished, check and set the job to finished.
+             */
+            if (newState.isFinishedState()) {
                 checkAndSetJobFinished(task)
             }
             eventBus.post(TaskStateChangeEvent(task, newState, oldState))
@@ -234,20 +226,23 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun cancelJob(job: Job): Boolean {
-        return setJobState(job, JobState.Cancelled, JobState.Active)
+        return setJobState(job, JobState.Cancelled, JobState.InProgress)
     }
 
     override fun restartJob(job: JobId): Boolean {
-        return setJobState(job, JobState.Active, null)
+        return setJobState(job, JobState.InProgress, null)
     }
 
     override fun retryAllTaskFailures(job: JobId): Int {
-
         var count = 0
         for (task in taskDao.getAll(job.jobId, TaskState.Failure)) {
-            if (setTaskState(task, TaskState.Waiting, TaskState.Failure)) {
+            // Use DAO here to avoid extra overhead of setTaskState service method
+            if (taskDao.setState(task, TaskState.Waiting, TaskState.Failure)) {
                 count++
             }
+        }
+        if (count > 0) {
+            restartJob(job)
         }
         return count
     }
@@ -266,8 +261,14 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun checkAndSetJobFinished(job: JobId): Boolean {
-        if (!jobDao.hasPendingFrames(job)) {
-            return setJobState(job, JobState.Finished, JobState.Active)
+        val counts = jobDao.getTaskStateCounts(job)
+        if (!counts.hasPendingTasks()) {
+            val newState = if (counts.hasFailures()) {
+                JobState.Failure
+            } else {
+                JobState.Success
+            }
+            return setJobState(job, newState, JobState.InProgress)
         }
         return false
     }

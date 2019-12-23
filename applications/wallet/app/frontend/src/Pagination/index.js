@@ -1,0 +1,52 @@
+import React from 'react'
+import PropTypes from 'prop-types'
+
+import { spacing, colors } from '../Styles'
+
+import PaginationLink from './Link'
+
+const Pagination = ({ currentPage, totalPages }) => {
+  return (
+    <div css={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <PaginationLink
+        currentPage={currentPage}
+        totalPages={totalPages}
+        direction="prev"
+      />
+
+      <div
+        css={{
+          padding: `${spacing.base}px ${spacing.normal}px`,
+          display: 'flex',
+          alignItems: 'center',
+          color: colors.structure.zinc,
+          backgroundColor: colors.structure.black,
+        }}>
+        {currentPage}
+      </div>
+
+      <div
+        css={{
+          padding: `${spacing.base}px ${spacing.moderate}px`,
+          display: 'flex',
+          alignItems: 'center',
+          color: colors.structure.zinc,
+        }}>
+        of {totalPages}
+      </div>
+
+      <PaginationLink
+        currentPage={currentPage}
+        totalPages={totalPages}
+        direction="next"
+      />
+    </div>
+  )
+}
+
+Pagination.propTypes = {
+  currentPage: PropTypes.number.isRequired,
+  totalPages: PropTypes.number.isRequired,
+}
+
+export default Pagination

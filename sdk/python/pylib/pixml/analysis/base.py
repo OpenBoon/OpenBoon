@@ -1,14 +1,8 @@
-import errno
-import itertools
 import logging
 import os
-import stat
-import traceback
-from shutil import copyfile
 
 from ..app import app_from_env
 from ..exception import PixmlException
-from ..util import as_collection
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +14,6 @@ __all__ = [
     "Generator",
     "AssetBuilder",
     "Argument",
-    "Reactor",
     "ProcessorHelper",
     "PixmlUnrecoverableProcessorException",
     "PixmlProcessorException",
@@ -96,6 +89,7 @@ class Frame(object):
         skip(bool): If set to True at any time, the Frame will be skipped and
             the Asset will not appear in the DB.
     """
+
     def __init__(self, asset):
         """
        Construct a new Frame.
@@ -111,6 +105,7 @@ class ExpandFrame(object):
     """When an Asset is broken down into child assets (pages, clips), the children
     are emitted as ExpandFrames which end up becoming new tasks.
     """
+
     def __init__(self, asset, copy_attrs=None):
         """
         Construct a new ExpandFrame.
@@ -124,224 +119,11 @@ class ExpandFrame(object):
         self.copy_attrs = copy_attrs
 
 
-class Reactor(object):
-    """
-    The Reactor is used to write cluster events like errors and expands
-    back to a listening service like an Analyst.
-
-    """
-
-    """
-    The default batch size if the Zps script does not provide one.
-    """
-    default_batch_size = int(os.environ.get("ZORROA_ZPS_BATCH_SIZE", 50))
-
-    """
-    The number of stack trace elements to provide in error events.
-    """
-    stack_trace_limit = 6
-
-    def __init__(self, emitter, batch_size=None):
-        """Create and return a Reactor instance.
-
-        Args:
-            executor (:obj:`Executor`): An Executor implementation has a single
-                write() method which is used to write events back to whatever
-                is collecting them, usually the Analyst.
-            batch_size (int): The default expand batch size.
-                This can be overridden by processors when check_expand() is
-                    called.
-        """
-        self.emitter = emitter
-        self.batch_size = batch_size or max(self.default_batch_size, 1)
-        self.expand_frames = []
-
-    def add_expand_frame(self, parent_frame, expand_frame, batch_size=None,
-                         force=False):
-        """Add an expand frame to the Reactor. If the expand frame buffer is
-        full an Expand event will be emitted automatically.  Alternatively,
-        you can pass in  a batch_size and force flag to customize the size
-        of the Expand event.
-
-        Args:
-            parent_frame (:obj:`Frame`): the parent frame.  Used to copy
-                attrs from parent to child.
-            expand_frame (:obj:`ExpandFrame`): the ExpandFrame
-            batch_size (:obj:`int`, optional): An optional batch size,
-                otherwise uses default from ZPS script
-            force (:obj:`bool`, optional): Optionally force the expand
-                buffer to emit regardless of size.
-        Returns:
-            int: The number of Expand events generated.
-
-        """
-        self.expand_frames.append((parent_frame, expand_frame))
-        return self.check_expand(batch_size, force)
-
-    def clear_expand_frames(self, parent_id=None):
-        """Clear out expand frames buffer. This can be done by parent asset ID in
-        the case that the parent Asset failed to process after adding children
-        to the expand buffer.
-
-        Args:
-            parent_id (:obj:`str`, optional): optional parent ID for clearing a
-                specific parent.
-
-        """
-        # expand_frames is a list of tuple (parent frame, expand_frame)
-        if parent_id:
-            self.expand_frames = [expand for expand in self.expand_frames if
-                                  expand[0].asset.id != parent_id]
-
-        else:
-            self.expand_frames[:] = []
-
-    def check_expand(self, batch_size=None, force=False):
-        """Check the expand buffer to see if it has met or exceeded the desired
-        size.  Optionally force the expand buffer to be processed.
-
-        Args:
-            batch_size (int): The size to check for.  Defaults to None which
-                pulls size from the running script.
-            force (bool): Force emitting the expand buffer.
-
-        Returns:
-            int: The number of batches created.
-
-        """
-        if not len(self.expand_frames):
-            return 0
-
-        batch_size = batch_size or self.batch_size
-
-        # If force is not set, check if the expand buffer has met the batch
-        # size
-        if not force and len(self.expand_frames) < batch_size:
-            return 0
-
-        def grouper(n, iterable):
-            it = iter(iterable)
-            while True:
-                chunk = tuple(itertools.islice(it, n))
-                if not chunk:
-                    return
-                yield chunk
-
-        batch_count = 0
-        for group in grouper(batch_size, self.expand_frames):
-            batch_count += 1
-            over = []
-            for parent_frame, group_frame in group:
-
-                # Copy metadata from the parent frame if necessary.  This is
-                # set in frame.copy_attrs
-                if group_frame.copy_attrs:
-                    for attr in group_frame.copy_attrs:
-                        logger.info("copy field='%s' to derived assetId='%s'" %
-                                    (attr, parent_frame.asset.id))
-                        group_frame.asset.set_attr(attr,
-                                                   parent_frame.asset.get_attr(
-                                                       attr))
-
-                # Check for a list of attrs in the tmp namespace and copy them
-                # down into each child.
-                copy_attrs = parent_frame.asset.get_attr(
-                    "tmp.copy_attrs_to_clip")
-                if copy_attrs:
-                    # handle the case where tmp.copy_attrs_to_clip may be a
-                    # string
-                    for attr in as_collection(copy_attrs):
-                        logger.info("copy field='%s' to derived assetId='%s'" %
-                                    (attr, parent_frame.asset.id))
-                        group_frame.asset.set_attr(attr,
-                                                   parent_frame.asset.get_attr(
-                                                       attr))
-
-                over.append(group_frame.asset.for_json())
-            self.expand(over)
-
-        self.clear_expand_frames()
-        return batch_count
-
-    def expand(self, assets):
-        """Emit an Expand event.  An Expand event will create a new task for the
-        current job.
-
-        Args:
-            assets (list of dict): A list of assets to process.
-
-        """
-        self.emitter.write({"type": "expand", "payload": {"assets": assets}})
-
-    def error(self, frame, processor, exp, fatal, phase, exec_traceback=None):
-        """Emit an Error
-
-        Args:
-            frame (:obj:`Frame`): The frame we had
-            processor (:obj:`class`): The processor the error occurred on.
-            exp (:obj:`Exception`): The exception that was thrown, or an error
-                message.
-            fatal (bool): If the error was fatal or not.
-            phase (str): The phase at which the error occurred.
-            exec_traceback (Traceback): An optional traceback from sys.exc_info
-
-        """
-        proc_name = None
-        if isinstance(processor, str):
-            proc_name = processor
-        elif processor:
-            try:
-                proc_name = processor.__class__.__name__
-            except Exception as e:
-                logger.warning("Failed to determine proc name from %s, %s" % (processor, e))
-
-        if isinstance(exp, Exception):
-            message = "%s: %s" % (exp.__class__.__name__, exp)
-        else:
-            message = str(exp)
-
-        payload = {
-            "processor": proc_name,
-            "message": message,
-            "fatal": fatal,
-            "phase": phase
-        }
-        if frame:
-            payload["path"] = frame.asset.get_attr("source.path")
-            payload["assetId"] = frame.asset.id
-
-        # Convert the python stack trace to a server side StackTraceElement
-        if exec_traceback:
-            trace = traceback.extract_tb(exec_traceback)
-            if len(trace) > self.stack_trace_limit:
-                trace = trace[-self.stack_trace_limit:]
-
-            stack_trace_for_payload = []
-            for ste in trace:
-                stack_trace_for_payload.append({
-                    "file": ste[0],
-                    "lineNumber": ste[1],
-                    "className": ste[2],
-                    "methodName": ste[3]
-                })
-            payload["stackTrace"] = stack_trace_for_payload
-
-        self.emitter.write({"type": "error", "payload": payload})
-
-    def performance_report(self, report):
-        """
-        Emit a performance report.
-
-        Args:
-            report: A JSON string containing processing time statistics
-        """
-        self.emitter.write({"type": "stats", "payload": report})
-
-
 class Context(object):
     """The Context class contains to a processors's runtime environment. This
     includes a reactor instance, args, and global vars
     """
+
     def __init__(self, reactor, args, global_args=None):
         """
         Initialize a new context.
@@ -492,96 +274,6 @@ class Processor(object):
                     raise PixmlUnrecoverableProcessorException(
                         msg % (arg_name, arg_expr, e))
 
-    def get_model_path(self, rel_path, debug=False):
-        """Returns the local drive location of a model file.
-
-        Example: full_path = get_model_file_path('/mxnet/resnet-152')
-        """
-
-        def resolve_paths(rel_path):
-            model_file_remote_top = '/tmp/zorroa-local/models'
-            model_file_local_top = '/tmp/zorroa-local/models'
-            return (os.path.join(model_file_remote_top, rel_path),
-                    os.path.join(model_file_local_top, rel_path))
-
-        def process_file(rel_path, remote_stat):
-            if debug:
-                self.logger.info("MODEL: Processing file: {}".format(rel_path))
-            remote_path, local_path = resolve_paths(rel_path)
-
-            # See if there's a local file.
-            do_copy = False
-            try:
-                local_stat = os.stat(local_path)
-            except Exception:
-                do_copy = True
-
-            # If there is a local file, see if it's out of date.
-            if not do_copy:
-                if remote_stat.st_mtime > local_stat.st_mtime:
-                    do_copy = True
-
-            # Do we need to copy?
-            if do_copy:
-                if debug:
-                    self.logger.info(
-                        "MODEL: Copying: {} -> {}".format(remote_path,
-                                                          local_path))
-                copyfile(remote_path, local_path)
-            else:
-                if debug:
-                    self.logger.info(
-                        "MODEL: Not necessary to copy: {} -> {}".format(
-                            remote_path, local_path))
-
-        def process_dir(rel_path):
-            if debug:
-                self.logger.info(
-                    "MODEL: Processing directory: {}".format(rel_path))
-            remote_path, local_path = resolve_paths(rel_path)
-
-            # Make sure the directory exists locally
-            try:
-                os.makedirs(local_path)
-            except OSError as exc:
-                if exc.errno == errno.EEXIST and os.path.isdir(local_path):
-                    pass
-                else:
-                    raise
-
-            items = os.listdir(remote_path)
-            for item in items:
-                process_item(os.path.join(rel_path, item))
-
-        def process_item(rel_path):
-            if debug:
-                self.logger.info("MODEL: Processing item: {}".format(rel_path))
-            remote_path, local_path = resolve_paths(rel_path)
-
-            try:
-                remote_stat = os.stat(remote_path)
-            except Exception:
-                errmsg = "Can't find remote model path: {}".format(remote_path)
-                raise ProcessorException(errmsg)
-
-            if stat.S_ISREG(remote_stat.st_mode):
-                process_file(rel_path, remote_stat)
-            elif stat.S_ISDIR(remote_stat.st_mode):
-                process_dir(rel_path)
-            else:
-                errmsg = "{} must refer to a file or directory".format(
-                    rel_path)
-                raise ProcessorException(errmsg)
-
-            return local_path
-
-        # Check to see if model caching functionality is disabled
-        if os.environ.get('ZORROA_DISABLE_LOCAL_MODEL_CACHE'):
-            remote_path, local_path = resolve_paths(rel_path)
-            return remote_path
-
-        return process_item(rel_path)
-
     def teardown(self):
         """Teardown is run automatically by the execution engine before a batch
         process is shut down.
@@ -681,13 +373,14 @@ class Processor(object):
         Returns:
             object: Object described by the helper data.
         """
-        raise NotImplemented('instantiate_helper is not implemented')
+        raise NotImplementedError('instantiate_helper is not implemented')
 
 
 class Generator(Processor):
     """
     Base class for Generators.  Generators are responsible for provisioning Assets.
     """
+
     def __init__(self):
         super(Generator, self).__init__()
 
@@ -708,6 +401,7 @@ class AssetBuilder(Processor):
     Base class for AssetBuilder processors. An AssetBuilder is handed a Frame
     which contains the Asset being processed.
     """
+
     def process(self, frame):
         """Process the given frame.
 
@@ -758,6 +452,7 @@ class ProcessorHelper(object):
         processor (Processor): Processor that is being helped.
 
     """
+
     def __init__(self, processor):
         self.processor = processor
 
@@ -767,12 +462,35 @@ class ProcessorHelper(object):
 
 
 class AnalysisEnv:
+    """
+    Static methods for obtaining environment variables available when running
+    within an analysis container.
+    """
+
+    @staticmethod
+    def get_job_id():
+        """
+        Return the PixelML Job id from the environment.
+
+        Returns:
+            str: The PixelML task Id.
+        """
+        return os.environ.get("PIXML_JOB_ID")
+
+    @staticmethod
+    def get_task_id():
+        """
+        Return the PixelML Task id from the environment.
+
+        Returns:
+            str: The PixelML task Id.
+        """
+        return os.environ.get("PIXML_TASK_ID")
 
     @staticmethod
     def get_project_id():
         """
-        Return the PixelML project id from the environment.  The project
-        should always exist.
+        Return the PixelML project id from the environment.
 
         Returns:
             str: The PixelML project Id.

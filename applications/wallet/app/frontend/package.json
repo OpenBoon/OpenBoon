@@ -1,0 +1,138 @@
+{
+  "private": true,
+  "scripts": {
+    "analyze": "ANALYZE=1 next build",
+    "build": "next build",
+    "dev": "node -r esm devServer.js",
+    "lint": "eslint '{pages,src}/**/*.js'",
+    "prod": "next start",
+    "size": "rimraf .next && next build && bundlesize",
+    "start": "next start",
+    "test": "TZ=UTC jest --watch --notify --verbose",
+    "test:cover": "TZ=UTC jest --coverage --verbose",
+    "test:hook": "TZ=UTC jest --bail --findRelatedTests"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": true,
+    "arrowParens": "avoid"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/.*/__mocks__"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "snapshotSerializers": [
+      "jest-emotion"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest",
+      "^.+\\.svg$": "<rootDir>/__mocks__/svg.js"
+    },
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add",
+      "eslint",
+      "npm run test:hook"
+    ]
+  },
+  "bundlesize": [
+    {
+      "//": "dependencies",
+      "path": ".next/static/chunks/commons**.js",
+      "maxSize": "74 kB"
+    },
+    {
+      "//": "app",
+      "path": ".next/static/**/pages/_app.js",
+      "maxSize": "32 kB"
+    },
+    {
+      "//": "main runtime",
+      "path": ".next/static/runtime/main**.js",
+      "maxSize": "5 kB"
+    },
+    {
+      "//": "error",
+      "path": ".next/static/**/pages/_error.js",
+      "maxSize": "11 kB"
+    },
+    {
+      "//": "polyfill & webpack runtime",
+      "path": ".next/static/runtime/[polyfill|webpack]**.js",
+      "maxSize": "5 kB"
+    },
+    {
+      "//": "all pages",
+      "path": ".next/static/**/!(commons|_app|_error|main|polyfill|webpack)*.js",
+      "maxSize": "10 kB"
+    }
+  ],
+  "dependencies": {
+    "@emotion/babel-preset-css-prop": "10.0.23",
+    "@emotion/core": "10.0.22",
+    "@sentry/browser": "5.10.2",
+    "@svgr/webpack": "4.3.3",
+    "@zeit/next-source-maps": "0.0.4-canary.1",
+    "body-scroll-lock": "2.6.4",
+    "dotenv": "8.2.0",
+    "jwt-decode": "2.2.0",
+    "next": "9.1.5",
+    "prop-types": "15.7.2",
+    "react": "16.12.0",
+    "react-aria-modal": "4.0.0",
+    "react-dom": "16.12.0",
+    "swr": "0.1.13"
+  },
+  "devDependencies": {
+    "babel-eslint": "10.0.3",
+    "babel-jest": "24.9.0",
+    "bundlesize": "0.18.0",
+    "eslint": "6.7.2",
+    "eslint-config-airbnb": "18.0.1",
+    "eslint-config-prettier": "6.7.0",
+    "eslint-plugin-emotion": "10.0.14",
+    "eslint-plugin-import": "2.19.1",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.17.0",
+    "eslint-plugin-react-hooks": "2.3.0",
+    "esm": "3.2.25",
+    "express": "4.17.1",
+    "http-proxy-middleware": "0.20.0",
+    "husky": "3.1.0",
+    "jest": "24.9.0",
+    "jest-emotion": "10.0.26",
+    "jest-fetch-mock": "2.1.2",
+    "lint-staged": "9.5.0",
+    "morgan": "1.9.1",
+    "prettier": "1.19.1",
+    "react-test-renderer": "16.12.0",
+    "webpack-bundle-analyzer": "3.6.0"
+  }
+}

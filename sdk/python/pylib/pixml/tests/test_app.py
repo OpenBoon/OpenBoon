@@ -48,7 +48,7 @@ class PixmlAppTests(unittest.TestCase):
 
     def test_create_app_from_file_env(self):
         server = "https://localhost:9999"
-        os.environ['PIXML_APIKEY_FILE'] = "test_key.json"
+        os.environ['PIXML_APIKEY_FILE'] = os.path.dirname(__file__) + "/test_key.json"
         os.environ['PIXML_SERVER'] = server
         try:
             app1 = pixml.app.app_from_env()

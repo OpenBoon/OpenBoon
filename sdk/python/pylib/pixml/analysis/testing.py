@@ -6,11 +6,13 @@ import tempfile
 import time
 import unittest
 import uuid
-
 from urllib.parse import urlparse
 
-from pixml.analysis.base import Reactor, Context, AssetBuilder, Generator, Argument
-from pixml.asset import AssetImport, Asset
+import requests
+
+from pixml.analysis.base import Context, AssetBuilder, Generator, Argument, \
+    PixmlUnrecoverableProcessorException
+from pixml.asset import FileImport, Asset
 
 logger = logging.getLogger(__name__)
 
@@ -21,27 +23,36 @@ class TestProcessor(AssetBuilder):
     processor in the SDK allows us to use the core image for
     testing the execution module.
     """
+
     def __init__(self):
         super(TestProcessor, self).__init__()
+        self.add_arg(Argument('sleep', 'int', default=1))
         self.add_arg(Argument('attrs', 'struct', default=None))
         self.add_arg(Argument('send_event', 'str', default=None))
+        self.add_arg(Argument('raise_fatal', 'bool', default=False,
+                              toolTip='Raise a PixmlUnrecoverableProcessorException'))
 
     def process(self, frame):
-        self.logger.info("Running TestProcessor process()")
-        attrs = self.arg_value("attrs")
+        self.logger.info('Running TestProcessor process()')
+        if self.arg_value('raise_fatal'):
+            raise PixmlUnrecoverableProcessorException('Fatal exception raised')
+
+        attrs = self.arg_value('attrs')
         if attrs:
-            self.logger.info("setting attrs: {}".format(attrs))
+            self.logger.info('setting attrs: {}'.format(attrs))
             for k, v in attrs.items():
                 frame.asset.set_attr(k, v)
 
-        event_type = self.arg_value("send_event")
+        event_type = self.arg_value('send_event')
         if event_type:
-            self.logger.info("emitting event: {}".format(event_type))
-            self.reactor.emitter.write({"type": event_type, "payload": {"ding": "dong"}})
-        time.sleep(1)
+            self.logger.info('emitting event: {}'.format(event_type))
+            self.reactor.emitter.write({'type': event_type, 'payload': {'ding': 'dong'}})
+
+        self.logger.info("Sleeping {}".format(self.arg_value('sleep')))
+        time.sleep(self.arg_value('sleep'))
 
     def teardown(self):
-        self.logger.info("Running TestProcessor teardown()")
+        self.logger.info('Running TestProcessor teardown()')
 
 
 class TestGenerator(Generator):
@@ -49,13 +60,14 @@ class TestGenerator(Generator):
     A test generator which generates frames from a supplied array
     of files paths.
     """
+
     def __init__(self):
         super(TestGenerator, self).__init__()
         self.add_arg(Argument('files', 'list', default=[]))
 
     def generate(self, consumer):
         for file in self.arg_value('files'):
-            spec = AssetImport(file)
+            spec = FileImport(file)
             consumer.accept(spec)
 
     def teardown(self):
@@ -67,6 +79,7 @@ class PluginUnitTestCase(unittest.TestCase):
     A base class for unit-testing Processor Plugins.
 
     """
+
     @classmethod
     def setUpClass(cls):
         """
@@ -96,7 +109,7 @@ class PluginUnitTestCase(unittest.TestCase):
            (:obj:`Processor`): The configured processor.
 
         """
-        reactor = Reactor(TestEventEmitter())
+        reactor = TestReactor(TestEventEmitter())
         processor.set_context(Context(reactor, args, global_args or {}))
         processor.init()
         return processor
@@ -124,6 +137,7 @@ class TestEventEmitter(object):
     This is an emitter class used for dumping Processor execution
     events to stdout.
     """
+
     def __init__(self):
         self.events = []
 
@@ -198,15 +212,15 @@ class TestAsset(Asset):
         "png": "image/png"
     }
 
-    def __init__(self, path=None, attrs=None):
+    def __init__(self, path=None, attrs=None, id=None):
         """
         Construct a test Asset.
 
         Args:
             path (str): A URL to a local file.
-            attrs(dict): Addtional attributes in key/value pair form Eg {"a.b.c": 123})
+            attrs(dict): Additional attributes in key/value pair form Eg {"a.b.c": 123})
         """
-        super(TestAsset, self).__init__({"id": str(uuid.uuid4())})
+        super(TestAsset, self).__init__({"id": id or str(uuid.uuid4())})
         self.set_attr("source.path", path)
 
         if path:
@@ -220,6 +234,31 @@ class TestAsset(Asset):
         if attrs:
             for k, v in attrs.items():
                 self.set_attr(k, v)
+
+
+class TestReactor(object):
+    """
+    A TestReactor class for testing expand frame generation.
+    """
+
+    def __init__(self, emitter):
+        self.emitter = emitter
+        self.expand_frames = []
+
+    def add_expand_frame(self, parent_frame, expand_frame, batch_size=None, force=False):
+        self.expand_frames.append((parent_frame, expand_frame))
+
+    def check_expand(self, *args, **kwargs):
+        pass
+
+    def expand(self, *args):
+        pass
+
+    def error(self, *args, **kwargs):
+        pass
+
+    def performance_report(self, *args):
+        pass
 
 
 def zorroa_test_data(rel_path="", uri=True):
@@ -244,3 +283,29 @@ def zorroa_test_data(rel_path="", uri=True):
         return "file://{}".format(full_path)
     else:
         return full_path
+
+
+class MockRequestsResponse:
+    """
+    A Mock HTTP request response object used for mockkng respsonss from
+    the popular python 'requests' library.
+
+    Examples:
+        post_patch.return_value = MockRequestsResponse(
+            {"output": "pixml://ml-storage/foo/bar"}, 200)
+
+    See Also:
+        https://requests.readthedocs.io/en/master/
+
+    """
+
+    def __init__(self, json_data, status_code):
+        self.json_data = json_data
+        self.status_code = status_code
+
+    def json(self):
+        return self.json_data
+
+    def raise_for_status(self):
+        if self.status_code > 299:
+            raise requests.RequestException("Failed with status {}".format(self.status_code))

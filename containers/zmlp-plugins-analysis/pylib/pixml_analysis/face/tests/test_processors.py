@@ -7,6 +7,7 @@ from pixml.analysis import Frame
 from pixml.analysis.storage import add_proxy_file
 from pixml_analysis.face.processors import FaceRecognitionProcessor
 
+
 class FaceUnitTestCase(PluginUnitTestCase):
 
     @patch.object(PixmlClient, 'upload_file')
@@ -14,7 +15,6 @@ class FaceUnitTestCase(PluginUnitTestCase):
         upload_patch.return_value = {
             "name": "proxy_200x200.jpg",
             "category": "proxy",
-            "assetId": "12345",
             "mimetype": "image/jpeg",
             "attrs": {
                 "width": 1023,

@@ -2,14 +2,14 @@ package com.zorroa.auth.repository
 
 import com.zorroa.auth.domain.ApiKey
 import com.zorroa.auth.domain.ApiKeyFilter
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.stereotype.Repository
 import java.util.UUID
 import javax.persistence.EntityManager
 import javax.persistence.TypedQuery
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.Predicate
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 
 @Repository("apiKeyRepository")
 interface ApiKeyRepository : JpaRepository<ApiKey, UUID> {

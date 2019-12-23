@@ -1,0 +1,181 @@
+version: "3.6"
+services:
+  # Postgres instance used for local development servers.
+  postgres:
+    image: "postgres:9.6.9"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./dev/postgres_init_scripts:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+
+  # MinIO object storage service.
+  minio:
+    image: "minio/minio"
+    ports:
+      - "9000:9000"
+    command: server /data
+    environment:
+      MINIO_ACCESS_KEY: qwerty123
+      MINIO_SECRET_KEY: 123qwerty
+
+  # Elastic Search instance used for local development servers.
+  es1:
+    image: zmlp/elasticsearch
+    build:
+      context: services/elasticsearch
+      args:
+        node_type: single
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: "single-node"
+      discovery.zen.minimum_master_nodes: "1"
+      cluster.name: "zorroa-es-cluster"
+      network.host: "0.0.0.0"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+
+  # API Gateway
+  api-gateway:
+    image: zmlp/apigateway
+    build:
+      context: services/api-gateway
+    depends_on:
+      - auth-server
+      - archivist
+    ports:
+      - 8080:80
+    environment:
+      ARCHIVIST_HOST: archivist:8080
+      AUTH_SERVER_HOST: auth-server:9090
+
+  # Auth server
+  auth-server:
+    image: zmlp/authserver
+    depends_on:
+      - postgres
+    build:
+      context: services/auth-server
+    volumes:
+      - "./dev/config/keys/inception-key.json:/service/config/inception-key.json"
+
+  # Local Archivist server.
+  archivist:
+    image: zmlp/archivist
+    depends_on:
+      - es1
+      - postgres
+      - auth-server
+    environment:
+      SENTRY_ENVIRONMENT: localdev
+      ARCHIVIST_STORAGE_ACCESSKEY: qwerty123
+      ARCHIVIST_STORAGE_SECRETKEY: 123qwerty
+      ARCHIVIST_STORAGE_URL: http://minio:9000
+      MLSTORAGE_ACCESSKEY: qwerty123
+      MLSTORAGE_SECRETKEY: 123qwerty
+      MLSTORAGE_URL: http://minio:9000
+      ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
+    build:
+      context: services/archivist
+    volumes:
+      - "./dev/config/monitoring:/monitoring"
+      - "./dev/config/archivist/application.properties:/service/config/application.properties"
+      - "./dev/config/keys/inception-key.json:/service/config/inception-key.json"
+
+  officer:
+    image: zmlp/officer
+    depends_on:
+      - minio
+    build:
+      context: services/officer
+    ports:
+      - 7078:7078
+    environment:
+      MLSTORAGE_URL: http://minio:9000
+      MLSTORAGE_ACCESSKEY: qwerty123
+      MLSTORAGE_SECRETKEY: 123qwerty
+
+  analyst:
+    image: zmlp/analyst
+    depends_on:
+      - archivist
+      - zmlp-py3-sdk
+    build:
+      context: services/analyst
+    ports:
+      - 5000:5000
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      ANALYST_DOCKER_PULL: "false"
+      ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
+      PIXML_SERVER: http://archivist:8080
+
+  # Console web application.
+  wallet:
+    image: zmlp/wallet
+    ports:
+      - 80:80
+    build:
+      context: .
+      dockerfile: applications/wallet/Dockerfile
+    environment:
+      DJANGO_SETTINGS_MODULE: wallet.settings
+      PG_HOST: postgres
+      ARCHIVIST_URL: http://api-gateway:8080
+      GOOGLE_OAUTH_CLIENT_ID: '683985502197-140kfdlheorkbc6e9vo748v5260df3pf.apps.googleusercontent.com'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      - postgres
+
+  # These services are only here because their images need to be built.
+  zmlp-py3-base:
+    image: zmlp/py3-base:latest
+    build:
+      context: containers/zmlp-py3-base
+
+  zmlp-py3-sdk:
+    image: zmlp/py3-sdk:latest
+    depends_on:
+      - zmlp-py3-base
+    build:
+      context: sdk/python
+    command: echo
+
+  zmlp-plugins-base:
+    image: zmlp/plugins-base:latest
+    depends_on:
+      - zmlp-py3-sdk
+    build:
+      context: containers/zmlp-plugins-base
+    command: echo
+
+  zmlp-plugins-core:
+    image: zmlp/plugins-core:latest
+    depends_on:
+      - zmlp-plugins-base
+    build:
+      context: containers/zmlp-plugins-core
+    command: echo
+
+  zmlp-plugins-analysis:
+    image: zmlp/plugins-analysis:latest
+    depends_on:
+      - zmlp-plugins-base
+    build:
+      context: containers/zmlp-plugins-analysis
+    command: echo

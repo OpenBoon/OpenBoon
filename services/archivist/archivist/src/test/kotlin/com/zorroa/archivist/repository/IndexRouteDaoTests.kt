@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -14,6 +15,9 @@ class IndexRouteDaoTests : AbstractTest() {
 
     @Autowired
     lateinit var indexRouteDao: IndexRouteDao
+
+    @Value("\${archivist.es.url}")
+    lateinit var esUrl: String
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -31,8 +35,8 @@ class IndexRouteDaoTests : AbstractTest() {
     fun testCreate() {
         val spec = getTestSpec()
         val route = indexRouteDao.create(spec)
-        assertEquals(spec.mappingMajorVer, route.mappingMajorVer)
-        assertEquals(0, route.mappingMinorVer)
+        assertEquals(spec.majorVer, route.majorVer)
+        assertEquals(0, route.minorVer)
         assertEquals(spec.shards, route.shards)
         assertEquals(spec.replicas, route.replicas)
     }
@@ -58,8 +62,8 @@ class IndexRouteDaoTests : AbstractTest() {
         val spec = getTestSpec()
         indexRouteDao.create(spec)
         val route = indexRouteDao.getProjectRoute()
-        assertEquals("http://localhost:9200", route.clusterUrl)
-        assertEquals("asset", route.mapping)
+        assertEquals(esUrl, route.clusterUrl)
+        assertEquals("english_strict", route.mapping)
         assertEquals(0, route.replicas)
         assertEquals(2, route.shards)
     }

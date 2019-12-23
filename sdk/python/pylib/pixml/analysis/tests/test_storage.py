@@ -1,8 +1,10 @@
 import os
+import urllib3
 from unittest import TestCase
 from unittest.mock import patch
 
 import pytest
+from minio.api import Minio
 
 from pixml.analysis import storage
 from pixml.analysis.testing import zorroa_test_data, TestAsset
@@ -17,23 +19,33 @@ class LocalFileCacheTests(TestCase):
     def tearDown(self):
         self.lfc.clear()
 
+    def test_init_with_task_id(self):
+        os.environ['PIXML_TASK_ID'] = '1234abcd5678'
+        try:
+            cache = storage.LocalFileCache()
+            path = cache.localize_uri('https://i.imgur.com/WkomVeG.jpg')
+            assert os.environ['PIXML_TASK_ID'] in path
+        finally:
+            del os.environ['PIXML_TASK_ID']
+            cache.close()
+
     def test_localize_http(self):
-        path = self.lfc.localize_uri("https://i.imgur.com/WkomVeG.jpg")
+        path = self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
         assert os.path.exists(path)
         assert os.path.getsize(path) == 267493
 
     def test_localize_gs(self):
-        path = self.lfc.localize_uri("gs://zorroa-dev-data/image/pluto_2.1.jpg")
+        path = self.lfc.localize_uri('gs://zorroa-dev-data/image/pluto_2.1.jpg')
         assert os.path.exists(path)
         assert os.path.getsize(path) == 65649
 
     def test_get_path(self):
-        path = self.lfc.get_path("spock", ".kirk")
-        filename = "1a569625e9949f82ab1be5257ab2cab1f7524c6d.kirk"
+        path = self.lfc.get_path('spock', '.kirk')
+        filename = '1a569625e9949f82ab1be5257ab2cab1f7524c6d.kirk'
         assert path.endswith(filename)
 
     def test_clear(self):
-        path = self.lfc.localize_uri("https://i.imgur.com/WkomVeG.jpg")
+        path = self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
         assert os.path.exists(path)
         self.lfc.clear()
         assert not os.path.exists(path)
@@ -41,57 +53,90 @@ class LocalFileCacheTests(TestCase):
     @patch.object(PixmlClient, 'stream')
     def test_localize_pixml_file(self, post_patch):
         pfile = {
-            "name": "cat.jpg",
-            "category": "proxy",
-            "assetId": "123456"
+            'name': 'cat.jpg',
+            'category': 'proxy'
         }
-        post_patch.return_value = "/tmp/cat.jpg"
-        path = self.lfc.localize_pixml_file(pfile)
-        assert path.endswith("c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg")
+        post_patch.return_value = '/tmp/cat.jpg'
+        path = self.lfc.localize_pixml_file(TestAsset(id='123456'), pfile)
+        assert path.endswith('c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg')
+
+    @patch.object(PixmlClient, 'stream')
+    def test_localize_pixml_with_asset_override(self, post_patch):
+        pfile = {
+            'name': 'cat.jpg',
+            'category': 'proxy',
+            'sourceAssetId': 'bingo'
+        }
+        post_patch.return_value = '/tmp/cat.jpg'
+        asset = TestAsset(id='123456')
+        self.lfc.localize_pixml_file(asset, pfile)
+        assert "assets/bingo/files" in post_patch.call_args_list[0][0][0]
+
+    @patch.object(PixmlClient, 'stream')
+    def test_localize_pixml_source_file(self, post_patch):
+        pfile = {
+            'name': 'cat.jpg',
+            'category': 'source'
+        }
+        post_patch.return_value = '/tmp/cat.jpg'
+        asset = TestAsset(id='123456')
+        asset.set_attr('files', [pfile])
+        path = self.lfc.localize_remote_file(asset)
+        assert path.endswith('3c25baa7cf0b59d64c0179a1e0030072444eac3b.jpg')
 
     @patch.object(PixmlClient, 'stream')
     def test_localize_pixml_file_with_copy(self, post_patch):
         pfile = {
-            "name": "cat.jpg",
-            "category": "proxy",
-            "assetId": "123456"
+            'name': 'cat.jpg',
+            'category': 'proxy'
         }
-        post_patch.return_value = "/tmp/toucan.jpg"
-        bird = zorroa_test_data("images/set01/toucan.jpg", uri=False)
-        path = self.lfc.localize_pixml_file(pfile, bird)
+        post_patch.return_value = '/tmp/toucan.jpg'
+        bird = zorroa_test_data('images/set01/toucan.jpg', uri=False)
+        path = self.lfc.localize_pixml_file(TestAsset(id='123456'), pfile, bird)
         assert os.path.getsize(path) == os.path.getsize(bird)
 
     def test_localize_file_obj_with_uri(self):
-        test_asset = TestAsset("https://i.imgur.com/WkomVeG.jpg")
+        test_asset = TestAsset('https://i.imgur.com/WkomVeG.jpg')
         path = self.lfc.localize_remote_file(test_asset)
         assert os.path.exists(path)
 
     def test_localize_file_str(self):
-        path = self.lfc.localize_remote_file("https://i.imgur.com/WkomVeG.jpg")
+        path = self.lfc.localize_remote_file('https://i.imgur.com/WkomVeG.jpg')
         assert os.path.exists(path)
+
+    @patch.object(Minio, 'get_object')
+    def test_localize_pixml_uri(self, get_object_patch):
+        http = urllib3.PoolManager()
+        r = http.request('GET', 'http://i.imgur.com/WkomVeG.jpg', preload_content=False)
+
+        get_object_patch.return_value = r
+        path = self.lfc.localize_remote_file('pixml://ml-storage/officer/pdf/proxy.1.jpg')
+
+        assert os.path.exists(path)
+        assert os.path.getsize(path) == 267493
 
     @patch.object(PixmlClient, 'stream')
     def test_localize_file_pixml_file_dict(self, post_patch):
-        post_patch.return_value = "/tmp/toucan.jpg"
+        post_patch.return_value = '/tmp/toucan.jpg'
         pfile = {
-            "name": "cat.jpg",
-            "category": "proxy",
-            "assetId": "123456"
+            'name': 'cat.jpg',
+            'category': 'proxy'
         }
-        path = self.lfc.localize_pixml_file(pfile)
-        assert path.endswith("c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg")
+        path = self.lfc.localize_pixml_file(TestAsset(id='123456'), pfile)
+        assert path.endswith('c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg')
 
     def test_close(self):
         pfile = {
-            "name": "cat.jpg",
-            "category": "proxy",
-            "assetId": "123456"
+            'name': 'cat.jpg',
+            'category': 'proxy'
         }
-        self.lfc.localize_pixml_file(pfile, zorroa_test_data("images/set01/toucan.jpg"))
+        self.lfc.localize_pixml_file(TestAsset(), pfile,
+                                     zorroa_test_data('images/set01/toucan.jpg'))
         self.lfc.close()
 
         with pytest.raises(FileNotFoundError):
-            self.lfc.localize_pixml_file(pfile, zorroa_test_data("images/set01/toucan.jpg"))
+            self.lfc.localize_pixml_file(TestAsset(), pfile,
+                                         zorroa_test_data('images/set01/toucan.jpg'))
 
 
 IMAGE_JPG = zorroa_test_data('images/set01/faces.jpg')
@@ -101,91 +146,97 @@ VIDEO_MP4 = zorroa_test_data('video/sample_ipad.m4v')
 
 class StorageFunctionTests(TestCase):
 
-    @patch.object(PixmlClient, 'stream')
-    def test__get_proxy_file(self, stream_patch):
-        asset = TestAsset(IMAGE_JPG)
-        asset.set_attr("files", [
-            {
-                "name": "proxy_200x200.jpg",
-                "category": "proxy",
-                "assetId": "12345",
-                "mimetype": "image/jpeg",
-                "attrs": {
-                    "width": 200,
-                    "height": 200
-                }
-            },
-            {
-                "name": "proxy_400x400.jpg",
-                "category": "proxy",
-                "assetId": "12345",
-                "mimetype": "image/jpeg",
-                "attrs": {
-                    "width": 400,
-                    "height": 400
-                }
-            },
-            {
-                "name": "proxy_400x400.mp4",
-                "category": "proxy",
-                "assetId": "12345",
-                "mimetype": "video/mp4",
-                "attrs": {
-                    "width": 400,
-                    "height": 400
-                }
-            },
-            {
-                "name": "proxy_500x500.mp4",
-                "category": "proxy",
-                "assetId": "12345",
-                "mimetype": "video/mp4",
-                "attrs": {
-                    "width": 500,
-                    "height": 500
-                }
+    file_list = [
+        {
+            'name': 'proxy_200x200.jpg',
+            'category': 'proxy',
+            'mimetype': 'image/jpeg',
+            'attrs': {
+                'width': 200,
+                'height': 200
             }
-        ])
+        },
+        {
+            'name': 'proxy_400x400.jpg',
+            'category': 'proxy',
+            'mimetype': 'image/jpeg',
+            'attrs': {
+                'width': 400,
+                'height': 400
+            }
+        },
+        {
+            'name': 'proxy_400x400.mp4',
+            'category': 'proxy',
+            'mimetype': 'video/mp4',
+            'attrs': {
+                'width': 400,
+                'height': 400
+            }
+        },
+        {
+            'name': 'proxy_500x500.mp4',
+            'category': 'proxy',
+            'mimetype': 'video/mp4',
+            'attrs': {
+                'width': 500,
+                'height': 500
+            }
+        }
+    ]
 
-        name, _ = storage.get_proxy_file(asset, min_width=300)
-        assert name == "proxy_400x400.jpg"
+    @patch.object(PixmlClient, 'stream')
+    def test_get_proxy_level(self, stream_patch):
+        asset = TestAsset(IMAGE_JPG, id='123456')
+        asset.set_attr('files', self.file_list)
 
-        name, _ = storage.get_proxy_file(asset, mimetype="video/", min_width=350)
-        assert name == "proxy_400x400.mp4"
+        path = storage.get_proxy_level(asset, 0)
+        assert '1246524d107aa3b91ccb1ea43c136d366156d2b1' in path
 
-        name, _ = storage.get_proxy_file(asset, mimetype="image/", min_width=1025, fallback=True)
-        assert name == "source"
+        path = storage.get_proxy_level(asset, 9)
+        assert '9bf44aa1e82ab54ce7adc212b3918c6047849c15' in path
+
+    @patch.object(PixmlClient, 'stream')
+    def test_get_proxy_min_width(self, stream_patch):
+        asset = TestAsset(IMAGE_JPG, id='123456')
+        asset.set_attr('files', self.file_list)
+
+        path = storage.get_proxy_min_width(asset, 300)
+        assert '9bf44aa1e82ab54ce7adc212b3918c6047849c15' in path
+
+        path = storage.get_proxy_min_width(asset, 350, mimetype='video/')
+        assert '5bedc72da42dd3e296e14c26eaba01c1568c71d0' in path
+
+        path = storage.get_proxy_min_width(asset, 1025, mimetype='image/', fallback=True)
+        assert 'faces.jpg' in path
 
         with pytest.raises(ValueError):
-            storage.get_proxy_file(asset, mimetype="video/", min_width=1025, fallback=False)
+            storage.get_proxy_min_width(asset, 1025, mimetype='video/', fallback=False)
 
     @patch.object(PixmlClient, 'upload_file')
     def test_add_proxy_file(self, upload_patch):
         asset = TestAsset(IMAGE_JPG)
         upload_patch.return_value = {
-            "name": "proxy_200x200.jpg",
-            "category": "proxy",
-            "assetId": "12345",
-            "mimetype": "image/jpeg",
-            "attrs": {
-                "width": 200,
-                "height": 200
+            'name': 'proxy_200x200.jpg',
+            'category': 'proxy',
+            'mimetype': 'image/jpeg',
+            'attrs': {
+                'width': 200,
+                'height': 200
             }
         }
-        ## Should only be added to list once.
+        # Should only be added to list once.
         storage.add_proxy_file(asset, IMAGE_JPG, (200, 200))
         storage.add_proxy_file(asset, IMAGE_JPG, (200, 200))
 
         upload_patch.return_value = {
-            "name": "proxy_200x200.mp4",
-            "category": "proxy",
-            "assetId": "12345",
-            "mimetype": "video/mp4",
-            "attrs": {
-                "width": 200,
-                "height": 200
+            'name': 'proxy_200x200.mp4',
+            'category': 'proxy',
+            'mimetype': 'video/mp4',
+            'attrs': {
+                'width': 200,
+                'height': 200
             }
         }
         storage.add_proxy_file(asset, VIDEO_MP4, (200, 200))
         assert 2 == len(asset.get_files())
-

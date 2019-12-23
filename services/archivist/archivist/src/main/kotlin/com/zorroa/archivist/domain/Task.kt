@@ -13,6 +13,7 @@ import com.zorroa.archivist.util.JdbcUtils
 import io.micrometer.core.instrument.Tag
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import java.util.EnumSet
 import java.util.UUID
 
 /**
@@ -39,12 +40,21 @@ enum class TaskState {
         return this == Running || this == Queued
     }
 
+    fun isWaitingState(): Boolean {
+        return this == Waiting
+    }
+
     /**
      * Return a Micrometer tag for tagging metrics related to this state.
      */
     fun metricsTag(): Tag {
         return Tag.of("task-state", this.toString())
     }
+
+    fun isFinishedState() : Boolean {
+        return this == Success || this == Failure || this == Skipped
+    }
+
 }
 
 class TaskSpec(
@@ -86,14 +96,6 @@ open class InternalTask(
 ) : TaskId, JobId {
     override fun toString(): String {
         return "<Task id='$taskId' name='$name'/>"
-    }
-
-    /**
-     * Return FileStorageSpec for where this tasks log file should go.
-     */
-    @JsonIgnore
-    fun getLogSpec(): FileStorageSpec {
-        return FileStorageSpec("job", jobId, "logs/$taskId.log")
     }
 }
 

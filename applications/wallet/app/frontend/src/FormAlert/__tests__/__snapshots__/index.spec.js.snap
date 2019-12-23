@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormAlert /> should render properly with an alert 1`] = `
+.emotion-3 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #000000;
+  font-weight: 500;
+}
+
+.emotion-1 {
+  border: 0;
+  padding: 0;
+  background: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+<div
+  className="emotion-3"
+>
+  <div
+    className="emotion-2"
+  >
+    <svg
+      color="#c92300"
+      data-file-name="warning.svg"
+      height={20}
+    />
+    <div
+      className="emotion-0"
+      role="alert"
+    >
+      Error Message
+    </div>
+    <button
+      aria-label="Close alert"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        color="#000000"
+        data-file-name="cross.svg"
+        height={20}
+      />
+    </button>
+  </div>
+</div>
+`;

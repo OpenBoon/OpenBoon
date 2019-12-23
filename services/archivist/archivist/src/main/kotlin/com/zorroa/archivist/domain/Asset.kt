@@ -3,6 +3,7 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
+import com.google.common.hash.Hashing
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.Json
 import com.zorroa.archivist.util.randomString
@@ -20,11 +21,11 @@ import java.util.regex.Pattern
     description = "Describes the different states can asset can be in.")
 enum class AssetState {
 
-    @ApiModelProperty("The Asset been created in the database but not analyzed.")
-    CREATED,
+    @ApiModelProperty("The Asset been created in the database but is pending analysis.")
+    Pending,
 
     @ApiModelProperty("The Asset has been analyzed and augmented with fields.")
-    ANALYZED
+    Analyzed
 }
 
 @ApiModel("Batch Asset Op Status",
@@ -127,10 +128,13 @@ class AssetSpec(
     @ApiModelProperty("The URI location of the asset.")
     var uri: String,
 
-    @ApiModelProperty("Additional metadata fields to add to the Asset.")
-    var document: Map<String, Any>? = null,
+    @ApiModelProperty("Additional metadata fields to add to the Asset in key/value format.")
+    var attrs: Map<String, Any>? = null,
 
-    @ApiModelProperty("An optional unique ID for the asset to override an auto-generated ID.")
+    @ApiModelProperty("Optional clip metadata specifies the portion of the asset to process.")
+    var clip: Clip? = null,
+
+    @ApiModelProperty("An optional unique ID for the asset to override the auto-generated ID.")
     val id: String? = null
 )
 
@@ -152,6 +156,7 @@ class AssetCounters(
     @ApiModelProperty("Total number of assets replaced")
     val replaced: Int = 0
 )
+
 
 @ApiModel("Asset",
     description = "The file information and all the metadata generated during Analysis.")
@@ -234,7 +239,7 @@ open class Asset(
      * @param <T>
      * @return
     </T> */
-    fun <T> getAttr(attr: String, type: TypeReference<T>): T {
+    fun <T> getAttr(attr: String, type: TypeReference<T>): T? {
         val current = getContainer(attr, false)
         return Json.Mapper.convertValue(getChild(current, Attr.name(attr)), type)
     }
@@ -313,6 +318,22 @@ open class Asset(
     }
 }
 
+@ApiModel("Asset Search", description = "Stores an Asset search, is modeled after an ElasticSearch request.")
+class AssetSearch(
+
+    @ApiModelProperty(
+        "The search to execute",
+        reference = "https://www.elastic.co/guide/en/elasticsearch/reference/6.4/query-filter-context.html"
+    )
+    val search: Map<String, Any>? = null,
+
+    @ApiModelProperty(
+        "A query to execute on deep elements",
+        reference = "https://www.elastic.co/guide/en/elasticsearch/reference/6.4/query-filter-context.html"
+    )
+    val deepQuery: Map<String, Any>? = null
+)
+
 object Attr {
 
     const val DELIMITER = "."
@@ -329,11 +350,20 @@ object Attr {
     }
 }
 
-class AssetIdBuilder(val spec: AssetSpec, val randomness: String? = null) {
+/**
+ * A utility class for building unique Asset ids.
+ *
+ * @property spec: The AssetSpec
+ */
+class AssetIdBuilder(val spec: AssetSpec) {
 
-    private val projectId = getProjectId()
-    private var dataSourceId: UUID? = null
+    val projectId = getProjectId()
+    var length = 32
+    var checksum: Int? = null
 
+    /**
+     * Convert the givne UUID into a byte array.
+     */
     private fun uuidToByteArray(uuid: UUID): ByteBuffer {
         val bb: ByteBuffer = ByteBuffer.wrap(ByteArray(16))
         bb.putLong(uuid.mostSignificantBits)
@@ -341,26 +371,52 @@ class AssetIdBuilder(val spec: AssetSpec, val randomness: String? = null) {
         return bb.asReadOnlyBuffer()
     }
 
-    fun dataSource(dataSource: UUID?): AssetIdBuilder {
-        dataSource?.let { this.dataSourceId = it }
+    /**
+     * Apply a checksum to ID generation.
+     */
+    fun checksum(bytes: ByteArray): AssetIdBuilder {
+        val hf = Hashing.adler32()
+        checksum = hf.hashBytes(bytes).asInt()
         return this
     }
 
+    /**
+     * Build and return the unique ID.
+     */
     fun build(): String {
         if (spec.id != null) {
             return spec.id
         }
 
+        /**
+         * Nothing about the order of these statements
+         * can ever change or duplicate assets will be
+         * created.
+         */
         val digester = MessageDigest.getInstance("SHA-256")
         digester.update(spec.uri.toByteArray())
         digester.update(uuidToByteArray(projectId))
-        dataSourceId?.let {
-            digester.update(uuidToByteArray(it))
+
+        spec.clip?.let {
+            digester.update(it.type.toByteArray())
+            it.timeline?.let { timeline ->
+                digester.update(timeline.toByteArray())
+            }
+            val buf = ByteBuffer.allocate(8)
+            buf.putFloat(it.start)
+            buf.putFloat(it.stop)
+            digester.update(buf.array())
         }
-        // TODO: clip tokens.
-        randomness?.let {
-            digester.update(randomness.toByteArray())
+
+        checksum?.let {
+            val buf = ByteBuffer.allocate(4)
+            buf.putInt(it)
+            digester.update(buf.array())
         }
-        return Base64.getUrlEncoder().encodeToString(digester.digest()).trim('=')
+        // Clamp the size to 32, 48 is bit much and you still
+        // get much better resolution than a UUID.  We could
+        // also up it on shared indexes but probably not necessary.
+        return Base64.getUrlEncoder()
+            .encodeToString(digester.digest()).trim('=').substring(0, length)
     }
 }

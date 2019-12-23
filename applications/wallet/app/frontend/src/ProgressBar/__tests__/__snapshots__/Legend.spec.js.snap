@@ -1,0 +1,160 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProgressBarLegend /> should render properly 1`] = `
+.emotion-20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #4a4a4a;
+  border-radius: 2px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 12px;
+}
+
+.emotion-0 {
+  width: 2px;
+  height: 100%;
+  background-color: #c92300;
+}
+
+.emotion-2 {
+  color: #e0e0e0;
+  padding-left: 8px;
+}
+
+.emotion-1 {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.emotion-4 {
+  width: 2px;
+  height: 100%;
+  background-color: #b3b3b3;
+}
+
+.emotion-8 {
+  width: 2px;
+  height: 100%;
+  background-color: #4ac565;
+}
+
+.emotion-12 {
+  width: 2px;
+  height: 100%;
+  background-color: #ebb52e;
+}
+
+.emotion-16 {
+  width: 2px;
+  height: 100%;
+  background-color: #4a90e2;
+}
+
+<div
+  className="emotion-20"
+>
+  <div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-0"
+    />
+    <div
+      className="emotion-2"
+    >
+      <div>
+        Failed:
+      </div>
+      <div
+        className="emotion-1"
+      >
+        1
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-4"
+    />
+    <div
+      className="emotion-2"
+    >
+      <div>
+        Skipped:
+      </div>
+      <div
+        className="emotion-1"
+      >
+        0
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-8"
+    />
+    <div
+      className="emotion-2"
+    >
+      <div>
+        Succeeded:
+      </div>
+      <div
+        className="emotion-1"
+      >
+        0
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-12"
+    />
+    <div
+      className="emotion-2"
+    >
+      <div>
+        Running:
+      </div>
+      <div
+        className="emotion-1"
+      >
+        0
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-16"
+    />
+    <div
+      className="emotion-2"
+    >
+      <div>
+        Pending:
+      </div>
+      <div
+        className="emotion-1"
+      >
+        0
+      </div>
+    </div>
+  </div>
+</div>
+`;

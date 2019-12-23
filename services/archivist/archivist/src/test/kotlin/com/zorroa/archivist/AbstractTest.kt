@@ -2,26 +2,22 @@ package com.zorroa.archivist
 
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.google.common.collect.Lists
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.capture
+import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.clients.ApiKey
 import com.zorroa.archivist.clients.AuthServerClient
-import com.zorroa.archivist.clients.ZmlpUser
+import com.zorroa.archivist.clients.ZmlpActor
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectSpec
-import com.zorroa.archivist.schema.Proxy
-import com.zorroa.archivist.schema.ProxySchema
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.Role
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.EsClientCache
-import com.zorroa.archivist.service.FileServerProvider
 import com.zorroa.archivist.service.IndexClusterService
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.service.PipelineService
@@ -36,16 +32,13 @@ import org.elasticsearch.client.RequestOptions
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
-import org.mockito.Mockito
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.test.context.TestPropertySource
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.transaction.annotation.Transactional
@@ -58,15 +51,12 @@ import javax.sql.DataSource
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-@TestPropertySource(locations = ["classpath:test.properties"])
+@ActiveProfiles("test", "aws")
 @WebAppConfiguration
 @Transactional
 abstract class AbstractTest {
 
     val logger = LoggerFactory.getLogger(javaClass)
-
-    @Autowired
-    protected lateinit var fileServerProvider: FileServerProvider
 
     @Autowired
     protected lateinit var projectService: ProjectService
@@ -133,6 +123,11 @@ abstract class AbstractTest {
         }
 
         /**
+         * Setup mocks for calls out to the authentication service.
+         */
+        setupAuthServerMocks()
+
+        /**
          * Setup a test project.
          */
         project = projectService.create(
@@ -145,11 +140,6 @@ abstract class AbstractTest {
         // TODO: Remove this once the indexRouteService can manage states.
         // Set the project index route to the current state
         jdbc.update("UPDATE index_route SET int_state=0")
-
-        /**
-         * Setup mocks for calls out to the authentication service.
-         */
-        setupAuthServerMocks()
 
         /**
          * Ensures that all transaction events run within the unit test transaction.
@@ -166,7 +156,7 @@ abstract class AbstractTest {
 
     fun authenticateAsAnalyst() {
         SecurityContextHolder.getContext().authentication =
-            AnalystAuthentication("https://127.0.0.1:5000")
+            AnalystAuthentication("http://127.0.0.1:5000", "unittest")
     }
 
     fun setupAuthServerMocks() {
@@ -177,7 +167,7 @@ abstract class AbstractTest {
         val permissions = ArgumentCaptor.forClass(listOf("foo").javaClass)
 
         // Create ApiKey
-        Mockito.`when`(
+        whenever(
             authServerClient.createApiKey(
                 capture<Project>(proj),
                 any(),
@@ -192,7 +182,7 @@ abstract class AbstractTest {
         }
 
         // Get ApiKey
-        Mockito.`when`(
+        whenever(
             authServerClient.getApiKey(
                 any(), any()
             )
@@ -203,6 +193,15 @@ abstract class AbstractTest {
                 randomString(64)
             )
         }
+
+        // Setup a inception key first.
+        val actor = ZmlpActor(
+            UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            "inception-key",
+            listOf(Role.SUPERADMIN, Role.PROJADMIN)
+        )
+        SecurityContextHolder.getContext().authentication = actor.getAuthentication()
     }
 
     fun setupElastic() {
@@ -232,17 +231,13 @@ abstract class AbstractTest {
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
     fun authenticate() {
-        val user = ZmlpUser(
+        val actor = ZmlpActor(
             UUID.fromString("00000000-0000-0000-0000-000000000000"),
             project.id,
             "unittest-key",
             listOf(Role.PROJADMIN)
         )
-
-        SecurityContextHolder.getContext().authentication =
-            UsernamePasswordAuthenticationToken(
-                user,
-                user.permissions.map { SimpleGrantedAuthority(it) })
+        SecurityContextHolder.getContext().authentication = actor.getAuthentication()
     }
 
     fun logout() {
@@ -273,10 +268,13 @@ abstract class AbstractTest {
                 null
             }
             val asset = AssetSpec(path)
-            asset.document = mapOf("media" to mapOf(
+            asset.attrs = mapOf(
+                "media" to mapOf(
                 "width" to 1024,
                 "height" to 1024,
-                "title" to "Picture of ${path}"))
+                    "title" to "Picture of $path"
+                )
+            )
             asset
         }
     }

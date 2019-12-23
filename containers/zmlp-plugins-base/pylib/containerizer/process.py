@@ -21,13 +21,15 @@ class ProcessorExecutor(object):
         self.processors = {}
 
     def execute_generator(self, request):
-        logger.info('--Generating------------')
-        logger.info(json.dumps(request, indent=4))
-        logger.info('------------------------')
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug('--Generating------------')
+            logger.debug(json.dumps(request, indent=4))
+            logger.debug('------------------------')
 
         ref = request["ref"]
         settings = request.get("settings", {})
 
+        logger.info('Executing generator=\'{}\''.format(ref['className']))
         wrapper = self.get_processor_wrapper(ref)
         wrapper.generate(settings)
 
@@ -42,14 +44,17 @@ class ProcessorExecutor(object):
         Returns:
             The processed data object.
         """
-        logger.info('--Processing------------')
-        logger.info(json.dumps(request, indent=4))
-        logger.info('------------------------')
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug('--Processing------------')
+            logger.debug(json.dumps(request, indent=4))
+            logger.debug('------------------------')
 
         ref = request["ref"]
         obj = request.get("asset")
         frame = Frame(Asset(obj))
 
+        logger.info('Executing processor=\'{}\' on assetId=\'{}\''.format(
+            ref['className'], obj['id']))
         wrapper = self.get_processor_wrapper(ref)
         wrapper.process(frame)
         return frame
@@ -64,7 +69,11 @@ class ProcessorExecutor(object):
             True if the processor was torn down.
 
         """
-        ref = request["ref"]
+        ref = request.get("ref")
+        if not ref:
+            self.warning("Invalid teardown request, missing a processor ref.")
+            return
+
         logger.info("tearing down processor='{}'".format(ref["className"]))
 
         key = self.get_processor_key(ref)
@@ -74,7 +83,7 @@ class ProcessorExecutor(object):
             del self.processors[key]
             return True
         else:
-            logger.warning("Failed to teardown processor, missing from cache {}".format(ref))
+            self.warning("Failed to teardown processor, missing from cache {}".format(ref))
         return False
 
     def get_processor_key(self, ref):
@@ -144,6 +153,20 @@ class ProcessorExecutor(object):
             # where the 'final' event is emitted.
             return None
 
+    def warning(self, msg):
+        """
+        Log and emit a warning message.
+
+        Args:
+            msg (str): The warning message.
+
+        """
+        logger.warning(msg)
+        self.reactor.emitter.write({
+            "type": "warning",
+            "payload": {"message": msg}
+        })
+
 
 class ProcessorWrapper(object):
     """
@@ -157,7 +180,7 @@ class ProcessorWrapper(object):
 
     def __init__(self, instance, ref, reactor):
         self.instance = instance
-        self.ref = ref
+        self.ref = ref or {}
         self.reactor = reactor
         self.stats = {
             "processor": ref["className"],
@@ -225,16 +248,20 @@ class ProcessorWrapper(object):
             total_time = round(time.monotonic() - start_time, 2)
             self.increment_stat("process_count")
             self.increment_stat("total_time", total_time)
+
+            # Check the expand queue.  A force check is done at teardown.
+            self.reactor.check_expand()
+
         except PixmlUnrecoverableProcessorException as upe:
             # Set the asset to be skipped for further processing
             # It will not be included in result
             frame.skip = True
             self.increment_stat("unrecoverable_error_count")
-            self.reactor.error(frame, self["ref"]["className"],
+            self.reactor.error(frame, self.ref,
                                upe, True, "execute", sys.exc_info()[2])
         except Exception as e:
             self.increment_stat("error_count")
-            self.reactor.error(frame, self.instance, e, False, "execute", sys.exc_info()[2])
+            self.reactor.error(frame, self.ref, e, False, "execute", sys.exc_info()[2])
         finally:
             self.reactor.emitter.write({
                 "type": "asset",
@@ -258,6 +285,8 @@ class ProcessorWrapper(object):
             return
         try:
             self.instance.teardown()
+            # When the processor tears down then force an expand check.
+            self.reactor.check_expand(force=True)
             self.reactor.emitter.write({"type": "stats", "payload": [self.stats]})
         except Exception as e:
             self.reactor.error(None, self.instance, e, False, "teardown", sys.exc_info()[2])
@@ -295,7 +324,7 @@ class AssetConsumer(object):
 
         Args:
             reactor (Reactor):  a reactor for talking back to the Archivist
-            file_types(iterable):  A set/list of file types to accept.
+            settings(dict):  A dict of ZPS script settings.
 
         """
         self.reactor = reactor

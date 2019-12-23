@@ -1,5 +1,6 @@
 package com.zorroa.es.kwconf
 
+import java.util.logging.Logger
 import org.apache.lucene.index.LeafReaderContext
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.plugins.Plugin
@@ -8,8 +9,6 @@ import org.elasticsearch.script.ScoreScript
 import org.elasticsearch.script.ScriptContext
 import org.elasticsearch.script.ScriptEngine
 import org.elasticsearch.search.lookup.SearchLookup
-
-import java.util.logging.Logger
 
 /**
  *
@@ -63,7 +62,7 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
              */
             return object : ScoreScript(params, lookup, ctx) {
 
-                override fun execute(): Double {
+                override fun execute(explanationHolder: ExplanationHolder): Double {
                     var score = 0.0
 
                     try {

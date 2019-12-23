@@ -1,15 +1,13 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.clients.ZmlpUser
+import com.zorroa.archivist.clients.ZmlpActor
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.crypto.bcrypt.BCrypt
 import java.util.UUID
 
 /**
@@ -48,14 +46,14 @@ fun getAuthentication(): Authentication? {
     return SecurityContextHolder.getContext().authentication
 }
 
-fun getZmlpUser(): ZmlpUser {
+fun getZmlpActor(): ZmlpActor {
     val auth = SecurityContextHolder.getContext().authentication
     return if (auth == null) {
         throw SecurityException("No credentials")
     }
     else {
         try {
-            auth.principal as ZmlpUser
+            auth.principal as ZmlpActor
         }
         catch (e: java.lang.ClassCastException) {
             throw SecurityException("Invalid credentials", e)
@@ -63,24 +61,25 @@ fun getZmlpUser(): ZmlpUser {
     }
 }
 
-fun getZmlpUserOrNull(): ZmlpUser? {
+fun getZmlpActorOrNull(): ZmlpActor? {
     return try {
-        getZmlpUser()
+        getZmlpActor()
     } catch (ex: Exception) {
         null
     }
 }
 
 fun getProjectId() : UUID {
-    return getZmlpUser().projectId
+    return getZmlpActor().projectId
 }
 
-fun getAnalystEndpoint(): String {
+fun getAnalyst() : AnalystAuthentication {
     val auth = SecurityContextHolder.getContext().authentication
-    return if (auth == null) {
+    return if (auth is AnalystAuthentication) {
+        auth
+    }
+    else {
         throw AuthenticationCredentialsNotFoundException("No login credentials specified for cluster node")
-    } else {
-        return SecurityContextHolder.getContext().authentication.principal as String
     }
 }
 
@@ -109,6 +108,6 @@ fun hasPermission(perms: Collection<String>): Boolean {
 
 
 fun getProjectFilter(): QueryBuilder {
-    return QueryBuilders.termQuery("system.projectId", getZmlpUser().projectId.toString())
+    return QueryBuilders.termQuery("system.projectId", getZmlpActor().projectId.toString())
 }
 

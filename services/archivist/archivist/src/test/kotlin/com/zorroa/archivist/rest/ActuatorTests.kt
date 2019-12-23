@@ -21,7 +21,7 @@ class ActuatorTests : MockMvcTest() {
     @Test
     fun testInfoEndpoint() {
         val rsp = mvc.perform(
-            MockMvcRequestBuilders.get("/actuator/info")
+            MockMvcRequestBuilders.get("/monitor/info")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -36,7 +36,7 @@ class ActuatorTests : MockMvcTest() {
     @Test
     fun testHealthEndpoint() {
         mvc.perform(
-            MockMvcRequestBuilders.get("/actuator/health")
+            MockMvcRequestBuilders.get("/monitor/health")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -49,7 +49,7 @@ class ActuatorTests : MockMvcTest() {
     fun testMetrics() {
         // Need to auth with monitor username/pass
         mvc.perform(
-            MockMvcRequestBuilders.get("/actuator/metrics")
+            MockMvcRequestBuilders.get("/monitor/metrics")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -61,7 +61,7 @@ class ActuatorTests : MockMvcTest() {
     @Test
     fun testMetricsFail() {
         mvc.perform(
-            MockMvcRequestBuilders.get("/actuator/metrics")
+            MockMvcRequestBuilders.get("/monitor/metrics")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().is4xxClientError)
