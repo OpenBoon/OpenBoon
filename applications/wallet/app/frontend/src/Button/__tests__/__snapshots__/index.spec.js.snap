@@ -341,6 +341,7 @@ exports[`<Button /> should render properly for MENU_ITEM Button 1`] = `
   color: #ffffff;
   padding: 8px 16px;
   font-weight: 400;
+  border-radius: 0;
 }
 
 .emotion-0:hover {
@@ -401,6 +402,7 @@ exports[`<Button /> should render properly for MENU_ITEM Link 1`] = `
   color: #ffffff;
   padding: 8px 16px;
   font-weight: 400;
+  border-radius: 0;
 }
 
 .emotion-0:hover {
