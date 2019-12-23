@@ -1,12 +1,12 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.DataSource;
 import domain.PixmlApp;
+import domain.Utils;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 import java.util.*;
 
-import static domain.Utils.updateEnvVariables;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,8 +27,8 @@ public class PixmlAppTestIT {
         //When
         // Setting up Environment Variables
         // It is valid just at this runtime
-        updateEnvVariables("PIXML_APIKEY_FILE", "../../dev/config/keys/inception-key.json");
-        updateEnvVariables("PIXML_SERVER", server);
+        Utils.updateEnvVariables("PIXML_APIKEY_FILE", "../../dev/config/keys/inception-key.json");
+        Utils.updateEnvVariables("PIXML_SERVER", server);
         pixmlApp = new PixmlApp();
         mapper = new ObjectMapper();
 
@@ -149,7 +149,7 @@ public class PixmlAppTestIT {
 
         Map post = pixmlApp.getPixmlClient().delete("/api/v1/projects", projectId);
 
-        assertEquals(true, (Boolean)post.get("success"));
+        assertEquals(true, (Boolean) post.get("success"));
         assertEquals("delete", post.get("op"));
         assertEquals("projects", post.get("type"));
         assertEquals("00000000-0000-0000-0000-000000000000", post.get("id"));

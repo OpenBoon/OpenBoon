@@ -71,6 +71,7 @@ public class PixmlApp {
     public PixmlClient getPixmlClient() {
         return pixmlClient;
     }
+
     public void setPixmlClient(PixmlClient pixmlClient) {
         this.pixmlClient = pixmlClient;
     }

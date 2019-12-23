@@ -211,6 +211,4 @@ public class PixmlClient {
     public JsonNode getApiKey() {
         return apiKey;
     }
-
-
 }
