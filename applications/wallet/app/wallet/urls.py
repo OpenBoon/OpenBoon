@@ -14,18 +14,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 
 """
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from rest_auth.views import PasswordResetView, PasswordResetConfirmView, \
+    PasswordChangeView
 from rest_framework import routers
 from rest_framework_nested.routers import NestedSimpleRouter
 
 from jobs.views import JobsViewSet
 from projects.views import ProjectViewSet
 from wallet import views as wallet_views
+from wallet.views import WalletAPIRootView
 
 router = routers.DefaultRouter()
+router.APIRootView = WalletAPIRootView
 router.register('users', wallet_views.UserViewSet, basename='user')
 router.register('groups', wallet_views.GroupViewSet, basename='group')
 router.register('projects', ProjectViewSet, basename='project')
@@ -33,11 +38,27 @@ router.register('projects', ProjectViewSet, basename='project')
 projects_router = NestedSimpleRouter(router, 'projects', lookup='project')
 projects_router.register('jobs', JobsViewSet, basename='job')
 
+
+# Use this variable to add standalone views to the urlspatterns and have them accessible
+# from the root DRF browsable API. The tuples are in the form (LABEL, path()).
+BROWSABLE_API_URLS = [
+    ('password-change', path('api/v1/password/change/', PasswordChangeView.as_view(),
+                             name='api-password-change')),
+    ('password-reset', path('api/v1/password/reset/', PasswordResetView.as_view(),
+                            name='api-password-reset')),
+    ('password-reset-confirmation', path('api/v1/password/reset/confirm/',
+                                         PasswordResetConfirmView.as_view(),
+                                         name='api-password-reset-confirm')),
+    ('logout', path('api/v1/logout/', wallet_views.LogoutView.as_view(), name='api-logout')),
+]
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/login/', wallet_views.LoginView.as_view(), name='api-login'),
-    path('api/v1/logout/', wallet_views.LogoutView.as_view(), name='api-logout'),
     path('api/v1/', include(router.urls)),
     path('api/v1/', include(projects_router.urls)),
-    path('health/', include('health_check.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('health/', include('health_check.urls'))
+]
+urlpatterns += [i[1] for i in BROWSABLE_API_URLS]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
