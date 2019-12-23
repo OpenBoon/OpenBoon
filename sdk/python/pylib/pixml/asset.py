@@ -1,8 +1,10 @@
 import logging
 import os
+import json
 
-from .rest import SearchResult
+from .rest import SearchResult, PixmlJsonEncoder
 from .util import as_collection
+from .elements import Element
 
 __all__ = [
     "Asset",
@@ -19,6 +21,7 @@ class DocumentMixin(object):
     """
     A Mixin class which provides easy access to a deeply nested dictionary.
     """
+
     def __init__(self):
         self.document = {}
 
@@ -93,7 +96,7 @@ class DocumentMixin(object):
         """
         doc = self.document
         parts = attr.split(".")
-        for k in parts[0:len(parts)-1]:
+        for k in parts[0:len(parts) - 1]:
             if k not in doc:
                 return False
             doc = doc.get(k)
@@ -111,6 +114,22 @@ class DocumentMixin(object):
             raise ValueError("Analysis requires a unique ID and value")
         attr = "analysis.%s" % id
         self.set_attr(attr, val)
+
+    def add_element(self, element):
+        """
+        Add a new Element instance to this Asset instance.  The Element is not
+        saved to the serve until the asset is re-indexed.
+
+        Args:
+            element (Element): An element instance.
+
+        """
+        if not isinstance(element, Element):
+            raise ValueError("Could not add element, value was not an Element instance.")
+
+        elements = self.get_attr("elements") or []
+        elements.append(json.loads(json.dumps(element, cls=PixmlJsonEncoder)))
+        self.set_attr("elements", elements)
 
     def extend_list_attr(self, attr, items):
         """
@@ -142,7 +161,7 @@ class DocumentMixin(object):
         """
         doc = self.document
         parts = attr.split(".")
-        for k in parts[0:len(parts)-1]:
+        for k in parts[0:len(parts) - 1]:
             if k not in doc:
                 doc[k] = {}
             doc = doc[k]
@@ -165,6 +184,7 @@ class FileImport(object):
     """
     An FileImport is used to import a new file and metdata into PixelML.
     """
+
     def __init__(self, uri, attrs=None, clip=None):
         """
         Construct an FileImport instance which can point to a remote URI.
@@ -207,6 +227,7 @@ class FileUpload(FileImport):
     """
     FileUpload instances point to a local file that will be uploaded for analysis.
     """
+
     def __init__(self, path, attrs=None, clip=None):
         """
         Create a new FileUpload instance.
@@ -231,6 +252,7 @@ class Asset(DocumentMixin):
     and augmented with files created by various analysis modules, the Asset
     will move into the 'ANALYZED' state.
     """
+
     def __init__(self, data):
         super(Asset, self).__init__()
         if not data:
@@ -366,7 +388,7 @@ class Clip(object):
                 by multiple types of services and labeling them with a timeline is
                 useful for differentiating them.
         Returns:
-            Clip: A shot Clip.
+            Clip: A scene Clip.
 
         """
         return Clip('scene', time_in, time_out, timeline)
