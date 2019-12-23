@@ -172,14 +172,23 @@ backend web server as well as a celery worker for the processing queue.
 - _Build the container._ - `docker build -t wallet .`
 - _Run the web server._ - `docker run -p 8080:8080 wallet sh /app/start-server.sh`
 
-## Continuous Integration
+---
+
+## External Services
+### Continuous Integration
 
 CI is handled by Gitlab and configured in the gitlab-ci.yml file. The config file is
 documented and the best place to go to understand what happens during the CI process.
 
-## Error Tracking
+### Error Tracking
 
 This application is configured to send all errors to the Sentry service
 (https://sentry.io/organizations/zorroa-eb/projects/). The errors can be viewed in the
 wallet app in the #Zorroa organization. The configuration can be found in the
 settings file.
+
+### Mail Delivery
+Emails is configured to be sent via SMTP by [MailGun](https://app.mailgun.com/). The 
+credentials to MailGun are stored in 1password. The SMTP_PASSWORD can found by going to 
+the MailGun console [here](https://app.mailgun.com/) and looking at mg.zorroa.com under the 
+domains menu.  
