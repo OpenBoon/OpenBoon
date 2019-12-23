@@ -5,7 +5,7 @@
     "build": "next build",
     "dev": "node -r esm devServer.js",
     "lint": "eslint '{pages,src}/**/*.js'",
-    "prod": "next build && next start",
+    "prod": "next start",
     "size": "rimraf .next && next build && bundlesize",
     "start": "next start",
     "test": "TZ=UTC jest --watch --notify --verbose",
