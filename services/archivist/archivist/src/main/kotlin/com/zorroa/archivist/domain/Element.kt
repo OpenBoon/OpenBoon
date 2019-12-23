@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty
 
 @ApiModel(
     "Element", description = "Defines a unique entity with an asset's visual representation, " +
-        "for example an object or a face. Elements are unique by a specific type, rect, files and" +
+        "for example an object or a face. Elements are unique by a specific type, rect, file name and" +
         "labels. "
 )
 class Element(

@@ -318,6 +318,24 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testElementSearch() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec(
+                "https://i.imgur.com/LRoLTlK.jpg",
+                attrs=mapOf("elements" to listOf(Element("object", listOf("cat"), listOf(0, 0, 100, 100)))))
+        ))
+
+        val createRsp = assetService.batchCreate(batchCreate)
+
+        val search = AssetSearch(
+            mapOf("query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg"))),
+            mapOf("term" to mapOf("elements.type" to "object")))
+
+        val rsp = assetService.search(search)
+        assertEquals(1L, rsp.hits.totalHits.value)
+    }
+
+    @Test
     fun testDeriveClipFromExistingAsset() {
 
         val batchCreate = BatchCreateAssetsRequest(
