@@ -116,7 +116,6 @@ exports[`<Navbar /> should render properly 1`] = `
   color: #82be3c;
   font-weight: 400;
   height: 100%;
-  margin-right: -12px;
   false: #3b3b3b;
 }
 
@@ -186,10 +185,14 @@ exports[`<Navbar /> should render properly 1`] = `
 
 <div
 <<<<<<< HEAD
+<<<<<<< HEAD
   className="emotion-9"
 =======
   className="emotion-8"
 >>>>>>> add prop validation
+=======
+  className="emotion-9"
+>>>>>>> consolidate spacing; add aria label and update test
 >
   <div
     className="emotion-2"
@@ -216,6 +219,7 @@ exports[`<Navbar /> should render properly 1`] = `
     </div>
   </div>
   <div
+<<<<<<< HEAD
 <<<<<<< HEAD
     className="emotion-8"
   >
@@ -248,21 +252,36 @@ exports[`<Navbar /> should render properly 1`] = `
     </div>
 =======
     className="emotion-7"
+=======
+    className="emotion-8"
+>>>>>>> consolidate spacing; add aria label and update test
   >
-    <button
-      className="emotion-6"
-      onBlur={[Function]}
-      onClick={[Function]}
-      type="button"
+    <div
+      className="emotion-7"
     >
-      <div
-        className="emotion-5"
+      <button
+        aria-label="Open user menu"
+        className="emotion-6"
+        onBlur={[Function]}
+        onClick={[Function]}
+        type="button"
       >
         <div
-          className="emotion-3"
+          className="emotion-5"
         >
-          JD
+          <div
+            className="emotion-3"
+          >
+            JD
+          </div>
+          <svg
+            className="emotion-4"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
         </div>
+<<<<<<< HEAD
         <svg
           className="emotion-4"
           color="#808080"
@@ -272,6 +291,10 @@ exports[`<Navbar /> should render properly 1`] = `
       </div>
     </button>
 >>>>>>> add prop validation
+=======
+      </button>
+    </div>
+>>>>>>> consolidate spacing; add aria label and update test
   </div>
 </div>
 `;
