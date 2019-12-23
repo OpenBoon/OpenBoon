@@ -58,6 +58,7 @@ const STYLES = {
     color: colors.structure.white,
     padding: `${spacing.base}px ${spacing.normal}px`,
     fontWeight: typography.weight.regular,
+    borderRadius: 0,
     ':hover': {
       backgroundColor: colors.structure.iron,
     },
