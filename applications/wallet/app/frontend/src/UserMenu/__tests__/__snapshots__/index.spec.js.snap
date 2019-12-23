@@ -495,7 +495,7 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
         <div
           className="emotion-0"
         >
-          OP
+          
         </div>
         <svg
           className="emotion-1"

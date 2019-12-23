@@ -50,8 +50,8 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
                     : colors.structure.steel,
                   fontWeight: typography.weight.bold,
                 }}>
-                {`${firstName ? firstName[0] : 'O'}${
-                  lastName ? lastName[0] : 'P'
+                {`${firstName ? firstName[0] : ''}${
+                  lastName ? lastName[0] : ''
                 }`}
               </div>
               <ChevronSvg
