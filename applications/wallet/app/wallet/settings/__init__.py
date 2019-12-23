@@ -175,3 +175,10 @@ PLATFORM = os.environ.get('PLATFORM', 'zmlp')
 
 # Google OAUTH2
 GOOGLE_OAUTH_CLIENT_ID = os.environ.get('GOOGLE_OAUTH_CLIENT_ID')
+
+# Mail Server
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_HOST_USER = 'postmaster@mg.zorroa.com'
+EMAIL_HOST_PASSWORD = os.environ.get('SMTP_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

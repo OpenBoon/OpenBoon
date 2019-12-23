@@ -34,6 +34,10 @@ variable "docker-email" {
   description = "Email address for Docker Hub user."
 }
 
+variable "smtp-password" {
+  description = "Password for the SMTP server wallet uses to send mail."
+}
+
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"
