@@ -89,10 +89,14 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         }
 
         val totalAssets = spec.script?.assets?.size ?: 0
-        jdbc.update("INSERT INTO task_stat (pk_task, pk_job,int_asset_total_count) VALUES (?,?,?)",
-                id, job.jobId, totalAssets)
-        logger.event(LogObject.TASK, LogAction.CREATE,
-                mapOf("taskId" to id, "taskName" to spec.name, "assetCount" to totalAssets))
+        jdbc.update(
+            "INSERT INTO task_stat (pk_task, pk_job,int_asset_total_count) VALUES (?,?,?)",
+            id, job.jobId, totalAssets
+        )
+        logger.event(
+            LogObject.TASK, LogAction.CREATE,
+            mapOf("taskId" to id, "taskName" to spec.name, "assetCount" to totalAssets)
+        )
         return get(id)
     }
 
@@ -105,8 +109,10 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     }
 
     override fun getScript(id: UUID): ZpsScript {
-        val script = jdbc.queryForObject("SELECT json_script FROM task WHERE pk_task=?",
-                String::class.java, id)
+        val script = jdbc.queryForObject(
+            "SELECT json_script FROM task WHERE pk_task=?",
+            String::class.java, id
+        )
         return Json.deserialize(script, ZpsScript::class.java)
     }
 
@@ -114,23 +120,33 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         val time = System.currentTimeMillis()
         // Note: There is a trigger updating counts here.
         val updated = if (oldState != null) {
-            jdbc.update("UPDATE task SET int_state=?,time_modified=? WHERE pk_task=? AND int_state=?",
-                    newState.ordinal, time, task.taskId, oldState.ordinal) == 1
+            jdbc.update(
+                "UPDATE task SET int_state=?,time_modified=? WHERE pk_task=? AND int_state=?",
+                newState.ordinal, time, task.taskId, oldState.ordinal
+            ) == 1
         } else {
-            jdbc.update("UPDATE task SET int_state=?,time_modified=? WHERE pk_task=?",
-                    newState.ordinal, time, task.taskId) == 1
+            jdbc.update(
+                "UPDATE task SET int_state=?,time_modified=? WHERE pk_task=?",
+                newState.ordinal, time, task.taskId
+            ) == 1
         }
 
         if (updated) {
             meterRegistry.counter("zorroa.task.state", getTags(newState.metricsTag())).increment()
-            logger.event(LogObject.TASK, LogAction.STATE_CHANGE,
-                    mapOf("taskId" to task.taskId,
-                            "newState" to newState.name,
-                            "oldState" to oldState?.name))
+            logger.event(
+                LogObject.TASK, LogAction.STATE_CHANGE,
+                mapOf(
+                    "taskId" to task.taskId,
+                    "newState" to newState.name,
+                    "oldState" to oldState?.name
+                )
+            )
 
             if (newState in START_STATES) {
-                jdbc.update("UPDATE task SET time_started=?, int_run_count=int_run_count+1, " +
-                        "time_stopped=-1 WHERE pk_task=?", time, task.taskId)
+                jdbc.update(
+                    "UPDATE task SET time_started=?, int_run_count=int_run_count+1, " +
+                        "time_stopped=-1 WHERE pk_task=?", time, task.taskId
+                )
             } else if (newState in STOP_STATES) {
                 jdbc.update("UPDATE task SET time_stopped=? WHERE pk_task=?", time, task.taskId)
             }
@@ -145,8 +161,10 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
 
     override fun getHostEndpoint(taskId: TaskId): String? {
         return try {
-            jdbc.queryForObject("SELECT str_host FROM task WHERE pk_task=?",
-                    String::class.java, taskId.taskId)
+            jdbc.queryForObject(
+                "SELECT str_host FROM task WHERE pk_task=?",
+                String::class.java, taskId.taskId
+            )
         } catch (e: EmptyResultDataAccessException) {
             null
         }
@@ -157,12 +175,14 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     }
 
     override fun incrementAssetCounters(task: TaskId, counts: AssetCounters): Boolean {
-        return jdbc.update(ASSET_COUNTS_INC,
-                counts.created,
-                counts.warnings,
-                counts.errors,
-                counts.replaced,
-                task.taskId) == 1
+        return jdbc.update(
+            ASSET_COUNTS_INC,
+            counts.created,
+            counts.warnings,
+            counts.errors,
+            counts.replaced,
+            task.taskId
+        ) == 1
     }
 
     override fun resetAssetCounters(task: TaskId): Boolean {
@@ -182,8 +202,10 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     }
 
     override fun getAll(job: UUID, state: TaskState): List<InternalTask> {
-        return jdbc.query("$GET_INTERNAL WHERE task.pk_job=? AND task.int_state=?",
-                INTERNAL_MAPPER, job, state.ordinal)
+        return jdbc.query(
+            "$GET_INTERNAL WHERE task.pk_job=? AND task.int_state=?",
+            INTERNAL_MAPPER, job, state.ordinal
+        )
     }
 
     override fun findOne(filter: TaskFilter): Task {
@@ -193,26 +215,34 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     }
 
     override fun isAutoRetryable(task: TaskId): Boolean {
-        return jdbc.queryForObject("SELECT int_run_count <= ? FROM task where pk_task=?",
-                Boolean::class.java, autoRetryLimit, task.taskId)
+        return jdbc.queryForObject(
+            "SELECT int_run_count <= ? FROM task where pk_task=?",
+            Boolean::class.java, autoRetryLimit, task.taskId
+        )
     }
 
     override fun getPendingTaskCount(): Long {
-        return jdbc.queryForObject(GET_PENDING_COUNT,
-                Long::class.java, JobState.Active.ordinal, TaskState.Waiting.ordinal)
+        return jdbc.queryForObject(
+            GET_PENDING_COUNT,
+            Long::class.java, JobState.InProgress.ordinal, TaskState.Waiting.ordinal
+        )
     }
 
     override fun updatePingTime(taskId: UUID, endpoint: String): Boolean {
-        return jdbc.update(UPDATE_PING,
-                System.currentTimeMillis(), taskId, endpoint, TaskState.Running.ordinal) == 1
+        return jdbc.update(
+            UPDATE_PING,
+            System.currentTimeMillis(), taskId, endpoint, TaskState.Running.ordinal
+        ) == 1
     }
 
     override fun getOrphans(duration: Duration): List<InternalTask> {
         val time = System.currentTimeMillis() - duration.toMillis()
-        return jdbc.query(GET_ORPHANS, INTERNAL_MAPPER,
-                TaskState.Running.ordinal,
-                TaskState.Queued.ordinal,
-                time)
+        return jdbc.query(
+            GET_ORPHANS, INTERNAL_MAPPER,
+            TaskState.Running.ordinal,
+            TaskState.Queued.ordinal,
+            time
+        )
     }
 
     companion object {
@@ -222,27 +252,31 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         private val STOP_STATES = setOf(TaskState.Failure, TaskState.Skipped, TaskState.Success)
 
         private val INTERNAL_MAPPER = RowMapper { rs, _ ->
-            InternalTask(rs.getObject("pk_task") as UUID,
-                    rs.getObject("pk_job") as UUID,
-                    rs.getObject("pk_project") as UUID,
+            InternalTask(
+                rs.getObject("pk_task") as UUID,
+                rs.getObject("pk_job") as UUID,
+                rs.getObject("pk_project") as UUID,
                 rs.getObject("pk_datasource") as UUID?,
-                    rs.getString("str_name"),
-                    TaskState.values()[rs.getInt("int_state")])
+                rs.getString("str_name"),
+                TaskState.values()[rs.getInt("int_state")]
+            )
         }
 
         private val MAPPER = RowMapper { rs, _ ->
-            Task(rs.getObject("pk_task") as UUID,
-                    rs.getObject("pk_job") as UUID,
-                    rs.getObject("pk_project") as UUID,
+            Task(
+                rs.getObject("pk_task") as UUID,
+                rs.getObject("pk_job") as UUID,
+                rs.getObject("pk_project") as UUID,
                 rs.getObject("pk_datasource") as UUID?,
-                    rs.getString("str_name"),
-                    TaskState.values()[rs.getInt("int_state")],
-                    rs.getString("str_host"),
-                    rs.getLong("time_started"),
-                    rs.getLong("time_stopped"),
-                    rs.getLong("time_created"),
-                    rs.getLong("time_ping"),
-                    buildAssetCounts(rs))
+                rs.getString("str_name"),
+                TaskState.values()[rs.getInt("int_state")],
+                rs.getString("str_host"),
+                rs.getLong("time_started"),
+                rs.getLong("time_stopped"),
+                rs.getLong("time_created"),
+                rs.getLong("time_ping"),
+                buildAssetCounts(rs)
+            )
         }
 
         private inline fun buildAssetCounts(rs: ResultSet): Map<String, Int> {
@@ -256,107 +290,109 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         }
 
         private const val UPDATE_PING =
-                "UPDATE " +
-                    "task " +
+            "UPDATE " +
+                "task " +
                 "SET " +
-                    "time_ping=? " +
+                "time_ping=? " +
                 "WHERE " +
-                    "pk_task=? " +
+                "pk_task=? " +
                 "AND " +
-                    "str_host=? " +
+                "str_host=? " +
                 "AND " +
-                    "int_state=?"
+                "int_state=?"
 
         private const val ASSET_COUNTS_INC = "UPDATE " +
-                "task_stat " +
-                "SET " +
-                "int_asset_create_count=int_asset_create_count+?," +
-                "int_asset_warning_count=int_asset_warning_count+?," +
-                "int_asset_error_count=int_asset_error_count+?," +
-                "int_asset_replace_count=int_asset_replace_count+? " +
-                "WHERE " +
-                "pk_task=?"
+            "task_stat " +
+            "SET " +
+            "int_asset_create_count=int_asset_create_count+?," +
+            "int_asset_warning_count=int_asset_warning_count+?," +
+            "int_asset_error_count=int_asset_error_count+?," +
+            "int_asset_replace_count=int_asset_replace_count+? " +
+            "WHERE " +
+            "pk_task=?"
 
         private const val ASSET_COUNTS_RESET = "UPDATE " +
-                "task_stat " +
-                "SET " +
-                "int_asset_create_count=0," +
-                "int_asset_warning_count=0," +
-                "int_asset_error_count=0," +
-                "int_asset_replace_count=0 " +
-                "WHERE " +
-                "pk_task=?"
+            "task_stat " +
+            "SET " +
+            "int_asset_create_count=0," +
+            "int_asset_warning_count=0," +
+            "int_asset_error_count=0," +
+            "int_asset_replace_count=0 " +
+            "WHERE " +
+            "pk_task=?"
 
         private const val GET_INTERNAL = "SELECT " +
-                "task.pk_task," +
-                "task.pk_job," +
-                "task.str_name," +
-                "task.int_state, " +
-                "job.pk_project, " +
-                "job.pk_datasource " +
+            "task.pk_task," +
+            "task.pk_job," +
+            "task.str_name," +
+            "task.int_state, " +
+            "job.pk_project, " +
+            "job.pk_datasource " +
             "FROM " +
-                "task INNER JOIN job ON (task.pk_job = job.pk_job)"
+            "task INNER JOIN job ON (task.pk_job = job.pk_job)"
 
         private const val COUNT = "SELECT COUNT(1) " +
             "FROM " +
-                "task " +
+            "task " +
             "INNER JOIN " +
-                "job ON (task.pk_job = job.pk_job) "
+            "job ON (task.pk_job = job.pk_job) "
 
         private const val GET_ORPHANS =
-                "$GET_INTERNAL " +
+            "$GET_INTERNAL " +
                 "WHERE " +
-                    "task.int_state IN (?,?) AND task.time_ping < ? LIMIT 15"
+                "task.int_state IN (?,?) AND task.time_ping < ? LIMIT 15"
 
-        private val INSERT = JdbcUtils.insert("task",
-                "pk_task",
-                "pk_job",
-                "str_name",
-                "time_created",
-                "time_modified",
-                "time_state_change",
-                "time_ping",
-                "json_script::JSON",
-                "int_run_count")
+        private val INSERT = JdbcUtils.insert(
+            "task",
+            "pk_task",
+            "pk_job",
+            "str_name",
+            "time_created",
+            "time_modified",
+            "time_state_change",
+            "time_ping",
+            "json_script::JSON",
+            "int_run_count"
+        )
 
         private const val GET = "SELECT " +
-                "task.pk_task," +
-                "task.pk_parent," +
-                "task.pk_job," +
-                "task.str_name," +
-                "task.int_state," +
-                "task.int_order," +
-                "task.time_started," +
-                "task.time_stopped," +
-                "task.time_created," +
-                "task.time_ping," +
-                "task.time_state_change," +
-                "task.int_exit_status," +
-                "task.str_host, " +
-                "task.int_run_count, " +
-                "task_stat.int_asset_total_count," +
-                "task_stat.int_asset_create_count," +
-                "task_stat.int_asset_replace_count," +
-                "task_stat.int_asset_error_count," +
-                "task_stat.int_asset_warning_count," +
-                "job.pk_project, " +
-                "job.pk_datasource " +
+            "task.pk_task," +
+            "task.pk_parent," +
+            "task.pk_job," +
+            "task.str_name," +
+            "task.int_state," +
+            "task.int_order," +
+            "task.time_started," +
+            "task.time_stopped," +
+            "task.time_created," +
+            "task.time_ping," +
+            "task.time_state_change," +
+            "task.int_exit_status," +
+            "task.str_host, " +
+            "task.int_run_count, " +
+            "task_stat.int_asset_total_count," +
+            "task_stat.int_asset_create_count," +
+            "task_stat.int_asset_replace_count," +
+            "task_stat.int_asset_error_count," +
+            "task_stat.int_asset_warning_count," +
+            "job.pk_project, " +
+            "job.pk_datasource " +
             "FROM " +
-                "task " +
-                "JOIN task_stat ON task.pk_task = task_stat.pk_task " +
-                "JOIN job ON task.pk_job = job.pk_job "
+            "task " +
+            "JOIN task_stat ON task.pk_task = task_stat.pk_task " +
+            "JOIN job ON task.pk_job = job.pk_job "
 
         private const val GET_PENDING_COUNT =
-                "SELECT " +
-                    "COUNT(1) " +
+            "SELECT " +
+                "COUNT(1) " +
                 "FROM " +
-                    "job," +
-                    "task " +
+                "job," +
+                "task " +
                 "WHERE " +
-                    "job.pk_job = task.pk_job " +
+                "job.pk_job = task.pk_job " +
                 "AND " +
-                    "job.int_state = ? " +
+                "job.int_state = ? " +
                 "AND " +
-                    "task.int_state = ? "
+                "task.int_state = ? "
     }
 }

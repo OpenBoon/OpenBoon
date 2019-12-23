@@ -12,8 +12,8 @@ import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.domain.TaskStateCounts
 import com.zorroa.archivist.security.getZmlpActor
-import com.zorroa.archivist.service.MeterRegistryHolder
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils.insert
 import com.zorroa.archivist.util.Json
@@ -33,9 +33,9 @@ interface JobDao {
     fun setTimeStarted(job: JobId): Boolean
     fun getExpired(duration: Long, unit: TimeUnit, limit: Int): List<Job>
     fun delete(job: JobId): Boolean
-    fun hasPendingFrames(job: JobId): Boolean
     fun resumePausedJobs(): Int
     fun findOneJob(filter: JobFilter): Job
+    fun getTaskStateCounts(job: JobId): TaskStateCounts
 }
 
 @Repository
@@ -61,21 +61,24 @@ class JobDaoImpl : AbstractDao(), JobDao {
             ps.setObject(2, key.projectId)
             ps.setObject(3, spec.dataSourceId)
             ps.setString(4, spec.name)
-            ps.setInt(5, JobState.Active.ordinal)
+            ps.setInt(5, JobState.InProgress.ordinal)
             ps.setInt(6, type.ordinal)
             ps.setLong(7, time)
             ps.setLong(8, time)
             ps.setLong(9, -1)
-            ps.setString(10, Json.serializeToString(spec.args, "{}"))
-            ps.setString(11, Json.serializeToString(spec.env, "{}"))
-            ps.setInt(12, spec.priority)
-            ps.setBoolean(13, spec.paused)
-            ps.setLong(14, pauseUntil)
+            ps.setLong(10, -1)
+            ps.setString(11, Json.serializeToString(spec.args, "{}"))
+            ps.setString(12, Json.serializeToString(spec.env, "{}"))
+            ps.setInt(13, spec.priority)
+            ps.setBoolean(14, spec.paused)
+            ps.setLong(15, pauseUntil)
             ps
         }
 
-        jdbc.update("INSERT INTO job_count (pk_job, time_updated, int_max_running_tasks) VALUES (?, ?, ?)",
-            id, time, spec.maxRunningTasks)
+        jdbc.update(
+            "INSERT INTO job_count (pk_job, time_updated, int_max_running_tasks) VALUES (?, ?, ?)",
+            id, time, spec.maxRunningTasks
+        )
         jdbc.update("INSERT INTO job_stat (pk_job) VALUES (?)", id)
 
         logger.event(LogObject.JOB, LogAction.CREATE, mapOf("jobId" to id, "jobName" to spec.name))
@@ -84,20 +87,24 @@ class JobDaoImpl : AbstractDao(), JobDao {
     }
 
     override fun update(job: JobId, update: JobUpdateSpec): Boolean {
-        jdbc.update("UPDATE job_count SET int_max_running_tasks=? WHERE pk_job=?",
-            update.maxRunningTasks, job.jobId)
-        return jdbc.update(UPDATE,
-                update.name, update.priority, update.paused, update.timePauseExpired, job.jobId) == 1
+        jdbc.update(
+            "UPDATE job_count SET int_max_running_tasks=? WHERE pk_job=?",
+            update.maxRunningTasks, job.jobId
+        )
+        return jdbc.update(
+            UPDATE,
+            update.name, update.priority, update.paused, update.timePauseExpired, job.jobId
+        ) == 1
     }
 
     override fun delete(job: JobId): Boolean {
         val result = listOf(
-                "DELETE FROM task_stat WHERE pk_job=?",
-                "DELETE FROM task_error WHERE pk_job=?",
-                "DELETE FROM task WHERE pk_job=?",
-                "DELETE FROM job_count WHERE pk_job=?",
-                "DELETE FROM job_stat WHERE pk_job=?",
-                "DELETE FROM job WHERE pk_job=?"
+            "DELETE FROM task_stat WHERE pk_job=?",
+            "DELETE FROM task_error WHERE pk_job=?",
+            "DELETE FROM task WHERE pk_job=?",
+            "DELETE FROM job_count WHERE pk_job=?",
+            "DELETE FROM job_stat WHERE pk_job=?",
+            "DELETE FROM job WHERE pk_job=?"
         ).map { jdbc.update(it, job.jobId) }
         return result.last() == 1
     }
@@ -124,54 +131,83 @@ class JobDaoImpl : AbstractDao(), JobDao {
     }
 
     override fun setTimeStarted(job: JobId): Boolean {
-        return jdbc.update("UPDATE job SET time_started=? WHERE pk_job=? AND time_started=-1",
-                System.currentTimeMillis(), job.jobId) == 1
+        return jdbc.update(
+            "UPDATE job SET time_started=? WHERE pk_job=? AND time_started=-1",
+            System.currentTimeMillis(), job.jobId
+        ) == 1
     }
 
     override fun getExpired(duration: Long, unit: TimeUnit, limit: Int): List<Job> {
         val cutOff = System.currentTimeMillis() - unit.toMillis(duration)
-        return jdbc.query("$GET_EXPIRED LIMIT ?", MAPPER,
-                JobState.Cancelled.ordinal, JobState.Finished.ordinal, cutOff, limit)
+        return jdbc.query(
+            "$GET_EXPIRED LIMIT ?", MAPPER,
+            JobState.Cancelled.ordinal, JobState.Success.ordinal, JobState.Failure.ordinal, cutOff, limit
+        )
     }
 
     override fun setState(job: JobId, newState: JobState, oldState: JobState?): Boolean {
         val time = System.currentTimeMillis()
         val result = if (oldState != null) {
-            jdbc.update("UPDATE job SET int_state=?,time_modified=? WHERE pk_job=? AND int_state=?",
-                    newState.ordinal, time, job.jobId, oldState.ordinal) == 1
+            jdbc.update(
+                "UPDATE job SET int_state=?,time_modified=? WHERE pk_job=? AND int_state=?",
+                newState.ordinal, time, job.jobId, oldState.ordinal
+            ) == 1
         } else {
-            jdbc.update("UPDATE job SET int_state=?,time_modified=? WHERE pk_job=?",
-                    newState.ordinal, time, job.jobId) == 1
+            jdbc.update(
+                "UPDATE job SET int_state=?,time_modified=? WHERE pk_job=? AND int_state!=?",
+                newState.ordinal, time, job.jobId, newState.ordinal
+            ) == 1
         }
         if (result) {
-            meterRegistry.counter("zorroa.job.state",
-                    MeterRegistryHolder.getTags(newState.metricsTag())).increment()
-            logger.event(LogObject.JOB, LogAction.STATE_CHANGE,
-                    mapOf("jobId" to job.jobId,
-                            "newState" to newState.name,
-                            "oldState" to oldState?.name,
-                            "status" to result))
+
+            if (newState.isInactiveState()) {
+                jdbc.update("UPDATE job SET time_stopped=? WHERE pk_job=?", time, job.jobId)
+            } else if (newState.isActiveState()) {
+                jdbc.update("UPDATE job SET time_stopped=-1 WHERE pk_job=?", job.jobId)
+            }
+
+            logger.event(
+                LogObject.JOB, LogAction.STATE_CHANGE,
+                mapOf(
+                    "jobId" to job.jobId,
+                    "newState" to newState.name,
+                    "oldState" to oldState?.name,
+                    "status" to result
+                )
+            )
         }
         return result
     }
 
-    override fun hasPendingFrames(job: JobId): Boolean {
-        return jdbc.queryForObject(HAS_PENDING, Int::class.java, JobState.Active.ordinal, job.jobId) == 1
+    override fun getTaskStateCounts(job: JobId): TaskStateCounts {
+        return jdbc.queryForObject(GET_TASK_COUNTS, RowMapper { rs, i ->
+            val map = mapOf(
+                TaskState.Waiting to rs.getInt("int_task_state_0"),
+                TaskState.Running to rs.getInt("int_task_state_1"),
+                TaskState.Success to rs.getInt("int_task_state_2"),
+                TaskState.Failure to rs.getInt("int_task_state_3"),
+                TaskState.Skipped to rs.getInt("int_task_state_4"),
+                TaskState.Queued to rs.getInt("int_task_state_5")
+            )
+            TaskStateCounts(map, rs.getInt("int_task_total_count"))
+        }, job.jobId)
     }
 
     override fun incrementAssetCounters(job: JobId, counts: AssetCounters): Boolean {
-        return jdbc.update(ASSET_COUNTS_INC,
-                counts.total,
-                counts.created,
-                counts.warnings,
-                counts.errors,
-                counts.replaced,
-                job.jobId) == 1
+        return jdbc.update(
+            ASSET_COUNTS_INC,
+            counts.total,
+            counts.created,
+            counts.warnings,
+            counts.errors,
+            counts.replaced,
+            job.jobId
+        ) == 1
     }
 
     override fun resumePausedJobs(): Int {
         val time = System.currentTimeMillis()
-        return jdbc.update(RESUME_PAUSED, JobState.Active.ordinal, time)
+        return jdbc.update(RESUME_PAUSED, JobState.InProgress.ordinal, time)
     }
 
     private fun count(filter: JobFilter): Long {
@@ -195,7 +231,7 @@ class JobDaoImpl : AbstractDao(), JobDao {
         private inline fun buildTaskCountMap(rs: ResultSet): Map<String, Int> {
             val result = mutableMapOf("tasksTotal" to rs.getInt("int_task_total_count"))
             return TaskState.values().map {
-                "tasks" + it.toString() to getTaskStateCount(rs, it)
+                "tasks$it" to getTaskStateCount(rs, it)
             }.toMap(result)
             return result
         }
@@ -211,96 +247,102 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
         private val MAPPER = RowMapper { rs, _ ->
             val state = JobState.values()[rs.getInt("int_state")]
-            Job(rs.getObject("pk_job") as UUID,
-                    rs.getObject("pk_project") as UUID,
+            Job(
+                rs.getObject("pk_job") as UUID,
+                rs.getObject("pk_project") as UUID,
                 rs.getObject("pk_datasource") as UUID?,
-                    rs.getString("str_name"),
-                    JobType.values()[rs.getInt("int_type")],
-                    state,
-                    null,
-                    null,
-                    rs.getLong("time_started"),
-                    rs.getLong("time_modified"),
-                    rs.getLong("time_created"),
-                    rs.getInt("int_priority"),
-                    rs.getBoolean("bool_paused"),
-                    rs.getLong("time_pause_expired"),
-                    rs.getInt("int_max_running_tasks")
+                rs.getString("str_name"),
+                JobType.values()[rs.getInt("int_type")],
+                state,
+                null,
+                null,
+                rs.getLong("time_started"),
+                rs.getLong("time_modified"),
+                rs.getLong("time_created"),
+                rs.getLong("time_stopped"),
+                rs.getInt("int_priority"),
+                rs.getBoolean("bool_paused"),
+                rs.getLong("time_pause_expired"),
+                rs.getInt("int_max_running_tasks")
             )
         }
 
         private const val GET = "SELECT * FROM job " +
-                "INNER JOIN job_stat ON job.pk_job=job_stat.pk_job " +
-                "INNER JOIN job_count ON job.pk_job=job_count.pk_job "
+            "INNER JOIN job_stat ON job.pk_job=job_stat.pk_job " +
+            "INNER JOIN job_count ON job.pk_job=job_count.pk_job "
 
         private const val COUNT = "SELECT COUNT(1) FROM job"
 
         private const val GET_EXPIRED = "$GET " +
-                "WHERE " +
+            "WHERE " +
                 "job.pk_job = job_count.pk_job " +
-                "AND " +
-                "job.int_state IN (?,?) " +
-                "AND " +
+            "AND " +
+                "job.int_state IN (?,?,?) " +
+            "AND " +
                 "job_count.time_updated < ? "
 
         private const val ASSET_COUNTS_INC = "UPDATE " +
-                "job_stat " +
-                "SET " +
+            "job_stat " +
+            "SET " +
                 "int_asset_total_count=int_asset_total_count+?," +
                 "int_asset_create_count=int_asset_create_count+?," +
                 "int_asset_warning_count=int_asset_warning_count+?," +
                 "int_asset_error_count=int_asset_error_count+?," +
                 "int_asset_replace_count=int_asset_replace_count+? " +
-                "WHERE " +
+            "WHERE " +
                 "pk_job=?"
 
         private const val RESUME_PAUSED =
-                "UPDATE " +
-                    "job " +
-                "SET " +
-                    "bool_paused='f' " +
-                "WHERE " +
-                    "int_state=? " +
-                "AND " +
-                    "bool_paused='t' " +
-                "AND " +
-                    "time_pause_expired < ? " +
-                "AND " +
-                    "time_pause_expired != -1"
-
-        private const val UPDATE = "UPDATE " +
+            "UPDATE " +
                 "job " +
             "SET " +
-                "str_name=?, int_priority=?, bool_paused=?, time_pause_expired=? " +
+                "bool_paused='f' " +
+            "WHERE " +
+                "int_state=? " +
+            "AND " +
+                "bool_paused='t' " +
+            "AND " +
+                "time_pause_expired < ? " +
+            "AND " +
+                "time_pause_expired != -1"
+
+        private const val UPDATE = "UPDATE " +
+            "job " +
+            "SET " +
+            "str_name=?, int_priority=?, bool_paused=?, time_pause_expired=? " +
             "WHERE pk_job=?"
 
-        private val INSERT = insert("job",
-                "pk_job",
-                "pk_project",
+        private val INSERT = insert(
+            "job",
+            "pk_job",
+            "pk_project",
             "pk_datasource",
-                "str_name",
-                "int_state",
-                "int_type",
-                "time_created",
-                "time_modified",
-                "time_started",
-                "json_args",
-                "json_env",
-                "int_priority",
-                "bool_paused",
-                "time_pause_expired")
+            "str_name",
+            "int_state",
+            "int_type",
+            "time_created",
+            "time_modified",
+            "time_started",
+            "time_stopped",
+            "json_args",
+            "json_env",
+            "int_priority",
+            "bool_paused",
+            "time_pause_expired"
+        )
 
-        private const val HAS_PENDING = "SELECT " +
-                "COUNT(1) " +
-                "FROM " +
-                    "job, job_count " +
-                "WHERE " +
-                    "job.pk_job = job_count.pk_job " +
-                "AND " +
-                    "job_count.int_task_state_4 + job_count.int_task_state_2 != job_count.int_task_total_count " +
-                "AND " +
-                    "job.int_state = ? " +
-                "AND " +
-                    "job.pk_job = ?"
+        private const val GET_TASK_COUNTS =
+            "SELECT " +
+                "job_count.int_task_state_0," +
+                "job_count.int_task_state_1," +
+                "job_count.int_task_state_2," +
+                "job_count.int_task_state_3," +
+                "job_count.int_task_state_4," +
+                "job_count.int_task_state_5, " +
+                "job_count.int_task_total_count " +
+            "FROM " +
+                "job_count " +
+            "WHERE " +
+                "job_count.pk_job = ?"
     }
 }

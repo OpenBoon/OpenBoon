@@ -117,7 +117,11 @@ class JobController @Autowired constructor(
     @PutMapping(value = ["/api/v1/jobs/{id}/_retryAllFailures"])
     @Throws(IOException::class)
     fun retryAllFailures(@ApiParam("UUID of the Job.") @PathVariable id: UUID): Any {
+        val job = jobService.get(id)
         val result = jobService.retryAllTaskFailures(jobService.get(id))
+        if (result > 0) {
+            jobService.restartJob(job)
+        }
         return HttpUtils.status("Job", id, "retryAllFailures", result > 0)
     }
 }
