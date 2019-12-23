@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Layout /> should render properly 1`] = `
-.emotion-10 {
+.emotion-11 {
   height: 100%;
 }
 
-.emotion-8 {
+.emotion-9 {
   position: fixed;
   top: 0;
   left: 0;
@@ -68,6 +68,10 @@ exports[`<Layout /> should render properly 1`] = `
   padding-right: 8px;
 }
 
+.emotion-8 {
+  margin-right: -12px;
+}
+
 .emotion-7 {
   position: relative;
 }
@@ -108,7 +112,6 @@ exports[`<Layout /> should render properly 1`] = `
   color: #82be3c;
   font-weight: 400;
   height: 100%;
-  margin-right: -12px;
   false: #3b3b3b;
 }
 
@@ -160,7 +163,7 @@ exports[`<Layout /> should render properly 1`] = `
   margin-left: 8px;
 }
 
-.emotion-9 {
+.emotion-10 {
   margin-top: 44px;
   padding: 24px;
   padding-left: 32px;
@@ -168,10 +171,10 @@ exports[`<Layout /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-10"
+  className="emotion-11"
 >
   <div
-    className="emotion-8"
+    className="emotion-9"
   >
     <div
       className="emotion-2"
@@ -199,30 +202,35 @@ exports[`<Layout /> should render properly 1`] = `
       <ProjectSwitcher />
     </div>
     <div
-      className="emotion-7"
+      className="emotion-8"
     >
-      <button
-        className="emotion-6"
-        onBlur={[Function]}
-        onClick={[Function]}
-        type="button"
+      <div
+        className="emotion-7"
       >
-        <div
-          className="emotion-5"
+        <button
+          aria-label="Open user menu"
+          className="emotion-6"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
         >
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            JD
+            <div
+              className="emotion-3"
+            >
+              JD
+            </div>
+            <svg
+              className="emotion-4"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
           </div>
-          <svg
-            className="emotion-4"
-            color="#808080"
-            data-file-name="chevron.svg"
-            width={20}
-          />
-        </div>
-      </button>
+        </button>
+      </div>
     </div>
   </div>
   <Sidebar
@@ -230,7 +238,7 @@ exports[`<Layout /> should render properly 1`] = `
     setSidebarOpen={[Function]}
   />
   <div
-    className="emotion-9"
+    className="emotion-10"
   >
     Hello World
   </div>
@@ -238,11 +246,11 @@ exports[`<Layout /> should render properly 1`] = `
 `;
 
 exports[`<Layout /> should render properly 2`] = `
-.emotion-10 {
+.emotion-11 {
   height: 100%;
 }
 
-.emotion-8 {
+.emotion-9 {
   position: fixed;
   top: 0;
   left: 0;
@@ -305,6 +313,10 @@ exports[`<Layout /> should render properly 2`] = `
   padding-right: 8px;
 }
 
+.emotion-8 {
+  margin-right: -12px;
+}
+
 .emotion-7 {
   position: relative;
 }
@@ -345,7 +357,6 @@ exports[`<Layout /> should render properly 2`] = `
   color: #82be3c;
   font-weight: 400;
   height: 100%;
-  margin-right: -12px;
   false: #3b3b3b;
 }
 
@@ -397,7 +408,7 @@ exports[`<Layout /> should render properly 2`] = `
   margin-left: 8px;
 }
 
-.emotion-9 {
+.emotion-10 {
   margin-top: 44px;
   padding: 24px;
   padding-left: 32px;
@@ -405,10 +416,10 @@ exports[`<Layout /> should render properly 2`] = `
 }
 
 <div
-  className="emotion-10"
+  className="emotion-11"
 >
   <div
-    className="emotion-8"
+    className="emotion-9"
   >
     <div
       className="emotion-2"
@@ -436,30 +447,35 @@ exports[`<Layout /> should render properly 2`] = `
       <ProjectSwitcher />
     </div>
     <div
-      className="emotion-7"
+      className="emotion-8"
     >
-      <button
-        className="emotion-6"
-        onBlur={[Function]}
-        onClick={[Function]}
-        type="button"
+      <div
+        className="emotion-7"
       >
-        <div
-          className="emotion-5"
+        <button
+          aria-label="Open user menu"
+          className="emotion-6"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
         >
           <div
-            className="emotion-3"
+            className="emotion-5"
           >
-            JD
+            <div
+              className="emotion-3"
+            >
+              JD
+            </div>
+            <svg
+              className="emotion-4"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
           </div>
-          <svg
-            className="emotion-4"
-            color="#808080"
-            data-file-name="chevron.svg"
-            width={20}
-          />
-        </div>
-      </button>
+        </button>
+      </div>
     </div>
   </div>
   <Sidebar
@@ -467,7 +483,7 @@ exports[`<Layout /> should render properly 2`] = `
     setSidebarOpen={[Function]}
   />
   <div
-    className="emotion-9"
+    className="emotion-10"
   >
     Hello World
   </div>

@@ -1,6 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<UserMenu /> should render properly 1`] = `
+.emotion-5 {
+  margin-right: -12px;
+}
+
 .emotion-4 {
   position: relative;
 }
@@ -41,7 +45,6 @@ exports[`<UserMenu /> should render properly 1`] = `
   color: #82be3c;
   font-weight: 400;
   height: 100%;
-  margin-right: -12px;
   false: #3b3b3b;
 }
 
@@ -94,34 +97,43 @@ exports[`<UserMenu /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-4"
+  className="emotion-5"
 >
-  <button
-    className="emotion-3"
-    onBlur={[Function]}
-    onClick={[Function]}
-    type="button"
+  <div
+    className="emotion-4"
   >
-    <div
-      className="emotion-2"
+    <button
+      aria-label="Open user menu"
+      className="emotion-3"
+      onBlur={[Function]}
+      onClick={[Function]}
+      type="button"
     >
       <div
-        className="emotion-0"
+        className="emotion-2"
       >
-        JD
+        <div
+          className="emotion-0"
+        >
+          JD
+        </div>
+        <svg
+          className="emotion-1"
+          color="#808080"
+          data-file-name="chevron.svg"
+          width={20}
+        />
       </div>
-      <svg
-        className="emotion-1"
-        color="#808080"
-        data-file-name="chevron.svg"
-        width={20}
-      />
-    </div>
-  </button>
+    </button>
+  </div>
 </div>
 `;
 
 exports[`<UserMenu /> should render properly 2`] = `
+.emotion-9 {
+  margin-right: -12px;
+}
+
 .emotion-8 {
   position: relative;
 }
@@ -169,7 +181,6 @@ exports[`<UserMenu /> should render properly 2`] = `
   color: #82be3c;
   font-weight: 400;
   height: 100%;
-  margin-right: -12px;
   background-color: #3b3b3b;
 }
 
@@ -221,7 +232,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   position: absolute;
   z-index: 1;
   top: 100%;
-  right: -12px;
+  right: 0;
   background-color: #808080;
   border-radius: 2px;
   box-shadow: 0 4px 7px 0 #000000;
@@ -307,64 +318,73 @@ exports[`<UserMenu /> should render properly 2`] = `
 }
 
 <div
-  className="emotion-8"
+  className="emotion-9"
 >
-  <button
-    className="emotion-3"
-    onBlur={[Function]}
-    onClick={[Function]}
-    type="button"
+  <div
+    className="emotion-8"
   >
-    <div
-      className="emotion-2"
+    <button
+      aria-label="Open user menu"
+      className="emotion-3"
+      onBlur={[Function]}
+      onClick={[Function]}
+      type="button"
     >
       <div
-        className="emotion-0"
-      >
-        JD
-      </div>
-      <svg
-        className="emotion-1"
-        color="#808080"
-        data-file-name="chevron.svg"
-        width={20}
-      />
-    </div>
-  </button>
-  <div
-    className="emotion-7"
-  >
-    <div>
-      <div
-        className="emotion-5"
+        className="emotion-2"
       >
         <div
-          className="emotion-4"
+          className="emotion-0"
         >
-          Jane Doe
+          JD
         </div>
-        <div>
-          jane.doe@zorroa.com
-        </div>
+        <svg
+          className="emotion-1"
+          color="#808080"
+          data-file-name="chevron.svg"
+          width={20}
+        />
       </div>
-      <ul>
-        <li>
-          <button
-            className="emotion-6"
-            onBlur={[Function]}
-            onClick={[Function]}
-            type="button"
+    </button>
+    <div
+      className="emotion-7"
+    >
+      <div>
+        <div
+          className="emotion-5"
+        >
+          <div
+            className="emotion-4"
           >
-            Sign Out
-          </button>
-        </li>
-      </ul>
+            Jane Doe
+          </div>
+          <div>
+            jane.doe@zorroa.com
+          </div>
+        </div>
+        <ul>
+          <li>
+            <button
+              className="emotion-6"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              Sign Out
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
 `;
 
 exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
+.emotion-5 {
+  margin-right: -12px;
+}
+
 .emotion-4 {
   position: relative;
 }
@@ -405,7 +425,6 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   color: #82be3c;
   font-weight: 400;
   height: 100%;
-  margin-right: -12px;
   false: #3b3b3b;
 }
 
@@ -458,29 +477,34 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
 }
 
 <div
-  className="emotion-4"
+  className="emotion-5"
 >
-  <button
-    className="emotion-3"
-    onBlur={[Function]}
-    onClick={[Function]}
-    type="button"
+  <div
+    className="emotion-4"
   >
-    <div
-      className="emotion-2"
+    <button
+      aria-label="Open user menu"
+      className="emotion-3"
+      onBlur={[Function]}
+      onClick={[Function]}
+      type="button"
     >
       <div
-        className="emotion-0"
+        className="emotion-2"
       >
-        OP
+        <div
+          className="emotion-0"
+        >
+          OP
+        </div>
+        <svg
+          className="emotion-1"
+          color="#808080"
+          data-file-name="chevron.svg"
+          width={20}
+        />
       </div>
-      <svg
-        className="emotion-1"
-        color="#808080"
-        data-file-name="chevron.svg"
-        width={20}
-      />
-    </div>
-  </button>
+    </button>
+  </div>
 </div>
 `;
