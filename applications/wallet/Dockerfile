@@ -13,7 +13,7 @@ COPY applications/wallet/app/start-server.sh /start-server.sh
 
 # Set up Node.
 WORKDIR /applications/wallet/app/frontend
-RUN npm ci
+RUN npm ci && npm run build
 
 # Collect static files and configs for nginx.
 WORKDIR /applications/wallet/app
