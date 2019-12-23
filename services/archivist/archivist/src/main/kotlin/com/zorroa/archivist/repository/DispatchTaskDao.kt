@@ -40,26 +40,30 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
 
     override fun getNextByProject(projectId: UUID, count: Int): List<DispatchTask> {
         return jdbc.query(
-                GET_BY_PROJ, MAPPER,
-                JobState.Active.ordinal,
-                TaskState.Waiting.ordinal,
-                projectId,
-                count)
+            GET_BY_PROJ, MAPPER,
+            JobState.InProgress.ordinal,
+            TaskState.Waiting.ordinal,
+            projectId,
+            count
+        )
     }
 
     override fun getNextByJobPriority(minPriority: Int, count: Int): List<DispatchTask> {
-        return jdbc.query(GET_BY_PRIORITY, MAPPER,
-            JobState.Active.ordinal,
+        return jdbc.query(
+            GET_BY_PRIORITY, MAPPER,
+            JobState.InProgress.ordinal,
             TaskState.Waiting.ordinal,
             minPriority,
-            count)
+            count
+        )
     }
 
     override fun getDispatchPriority(): List<DispatchPriority> {
         val result = jdbc.query(GET_DISPATCH_PRIORITY) { rs, _ ->
             DispatchPriority(
-                    rs.getObject("pk_project") as UUID,
-                    rs.getInt("priority"))
+                rs.getObject("pk_project") as UUID,
+                rs.getInt("priority")
+            )
         }
         result.sortBy { it.priority }
         return result
@@ -75,16 +79,18 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 script.setGlobalArg(key, value)
             }
 
-            DispatchTask(rs.getObject("pk_task") as UUID,
-                    rs.getObject("pk_job") as UUID,
-                    rs.getObject("pk_project") as UUID,
+            DispatchTask(
+                rs.getObject("pk_task") as UUID,
+                rs.getObject("pk_job") as UUID,
+                rs.getObject("pk_project") as UUID,
                 rs.getObject("pk_datasource") as UUID?,
-                    rs.getString("str_name"),
-                    TaskState.values()[rs.getInt("int_state")],
-                    rs.getString("str_host"),
-                    script,
-                    Json.Mapper.readValue(rs.getString("json_env")),
-                    globalArgs)
+                rs.getString("str_name"),
+                TaskState.values()[rs.getInt("int_state")],
+                rs.getString("str_host"),
+                script,
+                Json.Mapper.readValue(rs.getString("json_env")),
+                globalArgs
+            )
         }
 
         private const val GET_DISPATCH_PRIORITY =

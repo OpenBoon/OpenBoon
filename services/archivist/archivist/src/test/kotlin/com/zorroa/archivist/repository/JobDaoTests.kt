@@ -2,14 +2,13 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetCounters
-import com.zorroa.archivist.domain.JobType
-import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.domain.JobFilter
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
+import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.JobUpdateSpec
-import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.service.JobService
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
@@ -38,7 +37,7 @@ class JobDaoTests : AbstractTest() {
 
         val t1 = jobDao.create(spec, JobType.Import)
         assertEquals(spec.name, t1.name)
-        assertEquals(JobState.Active, t1.state) // no tasks
+        assertEquals(JobState.InProgress, t1.state) // no tasks
         assertEquals(JobType.Import, t1.type)
     }
 
@@ -212,19 +211,6 @@ class JobDaoTests : AbstractTest() {
         assertFalse(jobDao.delete(job))
     }
 
-    @Test
-    fun testHasPendingFrames() {
-        val spec = JobSpec("test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar"))
-
-        TaskState.Skipped
-        val job = jobService.create(spec, JobType.Import)
-        assertTrue(jobDao.hasPendingFrames(job))
-        jdbc.update("UPDATE job_count SET int_task_state_0=0, int_task_state_4=1")
-        assertFalse(jobDao.hasPendingFrames(job))
-    }
 
     @Test
     fun testGetExpired() {
@@ -236,9 +222,22 @@ class JobDaoTests : AbstractTest() {
                 env = mutableMapOf("foo" to "bar"))
 
         val job = jobDao.create(spec, JobType.Import)
-        assertTrue(jobDao.setState(job, JobState.Finished, null))
+        assertTrue(jobDao.setState(job, JobState.Failure, null))
         Thread.sleep(100)
         assertTrue(jobDao.getExpired(99, TimeUnit.MILLISECONDS, 100).isNotEmpty())
         assertTrue(jobDao.getExpired(1, TimeUnit.DAYS, 100).isEmpty())
+    }
+
+    @Test
+    fun testSetState() {
+        val spec = JobSpec("test_job", emptyZpsScript("foo"))
+        var job = jobDao.create(spec, JobType.Import)
+        assertFalse(jobDao.setState(job, JobState.InProgress, null))
+        assertTrue(jobDao.setState(job, JobState.Cancelled, null))
+        job = jobDao.get(job.id)
+        assertTrue(job.timeStopped > -1)
+        assertTrue(jobDao.setState(job, JobState.InProgress, null))
+        job = jobDao.get(job.id)
+        assertEquals(job.timeStopped, -1L)
     }
 }

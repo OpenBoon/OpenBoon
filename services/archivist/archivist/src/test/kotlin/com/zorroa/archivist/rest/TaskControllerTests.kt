@@ -1,23 +1,23 @@
 package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.google.cloud.storage.HttpMethod
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.JobState
+import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
 import com.zorroa.archivist.domain.TaskEventType
-import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.service.JobService
-import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskFilter
 import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.repository.TaskErrorDao
+import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.Json
 import com.zorroa.archivist.util.randomString
 import org.junit.Before
@@ -27,8 +27,8 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.nio.file.Files
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @WebAppConfiguration
 class TaskControllerTests : MockMvcTest() {
@@ -122,7 +122,11 @@ class TaskControllerTests : MockMvcTest() {
 
     @Test
     fun testRetry() {
-        jobService.setTaskState(task, TaskState.Failure, null)
+        jobService.getJobTasks(task.jobId).list.forEach {
+            assertTrue(jobService.setTaskState(it, TaskState.Failure, null))
+        }
+        var job = jobService.get(task.jobId)
+        assertEquals(JobState.Failure, job.state)
 
         val result = mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/tasks/${task.id}/_retry")
@@ -140,6 +144,9 @@ class TaskControllerTests : MockMvcTest() {
 
         val ct = jobService.getTask(task.id)
         assertEquals(TaskState.Waiting, ct.state)
+
+        job = jobService.get(task.jobId)
+        assertEquals(JobState.InProgress, job.state)
     }
 
     @Test
