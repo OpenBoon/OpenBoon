@@ -100,7 +100,7 @@ class DataSourceServiceImpl(
         // TODO: check the uri type and make correct generator
 
         val gen = ProcessorRef(
-            "pixml_core.core.generators.GcsBucketGenerator",
+            "zmlp_core.core.generators.GcsBucketGenerator",
             "zmlp-plugins-core",
             args = mapOf("uri" to dataSource.uri)
         )

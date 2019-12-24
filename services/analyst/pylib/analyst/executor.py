@@ -328,7 +328,7 @@ class DockerContainerWrapper(object):
                                                            entrypoint="/usr/local/bin/server",
                                                            network=network,
                                                            ports=ports,
-                                                           labels=["containerizer"])
+                                                           labels=["zmlpcd"])
 
         # Sets up a thread which iterates the container logs.
         self.log_thread = threading.Thread(target=self.__tail_container_logs)
