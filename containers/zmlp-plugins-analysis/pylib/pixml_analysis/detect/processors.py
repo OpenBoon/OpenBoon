@@ -33,4 +33,3 @@ class PixelMLObjectDetectionProcessor(AssetBuilder):
         for elem in zip(bbox, label, conf):
             element = Element("object", elem[1], rect=elem[0], score=elem[2], stored_file=efile)
             asset.add_element(element)
-
