@@ -1,5 +1,6 @@
 import os
 import urllib3
+import logging
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -9,6 +10,8 @@ from minio.api import Minio
 from pixml.analysis import storage
 from pixml.analysis.testing import zorroa_test_data, TestAsset
 from pixml.rest import PixmlClient
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 class LocalFileCacheTests(TestCase):
