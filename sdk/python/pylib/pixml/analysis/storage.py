@@ -46,7 +46,6 @@ class LocalFileCache(object):
         """
         self.root = None
         self.app = app_from_env()
-        self.ml_storage = get_pixml_storage_client()
 
     def __init_root(self):
         """
@@ -118,7 +117,7 @@ class LocalFileCache(object):
 
         # Pixml storage buckets
         elif parsed_uri.scheme == 'pixml':
-            data = self.ml_storage.get_object(parsed_uri.netloc, parsed_uri.path[1:])
+            data = get_pixml_storage_client().get_object(parsed_uri.netloc, parsed_uri.path[1:])
             with open(path, 'wb') as fpw:
                 for d in data.stream(32 * 1024):
                     fpw.write(d)
