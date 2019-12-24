@@ -107,4 +107,3 @@ class Element(object):
             if getattr(self, attr, None) is not None:
                 serializable_dict[attr] = getattr(self, attr)
         return serializable_dict
-
