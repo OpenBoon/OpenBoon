@@ -14,6 +14,7 @@ from pixml.rest import PixmlClient
 class LocalFileCacheTests(TestCase):
 
     def setUp(self):
+        os.environ['MLSTORAGE_URL'] = "http://localhost:9000"
         self.lfc = storage.LocalFileCache()
 
     def tearDown(self):

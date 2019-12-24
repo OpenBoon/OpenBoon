@@ -1,5 +1,5 @@
-import os
 import json
+import os
 from urllib.parse import urlparse
 
 import minio
@@ -64,6 +64,8 @@ def get_pixml_storage_client():
 
     """
     url = urlparse(os.environ.get("MLSTORAGE_URL", "http://localhost:9000"))
+    if not url.scheme or not url.netloc:
+        raise RuntimeError("The MLSTORAGE_URL is not a valid URL")
     return minio.Minio(url.netloc,
                        access_key=os.environ.get("MLSTORAGE_ACCESSKEY"),
                        secret_key=os.environ.get("MLSTORAGE_SECRETKEY"),

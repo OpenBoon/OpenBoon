@@ -1,10 +1,13 @@
 import minio
 import os
+import logging
 from unittest import TestCase
 from unittest.mock import patch
 
 from pixml.analysis.cloud import get_google_storage_client, get_pixml_storage_client
 from pixml.rest import PixmlClient
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 class TetCloudUtilFunction(TestCase):
@@ -33,18 +36,22 @@ class TetCloudUtilFunction(TestCase):
 
     @patch.object(PixmlClient, 'get')
     def test_get_google_storage_client_datasource(self, get_patch):
-        with open(os.path.dirname(__file__) + "/fake_gcs_account.json", "r") as fp:
+        with open(os.path.dirname(__file__) + '/fake_gcs_account.json', 'r') as fp:
             gcs_creds = {'blob': fp.read()}
 
         get_patch.return_value = gcs_creds
-        os.environ['PIXML_DATASOURCE_ID'] = "abc123"
+        os.environ['PIXML_DATASOURCE_ID'] = 'abc123'
         try:
             client = get_google_storage_client()
-            assert "fake_service_account@zorroa-deploy.iam.gserviceaccount.com" == \
+            assert 'fake_service_account@zorroa-deploy.iam.gserviceaccount.com' == \
                    client._credentials._service_account_email
         finally:
             del os.environ['PIXML_DATASOURCE_ID']
 
     def test_get_pixml_storage_client(self):
-        client = get_pixml_storage_client()
-        assert type(client) == minio.api.Minio
+        os.environ['MLSTORAGE_URL'] = "http://localhost:9000"
+        try:
+            client = get_pixml_storage_client()
+            assert type(client) == minio.api.Minio
+        finally:
+            del os.environ['MLSTORAGE_URL']
