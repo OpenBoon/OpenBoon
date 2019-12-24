@@ -275,7 +275,7 @@
           "vector": {
             "type": "keyword"
           },
-          "region": {
+          "regions": {
             "type": "keyword"
           }
         }
