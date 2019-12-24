@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from urllib.parse import urlparse, urlsplit
+from urllib.parse import urlparse
 
 import minio
 from google.auth.exceptions import DefaultCredentialsError
@@ -66,14 +66,9 @@ def get_pixml_storage_client():
 
     """
     url = urlparse(os.environ.get("MLSTORAGE_URL", "http://localhost:9000").strip())
-
     if not url.scheme or not url.netloc:
-        raise RuntimeError("The MLSTORAGE_URL is not a valid URL")
+        raise RuntimeError("The 'MLSTORAGE_URL' env var is not a valid URL")
     logger.debug("Initializing ML Storage client: '{}'".format(url.netloc))
-
-    u = urlsplit(url.netloc)
-    if u.scheme:
-        raise RuntimeError("URL has a scheme: '{}', loc='{}'".format(u.scheme, url.netloc))
 
     return minio.Minio(url.netloc,
                        access_key=os.environ.get("MLSTORAGE_ACCESSKEY"),

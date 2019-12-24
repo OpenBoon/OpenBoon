@@ -12,13 +12,10 @@ from urllib.parse import urljoin
 
 import jwt
 import requests
-import urllib3
 
 from .exception import PixmlException
 
 logger = logging.getLogger(__name__)
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class PixmlClient(object):
