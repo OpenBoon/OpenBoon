@@ -1,5 +1,6 @@
-import os
 import json
+import logging
+import os
 from urllib.parse import urlparse
 
 import minio
@@ -10,6 +11,8 @@ from google.oauth2 import service_account
 from .base import AnalysisEnv
 from ..app import app_from_env
 from ..util import memoize
+
+logger = logging.getLogger(__name__)
 
 
 @memoize
@@ -52,7 +55,6 @@ def get_google_storage_client():
             return gcs.Client.create_anonymous_client()
 
 
-@memoize
 def get_pixml_storage_client():
     """
     Return a PixelML storage client.  This client is used for accessing
@@ -63,8 +65,17 @@ def get_pixml_storage_client():
         Minio: A Minio client.
 
     """
-    url = urlparse(os.environ.get("MLSTORAGE_URL", "http://localhost:9000"))
+    url = urlparse(os.environ.get("MLSTORAGE_URL", "http://localhost:9000").strip())
+    if not url.scheme or not url.netloc:
+        raise RuntimeError("The 'MLSTORAGE_URL' env var is not a valid URL")
+    logger.debug("Initializing ML Storage client: '{}'".format(url.netloc))
+
     return minio.Minio(url.netloc,
                        access_key=os.environ.get("MLSTORAGE_ACCESSKEY"),
                        secret_key=os.environ.get("MLSTORAGE_SECRETKEY"),
                        secure=False)
+
+
+@memoize
+def get_cached_storage_client():
+    return get_pixml_storage_client()

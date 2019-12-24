@@ -229,6 +229,18 @@ class AssetAppTests(unittest.TestCase):
         assert path == "https://i.imgur.com/SSN26nN.jpg"
 
     @patch.object(PixmlClient, 'post')
+    def test_search_element(self, post_patch):
+        post_patch.return_value = self.mock_search_result
+        search = {
+            "query": {"match_all": {}}
+        }
+        rsp = self.app.assets.search(search=search,
+                                     element_query={"term": {"element.labels": "cat"}},
+                                     raw=True)
+        path = rsp["hits"]["hits"][0]["_source"]["source"]["path"]
+        assert path == "https://i.imgur.com/SSN26nN.jpg"
+
+    @patch.object(PixmlClient, 'post')
     def test_search_wrapped(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {

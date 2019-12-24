@@ -66,7 +66,7 @@ wallet-container-build-validation:
     - docker build --pull --no-cache -f applications/wallet/Dockerfile .
 
 backend-py-lint:
-  image: python:3.7
+  image: python:3.7.5
   stage: pretest
   allow_failure: false
   only:
@@ -97,7 +97,7 @@ backend-kotlin-lint:
 # Testing other containers requires building containers
 # Testing analyst requires it can pull plugin containers.
 sdk-unit-tests:
-  image: python:3.7
+  image: python:3.7.5
   stage: test
   allow_failure: true
   only:
