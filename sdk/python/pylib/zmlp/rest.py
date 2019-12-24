@@ -29,7 +29,7 @@ class PixmlClient(object):
 
         Args:
             apikey: An API key in any supported form. (dict, base64 string, or open file handle)
-            server: The url of the server to connect to. Defaults to https://api.Pixml.zorroa.com
+            server: The url of the server to connect to. Defaults to https://api.zmlp.zorroa.com
             project_id: An optional project UUID for API keys with access to multiple projects.
             max_retries: Maximum number of retries to make if the API
                 server is down, 0 for unlimited.
@@ -447,7 +447,7 @@ class PixmlClientException(PixmlException):
 
 class PixmlRequestException(PixmlClientException):
     """
-    The base exception class for all exceptions thrown from Pixml.
+    The base exception class for all exceptions thrown from zmlp.
     """
     def __init__(self, data):
         super(PixmlClientException, self).__init__(

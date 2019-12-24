@@ -21,13 +21,13 @@ requirements = [
 ]
 
 setup(
-    name='pixml',
+    name='zmlp',
     version=open("VERSION").read().strip(),
-    description='PixelML Python SDK',
+    description='ZMLP Python SDK',
     url='https://www.zorroa.com',
     license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
     package_dir={'': 'pylib'},
-    packages=['pixml', 'pixml.analysis'],
+    packages=['zmlp', 'zmlp.analysis'],
     scripts=[],
 
     classifiers=[

@@ -2,10 +2,10 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from pixml import Asset
-from pixml import PixmlClient, app_from_env
-from pixml.analysis.testing import zorroa_test_data
-from pixml.asset import FileImport, FileUpload, Clip
+from zmlp import Asset
+from zmlp import PixmlClient, app_from_env
+from zmlp.analysis.testing import zorroa_test_data
+from zmlp.asset import FileImport, FileUpload, Clip
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)

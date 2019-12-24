@@ -10,9 +10,9 @@ from urllib.parse import urlparse
 
 import requests
 
-from pixml.analysis.base import Context, AssetBuilder, Generator, Argument, \
+from zmlp.analysis.base import Context, AssetBuilder, Generator, Argument, \
     PixmlUnrecoverableProcessorException
-from pixml.asset import FileImport, Asset
+from zmlp.asset import FileImport, Asset
 
 logger = logging.getLogger(__name__)
 

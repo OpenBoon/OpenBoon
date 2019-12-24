@@ -1,8 +1,8 @@
 import unittest
 
 from pixml import Asset
-from pixml.datasource import DataSource
-from pixml.rest import SearchResult
+from zmlp.datasource import DataSource
+from zmlp.rest import SearchResult
 
 
 class SearchResultTests(unittest.TestCase):

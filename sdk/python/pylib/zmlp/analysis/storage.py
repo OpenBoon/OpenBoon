@@ -9,8 +9,8 @@ from urllib.parse import urlparse
 
 from pathlib2 import Path
 
-from pixml import app_from_env, Asset
-from pixml.exception import PixmlException
+from zmlp import app_from_env, Asset
+from zmlp.exception import PixmlException
 from .base import AnalysisEnv
 from .cloud import get_cached_google_storage_client, get_pixml_storage_client
 

@@ -2,9 +2,9 @@ import logging
 import unittest
 from unittest.mock import patch
 
-import pixml
-from pixml import PixmlClient
-from pixml.datasource import DataSource
+import zmlp
+from zmlp import PixmlClient
+from zmlp.datasource import DataSource
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -19,7 +19,7 @@ class PixmlDataSourceAppTests(unittest.TestCase):
             'keyId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'sharedKey': 'test123test135'
         }
-        self.app = pixml.app.PixmlApp(self.key_dict)
+        self.app = zmlp.app.PixmlApp(self.key_dict)
 
     @patch.object(PixmlClient, 'post')
     def test_create_datasource(self, post_patch):

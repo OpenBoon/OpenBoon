@@ -7,9 +7,9 @@ from unittest.mock import patch
 import pytest
 from minio.api import Minio
 
-from pixml.analysis import storage
-from pixml.analysis.testing import zorroa_test_data, TestAsset
-from pixml.rest import PixmlClient
+from zmlp.analysis import storage
+from zmlp.analysis.testing import zorroa_test_data, TestAsset
+from zmlp.rest import PixmlClient
 
 logging.basicConfig(level=logging.DEBUG)
 

@@ -4,7 +4,7 @@ import logging
 import os
 import unittest
 
-import pixml.app
+import zmlp.app
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -22,13 +22,13 @@ class PixmlAppTests(unittest.TestCase):
         self.key_str = base64.b64encode(json.dumps(self.key_dict).encode())
 
     def test_create_app_with_key_dict(self):
-        app = pixml.app.PixmlApp(self.key_dict)
+        app = zmlp.app.PixmlApp(self.key_dict)
         assert app.client
         assert app.client.apikey
         assert app.client.headers()
 
     def test_create_app_with_key_str(self):
-        app = pixml.app.PixmlApp(self.key_str)
+        app = zmlp.app.PixmlApp(self.key_str)
         assert app.client
         assert app.client.apikey
         assert app.client.headers()
@@ -38,7 +38,7 @@ class PixmlAppTests(unittest.TestCase):
         os.environ['PIXML_APIKEY'] = self.key_str.decode()
         os.environ['PIXML_SERVER'] = server
         try:
-            app1 = pixml.app.app_from_env()
+            app1 = zmlp.app.app_from_env()
             # Assert we can sign a request
             assert app1.client.headers()
             assert app1.client.server == server
@@ -51,7 +51,7 @@ class PixmlAppTests(unittest.TestCase):
         os.environ['PIXML_APIKEY_FILE'] = os.path.dirname(__file__) + "/test_key.json"
         os.environ['PIXML_SERVER'] = server
         try:
-            app1 = pixml.app.app_from_env()
+            app1 = zmlp.app.app_from_env()
             # Assert we can sign a request
             assert app1.client.headers()
             assert app1.client.server == server

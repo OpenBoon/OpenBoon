@@ -1,6 +1,6 @@
 import unittest
 
-from pixml.util import is_valid_uuid
+from zmlp.util import is_valid_uuid
 
 
 class UtilTests(unittest.TestCase):

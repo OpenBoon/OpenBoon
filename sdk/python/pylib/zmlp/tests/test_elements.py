@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from pixml.elements import Element
+from zmlp.elements import Element
 
 
 class ElementTests(TestCase):

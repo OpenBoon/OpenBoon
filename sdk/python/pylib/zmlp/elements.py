@@ -1,6 +1,6 @@
 import collections
 
-from pixml.util import as_collection
+from zmlp.util import as_collection
 
 
 class Element(object):
