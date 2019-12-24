@@ -2,7 +2,7 @@ import unittest
 
 from pixml import Asset
 from zmlp.datasource import DataSource
-from zmlp.rest import SearchResult
+from zmlp.client import SearchResult
 
 
 class SearchResultTests(unittest.TestCase):

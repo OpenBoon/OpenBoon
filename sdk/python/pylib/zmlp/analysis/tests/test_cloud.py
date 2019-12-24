@@ -5,7 +5,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from zmlp.analysis.cloud import get_google_storage_client, get_pixml_storage_client
-from zmlp.rest import PixmlClient
+from zmlp.client import PixmlClient
 
 logging.basicConfig(level=logging.DEBUG)
 

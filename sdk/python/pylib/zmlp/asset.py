@@ -2,7 +2,7 @@ import logging
 import os
 import json
 
-from .rest import SearchResult, PixmlJsonEncoder
+from .client import SearchResult, PixmlJsonEncoder
 from .util import as_collection
 from .elements import Element
 

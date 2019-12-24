@@ -4,7 +4,7 @@ import os
 
 from .asset import AssetApp
 from .datasource import DataSourceApp
-from .rest import PixmlClient
+from .client import PixmlClient
 
 logger = logging.getLogger(__name__)
 

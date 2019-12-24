@@ -9,7 +9,7 @@ from minio.api import Minio
 
 from zmlp.analysis import storage
 from zmlp.analysis.testing import zorroa_test_data, TestAsset
-from zmlp.rest import PixmlClient
+from zmlp.client import PixmlClient
 
 logging.basicConfig(level=logging.DEBUG)
 
