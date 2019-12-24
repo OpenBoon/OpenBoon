@@ -1,6 +1,6 @@
 import json
-import os
 import logging
+import os
 from urllib.parse import urlparse
 
 import minio
@@ -13,6 +13,7 @@ from ..app import app_from_env
 from ..util import memoize
 
 logger = logging.getLogger(__name__)
+
 
 @memoize
 def get_cached_google_storage_client():
