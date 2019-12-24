@@ -1,5 +1,6 @@
 import os
 import urllib3
+import logging
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -10,10 +11,13 @@ from pixml.analysis import storage
 from pixml.analysis.testing import zorroa_test_data, TestAsset
 from pixml.rest import PixmlClient
 
+logging.basicConfig(level=logging.DEBUG)
+
 
 class LocalFileCacheTests(TestCase):
 
     def setUp(self):
+        os.environ['MLSTORAGE_URL'] = "http://localhost:9000"
         self.lfc = storage.LocalFileCache()
 
     def tearDown(self):

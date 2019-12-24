@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
+import com.zorroa.archivist.domain.Element
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.util.Json
@@ -198,6 +199,49 @@ class AssetServiceTests : AbstractTest() {
         assertEquals("wU5f6DK02InzXUC600cqI5L8vGM", clip?.pile)
     }
 
+    @Test
+    fun testIndexhUpdateAssetsWithDuplicateElements() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-cat.jpg"))
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        var asset = assetService.getAsset(createRsp.status[0].assetId)
+
+        // These are considered duplicate elements
+        val element1 = Element("object", listOf("cat"), listOf(0, 0, 100, 100))
+        val element2 = Element("object", listOf("cat"), listOf(0, 0, 100, 100))
+        asset.setAttr("elements", listOf(element1, element2))
+
+        val batchIndex = BatchUpdateAssetsRequest(assets = listOf(asset))
+        assetService.batchUpdate(batchIndex)
+
+        asset = assetService.getAsset(createRsp.status[0].assetId)
+        assertEquals(1, asset.getAttr("elements", Json.SET_OF_ELEMENTS)!!.size)
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun testIndexhUpdateAssetsWithTooManyElements() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-cat.jpg"))
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        var asset = assetService.getAsset(createRsp.status[0].assetId)
+
+        val elements = mutableSetOf<Element>()
+        for (i in 0 .. AssetServiceImpl.maxElementCount + 1) {
+            elements.add(Element("object", listOf("cat$i"), listOf(i, i, 100, 100)))
+        }
+        asset.setAttr("elements", elements)
+
+        val batchIndex = BatchUpdateAssetsRequest(assets = listOf(asset))
+        assetService.batchUpdate(batchIndex)
+
+        asset = assetService.getAsset(createRsp.status[0].assetId)
+        assertEquals(1, asset.getAttr("elements", Json.SET_OF_ELEMENTS)!!.size)
+    }
+
     /**
      * Trying to update assets that don't exist should fail.
      */
@@ -271,6 +315,24 @@ class AssetServiceTests : AbstractTest() {
         val rsp = assetService.search(search)
         assertEquals(1, rsp.hits.hits.size)
         assertNull(rsp.scrollId)
+    }
+
+    @Test
+    fun testElementSearch() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec(
+                "https://i.imgur.com/LRoLTlK.jpg",
+                attrs=mapOf("elements" to listOf(Element("object", listOf("cat"), listOf(0, 0, 100, 100)))))
+        ))
+
+        val createRsp = assetService.batchCreate(batchCreate)
+
+        val search = AssetSearch(
+            mapOf("query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg"))),
+            mapOf("term" to mapOf("elements.type" to "object")))
+
+        val rsp = assetService.search(search)
+        assertEquals(1L, rsp.hits.totalHits.value)
     }
 
     @Test

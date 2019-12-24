@@ -15,12 +15,13 @@ import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.FileCategory
 import com.zorroa.archivist.domain.FileGroup
-import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.LogAction
+import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.STANDARD_PIPELINE
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.security.getProjectId
@@ -28,11 +29,11 @@ import com.zorroa.archivist.storage.FileStorageService
 import com.zorroa.archivist.util.ElasticSearchErrorTranslator
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.Json
+import com.zorroa.archivist.util.Json.SET_OF_ELEMENTS
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.search.SearchResponse
-import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.common.Strings
@@ -43,7 +44,6 @@ import org.elasticsearch.common.xcontent.XContentFactory
 import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.join.query.HasChildQueryBuilder
 import org.elasticsearch.search.SearchModule
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.Logger
@@ -112,9 +112,8 @@ interface AssetService {
      * @param newAsset The [Asset] we're creating
      * @param spec [AssetSpec] provided by the caller.
      */
-    fun deriveClip(newAsset: Asset, spec: AssetSpec) : Clip
+    fun deriveClip(newAsset: Asset, spec: AssetSpec): Clip
 }
-
 
 @Service
 class AssetServiceImpl : AssetService {
@@ -171,7 +170,7 @@ class AssetServiceImpl : AssetService {
         }
     }
 
-    override fun deriveClip(newAsset: Asset, spec: AssetSpec) : Clip {
+    override fun deriveClip(newAsset: Asset, spec: AssetSpec): Clip {
 
         val clip = spec.clip ?: throw java.lang.IllegalArgumentException("Cannot derive a clip with a null clip")
 
@@ -187,7 +186,7 @@ class AssetServiceImpl : AssetService {
             // Copy over source files if any
             val files = clipSource.getAttr("files", Json.LIST_OF_FILE_STORAGE) ?: listOf()
             val sourceFiles = files.let {
-                it.filter { file->
+                it.filter { file ->
                     file.category == FileCategory.SOURCE.lower()
                 }
             }
@@ -303,6 +302,9 @@ class AssetServiceImpl : AssetService {
             null
         }
         result.jobId = jobId
+
+        logger.event(LogObject.ASSET, LogAction.CREATE, mapOf("assetsUploaded" to bulk.items.size))
+
         return result
     }
 
@@ -332,8 +334,12 @@ class AssetServiceImpl : AssetService {
         val result = BatchCreateAssetsResponse(assets)
         for (item in bulk.items) {
             if (item.isFailed) {
-                result.status.add(BatchAssetOpStatus(item.id,
-                    ElasticSearchErrorTranslator.translate(item.failureMessage)))
+                result.status.add(
+                    BatchAssetOpStatus(
+                        item.id,
+                        ElasticSearchErrorTranslator.translate(item.failureMessage)
+                    )
+                )
             } else {
                 result.status.add(BatchAssetOpStatus(item.id))
             }
@@ -346,6 +352,8 @@ class AssetServiceImpl : AssetService {
             null
         }
         result.jobId = jobId
+
+        logger.event(LogObject.ASSET, LogAction.CREATE, mapOf("assetsCreated" to bulk.items.size))
         return result
     }
 
@@ -369,8 +377,7 @@ class AssetServiceImpl : AssetService {
 
             if (asset.id !in validAssetIds) {
                 result.status[idx] = BatchAssetOpStatus(asset.id, "Asset does not exist")
-            }
-            else {
+            } else {
                 bulkRequestValid = true
 
                 // Remove these which are used for temp attrs
@@ -382,11 +389,23 @@ class AssetServiceImpl : AssetService {
                 // This happens during deep analysis when a file is being clipped, the first
                 // clip/page/scene will be augmented with clip start/stop points.
                 if (asset.attrExists("clip") && (
-                        !asset.attrExists("clip.sourceAssetId") || !asset.attrExists("clip.pile"))) {
+                        !asset.attrExists("clip.sourceAssetId") || !asset.attrExists("clip.pile"))
+                ) {
                     val clip = asset.getAttr("clip", Clip::class.java)
-                        ?: throw IllegalArgumentException("Invalid clip data for asset ${asset.id}")
+                        ?: throw IllegalStateException("Invalid clip data for asset ${asset.id}")
                     clip.putInPile(asset.id)
                     asset.setAttr("clip", clip)
+                }
+
+                // Uniquify the elments
+                if (asset.attrExists("elements")) {
+                    val elements = asset.getAttr("elements", SET_OF_ELEMENTS)
+                    if (elements != null && elements.size > maxElementCount) {
+                        throw IllegalStateException(
+                            "Asset ${asset.id} has to many elements, > $maxElementCount"
+                        )
+                    }
+                    asset.setAttr("elements", elements)
                 }
 
                 // Update various system properties.
@@ -422,6 +441,11 @@ class AssetServiceImpl : AssetService {
             }
             result.status[idx + idxPlus] = status
         }
+
+        logger.event(
+            LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to bulk.items.size)
+        )
+
         return result
     }
 
@@ -433,13 +457,13 @@ class AssetServiceImpl : AssetService {
         return jobService.create(spec)
     }
 
-    fun getDeepQuery(search: AssetSearch): QueryBuilder? {
-        return if (search.deepQuery == null) {
+    fun getElementQuery(search: AssetSearch): QueryBuilder? {
+        return if (search.elementQuery == null) {
             null
         } else {
             val parser = XContentFactory.xContent(XContentType.JSON).createParser(
                 xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION,
-                Json.serializeToString(mapOf("query" to search.deepQuery))
+                Json.serializeToString(mapOf("query" to search.elementQuery))
             )
             val ssb = SearchSourceBuilder.fromXContent(parser)
             ssb.query()
@@ -457,7 +481,6 @@ class AssetServiceImpl : AssetService {
             Json.serializeToString(searchSource)
         )
 
-        // Wraps the query in a boolean query
         val ssb = SearchSourceBuilder.fromXContent(parser)
         val query = QueryBuilders.boolQuery()
         if (ssb.query() == null) {
@@ -466,15 +489,15 @@ class AssetServiceImpl : AssetService {
             query.must(ssb.query())
         }
 
-        getDeepQuery(search)?.let {
-            query.must(HasChildQueryBuilder("element", it, ScoreMode.Avg))
+        getElementQuery(search)?.let {
+            query.must(QueryBuilders.nestedQuery("elements", it, ScoreMode.Avg))
         }
 
         // Replace the query in the SearchSourceBuilder with wrapped versions
         ssb.query(query)
 
         if (logger.isDebugEnabled) {
-            logger.debug("SEARCH : {}", Strings.toString(query, true, true))
+            logger.debug("SEARCH : {}", Strings.toString(ssb, true, true))
         }
 
         return ssb
@@ -484,7 +507,6 @@ class AssetServiceImpl : AssetService {
         val client = indexRoutingService.getProjectRestClient()
         val req = client.newSearchRequest()
         req.source(prepSearch(search))
-        req.searchType(SearchType.DEFAULT)
         req.preference(getProjectId().toString())
 
         return client.client.search(req, RequestOptions.DEFAULT)
@@ -513,6 +535,11 @@ class AssetServiceImpl : AssetService {
             "highlight", "collapse",
             "slice", "aggs", "aggregations", "sort"
         )
+
+        /**
+         * Maximum number of elements you can have in an asset.
+         */
+        val maxElementCount = 25
 
         private val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
         val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)

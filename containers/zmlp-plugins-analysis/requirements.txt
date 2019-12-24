@@ -21,4 +21,7 @@ googleapis-common-protos
 backoff
 cmake
 face_recognition
+cvlib
+matplotlib
+
 
