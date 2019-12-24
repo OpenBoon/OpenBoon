@@ -65,7 +65,7 @@ def get_pixml_storage_client():
         Minio: A Minio client.
 
     """
-    url = urlparse(os.environ.get("MLSTORAGE_URL", "http://localhost:9000"))
+    url = urlparse(os.environ.get("MLSTORAGE_URL", "http://localhost:9000").strip())
     if not url.scheme or not url.netloc:
         raise RuntimeError("The MLSTORAGE_URL is not a valid URL")
     logger.debug("Initializing ML Storage client: {}".format(url.netloc))
