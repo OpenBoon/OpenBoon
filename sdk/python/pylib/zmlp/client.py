@@ -18,7 +18,7 @@ from .exception import PixmlException
 logger = logging.getLogger(__name__)
 
 
-class PixmlClient(object):
+class ZmlpClient(object):
     """
     PixmlClient is used to communicate to a Pixml API server.
     """

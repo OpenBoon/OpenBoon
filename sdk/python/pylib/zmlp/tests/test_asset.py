@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import patch
 
 from zmlp import Asset
-from zmlp import PixmlClient, app_from_env
+from zmlp import ZmlpClient, app_from_env
 from zmlp.analysis.testing import zorroa_test_data
 from zmlp.asset import FileImport, FileUpload, Clip
 
@@ -159,7 +159,7 @@ class AssetAppTests(unittest.TestCase):
             }
         }
 
-    @patch.object(PixmlClient, 'post')
+    @patch.object(ZmlpClient, 'post')
     def test_import_files(self, post_patch):
         post_patch.return_value = {
             "status": [
@@ -181,7 +181,7 @@ class AssetAppTests(unittest.TestCase):
         assert rsp["status"][0]["assetId"] == "abc123"
         assert not rsp["status"][0]["failed"]
 
-    @patch.object(PixmlClient, 'get')
+    @patch.object(ZmlpClient, 'get')
     def test_get_by_id(self, get_patch):
         get_patch.return_value = {
             "id": "abc13",
@@ -197,7 +197,7 @@ class AssetAppTests(unittest.TestCase):
         assert asset.id is not None
         assert asset.document is not None
 
-    @patch.object(PixmlClient, 'upload_files')
+    @patch.object(ZmlpClient, 'upload_files')
     def test_upload_assets(self, post_patch):
         post_patch.return_value = {
             "status": [
@@ -218,7 +218,7 @@ class AssetAppTests(unittest.TestCase):
         rsp = self.app.assets.upload_files(assets)
         assert rsp["status"][0]["assetId"] == "abc123"
 
-    @patch.object(PixmlClient, 'post')
+    @patch.object(ZmlpClient, 'post')
     def test_search_raw(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {
@@ -228,7 +228,7 @@ class AssetAppTests(unittest.TestCase):
         path = rsp["hits"]["hits"][0]["_source"]["source"]["path"]
         assert path == "https://i.imgur.com/SSN26nN.jpg"
 
-    @patch.object(PixmlClient, 'post')
+    @patch.object(ZmlpClient, 'post')
     def test_search_element(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {
@@ -240,7 +240,7 @@ class AssetAppTests(unittest.TestCase):
         path = rsp["hits"]["hits"][0]["_source"]["source"]["path"]
         assert path == "https://i.imgur.com/SSN26nN.jpg"
 
-    @patch.object(PixmlClient, 'post')
+    @patch.object(ZmlpClient, 'post')
     def test_search_wrapped(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {

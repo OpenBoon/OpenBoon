@@ -5,7 +5,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from zmlp.analysis.cloud import get_google_storage_client, get_pixml_storage_client
-from zmlp.client import PixmlClient
+from zmlp.client import ZmlpClient
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -34,7 +34,7 @@ class TetCloudUtilFunction(TestCase):
         finally:
             del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
-    @patch.object(PixmlClient, 'get')
+    @patch.object(ZmlpClient, 'get')
     def test_get_google_storage_client_datasource(self, get_patch):
         with open(os.path.dirname(__file__) + '/fake_gcs_account.json', 'r') as fp:
             gcs_creds = {'blob': fp.read()}

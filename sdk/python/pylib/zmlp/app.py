@@ -4,7 +4,7 @@ import os
 
 from .asset import AssetApp
 from .datasource import DataSourceApp
-from .client import PixmlClient
+from .client import ZmlpClient
 
 logger = logging.getLogger(__name__)
 
@@ -25,8 +25,8 @@ class PixmlApp(object):
             server (str): The URL to the PixelML API server, defaults cloud api.
         """
         logger.debug("Initializing PixmlApp to {}".format(server))
-        self.client = PixmlClient(apikey, server or
-                                  os.environ.get("PIXML_SERVER", DEFAULT_SERVER))
+        self.client = ZmlpClient(apikey, server or
+                                 os.environ.get("PIXML_SERVER", DEFAULT_SERVER))
         self.assets = AssetApp(self)
         self.datasource = DataSourceApp(self)
 
@@ -43,7 +43,7 @@ def app_from_env():
     - PIXML_SERVER : The URL to the Pixml API server.
 
     Returns:
-        PixmlClient : A configured PixmlClient
+        ZmlpClient : A configured PixmlClient
 
     """
     apikey = None

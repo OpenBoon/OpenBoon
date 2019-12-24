@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import patch
 
 import zmlp
-from zmlp import PixmlClient
+from zmlp import ZmlpClient
 from zmlp.datasource import DataSource
 
 logging.basicConfig(level=logging.DEBUG)
@@ -21,7 +21,7 @@ class PixmlDataSourceAppTests(unittest.TestCase):
         }
         self.app = zmlp.app.PixmlApp(self.key_dict)
 
-    @patch.object(PixmlClient, 'post')
+    @patch.object(ZmlpClient, 'post')
     def test_create_datasource(self, post_patch):
         value = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
@@ -38,7 +38,7 @@ class PixmlDataSourceAppTests(unittest.TestCase):
         assert ds.file_types == ['jpg']
         assert ds.analysis == ['google-ocr']
 
-    @patch.object(PixmlClient, 'post')
+    @patch.object(ZmlpClient, 'post')
     def test_get_datasource(self, post_patch):
         value = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
@@ -51,7 +51,7 @@ class PixmlDataSourceAppTests(unittest.TestCase):
         assert value['name'] == ds.name
         assert value['uri'] == ds.uri
 
-    @patch.object(PixmlClient, 'post')
+    @patch.object(ZmlpClient, 'post')
     def test_import_files(self, post_patch):
         value = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
@@ -62,7 +62,7 @@ class PixmlDataSourceAppTests(unittest.TestCase):
         assert value['id'] == job["id"]
         assert value['name'] == job["name"]
 
-    @patch.object(PixmlClient, 'put')
+    @patch.object(ZmlpClient, 'put')
     def test_update_credentials(self, put_patch):
         value = {
             'type': 'DATASOURCE',

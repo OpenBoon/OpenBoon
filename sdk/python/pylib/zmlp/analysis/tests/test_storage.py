@@ -9,7 +9,7 @@ from minio.api import Minio
 
 from zmlp.analysis import storage
 from zmlp.analysis.testing import zorroa_test_data, TestAsset
-from zmlp.client import PixmlClient
+from zmlp.client import ZmlpClient
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -54,7 +54,7 @@ class LocalFileCacheTests(TestCase):
         self.lfc.clear()
         assert not os.path.exists(path)
 
-    @patch.object(PixmlClient, 'stream')
+    @patch.object(ZmlpClient, 'stream')
     def test_localize_pixml_file(self, post_patch):
         pfile = {
             'name': 'cat.jpg',
@@ -64,7 +64,7 @@ class LocalFileCacheTests(TestCase):
         path = self.lfc.localize_pixml_file(TestAsset(id='123456'), pfile)
         assert path.endswith('c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg')
 
-    @patch.object(PixmlClient, 'stream')
+    @patch.object(ZmlpClient, 'stream')
     def test_localize_pixml_with_asset_override(self, post_patch):
         pfile = {
             'name': 'cat.jpg',
@@ -76,7 +76,7 @@ class LocalFileCacheTests(TestCase):
         self.lfc.localize_pixml_file(asset, pfile)
         assert "assets/bingo/files" in post_patch.call_args_list[0][0][0]
 
-    @patch.object(PixmlClient, 'stream')
+    @patch.object(ZmlpClient, 'stream')
     def test_localize_pixml_source_file(self, post_patch):
         pfile = {
             'name': 'cat.jpg',
@@ -88,7 +88,7 @@ class LocalFileCacheTests(TestCase):
         path = self.lfc.localize_remote_file(asset)
         assert path.endswith('3c25baa7cf0b59d64c0179a1e0030072444eac3b.jpg')
 
-    @patch.object(PixmlClient, 'stream')
+    @patch.object(ZmlpClient, 'stream')
     def test_localize_pixml_file_with_copy(self, post_patch):
         pfile = {
             'name': 'cat.jpg',
@@ -119,7 +119,7 @@ class LocalFileCacheTests(TestCase):
         assert os.path.exists(path)
         assert os.path.getsize(path) == 267493
 
-    @patch.object(PixmlClient, 'stream')
+    @patch.object(ZmlpClient, 'stream')
     def test_localize_file_pixml_file_dict(self, post_patch):
         post_patch.return_value = '/tmp/toucan.jpg'
         pfile = {
@@ -189,7 +189,7 @@ class StorageFunctionTests(TestCase):
         }
     ]
 
-    @patch.object(PixmlClient, 'stream')
+    @patch.object(ZmlpClient, 'stream')
     def test_get_proxy_level(self, stream_patch):
         asset = TestAsset(IMAGE_JPG, id='123456')
         asset.set_attr('files', self.file_list)
@@ -200,7 +200,7 @@ class StorageFunctionTests(TestCase):
         path = storage.get_proxy_level(asset, 9)
         assert '9bf44aa1e82ab54ce7adc212b3918c6047849c15' in path
 
-    @patch.object(PixmlClient, 'stream')
+    @patch.object(ZmlpClient, 'stream')
     def test_get_proxy_min_width(self, stream_patch):
         asset = TestAsset(IMAGE_JPG, id='123456')
         asset.set_attr('files', self.file_list)
@@ -217,7 +217,7 @@ class StorageFunctionTests(TestCase):
         with pytest.raises(ValueError):
             storage.get_proxy_min_width(asset, 1025, mimetype='video/', fallback=False)
 
-    @patch.object(PixmlClient, 'upload_file')
+    @patch.object(ZmlpClient, 'upload_file')
     def test_add_proxy_file(self, upload_patch):
         asset = TestAsset(IMAGE_JPG)
         upload_patch.return_value = {
