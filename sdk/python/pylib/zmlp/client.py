@@ -13,19 +13,19 @@ from urllib.parse import urljoin
 import jwt
 import requests
 
-from .exception import PixmlException
+from .exception import ZmlpException
 
 logger = logging.getLogger(__name__)
 
 
 class ZmlpClient(object):
     """
-    PixmlClient is used to communicate to a Pixml API server.
+    ZmlpClient is used to communicate to a ZMLP API server.
     """
 
     def __init__(self, apikey, server, **kwargs):
         """
-        Create a new PixmlClient instance.
+        Create a new ZmlpClient instance.
 
         Args:
             apikey: An API key in any supported form. (dict, base64 string, or open file handle)
@@ -53,14 +53,14 @@ class ZmlpClient(object):
                                         headers=self.headers(), stream=True)
 
                 if not response.ok:
-                    raise PixmlClientException(
+                    raise ZmlpClientException(
                         "Failed to stream asset: %s" % response)
 
                 for block in response.iter_content(1024):
                     handle.write(block)
             return dst
         except requests.exceptions.ConnectionError as e:
-            raise PixmlConnectionException(e)
+            raise ZmlpConnectionException(e)
 
     def stream_text(self, url):
         """
@@ -77,7 +77,7 @@ class ZmlpClient(object):
             response = requests.get(self.get_url(url), verify=False,
                                     headers=self.headers(), stream=True)
             if not response.ok:
-                raise PixmlClientException(
+                raise ZmlpClientException(
                     "Failed to stream asset: %s" % response)
 
             for line in response.iter_lines():
@@ -85,7 +85,7 @@ class ZmlpClient(object):
                     yield (line)
 
         except requests.exceptions.ConnectionError as e:
-            raise PixmlConnectionException(e)
+            raise ZmlpConnectionException(e)
 
     def upload_file(self, path, file, body={}, json_rsp=True):
         """
@@ -104,14 +104,14 @@ class ZmlpClient(object):
             post_files = [("file", (os.path.basename(file), open(file, 'rb')))]
             if body is not None:
                 post_files.append(
-                    ["body", (None, json.dumps(body, cls=PixmlJsonEncoder), 'application/json')])
+                    ["body", (None, json.dumps(body, cls=ZmlpJsonEncoder), 'application/json')])
 
             return self.__handle_rsp(requests.post(
                 self.get_url(path), headers=self.headers(content_type=""),
                 files=post_files), json_rsp)
 
         except requests.exceptions.ConnectionError as e:
-            raise PixmlConnectionException(e)
+            raise ZmlpConnectionException(e)
 
     def upload_files(self, path, files, body, json_rsp=True):
         """
@@ -134,7 +134,7 @@ class ZmlpClient(object):
 
             if body is not None:
                 post_files.append(
-                    ("body", ("", json.dumps(body, cls=PixmlJsonEncoder),
+                    ("body", ("", json.dumps(body, cls=ZmlpJsonEncoder),
                               'application/json')))
 
             return self.__handle_rsp(requests.post(
@@ -142,7 +142,7 @@ class ZmlpClient(object):
                 files=post_files), json_rsp)
 
         except requests.exceptions.ConnectionError as e:
-            raise PixmlConnectionException(e)
+            raise ZmlpConnectionException(e)
 
     def get(self, path, body=None, is_json=True):
         """
@@ -257,7 +257,7 @@ class ZmlpClient(object):
     def _make_request(self, method, path, body=None, is_json=True):
         request_function = getattr(requests, method)
         if body is not None:
-            data = json.dumps(body, cls=PixmlJsonEncoder)
+            data = json.dumps(body, cls=ZmlpJsonEncoder)
         else:
             data = body
 
@@ -417,7 +417,7 @@ class SearchResult(object):
         return self.items[idx]
 
 
-class PixmlJsonEncoder(json.JSONEncoder):
+class ZmlpJsonEncoder(json.JSONEncoder):
     """
     JSON encoder for with Pixml specific serialization defaults.
     """
@@ -440,17 +440,17 @@ class PixmlJsonEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-class PixmlClientException(PixmlException):
+class ZmlpClientException(ZmlpException):
     """The base exception class for all PixmlClient related Exceptions."""
     pass
 
 
-class PixmlRequestException(PixmlClientException):
+class ZmlpRequestException(ZmlpClientException):
     """
     The base exception class for all exceptions thrown from zmlp.
     """
     def __init__(self, data):
-        super(PixmlClientException, self).__init__(
+        super(ZmlpClientException, self).__init__(
             data.get("message", "Unknown request exception"))
         self.__data = data
 
@@ -474,7 +474,7 @@ class PixmlRequestException(PixmlClientException):
         return "<PixmlRequestException msg=%s>" % self.__data["message"]
 
 
-class PixmlConnectionException(PixmlClientException):
+class ZmlpConnectionException(ZmlpClientException):
     """
     This exception is thrown if the client encounters a connectivity issue
     with the Pixml API servers..
@@ -482,64 +482,64 @@ class PixmlConnectionException(PixmlClientException):
     pass
 
 
-class PixmlWriteException(PixmlRequestException):
+class ZmlpWriteException(ZmlpRequestException):
     """
     This exception is thrown the Pixml fails a write operation.
     """
 
     def __init__(self, data):
-        super(PixmlWriteException, self).__init__(data)
+        super(ZmlpWriteException, self).__init__(data)
 
 
-class PixmlSecurityException(PixmlRequestException):
+class ZmlpSecurityException(ZmlpRequestException):
     """
     This exception is thrown if Pixml fails a security check on the request.
     """
 
     def __init__(self, data):
-        super(PixmlSecurityException, self).__init__(data)
+        super(ZmlpSecurityException, self).__init__(data)
 
 
-class PixmlNotFoundException(PixmlRequestException):
+class ZmlpNotFoundException(ZmlpRequestException):
     """
     This exception is thrown if the Pixml fails a read operation because
     a piece of named data cannot be found.
     """
 
     def __init__(self, data):
-        super(PixmlNotFoundException, self).__init__(data)
+        super(ZmlpNotFoundException, self).__init__(data)
 
 
-class PixmlDuplicateException(PixmlWriteException):
+class ZmlpDuplicateException(ZmlpWriteException):
     """
     This exception is thrown if the Pixml fails a write operation because
     the newly created element would be a duplicate.
     """
 
     def __init__(self, data):
-        super(PixmlDuplicateException, self).__init__(data)
+        super(ZmlpDuplicateException, self).__init__(data)
 
 
-class PixmlInvalidRequestException(PixmlRequestException):
+class ZmlpInvalidRequestException(ZmlpRequestException):
     """
     This exception is thrown if the request sent to Pixml is invalid in
     some way, similar to an IllegalArgumentException.
     """
 
     def __init__(self, data):
-        super(PixmlInvalidRequestException, self).__init__(data)
+        super(ZmlpInvalidRequestException, self).__init__(data)
 
 
 """
 A map of HTTP response codes to local exception types.
 """
 EXCEPTION_MAP = {
-    404: PixmlNotFoundException,
-    409: PixmlDuplicateException,
-    500: PixmlInvalidRequestException,
-    400: PixmlInvalidRequestException,
-    401: PixmlSecurityException,
-    403: PixmlSecurityException
+    404: ZmlpNotFoundException,
+    409: ZmlpDuplicateException,
+    500: ZmlpInvalidRequestException,
+    400: ZmlpInvalidRequestException,
+    401: ZmlpSecurityException,
+    403: ZmlpSecurityException
 }
 
 
@@ -553,4 +553,4 @@ def translate_exception(status_code):
     Returns:
         Exception: the exception to throw for the given status code
     """
-    return EXCEPTION_MAP.get(status_code, PixmlRequestException)
+    return EXCEPTION_MAP.get(status_code, ZmlpRequestException)

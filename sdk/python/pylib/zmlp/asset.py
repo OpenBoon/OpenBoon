@@ -2,7 +2,7 @@ import logging
 import os
 import json
 
-from .client import SearchResult, PixmlJsonEncoder
+from .client import SearchResult, ZmlpJsonEncoder
 from .util import as_collection
 from .elements import Element
 
@@ -128,7 +128,7 @@ class DocumentMixin(object):
             raise ValueError("Could not add element, value was not an Element instance.")
 
         elements = self.get_attr("elements") or []
-        elements.append(json.loads(json.dumps(element, cls=PixmlJsonEncoder)))
+        elements.append(json.loads(json.dumps(element, cls=ZmlpJsonEncoder)))
         self.set_attr("elements", elements)
 
     def extend_list_attr(self, attr, items):
@@ -286,7 +286,7 @@ class Asset(DocumentMixin):
             attr_keys: (list): A list of attribute keys that must be present.
             sort_func: (func): A lambda function for sorting the result.
         Returns:
-            list of dict: A list of pixml file records.
+            list of dict: A list of ZMLP file records.
 
         """
         result = []

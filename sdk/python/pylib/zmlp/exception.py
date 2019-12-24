@@ -1,6 +1,6 @@
 
-class PixmlException(Exception):
+class ZmlpException(Exception):
     """
-    The base exception for the pixml library.
+    The base exception for the ZMLP library.
     """
     pass

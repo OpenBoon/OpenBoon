@@ -2,7 +2,7 @@ import logging
 import os
 
 from ..app import app_from_env
-from ..exception import PixmlException
+from ..exception import ZmlpException
 
 logger = logging.getLogger(__name__)
 
@@ -15,8 +15,8 @@ __all__ = [
     "AssetBuilder",
     "Argument",
     "ProcessorHelper",
-    "PixmlUnrecoverableProcessorException",
-    "PixmlProcessorException",
+    "ZmlpFatalProcessorException",
+    "ZmlpProcessorException",
     "AnalysisEnv"
 ]
 
@@ -271,7 +271,7 @@ class Processor(object):
                 if not expr.get("ignore_error"):
                     msg = "Failed to parse expression for arg '%s' : '%s', " \
                           "unexpected: %s"
-                    raise PixmlUnrecoverableProcessorException(
+                    raise ZmlpFatalProcessorException(
                         msg % (arg_name, arg_expr, e))
 
     def teardown(self):
@@ -435,7 +435,7 @@ class AssetBuilder(Processor):
             (int): The number of Expand events generated.
         """
         if not self.reactor:
-            raise PixmlException("No reactor set on processor")
+            raise ZmlpException("No reactor set on processor")
         return self.reactor.add_expand_frame(parent_frame, expand_frame,
                                              batch_size, force)
 
@@ -509,16 +509,16 @@ class AnalysisEnv:
         return os.environ.get("PIXML_DATASOURCE_ID")
 
 
-class PixmlProcessorException(PixmlException):
+class ZmlpProcessorException(ZmlpException):
     """
     The base class for processor exceptions.
     """
     pass
 
 
-class PixmlUnrecoverableProcessorException(ProcessorException):
+class ZmlpFatalProcessorException(ProcessorException):
     """
     Thrown by a processor when it makes no sense to continue processing
-    the asseet due to an unrecoverable error.
+    the asset due to an unrecoverable error.
     """
     pass

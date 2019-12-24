@@ -11,7 +11,7 @@ from urllib.parse import urlparse
 import requests
 
 from zmlp.analysis.base import Context, AssetBuilder, Generator, Argument, \
-    PixmlUnrecoverableProcessorException
+    ZmlpFatalProcessorException
 from zmlp.asset import FileImport, Asset
 
 logger = logging.getLogger(__name__)
@@ -35,7 +35,7 @@ class TestProcessor(AssetBuilder):
     def process(self, frame):
         self.logger.info('Running TestProcessor process()')
         if self.arg_value('raise_fatal'):
-            raise PixmlUnrecoverableProcessorException('Fatal exception raised')
+            raise ZmlpFatalProcessorException('Fatal exception raised')
 
         attrs = self.arg_value('attrs')
         if attrs:

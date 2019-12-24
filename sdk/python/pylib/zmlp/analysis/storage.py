@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 from pathlib2 import Path
 
 from zmlp import app_from_env, Asset
-from zmlp.exception import PixmlException
+from zmlp.exception import ZmlpException
 from .base import AnalysisEnv
 from .cloud import get_cached_google_storage_client, get_pixml_storage_client
 
@@ -20,7 +20,7 @@ __all__ = [
     "get_proxy_level",
     "add_proxy_file",
     "add_pixml_file",
-    "PixmlStorageException"
+    "ZmlpStorageException"
 ]
 
 logger = logging.getLogger(__name__)
@@ -129,7 +129,7 @@ class LocalFileCache(object):
             blob = bucket.blob(parsed_uri.path[1:])
             blob.download_to_filename(path)
         else:
-            raise PixmlStorageException('Invalid URI, unsupported scheme: {}'.format(parsed_uri))
+            raise ZmlpStorageException('Invalid URI, unsupported scheme: {}'.format(parsed_uri))
         return path
 
     def localize_pixml_file(self, asset, pfile, copy_path=None):
@@ -328,7 +328,7 @@ def add_pixml_file(asset, path, category, rename=None, attrs=None):
     return result
 
 
-class PixmlStorageException(PixmlException):
+class ZmlpStorageException(ZmlpException):
     """
     This exception is thrown if there are problems with storing or retrieving a file.
     """

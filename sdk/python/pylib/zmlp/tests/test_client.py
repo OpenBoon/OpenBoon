@@ -1,6 +1,6 @@
 import unittest
 
-from pixml import Asset
+from zmlp import Asset
 from zmlp.datasource import DataSource
 from zmlp.client import SearchResult
 
