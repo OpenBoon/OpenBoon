@@ -4,7 +4,6 @@ from pixml.elements import Element
 
 
 class ElementTests(TestCase):
-
     stored_file = {
         'name': 'cat_object.jpg',
         'category': 'element',
@@ -33,11 +32,6 @@ class ElementTests(TestCase):
         element = Element('object', 'cat',
                           rect=[0, 0, 100, 100], stored_file=self.stored_file)
         assert element.regions == ['NW']
-
-    def test_create_rect_element_with_sw_region(self):
-        element = Element('object', 'cat',
-                          rect=[0, 175, 10, 200], stored_file=self.stored_file)
-        assert element.regions == ['SW']
 
     def test_create_rect_element_with_sw_region(self):
         element = Element('object', 'cat',
