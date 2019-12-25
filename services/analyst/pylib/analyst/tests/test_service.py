@@ -41,7 +41,7 @@ def test_task(event_type=None, attrs=None, sleep=1):
             ],
             "execute": [
                 {
-                    "className": "pixml.analysis.testing.TestProcessor",
+                    "className": "zmlp.analysis.testing.TestProcessor",
                     "args": {
                         "send_event": event_type,
                         "attrs": attrs,

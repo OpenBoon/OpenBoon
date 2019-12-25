@@ -54,7 +54,7 @@ abstract class MockMvcTest : AbstractTest() {
 
         /**
          * When using the 'job()' method to authenticate in a controller test,
-         * this will be your PixmlActor.
+         * this will be your ZmlpActor.
          */
         whenever(authServerClient.authenticate(eq("JOBRUNNER"))).then {
             ZmlpActor(
@@ -67,7 +67,7 @@ abstract class MockMvcTest : AbstractTest() {
 
         /**
          * When using the 'admin()' method to authenticate in a controller test,
-         * this will be your PixmlActor.
+         * this will be your ZmlpActor.
          */
         whenever(authServerClient.authenticate(eq("ADMIN"))).then {
             ZmlpActor(

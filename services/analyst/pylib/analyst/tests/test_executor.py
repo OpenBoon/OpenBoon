@@ -78,7 +78,7 @@ class TestZpsExecutor(unittest.TestCase):
             "script": {
                 "generate": [
                     {
-                        "className": "pixml.analysis.testing.TestGenerator",
+                        "className": "zmlp.analysis.testing.TestGenerator",
                         "args": {
                             "files": ["/test-data/images/set01/toucan.jpg"]
                         },

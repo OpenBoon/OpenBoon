@@ -36,8 +36,8 @@ management:
 #Swagger info
 swagger:
   isPublic: true
-  title: PixelML APIKey Server
-  description: Validates PixmlML API keys
+  title: ZMLP APIKey Server
+  description: Validates ZMLP API keys
   version: 1.0.0
 
   termOfService: http://www.zorroa.com/terms

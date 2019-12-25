@@ -197,20 +197,20 @@ class DispatchQueueManager @Autowired constructor(
                 METRICS_KEY, "op", "tasks-queued"
             ).increment()
 
-            task.env["PIXML_TASK_ID"] = task.id.toString()
-            task.env["PIXML_JOB_ID"] = task.jobId.toString()
-            task.env["PIXML_PROJECT_ID"] = task.projectId.toString()
-            task.dataSourceId?.let { task.env["PIXML_DATASOURCE_ID"] = it.toString() }
-            task.env["PIXML_ARCHIVIST_MAX_RETRIES"] = "0"
+            task.env["ZMLP_TASK_ID"] = task.id.toString()
+            task.env["ZMLP_JOB_ID"] = task.jobId.toString()
+            task.env["ZMLP_PROJECT_ID"] = task.projectId.toString()
+            task.dataSourceId?.let { task.env["ZMLP_DATASOURCE_ID"] = it.toString() }
+            task.env["ZMLP_ARCHIVIST_MAX_RETRIES"] = "0"
 
             // So the container can make API calls as the JobRunner
             val key = authServerClient.getApiKey(task.projectId, KnownKeys.JOB_RUNNER)
-            task.env["PIXML_APIKEY"] = key.toBase64()
+            task.env["ZMLP_APIKEY"] = key.toBase64()
 
             // So the container can access shared
-            task.env["MLSTORAGE_URL"] = sharedStoragProperties.url
-            task.env["MLSTORAGE_ACCESSKEY"] = sharedStoragProperties.accessKey
-            task.env["MLSTORAGE_SECRETKEY"] = sharedStoragProperties.secretKey
+            task.env["ZMLP_MLSTORAGE_URL"] = sharedStoragProperties.url
+            task.env["ZMLP_MLSTORAGE_ACCESSKEY"] = sharedStoragProperties.accessKey
+            task.env["ZMLP_MLSTORAGE_SECRETKEY"] = sharedStoragProperties.secretKey
 
             return true
         } else {

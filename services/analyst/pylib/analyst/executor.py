@@ -319,7 +319,7 @@ class DockerContainerWrapper(object):
 
         env = self.task.get("env", {})
         env.update({
-            'PIXML_SERVER': os.environ.get("PIXML_SERVER")
+            'ZMLP_SERVER': os.environ.get("ZMLP_SERVER")
         })
 
         logger.info("starting container {}".format(self.image))
