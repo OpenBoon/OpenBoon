@@ -11,15 +11,15 @@ from pathlib2 import Path
 
 from zmlp import app_from_env, Asset
 from zmlp.exception import ZmlpException
-from .base import AnalysisEnv
-from .cloud import get_cached_google_storage_client, get_pixml_storage_client
+from .base import ZmlpEnv
+from .cloud import get_cached_google_storage_client, get_zmlp_storage_client
 
 __all__ = [
     "file_cache",
     "get_proxy_min_width",
     "get_proxy_level",
     "add_proxy_file",
-    "add_pixml_file",
+    "add_zmlp_file",
     "ZmlpStorageException"
 ]
 
@@ -37,7 +37,7 @@ class LocalFileCache(object):
         "http",
         "https"
         "file",
-        "pixml"
+        "zmlp"
     ]
 
     def __init__(self):
@@ -49,14 +49,14 @@ class LocalFileCache(object):
 
     def __init_root(self):
         """
-        This methods builds the root cache directory when the cache is
+        This method builds the root cache directory when the cache is
         used, otherwise it may leave lots of empty cache temp dirs
         in containers or other places.
         """
         if not self.root:
-            task = AnalysisEnv.get_task_id()
+            task = ZmlpEnv.get_task_id()
             if not task:
-                self.root = tempfile.mkdtemp('pixml', 'lfc')
+                self.root = tempfile.mkdtemp('zmlp', 'lfc')
             else:
                 self.root = os.path.join(tempfile.gettempdir(), task)
                 os.makedirs(self.root, exist_ok=True)
@@ -69,7 +69,7 @@ class LocalFileCache(object):
             - A supported URI
             - Asset instance
 
-        To localize an Asset the file must be in PixelML storage or a remoote
+        To localize an Asset the file must be in ZMLP storage or a remoote
         file available with the current DataSource credentials (if any).
 
         Args:
@@ -84,7 +84,7 @@ class LocalFileCache(object):
         elif isinstance(rep, Asset):
             source_files = rep.get_files(category="source")
             if source_files:
-                return self.localize_pixml_file(rep, source_files[0])
+                return self.localize_asset_file(rep, source_files[0])
             else:
                 return self.localize_uri(rep.uri)
         else:
@@ -115,9 +115,9 @@ class LocalFileCache(object):
         elif parsed_uri.scheme == 'file':
             return parsed_uri.path
 
-        # Pixml storage buckets
-        elif parsed_uri.scheme == 'pixml':
-            data = get_pixml_storage_client().get_object(parsed_uri.netloc, parsed_uri.path[1:])
+        # ZMLP ML storage
+        elif parsed_uri.scheme == 'zmlp':
+            data = get_zmlp_storage_client().get_object(parsed_uri.netloc, parsed_uri.path[1:])
             with open(path, 'wb') as fpw:
                 for d in data.stream(32 * 1024):
                     fpw.write(d)
@@ -132,14 +132,18 @@ class LocalFileCache(object):
             raise ZmlpStorageException('Invalid URI, unsupported scheme: {}'.format(parsed_uri))
         return path
 
-    def localize_pixml_file(self, asset, pfile, copy_path=None):
+    def localize_asset_file(self, asset, fdict, copy_path=None):
         """
-        Localize the file described by the storage dict.  If a path argument is
-        provided, overwrite the file cache location with that file.
+        Localize the file described by the ZMLP file storage dictionary.
+        If a path argument is provided, overwrite the file cache
+        location with that file.
+
+        This storage is used for files you want to serve externally,
+        like proxy images.
 
         Args:
             asset (Asset): The ID of the asset.
-            pfile (dict): a file storage dict
+            fdict (dict): a ZMLP Project file storage dictionary.
             copy_path (str): an optional path to a file to copy into the cache location.
 
         Returns:
@@ -147,13 +151,13 @@ class LocalFileCache(object):
 
         """
         self.__init_root()
-        _, suffix = os.path.splitext(copy_path or pfile['name'])
+        _, suffix = os.path.splitext(copy_path or zfile['name'])
 
         # Obtain the necessary properties to formulate a cache key.
-        name = pfile['name']
-        category = pfile['category']
+        name = fdict['name']
+        category = fdict['category']
         # handle the pfile referencing another asset.
-        asset_id = pfile.get("sourceAssetId", asset.id)
+        asset_id = fdict.get("sourceAssetId", asset.id)
         key = ''.join((asset_id, name, category))
 
         cache_path = self.get_path(key, suffix)
@@ -231,7 +235,7 @@ def get_proxy_level(asset, level, mimetype="image/"):
         level = -1
     try:
         proxy = files[level]
-        return file_cache.localize_pixml_file(asset, proxy)
+        return file_cache.localize_asset_file(asset, proxy)
     except IndexError:
         return None
 
@@ -258,7 +262,7 @@ def get_proxy_min_width(asset, min_width, mimetype="image/", fallback=False):
     files = [file for file in files if file["attrs"]["width"] >= min_width]
 
     if files:
-        return file_cache.localize_pixml_file(asset, files[0])
+        return file_cache.localize_asset_file(asset, files[0])
     elif fallback:
         return file_cache.localize_remote_file(asset)
     else:
@@ -268,7 +272,7 @@ def get_proxy_min_width(asset, min_width, mimetype="image/", fallback=False):
 def add_proxy_file(asset, path, size):
     """
     A convenience function that adds a proxy file to the Asset and
-    uploads the file to PixelML storage.
+    uploads the file to ZMLP storage.
 
     Args:
         asset (Asset): The purpose of the file, ex proxy.
@@ -276,19 +280,19 @@ def add_proxy_file(asset, path, size):
         size (tuple of int): a tuple of width, height
 
     Returns:
-        dict: a PixelML file storage dict.
+        dict: a ZMLP file storage dict.
     """
     _, ext = os.path.splitext(path)
     if not ext:
         raise ValueError("The path to the proxy file has no extension, but one is required.")
     name = "proxy_{}x{}{}".format(size[0], size[1], ext)
-    return add_pixml_file(asset, path, "proxy", rename=name,
+    return add_zmlp_file(asset, path, "proxy", rename=name,
                           attrs={"width": size[0], "height": size[1]})
 
 
-def add_pixml_file(asset, path, category, rename=None, attrs=None):
+def add_zmlp_file(asset, path, category, rename=None, attrs=None):
     """
-    Add a file to the asset and upload into PixelML storage.
+    Add a file to the asset and upload into ZMLP storage.
     Also stores a copy into the local file cache.
 
     Args:
@@ -299,7 +303,7 @@ def add_pixml_file(asset, path, category, rename=None, attrs=None):
         attrs (dict): Arbitrary attributes to attach to the file.
 
     Returns:
-        dict: a PixelML file storage dict.
+        dict: a ZMLP file storage dict.
 
     """
     app = app_from_env()
@@ -317,7 +321,7 @@ def add_pixml_file(asset, path, category, rename=None, attrs=None):
 
     # Store the path to the proxy in our local file storage
     # because a processor will need it down the line.
-    file_cache.localize_pixml_file(asset, result, path)
+    file_cache.localize_asset_file(asset, result, path)
 
     # Ensure the file doesn't already exist in the metadata
     if not asset.get_files(name=spec["name"], category=category):

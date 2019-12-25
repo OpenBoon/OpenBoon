@@ -282,7 +282,7 @@ class ZmlpClient(object):
                 wait = random.randint(1, random.randint(1, 60))
                 # Switched to stderr in case no logger is setup, still want
                 # to see messages.
-                msg = "Communicating to Pixml (%s) timed out %d times, " \
+                msg = "Communicating to ZMLP (%s) timed out %d times, " \
                       "waiting ... %d seconds, error=%s\n"
                 sys.stderr.write(msg % (url, tries, wait, e))
                 time.sleep(wait)
@@ -310,7 +310,7 @@ class ZmlpClient(object):
                               "JSON formatted. %s" % (rsp.status_code, e)
             data["status"] = rsp.status_code
 
-        # If the status code can't be found, then PixmlRequestException is returned.
+        # If the status code can't be found, then ZmlpRequestException is returned.
         ex_class = translate_exception(rsp.status_code)
         raise ex_class(data)
 
@@ -370,9 +370,9 @@ class ZmlpClient(object):
             'keyId': self.apikey["keyId"],
         }
 
-        if os.environ.get("PIXML_TASK_ID"):
-            claims['taskId'] = os.environ.get("PIXML_TASK_ID")
-            claims['jobId'] = os.environ.get("PIXML_JOB_ID")
+        if os.environ.get("ZMLP_TASK_ID"):
+            claims['taskId'] = os.environ.get("ZMLP_TASK_ID")
+            claims['jobId'] = os.environ.get("ZMLP_JOB_ID")
 
         if self.project_id:
             claims["projectId"] = self.project_id
@@ -382,7 +382,7 @@ class ZmlpClient(object):
 class SearchResult(object):
     """
     A utility class for wrapping various search result formats
-    that come back from the PixelML servers.
+    that come back from the ZMLP servers.
     """
 
     def __init__(self, data, clazz):
@@ -393,7 +393,7 @@ class SearchResult(object):
         as a list. For example
 
         Args:
-            data (dict): A search response body from the PixelML servers.
+            data (dict): A search response body from the ZMLP servers.
             clazz (mixed): A class to wrap each item in the response body.
         """
         # the "hits" key indicates its an ElasticSearch result.
@@ -419,7 +419,7 @@ class SearchResult(object):
 
 class ZmlpJsonEncoder(json.JSONEncoder):
     """
-    JSON encoder for with Pixml specific serialization defaults.
+    JSON encoder for with ZMLP specific serialization defaults.
     """
 
     def default(self, obj):
@@ -441,7 +441,7 @@ class ZmlpJsonEncoder(json.JSONEncoder):
 
 
 class ZmlpClientException(ZmlpException):
-    """The base exception class for all PixmlClient related Exceptions."""
+    """The base exception class for all ZmlpClient related Exceptions."""
     pass
 
 
@@ -471,20 +471,20 @@ class ZmlpRequestException(ZmlpClientException):
         return self.__data["status"]
 
     def __str__(self):
-        return "<PixmlRequestException msg=%s>" % self.__data["message"]
+        return "<ZmlpRequestException msg=%s>" % self.__data["message"]
 
 
 class ZmlpConnectionException(ZmlpClientException):
     """
     This exception is thrown if the client encounters a connectivity issue
-    with the Pixml API servers..
+    with the Zmlp API servers..
     """
     pass
 
 
 class ZmlpWriteException(ZmlpRequestException):
     """
-    This exception is thrown the Pixml fails a write operation.
+    This exception is thrown the Zmlp fails a write operation.
     """
 
     def __init__(self, data):
@@ -493,7 +493,7 @@ class ZmlpWriteException(ZmlpRequestException):
 
 class ZmlpSecurityException(ZmlpRequestException):
     """
-    This exception is thrown if Pixml fails a security check on the request.
+    This exception is thrown if Zmlp fails a security check on the request.
     """
 
     def __init__(self, data):
@@ -502,7 +502,7 @@ class ZmlpSecurityException(ZmlpRequestException):
 
 class ZmlpNotFoundException(ZmlpRequestException):
     """
-    This exception is thrown if the Pixml fails a read operation because
+    This exception is thrown if the Zmlp fails a read operation because
     a piece of named data cannot be found.
     """
 
@@ -512,7 +512,7 @@ class ZmlpNotFoundException(ZmlpRequestException):
 
 class ZmlpDuplicateException(ZmlpWriteException):
     """
-    This exception is thrown if the Pixml fails a write operation because
+    This exception is thrown if the Zmlp fails a write operation because
     the newly created element would be a duplicate.
     """
 
@@ -522,7 +522,7 @@ class ZmlpDuplicateException(ZmlpWriteException):
 
 class ZmlpInvalidRequestException(ZmlpRequestException):
     """
-    This exception is thrown if the request sent to Pixml is invalid in
+    This exception is thrown if the request sent to Zmlp is invalid in
     some way, similar to an IllegalArgumentException.
     """
 

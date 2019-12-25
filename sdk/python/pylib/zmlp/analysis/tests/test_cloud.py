@@ -4,7 +4,7 @@ import logging
 from unittest import TestCase
 from unittest.mock import patch
 
-from zmlp.analysis.cloud import get_google_storage_client, get_pixml_storage_client
+from zmlp.analysis.cloud import get_google_storage_client, get_zmlp_storage_client
 from zmlp.client import ZmlpClient
 
 logging.basicConfig(level=logging.DEBUG)
@@ -40,18 +40,18 @@ class TetCloudUtilFunction(TestCase):
             gcs_creds = {'blob': fp.read()}
 
         get_patch.return_value = gcs_creds
-        os.environ['PIXML_DATASOURCE_ID'] = 'abc123'
+        os.environ['ZMLP_DATASOURCE_ID'] = 'abc123'
         try:
             client = get_google_storage_client()
             assert 'fake_service_account@zorroa-deploy.iam.gserviceaccount.com' == \
                    client._credentials._service_account_email
         finally:
-            del os.environ['PIXML_DATASOURCE_ID']
+            del os.environ['ZMLP_DATASOURCE_ID']
 
-    def test_get_pixml_storage_client(self):
-        os.environ['MLSTORAGE_URL'] = "http://localhost:9000"
+    def test_get_zmlp_storage_client(self):
+        os.environ['ZMLP_MLSTORAGE_URL'] = "http://localhost:9000"
         try:
-            client = get_pixml_storage_client()
+            client = get_zmlp_storage_client()
             assert type(client) == minio.api.Minio
         finally:
-            del os.environ['MLSTORAGE_URL']
+            del os.environ['ZMLP_MLSTORAGE_URL']

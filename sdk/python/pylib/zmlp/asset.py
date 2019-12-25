@@ -182,7 +182,7 @@ class DocumentMixin(object):
 
 class FileImport(object):
     """
-    An FileImport is used to import a new file and metdata into PixelML.
+    An FileImport is used to import a new file and metadata into ZMLP.
     """
 
     def __init__(self, uri, attrs=None, clip=None):

@@ -17,7 +17,7 @@ __all__ = [
     "ProcessorHelper",
     "ZmlpFatalProcessorException",
     "ZmlpProcessorException",
-    "AnalysisEnv"
+    "ZmlpEnv"
 ]
 
 
@@ -461,7 +461,7 @@ class ProcessorHelper(object):
         return self.processor.logger
 
 
-class AnalysisEnv:
+class ZmlpEnv:
     """
     Static methods for obtaining environment variables available when running
     within an analysis container.
@@ -470,43 +470,43 @@ class AnalysisEnv:
     @staticmethod
     def get_job_id():
         """
-        Return the PixelML Job id from the environment.
+        Return the ZMLP Job id from the environment.
 
         Returns:
-            str: The PixelML task Id.
+            str: The ZMLP task Id.
         """
-        return os.environ.get("PIXML_JOB_ID")
+        return os.environ.get("ZMLP_JOB_ID")
 
     @staticmethod
     def get_task_id():
         """
-        Return the PixelML Task id from the environment.
+        Return the ZMLP Task id from the environment.
 
         Returns:
-            str: The PixelML task Id.
+            str: The ZMLP task Id.
         """
-        return os.environ.get("PIXML_TASK_ID")
+        return os.environ.get("ZMLP_TASK_ID")
 
     @staticmethod
     def get_project_id():
         """
-        Return the PixelML project id from the environment.
+        Return the ZMLP project id from the environment.
 
         Returns:
-            str: The PixelML project Id.
+            str: The ZMLP project Id.
         """
-        return os.environ.get("PIXML_PROJECT_ID")
+        return os.environ.get("ZMLP_PROJECT_ID")
 
     @staticmethod
     def get_datasource_id():
         """
-        Return the PixelML DataSource id from the environment.  The DataSource ID
+        Return the ZMLP DataSource id from the environment.  The DataSource ID
         may or may not exist.
 
         Returns:
-            str: The PixelML DataSource Id or None
+            str: The ZMLP DataSource Id or None
         """
-        return os.environ.get("PIXML_DATASOURCE_ID")
+        return os.environ.get("ZMLP_DATASOURCE_ID")
 
 
 class ZmlpProcessorException(ZmlpException):

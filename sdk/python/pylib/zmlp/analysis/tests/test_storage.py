@@ -24,13 +24,13 @@ class LocalFileCacheTests(TestCase):
         self.lfc.clear()
 
     def test_init_with_task_id(self):
-        os.environ['PIXML_TASK_ID'] = '1234abcd5678'
+        os.environ['ZMLP_TASK_ID'] = '1234abcd5678'
         try:
             cache = storage.LocalFileCache()
             path = cache.localize_uri('https://i.imgur.com/WkomVeG.jpg')
-            assert os.environ['PIXML_TASK_ID'] in path
+            assert os.environ['ZMLP_TASK_ID'] in path
         finally:
-            del os.environ['PIXML_TASK_ID']
+            del os.environ['ZMLP_TASK_ID']
             cache.close()
 
     def test_localize_http(self):
@@ -55,17 +55,17 @@ class LocalFileCacheTests(TestCase):
         assert not os.path.exists(path)
 
     @patch.object(ZmlpClient, 'stream')
-    def test_localize_pixml_file(self, post_patch):
+    def test_localize_asset_file(self, post_patch):
         pfile = {
             'name': 'cat.jpg',
             'category': 'proxy'
         }
         post_patch.return_value = '/tmp/cat.jpg'
-        path = self.lfc.localize_pixml_file(TestAsset(id='123456'), pfile)
+        path = self.lfc.localize_asset_file(TestAsset(id='123456'), pfile)
         assert path.endswith('c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg')
 
     @patch.object(ZmlpClient, 'stream')
-    def test_localize_pixml_with_asset_override(self, post_patch):
+    def test_localize_asset_file_with_asset_override(self, post_patch):
         pfile = {
             'name': 'cat.jpg',
             'category': 'proxy',
@@ -73,11 +73,11 @@ class LocalFileCacheTests(TestCase):
         }
         post_patch.return_value = '/tmp/cat.jpg'
         asset = TestAsset(id='123456')
-        self.lfc.localize_pixml_file(asset, pfile)
+        self.lfc.localize_asset_file(asset, pfile)
         assert "assets/bingo/files" in post_patch.call_args_list[0][0][0]
 
     @patch.object(ZmlpClient, 'stream')
-    def test_localize_pixml_source_file(self, post_patch):
+    def test_localize_asset_source_file(self, post_patch):
         pfile = {
             'name': 'cat.jpg',
             'category': 'source'
@@ -89,14 +89,14 @@ class LocalFileCacheTests(TestCase):
         assert path.endswith('3c25baa7cf0b59d64c0179a1e0030072444eac3b.jpg')
 
     @patch.object(ZmlpClient, 'stream')
-    def test_localize_pixml_file_with_copy(self, post_patch):
+    def test_localize_asset_file_with_copy(self, post_patch):
         pfile = {
             'name': 'cat.jpg',
             'category': 'proxy'
         }
         post_patch.return_value = '/tmp/toucan.jpg'
         bird = zorroa_test_data('images/set01/toucan.jpg', uri=False)
-        path = self.lfc.localize_pixml_file(TestAsset(id='123456'), pfile, bird)
+        path = self.lfc.localize_asset_file(TestAsset(id='123456'), pfile, bird)
         assert os.path.getsize(path) == os.path.getsize(bird)
 
     def test_localize_file_obj_with_uri(self):
@@ -109,24 +109,24 @@ class LocalFileCacheTests(TestCase):
         assert os.path.exists(path)
 
     @patch.object(Minio, 'get_object')
-    def test_localize_pixml_uri(self, get_object_patch):
+    def test_localize_mlstorage_uri(self, get_object_patch):
         http = urllib3.PoolManager()
         r = http.request('GET', 'http://i.imgur.com/WkomVeG.jpg', preload_content=False)
 
         get_object_patch.return_value = r
-        path = self.lfc.localize_remote_file('pixml://ml-storage/officer/pdf/proxy.1.jpg')
+        path = self.lfc.localize_remote_file('zmlp://ml-storage/officer/pdf/proxy.1.jpg')
 
         assert os.path.exists(path)
         assert os.path.getsize(path) == 267493
 
     @patch.object(ZmlpClient, 'stream')
-    def test_localize_file_pixml_file_dict(self, post_patch):
+    def test_localize_asset_file_dict(self, post_patch):
         post_patch.return_value = '/tmp/toucan.jpg'
         pfile = {
             'name': 'cat.jpg',
             'category': 'proxy'
         }
-        path = self.lfc.localize_pixml_file(TestAsset(id='123456'), pfile)
+        path = self.lfc.localize_asset_file(TestAsset(id='123456'), pfile)
         assert path.endswith('c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg')
 
     def test_close(self):
@@ -134,12 +134,12 @@ class LocalFileCacheTests(TestCase):
             'name': 'cat.jpg',
             'category': 'proxy'
         }
-        self.lfc.localize_pixml_file(TestAsset(), pfile,
+        self.lfc.localize_asset_file(TestAsset(), pfile,
                                      zorroa_test_data('images/set01/toucan.jpg'))
         self.lfc.close()
 
         with pytest.raises(FileNotFoundError):
-            self.lfc.localize_pixml_file(TestAsset(), pfile,
+            self.lfc.localize_asset_file(TestAsset(), pfile,
                                          zorroa_test_data('images/set01/toucan.jpg'))
 
 

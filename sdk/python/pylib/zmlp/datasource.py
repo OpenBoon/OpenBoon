@@ -65,7 +65,7 @@ class DataSourceApp(object):
         completely overwrite the existing Assets with fresh copies.
 
         If the DataSource URI contains less Assets, no assets will be
-        removed from PixelML.
+        removed from ZMLP.
 
         Args:
             ds (DataSource): A DataSource object or the name of a data source.
@@ -90,7 +90,7 @@ class DataSourceApp(object):
             dict: A status dict.
 
         Raises:
-            PixmlNotFoundException: If the DataSource does not exist.
+            ZmlpNotFoundException: If the DataSource does not exist.
 
         """
         url = '/api/v1/data-sources/{}/_credentials'.format(ds.id)

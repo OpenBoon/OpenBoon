@@ -30,7 +30,7 @@ class TestProcessor(AssetBuilder):
         self.add_arg(Argument('attrs', 'struct', default=None))
         self.add_arg(Argument('send_event', 'str', default=None))
         self.add_arg(Argument('raise_fatal', 'bool', default=False,
-                              toolTip='Raise a PixmlUnrecoverableProcessorException'))
+                              toolTip='Raise a ZmlpUnrecoverableProcessorException'))
 
     def process(self, frame):
         self.logger.info('Running TestProcessor process()')
@@ -287,12 +287,12 @@ def zorroa_test_data(rel_path="", uri=True):
 
 class MockRequestsResponse:
     """
-    A Mock HTTP request response object used for mockkng respsonss from
+    A Mock HTTP request response object used for mocking responses from
     the popular python 'requests' library.
 
     Examples:
         post_patch.return_value = MockRequestsResponse(
-            {"output": "pixml://ml-storage/foo/bar"}, 200)
+            {"output": "zmlp://ml-storage/foo/bar"}, 200)
 
     See Also:
         https://requests.readthedocs.io/en/master/

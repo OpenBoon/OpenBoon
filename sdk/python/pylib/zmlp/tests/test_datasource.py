@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
-class PixmlDataSourceAppTests(unittest.TestCase):
+class ZmlpDataSourceAppTests(unittest.TestCase):
 
     def setUp(self):
         # This is not a valid key
@@ -19,7 +19,7 @@ class PixmlDataSourceAppTests(unittest.TestCase):
             'keyId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'sharedKey': 'test123test135'
         }
-        self.app = zmlp.app.PixmlApp(self.key_dict)
+        self.app = zmlp.app.ZmlpApp(self.key_dict)
 
     @patch.object(ZmlpClient, 'post')
     def test_create_datasource(self, post_patch):
