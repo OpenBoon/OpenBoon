@@ -1,7 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
-import domain.DataSource;
-import domain.PixmlApp;
-import domain.Utils;
+import domain.*;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -36,53 +34,52 @@ public class PixmlAppTestIT {
 
     @Test
     @Order(1)
-    public void testCreateAppFromEnvFile() throws IOException, InterruptedException {
+    public void testCreateProject() throws IOException, InterruptedException {
 
-        Map requestParams = new HashMap();
-        requestParams.put("name", projectName);
-        requestParams.put("projectId", projectId);
+        ProjectSpec projectSpec = new ProjectSpec(projectName, projectId);
+        Project project = pixmlApp.getPixmlClient().createProject(projectSpec);
 
-        Map post = pixmlApp.getPixmlClient().post("/api/v1/projects", requestParams);
-
-        assertNotNull(pixmlApp);
-        assertNotNull(pixmlApp.getPixmlClient());
-        assertNotNull(pixmlApp.getPixmlClient().getApiKey());
-        assertNotNull(pixmlApp.getPixmlClient().headers());
-
-        assertEquals(post.get("id"), projectId.toString());
-        assertEquals(post.get("name"), projectName);
+        assertEquals(project.getId(), projectId);
+        assertEquals(project.getName(), projectName);
     }
 
 
     @Test
     @Order(2)
-    public void testCreateRepeatedAppFromEnvFile() {
+    public void testFailOnCreateRepeatedApp() {
 
-        Map requestParams = new HashMap();
-        requestParams.put("name", projectName);
-        requestParams.put("projectId", projectId);
+        ProjectSpec projectSpec = new ProjectSpec(projectName, projectId);
 
-        assertThrows(IOException.class, () -> pixmlApp.getPixmlClient().post("/api/v1/projects", requestParams));
+        assertThrows(IOException.class, () -> pixmlApp.getPixmlClient().createProject(projectSpec));
     }
 
     @Test
     @Order(3)
     public void testRetrieveProject() throws IOException, InterruptedException {
 
-        List<UUID> strings = Arrays.asList(projectId);
-        Map searchFilter = new HashMap();
-        searchFilter.put("ids", strings);
+        List<UUID> uuidList = Arrays.asList(projectId);
+        ProjectFilter projectFilter = new ProjectFilter(uuidList, null, null, null);
 
-        Map response = pixmlApp.getPixmlClient().post("/api/v1/projects/_findOne", searchFilter);
+        Project project = pixmlApp.getPixmlClient().searchProject(projectFilter);
 
-        assertEquals(response.get("id"), projectId.toString());
-        assertEquals(response.get("name"), projectName);
-        assertEquals(response.get("actorCreated"), "admin-key");
-        assertEquals(response.get("actorModified"), "admin-key");
+        assertEquals(project.getId(), projectId);
+        assertEquals(project.getName(), projectName);
+        assertEquals(project.getActorCreated(), "admin-key");
+        assertEquals(project.getActorCreated(), "admin-key");
     }
 
     @Test
     @Order(4)
+    public void testRetrieveAllProjects() throws IOException, InterruptedException {
+
+        ProjectFilter projectFilter = new ProjectFilter(null, null, null, null);
+        List<Project> projects = pixmlApp.getPixmlClient().getAllProjects(projectFilter);
+        assertEquals(projects.get(0).getId(), projectId);
+        assertEquals(projects.get(0).getName(), projectName);
+    }
+
+    @Test
+    @Order(5)
     public void createDataSource() throws IOException, InterruptedException {
 
         Map value = new HashMap();
@@ -97,9 +94,8 @@ public class PixmlAppTestIT {
 
     }
 
-
     @Test
-    @Order(5)
+    @Order(6)
     public void getDataSource() throws IOException, InterruptedException {
 
         Map value = new HashMap();
@@ -116,7 +112,7 @@ public class PixmlAppTestIT {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     public void importDataSource() throws IOException, InterruptedException {
 
         Map dataSourceParam = new HashMap();
@@ -130,7 +126,7 @@ public class PixmlAppTestIT {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     public void updateCredentials() throws IOException, InterruptedException {
 
         Map status = this.pixmlApp.getDataSourceApp().updateCredentials(dsTest, "ABC123");
@@ -144,15 +140,12 @@ public class PixmlAppTestIT {
     }
 
     @Test
-    @Order(8)
+    @Order(9)
     public void testDeleteApp() throws IOException, InterruptedException {
+        Boolean success = pixmlApp.getPixmlClient().deleteProject(projectId);
 
-        Map post = pixmlApp.getPixmlClient().delete("/api/v1/projects", projectId);
-
-        assertEquals(true, (Boolean) post.get("success"));
-        assertEquals("delete", post.get("op"));
-        assertEquals("projects", post.get("type"));
-        assertEquals("00000000-0000-0000-0000-000000000000", post.get("id"));
-
+        assertEquals(true, success);
     }
+
+
 }
