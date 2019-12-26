@@ -3,7 +3,7 @@ const noop = () => () => {}
 /**
  * fetch
  */
-global.fetch = require('jest-fetch-mock')
+require('jest-fetch-mock').enableMocks()
 
 const { initialize } = require('./src/Fetch/helpers')
 
