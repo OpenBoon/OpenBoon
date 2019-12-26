@@ -81,8 +81,6 @@ public class Utils {
      * @return String response for the request
      * @throws IOException HTTP Fail
      */
-
-
     public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map bodyParams) throws IOException {
 
         // json formatted data
