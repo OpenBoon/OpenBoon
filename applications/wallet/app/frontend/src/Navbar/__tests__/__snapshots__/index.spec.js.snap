@@ -104,15 +104,7 @@ exports[`<Navbar /> should render properly 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-<<<<<<< HEAD
-<<<<<<< HEAD
   padding: 4px 8px;
-=======
-  padding: 4px 0;
->>>>>>> add prop validation
-=======
-  padding: 4px 8px;
->>>>>>> fix tests and proptype
   color: #82be3c;
   font-weight: 400;
   height: 100%;
@@ -127,19 +119,10 @@ exports[`<Navbar /> should render properly 1`] = `
   background-color: #3b3b3b;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> move hover to button
 .emotion-6:hover {
   cursor: pointer;
 }
 
-<<<<<<< HEAD
-=======
->>>>>>> add prop validation
-=======
->>>>>>> move hover to button
 .emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -171,27 +154,12 @@ exports[`<Navbar /> should render properly 1`] = `
   font-weight: 700;
 }
 
-<<<<<<< HEAD
-.emotion-4 {
-  margin-left: 8px;
-}
-
-=======
->>>>>>> move hover to button
 .emotion-4 {
   margin-left: 8px;
 }
 
 <div
-<<<<<<< HEAD
-<<<<<<< HEAD
   className="emotion-9"
-=======
-  className="emotion-8"
->>>>>>> add prop validation
-=======
-  className="emotion-9"
->>>>>>> consolidate spacing; add aria label and update test
 >
   <div
     className="emotion-2"
@@ -218,8 +186,6 @@ exports[`<Navbar /> should render properly 1`] = `
     </div>
   </div>
   <div
-<<<<<<< HEAD
-<<<<<<< HEAD
     className="emotion-8"
   >
     <div
@@ -249,51 +215,6 @@ exports[`<Navbar /> should render properly 1`] = `
         </div>
       </button>
     </div>
-=======
-    className="emotion-7"
-=======
-    className="emotion-8"
->>>>>>> consolidate spacing; add aria label and update test
-  >
-    <div
-      className="emotion-7"
-    >
-      <button
-        aria-label="Open user menu"
-        className="emotion-6"
-        onBlur={[Function]}
-        onClick={[Function]}
-        type="button"
-      >
-        <div
-          className="emotion-5"
-        >
-          <div
-            className="emotion-3"
-          >
-            JD
-          </div>
-          <svg
-            className="emotion-4"
-            color="#808080"
-            data-file-name="chevron.svg"
-            width={20}
-          />
-        </div>
-<<<<<<< HEAD
-        <svg
-          className="emotion-4"
-          color="#808080"
-          data-file-name="chevron.svg"
-          width={20}
-        />
-      </div>
-    </button>
->>>>>>> add prop validation
-=======
-      </button>
-    </div>
->>>>>>> consolidate spacing; add aria label and update test
   </div>
 </div>
 `;

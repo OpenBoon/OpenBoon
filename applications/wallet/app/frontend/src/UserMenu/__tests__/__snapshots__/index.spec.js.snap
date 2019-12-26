@@ -95,10 +95,6 @@ exports[`<UserMenu /> should render properly 1`] = `
   margin-left: 8px;
 }
 
-.emotion-1 {
-  margin-left: 8px;
-}
-
 <div
   className="emotion-5"
 >
@@ -472,10 +468,6 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
   color: #252525;
   background-color: #808080;
   font-weight: 700;
-}
-
-.emotion-1 {
-  margin-left: 8px;
 }
 
 .emotion-1 {
