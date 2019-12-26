@@ -55,7 +55,7 @@ def get_google_storage_client():
             return gcs.Client.create_anonymous_client()
 
 
-def get_zmlp_storage_client():
+def get_internal_storage_client():
     """
     Return a ZMLP storage client.  This client is used for accessing
     internal zmlp:// URIs.  These URIs allow processors to store binary
@@ -78,4 +78,4 @@ def get_zmlp_storage_client():
 
 @memoize
 def get_cached_storage_client():
-    return get_zmlp_storage_client()
+    return get_internal_storage_client()

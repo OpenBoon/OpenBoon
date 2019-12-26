@@ -4,7 +4,7 @@ import logging
 from unittest import TestCase
 from unittest.mock import patch
 
-from zmlp.analysis.cloud import get_google_storage_client, get_zmlp_storage_client
+from zmlp.analysis.cloud import get_google_storage_client, get_internal_storage_client
 from zmlp.client import ZmlpClient
 
 logging.basicConfig(level=logging.DEBUG)
@@ -51,7 +51,7 @@ class TetCloudUtilFunction(TestCase):
     def test_get_zmlp_storage_client(self):
         os.environ['ZMLP_ISTORAGE_URL'] = "http://localhost:9000"
         try:
-            client = get_zmlp_storage_client()
+            client = get_internal_storage_client()
             assert type(client) == minio.api.Minio
         finally:
             del os.environ['ZMLP_ISTORAGE_URL']

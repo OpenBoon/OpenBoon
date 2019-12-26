@@ -12,14 +12,14 @@ from pathlib2 import Path
 from zmlp import app_from_env, Asset
 from zmlp.exception import ZmlpException
 from .base import ZmlpEnv
-from .cloud import get_cached_google_storage_client, get_zmlp_storage_client
+from .cloud import get_cached_google_storage_client, get_internal_storage_client
 
 __all__ = [
     "file_cache",
     "get_proxy_min_width",
     "get_proxy_level",
     "add_proxy_file",
-    "add_zmlp_file",
+    "store_asset_file",
     "ZmlpStorageException"
 ]
 
@@ -117,7 +117,7 @@ class LocalFileCache(object):
 
         # ZMLP ML storage
         elif parsed_uri.scheme == 'zmlp':
-            data = get_zmlp_storage_client().get_object(parsed_uri.netloc, parsed_uri.path[1:])
+            data = get_internal_storage_client().get_object(parsed_uri.netloc, parsed_uri.path[1:])
             with open(path, 'wb') as fpw:
                 for d in data.stream(32 * 1024):
                     fpw.write(d)
@@ -134,7 +134,7 @@ class LocalFileCache(object):
 
     def localize_asset_file(self, asset, fdict, copy_path=None):
         """
-        Localize the file described by the ZMLP file storage dictionary.
+        Localize the file described by the Asset file storage dictionary.
         If a path argument is provided, overwrite the file cache
         location with that file.
 
@@ -151,7 +151,7 @@ class LocalFileCache(object):
 
         """
         self.__init_root()
-        _, suffix = os.path.splitext(copy_path or zfile['name'])
+        _, suffix = os.path.splitext(copy_path or fdict['name'])
 
         # Obtain the necessary properties to formulate a cache key.
         name = fdict['name']
@@ -286,14 +286,15 @@ def add_proxy_file(asset, path, size):
     if not ext:
         raise ValueError("The path to the proxy file has no extension, but one is required.")
     name = "proxy_{}x{}{}".format(size[0], size[1], ext)
-    return add_zmlp_file(asset, path, "proxy", rename=name,
-                          attrs={"width": size[0], "height": size[1]})
+    return store_asset_file(asset, path, "proxy", rename=name,
+                            attrs={"width": size[0], "height": size[1]})
 
 
-def add_zmlp_file(asset, path, category, rename=None, attrs=None):
+def store_asset_file(asset, path, category, rename=None, attrs=None):
     """
-    Add a file to the asset and upload into ZMLP storage.
-    Also stores a copy into the local file cache.
+    Add a file to the asset's file list and store into externally
+    available cloud storage. Also stores a copy into the
+    local file cache.
 
     Args:
         asset (Asset): The purpose of the file, ex proxy.
