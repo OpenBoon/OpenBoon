@@ -2,8 +2,8 @@ import logging
 import os
 import tempfile
 import threading
-import unittest
 import time
+import unittest
 
 from analyst.executor import ZpsExecutor, DockerContainerWrapper
 from .test_service import test_task
@@ -15,6 +15,7 @@ class MockClusterClient:
     """
     A pretend ClusterClient which simply counts events types.
     """
+
     def __init__(self):
         self.pings = []
         self.events = []
@@ -34,11 +35,29 @@ class MockClusterClient:
 
 
 class TestZpsExecutor(unittest.TestCase):
-    """
 
-    """
     def setUp(self):
         self.client = MockClusterClient()
+        self.gen_task = {
+            "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
+            "jobId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
+            "name": "process_me",
+            "logFile": "file:///%s" % tempfile.mktemp("logfile"),
+            "env": {
+                "CAT": "DOG"
+            },
+            "script": {
+                "generate": [
+                    {
+                        "className": "zmlp.analysis.testing.TestGenerator",
+                        "args": {
+                            "files": ["/test-data/images/set01/toucan.jpg"]
+                        },
+                        "image": "zmlp/plugins-base:latest"
+                    }
+                ]
+            }
+        }
 
     def test_kill(self):
         task = test_task(sleep=30)
@@ -54,7 +73,7 @@ class TestZpsExecutor(unittest.TestCase):
         wrapper.run()
         thread.join()
 
-    def test_run(self):
+    def test_process(self):
         task = test_task()
 
         wrapper = ZpsExecutor(task, self.client)
@@ -66,29 +85,19 @@ class TestZpsExecutor(unittest.TestCase):
         assert self.client.event_count("index") == 1
         assert self.client.event_count("stats") == 1
 
-    def test_generate(self):
-        task = {
-            "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
-            "jobId": "71C54046-6452-4669-BD71-719E9D5C2BBF",
-            "name": "process_me",
-            "logFile": "file:///%s" % tempfile.mktemp("logfile"),
-            "env": {
-                "CAT": "DOG"
-            },
-            "script": {
-                "generate": [
-                    {
-                        "className": "zmlp.analysis.testing.TestGenerator",
-                        "args": {
-                            "files": ["/test-data/images/set01/toucan.jpg"]
-                        },
-                        "image": "zmlp/plugins-base"
-                    }
-                ]
-            }
-        }
+    def test_process_invalid_processor(self):
+        task = test_task()
+        task["script"]["execute"][0]["className"] = "FOO.analysis.testing.FOOProcessor"
 
         wrapper = ZpsExecutor(task, self.client)
+        result = wrapper.run()
+        print(result)
+        assert result["hardfailure_events"] == 1
+        assert result["error_events"] == 1
+        assert result["exit_status"] == 2
+
+    def test_generate(self):
+        wrapper = ZpsExecutor(self.gen_task, self.client)
         wrapper.run()
 
         assert self.client.event_count("started") == 1
@@ -96,6 +105,16 @@ class TestZpsExecutor(unittest.TestCase):
         assert self.client.event_count("expand") == 1
         assert self.client.event_count("stats") == 1
         assert self.client.event_count("index") == 0
+
+    def test_generate_invalid_processor(self):
+        self.gen_task["script"]["generate"][0]["className"] = "foo.analysis.testing.FOO"
+
+        wrapper = ZpsExecutor(self.gen_task, self.client)
+        result = wrapper.run()
+
+        assert result["hardfailure_events"] == 1
+        assert result["error_events"] == 1
+        assert result["exit_status"] == 1
 
 
 class TestDockerContainerWrapper(unittest.TestCase):

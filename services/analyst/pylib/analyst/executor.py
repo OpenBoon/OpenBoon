@@ -31,7 +31,7 @@ class ZpsExecutor(object):
 
     def __init__(self, task, client):
         """
-        Create a new ContainerizedZpsExecutor.
+        Create a new ZpsExecutor.
 
         Args:
             task (dict): A task.
@@ -248,6 +248,7 @@ class DockerContainerWrapper(object):
         image: (str): the
 
     """
+
     def __init__(self, client, task, image):
         """
 
@@ -365,12 +366,15 @@ class DockerContainerWrapper(object):
         """
         logs = self.container.logs(stream=True)
         for line in logs:
+            if self.killed:
+                return
             line = line.decode("utf-8").rstrip()
             logger.info("CONTAINER:%s" % line)
 
     def stop(self):
         """
-        Stop the underlying docker Container.
+        Stop the underlying docker Container. This can happen from an exception
+        or manually.
 
         """
         if not self.killed and self.container:
