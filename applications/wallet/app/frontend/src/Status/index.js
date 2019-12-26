@@ -1,10 +1,18 @@
 import PropTypes from 'prop-types'
+
+import { getStatusLabel } from './helpers'
 import { colors, spacing, constants } from '../Styles'
 
 const STATUS_COLORS = {
   Active: colors.signal.canary.base,
-  Cancelled: colors.structure.steel,
   Finished: colors.signal.grass.base,
+
+  // new job states
+  InProgress: colors.signal.canary.base,
+  Cancelled: colors.signal.warning.base,
+  Success: colors.signal.grass.base,
+  Archived: colors.signal.grass.base,
+  Failure: colors.signal.warning.base,
 }
 
 const Status = ({ jobStatus }) => {
@@ -18,7 +26,7 @@ const Status = ({ jobStatus }) => {
         color: STATUS_COLORS[jobStatus],
         backgroundColor: colors.structure.coal,
       }}>
-      {jobStatus}
+      {getStatusLabel({ jobStatus })}
     </div>
   )
 }
