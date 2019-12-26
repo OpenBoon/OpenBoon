@@ -9,13 +9,13 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Service
 import javax.annotation.PostConstruct
 
-interface MLStorageService {
+interface InternalStorageService {
 
 }
 
 @Configuration
-@ConfigurationProperties("ml-storage")
-class SharedStorageServiceConfiguration {
+@ConfigurationProperties("zmlp.istorage")
+class InternalStorageServiceConfiguration {
     lateinit var bucket: String
     lateinit var accessKey: String
     lateinit var secretKey: String
@@ -23,9 +23,9 @@ class SharedStorageServiceConfiguration {
 }
 
 @Service
-class MLStorageServiceImpl(
-    val config : SharedStorageServiceConfiguration
-) : MLStorageService {
+class InternalStorageServiceImpl(
+    val config : InternalStorageServiceConfiguration
+) : InternalStorageService {
 
     val client : MinioClient
 
@@ -52,7 +52,7 @@ class MLStorageServiceImpl(
     }
 
     companion object {
-        val logger: Logger = LoggerFactory.getLogger(MLStorageServiceImpl::class.java)
+        val logger: Logger = LoggerFactory.getLogger(InternalStorageServiceImpl::class.java)
 
         // Setup the tmp-files lifecycle
         const val LIFECYCLE = """<LifecycleConfiguration><Rule>

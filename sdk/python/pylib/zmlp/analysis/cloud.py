@@ -65,14 +65,14 @@ def get_zmlp_storage_client():
         Minio: A Minio client.
 
     """
-    url = urlparse(os.environ.get("ZMLP_MLSTORAGE_URL", "http://localhost:9000").strip())
+    url = urlparse(os.environ.get("ZMLP_ISTORAGE_URL", "http://localhost:9000").strip())
     if not url.scheme or not url.netloc:
-        raise RuntimeError("The 'ZMLP_MLSTORAGE_URL' env var is not a valid URL")
-    logger.debug("Initializing ML Storage client: '{}'".format(url.netloc))
+        raise RuntimeError("The 'ZMLP_ISTORAGE_URL' env var is not a valid URL")
+    logger.debug("Initializing Internal Storage client: '{}'".format(url.netloc))
 
     return minio.Minio(url.netloc,
-                       access_key=os.environ.get("ZMLP_MLSTORAGE_ACCESSKEY"),
-                       secret_key=os.environ.get("ZMLP_MLSTORAGE_SECRETKEY"),
+                       access_key=os.environ.get("ZMLP_ISTORAGE_ACCESSKEY"),
+                       secret_key=os.environ.get("ZMLP_ISTORAGE_SECRETKEY"),
                        secure=False)
 
 

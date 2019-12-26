@@ -80,9 +80,9 @@ services:
       ARCHIVIST_STORAGE_ACCESSKEY: qwerty123
       ARCHIVIST_STORAGE_SECRETKEY: 123qwerty
       ARCHIVIST_STORAGE_URL: http://minio:9000
-      ZMLP_MLSTORAGE_ACCESSKEY: qwerty123
-      ZMLP_MLSTORAGE_SECRETKEY: 123qwerty
-      ZMLP_MLSTORAGE_URL: http://minio:9000
+      ZMLP_ISTORAGE_ACCESSKEY: qwerty123
+      ZMLP_ISTORAGE_SECRETKEY: 123qwerty
+      ZMLP_ISTORAGE_URL: http://minio:9000
       ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
     build:
       context: services/archivist
@@ -100,9 +100,9 @@ services:
     ports:
       - 7078:7078
     environment:
-      ZMLP_MLSTORAGE_URL: http://minio:9000
-      ZMLP_MLSTORAGE_ACCESSKEY: qwerty123
-      ZMLP_MLSTORAGE_SECRETKEY: 123qwerty
+      ZMLP_ISTORAGE_URL: http://minio:9000
+      ZMLP_ISTORAGE_ACCESSKEY: qwerty123
+      ZMLP_ISTORAGE_SECRETKEY: 123qwerty
 
   analyst:
     image: zmlp/analyst

@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.DEBUG)
 class LocalFileCacheTests(TestCase):
 
     def setUp(self):
-        os.environ['MLSTORAGE_URL'] = "http://localhost:9000"
+        os.environ['ZMLP_ISTORAGE_URL'] = "http://localhost:9000"
         self.lfc = storage.LocalFileCache()
 
     def tearDown(self):

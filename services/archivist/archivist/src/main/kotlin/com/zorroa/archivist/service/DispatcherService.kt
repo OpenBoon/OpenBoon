@@ -44,7 +44,7 @@ import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
-import com.zorroa.archivist.storage.SharedStorageServiceConfiguration
+import com.zorroa.archivist.storage.InternalStorageServiceConfiguration
 import com.zorroa.archivist.util.Json
 import io.micrometer.core.instrument.MeterRegistry
 import kotlinx.coroutines.Dispatchers
@@ -110,7 +110,7 @@ class DispatchQueueManager @Autowired constructor(
     val analystService: AnalystService,
     val properties: ApplicationProperties,
     val authServerClient: AuthServerClient,
-    val sharedStoragProperties: SharedStorageServiceConfiguration,
+    val internalStoragProperties: InternalStorageServiceConfiguration,
     val meterRegistry: MeterRegistry
 ) {
 
@@ -208,9 +208,9 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZMLP_APIKEY"] = key.toBase64()
 
             // So the container can access shared
-            task.env["ZMLP_MLSTORAGE_URL"] = sharedStoragProperties.url
-            task.env["ZMLP_MLSTORAGE_ACCESSKEY"] = sharedStoragProperties.accessKey
-            task.env["ZMLP_MLSTORAGE_SECRETKEY"] = sharedStoragProperties.secretKey
+            task.env["ZMLP_ISTORAGE_URL"] = internalStoragProperties.url
+            task.env["ZMLP_ISTORAGE_ACCESSKEY"] = internalStoragProperties.accessKey
+            task.env["ZMLP_ISTORAGE_SECRETKEY"] = internalStoragProperties.secretKey
 
             return true
         } else {

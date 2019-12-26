@@ -6,10 +6,10 @@ import org.slf4j.LoggerFactory
 object Config {
 
     class BucketConfiguration(
-        val url: String = System.getenv("MLSTORAGE_URL") ?: "http://localhost:9000",
-        val name: String = System.getenv("MLSTORAGE_BUCKET") ?: "ml-storage",
-        val accessKey: String = System.getenv("MLSTORAGE_ACCESSKEY") ?: "qwerty123",
-        val secretKey: String = System.getenv("MLSTORAGE_SECRETKEY") ?: "123qwerty"
+        val url: String = System.getenv("ZMLP_ISTORAGE_URL") ?: "http://localhost:9000",
+        val name: String = System.getenv("ZMLP_ISTORAGE_BUCKET") ?: "istorage",
+        val accessKey: String = System.getenv("ZMLP_ISTORAGE_ACCESSKEY") ?: "qwerty123",
+        val secretKey: String = System.getenv("ZMLP_ISTORAGE_SECRETKEY") ?: "123qwerty"
     )
 
     class OfficerConfiguration(

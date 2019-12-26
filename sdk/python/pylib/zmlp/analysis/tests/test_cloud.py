@@ -49,9 +49,9 @@ class TetCloudUtilFunction(TestCase):
             del os.environ['ZMLP_DATASOURCE_ID']
 
     def test_get_zmlp_storage_client(self):
-        os.environ['ZMLP_MLSTORAGE_URL'] = "http://localhost:9000"
+        os.environ['ZMLP_ISTORAGE_URL'] = "http://localhost:9000"
         try:
             client = get_zmlp_storage_client()
             assert type(client) == minio.api.Minio
         finally:
-            del os.environ['ZMLP_MLSTORAGE_URL']
+            del os.environ['ZMLP_ISTORAGE_URL']
