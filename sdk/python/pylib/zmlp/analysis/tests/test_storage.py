@@ -7,6 +7,7 @@ from unittest.mock import patch
 import pytest
 from minio.api import Minio
 
+import zmlp.analysis.proxies
 from zmlp.analysis import storage
 from zmlp.analysis.testing import zorroa_test_data, TestAsset
 from zmlp.client import ZmlpClient
@@ -194,10 +195,10 @@ class StorageFunctionTests(TestCase):
         asset = TestAsset(IMAGE_JPG, id='123456')
         asset.set_attr('files', self.file_list)
 
-        path = storage.get_proxy_level(asset, 0)
+        path = zmlp.analysis.proxies.get_proxy_level(asset, 0)
         assert '1246524d107aa3b91ccb1ea43c136d366156d2b1' in path
 
-        path = storage.get_proxy_level(asset, 9)
+        path = zmlp.analysis.proxies.get_proxy_level(asset, 9)
         assert '9bf44aa1e82ab54ce7adc212b3918c6047849c15' in path
 
     @patch.object(ZmlpClient, 'stream')
@@ -205,17 +206,17 @@ class StorageFunctionTests(TestCase):
         asset = TestAsset(IMAGE_JPG, id='123456')
         asset.set_attr('files', self.file_list)
 
-        path = storage.get_proxy_min_width(asset, 300)
+        path = zmlp.analysis.proxies.get_proxy_min_width(asset, 300)
         assert '9bf44aa1e82ab54ce7adc212b3918c6047849c15' in path
 
-        path = storage.get_proxy_min_width(asset, 350, mimetype='video/')
+        path = zmlp.analysis.proxies.get_proxy_min_width(asset, 350, mimetype='video/')
         assert '5bedc72da42dd3e296e14c26eaba01c1568c71d0' in path
 
-        path = storage.get_proxy_min_width(asset, 1025, mimetype='image/', fallback=True)
+        path = zmlp.analysis.proxies.get_proxy_min_width(asset, 1025, mimetype='image/', fallback=True)
         assert 'faces.jpg' in path
 
         with pytest.raises(ValueError):
-            storage.get_proxy_min_width(asset, 1025, mimetype='video/', fallback=False)
+            zmlp.analysis.proxies.get_proxy_min_width(asset, 1025, mimetype='video/', fallback=False)
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_add_proxy_file(self, upload_patch):
@@ -230,8 +231,8 @@ class StorageFunctionTests(TestCase):
             }
         }
         # Should only be added to list once.
-        storage.add_proxy_file(asset, IMAGE_JPG, (200, 200))
-        storage.add_proxy_file(asset, IMAGE_JPG, (200, 200))
+        zmlp.analysis.proxies.store_asset_proxy(asset, IMAGE_JPG, (200, 200))
+        zmlp.analysis.proxies.store_asset_proxy(asset, IMAGE_JPG, (200, 200))
 
         upload_patch.return_value = {
             'name': 'proxy_200x200.mp4',
@@ -242,5 +243,5 @@ class StorageFunctionTests(TestCase):
                 'height': 200
             }
         }
-        storage.add_proxy_file(asset, VIDEO_MP4, (200, 200))
+        zmlp.analysis.proxies.store_asset_proxy(asset, VIDEO_MP4, (200, 200))
         assert 2 == len(asset.get_files())

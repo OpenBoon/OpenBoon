@@ -7,7 +7,7 @@ import face_recognition
 import numpy as np
 
 from zmlp.analysis import AssetBuilder, Argument
-from zmlp.analysis.storage import get_proxy_level
+from zmlp.analysis.proxies import get_proxy_level
 
 
 class FaceRecognitionProcessor(AssetBuilder):

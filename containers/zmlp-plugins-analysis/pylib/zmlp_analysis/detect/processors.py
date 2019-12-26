@@ -5,6 +5,7 @@ import cvlib as cv
 import matplotlib.pyplot as plt
 from cvlib.object_detection import draw_bbox
 
+import zmlp.analysis.proxies
 from zmlp.asset import Element
 from zmlp.analysis import AssetBuilder
 
@@ -15,7 +16,7 @@ class PixelMLObjectDetectionProcessor(AssetBuilder):
 
     def process(self, frame):
         asset = frame.asset
-        p_path = storage.get_proxy_level(asset, 0)
+        p_path = zmlp.analysis.proxies.get_proxy_level(asset, 0)
 
         im = cv2.imread(p_path)
         bbox, label, conf = cv.detect_common_objects(im)

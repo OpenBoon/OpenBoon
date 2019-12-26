@@ -7,7 +7,7 @@ import numpy as np
 from pathlib2 import Path
 
 from zmlp.analysis import AssetBuilder, Argument
-from zmlp.analysis.storage import get_proxy_level
+from zmlp.analysis.proxies import get_proxy_level
 
 package_directory = os.path.dirname(os.path.abspath(__file__))
 

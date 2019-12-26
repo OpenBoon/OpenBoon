@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from zmlp import ZmlpClient
 from zmlp.analysis import Frame
-from zmlp.analysis.storage import add_proxy_file
+from zmlp.analysis.proxies import store_asset_proxy
 from zmlp.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 from ..processors import ResNetSimilarityProcessor, ResNetClassifyProcessor
 
@@ -28,7 +28,7 @@ class MxUnitTests(PluginUnitTestCase):
                 'height': 1024
             }
         }
-        add_proxy_file(self.frame.asset, self.toucan_path, (512, 512))
+        store_asset_proxy(self.frame.asset, self.toucan_path, (512, 512))
         processor = self.init_processor(ResNetSimilarityProcessor(), {'debug': True})
         processor.process(self.frame)
 
@@ -46,7 +46,7 @@ class MxUnitTests(PluginUnitTestCase):
                 'height': 1024
             }
         }
-        add_proxy_file(self.frame.asset, self.toucan_path, (512, 512))
+        store_asset_proxy(self.frame.asset, self.toucan_path, (512, 512))
         processor = self.init_processor(ResNetClassifyProcessor(), {'debug': True})
         processor.process(self.frame)
 
