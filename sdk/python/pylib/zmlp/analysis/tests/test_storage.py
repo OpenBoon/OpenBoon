@@ -7,7 +7,6 @@ from unittest.mock import patch
 import pytest
 from minio.api import Minio
 
-import zmlp.analysis.proxies
 from zmlp.analysis import storage
 from zmlp.analysis.testing import zorroa_test_data, TestAsset
 from zmlp.client import ZmlpClient
@@ -54,6 +53,19 @@ class LocalFileCacheTests(TestCase):
         assert os.path.exists(path)
         self.lfc.clear()
         assert not os.path.exists(path)
+
+    @patch.object(ZmlpClient, 'upload_file')
+    def test_store_asset_file(self, upload_patch):
+        upload_patch.return_value = {
+            'name': 'cat.jpg',
+            'category': 'proxy'
+        }
+        asset = TestAsset(id='123456')
+        result = self.lfc.store_asset_file(
+            asset, zorroa_test_data('images/set01/toucan.jpg', uri=False), "test")
+
+        print(result)
+
 
     @patch.object(ZmlpClient, 'stream')
     def test_localize_asset_file(self, post_patch):
@@ -110,12 +122,12 @@ class LocalFileCacheTests(TestCase):
         assert os.path.exists(path)
 
     @patch.object(Minio, 'get_object')
-    def test_localize_mlstorage_uri(self, get_object_patch):
+    def test_localize_internal_uri(self, get_object_patch):
         http = urllib3.PoolManager()
         r = http.request('GET', 'http://i.imgur.com/WkomVeG.jpg', preload_content=False)
 
         get_object_patch.return_value = r
-        path = self.lfc.localize_remote_file('zmlp://ml-storage/officer/pdf/proxy.1.jpg')
+        path = self.lfc.localize_remote_file('zmlp://internal/officer/pdf/proxy.1.jpg')
 
         assert os.path.exists(path)
         assert os.path.getsize(path) == 267493
@@ -143,105 +155,3 @@ class LocalFileCacheTests(TestCase):
             self.lfc.localize_asset_file(TestAsset(), pfile,
                                          zorroa_test_data('images/set01/toucan.jpg'))
 
-
-IMAGE_JPG = zorroa_test_data('images/set01/faces.jpg')
-VIDEO_WEBM = zorroa_test_data('video/dc.webm')
-VIDEO_MP4 = zorroa_test_data('video/sample_ipad.m4v')
-
-
-class StorageFunctionTests(TestCase):
-
-    file_list = [
-        {
-            'name': 'proxy_200x200.jpg',
-            'category': 'proxy',
-            'mimetype': 'image/jpeg',
-            'attrs': {
-                'width': 200,
-                'height': 200
-            }
-        },
-        {
-            'name': 'proxy_400x400.jpg',
-            'category': 'proxy',
-            'mimetype': 'image/jpeg',
-            'attrs': {
-                'width': 400,
-                'height': 400
-            }
-        },
-        {
-            'name': 'proxy_400x400.mp4',
-            'category': 'proxy',
-            'mimetype': 'video/mp4',
-            'attrs': {
-                'width': 400,
-                'height': 400
-            }
-        },
-        {
-            'name': 'proxy_500x500.mp4',
-            'category': 'proxy',
-            'mimetype': 'video/mp4',
-            'attrs': {
-                'width': 500,
-                'height': 500
-            }
-        }
-    ]
-
-    @patch.object(ZmlpClient, 'stream')
-    def test_get_proxy_level(self, stream_patch):
-        asset = TestAsset(IMAGE_JPG, id='123456')
-        asset.set_attr('files', self.file_list)
-
-        path = zmlp.analysis.proxies.get_proxy_level(asset, 0)
-        assert '1246524d107aa3b91ccb1ea43c136d366156d2b1' in path
-
-        path = zmlp.analysis.proxies.get_proxy_level(asset, 9)
-        assert '9bf44aa1e82ab54ce7adc212b3918c6047849c15' in path
-
-    @patch.object(ZmlpClient, 'stream')
-    def test_get_proxy_min_width(self, stream_patch):
-        asset = TestAsset(IMAGE_JPG, id='123456')
-        asset.set_attr('files', self.file_list)
-
-        path = zmlp.analysis.proxies.get_proxy_min_width(asset, 300)
-        assert '9bf44aa1e82ab54ce7adc212b3918c6047849c15' in path
-
-        path = zmlp.analysis.proxies.get_proxy_min_width(asset, 350, mimetype='video/')
-        assert '5bedc72da42dd3e296e14c26eaba01c1568c71d0' in path
-
-        path = zmlp.analysis.proxies.get_proxy_min_width(asset, 1025, mimetype='image/', fallback=True)
-        assert 'faces.jpg' in path
-
-        with pytest.raises(ValueError):
-            zmlp.analysis.proxies.get_proxy_min_width(asset, 1025, mimetype='video/', fallback=False)
-
-    @patch.object(ZmlpClient, 'upload_file')
-    def test_add_proxy_file(self, upload_patch):
-        asset = TestAsset(IMAGE_JPG)
-        upload_patch.return_value = {
-            'name': 'proxy_200x200.jpg',
-            'category': 'proxy',
-            'mimetype': 'image/jpeg',
-            'attrs': {
-                'width': 200,
-                'height': 200
-            }
-        }
-        # Should only be added to list once.
-        zmlp.analysis.proxies.store_asset_proxy(asset, IMAGE_JPG, (200, 200))
-        zmlp.analysis.proxies.store_asset_proxy(asset, IMAGE_JPG, (200, 200))
-
-        upload_patch.return_value = {
-            'name': 'proxy_200x200.mp4',
-            'category': 'proxy',
-            'mimetype': 'video/mp4',
-            'attrs': {
-                'width': 200,
-                'height': 200
-            }
-        }
-        zmlp.analysis.proxies.store_asset_proxy(asset, VIDEO_MP4, (200, 200))
-        assert 2 == len(asset.get_files())

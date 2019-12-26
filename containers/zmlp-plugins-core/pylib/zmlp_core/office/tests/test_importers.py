@@ -6,7 +6,7 @@ import pytest
 from pathlib2 import Path
 
 from zmlp.analysis import Frame, ZmlpFatalProcessorException
-from zmlp.analysis.storage import file_cache
+from zmlp.analysis.storage import file_storage
 from zmlp.analysis.testing import PluginUnitTestCase, TestAsset
 from zmlp_core.office.importers import OfficeImporter, _content_sanitizer
 from zmlp_core.office.oclient import OfficerClient
@@ -90,7 +90,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         processor.process(Frame(self.asset))
         assert expand_patch.call_count == 2
 
-    @patch.object(file_cache, 'localize_uri')
+    @patch.object(file_storage, 'localize_uri')
     def test_get_metadata(self, cache_patch):
         path = os.path.dirname(__file__) + '/test_metadata.json'
         cache_patch.return_value = path

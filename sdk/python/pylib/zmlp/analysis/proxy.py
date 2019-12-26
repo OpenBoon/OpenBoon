@@ -1,6 +1,6 @@
 import os
 
-from zmlp.analysis.storage import store_asset_file, file_cache
+from zmlp.analysis.storage import file_storage
 
 
 def store_asset_proxy(asset, path, size):
@@ -20,8 +20,8 @@ def store_asset_proxy(asset, path, size):
     if not ext:
         raise ValueError("The path to the proxy file has no extension, but one is required.")
     name = "proxy_{}x{}{}".format(size[0], size[1], ext)
-    return store_asset_file(asset, path, "proxy", rename=name,
-                            attrs={"width": size[0], "height": size[1]})
+    return file_storage.store_asset_file(asset, path, "proxy", rename=name,
+                                         attrs={"width": size[0], "height": size[1]})
 
 
 def get_proxy_min_width(asset, min_width, mimetype="image/", fallback=False):
@@ -46,9 +46,9 @@ def get_proxy_min_width(asset, min_width, mimetype="image/", fallback=False):
     files = [file for file in files if file["attrs"]["width"] >= min_width]
 
     if files:
-        return file_cache.localize_asset_file(asset, files[0])
+        return file_storage.localize_asset_file(asset, files[0])
     elif fallback:
-        return file_cache.localize_remote_file(asset)
+        return file_storage.localize_remote_file(asset)
     else:
         raise ValueError("No suitable proxy file was found.")
 
@@ -76,6 +76,6 @@ def get_proxy_level(asset, level, mimetype="image/"):
         level = -1
     try:
         proxy = files[level]
-        return file_cache.localize_asset_file(asset, proxy)
+        return file_storage.localize_asset_file(asset, proxy)
     except IndexError:
         return None

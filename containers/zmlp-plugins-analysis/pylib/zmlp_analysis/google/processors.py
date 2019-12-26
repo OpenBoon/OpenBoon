@@ -18,7 +18,7 @@ from .base import GoogleApiDocumentProcessor
 from .base import AutoMLModelProcessor
 
 from zmlp.analysis import Argument, ZmlpFatalProcessorException
-from zmlp.analysis.proxies import get_proxy_level
+from zmlp.analysis.proxy import get_proxy_level
 
 
 class CloudVisionProcessor(GoogleApiDocumentProcessor):

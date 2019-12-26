@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from pathlib2 import Path
 
-from zmlp.analysis.storage import file_cache
+from zmlp.analysis.storage import file_storage
 from zmlp.analysis.testing import TestAsset, MockRequestsResponse, zorroa_test_data
 from zmlp_core.office.oclient import OfficerClient
 
@@ -23,7 +23,7 @@ class OfficerPythonClientTests(unittest.TestCase):
         assert client.render_url == 'http://officer:7078/render'
 
     @patch('requests.post')
-    @patch.object(file_cache, 'localize_remote_file')
+    @patch.object(file_storage, 'localize_remote_file')
     def test_render(self, file_cache_patch, post_patch):
         post_patch.return_value = MockRequestsResponse(
             {"location": "pixml://ml-storage/foo/bar"}, 200)
@@ -33,7 +33,7 @@ class OfficerPythonClientTests(unittest.TestCase):
         assert result == "pixml://ml-storage/foo/bar"
 
     @patch('requests.post')
-    @patch.object(file_cache, 'localize_remote_file')
+    @patch.object(file_storage, 'localize_remote_file')
     def test_get_render_request_body(self, file_cache_patch, post_patch):
         post_patch.return_value = MockRequestsResponse(
             {"output": "pixml://ml-storage/foo/bar"}, 200)
@@ -51,7 +51,7 @@ class OfficerPythonClientTests(unittest.TestCase):
         assert '"page": -1' in body[1][1][1]
 
     @patch('requests.post')
-    @patch.object(file_cache, 'localize_remote_file')
+    @patch.object(file_storage, 'localize_remote_file')
     def test_get_render_request_body_clip(self, file_cache_patch, post_patch):
         post_patch.return_value = MockRequestsResponse(
             {"location": "pixml://ml-storage/foo/bar"}, 200)

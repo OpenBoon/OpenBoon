@@ -4,7 +4,7 @@ from mock import patch
 
 from ..processors import CloudVisionProcessor
 from zmlp import ZmlpClient
-from zmlp.analysis.proxies import store_asset_proxy
+from zmlp.analysis.proxy import store_asset_proxy
 from zmlp.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 from zmlp.analysis import Frame, ZmlpFatalProcessorException
 

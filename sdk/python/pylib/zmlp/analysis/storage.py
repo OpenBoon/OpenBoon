@@ -15,8 +15,7 @@ from .base import ZmlpEnv
 from .cloud import get_cached_google_storage_client, get_internal_storage_client
 
 __all__ = [
-    "file_cache",
-    "store_asset_file",
+    "file_storage",
     "ZmlpStorageException"
 ]
 
@@ -208,48 +207,49 @@ class LocalFileCache(object):
         logger.info('closing local file cache : "{}"'.format(self.root))
         shutil.rmtree(self.root)
 
+    def store_asset_file(self, asset, path, category, rename=None, attrs=None):
+        """
+        Add a file to the asset's file list and store into externally
+        available cloud storage. Also stores a copy into the
+        local file cache for use by other processors.
 
-def store_asset_file(asset, path, category, rename=None, attrs=None):
-    """
-    Add a file to the asset's file list and store into externally
-    available cloud storage. Also stores a copy into the
-    local file cache.
+        To obtain the local cache path for the file, call 'localize_asset_file'
+        with the result of this method.
 
-    Args:
-        asset (Asset): The purpose of the file, ex proxy.
-        category (str): The purpose of the file, ex proxy.
-        path (str): The local path to the file.
-        rename (str): Rename the file to something better.
-        attrs (dict): Arbitrary attributes to attach to the file.
+        Args:
+            asset (Asset): The purpose of the file, ex proxy.
+            category (str): The purpose of the file, ex proxy.
+            path (str): The local path to the file.
+            rename (str): Rename the file to something better.
+            attrs (dict): Arbitrary attributes to attach to the file.
 
-    Returns:
-        dict: a ZMLP file storage dict.
+        Returns:
+            dict: an Asset file storage dict.
 
-    """
-    app = app_from_env()
-    spec = {
-        "name": rename or Path(path).name,
-        "attrs": {}
-    }
-    if attrs:
-        spec["attrs"].update(attrs)
+        """
+        spec = {
+            "name": rename or Path(path).name,
+            "attrs": {}
+        }
+        if attrs:
+            spec["attrs"].update(attrs)
 
-    # handle file:// urls
-    path = urlparse(str(path)).path
-    result = app.client.upload_file(
-        "/api/v3/assets/{}/files/{}".format(asset.id, category), path, spec)
+        # handle file:// urls
+        path = urlparse(str(path)).path
+        result = self.app.client.upload_file(
+            "/api/v3/assets/{}/files/{}".format(asset.id, category), path, spec)
 
-    # Store the path to the proxy in our local file storage
-    # because a processor will need it down the line.
-    file_cache.localize_asset_file(asset, result, path)
+        # Store the path to the proxy in our local file storage
+        # because a processor will need it down the line.
+        self.localize_asset_file(asset, result, path)
 
-    # Ensure the file doesn't already exist in the metadata
-    if not asset.get_files(name=spec["name"], category=category):
-        files = asset.get_attr("files") or []
-        files.append(result)
-        asset.set_attr("files", files)
+        # Ensure the file doesn't already exist in the metadata
+        if not asset.get_files(name=spec["name"], category=category):
+            files = asset.get_attr("files") or []
+            files.append(result)
+            asset.set_attr("files", files)
 
-    return result
+        return result
 
 
 class ZmlpStorageException(ZmlpException):
@@ -262,4 +262,4 @@ class ZmlpStorageException(ZmlpException):
 """
 A local file cache singleton.
 """
-file_cache = LocalFileCache()
+file_storage = LocalFileCache()

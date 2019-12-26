@@ -4,7 +4,7 @@ import os
 
 from zmlp.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 from zmlp.analysis import Frame
-from zmlp.analysis.proxies import store_asset_proxy
+from zmlp.analysis.proxy import store_asset_proxy
 
 from ..processors import AutoMLVisionModelProcessor
 

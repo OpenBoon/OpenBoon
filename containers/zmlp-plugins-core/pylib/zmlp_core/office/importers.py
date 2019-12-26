@@ -2,7 +2,7 @@ import json
 
 from zmlp import FileImport, Clip
 from zmlp.analysis import AssetBuilder, Argument, ExpandFrame, ZmlpFatalProcessorException
-from zmlp.analysis.storage import file_cache, ZmlpStorageException
+from zmlp.analysis.storage import file_storage, ZmlpStorageException
 from .oclient import OfficerClient
 
 __all__ = ['OfficeImporter', '_content_sanitizer']
@@ -37,7 +37,7 @@ class OfficeImporter(AssetBuilder):
         """
         try:
             pixml_uri = '{}/metadata.{}.json'.format(uri, page)
-            with open(file_cache.localize_uri(pixml_uri), 'r') as fp:
+            with open(file_storage.localize_uri(pixml_uri), 'r') as fp:
                 return json.load(fp, object_hook=_content_sanitizer)
         except ZmlpStorageException as e:
             raise ZmlpFatalProcessorException(

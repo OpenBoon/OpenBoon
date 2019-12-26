@@ -4,7 +4,7 @@ from unittest.mock import patch
 from zmlp import ZmlpClient
 from zmlp.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from zmlp.analysis import Frame
-from zmlp.analysis.proxies import store_asset_proxy
+from zmlp.analysis.proxy import store_asset_proxy
 from zmlp_analysis.face.processors import FaceRecognitionProcessor
 
 

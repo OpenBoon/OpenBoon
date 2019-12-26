@@ -6,7 +6,7 @@ import backoff
 import requests
 
 from zmlp.analysis import ZmlpFatalProcessorException
-from zmlp.analysis.storage import file_cache, ZmlpStorageException
+from zmlp.analysis.storage import file_storage, ZmlpStorageException
 from zmlp.client import ZmlpJsonEncoder
 
 logger = logging.getLogger(__name__)
@@ -119,7 +119,7 @@ class OfficerClient(object):
         """
         # localizes the asset's source file if it's not
         # already localized.
-        file_path = file_cache.localize_remote_file(asset)
+        file_path = file_storage.localize_remote_file(asset)
 
         if not page:
             # -1 means render everything.

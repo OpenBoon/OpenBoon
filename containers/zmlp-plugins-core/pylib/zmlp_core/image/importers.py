@@ -8,7 +8,7 @@ from pathlib2 import Path
 
 from zmlp import Clip, FileImport
 from zmlp.analysis import AssetBuilder, Argument, ExpandFrame
-from zmlp.analysis.storage import file_cache
+from zmlp.analysis.storage import file_storage
 from ..util.media import get_image_metadata, set_resolution_attrs
 
 
@@ -40,7 +40,7 @@ class ImageImporter(AssetBuilder):
 
     def process(self, frame):
         asset = frame.asset
-        path = Path(file_cache.localize_remote_file(asset))
+        path = Path(file_storage.localize_remote_file(asset))
         metadata = get_image_metadata(path)
         set_resolution_attrs(asset, int(metadata.get('full_width')),
                              int(metadata.get('full_height')))

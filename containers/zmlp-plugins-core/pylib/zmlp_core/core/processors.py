@@ -3,7 +3,7 @@ import os
 from zlib import adler32
 
 from zmlp.analysis import AssetBuilder, Argument, ZmlpFatalProcessorException
-from zmlp.analysis.storage import file_cache
+from zmlp.analysis.storage import file_storage
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ class PreCacheSourceFileProcessor(AssetBuilder):
         asset = frame.asset
         try:
             logger.info('precaching Asset: {}'.format(asset))
-            path = file_cache.localize_remote_file(asset)
+            path = file_storage.localize_remote_file(asset)
             # Virtual clip assets don't get a file size or checksum.
             if not asset.attr_exists('source.filesize') and \
                     not asset.attr_exists('clip.sourceAssetId'):

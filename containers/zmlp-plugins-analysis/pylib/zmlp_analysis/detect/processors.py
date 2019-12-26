@@ -5,18 +5,18 @@ import cvlib as cv
 import matplotlib.pyplot as plt
 from cvlib.object_detection import draw_bbox
 
-import zmlp.analysis.proxies
+import zmlp.analysis.proxy
 from zmlp.asset import Element
 from zmlp.analysis import AssetBuilder
 
-import zmlp.analysis.storage as storage
+from zmlp.analysis.storage import file_storage
 
 
 class PixelMLObjectDetectionProcessor(AssetBuilder):
 
     def process(self, frame):
         asset = frame.asset
-        p_path = zmlp.analysis.proxies.get_proxy_level(asset, 0)
+        p_path = zmlp.analysis.proxy.get_proxy_level(asset, 0)
 
         im = cv2.imread(p_path)
         bbox, label, conf = cv.detect_common_objects(im)
@@ -28,8 +28,8 @@ class PixelMLObjectDetectionProcessor(AssetBuilder):
         with tempfile.NamedTemporaryFile(suffix=".jpg") as tf:
             plt.imsave(tf.name, output)
             attrs = {"width": output.shape[1], "height": output.shape[0]}
-            efile = storage.store_asset_file(asset, tf.name, 'element',
-                                             rename=name, attrs=attrs)
+            efile = file_storage.store_asset_file(asset, tf.name, 'element',
+                                                  rename=name, attrs=attrs)
 
         for elem in zip(bbox, label, conf):
             element = Element("object", elem[1], rect=elem[0], score=elem[2], stored_file=efile)
