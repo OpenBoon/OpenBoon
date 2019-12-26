@@ -26,7 +26,12 @@
       }
     },
     {
-      "files": ["**/*.spec.js", "**/__mocks__/**/*.js", "next.config.js"],
+      "files": [
+        "**/*.spec.js",
+        "**/__mocks__/**/*.js",
+        "next.config.js",
+        "devServer.js"
+      ],
       "rules": {
         "global-require": "off",
         "no-underscore-dangle": "off",
