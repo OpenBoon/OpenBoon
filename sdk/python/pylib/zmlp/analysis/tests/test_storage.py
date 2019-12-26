@@ -1,10 +1,10 @@
-import os
-import urllib3
 import logging
+import os
 from unittest import TestCase
 from unittest.mock import patch
 
 import pytest
+import urllib3
 from minio.api import Minio
 
 from zmlp.analysis import storage
@@ -62,10 +62,9 @@ class LocalFileCacheTests(TestCase):
         }
         asset = TestAsset(id='123456')
         result = self.lfc.store_asset_file(
-            asset, zorroa_test_data('images/set01/toucan.jpg', uri=False), "test")
-
-        print(result)
-
+            asset, zorroa_test_data('images/set01/toucan.jpg', uri=False), 'test')
+        assert 'cat.jpg' == result['name']
+        assert 'proxy' == result['category']
 
     @patch.object(ZmlpClient, 'stream')
     def test_localize_asset_file(self, post_patch):
@@ -154,4 +153,3 @@ class LocalFileCacheTests(TestCase):
         with pytest.raises(FileNotFoundError):
             self.lfc.localize_asset_file(TestAsset(), pfile,
                                          zorroa_test_data('images/set01/toucan.jpg'))
-
