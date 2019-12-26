@@ -10,7 +10,7 @@ from zmlp.analysis.testing import TestEventEmitter
 logging.basicConfig(level=logging.DEBUG)
 
 
-class PixmlContainerDaemonTests(unittest.TestCase):
+class ZmlpContainerDaemonTests(unittest.TestCase):
 
     def tearDown(self):
         self.zpsd.stop()

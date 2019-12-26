@@ -2,7 +2,7 @@ import argparse
 import logging
 import os
 
-from .daemon import zmlpContainerDaemon
+from .daemon import ZmlpContainerDaemon
 
 logger = logging.getLogger(__file__)
 
@@ -20,5 +20,5 @@ def main():
     else:
         logging.basicConfig(level=logging.INFO)
 
-    server = PixmlContainerDaemon(port)
+    server = ZmlpContainerDaemon(port)
     server.start()
