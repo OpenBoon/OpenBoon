@@ -65,7 +65,7 @@ fun formatLogMessage(obj: LogObject, action: LogAction, vararg kvp: Map<String, 
     val user = getZmlpActorOrNull()
     val sb = StringBuilder(256)
 
-    sb.append("PIXEVENT zmlp.object='${obj.toString().toLowerCase()}' zmlp.action='${action.toString().toLowerCase()}'")
+    sb.append("ZMLPEVENT zmlp.object='${obj.toString().toLowerCase()}' zmlp.action='${action.toString().toLowerCase()}'")
     if (user != null) {
         sb.append(" zmlp.authedProjectId='${user.projectId}' zmlp.actor='${user.name}'")
     }
