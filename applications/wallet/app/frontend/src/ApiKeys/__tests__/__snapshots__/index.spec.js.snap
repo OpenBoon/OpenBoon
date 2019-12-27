@@ -108,6 +108,9 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
       </li>
     </ul>
   </nav>
+  <div>
+     
+  </div>
   Loading...
 </div>
 `;
@@ -390,6 +393,9 @@ exports[`<ApiKeys /> should render properly with api keys 1`] = `
     </ul>
   </nav>
   <div>
+     
+  </div>
+  <div>
     <table
       className="emotion-8"
     >
@@ -570,6 +576,9 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
       </li>
     </ul>
   </nav>
+  <div>
+     
+  </div>
   There are no results
 </div>
 `;
