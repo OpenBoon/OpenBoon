@@ -2,13 +2,15 @@ import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
+import TableContent from './Content'
+
 import { colors, constants, spacing, typography } from '../Styles'
 
 import Pagination from '../Pagination'
 
 const SIZE = 20
 
-const Table = ({ url, columns, renderRow }) => {
+const Table = ({ url, columns, renderEmpty, renderRow }) => {
   const {
     query: { page = 1 },
   } = useRouter()
@@ -21,8 +23,6 @@ const Table = ({ url, columns, renderRow }) => {
   )
 
   if (!Array.isArray(results)) return 'Loading...'
-
-  if (results.length === 0) return 'There are no results'
 
   return (
     <div>
@@ -93,7 +93,13 @@ const Table = ({ url, columns, renderRow }) => {
           </tr>
         </thead>
         <tbody>
-          {results.map(result => renderRow({ result, revalidate }))}
+          <TableContent
+            numColumns={columns.length}
+            results={results}
+            renderEmpty={renderEmpty}
+            renderRow={renderRow}
+            revalidate={revalidate}
+          />
         </tbody>
       </table>
 
@@ -110,6 +116,7 @@ const Table = ({ url, columns, renderRow }) => {
 Table.propTypes = {
   url: PropTypes.string.isRequired,
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+  renderEmpty: PropTypes.node.isRequired,
   renderRow: PropTypes.func.isRequired,
 }
 

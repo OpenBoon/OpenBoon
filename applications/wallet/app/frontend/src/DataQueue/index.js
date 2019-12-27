@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import PageTitle from '../PageTitle'
 import Table from '../Table'
 
+import DataQueueEmpty from './Empty'
 import DataQueueRow from './Row'
 
 export const noop = () => () => {}
@@ -33,6 +34,7 @@ const DataQueue = () => {
           'Errors',
           'Task Progress',
         ]}
+        renderEmpty={<DataQueueEmpty />}
         renderRow={({ result, revalidate }) => (
           <DataQueueRow
             key={result.id}
