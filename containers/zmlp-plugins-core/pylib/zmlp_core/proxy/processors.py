@@ -236,7 +236,7 @@ def set_tiny_proxy_colors(asset):
         smallest_proxy = get_proxy_level(asset, 0)
         if smallest_proxy:
             logger.info('Creating tiny proxy colors for %s.' % smallest_proxy)
-            asset.set_attr('analysis.zmlp.tiny-proxy',
+            asset.set_attr('analysis.zmlp.tinyProxy',
                            get_tiny_proxy_colors(smallest_proxy) or None)
 
             # Mark that the tiny proxy was generated so we don't do this multiple times

@@ -120,5 +120,5 @@ val STANDARD_PIPELINE = listOf(
     ProcessorRef("zmlp_core.proxy.processors.ProxyProcessor", "zmlp/plugins-core"),
     ProcessorRef("zmlp_analysis.mxnet.processors.ResNetSimilarityProcessor", "zmlp/plugins-analysis"),
     ProcessorRef("zmlp_analysis.mxnet.processors.ResNetClassifyProcessor", "zmlp/plugins-analysis"),
-    ProcessorRef("zmlp_analysis.detect.ObjectDetectionProcessor", "zmlp/plugins-analysis")
+    ProcessorRef("zmlp_analysis.detect.ZmlpObjectDetectionProcessor", "zmlp/plugins-analysis")
 )
