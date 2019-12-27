@@ -1,6 +1,4 @@
 import PropTypes from 'prop-types'
-
-import { getStatusLabel } from './helpers'
 import { colors, spacing, constants } from '../Styles'
 
 const STATUS_COLORS = {
@@ -26,7 +24,7 @@ const Status = ({ jobStatus }) => {
         color: STATUS_COLORS[jobStatus],
         backgroundColor: colors.structure.coal,
       }}>
-      {getStatusLabel({ jobStatus })}
+      {jobStatus.replace(/([A-Z])/g, match => ` ${match}`)}
     </div>
   )
 }
