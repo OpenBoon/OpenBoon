@@ -50,10 +50,10 @@ class ProjectFilterDaoImpl : ProjectFilterDao, AbstractDao() {
     override fun deleteByUUID(projectUUID: UUID): Boolean {
 
         val result = listOf(
-            "DELETE FROM zorroa.job WHERE pk_project = ?",
-            "DELETE FROM zorroa.datasource WHERE pk_project = ?",
-            "DELETE FROM zorroa.index_route WHERE pk_project = ?",
-            "DELETE FROM zorroa.project WHERE pk_project = ?",
+            "DELETE FROM job WHERE pk_project = ?",
+            "DELETE FROM datasource WHERE pk_project = ?",
+            "DELETE FROM index_route WHERE pk_project = ?",
+            "DELETE FROM project WHERE pk_project = ?",
             "DELETE FROM auth.api_key WHERE project_id = ?"
         ).map { jdbc.update(it, projectUUID) }
 

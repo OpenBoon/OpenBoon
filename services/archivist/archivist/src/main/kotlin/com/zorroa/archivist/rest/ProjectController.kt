@@ -29,12 +29,7 @@ class ProjectController constructor(
     @PostMapping(value = ["/api/v1/projects"])
     @ApiOperation("Create Project.")
     fun create(@RequestBody spec: ProjectSpec): Project {
-        try {
-            return projectService.create(spec)
-        }catch (ex: Exception){
-            ex.printStackTrace()
-            throw ex
-        }
+        return projectService.create(spec)
     }
 
     @GetMapping(value = ["/api/v1/projects/{id}"])
