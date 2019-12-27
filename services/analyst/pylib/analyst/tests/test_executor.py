@@ -116,6 +116,7 @@ class TestZpsExecutor(unittest.TestCase):
 class TestDockerContainerWrapper(unittest.TestCase):
 
     def setUp(self):
+        os.environ["ANALYST_DOCKER_PULL"] = "false"
         self.client = MockClusterClient()
         task = test_task()
         wrapper = ZpsExecutor(task, self.client)
@@ -123,6 +124,10 @@ class TestDockerContainerWrapper(unittest.TestCase):
 
     def tearDown(self):
         self.container.stop()
+        try:
+            del os.environ["ANALYST_DOCKER_PULL"]
+        except KeyError:
+            pass
 
     def test_get_network_id(self):
         # Running locally this is false, running in CI/CD it's true
@@ -138,16 +143,17 @@ class TestDockerContainerWrapper(unittest.TestCase):
         assert self.container.event_counts["ok_events"] == 1
 
     def test_docker_pull(self):
+        try:
+            del os.environ["ANALYST_DOCKER_PULL"]
+        except KeyError:
+            pass
+
         image = self.container._pull_image()
         assert "zmlp/plugins-base:development" == image
 
     def test_docker_pull_no_repo(self):
-        os.environ["ANALYST_DOCKER_PULL"] = "false"
-        try:
-            image = self.container._pull_image()
-            assert "zmlp/plugins-base" == image
-        finally:
-            del os.environ["ANALYST_DOCKER_PULL"]
+        image = self.container._pull_image()
+        assert "zmlp/plugins-base" == image
 
     def test_receive_event_with_timeout(self):
         event = self.container.receive_event(250)

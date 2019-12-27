@@ -483,28 +483,27 @@ class DockerContainerWrapper(object):
         Returns:
             dict: an event dict
         """
+        wait_time = timeout
         while True:
-            if timeout:
-                total_time = timeout
-                while True:
-                    total_time -= 1000
-                    poll = self.socket.poll(1000)
-                    if poll > 0:
-                        event = self.socket.recv_json()
-                        break
-                    elif total_time <= 0:
-                        event = {"type": "timeout", "payload": {"timeout": timeout}}
-                        break
-            else:
+            event = None
+            # We have to use polling in all cases or else killing
+            # the container depends up in a deadlocked socket.
+            poll = self.socket.poll(500)
+            if poll > 0:
                 event = self.socket.recv_json()
+            elif timeout:
+                wait_time -= 500
+                if wait_time <= 0:
+                    event = {"type": "timeout", "payload": {"timeout": timeout}}
 
-            self.log_event(event)
-            if event["type"] == "hardfailure":
-                raise RuntimeError("Container failure, exiting event='{}'".format(event))
             if self.killed:
                 raise RuntimeError("Container was killed, exiting event='{}'".format(event))
 
-            return event
+            if event:
+                self.log_event(event)
+                if event["type"] == "hardfailure":
+                    raise RuntimeError("Container failure, exiting event='{}'".format(event))
+                return event
 
     def log_event(self, event):
         """
