@@ -8,41 +8,41 @@ exports[`<DataQueue /> should render properly while loading 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-9 {
+.emotion-11 {
   width: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
   white-space: nowrap;
 }
 
-.emotion-9 tr {
+.emotion-11 tr {
   background-color: #252525;
 }
 
-.emotion-9 tr:nth-of-type(2n) {
+.emotion-11 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-9 tr:hover {
+.emotion-11 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-9 tr:hover td {
+.emotion-11 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-9 tr:hover td:first-of-type {
+.emotion-11 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-9 tr:hover td:last-of-type {
+.emotion-11 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-9 td {
+.emotion-11 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -50,11 +50,11 @@ exports[`<DataQueue /> should render properly while loading 1`] = `
   border-right: 0;
 }
 
-.emotion-9 td:first-of-type {
+.emotion-11 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-9 td:last-of-type {
+.emotion-11 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
@@ -77,6 +77,33 @@ exports[`<DataQueue /> should render properly while loading 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
+.emotion-10 {
+  pointer-events: none;
+}
+
+.emotion-9 {
+  height: 300px;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: red;
+  font-size: 16px;
+  line-height: 20px;
+}
+
 <div>
   <h2
     className="emotion-0"
@@ -85,7 +112,7 @@ exports[`<DataQueue /> should render properly while loading 1`] = `
   </h2>
   <div>
     <table
-      className="emotion-9"
+      className="emotion-11"
     >
       <thead>
         <tr>
@@ -132,7 +159,20 @@ exports[`<DataQueue /> should render properly while loading 1`] = `
         </tr>
       </thead>
       <tbody>
-        Loading...
+        <tr
+          aria-label="Loading message"
+          className="emotion-10"
+        >
+          <td
+            colSpan={8}
+          >
+            <div
+              className="emotion-9"
+            >
+              Loading...
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
     <div>
@@ -1616,7 +1656,7 @@ exports[`<DataQueue /> should render properly with no jobs 1`] = `
       </thead>
       <tbody>
         <tr
-          aria-label="Empty table"
+          aria-label="Empty message"
           className="emotion-11"
         >
           <td

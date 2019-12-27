@@ -2,9 +2,9 @@ import PropTypes from 'prop-types'
 
 import { typography } from '../Styles'
 
-const TableEmpty = ({ numColumns, children }) => {
+const TableException = ({ ariaLabel, numColumns, children }) => {
   return (
-    <tr aria-label="Empty table" css={{ pointerEvents: 'none' }}>
+    <tr aria-label={ariaLabel} css={{ pointerEvents: 'none' }}>
       <td colSpan={numColumns}>
         <div
           css={{
@@ -25,9 +25,10 @@ const TableEmpty = ({ numColumns, children }) => {
   )
 }
 
-TableEmpty.propTypes = {
+TableException.propTypes = {
+  ariaLabel: PropTypes.string.isRequired,
   numColumns: PropTypes.number.isRequired,
   children: PropTypes.node.isRequired,
 }
 
-export default TableEmpty
+export default TableException

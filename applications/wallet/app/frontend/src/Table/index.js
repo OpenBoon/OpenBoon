@@ -93,7 +93,7 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
         <tbody>
           <TableContent
             numColumns={columns.length}
-            isLoading={!Array.isArray(results)}
+            isLoading={!results}
             results={results || []}
             renderEmpty={renderEmpty}
             renderRow={renderRow}

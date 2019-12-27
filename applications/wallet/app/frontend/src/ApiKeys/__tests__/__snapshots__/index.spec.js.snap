@@ -72,41 +72,41 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   color: #73b61c;
 }
 
-.emotion-8 {
+.emotion-10 {
   width: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
   white-space: nowrap;
 }
 
-.emotion-8 tr {
+.emotion-10 tr {
   background-color: #252525;
 }
 
-.emotion-8 tr:nth-of-type(2n) {
+.emotion-10 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-8 tr:hover {
+.emotion-10 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-8 tr:hover td {
+.emotion-10 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-8 tr:hover td:first-of-type {
+.emotion-10 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-8 tr:hover td:last-of-type {
+.emotion-10 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-8 td {
+.emotion-10 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -114,11 +114,11 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   border-right: 0;
 }
 
-.emotion-8 td:first-of-type {
+.emotion-10 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-8 td:last-of-type {
+.emotion-10 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
@@ -141,7 +141,34 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-15 {
+.emotion-9 {
+  pointer-events: none;
+}
+
+.emotion-8 {
+  height: 300px;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: red;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -152,7 +179,7 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   justify-content: flex-end;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -170,20 +197,20 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   border-bottom-right-radius: 0;
 }
 
-.emotion-10:hover {
+.emotion-12:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-9 {
+.emotion-11 {
   color: #191919;
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-11 {
+.emotion-13 {
   padding: 8px 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -197,7 +224,7 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   background-color: #000000;
 }
 
-.emotion-12 {
+.emotion-14 {
   padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -210,7 +237,7 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-14 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -228,13 +255,13 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   border-bottom-right-radius: 2px;
 }
 
-.emotion-14:hover {
+.emotion-16:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #191919;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -282,7 +309,7 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   </div>
   <div>
     <table
-      className="emotion-8"
+      className="emotion-10"
     >
       <thead>
         <tr>
@@ -299,44 +326,57 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
         </tr>
       </thead>
       <tbody>
-        Loading...
+        <tr
+          aria-label="Loading message"
+          className="emotion-9"
+        >
+          <td
+            colSpan={2}
+          >
+            <div
+              className="emotion-8"
+            >
+              Loading...
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
     <div>
        
     </div>
     <div
-      className="emotion-15"
+      className="emotion-17"
     >
       <button
-        className="emotion-10"
+        className="emotion-12"
         disabled={true}
         type="button"
       >
         <svg
-          className="emotion-9"
+          className="emotion-11"
           data-file-name="chevron.svg"
           width={16}
         />
       </button>
       <div
-        className="emotion-11"
+        className="emotion-13"
       >
         1
       </div>
       <div
-        className="emotion-12"
+        className="emotion-14"
       >
         of 
         0
       </div>
       <button
-        className="emotion-14"
+        className="emotion-16"
         disabled={true}
         type="button"
       >
         <svg
-          className="emotion-13"
+          className="emotion-15"
           data-file-name="chevron.svg"
           width={16}
         />
@@ -840,6 +880,33 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
+.emotion-9 {
+  pointer-events: none;
+}
+
+.emotion-8 {
+  height: 300px;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: red;
+  font-size: 16px;
+  line-height: 20px;
+}
+
 .emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -940,33 +1007,6 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
   transform: rotate(-90deg);
 }
 
-.emotion-9 {
-  pointer-events: none;
-}
-
-.emotion-8 {
-  height: 300px;
-  width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  color: red;
-  font-size: 16px;
-  line-height: 20px;
-}
-
 <div>
   <h2
     className="emotion-0"
@@ -1026,7 +1066,7 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
       </thead>
       <tbody>
         <tr
-          aria-label="Empty table"
+          aria-label="Empty message"
           className="emotion-9"
         >
           <td

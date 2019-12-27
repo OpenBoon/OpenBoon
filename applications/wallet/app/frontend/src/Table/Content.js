@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import TableEmpty from './Empty'
+import TableException from './Exception'
 
 const TableContent = ({
   numColumns,
@@ -10,10 +10,20 @@ const TableContent = ({
   renderRow,
   revalidate,
 }) => {
-  if (isLoading) return 'Loading...'
+  if (isLoading) {
+    return (
+      <TableException numColumns={numColumns} ariaLabel="Loading message">
+        Loading...
+      </TableException>
+    )
+  }
 
   if (results.length === 0) {
-    return <TableEmpty numColumns={numColumns}>{renderEmpty}</TableEmpty>
+    return (
+      <TableException numColumns={numColumns} ariaLabel="Empty message">
+        {renderEmpty}
+      </TableException>
+    )
   }
 
   return results.map(result => renderRow({ result, revalidate }))
