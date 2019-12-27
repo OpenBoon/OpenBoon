@@ -122,8 +122,8 @@ class OfficeImporter(AssetBuilder):
             asset.set_attr('tmp.proxy_source_image', self.get_image_uri(cache_loc, page))
             return cache_loc
         except Exception as e:
-            raise ZmlpFatalProcessorException('Unable to determine page cache location {}'
-                                                       .format(asset.id), e)
+            raise ZmlpFatalProcessorException(
+                'Unable to determine page cache location {}'.format(asset.id), e)
 
 
 def _content_sanitizer(metadata):
