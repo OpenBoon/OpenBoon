@@ -44,7 +44,7 @@ import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
-import com.zorroa.archivist.storage.SharedStorageServiceConfiguration
+import com.zorroa.archivist.storage.InternalStorageServiceConfiguration
 import com.zorroa.archivist.util.Json
 import io.micrometer.core.instrument.MeterRegistry
 import kotlinx.coroutines.Dispatchers
@@ -110,7 +110,7 @@ class DispatchQueueManager @Autowired constructor(
     val analystService: AnalystService,
     val properties: ApplicationProperties,
     val authServerClient: AuthServerClient,
-    val sharedStoragProperties: SharedStorageServiceConfiguration,
+    val internalStoragProperties: InternalStorageServiceConfiguration,
     val meterRegistry: MeterRegistry
 ) {
 
@@ -197,20 +197,20 @@ class DispatchQueueManager @Autowired constructor(
                 METRICS_KEY, "op", "tasks-queued"
             ).increment()
 
-            task.env["PIXML_TASK_ID"] = task.id.toString()
-            task.env["PIXML_JOB_ID"] = task.jobId.toString()
-            task.env["PIXML_PROJECT_ID"] = task.projectId.toString()
-            task.dataSourceId?.let { task.env["PIXML_DATASOURCE_ID"] = it.toString() }
-            task.env["PIXML_ARCHIVIST_MAX_RETRIES"] = "0"
+            task.env["ZMLP_TASK_ID"] = task.id.toString()
+            task.env["ZMLP_JOB_ID"] = task.jobId.toString()
+            task.env["ZMLP_PROJECT_ID"] = task.projectId.toString()
+            task.dataSourceId?.let { task.env["ZMLP_DATASOURCE_ID"] = it.toString() }
+            task.env["ZMLP_ARCHIVIST_MAX_RETRIES"] = "0"
 
             // So the container can make API calls as the JobRunner
             val key = authServerClient.getApiKey(task.projectId, KnownKeys.JOB_RUNNER)
-            task.env["PIXML_APIKEY"] = key.toBase64()
+            task.env["ZMLP_APIKEY"] = key.toBase64()
 
             // So the container can access shared
-            task.env["MLSTORAGE_URL"] = sharedStoragProperties.url
-            task.env["MLSTORAGE_ACCESSKEY"] = sharedStoragProperties.accessKey
-            task.env["MLSTORAGE_SECRETKEY"] = sharedStoragProperties.secretKey
+            task.env["ZMLP_ISTORAGE_URL"] = internalStoragProperties.url
+            task.env["ZMLP_ISTORAGE_ACCESSKEY"] = internalStoragProperties.accessKey
+            task.env["ZMLP_ISTORAGE_SECRETKEY"] = internalStoragProperties.secretKey
 
             return true
         } else {

@@ -74,7 +74,7 @@ resource "kubernetes_deployment" "analyst" {
           image = "zmlp/analyst:${var.container-tag}"
           image_pull_policy = "Always"
           env {
-            name = "PIXML_SERVER"
+            name = "ZMLP_SERVER"
             value = "${var.archivist-url}"
           }
           env {
