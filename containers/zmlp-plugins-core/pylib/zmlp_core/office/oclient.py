@@ -26,10 +26,10 @@ class OfficerClient(object):
         Create a new OfficerClient instance.
 
         Args:
-            url (str): An optional URL. Will look for the PIXML_OFFICER_URL environment
+            url (str): An optional URL. Will look for the OFFICER_URL environment
             variable and finally default to 'http://officer:7078'
         """
-        self.url = url or os.environ.get('PIXML_OFFICER_URL', 'http://officer:7078')
+        self.url = url or os.environ.get('OFFICER_URL', 'http://officer:7078')
 
     @property
     def render_url(self):
@@ -51,7 +51,7 @@ class OfficerClient(object):
             page (int): The page number, None for all pages.
 
         Returns:
-            (str): An pixml URL where the thumbnails and metadata are located.
+            (str): An internal ZMLP URL where the thumbnails and metadata are located.
 
         """
         try:

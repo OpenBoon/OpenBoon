@@ -626,7 +626,7 @@ class AutoMLNLPModelProcessor(AutoMLModelProcessor):
         pages = [''] * (page_count + 1)
 
         #
-        # TODO: a pixml search instead.
+        # TODO: a ZMLP search instead.
         # archivist.AssetSearch().term_filter("media.clip.parent", asset.id)
         #
         search = []

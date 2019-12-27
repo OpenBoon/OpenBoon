@@ -26,17 +26,17 @@ class OfficerPythonClientTests(unittest.TestCase):
     @patch.object(file_storage, 'localize_remote_file')
     def test_render(self, file_cache_patch, post_patch):
         post_patch.return_value = MockRequestsResponse(
-            {"location": "pixml://ml-storage/foo/bar"}, 200)
+            {"location": "zmlp://ml-storage/foo/bar"}, 200)
         file_cache_patch.return_value = zorroa_test_data('office/pdfTest.pdf', False)
         client = OfficerClient()
         result = client.render(self.asset, 1)
-        assert result == "pixml://ml-storage/foo/bar"
+        assert result == "zmlp://ml-storage/foo/bar"
 
     @patch('requests.post')
     @patch.object(file_storage, 'localize_remote_file')
     def test_get_render_request_body(self, file_cache_patch, post_patch):
         post_patch.return_value = MockRequestsResponse(
-            {"output": "pixml://ml-storage/foo/bar"}, 200)
+            {"output": "zmlp://ml-storage/foo/bar"}, 200)
         file_cache_patch.return_value = zorroa_test_data('office/pdfTest.pdf', False)
         client = OfficerClient()
         body = client._get_render_request_body(self.asset, None)
@@ -54,7 +54,7 @@ class OfficerPythonClientTests(unittest.TestCase):
     @patch.object(file_storage, 'localize_remote_file')
     def test_get_render_request_body_clip(self, file_cache_patch, post_patch):
         post_patch.return_value = MockRequestsResponse(
-            {"location": "pixml://ml-storage/foo/bar"}, 200)
+            {"location": "zmlp://ml-storage/foo/bar"}, 200)
         file_cache_patch.return_value = zorroa_test_data('office/pdfTest.pdf', False)
         client = OfficerClient()
         body = client._get_render_request_body(self.asset, 5)

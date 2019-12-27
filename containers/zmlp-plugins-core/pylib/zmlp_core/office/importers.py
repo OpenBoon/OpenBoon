@@ -11,7 +11,7 @@ __all__ = ['OfficeImporter', '_content_sanitizer']
 class OfficeImporter(AssetBuilder):
     file_types = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']
 
-    # The tmp_loc_attribute store the pixml
+    # The tmp_loc_attribute store the document
     tmp_loc_attr = OfficerClient.tmp_loc_attr
 
     def __init__(self):
@@ -36,8 +36,8 @@ class OfficeImporter(AssetBuilder):
 
         """
         try:
-            pixml_uri = '{}/metadata.{}.json'.format(uri, page)
-            with open(file_storage.localize_uri(pixml_uri), 'r') as fp:
+            zuri = '{}/metadata.{}.json'.format(uri, page)
+            with open(file_storage.localize_uri(zuri), 'r') as fp:
                 return json.load(fp, object_hook=_content_sanitizer)
         except ZmlpStorageException as e:
             raise ZmlpFatalProcessorException(
@@ -45,14 +45,14 @@ class OfficeImporter(AssetBuilder):
 
     def get_image_uri(self, uri, page):
         """
-        Return the pixml storage URL for the given page.
+        Return the ZMLP storage URL for the given page.
 
         Args:
             uri (str):  A previously created output uri.
             page (int): The page number, 0 for parent page.
 
         Returns:
-            str: the pixml URL to the image.
+            str: the ZMLP URL to the image.
         """
         return '{}/proxy.{}.jpg'.format(uri, max(page, 0))
 

@@ -18,7 +18,7 @@ STREETSIGN = zorroa_test_data("images/set09/streetsign.jpg")
 MANUAL = zorroa_test_data("images/set09/nvidia_manual_page.jpg")
 TOOBIG = zorroa_test_data("images/set09/heckabig.jpg")
 
-PIXML_FILE = {
+PROXY_FILE = {
     "name": "proxy_512x341.jpg",
     "category": "proxy",
     "mimetype": "image/jpeg",
@@ -351,7 +351,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_too_big(self, mock_image_annotator, upload_patch):
         # initialize doomed asset and initialize the processor
-        upload_patch.return_value = PIXML_FILE
+        upload_patch.return_value = PROXY_FILE
         asset = TestAsset(TOOBIG)
         frame = Frame(asset)
         store_asset_proxy(asset, TOOBIG, (200, 200))
@@ -365,7 +365,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_label(self, mock_image_annotator, upload_patch):
         # initialize asset and processor
-        upload_patch.return_value = PIXML_FILE
+        upload_patch.return_value = PROXY_FILE
         asset = TestAsset(TOUCAN)
         frame = Frame(asset)
         store_asset_proxy(asset, TOUCAN, (200, 200))
@@ -401,7 +401,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_label_with_debug(self, mock_image_annotator, upload_patch):
         # initialize asset and processor
-        upload_patch.return_value = PIXML_FILE
+        upload_patch.return_value = PROXY_FILE
         asset = TestAsset(TOUCAN)
         frame = Frame(asset)
         store_asset_proxy(asset, TOUCAN, (200, 200))
@@ -495,7 +495,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_landmark(self, mock_image_annotator, upload_patch):
         # initialize asset and processor
-        upload_patch.return_value = PIXML_FILE
+        upload_patch.return_value = PROXY_FILE
         asset = TestAsset(EIFFEL)
         frame = Frame(asset)
         store_asset_proxy(asset, EIFFEL, (200, 200))
@@ -530,7 +530,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_explicit(self, mock_image_annotator, upload_patch):
         # initialize asset and processor
-        upload_patch.return_value = PIXML_FILE
+        upload_patch.return_value = PROXY_FILE
         asset = TestAsset(PUNCH)
         frame = Frame(asset)
         store_asset_proxy(asset, PUNCH, (200, 200))
@@ -563,7 +563,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_faces(self, mock_image_annotator, upload_patch):
         # initialize the asset and processor
-        upload_patch.return_value = PIXML_FILE
+        upload_patch.return_value = PROXY_FILE
         asset = TestAsset(FACES)
         frame = Frame(asset)
         store_asset_proxy(asset, FACES, (200, 200))
@@ -614,7 +614,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     @patch.object(ZmlpClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_image_text(self, mock_image_annotator, upload_patch):
-        upload_patch.return_value = PIXML_FILE
+        upload_patch.return_value = PROXY_FILE
         # initialize the asset and processor
         asset = TestAsset(STREETSIGN)
         frame = Frame(asset)
@@ -641,7 +641,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_document_text(self, mock_image_annotator, upload_patch):
         self.maxDiff = None
-        upload_patch.return_value = PIXML_FILE
+        upload_patch.return_value = PROXY_FILE
         # initialize the asset and processor
         asset = TestAsset(MANUAL)
         frame = Frame(asset)

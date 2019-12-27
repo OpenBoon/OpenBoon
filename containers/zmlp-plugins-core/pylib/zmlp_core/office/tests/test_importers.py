@@ -102,8 +102,8 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
 
     def test_get_image_uri(self):
         processor = self.init_processor(OfficeImporter())
-        md = processor.get_image_uri("pixml://ml-storage/tmp-files/officer/foo/bar", 1)
-        assert md.startswith("pixml://")
+        md = processor.get_image_uri("zmlp://ml-storage/tmp-files/officer/foo/bar", 1)
+        assert md.startswith("zmlp://")
         assert md.endswith('proxy.1.jpg')
 
     @patch.object(OfficerClient, '_get_render_request_body', return_value={})
@@ -115,10 +115,10 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
             processor.process(Frame(self.asset))
 
     @patch.object(OfficerClient, '_get_render_request_body', return_value={})
-    @patch.object(OfficerClient, 'render', return_value='pixml://foo/bar')
+    @patch.object(OfficerClient, 'render', return_value='zmlp://foo/bar')
     @patch.object(OfficerClient, 'get_cache_location', return_value=None)
     def test_render_pages(self, _, __, ___):
         processor = self.init_processor(OfficeImporter(), {})
         output_uri = processor.render_pages(self.asset, 1, True)
-        assert 'pixml://foo/bar' == output_uri
-        assert self.asset["tmp.proxy_source_image"] == 'pixml://foo/bar/proxy.1.jpg'
+        assert 'zmlp://foo/bar' == output_uri
+        assert self.asset["tmp.proxy_source_image"] == 'zmlp://foo/bar/proxy.1.jpg'

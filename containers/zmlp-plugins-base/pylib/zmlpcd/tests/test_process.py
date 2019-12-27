@@ -33,7 +33,7 @@ class ProcessorExecutorTests(unittest.TestCase):
             "ref": {
                 "className": "zmlp.analysis.testing.TestProcessor",
                 "args": {},
-                "image": "plugins-py3-base"
+                "image": "plugins-py3-base:latest"
             },
             "asset": {
                 "id": "1234"
@@ -42,15 +42,14 @@ class ProcessorExecutorTests(unittest.TestCase):
         self.pe.execute_processor(req)
         assert self.emitter.event_count("asset") == 1
         assert self.emitter.event_count("error") == 0
-        assert self.emitter.event_count("finished") == 1
-        assert self.emitter.event_total() == 2
+        assert self.emitter.event_total() == 1
 
     def test_execute_processor_and_raise_fatal(self):
         req = {
             "ref": {
                 "className": "zmlp.analysis.testing.TestProcessor",
                 "args": {"raise_fatal": True},
-                "image": "plugins-py3-base"
+                "image": "plugins-py3-base:latest"
             },
             "asset": {
                 "id": "1234",
@@ -64,8 +63,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         self.pe.execute_processor(req)
         assert self.emitter.event_count("asset") == 1
         assert self.emitter.event_count("error") == 1
-        assert self.emitter.event_count("finished") == 1
-        assert self.emitter.event_total() == 3
+        assert self.emitter.event_total() == 2
 
         error = self.emitter.get_events("error")[0]
         assert error["payload"]["processor"] == "zmlp.analysis.testing.TestProcessor"
@@ -79,7 +77,7 @@ class ProcessorExecutorTests(unittest.TestCase):
             "ref": {
                 "className": "zmlp.analysis.testing.TestProcessor",
                 "args": {},
-                "image": "plugins-py3-base"
+                "image": "plugins-py3-base:latest"
             },
             "asset": {
                 "id": "1234"
@@ -96,7 +94,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref = {
             "className": "zmlp.analysis.testing.TestProcessor",
             "args": {},
-            "image": "plugins-py3-base"
+            "image": "plugins-py3-base:latest"
         }
         wrapper = self.pe.get_processor_wrapper(ref)
         assert wrapper is not None
@@ -110,7 +108,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref = {
             "className": "zmlp.analysis.testing.TestProcessor",
             "args": {},
-            "image": "plugins-py3-base"
+            "image": "plugins-py3-base:latest"
         }
         instance = self.pe.new_processor_instance(ref)
         assert instance.__class__.__name__ == "TestProcessor"
