@@ -1,9 +1,10 @@
 {
   "private": true,
   "scripts": {
-    "analyze": "ANALYZE=1 next build",
+    "analyze": "ANALYZE=true next build",
     "build": "next build",
     "dev": "node -r esm devServer.js",
+    "dev:mocked": "MOCKED=true node -r esm devServer.js",
     "lint": "eslint '{pages,src}/**/*.js'",
     "prod": "next start",
     "size": "rimraf .next && next build && bundlesize",
@@ -128,7 +129,7 @@
     "husky": "3.1.0",
     "jest": "24.9.0",
     "jest-emotion": "10.0.26",
-    "jest-fetch-mock": "2.1.2",
+    "jest-fetch-mock": "3.0.0",
     "lint-staged": "9.5.0",
     "morgan": "1.9.1",
     "prettier": "1.19.1",

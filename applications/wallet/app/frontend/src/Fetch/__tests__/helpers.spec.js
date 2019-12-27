@@ -11,7 +11,7 @@ describe('<Fetch /> helpers', () => {
 
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
-      const data = await fetcher()
+      const data = await fetcher('/url')
 
       expect(data).toEqual({ id: 12345 })
     })
@@ -19,11 +19,14 @@ describe('<Fetch /> helpers', () => {
     it('should return the raw response in case of error', async () => {
       initialize({ setUser: noop })
 
-      fetch.mockResponseOnce('Internal Server Error', { status: 500 })
+      fetch.mockResponseOnce(null, { status: 500 })
 
-      const response = await fetcher()
+      const response = await fetcher('/url')
 
       expect(response.status).toBe(500)
+
+      expect(response.statusText).toBe('Internal Server Error')
+
       expect(response).toMatchSnapshot()
     })
 
@@ -33,7 +36,7 @@ describe('<Fetch /> helpers', () => {
 
       initialize({ setUser: mockSetUser })
 
-      fetch.mockResponseOnce('Access Denied', { status: 401 })
+      fetch.mockResponseOnce(null, { status: 401 })
 
       Object.defineProperty(window, 'localStorage', {
         writable: true,
@@ -42,7 +45,7 @@ describe('<Fetch /> helpers', () => {
         },
       })
 
-      const data = await fetcher()
+      const data = await fetcher('/url')
 
       expect(data).toEqual({})
 

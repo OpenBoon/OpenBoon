@@ -63,14 +63,14 @@ class FileStorageAttrs(
     @ApiModelProperty("The name of the file, overrides the local file name.")
     var name: String,
 
-    @ApiModelProperty("The file used internally by PixelML.  Internal files cannot be created by REST calls.")
+    @ApiModelProperty("The file used internally by ZMLP.  Internal files cannot be created by REST calls.")
     var attrs: Map<String, Any>
 )
 
 /**
  * Internal class for storing the location details of a file.
  *
- * @property type The type of PixelML object.
+ * @property type The type of ZMLP object.
  * @property id The id of the object.
  * @property category The category the object belongs in, this is just the directory it lives in.
  * @property name The name of the file.
@@ -116,7 +116,7 @@ class FileStorageSpec(
     val mimetype = FileUtils.getMediaType(locator.name)
 }
 
-@ApiModel("FileStorage", description = "Describes a file stored in PixelML storage.")
+@ApiModel("FileStorage", description = "Describes a file stored in ZMLP storage.")
 class FileStorage(
 
     @ApiModelProperty("The file name")

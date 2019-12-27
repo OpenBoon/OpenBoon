@@ -156,15 +156,15 @@ resource "kubernetes_deployment" "archivist" {
               value = "${var.inception-key-b64}"
             },
             {
-              name = "MLSTORAGE_URL"
+              name = "ZMLP_ISTORAGE_URL"
               value = "${var.minio-url}"
             },
             {
-              name = "MLSTORAGE_SECRETKEY"
+              name = "ZMLP_ISTORAGE_SECRETKEY"
               value = "${var.minio-secret-key}"
             },
             {
-              name = "MLSTORAGE_ACCESSKEY"
+              name = "ZMLP_ISTORAGE_ACCESSKEY"
               value = "${var.minio-access-key}"
             }
           ]

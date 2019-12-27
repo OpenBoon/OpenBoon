@@ -5,11 +5,12 @@ Response {
   "size": 0,
   "timeout": 0,
   Symbol(Body internals): Object {
-    "body": "Internal Server Error",
+    "body": null,
     "disturbed": false,
     "error": null,
   },
   Symbol(Response internals): Object {
+    "counter": undefined,
     "headers": Headers {
       Symbol(map): Object {},
     },

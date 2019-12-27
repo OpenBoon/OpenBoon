@@ -15,7 +15,7 @@ app = Flask(__name__)
 def main():
     parser = argparse.ArgumentParser(prog='analyst')
     parser.add_argument("-a", "--archivist", help="The URL of the Archivist server.",
-                        default=os.environ.get("PIXML_SERVER", "http://archivist:8080"))
+                        default=os.environ.get("ZMLPL_SERVER", "http://archivist:8080"))
     parser.add_argument("-p", "--port", help="The port to listen on",
                         default=os.environ.get("ANALYST_PORT", "5000"))
     parser.add_argument("-c", "--credentials",

@@ -28,7 +28,7 @@ export const initialize = ({ setUser }) => {
       ...options,
     })
 
-    if (response.status === 401) {
+    if ([401, 403].includes(response.status)) {
       clearUser()
 
       setUser({})

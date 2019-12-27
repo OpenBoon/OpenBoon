@@ -2,7 +2,6 @@ import json
 import logging
 import os
 import threading
-import time
 
 import docker
 import zmq
@@ -31,7 +30,7 @@ class ZpsExecutor(object):
 
     def __init__(self, task, client):
         """
-        Create a new ContainerizedZpsExecutor.
+        Create a new ZpsExecutor.
 
         Args:
             task (dict): A task.
@@ -56,7 +55,7 @@ class ZpsExecutor(object):
                 self.generate()
             if self.script.get("assets"):
                 assets = self.process()
-                if assets:
+                if assets and self.exit_status == 0:
                     self.client.emit_event(
                         self.task, "index", {"assets": assets})
         except Exception as e:
@@ -248,6 +247,7 @@ class DockerContainerWrapper(object):
         image: (str): the
 
     """
+
     def __init__(self, client, task, image):
         """
 
@@ -267,7 +267,7 @@ class DockerContainerWrapper(object):
         self.log_thread = None
 
         ctx = zmq.Context()
-        self.socket = ctx.socket(zmq.DEALER)
+        self.socket = ctx.socket(zmq.PAIR)
 
     def _pull_image(self):
         """
@@ -319,7 +319,7 @@ class DockerContainerWrapper(object):
 
         env = self.task.get("env", {})
         env.update({
-            'PIXML_SERVER': os.environ.get("PIXML_SERVER")
+            'ZMLP_SERVER': os.environ.get("ZMLP_SERVER")
         })
 
         logger.info("starting container {}".format(self.image))
@@ -328,7 +328,7 @@ class DockerContainerWrapper(object):
                                                            entrypoint="/usr/local/bin/server",
                                                            network=network,
                                                            ports=ports,
-                                                           labels=["containerizer"])
+                                                           labels=["zmlpcd"])
 
         # Sets up a thread which iterates the container logs.
         self.log_thread = threading.Thread(target=self.__tail_container_logs)
@@ -347,15 +347,19 @@ class DockerContainerWrapper(object):
             self.image, uri))
 
         self.socket.connect(uri)
-        self.socket.send_json({"type": "ready", "payload": {}})
-
-        # Give us 20 seconds to start.
-        event = self.receive_event(20000)
-        if event["type"] != "ok":
-            raise RuntimeError(
-                "Container {} in bad state, did not send ok event: {}".format(
-                    self.image, event))
-        logger.info("Container '{}' is ready to accept commands.".format(self.image))
+        while True:
+            self.socket.send_json({"type": "ready", "payload": {}})
+            event = self.receive_event(20000)
+            if event["type"] == "timeout":
+                raise RuntimeError(
+                    "Container {} in bad state, timed out".format(self.image))
+            elif event["type"] == "ok":
+                logger.info("Container '{}' is ready to accept commands.".format(self.image))
+                return
+            else:
+                raise RuntimeError(
+                    "Container {} in bad state, did not send ok event: {}".format(
+                        self.image, event))
 
     def __tail_container_logs(self):
         """
@@ -365,12 +369,15 @@ class DockerContainerWrapper(object):
         """
         logs = self.container.logs(stream=True)
         for line in logs:
+            if self.killed:
+                return
             line = line.decode("utf-8").rstrip()
             logger.info("CONTAINER:%s" % line)
 
     def stop(self):
         """
-        Stop the underlying docker Container.
+        Stop the underlying docker Container. This can happen from an exception
+        or manually.
 
         """
         if not self.killed and self.container:
@@ -459,9 +466,7 @@ class DockerContainerWrapper(object):
             event = self.receive_event()
             event_type = event["type"]
             if event_type == "asset":
-                response = event["payload"]
-            elif event_type == "finished":
-                return response
+                return event["payload"]
             else:
                 # Echo back to archivist.
                 self.client.emit_event(self.task, event_type, event["payload"])
@@ -478,26 +483,27 @@ class DockerContainerWrapper(object):
         Returns:
             dict: an event dict
         """
-        timeout_time = int(time.time() * 1000) + (timeout or 0)
+        wait_time = timeout
         while True:
-            poll = self.socket.poll(timeout or 1000)
+            event = None
+            # We have to use polling in all cases or else killing
+            # the container depends up in a deadlocked socket.
+            poll = self.socket.poll(500)
             if poll > 0:
-                try:
-                    event = self.socket.recv_json()
-                except Exception as e:
-                    logger.warning("event socket recv failed {} {}", type(e), e)
-                    raise RuntimeError("ZMQ socket failure", e)
+                event = self.socket.recv_json()
+            elif timeout:
+                wait_time -= 500
+                if wait_time <= 0:
+                    event = {"type": "timeout", "payload": {"timeout": timeout}}
 
+            if self.killed:
+                raise RuntimeError("Container was killed, exiting event='{}'".format(event))
+
+            if event:
                 self.log_event(event)
                 if event["type"] == "hardfailure":
                     raise RuntimeError("Container failure, exiting event='{}'".format(event))
-                if self.killed:
-                    raise RuntimeError("Container was killed, exiting event='{}'".format(event))
                 return event
-            elif self.killed:
-                raise RuntimeError("Container was killed")
-            elif timeout and (time.time() * 1000) > timeout_time:
-                return {"type": "timeout", "payload": {"timeout": timeout}}
 
     def log_event(self, event):
         """

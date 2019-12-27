@@ -57,12 +57,12 @@ class ClusterClient(object):
     """
 
     def __init__(self, remote_url, shared_key, my_port=5000):
-        self.remote_url = remote_url or os.environ.get("PIXML_SERVER")
+        self.remote_url = remote_url or os.environ.get("ZMLP_SERVER")
         self.shared_key = shared_key or os.environ.get("ANALYST_SHAREDKEY")
         self.version = get_sdk_version()
 
         if not self.remote_url:
-            raise ValueError("No archivist URL has been set, try setting the PIXML_SERVER env var")
+            raise ValueError("No archivist URL has been set, try setting the ZMLP_SERVER env var")
 
         if not self.shared_key:
             raise ValueError("No shared key has been setting the ANALYST_SHAREDKEY env var")
@@ -100,7 +100,7 @@ class ClusterClient(object):
                 return rsp.json()
         except requests.exceptions.ConnectionError as e:
             logger.warning(
-                 "Connection error, failed to obtain next task %s, %s" % (self.remote_url, e))
+                "Connection error, failed to obtain next task %s, %s" % (self.remote_url, e))
         return None
 
     def emit_event(self, task, etype, payload):
@@ -356,6 +356,5 @@ def get_sdk_version():
     try:
         with open("BUILD", "r") as fp:
             return fp.read().strip()
-    except IOError as e:
-        logger.warning("Failed to read build file, %s" % e)
+    except IOError:
         return "unknown"
