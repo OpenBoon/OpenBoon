@@ -27,28 +27,30 @@ const ProgressBar = ({ taskCounts }) => {
         width: CONTAINER_WIDTH,
         position: 'relative',
       }}>
-      {Object.keys(TASK_STATUS_COLORS)
-        .filter(taskStatus => taskCounts[taskStatus] > 0)
-        .map(taskStatus => {
-          return (
-            <div
-              key={taskStatus}
-              css={{
-                height: '100%',
-                flex: `${taskCounts[taskStatus]} 0 auto`,
-                backgroundColor: TASK_STATUS_COLORS[taskStatus],
-                '&:first-of-type': {
-                  borderTopLeftRadius: constants.borderRadius.medium,
-                  borderBottomLeftRadius: constants.borderRadius.medium,
-                },
-                '&:last-of-type': {
-                  borderTopRightRadius: constants.borderRadius.medium,
-                  borderBottomRightRadius: constants.borderRadius.medium,
-                },
-              }}
-            />
-          )
-        })}
+      <div css={{ display: 'flex', width: '100%' }}>
+        {Object.keys(TASK_STATUS_COLORS)
+          .filter(taskStatus => taskCounts[taskStatus] > 0)
+          .map(taskStatus => {
+            return (
+              <div
+                key={taskStatus}
+                css={{
+                  height: '100%',
+                  flex: `${taskCounts[taskStatus]} 0 auto`,
+                  backgroundColor: TASK_STATUS_COLORS[taskStatus],
+                  '&:first-of-type': {
+                    borderTopLeftRadius: constants.borderRadius.medium,
+                    borderBottomLeftRadius: constants.borderRadius.medium,
+                  },
+                  '&:last-of-type': {
+                    borderTopRightRadius: constants.borderRadius.medium,
+                    borderBottomRightRadius: constants.borderRadius.medium,
+                  },
+                }}
+              />
+            )
+          })}
+      </div>
       {showLegend && (
         <div
           css={{
