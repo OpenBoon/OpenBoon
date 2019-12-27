@@ -1,12 +1,11 @@
 import json
 import logging
 import sys
-import time
 
 import zmq
 
-from zmlpcd.process import ProcessorExecutor
 from zmlp.client import ZmlpJsonEncoder
+from zmlpcd.process import ProcessorExecutor
 from .reactor import Reactor
 
 logger = logging.getLogger(__name__)
