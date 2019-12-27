@@ -55,7 +55,7 @@ class ZpsExecutor(object):
                 self.generate()
             if self.script.get("assets"):
                 assets = self.process()
-                if assets:
+                if assets and self.exit_status == 0:
                     self.client.emit_event(
                         self.task, "index", {"assets": assets})
         except Exception as e:
