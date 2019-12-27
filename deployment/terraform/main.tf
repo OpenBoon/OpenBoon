@@ -94,7 +94,7 @@ resource "kubernetes_secret" "dockerhub" {
 }
 
 
-## pixelML Services ######################################################################
+## ZMLP Services ######################################################################
 module "elasticsearch" {
   source = "./modules/elasticsearch"
   container-cluster-name = "${module.gke-cluster.name}"

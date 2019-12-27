@@ -70,7 +70,7 @@ class AssetController @Autowired constructor(
         return assetService.getAsset(id)
     }
 
-    @ApiOperation("Stream the source file for the asset is in PixelML storage")
+    @ApiOperation("Stream the source file for the asset is in ZMLP external storage")
     @GetMapping(value = ["/api/v3/assets/{id}/_stream"])
     fun streamAsset(
         @ApiParam("Unique ID of the Asset.") @PathVariable id: String
