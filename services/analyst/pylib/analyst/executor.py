@@ -2,7 +2,6 @@ import json
 import logging
 import os
 import threading
-import time
 
 import docker
 import zmq
@@ -268,7 +267,7 @@ class DockerContainerWrapper(object):
         self.log_thread = None
 
         ctx = zmq.Context()
-        self.socket = ctx.socket(zmq.DEALER)
+        self.socket = ctx.socket(zmq.PAIR)
 
     def _pull_image(self):
         """
@@ -348,15 +347,19 @@ class DockerContainerWrapper(object):
             self.image, uri))
 
         self.socket.connect(uri)
-        self.socket.send_json({"type": "ready", "payload": {}})
-
-        # Give us 20 seconds to start.
-        event = self.receive_event(20000)
-        if event["type"] != "ok":
-            raise RuntimeError(
-                "Container {} in bad state, did not send ok event: {}".format(
-                    self.image, event))
-        logger.info("Container '{}' is ready to accept commands.".format(self.image))
+        while True:
+            self.socket.send_json({"type": "ready", "payload": {}})
+            event = self.receive_event(20000)
+            if event["type"] == "timeout":
+                raise RuntimeError(
+                    "Container {} in bad state, timed out".format(self.image))
+            elif event["type"] == "ok":
+                logger.info("Container '{}' is ready to accept commands.".format(self.image))
+                return
+            else:
+                raise RuntimeError(
+                    "Container {} in bad state, did not send ok event: {}".format(
+                        self.image, event))
 
     def __tail_container_logs(self):
         """
@@ -463,9 +466,7 @@ class DockerContainerWrapper(object):
             event = self.receive_event()
             event_type = event["type"]
             if event_type == "asset":
-                response = event["payload"]
-            elif event_type == "finished":
-                return response
+                return event["payload"]
             else:
                 # Echo back to archivist.
                 self.client.emit_event(self.task, event_type, event["payload"])
@@ -482,26 +483,28 @@ class DockerContainerWrapper(object):
         Returns:
             dict: an event dict
         """
-        timeout_time = int(time.time() * 1000) + (timeout or 0)
         while True:
-            poll = self.socket.poll(timeout or 1000)
-            if poll > 0:
-                try:
-                    event = self.socket.recv_json()
-                except Exception as e:
-                    logger.warning("event socket recv failed {} {}", type(e), e)
-                    raise RuntimeError("ZMQ socket failure", e)
+            if timeout:
+                total_time = timeout
+                while True:
+                    total_time -= 1000
+                    poll = self.socket.poll(1000)
+                    if poll > 0:
+                        event = self.socket.recv_json()
+                        break
+                    elif total_time <= 0:
+                        event = {"type": "timeout", "payload": {"timeout": timeout}}
+                        break
+            else:
+                event = self.socket.recv_json()
 
-                self.log_event(event)
-                if event["type"] == "hardfailure":
-                    raise RuntimeError("Container failure, exiting event='{}'".format(event))
-                if self.killed:
-                    raise RuntimeError("Container was killed, exiting event='{}'".format(event))
-                return event
-            elif self.killed:
-                raise RuntimeError("Container was killed")
-            elif timeout and (time.time() * 1000) > timeout_time:
-                return {"type": "timeout", "payload": {"timeout": timeout}}
+            self.log_event(event)
+            if event["type"] == "hardfailure":
+                raise RuntimeError("Container failure, exiting event='{}'".format(event))
+            if self.killed:
+                raise RuntimeError("Container was killed, exiting event='{}'".format(event))
+
+            return event
 
     def log_event(self, event):
         """

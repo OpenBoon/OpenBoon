@@ -270,10 +270,6 @@ class ProcessorWrapper(object):
                     "skip": frame.skip
                 }
             })
-            self.reactor.emitter.write({
-                "type": "finished",
-                "payload": {}
-            })
 
     def teardown(self):
         """

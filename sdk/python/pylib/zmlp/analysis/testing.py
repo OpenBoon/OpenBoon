@@ -30,7 +30,7 @@ class TestProcessor(AssetBuilder):
         self.add_arg(Argument('attrs', 'struct', default=None))
         self.add_arg(Argument('send_event', 'str', default=None))
         self.add_arg(Argument('raise_fatal', 'bool', default=False,
-                              toolTip='Raise a ZmlpUnrecoverableProcessorException'))
+                              toolTip='Raise a ZmlpFatalProcessorException'))
 
     def process(self, frame):
         self.logger.info('Running TestProcessor process()')

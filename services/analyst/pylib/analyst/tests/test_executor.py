@@ -75,7 +75,6 @@ class TestZpsExecutor(unittest.TestCase):
 
     def test_process(self):
         task = test_task()
-
         wrapper = ZpsExecutor(task, self.client)
         wrapper.run()
 
@@ -91,7 +90,6 @@ class TestZpsExecutor(unittest.TestCase):
 
         wrapper = ZpsExecutor(task, self.client)
         result = wrapper.run()
-        print(result)
         assert result["hardfailure_events"] == 1
         assert result["error_events"] == 1
         assert result["exit_status"] == 2
@@ -108,13 +106,11 @@ class TestZpsExecutor(unittest.TestCase):
 
     def test_generate_invalid_processor(self):
         self.gen_task["script"]["generate"][0]["className"] = "foo.analysis.testing.FOO"
-
         wrapper = ZpsExecutor(self.gen_task, self.client)
         result = wrapper.run()
 
-        assert result["hardfailure_events"] == 1
-        assert result["error_events"] == 1
-        assert result["exit_status"] == 1
+        assert result.get("hardfailure_events") == 1
+        assert result.get("exit_status") == 1
 
 
 class TestDockerContainerWrapper(unittest.TestCase):

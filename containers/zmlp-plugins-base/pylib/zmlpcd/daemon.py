@@ -1,6 +1,7 @@
 import json
 import logging
 import sys
+import time
 
 import zmq
 
@@ -27,7 +28,7 @@ class ZmlpContainerDaemon(object):
 
     def __setup_zmq_socket(self, port):
         ctx = zmq.Context()
-        socket = ctx.socket(zmq.DEALER)
+        socket = ctx.socket(zmq.PAIR)
         socket.bind("tcp://*:%s" % port)
         return socket
 
