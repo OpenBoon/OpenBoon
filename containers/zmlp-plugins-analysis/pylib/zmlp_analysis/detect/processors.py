@@ -24,7 +24,7 @@ class ZmlpObjectDetectionProcessor(AssetBuilder):
 
         # Write out file with boxes around detected objects
         # We'll use this file for all elements.
-        name = "standard-object-detection.jpg"
+        name = "zmlp-object-detection.jpg"
         with tempfile.NamedTemporaryFile(suffix=".jpg") as tf:
             plt.imsave(tf.name, output)
             attrs = {"width": output.shape[1], "height": output.shape[0]}
