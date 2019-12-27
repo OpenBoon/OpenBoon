@@ -431,7 +431,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             className="emotion-9"
           >
-             Cancelled
+            Cancelled
           </div>
         </td>
         <td>
@@ -513,7 +513,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             className="emotion-22"
           >
-             In Progress
+            In Progress
           </div>
         </td>
         <td>
@@ -595,7 +595,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             className="emotion-35"
           >
-             Archived
+            Archived
           </div>
         </td>
         <td>
@@ -674,7 +674,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             className="emotion-9"
           >
-             Cancelled
+            Cancelled
           </div>
         </td>
         <td>
@@ -747,7 +747,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             className="emotion-35"
           >
-             Finished
+            Finished
           </div>
         </td>
         <td>
@@ -820,7 +820,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             className="emotion-22"
           >
-             Active
+            Active
           </div>
         </td>
         <td>
@@ -893,7 +893,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             className="emotion-22"
           >
-             Active
+            Active
           </div>
         </td>
         <td>
@@ -960,7 +960,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             className="emotion-22"
           >
-             Active
+            Active
           </div>
         </td>
         <td>
@@ -1027,7 +1027,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             className="emotion-22"
           >
-             Active
+            Active
           </div>
         </td>
         <td>
@@ -1094,7 +1094,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             className="emotion-22"
           >
-             Active
+            Active
           </div>
         </td>
         <td>
@@ -1161,7 +1161,7 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
           <div
             className="emotion-22"
           >
-             Active
+            Active
           </div>
         </td>
         <td>

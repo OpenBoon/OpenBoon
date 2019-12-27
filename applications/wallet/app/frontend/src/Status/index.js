@@ -24,7 +24,7 @@ const Status = ({ jobStatus }) => {
         color: STATUS_COLORS[jobStatus],
         backgroundColor: colors.structure.coal,
       }}>
-      {jobStatus.replace(/([A-Z])/g, match => ` ${match}`)}
+      {jobStatus.replace(/([A-Z])/g, match => ` ${match}`).trim()}
     </div>
   )
 }
