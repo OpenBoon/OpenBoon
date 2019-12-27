@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-const DataQueueRow = ({ apiKey: { name, permissions } }) => {
+const ApiKeysRow = ({ apiKey: { name, permissions } }) => {
   return (
     <tr>
       <td>{name}</td>
@@ -11,11 +11,11 @@ const DataQueueRow = ({ apiKey: { name, permissions } }) => {
   )
 }
 
-DataQueueRow.propTypes = {
+ApiKeysRow.propTypes = {
   apiKey: PropTypes.shape({
     name: PropTypes.string.isRequired,
     permissions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   }).isRequired,
 }
 
-export default DataQueueRow
+export default ApiKeysRow
