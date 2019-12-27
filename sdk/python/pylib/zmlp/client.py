@@ -367,7 +367,7 @@ class ZmlpClient(object):
         claims = {
             'aud': self.server,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60),
-            'keyId': self.apikey["keyId"],
+            'id': self.apikey["id"],
         }
 
         if os.environ.get("ZMLP_TASK_ID"):

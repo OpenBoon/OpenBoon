@@ -18,7 +18,7 @@ class SecurityUtilTests {
 
         assertEquals(
             UUID.fromString("76094317-D968-43A8-B9DC-D0680A899AD7"),
-            apikey.keyId
+            apikey.id
         )
 
         assertEquals(
@@ -43,7 +43,7 @@ class SecurityUtilTests {
 
         assertEquals(
             UUID.fromString("76094317-D968-43A8-B9DC-D0680A899AD7"),
-            apikey.keyId
+            apikey.id
         )
 
         assertEquals(

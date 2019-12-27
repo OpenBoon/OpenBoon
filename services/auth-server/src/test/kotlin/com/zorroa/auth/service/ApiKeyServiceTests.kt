@@ -33,7 +33,7 @@ class ApiKeyServiceTests : AbstractTest() {
             listOf("foo")
         )
         val key1 = apiKeyService.create(spec)
-        val key2 = apiKeyService.get(key1.keyId)
+        val key2 = apiKeyService.get(key1.id)
         assertEquals(key1, key2)
     }
 
@@ -75,6 +75,6 @@ class ApiKeyServiceTests : AbstractTest() {
         )
         val key1 = apiKeyService.create(spec)
         apiKeyService.delete(key1)
-        apiKeyService.get(key1.keyId)
+        apiKeyService.get(key1.id)
     }
 }

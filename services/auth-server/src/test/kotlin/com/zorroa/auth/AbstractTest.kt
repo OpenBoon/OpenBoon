@@ -44,7 +44,7 @@ abstract class AbstractTest {
         SecurityContextHolder.getContext().authentication =
             UsernamePasswordAuthenticationToken(
                 standardKey.getZmlpActor(),
-                standardKey.keyId,
+                standardKey.id,
                 standardKey.getGrantedAuthorities()
             )
     }

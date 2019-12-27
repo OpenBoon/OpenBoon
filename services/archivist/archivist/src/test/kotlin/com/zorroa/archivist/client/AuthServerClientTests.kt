@@ -39,7 +39,7 @@ class AuthServerClientTests : AbstractTest() {
         val client = AuthServerClientImpl("http://localhost:9090", base64)
         val serviceKey = client.serviceKey
         assertEquals(UUID.fromString("50550AAC-6C5A-41CD-B779-2821BB5B535F"), serviceKey?.projectId)
-        assertEquals(UUID.fromString("76094317-D968-43A8-B9DC-D0680A899AD7"), serviceKey?.keyId)
+        assertEquals(UUID.fromString("76094317-D968-43A8-B9DC-D0680A899AD7"), serviceKey?.id)
     }
 
     @Test
@@ -47,7 +47,7 @@ class AuthServerClientTests : AbstractTest() {
         val client = AuthServerClientImpl("http://localhost:9090", "src/test/resources/inception-key.json")
         val serviceKey = client.serviceKey
         assertEquals(UUID.fromString("00000000-0000-0000-0000-000000000000"), serviceKey?.projectId)
-        assertEquals(UUID.fromString("4338a83f-a920-40ab-a251-a123b17df1ba"), serviceKey?.keyId)
+        assertEquals(UUID.fromString("4338a83f-a920-40ab-a251-a123b17df1ba"), serviceKey?.id)
     }
 
     @Test
@@ -55,7 +55,7 @@ class AuthServerClientTests : AbstractTest() {
         val payload = """
         {
             "projectId": "cc7c2e6f-1e36-4731-9154-9598e22408b7",
-            "keyId": "11eaad16-d355-4006-90e4-6bd100c3cd81",
+            "id": "11eaad16-d355-4006-90e4-6bd100c3cd81",
             "sharedKey": "abc123"
         }
         """.trimIndent()
@@ -74,7 +74,7 @@ class AuthServerClientTests : AbstractTest() {
         val project = projectService.findOne(ProjectFilter())
         val apiKey = authServerClient.createApiKey(project, "test", listOf(Perm.ASSETS_WRITE))
         assertEquals("cc7c2e6f-1e36-4731-9154-9598e22408b7", apiKey.projectId.toString())
-        assertEquals("11eaad16-d355-4006-90e4-6bd100c3cd81", apiKey.keyId.toString())
+        assertEquals("11eaad16-d355-4006-90e4-6bd100c3cd81", apiKey.id.toString())
         assertEquals("abc123", apiKey.sharedKey)
     }
 
@@ -83,7 +83,7 @@ class AuthServerClientTests : AbstractTest() {
         val payload = """
         {
             "projectId": "cc7c2e6f-1e36-4731-9154-9598e22408b7",
-            "keyId": "11eaad16-d355-4006-90e4-6bd100c3cd81",
+            "id": "11eaad16-d355-4006-90e4-6bd100c3cd81",
             "sharedKey": "abc123"
         }
         """.trimIndent()
@@ -101,7 +101,7 @@ class AuthServerClientTests : AbstractTest() {
 
         val apiKey = authServerClient.getApiKey(UUID.randomUUID(), "test")
         assertEquals("cc7c2e6f-1e36-4731-9154-9598e22408b7", apiKey.projectId.toString())
-        assertEquals("11eaad16-d355-4006-90e4-6bd100c3cd81", apiKey.keyId.toString())
+        assertEquals("11eaad16-d355-4006-90e4-6bd100c3cd81", apiKey.id.toString())
         assertEquals("abc123", apiKey.sharedKey)
     }
 
@@ -112,7 +112,7 @@ class AuthServerClientTests : AbstractTest() {
         val payload = """
         {
             "projectId": "cc7c2e6f-1e36-4731-9154-9598e22408b7",
-            "keyId": "11eaad16-d355-4006-90e4-6bd100c3cd81",
+            "id": "11eaad16-d355-4006-90e4-6bd100c3cd81",
             "name": "roflcopter",
             "permissions": ["SuperAdmin"]
         }

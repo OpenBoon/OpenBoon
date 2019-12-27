@@ -64,7 +64,7 @@ locals {
   inception-key = <<EOF
 {"name": "admin-key",
     "projectId": "00000000-0000-0000-0000-000000000000",
-    "keyId": "${uuid()}",
+    "id": "${uuid()}",
     "sharedKey": "${random_string.shared-key.result}",
     "permissions": [
         "SuperAdmin", "ProjectAdmin", "AssetsRead", "AssetsImport"

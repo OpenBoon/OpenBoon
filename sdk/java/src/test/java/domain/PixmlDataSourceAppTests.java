@@ -33,7 +33,7 @@ public class PixmlDataSourceAppTests {
         //This is not a valid key
         keyDict = new HashMap();
         keyDict.put("projectId", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
-        keyDict.put("keyId", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
+        keyDict.put("id", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
         keyDict.put("sharedKey", "test123test135");
 
         app = new PixmlApp(keyDict);

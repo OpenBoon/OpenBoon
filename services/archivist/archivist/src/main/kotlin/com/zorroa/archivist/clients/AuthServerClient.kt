@@ -29,13 +29,13 @@ import org.springframework.web.client.RestTemplate
  * ZmlpUser instances are the result of authenticating a JWT token
  * with the auth server.
  *
- * @param keyId The keyId of the key.
+ * @param id The id of the key.
  * @param projectId The project ID of the key.
  * @param name a name assoicated with they key, names are unique.
  * @param permissions A list of permissions available to the key.
  */
 class ZmlpActor(
-    val keyId: UUID,
+    val id: UUID,
     val projectId: UUID,
     val name: String,
     val permissions: List<String>
@@ -62,13 +62,13 @@ class ZmlpActor(
 
         other as ZmlpActor
 
-        if (keyId != other.keyId) return false
+        if (id != other.id) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return keyId.hashCode()
+        return id.hashCode()
     }
 }
 
@@ -76,7 +76,7 @@ class ZmlpActor(
  * An ApiKey that can be used for signing JWT tokens.
  */
 class ApiKey(
-    val keyId: UUID,
+    val id: UUID,
     val projectId: UUID,
     val sharedKey: String
 ) {
@@ -137,13 +137,13 @@ class AuthServerClientImpl(val baseUri: String, val serviceKeyFile: String?) : A
         val path = Paths.get(serviceKeyFile)
         return if (Files.exists(path)) {
             val key = Json.Mapper.readValue<ApiKey>(path.toFile())
-            logger.info("Loaded Inception key: ${key.keyId.prefix(8)} from: '$serviceKeyFile'")
+            logger.info("Loaded Inception key: ${key.id.prefix(8)} from: '$serviceKeyFile'")
             key
         } else {
             try {
                 val decoded = Base64.getUrlDecoder().decode(serviceKeyFile)
                 val key = Json.Mapper.readValue<ApiKey>(decoded)
-                logger.info("Loaded Inception key: ${key.keyId.prefix(8)}")
+                logger.info("Loaded Inception key: ${key.id.prefix(8)}")
                 key
             } catch (e: Exception) {
                 logger.warn("NO INCEPTION KEY WAS LOADED")
@@ -193,7 +193,7 @@ class AuthServerClientImpl(val baseUri: String, val serviceKeyFile: String?) : A
             val token = JWT.create()
                 .withIssuer("zorroa-archivist")
                 .withClaim("projectId", it.projectId.toString())
-                .withClaim("keyId", it.keyId.toString())
+                .withClaim("id", it.id.toString())
                 .sign(algo)
             entity.header("Authorization", "Bearer $token")
         }

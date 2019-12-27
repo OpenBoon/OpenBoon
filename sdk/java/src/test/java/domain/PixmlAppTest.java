@@ -26,7 +26,7 @@ public class PixmlAppTest {
     @Before
     public void setup() {
         keyDict.put("projectId", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
-        keyDict.put("keyId", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
+        keyDict.put("id", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
         keyDict.put("sharedKey", "test123test135");
 
         try {

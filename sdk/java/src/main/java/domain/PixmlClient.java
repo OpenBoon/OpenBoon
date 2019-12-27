@@ -110,7 +110,7 @@ public class PixmlClient {
 
         claimBuilder.withClaim("aud", this.server);
         claimBuilder.withClaim("exp", Instant.now().plus(60, ChronoUnit.SECONDS).toEpochMilli());
-        claimBuilder.withClaim("keyId", this.apiKey.get("keyId").textValue());
+        claimBuilder.withClaim("id", this.apiKey.get("id").textValue());
 
         //if PIXML_TASK_ID exists
         Optional.ofNullable(System.getenv("PIXML_TASK_ID"))

@@ -57,12 +57,12 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
                 }
             }
 
-            val keyId = UUID.fromString(jwt.claims.getValue("keyId").asString())
+            val id = UUID.fromString(jwt.claims.getValue("id").asString())
 
             /**
              * Check to see if the key is the internal admin key.
              */
-            val apiKey = if (externalApiKey.keyId == keyId) {
+            val apiKey = if (externalApiKey.id == id) {
                 val projectId = if (jwt.claims.containsKey("projectId")
                 ) {
                     UUID.fromString(jwt.claims.getValue("projectId").asString())
@@ -70,13 +70,13 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
                     externalApiKey.projectId
                 }
                 ApiKey(
-                    externalApiKey.keyId,
+                    externalApiKey.id,
                     projectId,
                     externalApiKey.sharedKey,
                     externalApiKey.name, externalApiKey.permissions
                 )
             } else {
-                apiKeyRepository.findById(keyId).get()
+                apiKeyRepository.findById(id).get()
             }
 
             val alg = Algorithm.HMAC512(apiKey.sharedKey)
@@ -102,7 +102,7 @@ class JwtAuthenticationToken constructor(
 ) : AbstractAuthenticationToken(permissions) {
 
     override fun getCredentials(): Any {
-        return user.keyId
+        return user.id
     }
 
     override fun getPrincipal(): Any {

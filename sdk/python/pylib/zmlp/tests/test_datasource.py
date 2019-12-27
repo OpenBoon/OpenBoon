@@ -16,7 +16,7 @@ class ZmlpDataSourceAppTests(unittest.TestCase):
         # This is not a valid key
         self.key_dict = {
             'projectId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
-            'keyId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
+            'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'sharedKey': 'test123test135'
         }
         self.app = zmlp.app.ZmlpApp(self.key_dict)

@@ -72,7 +72,7 @@ class TaskController @Autowired constructor(
     fun retry(@ApiParam("UUID of the Task.") @PathVariable id: UUID): Any {
         val task = jobService.getInternalTask(id)
         val result =  dispatcherService.retryTask(task,
-            "Retried by ${getZmlpActor().keyId}")
+            "Retried by ${getZmlpActor().id}")
         if (result) {
             jobService.restartJob(task)
         }

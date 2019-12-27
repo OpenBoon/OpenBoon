@@ -38,7 +38,7 @@ class ApiKeySpec(
 @ApiModel("SigningApiKey", description = "The attributes required to sign JWT requests.")
 class SigningApiKey(
     @ApiModelProperty("The unique ID of the ApiKey")
-    val keyId: UUID,
+    val id: UUID,
 
     @ApiModelProperty("The project ID of the ApiKey")
     val projectId: UUID,
@@ -54,7 +54,7 @@ class SigningApiKey(
 class ZmlpActor(
 
     @ApiModelProperty("The unique ID of the ApiKey")
-    val keyId: UUID,
+    val id: UUID,
 
     @ApiModelProperty("The project ID of the ApiKey")
     val projectId: UUID,
@@ -74,7 +74,7 @@ class ApiKey(
     @Id
     @Column(name = "pk_api_key")
     @ApiModelProperty("The unique ID of the ApiKey")
-    val keyId: UUID,
+    val id: UUID,
 
     @Column(name = "project_id", nullable = false)
     @ApiModelProperty("The Project ID the ApiKey belongs in.")
@@ -106,7 +106,7 @@ class ApiKey(
     fun getJwtToken(timeout: Int = 60, projId: UUID? = null): String {
         val algo = Algorithm.HMAC512(sharedKey)
         val spec = JWT.create().withIssuer("zorroa")
-            .withClaim("keyId", keyId.toString())
+            .withClaim("id", id.toString())
             .withClaim("projectId", (projId ?: projectId).toString())
 
         if (timeout > 0) {
@@ -120,16 +120,16 @@ class ApiKey(
 
     @JsonIgnore
     fun getMinimalApiKey(): SigningApiKey {
-        return SigningApiKey(keyId, projectId, sharedKey)
+        return SigningApiKey(id, projectId, sharedKey)
     }
 
     @JsonIgnore
     fun getZmlpActor(): ZmlpActor {
-        return ZmlpActor(keyId, projectId, name, permissions)
+        return ZmlpActor(id, projectId, name, permissions)
     }
 
     override fun toString(): String {
-        return "ApiKey(keyId=$keyId, projectId=$projectId)"
+        return "ApiKey(id=$id, projectId=$projectId)"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -138,7 +138,7 @@ class ApiKey(
 
         other as ApiKey
 
-        if (keyId != other.keyId) return false
+        if (id != other.id) return false
         if (projectId != other.projectId) return false
         if (sharedKey != other.sharedKey) return false
 
@@ -146,7 +146,7 @@ class ApiKey(
     }
 
     override fun hashCode(): Int {
-        var result = keyId.hashCode()
+        var result = id.hashCode()
         result = 31 * result + projectId.hashCode()
         result = 31 * result + sharedKey.hashCode()
         return result
@@ -175,7 +175,7 @@ class ApiKeyFilter(
      * A list of unique ApiKey  IDs.
      */
     @ApiModelProperty("The ApiKey IDs to match.")
-    val keyIds: List<UUID>? = null,
+    val ids: List<UUID>? = null,
 
     /**
      * A list of unqiue Project ids

@@ -32,13 +32,13 @@ fun loadServiceKey(serviceKey: String?): ApiKey {
         val path = Paths.get(it)
         val apikey = if (Files.exists(path)) {
             val key = JSON_MAPPER.readValue<ApiKey>(path.toFile())
-            logger.info("Loaded Inception key: ${key.keyId.prefix(8)} from: '$path'")
+            logger.info("Loaded Inception key: ${key.id.prefix(8)} from: '$path'")
             key
         } else {
             try {
                 val decoded = Base64.getUrlDecoder().decode(it)
                 val key = JSON_MAPPER.readValue<ApiKey>(decoded)
-                logger.info("Loaded Inception key: ${key.keyId.prefix(8)}")
+                logger.info("Loaded Inception key: ${key.id.prefix(8)}")
                 key
             } catch (e: Exception) {
                 logger.warn("Failed to load inception key, decode failed, unexpected", e)
