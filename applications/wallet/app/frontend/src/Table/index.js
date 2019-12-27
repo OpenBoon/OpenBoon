@@ -22,8 +22,6 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
     `${url}?from=${from}&size=${SIZE}`,
   )
 
-  if (!Array.isArray(results)) return 'Loading...'
-
   return (
     <div>
       <table
@@ -95,7 +93,8 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
         <tbody>
           <TableContent
             numColumns={columns.length}
-            results={results}
+            isLoading={!Array.isArray(results)}
+            results={results || []}
             renderEmpty={renderEmpty}
             renderRow={renderRow}
             revalidate={revalidate}

@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Table /> should render properly 1`] = `
+.emotion-1 {
+  pointer-events: none;
+}
+
+.emotion-0 {
+  height: 300px;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: red;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+<tr
+  aria-label="Empty table"
+  className="emotion-1"
+>
+  <td
+    colSpan={1}
+  >
+    <div
+      className="emotion-0"
+    >
+      Empty
+    </div>
+  </td>
+</tr>
+`;
+
+exports[`<Table /> should render properly when loading 1`] = `"Loading..."`;
+
+exports[`<Table /> should render properly without results 1`] = `
+.emotion-1 {
+  pointer-events: none;
+}
+
+.emotion-0 {
+  height: 300px;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: red;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+<tr
+  aria-label="Empty table"
+  className="emotion-1"
+>
+  <td
+    colSpan={1}
+  >
+    <div
+      className="emotion-0"
+    >
+      Empty
+    </div>
+  </td>
+</tr>
+`;
