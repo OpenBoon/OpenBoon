@@ -356,5 +356,5 @@ def get_sdk_version():
     try:
         with open("BUILD", "r") as fp:
             return fp.read().strip()
-    except IOError as e:
+    except IOError:
         return "unknown"
