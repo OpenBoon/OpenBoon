@@ -32,7 +32,7 @@ class MxUnitTests(PluginUnitTestCase):
         processor = self.init_processor(ResNetSimilarityProcessor(), {'debug': True})
         processor.process(self.frame)
 
-        self.assertEquals(2048, len(self.frame.asset['analysis.pixelml.similarity.vector']))
+        self.assertEquals(2048, len(self.frame.asset['analysis.zmlp.similarity.vector']))
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_MxNetClassify_defaults(self, upload_patch):
@@ -50,5 +50,5 @@ class MxUnitTests(PluginUnitTestCase):
         processor = self.init_processor(ResNetClassifyProcessor(), {'debug': True})
         processor.process(self.frame)
 
-        self.assertTrue('albatross' in self.frame.asset['analysis.pixelml.labels.keywords'])
-        self.assertTrue(type(self.frame.asset['analysis.pixelml.labels.score']) == float)
+        self.assertTrue('albatross' in self.frame.asset['analysis.zmlp.classify.labels'])
+        self.assertTrue(type(self.frame.asset['analysis.zmlp.classify.score']) == float)

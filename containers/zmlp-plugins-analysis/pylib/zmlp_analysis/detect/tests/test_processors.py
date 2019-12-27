@@ -5,10 +5,10 @@ from zmlp.analysis import Frame
 from zmlp.analysis.proxy import store_asset_proxy
 from zmlp.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 
-from zmlp_analysis.detect.processors import PixelMLObjectDetectionProcessor
+from zmlp_analysis.detect.processors import ZmlpObjectDetectionProcessor
 
 
-class PixelMLObjectDetectionProcessorTests(PluginUnitTestCase):
+class ZmlpObjectDetectionProcessorTests(PluginUnitTestCase):
 
     def setUp(self):
         self.image_path = zorroa_test_data('images/detect/dogbike.jpg')
@@ -29,7 +29,7 @@ class PixelMLObjectDetectionProcessorTests(PluginUnitTestCase):
         # We have to add a proxy to use ML, there is no source
         # fallback currently.
         store_asset_proxy(self.frame.asset, self.image_path, (2322, 4128))
-        processor = self.init_processor(PixelMLObjectDetectionProcessor(), {})
+        processor = self.init_processor(ZmlpObjectDetectionProcessor(), {})
         processor.process(self.frame)
 
         elements = self.frame.asset.document["elements"]

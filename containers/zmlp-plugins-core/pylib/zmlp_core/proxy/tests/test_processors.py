@@ -43,7 +43,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
     def test_process(self, post_patch):
         post_patch.return_value = self.storage_patch
         self.processor.process(self.frame)
-        assert len(self.frame.asset.get_attr('analysis.pixelml.tinyProxy')) == 9
+        assert len(self.frame.asset.get_attr('analysis.zmlp.tiny-proxy')) == 9
         assert len(self.frame.asset.get_attr('files')) == 2
 
     @patch.object(ZmlpClient, 'upload_file')
@@ -98,7 +98,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         # Videos can't be processed, so there is no valid source path.
         frame = Frame(TestAsset(VIDEO))
         self.processor.process(frame)
-        assert not frame.asset.get_attr("proxies.proxies")
+        assert not frame.asset.get_attr("files")
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_process_asset_without_media_namespace(self, post_patch):
@@ -106,7 +106,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         self.frame.asset.set_attr('media', {})
         self.processor.process(self.frame)
 
-        assert len(self.frame.asset.get_attr('analysis.pixelml.tinyProxy')) == 9
+        assert len(self.frame.asset.get_attr('analysis.zmlp.tiny-proxy')) == 9
         assert len(self.frame.asset.get_attr('files')) == 2
 
     def test_get_tiny_proxy_colors(self):

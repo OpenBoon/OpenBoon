@@ -12,7 +12,7 @@ from zmlp.analysis import AssetBuilder
 from zmlp.analysis.storage import file_storage
 
 
-class PixelMLObjectDetectionProcessor(AssetBuilder):
+class ZmlpObjectDetectionProcessor(AssetBuilder):
 
     def process(self, frame):
         asset = frame.asset

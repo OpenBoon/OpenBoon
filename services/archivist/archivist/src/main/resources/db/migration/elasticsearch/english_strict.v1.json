@@ -99,7 +99,7 @@
       "analysis": {
         "dynamic": "strict",
         "properties": {
-          "pixelml": {
+          "zmlp": {
             "dynamic": "strict",
             "properties": {
               "tinyProxy": {
