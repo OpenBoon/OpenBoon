@@ -50,5 +50,5 @@ class MxUnitTests(PluginUnitTestCase):
         processor = self.init_processor(ResNetClassifyProcessor(), {'debug': True})
         processor.process(self.frame)
 
-        self.assertTrue('albatross' in self.frame.asset['analysis.zmlp.classify.labels'])
-        self.assertTrue(type(self.frame.asset['analysis.zmlp.classify.score']) == float)
+        self.assertTrue('albatross' in self.frame.asset['analysis.zmlp.labels.keywords'])
+        self.assertTrue(type(self.frame.asset['analysis.zmlp.labels.score']) == float)

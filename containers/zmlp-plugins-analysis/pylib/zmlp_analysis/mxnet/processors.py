@@ -62,7 +62,7 @@ class ResNetClassifyProcessor(AssetBuilder):
             kw.extend([k.strip() for k in self.labels[i].split(',') if k])
 
         struct = {
-            'labels': list(set(kw)),
+            'keywords': list(set(kw)),
             'score': float(prob[psort[0]])
         }
 
@@ -77,7 +77,7 @@ class ResNetClassifyProcessor(AssetBuilder):
                     self.labels[i].replace(',', '').split(' ')[1:])
                 struct['debug']['prob' + str(j)] = prob[i]
 
-        asset.add_analysis('zmlp.classify', struct)
+        asset.add_analysis('zmlp.labels', struct)
 
 
 class ResNetSimilarityProcessor(AssetBuilder):
