@@ -105,12 +105,17 @@ interface AuthServerClient {
     /**
      * Delete API key for the given project.
      */
-    fun deleteApiKey(uuid: UUID): ApiKey
+    fun deleteApiKey(uuid: UUID)
 
     /**
      * Get an API key by project and its unique name.
      */
     fun getApiKey(projectId: UUID, name: String): ApiKey
+
+    /**
+     * Get an API key by project by Project ID.
+     */
+    fun getApiKey(projectId: UUID): ApiKey
 }
 
 /**
@@ -180,19 +185,30 @@ class AuthServerClientImpl(val baseUri: String, val serviceKeyFile: String?) : A
     }
 
 
-    override fun deleteApiKey(uuid: UUID): ApiKey {
+    override fun deleteApiKey(uuid: UUID){
 
-        var entity = RequestEntity.method(HttpMethod.DELETE, URI("$baseUri/auth/v1/apikey/{$uuid}"))
-        val req = signRequest(entity)
-            .build()
+        var entity = RequestEntity.method(HttpMethod.DELETE, URI("$baseUri/auth/v1/apikey/$uuid"))
+        val req = signRequest(entity).build()
 
-        return rest.exchange(req, TYPE_APIKEY).body
+        val exchange = rest.exchange(req, TYPE_APIKEY)
+        logger.debug("DELETE API KEY RESPONSE CODE ${exchange.statusCode.value()}")
+        logger.debug("DELETE API KEY BODY ${exchange.body}")
     }
 
     override fun getApiKey(projectId: UUID, name: String): ApiKey {
         val body = mapOf(
             "projectIds" to listOf(projectId),
             "names" to listOf(name)
+        )
+        val req = signRequest(
+            RequestEntity.post(URI("$baseUri/auth/v1/apikey/_findOne"))
+        ).body(body)
+        return rest.exchange(req, TYPE_APIKEY).body
+    }
+
+    override fun getApiKey(projectId: UUID): ApiKey {
+        val body = mapOf(
+            "projectIds" to listOf(projectId)
         )
         val req = signRequest(
             RequestEntity.post(URI("$baseUri/auth/v1/apikey/_findOne"))
