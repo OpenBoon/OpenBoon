@@ -1,10 +1,12 @@
 package com.zorroa.archivist.repository
 
+import com.zorroa.archivist.clients.AuthServerClient
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.service.event
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -53,8 +55,7 @@ class ProjectFilterDaoImpl : ProjectFilterDao, AbstractDao() {
             "DELETE FROM job WHERE pk_project = ?",
             "DELETE FROM datasource WHERE pk_project = ?",
             "DELETE FROM index_route WHERE pk_project = ?",
-            "DELETE FROM project WHERE pk_project = ?",
-            "DELETE FROM auth.api_key WHERE project_id = ?"
+            "DELETE FROM project WHERE pk_project = ?"
         ).map { jdbc.update(it, projectUUID) }
 
         val lastResult = result.last() == 1;
@@ -62,7 +63,6 @@ class ProjectFilterDaoImpl : ProjectFilterDao, AbstractDao() {
             logger.event(LogObject.JOB, LogAction.DELETE)
             logger.event(LogObject.DATASOURCE, LogAction.DELETE)
             logger.event(LogObject.INDEX_ROUTE, LogAction.DELETE)
-            logger.event(LogObject.PROJECT, LogAction.DELETE)
         }
 
         return lastResult

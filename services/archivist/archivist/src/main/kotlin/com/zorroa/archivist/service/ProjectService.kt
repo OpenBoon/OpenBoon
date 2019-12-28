@@ -155,7 +155,11 @@ class ProjectServiceImpl constructor(
     }
 
     override fun delete(id: UUID){
+        authServerClient.deleteApiKey(id)
+        logger.event(LogObject.PROJECT, LogAction.DELETE)
+
         projectFilterDao.deleteByUUID(id)
+
     }
 
     override fun get(id: UUID): Project {
