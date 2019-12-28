@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
-from pixml import PixmlClient
+from zmlp import ZmlpClient
 from rest_framework import viewsets
 from rest_framework.viewsets import ViewSet
 
@@ -47,7 +47,7 @@ class BaseProjectViewSet(ViewSet):
         if settings.PLATFORM == 'zvi':
             return ZviClient(apikey=apikey, server=settings.ARCHIVIST_URL)
         else:
-            return PixmlClient(apikey=apikey, server=settings.ARCHIVIST_URL)
+            return ZmlpClient(apikey=apikey, server=settings.ARCHIVIST_URL)
 
 
 class ProjectViewSet(viewsets.ReadOnlyModelViewSet):

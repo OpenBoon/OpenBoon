@@ -1,11 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "analyze": "ANALYZE=1 next build",
+    "analyze": "ANALYZE=true next build",
     "build": "next build",
     "dev": "node -r esm devServer.js",
+    "dev:mocked": "MOCKED=true node -r esm devServer.js",
     "lint": "eslint '{pages,src}/**/*.js'",
-    "prod": "next build && next start",
+    "prod": "next start",
     "size": "rimraf .next && next build && bundlesize",
     "start": "next start",
     "test": "TZ=UTC jest --watch --notify --verbose",
@@ -66,12 +67,12 @@
     {
       "//": "dependencies",
       "path": ".next/static/chunks/commons**.js",
-      "maxSize": "74 kB"
+      "maxSize": "75 kB"
     },
     {
       "//": "app",
       "path": ".next/static/**/pages/_app.js",
-      "maxSize": "32 kB"
+      "maxSize": "30 kB"
     },
     {
       "//": "main runtime",
@@ -81,7 +82,7 @@
     {
       "//": "error",
       "path": ".next/static/**/pages/_error.js",
-      "maxSize": "11 kB"
+      "maxSize": "10 kB"
     },
     {
       "//": "polyfill & webpack runtime",
@@ -103,18 +104,18 @@
     "body-scroll-lock": "2.6.4",
     "dotenv": "8.2.0",
     "jwt-decode": "2.2.0",
-    "next": "9.1.5",
+    "next": "9.1.6",
     "prop-types": "15.7.2",
     "react": "16.12.0",
     "react-aria-modal": "4.0.0",
     "react-dom": "16.12.0",
-    "swr": "0.1.13"
+    "swr": "0.1.15"
   },
   "devDependencies": {
     "babel-eslint": "10.0.3",
     "babel-jest": "24.9.0",
     "bundlesize": "0.18.0",
-    "eslint": "6.7.2",
+    "eslint": "6.8.0",
     "eslint-config-airbnb": "18.0.1",
     "eslint-config-prettier": "6.7.0",
     "eslint-plugin-emotion": "10.0.14",
@@ -128,7 +129,7 @@
     "husky": "3.1.0",
     "jest": "24.9.0",
     "jest-emotion": "10.0.26",
-    "jest-fetch-mock": "2.1.2",
+    "jest-fetch-mock": "3.0.0",
     "lint-staged": "9.5.0",
     "morgan": "1.9.1",
     "prettier": "1.19.1",

@@ -19,12 +19,6 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
-def read_build_version_file():
-    with open(os.environ["ZORROA_BUILD_FILE"]) as fp:
-        expected = fp.read().strip()
-    return expected
-
-
 def test_task(event_type=None, attrs=None, sleep=1):
     task = {
         "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
@@ -41,7 +35,7 @@ def test_task(event_type=None, attrs=None, sleep=1):
             ],
             "execute": [
                 {
-                    "className": "pixml.analysis.testing.TestProcessor",
+                    "className": "zmlp.analysis.testing.TestProcessor",
                     "args": {
                         "send_event": event_type,
                         "attrs": attrs,
@@ -102,15 +96,11 @@ class TestClusterClient(unittest.TestCase):
         assert header["Authorization"].startswith("Bearer")
 
 
-class ApiUnitTestCases(unittest.TestCase):
+class EndpointUnitTestCases(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         setup_routes(None)
         cls.test_client = main.app.test_client()
-
-    def setUp(self):
-        os.environ["ZORROA_CORE_PLUGIN_PATH"] = os.path.dirname(__file__) + "/../../zplugins"
-        os.environ["ZORROA_BUILD_FILE"] = os.path.dirname(__file__) + "/BUILD"
 
     def test_root(self):
         response = self.test_client.get('/')
@@ -118,16 +108,7 @@ class ApiUnitTestCases(unittest.TestCase):
 
     def test_info(self):
         response = self.test_client.get('/info')
-        assert read_build_version_file() == response.json['version']
-
-
-class TestFunctions(unittest.TestCase):
-    def setUp(self):
-        os.environ["ZORROA_BUILD_FILE"] = os.path.dirname(__file__) + "/BUILD"
-
-    def test_read_sdk_version(self):
-        expected = read_build_version_file()
-        assert get_sdk_version() == expected
+        assert get_sdk_version() == response.json['version']
 
 
 class TestExecutor(unittest.TestCase):
@@ -159,8 +140,9 @@ class TestExecutor(unittest.TestCase):
         ping = api.executor.send_ping()
         assert ("taskId" in ping)
 
-    @patch("requests.post")
-    def test_emit_error(self, post_patch):
+    @patch.object(ClusterClient, "emit_event")
+    def test_emit_error(self, event_patch):
+        event_patch.return_value = {}
         api = self.api
         result = api.executor.run_task(test_task("error"))
         assert (result["exit_status"] == 0)

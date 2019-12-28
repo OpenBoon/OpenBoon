@@ -7,6 +7,7 @@ from google.auth.transport import requests
 from google.oauth2 import id_token
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.routers import APIRootView
 from rest_framework.views import APIView
 
 from wallet.serializers import UserSerializer, GroupSerializer
@@ -74,3 +75,12 @@ class LogoutView(APIView):
     def post(self, request):
         logout(request)
         return Response({})
+
+
+class WalletAPIRootView(APIRootView):
+    "Extends the default DRF API root view to allow adding extra views."
+    def get(self, request, *args, **kwargs):
+        from wallet.urls import BROWSABLE_API_URLS
+        for view in BROWSABLE_API_URLS:
+            self.api_root_dict[view[0]] = view[1].name
+        return super(WalletAPIRootView, self).get(request, *args, **kwargs)

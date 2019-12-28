@@ -29,6 +29,7 @@ import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.archivist.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -114,7 +115,7 @@ class JobServiceImpl @Autowired constructor(
              */
             txevent.afterCommit(sync = false) {
                 val filter = JobFilter(
-                    states = listOf(JobState.Active),
+                    states = listOf(JobState.InProgress),
                     names = listOf(job.name)
                 )
                 val oldJobs = jobDao.getAll(filter)
@@ -213,7 +214,10 @@ class JobServiceImpl @Autowired constructor(
     override fun setTaskState(task: InternalTask, newState: TaskState, oldState: TaskState?): Boolean {
         val result = taskDao.setState(task, newState, oldState)
         if (result) {
-            if (newState == TaskState.Success || newState == TaskState.Skipped) {
+            /**
+             * If the task finished, check and set the job to finished.
+             */
+            if (newState.isFinishedState()) {
                 checkAndSetJobFinished(task)
             }
             eventBus.post(TaskStateChangeEvent(task, newState, oldState))
@@ -222,20 +226,23 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun cancelJob(job: Job): Boolean {
-        return setJobState(job, JobState.Cancelled, JobState.Active)
+        return setJobState(job, JobState.Cancelled, JobState.InProgress)
     }
 
     override fun restartJob(job: JobId): Boolean {
-        return setJobState(job, JobState.Active, null)
+        return setJobState(job, JobState.InProgress, null)
     }
 
     override fun retryAllTaskFailures(job: JobId): Int {
-
         var count = 0
         for (task in taskDao.getAll(job.jobId, TaskState.Failure)) {
-            if (setTaskState(task, TaskState.Waiting, TaskState.Failure)) {
+            // Use DAO here to avoid extra overhead of setTaskState service method
+            if (taskDao.setState(task, TaskState.Waiting, TaskState.Failure)) {
                 count++
             }
+        }
+        if (count > 0) {
+            restartJob(job)
         }
         return count
     }
@@ -254,8 +261,14 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun checkAndSetJobFinished(job: JobId): Boolean {
-        if (!jobDao.hasPendingFrames(job)) {
-            return setJobState(job, JobState.Finished, JobState.Active)
+        val counts = jobDao.getTaskStateCounts(job)
+        if (!counts.hasPendingTasks()) {
+            val newState = if (counts.hasFailures()) {
+                JobState.Failure
+            } else {
+                JobState.Success
+            }
+            return setJobState(job, newState, JobState.InProgress)
         }
         return false
     }

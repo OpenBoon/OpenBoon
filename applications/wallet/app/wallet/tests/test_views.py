@@ -131,3 +131,32 @@ def test_api_logout(api_client, user):
     response = api_client.post(reverse('api-logout'), {})
     assert response.status_code == 200
     assert api_client.get(reverse('project-list')).status_code == 403
+
+
+def test_password_change(api_client, user):
+    api_client.force_login(user)
+    response = api_client.post(reverse('api-password-change'),
+                               {'new_password1': '7BMQv5Pb(KpdS+!z',
+                                'new_password2': '7BMQv5Pb(KpdS+!z'})
+    assert response.status_code == 200
+    user = User.objects.get(username=user.username)
+    assert user.check_password('7BMQv5Pb(KpdS+!z')
+
+
+def test_reset_password(api_client, user, mailoutbox):
+    api_client.logout()
+    assert not user.check_password('7BMQv5Pb(KpdS+!z')
+    response = api_client.post(reverse('api-password-reset'), {'email': user.email})
+    assert response.status_code == 200
+    message = mailoutbox[0]
+    assert message.subject == 'Wallet Password Reset'
+    lines = message.body.split('\n')
+    token = lines[1]
+    uid = lines[2]
+    response = api_client.post(reverse('api-password-reset-confirm'),
+                               {'new_password1': '7BMQv5Pb(KpdS+!z',
+                                'new_password2': '7BMQv5Pb(KpdS+!z',
+                                'uid': uid, 'token': token})
+    assert response.status_code == 200
+    user = User.objects.get(username=user.username)
+    assert user.check_password('7BMQv5Pb(KpdS+!z')
