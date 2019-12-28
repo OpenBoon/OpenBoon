@@ -190,9 +190,7 @@ class AuthServerClientImpl(val baseUri: String, val serviceKeyFile: String?) : A
         var entity = RequestEntity.method(HttpMethod.DELETE, URI("$baseUri/auth/v1/apikey/$uuid"))
         val req = signRequest(entity).build()
 
-        val exchange = rest.exchange(req, TYPE_APIKEY)
-        logger.debug("DELETE API KEY RESPONSE CODE ${exchange.statusCode.value()}")
-        logger.debug("DELETE API KEY BODY ${exchange.body}")
+        rest.exchange(req, TYPE_APIKEY)
     }
 
     override fun getApiKey(projectId: UUID, name: String): ApiKey {

@@ -1,7 +1,8 @@
 package com.zorroa.archivist.rest
 
-import com.google.common.collect.ImmutableMap
+import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.clients.ApiKey
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.util.Json
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.util.UUID
 
 class ProjectControllerTests : MockMvcTest() {
 
@@ -83,9 +85,12 @@ class ProjectControllerTests : MockMvcTest() {
             .andReturn()
     }
 
-
     @Test
     fun testDelete() {
+        whenever(authServerClient.getApiKey(testProject.id)).thenReturn(
+            ApiKey(keyId = UUID.fromString("A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80"), projectId = UUID.fromString("A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80"), sharedKey = "sharedKey")
+        )
+
 
         mvc.perform(
             MockMvcRequestBuilders.delete("/api/v1/projects/${testProject.id}")
@@ -98,7 +103,5 @@ class ProjectControllerTests : MockMvcTest() {
             .andExpect(jsonPath("$.op", CoreMatchers.equalTo("delete")))
             .andExpect(jsonPath("$.success", CoreMatchers.equalTo(true)))
             .andReturn()
-
-
     }
 }

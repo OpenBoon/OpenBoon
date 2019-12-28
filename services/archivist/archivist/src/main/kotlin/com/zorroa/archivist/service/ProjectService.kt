@@ -157,7 +157,6 @@ class ProjectServiceImpl constructor(
     override fun delete(id: UUID){
 
         val apiKey = authServerClient.getApiKey(id)
-        logger.debug("DELETE API KEY ${apiKey.keyId}")
         authServerClient.deleteApiKey(apiKey.keyId)
         logger.event(LogObject.PROJECT, LogAction.DELETE)
 
