@@ -16,6 +16,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 import org.slf4j.LoggerFactory
 import org.springframework.core.ParameterizedTypeReference
+import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.RequestEntity
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
@@ -102,9 +103,19 @@ interface AuthServerClient {
     fun createApiKey(project: Project, name: String, perms: List<String>): ApiKey
 
     /**
+     * Delete API key for the given project.
+     */
+    fun deleteApiKey(uuid: UUID)
+
+    /**
      * Get an API key by project and its unique name.
      */
     fun getApiKey(projectId: UUID, name: String): ApiKey
+
+    /**
+     * Get an API key by project by Project ID.
+     */
+    fun getApiKey(projectId: UUID): ApiKey
 }
 
 /**
@@ -173,10 +184,29 @@ class AuthServerClientImpl(val baseUri: String, val serviceKeyFile: String?) : A
         return rest.exchange(req, TYPE_APIKEY).body
     }
 
+
+    override fun deleteApiKey(uuid: UUID){
+
+        var entity = RequestEntity.method(HttpMethod.DELETE, URI("$baseUri/auth/v1/apikey/$uuid"))
+        val req = signRequest(entity).build()
+
+        rest.exchange(req, TYPE_APIKEY)
+    }
+
     override fun getApiKey(projectId: UUID, name: String): ApiKey {
         val body = mapOf(
             "projectIds" to listOf(projectId),
             "names" to listOf(name)
+        )
+        val req = signRequest(
+            RequestEntity.post(URI("$baseUri/auth/v1/apikey/_findOne"))
+        ).body(body)
+        return rest.exchange(req, TYPE_APIKEY).body
+    }
+
+    override fun getApiKey(projectId: UUID): ApiKey {
+        val body = mapOf(
+            "projectIds" to listOf(projectId)
         )
         val req = signRequest(
             RequestEntity.post(URI("$baseUri/auth/v1/apikey/_findOne"))
