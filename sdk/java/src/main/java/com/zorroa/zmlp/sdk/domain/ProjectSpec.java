@@ -21,6 +21,8 @@ public class ProjectSpec {
 
     UUID projectId;
 
+    public ProjectSpec() { }
+
     public ProjectSpec(String name, UUID projectId) {
         this.name = name;
         this.projectId = projectId;
@@ -40,15 +42,6 @@ public class ProjectSpec {
 
     public void setProjectId(UUID projectId) {
         this.projectId = projectId;
-    }
-
-    public Map toMap(){
-        Map map = new HashMap();
-
-        Optional.of(name).ifPresent((String value)->map.put("name", value));
-        Optional.of(projectId).ifPresent((UUID value)->map.put("projectId", value));
-
-        return map;
     }
 }
 

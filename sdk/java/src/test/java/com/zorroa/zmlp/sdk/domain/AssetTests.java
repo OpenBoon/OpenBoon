@@ -1,4 +1,4 @@
-package com.zorroa.zmlp.sdk;
+package com.zorroa.zmlp.sdk.domain;
 
 import com.zorroa.zmlp.sdk.domain.Asset;
 import org.junit.Before;

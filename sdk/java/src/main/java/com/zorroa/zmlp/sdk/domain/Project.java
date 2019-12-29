@@ -35,23 +35,7 @@ public class Project {
      */
     private String actorModified;
 
-    public Project(UUID id, String name, Long timeCreated, Long timeModified, String actorCreated, String actorModified) {
-        this.id = id;
-        this.name = name;
-        this.timeCreated = timeCreated;
-        this.timeModified = timeModified;
-        this.actorCreated = actorCreated;
-        this.actorModified = actorModified;
-    }
-
-    public Project(Map apiResponse) {
-        this.id = UUID.fromString((String)apiResponse.get("id"));
-        this.name = (String) apiResponse.get("name");
-        this.timeCreated = (Long) apiResponse.get("timeCreated");
-        this.timeModified = (Long) apiResponse.get("timeModified");
-        this.actorCreated = (String) apiResponse.get("actorCreated");
-        this.actorModified = (String) apiResponse.get("actorModified");
-    }
+    public Project() { }
 
     public UUID getId() {
         return id;

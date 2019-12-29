@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Used to describe results page when paginating responses.
  */
-public class KPage {
+public class Page {
     /**
      * Result index to start from.
      */
@@ -21,7 +21,9 @@ public class KPage {
 
     private Long totalCount;
 
-    public KPage(Integer from, Integer size, Long totalCount) {
+    public Page() { }
+
+    public Page(Integer from, Integer size, Long totalCount) {
         this.from = from;
         this.size = size;
         this.totalCount = totalCount;
@@ -49,16 +51,6 @@ public class KPage {
 
     public void setTotalCount(Long totalCount) {
         this.totalCount = totalCount;
-    }
-
-    public Map toMap() {
-        Map map = new HashMap();
-
-        Optional.ofNullable(from).ifPresent((value) -> map.put("from", value));
-        Optional.ofNullable(size).ifPresent((value) -> map.put("size", value));
-        Optional.ofNullable(totalCount).ifPresent((value) -> map.put("totalCount", value));
-
-        return map;
     }
 }
 

@@ -1,74 +1,59 @@
 package com.zorroa.zmlp.sdk.app;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.zmlp.sdk.ZmlpClient;
+import com.zorroa.zmlp.sdk.domain.PagedList;
 import com.zorroa.zmlp.sdk.domain.Project;
 import com.zorroa.zmlp.sdk.domain.ProjectFilter;
 import com.zorroa.zmlp.sdk.domain.ProjectSpec;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.Map;
+import java.util.UUID;
 
 public class ProjectApp {
 
     private ZmlpClient client;
 
     public ProjectApp(ZmlpClient client) {
-        this.client = client
+        this.client = client;
     }
 
     /**
-     * @param spec Project Params
-     * @return
-     * @throws IOException
-     * @throws InterruptedException
+     * Create a new project.
+     *
+     * @param spec A ProjectSpec instance.
+     * @return The created Project
      */
-    public Project createProject(ProjectSpec spec) throws IOException, InterruptedException {
-
-        Map post = this.client("/api/v1/projects", spec.toMap());
-        return new Project(post);
-
+    public Project createProject(ProjectSpec spec) {
+        return client.post("/api/v1/projects", spec, Project.class);
     }
 
     /**
-     * @param params Project Filter parameters
-     * @return
-     * @throws IOException
-     * @throws InterruptedException
+     * Find a Project with the given filter.  Filter must limit result count to 1.
+     *
+     * @param filter
+     * @return The found Project
      */
-    public Project searchProject(ProjectFilter params) throws IOException, InterruptedException {
-        Map response = this.post("/api/v1/projects/_findOne", params.toMap());
-        return new Project(response);
-
+    public Project findProject(ProjectFilter filter) {
+        return client.post("/api/v1/projects/_findOne", filter, Project.class);
     }
 
     /**
-     * @param uuid Project Unique Key
-     * @return
-     * @throws IOException
-     * @throws InterruptedException
+     * Delete a Project by unique Id.
+     *
+     * @param uuid
+     * @return true if success
      */
-    public Boolean deleteProject(UUID uuid) throws IOException, InterruptedException {
-        Map response = this.delete("/api/v1/projects", uuid);
+    public Boolean deleteProject(UUID uuid) {
+        Map response = client.delete(String.format("/api/v1/projects/%s", uuid), null, Map.class);
         return (Boolean) response.get("success");
     }
 
     /**
-     *
-     * @param projectFilter Project Filter
+     * @param filter
      * @return
-     * @throws IOException
-     * @throws InterruptedException
      */
-    public List<Project> getAllProjects(ProjectFilter projectFilter) throws IOException, InterruptedException {
-        Map response = this.post("/api/v1/projects/_search", projectFilter.toMap());
-        List<Project> projects = new ArrayList();
-        Optional.ofNullable(response.get("list"))
-                .ifPresent((mapList) -> {
-                            for (Map p : (List<Map>) mapList)
-                                projects.add(new Project(p));
-                        }
-                );
-
-        return projects;
+    public PagedList<Project> searchProjects(ProjectFilter filter) {
+        return client.post("/api/v1/projects/_search", filter, new TypeReference<PagedList<Project>>() {});
     }
 }

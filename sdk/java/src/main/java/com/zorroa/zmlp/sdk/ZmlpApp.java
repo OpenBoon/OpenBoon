@@ -2,15 +2,17 @@ package com.zorroa.zmlp.sdk;
 
 import com.zorroa.zmlp.sdk.app.AssetApp;
 import com.zorroa.zmlp.sdk.app.DataSourceApp;
+import com.zorroa.zmlp.sdk.app.ProjectApp;
 
 import java.io.IOException;
 import java.util.Optional;
 
 public class ZmlpApp {
 
-    private ZmlpClient zmlpClient;
-    private AssetApp assetApp;
-    private DataSourceApp dataSourceApp;
+    public final ZmlpClient zmlpClient;
+    public final AssetApp assets;
+    public final DataSourceApp datasources;
+    public final ProjectApp projects;
 
     /**
      * Exposes the main PixelML API.
@@ -19,12 +21,10 @@ public class ZmlpApp {
      * @param server
      */
     public ZmlpApp(Object apikey, String server) {
-
-        String envServer = System.getenv("ZMLP_SERVER");
-
-        this.zmlpClient = new ZmlpClient(apikey, Optional.ofNullable(server).orElse(envServer), null);
-        this.assetApp = new AssetApp();
-        this.dataSourceApp = new DataSourceApp(this);
+        this.zmlpClient = new ZmlpClient(apikey, server);
+        this.assets = new AssetApp(zmlpClient);
+        this.datasources = new DataSourceApp(zmlpClient);
+        this.projects = new ProjectApp(zmlpClient);
     }
 
     public ZmlpApp(Object apikey) {
@@ -44,7 +44,7 @@ public class ZmlpApp {
      *  - ZMLP_SERVER : The URL to the ZMLP API server.
      */
 
-    public ZmlpApp() {
+    public static ZmlpApp fromEnv() {
 
         Optional<String> envApiKey = Optional.ofNullable(System.getenv("ZMLP_APIKEY"));//base64
         Optional<String> envApiKeyFilePath = Optional.ofNullable(System.getenv("ZMLP_APIKEY_FILE"));//file path
@@ -64,37 +64,6 @@ public class ZmlpApp {
             }).get();
         }
 
-
-        // load Variables
-        this.zmlpClient = new ZmlpClient(apiKey, System.getenv("ZMLP_SERVER"), null);
-        this.assetApp = new AssetApp();
-        this.dataSourceApp = new DataSourceApp(this);
+        return new ZmlpApp(apiKey, System.getenv("ZMLP_SERVER"));
     }
-
-    public ZmlpClient getZmlpClient() {
-        return zmlpClient;
-    }
-
-    public void setZmlpClient(ZmlpClient zmlpClient) {
-        this.zmlpClient = zmlpClient;
-    }
-
-    public AssetApp getAssetApp() {
-        return assetApp;
-    }
-
-    public void setAssetApp(AssetApp assetApp) {
-        this.assetApp = assetApp;
-    }
-
-    public DataSourceApp getDataSourceApp() {
-        return dataSourceApp;
-    }
-
-    public void setDataSourceApp(DataSourceApp dataSourceApp) {
-        this.dataSourceApp = dataSourceApp;
-    }
-
-
-
 }

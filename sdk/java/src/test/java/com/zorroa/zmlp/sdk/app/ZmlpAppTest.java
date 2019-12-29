@@ -1,7 +1,8 @@
-package com.zorroa.zmlp.sdk;
+package com.zorroa.zmlp.sdk.app;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zorroa.zmlp.sdk.ZmlpApp;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.zorroa.zmlp.sdk.Utils.updateEnvVariables;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -44,10 +46,8 @@ public class ZmlpAppTest {
         ZmlpApp zmlpApp = new ZmlpApp(keyDict, null);
 
         assertNotNull(zmlpApp);
-        assertNotNull(zmlpApp.getZmlpClient());
-        assertNotNull(zmlpApp.getZmlpClient().apiKey);
-        assertNotNull(zmlpApp.getZmlpClient().headers());
-
+        assertNotNull(zmlpApp.zmlpClient);
+        assertTrue(zmlpApp.zmlpClient.isApiKeySet());
     }
 
     @DisplayName("Create app with Key String")
@@ -57,9 +57,8 @@ public class ZmlpAppTest {
         ZmlpApp zmlpApp = new ZmlpApp(keyString, null);
 
         assertNotNull(zmlpApp);
-        assertNotNull(zmlpApp.getZmlpClient());
-        assertNotNull(zmlpApp.getZmlpClient().apiKey);
-        assertNotNull(zmlpApp.getZmlpClient().headers());
+        assertNotNull(zmlpApp.zmlpClient);
+        assertTrue(zmlpApp.zmlpClient.isApiKeySet());
     }
 
     @DisplayName("Create app with Key String.Byte[]")
@@ -68,9 +67,8 @@ public class ZmlpAppTest {
         ZmlpApp zmlpApp = new ZmlpApp(keyStrByteArr, null);
 
         assertNotNull(zmlpApp);
-        assertNotNull(zmlpApp.getZmlpClient());
-        assertNotNull(zmlpApp.getZmlpClient().apiKey);
-        assertNotNull(zmlpApp.getZmlpClient().headers());
+        assertNotNull(zmlpApp.zmlpClient);
+        assertTrue(zmlpApp.zmlpClient.isApiKeySet());
     }
 
     @DisplayName("Create app with ENV Variables")
@@ -86,12 +84,11 @@ public class ZmlpAppTest {
         updateEnvVariables("ZMLP_APIKEY", keyString);
         updateEnvVariables("ZMLP_SERVER", server);
 
-        ZmlpApp zmlpApp = new ZmlpApp();
+        ZmlpApp zmlpApp = ZmlpApp.fromEnv();
 
         assertNotNull(zmlpApp);
-        assertNotNull(zmlpApp.getZmlpClient());
-        assertNotNull(zmlpApp.getZmlpClient().apiKey);
-        assertNotNull(zmlpApp.getZmlpClient().headers());
+        assertNotNull(zmlpApp.zmlpClient);
+        assertTrue(zmlpApp.zmlpClient.isApiKeySet());
     }
 
 
@@ -108,12 +105,11 @@ public class ZmlpAppTest {
         updateEnvVariables("ZMLP_APIKEY_FILE", "src/test/resources/testkey.json");
         updateEnvVariables("ZMLP_SERVER", server);
 
-        ZmlpApp zmlpApp = new ZmlpApp();
+        ZmlpApp zmlpApp = ZmlpApp.fromEnv();
 
         assertNotNull(zmlpApp);
-        assertNotNull(zmlpApp.getZmlpClient());
-        assertNotNull(zmlpApp.getZmlpClient().apiKey);
-        assertNotNull(zmlpApp.getZmlpClient().headers());
+        assertNotNull(zmlpApp.zmlpClient);
+        assertTrue(zmlpApp.zmlpClient.isApiKeySet());
     }
 
 

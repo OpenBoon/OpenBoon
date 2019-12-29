@@ -1,76 +1,32 @@
 package com.zorroa.zmlp.sdk.app;
 
+import com.zorroa.zmlp.sdk.ZmlpClient;
 import com.zorroa.zmlp.sdk.domain.DataSource;
 import com.zorroa.zmlp.sdk.Utils;
 import com.zorroa.zmlp.sdk.ZmlpApp;
+import com.zorroa.zmlp.sdk.domain.DataSourceSpec;
 
 import java.io.IOException;
 import java.util.*;
 
 public class DataSourceApp {
 
-    ZmlpApp app;
+    private static final String BASE_URI = "/api/v1/data-sources";
 
-    public DataSourceApp(ZmlpApp app) {
-        this.app = app;
+    public final ZmlpClient client;
+
+    public DataSourceApp(ZmlpClient client) {
+        this.client = client;
     }
 
     /**
      * Create a new DataSource.
      *
-     * @param name        The name of the data source.
-     * @param uri         The URI where the data can be found.
-     * @param credentials A file path to an associated credentials file.
-     * @param fileTypes   A list of file paths or mimetypes to match.
-     * @param analysis    A list of Analysis Modules to apply to the data.
-     * @return The created DataSource
-     * @throws IOException
-     * @throws InterruptedException
+     * @param spec
+     * @return
      */
-
-    public DataSource createDataSource(String name, String uri, String credentials, List<String> fileTypes, List analysis) throws IOException, InterruptedException {
-
-        if (credentials != null) {
-            credentials = Utils.readTextFromFile(credentials);
-        }
-
-        Map body = new HashMap();
-
-        body.put("name", name);
-        body.put("uri", uri);
-        body.put("credentials", credentials);
-        body.put("fileTypes", fileTypes);
-        body.put("analysis", analysis);
-
-        // TODO - Implement Analysis
-        final String url = "/api/v1/data-sources";
-        return new DataSource(app.getZmlpClient().post(url, body));
-
-    }
-
-    /**
-     * Finds a DataSource by name or unique Id.
-     *
-     * @param name The unique name or unique ID.
-     * @return The DataSource
-     * @throws IOException
-     * @throws InterruptedException
-     */
-
-    public DataSource getDataSource(String name) throws IOException, InterruptedException {
-
-        String url = "/api/v1/data-sources/_findOne";
-
-        Map body = new HashMap();
-        if (Utils.isValidUUI(name)) {
-            body.put("ids", Arrays.asList(UUID.fromString(name)));
-        } else {
-            body.put("names", Arrays.asList(name));
-        }
-
-
-        return new DataSource(this.app.getZmlpClient().post(url, body));
-
+    public DataSource createDataSource(DataSourceSpec spec) {
+        return client.post(BASE_URI, spec, DataSource.class);
     }
 
     /**
@@ -82,15 +38,10 @@ public class DataSourceApp {
      *
      * @param ds A DataSource object or the name of a data source.
      * @return An import DataSource result dictionary.
-     * @throws IOException          If the DataSource does not exist.
-     * @throws InterruptedException
      */
-    public Map importDataSource(DataSource ds) throws IOException, InterruptedException {
-
-        String url = String.format("/api/v1/data-sources/%s/_import", ds.getId());
-
-        return this.app.getZmlpClient().post(url, null);
-
+    public Map importDataSource(DataSource ds) {
+        String url = String.format("%s/%s/_import", BASE_URI, ds.getId());
+        return client.post(url, null, Map.class);
     }
 
     /**
@@ -99,18 +50,12 @@ public class DataSourceApp {
      * @param ds   A DataSource object or the name of a data source.
      * @param blob A credentials blob.
      * @return A status dict.
-     * @throws IOException          If the DataSource does not exist.
-     * @throws InterruptedException
      */
 
-    public Map updateCredentials(DataSource ds, String blob) throws IOException, InterruptedException {
-
-        String url = String.format("/api/v1/data-sources/%s/_credentials", ds.getId());
-
+    public Map updateCredentials(DataSource ds, String blob)  {
+        String url = String.format("%s/%s/_credentials", BASE_URI, ds.getId());
         Map body = new HashMap();
         body.put("blob", blob);
-
-        return this.app.getZmlpClient().put(url, body);
-
+        return client.put(url, body, Map.class);
     }
 }

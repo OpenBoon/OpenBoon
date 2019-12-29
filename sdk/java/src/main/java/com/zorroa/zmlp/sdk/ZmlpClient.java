@@ -3,32 +3,32 @@ package com.zorroa.zmlp.sdk;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zorroa.zmlp.sdk.domain.Project;
-import com.zorroa.zmlp.sdk.domain.ProjectFilter;
-import com.zorroa.zmlp.sdk.domain.ProjectSpec;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import okhttp3.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Base64;
+import java.util.Map;
+import java.util.Optional;
 
 public class ZmlpClient {
 
     public static final MediaType JSON = MediaType.parse("application/json");
 
-    OkHttpClient httpClient = new OkHttpClient();
-    ObjectMapper mapper = new ObjectMapper();
+    private final OkHttpClient http = new OkHttpClient();
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    JsonNode apiKey;
-    String server;
-
-    String projectId;
-    Integer maxRetries;
+    private final ApiKey apiKey;
+    private final String server;
 
     private final String DEFAULT_SERVER_URL = "https://api.zmlp.zorroa.com";
 
@@ -38,182 +38,137 @@ public class ZmlpClient {
      *
      * @param apiKey An API key in any supported form. (dict, base64 string, or open file handle)
      * @param server The url of the server to connect to. Defaults to https://api.zmlp.zorroa.com
-     * @param args   Contains max_entries and/or project_id. Project_id contains
-     *               An optional project UUID for API keys with access to multiple projects.
      */
-    public ZmlpClient(Object apiKey, String server, Map args) {
-
-        args = Optional.ofNullable(args).orElse(new HashMap());
-
+    public ZmlpClient(Object apiKey, String server) {
+        configureJsonMapper();
         this.apiKey = loadApiKey(apiKey);
         this.server = Optional.ofNullable(server).orElse(DEFAULT_SERVER_URL);
-        this.maxRetries = (Integer) args.getOrDefault("max_retries", 3);
-        this.projectId = (String) args.get("project_id");
     }
 
     public ZmlpClient(Object apiKey) {
-        this(apiKey, null, null);
+        this(apiKey, null);
+    }
+
+    public Boolean isApiKeySet() {
+        return this.apiKey != null;
+    }
+
+    public <T> T get(String path, Object body, TypeReference<T> type) {
+        return marshallResponse(makeRequest(path, "get", body), type);
+    }
+
+    public <T> T get(String path, Object body, Class<T> type) {
+        return marshallResponse(makeRequest(path, "get", body), type);
+    }
+
+    public <T> T delete(String path, Object body, TypeReference<T> type) {
+        return marshallResponse(makeRequest(path, "delete", body), type);
+    }
+
+    public <T> T delete(String path, Object body, Class<T> type) {
+        return marshallResponse(makeRequest(path, "delete", body), type);
+    }
+
+    public <T> T put(String path, Object body, TypeReference<T> type) {
+        return marshallResponse(makeRequest(path, "put", body), type);
+    }
+
+    public <T> T put(String path, Object body, Class<T> type) {
+        return marshallResponse(makeRequest(path, "put", body), type);
+    }
+
+    public <T> T post(String path, Object body, TypeReference<T> type) {
+        return marshallResponse(makeRequest(path, "post", body), type);
+    }
+
+    public <T> T post(String path, Object body, Class<T> type) {
+        return marshallResponse(makeRequest(path, "post", body), type);
+    }
+
+    private String getUrl(String path) {
+        return (server + ("/" + path).replace("//", "/"));
+    }
+
+    public InputStream makeRequest(String path, String method, Object body) {
+        try {
+            Request.Builder builder = new Request.Builder()
+                    .url(getUrl(path));
+            if (body == null) {
+                builder.method(method, null);
+            } else {
+                builder.method(method.toUpperCase(),
+                        RequestBody.create(mapper.writeValueAsString(body), JSON));
+            }
+            applyHeaders(builder);
+
+            try (Response response = http.newCall(builder.build()).execute()) {
+                return response.body().byteStream();
+            }
+        } catch (IOException e) {
+            String msg = method + " + request to " + path + " failed. " + e.getMessage();
+            throw new ZmlpClientException(msg, e);
+        }
+    }
+
+    private <T> T marshallResponse(InputStream response, TypeReference<T> type) {
+        try {
+            return mapper.readValue(response, type);
+        } catch (IOException e) {
+            throw new ZmlpClientException("Could not  deserialize response", e);
+        }
     }
 
 
-    private JsonNode loadApiKey(Object apiKey) {
+    private <T> T marshallResponse(InputStream response, Class<T> type) {
+        try {
+            return mapper.readValue(response, type);
+        } catch (IOException e) {
+            throw new ZmlpClientException("Could not  deserialize response", e);
+        }
+    }
+
+    private ApiKey loadApiKey(Object apiKey) {
 
         if (apiKey instanceof Map) {
-            return mapper.valueToTree(apiKey);
-        } else if (apiKey instanceof byte[] || apiKey instanceof String) {
-            String apiKeyString;
-            if (apiKey instanceof byte[])
-                apiKeyString = new String(Base64.getDecoder().decode((byte[]) apiKey));
-            else
-                apiKeyString = (String) apiKey;
-
-            //Check if is a valid JSON
+            return mapper.convertValue(apiKey, ApiKey.class);
+        } else if (apiKey instanceof String) {
+            byte[] decoded = Base64.getDecoder().decode(apiKey.toString());
             try {
-                return mapper.readTree(apiKeyString);
-            } catch (JsonProcessingException e) {
-                System.out.println("Invalid Json Format");
+                return mapper.convertValue(decoded, ApiKey.class);
+            } catch (Exception e) {
+                throw new ZmlpClientException("Failed to parse API Key", e);
             }
+        } else {
+            return null;
         }
-
-        return null;
     }
 
-    /**
-     * Generate the return some request headers.
-     * The content-type for the request. Defaults to 'application/json'
-     *
-     * @return Map: An http header struct.
-     */
-
-    public Map<String, String> headers() {
-        return this.headers("application/json");
-    }
-
-    /**
-     * Generate the return some request headers.
-     *
-     * @param contentType The content-type for the request.
-     * @return Map: An http header struct.
-     */
-
-    private Map<String, String> headers(String contentType) {
-
-        String authorization = null;
-        authorization = String.format("Bearer %s", signRequest());
-        Map header = new HashMap<String, String>();
-        header.put("Authorization", authorization);
-
-        Optional.ofNullable(contentType).ifPresent(
-                (type) -> header.put("Content-Type", type));
-
-        return header;
-
+    private void applyHeaders(Request.Builder builder) {
+        // The content type is already set.
+        builder.addHeader("Authorization", String.format("Bearer %s", signRequest()));
     }
 
     private String signRequest() {
-
         if (this.apiKey == null) {
             throw new RuntimeException("Unable to make request, no ApiKey has been specified.");
         }
 
         JWTCreator.Builder claimBuilder = JWT.create();
-
         claimBuilder.withClaim("aud", this.server);
         claimBuilder.withClaim("exp", Instant.now().plus(60, ChronoUnit.SECONDS).toEpochMilli());
-        claimBuilder.withClaim("keyId", this.apiKey.get("keyId").textValue());
-
-        // if projectId exists
-        Optional.ofNullable(this.projectId).ifPresent((String projectId) -> {
-            claimBuilder.withClaim("projectId", projectId);
-        });
-
-
-        Algorithm sharedKey = Algorithm.HMAC512(this.apiKey.get("sharedKey").asText());
-        String jwtEncoded = claimBuilder.sign(sharedKey);
-        return jwtEncoded;
+        claimBuilder.withClaim("keyId", this.apiKey.getKeyId().toString());
+        ;
+        Algorithm sharedKey = Algorithm.HMAC512(apiKey.getSigningKey());
+        return claimBuilder.sign(sharedKey);
     }
 
-    /**
-     * Performs a post request.
-     *
-     * @param path An archivist URI path.
-     * @param body The request body which will be serialized to json.
-     * @return The http response object or an object deserialized from the response json if the ``json`` argument is true.
-     * @throws IOException          An error occurred making the request or parsing the JSON response
-     * @throws InterruptedException
-     */
-    public Map post(String path, Map body) throws IOException, InterruptedException {
-
-        return this.makeRequest("post", path, body);
+    private void configureJsonMapper() {
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
+        mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        mapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, false);
+        mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true);
     }
-
-    /**
-     * Performs a Delete request.
-     *
-     * @param path      An archivist URI path.
-     * @param projectId Project unique ID
-     * @return The http response object or an object deserialized from the response json if the ``json`` argument is true.
-     * @throws IOException          An error occurred making the request or parsing the JSON response
-     * @throws InterruptedException
-     */
-    public Map delete(String path, UUID projectId) throws IOException, InterruptedException {
-        path += String.format("/%s", projectId);
-        return this.makeRequest("delete", path, null);
-    }
-
-
-    private Map makeRequest(String httpMethod, String path, Map body) throws InterruptedException, IOException {
-
-        String httpResponseString = null;
-        String url = getUrl(this.DEFAULT_SERVER_URL, path);
-
-        int tries = 0;
-        while (true)
-            try {
-                httpResponseString = Utils.executeHttpRequest(httpMethod, url, this.headers(), body);
-                break;
-            } catch (IOException e) {
-                tries++;
-
-                if (tries >= maxRetries)
-                    throw e;
-
-                int wait = new Random().nextInt(60);
-                String msg = String.format("Communicating to Pixml (%s) timed out %d times, waiting ... %d seconds, error=%s", path, tries, wait, e.getMessage());
-                System.out.println(msg);
-                Thread.sleep(wait * 1000);
-            }
-
-        return handleResponse(httpResponseString);
-    }
-
-    private String getUrl(String default_server_url, String path) {
-        return default_server_url + path;
-    }
-
-    private Map handleResponse(String response) throws JsonProcessingException {
-        return mapper.readValue(response, Map.class);
-    }
-
-    /**
-     * Performs a put request.
-     *
-     * @param url  An archivist URI path.
-     * @param body The request body which will be serialized to json.
-     * @return The http response object or an object deserialized from the response json if the ``json`` argument is true.
-     * @throws IOException          An error occurred making the request or parsing the JSON response
-     * @throws InterruptedException
-     */
-
-    public Map put(String url, Map body) throws IOException, InterruptedException {
-
-        return this.makeRequest("put", url, body);
-    }
-
-    public JsonNode getApiKey() {
-        return apiKey;
-    }
-
-
-
 }

@@ -81,35 +81,6 @@ public class Utils {
      * @return String response for the request
      * @throws IOException HTTP Fail
      */
-    public static String executeHttpRequest(String httpMethod, String urlParam, Map<String, String> header, Map bodyParams) throws IOException {
-
-        // json formatted data
-        // Request body Setup
-        bodyParams = Optional.ofNullable(bodyParams).orElse(new HashMap());
-        String json = new ObjectMapper().writeValueAsString(bodyParams);
-
-        // json request body
-        RequestBody body = RequestBody.create(JSON, json);
-
-        Request.Builder builder = new Request.Builder();
-
-        header.entrySet().forEach((entry) -> {
-            builder.addHeader(entry.getKey(), entry.getValue());
-        });
-
-        Request request = builder
-                .url(urlParam)
-                .method(httpMethod.toUpperCase(), body)
-                .build();
-
-        try (Response response = Utils.HTTP_CLIENT_INSTANCE.newCall(request).execute()) {
-
-            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-            // Get response body
-            return response.body().string();
-        }
-    }
 
     public static void updateEnvVariables(String name, String val) throws ReflectiveOperationException {
         Map<String, String> env = System.getenv();
