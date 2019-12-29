@@ -3,6 +3,7 @@ package com.zorroa.archivist.security
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.auth.client.AuthServerClient
 import com.zorroa.auth.client.AuthServerClientImpl
+import com.zorroa.auth.client.prefix
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -173,10 +174,12 @@ class MultipleWebSecurityConfig {
 
     @Bean
     fun authServerClient(): AuthServerClient {
-        return AuthServerClientImpl(
-            properties.getString("security.auth-server.url"),
-            properties.getString("security.service-key")
+        val client = AuthServerClientImpl(
+            properties.getString("zmlp.security.auth-server.url"),
+            properties.getString("zmlp.security.inception-key")
         )
+        logger.info("Loaded inception key: {}", client.serviceKey?.keyId?.prefix(8))
+        return client
     }
 
     @Bean

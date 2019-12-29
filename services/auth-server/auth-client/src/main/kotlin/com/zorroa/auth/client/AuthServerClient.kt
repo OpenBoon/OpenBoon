@@ -25,26 +25,26 @@ interface AuthServerClient {
 /**
  * A simple client to the Authentication service.
  */
-open class AuthServerClientImpl(val baseUri: String, val signingKey: String?) : AuthServerClient {
+open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?) : AuthServerClient {
 
     val client = OkHttpClient()
 
     val serviceKey: SigningiKey? = loadSigningKey()
 
     private fun loadSigningKey(): SigningiKey? {
-        if (signingKey == null) {
+        if (apiKey == null) {
             return null
         }
-        val path = Paths.get(signingKey)
+        val path = Paths.get(apiKey)
         return if (Files.exists(path)) {
             val key = Json.mapper.readValue<SigningiKey>(path.toFile())
-            logger.info("Loaded signing key: ${key.keyId.prefix(8)} from: '$signingKey'")
+            logger.debug("Loaded signing key: ${key.keyId.prefix(8)} from: '$apiKey'")
             key
         } else {
             try {
-                val decoded = Base64.getUrlDecoder().decode(signingKey)
+                val decoded = Base64.getUrlDecoder().decode(apiKey)
                 val key = Json.mapper.readValue<SigningiKey>(decoded)
-                logger.info("Loaded signing key: ${key.keyId.prefix(8)}")
+                logger.debug("Loaded signing key: ${key.keyId.prefix(8)}")
                 key
             } catch (e: Exception) {
                 logger.warn("NO signing KEY WAS LOADED")

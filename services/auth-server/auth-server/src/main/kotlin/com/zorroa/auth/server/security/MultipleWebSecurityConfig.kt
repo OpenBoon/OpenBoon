@@ -22,10 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
-@ConfigurationProperties("security")
+@ConfigurationProperties("zmlp.security")
 class SecurityProperties {
-
-    var serviceKey: String? = null
+    var inceptionKey: String? = null
 }
 
 @EnableWebSecurity
@@ -128,7 +127,7 @@ class MultipleWebSecurityConfig {
 
     @Bean
     fun serviceKey(): ApiKey {
-        return loadServiceKey(securityProperties.serviceKey)
+        return loadServiceKey(securityProperties.inceptionKey)
     }
 
     @Bean
