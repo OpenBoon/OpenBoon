@@ -29,6 +29,16 @@ public class ProjectApp {
     }
 
     /**
+     * Find a Project with its unique Id.
+     *
+     * @param id
+     * @return The found Project
+     */
+    public Project getProject(UUID id) {
+        return client.get("/api/v1/projects/" + id.toString(), null, Project.class);
+    }
+
+    /**
      * Find a Project with the given filter.  Filter must limit result count to 1.
      *
      * @param filter

@@ -1,5 +1,6 @@
 package com.zorroa.zmlp.sdk.domain;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -18,12 +19,12 @@ public class Project {
     /**
      * The time the Project was created.
      */
-    private Long timeCreated;
+    private Date timeCreated;
 
     /**
      * The last time the Project was modified.
      */
-    private Long timeModified;
+    private Date timeModified;
 
     /**
      * The actor which created this Project
@@ -53,19 +54,19 @@ public class Project {
         this.name = name;
     }
 
-    public Long getTimeCreated() {
+    public Date getTimeCreated() {
         return timeCreated;
     }
 
-    public void setTimeCreated(Long timeCreated) {
+    public void setTimeCreated(Date timeCreated) {
         this.timeCreated = timeCreated;
     }
 
-    public Long getTimeModified() {
+    public Date getTimeModified() {
         return timeModified;
     }
 
-    public void setTimeModified(Long timeModified) {
+    public void setTimeModified(Date timeModified) {
         this.timeModified = timeModified;
     }
 
