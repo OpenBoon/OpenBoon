@@ -17,10 +17,15 @@ import org.slf4j.LoggerFactory
  */
 class AuthServerClientException(message: String) : RuntimeException(message)
 
+interface AuthServerClient {
+    fun authenticate(jwtToken: String): ZmlpActor
+    fun createApiKey(project: UUID, name: String, perms: Collection<Permission>): ApiKey
+    fun getApiKey(projectId: UUID, name: String): ApiKey
+}
 /**
  * A simple client to the Authentication service.
  */
-class AuthServerClient(val baseUri: String, val signingKey: String?) {
+open class AuthServerClientImpl(val baseUri: String, val signingKey: String?) : AuthServerClient {
 
     val client = OkHttpClient()
 
@@ -53,7 +58,7 @@ class AuthServerClient(val baseUri: String, val signingKey: String?) {
      *
      * @param jwtToken An JWT token.
      */
-    fun authenticate(jwtToken: String): ZmlpActor {
+    override fun authenticate(jwtToken: String): ZmlpActor {
         val request = Request.Builder()
             .url("$baseUri/auth/v1/auth-token")
             .header("Authorization", "Bearer $jwtToken")
@@ -64,7 +69,7 @@ class AuthServerClient(val baseUri: String, val signingKey: String?) {
         return Json.mapper.readValue(responseBody.byteStream())
     }
 
-    fun createApiKey(project: UUID, name: String, perms: Collection<Permission>): ApiKey {
+    override fun createApiKey(project: UUID, name: String, perms: Collection<Permission>): ApiKey {
         val data = mapOf(
             "projectId" to project,
             "name" to name,
@@ -73,7 +78,7 @@ class AuthServerClient(val baseUri: String, val signingKey: String?) {
         return post("auth/v1/apikey", data)
     }
 
-    fun getApiKey(projectId: UUID, name: String): ApiKey {
+    override fun getApiKey(projectId: UUID, name: String): ApiKey {
         val data = mapOf(
             "projectIds" to listOf(projectId),
             "names" to listOf(name)
