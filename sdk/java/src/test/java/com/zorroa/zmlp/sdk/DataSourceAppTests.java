@@ -1,4 +1,4 @@
-package domain;
+package com.zorroa.zmlp.sdk;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;

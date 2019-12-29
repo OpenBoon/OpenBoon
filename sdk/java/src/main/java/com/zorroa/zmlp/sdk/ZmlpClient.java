@@ -1,4 +1,4 @@
-package domain;
+package com.zorroa.zmlp.sdk;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;

@@ -1,4 +1,4 @@
-package domain;
+package com.zorroa.zmlp.sdk;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package domain;
+package com.zorroa.zmlp.sdk;
 
 import java.util.Map;
 import java.util.UUID;

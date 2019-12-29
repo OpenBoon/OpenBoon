@@ -1,4 +1,4 @@
-package domain;
+package com.zorroa.zmlp.sdk;
 
 import java.io.IOException;
 import java.util.Optional;

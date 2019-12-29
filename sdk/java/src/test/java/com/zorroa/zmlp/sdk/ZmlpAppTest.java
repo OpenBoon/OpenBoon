@@ -1,4 +1,4 @@
-package domain;
+package com.zorroa.zmlp.sdk;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import java.util.HashMap;
 import java.util.Map;
 
-import static domain.Utils.updateEnvVariables;
+import static com.zorroa.zmlp.sdk.Utils.updateEnvVariables;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
