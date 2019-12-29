@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Order;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
@@ -24,10 +23,10 @@ import static org.junit.Assert.assertEquals;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Utils.class})
 @PowerMockIgnore({"javax.crypto.*", "javax.net.ssl.*"})
-public class PixmlDataSourceAppTests {
+public class DataSourceAppTests {
 
     Map keyDict;
-    PixmlApp app;
+    ZmlpApp app;
 
     ObjectMapper mapper;
     OkHttpClient okHttpClient;
@@ -43,7 +42,7 @@ public class PixmlDataSourceAppTests {
         keyDict.put("keyId", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
         keyDict.put("sharedKey", "test123test135");
 
-        app = new PixmlApp(keyDict);
+        app = new ZmlpApp(keyDict);
         mapper = new ObjectMapper();
         okHttpClient = new OkHttpClient();
     }
@@ -164,7 +163,7 @@ public class PixmlDataSourceAppTests {
         BDDMockito.given(Utils.executeHttpRequest(Mockito.matches("delete"), Mockito.anyString(), Mockito.anyMap(), Mockito.any()))
                 .willReturn(mapper.writeValueAsString(value));
 
-        Map post = this.app.getPixmlClient().delete("/api/v1/projects", UUID.fromString(UUIDTestValue));
+        Map post = this.app.getZmlpClient().delete("/api/v1/projects", UUID.fromString(UUIDTestValue));
 
         assertEquals(true, post.get("success"));
         assertEquals("delete", post.get("op"));

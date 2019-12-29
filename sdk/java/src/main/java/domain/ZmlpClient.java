@@ -12,7 +12,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-public class PixmlClient {
+public class ZmlpClient {
 
     ObjectMapper mapper = new ObjectMapper();
     JsonNode apiKey;
@@ -21,18 +21,18 @@ public class PixmlClient {
     String projectId;
     Integer maxRetries;
 
-    //    private final String DEFAULT_SERVER_URL = "https://api.pixelml.com";
-    private final String DEFAULT_SERVER_URL = "http://localhost:8080";
+    private final String DEFAULT_SERVER_URL = "https://api.zmlp.zorroa.com";
 
     /**
-     * PixmlClient is used to communicate to a Pixml API server.
-     * Create a new PixmlClient instance.
+     * ZmlpClient is used to communicate to a ZMLP API server.
+     * Create a new ZmlpClient instance.
      *
      * @param apiKey An API key in any supported form. (dict, base64 string, or open file handle)
-     * @param server The url of the server to connect to. Defaults to https://api.Pixml.zorroa.com
-     * @param args   Contains max_entries and/or project_id. Project_id contains An optional project UUID for API keys with access to multiple projects.
+     * @param server The url of the server to connect to. Defaults to https://api.zmlp.zorroa.com
+     * @param args   Contains max_entries and/or project_id. Project_id contains
+     *               An optional project UUID for API keys with access to multiple projects.
      */
-    public PixmlClient(Object apiKey, String server, Map args) {
+    public ZmlpClient(Object apiKey, String server, Map args) {
 
         args = Optional.ofNullable(args).orElse(new HashMap());
 
@@ -42,7 +42,7 @@ public class PixmlClient {
         this.projectId = (String) args.get("project_id");
     }
 
-    public PixmlClient(Object apiKey) {
+    public ZmlpClient(Object apiKey) {
         this(apiKey, null, null);
     }
 
@@ -112,13 +112,6 @@ public class PixmlClient {
         claimBuilder.withClaim("aud", this.server);
         claimBuilder.withClaim("exp", Instant.now().plus(60, ChronoUnit.SECONDS).toEpochMilli());
         claimBuilder.withClaim("keyId", this.apiKey.get("keyId").textValue());
-
-        //if PIXML_TASK_ID exists
-        Optional.ofNullable(System.getenv("PIXML_TASK_ID"))
-                .ifPresent((String taskId) -> {
-                    claimBuilder.withClaim("taskId", taskId);
-                    claimBuilder.withClaim("PIXML_JOB_ID", System.getenv("PIXML_JOB_ID"));
-                });
 
         // if projectId exists
         Optional.ofNullable(this.projectId).ifPresent((String projectId) -> {

@@ -3,9 +3,9 @@ package domain;
 import java.io.IOException;
 import java.util.Optional;
 
-public class PixmlApp {
+public class ZmlpApp {
 
-    private PixmlClient pixmlClient;
+    private ZmlpClient zmlpClient;
     private AssetApp assetApp;
     private DataSourceApp dataSourceApp;
 
@@ -15,36 +15,36 @@ public class PixmlApp {
      * @param apikey
      * @param server
      */
-    public PixmlApp(Object apikey, String server) {
+    public ZmlpApp(Object apikey, String server) {
 
-        String envServer = System.getenv("PIXML_SERVER");
+        String envServer = System.getenv("ZMLP_SERVER");
 
-        this.pixmlClient = new PixmlClient(apikey, Optional.ofNullable(server).orElse(envServer), null);
+        this.zmlpClient = new ZmlpClient(apikey, Optional.ofNullable(server).orElse(envServer), null);
         this.assetApp = new AssetApp();
         this.dataSourceApp = new DataSourceApp(this);
     }
 
-    public PixmlApp(Object apikey) {
+    public ZmlpApp(Object apikey) {
         this(apikey, null);
     }
 
     /**
      * Env Variables Constructor
-     * Create a PixmlApp configured via environment variables. This method
+     * Create a ZmlpApp configured via environment variables. This method
      * will not throw if the environment is configured improperly, however
-     * attempting the use the PixmlApp instance to make a request
+     * attempting the use the ZmlpApp instance to make a request
      * will fail.
      *
      * Environment Variables
-     *  - PIXML_APIKEY : A base64 encoded API key.
-     *  - PIXML_APIKEY_FILE : A path to a JSON formatted API key.
-     *  - PIXML_SERVER : The URL to the Pixml API server.
+     *  - ZMLP_APIKEY : A base64 encoded API key.
+     *  - ZMLP_APIKEY_FILE : A path to a JSON formatted API key.
+     *  - ZMLP_SERVER : The URL to the ZMLP API server.
      */
 
-    public PixmlApp() {
+    public ZmlpApp() {
 
-        Optional<String> envApiKey = Optional.ofNullable(System.getenv("PIXML_APIKEY"));//base64
-        Optional<String> envApiKeyFilePath = Optional.ofNullable(System.getenv("PIXML_APIKEY_FILE"));//file path
+        Optional<String> envApiKey = Optional.ofNullable(System.getenv("ZMLP_APIKEY"));//base64
+        Optional<String> envApiKeyFilePath = Optional.ofNullable(System.getenv("ZMLP_APIKEY_FILE"));//file path
 
         String apiKey = null;
 
@@ -63,17 +63,17 @@ public class PixmlApp {
 
 
         // load Variables
-        this.pixmlClient = new PixmlClient(apiKey, System.getenv("PIXML_SERVER"), null);
+        this.zmlpClient = new ZmlpClient(apiKey, System.getenv("ZMLP_SERVER"), null);
         this.assetApp = new AssetApp();
         this.dataSourceApp = new DataSourceApp(this);
     }
 
-    public PixmlClient getPixmlClient() {
-        return pixmlClient;
+    public ZmlpClient getZmlpClient() {
+        return zmlpClient;
     }
 
-    public void setPixmlClient(PixmlClient pixmlClient) {
-        this.pixmlClient = pixmlClient;
+    public void setZmlpClient(ZmlpClient zmlpClient) {
+        this.zmlpClient = zmlpClient;
     }
 
     public AssetApp getAssetApp() {

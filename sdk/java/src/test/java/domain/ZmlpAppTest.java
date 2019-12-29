@@ -14,8 +14,8 @@ import static domain.Utils.updateEnvVariables;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@DisplayName("Pixml Client Test")
-public class PixmlAppTest {
+@DisplayName("ZMLP App Test")
+public class ZmlpAppTest {
 
     Map<String, String> keyDict = new HashMap<>();
     byte[] keyStrByteArr;
@@ -41,12 +41,12 @@ public class PixmlAppTest {
     @Test
     public void testCreateAppWithKeyDict() {
 
-        PixmlApp pixmlApp = new PixmlApp(keyDict, null);
+        ZmlpApp zmlpApp = new ZmlpApp(keyDict, null);
 
-        assertNotNull(pixmlApp);
-        assertNotNull(pixmlApp.getPixmlClient());
-        assertNotNull(pixmlApp.getPixmlClient().apiKey);
-        assertNotNull(pixmlApp.getPixmlClient().headers());
+        assertNotNull(zmlpApp);
+        assertNotNull(zmlpApp.getZmlpClient());
+        assertNotNull(zmlpApp.getZmlpClient().apiKey);
+        assertNotNull(zmlpApp.getZmlpClient().headers());
 
     }
 
@@ -54,23 +54,23 @@ public class PixmlAppTest {
     @Test
     public void testCreateAppWithKeyString() {
 
-        PixmlApp pixmlApp = new PixmlApp(keyString, null);
+        ZmlpApp zmlpApp = new ZmlpApp(keyString, null);
 
-        assertNotNull(pixmlApp);
-        assertNotNull(pixmlApp.getPixmlClient());
-        assertNotNull(pixmlApp.getPixmlClient().apiKey);
-        assertNotNull(pixmlApp.getPixmlClient().headers());
+        assertNotNull(zmlpApp);
+        assertNotNull(zmlpApp.getZmlpClient());
+        assertNotNull(zmlpApp.getZmlpClient().apiKey);
+        assertNotNull(zmlpApp.getZmlpClient().headers());
     }
 
     @DisplayName("Create app with Key String.Byte[]")
     @Test
     public void testCreateAppWithKeyByteArr() {
-        PixmlApp pixmlApp = new PixmlApp(keyStrByteArr, null);
+        ZmlpApp zmlpApp = new ZmlpApp(keyStrByteArr, null);
 
-        assertNotNull(pixmlApp);
-        assertNotNull(pixmlApp.getPixmlClient());
-        assertNotNull(pixmlApp.getPixmlClient().apiKey);
-        assertNotNull(pixmlApp.getPixmlClient().headers());
+        assertNotNull(zmlpApp);
+        assertNotNull(zmlpApp.getZmlpClient());
+        assertNotNull(zmlpApp.getZmlpClient().apiKey);
+        assertNotNull(zmlpApp.getZmlpClient().headers());
     }
 
     @DisplayName("Create app with ENV Variables")
@@ -83,15 +83,15 @@ public class PixmlAppTest {
         //When
         // Setting up Environment Variables
         // It is valid just at this runtime
-        updateEnvVariables("PIXML_APIKEY", keyString);
-        updateEnvVariables("PIXML_SERVER", server);
+        updateEnvVariables("ZMLP_APIKEY", keyString);
+        updateEnvVariables("ZMLP_SERVER", server);
 
-        PixmlApp pixmlApp = new PixmlApp();
+        ZmlpApp zmlpApp = new ZmlpApp();
 
-        assertNotNull(pixmlApp);
-        assertNotNull(pixmlApp.getPixmlClient());
-        assertNotNull(pixmlApp.getPixmlClient().apiKey);
-        assertNotNull(pixmlApp.getPixmlClient().headers());
+        assertNotNull(zmlpApp);
+        assertNotNull(zmlpApp.getZmlpClient());
+        assertNotNull(zmlpApp.getZmlpClient().apiKey);
+        assertNotNull(zmlpApp.getZmlpClient().headers());
     }
 
 
@@ -105,15 +105,15 @@ public class PixmlAppTest {
         //When
         // Setting up Environment Variables
         // It is valid just at this runtime
-        updateEnvVariables("PIXML_APIKEY_FILE", "src/test/resources/testkey.json");
-        updateEnvVariables("PIXML_SERVER", server);
+        updateEnvVariables("ZMLP_APIKEY_FILE", "src/test/resources/testkey.json");
+        updateEnvVariables("ZMLP_SERVER", server);
 
-        PixmlApp pixmlApp = new PixmlApp();
+        ZmlpApp zmlpApp = new ZmlpApp();
 
-        assertNotNull(pixmlApp);
-        assertNotNull(pixmlApp.getPixmlClient());
-        assertNotNull(pixmlApp.getPixmlClient().apiKey);
-        assertNotNull(pixmlApp.getPixmlClient().headers());
+        assertNotNull(zmlpApp);
+        assertNotNull(zmlpApp.getZmlpClient());
+        assertNotNull(zmlpApp.getZmlpClient().apiKey);
+        assertNotNull(zmlpApp.getZmlpClient().headers());
     }
 
 

@@ -5,9 +5,9 @@ import java.util.*;
 
 public class DataSourceApp {
 
-    PixmlApp app;
+    ZmlpApp app;
 
-    public DataSourceApp(PixmlApp app) {
+    public DataSourceApp(ZmlpApp app) {
         this.app = app;
     }
 
@@ -40,7 +40,7 @@ public class DataSourceApp {
 
         // TODO - Implement Analysis
         final String url = "/api/v1/data-sources";
-        return new DataSource(app.getPixmlClient().post(url, body));
+        return new DataSource(app.getZmlpClient().post(url, body));
 
     }
 
@@ -65,7 +65,7 @@ public class DataSourceApp {
         }
 
 
-        return new DataSource(this.app.getPixmlClient().post(url, body));
+        return new DataSource(this.app.getZmlpClient().post(url, body));
 
     }
 
@@ -85,7 +85,7 @@ public class DataSourceApp {
 
         String url = String.format("/api/v1/data-sources/%s/_import", ds.getId());
 
-        return this.app.getPixmlClient().post(url, null);
+        return this.app.getZmlpClient().post(url, null);
 
     }
 
@@ -106,7 +106,7 @@ public class DataSourceApp {
         Map body = new HashMap();
         body.put("blob", blob);
 
-        return this.app.getPixmlClient().put(url, body);
+        return this.app.getZmlpClient().put(url, body);
 
     }
 }

@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class PixmlAppTestIT {
+public class ZmlpAppTestIT {
 
-    PixmlApp pixmlApp;
+    ZmlpApp zmlpApp;
     String server = "http://localhost:8080";
     String projectName = "ProjectZERO";
     UUID projectId = UUID.fromString("00000000-0000-0000-0000-000000000000");
@@ -25,9 +25,9 @@ public class PixmlAppTestIT {
         //When
         // Setting up Environment Variables
         // It is valid just at this runtime
-        Utils.updateEnvVariables("PIXML_APIKEY_FILE", "../../dev/config/keys/inception-key.json");
-        Utils.updateEnvVariables("PIXML_SERVER", server);
-        pixmlApp = new PixmlApp();
+        Utils.updateEnvVariables("ZMLP_APIKEY_FILE", "../../dev/config/keys/inception-key.json");
+        Utils.updateEnvVariables("ZMLP_SERVER", server);
+        zmlpApp = new ZmlpApp();
         mapper = new ObjectMapper();
 
     }
@@ -37,7 +37,7 @@ public class PixmlAppTestIT {
     public void testCreateProject() throws IOException, InterruptedException {
 
         ProjectSpec projectSpec = new ProjectSpec(projectName, projectId);
-        Project project = pixmlApp.getPixmlClient().createProject(projectSpec);
+        Project project = zmlpApp.getZmlpClient().createProject(projectSpec);
 
         assertEquals(project.getId(), projectId);
         assertEquals(project.getName(), projectName);
@@ -50,7 +50,7 @@ public class PixmlAppTestIT {
 
         ProjectSpec projectSpec = new ProjectSpec(projectName, projectId);
 
-        assertThrows(IOException.class, () -> pixmlApp.getPixmlClient().createProject(projectSpec));
+        assertThrows(IOException.class, () -> zmlpApp.getZmlpClient().createProject(projectSpec));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class PixmlAppTestIT {
         List<UUID> uuidList = Arrays.asList(projectId);
         ProjectFilter projectFilter = new ProjectFilter(uuidList, null, null, null);
 
-        Project project = pixmlApp.getPixmlClient().searchProject(projectFilter);
+        Project project = zmlpApp.getZmlpClient().searchProject(projectFilter);
 
         assertEquals(project.getId(), projectId);
         assertEquals(project.getName(), projectName);
@@ -73,7 +73,7 @@ public class PixmlAppTestIT {
     public void testRetrieveAllProjects() throws IOException, InterruptedException {
 
         ProjectFilter projectFilter = new ProjectFilter(null, null, null, null);
-        List<Project> projects = pixmlApp.getPixmlClient().getAllProjects(projectFilter);
+        List<Project> projects = zmlpApp.getZmlpClient().getAllProjects(projectFilter);
         assertEquals(projects.get(0).getId(), projectId);
         assertEquals(projects.get(0).getName(), projectName);
     }
@@ -87,7 +87,7 @@ public class PixmlAppTestIT {
         value.put("name", "test");
         value.put("uri", "gs://test/test");
 
-        dsTest = pixmlApp.getDataSourceApp().createDataSource("test", "gs://test/test", null, null, null);
+        dsTest = zmlpApp.getDataSourceApp().createDataSource("test", "gs://test/test", null, null, null);
 
         assertEquals(value.get("name"), dsTest.getName());
         assertEquals(value.get("uri"), dsTest.getUri());
@@ -104,7 +104,7 @@ public class PixmlAppTestIT {
         value.put("uri", "gs://test/test");
 
         //run real method with static mocked method with http request inside
-        DataSource ds = pixmlApp.getDataSourceApp().getDataSource("test");
+        DataSource ds = zmlpApp.getDataSourceApp().getDataSource("test");
 
         assertEquals(value.get("name"), ds.getName());
         assertEquals(value.get("uri"), ds.getUri());
@@ -119,7 +119,7 @@ public class PixmlAppTestIT {
         dataSourceParam.put("id", dsTest.getId());
         DataSource ds = new DataSource(dataSourceParam);
 
-        Map response = pixmlApp.getDataSourceApp().importDataSource(ds);
+        Map response = zmlpApp.getDataSourceApp().importDataSource(ds);
 
         assertEquals(response.get("dataSourceId"), dsTest.getId().toString());
         assert (((String) response.get("name")).contains(dsTest.getName()));
@@ -129,7 +129,7 @@ public class PixmlAppTestIT {
     @Order(8)
     public void updateCredentials() throws IOException, InterruptedException {
 
-        Map status = this.pixmlApp.getDataSourceApp().updateCredentials(dsTest, "ABC123");
+        Map status = this.zmlpApp.getDataSourceApp().updateCredentials(dsTest, "ABC123");
 
         Map dataSourceParam = new HashMap();
         dataSourceParam.put("id", projectId);
@@ -142,7 +142,7 @@ public class PixmlAppTestIT {
     @Test
     @Order(9)
     public void testDeleteApp() throws IOException, InterruptedException {
-        Boolean success = pixmlApp.getPixmlClient().deleteProject(projectId);
+        Boolean success = zmlpApp.getZmlpClient().deleteProject(projectId);
 
         assertEquals(true, success);
     }
