@@ -102,7 +102,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
          * decrypt encrypted project data.
          */
         val INCEPTION_PERMISSIONS = Permission.values()
-            .map { it.name }.toSet().minus(Permission.ProjectDecrypt.name)
+            .map { it.name }.toSet().minus(Permission.SystemProjectDecrypt.name)
 
         private val log = LoggerFactory.getLogger(JWTAuthorizationFilter::class.java)
     }

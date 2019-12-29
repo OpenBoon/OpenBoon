@@ -36,7 +36,7 @@ class ApiKeyServiceTests : AbstractTest() {
             UUID.randomUUID(),
             UUID.randomUUID(),
             "bigAdmin",
-            setOf(Permission.ProjectOverride)
+            setOf(Permission.SystemProjectOverride)
         )
 
         SecurityContextHolder.getContext().authentication =

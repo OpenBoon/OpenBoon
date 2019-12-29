@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 class AuthControllerTests : MockMvcTest() {
 
     @Test
-    fun testAuthExtenrnalToken() {
+    fun testAuthInceptionToken() {
         mvc.perform(
             MockMvcRequestBuilders.post("/auth/v1/auth-token")
                 .headers(superAdmin())
@@ -21,7 +21,7 @@ class AuthControllerTests : MockMvcTest() {
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$.permissions",
-                    CoreMatchers.hasItem("ProjectOverride")
+                    CoreMatchers.hasItem("SystemProjectOverride")
                 )
             )
             .andReturn()

@@ -39,7 +39,7 @@ class ApiKeyServiceImpl constructor(
         val actor = getZmlpActor()
 
         // If the Actor is a PlatformApp, then allow a project ID override.
-        val projectId = if (actor.hasAnyPermission(Permission.ProjectOverride) && spec.projectId != null) {
+        val projectId = if (actor.hasAnyPermission(Permission.SystemProjectOverride) && spec.projectId != null) {
             spec.projectId
         } else {
             actor.projectId

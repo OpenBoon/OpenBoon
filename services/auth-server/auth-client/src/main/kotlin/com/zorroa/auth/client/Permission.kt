@@ -2,34 +2,35 @@ package com.zorroa.auth.client
 
 import io.swagger.annotations.ApiModelProperty
 
-enum class Permission {
-    @ApiModelProperty("Permission which allows access to monitoring endpoints")
-    PlatformMonitor,
+enum class Permission(val description: String) {
 
-    @ApiModelProperty("Permission which allows access to platform management endpoints")
-    PlatformManage,
+    @ApiModelProperty("Allows access to monitoring endpoints")
+    SystemMonitor("Allows access to monitoring endpoints"),
 
-    @ApiModelProperty("Permission which provides ability to switch projects")
-    ProjectOverride,
+    @ApiModelProperty("Allows access to platform management endpoints")
+    SystemManage("Allows access to platform management endpoints"),
 
-    @ApiModelProperty("Permission which provides ability to view encrypted project data")
-    ProjectDecrypt,
+    @ApiModelProperty("Provides ability to switch projects")
+    SystemProjectOverride("Provides ability to switch projects"),
 
-    @ApiModelProperty("Permission which provides ability to manage API keys")
-    ApiKeyManage,
+    @ApiModelProperty("Provides ability to view encrypted project data")
+    SystemProjectDecrypt("Provides ability to view encrypted project data"),
 
-    @ApiModelProperty("Permission which provides ability to read assets and associated files")
-    AssetsRead,
+    @ApiModelProperty("Provides ability to manage API keys")
+    ApiKeyManage("Provides ability to manage API keys"),
 
-    @ApiModelProperty("Permission which provides ability to import assets. (created and update)")
-    AssetsImport,
+    @ApiModelProperty("Provides ability to read assets and associated files")
+    AssetsRead("Provides ability to read assets and associated files"),
 
-    @ApiModelProperty("Permission which provides ability to remove assets")
-    AssetsDelete,
+    @ApiModelProperty("Provides ability to import assets. (created and update)")
+    AssetsImport("Provides ability to import assets. (created and update)"),
 
-    @ApiModelProperty("Permission which provides ability to manage projects.")
-    ProjectManage,
+    @ApiModelProperty("Provides ability to remove assets")
+    AssetsDelete("Provides ability to remove assets"),
 
-    @ApiModelProperty("Permission which provides ability to create projects.")
-    ProjectCreate;
+    @ApiModelProperty("Povides ability to manage projects.")
+    ProjectManage("Povides ability to manage projects."),
+
+    @ApiModelProperty("Provides ability to create projects.")
+    ProjectCreate("Provides ability to create projects.")
 }

@@ -63,7 +63,7 @@ fun loadServiceKey(serviceKey: String?): ApiKey {
         UUID.randomUUID(),
         UUID.randomUUID(),
         KeyGenerator.generate() + KeyGenerator.generate(),
-        "random", setOf(Permission.PlatformMonitor.name)
+        "random", setOf(Permission.SystemMonitor.name)
     )
 }
 
