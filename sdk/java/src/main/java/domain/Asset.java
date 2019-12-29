@@ -1,7 +1,5 @@
 package domain;
 
-import jdk.nashorn.internal.runtime.regexp.joni.exception.ValueException;
-
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -23,7 +21,7 @@ public class Asset extends AssetBase {
     public Asset(Map<String, Object> data) throws Exception {
 
         if (data == null)
-            throw new ValueException("Error creating Asset instance, Assets must have an id.");
+            throw new IllegalArgumentException("Error creating Asset instance, Assets must have an id.");
 
         this.id = (Integer) data.get("id");
         this.document.getOrDefault("document", new HashMap<>());
