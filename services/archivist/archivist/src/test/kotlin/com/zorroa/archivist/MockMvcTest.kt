@@ -7,12 +7,11 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.whenever
-import com.zorroa.archivist.clients.ZmlpActor
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.AnalystTokenValidator
-import com.zorroa.archivist.security.Perm
-import com.zorroa.archivist.security.Role
 import com.zorroa.archivist.util.Json
+import com.zorroa.auth.client.Permission
+import com.zorroa.auth.client.ZmlpActor
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -61,7 +60,7 @@ abstract class MockMvcTest : AbstractTest() {
                 UUID.fromString("00000000-0000-0000-0000-000000000001"),
                 project.id,
                 "JobRunner",
-                listOf(Role.JOBRUNNER)
+                setOf(Permission.ProjectDataDecrypt)
             )
         }
 
@@ -74,7 +73,7 @@ abstract class MockMvcTest : AbstractTest() {
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 project.id,
                 "unittest-key",
-                listOf(Role.SUPERADMIN, Role.PROJADMIN, Perm.MONITOR_SERVER)
+                Permission.values().toSet()
             )
         }
 

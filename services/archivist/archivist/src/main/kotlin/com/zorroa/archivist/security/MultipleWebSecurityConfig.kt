@@ -1,8 +1,7 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.clients.AuthServerClient
-import com.zorroa.archivist.clients.AuthServerClientImpl
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.auth.client.AuthServerClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -40,7 +39,7 @@ class MultipleWebSecurityConfig {
     internal lateinit var properties: ApplicationProperties
 
     @Configuration
-    @Order(Ordered.HIGHEST_PRECEDENCE+1)
+    @Order(Ordered.HIGHEST_PRECEDENCE + 1)
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
@@ -81,8 +80,10 @@ class MultipleWebSecurityConfig {
         override fun configure(http: HttpSecurity) {
             http
                 .antMatcher("/cluster/**")
-                .addFilterBefore(analystAuthenticationFilter,
-                    UsernamePasswordAuthenticationFilter::class.java)
+                .addFilterBefore(
+                    analystAuthenticationFilter,
+                    UsernamePasswordAuthenticationFilter::class.java
+                )
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -106,14 +107,15 @@ class MultipleWebSecurityConfig {
                 .httpBasic()
                 .and()
                 .csrf().disable()
-                .addFilterBefore(apiKeyAuthorizationFilter,
+                .addFilterBefore(
+                    apiKeyAuthorizationFilter,
                     UsernamePasswordAuthenticationFilter::class.java
                 )
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .requestMatchers(EndpointRequest.to("metrics", "prometheus"))
-                .hasAnyAuthority(Role.SUPERADMIN, Role.PROJADMIN, Perm.MONITOR_SERVER)
+                .hasAnyAuthority("PlatformMonitor")
                 .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
         }
     }
@@ -147,7 +149,7 @@ class MultipleWebSecurityConfig {
             .authenticationProvider(apiKeyAuthenticationProvider())
             .inMemoryAuthentication()
             .withUser("monitor").password(passwordEncoder().encode(monitorPassword))
-            .authorities(Perm.MONITOR_SERVER)
+            .authorities("PlatformMonitor")
     }
 
     @Bean
@@ -170,9 +172,10 @@ class MultipleWebSecurityConfig {
 
     @Bean
     fun authServerClient(): AuthServerClient {
-        return AuthServerClientImpl(
+        return AuthServerClient(
             properties.getString("security.auth-server.url"),
-            properties.getString("security.service-key"))
+            properties.getString("security.service-key")
+        )
     }
 
     @Bean

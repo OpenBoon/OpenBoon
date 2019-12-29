@@ -20,14 +20,10 @@ import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.InternalThreadAuthentication
-import com.zorroa.archivist.security.Perm
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.security.withAuth
 import io.micrometer.core.instrument.MeterRegistry
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.TestPropertySource
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
@@ -127,15 +123,14 @@ class DispatcherServiceTests : AbstractTest() {
         val pspec = ProjectSpec("foojam", projectId = UUID.randomUUID())
         val project = projectService.create(pspec)
 
-        withAuth(InternalThreadAuthentication(project.id, listOf(Perm.STORAGE_CREATE))) {
-            val spec2 = JobSpec(
-                "test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar")
-            )
-            jobService.create(spec2)
-        }
+        val spec2 = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
+        jobService.create(spec2)
+
 
         val priority = dispatcherService.getDispatchPriority()
         assertEquals(0, priority[0].priority)

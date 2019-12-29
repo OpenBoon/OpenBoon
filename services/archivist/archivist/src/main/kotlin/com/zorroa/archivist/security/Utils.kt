@@ -1,12 +1,10 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.clients.ZmlpActor
+import com.zorroa.auth.client.ZmlpActor
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
-import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
@@ -38,10 +36,6 @@ fun <T> withAuth(auth: Authentication?, body: () -> T): T {
     }
 }
 
-object SecurityLogger {
-    val logger = LoggerFactory.getLogger(SecurityLogger::class.java)
-}
-
 fun getAuthentication(): Authentication? {
     return SecurityContextHolder.getContext().authentication
 }
@@ -50,12 +44,10 @@ fun getZmlpActor(): ZmlpActor {
     val auth = SecurityContextHolder.getContext().authentication
     return if (auth == null) {
         throw SecurityException("No credentials")
-    }
-    else {
+    } else {
         try {
             auth.principal as ZmlpActor
-        }
-        catch (e: java.lang.ClassCastException) {
+        } catch (e: java.lang.ClassCastException) {
             throw SecurityException("Invalid credentials", e)
         }
     }
@@ -69,43 +61,30 @@ fun getZmlpActorOrNull(): ZmlpActor? {
     }
 }
 
-fun getProjectId() : UUID {
+fun getProjectId(): UUID {
     return getZmlpActor().projectId
 }
 
-fun getAnalyst() : AnalystAuthentication {
+fun getAnalyst(): AnalystAuthentication {
     val auth = SecurityContextHolder.getContext().authentication
     return if (auth is AnalystAuthentication) {
         auth
-    }
-    else {
+    } else {
         throw AuthenticationCredentialsNotFoundException("No login credentials specified for cluster node")
     }
 }
 
-private fun containsOnlySuperadmin(perms: Collection<String>): Boolean {
-    return perms.isNotEmpty() and perms.all { it == Role.SUPERADMIN }
-}
-
-private fun containsSuperadmin(it: Collection<GrantedAuthority>) =
-    it.any { it.authority == Role.SUPERADMIN }
-
 fun hasPermission(perms: Collection<String>): Boolean {
     val auth = SecurityContextHolder.getContext().authentication
     auth?.authorities?.let { authorities ->
-        if (containsSuperadmin(authorities)) {
-            return true
-        } else if (!containsOnlySuperadmin(perms)) {
-            for (g in authorities) {
-                if (perms.contains(g.authority)) {
-                    return true
-                }
+        for (g in authorities) {
+            if (perms.contains(g.authority)) {
+                return true
             }
         }
     }
     return false
 }
-
 
 fun getProjectFilter(): QueryBuilder {
     return QueryBuilders.termQuery("system.projectId", getZmlpActor().projectId.toString())
