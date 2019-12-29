@@ -1,6 +1,6 @@
-package com.zorroa.zmlp.sdk;
+package com.zorroa.zmlp.sdk.domain;
 
-public class ZmlpClientException extends RuntimeException {
+public class ZmlpClientException extends ZmlpAppException {
     public ZmlpClientException(String message, Throwable cause) {
         super(message, cause);
     }

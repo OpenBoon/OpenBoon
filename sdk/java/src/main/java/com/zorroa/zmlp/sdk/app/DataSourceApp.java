@@ -2,11 +2,8 @@ package com.zorroa.zmlp.sdk.app;
 
 import com.zorroa.zmlp.sdk.ZmlpClient;
 import com.zorroa.zmlp.sdk.domain.DataSource;
-import com.zorroa.zmlp.sdk.Utils;
-import com.zorroa.zmlp.sdk.ZmlpApp;
 import com.zorroa.zmlp.sdk.domain.DataSourceSpec;
 
-import java.io.IOException;
 import java.util.*;
 
 public class DataSourceApp {

@@ -3,8 +3,12 @@ package com.zorroa.zmlp.sdk;
 import com.zorroa.zmlp.sdk.app.AssetApp;
 import com.zorroa.zmlp.sdk.app.DataSourceApp;
 import com.zorroa.zmlp.sdk.app.ProjectApp;
+import com.zorroa.zmlp.sdk.domain.ZmlpAppException;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
+import java.util.Map;
 import java.util.Optional;
 
 public class ZmlpApp {
@@ -20,15 +24,20 @@ public class ZmlpApp {
      * @param apikey
      * @param server
      */
-    public ZmlpApp(Object apikey, String server) {
+    public ZmlpApp(ApiKey apikey, String server) {
         this.zmlpClient = new ZmlpClient(apikey, server);
         this.assets = new AssetApp(zmlpClient);
         this.datasources = new DataSourceApp(zmlpClient);
         this.projects = new ProjectApp(zmlpClient);
     }
 
-    public ZmlpApp(Object apikey) {
-        this(apikey, null);
+    public ZmlpApp(String apikey, String server) {
+        this(loadApiKey(apikey), server);
+    }
+
+
+    public ZmlpApp(File apikey, String server) {
+        this(loadApiKey(apikey), server);
     }
 
     /**
@@ -44,24 +53,37 @@ public class ZmlpApp {
      *  - ZMLP_SERVER : The URL to the ZMLP API server.
      */
 
+    private static ApiKey loadApiKey(File fileKey) {
+        try {
+            return Json.mapper.readValue(fileKey, ApiKey.class);
+        } catch (IOException e) {
+            throw new ZmlpAppException("Unable to load ZpiKey file " + fileKey, e);
+        }
+    }
+
+    private static ApiKey loadApiKey(String base64key) {
+        byte[] decoded = Base64.getDecoder().decode(base64key);
+        try {
+            return Json.mapper.readValue(decoded, ApiKey.class);
+        } catch (IOException e) {
+            throw new ZmlpAppException("Unable to load Base64 key", e);
+        }
+    }
+
     public static ZmlpApp fromEnv() {
 
         Optional<String> envApiKey = Optional.ofNullable(System.getenv("ZMLP_APIKEY"));//base64
         Optional<String> envApiKeyFilePath = Optional.ofNullable(System.getenv("ZMLP_APIKEY_FILE"));//file path
 
-        String apiKey = null;
+        ApiKey apiKey;
 
         if (envApiKey.isPresent()) {
-            apiKey = envApiKey.get();
+            apiKey = loadApiKey(envApiKey.get());
         } else if (envApiKeyFilePath.isPresent()) {
-            apiKey = envApiKeyFilePath.map((String filePath) -> {
-                try {
-                    return Utils.readTextFromFile(filePath);
-                } catch (IOException e) {
-                    System.out.println("Invalid Key File Path.");
-                    return null;
-                }
-            }).get();
+            apiKey = loadApiKey(new File(envApiKeyFilePath.get()));
+        }
+        else {
+            throw new ZmlpAppException("Unable to load api key from envirionment");
         }
 
         return new ZmlpApp(apiKey, System.getenv("ZMLP_SERVER"));

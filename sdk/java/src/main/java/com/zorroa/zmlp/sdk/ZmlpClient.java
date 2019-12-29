@@ -3,21 +3,14 @@ package com.zorroa.zmlp.sdk;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.zorroa.zmlp.sdk.domain.ZmlpClientException;
 import okhttp3.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Base64;
-import java.util.Map;
 import java.util.Optional;
 
 public class ZmlpClient {
@@ -25,7 +18,6 @@ public class ZmlpClient {
     public static final MediaType JSON = MediaType.parse("application/json");
 
     private final OkHttpClient http = new OkHttpClient();
-    private final ObjectMapper mapper = new ObjectMapper();
 
     private final ApiKey apiKey;
     private final String server;
@@ -39,14 +31,9 @@ public class ZmlpClient {
      * @param apiKey An API key in any supported form. (dict, base64 string, or open file handle)
      * @param server The url of the server to connect to. Defaults to https://api.zmlp.zorroa.com
      */
-    public ZmlpClient(Object apiKey, String server) {
-        configureJsonMapper();
-        this.apiKey = loadApiKey(apiKey);
+    public ZmlpClient(ApiKey apiKey, String server) {
+        this.apiKey = apiKey;
         this.server = Optional.ofNullable(server).orElse(DEFAULT_SERVER_URL);
-    }
-
-    public ZmlpClient(Object apiKey) {
-        this(apiKey, null);
     }
 
     public Boolean isApiKeySet() {
@@ -97,7 +84,7 @@ public class ZmlpClient {
                 builder.method(method, null);
             } else {
                 builder.method(method.toUpperCase(),
-                        RequestBody.create(mapper.writeValueAsString(body), JSON));
+                        RequestBody.create(Json.mapper.writeValueAsString(body), JSON));
             }
             applyHeaders(builder);
 
@@ -112,7 +99,7 @@ public class ZmlpClient {
 
     private <T> T marshallResponse(InputStream response, TypeReference<T> type) {
         try {
-            return mapper.readValue(response, type);
+            return Json.mapper.readValue(response, type);
         } catch (IOException e) {
             throw new ZmlpClientException("Could not  deserialize response", e);
         }
@@ -121,25 +108,9 @@ public class ZmlpClient {
 
     private <T> T marshallResponse(InputStream response, Class<T> type) {
         try {
-            return mapper.readValue(response, type);
+            return Json.mapper.readValue(response, type);
         } catch (IOException e) {
             throw new ZmlpClientException("Could not  deserialize response", e);
-        }
-    }
-
-    private ApiKey loadApiKey(Object apiKey) {
-
-        if (apiKey instanceof Map) {
-            return mapper.convertValue(apiKey, ApiKey.class);
-        } else if (apiKey instanceof String) {
-            byte[] decoded = Base64.getDecoder().decode(apiKey.toString());
-            try {
-                return mapper.convertValue(decoded, ApiKey.class);
-            } catch (Exception e) {
-                throw new ZmlpClientException("Failed to parse API Key", e);
-            }
-        } else {
-            return null;
         }
     }
 
@@ -160,15 +131,5 @@ public class ZmlpClient {
         ;
         Algorithm sharedKey = Algorithm.HMAC512(apiKey.getSigningKey());
         return claimBuilder.sign(sharedKey);
-    }
-
-    private void configureJsonMapper() {
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
-        mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, false);
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-        mapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, false);
-        mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true);
     }
 }
