@@ -75,7 +75,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
                     projectId,
                     externalApiKey.sharedKey,
                     externalApiKey.name,
-                    UNIQUE_PERMISSION_SET
+                    INCEPTION_PERMISSIONS
                 )
             } else {
                 apiKeyRepository.findById(keyId).get()
@@ -97,7 +97,12 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
     }
 
     companion object {
-        val UNIQUE_PERMISSION_SET = Permission.values().map { it.name }.toSet()
+        /**
+         * The inception permissions is everything except ability to
+         * decrypt encrypted project data.
+         */
+        val INCEPTION_PERMISSIONS = Permission.values()
+            .map { it.name }.toSet().minus(Permission.ProjectDecrypt.name)
 
         private val log = LoggerFactory.getLogger(JWTAuthorizationFilter::class.java)
     }
