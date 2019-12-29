@@ -84,7 +84,7 @@ public class ZmlpClient {
                 builder.method(method, null);
             } else {
                 builder.method(method.toUpperCase(),
-                        RequestBody.create(Json.mapper.writeValueAsString(body), JSON));
+                        RequestBody.create(JSON, Json.mapper.writeValueAsString(body)));
             }
             applyHeaders(builder);
 
