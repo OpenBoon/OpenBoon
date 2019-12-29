@@ -19,7 +19,7 @@ public class ZmlpClient {
 
     private final OkHttpClient http = new OkHttpClient();
 
-    private final ApiKey apiKey;
+    private final Optional<ApiKey> apiKey;
     private final String server;
 
     private final String DEFAULT_SERVER_URL = "https://api.zmlp.zorroa.com";
@@ -32,7 +32,7 @@ public class ZmlpClient {
      * @param server The url of the server to connect to. Defaults to https://api.zmlp.zorroa.com
      */
     public ZmlpClient(ApiKey apiKey, String server) {
-        this.apiKey = apiKey;
+        this.apiKey = Optional.ofNullable(apiKey);
         this.server = Optional.ofNullable(server).orElse(DEFAULT_SERVER_URL);
     }
 
@@ -73,10 +73,15 @@ public class ZmlpClient {
     }
 
     private String getUrl(String path) {
-        return (server + ("/" + path).replace("//", "/"));
+        if (server.endsWith("/")) {
+            return server.concat(path.replaceFirst("/", ""));
+        }
+        else {
+            return server.concat(path);
+        }
     }
 
-    public InputStream makeRequest(String path, String method, Object body) {
+    public byte[] makeRequest(String path, String method, Object body) {
         try {
             Request.Builder builder = new Request.Builder()
                     .url(getUrl(path));
@@ -87,9 +92,8 @@ public class ZmlpClient {
                         RequestBody.create(JSON, Json.mapper.writeValueAsString(body)));
             }
             applyHeaders(builder);
-
             try (Response response = http.newCall(builder.build()).execute()) {
-                return response.body().byteStream();
+                return response.body().bytes();
             }
         } catch (IOException e) {
             String msg = method + " + request to " + path + " failed. " + e.getMessage();
@@ -97,7 +101,7 @@ public class ZmlpClient {
         }
     }
 
-    private <T> T marshallResponse(InputStream response, TypeReference<T> type) {
+    private <T> T marshallResponse(byte[] response, TypeReference<T> type) {
         try {
             return Json.mapper.readValue(response, type);
         } catch (IOException e) {
@@ -105,31 +109,28 @@ public class ZmlpClient {
         }
     }
 
-
-    private <T> T marshallResponse(InputStream response, Class<T> type) {
+    private <T> T marshallResponse(byte[] response, Class<T> type) {
         try {
             return Json.mapper.readValue(response, type);
         } catch (IOException e) {
-            throw new ZmlpClientException("Could not  deserialize response", e);
+            throw new ZmlpClientException("Could not  deserialize response ", e);
         }
     }
 
     private void applyHeaders(Request.Builder builder) {
-        // The content type is already set.
-        builder.addHeader("Authorization", String.format("Bearer %s", signRequest()));
+        signRequest(builder);
+
     }
 
-    private String signRequest() {
-        if (this.apiKey == null) {
-            throw new RuntimeException("Unable to make request, no ApiKey has been specified.");
-        }
-
-        JWTCreator.Builder claimBuilder = JWT.create();
-        claimBuilder.withClaim("aud", this.server);
-        claimBuilder.withClaim("exp", Instant.now().plus(60, ChronoUnit.SECONDS).toEpochMilli());
-        claimBuilder.withClaim("keyId", this.apiKey.getKeyId().toString());
-        ;
-        Algorithm sharedKey = Algorithm.HMAC512(apiKey.getSigningKey());
-        return claimBuilder.sign(sharedKey);
+    private void signRequest(Request.Builder builder) {
+        apiKey.ifPresent(key -> {
+            JWTCreator.Builder claimBuilder = JWT.create();
+            claimBuilder.withClaim("aud", this.server);
+            claimBuilder.withClaim("exp", Instant.now().plus(60, ChronoUnit.SECONDS).toEpochMilli());
+            claimBuilder.withClaim("keyId", key.getKeyId().toString());
+            ;
+            Algorithm sharedKey = Algorithm.HMAC512(key.getSigningKey());
+            builder.header("Authorization", "Bearer " + claimBuilder.sign(sharedKey));
+        });
     }
 }

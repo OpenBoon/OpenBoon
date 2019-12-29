@@ -13,7 +13,7 @@ import java.util.Map;
 import static com.zorroa.zmlp.sdk.TestUtils.updateEnvVariables;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+
 
 @DisplayName("ZMLP App Test")
 public class ZmlpAppTest {

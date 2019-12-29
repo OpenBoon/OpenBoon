@@ -1,7 +1,5 @@
 package com.zorroa.zmlp.sdk.domain;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
@@ -19,7 +17,6 @@ public class PagedList<T> implements Iterable<T> {
         this.list = list;
     }
 
-    @NotNull
     @Override
     public Iterator<T> iterator() {
         return list.iterator();
