@@ -106,7 +106,7 @@ class DispatcherServiceTests : AbstractTest() {
     }
 
     @Test
-    fun getTaskPriorityMultipleOrganizations() {
+    fun getTaskPriorityMultipleProjects() {
 
         val spec1 = JobSpec(
             "test_job",
@@ -122,6 +122,7 @@ class DispatcherServiceTests : AbstractTest() {
 
         val pspec = ProjectSpec("foojam", projectId = UUID.randomUUID())
         val project = projectService.create(pspec)
+        authenticate(project.id)
 
         val spec2 = JobSpec(
             "test_job",

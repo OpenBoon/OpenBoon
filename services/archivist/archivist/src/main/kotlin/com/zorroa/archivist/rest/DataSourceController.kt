@@ -10,6 +10,7 @@ import com.zorroa.archivist.repository.DataSourceJdbcDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.DataSourceService
 import com.zorroa.archivist.util.RestUtils
+import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.springframework.http.HttpStatus
@@ -23,42 +24,40 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.util.UUID
 
+@PreAuthorize("hasAuthority('ProjectManage')")
 @RestController
+@Timed
 class DataSourceController(
     val dataSourceService: DataSourceService,
     val dataSourceJdbcDao: DataSourceJdbcDao
 ) {
 
     @ApiOperation("Create a DataSource")
-    @PreAuthorize("hasAnyAuthority('DataAdmin', 'ProjectAdmin', 'SuperAdmin')")
+
     @PostMapping("/api/v1/data-sources")
     fun create(@ApiParam("Create a new data set.") @RequestBody spec: DataSourceSpec): DataSource {
         return dataSourceService.create(spec)
     }
 
     @ApiOperation("Get a DataSource by id.")
-    @PreAuthorize("hasAnyAuthority('DataAdmin', 'ProjectAdmin', 'SuperAdmin')")
     @GetMapping("/api/v1/data-sources/{id}")
     fun get(@ApiParam("The DataSource unique Id.") @PathVariable id: UUID): DataSource {
         return dataSourceService.get(id)
     }
 
     @ApiOperation("Get a DataSource by id.")
-    @PreAuthorize("hasAnyAuthority('DataAdmin', 'ProjectAdmin', 'SuperAdmin')")
     @PostMapping("/api/v1/data-sources/_find")
     fun find(@RequestBody(required = false) filter: DataSourceFilter?): KPagedList<DataSource> {
         return dataSourceJdbcDao.find(filter ?: DataSourceFilter())
     }
 
     @ApiOperation("Get a DataSource by id.")
-    @PreAuthorize("hasAnyAuthority('DataAdmin', 'ProjectAdmin', 'SuperAdmin')")
     @PostMapping("/api/v1/data-sources/_findOne")
     fun findOne(@RequestBody(required = false) filter: DataSourceFilter?): DataSource {
         return dataSourceJdbcDao.findOne(filter ?: DataSourceFilter())
     }
 
     @ApiOperation("Import assets from a DataSource.")
-    @PreAuthorize("hasAnyAuthority('DataAdmin', 'ProjectAdmin', 'SuperAdmin')")
     @PostMapping("/api/v1/data-sources/{id}/_import")
     fun importAssets(@ApiParam("The DataSource unique Id.") @PathVariable id: UUID): Job {
         val ds = dataSourceService.get(id)
@@ -66,7 +65,6 @@ class DataSourceController(
     }
 
     @ApiOperation("Update or remove DataSource credentials.")
-    @PreAuthorize("hasAnyAuthority('DataAdmin', 'ProjectAdmin', 'SuperAdmin')")
     @PutMapping("/api/v1/data-sources/{id}/_credentials")
     fun updateCredentials(
         @ApiParam("The DataSource Id") @PathVariable id: UUID,
@@ -78,8 +76,8 @@ class DataSourceController(
         return RestUtils.updated(LogObject.DATASOURCE, id)
     }
 
-    @ApiOperation("Get DataSource credentials.  Only obtainable by a JobRunner key.", hidden = true)
-    @PreAuthorize("hasAuthority('JobRunner')")
+    @ApiOperation("Get DataSource credentials.", hidden = true)
+    @PreAuthorize("hasAuthority('ProjectDecrypt')")
     @GetMapping("/api/v1/data-sources/{id}/_credentials")
     fun getCredentials(
         @ApiParam("The DataSource Id") @PathVariable id: UUID

@@ -18,9 +18,8 @@ import org.springframework.web.bind.annotation.RestController
 import springfox.documentation.annotations.ApiIgnore
 import java.util.UUID
 
-@PreAuthorize("hasAuthority('ProjectAdmin')")
+@PreAuthorize("hasAuthority('ProjectManage')")
 @RestController
-@Timed
 @ApiIgnore
 class IndexRoutingController @Autowired constructor(
     val indexRoutingService: IndexRoutingService

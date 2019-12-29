@@ -60,7 +60,7 @@ abstract class MockMvcTest : AbstractTest() {
                 UUID.fromString("00000000-0000-0000-0000-000000000001"),
                 project.id,
                 "JobRunner",
-                setOf(Permission.ProjectDataDecrypt)
+                setOf(Permission.AssetsImport, Permission.ProjectDecrypt)
             )
         }
 
@@ -73,7 +73,7 @@ abstract class MockMvcTest : AbstractTest() {
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 project.id,
                 "unittest-key",
-                Permission.values().toSet()
+                Permission.values().toSet().minus(Permission.ProjectDecrypt)
             )
         }
 

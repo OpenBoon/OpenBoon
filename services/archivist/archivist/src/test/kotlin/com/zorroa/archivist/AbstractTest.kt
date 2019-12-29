@@ -23,9 +23,9 @@ import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.Json
 import com.zorroa.archivist.util.randomString
+import com.zorroa.auth.client.ApiKey
 import com.zorroa.auth.client.AuthServerClient
 import com.zorroa.auth.client.Permission
-import com.zorroa.auth.client.SigningiKey
 import com.zorroa.auth.client.ZmlpActor
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.Request
@@ -165,20 +165,22 @@ abstract class AbstractTest {
          * Stub out network calls to the authServerClient.
          */
         val proj = ArgumentCaptor.forClass(UUID::class.java)
-        val permissions = ArgumentCaptor.forClass(listOf(Permission.AssetsCreate).javaClass)
+        val permissions = ArgumentCaptor.forClass(setOf(Permission.AssetsImport).javaClass)
 
         // Create ApiKey
         whenever(
             authServerClient.createApiKey(
                 capture<UUID>(proj),
                 any(),
-                capture<List<Permission>>(permissions)
+                capture<Set<Permission>>(permissions)
             )
         ).then {
-            SigningiKey(
+            ApiKey(
                 UUID.randomUUID(),
                 proj.value,
-                randomString(64)
+                randomString(64),
+                "key-name",
+                permissions.value
             )
         }
 
@@ -188,10 +190,12 @@ abstract class AbstractTest {
                 any(), any()
             )
         ).then {
-            SigningiKey(
+            ApiKey(
                 UUID.randomUUID(),
                 project.id,
-                randomString(64)
+                randomString(64),
+                "key-name",
+                setOf()
             )
         }
 
@@ -232,9 +236,13 @@ abstract class AbstractTest {
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
     fun authenticate() {
+        authenticate(project.id)
+    }
+
+    fun authenticate(project: UUID) {
         val actor = ZmlpActor(
             UUID.fromString("00000000-0000-0000-0000-000000000000"),
-            project.id,
+            project,
             "unittest-key",
             Permission.values().toSet()
         )

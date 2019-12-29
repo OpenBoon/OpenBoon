@@ -120,7 +120,7 @@ class ProjectServiceImpl constructor(
     private fun createStandardApiKeys(project: Project) {
         logger.info("Creating standard API Keys for project ${project.name}")
         authServerClient.createApiKey(
-            project.id, KnownKeys.JOB_RUNNER, listOf(
+            project.id, KnownKeys.JOB_RUNNER, setOf(
                 Permission.AssetsImport,
                 Permission.AssetsRead,
                 Permission.ProjectDecrypt
