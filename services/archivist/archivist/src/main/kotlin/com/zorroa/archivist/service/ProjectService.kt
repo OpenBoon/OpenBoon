@@ -123,7 +123,7 @@ class ProjectServiceImpl constructor(
             project.id, KnownKeys.JOB_RUNNER, setOf(
                 Permission.AssetsImport,
                 Permission.AssetsRead,
-                Permission.ProjectDecrypt
+                Permission.SystemProjectDecrypt
             )
         )
     }

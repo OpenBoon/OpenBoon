@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
-@PreAuthorize("hasAuthority('PlatformManage')")
+@PreAuthorize("hasAuthority('SystemManage')")
 @RestController
 @Api(tags = ["Index Cluster"], description = "Operations for managing Index Clusters.")
 class IndexClusterController constructor(
