@@ -1,6 +1,7 @@
 package com.zorroa.zmlp.sdk;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zorroa.zmlp.sdk.domain.DataSource;
 import okhttp3.OkHttpClient;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,5 +1,6 @@
 package com.zorroa.zmlp.sdk;
 
+import com.zorroa.zmlp.sdk.domain.Asset;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,4 +1,8 @@
-package com.zorroa.zmlp.sdk;
+package com.zorroa.zmlp.sdk.app;
+
+import com.zorroa.zmlp.sdk.domain.DataSource;
+import com.zorroa.zmlp.sdk.Utils;
+import com.zorroa.zmlp.sdk.ZmlpApp;
 
 import java.io.IOException;
 import java.util.*;

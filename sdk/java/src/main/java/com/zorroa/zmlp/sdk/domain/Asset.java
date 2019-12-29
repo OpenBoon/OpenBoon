@@ -1,4 +1,4 @@
-package com.zorroa.zmlp.sdk;
+package com.zorroa.zmlp.sdk.domain;
 
 import java.util.*;
 import java.util.function.Predicate;

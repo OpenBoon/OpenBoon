@@ -6,6 +6,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zorroa.zmlp.sdk.domain.Project;
+import com.zorroa.zmlp.sdk.domain.ProjectFilter;
+import com.zorroa.zmlp.sdk.domain.ProjectSpec;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -14,7 +19,11 @@ import java.util.*;
 
 public class ZmlpClient {
 
+    public static final MediaType JSON = MediaType.parse("application/json");
+
+    OkHttpClient httpClient = new OkHttpClient();
     ObjectMapper mapper = new ObjectMapper();
+
     JsonNode apiKey;
     String server;
 
@@ -205,60 +214,6 @@ public class ZmlpClient {
         return apiKey;
     }
 
-    /**
-     * @param spec Project Params
-     * @return
-     * @throws IOException
-     * @throws InterruptedException
-     */
-    public Project createProject(ProjectSpec spec) throws IOException, InterruptedException {
 
-        Map post = this.post("/api/v1/projects", spec.toMap());
-        return new Project(post);
-
-    }
-
-    /**
-     * @param params Project Filter parameters
-     * @return
-     * @throws IOException
-     * @throws InterruptedException
-     */
-    public Project searchProject(ProjectFilter params) throws IOException, InterruptedException {
-        Map response = this.post("/api/v1/projects/_findOne", params.toMap());
-        return new Project(response);
-
-    }
-
-    /**
-     * @param uuid Project Unique Key
-     * @return
-     * @throws IOException
-     * @throws InterruptedException
-     */
-    public Boolean deleteProject(UUID uuid) throws IOException, InterruptedException {
-        Map response = this.delete("/api/v1/projects", uuid);
-        return (Boolean) response.get("success");
-    }
-
-    /**
-     *
-     * @param projectFilter Project Filter
-     * @return
-     * @throws IOException
-     * @throws InterruptedException
-     */
-    public List<Project> getAllProjects(ProjectFilter projectFilter) throws IOException, InterruptedException {
-        Map response = this.post("/api/v1/projects/_search", projectFilter.toMap());
-        List<Project> projects = new ArrayList();
-        Optional.ofNullable(response.get("list"))
-                .ifPresent((mapList) -> {
-                            for (Map p : (List<Map>) mapList)
-                                projects.add(new Project(p));
-                        }
-                );
-
-        return projects;
-    }
 
 }

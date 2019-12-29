@@ -1,5 +1,8 @@
 package com.zorroa.zmlp.sdk;
 
+import com.zorroa.zmlp.sdk.app.AssetApp;
+import com.zorroa.zmlp.sdk.app.DataSourceApp;
+
 import java.io.IOException;
 import java.util.Optional;
 

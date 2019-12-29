@@ -1,5 +1,9 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zorroa.zmlp.sdk.*;
+import com.zorroa.zmlp.sdk.domain.DataSource;
+import com.zorroa.zmlp.sdk.domain.Project;
+import com.zorroa.zmlp.sdk.domain.ProjectFilter;
+import com.zorroa.zmlp.sdk.domain.ProjectSpec;
 import domain.*;
 import org.junit.jupiter.api.*;
 
