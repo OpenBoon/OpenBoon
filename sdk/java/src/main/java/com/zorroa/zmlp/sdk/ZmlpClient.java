@@ -8,7 +8,6 @@ import com.zorroa.zmlp.sdk.domain.ZmlpClientException;
 import okhttp3.*;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -19,7 +18,8 @@ public class ZmlpClient {
 
     private final OkHttpClient http = new OkHttpClient();
 
-    private final Optional<ApiKey> apiKey;
+    private final ApiKey apiKey;
+
     private final String server;
 
     private final String DEFAULT_SERVER_URL = "https://api.zmlp.zorroa.com";
@@ -32,12 +32,16 @@ public class ZmlpClient {
      * @param server The url of the server to connect to. Defaults to https://api.zmlp.zorroa.com
      */
     public ZmlpClient(ApiKey apiKey, String server) {
-        this.apiKey = Optional.ofNullable(apiKey);
-        this.server = Optional.ofNullable(server).orElse(DEFAULT_SERVER_URL);
-    }
+        if (apiKey == null) {
+            throw new ZmlpClientException("No APIKey has been configured");
+        }
 
-    public Boolean isApiKeySet() {
-        return this.apiKey != null;
+        if (apiKey.getKeyId() == null || apiKey.getSharedKey() == null) {
+            throw new ZmlpClientException("No APIKey has been configured");
+        }
+
+        this.apiKey = apiKey;
+        this.server = Optional.ofNullable(server).orElse(DEFAULT_SERVER_URL);
     }
 
     public <T> T get(String path, Object body, TypeReference<T> type) {
@@ -119,18 +123,14 @@ public class ZmlpClient {
 
     private void applyHeaders(Request.Builder builder) {
         signRequest(builder);
-
     }
 
     private void signRequest(Request.Builder builder) {
-        apiKey.ifPresent(key -> {
-            JWTCreator.Builder claimBuilder = JWT.create();
-            claimBuilder.withClaim("aud", this.server);
-            claimBuilder.withClaim("exp", Instant.now().plus(60, ChronoUnit.SECONDS).toEpochMilli());
-            claimBuilder.withClaim("keyId", key.getKeyId().toString());
-            ;
-            Algorithm sharedKey = Algorithm.HMAC512(key.getSigningKey());
-            builder.header("Authorization", "Bearer " + claimBuilder.sign(sharedKey));
-        });
+        JWTCreator.Builder claimBuilder = JWT.create();
+        claimBuilder.withClaim("aud", server);
+        claimBuilder.withClaim("exp", Instant.now().plus(60, ChronoUnit.SECONDS).toEpochMilli());
+        claimBuilder.withClaim("keyId", apiKey.getKeyId().toString());
+        Algorithm sharedKey = Algorithm.HMAC512(apiKey.getSharedKey());
+        builder.header("Authorization", "Bearer " + claimBuilder.sign(sharedKey));
     }
 }

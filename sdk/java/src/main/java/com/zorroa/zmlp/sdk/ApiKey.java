@@ -4,15 +4,22 @@ import java.util.UUID;
 
 public class ApiKey {
 
-    private String signingKey;
+    private String sharedKey;
     private UUID keyId;
 
-    public String getSigningKey() {
-        return signingKey;
+    public ApiKey() { }
+
+    public ApiKey(UUID keyId, String sharedKey) {
+        this.keyId = keyId;
+        this.sharedKey = sharedKey;
     }
 
-    public void setSigningKey(String signingKey) {
-        this.signingKey = signingKey;
+    public String getSharedKey() {
+        return sharedKey;
+    }
+
+    public void setSharedKey(String sharedKey) {
+        this.sharedKey = sharedKey;
     }
 
     public UUID getKeyId() {

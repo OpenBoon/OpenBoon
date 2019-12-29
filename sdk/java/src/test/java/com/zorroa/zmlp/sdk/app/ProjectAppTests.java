@@ -1,5 +1,6 @@
 package com.zorroa.zmlp.sdk.app;
 
+import com.zorroa.zmlp.sdk.ApiKey;
 import com.zorroa.zmlp.sdk.Json;
 import com.zorroa.zmlp.sdk.ZmlpClient;
 import com.zorroa.zmlp.sdk.domain.Project;
@@ -20,7 +21,9 @@ public class ProjectAppTests extends AbstractAppTest {
 
     @Before
     public void setup() {
-        projectApp = new ProjectApp(new ZmlpClient(null, webServer.url("/").toString()));
+        ApiKey key = new ApiKey(UUID.randomUUID(), "1234");
+        projectApp = new ProjectApp(
+                new ZmlpClient(key, webServer.url("/").toString()));
     }
 
     @Test
