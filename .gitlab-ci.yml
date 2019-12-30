@@ -118,10 +118,10 @@ sdk-unit-tests:
 # These jobs build the container images and push them up to docker hub with the
 # "development" tag whenever code is merged to development.
 .docker_hub_push_base:
-  image: igoratencompass/docker-dind-make:18.09.7
+  image: zmlp/dind-buildx
   stage: push
   services:
-    - igoratencompass/docker-dind:18.03.0
+    - zmlp/dind-buildx
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
@@ -129,10 +129,10 @@ sdk-unit-tests:
   retry: 2
   before_script:
 #    - apk add docker-compose
-    - wget https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-arm64
-    - mkdir -p ~/.docker/cli-plugins/docker-buildx
-    - cp buildx-v0.3.1.linux-arm64 ~/.docker/cli-plugins/docker-buildx
-    - chmod a+x ~/.docker/cli-plugins/docker-buildx
+#    - wget https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-arm64
+#    - mkdir -p ~/.docker/cli-plugins/docker-buildx
+#    - cp buildx-v0.3.1.linux-arm64 ~/.docker/cli-plugins/docker-buildx
+#    - chmod a+x ~/.docker/cli-plugins/docker-buildx
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
 #  only:
 #      - development
@@ -140,7 +140,7 @@ sdk-unit-tests:
 docker_hub_push_archivist:
   extends: .docker_hub_push_base
   script:
-    - DOCKER_CLI_EXPERIMENTAL=enabled docker buildx bake -f docker-compose.yml archivist
+    - docker buildx bake -f docker-compose.yml archivist
     - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
 
 #docker_hub_push_wallet:
