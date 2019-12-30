@@ -83,10 +83,15 @@ backend-py-lint:
   stage: pretest
   allow_failure: false
   only:
-    - merge_requests
-    - development
-    - qa
-    - master
+    refs:
+      - merge_requests
+      - development
+      - qa
+      - master
+    changes:
+      - sdk
+      - containers
+      - services
   script:
     - python -m pip install flake8
     - flake8 --config .flake8.cfg sdk/python containers/zmlp-py3-base services/analyst
@@ -96,10 +101,13 @@ backend-kotlin-lint:
   image: kkopper/ktlint
   stage: pretest
   only:
-    - merge_requests
-    - development
-    - qa
-    - master
+    refs:
+      - merge_requests
+      - development
+      - qa
+      - master
+    changes:
+      - services
   script:
     - ktlint services/archivist/src/**/*.kt
     - ktlint services/auth-server/src/**/*.kt
@@ -114,10 +122,13 @@ sdk-unit-tests:
   stage: test
   allow_failure: true
   only:
-    - merge_requests
-    - development
-    - qa
-    - master
+    refs:
+      - merge_requests
+      - development
+      - qa
+      - master
+    changes:
+      - sdk
   script:
     - python -m pip install pipenv pytest
     - cd sdk/python
