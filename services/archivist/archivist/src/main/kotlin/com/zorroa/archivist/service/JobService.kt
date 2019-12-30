@@ -14,6 +14,7 @@ import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorFilter
@@ -25,6 +26,7 @@ import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.domain.ZpsSlot
 import com.zorroa.archivist.domain.zpsTaskName
 import com.zorroa.archivist.repository.JobDao
+import com.zorroa.archivist.repository.JobDaoImpl
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
@@ -38,6 +40,7 @@ import java.time.Duration
 import java.util.Date
 import java.util.UUID
 import java.util.concurrent.TimeUnit
+import java.util.function.Consumer
 
 interface JobService {
     fun create(spec: JobSpec): Job
@@ -59,6 +62,7 @@ interface JobService {
     fun getTaskErrors(filter: TaskErrorFilter): KPagedList<TaskError>
     fun deleteTaskError(id: UUID): Boolean
     fun deleteJob(job: JobId): Boolean
+    fun deleteAllProjectJobs(project: Project): Boolean
     fun getExpiredJobs(duration: Long, unit: TimeUnit, limit: Int): List<Job>
     fun checkAndSetJobFinished(job: JobId): Boolean
     fun getOrphanTasks(duration: Duration): List<InternalTask>
@@ -147,6 +151,16 @@ class JobServiceImpl @Autowired constructor(
 
     override fun deleteJob(job: JobId): Boolean {
         return jobDao.delete(job)
+    }
+
+    override fun deleteAllProjectJobs(project: Project): Boolean {
+        val filter = JobFilter()
+        filter.addToWhere("job.pk_project='${project.id}'")
+
+        val projectJobs: List<Job> = jobDao.getAll(filter).list
+        projectJobs.forEach(Consumer { jobDao.delete(it) })
+        //return jobDao.deleteAll(projectJobs)
+        return true
     }
 
     @Transactional(readOnly = true)

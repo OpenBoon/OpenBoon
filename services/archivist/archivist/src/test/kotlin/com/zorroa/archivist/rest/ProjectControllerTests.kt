@@ -88,9 +88,8 @@ class ProjectControllerTests : MockMvcTest() {
     @Test
     fun testDelete() {
         whenever(authServerClient.getApiKey(testProject.id)).thenReturn(
-            ApiKey(keyId = UUID.fromString("A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80"), projectId = UUID.fromString("A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80"), sharedKey = "sharedKey")
+            ApiKey(keyId = UUID.fromString("00000000-0000-0000-0000-000000000000"), projectId = UUID.fromString("00000000-0000-0000-0000-000000000000"), sharedKey = "sharedKey")
         )
-
 
         mvc.perform(
             MockMvcRequestBuilders.delete("/api/v1/projects/${testProject.id}")

@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
+import com.zorroa.archivist.domain.JobFilter
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.Project
@@ -23,6 +24,8 @@ import com.zorroa.archivist.security.Role
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.storage.FileStorageService
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Lazy
 import org.springframework.security.crypto.keygen.KeyGenerators
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -76,9 +79,15 @@ class ProjectServiceImpl constructor(
     val authServerClient: AuthServerClient,
     val indexRoutingService: IndexRoutingService,
     val fileStorageService: FileStorageService,
+    val jobService: JobService,
     val properties: ApplicationProperties,
     val txEvent: TransactionEventManager
 ) : ProjectService {
+
+    @Lazy
+    @Autowired
+    lateinit var dataSourceService: DataSourceService
+
 
     override fun create(spec: ProjectSpec): Project {
         val time = System.currentTimeMillis()
@@ -154,13 +163,30 @@ class ProjectServiceImpl constructor(
         return String(fileStorageService.fetch(loc))
     }
 
-    override fun delete(id: UUID){
+    @Transactional
+    override fun delete(id: UUID) {
+        //Get Project
+        val project: Project = get(id)
 
-        val apiKey = authServerClient.getApiKey(id)
-        authServerClient.deleteApiKey(apiKey.keyId)
+        //Job Delete
+        jobService.deleteAllProjectJobs(project)
+        logger.event(LogObject.JOB, LogAction.DELETE)
+
+        //DataSource Delete
+        dataSourceService.deleteProjectDataSource(project)
+        logger.event(LogObject.DATASOURCE, LogAction.DELETE)
+
+        //Index Route Delete
+        indexRoutingService.deleteIndexByProject(project)
+        logger.event(LogObject.INDEX_ROUTE, LogAction.DELETE)
+
+        //Project Delete
+        projectDao.delete(project)
         logger.event(LogObject.PROJECT, LogAction.DELETE)
 
-        projectFilterDao.deleteByUUID(id)
+        //Delete Auth Api Key
+        val apiKey = authServerClient.getApiKey(id)
+        authServerClient.deleteApiKey(apiKey.keyId)
 
     }
 

@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils
@@ -30,6 +31,11 @@ interface IndexRouteDao {
      * Return the [IndexRoute] assigned to the current user's project.
      */
     fun getProjectRoute(): IndexRoute
+
+    /**
+     * Return the [IndexRoute] by Project
+     */
+    fun getProjectRoute(project: Project): IndexRoute
 
     /**
      * Return a list of all [IndexRoute]s, including closed.
@@ -109,6 +115,15 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             return jdbc.queryForObject(
                 "$GET WHERE pk_project=? AND index_route.int_state=?",
                 MAPPER, getProjectId(), IndexRouteState.CURRENT.ordinal
+            )
+        }
+    }
+
+    override fun getProjectRoute(project: Project): IndexRoute {
+        return throwWhenNotFound("Project has no index") {
+            return jdbc.queryForObject(
+                "$GET WHERE pk_project=? AND index_route.int_state=?",
+                MAPPER, project.id, IndexRouteState.CURRENT.ordinal
             )
         }
     }

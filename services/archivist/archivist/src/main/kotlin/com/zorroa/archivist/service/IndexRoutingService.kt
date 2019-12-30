@@ -11,6 +11,7 @@ import com.zorroa.archivist.domain.IndexMappingVersion
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
+import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.repository.IndexClusterDao
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
@@ -144,6 +145,11 @@ interface IndexRoutingService {
      * Delete the given IndexRoute, must be closed first.
      */
     fun deleteIndex(route: IndexRoute, force: Boolean = false): Boolean
+
+    /**
+     * Delete Index by Project
+     */
+    fun deleteIndexByProject(project: Project): Boolean
 
     /**
      * Close and delete the given index.
@@ -419,6 +425,13 @@ constructor(
             return indexRouteDao.delete(route)
         }
         return false
+    }
+
+
+    override fun deleteIndexByProject(project: Project): Boolean {
+
+        val projectRoute = indexRouteDao.getProjectRoute(project)
+        return deleteIndex(projectRoute)
     }
 
     override fun closeAndDeleteIndex(route: IndexRoute): Boolean {

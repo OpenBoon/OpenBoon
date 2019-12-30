@@ -13,6 +13,8 @@ import java.util.UUID
 interface DataSourceDao : JpaRepository<DataSource, UUID> {
 
     fun getByName(name: String): DataSource
+
+    fun deleteAllByProjectId(projectUUID: UUID): Int
 }
 
 interface DataSourceJdbcDao {

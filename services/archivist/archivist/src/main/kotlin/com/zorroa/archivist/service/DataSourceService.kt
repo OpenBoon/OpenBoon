@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.DataSourceDao
 import com.zorroa.archivist.repository.DataSourceJdbcDao
@@ -46,12 +47,17 @@ interface DataSourceService {
      * Update the credentials blob, can be null.  Return true
      * if the value was updated.
      */
-    fun updateCredentials(id: UUID, blob: String?) : Boolean
+    fun updateCredentials(id: UUID, blob: String?): Boolean
 
     /**
      * Create an Analysis job to process the [DataSource]
      */
     fun createAnalysisJob(dataSource: DataSource): Job
+
+    /**
+     * Delete All Project [DataSource]
+     */
+    fun deleteProjectDataSource(project: Project): Boolean
 }
 
 @Service
@@ -113,6 +119,10 @@ class DataSourceServiceImpl(
         return jobService.create(spec)
     }
 
+    override fun deleteProjectDataSource(project: Project): Boolean {
+        return dataSourceDao.deleteAllByProjectId(project.id) == 1
+    }
+
     @Transactional(readOnly = true)
     override fun get(id: UUID): DataSource {
         return dataSourceDao.getOne(id)
@@ -128,7 +138,7 @@ class DataSourceServiceImpl(
         )
     }
 
-    override fun updateCredentials(id: UUID, blob: String?) : Boolean {
+    override fun updateCredentials(id: UUID, blob: String?): Boolean {
         val salt = KeyGenerators.string().generateKey()
         return dataSourceJdbcDao.updateCredentials(
             id, encryptCredentials(blob, salt), salt

@@ -11,6 +11,7 @@ import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStateCounts
 import com.zorroa.archivist.security.getZmlpActor
@@ -18,10 +19,13 @@ import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils.insert
 import com.zorroa.archivist.util.Json
 import org.springframework.jdbc.core.RowMapper
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import java.sql.ResultSet
 import java.util.UUID
 import java.util.concurrent.TimeUnit
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
+import java.util.Collections
 
 interface JobDao {
     fun create(spec: JobSpec, type: JobType): Job
@@ -33,6 +37,7 @@ interface JobDao {
     fun setTimeStarted(job: JobId): Boolean
     fun getExpired(duration: Long, unit: TimeUnit, limit: Int): List<Job>
     fun delete(job: JobId): Boolean
+    fun deleteAll(jobList: List<JobId>): Boolean
     fun resumePausedJobs(): Int
     fun findOneJob(filter: JobFilter): Job
     fun getTaskStateCounts(job: JobId): TaskStateCounts
@@ -106,6 +111,24 @@ class JobDaoImpl : AbstractDao(), JobDao {
             "DELETE FROM job_stat WHERE pk_job=?",
             "DELETE FROM job WHERE pk_job=?"
         ).map { jdbc.update(it, job.jobId) }
+        return result.last() == 1
+    }
+
+    override fun deleteAll(jobList: List<JobId>): Boolean {
+
+        if (jobList.isEmpty())
+            return true
+
+        var parameters = Collections.singletonMap("ids", jobList.map { job -> job.jobId })
+
+        val result = listOf(
+            "DELETE FROM task_stat WHERE pk_job in (:ids)",
+            "DELETE FROM task_error WHERE pk_job in (:ids)",
+            "DELETE FROM task WHERE pk_job in (:ids)",
+            "DELETE FROM job_count WHERE pk_job in (:ids)",
+            "DELETE FROM job_stat WHERE pk_job in (:ids)",
+            "DELETE FROM job WHERE pk_job in (:ids)"
+        ).map { jdbc.update(it, parameters) }
         return result.last() == 1
     }
 
@@ -275,35 +298,35 @@ class JobDaoImpl : AbstractDao(), JobDao {
 
         private const val GET_EXPIRED = "$GET " +
             "WHERE " +
-                "job.pk_job = job_count.pk_job " +
+            "job.pk_job = job_count.pk_job " +
             "AND " +
-                "job.int_state IN (?,?,?) " +
+            "job.int_state IN (?,?,?) " +
             "AND " +
-                "job_count.time_updated < ? "
+            "job_count.time_updated < ? "
 
         private const val ASSET_COUNTS_INC = "UPDATE " +
             "job_stat " +
             "SET " +
-                "int_asset_total_count=int_asset_total_count+?," +
-                "int_asset_create_count=int_asset_create_count+?," +
-                "int_asset_warning_count=int_asset_warning_count+?," +
-                "int_asset_error_count=int_asset_error_count+?," +
-                "int_asset_replace_count=int_asset_replace_count+? " +
+            "int_asset_total_count=int_asset_total_count+?," +
+            "int_asset_create_count=int_asset_create_count+?," +
+            "int_asset_warning_count=int_asset_warning_count+?," +
+            "int_asset_error_count=int_asset_error_count+?," +
+            "int_asset_replace_count=int_asset_replace_count+? " +
             "WHERE " +
-                "pk_job=?"
+            "pk_job=?"
 
         private const val RESUME_PAUSED =
             "UPDATE " +
                 "job " +
-            "SET " +
+                "SET " +
                 "bool_paused='f' " +
-            "WHERE " +
+                "WHERE " +
                 "int_state=? " +
-            "AND " +
+                "AND " +
                 "bool_paused='t' " +
-            "AND " +
+                "AND " +
                 "time_pause_expired < ? " +
-            "AND " +
+                "AND " +
                 "time_pause_expired != -1"
 
         private const val UPDATE = "UPDATE " +
@@ -340,9 +363,9 @@ class JobDaoImpl : AbstractDao(), JobDao {
                 "job_count.int_task_state_4," +
                 "job_count.int_task_state_5, " +
                 "job_count.int_task_total_count " +
-            "FROM " +
+                "FROM " +
                 "job_count " +
-            "WHERE " +
+                "WHERE " +
                 "job_count.pk_job = ?"
     }
 }
