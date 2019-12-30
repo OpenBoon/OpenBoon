@@ -124,7 +124,7 @@ sdk-unit-tests:
     - lansible/docker-dind-buildx
   variables:
     DOCKER_DRIVER: overlay2
-    DOCKER_HOST: tcp://localhost:2375
+#    DOCKER_HOST: tcp://localhost:2375
     DOCKER_CLI_EXPERIMENTAL: enabled
     DOCKER_BUILDKIT: 1
   retry: 2
