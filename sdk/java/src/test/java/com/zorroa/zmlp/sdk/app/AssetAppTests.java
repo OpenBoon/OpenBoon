@@ -93,7 +93,10 @@ public class AssetAppTests extends AbstractAppTest {
     }
 
     //Asset App Tests
+    @Test
+    public void testImportFiles() {
 
+    }
 
 
     // Mocks
@@ -155,6 +158,31 @@ public class AssetAppTests extends AbstractAppTest {
         Asset asset = new Asset("123");
         asset.setDocumentAttr("files", getTestFiles());
         return asset;
+    }
+
+    private Map getTestImportFilesMock() {
+        Map mock = new HashMap();
+
+        List statusMockList = new ArrayList();
+        Map statusMockMap1 = new HashMap();
+        statusMockMap1.put("assetId", "abc123");
+        statusMockMap1.put("failed", false);
+        statusMockList.add(statusMockMap1);
+        mock.put("status", statusMockList);
+
+        List assetsMockList = new ArrayList();
+        Map assetsMockMap1 = new HashMap();
+        assetsMockMap1.put("id", "abc123");
+        Map documentMockMap = new HashMap();
+        Map sourceMockMap = new HashMap();
+        sourceMockMap.put("path", "gs://zorroa-dev-data/image/pluto.png");
+        documentMockMap.put("source", sourceMockMap);
+        assetsMockMap1.put("document", documentMockMap);
+        assetsMockList.add(assetsMockMap1);
+        mock.put("assets", assetsMockList);
+
+        return mock;
+
     }
 
 }
