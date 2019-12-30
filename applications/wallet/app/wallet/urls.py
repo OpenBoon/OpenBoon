@@ -58,7 +58,7 @@ urlpatterns = [
     path('api/v1/login/', wallet_views.LoginView.as_view(), name='api-login'),
     path('api/v1/', include(router.urls)),
     path('api/v1/', include(projects_router.urls)),
-    path('health/', include('health_check.urls'))
+    path('api/v1/health/', include('health_check.urls'))
 ]
 urlpatterns += [i[1] for i in BROWSABLE_API_URLS]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
