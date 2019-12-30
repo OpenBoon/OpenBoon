@@ -8,13 +8,180 @@ exports[`<DataQueue /> should render properly while loading 1`] = `
   padding-bottom: 16px;
 }
 
+.emotion-11 {
+  width: 100%;
+  border-spacing: 0;
+  box-shadow: 0 0 5px 0 #000000;
+  white-space: nowrap;
+}
+
+.emotion-11 tr {
+  background-color: #252525;
+}
+
+.emotion-11 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-11 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-11 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-11 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-11 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-11 td {
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-11 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-11 td:last-of-type {
+  border-right: 1px solid transparent;
+}
+
+.emotion-1 {
+  text-align: left;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-1:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-1:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-10 {
+  pointer-events: none;
+}
+
+.emotion-9 {
+  height: 300px;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: #c92300;
+  font-size: 16px;
+  line-height: 20px;
+}
+
 <div>
   <h2
     className="emotion-0"
   >
     Job Queue
   </h2>
-  Loading...
+  <div>
+    <table
+      className="emotion-11"
+    >
+      <thead>
+        <tr>
+          <th
+            className="emotion-1"
+          >
+            Status
+          </th>
+          <th
+            className="emotion-1"
+          >
+            Job Name
+          </th>
+          <th
+            className="emotion-1"
+          >
+            Created By
+          </th>
+          <th
+            className="emotion-1"
+          >
+            Priority
+          </th>
+          <th
+            className="emotion-1"
+          >
+            Created
+          </th>
+          <th
+            className="emotion-1"
+          >
+            # Assets
+          </th>
+          <th
+            className="emotion-1"
+          >
+            Errors
+          </th>
+          <th
+            className="emotion-1"
+          >
+            Task Progress
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="emotion-10"
+        >
+          <td
+            colSpan={8}
+          >
+            <div
+              className="emotion-9"
+            >
+              Loading...
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+       
+    </div>
+    <Pagination
+      currentPage={1}
+      totalPages={0}
+    />
+  </div>
 </div>
 `;
 
@@ -1322,12 +1489,207 @@ exports[`<DataQueue /> should render properly with no jobs 1`] = `
   padding-bottom: 16px;
 }
 
+.emotion-12 {
+  width: 100%;
+  border-spacing: 0;
+  box-shadow: 0 0 5px 0 #000000;
+  white-space: nowrap;
+}
+
+.emotion-12 tr {
+  background-color: #252525;
+}
+
+.emotion-12 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-12 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-12 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-12 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-12 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-12 td {
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-12 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-12 td:last-of-type {
+  border-right: 1px solid transparent;
+}
+
+.emotion-1 {
+  text-align: left;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-1:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-1:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-11 {
+  pointer-events: none;
+}
+
+.emotion-10 {
+  height: 300px;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  color: #c92300;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
 <div>
   <h2
     className="emotion-0"
   >
     Job Queue
   </h2>
-  There are no results
+  <div>
+    <table
+      className="emotion-12"
+    >
+      <thead>
+        <tr>
+          <th
+            className="emotion-1"
+          >
+            Status
+          </th>
+          <th
+            className="emotion-1"
+          >
+            Job Name
+          </th>
+          <th
+            className="emotion-1"
+          >
+            Created By
+          </th>
+          <th
+            className="emotion-1"
+          >
+            Priority
+          </th>
+          <th
+            className="emotion-1"
+          >
+            Created
+          </th>
+          <th
+            className="emotion-1"
+          >
+            # Assets
+          </th>
+          <th
+            className="emotion-1"
+          >
+            Errors
+          </th>
+          <th
+            className="emotion-1"
+          >
+            Task Progress
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="emotion-11"
+        >
+          <td
+            colSpan={8}
+          >
+            <div
+              className="emotion-10"
+            >
+              <div
+                className="emotion-9"
+              >
+                <svg
+                  color="#c92300"
+                  data-file-name="noJobs.svg"
+                  width={40}
+                />
+                <div>
+                  There are currently no jobs in the queue.
+                </div>
+                <div>
+                  Any new job will appear here.
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+       
+    </div>
+    <Pagination
+      currentPage={1}
+      totalPages={0}
+    />
+  </div>
 </div>
 `;
