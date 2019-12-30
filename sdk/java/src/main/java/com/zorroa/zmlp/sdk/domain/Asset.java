@@ -12,6 +12,16 @@ public class Asset {
     public Asset() {
     }
 
+    public Asset(String id) {
+        this.id = id;
+        document = new HashMap();
+    }
+
+    public Asset(String id, Map<String, Object> document) {
+        this.id = id;
+        this.document = document;
+    }
+
     /**
      * Return all stored files associated with this asset.  Optionally
      * filter the results.
@@ -24,7 +34,7 @@ public class Asset {
      * @return List of Dict Pixml file records.
      */
 
-    public List getFiles(List<String> name, List<String> category, List<String> mimetype, List<String> extension, Map attrs) {
+    public List getFiles(List<String> name, List<String> category, List<String> mimetype, List<String> extension, Map attrs, List attrKeys) {
 
         // Get Files Object
         List<Map<String, Object>> files = (List) document.getOrDefault("files", new ArrayList());
@@ -69,6 +79,12 @@ public class Asset {
                                 }
                         ).reduce((o1, o2) -> ((Boolean) o1) && ((Boolean) o2)).orElse(false);
 
+        // Create Attrs Keys Filter
+        Predicate<Map<String, Object>> attrsKeysPredicate = f -> {
+            Map attributes = (Map)f.get("attrs");
+            return attributes == null ? false : attributes.keySet().containsAll(attrKeys);
+        };
+
         // Check which of predicates will be used
         List<Predicate> elegiblePredicates = new ArrayList();
         Optional.ofNullable(name).ifPresent((ignore) -> elegiblePredicates.add(namePredicate));
@@ -76,6 +92,7 @@ public class Asset {
         Optional.ofNullable(mimetype).ifPresent((ignore) -> elegiblePredicates.add(mimeTypePredicate));
         Optional.ofNullable(extension).ifPresent((ignore) -> elegiblePredicates.add(extensionPredicate));
         Optional.ofNullable(attrs).ifPresent((ignore) -> elegiblePredicates.add(attrsPredicate));
+        Optional.ofNullable(attrKeys).ifPresent((ignore) -> elegiblePredicates.add(attrsKeysPredicate));
 
         //Join All predicates
         Predicate compositePredicate = elegiblePredicates.stream().reduce(w -> true, Predicate::and);
@@ -93,7 +110,7 @@ public class Asset {
     public List getFilesByName(String... name) {
         if (name == null)
             return new ArrayList();
-        return this.getFiles(Arrays.asList(name), null, null, null, null);
+        return this.getFiles(Arrays.asList(name), null, null, null, null, null);
     }
 
     /**
@@ -105,7 +122,7 @@ public class Asset {
     public List getFilesByCategory(String... category) {
         if (category == null)
             return new ArrayList();
-        return this.getFiles(null, Arrays.asList(category), null, null, null);
+        return this.getFiles(null, Arrays.asList(category), null, null, null, null);
     }
 
     /**
@@ -117,7 +134,7 @@ public class Asset {
     public List getFilesByMimetype(String... mimetype) {
         if (mimetype == null)
             return new ArrayList();
-        return this.getFiles(null, null, Arrays.asList(mimetype), null, null);
+        return this.getFiles(null, null, Arrays.asList(mimetype), null, null, null);
     }
 
     /**
@@ -129,11 +146,11 @@ public class Asset {
     public List getFilesByExtension(String... extension) {
         if (extension == null)
             return new ArrayList();
-        return this.getFiles(null, null, null, Arrays.asList(extension), null);
+        return this.getFiles(null, null, null, Arrays.asList(extension), null, null);
     }
 
     /**
-     * Return all stored files associated with this asset filtered by extension.
+     * Return all stored files associated with this asset filtered by File Attrs.
      *
      * @param attrs The file must have all of the given attributes.
      * @return List of Dict Pixml file records.
@@ -141,7 +158,19 @@ public class Asset {
     public List getFilesByAttrs(Map attrs) {
         if (attrs == null)
             return new ArrayList();
-        return this.getFiles(null, null, null, null, attrs);
+        return this.getFiles(null, null, null, null, attrs, null);
+    }
+
+    /**
+     * Return all stored files associated with this asset filtered by by File Attrs Keys.
+     *
+     * @param attrsKey The file must have all of the given attributes.
+     * @return List of Dict Pixml file records.
+     */
+    public List getFilesByAttrsKey(String... attrsKey) {
+        if (attrsKey == null)
+            return new ArrayList();
+        return this.getFiles(null, null, null, null, null, Arrays.asList(attrsKey));
     }
 
     @Override
@@ -155,5 +184,13 @@ public class Asset {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public void setDocumentAttr(String key, Object value) {
+        this.document.put(key, value);
+    }
+
+    public Object getDocumentAttr(String key) {
+        return this.document.get(key);
     }
 }
