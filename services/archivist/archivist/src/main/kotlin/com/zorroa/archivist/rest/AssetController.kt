@@ -15,6 +15,7 @@ import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.storage.FileStorageService
 import com.zorroa.archivist.util.RawByteArrayOutputStream
+import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
@@ -40,6 +41,7 @@ import org.springframework.web.multipart.MultipartFile
 import javax.servlet.ServletOutputStream
 
 @RestController
+@Timed
 @Api(
     tags = ["Asset"],
     description = "Operations for interacting with Assets including CRUD, streaming, proxies and more."
@@ -49,6 +51,7 @@ class AssetController @Autowired constructor(
     val fileStorageService: FileStorageService
 ) {
 
+    @PreAuthorize("hasAuthority('AssetsRead')")
     @RequestMapping("/api/v3/assets/_search", method = [RequestMethod.GET, RequestMethod.POST])
     fun search(@RequestBody(required = false) search: AssetSearch?, output: ServletOutputStream)
         : ResponseEntity<Resource> {
@@ -64,13 +67,14 @@ class AssetController @Autowired constructor(
             .body(InputStreamResource(output.toInputStream()))
     }
 
-    @PreAuthorize("hasAnyAuthority('ProjectAdmin', 'AssetsRead')")
+    @PreAuthorize("hasAuthority('AssetsRead')")
     @GetMapping("/api/v3/assets/{id}")
     fun get(@ApiParam("Unique ID of the Asset") @PathVariable id: String) : Asset {
         return assetService.getAsset(id)
     }
 
     @ApiOperation("Stream the source file for the asset is in ZMLP external storage")
+    @PreAuthorize("hasAuthority('AssetsRead')")
     @GetMapping(value = ["/api/v3/assets/{id}/_stream"])
     fun streamAsset(
         @ApiParam("Unique ID of the Asset.") @PathVariable id: String
@@ -82,19 +86,20 @@ class AssetController @Autowired constructor(
         return fileStorageService.stream(locator)
     }
 
-    @PreAuthorize("hasAnyAuthority('ProjectAdmin', 'AssetsWrite')")
+    @PreAuthorize("hasAuthority('AssetsImport')")
     @PostMapping("/api/v3/assets/_batchCreate")
     fun batchCreate(@RequestBody request: BatchCreateAssetsRequest)
         : BatchCreateAssetsResponse {
         return assetService.batchCreate(request)
     }
 
-    @PreAuthorize("hasAnyAuthority('ProjectAdmin', 'AssetsWrite')")
+    @PreAuthorize("hasAuthority('AssetsImport')")
     @PutMapping("/api/v3/assets/_batchUpdate")
     fun batchUpdate(@RequestBody request: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
         return assetService.batchUpdate(request)
     }
 
+    @PreAuthorize("hasAuthority('AssetsImport')")
     @ApiOperation("Create or reprocess assets via a file upload.")
     @PostMapping(value = ["/api/v3/assets/_batchUpload"], consumes = ["multipart/form-data"])
     @ResponseBody
@@ -109,6 +114,7 @@ class AssetController @Autowired constructor(
     }
 
     @ApiOperation("Store an additional file to an asset.")
+    @PreAuthorize("hasAuthority('AssetsImport')")
     @PostMapping(value = ["/api/v3/assets/{id}/files/{category}"], consumes = ["multipart/form-data"])
     @ResponseBody
     fun uploadFile(
@@ -125,6 +131,7 @@ class AssetController @Autowired constructor(
     }
 
     @ApiOperation("Store an additional file to an asset.")
+    @PreAuthorize("hasAuthority('AssetsRead')")
     @GetMapping(value = ["/api/v3/assets/{id}/files/{category}/{name}"])
     @ResponseBody
     fun streamFile(

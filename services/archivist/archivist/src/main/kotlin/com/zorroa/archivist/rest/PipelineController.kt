@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 import javax.servlet.http.HttpServletResponse
 
-@PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
+@PreAuthorize("hasAuthority('ProjectManage')")
 @RestController
 @Timed
 @Api(tags = ["Pipeline"], description = "Operations for interacting with Pipelines.")

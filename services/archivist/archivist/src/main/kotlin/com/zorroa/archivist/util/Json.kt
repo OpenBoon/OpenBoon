@@ -48,14 +48,13 @@ object Json {
     fun configureObjectMapper(mapper: ObjectMapper): ObjectMapper {
         mapper.registerModule(KotlinModule())
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-        mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false)
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
         mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, true)
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
         mapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, false)
         mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
-        mapper.dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z")
+        mapper.dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
         return mapper
     }
 

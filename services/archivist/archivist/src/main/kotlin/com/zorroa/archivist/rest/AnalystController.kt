@@ -35,9 +35,8 @@ import org.springframework.web.client.RestTemplate
 import java.security.cert.X509Certificate
 import java.util.UUID
 
-@PreAuthorize("hasAuthority('SuperAdmin')")
+@PreAuthorize("hasAuthority('SystemManage')")
 @RestController
-@Timed
 @Api(tags = ["Analyst"], description = "Operations for managing and interacting with the Analysts.")
 class AnalystController @Autowired constructor(
     val analystService: AnalystService,

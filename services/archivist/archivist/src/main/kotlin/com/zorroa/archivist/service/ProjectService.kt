@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.archivist.clients.AuthServerClient
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.FileCategory
 import com.zorroa.archivist.domain.FileGroup
@@ -18,10 +17,10 @@ import com.zorroa.archivist.repository.ProjectDao
 import com.zorroa.archivist.repository.ProjectFilterDao
 import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.KnownKeys
-import com.zorroa.archivist.security.Perm
-import com.zorroa.archivist.security.Role
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.storage.FileStorageService
+import com.zorroa.auth.client.AuthServerClient
+import com.zorroa.auth.client.Permission
 import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.keygen.KeyGenerators
 import org.springframework.stereotype.Service
@@ -60,7 +59,7 @@ interface ProjectService {
      * key, any stored data would first have to be decrypted with the
      * old key.
      */
-    fun getCredentialsKey() : String
+    fun getCredentialsKey(): String
 }
 
 @Service
@@ -108,8 +107,10 @@ class ProjectServiceImpl constructor(
         val mapping = properties.getString("archivist.es.default-mapping-type")
         val ver = properties.getInt("archivist.es.default-mapping-version")
         indexRoutingService.createIndexRoute(
-            IndexRouteSpec(mapping, ver, projectId = project.id,
-                state = IndexRouteState.CURRENT)
+            IndexRouteSpec(
+                mapping, ver, projectId = project.id,
+                state = IndexRouteState.CURRENT
+            )
         )
     }
 
@@ -119,11 +120,10 @@ class ProjectServiceImpl constructor(
     private fun createStandardApiKeys(project: Project) {
         logger.info("Creating standard API Keys for project ${project.name}")
         authServerClient.createApiKey(
-            project, KnownKeys.JOB_RUNNER, listOf(
-                Role.JOBRUNNER,
-                Perm.ASSETS_WRITE,
-                Perm.ASSETS_READ,
-                Perm.STORAGE_CREATE
+            project.id, KnownKeys.JOB_RUNNER, setOf(
+                Permission.AssetsImport,
+                Permission.AssetsRead,
+                Permission.SystemProjectDecrypt
             )
         )
     }
@@ -142,7 +142,7 @@ class ProjectServiceImpl constructor(
         fileStorageService.store(spec)
     }
 
-    override fun getCredentialsKey() : String {
+    override fun getCredentialsKey(): String {
         val loc = FileStorageLocator(FileGroup.INTERNAL, "project", FileCategory.KEYS, "project.key")
         return String(fileStorageService.fetch(loc))
     }

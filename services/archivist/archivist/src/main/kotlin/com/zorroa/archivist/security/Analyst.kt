@@ -3,9 +3,7 @@ package com.zorroa.archivist.security
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
-import com.zorroa.archivist.config.ApplicationProperties
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
@@ -21,7 +19,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class AnalystAuthenticationFilter(val analystTokenValidator: AnalystTokenValidator): OncePerRequestFilter() {
+class AnalystAuthenticationFilter(val analystTokenValidator: AnalystTokenValidator) : OncePerRequestFilter() {
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(
@@ -40,8 +38,7 @@ class AnalystAuthenticationFilter(val analystTokenValidator: AnalystTokenValidat
 
         if (token == null) {
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
-        }
-        else {
+        } else {
             try {
                 val auth = analystTokenValidator.validateJwtToken(token, req.remoteAddr)
                 SecurityContextHolder.getContext().authentication = auth
@@ -72,7 +69,7 @@ class AnalystTokenValidator() {
      *
      * @throws JWTVerificationException
      */
-    fun validateJwtToken(token: String, remoteAddr: String) : AnalystAuthentication {
+    fun validateJwtToken(token: String, remoteAddr: String): AnalystAuthentication {
         val jwt = JWT.decode(token)
         if (jwt.expiresAt == null || Date() > jwt.expiresAt) {
             throw JWTVerificationException("Not Authorized")
@@ -85,12 +82,21 @@ class AnalystTokenValidator() {
         val analystHost = jwt.getClaim("host").asString()
         val version = jwt.getClaim("version").asString()
 
+        if (analystPort == null || analystHost == null || version == null) {
+            logger.warn("Analyst request from $remoteAddr rejected, missing host, port or version")
+            throw JWTVerificationException("Not Authorized, invalid claims")
+        }
+
         val endpoint = if (preferHostnames && analystHost != null) {
-            "http://${analystHost ?: remoteAddr}:$analystPort"
+            "http://${analystHost}:$analystPort"
         } else {
             "http://$remoteAddr:$analystPort"
         }
         return AnalystAuthentication(endpoint, version)
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(AnalystTokenValidator::class.java)
     }
 }
 
@@ -100,7 +106,7 @@ class AnalystAuthentication(val endpoint: String, val version: String) : Authent
         return setOf(SimpleGrantedAuthority("ANALYST"))
     }
 
-    override fun setAuthenticated(p0: Boolean) { }
+    override fun setAuthenticated(p0: Boolean) {}
 
     override fun getName(): String {
         return endpoint

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
-@PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
+@PreAuthorize("hasAuthority('ProjectManage')")
 @RestController
 @Timed
 @Api(tags = ["Task Error"], description = "Operations for interacting with Task Errors.")
