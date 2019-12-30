@@ -30,6 +30,11 @@ stages:
 
 wallet-frontend-test-suite:
   extends: .wallet-frontend-base
+  only:
+    refs:
+      - merge_requests
+    changes:
+      - applications/wallet/app/frontend
   stage: test
   script:
     - npm run lint
@@ -38,6 +43,14 @@ wallet-frontend-test-suite:
 
 wallet-backend-test-suite:
   extends: .wallet-base
+  except:
+    changes:
+      - applications/wallet/app/frontend
+  only:
+    refs:
+      - merge_requests
+    changes:
+      - applications/wallet/app
   image: mc706/pipenv-3.7
   stage: test
   services:
@@ -114,7 +127,6 @@ sdk-unit-tests:
     - pip install -r requirements.txt
     - pytest
 
-
 # These jobs build the container images and push them up to docker hub with the
 # "development" tag whenever code is merged to development.
 .docker_hub_push_base:
@@ -130,7 +142,7 @@ sdk-unit-tests:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   only:
-      - development
+    - development
 
 docker_hub_push_archivist:
   extends: .docker_hub_push_base
@@ -199,8 +211,11 @@ services_build_artifacts:
   image: maven:3.6.2-jdk-11-slim
   stage: build
   only:
-    - merge_requests
-    - development
+    refs:
+      - merge_requests
+      - development
+    changes:
+      - services/elasticsearch
   script:
     - cd services/elasticsearch
     - mvn clean install -Dmaven.test.skip=true
@@ -213,8 +228,11 @@ services_push_to_local_registry:
   image: docker:18.09.8-dind
   stage: pretest
   only:
-    - merge_requests
-    - development
+    refs:
+      - merge_requests
+      - development
+    changes:
+      - services/elasticsearch
   retry: 2
   services:
     - docker:18.09.8-dind
@@ -228,8 +246,11 @@ services_unit_tests:
   stage: test
   image: maven:3.6-jdk-11
   only:
-    - merge_requests
-    - development
+    refs:
+      - merge_requests
+      - development
+    changes:
+      - services
   services:
     - name: redis:alpine
       alias: redis
@@ -240,7 +261,7 @@ services_unit_tests:
       alias: postgres
     - name: $LOCAL_ES_NAME
       alias: elasticsearch
-      command: [ "bin/elasticsearch", "-Ediscovery.type=single-node"]
+      command: ["bin/elasticsearch", "-Ediscovery.type=single-node"]
   variables:
     POSTGRES_PASSWORD: "zorroa"
     POSTGRES_USER: "zorroa"
@@ -269,8 +290,6 @@ services_unit_tests:
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
     - mvn test verify -f services/auth-server -q
     - mvn test verify -f services/officer -q
-
-
 # Kotlin Services Jobs
 #sdk-containers-tests:
 #  stage: test
