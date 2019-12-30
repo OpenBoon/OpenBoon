@@ -118,11 +118,10 @@ sdk-unit-tests:
 # These jobs build the container images and push them up to docker hub with the
 # "development" tag whenever code is merged to development.
 .docker_hub_push_base:
-  image: docker:18.09.8-dind
+  image: jonoh/docker-buildx-qemu
   stage: push
   services:
-    - name: docker:19.03-dind
-      command: ["--experimental"]
+    - docker:dind
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
@@ -138,7 +137,7 @@ sdk-unit-tests:
 docker_hub_push_archivist:
   extends: .docker_hub_push_base
   script:
-    - DOCKER_BUILDKIT=1 docker buildx bake -f docker-compose.yml archivist
+    - DOCKER_BUILDKIT=1 DOCKER_CLI_EXPERIMENTAL=enabled docker buildx bake -f docker-compose.yml archivist
     - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
 
 #docker_hub_push_wallet:
