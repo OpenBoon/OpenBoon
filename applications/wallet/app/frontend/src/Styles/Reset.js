@@ -30,11 +30,7 @@ const StylesReset = () => (
         'input, textarea, select, button': {
           fontFamily: 'inherit',
         },
-        h3: {
-          fontSize: typography.size.kilo,
-          lineHeight: typography.height.kilo,
-          fontWeight: typography.weight.regular,
-        },
+        'h1, h2, h3, h4': { margin: 0, padding: 0 },
         small: {
           fontSize: typography.size.uno,
           lineHeight: typography.height.uno,

@@ -19,6 +19,10 @@ const BASE = ({ isDisabled }) => ({
   fontWeight: typography.weight.medium,
   border: 'none',
   cursor: isDisabled ? 'not-allowed' : 'pointer',
+  backgroundColor: colors.transparent,
+  ':hover': {
+    textDecoration: 'none',
+  },
 })
 
 const STYLES = {
@@ -32,11 +36,32 @@ const STYLES = {
     },
     '&[aria-disabled=true]': {
       color: colors.structure.mattGrey,
-      backgroundColor: colors.rocks.iron,
+      backgroundColor: colors.structure.steel,
     },
   },
   NEUTRAL: {
-    padding: spacing.moderate,
+    padding: 0,
+  },
+  MENU: {
+    flex: 1,
+    padding: `${spacing.small}px ${spacing.base}px`,
+    color: colors.primary,
+    fontWeight: typography.weight.regular,
+    height: '100%',
+    ':hover': {
+      backgroundColor: colors.structure.smoke,
+    },
+  },
+  MENU_ITEM: {
+    flex: '1',
+    alignItems: 'flex-start',
+    color: colors.structure.white,
+    padding: `${spacing.base}px ${spacing.normal}px`,
+    fontWeight: typography.weight.regular,
+    borderRadius: 0,
+    ':hover': {
+      backgroundColor: colors.structure.iron,
+    },
   },
 }
 

@@ -128,6 +128,10 @@ resource "kubernetes_deployment" "wallet" {
             {
               name = "ARCHIVIST_URL"
               value = "${var.archivist-url}"
+            },
+            {
+              name = "SMTP_PASSWORD"
+              value = "${var.smtp-password}"
             }
           ]
         }

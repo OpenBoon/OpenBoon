@@ -1,41 +1,25 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.config.ApplicationProperties
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.exceptions.JWTVerificationException
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
-import javax.annotation.PostConstruct
+import java.util.Date
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class AnalystAuthenticationFilter: OncePerRequestFilter() {
-
-    @Autowired
-    private lateinit var properties: ApplicationProperties
-
-    private val ipRegexes = mutableListOf<Regex>()
-
-    @Value("\${archivist.security.analyst.prefer-hostnames}")
-    var preferHostnames: Boolean = true
-
-    @PostConstruct
-    fun init() {
-        for (regex in properties.getList("archivist.security.analyst.ipRanges")) {
-            ipRegexes.add(Regex(regex))
-        }
-    }
+class AnalystAuthenticationFilter(val analystTokenValidator: AnalystTokenValidator) : OncePerRequestFilter() {
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(
@@ -44,63 +28,92 @@ class AnalystAuthenticationFilter: OncePerRequestFilter() {
         chain: FilterChain
     ) {
 
-        val analystPort = req.getHeader(ANALYST_HEADER_PORT)
-        val analystHost = req.getHeader(ANALYST_HEADER_HOST)
-        if (analystPort != null) {
-            val remoteAddr = req.remoteAddr
-            if (req.requestURI.startsWith("/cluster")) {
-                for (r in ipRegexes) {
-                    if (r.matches(remoteAddr)) {
-                        val port = analystPort.toInt()
-                        val endpoint = if (preferHostnames) {
-                            "https://${analystHost ?: remoteAddr}:$port"
-                        } else {
-                            "https://$remoteAddr:$port"
-                        }
-                        SecurityContextHolder.getContext().authentication =
-                                AnalystAuthentication(endpoint)
-                        if (logger.isDebugEnabled) {
-                            logger.debug("Worker '$endpoint' is allowed, matches ${r.pattern}")
-                        }
-                        break
-                    }
-                }
+        val token = req.getHeader(HEADER)?.let {
+            if (it.startsWith(PREFIX)) {
+                it.removePrefix(PREFIX)
+            } else {
+                null
             }
         }
 
-        chain.doFilter(req, res)
+        if (token == null) {
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
+        } else {
+            try {
+                val auth = analystTokenValidator.validateJwtToken(token, req.remoteAddr)
+                SecurityContextHolder.getContext().authentication = auth
+                chain.doFilter(req, res)
+            } catch (e: JWTVerificationException) {
+                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
+            }
+        }
     }
 
     companion object {
-
-        /**
-         * The HTTP header where the Analyst sets the port it is listening on.
-         */
-        const val ANALYST_HEADER_PORT = "X-Analyst-Port"
-
-        /**
-         * The HTTP header where the Analyst sets its hostname.
-         */
-        const val ANALYST_HEADER_HOST = "X-Analyst-Host"
-
         private val logger = LoggerFactory.getLogger(AnalystAuthenticationFilter::class.java)
     }
 }
 
-class AnalystAuthentication(private val endpoint: String) : Authentication {
+@Component
+class AnalystTokenValidator() {
+
+    @Value("\${archivist.security.analyst.prefer-hostnames}")
+    var preferHostnames: Boolean = true
+
+    @Value("\${analyst.shared-key}")
+    lateinit var sharedKey: String
+
+    /**
+     * Validate the JWT token, if any and return a [AnalystAuthentication]
+     * instance.
+     *
+     * @throws JWTVerificationException
+     */
+    fun validateJwtToken(token: String, remoteAddr: String): AnalystAuthentication {
+        val jwt = JWT.decode(token)
+        if (jwt.expiresAt == null || Date() > jwt.expiresAt) {
+            throw JWTVerificationException("Not Authorized")
+        }
+
+        val alg = Algorithm.HMAC256(sharedKey)
+        alg.verify(jwt)
+
+        val analystPort = jwt.getClaim("port").asInt()
+        val analystHost = jwt.getClaim("host").asString()
+        val version = jwt.getClaim("version").asString()
+
+        if (analystPort == null || analystHost == null || version == null) {
+            logger.warn("Analyst request from $remoteAddr rejected, missing host, port or version")
+            throw JWTVerificationException("Not Authorized, invalid claims")
+        }
+
+        val endpoint = if (preferHostnames && analystHost != null) {
+            "http://${analystHost}:$analystPort"
+        } else {
+            "http://$remoteAddr:$analystPort"
+        }
+        return AnalystAuthentication(endpoint, version)
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(AnalystTokenValidator::class.java)
+    }
+}
+
+class AnalystAuthentication(val endpoint: String, val version: String) : Authentication {
 
     override fun getAuthorities(): Collection<out GrantedAuthority> {
         return setOf(SimpleGrantedAuthority("ANALYST"))
     }
 
-    override fun setAuthenticated(p0: Boolean) { }
+    override fun setAuthenticated(p0: Boolean) {}
 
     override fun getName(): String {
         return endpoint
     }
 
     override fun getCredentials(): Any {
-        return endpoint
+        return version
     }
 
     override fun getPrincipal(): Any {

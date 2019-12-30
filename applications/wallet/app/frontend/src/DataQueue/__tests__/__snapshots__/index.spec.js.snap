@@ -1,88 +1,98 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DataQueue /> should render properly while loading 1`] = `"Loading..."`;
+exports[`<DataQueue /> should render properly while loading 1`] = `
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-bottom: 16px;
+}
+
+<div>
+  <h2
+    className="emotion-0"
+  >
+    Job Queue
+  </h2>
+  Loading...
+</div>
+`;
 
 exports[`<DataQueue /> should render properly with jobs 1`] = `
-.emotion-60 {
-  padding: 16px;
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-bottom: 16px;
 }
 
-.emotion-59 {
+.emotion-135 {
   width: 100%;
   border-spacing: 0;
-}
-
-.emotion-59 th {
-  color: #b3b3b3;
-  background-color: #2e2e2e;
-  padding: 12px 16px;
-  border-bottom: 1px solid #4d4948;
-}
-
-.emotion-59 th:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-59 th:not(:last-child) {
-  border-right: 1px solid #4d4948;
-}
-
-.emotion-59 tr {
-  background-color: #121212;
-}
-
-.emotion-59 tr:hover {
-  background-color: #2e2e2e;
-}
-
-.emotion-59 tr:hover td {
-  border: 1px solid #4d4948;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-59 tr:hover td:first-of-type {
-  border: 1px solid #4d4948;
-  border-right: 0;
-}
-
-.emotion-59 tr:hover td:last-of-type {
-  border: 1px solid #4d4948;
-  border-left: 0;
-}
-
-.emotion-59 td {
+  box-shadow: 0 0 5px 0 #000000;
   white-space: nowrap;
-  color: #b3b3b3;
+}
+
+.emotion-135 tr {
+  background-color: #252525;
+}
+
+.emotion-135 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-135 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-135 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-135 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-135 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-135 td {
+  color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-59 td:first-of-type {
-  border: 1px solid transparent;
-  border-right: 0;
+.emotion-135 td:first-of-type {
+  border-left: 1px solid transparent;
 }
 
-.emotion-59 td:last-of-type {
-  border: 1px solid transparent;
-  border-left: 0;
+.emotion-135 td:last-of-type {
+  border-right: 1px solid transparent;
 }
 
-.emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+.emotion-1 {
+  text-align: left;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-15 {
-  background-color: #121212;
+.emotion-1:nth-of-type(2) {
+  width: 100%;
 }
 
-.emotion-15:nth-of-type(2n) {
-  background-color: #1d1d1d;
+.emotion-1:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
 }
 
 .emotion-9 {
@@ -95,22 +105,91 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 8px;
-  height: 24px;
   border-radius: 2px;
-  color: #fff;
-  background-color: #4a90e2;
+  color: #c92300;
+  background-color: #191919;
 }
 
-.emotion-14 {
+.emotion-10 {
+  text-align: center;
+}
+
+.emotion-12 {
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  min-width: 32px;
+  height: 32px;
+  padding: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  border-radius: 32px;
+  color: #c92300;
+  background-color: #191919;
+}
+
+.emotion-22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   height: 16px;
-  width: 200px;
+  width: 212px;
+  position: relative;
 }
 
-.emotion-10 {
+.emotion-17 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.emotion-13 {
+  height: 100%;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  background-color: #c92300;
+}
+
+.emotion-13:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-13:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.emotion-14 {
   height: 100%;
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
@@ -118,35 +197,35 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-10:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+.emotion-14:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
-.emotion-10:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+.emotion-14:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
-.emotion-11 {
+.emotion-15 {
   height: 100%;
-  -webkit-flex: 1 0 auto;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
-  background-color: #ce2d3f;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #ebb52e;
 }
 
-.emotion-11:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+.emotion-15:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
-.emotion-11:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+.emotion-15:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
-.emotion-12 {
+.emotion-16 {
   height: 100%;
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
@@ -154,32 +233,65 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4a90e2;
 }
 
-.emotion-12:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+.emotion-16:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
-.emotion-12:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+.emotion-16:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
-.emotion-13 {
-  height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #404040;
+.emotion-19 {
+  width: 8px;
 }
 
-.emotion-13:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+.emotion-21 {
+  position: relative;
 }
 
-.emotion-13:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+.emotion-20 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  padding: 0;
+  padding: 6px;
+  border-radius: 32px;
+}
+
+.emotion-20:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-20:hover {
+  background-color: #808080;
 }
 
 .emotion-23 {
@@ -192,33 +304,30 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 8px;
-  height: 24px;
   border-radius: 2px;
-  color: #fff;
-  background-color: #f5a623;
-}
-
-.emotion-27 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px;
-  height: 24px;
-  border-radius: 2px;
-  color: #000000;
-  background-color: #b3b3b3;
-}
-
-.emotion-28 {
-  color: #4d4948;
+  color: #ebb52e;
+  background-color: #191919;
 }
 
 .emotion-30 {
+  height: 100%;
+  -webkit-flex: 14 0 auto;
+  -ms-flex: 14 0 auto;
+  flex: 14 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-30:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-30:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.emotion-37 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -228,13 +337,48 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 8px;
-  height: 24px;
   border-radius: 2px;
-  color: #fff;
+  color: #4ac565;
+  background-color: #191919;
+}
+
+.emotion-42 {
+  height: 100%;
+  -webkit-flex: 8 0 auto;
+  -ms-flex: 8 0 auto;
+  flex: 8 0 auto;
   background-color: #4ac565;
 }
 
-.emotion-39 {
+.emotion-42:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-42:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.emotion-43 {
+  height: 100%;
+  -webkit-flex: 4 0 auto;
+  -ms-flex: 4 0 auto;
+  flex: 4 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-43:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-43:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.emotion-86 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -242,713 +386,948 @@ exports[`<DataQueue /> should render properly with jobs 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-39:first-of-type {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+.emotion-86:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
-.emotion-39:last-of-type {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+.emotion-86:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
-<div
-  className="emotion-60"
->
-  <h2>
-    Data Queue
-  </h2>
-  <table
-    className="emotion-59"
+<div>
+  <h2
+    className="emotion-0"
   >
-    <thead>
-      <tr>
-        <th>
-          <div
-            className="emotion-0"
+    Job Queue
+  </h2>
+  <div>
+    <table
+      className="emotion-135"
+    >
+      <thead>
+        <tr>
+          <th
+            className="emotion-1"
           >
             Status
-          </div>
-        </th>
-        <th>
-          <div
-            className="emotion-0"
+          </th>
+          <th
+            className="emotion-1"
           >
             Job Name
-          </div>
-        </th>
-        <th>
-          <div
-            className="emotion-0"
+          </th>
+          <th
+            className="emotion-1"
           >
             Created By
-          </div>
-        </th>
-        <th>
-          <div
-            className="emotion-0"
+          </th>
+          <th
+            className="emotion-1"
           >
             Priority
-          </div>
-        </th>
-        <th>
-          <div
-            className="emotion-0"
+          </th>
+          <th
+            className="emotion-1"
           >
             Created
-          </div>
-        </th>
-        <th>
-          <div
-            className="emotion-0"
-          >
-            Failed
-          </div>
-        </th>
-        <th>
-          <div
-            className="emotion-0"
-          >
-            Errors
-          </div>
-        </th>
-        <th>
-          <div
-            className="emotion-0"
+          </th>
+          <th
+            className="emotion-1"
           >
             # Assets
-          </div>
-        </th>
-        <th>
-          <div
-            className="emotion-0"
+          </th>
+          <th
+            className="emotion-1"
           >
-            Progress
-          </div>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        className="emotion-15"
-      >
-        <td>
-          <div
-            className="emotion-9"
+            Errors
+          </th>
+          <th
+            className="emotion-1"
           >
-            Active
-          </div>
-        </td>
-        <td>
-          test-whitespace.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td>
-          100
-        </td>
-        <td>
-          2019-11-07 01:38:36
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
+            Task Progress
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div
+              className="emotion-9"
+            >
+              Cancelled
+            </div>
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-10"
           >
-            1
-          </div>
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
+            100
+          </td>
+          <td>
+            2019-11-07 01:38:36
+          </td>
+          <td
+            className="emotion-10"
           >
             4
-          </div>
-        </td>
-        <td>
-          numAssets
-        </td>
-        <td>
-          <div
-            className="emotion-14"
-          >
-            <div
-              className="emotion-10"
-            />
-            <div
-              className="emotion-11"
-            />
+          </td>
+          <td>
             <div
               className="emotion-12"
-            />
+            >
+              4
+            </div>
+          </td>
+          <td>
             <div
-              className="emotion-13"
-            />
-          </div>
-        </td>
-      </tr>
-      <tr
-        className="emotion-15"
-      >
-        <td>
-          <div
-            className="emotion-9"
-          >
-            Active
-          </div>
-        </td>
-        <td>
-          test-whitespace.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td>
-          100
-        </td>
-        <td>
-          2019-11-07 01:38:36
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
-          >
-            1
-          </div>
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
-          >
-            4
-          </div>
-        </td>
-        <td>
-          numAssets
-        </td>
-        <td>
-          <div
-            className="emotion-14"
-          >
+              className="emotion-22"
+            >
+              <div
+                aria-label="Progress Bar"
+                className="emotion-18"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
+              >
+                <div
+                  className="emotion-17"
+                >
+                  <div
+                    className="emotion-13"
+                  />
+                  <div
+                    className="emotion-14"
+                  />
+                  <div
+                    className="emotion-15"
+                  />
+                  <div
+                    className="emotion-16"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-19"
+              />
+              <div
+                className="emotion-21"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-20"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div
-              className="emotion-10"
-            />
-            <div
-              className="emotion-11"
-            />
+              className="emotion-23"
+            >
+              In Progress
+            </div>
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-10"
+          >
+            100
+          </td>
+          <td>
+            2019-11-07 01:38:36
+          </td>
+          <td
+            className="emotion-10"
+          >
+            40
+          </td>
+          <td>
             <div
               className="emotion-12"
-            />
+            >
+              40
+            </div>
+          </td>
+          <td>
             <div
-              className="emotion-13"
-            />
-          </div>
-        </td>
-      </tr>
-      <tr
-        className="emotion-15"
-      >
-        <td>
-          <div
-            className="emotion-23"
+              className="emotion-22"
+            >
+              <div
+                aria-label="Progress Bar"
+                className="emotion-18"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
+              >
+                <div
+                  className="emotion-17"
+                >
+                  <div
+                    className="emotion-13"
+                  />
+                  <div
+                    className="emotion-14"
+                  />
+                  <div
+                    className="emotion-15"
+                  />
+                  <div
+                    className="emotion-30"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-19"
+              />
+              <div
+                className="emotion-21"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-20"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div
+              className="emotion-37"
+            >
+              Archived
+            </div>
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-10"
           >
-            Paused
-          </div>
-        </td>
-        <td>
-          test-whitespace.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td>
-          100
-        </td>
-        <td>
-          2019-11-07 01:36:29
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
+            100
+          </td>
+          <td>
+            2019-11-07 01:36:29
+          </td>
+          <td
+            className="emotion-10"
+          >
+            400
+          </td>
+          <td>
+            <div
+              className="emotion-12"
+            >
+              400
+            </div>
+          </td>
+          <td>
+            <div
+              className="emotion-22"
+            >
+              <div
+                aria-label="Progress Bar"
+                className="emotion-18"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
+              >
+                <div
+                  className="emotion-17"
+                >
+                  <div
+                    className="emotion-13"
+                  />
+                  <div
+                    className="emotion-42"
+                  />
+                  <div
+                    className="emotion-43"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-19"
+              />
+              <div
+                className="emotion-21"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-20"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div
+              className="emotion-9"
+            >
+              Cancelled
+            </div>
+          </td>
+          <td>
+            test-whitespace.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-10"
+          >
+            100
+          </td>
+          <td>
+            2019-11-07 01:35:36
+          </td>
+          <td
+            className="emotion-10"
+          >
+            4000
+          </td>
+          <td>
+            <div
+              className="emotion-12"
+            >
+              4000
+            </div>
+          </td>
+          <td>
+            <div
+              className="emotion-22"
+            >
+              <div
+                aria-label="Progress Bar"
+                className="emotion-18"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
+              >
+                <div
+                  className="emotion-17"
+                >
+                  <div
+                    className="emotion-13"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-19"
+              />
+              <div
+                className="emotion-21"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-20"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div
+              className="emotion-37"
+            >
+              Finished
+            </div>
+          </td>
+          <td>
+            test_officer
+          </td>
+          <td>
+            zach@zorroa.com
+          </td>
+          <td
+            className="emotion-10"
+          >
+            100
+          </td>
+          <td>
+            2019-10-11 21:11:03
+          </td>
+          <td
+            className="emotion-10"
+          >
+            40000
+          </td>
+          <td>
+            <div
+              className="emotion-12"
+            >
+              40000
+            </div>
+          </td>
+          <td>
+            <div
+              className="emotion-22"
+            >
+              <div
+                aria-label="Progress Bar"
+                className="emotion-18"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
+              >
+                <div
+                  className="emotion-17"
+                >
+                  <div
+                    className="emotion-13"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-19"
+              />
+              <div
+                className="emotion-21"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-20"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div
+              className="emotion-23"
+            >
+              Active
+            </div>
+          </td>
+          <td>
+            test_officer
+          </td>
+          <td>
+            zach@zorroa.com
+          </td>
+          <td
+            className="emotion-10"
+          >
+            100
+          </td>
+          <td>
+            2019-10-11 21:03:27
+          </td>
+          <td
+            className="emotion-10"
+          >
+            400000
+          </td>
+          <td>
+            <div
+              className="emotion-12"
+            >
+              400000
+            </div>
+          </td>
+          <td>
+            <div
+              className="emotion-22"
+            >
+              <div
+                aria-label="Progress Bar"
+                className="emotion-18"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
+              >
+                <div
+                  className="emotion-17"
+                >
+                  <div
+                    className="emotion-13"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-19"
+              />
+              <div
+                className="emotion-21"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-20"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div
+              className="emotion-23"
+            >
+              Active
+            </div>
+          </td>
+          <td>
+            flipbook_export_1
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-10"
           >
             1
-          </div>
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
+          </td>
+          <td>
+            2019-08-01 22:52:19
+          </td>
+          <td
+            className="emotion-10"
           >
-            4
-          </div>
-        </td>
-        <td>
-          numAssets
-        </td>
-        <td>
-          <div
-            className="emotion-14"
-          >
+            0
+          </td>
+          <td />
+          <td>
             <div
-              className="emotion-11"
-            />
-          </div>
-        </td>
-      </tr>
-      <tr
-        className="emotion-15"
-      >
-        <td>
-          <div
-            className="emotion-27"
-          >
-            Canceled
-          </div>
-        </td>
-        <td>
-          test-whitespace.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td>
-          100
-        </td>
-        <td>
-          2019-11-07 01:35:36
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
+              className="emotion-22"
+            >
+              <div
+                aria-label="Progress Bar"
+                className="emotion-18"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
+              >
+                <div
+                  className="emotion-17"
+                >
+                  <div
+                    className="emotion-86"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-19"
+              />
+              <div
+                className="emotion-21"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-20"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div
+              className="emotion-23"
+            >
+              Active
+            </div>
+          </td>
+          <td>
+            export_7_8_2019
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-10"
           >
             1
-          </div>
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
+          </td>
+          <td>
+            2019-07-08 18:53:44
+          </td>
+          <td
+            className="emotion-10"
           >
-            4
-          </div>
-        </td>
-        <td>
-          numAssets
-        </td>
-        <td>
-          <div
-            className="emotion-28"
-          >
-            Canceled
-          </div>
-        </td>
-      </tr>
-      <tr
-        className="emotion-15"
-      >
-        <td>
-          <div
-            className="emotion-30"
-          >
-            Finished
-          </div>
-        </td>
-        <td>
-          test_officer
-        </td>
-        <td>
-          zach@zorroa.com
-        </td>
-        <td>
-          100
-        </td>
-        <td>
-          2019-10-11 21:11:03
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
+            0
+          </td>
+          <td />
+          <td>
+            <div
+              className="emotion-22"
+            >
+              <div
+                aria-label="Progress Bar"
+                className="emotion-18"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
+              >
+                <div
+                  className="emotion-17"
+                >
+                  <div
+                    className="emotion-13"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-19"
+              />
+              <div
+                className="emotion-21"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-20"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div
+              className="emotion-23"
+            >
+              Active
+            </div>
+          </td>
+          <td>
+            export_7_8_2019___
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-10"
           >
             1
-          </div>
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
+          </td>
+          <td>
+            2019-07-08 18:43:03
+          </td>
+          <td
+            className="emotion-10"
           >
-            4
-          </div>
-        </td>
-        <td>
-          numAssets
-        </td>
-        <td>
-          <div
-            className="emotion-14"
-          >
+            0
+          </td>
+          <td />
+          <td>
             <div
-              className="emotion-11"
-            />
-          </div>
-        </td>
-      </tr>
-      <tr
-        className="emotion-15"
-      >
-        <td>
-          <div
-            className="emotion-9"
-          >
-            Active
-          </div>
-        </td>
-        <td>
-          test_officer
-        </td>
-        <td>
-          zach@zorroa.com
-        </td>
-        <td>
-          100
-        </td>
-        <td>
-          2019-10-11 21:03:27
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
-          >
-            1
-          </div>
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
-          >
-            3
-          </div>
-        </td>
-        <td>
-          numAssets
-        </td>
-        <td>
-          <div
-            className="emotion-14"
-          >
+              className="emotion-22"
+            >
+              <div
+                aria-label="Progress Bar"
+                className="emotion-18"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
+              >
+                <div
+                  className="emotion-17"
+                >
+                  <div
+                    className="emotion-13"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-19"
+              />
+              <div
+                className="emotion-21"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-20"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div
-              className="emotion-11"
-            />
-          </div>
-        </td>
-      </tr>
-      <tr
-        className="emotion-15"
-      >
-        <td>
-          <div
-            className="emotion-9"
+              className="emotion-23"
+            >
+              Active
+            </div>
+          </td>
+          <td>
+            sdlc-testdata-import.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-10"
           >
-            Active
-          </div>
-        </td>
-        <td>
-          flipbook_export_1
-        </td>
-        <td>
-          admin
-        </td>
-        <td>
-          1
-        </td>
-        <td>
-          2019-08-01 22:52:19
-        </td>
-        <td />
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
+            100
+          </td>
+          <td>
+            2019-07-03 16:49:15
+          </td>
+          <td
+            className="emotion-10"
           >
-            3
-          </div>
-        </td>
-        <td>
-          numAssets
-        </td>
-        <td>
-          <div
-            className="emotion-14"
-          >
+            0
+          </td>
+          <td />
+          <td>
             <div
-              className="emotion-39"
-            />
-          </div>
-        </td>
-      </tr>
-      <tr
-        className="emotion-15"
-      >
-        <td>
-          <div
-            className="emotion-9"
-          >
-            Active
-          </div>
-        </td>
-        <td>
-          export_7_8_2019
-        </td>
-        <td>
-          admin
-        </td>
-        <td>
-          1
-        </td>
-        <td>
-          2019-07-08 18:53:44
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
-          >
-            1
-          </div>
-        </td>
-        <td />
-        <td>
-          numAssets
-        </td>
-        <td>
-          <div
-            className="emotion-14"
-          >
+              className="emotion-22"
+            >
+              <div
+                aria-label="Progress Bar"
+                className="emotion-18"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
+              >
+                <div
+                  className="emotion-17"
+                >
+                  <div
+                    className="emotion-13"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-19"
+              />
+              <div
+                className="emotion-21"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-20"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div
-              className="emotion-11"
-            />
-          </div>
-        </td>
-      </tr>
-      <tr
-        className="emotion-15"
-      >
-        <td>
-          <div
-            className="emotion-9"
+              className="emotion-23"
+            >
+              Active
+            </div>
+          </td>
+          <td>
+            sdlc-testdata-import.json
+          </td>
+          <td>
+            admin
+          </td>
+          <td
+            className="emotion-10"
           >
-            Active
-          </div>
-        </td>
-        <td>
-          export_7_8_2019___
-        </td>
-        <td>
-          admin
-        </td>
-        <td>
-          1
-        </td>
-        <td>
-          2019-07-08 18:43:03
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
-          >
-            1
-          </div>
-        </td>
-        <td />
-        <td>
-          numAssets
-        </td>
-        <td>
-          <div
-            className="emotion-14"
-          >
-            <div
-              className="emotion-11"
-            />
-          </div>
-        </td>
-      </tr>
-      <tr
-        className="emotion-15"
-      >
-        <td>
-          <div
-            className="emotion-9"
-          >
-            Active
-          </div>
-        </td>
-        <td>
-          sdlc-testdata-import.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td>
-          100
-        </td>
-        <td>
-          2019-07-03 16:49:15
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
-          >
-            1
-          </div>
-        </td>
-        <td />
-        <td>
-          numAssets
-        </td>
-        <td>
-          <div
-            className="emotion-14"
-          >
-            <div
-              className="emotion-11"
-            />
-          </div>
-        </td>
-      </tr>
-      <tr
-        className="emotion-15"
-      >
-        <td>
-          <div
-            className="emotion-9"
-          >
-            Active
-          </div>
-        </td>
-        <td>
-          sdlc-testdata-import.json
-        </td>
-        <td>
-          admin
-        </td>
-        <td>
-          100
-        </td>
-        <td>
-          2019-07-03 01:29:41
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
-          >
-            1
-          </div>
-        </td>
-        <td>
-          <div
-            style={
-              Object {
-                "color": "#ce2d3f",
-              }
-            }
+            100
+          </td>
+          <td>
+            2019-07-03 01:29:41
+          </td>
+          <td
+            className="emotion-10"
           >
             49
-          </div>
-        </td>
-        <td>
-          numAssets
-        </td>
-        <td>
-          <div
-            className="emotion-14"
-          >
+          </td>
+          <td>
             <div
-              className="emotion-39"
-            />
+              className="emotion-12"
+            >
+              49
+            </div>
+          </td>
+          <td>
             <div
-              className="emotion-11"
-            />
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div>
-     
+              className="emotion-22"
+            >
+              <div
+                aria-label="Progress Bar"
+                className="emotion-18"
+                onKeyPress={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                role="button"
+                tabIndex="0"
+              >
+                <div
+                  className="emotion-17"
+                >
+                  <div
+                    className="emotion-13"
+                  />
+                  <div
+                    className="emotion-86"
+                  />
+                </div>
+              </div>
+              <div
+                className="emotion-19"
+              />
+              <div
+                className="emotion-21"
+              >
+                <button
+                  aria-label="Toggle Actions Menu"
+                  className="emotion-20"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  type="button"
+                >
+                  <svg
+                    data-file-name="gear.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+       
+    </div>
+    <Pagination
+      currentPage={1}
+      totalPages={1}
+    />
   </div>
-  <Pagination
-    currentPage={1}
-    legend="Jobs: 1–17 of 415"
-    nextLink="/?page=2"
-    onClick={[Function]}
-    prevLink="/"
-    totalPages={2}
-  />
 </div>
 `;
 
-exports[`<DataQueue /> should render properly with no jobs 1`] = `"You have 0 jobs"`;
+exports[`<DataQueue /> should render properly with no jobs 1`] = `
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-bottom: 16px;
+}
+
+<div>
+  <h2
+    className="emotion-0"
+  >
+    Job Queue
+  </h2>
+  There are no results
+</div>
+`;

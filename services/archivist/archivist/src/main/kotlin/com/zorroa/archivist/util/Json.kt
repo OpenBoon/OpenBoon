@@ -10,9 +10,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.zorroa.archivist.domain.Element
+import com.zorroa.archivist.domain.FileStorage
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.UUID
 
 inline fun <reified T : Any> ObjectMapper.readValueOrNull(content: String?): T? {
     return if (content == null) {
@@ -35,14 +36,8 @@ object Json {
 
     val GENERIC_MAP: TypeReference<Map<String, Any>> = object : TypeReference<Map<String, Any>>() {}
     val LIST_OF_GENERIC_MAP: TypeReference<List<Map<String, Any>>> = object : TypeReference<List<Map<String, Any>>>() {}
-    val STRING_MAP: TypeReference<Map<String, String>> = object : TypeReference<Map<String, String>>() {}
-    val SET_OF_INTS: TypeReference<Set<Int>> = object : TypeReference<Set<Int>>() {}
-    val SET_OF_STRINGS: TypeReference<Set<String>> = object : TypeReference<Set<String>>() {}
-    val LIST_OF_INTS: TypeReference<List<Int>> = object : TypeReference<List<Int>>() {}
-    val LIST_OF_STRINGS: TypeReference<List<String>> = object : TypeReference<List<String>>() {}
-    val LIST_OF_OBJECTS: TypeReference<List<Any>> = object : TypeReference<List<Any>>() {}
-    val SET_OF_UUIDS: TypeReference<Set<UUID>> = object : TypeReference<Set<UUID>>() {}
-    val LIST_OF_UUIDS: TypeReference<List<UUID>> = object : TypeReference<List<UUID>>() {}
+    val LIST_OF_FILE_STORAGE: TypeReference<List<FileStorage>> = object : TypeReference<List<FileStorage>>() {}
+    val SET_OF_ELEMENTS: TypeReference<Set<Element>> = object : TypeReference<Set<Element>>() {}
 
     val Mapper = ObjectMapper()
 
@@ -53,14 +48,13 @@ object Json {
     fun configureObjectMapper(mapper: ObjectMapper): ObjectMapper {
         mapper.registerModule(KotlinModule())
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-        mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false)
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
         mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, true)
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
         mapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, false)
         mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
-        mapper.dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z")
+        mapper.dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
         return mapper
     }
 

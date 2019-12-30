@@ -6,14 +6,14 @@ with open('requirements.txt') as f:
     reqs = f.read().strip().splitlines()
 
 setup(
-    name='pixmld',
+    name='zmlpcd',
     version="1.0.0",
-    description='PixML container daemon',
-    url='https://www.pixml.com"',
+    description='ZMLP container daemon',
+    url='https://www.zorroa.com"',
     license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
     package_dir={'': 'pylib'},
-    packages=['containerizer'],
-    scripts=['entrypoint'],
+    packages=['zmlpcd'],
+    scripts=['server'],
 
     classifiers=[
         "Programming Language :: Python :: 3",

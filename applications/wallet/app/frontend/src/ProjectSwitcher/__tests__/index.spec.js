@@ -8,22 +8,24 @@ const noop = () => () => {}
 
 describe('<ProjectSwitcher />', () => {
   it('should render properly without data', () => {
-    const component = TestRenderer.create(
-      <ProjectSwitcher projects={[]} setSelectedProject={noop} />,
-    )
+    require('swr').__setMockUseSWRResponse({ data: {} })
+
+    const component = TestRenderer.create(<ProjectSwitcher />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should render properly with data', () => {
-    const mockFn = jest.fn()
-    const mockProjects = projects.results.map(({ name }, index) => {
-      return { id: `${index + 1}`, name, selected: index === 0 }
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: { projectId: projects.results[0].id },
     })
 
-    const component = TestRenderer.create(
-      <ProjectSwitcher projects={mockProjects} setSelectedProject={mockFn} />,
-    )
+    require('swr').__setMockUseSWRResponse({
+      data: projects,
+    })
+
+    const component = TestRenderer.create(<ProjectSwitcher />)
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -34,14 +36,20 @@ describe('<ProjectSwitcher />', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
 
-    act(() => {
-      component.root
-        .findByProps({ children: 'asdf' })
-        .props.onClick({ preventDefault: noop })
+  it('should not render if the projectId is not of an authorized project', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: { projectId: 'not-a-valid-project-id' },
     })
 
-    expect(component.toJSON()).toMatchSnapshot()
-    expect(mockFn).toHaveBeenCalledWith({ id: '2', name: 'asdf' })
+    require('swr').__setMockUseSWRResponse({
+      data: projects,
+    })
+
+    const component = TestRenderer.create(<ProjectSwitcher />)
+
+    expect(component.toJSON()).toBeNull()
   })
 })

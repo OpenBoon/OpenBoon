@@ -58,7 +58,8 @@ INSTALLED_APPS = [
     'health_check',
     'health_check.db',
     'health_check.cache',
-    'health_check.storage'
+    'health_check.storage',
+    'rest_auth'
 ]
 
 MIDDLEWARE = [
@@ -143,13 +144,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 # The static files are built in the static_server directory in the root of the repo.
 # These files are then built into the nginx static file server container.
-STATIC_URL = '/wallet/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-# Add the React app build location to staticfiles
-STATICFILES_DIRS = [
-    os.path.join(REACT_APP_DIR, 'build'),
-]
 
 
 # Rest Framework Specific Settings
@@ -161,9 +157,28 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    'DEFAULT_RENDERER_CLASSES': (
+        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+        'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'djangorestframework_camel_case.parser.CamelCaseFormParser',
+        'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
+        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+    ),
 }
 
 # General Application Configuration
 ARCHIVIST_URL = os.environ.get('ARCHIVIST_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
+
+# Google OAUTH2
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get('GOOGLE_OAUTH_CLIENT_ID')
+
+# Mail Server
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_HOST_USER = 'postmaster@mg.zorroa.com'
+EMAIL_HOST_PASSWORD = os.environ.get('SMTP_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

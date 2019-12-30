@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Pagination /> should render properly on first page 1`] = `
-.emotion-9 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -12,41 +12,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
   justify-content: flex-end;
 }
 
-.emotion-0 {
-  color: #4d4948;
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
 .emotion-1 {
-  color: #4d4948;
-  padding: 8px 12px;
-  padding-left: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -56,30 +22,43 @@ exports[`<Pagination /> should render properly on first page 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 8px 12px;
-  background-color: #4d4948;
-  border: 1px solid #4d4948;
+  background-color: #808080;
+  border: none;
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.emotion-3:hover {
+.emotion-1:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2 {
-  color: #b3b3b3;
+.emotion-0 {
+  color: #191919;
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-4 {
+.emotion-2 {
+  padding: 8px 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #b3b3b3;
+  background-color: #000000;
+}
+
+.emotion-3 {
   padding: 8px 12px;
-  border: 1px solid #4d4948;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -92,19 +71,6 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 }
 
 .emotion-5 {
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #4d4948;
-}
-
-.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -114,82 +80,70 @@ exports[`<Pagination /> should render properly on first page 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 8px 12px;
-  background-color: #4d4948;
-  border: 1px solid #4d4948;
+  background-color: #808080;
+  border: none;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-7:hover {
+.emotion-5:hover {
   opacity: 0.5;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6 {
-  color: #b3b3b3;
+.emotion-4 {
+  color: #191919;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 
 <div
-  className="emotion-9"
+  className="emotion-6"
 >
-  <div
-    className="emotion-0"
-  >
-    Jobs: 1–17 of 415
-  </div>
-  <div
+  <button
     className="emotion-1"
+    disabled={true}
+    type="button"
   >
-    Page:
+    <svg
+      className="emotion-0"
+      data-file-name="chevron.svg"
+      width={16}
+    />
+  </button>
+  <div
+    className="emotion-2"
+  >
+    1
   </div>
   <div
-    className="emotion-8"
+    className="emotion-3"
   >
-    <button
-      className="emotion-3"
-      disabled={true}
-    >
-      <svg
-        className="emotion-2"
-        data-file-name="chevron.svg"
-        width={16}
-      />
-    </button>
-    <div
-      className="emotion-4"
-    >
-      1
-    </div>
-    <div
-      className="emotion-5"
-    >
-      of 
-      2
-    </div>
-    <a
-      className="emotion-7"
-      href="/?page=2"
-      onClick={[Function]}
-      rel="next"
-    >
-      <svg
-        className="emotion-6"
-        data-file-name="chevron.svg"
-        width={16}
-      />
-    </a>
+    of 
+    2
   </div>
+  <a
+    className="emotion-5"
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs?page=2"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+    rel="next"
+  >
+    <svg
+      className="emotion-4"
+      data-file-name="chevron.svg"
+      width={16}
+    />
+  </a>
 </div>
 `;
 
 exports[`<Pagination /> should render properly on last page 1`] = `
-.emotion-9 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -201,81 +155,47 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 }
 
 .emotion-0 {
-  color: #4d4948;
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-1 {
-  color: #4d4948;
-  padding: 8px 12px;
-  padding-left: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  color: #b3b3b3;
+  color: #191919;
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
+.emotion-2 {
+  padding: 8px 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #b3b3b3;
+  background-color: #000000;
+}
+
+.emotion-3 {
+  padding: 8px 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #b3b3b3;
+}
+
 .emotion-4 {
-  padding: 8px 12px;
-  border: 1px solid #4d4948;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #b3b3b3;
-}
-
-.emotion-5 {
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #4d4948;
-}
-
-.emotion-6 {
-  color: #b3b3b3;
+  color: #191919;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 
-.emotion-3 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -285,21 +205,21 @@ exports[`<Pagination /> should render properly on last page 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 8px 12px;
-  background-color: #4d4948;
-  border: 1px solid #4d4948;
+  background-color: #808080;
+  border: none;
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.emotion-3:hover {
+.emotion-1:hover {
   opacity: 0.5;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -309,69 +229,57 @@ exports[`<Pagination /> should render properly on last page 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 8px 12px;
-  background-color: #4d4948;
-  border: 1px solid #4d4948;
+  background-color: #808080;
+  border: none;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
 }
 
-.emotion-7:hover {
+.emotion-5:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
 <div
-  className="emotion-9"
+  className="emotion-6"
 >
-  <div
-    className="emotion-0"
-  >
-    Jobs: 1–17 of 415
-  </div>
-  <div
+  <a
     className="emotion-1"
+    href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+    rel="prev"
   >
-    Page:
+    <svg
+      className="emotion-0"
+      data-file-name="chevron.svg"
+      width={16}
+    />
+  </a>
+  <div
+    className="emotion-2"
+  >
+    2
   </div>
   <div
-    className="emotion-8"
+    className="emotion-3"
   >
-    <a
-      className="emotion-3"
-      href="/"
-      onClick={[Function]}
-      rel="prev"
-    >
-      <svg
-        className="emotion-2"
-        data-file-name="chevron.svg"
-        width={16}
-      />
-    </a>
-    <div
-      className="emotion-4"
-    >
-      2
-    </div>
-    <div
-      className="emotion-5"
-    >
-      of 
-      2
-    </div>
-    <button
-      className="emotion-7"
-      disabled={true}
-    >
-      <svg
-        className="emotion-6"
-        data-file-name="chevron.svg"
-        width={16}
-      />
-    </button>
+    of 
+    2
   </div>
+  <button
+    className="emotion-5"
+    disabled={true}
+    type="button"
+  >
+    <svg
+      className="emotion-4"
+      data-file-name="chevron.svg"
+      width={16}
+    />
+  </button>
 </div>
 `;

@@ -5,9 +5,6 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.capture
 import com.nhaarman.mockito_kotlin.whenever
-import com.zorroa.archivist.clients.ApiKey
-import com.zorroa.archivist.clients.AuthServerClient
-import com.zorroa.archivist.clients.ZmlpActor
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.AssetSpec
@@ -15,7 +12,7 @@ import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.security.AnalystAuthentication
-import com.zorroa.archivist.security.Role
+import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.EsClientCache
 import com.zorroa.archivist.service.IndexClusterService
@@ -26,6 +23,10 @@ import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.Json
 import com.zorroa.archivist.util.randomString
+import com.zorroa.auth.client.ApiKey
+import com.zorroa.auth.client.AuthServerClient
+import com.zorroa.auth.client.Permission
+import com.zorroa.auth.client.ZmlpActor
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
@@ -156,28 +157,30 @@ abstract class AbstractTest {
 
     fun authenticateAsAnalyst() {
         SecurityContextHolder.getContext().authentication =
-            AnalystAuthentication("https://127.0.0.1:5000")
+            AnalystAuthentication("http://127.0.0.1:5000", "unittest")
     }
 
     fun setupAuthServerMocks() {
         /**
          * Stub out network calls to the authServerClient.
          */
-        val proj = ArgumentCaptor.forClass(Project::class.java)
-        val permissions = ArgumentCaptor.forClass(listOf("foo").javaClass)
+        val proj = ArgumentCaptor.forClass(UUID::class.java)
+        val permissions = ArgumentCaptor.forClass(setOf(Permission.AssetsImport).javaClass)
 
         // Create ApiKey
         whenever(
             authServerClient.createApiKey(
-                capture<Project>(proj),
+                capture<UUID>(proj),
                 any(),
-                capture<List<String>>(permissions)
+                capture<Set<Permission>>(permissions)
             )
         ).then {
             ApiKey(
                 UUID.randomUUID(),
-                proj.value.id,
-                randomString(64)
+                proj.value,
+                randomString(64),
+                "key-name",
+                permissions.value
             )
         }
 
@@ -190,7 +193,9 @@ abstract class AbstractTest {
             ApiKey(
                 UUID.randomUUID(),
                 project.id,
-                randomString(64)
+                randomString(64),
+                "key-name",
+                setOf()
             )
         }
 
@@ -199,7 +204,7 @@ abstract class AbstractTest {
             UUID.fromString("00000000-0000-0000-0000-000000000000"),
             UUID.fromString("00000000-0000-0000-0000-000000000000"),
             "inception-key",
-            listOf(Role.SUPERADMIN, Role.PROJADMIN)
+            setOf()
         )
         SecurityContextHolder.getContext().authentication = actor.getAuthentication()
     }
@@ -231,11 +236,15 @@ abstract class AbstractTest {
      * Authenticates a user as admin but with all permissions, including internal ones.
      */
     fun authenticate() {
+        authenticate(project.id)
+    }
+
+    fun authenticate(project: UUID) {
         val actor = ZmlpActor(
             UUID.fromString("00000000-0000-0000-0000-000000000000"),
-            project.id,
+            project,
             "unittest-key",
-            listOf(Role.PROJADMIN)
+            Permission.values().toSet()
         )
         SecurityContextHolder.getContext().authentication = actor.getAuthentication()
     }
@@ -261,7 +270,8 @@ abstract class AbstractTest {
 
         val formats = setOf("jpg", "pdf", "m4v", "gif", "tif")
         val imagePaths = Json.Mapper.readValue<List<String>>(
-            File("src/test/resources/test-data/files.json"))
+            File("src/test/resources/test-data/files.json")
+        )
 
         return imagePaths.mapNotNull { path ->
             if (!path.contains(subdir) || !formats.contains(FileUtils.extension(path).toLowerCase())) {
@@ -270,8 +280,8 @@ abstract class AbstractTest {
             val asset = AssetSpec(path)
             asset.attrs = mapOf(
                 "media" to mapOf(
-                "width" to 1024,
-                "height" to 1024,
+                    "width" to 1024,
+                    "height" to 1024,
                     "title" to "Picture of $path"
                 )
             )

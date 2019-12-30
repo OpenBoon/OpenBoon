@@ -8,29 +8,12 @@ import org.junit.Before
 
 class TestPdfDocument {
 
-    private lateinit var opts: Options
+    private lateinit var opts: RenderRequest
 
     @Before
     fun setup() {
-        opts = Options("src/test/resources/CPB7_WEB.pdf")
+        opts = RenderRequest("src/test/resources/CPB7_WEB.pdf")
         opts.outputDir = "pdf"
-    }
-
-    @Test
-    fun testRenderAssetImage() {
-        val doc = PdfDocument(opts, FileInputStream(opts.fileName))
-        doc.renderImage(0)
-
-        val image = ImageIO.read(doc.getImage(0))
-        assertEquals(637, image.width)
-        assertEquals(825, image.height)
-    }
-
-    @Test
-    fun testRenderAssetMetadata() {
-        val doc = PdfDocument(opts, FileInputStream(opts.fileName))
-        doc.renderMetadata(0)
-        validateAssetMetadata(doc.getMetadata(0))
     }
 
     @Test
@@ -47,14 +30,13 @@ class TestPdfDocument {
     fun testRenderPageMetadata() {
         val doc = PdfDocument(opts, FileInputStream(opts.fileName))
         doc.renderMetadata(1)
-
-        validatePageMetadata(doc.getMetadata(1))
+        validateMetadata(doc.getMetadata(1))
     }
 
     @Test
     fun testRenderAllImages() {
-        val opts = Options("src/test/resources/pdf_test.pdf")
+        val opts = RenderRequest("src/test/resources/pdf_test.pdf")
         val doc = PdfDocument(opts, FileInputStream(opts.fileName))
-        assertEquals(4, doc.renderAllImages())
+        assertEquals(3, doc.renderAllImages())
     }
 }

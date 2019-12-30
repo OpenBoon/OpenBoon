@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
-@PreAuthorize("hasAuthority('SuperAdmin')")
+@PreAuthorize("hasAuthority('ProjectManage')")
 @RestController
 @Api(tags = ["Project"], description = "Operations for managing Projects.")
 class ProjectController constructor(

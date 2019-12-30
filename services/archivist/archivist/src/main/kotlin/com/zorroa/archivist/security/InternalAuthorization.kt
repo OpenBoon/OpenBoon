@@ -1,6 +1,7 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.clients.ZmlpActor
+import com.zorroa.auth.client.Permission
+import com.zorroa.auth.client.ZmlpActor
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -10,9 +11,9 @@ import java.util.UUID
  * An Authentication class for authorizing background threads.
  */
 class InternalThreadAuthentication constructor(
-    projectId: UUID, perms: List<String>
+    projectId: UUID, perms: Set<Permission>
 ) :
-    AbstractAuthenticationToken(perms.map { SimpleGrantedAuthority(it) }) {
+    AbstractAuthenticationToken(perms.map { SimpleGrantedAuthority(it.name) }) {
 
     val zmlpActor: ZmlpActor = ZmlpActor(
         KnownKeys.SUKEY,

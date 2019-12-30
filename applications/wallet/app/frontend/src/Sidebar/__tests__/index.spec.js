@@ -4,8 +4,15 @@ import Sidebar from '..'
 
 const noop = () => () => {}
 
+const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
+
 describe('<Sidebar />', () => {
   it('should render properly closed', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: { projectId: PROJECT_ID },
+    })
+
     const component = TestRenderer.create(
       <Sidebar isSidebarOpen={false} setSidebarOpen={noop} />,
     )
@@ -14,6 +21,11 @@ describe('<Sidebar />', () => {
   })
 
   it('should render properly opened', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: { projectId: PROJECT_ID },
+    })
+
     const component = TestRenderer.create(
       <Sidebar isSidebarOpen setSidebarOpen={noop} />,
     )

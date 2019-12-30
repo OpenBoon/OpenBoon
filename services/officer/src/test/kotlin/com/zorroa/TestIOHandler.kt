@@ -12,7 +12,7 @@ import org.junit.Test
 
 class TestIOHandler {
 
-    val options = Options("foo.docx")
+    val options = RenderRequest("foo.docx")
     val handler = IOHandler(options)
 
     @Test
@@ -77,6 +77,6 @@ class TestIOHandler {
         val bucket = StorageManager.bucket
         val prefix = IOHandler.PREFIX
         val path = handler.getOutputUri()
-        assertEquals("pixml://$bucket/$prefix/${options.outputDir}", path)
+        assertEquals("zmlp://$bucket/$prefix/${options.outputDir}", path)
     }
 }

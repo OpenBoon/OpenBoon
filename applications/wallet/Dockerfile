@@ -1,21 +1,19 @@
-FROM node:12.13.1 as node_build
-COPY applications/wallet/app /app
-WORKDIR /app/frontend
-RUN npm ci && npm run build
-
-FROM nginx:1.17.1-alpine
-RUN apk update && apk upgrade && apk add --no-cache ffmpeg postgresql postgresql-dev gcc python3-dev musl-dev python3 py3-gunicorn libffi-dev g++
+FROM nginx:alpine
+RUN apk update && apk upgrade && apk add --no-cache postgresql postgresql-dev gcc python3-dev musl-dev python3 py3-gunicorn libffi-dev g++ nodejs-current npm
 COPY applications/wallet /applications/wallet
 COPY sdk /sdk
 WORKDIR /applications/wallet
 
-# Setup and Run uWSGI server for django.
+# Set up Django.
 ENV PYTHONPATH /applications/wallet/app:$PATH
 RUN pip3 install --upgrade pip \
     && pip3 install pipenv \
     && pipenv install --system --deploy
-COPY --from=node_build /app/frontend/build /applications/wallet/app/frontend/build
 COPY applications/wallet/app/start-server.sh /start-server.sh
+
+# Set up Node.
+WORKDIR /applications/wallet/app/frontend
+RUN npm ci && npm run build
 
 # Collect static files and configs for nginx.
 WORKDIR /applications/wallet/app

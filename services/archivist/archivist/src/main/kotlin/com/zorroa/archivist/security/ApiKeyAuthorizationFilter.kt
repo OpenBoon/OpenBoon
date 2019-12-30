@@ -1,11 +1,10 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.archivist.clients.AuthServerClient
-import com.zorroa.archivist.clients.ZmlpActor
+import com.zorroa.auth.client.AuthServerClient
+import com.zorroa.auth.client.ZmlpActor
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.authentication.AuthenticationProvider
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
@@ -19,14 +18,14 @@ val HEADER = "Authorization"
 val PREFIX = "Bearer "
 
 class ApiKeyAuthorizationFilter constructor(
-        val authServerClient: AuthServerClient
+    val authServerClient: AuthServerClient
 ) : OncePerRequestFilter() {
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(
-            req: HttpServletRequest,
-            res: HttpServletResponse,
-            chain: FilterChain
+        req: HttpServletRequest,
+        res: HttpServletResponse,
+        chain: FilterChain
     ) {
         val token = req.getHeader(HEADER)?.let {
             if (it.startsWith(PREFIX)) {
@@ -54,9 +53,8 @@ class ApiKeyAuthorizationFilter constructor(
     }
 }
 
-
 class ApiTokenAuthentication constructor(
-        val zmlpActor : ZmlpActor
+    val zmlpActor: ZmlpActor
 ) : AbstractAuthenticationToken(listOf()) {
 
     override fun getCredentials(): Any {
@@ -70,16 +68,11 @@ class ApiTokenAuthentication constructor(
     override fun isAuthenticated(): Boolean = false
 }
 
-
 class ApiKeyAuthenticationProvider : AuthenticationProvider {
 
     override fun authenticate(auth: Authentication): Authentication {
         val token = auth as ApiTokenAuthentication
-
-        return UsernamePasswordAuthenticationToken(
-                token.zmlpActor,
-                token.credentials,
-                token.zmlpActor.getAuthorities())
+        return token.zmlpActor.getAuthentication()
     }
 
     override fun supports(cls: Class<*>): Boolean {

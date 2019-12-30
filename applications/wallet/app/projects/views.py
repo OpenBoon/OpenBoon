@@ -2,8 +2,8 @@ from django.db import transaction
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
-from pixml import PixmlClient
-from pixml.rest import PixmlDuplicateException
+from zmlp import ZmlpClient
+from zmlp.client import ZmlpDuplicateException
 
 from rest_framework import status
 from rest_framework.viewsets import ViewSet, GenericViewSet
@@ -56,7 +56,7 @@ class BaseProjectViewSet(ViewSet):
         if settings.PLATFORM == 'zvi':
             return ZviClient(apikey=apikey, server=settings.ARCHIVIST_URL)
         else:
-            return PixmlClient(apikey=apikey, server=settings.ARCHIVIST_URL)
+            return ZmlpClient(apikey=apikey, server=settings.ARCHIVIST_URL)
 
     def get_serializer(self, *args, **kwargs):
         """
@@ -136,18 +136,18 @@ class ProjectViewSet(ListModelMixin,
         serializer.save()
 
         # Create it in ZMLP now
-        client = self._get_zmlp_client(request)
+        client = self._get_zmlp_superuser_client(request)
         body = {'name': serializer.data['name'],
                 'projectId': serializer.data['id']}
         try:
             client.post('/api/v1/projects', body)
-        except PixmlDuplicateException:
+        except ZmlpDuplicateException:
             # It's ok if it already exists in ZMLP at this point.
             pass
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def _get_zmlp_client(self, request):
+    def _get_zmlp_superuser_client(self, request):
         """
         Helper method to return the ZMLP client specifically for the SuperUser, who is
         the only person who can create projects through this view.
@@ -158,7 +158,7 @@ class ProjectViewSet(ListModelMixin,
         Returns:
             Initialized ZMLP client
         """
-        # This project zero check should eventually go away as pixml/zmlp changes.
+        # This project zero check should eventually go away as Zmlp changes.
         try:
             project = self.request.user.projects.filter(
                 id='00000000-0000-0000-0000-000000000000'
@@ -174,4 +174,4 @@ class ProjectViewSet(ListModelMixin,
             raise PermissionDenied(detail=(f'{request.user.username} does not have a membership '
                                            f'to {project.name} setup yet. Please create in the '
                                            f'Admin console to continue.'))
-        return PixmlClient(apikey=apikey, server=settings.ARCHIVIST_URL)
+        return ZmlpClient(apikey=apikey, server=settings.ARCHIVIST_URL)

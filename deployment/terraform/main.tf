@@ -94,7 +94,7 @@ resource "kubernetes_secret" "dockerhub" {
 }
 
 
-## pixelML Services ######################################################################
+## ZMLP Services ######################################################################
 module "elasticsearch" {
   source = "./modules/elasticsearch"
   container-cluster-name = "${module.gke-cluster.name}"
@@ -159,4 +159,5 @@ module "wallet" {
   sql-service-account-key = "${module.postgres.sql-service-account-key}"
   sql-connection-name = "${module.postgres.connection-name}"
   archivist-url = "http://${module.archivist.ip-address}"
+  smtp-password = "${var.smtp-password}"
 }

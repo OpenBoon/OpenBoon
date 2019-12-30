@@ -20,14 +20,10 @@ import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
-import com.zorroa.archivist.security.InternalThreadAuthentication
-import com.zorroa.archivist.security.Perm
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.security.withAuth
 import io.micrometer.core.instrument.MeterRegistry
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.TestPropertySource
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
@@ -110,7 +106,7 @@ class DispatcherServiceTests : AbstractTest() {
     }
 
     @Test
-    fun getTaskPriorityMultipleOrganizations() {
+    fun getTaskPriorityMultipleProjects() {
 
         val spec1 = JobSpec(
             "test_job",
@@ -126,16 +122,16 @@ class DispatcherServiceTests : AbstractTest() {
 
         val pspec = ProjectSpec("foojam", projectId = UUID.randomUUID())
         val project = projectService.create(pspec)
+        authenticate(project.id)
 
-        withAuth(InternalThreadAuthentication(project.id, listOf(Perm.STORAGE_CREATE))) {
-            val spec2 = JobSpec(
-                "test_job",
-                emptyZpsScript("foo"),
-                args = mutableMapOf("foo" to 1),
-                env = mutableMapOf("foo" to "bar")
-            )
-            jobService.create(spec2)
-        }
+        val spec2 = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
+        jobService.create(spec2)
+
 
         val priority = dispatcherService.getDispatchPriority()
         assertEquals(0, priority[0].priority)
@@ -144,7 +140,7 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Test
     fun testGetNextWithInteractivePriortity() {
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
 
         // Standard job is launched first, which should go first
         launchJob(JobPriority.Standard)
@@ -167,7 +163,7 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Test
     fun testGetNext() {
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val spec = JobSpec(
             "test_job",
             emptyZpsScript("foo"),
@@ -181,7 +177,7 @@ class DispatcherServiceTests : AbstractTest() {
 
         assertNotNull(next)
         next?.let {
-            assertFalse("PIXML_DATASOURCE_ID" in next.env)
+            assertFalse("ZMLP_DATASOURCE_ID" in next.env)
             assertEquals(job.id, it.jobId)
             val host: String = this.jdbc.queryForObject(
                 "SELECT str_host FROM task WHERE pk_task=?",
@@ -193,7 +189,7 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Test
     fun testGetNextFailureMaxRunningJob() {
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val spec = JobSpec(
             "test_job",
             emptyZpsScript("foo"),
@@ -216,7 +212,7 @@ class DispatcherServiceTests : AbstractTest() {
         jobService.create(spec)
 
         authenticateAsAnalyst()
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val aspec = AnalystSpec(
             1024,
             648,
@@ -242,7 +238,7 @@ class DispatcherServiceTests : AbstractTest() {
         jobService.create(spec)
 
         authenticateAsAnalyst()
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val aspec = AnalystSpec(
             1024,
             648,
@@ -288,7 +284,7 @@ class DispatcherServiceTests : AbstractTest() {
         jobService.create(spec)
 
         authenticateAsAnalyst()
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val aspec = AnalystSpec(
             1024,
             648,
@@ -331,7 +327,7 @@ class DispatcherServiceTests : AbstractTest() {
         jobService.create(spec)
 
         authenticateAsAnalyst()
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val aspec = AnalystSpec(
             1024,
             648,
@@ -374,7 +370,7 @@ class DispatcherServiceTests : AbstractTest() {
         jobService.create(spec)
 
         authenticateAsAnalyst()
-        val analyst = "https://127.0.0.1:5000"
+        val analyst = "http://127.0.0.1:5000"
         val aspec = AnalystSpec(
             1024,
             648,

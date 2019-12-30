@@ -10,18 +10,20 @@ exports[`<Authentication /> should render properly when user is logged in 2`] = 
     }
   }
 >
-  <Projects
-    user={
-      Object {
-        "email": "jane.doe@zorroa.com",
-        "first_name": "Jane",
-        "id": 1,
-        "last_name": "Doe",
-        "username": "jane.doe",
+  <Projects>
+    <Layout
+      user={
+        Object {
+          "email": "jane.doe@zorroa.com",
+          "firstName": "Jane",
+          "id": 1,
+          "lastName": "Doe",
+          "username": "jane.doe",
+        }
       }
-    }
-  >
-    Hello World
+    >
+      Hello World!
+    </Layout>
   </Projects>
 </SWRConfig>
 `;
@@ -31,6 +33,13 @@ exports[`<Authentication /> should render properly when user is logged out 1`] =
 exports[`<Authentication /> should render properly when user is logged out 2`] = `
 <Login
   errorMessage=""
+  googleAuth={
+    Object {
+      "signIn": [Function],
+      "signOut": [Function],
+    }
+  }
+  hasGoogleLoaded={true}
   onSubmit={[Function]}
   setErrorMessage={[Function]}
 />

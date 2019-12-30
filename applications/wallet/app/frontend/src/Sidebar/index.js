@@ -1,10 +1,10 @@
 import { forwardRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import Link from 'next/link'
 import Router from 'next/router'
 
-import { colors, spacing, zIndex, constants, typography } from '../Styles'
+import { colors, spacing, zIndex, constants } from '../Styles'
 
+import SidebarLink from './Link'
 import SidebarOverlay from './Overlay'
 
 import QueueSvg from './icons/queue.svg'
@@ -49,38 +49,16 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
             listStyleType: 'none',
             padding: 0,
             margin: 0,
-            a: {
-              display: 'flex',
-              alignItems: 'center',
-              padding: spacing.moderate,
-              fontSize: typography.size.kilo,
-              color: colors.grey2,
-              svg: {
-                marginRight: spacing.moderate,
-              },
-              ':hover': {
-                textDecoration: 'none',
-                color: colors.plants.clover,
-                backgroundColor: colors.grey1,
-              },
-            },
           }}>
-          <li>
-            <Link href="/">
-              <a>
-                <QueueSvg width={ICON_WIDTH} aria-hidden />
-                Data Queue
-              </a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/api-keys">
-              <a>
-                <KeySvg width={ICON_WIDTH} aria-hidden />
-                API Keys
-              </a>
-            </Link>
-          </li>
+          <SidebarLink href="/jobs">
+            <QueueSvg width={ICON_WIDTH} aria-hidden />
+            Job Queue
+          </SidebarLink>
+
+          <SidebarLink href="/api-keys">
+            <KeySvg width={ICON_WIDTH} aria-hidden />
+            API Keys
+          </SidebarLink>
         </ul>
       </nav>
       <SidebarOverlay

@@ -71,15 +71,17 @@ class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient)
     }
 
     fun newUpdateRequest(id: String): UpdateRequest {
-        return UpdateRequest(route.indexName, "asset", id)
+        return UpdateRequest(route.indexName, id)
     }
 
     fun newIndexRequest(id: String): IndexRequest {
-        return IndexRequest(route.indexName, "asset", id)
+       val req = IndexRequest(route.indexName)
+        req.id(id)
+        return req
     }
 
     fun newDeleteRequest(id: String): DeleteRequest {
-        return DeleteRequest(route.indexName, "asset", id)
+        return DeleteRequest(route.indexName, id)
     }
 
     fun routeSearchRequest(req: SearchRequest): SearchRequest {
@@ -127,7 +129,7 @@ class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient)
      * a success or the mapping already existed.s
      */
     fun updateMapping(body: Map<String, Any>): Boolean {
-        val url = "${route.indexUrl}/_mapping/asset"
+        val url = "${route.indexUrl}/_mapping"
         val req = Request("PUT", url)
         req.setJsonEntity(Json.serializeToString(body))
 

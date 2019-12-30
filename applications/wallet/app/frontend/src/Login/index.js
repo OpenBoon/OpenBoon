@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import Head from 'next/head'
 
 import { colors, constants, typography, spacing } from '../Styles'
 
@@ -11,10 +12,18 @@ import FormAlert from '../FormAlert'
 import Input from '../Input'
 import Button, { VARIANTS } from '../Button'
 
-const WIDTH = 440
+import LoginWithGoogle from './WithGoogle'
+
+const WIDTH = 446
 const LOGO_WIDTH = 143
 
-const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
+const Login = ({
+  googleAuth,
+  hasGoogleLoaded,
+  errorMessage,
+  setErrorMessage,
+  onSubmit,
+}) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -27,41 +36,45 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
         alignItems: 'center',
         height: '100vh',
       }}>
+      <Head>
+        <title>Login</title>
+      </Head>
       <form
         method="post"
         onSubmit={event => event.preventDefault()}
         css={{
           display: 'flex',
           flexDirection: 'column',
-          padding: `${spacing.normal}px ${spacing.colossal}px`,
+          padding: spacing.colossal,
           width: WIDTH,
           backgroundColor: colors.secondaryBackground,
           borderRadius: constants.borderRadius.small,
           boxShadow: constants.boxShadows.default,
         }}>
-        <LogoSvg
-          width={LOGO_WIDTH}
-          css={{
-            alignSelf: 'center',
-            paddingTop: spacing.comfy,
-            paddingBottom: spacing.comfy,
-          }}
-        />
+        <LogoSvg width={LOGO_WIDTH} css={{ alignSelf: 'center' }} />
+
         <h3
           css={{
             textAlign: 'center',
             fontSize: typography.size.mega,
             lineHeight: typography.height.mega,
-            margin: 0,
-            paddingTop: spacing.moderate,
-            paddingBottom: spacing.moderate,
+            paddingTop: spacing.spacious,
+            paddingBottom: spacing.spacious,
           }}>
           Welcome. Please login.
         </h3>
+
+        <LoginWithGoogle
+          googleAuth={googleAuth}
+          hasGoogleLoaded={hasGoogleLoaded}
+          onSubmit={onSubmit}
+        />
+
         <FormAlert
           errorMessage={errorMessage}
           setErrorMessage={setErrorMessage}
         />
+
         <Input
           autoFocus
           id="username"
@@ -71,6 +84,7 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
           onChange={({ target: { value } }) => setUsername(value)}
           hasError={!!errorMessage}
         />
+
         <Input
           id="password"
           label="Password"
@@ -84,6 +98,7 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
               variant={VARIANTS.NEUTRAL}
               onClick={() => setShowPassword(!showPassword)}
               style={{
+                padding: spacing.moderate,
                 outlineOffset: -2,
                 '&:hover': { color: colors.primary },
               }}>
@@ -95,9 +110,10 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
             </Button>
           }
         />
+
         <div
           css={{
-            padding: spacing.comfy,
+            paddingTop: spacing.normal,
             display: 'flex',
             justifyContent: 'center',
           }}>
@@ -115,6 +131,10 @@ const Login = ({ errorMessage, setErrorMessage, onSubmit }) => {
 }
 
 Login.propTypes = {
+  googleAuth: PropTypes.shape({
+    signIn: PropTypes.func.isRequired,
+  }).isRequired,
+  hasGoogleLoaded: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string.isRequired,
   setErrorMessage: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,

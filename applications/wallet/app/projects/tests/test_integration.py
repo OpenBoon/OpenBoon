@@ -5,8 +5,8 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.test import RequestFactory
 from django.urls import reverse
 
-from pixml import PixmlClient
-from pixml.rest import PixmlDuplicateException
+from zmlp import ZmlpClient
+from zmlp.client import ZmlpDuplicateException
 
 from projects.clients import ZviClient
 from projects.views import BaseProjectViewSet
@@ -17,13 +17,13 @@ from projects.models import Project, Membership
 pytestmark = pytest.mark.django_db
 
 
-def test_get_zmlp_client(pixml_project_user, project, settings):
+def test_get_zmlp_client(zmlp_project_user, project, settings):
     settings.PLATFORM = 'zmlp'
     request = RequestFactory().get('/bunk/')
-    request.user = pixml_project_user
+    request.user = zmlp_project_user
     view = BaseProjectViewSet()
     client = view._get_archivist_client(request, project)
-    assert type(client) == PixmlClient
+    assert type(client) == ZmlpClient
 
 
 def test_get_zvi_client(zvi_project_user, project, settings):
@@ -57,8 +57,8 @@ def test_projects_view_no_projects(project, user, api_client):
     assert response['count'] == 0
 
 
-def test_projects_view_with_projects(project, pixml_project_user, api_client):
-    api_client.force_authenticate(pixml_project_user)
+def test_projects_view_with_projects(project, zmlp_project_user, api_client):
+    api_client.force_authenticate(zmlp_project_user)
     response = api_client.get(reverse('project-list')).json()
     assert response['count'] == 1
     assert response['results'][0]['name'] == project.name
@@ -116,7 +116,7 @@ class TestProjectViewSet:
         def mock_api_response(*args, **kwargs):
             return True
 
-        monkeypatch.setattr(PixmlClient, 'post', mock_api_response)
+        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
         api_client.force_authenticate(project_zero_user)
 
         with pytest.raises(Project.DoesNotExist):
@@ -128,8 +128,8 @@ class TestProjectViewSet:
         project = Project.objects.get(name='Create Project Test')
         assert project.name == 'Create Project Test'
 
-    def test_post_create_no_project_zero(self, project, pixml_project_user, api_client):
-        api_client.force_authenticate(pixml_project_user)
+    def test_post_create_no_project_zero(self, project, zmlp_project_user, api_client):
+        api_client.force_authenticate(zmlp_project_user)
         body = {'name': 'Test Project'}
         response = api_client.post(reverse('project-list'), body)
         assert response.status_code == 403
@@ -143,15 +143,15 @@ class TestProjectViewSet:
         assert response.status_code == 400
         assert response.json()['name'][0] == 'This field is required.'
 
-    def test_post_create_dup_pixml_project(self, project_zero, project_zero_user, api_client,
-                                           monkeypatch):
+    def test_post_create_dup_zmlp_project(self, project_zero, project_zero_user, api_client,
+                                          monkeypatch):
 
         def mock_api_response(*args, **kwargs):
-            raise PixmlDuplicateException(data={'msg': 'Duplicate'})
+            raise ZmlpDuplicateException(data={'msg': 'Duplicate'})
 
         api_client.force_authenticate(project_zero_user)
         body = {'name': 'Create Project Test'}
-        monkeypatch.setattr(PixmlClient, 'post', mock_api_response)
+        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
         api_client.force_authenticate(project_zero_user)
 
         with pytest.raises(Project.DoesNotExist):

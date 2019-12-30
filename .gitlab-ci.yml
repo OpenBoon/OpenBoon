@@ -38,7 +38,7 @@ wallet-frontend-test-suite:
 
 wallet-backend-test-suite:
   extends: .wallet-base
-  image: mc706/pipenv-3.6
+  image: mc706/pipenv-3.7
   stage: test
   services:
     - name: postgres:9.6.9
@@ -66,7 +66,7 @@ wallet-container-build-validation:
     - docker build --pull --no-cache -f applications/wallet/Dockerfile .
 
 backend-py-lint:
-  image: python:3.7
+  image: python:3.7.5
   stage: pretest
   allow_failure: false
   only:
@@ -97,7 +97,7 @@ backend-kotlin-lint:
 # Testing other containers requires building containers
 # Testing analyst requires it can pull plugin containers.
 sdk-unit-tests:
-  image: python:3.7
+  image: python:3.7.5
   stage: test
   allow_failure: true
   only:
@@ -108,7 +108,6 @@ sdk-unit-tests:
   script:
     - python -m pip install pipenv pytest
     - cd sdk/python
-    - pip install -r requirements.txt
     - python setup.py install
     - pytest
     - cd ../../containers/zmlp-plugins-base
@@ -254,17 +253,18 @@ services_unit_tests:
     ARCHIVIST_STORAGE_ACCESSKEY: "qwerty123"
     ARCHIVIST_STORAGE_SECRETKEY: "123qwerty"
     ARCHIVIST_STORAGE_URL: "http://localhost:9000"
-    MLSTORAGE_ACCESSKEY: "qwerty123"
-    MLSTORAGE_SECRETKEY: "123qwerty"
-    MLSTORAGE_URL: "http://localhost:9000"
+    ZMLP_ISTORAGE_ACCESSKEY: "qwerty123"
+    ZMLP_ISTORAGE_SECRETKEY: "123qwerty"
+    ZMLP_ISTORAGE_URL: "http://localhost:9000"
     MINIO_ACCESS_KEY: "qwerty123"
     MINIO_SECRET_KEY: "123qwerty"
   script:
     - export
     - IP="$(cat /etc/hosts |grep $HOSTNAME|cut -d$'\t' -f1)"
-    - MLSTORAGE_URL="http://${IP}:9000"
+    - ZMLP_ISTORAGE_URL="http://${IP}:9000"
     - ARCHIVIST_ES_URL="http://${IP}:9200"
     - ARCHIVIST_STORAGE_URL="http://${IP}:9000"
+    - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true
     - mvn test verify -f services/archivist -q
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
     - mvn test verify -f services/auth-server -q

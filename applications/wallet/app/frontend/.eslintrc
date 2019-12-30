@@ -10,6 +10,8 @@
     "emotion/syntax-preference": ["error", "object"],
     "import/no-extraneous-dependencies": "error",
     "jsx-a11y/anchor-is-valid": "off",
+    "jsx-a11y/label-has-associated-control": ["error", { "assert": "either" }],
+    "jsx-a11y/label-has-for": "off",
     "react-hooks/exhaustive-deps": "error",
     "react-hooks/rules-of-hooks": "error",
     "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
@@ -24,7 +26,12 @@
       }
     },
     {
-      "files": ["**/*.spec.js", "**/__mocks__/**/*.js", "next.config.js"],
+      "files": [
+        "**/*.spec.js",
+        "**/__mocks__/**/*.js",
+        "next.config.js",
+        "devServer.js"
+      ],
       "rules": {
         "global-require": "off",
         "no-underscore-dangle": "off",

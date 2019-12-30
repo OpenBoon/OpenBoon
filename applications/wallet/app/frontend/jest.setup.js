@@ -1,11 +1,28 @@
+const noop = () => () => {}
+
 /**
  * fetch
  */
-global.fetch = require('jest-fetch-mock')
+require('jest-fetch-mock').enableMocks()
+
+const { initialize } = require('./src/Fetch/helpers')
 
 beforeEach(() => {
   fetch.resetMocks()
+
+  initialize({ setUser: noop })
 })
+
+/**
+ * CSRF Cookie
+ */
+
+if (typeof document !== 'undefined') {
+  Object.defineProperty(document, 'cookie', {
+    writable: true,
+    value: 'csrftoken=CSRF_TOKEN',
+  })
+}
 
 /**
  * console

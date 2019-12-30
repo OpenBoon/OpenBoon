@@ -19,12 +19,7 @@ enum class FileGroup {
     /**
      * The stored file is for internal use.
      */
-    INTERNAL,
-
-    /**
-     * The stored file is input for an Analysis module.
-     */
-    ANALYSIS;
+    INTERNAL;
 
     fun lower() = this.toString().toLowerCase()
 }
@@ -45,14 +40,19 @@ enum class FileCategory {
     PROXY,
 
     /**
-     * "The file is some form of metadata, text, json, etc."
+     * The file is some form of metadata, text, json, etc."
      */
     METADATA,
 
     /**
-     * "The file is a encryption key.
+     * The file is a encryption key.
      */
-    KEYS;
+    KEYS,
+
+    /**
+     * The file is elated to an element.
+     */
+    ELEMENT;
 
     fun lower() = this.toString().toLowerCase()
 }
@@ -63,14 +63,14 @@ class FileStorageAttrs(
     @ApiModelProperty("The name of the file, overrides the local file name.")
     var name: String,
 
-    @ApiModelProperty("The file used internally by PixelML.  Internal files cannot be created by REST calls.")
+    @ApiModelProperty("The file used internally by ZMLP.  Internal files cannot be created by REST calls.")
     var attrs: Map<String, Any>
 )
 
 /**
  * Internal class for storing the location details of a file.
  *
- * @property type The type of PixelML object.
+ * @property type The type of ZMLP object.
  * @property id The id of the object.
  * @property category The category the object belongs in, this is just the directory it lives in.
  * @property name The name of the file.
@@ -84,7 +84,7 @@ class FileStorageLocator(
     val projectId: UUID? = null
 ) {
 
-    fun getPath() : String {
+    fun getPath(): String {
 
         if (name.lastIndexOf('.') == -1) {
             throw IllegalArgumentException("File name has no extension: $name")
@@ -107,7 +107,7 @@ class FileStorageLocator(
  * @property data The actual file data in the form of a ByteArray
  * @property mimetype The mimetype (aka MediaType) of the file which is auto detected.
  */
-class FileStorageSpec  (
+class FileStorageSpec(
     val locator: FileStorageLocator,
     var attrs: Map<String, Any>,
     val data: ByteArray
@@ -116,8 +116,7 @@ class FileStorageSpec  (
     val mimetype = FileUtils.getMediaType(locator.name)
 }
 
-
-@ApiModel("FileStorage", description = "Describes a file stored in PixelML storage.")
+@ApiModel("FileStorage", description = "Describes a file stored in ZMLP storage.")
 class FileStorage(
 
     @ApiModelProperty("The file name")
@@ -133,5 +132,8 @@ class FileStorage(
     val size: Long,
 
     @ApiModelProperty("Arbitrary attributes for the file")
-    var attrs: Map<String, Any>
+    var attrs: Map<String, Any>,
+
+    @ApiModelProperty("Overrides which Asset")
+    var sourceAssetId: String? = null
 )

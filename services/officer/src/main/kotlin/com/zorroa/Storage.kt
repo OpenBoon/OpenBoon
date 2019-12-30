@@ -53,7 +53,7 @@ class ReversibleByteArrayOutputStream(size: Int = 2048) : ByteArrayOutputStream(
 /**
  * Manages render inputs and outputs.
  */
-class IOHandler(val options: Options) {
+class IOHandler(val options: RenderRequest) {
 
     fun writeImage(page: Int, outputStream: ReversibleByteArrayOutputStream) {
         StorageManager.minioClient.putObject(
@@ -80,7 +80,7 @@ class IOHandler(val options: Options) {
     }
 
     fun getOutputUri(): String {
-        return "pixml://${Config.bucket.name}/$PREFIX/${options.outputDir}"
+        return "zmlp://${Config.bucket.name}/$PREFIX/${options.outputDir}"
     }
 
     fun getMetadata(page: Int = 1): InputStream {

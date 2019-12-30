@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.TaskFilter
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
@@ -29,7 +30,7 @@ import java.io.IOException
 import java.util.UUID
 import java.util.concurrent.ExecutionException
 
-@PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
+@PreAuthorize("hasAuthority('ProjectManage')")
 @RestController
 @Timed
 @Api(tags = ["Task"], description = "Operations for interacting with Tasks.")
@@ -69,9 +70,13 @@ class TaskController @Autowired constructor(
     @ResponseBody
     @Throws(ExecutionException::class, IOException::class)
     fun retry(@ApiParam("UUID of the Task.") @PathVariable id: UUID): Any {
-        return HttpUtils.status("Task", id, "retry",
-                dispatcherService.retryTask(jobService.getInternalTask(id),
-                        "Retried by ${getProjectId()}"))
+        val task = jobService.getInternalTask(id)
+        val result =  dispatcherService.retryTask(task,
+            "Retried by ${getZmlpActor().keyId}")
+        if (result) {
+            jobService.restartJob(task)
+        }
+        return HttpUtils.status("Task", id, "retry", result)
     }
 
     @ApiOperation("Skip a Task.")

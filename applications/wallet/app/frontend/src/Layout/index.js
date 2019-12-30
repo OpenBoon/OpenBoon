@@ -8,28 +8,15 @@ import {
 
 import userShape from '../User/shape'
 
-import { constants } from '../Styles'
+import { constants, spacing } from '../Styles'
 
 import Navbar from '../Navbar'
 import Sidebar from '../Sidebar'
 
-const Layout = ({ user, results, logout, children }) => {
+const Layout = ({ user, logout, children }) => {
   const sidebarRef = useRef()
 
   const [isSidebarOpen, setSidebarOpen] = useState(false)
-
-  const [selectedProject, setSelectedProject] = useState({
-    id: results[0].id,
-    name: results[0].name,
-  })
-
-  const projects = results.map(({ id, name }) => {
-    return {
-      id,
-      name,
-      selected: selectedProject.id === id,
-    }
-  })
 
   useEffect(() => {
     if (isSidebarOpen) disableBodyScroll(sidebarRef.current)
@@ -42,9 +29,7 @@ const Layout = ({ user, results, logout, children }) => {
       <Navbar
         user={user}
         isSidebarOpen={isSidebarOpen}
-        projects={projects}
         setSidebarOpen={setSidebarOpen}
-        setSelectedProject={setSelectedProject}
         logout={logout}
       />
       <Sidebar
@@ -52,23 +37,23 @@ const Layout = ({ user, results, logout, children }) => {
         setSidebarOpen={setSidebarOpen}
         ref={sidebarRef}
       />
-      <div css={{ paddingTop: constants.navbar.height }}>
-        {children({ selectedProject })}
+      <div
+        css={{
+          marginTop: constants.navbar.height,
+          padding: spacing.comfy,
+          paddingLeft: spacing.spacious,
+          paddingRight: spacing.spacious,
+        }}>
+        {children}
       </div>
     </div>
   )
 }
 
 Layout.propTypes = {
-  results: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
   user: PropTypes.shape(userShape).isRequired,
   logout: PropTypes.func.isRequired,
-  children: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 }
 
 export default Layout

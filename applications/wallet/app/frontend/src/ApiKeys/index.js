@@ -1,16 +1,40 @@
-import { spacing } from '../Styles'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
 
+import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
+import Table from '../Table'
+
+import ApiKeysRow from './Row'
 
 const ApiKeys = () => {
+  const {
+    query: { projectId },
+  } = useRouter()
+
   return (
-    <div css={{ padding: spacing.normal }}>
-      <h2>Project API Keys</h2>
+    <div>
+      <Head>
+        <title>API Keys</title>
+      </Head>
+
+      <PageTitle>Project API Keys</PageTitle>
+
       <Tabs
         tabs={[
           { title: 'View all', href: '/api-keys' },
           { title: 'Create API key', href: '/api-keys/add' },
         ]}
+      />
+
+      <div>&nbsp;</div>
+
+      <Table
+        url={`/api/v1/projects/${projectId}/apikeys/`}
+        columns={['API Key Name', 'Permissions']}
+        renderRow={({ result }) => (
+          <ApiKeysRow key={result.id} apiKey={result} />
+        )}
       />
     </div>
   )

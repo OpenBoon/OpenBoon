@@ -65,8 +65,8 @@ services:
       - postgres
     build:
       context: services/auth-server
-    volumes:
-      - "./dev/config/keys/inception-key.json:/service/config/inception-key.json"
+    environment:
+      ZMLP_SECURITY_INCEPTIONKEY: ewogICAgIm5hbWUiOiAiYWRtaW4ta2V5IiwKICAgICJwcm9qZWN0SWQiOiAiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwKICAgICJrZXlJZCI6ICI0MzM4YTgzZi1hOTIwLTQwYWItYTI1MS1hMTIzYjE3ZGYxYmEiLAogICAgInNoYXJlZEtleSI6ICJwY2VrakRWX2lwU01YQWFCcXF0cTZKd3k1RkFNbmplaFVRck1FaGJHOFcwMWdpVnFWTGZFTjlGZE1Jdnp1MHJiIiwKICAgICJwZXJtaXNzaW9ucyI6IFtdCn0K
 
   # Local Archivist server.
   archivist:
@@ -80,15 +80,16 @@ services:
       ARCHIVIST_STORAGE_ACCESSKEY: qwerty123
       ARCHIVIST_STORAGE_SECRETKEY: 123qwerty
       ARCHIVIST_STORAGE_URL: http://minio:9000
-      MLSTORAGE_ACCESSKEY: qwerty123
-      MLSTORAGE_SECRETKEY: 123qwerty
-      MLSTORAGE_URL: http://minio:9000
+      ZMLP_ISTORAGE_ACCESSKEY: qwerty123
+      ZMLP_ISTORAGE_SECRETKEY: 123qwerty
+      ZMLP_ISTORAGE_URL: http://minio:9000
+      ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
+      ZMLP_SECURITY_INCEPTIONKEY: ewogICAgIm5hbWUiOiAiYWRtaW4ta2V5IiwKICAgICJwcm9qZWN0SWQiOiAiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwKICAgICJrZXlJZCI6ICI0MzM4YTgzZi1hOTIwLTQwYWItYTI1MS1hMTIzYjE3ZGYxYmEiLAogICAgInNoYXJlZEtleSI6ICJwY2VrakRWX2lwU01YQWFCcXF0cTZKd3k1RkFNbmplaFVRck1FaGJHOFcwMWdpVnFWTGZFTjlGZE1Jdnp1MHJiIiwKICAgICJwZXJtaXNzaW9ucyI6IFtdCn0K
     build:
       context: services/archivist
     volumes:
       - "./dev/config/monitoring:/monitoring"
       - "./dev/config/archivist/application.properties:/service/config/application.properties"
-      - "./dev/config/keys/inception-key.json:/service/config/inception-key.json"
 
   officer:
     image: zmlp/officer
@@ -99,9 +100,9 @@ services:
     ports:
       - 7078:7078
     environment:
-      MLSTORAGE_URL: http://minio:9000
-      MLSTORAGE_ACCESSKEY: qwerty123
-      MLSTORAGE_SECRETKEY: 123qwerty
+      ZMLP_ISTORAGE_URL: http://minio:9000
+      ZMLP_ISTORAGE_ACCESSKEY: qwerty123
+      ZMLP_ISTORAGE_SECRETKEY: 123qwerty
 
   analyst:
     image: zmlp/analyst
@@ -115,7 +116,9 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
-      PIXML_SERVER: http://archivist:8080
+      ANALYST_DOCKER_PULL: "false"
+      ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
+      ZMLP_SERVER: http://archivist:8080
 
   # Console web application.
   wallet:
@@ -129,8 +132,9 @@ services:
       DJANGO_SETTINGS_MODULE: wallet.settings
       PG_HOST: postgres
       ARCHIVIST_URL: http://api-gateway:8080
+      GOOGLE_OAUTH_CLIENT_ID: '683985502197-140kfdlheorkbc6e9vo748v5260df3pf.apps.googleusercontent.com'
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      test: ["CMD", "curl", "-f", "http://localhost/api/v1/health"]
       interval: 30s
       timeout: 10s
       retries: 3

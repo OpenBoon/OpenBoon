@@ -1,14 +1,16 @@
 const jobs = {
   count: 11,
-  next: null,
-  previous: null,
+  next:
+    'http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/?from=2&size=3',
+  previous:
+    'http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/?from=0&size=3',
   results: [
     {
       id: '82d5308b-67c2-1433-8fef-0a580a000956',
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
       type: 'Import',
-      state: 'Active',
+      state: 'Cancelled',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
@@ -48,12 +50,12 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
       type: 'Import',
-      state: 'Active',
+      state: 'InProgress',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 4,
+        assetErrorCount: 40,
       },
       taskCounts: {
         tasksTotal: 16,
@@ -62,7 +64,7 @@ const jobs = {
         tasksSuccess: 5,
         tasksFailure: 1,
         tasksSkipped: 0,
-        tasksQueued: 0,
+        tasksQueued: 9,
       },
       createdUser: {
         id: '00000000-7b0b-480e-8c36-f06f04aed2f1',
@@ -88,21 +90,21 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
       type: 'Import',
-      state: 'Active',
+      state: 'Archived',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 4,
+        assetErrorCount: 400,
       },
       taskCounts: {
         tasksTotal: 1,
-        tasksWaiting: 0,
+        tasksWaiting: 1,
         tasksRunning: 0,
-        tasksSuccess: 0,
+        tasksSuccess: 8,
         tasksFailure: 1,
         tasksSkipped: 0,
-        tasksQueued: 0,
+        tasksQueued: 3,
       },
       createdUser: {
         id: '00000000-7b0b-480e-8c36-f06f04aed2f1',
@@ -128,12 +130,12 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
       type: 'Import',
-      state: 'Canceled',
+      state: 'Cancelled',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 4,
+        assetErrorCount: 4000,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -173,7 +175,7 @@ const jobs = {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 4,
+        assetErrorCount: 40000,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -213,7 +215,7 @@ const jobs = {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 3,
+        assetErrorCount: 400000,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -253,7 +255,7 @@ const jobs = {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
         assetWarningCount: 0,
-        assetErrorCount: 3,
+        assetErrorCount: 0,
       },
       taskCounts: {
         tasksTotal: 1,

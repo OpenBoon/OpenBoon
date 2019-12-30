@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Layout /> should render properly 1`] = `
-.emotion-6 {
+.emotion-11 {
   height: 100%;
 }
 
-.emotion-4 {
+.emotion-9 {
   position: fixed;
   top: 0;
   left: 0;
@@ -30,15 +30,15 @@ exports[`<Layout /> should render properly 1`] = `
   padding-right: 16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
 }
 
 .emotion-0 {
@@ -60,42 +60,123 @@ exports[`<Layout /> should render properly 1`] = `
   padding: 8px;
   margin: 0;
   margin-left: -8px;
-  margin-right: 8px;
   cursor: pointer;
 }
 
-.emotion-3 {
+.emotion-1 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-8 {
+  margin-right: -12px;
+}
+
+.emotion-7 {
   position: relative;
 }
 
-.emotion-2 {
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 4px 8px;
+  color: #82be3c;
+  font-weight: 400;
+  height: 100%;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-6:hover {
+  background-color: #3b3b3b;
+}
+
+.emotion-6:hover {
+  cursor: pointer;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   border: 0;
   margin: 0;
   padding: 0;
   width: 28px;
   height: 28px;
   border-radius: 28px;
-  color: #ffffff;
-  background-color: #4d4948;
+  color: #252525;
+  background-color: #808080;
   font-weight: 700;
 }
 
-.emotion-2:hover {
-  cursor: pointer;
+.emotion-4 {
+  margin-left: 8px;
 }
 
-.emotion-5 {
-  padding-top: 44px;
+.emotion-10 {
+  margin-top: 44px;
+  padding: 24px;
+  padding-left: 32px;
+  padding-right: 32px;
 }
 
 <div
-  className="emotion-6"
+  className="emotion-11"
 >
   <div
-    className="emotion-4"
+    className="emotion-9"
   >
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <button
         aria-label="Open Sidebar Menu"
@@ -109,39 +190,46 @@ exports[`<Layout /> should render properly 1`] = `
           width={20}
         />
       </button>
-      <svg
-        data-file-name="logo.svg"
-        width={110}
-      />
-      <ProjectSwitcher
-        projects={
-          Array [
-            Object {
-              "id": "76917058-b147-4556-987a-0a0f11e46d9b",
-              "name": "qwerty",
-              "selected": true,
-            },
-            Object {
-              "id": "76917058-b147-4556-987a-0a0f11e46d9c",
-              "name": "asdf",
-              "selected": false,
-            },
-          ]
-        }
-        setSelectedProject={[Function]}
-      />
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="logo.svg"
+          width={110}
+        />
+      </div>
+      <ProjectSwitcher />
     </div>
     <div
-      className="emotion-3"
+      className="emotion-8"
     >
-      <button
-        className="emotion-2"
-        onBlur={[Function]}
-        onClick={[Function]}
-        type="button"
+      <div
+        className="emotion-7"
       >
-        JD
-      </button>
+        <button
+          aria-label="Open user menu"
+          className="emotion-6"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
+        >
+          <div
+            className="emotion-5"
+          >
+            <div
+              className="emotion-3"
+            >
+              JD
+            </div>
+            <svg
+              className="emotion-4"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </div>
+        </button>
+      </div>
     </div>
   </div>
   <Sidebar
@@ -149,7 +237,7 @@ exports[`<Layout /> should render properly 1`] = `
     setSidebarOpen={[Function]}
   />
   <div
-    className="emotion-5"
+    className="emotion-10"
   >
     Hello World
   </div>
@@ -157,11 +245,11 @@ exports[`<Layout /> should render properly 1`] = `
 `;
 
 exports[`<Layout /> should render properly 2`] = `
-.emotion-6 {
+.emotion-11 {
   height: 100%;
 }
 
-.emotion-4 {
+.emotion-9 {
   position: fixed;
   top: 0;
   left: 0;
@@ -186,15 +274,15 @@ exports[`<Layout /> should render properly 2`] = `
   padding-right: 16px;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
 }
 
 .emotion-0 {
@@ -216,42 +304,123 @@ exports[`<Layout /> should render properly 2`] = `
   padding: 8px;
   margin: 0;
   margin-left: -8px;
-  margin-right: 8px;
   cursor: pointer;
 }
 
-.emotion-3 {
+.emotion-1 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-8 {
+  margin-right: -12px;
+}
+
+.emotion-7 {
   position: relative;
 }
 
-.emotion-2 {
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 4px 8px;
+  color: #82be3c;
+  font-weight: 400;
+  height: 100%;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-6:hover {
+  background-color: #3b3b3b;
+}
+
+.emotion-6:hover {
+  cursor: pointer;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   border: 0;
   margin: 0;
   padding: 0;
   width: 28px;
   height: 28px;
   border-radius: 28px;
-  color: #ffffff;
-  background-color: #4d4948;
+  color: #252525;
+  background-color: #808080;
   font-weight: 700;
 }
 
-.emotion-2:hover {
-  cursor: pointer;
+.emotion-4 {
+  margin-left: 8px;
 }
 
-.emotion-5 {
-  padding-top: 44px;
+.emotion-10 {
+  margin-top: 44px;
+  padding: 24px;
+  padding-left: 32px;
+  padding-right: 32px;
 }
 
 <div
-  className="emotion-6"
+  className="emotion-11"
 >
   <div
-    className="emotion-4"
+    className="emotion-9"
   >
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <button
         aria-label="Open Sidebar Menu"
@@ -265,39 +434,46 @@ exports[`<Layout /> should render properly 2`] = `
           width={20}
         />
       </button>
-      <svg
-        data-file-name="logo.svg"
-        width={110}
-      />
-      <ProjectSwitcher
-        projects={
-          Array [
-            Object {
-              "id": "76917058-b147-4556-987a-0a0f11e46d9b",
-              "name": "qwerty",
-              "selected": true,
-            },
-            Object {
-              "id": "76917058-b147-4556-987a-0a0f11e46d9c",
-              "name": "asdf",
-              "selected": false,
-            },
-          ]
-        }
-        setSelectedProject={[Function]}
-      />
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="logo.svg"
+          width={110}
+        />
+      </div>
+      <ProjectSwitcher />
     </div>
     <div
-      className="emotion-3"
+      className="emotion-8"
     >
-      <button
-        className="emotion-2"
-        onBlur={[Function]}
-        onClick={[Function]}
-        type="button"
+      <div
+        className="emotion-7"
       >
-        JD
-      </button>
+        <button
+          aria-label="Open user menu"
+          className="emotion-6"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
+        >
+          <div
+            className="emotion-5"
+          >
+            <div
+              className="emotion-3"
+            >
+              JD
+            </div>
+            <svg
+              className="emotion-4"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </div>
+        </button>
+      </div>
     </div>
   </div>
   <Sidebar
@@ -305,7 +481,7 @@ exports[`<Layout /> should render properly 2`] = `
     setSidebarOpen={[Function]}
   />
   <div
-    className="emotion-5"
+    className="emotion-10"
   >
     Hello World
   </div>

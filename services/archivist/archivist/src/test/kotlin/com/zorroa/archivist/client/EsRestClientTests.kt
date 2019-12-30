@@ -35,6 +35,6 @@ class EsRestClientTests : AbstractTest() {
         val mapping = client.getMapping()
         val doc = Asset(mapping)
         val index = client.route.indexName
-        assertEquals("keyword", doc.getAttr("${index}.mappings.asset.properties.name.type", String::class.java))
+        assertEquals("keyword", doc.getAttr("${index}.mappings.properties.name.type", String::class.java))
     }
 }

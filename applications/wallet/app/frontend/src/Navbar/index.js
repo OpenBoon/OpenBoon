@@ -13,14 +13,7 @@ import HamburgerSvg from './hamburger.svg'
 
 const LOGO_WIDTH = 110
 
-const Navbar = ({
-  user,
-  projects,
-  setSelectedProject,
-  isSidebarOpen,
-  setSidebarOpen,
-  logout,
-}) => {
+const Navbar = ({ user, isSidebarOpen, setSidebarOpen, logout }) => {
   return (
     <div
       css={{
@@ -38,7 +31,7 @@ const Navbar = ({
         paddingLeft: spacing.normal,
         paddingRight: spacing.normal,
       }}>
-      <div css={{ display: 'flex', alignItems: 'center' }}>
+      <div css={{ display: 'flex', alignItems: 'stretch' }}>
         <button
           aria-label="Open Sidebar Menu"
           type="button"
@@ -46,23 +39,23 @@ const Navbar = ({
           css={{
             border: 0,
             backgroundColor: 'inherit',
-            color: colors.rocks.iron,
+            color: colors.structure.steel,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             padding: spacing.base,
             margin: 0,
             marginLeft: -spacing.base,
-            marginRight: spacing.base,
             cursor: 'pointer',
           }}>
           <HamburgerSvg width={20} aria-hidden />
         </button>
-        <LogoSvg width={LOGO_WIDTH} />
-        <ProjectSwitcher
-          projects={projects}
-          setSelectedProject={setSelectedProject}
-        />
+
+        <div css={{ paddingLeft: spacing.base, paddingRight: spacing.base }}>
+          <LogoSvg width={LOGO_WIDTH} />
+        </div>
+
+        <ProjectSwitcher />
       </div>
 
       <UserMenu user={user} logout={logout} />
@@ -72,13 +65,6 @@ const Navbar = ({
 
 Navbar.propTypes = {
   user: PropTypes.shape(userShape).isRequired,
-  projects: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
-  setSelectedProject: PropTypes.func.isRequired,
   isSidebarOpen: PropTypes.bool.isRequired,
   setSidebarOpen: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,

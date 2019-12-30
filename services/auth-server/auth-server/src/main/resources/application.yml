@@ -1,0 +1,51 @@
+server:
+  port: 9090
+
+spring:
+  flyway:
+    schemas: auth
+  datasource:
+    url: jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth
+    username: zorroa
+    password: zorroa
+    driver-class-name: org.postgresql.Driver
+  main:
+    allow-bean-definition-overriding: true
+
+zmlp:
+  security:
+    inception-key: /service/config/inception-key.json
+
+management:
+  metrics:
+    tags:
+      application: auth-server
+    export:
+      prometheus:
+        enabled: true
+  health:
+    status:
+      http-mapping:
+        DOWN: 400
+  endpoints:
+    password: ${random.value}
+    web:
+      exposure:
+        include: metrics,info,health,prometheus
+      base-path: /monitor
+
+#Swagger info
+swagger:
+  isPublic: true
+  title: ZMLP APIKey Server
+  description: Validates ZMLP API keys
+  version: 1.0.0
+
+  termOfService: http://www.zorroa.com/terms
+
+  contactCompanyName: Zorroa
+  contactCompanyWebsite: http://www.zorroa.com/contact
+  contactCompanySupportEmail: support@zorroa.com
+  restBasePackage: com.zorroa.auth.rest
+  licenseName: Commercial
+  licenseUrl: http://www.zorroa.com/contact

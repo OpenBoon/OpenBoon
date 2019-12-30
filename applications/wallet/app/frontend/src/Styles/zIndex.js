@@ -6,7 +6,6 @@ const zIndex = {
     navbar: 100,
     drawer: 90,
     overlay: 80,
-    dropdown: 70,
   },
 }
 

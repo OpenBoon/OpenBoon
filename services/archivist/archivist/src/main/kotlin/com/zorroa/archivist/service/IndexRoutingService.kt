@@ -16,15 +16,14 @@ import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.util.Json
 import org.apache.http.HttpHost
-import org.elasticsearch.action.admin.indices.close.CloseIndexRequest
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
-import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
-import org.elasticsearch.common.xcontent.DeprecationHandler
+import org.elasticsearch.client.indices.CloseIndexRequest
+import org.elasticsearch.client.indices.CreateIndexRequest
+import org.elasticsearch.client.indices.PutMappingRequest
 import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -262,9 +261,8 @@ constructor(
             mapping.setAttr("settings.index.number_of_shards", route.shards)
             mapping.setAttr("settings.index.number_of_replicas", route.replicas)
 
-            val req = CreateIndexRequest()
-            req.index(route.indexName)
-            req.source(mapping.document, DeprecationHandler.THROW_UNSUPPORTED_OPERATION)
+            val req = CreateIndexRequest(route.indexName)
+            req.source(mapping.document)
             es.client.indices().create(req, RequestOptions.DEFAULT)
 
             result = mappingFile
@@ -374,7 +372,6 @@ constructor(
         try {
             val patch = patchFile.mapping
             val request = PutMappingRequest(route.indexName)
-            request.type("asset")
             request.source(Json.serializeToString(patch.getValue("patch")), XContentType.JSON)
 
             logger.info(

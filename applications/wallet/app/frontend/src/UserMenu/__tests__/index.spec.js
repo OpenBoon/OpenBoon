@@ -16,9 +16,21 @@ describe('<UserMenu />', () => {
 
     act(() => {
       component.root
-        .findByProps({ children: 'JD' })
+        .findByType('button')
+        .findByProps({ 'aria-label': 'Open user menu' })
         .props.onClick({ preventDefault: noop })
     })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly without firstName/lastName', () => {
+    const component = TestRenderer.create(
+      <UserMenu
+        user={{ ...mockUser, firstName: '', lastName: '' }}
+        logout={noop}
+      />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
