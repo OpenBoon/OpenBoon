@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 
-import { typography } from '../Styles'
+import { colors, typography } from '../Styles'
+
+const HEIGHT = 300
 
 const TableException = ({ ariaLabel, numColumns, children }) => {
   return (
@@ -8,13 +10,13 @@ const TableException = ({ ariaLabel, numColumns, children }) => {
       <td colSpan={numColumns}>
         <div
           css={{
-            height: '300px',
+            height: HEIGHT,
             width: '100%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexDirection: 'column',
-            color: 'red',
+            color: colors.signal.warning.base,
             fontSize: typography.size.kilo,
             lineHeight: typography.height.kilo,
           }}>
