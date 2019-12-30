@@ -7,7 +7,6 @@ import com.zorroa.zmlp.sdk.domain.Project;
 import com.zorroa.zmlp.sdk.domain.ProjectFilter;
 import com.zorroa.zmlp.sdk.domain.ProjectSpec;
 
-import java.util.Map;
 import java.util.UUID;
 
 public class ProjectApp {
@@ -49,21 +48,11 @@ public class ProjectApp {
     }
 
     /**
-     * Delete a Project by unique Id.
-     *
-     * @param uuid
-     * @return true if success
-     */
-    public Boolean deleteProject(UUID uuid) {
-        Map response = client.delete(String.format("/api/v1/projects/%s", uuid), null, Map.class);
-        return (Boolean) response.get("success");
-    }
-
-    /**
      * @param filter
      * @return
      */
     public PagedList<Project> searchProjects(ProjectFilter filter) {
-        return client.post("/api/v1/projects/_search", filter, new TypeReference<PagedList<Project>>() {});
+        return client.post("/api/v1/projects/_search", filter, new TypeReference<PagedList<Project>>() {
+        });
     }
 }
