@@ -16,6 +16,10 @@ describe('<DataQueue />', () => {
       query: { projectId: PROJECT_ID },
     })
 
+    require('swr').__setMockUseSWRResponse({
+      data: {},
+    })
+
     const component = TestRenderer.create(<DataQueue />)
 
     expect(component.toJSON()).toMatchSnapshot()
