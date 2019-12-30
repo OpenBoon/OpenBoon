@@ -4,8 +4,10 @@ import com.zorroa.zmlp.sdk.ZmlpClient;
 import com.zorroa.zmlp.sdk.domain.DataSource;
 import com.zorroa.zmlp.sdk.domain.DataSourceSpec;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class DataSourceApp {
 
@@ -55,5 +57,25 @@ public class DataSourceApp {
         Map body = new HashMap();
         body.put("blob", blob);
         return client.put(url, body, Map.class);
+    }
+
+    /**
+     * Finds a DataSource by name or unique Id.
+     *
+     * @param name The unique name or unique ID.
+     * @return The DataSource
+     */
+    public DataSource getDataSource(String name) {
+
+        String url = String.format("%s/_findOne", BASE_URI);
+        Map body = new HashMap();
+
+        try {
+            body.put("ids", Arrays.asList(UUID.fromString(name)));
+        } catch (IllegalArgumentException ex) {
+            body.put("names", Arrays.asList(name));
+        }
+
+        return client.post(url, body, DataSource.class);
     }
 }
