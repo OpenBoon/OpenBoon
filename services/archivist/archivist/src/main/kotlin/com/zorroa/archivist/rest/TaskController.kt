@@ -30,7 +30,7 @@ import java.io.IOException
 import java.util.UUID
 import java.util.concurrent.ExecutionException
 
-@PreAuthorize("hasAnyAuthority('ProjectAdmin', 'SuperAdmin')")
+@PreAuthorize("hasAuthority('ProjectManage')")
 @RestController
 @Timed
 @Api(tags = ["Task"], description = "Operations for interacting with Tasks.")

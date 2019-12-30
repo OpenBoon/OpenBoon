@@ -67,7 +67,7 @@ class ClusterClient(object):
         if not self.shared_key:
             raise ValueError("No shared key has been setting the ANALYST_SHAREDKEY env var")
 
-        self.my_port = my_port
+        self.my_port = int(my_port)
 
         try:
             self.hostname = socket.gethostname()

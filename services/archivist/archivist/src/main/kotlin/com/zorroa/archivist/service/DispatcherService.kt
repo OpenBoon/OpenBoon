@@ -5,7 +5,6 @@ import com.google.common.base.Supplier
 import com.google.common.base.Suppliers
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
-import com.zorroa.archivist.clients.AuthServerClient
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
@@ -39,13 +38,14 @@ import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.KnownKeys
-import com.zorroa.archivist.security.Perm
 import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.storage.InternalStorageServiceConfiguration
 import com.zorroa.archivist.util.Json
+import com.zorroa.auth.client.AuthServerClient
+import com.zorroa.auth.client.Permission
 import io.micrometer.core.instrument.MeterRegistry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -425,7 +425,8 @@ class DispatcherServiceImpl @Autowired constructor(
                 handleTaskError(task, payload)
             }
             TaskEventType.EXPAND -> {
-                withAuth(InternalThreadAuthentication(task.projectId, listOf(Perm.ASSETS_WRITE))) {
+                withAuth(InternalThreadAuthentication(task.projectId,
+                    setOf(Permission.AssetsImport))) {
                     val payload = Json.Mapper.convertValue<TaskExpandEvent>(event.payload)
                     expand(task, payload)
                 }
@@ -440,7 +441,8 @@ class DispatcherServiceImpl @Autowired constructor(
             }
             TaskEventType.INDEX -> {
                 val index = Json.Mapper.convertValue<IndexAssetsEvent>(event.payload)
-                withAuth(InternalThreadAuthentication(task.projectId, listOf(Perm.ASSETS_WRITE))) {
+                withAuth(InternalThreadAuthentication(task.projectId,
+                    setOf(Permission.AssetsImport))) {
                     assetService.batchUpdate(BatchUpdateAssetsRequest(index.assets))
                 }
             }
