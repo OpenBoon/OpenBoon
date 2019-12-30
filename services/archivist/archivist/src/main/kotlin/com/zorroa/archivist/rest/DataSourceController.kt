@@ -77,7 +77,7 @@ class DataSourceController(
     }
 
     @ApiOperation("Get DataSource credentials.", hidden = true)
-    @PreAuthorize("hasAuthority('ProjectDecrypt')")
+    @PreAuthorize("hasAuthority('SystemProjectDecrypt')")
     @GetMapping("/api/v1/data-sources/{id}/_credentials")
     fun getCredentials(
         @ApiParam("The DataSource Id") @PathVariable id: UUID

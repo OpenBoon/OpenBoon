@@ -3,6 +3,7 @@ package com.zorroa.archivist.security
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.auth.client.AuthServerClient
 import com.zorroa.auth.client.AuthServerClientImpl
+import com.zorroa.auth.client.Permission
 import com.zorroa.auth.client.prefix
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -117,7 +118,7 @@ class MultipleWebSecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(EndpointRequest.to("metrics", "prometheus"))
-                .hasAnyAuthority("PlatformMonitor")
+                .hasAnyAuthority(Permission.SystemMonitor.name)
                 .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
         }
     }
@@ -151,7 +152,7 @@ class MultipleWebSecurityConfig {
             .authenticationProvider(apiKeyAuthenticationProvider())
             .inMemoryAuthentication()
             .withUser("monitor").password(passwordEncoder().encode(monitorPassword))
-            .authorities("PlatformMonitor")
+            .authorities(Permission.SystemMonitor.name)
     }
 
     @Bean
