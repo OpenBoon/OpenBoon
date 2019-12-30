@@ -3,7 +3,7 @@ services:
   - docker:18.09.8-dind
 variables:
   DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_HOST: tcp://localhost:2375
   LOCAL_ES_NAME: $CI_REGISTRY_IMAGE/elasticsearch:$CI_COMMIT_SHORT_SHA
 
 stages:
@@ -118,18 +118,20 @@ sdk-unit-tests:
 # These jobs build the container images and push them up to docker hub with the
 # "development" tag whenever code is merged to development.
 .docker_hub_push_base:
-  image: jonoh/docker-buildx-qemu
+  image: docker:dind
   stage: push
   services:
     - docker:dind
   variables:
     DOCKER_DRIVER: overlay2
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_CLI_EXPERIMENTAL: enabled
-    DOCKER_BUILDKIT: 1
+    DOCKER_HOST: tcp://localhost:2375
   retry: 2
   before_script:
 #    - apk add docker-compose
+    - wget https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-arm64
+    - mkdir -p ~/.docker/cli-plugins/docker-buildx
+    - cp buildx-v0.3.1.linux-arm64 ~/.docker/cli-plugins/docker-buildx
+    - chmod a+x ~/.docker/cli-plugins/docker-buildx
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
 #  only:
 #      - development
@@ -137,37 +139,37 @@ sdk-unit-tests:
 docker_hub_push_archivist:
   extends: .docker_hub_push_base
   script:
-    - docker buildx bake -f docker-compose.yml archivist
+    - DOCKER_CLI_EXPERIMENTAL=enabled docker buildx bake -f docker-compose.yml archivist
     - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
 
 #docker_hub_push_wallet:
 #  extends: .docker_hub_push_base
 #  script:
-#    - DOCKER_BUILDKIT=1 DOCKER_CLI_EXPERIMENTAL=enabled  docker buildx bake -f docker-compose.yml wallet
+#    - docker-compose build wallet
 #    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
 #
 #docker_hub_push_es:
 #  extends: .docker_hub_push_base
 #  script:
-#    - docker buildx bake -f docker-compose.yml es1
+#    - docker-compose build es1
 #    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
 #
 #docker_hub_push_auth_server:
 #  extends: .docker_hub_push_base
 #  script:
-#    - docker buildx bake -f docker-compose.yml auth-server
+#    - docker-compose build auth-server
 #    - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
 #
 #docker_hub_push_api_gateway:
 #  extends: .docker_hub_push_base
 #  script:
-#    - docker buildx bake -f docker-compose.yml api-gateway
+#    - docker-compose build api-gateway
 #    - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
 #
 #docker_hub_push_sdk:
 #  extends: .docker_hub_push_base
 #  script:
-#    - docker buildx bake -f docker-compose.yml zmlp-py3-base zmlp-py3-sdk zmlp-plugins-base zmlp-plugins-core zmlp-plugins-analysis analyst
+#    - docker-compose build zmlp-py3-base zmlp-py3-sdk zmlp-plugins-base zmlp-plugins-core zmlp-plugins-analysis analyst
 #    - docker tag zmlp/py3-base:latest zmlp/py3-base:development; docker push zmlp/py3-base:development
 #    - docker tag zmlp/py3-sdk:latest zmlp/py3-sdk:development; docker push zmlp/py3-sdk:development
 #    - docker tag zmlp/plugins-base:latest zmlp/plugins-base:development; docker push zmlp/plugins-base:development
@@ -266,7 +268,6 @@ services_unit_tests:
     - ZMLP_ISTORAGE_URL="http://${IP}:9000"
     - ARCHIVIST_ES_URL="http://${IP}:9200"
     - ARCHIVIST_STORAGE_URL="http://${IP}:9000"
-    - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true
     - mvn test verify -f services/archivist -q
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
     - mvn test verify -f services/auth-server -q
