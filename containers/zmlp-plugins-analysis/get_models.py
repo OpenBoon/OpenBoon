@@ -15,4 +15,3 @@ cvlib.detect_common_objects(im, model="yolov3-tiny")
 ResNet152V2(weights='imagenet')
 ResNet50V2(weights='imagenet')
 DenseNet201(weights='imagenet')
-
