@@ -21,21 +21,6 @@ stages:
     - qa
     - master
 
-.wallet-frontend-base:
-  extends: .wallet-base
-  image: node:12
-  before_script:
-    - cd applications/wallet/app/frontend
-    - npm ci
-
-wallet-frontend-test-suite:
-  extends: .wallet-frontend-base
-  stage: test
-  script:
-    - npm run lint
-    - npm run test:cover
-    - npm run size
-
 wallet-backend-test-suite:
   extends: .wallet-base
   image: mc706/pipenv-3.7
@@ -114,7 +99,6 @@ sdk-unit-tests:
     - pip install -r requirements.txt
     - pytest
 
-
 # These jobs build the container images and push them up to docker hub with the
 # "development" tag whenever code is merged to development.
 .docker_hub_push_base:
@@ -130,7 +114,7 @@ sdk-unit-tests:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   only:
-      - development
+    - development
 
 docker_hub_push_archivist:
   extends: .docker_hub_push_base
@@ -240,7 +224,7 @@ services_unit_tests:
       alias: postgres
     - name: $LOCAL_ES_NAME
       alias: elasticsearch
-      command: [ "bin/elasticsearch", "-Ediscovery.type=single-node"]
+      command: ["bin/elasticsearch", "-Ediscovery.type=single-node"]
   variables:
     POSTGRES_PASSWORD: "zorroa"
     POSTGRES_USER: "zorroa"
@@ -269,8 +253,6 @@ services_unit_tests:
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
     - mvn test verify -f services/auth-server -q
     - mvn test verify -f services/officer -q
-
-
 # Kotlin Services Jobs
 #sdk-containers-tests:
 #  stage: test
@@ -282,3 +264,5 @@ services_unit_tests:
 #    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-analysis /zps/pylib/zplugins
 #    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-core /zps/pylib/zplugins
 
+include:
+  - applications/wallet/app/frontend/.gitlab-ci.yml
