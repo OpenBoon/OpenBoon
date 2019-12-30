@@ -18,7 +18,8 @@ RUN pip3 install protobuf
 USER zorroa
 
 COPY --chown=zorroa:zorroa get_models.py /tmp
-RUN python3 /tmp/get_models.py; rm /tmp/get_models.py
+COPY --chown=zorroa:zorroa fruit.jpg /tmp/fruit.jpg
+RUN python3 /tmp/get_models.py; rm /tmp/get_models.py; rm /tmp/fruit.jpg
 
 
 
