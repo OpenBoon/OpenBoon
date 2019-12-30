@@ -129,7 +129,7 @@ sdk-unit-tests:
     DOCKER_BUILDKIT: 1
   retry: 2
   before_script:
-    - apk add docker-compose
+#    - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
 #  only:
 #      - development
@@ -137,13 +137,13 @@ sdk-unit-tests:
 docker_hub_push_archivist:
   extends: .docker_hub_push_base
   script:
-    - DOCKER_BUILDKIT=1 DOCKER_CLI_EXPERIMENTAL=enabled docker buildx bake -f docker-compose.yml archivist
+    - docker buildx bake -f docker-compose.yml archivist
     - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
 
 #docker_hub_push_wallet:
 #  extends: .docker_hub_push_base
 #  script:
-#    - docker buildx bake -f docker-compose.yml wallet
+#    - DOCKER_BUILDKIT=1 DOCKER_CLI_EXPERIMENTAL=enabled  docker buildx bake -f docker-compose.yml wallet
 #    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
 #
 #docker_hub_push_es:
