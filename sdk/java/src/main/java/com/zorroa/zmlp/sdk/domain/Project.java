@@ -9,32 +9,32 @@ public class Project {
     /**
      * The Unique ID of the project.
      */
-    private UUID id;
+    UUID id;
 
     /**
      * The name of the Project
      */
-    private String name;
+    String name;
 
     /**
      * The time the Project was created.
      */
-    private Date timeCreated;
+    Date timeCreated;
 
     /**
      * The last time the Project was modified.
      */
-    private Date timeModified;
+    Date timeModified;
 
     /**
      * The actor which created this Project
      */
-    private String actorCreated;
+    String actorCreated;
 
     /**
      * The actor that last made the last modification the project.
      */
-    private String actorModified;
+    String actorModified;
 
     public Project() { }
 

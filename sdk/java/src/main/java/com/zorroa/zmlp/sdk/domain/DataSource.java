@@ -1,58 +1,64 @@
 package com.zorroa.zmlp.sdk.domain;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 public class DataSource {
 
-    private Map data;
+    UUID id;
+    String name;
+    String uri;
+    String credentials;
+    List<String> fileTypes;
+    List<String> analysis;
 
-    /**
-     * A DataSource is a remote source for Assets that can be
-     * iterated by the Analysis framework and imported
-     * in a single import Job.
-     *
-     * @param data Contains DataSource Attributes
-     */
-    public DataSource(Map data) {
-        this.data = data;
-    }
+    public DataSource() { }
 
-    /**
-     * @return The id of the DataSource
-     */
     public UUID getId() {
-        if (this.data.get("id") instanceof UUID)
-            return (UUID) this.data.get("id");
-        return UUID.fromString((String) this.data.get("id"));
+        return id;
     }
 
-    /**
-     * @return The name of the DataSource
-     */
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public String getName() {
-        return (String) this.data.get("name");
+        return name;
     }
 
-    /**
-     * @return The URI of the DataSource
-     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getUri() {
-        return (String) this.data.get("uri");
+        return uri;
     }
 
-    /**
-     * @return The file type filter for the DataSource
-     */
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public String getCredentials() {
+        return credentials;
+    }
+
+    public void setCredentials(String credentials) {
+        this.credentials = credentials;
+    }
+
     public List<String> getFileTypes() {
-        return (List<String>) Optional.ofNullable(this.data.get("file_types")).orElse(new ArrayList());
+        return fileTypes;
     }
 
-    /**
-     * @return The type of analysis done to the DataSource
-     */
+    public void setFileTypes(List<String> fileTypes) {
+        this.fileTypes = fileTypes;
+    }
 
-    public List getAnalysis() {
-        return (List) Optional.ofNullable(this.data.get("analysis")).orElse(new ArrayList());
+    public List<String> getAnalysis() {
+        return analysis;
+    }
 
+    public void setAnalysis(List<String> analysis) {
+        this.analysis = analysis;
     }
 }

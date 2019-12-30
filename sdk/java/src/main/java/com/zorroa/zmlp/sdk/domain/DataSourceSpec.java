@@ -4,11 +4,11 @@ import java.util.List;
 
 public class DataSourceSpec {
 
-    private String name;
-    private String uri;
-    private String credentials;
-    private List<String> fileTypes;
-    private List<String> analysis;
+    String name;
+    String uri;
+    String credentials;
+    List<String> fileTypes;
+    List<String> analysis;
 
     public String getName() {
         return name;

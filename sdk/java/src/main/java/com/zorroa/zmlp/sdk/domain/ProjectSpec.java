@@ -1,8 +1,5 @@
 package com.zorroa.zmlp.sdk.domain;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -21,27 +18,29 @@ public class ProjectSpec {
 
     UUID projectId;
 
-    public ProjectSpec() { }
+    public ProjectSpec() {
+    }
 
-    public ProjectSpec(String name, UUID projectId) {
+    public ProjectSpec(String name) {
         this.name = name;
-        this.projectId = projectId;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public ProjectSpec setName(String name) {
         this.name = name;
+        return this;
     }
 
     public UUID getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(UUID projectId) {
+    public ProjectSpec setProjectId(UUID projectId) {
         this.projectId = projectId;
+        return this;
     }
 }
 

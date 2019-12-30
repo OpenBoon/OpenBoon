@@ -12,12 +12,12 @@ public class Page {
     /**
      * Result index to start from.
      */
-    private Integer from;
+    private Integer from = 0;
 
     /**
      * Number of results per page.
      */
-    private Integer size;
+    private Integer size = 25;
 
     private Long totalCount;
 
@@ -33,24 +33,27 @@ public class Page {
         return from;
     }
 
-    public void setFrom(Integer from) {
+    public Page setFrom(Integer from) {
         this.from = from;
+        return this;
     }
 
     public Integer getSize() {
         return size;
     }
 
-    public void setSize(Integer size) {
+    public Page setSize(Integer size) {
         this.size = size;
+        return this;
     }
 
     public Long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(Long totalCount) {
+    public Page setTotalCount(Long totalCount) {
         this.totalCount = totalCount;
+        return this;
     }
 }
 

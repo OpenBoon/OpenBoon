@@ -17,6 +17,18 @@ public class PagedList<T> implements Iterable<T> {
         this.list = list;
     }
 
+    public int size() {
+        return this.list.size();
+    }
+
+    public List<T> getList() {
+        return this.list;
+    }
+
+    public Page getPage() {
+        return this.page;
+    }
+
     @Override
     public Iterator<T> iterator() {
         return list.iterator();
