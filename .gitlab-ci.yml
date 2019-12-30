@@ -118,13 +118,14 @@ sdk-unit-tests:
 # These jobs build the container images and push them up to docker hub with the
 # "development" tag whenever code is merged to development.
 .docker_hub_push_base:
-  image: docker:dind
+  image: igoratencompass/docker-dind-make:18.09.7
   stage: push
   services:
-    - docker:dind
+    - igoratencompass/docker-dind:18.03.0
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
+    DOCKER_CLI_EXPERIMENTAL: "enabled"
   retry: 2
   before_script:
 #    - apk add docker-compose
