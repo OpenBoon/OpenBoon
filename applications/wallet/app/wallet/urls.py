@@ -24,6 +24,7 @@ from rest_auth.views import PasswordResetView, PasswordResetConfirmView, \
 from rest_framework import routers
 from rest_framework_nested.routers import NestedSimpleRouter
 
+from apikeys.views import ApikeyViewSet
 from jobs.views import JobsViewSet
 from projects.views import ProjectViewSet
 from wallet import views as wallet_views
@@ -37,6 +38,7 @@ router.register('projects', ProjectViewSet, basename='project')
 
 projects_router = NestedSimpleRouter(router, 'projects', lookup='project')
 projects_router.register('jobs', JobsViewSet, basename='job')
+projects_router.register('apikeys', ApikeyViewSet, basename='apikey')
 
 
 # Use this variable to add standalone views to the urlspatterns and have them accessible
