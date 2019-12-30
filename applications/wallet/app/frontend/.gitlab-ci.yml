@@ -1,10 +1,5 @@
-image: node:12
-
-before_script:
-  - cd applications/wallet/app/frontend
-  - npm ci
-
 wallet-frontend-test-suite:
+  image: node:12
   stage: test
   only:
     refs:
@@ -12,6 +7,9 @@ wallet-frontend-test-suite:
       - development
     changes:
       - applications/wallet/app/frontend/**/*
+  before_script:
+    - cd applications/wallet/app/frontend
+    - npm ci
   script:
     - npm run lint
     - npm run test:cover
