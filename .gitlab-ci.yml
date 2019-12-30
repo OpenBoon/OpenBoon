@@ -43,9 +43,6 @@ wallet-frontend-test-suite:
 
 wallet-backend-test-suite:
   extends: .wallet-base
-  except:
-    changes:
-      - applications/wallet/app/frontend/**/*
   only:
     refs:
       - merge_requests
