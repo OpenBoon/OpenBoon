@@ -34,7 +34,7 @@ wallet-frontend-test-suite:
     refs:
       - merge_requests
     changes:
-      - applications/wallet/app/frontend
+      - applications/wallet/app/frontend/**/*
   stage: test
   script:
     - npm run lint
@@ -45,12 +45,12 @@ wallet-backend-test-suite:
   extends: .wallet-base
   except:
     changes:
-      - applications/wallet/app/frontend
+      - applications/wallet/app/frontend/**/*
   only:
     refs:
       - merge_requests
     changes:
-      - applications/wallet/app
+      - applications/wallet/app/**/*
   image: mc706/pipenv-3.7
   stage: test
   services:
@@ -89,9 +89,9 @@ backend-py-lint:
       - qa
       - master
     changes:
-      - sdk
-      - containers
-      - services
+      - sdk/**/*
+      - containers/**/*
+      - services/**/*
   script:
     - python -m pip install flake8
     - flake8 --config .flake8.cfg sdk/python containers/zmlp-py3-base services/analyst
@@ -107,7 +107,7 @@ backend-kotlin-lint:
       - qa
       - master
     changes:
-      - services
+      - services/**/*
   script:
     - ktlint services/archivist/src/**/*.kt
     - ktlint services/auth-server/src/**/*.kt
@@ -128,7 +128,7 @@ sdk-unit-tests:
       - qa
       - master
     changes:
-      - sdk
+      - sdk/**/*
   script:
     - python -m pip install pipenv pytest
     - cd sdk/python
@@ -226,7 +226,7 @@ services_build_artifacts:
       - merge_requests
       - development
     changes:
-      - services/elasticsearch
+      - services/elasticsearch/**/*
   script:
     - cd services/elasticsearch
     - mvn clean install -Dmaven.test.skip=true
@@ -243,7 +243,7 @@ services_push_to_local_registry:
       - merge_requests
       - development
     changes:
-      - services/elasticsearch
+      - services/elasticsearch/**/*
   retry: 2
   services:
     - docker:18.09.8-dind
@@ -261,7 +261,7 @@ services_unit_tests:
       - merge_requests
       - development
     changes:
-      - services
+      - services/**/*
   services:
     - name: redis:alpine
       alias: redis
