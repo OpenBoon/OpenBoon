@@ -134,7 +134,7 @@ services:
       ARCHIVIST_URL: http://api-gateway:8080
       GOOGLE_OAUTH_CLIENT_ID: '683985502197-140kfdlheorkbc6e9vo748v5260df3pf.apps.googleusercontent.com'
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      test: ["CMD", "curl", "-f", "http://localhost/api/v1/health"]
       interval: 30s
       timeout: 10s
       retries: 3
