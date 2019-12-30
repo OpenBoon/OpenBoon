@@ -11,18 +11,12 @@ const TableContent = ({
   revalidate,
 }) => {
   if (isLoading) {
-    return (
-      <TableException numColumns={numColumns} ariaLabel="Loading message">
-        Loading...
-      </TableException>
-    )
+    return <TableException numColumns={numColumns}>Loading...</TableException>
   }
 
   if (results.length === 0) {
     return (
-      <TableException numColumns={numColumns} ariaLabel="Empty message">
-        {renderEmpty}
-      </TableException>
+      <TableException numColumns={numColumns}>{renderEmpty}</TableException>
     )
   }
 

@@ -327,7 +327,6 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
       </thead>
       <tbody>
         <tr
-          aria-label="Loading message"
           className="emotion-9"
         >
           <td
@@ -1066,7 +1065,6 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
       </thead>
       <tbody>
         <tr
-          aria-label="Empty message"
           className="emotion-9"
         >
           <td

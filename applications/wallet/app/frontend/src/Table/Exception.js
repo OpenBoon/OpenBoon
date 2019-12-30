@@ -4,9 +4,9 @@ import { colors, typography } from '../Styles'
 
 const HEIGHT = 300
 
-const TableException = ({ ariaLabel, numColumns, children }) => {
+const TableException = ({ numColumns, children }) => {
   return (
-    <tr aria-label={ariaLabel} css={{ pointerEvents: 'none' }}>
+    <tr css={{ pointerEvents: 'none' }}>
       <td colSpan={numColumns}>
         <div
           css={{
@@ -28,7 +28,6 @@ const TableException = ({ ariaLabel, numColumns, children }) => {
 }
 
 TableException.propTypes = {
-  ariaLabel: PropTypes.string.isRequired,
   numColumns: PropTypes.number.isRequired,
   children: PropTypes.node.isRequired,
 }
