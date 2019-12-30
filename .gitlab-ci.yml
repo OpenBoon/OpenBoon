@@ -121,7 +121,8 @@ sdk-unit-tests:
   image: docker:18.09.8-dind
   stage: push
   services:
-    - docker:18.09.8-dind
+    - name: docker:dind
+      command: ["--experimental"]
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
