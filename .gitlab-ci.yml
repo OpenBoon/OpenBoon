@@ -121,7 +121,7 @@ sdk-unit-tests:
   image: docker:18.09.8-dind
   stage: push
   services:
-    - name: docker:18.09.8-dind
+    - name: docker:19.03-dind
       command: ["--experimental"]
   variables:
     DOCKER_DRIVER: overlay2
@@ -138,7 +138,7 @@ sdk-unit-tests:
 docker_hub_push_archivist:
   extends: .docker_hub_push_base
   script:
-    - docker buildx bake -f docker-compose.yml archivist
+    - DOCKER_BUILDKIT=1 docker buildx bake -f docker-compose.yml archivist
     - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
 
 #docker_hub_push_wallet:
