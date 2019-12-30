@@ -1,6 +1,7 @@
 package com.zorroa.zmlp.sdk.domain;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Search filter for finding Projects
@@ -20,7 +21,8 @@ public class ProjectFilter {
 
     private List<String> sort;
 
-    public ProjectFilter() { }
+    public ProjectFilter() {
+    }
 
     public List<UUID> getIds() {
         return ids;

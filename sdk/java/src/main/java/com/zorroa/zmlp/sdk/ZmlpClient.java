@@ -79,8 +79,7 @@ public class ZmlpClient {
     private String getUrl(String path) {
         if (server.endsWith("/")) {
             return server.concat(path.replaceFirst("/", ""));
-        }
-        else {
+        } else {
             return server.concat(path);
         }
     }

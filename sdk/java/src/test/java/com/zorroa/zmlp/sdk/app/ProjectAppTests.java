@@ -1,13 +1,11 @@
 package com.zorroa.zmlp.sdk.app;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.zorroa.zmlp.sdk.ApiKey;
 import com.zorroa.zmlp.sdk.Json;
 import com.zorroa.zmlp.sdk.ZmlpClient;
 import com.zorroa.zmlp.sdk.domain.*;
 import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,8 +37,8 @@ public class ProjectAppTests extends AbstractAppTest {
         assertEquals(proj.getId().toString(), body.get("id").toString());
         assertEquals(proj.getActorCreated(), body.get("actorCreated"));
         assertEquals(proj.getActorModified(), body.get("actorModified"));
-        assertEquals(proj.getTimeCreated(), new Date((Long)body.get("timeCreated")));
-        assertEquals(proj.getTimeModified(), new Date((Long)body.get("timeModified")));
+        assertEquals(proj.getTimeCreated(), new Date((Long) body.get("timeCreated")));
+        assertEquals(proj.getTimeModified(), new Date((Long) body.get("timeModified")));
     }
 
     @Test
@@ -53,8 +51,8 @@ public class ProjectAppTests extends AbstractAppTest {
         assertEquals(proj.getId().toString(), body.get("id").toString());
         assertEquals(proj.getActorCreated(), body.get("actorCreated"));
         assertEquals(proj.getActorModified(), body.get("actorModified"));
-        assertEquals(proj.getTimeCreated(), new Date((Long)body.get("timeCreated")));
-        assertEquals(proj.getTimeModified(), new Date((Long)body.get("timeModified")));
+        assertEquals(proj.getTimeCreated(), new Date((Long) body.get("timeCreated")));
+        assertEquals(proj.getTimeModified(), new Date((Long) body.get("timeModified")));
     }
 
     @Test
@@ -68,8 +66,8 @@ public class ProjectAppTests extends AbstractAppTest {
         assertEquals(proj.getId().toString(), body.get("id").toString());
         assertEquals(proj.getActorCreated(), body.get("actorCreated"));
         assertEquals(proj.getActorModified(), body.get("actorModified"));
-        assertEquals(proj.getTimeCreated(), new Date((Long)body.get("timeCreated")));
-        assertEquals(proj.getTimeModified(), new Date((Long)body.get("timeModified")));
+        assertEquals(proj.getTimeCreated(), new Date((Long) body.get("timeCreated")));
+        assertEquals(proj.getTimeModified(), new Date((Long) body.get("timeModified")));
     }
 
     @Test
@@ -89,14 +87,14 @@ public class ProjectAppTests extends AbstractAppTest {
         assertEquals(proj.getId().toString(), responseProject.get("id").toString());
         assertEquals(proj.getActorCreated(), responseProject.get("actorCreated"));
         assertEquals(proj.getActorModified(), responseProject.get("actorModified"));
-        assertEquals(proj.getTimeCreated(), new Date((Long)responseProject.get("timeCreated")));
-        assertEquals(proj.getTimeModified(), new Date((Long)responseProject.get("timeModified")));
+        assertEquals(proj.getTimeCreated(), new Date((Long) responseProject.get("timeCreated")));
+        assertEquals(proj.getTimeModified(), new Date((Long) responseProject.get("timeModified")));
     }
 
     private Map<String, Object> getProjectBody() {
         Map<String, Object> body = new HashMap<>();
         body.put("id", UUID.randomUUID().toString());
-        body.put("actorCreated","test@test");
+        body.put("actorCreated", "test@test");
         body.put("actorModified", "test@test");
         body.put("timeCreated", System.currentTimeMillis());
         body.put("timeModified", System.currentTimeMillis());

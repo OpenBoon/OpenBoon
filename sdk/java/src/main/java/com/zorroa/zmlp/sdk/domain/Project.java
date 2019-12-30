@@ -1,7 +1,6 @@
 package com.zorroa.zmlp.sdk.domain;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 
 public class Project {
@@ -36,7 +35,8 @@ public class Project {
      */
     String actorModified;
 
-    public Project() { }
+    public Project() {
+    }
 
     public UUID getId() {
         return id;

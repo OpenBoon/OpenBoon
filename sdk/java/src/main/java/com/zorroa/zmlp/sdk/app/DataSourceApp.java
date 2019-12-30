@@ -4,7 +4,8 @@ import com.zorroa.zmlp.sdk.ZmlpClient;
 import com.zorroa.zmlp.sdk.domain.DataSource;
 import com.zorroa.zmlp.sdk.domain.DataSourceSpec;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DataSourceApp {
 
@@ -49,7 +50,7 @@ public class DataSourceApp {
      * @return A status dict.
      */
 
-    public Map updateCredentials(DataSource ds, String blob)  {
+    public Map updateCredentials(DataSource ds, String blob) {
         String url = String.format("%s/%s/_credentials", BASE_URI, ds.getId());
         Map body = new HashMap();
         body.put("blob", blob);

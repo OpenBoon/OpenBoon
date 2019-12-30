@@ -7,7 +7,8 @@ public class ApiKey {
     private String sharedKey;
     private UUID keyId;
 
-    public ApiKey() { }
+    public ApiKey() {
+    }
 
     public ApiKey(UUID keyId, String sharedKey) {
         this.keyId = keyId;

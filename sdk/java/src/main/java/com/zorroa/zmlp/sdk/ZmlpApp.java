@@ -8,7 +8,6 @@ import com.zorroa.zmlp.sdk.domain.ZmlpAppException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
-import java.util.Map;
 import java.util.Optional;
 
 public class ZmlpApp {
@@ -46,11 +45,11 @@ public class ZmlpApp {
      * will not throw if the environment is configured improperly, however
      * attempting the use the ZmlpApp instance to make a request
      * will fail.
-     *
+     * <p>
      * Environment Variables
-     *  - ZMLP_APIKEY : A base64 encoded API key.
-     *  - ZMLP_APIKEY_FILE : A path to a JSON formatted API key.
-     *  - ZMLP_SERVER : The URL to the ZMLP API server.
+     * - ZMLP_APIKEY : A base64 encoded API key.
+     * - ZMLP_APIKEY_FILE : A path to a JSON formatted API key.
+     * - ZMLP_SERVER : The URL to the ZMLP API server.
      */
 
     private static ApiKey loadApiKey(File fileKey) {
@@ -81,8 +80,7 @@ public class ZmlpApp {
             apiKey = loadApiKey(envApiKey.get());
         } else if (envApiKeyFilePath.isPresent()) {
             apiKey = loadApiKey(new File(envApiKeyFilePath.get()));
-        }
-        else {
+        } else {
             throw new ZmlpAppException("Unable to load api key from envirionment");
         }
 

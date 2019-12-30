@@ -12,7 +12,8 @@ public class DataSource {
     List<String> fileTypes;
     List<String> analysis;
 
-    public DataSource() { }
+    public DataSource() {
+    }
 
     public UUID getId() {
         return id;

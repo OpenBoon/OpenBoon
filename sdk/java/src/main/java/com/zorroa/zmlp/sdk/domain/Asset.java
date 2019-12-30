@@ -9,7 +9,8 @@ public class Asset {
     private String id;
     private Map<String, Object> document;
 
-    public Asset() { }
+    public Asset() {
+    }
 
     /**
      * Return all stored files associated with this asset.  Optionally

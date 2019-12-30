@@ -10,7 +10,8 @@ public class PagedList<T> implements Iterable<T> {
     private Page page;
     private List<T> list;
 
-    public PagedList() { }
+    public PagedList() {
+    }
 
     public PagedList(Page page, List<T> list) {
         this.page = page;

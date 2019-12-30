@@ -1,10 +1,6 @@
 package com.zorroa.zmlp.sdk.domain;
 
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 /**
  * Used to describe results page when paginating responses.
  */
@@ -21,7 +17,8 @@ public class Page {
 
     private Long totalCount;
 
-    public Page() { }
+    public Page() {
+    }
 
     public Page(Integer from, Integer size, Long totalCount) {
         this.from = from;
