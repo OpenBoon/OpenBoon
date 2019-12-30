@@ -4,29 +4,12 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class Asset extends AssetBase {
+public class Asset {
 
-    private Integer id;
+    private String id;
+    private Map<String, Object> document;
 
-    /**
-     * An Asset represents a single processed file or a clip/segment of a
-     * file. Assets start out in the 'CREATED' state, which indicates
-     * they've been created by not processed.  Once an asset has been processed
-     * and augmented with files created by various analysis modules, the Asset
-     * will move into the 'ANALYZED' state.
-     *
-     * @param data Map that should contains data attributes
-     * @throws Exception
-     */
-    public Asset(Map<String, Object> data) throws Exception {
-
-        if (data == null)
-            throw new IllegalArgumentException("Error creating Asset instance, Assets must have an id.");
-
-        this.id = (Integer) data.get("id");
-        this.document.getOrDefault("document", new HashMap<>());
-
-    }
+    public Asset() { }
 
     /**
      * Return all stored files associated with this asset.  Optionally
@@ -160,40 +143,16 @@ public class Asset extends AssetBase {
         return this.getFiles(null, null, null, null, attrs);
     }
 
-    /**
-     * Returns a dictionary suitable for JSON encoding.
-     * The ZpsJsonEncoder will call this method automatically.
-     *
-     * @return Map version of this Document.
-     */
     @Override
-    public Map forJson() {
-
-        Map json = new HashMap();
-        json.put("id", this.id);
-        json.put("document", this.document);
-        return json;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Asset)) return false;
+        Asset asset = (Asset) o;
+        return id.equals(asset.id);
     }
 
-    /**
-     * Evaluate equality by Asset ID
-     *
-     * @param obj
-     * @return
-     */
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Asset))
-            return false;
-
-        return ((Asset) obj).getId() == this.id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
