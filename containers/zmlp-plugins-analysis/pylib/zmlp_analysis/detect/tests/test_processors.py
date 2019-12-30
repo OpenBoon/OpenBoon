@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from zmlp import ZmlpClient
 from zmlp.analysis import Frame
-from zmlp.analysis.proxy import store_asset_proxy
+from zmlp.analysis.proxy import store_proxy_media
 from zmlp.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 
 from zmlp_analysis.detect.processors import ZmlpObjectDetectionProcessor
@@ -28,7 +28,7 @@ class ZmlpObjectDetectionProcessorTests(PluginUnitTestCase):
 
         # We have to add a proxy to use ML, there is no source
         # fallback currently.
-        store_asset_proxy(self.frame.asset, self.image_path, (2322, 4128))
+        store_proxy_media(self.frame.asset, self.image_path, (2322, 4128))
         processor = self.init_processor(ZmlpObjectDetectionProcessor(), {})
         processor.process(self.frame)
 

@@ -176,6 +176,8 @@ def create_video_thumbnail(source_path, destination_path, seconds):
 
     """
     cmd = ["ffmpeg",
+           "-v",
+           "1",
            "-y",
            "-ss",
            str(seconds),
