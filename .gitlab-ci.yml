@@ -13,7 +13,6 @@ stages:
   - push
   - deploy
 
-## Filepath changes
 .all-stable-branches:
   only:
     refs:
