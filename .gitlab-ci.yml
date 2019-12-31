@@ -98,7 +98,7 @@ backend-py-lint:
       - merge_requests
     changes:
       - sdk/python/**/*.py
-      - containers/**/*
+      - containers/**/*.py
       - services/analyst/**/*
 
 backend-py-lint-all-stable-branches:
