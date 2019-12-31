@@ -99,7 +99,7 @@ backend-py-lint:
     changes:
       - sdk/python/**/*.py
       - containers/**/*.py
-      - services/analyst/**/*
+      - services/analyst/**/*.py
 
 backend-py-lint-all-stable-branches:
   extends:
