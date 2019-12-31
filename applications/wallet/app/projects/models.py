@@ -1,3 +1,4 @@
+import uuid
 from django.conf import settings
 from django.db import models
 from django_cryptography.fields import encrypt
@@ -5,7 +6,7 @@ from django_cryptography.fields import encrypt
 
 class Project(models.Model):
     """Represents a ZMLP project."""
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=144)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='projects.Membership',
                                    related_name='projects')
