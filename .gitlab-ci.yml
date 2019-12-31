@@ -137,48 +137,30 @@ sdk-unit-tests:
 #  only:
 #      - development
 
-docker_hub_push_archivist_auth_server:
+docker_hub_push_1:
   extends: .docker_hub_push_base
   script:
-    - docker buildx bake -f docker-compose.yml auth-server
+    - docker buildx bake -f docker-compose.yml auth-server api-gateway wallet es1
     - docker buildx bake -f docker-compose.yml archivist
     - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
     - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
+    - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
+    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
+    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
 
-#docker_hub_push_wallet:
-#  extends: .docker_hub_push_base
-#  script:
-#    - docker-compose build wallet
-#    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
-#
-#docker_hub_push_es:
-#  extends: .docker_hub_push_base
-#  script:
-#    - docker-compose build es1
-#    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
-#
-#docker_hub_push_auth_server:
-#  extends: .docker_hub_push_base
-#  script:
-#    - docker-compose build auth-server
-#    - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
-#
-#docker_hub_push_api_gateway:
-#  extends: .docker_hub_push_base
-#  script:
-#    - docker-compose build api-gateway
-#    - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
-#
-#docker_hub_push_sdk:
-#  extends: .docker_hub_push_base
-#  script:
-#    - docker-compose build zmlp-py3-base zmlp-py3-sdk zmlp-plugins-base zmlp-plugins-core zmlp-plugins-analysis analyst
-#    - docker tag zmlp/py3-base:latest zmlp/py3-base:development; docker push zmlp/py3-base:development
-#    - docker tag zmlp/py3-sdk:latest zmlp/py3-sdk:development; docker push zmlp/py3-sdk:development
-#    - docker tag zmlp/plugins-base:latest zmlp/plugins-base:development; docker push zmlp/plugins-base:development
-#    - docker tag zmlp/plugins-core:latest zmlp/plugins-core:development; docker push zmlp/plugins-core:development
-#    - docker tag zmlp/plugins-analysis:latest zmlp/plugins-analysis:development; docker push zmlp/plugins-analysis:development
-#    - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
+docker_hub_push_2:
+  extends: .docker_hub_push_base
+  script:
+    - docker buildx bake -f docker-compose.yml zmlp-py3-base
+    - docker buildx bake -f docker-compose.yml zmlp-py3-sdk
+    - docker buildx bake -f docker-compose.yml zmlp-plugins-base analyst
+    - docker buildx bake -f docker-compose.yml zmlp-plugins-core zmlp-plugins-analysis
+    - docker tag zmlp/py3-base:latest zmlp/py3-base:development; docker push zmlp/py3-base:development
+    - docker tag zmlp/py3-sdk:latest zmlp/py3-sdk:development; docker push zmlp/py3-sdk:development
+    - docker tag zmlp/plugins-base:latest zmlp/plugins-base:development; docker push zmlp/plugins-base:development
+    - docker tag zmlp/plugins-core:latest zmlp/plugins-core:development; docker push zmlp/plugins-core:development
+    - docker tag zmlp/plugins-analysis:latest zmlp/plugins-analysis:development; docker push zmlp/plugins-analysis:development
+    - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
 
 deploy_development:
   image: google/cloud-sdk
