@@ -26,16 +26,12 @@ stages:
 wallet-frontend-test-suite:
   stage: test
   image: node:12
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - applications/wallet/frontend/.next/cache/
   before_script:
     - cd applications/wallet/frontend
     - npm ci
   script:
     - npm run lint
-    - npm run test:cover -- --ci --verbose false
+    - npm run test:cover
     - npm run size
   only:
     refs:
