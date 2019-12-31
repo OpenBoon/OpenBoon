@@ -1,3 +1,5 @@
+import Router from 'next/router'
+
 export const USER = 'user'
 
 export const getUser = () => {
@@ -68,4 +70,6 @@ export const logout = ({ googleAuth, setUser }) => async () => {
   clearUser()
 
   setUser({})
+
+  Router.push('/')
 }

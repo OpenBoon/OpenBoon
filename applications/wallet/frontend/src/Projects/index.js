@@ -11,7 +11,15 @@ const Projects = ({ children }) => {
 
   if (!Array.isArray(projects)) return 'Loading...'
 
-  if (projects.length === 0) return 'You have 0 projects'
+  if (projects.length === 0) {
+    if (projectId) {
+      Router.push('/')
+
+      return null
+    }
+
+    return children
+  }
 
   if (!projectId || !projects.find(({ id }) => projectId === id)) {
     Router.push('/[projectId]/jobs', `/${projects[0].id}/jobs`)

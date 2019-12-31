@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NoProject /> should render properly 1`] = `"You have no project available"`;
