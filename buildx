@@ -29,6 +29,8 @@ def main():
 
 
 def build_dependency_tree(to_build):
+    env = os.environ
+    env['DOCKER_CLI_EXPERIMENTAL'] = 'enabled'
     with open('docker-compose.yml') as fp:
         compose = yaml.load(fp, yaml.Loader)
 
