@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+import yaml
+import subprocess
+
+
+def main():
+    build_dependency_tree()
+
+
+def build_dependency_tree():
+    with open('docker-compose.yml') as fp:
+        compose = yaml.load(fp)
+
+    built = set()
+    need_to_build = set()
+
+    # Pass #1
+    for svc_name, svc in compose['services'].items():
+        if not svc.get("build"):
+            built.add(svc_name)
+        else:
+            need_to_build.add(svc_name)
+
+    # Pass #2
+    phases = []
+    while len(need_to_build) > 0:
+        phase_built = set()
+        for svc_name, svc in compose['services'].items():
+            if svc_name in built:
+                continue
+            depends = svc.get('depends_on')
+            if not depends or frozenset(depends).issubset(built):
+                need_to_build.remove(svc_name)
+                phase_built.add(svc_name)
+        built.update(phase_built)
+        phases.append(phase_built)
+
+    # Pass #3
+    for phase in phases:
+        cmd = ["docker", "buildx", "bake", "--no-cache", "-f", "docker-compose.yml"]
+        cmd.extend(phase)
+        print("Building {}".format(phase))
+        subprocess.check_call(cmd, shell=False)
+
+
+if __name__ == '__main__':
+    main()
