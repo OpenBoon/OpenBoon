@@ -1,4 +1,4 @@
-package com.zorroa.zmlp.sdk.domain;
+package com.zorroa.zmlp.sdk.domain.Asset;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -8,6 +8,7 @@ public class Asset {
 
     private String id;
     private Map<String, Object> document;
+
 
     public Asset() {
     }
@@ -192,5 +193,13 @@ public class Asset {
 
     public Object getDocumentAttr(String key) {
         return this.document.get(key);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Map<String, Object> getDocument() {
+        return document;
     }
 }

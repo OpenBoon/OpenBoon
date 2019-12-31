@@ -1,8 +1,10 @@
-package com.zorroa.zmlp.sdk.domain;
+package com.zorroa.zmlp.sdk.domain.Asset;
+
+import com.zorroa.zmlp.sdk.domain.Clip;
 
 import java.util.Map;
 
-public class FileImport {
+public class AssetSpec {
 
     /**
      * a URI locator to the file asset.
@@ -18,6 +20,13 @@ public class FileImport {
      * Defines a subset of the asset to be processed, for example a page of a PDF or time code from a video.
      */
     private Clip clip;
+
+    public AssetSpec() {
+    }
+
+    public AssetSpec(String uri) {
+        this.uri = uri;
+    }
 
     public String getUri() {
         return uri;

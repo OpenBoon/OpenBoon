@@ -1,14 +1,19 @@
 package com.zorroa.zmlp.sdk.app;
 
 import com.zorroa.zmlp.sdk.ApiKey;
+import com.zorroa.zmlp.sdk.Json;
 import com.zorroa.zmlp.sdk.ZmlpClient;
-import com.zorroa.zmlp.sdk.domain.Asset;
+import com.zorroa.zmlp.sdk.domain.Asset.Asset;
+import com.zorroa.zmlp.sdk.domain.Asset.AssetSpec;
+import com.zorroa.zmlp.sdk.domain.Asset.BatchCreateAssetRequest;
+import com.zorroa.zmlp.sdk.domain.Asset.BatchCreateAssetResponse;
+import okhttp3.mockwebserver.MockResponse;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AssetAppTests extends AbstractAppTest {
 
@@ -96,6 +101,28 @@ public class AssetAppTests extends AbstractAppTest {
     @Test
     public void testImportFiles() {
 
+        webServer.enqueue(new MockResponse().setBody(Json.asJson(getImportFilesMock())));
+
+        AssetSpec fileImport = new AssetSpec("gs://zorroa-dev-data/image/pluto.png");
+
+        BatchCreateAssetRequest batchCreateAssetRequest = new BatchCreateAssetRequest();
+        batchCreateAssetRequest.setAssets(Arrays.asList(fileImport));
+
+        BatchCreateAssetResponse batchCreateAssetResponse = assetApp.importFiles(batchCreateAssetRequest);
+
+        assertEquals(batchCreateAssetResponse.getStatus().get(0).getAssetId(), "abc123");
+        assertEquals(batchCreateAssetResponse.getStatus().get(0).getFailed(), false);
+    }
+
+    @Test
+    public void testGetById(){
+
+        webServer.enqueue(new MockResponse().setBody(Json.asJson(getGetByIdMock())));
+
+        Asset asset = assetApp.getById("abc123");
+
+        assertNotNull(asset.getId());
+        assertNotNull(asset.getDocument());
     }
 
 
@@ -160,7 +187,7 @@ public class AssetAppTests extends AbstractAppTest {
         return asset;
     }
 
-    private Map getTestImportFilesMock() {
+    private Map getImportFilesMock() {
         Map mock = new HashMap();
 
         List statusMockList = new ArrayList();
@@ -183,6 +210,19 @@ public class AssetAppTests extends AbstractAppTest {
 
         return mock;
 
+    }
+
+    private Map getGetByIdMock(){
+        Map mock = new HashMap();
+
+        mock.put("id", "abc123");
+        Map documentMock = new HashMap();
+        Map sourceMock = new HashMap();
+        sourceMock.put("path", "gs://zorroa-dev-data/image/pluto.png");
+        documentMock.put("source", sourceMock);
+        mock.put("document", documentMock);
+
+        return mock;
     }
 
 }
