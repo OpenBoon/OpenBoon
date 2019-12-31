@@ -13,43 +13,42 @@ stages:
   - push
   - deploy
 
-## Wallet Jobs
-.wallet-base:
+## Filepath changes
+.all-stable-branches:
   only:
-    - merge_requests
-    - development
-    - qa
-    - master
+    refs:
+      - development
+      - qa
+      - master
+    changes:
+      - "**/*"
 
-.wallet-frontend-base:
-  extends: .wallet-base
+## Wallet Frontend
+wallet-frontend-test-suite:
+  stage: test
   image: node:12
   before_script:
     - cd applications/wallet/frontend
     - npm ci
-
-wallet-frontend-test-suite:
-  extends: .wallet-frontend-base
-  only:
-    refs:
-      - merge_requests
-    changes:
-      - applications/wallet/app/frontend/**/*
-  stage: test
   script:
     - npm run lint
     - npm run test:cover
     - npm run size
-
-wallet-backend-test-suite:
-  extends: .wallet-base
   only:
     refs:
       - merge_requests
     changes:
-      - applications/wallet/app/**/*
-  image: mc706/pipenv-3.7
+      - applications/wallet/frontend/**/*
+
+wallet-frontend-test-suite-all-stable-branches:
+  extends:
+    - wallet-frontend-test-suite
+    - .all-stable-branches
+
+## Wallet Backend
+wallet-backend-test-suite:
   stage: test
+  image: mc706/pipenv-3.7
   services:
     - name: postgres:9.6.9
       alias: postgres
@@ -64,7 +63,18 @@ wallet-backend-test-suite:
     - cd app
     - pipenv run flake8
     - pipenv run pytest --cov=.
+  only:
+    refs:
+      - merge_requests
+    changes:
+      - applications/wallet/app/**/*
 
+wallet-backend-test-suite-all-stable-branches:
+  extends:
+    - wallet-backend-test-suite
+    - .all-stable-branches
+
+## Wallet Container Build Validation
 wallet-container-build-validation:
   only:
     - development
@@ -75,41 +85,47 @@ wallet-container-build-validation:
   script:
     - docker build --pull --no-cache -f applications/wallet/Dockerfile .
 
+## Backend Python Lint
 backend-py-lint:
   image: python:3.7.5
   stage: pretest
   allow_failure: false
-  only:
-    refs:
-      - merge_requests
-      - development
-      - qa
-      - master
-    changes:
-      - sdk/**/*
-      - containers/**/*
-      - services/**/*
   script:
     - python -m pip install flake8
     - flake8 --config .flake8.cfg sdk/python containers/zmlp-py3-base services/analyst
     - flake8 --config .flake8.cfg containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis
-
-backend-kotlin-lint:
-  image: kkopper/ktlint
-  stage: pretest
   only:
     refs:
       - merge_requests
-      - development
-      - qa
-      - master
     changes:
+      - sdk/**/*
+      - containers/**/*
       - services/**/*
+
+backend-py-lint-all-stable-branches:
+  extends:
+    - backend-py-lint
+    - .all-stable-branches
+
+## Backend Kotlin Lint
+backend-kotlin-lint:
+  image: kkopper/ktlint
+  stage: pretest
   script:
     - ktlint services/archivist/src/**/*.kt
     - ktlint services/auth-server/src/**/*.kt
     - ktlint services/elasticsearch/es-kwconf/src/main/kotlin/**/*.kt
     - ktlint services/officer/src/**/*.kt
+  only:
+    refs:
+      - merge_requests
+    changes:
+      - services/**/*
+
+backend-kotlin-lint-all-stable-branches:
+  extends:
+    - backend-kotlin-lint
+    - .all-stable-branches
 
 # SDK Test
 # Testing other containers requires building containers
@@ -118,14 +134,6 @@ sdk-unit-tests:
   image: python:3.7.5
   stage: test
   allow_failure: true
-  only:
-    refs:
-      - merge_requests
-      - development
-      - qa
-      - master
-    changes:
-      - sdk/**/*
   script:
     - python -m pip install pipenv pytest
     - cd sdk/python
@@ -134,6 +142,16 @@ sdk-unit-tests:
     - cd ../../containers/zmlp-plugins-base
     - pip install -r requirements.txt
     - pytest
+  only:
+    refs:
+      - merge_requests
+    changes:
+      - sdk/**/*
+
+sdk-unit-tests-all-stable-branches:
+  extends:
+    - sdk-unit-tests
+    - .all-stable-branches
 
 # These jobs build the container images and push them up to docker hub with the
 # "development" tag whenever code is merged to development.
@@ -218,29 +236,27 @@ deploy_development:
 services_build_artifacts:
   image: maven:3.6.2-jdk-11-slim
   stage: build
-  only:
-    refs:
-      - merge_requests
-      - development
-    changes:
-      - services/elasticsearch/**/*
   script:
     - cd services/elasticsearch
     - mvn clean install -Dmaven.test.skip=true
   artifacts:
     paths:
       - services/elasticsearch/es-similarity/target/releases/es-similarity.zip
+  only:
+    refs:
+      - merge_requests
+    changes:
+      - services/elasticsearch/**/*
+
+services_build_artifacts-all-stable-branches:
+  extends:
+    - services_build_artifacts
+    - .all-stable-branches
 
 # Kotlin services - Unit tests - Step 2
 services_push_to_local_registry:
   image: docker:18.09.8-dind
   stage: pretest
-  only:
-    refs:
-      - merge_requests
-      - development
-    changes:
-      - services/elasticsearch/**/*
   retry: 2
   services:
     - docker:18.09.8-dind
@@ -249,16 +265,20 @@ services_push_to_local_registry:
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
     - docker build -t $LOCAL_ES_NAME .
     - docker push $LOCAL_ES_NAME
+  only:
+    refs:
+      - merge_requests
+    changes:
+      - services/elasticsearch/**/*
+
+services_push_to_local_registry-all-stable-branches:
+  extends:
+    - services_push_to_local_registry
+    - .all-stable-branches
 
 services_unit_tests:
   stage: test
   image: maven:3.6-jdk-11
-  only:
-    refs:
-      - merge_requests
-      - development
-    changes:
-      - services/**/*
   services:
     - name: redis:alpine
       alias: redis
@@ -298,6 +318,16 @@ services_unit_tests:
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
     - mvn test verify -f services/auth-server -q
     - mvn test verify -f services/officer -q
+  only:
+    refs:
+      - merge_requests
+    changes:
+      - services/**/*
+
+services_unit_tests-all-stable-branches:
+  extends:
+    - services_unit_tests
+    - .all-stable-branches
 # Kotlin Services Jobs
 #sdk-containers-tests:
 #  stage: test
