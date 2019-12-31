@@ -97,7 +97,7 @@ backend-py-lint:
     refs:
       - merge_requests
     changes:
-      - sdk/python/**/*
+      - sdk/python/**/*.py
       - containers/**/*
       - services/analyst/**/*
 
