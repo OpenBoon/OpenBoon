@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -14,7 +15,10 @@ class JobsViewSet(BaseProjectViewSet):
         payload = {'page': {'from': request.GET.get('from', 0),
                             'size': request.GET.get('size', self.pagination_class.default_limit)}}
         response = client.post('/api/v1/jobs/_search', payload)
-        content = response.json()
+        if settings.PLATFORM == 'zvi':
+            content = response.json()
+        else:
+            content = response
 
         current_url = request.build_absolute_uri(request.path)
         for item in content['list']:

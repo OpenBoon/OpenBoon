@@ -19,3 +19,10 @@ def test_membership_str(project):
     user = User(username='fakey')
     membership = Membership(user=user, project=project)
     assert str(membership) == 'butts - fakey'
+
+
+def test_project_has_default_id():
+    project = Project(name='test')
+    assert project.id
+    assert len(str(project.id)) == 36
+    assert str(project.id).split('-')[2].startswith('4')

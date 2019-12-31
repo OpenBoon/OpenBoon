@@ -1,9 +1,17 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
+import Table from '../Table'
+
+import ApiKeysRow from './Row'
 
 const ApiKeys = () => {
+  const {
+    query: { projectId },
+  } = useRouter()
+
   return (
     <div>
       <Head>
@@ -17,6 +25,17 @@ const ApiKeys = () => {
           { title: 'View all', href: '/api-keys' },
           { title: 'Create API key', href: '/api-keys/add' },
         ]}
+      />
+
+      <div>&nbsp;</div>
+
+      <Table
+        url={`/api/v1/projects/${projectId}/apikeys/`}
+        columns={['API Key Name', 'Permissions']}
+        renderEmpty="No api keys"
+        renderRow={({ result }) => (
+          <ApiKeysRow key={result.id} apiKey={result} />
+        )}
       />
     </div>
   )

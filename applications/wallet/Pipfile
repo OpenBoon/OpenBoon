@@ -22,11 +22,11 @@ drf-nested-routers = "*"
 requests = "*"
 uritools = "*"
 flake8 = "*"
-pixml = {path = "./../../sdk/python"}
 markdown = "*"
 google-auth = "*"
 djangorestframework-camel-case = "*"
 django-rest-auth = "*"
+zmlp = {path = "./../../sdk/python"}
 
 [requires]
 python_version = "3.7"
