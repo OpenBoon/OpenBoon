@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+import argparse
+import os
+import subprocess
+
+import yaml
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Build docker containers with buildx')
+    parser.add_argument('containers', metavar='C', type=str, nargs='?',
+                        help='Container names to build')
+    parser.add_argument('--core', '-c', action='store_true',
+                        help='Build zmlp-plugins-core and SDK requirements')
+    parser.add_argument('--jvm', '-j', action='store_true',
+                        help='Build JVM services')
+    parser.add_argument('--analysis', '-a', action='store_true',
+                        help='Build zmlp-plugins-analysis and SDK requirements')
+
+    args = parser.parse_args()
+    containers = args.containers or set()
+    if args.core:
+        containers.update(['zmlp-py3-sdk', 'zmlp-plugins-base', 'zmlp-plugins-core'])
+    if args.jvm:
+        containers.update(['archivist', 'auth-server'])
+    if args.analysis:
+        containers.update(['zmlp-py3-sdk', 'zmlp-plugins-base', 'zmlp-plugins-analysis'])
+
+    build_dependency_tree(containers)
+
+
+def build_dependency_tree(to_build):
+    env = os.environ
+    env['DOCKER_CLI_EXPERIMENTAL'] = 'enabled'
+    with open('docker-compose.yml') as fp:
+        compose = yaml.load(fp, yaml.Loader)
+
+    built = set()
+    need_to_build = set()
+
+    # Pass #1
+    for svc_name, svc in compose['services'].items():
+        if not svc.get("build"):
+            built.add(svc_name)
+        else:
+            need_to_build.add(svc_name)
+
+    # Pass #2
+    phases = []
+    while len(need_to_build) > 0:
+        phase_built = set()
+        for svc_name, svc in compose['services'].items():
+            if svc_name in built:
+                continue
+            depends = svc.get('depends_on')
+            if not depends or frozenset(depends).issubset(built):
+                need_to_build.remove(svc_name)
+                phase_built.add(svc_name)
+        built.update(phase_built)
+        phases.append(phase_built)
+
+    # Pass #3
+    for phase in phases:
+        if to_build:
+            phase = to_build.intersection(phase)
+        if not phase:
+            continue
+        # Adding --no-cache won't use the stupid maven cache.
+        cmd = ["docker", "buildx", "bake", "-f", "docker-compose.yml"]
+        cmd.extend(phase)
+        print("Building {}".format(phase))
+        subprocess.check_call(cmd, shell=False, env=env)
+
+
+if __name__ == '__main__':
+    main()
