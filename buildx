@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 import yaml
 import subprocess
+import sys
 
 
 def main():
-    build_dependency_tree()
+
+    if len(sys.argv) > 1:
+        to_build = set(sys.argv[1:len(sys.argv)])
+    else:
+        to_build = None
+    build_dependency_tree(to_build)
 
 
-def build_dependency_tree():
+def build_dependency_tree(to_build):
     with open('docker-compose.yml') as fp:
-        compose = yaml.load(fp)
+        compose = yaml.load(fp, yaml.Loader)
 
     built = set()
     need_to_build = set()
@@ -37,7 +43,11 @@ def build_dependency_tree():
 
     # Pass #3
     for phase in phases:
-        cmd = ["docker", "buildx", "bake", "--no-cache", "-f", "docker-compose.yml"]
+        if to_build:
+            phase = to_build.intersection(phase)
+        if not phase:
+            continue
+        cmd = ["docker", "buildx", "bake", "-f", "docker-compose.yml"]
         cmd.extend(phase)
         print("Building {}".format(phase))
         subprocess.check_call(cmd, shell=False)
