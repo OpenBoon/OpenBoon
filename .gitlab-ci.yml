@@ -118,7 +118,7 @@ sdk-unit-tests:
 # These jobs build the container images and push them up to docker hub with the
 # "development" tag whenever code is merged to development.
 .docker_hub_push_base:
-  image: zmlp/dind-buildx
+  image: docker:19.03
   stage: push
   services:
     - docker:18.09.8-dind
