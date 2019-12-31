@@ -42,7 +42,7 @@ class VideoImporter(AssetBuilder):
             probe = get_video_metadata(path)
             asset.set_attr('media.type', 'video')
 
-            for key in ('description', 'title', 'width', 'height', 'length', 'createdTime'):
+            for key in ('description', 'title', 'width', 'height', 'length', 'timeCreated'):
                 asset.set_attr("media.{}".format(key), probe[key])
 
             if probe.get('width') and probe.get('height'):

@@ -203,7 +203,7 @@ def get_video_metadata(src_path):
     # Set the title and description.
     result['description'] = props.get('format', {}).get('tags', {}).get('description')
     result['title'] = props.get('format', {}).get('tags', {}).get('title')
-    result['createdTime'] = props.get('format', {}).get('tags', {}).get('creation_time')
+    result['timeCreated'] = props.get('format', {}).get('tags', {}).get('creation_time')
     return result
 
 
