@@ -37,7 +37,7 @@ def build_dependency_tree():
 
     # Pass #3
     for phase in phases:
-        cmd = ["docker", "buildx", "bake", "--no-cache", "-f", "docker-compose.yml"]
+        cmd = ["docker", "buildx", "bake", "-f", "docker-compose.yml"]
         cmd.extend(phase)
         print("Building {}".format(phase))
         subprocess.check_call(cmd, shell=False)
