@@ -1,3 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<NoProject /> should render properly 1`] = `"You have no project available"`;
+exports[`<NoProject /> should render properly 1`] = `
+<div>
+  You have no project available
+</div>
+`;
