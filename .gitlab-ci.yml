@@ -137,11 +137,13 @@ sdk-unit-tests:
 #  only:
 #      - development
 
-docker_hub_push_archivist:
+docker_hub_push_archivist_auth_server:
   extends: .docker_hub_push_base
   script:
+    - docker buildx bake -f docker-compose.yml auth-server
     - docker buildx bake -f docker-compose.yml archivist
     - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
+    - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
 
 #docker_hub_push_wallet:
 #  extends: .docker_hub_push_base
