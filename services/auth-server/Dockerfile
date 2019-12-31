@@ -4,7 +4,6 @@ FROM maven:3.6-jdk-11-slim as build
 RUN mkdir /build
 COPY . /build
 WORKDIR /build
-RUN --mount=type=cache,target=/root/.m2 mvn dependency:go-offline
 RUN --mount=type=cache,target=/root/.m2 mvn clean install -Dmaven.test.skip=true
 
 FROM openjdk:11-jdk-slim
