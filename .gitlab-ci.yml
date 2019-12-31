@@ -97,9 +97,9 @@ backend-py-lint:
     refs:
       - merge_requests
     changes:
-      - sdk/**/*
+      - sdk/python/**/*
       - containers/**/*
-      - services/**/*
+      - services/analyst/**/*
 
 backend-py-lint-all-stable-branches:
   extends:
@@ -146,6 +146,7 @@ sdk-unit-tests:
       - merge_requests
     changes:
       - sdk/**/*
+      - containers/zmlp-plugins-base/**/*
 
 sdk-unit-tests-all-stable-branches:
   extends:
