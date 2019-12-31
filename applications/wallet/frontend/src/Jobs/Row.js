@@ -7,11 +7,11 @@ import { formatFullDate } from '../Date/helpers'
 import Status from '../Status'
 import ProgressBar from '../ProgressBar'
 
-import DataQueueMenu from './Menu'
+import JobsMenu from './Menu'
 
 const ERROR_COUNT_HEIGHT = 32
 
-const DataQueueRow = ({
+const JobsRow = ({
   projectId,
   job: {
     id: jobId,
@@ -68,7 +68,7 @@ const DataQueueRow = ({
 
           <div css={{ width: spacing.base }} />
 
-          <DataQueueMenu
+          <JobsMenu
             projectId={projectId}
             jobId={jobId}
             revalidate={revalidate}
@@ -79,7 +79,7 @@ const DataQueueRow = ({
   )
 }
 
-DataQueueRow.propTypes = {
+JobsRow.propTypes = {
   projectId: PropTypes.string.isRequired,
   job: PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -108,4 +108,4 @@ DataQueueRow.propTypes = {
   revalidate: PropTypes.func.isRequired,
 }
 
-export default DataQueueRow
+export default JobsRow
