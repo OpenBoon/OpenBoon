@@ -17,8 +17,6 @@ stages:
   only:
     refs:
       - development
-      - qa
-      - master
     changes:
       - "**/*"
 
@@ -246,7 +244,7 @@ services_build_artifacts:
     refs:
       - merge_requests
     changes:
-      - services/elasticsearch/**/*
+      - services/**/*
 
 services_build_artifacts-all-stable-branches:
   extends:
@@ -269,7 +267,7 @@ services_push_to_local_registry:
     refs:
       - merge_requests
     changes:
-      - services/elasticsearch/**/*
+      - services/**/*
 
 services_push_to_local_registry-all-stable-branches:
   extends:
