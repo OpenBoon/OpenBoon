@@ -1,16 +1,31 @@
 #!/usr/bin/env python3
-import yaml
+import argparse
 import subprocess
-import sys
+
+import yaml
 
 
 def main():
+    parser = argparse.ArgumentParser(description='Build docker containers with buildx')
+    parser.add_argument('containers', metavar='C', type=str, nargs='?',
+                        help='Container names to build')
+    parser.add_argument('--core', '-c', action='store_true',
+                        help='Build zmlp-plugins-core and SDK requirements')
+    parser.add_argument('--jvm', '-j', action='store_true',
+                        help='Build JVM services')
+    parser.add_argument('--analysis', '-a', action='store_true',
+                        help='Build zmlp-plugins-analysis and SDK requirements')
 
-    if len(sys.argv) > 1:
-        to_build = set(sys.argv[1:len(sys.argv)])
-    else:
-        to_build = None
-    build_dependency_tree(to_build)
+    args = parser.parse_args()
+    containers = args.containers or set()
+    if args.core:
+        containers.update(['zmlp-py3-sdk', 'zmlp-plugins-base', 'zmlp-plugins-core'])
+    if args.jvm:
+        containers.update(['archivist', 'auth-server'])
+    if args.analysis:
+        containers.update(['zmlp-py3-sdk', 'zmlp-plugins-base', 'zmlp-plugins-analysis'])
+
+    build_dependency_tree(containers)
 
 
 def build_dependency_tree(to_build):
