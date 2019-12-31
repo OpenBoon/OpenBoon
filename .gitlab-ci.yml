@@ -119,7 +119,7 @@ backend-kotlin-lint:
     refs:
       - merge_requests
     changes:
-      - services/**/*
+      - services/**/*.kt
 
 backend-kotlin-lint-all-stable-branches:
   extends:
