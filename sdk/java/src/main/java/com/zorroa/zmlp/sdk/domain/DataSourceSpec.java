@@ -2,6 +2,9 @@ package com.zorroa.zmlp.sdk.domain;
 
 import java.util.List;
 
+/**
+ * Defines a DataSource containing assets to import.
+ */
 public class DataSourceSpec {
 
     String name;

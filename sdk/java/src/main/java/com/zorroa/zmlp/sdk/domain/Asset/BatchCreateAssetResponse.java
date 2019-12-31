@@ -3,6 +3,9 @@ package com.zorroa.zmlp.sdk.domain.Asset;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The response returned after provisioning assets.
+ */
 public class BatchCreateAssetResponse {
 
     /**

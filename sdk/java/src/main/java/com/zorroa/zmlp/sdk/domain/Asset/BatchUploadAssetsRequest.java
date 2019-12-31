@@ -1,26 +1,31 @@
 package com.zorroa.zmlp.sdk.domain.Asset;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Defines the properties necessary to provision a batch of assets.
+ * Defines the properties required to batch upload a list of assets.
  */
-public class BatchCreateAssetRequest {
+public class BatchUploadAssetsRequest {
 
     /**
-     * The list of assets to be created
+     * A list of AssetSpec objects which define the Assets starting metadata.
      */
     private List<AssetSpec> assets;
 
     /**
-     * Set to true if the assets should undergo further analysis, or false to stay in the provisioned state.
+     * Set to true if the assets should undergo
+     * further analysis, or false to stay in the provisioned state.
      */
-    private Boolean analyze;
+    private Boolean analyze = true;
 
     /**
      * The analysis to apply.
      */
     private List<String> analysis;
+
+    private List files = new ArrayList<AssetSpec>();
+
 
     public List<AssetSpec> getAssets() {
         return assets;
@@ -44,5 +49,13 @@ public class BatchCreateAssetRequest {
 
     public void setAnalysis(List<String> analysis) {
         this.analysis = analysis;
+    }
+
+    public List getFiles() {
+        return files;
+    }
+
+    public void setFiles(List files) {
+        this.files = files;
     }
 }

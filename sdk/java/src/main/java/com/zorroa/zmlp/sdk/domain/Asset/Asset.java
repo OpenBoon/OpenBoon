@@ -4,6 +4,9 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * The file information and all the metadata generated during Analysis.
+ */
 public class Asset {
 
     private String id;
@@ -185,14 +188,6 @@ public class Asset {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public void setDocumentAttr(String key, Object value) {
-        this.document.put(key, value);
-    }
-
-    public Object getDocumentAttr(String key) {
-        return this.document.get(key);
     }
 
     public String getId() {

@@ -1,5 +1,9 @@
 package com.zorroa.zmlp.sdk.domain;
 
+/**
+ * Defines a subsection of an Asset that was processed,
+ * for example a page of a document.
+ */
 public class Clip {
 
     /**

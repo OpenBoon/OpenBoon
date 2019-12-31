@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
+/**
+ * Paginated list of items.
+ * @param <T>
+ */
 public class PagedList<T> implements Iterable<T> {
 
     private Page page;

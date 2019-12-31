@@ -1,5 +1,8 @@
 package com.zorroa.zmlp.sdk.domain.Asset;
 
+/**
+ * Used to describe the result of a batch asset operation
+ */
 public class BatchAssetOpStatus {
 
     /**

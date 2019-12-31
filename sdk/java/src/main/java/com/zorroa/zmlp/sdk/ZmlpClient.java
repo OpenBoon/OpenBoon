@@ -4,13 +4,21 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.zorroa.zmlp.sdk.domain.Asset.BatchCreateAssetResponse;
 import com.zorroa.zmlp.sdk.domain.ZmlpClientException;
 import okhttp3.*;
 
+import javax.activation.MimetypesFileTypeMap;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class ZmlpClient {
 
@@ -131,5 +139,45 @@ public class ZmlpClient {
         claimBuilder.withClaim("keyId", apiKey.getKeyId().toString());
         Algorithm sharedKey = Algorithm.HMAC512(apiKey.getSharedKey());
         builder.header("Authorization", "Bearer " + claimBuilder.sign(sharedKey));
+    }
+
+    public <T> T uploadFiles(String path, List<String> uris, Map body, Class<T> type) {
+        return marshallResponse(multiPartFileUpload(path, uris, body), type);
+    }
+
+    private byte[] multiPartFileUpload(String path, List<String> uris, Map body) {
+
+        try {
+            path = getUrl(path);
+            MultipartBody.Builder multiPartBuilder = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("body", Json.mapper.writeValueAsString(body));
+
+            // Adding Files to Request
+            uris.forEach(value -> {
+                File file = new File(value);
+                String contentType = new MimetypesFileTypeMap().getContentType(file);
+                MediaType mimeType = MediaType.parse(contentType);
+                RequestBody fileRequestBody = RequestBody.create(
+                        mimeType, file);
+
+                multiPartBuilder.addFormDataPart("files", file.getName(), fileRequestBody);
+
+            });
+
+            Request.Builder requestBuilder = new Request.Builder()
+                    .url(path)
+                    .post(multiPartBuilder.build());
+            applyHeaders(requestBuilder);
+
+
+            try (Response response = http.newCall(requestBuilder.build()).execute()) {
+                return response.body().bytes();
+            }
+
+        } catch (IOException e) {
+            String msg = "Multipart Request" + " + request to " + path + " failed. " + e.getMessage();
+            throw new ZmlpClientException(msg, e);
+        }
     }
 }

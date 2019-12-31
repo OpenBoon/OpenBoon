@@ -11,6 +11,7 @@ import okhttp3.mockwebserver.MockResponse;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,77 +28,6 @@ public class AssetAppTests extends AbstractAppTest {
                 new ZmlpClient(key, webServer.url("/").toString()));
     }
 
-    // Asset Tests
-    @Test
-    public void testAssetGetFilesFilterName() {
-        Asset asset = getTestAsset();
-
-        String array[] = {"proxy_200x200.jpg"};
-        assertEquals(asset.getFilesByName(array).size(), 1);
-        assertEquals(asset.getFilesByName("proxy_200x200.jpg").size(), 1);
-        assertEquals(asset.getFilesByName("spock").size(), 0);
-    }
-
-    @Test
-    public void testAssetGetFilesFilterCategory() {
-        Asset asset = getTestAsset();
-
-        String array[] = {"proxy"};
-        assertEquals(asset.getFilesByCategory(array).size(), 1);
-        assertEquals(asset.getFilesByCategory("proxy").size(), 1);
-        assertEquals(asset.getFilesByCategory("face").size(), 0);
-    }
-
-    @Test
-    public void testAssetGetFilesFilterMimetype() {
-        Asset asset = getTestAsset();
-
-        String array[] = {"image/", "video/mp4"};
-        assertEquals(asset.getFilesByMimetype(array).size(), 1);
-        assertEquals(asset.getFilesByMimetype("image/jpeg").size(), 1);
-        assertEquals(asset.getFilesByMimetype("video/mp4").size(), 0);
-    }
-
-    @Test
-    public void testAssetGetFilesFilterByExtension() {
-        Asset asset = getTestAsset();
-
-        String array[] = {"png", "jpg"};
-        assertEquals(asset.getFilesByExtension(array).size(), 1);
-        assertEquals(asset.getFilesByExtension("jpg").size(), 1);
-        assertEquals(asset.getFilesByExtension("png").size(), 0);
-    }
-
-    @Test
-    public void testAssetGetFilesFilterByAttrs() {
-
-        Asset asset = getTestAsset();
-
-        Map attr1 = new HashMap();
-        attr1.put("width", 200);
-
-        Map attr2 = new HashMap();
-        attr2.put("width", 200);
-        attr2.put("height", 100);
-
-        assertEquals(asset.getFilesByAttrs(attr1).size(), 1);
-        assertEquals(asset.getFilesByAttrs(attr2).size(), 0);
-    }
-
-    @Test
-    public void testAssetGetFilesFilterByAttrsKeys() {
-
-        Asset asset = getTestAsset();
-
-        String array1[] = {"width"};
-        String array2[] = {"kirk"};
-
-        assertEquals(asset.getFilesByAttrsKey(array1).size(), 1);
-        assertEquals(asset.getFilesByAttrsKey("width").size(), 1);
-        assertEquals(asset.getFilesByAttrsKey(array2).size(), 0);
-    }
-
-    //Asset App Tests
     @Test
     public void testImportFiles() {
 
@@ -125,6 +55,16 @@ public class AssetAppTests extends AbstractAppTest {
         assertNotNull(asset.getDocument());
     }
 
+    @Test
+    public void testUploadAssets(){
+
+        webServer.enqueue(new MockResponse().setBody(Json.asJson(getUploadAssetsMock())));
+
+        List<AssetSpec> assetSpecList = Arrays.asList(new AssetSpec("../../../zorroa-test-data/images/set01/toucan.jpg"));
+        BatchCreateAssetResponse response = assetApp.uploadFiles(assetSpecList);
+
+        assertEquals(response.getStatus().get(0).getAssetId(), "abc123");
+    }
 
     // Mocks
     private Map getMockSearchResult() {
@@ -158,33 +98,6 @@ public class AssetAppTests extends AbstractAppTest {
         hitsMock.add(hit2);
 
         return mock;
-    }
-
-    private List<Map> getTestFiles() {
-
-        List<Map> testFiles = new ArrayList();
-
-        Map<String, Object> file1 = new HashMap();
-
-        file1.put("category", "proxy");
-        file1.put("name", "proxy_200x200.jpg");
-        file1.put("mimetype", "image/jpeg");
-
-        Map<String, Object> attrs = new HashMap();
-        attrs.put("width", 200);
-        attrs.put("height", 200);
-
-        file1.put("attrs", attrs);
-
-        testFiles.add(file1);
-
-        return testFiles;
-    }
-
-    private Asset getTestAsset() {
-        Asset asset = new Asset("123");
-        asset.setDocumentAttr("files", getTestFiles());
-        return asset;
     }
 
     private Map getImportFilesMock() {
@@ -225,4 +138,29 @@ public class AssetAppTests extends AbstractAppTest {
         return mock;
     }
 
+    private Map getUploadAssetsMock(){
+        Map mock = new HashMap();
+        List<Map> statusListMock = new ArrayList();
+        Map statusMock = new HashMap();
+        statusMock.put("assetId","abc123");
+        statusMock.put("failed", false);
+        statusListMock.add(statusMock);
+        mock.put("status", statusListMock);
+
+        Map sourceMock = new HashMap();
+        sourceMock.put("path", "zmlp:///abc123/source/toucan.jpg");
+        Map documentMock = new HashMap();
+        documentMock.put("source", sourceMock);
+
+        List<Map> assetsListMock = new ArrayList();
+        Map assetsMock = new HashMap();
+        assetsMock.put("id", "abc123");
+        assetsMock.put("document", documentMock);
+        assetsListMock.add(assetsMock);
+
+        mock.put("assets", assetsListMock);
+
+        return mock;
+
+    }
 }

@@ -4,6 +4,9 @@ import com.zorroa.zmlp.sdk.domain.Clip;
 
 import java.util.Map;
 
+/**
+ * Defines all the properties required to create an Asset.
+ */
 public class AssetSpec {
 
     /**

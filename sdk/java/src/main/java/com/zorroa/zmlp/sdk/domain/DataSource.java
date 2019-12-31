@@ -3,6 +3,9 @@ package com.zorroa.zmlp.sdk.domain;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * A DataSource describes a URI where Assets can be imported from.
+ */
 public class DataSource {
 
     UUID id;
