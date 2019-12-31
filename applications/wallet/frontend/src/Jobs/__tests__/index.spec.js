@@ -1,6 +1,6 @@
 import TestRenderer from 'react-test-renderer'
 
-import Jobs, { noop } from '..'
+import Jobs from '..'
 
 import jobs from '../__mocks__/jobs'
 
@@ -53,9 +53,5 @@ describe('<Jobs />', () => {
     const component = TestRenderer.create(<Jobs />)
 
     expect(component.toJSON()).toMatchSnapshot()
-  })
-
-  it('should do nothing on noop', () => {
-    expect(noop()()).toBeUndefined()
   })
 })

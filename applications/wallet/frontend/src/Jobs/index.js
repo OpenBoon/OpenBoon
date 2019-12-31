@@ -7,8 +7,6 @@ import Table from '../Table'
 import JobsEmpty from './Empty'
 import JobsRow from './Row'
 
-export const noop = () => () => {}
-
 const Jobs = () => {
   const {
     query: { projectId },
