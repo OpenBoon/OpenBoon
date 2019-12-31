@@ -12,7 +12,7 @@ RUN pip3 install --upgrade pip \
 COPY applications/wallet/app/start-server.sh /start-server.sh
 
 # Set up Node.
-WORKDIR /applications/wallet/app/frontend
+WORKDIR /applications/wallet/frontend
 RUN npm ci && npm run build
 
 # Collect static files and configs for nginx.

@@ -26,14 +26,14 @@ needs.
 
 ### React Frontend Setup
 
-The entire React project is in the `app/frontend` subdirectory. This is a basic React
+The entire React project is in the `wallet/frontend` subdirectory. This is a basic React
 application, as created by `create-react-app`.
 
 _Note_
 
 - Make sure you're using Node 12 (if you're using [nvm](https://github.com/nvm-sh/nvm#install--update-script),
   then run `nvm use node 12`)
-- All subsequent commands assume that the `app/frontend` subdirectory is your current working
+- All subsequent commands assume that the `wallet/frontend` subdirectory is your current working
   directory.
 
 ## Install Frontend Dependencies
