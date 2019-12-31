@@ -1,9 +1,11 @@
-import pytest
 from unittest import TestCase
 from unittest.mock import patch
 
-from zmlp.analysis.testing import zorroa_test_data, TestAsset
+import pytest
+
 import zmlp.analysis.proxy
+from zmlp.analysis.storage import file_storage
+from zmlp.analysis.testing import zorroa_test_data, TestAsset
 from zmlp.client import ZmlpClient
 
 IMAGE_JPG = zorroa_test_data('images/set01/faces.jpg')
@@ -12,7 +14,6 @@ VIDEO_MP4 = zorroa_test_data('video/sample_ipad.m4v')
 
 
 class ProxyFunctionTests(TestCase):
-
     file_list = [
         {
             'name': 'image_200x200.jpg',
@@ -83,7 +84,7 @@ class ProxyFunctionTests(TestCase):
                 asset, 1025, mimetype='video/', fallback=False)
 
     @patch.object(ZmlpClient, 'upload_file')
-    def test_store_proxy_media(self, upload_patch):
+    def test_store_proxy_media_unique(self, upload_patch):
         asset = TestAsset(IMAGE_JPG)
         upload_patch.return_value = {
             'name': 'image_200x200.jpg',
@@ -109,3 +110,21 @@ class ProxyFunctionTests(TestCase):
         }
         zmlp.analysis.proxy.store_proxy_media(asset, VIDEO_MP4, (200, 200))
         assert 2 == len(asset.get_files())
+
+    @patch.object(file_storage, 'store_asset_file')
+    @patch.object(ZmlpClient, 'upload_file')
+    def test_store_proxy_media_with_attrs(self, upload_patch, store_file_patch):
+        upload_patch.return_value = {}
+
+        asset = TestAsset(IMAGE_JPG)
+        asset.set_attr('tmp.proxy_source_attrs', {'king': 'kong'})
+        zmlp.analysis.proxy.store_proxy_media(
+            asset, IMAGE_JPG, (200, 200), attrs={'foo': 'bar'})
+
+        # Merges args from both the proxy_source_attrs attr and
+        # args passed into store_proxy_media
+        args, kwargs = store_file_patch.call_args_list[0]
+        assert kwargs['attrs']['king'] == 'kong'
+        assert kwargs['attrs']['width'] == 200
+        assert kwargs['attrs']['height'] == 200
+        assert kwargs['attrs']['foo'] == 'bar'

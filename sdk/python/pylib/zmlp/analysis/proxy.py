@@ -9,7 +9,7 @@ __all__ = [
 ]
 
 
-def store_proxy_media(asset, path, size, type="image"):
+def store_proxy_media(asset, path, size, type="image", attrs=None):
     """
     A convenience function that adds a proxy file to the Asset and
     uploads the file to ZMLP storage.
@@ -19,6 +19,7 @@ def store_proxy_media(asset, path, size, type="image"):
         path (str): The local path to the file.
         size (tuple of int): a tuple of width, height
         type (str): The media type
+        attrs (dict): Additional media attrs
     Returns:
         dict: a ZMLP file storage dict.
     """
@@ -26,9 +27,12 @@ def store_proxy_media(asset, path, size, type="image"):
     if not ext:
         raise ValueError('The path to the proxy file has no extension, but one is required.')
     name = '{}_{}x{}{}'.format(type, size[0], size[1], ext)
-    attrs = asset.get_attr('tmp.proxy_source_attrs') or {}
-    attrs.update({'width': size[0], 'height': size[1]})
-    return file_storage.store_asset_file(asset, path, 'proxy', rename=name, attrs=attrs)
+    proxy_attrs = asset.get_attr('tmp.proxy_source_attrs') or {}
+    proxy_attrs['width'] = size[0]
+    proxy_attrs['height'] = size[1]
+    if attrs:
+        proxy_attrs.update(attrs)
+    return file_storage.store_asset_file(asset, path, 'proxy', rename=name, attrs=proxy_attrs)
 
 
 def get_proxy_min_width(asset, min_width, mimetype="image/", fallback=False):
