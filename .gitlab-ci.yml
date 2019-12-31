@@ -31,7 +31,7 @@ wallet-frontend-test-suite:
     - npm ci
   script:
     - npm run lint
-    - npm run test:cover -- --runInBand --ci
+    - npm run test:cover -- --ci --verbose false
     - npm run size
   only:
     refs:
