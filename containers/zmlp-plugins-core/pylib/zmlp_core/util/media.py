@@ -138,14 +138,14 @@ def get_output_dimension(size, width, height):
     return int(width), int(height)
 
 
-def ffprobe(destination_path):
+def ffprobe(src_path):
     """Returns the json results of an ffprobe command as a dictionary.
 
     Args:
-        destination_path (str): temporary location to store ffprobe results.
+        src_path (str): Path the the medis.
 
     Returns:
-        :obj:`dict`: The ffprobe result
+        dict: The media properties extracgted by ffprobe
     """
     cmd = ['ffprobe',
            '-v',
@@ -154,11 +154,57 @@ def ffprobe(destination_path):
            'json',
            '-show_streams',
            '-show_format',
-           str(destination_path)]
+           str(src_path)]
 
     logger.info("running command: %s" % cmd)
     ffprobe_result = check_output(cmd, shell=False)
     return json.loads(ffprobe_result)
+
+
+def get_video_metadata(src_path):
+    """
+    Use FFProbe to extract video metadata.
+
+    Args:
+        src_path (str): The path to a video to FFPprobe
+
+    Returns:
+        (dict):
+    """
+    props = ffprobe(src_path)
+    result = {}
+    frame_rate = None
+    frames = None
+
+    for stream in props.get('streams', []):
+        if stream.get('codec_type') == 'video':
+            # Determine the frame rate.
+            frame_rate = stream.get('r_frame_rate')
+            if frame_rate:
+                numerator, denominator = frame_rate.split('/')
+                frame_rate = round(float(numerator) / float(denominator), 2)
+            result['frameRate'] = frame_rate
+            result['frames'] = stream.get('nb_frames')
+
+            # Set the dimensions
+            result['width'] = stream.get('width')
+            result['height'] = stream.get('height')
+
+    # Set the video duration.
+    duration = props.get('format', {}).get('duration')
+    if duration:
+        duration = float(duration)
+        result['length'] = duration
+        if not frames:
+            result['frames'] = int(duration * frame_rate)
+    elif frame_rate and frames and not duration:
+        result['length'] = float(frames) / float(frame_rate)
+
+    # Set the title and description.
+    result['description'] = props.get('format', {}).get('tags', {}).get('description')
+    result['title'] = props.get('format', {}).get('tags', {}).get('title')
+    result['createdTime'] = props.get('format', {}).get('tags', {}).get('creation_time')
+    return result
 
 
 def create_video_thumbnail(source_path, destination_path, seconds):

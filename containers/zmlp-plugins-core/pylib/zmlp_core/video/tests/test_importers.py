@@ -15,11 +15,15 @@ class VideoImporterUnitTestCase(PluginUnitTestCase):
     def test_set_media_metadata(self):
         asset = self.frame.asset
         self.processor._set_media_metadata(asset)
-        expected_media = {'description': u'A short description of luke sledding in winter.',
-                          'title': u'Luke crashes sled', 'length': 15.048367,
-                          'height': 360, 'width': 640,
-                          'orientation': 'landscape',
-                          'aspect': 1.78}
+        expected_media = {
+            'description': u'A short description of luke sledding in winter.',
+            'title': u'Luke crashes sled', 'length': 15.048367,
+            'height': 360, 'width': 640,
+            'orientation': 'landscape',
+            'aspect': 1.78, 'type': 'video',
+            'createdTime': '2016-04-08T15:02:31.000000Z'
+        }
+
         assert asset.get_attr('media') == expected_media
 
     def test_create_proxy_source_image(self):

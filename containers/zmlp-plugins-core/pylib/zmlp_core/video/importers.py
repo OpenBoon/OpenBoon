@@ -5,7 +5,7 @@ from pathlib2 import Path
 from zmlp.asset import Clip
 from zmlp.analysis.storage import file_storage
 from zmlp.analysis.base import AssetBuilder, ZmlpProcessorException
-from ..util.media import ffprobe, create_video_thumbnail, set_resolution_attrs
+from ..util.media import get_video_metadata, create_video_thumbnail, set_resolution_attrs
 
 
 class VideoImporter(AssetBuilder):
@@ -21,7 +21,6 @@ class VideoImporter(AssetBuilder):
 
     def process(self, frame):
         asset = frame.asset
-        asset.set_attr('media.type', 'video')
         self._set_media_metadata(asset)
         self._create_proxy_source_image(asset)
 
@@ -32,51 +31,29 @@ class VideoImporter(AssetBuilder):
             asset (Asset): Asset to add metadata to.
 
         """
-        path = file_storage.localize_remote_file(asset)
-        ffprobe_info = ffprobe(path)
-        media = asset.get_attr('media', {})
-        frame_rate = None
-        frames = None
-        width = None
-        height = None
-
-        for stream in ffprobe_info.get('streams', []):
-            if stream.get('codec_type') == 'video':
-                # Determine the frame rate.
-                frame_rate = stream.get('r_frame_rate')
-                if frame_rate:
-                    numerator, denominator = frame_rate.split('/')
-                    frame_rate = round(float(numerator) / float(denominator), 2)
-                frames = stream.get('nb_frames')
-
-                # Set the dimensions
-                width = stream.get('width')
-                height = stream.get('height')
-
-        # Set the video duration.
-        duration = ffprobe_info.get('format', {}).get('duration')
-        if duration:
-            duration = float(duration)
-            media['length'] = duration
-            if not frames:
-                frames = int(duration * frame_rate)
-        elif frame_rate and frames and not duration:
-            media['length'] = float(frames) / float(frame_rate)
-
-        # Set the title and description.
-        media['description'] = ffprobe_info.get('format', {}).get('tags', {}).get('description')
-        media['title'] = ffprobe_info.get('format', {}).get('tags', {}).get('title')
-
-        asset.set_attr('media', media)
-        if width and height:
-            set_resolution_attrs(asset, width, height)
-
-        # Everything has a clip, even if its the whole movie.
         has_clip = asset.attr_exists('clip')
-        if not has_clip:
-            # Since there is no clip, then set a clip, as all pages
-            # need to have a clip.
-            asset.set_attr('clip', Clip.scene(0.0, media['length'], 'full-movie'))
+
+        # If we don't have a clip or its the full video timeline
+        # then we can make a proxy.  Otherwise, don't make a proxy file.
+        # Other clip will re-use use this proxy and all the metadata.
+        if not has_clip or asset.get_attr('clip.timelime' == 'full'):
+
+            path = file_storage.localize_remote_file(asset)
+            probe = get_video_metadata(path)
+            asset.set_attr('media.type', 'video')
+
+            for key in ('description', 'title', 'width', 'height', 'length', 'createdTime'):
+                asset.set_attr("media.{}".format(key), probe[key])
+
+            if probe.get('width') and probe.get('height'):
+                set_resolution_attrs(asset, probe.get('width'), probe.get('height'))
+
+            # Everything has a clip, even if it's the whole movie.
+            # Only add the clip if we didn't have have it.
+            if not has_clip:
+                # Since there is no clip, then set a clip, as all pages
+                # need to have a clip.
+                asset.set_attr('clip', Clip.scene(0.0, probe['length'], 'full'))
 
     def _create_proxy_source_image(self, asset):
         """Creates a source image to be used by the ProxyIngestor.
