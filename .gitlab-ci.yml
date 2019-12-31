@@ -121,7 +121,7 @@ sdk-unit-tests:
   image: zmlp/dind-buildx
   stage: push
   services:
-    - zmlp/dind-buildx
+    - docker:18.09.8-dind
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
