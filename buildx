@@ -68,7 +68,7 @@ def build_dependency_tree(to_build):
         cmd = ["docker", "buildx", "bake", "-f", "docker-compose.yml"]
         cmd.extend(phase)
         print("Building {}".format(phase))
-        subprocess.check_call(cmd, shell=False)
+        subprocess.check_call(cmd, shell=False, env=env)
 
 
 if __name__ == '__main__':
