@@ -4,7 +4,7 @@ from unittest.mock import patch
 from zmlp import ZmlpClient
 from zmlp.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from zmlp.analysis import Frame
-from zmlp.analysis.proxy import store_asset_proxy
+from zmlp.analysis.proxy import store_proxy_media
 from zmlp_analysis.face.processors import FaceRecognitionProcessor
 
 
@@ -25,7 +25,7 @@ class FaceUnitTestCase(PluginUnitTestCase):
         test_faces_path = zorroa_test_data("images/set01/faces.jpg")
         frame = Frame(TestAsset(test_faces_path))
 
-        store_asset_proxy(frame.asset, test_faces_path, (1024, 1024))
+        store_proxy_media(frame.asset, test_faces_path, (1024, 1024))
 
         processor = self.init_processor(FaceRecognitionProcessor(), {})
         processor.process(frame)

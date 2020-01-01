@@ -4,7 +4,7 @@ from mock import patch
 
 from ..processors import CloudVisionProcessor
 from zmlp import ZmlpClient
-from zmlp.analysis.proxy import store_asset_proxy
+from zmlp.analysis.proxy import store_proxy_media
 from zmlp.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 from zmlp.analysis import Frame, ZmlpFatalProcessorException
 
@@ -354,7 +354,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         upload_patch.return_value = PROXY_FILE
         asset = TestAsset(TOOBIG)
         frame = Frame(asset)
-        store_asset_proxy(asset, TOOBIG, (200, 200))
+        store_proxy_media(asset, TOOBIG, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {})
 
         # see if the processor throws an exception for the image being too big
@@ -368,7 +368,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         upload_patch.return_value = PROXY_FILE
         asset = TestAsset(TOUCAN)
         frame = Frame(asset)
-        store_asset_proxy(asset, TOUCAN, (200, 200))
+        store_proxy_media(asset, TOUCAN, (200, 200))
 
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
@@ -404,7 +404,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         upload_patch.return_value = PROXY_FILE
         asset = TestAsset(TOUCAN)
         frame = Frame(asset)
-        store_asset_proxy(asset, TOUCAN, (200, 200))
+        store_proxy_media(asset, TOUCAN, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
             "detect_document_text": False,
@@ -498,7 +498,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         upload_patch.return_value = PROXY_FILE
         asset = TestAsset(EIFFEL)
         frame = Frame(asset)
-        store_asset_proxy(asset, EIFFEL, (200, 200))
+        store_proxy_media(asset, EIFFEL, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
             "detect_document_text": False,
@@ -533,7 +533,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         upload_patch.return_value = PROXY_FILE
         asset = TestAsset(PUNCH)
         frame = Frame(asset)
-        store_asset_proxy(asset, PUNCH, (200, 200))
+        store_proxy_media(asset, PUNCH, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
             "detect_document_text": False,
@@ -566,7 +566,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         upload_patch.return_value = PROXY_FILE
         asset = TestAsset(FACES)
         frame = Frame(asset)
-        store_asset_proxy(asset, FACES, (200, 200))
+        store_proxy_media(asset, FACES, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
             "detect_document_text": False,
@@ -618,7 +618,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         # initialize the asset and processor
         asset = TestAsset(STREETSIGN)
         frame = Frame(asset)
-        store_asset_proxy(asset, STREETSIGN, (200, 200))
+        store_proxy_media(asset, STREETSIGN, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": True,
             "detect_document_text": False,
@@ -645,7 +645,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         # initialize the asset and processor
         asset = TestAsset(MANUAL)
         frame = Frame(asset)
-        store_asset_proxy(asset, MANUAL, (200, 200))
+        store_proxy_media(asset, MANUAL, (200, 200))
         processor = self.init_processor(CloudVisionProcessor(), {
             "detect_image_text": False,
             "detect_document_text": True,
