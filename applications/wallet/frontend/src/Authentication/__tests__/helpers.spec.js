@@ -152,6 +152,9 @@ describe('<Authentication /> helpers', () => {
       const mockSignOut = jest.fn()
       const mockSetUser = jest.fn()
       const mockRemoveItem = jest.fn()
+      const mockRouterPush = jest.fn()
+
+      require('next/router').__setMockPushFunction(mockRouterPush)
 
       Object.defineProperty(window, 'localStorage', {
         writable: true,
@@ -180,6 +183,8 @@ describe('<Authentication /> helpers', () => {
         },
         method: 'POST',
       })
+
+      expect(mockRouterPush).toHaveBeenCalledWith('/')
     })
   })
 })

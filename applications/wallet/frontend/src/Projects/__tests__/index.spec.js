@@ -18,7 +18,9 @@ describe('<Projects />', () => {
       data: { results: [] },
     })
 
-    const component = TestRenderer.create(<Projects>Hello World</Projects>)
+    const component = TestRenderer.create(
+      <Projects>You have 0 projects</Projects>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -38,7 +40,7 @@ describe('<Projects />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should redirect if theres no project id', () => {
+  it('should redirect if there is no project id', () => {
     const mockFn = jest.fn()
 
     require('next/router').__setMockPushFunction(mockFn)
@@ -82,6 +84,27 @@ describe('<Projects />', () => {
       '/[projectId]/jobs',
       '/76917058-b147-4556-987a-0a0f11e46d9b/jobs',
     )
+
+    expect(component.toJSON()).toBeNull()
+  })
+
+  it('should redirect if there is a projectId but no project', () => {
+    const mockFn = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockFn)
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: { projectId: 'not-a-valid-project-id' },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: { results: [] },
+    })
+
+    const component = TestRenderer.create(<Projects>Hello World</Projects>)
+
+    expect(mockFn).toHaveBeenCalledWith('/')
 
     expect(component.toJSON()).toBeNull()
   })
