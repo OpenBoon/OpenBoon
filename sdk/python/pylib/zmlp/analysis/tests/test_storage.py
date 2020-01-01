@@ -33,15 +33,21 @@ class LocalFileCacheTests(TestCase):
             del os.environ['ZMLP_TASK_ID']
             cache.close()
 
-    def test_localize_http(self):
+    def test_localize_uri_http(self):
         path = self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
         assert os.path.exists(path)
         assert os.path.getsize(path) == 267493
 
-    def test_localize_gs(self):
+    def test_localize_uri_gs(self):
         path = self.lfc.localize_uri('gs://zorroa-dev-data/image/pluto_2.1.jpg')
         assert os.path.exists(path)
         assert os.path.getsize(path) == 65649
+
+    def test_localize_uri_local_path(self):
+        local_file = zorroa_test_data('images/set01/toucan.jpg', uri=False)
+        path = self.lfc.localize_uri(local_file)
+        assert os.path.exists(path)
+        assert os.path.getsize(path) == 97221
 
     def test_get_path(self):
         path = self.lfc.get_path('spock', '.kirk')

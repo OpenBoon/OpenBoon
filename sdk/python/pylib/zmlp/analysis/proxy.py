@@ -2,8 +2,14 @@ import os
 
 from zmlp.analysis.storage import file_storage
 
+__all__ = [
+    'store_proxy_media',
+    'get_proxy_min_width',
+    'get_proxy_level'
+]
 
-def store_asset_proxy(asset, path, size):
+
+def store_proxy_media(asset, path, size, type="image", attrs=None):
     """
     A convenience function that adds a proxy file to the Asset and
     uploads the file to ZMLP storage.
@@ -12,16 +18,21 @@ def store_asset_proxy(asset, path, size):
         asset (Asset): The purpose of the file, ex proxy.
         path (str): The local path to the file.
         size (tuple of int): a tuple of width, height
-
+        type (str): The media type
+        attrs (dict): Additional media attrs
     Returns:
         dict: a ZMLP file storage dict.
     """
     _, ext = os.path.splitext(path)
     if not ext:
-        raise ValueError("The path to the proxy file has no extension, but one is required.")
-    name = "proxy_{}x{}{}".format(size[0], size[1], ext)
-    return file_storage.store_asset_file(asset, path, "proxy", rename=name,
-                                         attrs={"width": size[0], "height": size[1]})
+        raise ValueError('The path to the proxy file has no extension, but one is required.')
+    name = '{}_{}x{}{}'.format(type, size[0], size[1], ext)
+    proxy_attrs = asset.get_attr('tmp.proxy_source_attrs') or {}
+    proxy_attrs['width'] = size[0]
+    proxy_attrs['height'] = size[1]
+    if attrs:
+        proxy_attrs.update(attrs)
+    return file_storage.store_asset_file(asset, path, 'proxy', rename=name, attrs=proxy_attrs)
 
 
 def get_proxy_min_width(asset, min_width, mimetype="image/", fallback=False):
@@ -40,17 +51,17 @@ def get_proxy_min_width(asset, min_width, mimetype="image/", fallback=False):
         str: A path to the localized proxy file or None on no match.
 
     """
-    files = asset.get_files(mimetype=mimetype, category="proxy", attr_keys=["width"],
+    files = asset.get_files(mimetype=mimetype, category='proxy', attr_keys=['width'],
                             sort_func=lambda f: f['attrs']['width'])
     # Trim out smaller ones
-    files = [file for file in files if file["attrs"]["width"] >= min_width]
+    files = [file for file in files if file['attrs']['width'] >= min_width]
 
     if files:
         return file_storage.localize_asset_file(asset, files[0])
     elif fallback:
         return file_storage.localize_remote_file(asset)
     else:
-        raise ValueError("No suitable proxy file was found.")
+        raise ValueError('No suitable proxy file was found.')
 
 
 def get_proxy_level(asset, level, mimetype="image/"):
@@ -70,7 +81,7 @@ def get_proxy_level(asset, level, mimetype="image/"):
         str: A path to the localized proxy file or None on no match.
 
     """
-    files = asset.get_files(mimetype=mimetype, category="proxy", attr_keys=["width"],
+    files = asset.get_files(mimetype=mimetype, category='proxy', attr_keys=['width'],
                             sort_func=lambda f: f['attrs']['width'])
     if level >= len(files):
         level = -1

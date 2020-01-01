@@ -21,6 +21,15 @@ def test_get_image_metadata():
     assert metadata["height"] == "2448"
 
 
+def test_get_video_metadata():
+    metadata = media.get_video_metadata(VIDEO_MP4)
+    assert 25.0 == metadata['frameRate']
+    assert 3611 == metadata['frames']
+    assert 450 == metadata['width']
+    assert 360 == metadata['height']
+    assert 144.45 == metadata['length']
+
+
 @patch('zmlp_core.util.media.check_output')
 def test_get_image_metadata_invalid_chars(check_out_patch):
 

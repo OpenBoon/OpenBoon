@@ -115,9 +115,11 @@ val STANDARD_PIPELINE = listOf(
     ProcessorRef("zmlp_core.core.processors.PreCacheSourceFileProcessor", "zmlp/plugins-core"),
     ProcessorRef("zmlp_core.image.importers.ImageImporter", "zmlp/plugins-core"),
     ProcessorRef("zmlp_core.office.importers.OfficeImporter", "zmlp/plugins-core"),
+    ProcessorRef("zmlp_core.video.VideoImporter", "zmlp/plugins-core"),
     ProcessorRef("zmlp_core.core.processors.AssertAttributesProcessor", "zmlp/plugins-core",
         mapOf("attrs" to listOf("media.type"))),
-    ProcessorRef("zmlp_core.proxy.processors.ProxyProcessor", "zmlp/plugins-core"),
+    ProcessorRef("zmlp_core.proxy.ImageProxyProcessor", "zmlp/plugins-core"),
+    ProcessorRef("zmlp_core.proxy.VideoProxyProcessor", "zmlp/plugins-core"),
     ProcessorRef("zmlp_analysis.mxnet.processors.ResNetSimilarityProcessor", "zmlp/plugins-analysis"),
     ProcessorRef("zmlp_analysis.mxnet.processors.ResNetClassifyProcessor", "zmlp/plugins-analysis"),
     ProcessorRef("zmlp_analysis.detect.ZmlpObjectDetectionProcessor", "zmlp/plugins-analysis")
