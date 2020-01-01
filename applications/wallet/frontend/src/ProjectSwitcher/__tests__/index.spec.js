@@ -52,4 +52,17 @@ describe('<ProjectSwitcher />', () => {
 
     expect(component.toJSON()).toBeNull()
   })
+
+  it('should not render while projects are loading', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: { projectId: 'not-a-valid-project-id' },
+    })
+
+    require('swr').__setMockUseSWRResponse({})
+
+    const component = TestRenderer.create(<ProjectSwitcher />)
+
+    expect(component.toJSON()).toBeNull()
+  })
 })

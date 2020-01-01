@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 
 import userShape from '../User/shape'
 
@@ -14,6 +15,9 @@ import HamburgerSvg from './hamburger.svg'
 const LOGO_WIDTH = 110
 
 const Navbar = ({ user, isSidebarOpen, setSidebarOpen, logout }) => {
+  const {
+    query: { projectId },
+  } = useRouter()
   return (
     <div
       css={{
@@ -32,24 +36,26 @@ const Navbar = ({ user, isSidebarOpen, setSidebarOpen, logout }) => {
         paddingRight: spacing.normal,
       }}>
       <div css={{ display: 'flex', alignItems: 'stretch' }}>
-        <button
-          aria-label="Open Sidebar Menu"
-          type="button"
-          onClick={() => setSidebarOpen(!isSidebarOpen)}
-          css={{
-            border: 0,
-            backgroundColor: 'inherit',
-            color: colors.structure.steel,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: spacing.base,
-            margin: 0,
-            marginLeft: -spacing.base,
-            cursor: 'pointer',
-          }}>
-          <HamburgerSvg width={20} aria-hidden />
-        </button>
+        {!!projectId && (
+          <button
+            aria-label="Open Sidebar Menu"
+            type="button"
+            onClick={() => setSidebarOpen(!isSidebarOpen)}
+            css={{
+              border: 0,
+              backgroundColor: 'inherit',
+              color: colors.structure.steel,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: spacing.base,
+              margin: 0,
+              marginLeft: -spacing.base,
+              cursor: 'pointer',
+            }}>
+            <HamburgerSvg width={20} aria-hidden />
+          </button>
+        )}
 
         <div css={{ paddingLeft: spacing.base, paddingRight: spacing.base }}>
           <LogoSvg width={LOGO_WIDTH} />
