@@ -32,12 +32,11 @@ class VideoImporter(AssetBuilder):
 
         """
         has_clip = asset.attr_exists('clip')
+        has_media_type = asset.attr_exists('media.type')
 
-        # If we don't have a clip or its the full video timeline
-        # then we can make a proxy.  Otherwise, don't make a proxy file.
-        # Other clip will re-use use this proxy and all the metadata.
-        if not has_clip or asset.get_attr('clip.timelime' == 'full'):
-
+        # If there is no media type, then we have to
+        # fetch metadata for this file.
+        if not has_media_type:
             path = file_storage.localize_remote_file(asset)
             probe = get_video_metadata(path)
             asset.set_attr('media.type', 'video')
@@ -89,4 +88,4 @@ class VideoImporter(AssetBuilder):
                     destination_path, final_error))
 
         asset.set_attr('tmp.proxy_source_image', str(destination_path))
-        asset.set_attr('tmp.proxy_source_attrs', {'time_offset': seconds})
+        asset.set_attr('tmp.image_proxy_source_attrs', {'time_offset': seconds})
