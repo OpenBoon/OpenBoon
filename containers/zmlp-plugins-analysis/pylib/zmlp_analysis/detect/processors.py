@@ -16,7 +16,7 @@ class ZmlpObjectDetectionProcessor(AssetBuilder):
 
     def process(self, frame):
         asset = frame.asset
-        p_path = zmlp.analysis.proxy.get_proxy_level(asset, 0)
+        p_path = zmlp.analysis.proxy.get_proxy_level(asset, 1)
 
         im = cv2.imread(p_path)
         bbox, label, conf = cv.detect_common_objects(im)
