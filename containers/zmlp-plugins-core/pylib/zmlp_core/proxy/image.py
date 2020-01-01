@@ -31,7 +31,7 @@ class ImageProxyProcessor(AssetBuilder):
         super(ImageProxyProcessor, self).__init__()
         self.created_proxy_count = 0
         self.add_arg(Argument('force', 'boolean', default=False, toolTip=self.toolTips['force']))
-        self.add_arg(Argument('sizes', 'list[int]', default=[1024, 512, 256],
+        self.add_arg(Argument('sizes', 'list[int]', default=[1024, 512, 320],
                               toolTip=self.toolTips['sizes']))
         self.add_arg(Argument('file_type', 'str', default='jpg',
                               toolTip=self.toolTips['file_type']))
@@ -216,8 +216,11 @@ class ImageProxyProcessor(AssetBuilder):
         valid_sizes = []
         longest_edge = max(width, height)
         for size in self.arg_value('sizes'):
-            if size <= longest_edge:
-                valid_sizes.append(size)
+            # Can't use a set here, maintaining order
+            _size = min(size, longest_edge)
+            if _size not in valid_sizes:
+                valid_sizes.append(_size)
+
         if not valid_sizes:
             valid_sizes.append(longest_edge)
         return valid_sizes

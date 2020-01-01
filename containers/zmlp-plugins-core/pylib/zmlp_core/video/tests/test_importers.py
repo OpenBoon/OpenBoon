@@ -26,6 +26,17 @@ class VideoImporterUnitTestCase(PluginUnitTestCase):
 
         assert asset.get_attr('media') == expected_media
 
+    def test_skip_set_media_metadata(self):
+        # If media.type is set then extracting
+        # media attrs is skipped.
+        asset = self.frame.asset
+        asset.set_attr('media.type', 'video')
+        self.processor._set_media_metadata(asset)
+        expected_media = {
+            'type': 'video'
+        }
+        assert asset.get_attr('media') == expected_media
+
     def test_create_proxy_source_image(self):
         asset = self.frame.asset
         asset.set_attr('clip', {'start': 0, 'stop': 10})

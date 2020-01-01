@@ -27,7 +27,7 @@ def store_proxy_media(asset, path, size, type="image", attrs=None):
     if not ext:
         raise ValueError('The path to the proxy file has no extension, but one is required.')
     name = '{}_{}x{}{}'.format(type, size[0], size[1], ext)
-    proxy_attrs = asset.get_attr('tmp.proxy_source_attrs') or {}
+    proxy_attrs = asset.get_attr('tmp.{}_proxy_source_attrs'.format(type)) or {}
     proxy_attrs['width'] = size[0]
     proxy_attrs['height'] = size[1]
     if attrs:
