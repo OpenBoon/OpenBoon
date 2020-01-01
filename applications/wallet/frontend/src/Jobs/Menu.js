@@ -32,7 +32,7 @@ const ACTIONS = [
   },
 ]
 
-const DataQueueMenu = ({ projectId, jobId, revalidate }) => {
+const JobsMenu = ({ projectId, jobId, revalidate }) => {
   return (
     <Menu
       open="left"
@@ -81,10 +81,10 @@ const DataQueueMenu = ({ projectId, jobId, revalidate }) => {
   )
 }
 
-DataQueueMenu.propTypes = {
+JobsMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   jobId: PropTypes.string.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 
-export default DataQueueMenu
+export default JobsMenu
