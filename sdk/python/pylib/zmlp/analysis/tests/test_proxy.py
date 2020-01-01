@@ -117,7 +117,7 @@ class ProxyFunctionTests(TestCase):
         upload_patch.return_value = {}
 
         asset = TestAsset(IMAGE_JPG)
-        asset.set_attr('tmp.proxy_source_attrs', {'king': 'kong'})
+        asset.set_attr('tmp.image_proxy_source_attrs', {'king': 'kong'})
         zmlp.analysis.proxy.store_proxy_media(
             asset, IMAGE_JPG, (200, 200), attrs={'foo': 'bar'})
 
