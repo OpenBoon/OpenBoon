@@ -114,5 +114,5 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         assert len(colors) == 9
 
     def test_get_valid_sizes(self):
-        assert self.processor._get_valid_sizes(800, 600) == [512, 256]
+        assert self.processor._get_valid_sizes(800, 600) == [800, 512, 320]
         assert self.processor._get_valid_sizes(100, 50) == [100]
