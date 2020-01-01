@@ -1,22 +1,18 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import DataQueueMenu from '../Menu'
+import JobsMenu from '../Menu'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const JOB_ID = '82d5308b-67c2-1433-8fef-0a580a000955'
 
-describe('<DataQueueMenu />', () => {
+describe('<JobsMenu />', () => {
   it('should render properly', async () => {
     const mockFn = jest.fn()
 
     fetch.mockResponseOnce('{}')
 
     const component = TestRenderer.create(
-      <DataQueueMenu
-        projectId={PROJECT_ID}
-        jobId={JOB_ID}
-        revalidate={mockFn}
-      />,
+      <JobsMenu projectId={PROJECT_ID} jobId={JOB_ID} revalidate={mockFn} />,
     )
 
     act(() => {

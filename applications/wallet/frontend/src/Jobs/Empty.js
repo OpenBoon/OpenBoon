@@ -2,7 +2,7 @@ import NoJobsSvg from '../Icons/noJobs.svg'
 
 import { colors } from '../Styles'
 
-const DataQueueEmpty = () => {
+const JobsEmpty = () => {
   return (
     <div
       css={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -13,4 +13,4 @@ const DataQueueEmpty = () => {
   )
 }
 
-export default DataQueueEmpty
+export default JobsEmpty
