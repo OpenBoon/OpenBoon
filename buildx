@@ -8,7 +8,7 @@ import yaml
 
 def main():
     parser = argparse.ArgumentParser(description='Build docker containers with buildx')
-    parser.add_argument('containers', metavar='C', type=str, nargs='?',
+    parser.add_argument('containers', metavar='C', type=str, nargs='*',
                         help='Container names to build')
     parser.add_argument('--core', '-c', action='store_true',
                         help='Build zmlp-plugins-core and SDK requirements')
@@ -18,7 +18,11 @@ def main():
                         help='Build zmlp-plugins-analysis and SDK requirements')
 
     args = parser.parse_args()
-    containers = args.containers or set()
+    if args.containers:
+        containers = set(args.containers)
+    else:
+        containers = set()
+
     if args.core:
         containers.update(['zmlp-py3-sdk', 'zmlp-plugins-base', 'zmlp-plugins-core'])
     if args.jvm:
@@ -66,11 +70,12 @@ def build_dependency_tree(to_build):
         if not phase:
             continue
         # Adding --no-cache won't use the stupid maven cache.
-        cmd = ["docker", "buildx", "bake", "-f", "docker-compose.yml"]
+        cmd = ['docker', 'buildx', 'bake', '-f', 'docker-compose.yml']
         cmd.extend(phase)
-        print("Building {}".format(phase))
+        print('Building {}'.format(phase))
         subprocess.check_call(cmd, shell=False, env=env)
 
 
 if __name__ == '__main__':
     main()
+
