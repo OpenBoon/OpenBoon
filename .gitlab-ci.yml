@@ -162,12 +162,25 @@ docker_hub_build_push:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://localhost:2375
-#  retry: 2
+  retry: 2
   before_script:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
     - ./buildx
+    - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
+    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
+    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
+    - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
+    - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
+    - docker tag zmlp/py3-base:latest zmlp/py3-base:development; docker push zmlp/py3-base:development
+    - docker tag zmlp/py3-sdk:latest zmlp/py3-sdk:development; docker push zmlp/py3-sdk:development
+    - docker tag zmlp/plugins-base:latest zmlp/plugins-base:development; docker push zmlp/plugins-base:development
+    - docker tag zmlp/plugins-core:latest zmlp/plugins-core:development; docker push zmlp/plugins-core:development
+    - docker tag zmlp/plugins-analysis:latest zmlp/plugins-analysis:development; docker push zmlp/plugins-analysis:development
+    - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
+#  only:
+#    - development
 
 .docker_hub_push_base:
   image: docker:18.09.8-dind
