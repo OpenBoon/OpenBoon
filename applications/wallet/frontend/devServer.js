@@ -4,7 +4,7 @@ import p from 'http-proxy-middleware'
 import morgan from 'morgan'
 
 import projects from './src/Projects/__mocks__/projects'
-import jobs from './src/DataQueue/__mocks__/jobs'
+import jobs from './src/Jobs/__mocks__/jobs'
 import apikeys from './src/ApiKeys/__mocks__/apikeys'
 
 const { MOCKED, SLOW } = process.env

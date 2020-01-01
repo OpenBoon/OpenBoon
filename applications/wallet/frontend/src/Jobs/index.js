@@ -4,12 +4,10 @@ import { useRouter } from 'next/router'
 import PageTitle from '../PageTitle'
 import Table from '../Table'
 
-import DataQueueEmpty from './Empty'
-import DataQueueRow from './Row'
+import JobsEmpty from './Empty'
+import JobsRow from './Row'
 
-export const noop = () => () => {}
-
-const DataQueue = () => {
+const Jobs = () => {
   const {
     query: { projectId },
   } = useRouter()
@@ -34,9 +32,9 @@ const DataQueue = () => {
           'Errors',
           'Task Progress',
         ]}
-        renderEmpty={<DataQueueEmpty />}
+        renderEmpty={<JobsEmpty />}
         renderRow={({ result, revalidate }) => (
-          <DataQueueRow
+          <JobsRow
             key={result.id}
             projectId={projectId}
             job={result}
@@ -48,4 +46,4 @@ const DataQueue = () => {
   )
 }
 
-export default DataQueue
+export default Jobs
