@@ -13,6 +13,6 @@ python3 ./manage.py migrate --no-input
 
 # Start the server.
 gunicorn -b :8080 wallet.wsgi &
-cd frontend
-npm run prod &
+cd ../frontend
+npm start &
 nginx -g "daemon off;"
