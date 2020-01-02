@@ -1,12 +1,10 @@
 package com.zorroa.zmlp.sdk.app;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.zorroa.zmlp.sdk.ApiKey;
 import com.zorroa.zmlp.sdk.Json;
 import com.zorroa.zmlp.sdk.ZmlpClient;
-import com.zorroa.zmlp.sdk.domain.Asset.Asset;
-import com.zorroa.zmlp.sdk.domain.Asset.AssetSpec;
-import com.zorroa.zmlp.sdk.domain.Asset.BatchCreateAssetRequest;
-import com.zorroa.zmlp.sdk.domain.Asset.BatchCreateAssetResponse;
+import com.zorroa.zmlp.sdk.domain.Asset.*;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +43,7 @@ public class AssetAppTests extends AbstractAppTest {
     }
 
     @Test
-    public void testGetById(){
+    public void testGetById() {
 
         webServer.enqueue(new MockResponse().setBody(Json.asJson(getGetByIdMock())));
 
@@ -56,7 +54,7 @@ public class AssetAppTests extends AbstractAppTest {
     }
 
     @Test
-    public void testUploadAssets(){
+    public void testUploadAssets() {
 
         webServer.enqueue(new MockResponse().setBody(Json.asJson(getUploadAssetsMock())));
 
@@ -66,40 +64,44 @@ public class AssetAppTests extends AbstractAppTest {
         assertEquals(response.getStatus().get(0).getAssetId(), "abc123");
     }
 
-    // Mocks
-    private Map getMockSearchResult() {
-        Map mock = new HashMap();
-        mock.put("took", 4);
-        mock.put("timed_out", false);
+    @Test
+    public void testSearchRaw() {
 
-        List hitsMock = new ArrayList();
-        Map hit1 = new HashMap();
-        hit1.put("_index", "litvqrkus86sna2w");
-        hit1.put("_type", "asset");
-        hit1.put("_id", "dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg");
-        hit1.put("_score", 0.2876821);
-        Map hit1_Source = new HashMap();
-        Map hit1Source = new HashMap();
-        hit1Source.put("path", "https://i.imgur.com/SSN26nN.jpg");
-        hit1_Source.put("source", hit1Source);
-        hit1.put("_source", hit1_Source);
-        hitsMock.add(hit1);
+        webServer.enqueue(new MockResponse().setBody(Json.asJson(getMockSearchResult())));
 
-        Map hit2 = new HashMap();
-        hit2.put("_index", "litvqrkus86sna2w");
-        hit2.put("_type", "asset");
-        hit2.put("_id", "dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg");
-        hit2.put("_score", 0.2876821);
-        Map hit2_Source = new HashMap();
-        Map hit2Source = new HashMap();
-        hit2Source.put("path", "https://i.imgur.com/foo.jpg");
-        hit2_Source.put("source", hit2Source);
-        hit2.put("_source", hit2_Source);
-        hitsMock.add(hit2);
+        Map query = new HashMap();
+        query.put("match_all", new HashMap());
+        AssetSearch assetSearch = new AssetSearch(query);
 
-        return mock;
+        JsonNode searchResult = assetApp.search(assetSearch);
+        String path = searchResult.get("hits").get("hits").get(0).get("_source").get("source").get("path").asText();
+
+        assertEquals(path, "https://i.imgur.com/SSN26nN.jpg");
     }
 
+    @Test
+    public void testSearchElement() {
+
+        webServer.enqueue(new MockResponse().setBody(Json.asJson(getMockSearchResult())));
+
+        Map query = new HashMap();
+        query.put("match_all", new HashMap());
+        Map elementQuery = new HashMap();
+        Map elementQueryTerms = new HashMap();
+        elementQueryTerms.put("element.labels", "cat");
+        elementQuery.put("terms", elementQueryTerms);
+
+        AssetSearch assetSearch = new AssetSearch(query, elementQuery);
+
+        JsonNode searchResult = assetApp.search(assetSearch);
+        String path = searchResult.get("hits").get("hits").get(0).get("_source").get("source").get("path").asText();
+
+        assertEquals(path, "https://i.imgur.com/SSN26nN.jpg");
+    }
+
+
+
+    // Mocks
     private Map getImportFilesMock() {
         Map mock = new HashMap();
 
@@ -125,7 +127,7 @@ public class AssetAppTests extends AbstractAppTest {
 
     }
 
-    private Map getGetByIdMock(){
+    private Map getGetByIdMock() {
         Map mock = new HashMap();
 
         mock.put("id", "abc123");
@@ -138,11 +140,11 @@ public class AssetAppTests extends AbstractAppTest {
         return mock;
     }
 
-    private Map getUploadAssetsMock(){
+    private Map getUploadAssetsMock() {
         Map mock = new HashMap();
         List<Map> statusListMock = new ArrayList();
         Map statusMock = new HashMap();
-        statusMock.put("assetId","abc123");
+        statusMock.put("assetId", "abc123");
         statusMock.put("failed", false);
         statusListMock.add(statusMock);
         mock.put("status", statusListMock);
@@ -163,4 +165,48 @@ public class AssetAppTests extends AbstractAppTest {
         return mock;
 
     }
+
+    private Map getMockSearchResult() {
+        Map mock = new HashMap();
+        mock.put("took", 4);
+        mock.put("timed_out", false);
+
+        Map hitsMock = new HashMap();
+        List hitsListMock = new ArrayList();
+        Map hit1 = new HashMap();
+        hit1.put("_index", "litvqrkus86sna2w");
+        hit1.put("_type", "asset");
+        hit1.put("_id", "dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg");
+        hit1.put("_score", 0.2876821);
+        Map hit1_Source = new HashMap();
+        Map hit1Source = new HashMap();
+        hit1Source.put("path", "https://i.imgur.com/SSN26nN.jpg");
+        hit1_Source.put("source", hit1Source);
+        hit1.put("_source", hit1_Source);
+        hitsListMock.add(hit1);
+
+
+        Map hit2 = new HashMap();
+        hit2.put("_index", "litvqrkus86sna2w");
+        hit2.put("_type", "asset");
+        hit2.put("_id", "dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg");
+        hit2.put("_score", 0.2876821);
+        Map hit2_Source = new HashMap();
+        Map hit2Source = new HashMap();
+        hit2Source.put("path", "https://i.imgur.com/foo.jpg");
+        hit2_Source.put("source", hit2Source);
+        hit2.put("_source", hit2_Source);
+        hitsListMock.add(hit2);
+
+        hitsMock.put("hits", hitsListMock);
+        hitsMock.put("max_score", 0.2876821);
+
+        Map hitsMockTotal = new HashMap();
+        hitsMockTotal.put("value", 2);
+        hitsMock.put("total", hitsMockTotal);
+        mock.put("hits", hitsMock);
+
+        return mock;
+    }
+
 }

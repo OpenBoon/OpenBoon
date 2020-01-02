@@ -1,11 +1,11 @@
 package com.zorroa.zmlp.sdk.app;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.zorroa.zmlp.sdk.ZmlpClient;
-import com.zorroa.zmlp.sdk.domain.Asset.Asset;
-import com.zorroa.zmlp.sdk.domain.Asset.AssetSpec;
-import com.zorroa.zmlp.sdk.domain.Asset.BatchCreateAssetRequest;
-import com.zorroa.zmlp.sdk.domain.Asset.BatchCreateAssetResponse;
+import com.zorroa.zmlp.sdk.domain.Asset.*;
+import jdk.internal.util.xml.impl.Input;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +38,11 @@ public class AssetApp {
         return client.get(String.format("/api/v3/assets/%s", id), null,Asset.class);
     }
 
+    /**
+     *
+     * @param assetSpecList List of files to upload
+     * @return Response State after provisioning assets.
+     */
     public BatchCreateAssetResponse uploadFiles(List<AssetSpec> assetSpecList) {
 
         List<String> uris = assetSpecList.stream().map(assetSpec -> assetSpec.getUri()).collect(Collectors.toList());
@@ -46,5 +51,9 @@ public class AssetApp {
 
         return client.uploadFiles("/api/v3/assets/_batchUpload", uris, body, BatchCreateAssetResponse.class);
 
+    }
+
+    public JsonNode search(AssetSearch assetSearch){
+        return client.post("/api/v3/assets/_search", assetSearch, JsonNode.class);
     }
 }
