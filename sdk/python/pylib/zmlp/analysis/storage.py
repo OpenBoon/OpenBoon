@@ -124,6 +124,8 @@ class LocalFileCache(object):
             bucket = gcs_client.get_bucket(parsed_uri.netloc)
             blob = bucket.blob(parsed_uri.path[1:])
             blob.download_to_filename(path)
+        elif parsed_uri.scheme == '' and parsed_uri.path.startswith("/"):
+            path = parsed_uri.path
         else:
             raise ZmlpStorageException('Invalid URI, unsupported scheme: {}'.format(parsed_uri))
         return path

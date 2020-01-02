@@ -12,7 +12,11 @@ if (process.env.NODE_ENV === 'production') {
 
 class MyApp extends App {
   render() {
-    const { Component, pageProps } = this.props
+    const { Component, pageProps, router, err = '' } = this.props
+
+    if (router.route === '/_error') {
+      return <Component {...pageProps} err={err} />
+    }
 
     return (
       <Authentication>

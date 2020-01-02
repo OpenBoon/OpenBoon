@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DataQueueMenu /> should render properly 1`] = `
+exports[`<JobsMenu /> should render properly 1`] = `
 .emotion-7 {
   position: relative;
 }

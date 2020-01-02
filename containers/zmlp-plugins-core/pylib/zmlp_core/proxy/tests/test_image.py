@@ -1,11 +1,11 @@
-import pytest
 from unittest.mock import patch
+
+import pytest
 
 from zmlp.analysis import Frame
 from zmlp.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from zmlp.client import ZmlpClient
-
-from zmlp_core.proxy.processors import ProxyProcessor, get_tiny_proxy_colors
+from zmlp_core.proxy.image import ImageProxyProcessor, get_tiny_proxy_colors
 
 TOUCAN_PATH = zorroa_test_data("images/set01/toucan.jpg", uri=False)
 TOUCAN = zorroa_test_data("images/set01/toucan.jpg")
@@ -21,7 +21,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         self.frame.asset.set_attr('media.width', 512)
         self.frame.asset.set_attr('media.height', 341)
         self.frame.asset.set_attr('tmp.proxy_source_image', TOUCAN)
-        self.processor = self.init_processor(ProxyProcessor(), {})
+        self.processor = self.init_processor(ImageProxyProcessor(), {})
 
         self.storage_patch = {
             "name": "proxy_512x341.jpg",
@@ -36,7 +36,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
 
     def test_init(self):
         with pytest.raises(ValueError) as error:
-            self.init_processor(ProxyProcessor(), {'file_type': 'butts'})
+            self.init_processor(ImageProxyProcessor(), {'file_type': 'butts'})
         assert '"butts" is not a valid type' in error.value.args[0]
 
     @patch.object(ZmlpClient, 'upload_file')
@@ -54,17 +54,17 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         frame.asset.set_attr('media.height', 768)
         frame.asset.set_attr('tmp.proxy_source_image', TOUCAN)
 
-        processor = self.init_processor(ProxyProcessor(), {"sizes": [384]})
+        processor = self.init_processor(ImageProxyProcessor(), {"sizes": [384]})
         processor.process(frame)
         assert len(frame.asset.get_attr("files")) == 1
 
-        processor = self.init_processor(ProxyProcessor(), {"sizes": [512, 384]})
+        processor = self.init_processor(ImageProxyProcessor(), {"sizes": [512, 384]})
         processor.process(frame)
         assert len(frame.asset.get_attr("files")) == 2
 
         assert processor.created_proxy_count == 1
 
-    @patch.object(ProxyProcessor, '_create_proxy_images')
+    @patch.object(ImageProxyProcessor, '_create_proxy_images')
     def test_no_process(self, proxy_patch):
         self.frame.asset.set_attr('proxies', True)
         assert proxy_patch.call_count == 0
@@ -114,5 +114,5 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         assert len(colors) == 9
 
     def test_get_valid_sizes(self):
-        assert self.processor._get_valid_sizes(800, 600) == [512, 256]
+        assert self.processor._get_valid_sizes(800, 600) == [800, 512, 320]
         assert self.processor._get_valid_sizes(100, 50) == [100]

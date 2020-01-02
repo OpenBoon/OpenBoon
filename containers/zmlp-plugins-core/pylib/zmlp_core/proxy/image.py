@@ -9,14 +9,14 @@ from pathlib2 import Path
 
 from zmlp.analysis import AssetBuilder, Argument
 from zmlp.analysis.storage import file_storage
-from zmlp.analysis.proxy import store_asset_proxy, get_proxy_level
+from zmlp.analysis.proxy import store_proxy_media, get_proxy_level
 from zmlp_core.util.media import get_output_dimension, media_size
 
 
 logger = logging.getLogger(__file__)
 
 
-class ProxyProcessor(AssetBuilder):
+class ImageProxyProcessor(AssetBuilder):
     toolTips = {
         'force': 'Force re-creation of proxies, even if they already exist.',
         'sizes': 'Sizes of the proxies to create.',
@@ -28,10 +28,10 @@ class ProxyProcessor(AssetBuilder):
     VALID_FILE_TYPES = {'jpg': 'image/jpeg', 'png': 'image/png'}
 
     def __init__(self):
-        super(ProxyProcessor, self).__init__()
+        super(ImageProxyProcessor, self).__init__()
         self.created_proxy_count = 0
         self.add_arg(Argument('force', 'boolean', default=False, toolTip=self.toolTips['force']))
-        self.add_arg(Argument('sizes', 'list[int]', default=[1024, 512, 256],
+        self.add_arg(Argument('sizes', 'list[int]', default=[1024, 512, 320],
                               toolTip=self.toolTips['sizes']))
         self.add_arg(Argument('file_type', 'str', default='jpg',
                               toolTip=self.toolTips['file_type']))
@@ -41,8 +41,6 @@ class ProxyProcessor(AssetBuilder):
                               toolTip=self.toolTips['output_args']))
 
     def init(self):
-        # Inherits parent docstring.
-        super(ProxyProcessor, self).init()
         file_type = self.arg_value('file_type')
         if file_type not in self.VALID_FILE_TYPES:
             raise ValueError('"%s" is not a valid type (%s)' %
@@ -67,7 +65,7 @@ class ProxyProcessor(AssetBuilder):
                                                           source_path))
         proxy_paths = self._create_proxy_images(asset)
         for proxy in proxy_paths:
-            store_asset_proxy(asset, proxy[2], (proxy[0], proxy[1]))
+            store_proxy_media(asset, proxy[2], (proxy[0], proxy[1]))
         set_tiny_proxy_colors(asset)
 
     def _create_proxy_images(self, asset):
@@ -218,8 +216,11 @@ class ProxyProcessor(AssetBuilder):
         valid_sizes = []
         longest_edge = max(width, height)
         for size in self.arg_value('sizes'):
-            if size <= longest_edge:
-                valid_sizes.append(size)
+            # Can't use a set here, maintaining order
+            _size = min(size, longest_edge)
+            if _size not in valid_sizes:
+                valid_sizes.append(_size)
+
         if not valid_sizes:
             valid_sizes.append(longest_edge)
         return valid_sizes
