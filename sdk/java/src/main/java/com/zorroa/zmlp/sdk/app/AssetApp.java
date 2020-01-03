@@ -58,7 +58,7 @@ public class AssetApp {
      * https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-body.html
      *
      * @param assetSearch Asset search object that contains The Elastic Search and Element Query
-     * @return A SearchResult containing assets or in raw mode an ElasticSearch search result dictionary.
+     * @return A SearchResult containing assets ElasticSearch search result dictionary.
      */
 
     public PagedList<Asset> search(AssetSearch assetSearch) {
@@ -66,6 +66,18 @@ public class AssetApp {
 
         return buildAssetListResult(post);
     }
+
+    /**
+     * Perform an asset search using the ElasticSearch query DSL.  Note that for
+     * load and security purposes, not all ElasticSearch search options are accepted.
+     * <p>
+     * See Also:
+     * For search/query format.
+     * https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-body.html
+     *
+     * @param assetSearch Asset search object that contains The Elastic Search and Element Query
+     * @return A SearchResult containing Raw mode an ElasticSearch search result dictionary.
+     */
 
     public Map<String, Object> rawSearch(AssetSearch assetSearch) {
         return client.post("/api/v3/assets/_search", assetSearch, Map.class);
