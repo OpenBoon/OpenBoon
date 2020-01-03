@@ -9,10 +9,10 @@ import okhttp3.mockwebserver.MockResponse;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AssetAppTests extends AbstractAppTest {
 
@@ -73,7 +73,7 @@ public class AssetAppTests extends AbstractAppTest {
         query.put("match_all", new HashMap());
         AssetSearch assetSearch = new AssetSearch(query);
 
-        JsonNode searchResult = assetApp.search(assetSearch);
+        JsonNode searchResult = assetApp.search(assetSearch, true);
         String path = searchResult.get("hits").get("hits").get(0).get("_source").get("source").get("path").asText();
 
         assertEquals(path, "https://i.imgur.com/SSN26nN.jpg");
@@ -93,13 +93,25 @@ public class AssetAppTests extends AbstractAppTest {
 
         AssetSearch assetSearch = new AssetSearch(query, elementQuery);
 
-        JsonNode searchResult = assetApp.search(assetSearch);
+        JsonNode searchResult = assetApp.search(assetSearch, true);
         String path = searchResult.get("hits").get("hits").get(0).get("_source").get("source").get("path").asText();
 
         assertEquals(path, "https://i.imgur.com/SSN26nN.jpg");
     }
 
+    @Test
+    public void testSearchWrapped() {
+        webServer.enqueue(new MockResponse().setBody(Json.asJson(getMockSearchResult())));
 
+        Map query = new HashMap();
+        query.put("match_all", new HashMap());
+        AssetSearch assetSearch = new AssetSearch(query);
+        JsonNode searchResult = assetApp.search(assetSearch);
+
+        assertEquals(searchResult.get("size").asInt(), 2);
+        assertEquals(searchResult.get("offset").asInt(), 0);
+        assertEquals(searchResult.get("total").asInt(), 2);
+    }
 
     // Mocks
     private Map getImportFilesMock() {
