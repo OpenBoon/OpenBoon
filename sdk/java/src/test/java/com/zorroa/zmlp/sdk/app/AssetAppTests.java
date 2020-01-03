@@ -5,6 +5,7 @@ import com.zorroa.zmlp.sdk.ApiKey;
 import com.zorroa.zmlp.sdk.Json;
 import com.zorroa.zmlp.sdk.ZmlpClient;
 import com.zorroa.zmlp.sdk.domain.Asset.*;
+import com.zorroa.zmlp.sdk.domain.PagedList;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,8 +74,10 @@ public class AssetAppTests extends AbstractAppTest {
         query.put("match_all", new HashMap());
         AssetSearch assetSearch = new AssetSearch(query);
 
-        JsonNode searchResult = assetApp.search(assetSearch, true);
-        String path = searchResult.get("hits").get("hits").get(0).get("_source").get("source").get("path").asText();
+        Map searchResult = assetApp. rawSearch(assetSearch);
+        JsonNode jsonNode = Json.mapper.valueToTree(searchResult);
+
+        String path = jsonNode.get("hits").get("hits").get(0).get("_source").get("source").get("path").asText();
 
         assertEquals(path, "https://i.imgur.com/SSN26nN.jpg");
     }
@@ -93,8 +96,9 @@ public class AssetAppTests extends AbstractAppTest {
 
         AssetSearch assetSearch = new AssetSearch(query, elementQuery);
 
-        JsonNode searchResult = assetApp.search(assetSearch, true);
-        String path = searchResult.get("hits").get("hits").get(0).get("_source").get("source").get("path").asText();
+        PagedList<Asset> searchResult = assetApp.search(assetSearch);
+        Map<String, Object> document = searchResult.getList().get(0).getDocument();
+        String path = (String) document.get("path");
 
         assertEquals(path, "https://i.imgur.com/SSN26nN.jpg");
     }
@@ -106,11 +110,9 @@ public class AssetAppTests extends AbstractAppTest {
         Map query = new HashMap();
         query.put("match_all", new HashMap());
         AssetSearch assetSearch = new AssetSearch(query);
-        JsonNode searchResult = assetApp.search(assetSearch);
+        PagedList<Asset> searchResult = assetApp.search(assetSearch);
 
-        assertEquals(searchResult.get("size").asInt(), 2);
-        assertEquals(searchResult.get("offset").asInt(), 0);
-        assertEquals(searchResult.get("total").asInt(), 2);
+        assertEquals(searchResult.getList().size(), 2);
     }
 
     // Mocks
