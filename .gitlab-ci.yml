@@ -16,7 +16,6 @@ stages:
 .all-stable-branches:
   only:
     refs:
-      - dv/fe-docs
       - development
     changes:
       - "**/*"
@@ -75,7 +74,6 @@ wallet-backend-test-suite-all-stable-branches:
 ## Wallet Container Build Validation
 wallet-container-build-validation:
   only:
-    - dv/fe-docs
     - development
   stage: test
   image: docker:18.09.8-dind
@@ -165,7 +163,8 @@ sdk-unit-tests-all-stable-branches:
     DOCKER_HOST: tcp://localhost:2375
   retry: 2
   before_script:
-    - apk add docker-compose
+    - curl -L https://github.com/docker/compose/releases/download/1.25.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+    - chmod +x /usr/local/bin/docker-compose
     - export DOCKER_BUILDKIT=1
     - export COMPOSE_DOCKER_CLI_BUILD=1
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
