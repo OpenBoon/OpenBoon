@@ -1,18 +1,31 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.domain.ModOp
+import com.zorroa.archivist.domain.ModOpType
+import com.zorroa.archivist.domain.OpFilter
+import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.Pipeline
+import com.zorroa.archivist.domain.PipelineFilter
+import com.zorroa.archivist.domain.PipelineModSpec
+import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
-import com.zorroa.archivist.domain.ZpsSlot
+import com.zorroa.archivist.domain.PipelineUpdate
+import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.archivist.util.Json
+import org.hamcrest.CoreMatchers
 import org.junit.Before
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -21,32 +34,47 @@ class PipelineControllerTests : MockMvcTest() {
     lateinit var pl: Pipeline
     lateinit var spec: PipelineSpec
 
+    @Autowired
+    lateinit var pipelineModService: PipelineModService
+
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
+
     @Before
     fun init() {
-        spec = PipelineSpec("Zorroa Test", ZpsSlot.Execute, processors = listOf())
+        val modSpec = PipelineModSpec(
+            "test", "A test module", listOf(
+                ModOp(
+                    ModOpType.SET_ARGS,
+                    mapOf("extract_pages" to true),
+                    OpFilter(OpFilterType.SUBSTR, "OfficeImporter")
+                )
+            )
+        )
+        val mod = pipelineModService.create(modSpec)
+        entityManager.flush()
+
+        spec = PipelineSpec("Zorroa Test", modules = listOf(mod.id))
         pl = pipelineService.create(spec)
     }
 
     @Test
     fun testCreate() {
 
-        val spec = PipelineSpec("ZorroaTest2", ZpsSlot.Execute, processors = listOf())
-        val result = mvc.perform(
+        val spec = PipelineSpec("ZorroaTest2", processors = listOf())
+        mvc.perform(
             post("/api/v1/pipelines")
                 .headers(admin())
                 .content(Json.serialize(spec))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name",
+                CoreMatchers.equalTo(spec.name)))
             .andReturn()
-        val p = deserialize(result, Pipeline::class.java)
-        assertEquals(spec.slot, p.slot)
-        assertEquals(spec.processors, p.processors)
-        assertEquals(spec.name, p.name)
     }
 
     @Test
-    @Throws(Exception::class)
     fun testDelete() {
 
         mvc.perform(
@@ -55,60 +83,125 @@ class PipelineControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success",
+                CoreMatchers.equalTo(true)))
             .andReturn()
     }
 
     @Test
-    @Throws(Exception::class)
     fun testUpdate() {
-        val spec2 = Pipeline(
-            pl.id,
+        val spec2 = PipelineUpdate(
             "Rocky IV",
-            ZpsSlot.Execute,
-            listOf()
+            pl.processors,
+            pl.modules
         )
 
-        val result = mvc.perform(
+        mvc.perform(
             put("/api/v1/pipelines/" + pl.id)
                 .headers(admin())
                 .content(Json.serialize(spec2))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success",
+                CoreMatchers.equalTo(true)))
             .andReturn()
-
-        val rs = deserialize(result, Json.GENERIC_MAP)
-        assertTrue(rs.get("success") as Boolean)
     }
 
     @Test
     fun testGet() {
 
-        val result = mvc.perform(
+        mvc.perform(
             get("/api/v1/pipelines/" + pl.id)
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id",
+                CoreMatchers.equalTo(pl.id.toString())))
             .andReturn()
-
-        val data = deserialize(result, Pipeline::class.java)
-        assertEquals(pl.id, data.id)
     }
 
     @Test
-    @Throws(Exception::class)
-    fun testGetByName() {
+    fun testOneFindByName() {
+        val find = """
+            {"names": ["Zorroa Test"]}
+        """.trimIndent()
+        mvc.perform(
+            get("/api/v1/pipelines/_findOne")
+                .headers(admin())
+                .content(find)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name",
+                CoreMatchers.equalTo(spec.name)))
+            .andReturn()
+    }
 
-        val result = mvc.perform(
-            get("/api/v1/pipelines/" + pl.name)
+    @Test
+    fun testSearchSorted() {
+        // sort by everything
+        val filter = PipelineFilter()
+        filter.sort = filter.sortMap.keys.map { "$it:asc" }
+
+         mvc.perform(
+            get("/api/v1/pipelines/_search")
+                .headers(admin())
+                .content(Json.serialize(filter))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name",
+                CoreMatchers.equalTo("default")))
+            .andReturn()
+    }
+
+    @Test
+    fun testSearchByNameAndType() {
+        // sort by everything
+        val filter = PipelineFilter(names=listOf("default"), modes=listOf(PipelineMode.MODULAR))
+        mvc.perform(
+            get("/api/v1/pipelines/_search")
+                .headers(admin())
+                .content(Json.serialize(filter))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name",
+                CoreMatchers.equalTo("default")))
+            .andReturn()
+    }
+
+    @Test
+    fun testSearchById() {
+        // sort by everything
+        val filter = PipelineFilter(ids=listOf(pl.id))
+        mvc.perform(
+            get("/api/v1/pipelines/_search")
+                .headers(admin())
+                .content(Json.serialize(filter))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name",
+                CoreMatchers.equalTo("Zorroa Test")))
+            .andReturn()
+    }
+
+    @Test
+    fun testResolve() {
+
+        mvc.perform(
+            get("/api/v1/pipelines/${pl.id}/_resolve")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0].className",
+                CoreMatchers.equalTo("zmlp_core.core.processors.PreCacheSourceFileProcessor")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[2].args.extract_pages",
+                CoreMatchers.equalTo(true)))
             .andReturn()
-
-        val data = deserialize(result, Pipeline::class.java)
-        assertEquals(pl, data)
     }
 }

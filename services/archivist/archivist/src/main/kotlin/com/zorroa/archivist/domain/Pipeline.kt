@@ -8,10 +8,27 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
-enum class ZpsSlot {
-    Execute,
-    Generate
+@ApiModel("Pipeline Mode", description = "Determines what mode the pipeline is in.")
+enum class PipelineMode {
+    @ApiModelProperty("Modular pipelines use pipeline-modules")
+    MODULAR,
+
+    @ApiModelProperty("Custom pipelines are manually built with processors")
+    CUSTOM
 }
+
+@ApiModel("Pipeline", description = "The list of properties than be updated on a pipeline")
+class PipelineUpdate(
+
+    @ApiModelProperty("Name of the Pipeline.")
+    var name: String,
+
+    @ApiModelProperty("List of processors in this Pipeline.  Processors are ignored in modular pipelines")
+    var processors: List<ProcessorRef>,
+
+    @ApiModelProperty("All Pipeline modules applied to this pipeline. Modules are only used in modular pipelines.")
+    var modules: List<UUID>
+)
 
 @ApiModel("Pipeline", description = "Describes a list of Processors for a Job to run in serial.")
 class Pipeline(
@@ -19,14 +36,32 @@ class Pipeline(
     @ApiModelProperty("UUID of the Pipeline.")
     var id: UUID,
 
+    @ApiModelProperty("The pipelines's project Ic.")
+    var projectId: UUID,
+
     @ApiModelProperty("Name of the Pipeline.")
     var name: String,
 
-    @ApiModelProperty("Type of the Pipeline.")
-    var slot: ZpsSlot,
+    @ApiModelProperty("The mode the pipeline is in, either modular or custom.")
+    var mode: PipelineMode,
 
-    @ApiModelProperty("List of processors in this Pipeline.")
-    var processors: List<ProcessorRef> = mutableListOf()
+    @ApiModelProperty("List of processors in this Pipeline.  Processors are ignored in modular pipelines")
+    var processors: List<ProcessorRef>,
+
+    @ApiModelProperty("All Pipeline modules applied to this pipeline. Modules are only used in modular pipelines.")
+    var modules: List<UUID>,
+
+    @ApiModelProperty("The time the Project was created..")
+    val timeCreated: Long,
+
+    @ApiModelProperty("The last time the Pipeline was modified.")
+    var timeModified: Long,
+
+    @ApiModelProperty("The actor which created this Project")
+    var actorCreated: String,
+
+    @ApiModelProperty("The actor that last made the last modification the project.")
+    var actorModified: String
 
 ) {
     override fun equals(other: Any?): Boolean {
@@ -51,13 +86,19 @@ data class PipelineSpec(
     @ApiModelProperty("Name of the Pipeline.")
     var name: String,
 
-    @ApiModelProperty("Type of the Pipeline.")
-    var slot: ZpsSlot,
+    @ApiModelProperty("The mode the pipeline is in, either modular or custom.")
+    var mode: PipelineMode = PipelineMode.MODULAR,
 
-    @ApiModelProperty("List of the Pipeline's processors.")
-    var processors: List<ProcessorRef> = mutableListOf()
+    @ApiModelProperty("List of the Pipeline's processors, only used in Custom mode.")
+    var processors: List<ProcessorRef>? = null,
+
+    @ApiModelProperty("List of the Pipeline's processors, only used in Modular mode.")
+    var modules: List<UUID>? = null,
+
+    @JsonIgnore
+    @ApiModelProperty("List of the Pipeline's processors, only used in Modular mode.", hidden = true)
+    var projectId: UUID? = null
 )
-
 
 @ApiModel("Pipeline Filter", description = "Search filter for finding Pipelines.")
 data class PipelineFilter(
@@ -66,17 +107,23 @@ data class PipelineFilter(
     val ids: List<UUID>? = null,
 
     @ApiModelProperty("Pipeline names.")
-    val names: List<UUID>? = null,
+    val names: List<String>? = null,
 
-    @ApiModelProperty("The Zps script slot the pipeline is used in")
-    val slots: List<ZpsSlot>? = null
+    @ApiModelProperty("The pipeline mode.")
+    val modes: List<PipelineMode>? = null
 
 ) : KDaoFilter() {
 
     @JsonIgnore
     override val sortMap: Map<String, String> = mapOf(
         "id" to "pipeline.pk_pipeline",
-        "name" to "name.str_name")
+        "name" to "pipeline.str_name",
+        "mode" to "pipeline.int_mode",
+        "timeCreated" to "pipeline.time_created",
+        "timeModified" to "pipeline.time_modified",
+        "actorCreated" to "pipeline.actor_created",
+        "actorModified" to "pipeline.actor_modified"
+    )
 
     @JsonIgnore
     override fun build() {
@@ -98,29 +145,9 @@ data class PipelineFilter(
             addToValues(it)
         }
 
-        slots?.let {
-            addToWhere(JdbcUtils.inClause("pipeline.int_slot", it.size))
-            addToValues(it.map { s -> s.ordinal })
+        modes?.let {
+            addToWhere(JdbcUtils.inClause("pipeline.int_mode", it.size))
+            addToValues(it.map { mode -> mode.ordinal })
         }
     }
 }
-
-/**
- * TODO: replace with configuration file.
- *
- * This is the basic pipeline we're running for now until we
- * get into the Analysis dev phase.
- */
-val STANDARD_PIPELINE = listOf(
-    ProcessorRef("zmlp_core.core.processors.PreCacheSourceFileProcessor", "zmlp/plugins-core"),
-    ProcessorRef("zmlp_core.image.importers.ImageImporter", "zmlp/plugins-core"),
-    ProcessorRef("zmlp_core.office.importers.OfficeImporter", "zmlp/plugins-core"),
-    ProcessorRef("zmlp_core.video.VideoImporter", "zmlp/plugins-core"),
-    ProcessorRef("zmlp_core.core.processors.AssertAttributesProcessor", "zmlp/plugins-core",
-        mapOf("attrs" to listOf("media.type"))),
-    ProcessorRef("zmlp_core.proxy.ImageProxyProcessor", "zmlp/plugins-core"),
-    ProcessorRef("zmlp_core.proxy.VideoProxyProcessor", "zmlp/plugins-core"),
-    ProcessorRef("zmlp_analysis.mxnet.processors.ResNetSimilarityProcessor", "zmlp/plugins-analysis"),
-    ProcessorRef("zmlp_analysis.mxnet.processors.ResNetClassifyProcessor", "zmlp/plugins-analysis"),
-    ProcessorRef("zmlp_analysis.detect.ZmlpObjectDetectionProcessor", "zmlp/plugins-analysis")
-)
