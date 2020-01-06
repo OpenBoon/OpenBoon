@@ -163,9 +163,8 @@ sdk-unit-tests-all-stable-branches:
     DOCKER_HOST: tcp://localhost:2375
   retry: 2
   before_script:
-    - apk add curl
-    - curl -L https://github.com/docker/compose/releases/download/1.25.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-    - chmod +x /usr/local/bin/docker-compose
+    - apk add pip py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    - pip install docker-compose
     - export DOCKER_BUILDKIT=1
     - export COMPOSE_DOCKER_CLI_BUILD=1
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
