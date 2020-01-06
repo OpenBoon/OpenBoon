@@ -22,14 +22,12 @@ import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStateChangeEvent
 import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.domain.ZpsSlot
 import com.zorroa.archivist.domain.zpsTaskName
 import com.zorroa.archivist.repository.JobDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.getZmlpActor
-import com.zorroa.archivist.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -78,7 +76,7 @@ class JobServiceImpl @Autowired constructor(
 ) : JobService {
 
     @Autowired
-    private lateinit var pipelineService: PipelineService
+    private lateinit var pipelineResolverService: PipelineResolverService
 
     override fun create(spec: JobSpec): Job {
         if (spec.script != null) {
@@ -134,7 +132,7 @@ class JobServiceImpl @Autowired constructor(
 
         spec.script?.let { script ->
             // Execute may be empty
-            script.execute = pipelineService.resolve(ZpsSlot.Execute, script.execute)
+            script.execute = pipelineResolverService.resolveCustom(script.execute)
             taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         }
 
