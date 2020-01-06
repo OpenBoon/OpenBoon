@@ -9,10 +9,11 @@ until pg_isready -h $PG_HOST; do
 done
 
 # Do any needed database migrations.
-python3 ./manage.py migrate --no-input
+cd applications/wallet
+python3 ./app/manage.py migrate --no-input
 
 # Start the server.
 gunicorn -b :8080 wallet.wsgi &
-cd ../frontend
+cd frontend
 npm start &
 nginx -g "daemon off;"
