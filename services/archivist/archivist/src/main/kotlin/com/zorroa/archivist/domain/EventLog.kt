@@ -43,5 +43,6 @@ enum class LogObject {
     TASK_ERROR,
     PROJECT,
     DATASOURCE,
-    FILE_STORAGE
+    FILE_STORAGE,
+    PIPELINE_MODULE
 }
