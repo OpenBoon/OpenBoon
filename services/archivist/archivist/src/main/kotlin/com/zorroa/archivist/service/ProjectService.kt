@@ -9,6 +9,8 @@ import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.PipelineMode
+import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectSpec
@@ -22,6 +24,7 @@ import com.zorroa.archivist.storage.FileStorageService
 import com.zorroa.auth.client.AuthServerClient
 import com.zorroa.auth.client.Permission
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.keygen.KeyGenerators
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -74,6 +77,9 @@ class ProjectServiceImpl constructor(
     val txEvent: TransactionEventManager
 ) : ProjectService {
 
+    @Autowired
+    lateinit var pipelineService: PipelineService
+
     override fun create(spec: ProjectSpec): Project {
         val time = System.currentTimeMillis()
         val actor = getZmlpActor()
@@ -91,6 +97,7 @@ class ProjectServiceImpl constructor(
         txEvent.afterCommit(sync = true) {
             createProjectCryptoKey(project)
             createStandardApiKeys(project)
+            createDefaultPipeline(project)
         }
 
         logger.event(
@@ -126,6 +133,11 @@ class ProjectServiceImpl constructor(
                 Permission.SystemProjectDecrypt
             )
         )
+    }
+
+    private fun createDefaultPipeline(project: Project) {
+        val spec = PipelineSpec("default", PipelineMode.MODULAR, projectId = project.id)
+        val pipeline = pipelineService.create(spec)
     }
 
     private fun createProjectCryptoKey(project: Project) {

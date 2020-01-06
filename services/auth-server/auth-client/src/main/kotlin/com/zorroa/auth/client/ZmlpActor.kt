@@ -25,4 +25,8 @@ class ZmlpActor(
     fun hasAnyPermission(vararg perm: Permission): Boolean {
         return perm.any { it in permissions }
     }
+
+    override fun toString() : String {
+        return "${name}/${keyId}"
+    }
 }

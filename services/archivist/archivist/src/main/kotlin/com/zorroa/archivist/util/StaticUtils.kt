@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.text.SimpleDateFormat
 import java.util.UUID
 import java.util.concurrent.ThreadLocalRandom
@@ -48,3 +46,8 @@ fun randomString(length: Int=16): String {
 fun UUID.prefix(size: Int= 8): String {
     return this.toString().substring(0, size)
 }
+
+/**
+ * Extension function to check if a string is a UUID
+ */
+fun String.isUUID(): Boolean = StaticUtils.UUID_REGEXP.matches(this)
