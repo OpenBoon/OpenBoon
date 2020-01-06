@@ -163,7 +163,8 @@ sdk-unit-tests-all-stable-branches:
     DOCKER_HOST: tcp://localhost:2375
   retry: 2
   before_script:
-    - apk add pip py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    - apk add pip
+    - apk add py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
     - pip install docker-compose
     - export DOCKER_BUILDKIT=1
     - export COMPOSE_DOCKER_CLI_BUILD=1
