@@ -75,6 +75,7 @@ wallet-backend-test-suite-all-stable-branches:
 ## Wallet Container Build Validation
 wallet-container-build-validation:
   only:
+    - dv/fe-docs
     - development
   stage: test
   image: docker:18.09.8-dind
@@ -169,6 +170,7 @@ sdk-unit-tests-all-stable-branches:
     - export COMPOSE_DOCKER_CLI_BUILD=1
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   only:
+    - dv/fe-docs
     - development
 
 docker_hub_push_archivist:
