@@ -26,25 +26,25 @@ class ProjectController constructor(
 
     @PostMapping(value = ["/api/v1/projects"])
     @ApiOperation("Create Project.")
-    fun create(@RequestBody spec: ProjectSpec) : Project {
+    fun create(@RequestBody spec: ProjectSpec): Project {
         return projectService.create(spec)
     }
 
     @GetMapping(value = ["/api/v1/projects/{id}"])
     @ApiOperation("Retrieve Project by Id.")
-    fun get(@PathVariable id: UUID) : Project {
+    fun get(@PathVariable id: UUID): Project {
         return projectService.get(id)
     }
 
-    @RequestMapping(value = ["/api/v1/projects/_search"], method=[RequestMethod.POST, RequestMethod.GET])
+    @RequestMapping(value = ["/api/v1/projects/_search"], method = [RequestMethod.POST, RequestMethod.GET])
     @ApiOperation("Get all Projects")
-    fun getAll(@RequestBody(required = false) filter: ProjectFilter?) : KPagedList<Project> {
+    fun getAll(@RequestBody(required = false) filter: ProjectFilter?): KPagedList<Project> {
         return projectService.getAll(filter ?: ProjectFilter())
     }
 
-    @RequestMapping(value = ["/api/v1/projects/_findOne"], method=[RequestMethod.POST, RequestMethod.GET])
+    @RequestMapping(value = ["/api/v1/projects/_findOne"], method = [RequestMethod.POST, RequestMethod.GET])
     @ApiOperation("Search Filter")
-    fun findOne(@RequestBody(required = false) filter: ProjectFilter?) : Project {
+    fun findOne(@RequestBody(required = false) filter: ProjectFilter?): Project {
         return projectService.findOne(filter ?: ProjectFilter())
     }
 }
