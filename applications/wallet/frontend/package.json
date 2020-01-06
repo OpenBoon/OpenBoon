@@ -6,7 +6,7 @@
     "dev": "node -r esm devServer.js",
     "dev:mocked": "MOCKED=true node -r esm devServer.js",
     "lint": "eslint '{pages,src}/**/*.js'",
-    "prod": "next start",
+    "prod": "next build && next start",
     "size": "rimraf .next && next build && bundlesize",
     "start": "next start",
     "test": "TZ=UTC jest --watch --notify --verbose",
@@ -22,7 +22,8 @@
     "trailingComma": "all",
     "bracketSpacing": true,
     "jsxBracketSameLine": true,
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "proseWrap": "always"
   },
   "jest": {
     "modulePathIgnorePatterns": [
