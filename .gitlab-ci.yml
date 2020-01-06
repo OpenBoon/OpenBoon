@@ -16,6 +16,7 @@ stages:
 .all-stable-branches:
   only:
     refs:
+      - dv/fe-docs
       - development
     changes:
       - "**/*"
@@ -164,6 +165,8 @@ sdk-unit-tests-all-stable-branches:
   retry: 2
   before_script:
     - apk add docker-compose
+    - export DOCKER_BUILDKIT=1
+    - export COMPOSE_DOCKER_CLI_BUILD=1
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   only:
     - development
