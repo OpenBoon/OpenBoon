@@ -117,12 +117,11 @@ public class AssetAppTests extends AbstractAppTest {
         String nestedValue = asset.getAttr("nestedSource.nestedKey");
         String path = asset.getAttr("path");
 
-
         assertEquals(searchResult.getList().size(), 2);
         assertEquals(nestedValue, "nestedValue");
         assertEquals(path, "https://i.imgur.com/SSN26nN.jpg");
     }
-
+    
     // Mocks
     private Map getImportFilesMock() {
         Map mock = new HashMap();
