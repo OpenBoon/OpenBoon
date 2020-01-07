@@ -79,7 +79,7 @@ public class AssetApp {
      * @return A SearchResult containing Raw mode an ElasticSearch search result dictionary.
      */
 
-    public Map<String, Object> rawSearch(AssetSearch assetSearch) {
+    public Map rawSearch(AssetSearch assetSearch) {
         return client.post("/api/v3/assets/_search", assetSearch, Map.class);
     }
 
@@ -96,7 +96,12 @@ public class AssetApp {
                         ((List<Map>) hitsHits).forEach(hit -> {
 
                             String id = (String) hit.get("_id");
-                            Asset asset = new Asset(id, (Map) ((Map)hit.get("_source")).get("source"));
+                            String index = (String) hit.get("_index");
+                            String type = (String) hit.get("_type");
+                            Map document = (Map) ((Map) hit.get("_source")).get("source");
+                            Double score = (Double) hit.get("_score");
+
+                            Asset asset = new Asset(id, document, score, type, index);
 
                             assetList.add(asset);
                         });

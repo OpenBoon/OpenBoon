@@ -74,7 +74,7 @@ public class AssetAppTests extends AbstractAppTest {
         query.put("match_all", new HashMap());
         AssetSearch assetSearch = new AssetSearch(query);
 
-        Map searchResult = assetApp. rawSearch(assetSearch);
+        Map searchResult = assetApp.rawSearch(assetSearch);
         JsonNode jsonNode = Json.mapper.valueToTree(searchResult);
 
         String path = jsonNode.get("hits").get("hits").get(0).get("_source").get("source").get("path").asText();
@@ -97,8 +97,8 @@ public class AssetAppTests extends AbstractAppTest {
         AssetSearch assetSearch = new AssetSearch(query, elementQuery);
 
         PagedList<Asset> searchResult = assetApp.search(assetSearch);
-        Map<String, Object> document = searchResult.getList().get(0).getDocument();
-        String path = (String) document.get("path");
+        Asset asset = searchResult.getList().get(0);
+        String path = asset.getAttr("path");
 
         assertEquals(path, "https://i.imgur.com/SSN26nN.jpg");
     }
@@ -109,10 +109,18 @@ public class AssetAppTests extends AbstractAppTest {
 
         Map query = new HashMap();
         query.put("match_all", new HashMap());
+
         AssetSearch assetSearch = new AssetSearch(query);
         PagedList<Asset> searchResult = assetApp.search(assetSearch);
 
+        Asset asset = searchResult.getList().get(0);
+        String nestedValue = asset.getAttr("nestedSource.nestedKey");
+        String path = asset.getAttr("path");
+
+
         assertEquals(searchResult.getList().size(), 2);
+        assertEquals(nestedValue, "nestedValue");
+        assertEquals(path, "https://i.imgur.com/SSN26nN.jpg");
     }
 
     // Mocks
@@ -195,6 +203,9 @@ public class AssetAppTests extends AbstractAppTest {
         Map hit1_Source = new HashMap();
         Map hit1Source = new HashMap();
         hit1Source.put("path", "https://i.imgur.com/SSN26nN.jpg");
+        Map nestedSourceMap = new HashMap();
+        nestedSourceMap.put("nestedKey", "nestedValue");
+        hit1Source.put("nestedSource", nestedSourceMap);
         hit1_Source.put("source", hit1Source);
         hit1.put("_source", hit1_Source);
         hitsListMock.add(hit1);
