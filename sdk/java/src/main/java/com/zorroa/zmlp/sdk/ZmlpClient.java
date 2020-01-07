@@ -36,7 +36,7 @@ public class ZmlpClient {
             throw new ZmlpClientException("No APIKey has been configured");
         }
 
-        if (apiKey.getKeyId() == null || apiKey.getSharedKey() == null) {
+        if (apiKey.getAccessKey() == null || apiKey.getSecretKey() == null) {
             throw new ZmlpClientException("No APIKey has been configured");
         }
 
@@ -128,8 +128,8 @@ public class ZmlpClient {
         JWTCreator.Builder claimBuilder = JWT.create();
         claimBuilder.withClaim("aud", server);
         claimBuilder.withClaim("exp", Instant.now().plus(60, ChronoUnit.SECONDS).toEpochMilli());
-        claimBuilder.withClaim("keyId", apiKey.getKeyId().toString());
-        Algorithm sharedKey = Algorithm.HMAC512(apiKey.getSharedKey());
-        builder.header("Authorization", "Bearer " + claimBuilder.sign(sharedKey));
+        claimBuilder.withClaim("accessKey", apiKey.getAccessKey());
+        Algorithm secretKey = Algorithm.HMAC512(apiKey.getSecretKey());
+        builder.header("Authorization", "Bearer " + claimBuilder.sign(secretKey));
     }
 }
