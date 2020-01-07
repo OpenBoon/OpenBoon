@@ -22,9 +22,9 @@ import java.util.UUID
  */
 enum class IndexRouteState {
     /**
-     * The current [IndexRoute] is what all queries happen in.
+     * The [IndexRoute] exists and is ready to query.
      */
-    CURRENT,
+    READY,
 
     /**
      * A building [IndexRoute] is a new index we're re-indexing data into but

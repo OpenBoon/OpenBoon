@@ -24,7 +24,6 @@ import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.repository.throwWhenNotFound
 import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.KnownKeys
-import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.security.withAuth
@@ -146,7 +145,7 @@ class ProjectServiceImpl constructor(
         return indexRoutingService.createIndexRoute(
             IndexRouteSpec(
                 mapping, ver, projectId = project.id,
-                state = IndexRouteState.CURRENT
+                state = IndexRouteState.READY
             )
         )
     }
