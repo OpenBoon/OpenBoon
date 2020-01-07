@@ -3,11 +3,11 @@ package com.zorroa.zmlp.sdk.domain.Asset;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
-import com.sun.xml.internal.ws.util.StringUtils;
+import com.sun.xml.ws.util.StringUtils;
 import com.zorroa.zmlp.sdk.Json;
 import com.zorroa.zmlp.sdk.domain.Attr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.*;
