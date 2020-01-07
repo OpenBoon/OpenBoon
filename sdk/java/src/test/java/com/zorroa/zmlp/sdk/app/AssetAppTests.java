@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.zorroa.zmlp.sdk.ApiKey;
 import com.zorroa.zmlp.sdk.Json;
 import com.zorroa.zmlp.sdk.ZmlpClient;
-import com.zorroa.zmlp.sdk.domain.Asset.*;
+import com.zorroa.zmlp.sdk.domain.asset.*;
 import com.zorroa.zmlp.sdk.domain.PagedList;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.Before;

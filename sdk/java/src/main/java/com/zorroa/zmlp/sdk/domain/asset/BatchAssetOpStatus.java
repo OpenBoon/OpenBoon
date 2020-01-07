@@ -1,4 +1,4 @@
-package com.zorroa.zmlp.sdk.domain.Asset;
+package com.zorroa.zmlp.sdk.domain.asset;
 
 /**
  * Used to describe the result of a batch asset operation

@@ -1,11 +1,15 @@
 package com.zorroa.zmlp.sdk.domain;
 
-import com.google.common.collect.Lists;
-import com.zorroa.zmlp.sdk.domain.Asset.Asset;
+import com.zorroa.zmlp.sdk.Json;
+import com.zorroa.zmlp.sdk.domain.asset.Asset;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -116,10 +120,9 @@ public class AssetTests {
     @Test
     public void testAttributeExists(){
         Asset asset = getNestedAttributesAssetMock();
-
-        assert(asset.attrExists("path"));
+        assertTrue(asset.attrExists("path"));
         assertFalse(asset.attrExists("duck"));
-        assert(asset.attrExists("nestedSource.nestedKey"));
+        assertTrue(asset.attrExists("nestedSource.nestedKey"));
         assertFalse(asset.attrExists("notPresentKey.AlsoNotPresentKey"));
     }
 
@@ -133,24 +136,6 @@ public class AssetTests {
 
         assertFalse(asset.attrExists("path"));
     }
-
-    @Test
-    public void testAttributeContains(){
-        Asset asset = getNestedAttributesAssetMock();
-
-        asset.setAttr("list", Arrays.asList(1,2,3,4));
-
-        assert(asset.attrContains("path", "http"));
-        assertFalse(asset.attrContains("path", "jpeg"));
-
-        assert(asset.attrContains("list",1));
-        assert(asset.attrContains("list",2));
-        assert(asset.attrContains("list",3));
-        assert(asset.attrContains("list",4));
-        assertFalse(asset.attrContains("list",5));
-    }
-
-
 
     //Mocks
     private Asset getTestAsset() {
@@ -184,9 +169,10 @@ public class AssetTests {
 
     private Asset getNestedAttributesAssetMock() {
 
-        Map document = new HashMap();
+        Map<String, Object> document = new HashMap();
         document.put("path", "https://i.imgur.com/SSN26nN.jpg");
-        Map nestedSourceMap = new HashMap();
+
+        Map<String, Object> nestedSourceMap = new HashMap();
         nestedSourceMap.put("nestedKey", "nestedValue");
         document.put("nestedSource", nestedSourceMap);
 

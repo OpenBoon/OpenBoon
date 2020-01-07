@@ -290,10 +290,10 @@ open class Asset(
         if (`object` == null) {
             return null
         }
-        try {
-            return (`object` as Map<String, Any>)[key]
+        return try {
+            (`object` as Map<String, Any>)[key]
         } catch (ex: ClassCastException) {
-            return null
+            null
         }
     }
 

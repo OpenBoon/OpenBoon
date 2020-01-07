@@ -1,9 +1,9 @@
 package com.zorroa.zmlp.sdk.app;
 
 import com.zorroa.zmlp.sdk.ZmlpClient;
-import com.zorroa.zmlp.sdk.domain.Asset.*;
 import com.zorroa.zmlp.sdk.domain.Page;
 import com.zorroa.zmlp.sdk.domain.PagedList;
+import com.zorroa.zmlp.sdk.domain.asset.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -94,15 +94,9 @@ public class AssetApp {
             Optional.ofNullable(hits.get("hits")).ifPresent(
                     (hitsHits) -> {
                         ((List<Map>) hitsHits).forEach(hit -> {
-
                             String id = (String) hit.get("_id");
-                            String index = (String) hit.get("_index");
-                            String type = (String) hit.get("_type");
-                            Map document = (Map) ((Map) hit.get("_source")).get("source");
-                            Double score = (Double) hit.get("_score");
-
-                            Asset asset = new Asset(id, document, score, type, index);
-
+                            Map document = (Map) hit.get("_source");
+                            Asset asset = new Asset(id, document);
                             assetList.add(asset);
                         });
                     }

@@ -1,4 +1,4 @@
-package com.zorroa.zmlp.sdk.domain.Asset;
+package com.zorroa.zmlp.sdk.domain.asset;
 
 import com.zorroa.zmlp.sdk.domain.Clip;
 
