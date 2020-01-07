@@ -19,7 +19,7 @@ interface ApiKeyService {
      */
     fun create(spec: ApiKeySpec): ApiKey
 
-    fun get(keyId: UUID): ApiKey
+    fun get(id: UUID): ApiKey
 
     fun findAll(): List<ApiKey>
 
@@ -48,15 +48,16 @@ class ApiKeyServiceImpl constructor(
         val key = ApiKey(
             UUID.randomUUID(),
             projectId,
-            KeyGenerator.generate(),
+            KeyGenerator.generate(24),
+            KeyGenerator.generate(64),
             spec.name,
             spec.permissions.map { it.name }.toSet()
         )
         return apiKeyRepository.save(key)
     }
 
-    override fun get(keyId: UUID): ApiKey {
-        return apiKeyRepository.findByProjectIdAndKeyId(getProjectId(), keyId)
+    override fun get(id: UUID): ApiKey {
+        return apiKeyRepository.findByProjectIdAndId(getProjectId(), id)
     }
 
     override fun findAll(): List<ApiKey> {

@@ -21,7 +21,7 @@ class AuthController {
         return mapOf(
             "name" to user.name,
             "projectId" to user.projectId,
-            "keyId" to user.keyId,
+            "id" to user.id,
             "permissions" to auth.authorities.map { it.toString() })
     }
 }

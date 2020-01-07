@@ -36,21 +36,25 @@ fun getZmlpActor(): ZmlpActor {
  */
 fun loadServiceKey(serviceKey: String?): ApiKey {
     serviceKey?.let {
+        logger.info("path: {}", serviceKey)
         val path = Paths.get(it)
         val apikey = if (Files.exists(path)) {
             val key = Json.mapper.readValue<ApiKey>(path.toFile())
-            logger.info("Loaded Inception key: ${key.keyId.prefix(8)} from: '$path'")
+            logger.info("Loaded Inception key: ${key.accessKey.substring(8)} from: '$path'")
             key
-        } else {
+        } else if (!it.startsWith("/")) {
             try {
                 val decoded = Base64.getUrlDecoder().decode(it)
                 val key = Json.mapper.readValue<ApiKey>(decoded)
-                logger.info("Loaded Inception key: ${key.keyId.prefix(8)}")
+                logger.info("Loaded Inception key: ${key.accessKey.substring(8)}")
                 key
             } catch (e: Exception) {
                 logger.warn("Failed to load inception key, decode failed, unexpected", e)
                 null
             }
+        }
+        else {
+            null
         }
 
         if (apikey != null) {
@@ -58,22 +62,17 @@ fun loadServiceKey(serviceKey: String?): ApiKey {
         }
     }
 
-    logger.info("Generating RANDOM service key")
-    return ApiKey(
-        UUID.randomUUID(),
-        UUID.randomUUID(),
-        KeyGenerator.generate() + KeyGenerator.generate(),
-        "random", setOf(Permission.SystemMonitor.name)
-    )
+    throw RuntimeException("Unable to load inception key, " +
+        "check the zmlp.security.inception-key property.")
 }
 
 /**
  * Generates API signing keys.
  */
 object KeyGenerator {
-    fun generate(): String {
+    fun generate(size: Int): String {
         val random = ThreadLocalRandom.current()
-        val r = ByteArray(64)
+        val r = ByteArray(size)
         random.nextBytes(r)
         return Base64.getUrlEncoder().encodeToString(r).trimEnd('=')
     }

@@ -64,7 +64,7 @@ class ApiKeyControllerTests : MockMvcTest() {
     @Test
     fun testGet() {
         mvc.perform(
-            MockMvcRequestBuilders.get("/auth/v1/apikey/${standardKey.keyId}")
+            MockMvcRequestBuilders.get("/auth/v1/apikey/${standardKey.id}")
                 .headers(superAdmin(standardKey.projectId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -117,7 +117,7 @@ class ApiKeyControllerTests : MockMvcTest() {
     @Test
     fun testDownload() {
         mvc.perform(
-            MockMvcRequestBuilders.get("/auth/v1/apikey/${standardKey.keyId}/_download")
+            MockMvcRequestBuilders.get("/auth/v1/apikey/${standardKey.id}/_download")
                 .headers(superAdmin(standardKey.projectId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
@@ -147,7 +147,7 @@ class ApiKeyControllerTests : MockMvcTest() {
     @Test
     fun testDelete() {
         mvc.perform(
-            MockMvcRequestBuilders.delete("/auth/v1/apikey/${standardKey.keyId}")
+            MockMvcRequestBuilders.delete("/auth/v1/apikey/${standardKey.id}")
                 .headers(superAdmin(standardKey.projectId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )

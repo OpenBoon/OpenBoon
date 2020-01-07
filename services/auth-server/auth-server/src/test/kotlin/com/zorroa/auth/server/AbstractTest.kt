@@ -41,7 +41,8 @@ abstract class AbstractTest {
         val keySpec = ApiKey(
             UUID.randomUUID(),
             UUID.randomUUID(),
-            KeyGenerator.generate(),
+            KeyGenerator.generate(24),
+            KeyGenerator.generate(32),
             "standard-key",
             setOf(Permission.AssetsRead.name)
         )
@@ -51,7 +52,7 @@ abstract class AbstractTest {
         SecurityContextHolder.getContext().authentication =
             UsernamePasswordAuthenticationToken(
                 standardKey.getZmlpActor(),
-                standardKey.keyId,
+                standardKey.id,
                 standardKey.getGrantedAuthorities()
             )
     }
