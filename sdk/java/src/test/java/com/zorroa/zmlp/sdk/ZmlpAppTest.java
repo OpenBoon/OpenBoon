@@ -22,9 +22,8 @@ public class ZmlpAppTest {
 
     @Before
     public void setup() throws JsonProcessingException {
-        keyDict.put("projectId", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
-        keyDict.put("keyId", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
-        keyDict.put("sharedKey", "test123test135");
+        keyDict.put("accessKey", "A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80");
+        keyDict.put("secretKey", "test123test135");
 
         base64Key = Base64.encodeBase64String(Json.mapper.writeValueAsBytes(keyDict));
     }
