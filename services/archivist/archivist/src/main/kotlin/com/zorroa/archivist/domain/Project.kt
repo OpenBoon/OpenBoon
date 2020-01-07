@@ -77,6 +77,16 @@ class Project (
     }
 }
 
+@ApiModel("Project Settings", description = "The Project default settings.")
+class ProjectSettings(
+
+    @ApiModelProperty("The default Pipeline to use if no Pipeline is specified.")
+    var defaultPipelineId: UUID,
+
+    @ApiModelProperty("The default Index to use if no index is specified.")
+    var defaultIndexRouteId: UUID
+)
+
 @ApiModel("Project Filter", description = "Search filter for finding Projects")
 class ProjectFilter (
 
