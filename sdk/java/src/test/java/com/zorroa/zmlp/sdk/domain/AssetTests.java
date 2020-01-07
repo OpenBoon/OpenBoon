@@ -1,14 +1,13 @@
 package com.zorroa.zmlp.sdk.domain;
 
+import com.google.common.collect.Lists;
 import com.zorroa.zmlp.sdk.domain.Asset.Asset;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AssetTests {
 
@@ -81,6 +80,79 @@ public class AssetTests {
         assertEquals(asset.getFilesByAttrsKey(array2).size(), 0);
     }
 
+    @Test
+    public void testGetAttribute(){
+
+        Asset asset = getNestedAttributesAssetMock();
+
+        String attr = asset.getAttr("path");
+
+        assertEquals(attr, "https://i.imgur.com/SSN26nN.jpg");
+    }
+
+    @Test
+    public void testSetAttribute(){
+
+        Asset asset = getNestedAttributesAssetMock();
+
+        asset.setAttr("newKey", "newValue");
+        String newValue = asset.getAttr("newKey");
+
+        assertEquals("newValue", newValue);
+
+    }
+
+    @Test
+    public void testSetNestedAttribute(){
+
+        Asset asset = getNestedAttributesAssetMock();
+
+        asset.setAttr("nestedKey.newKey", "newValue");
+        String newValue = asset.getAttr("nestedKey.newKey", String.class);
+
+        assertEquals("newValue", newValue);
+    }
+
+    @Test
+    public void testAttributeExists(){
+        Asset asset = getNestedAttributesAssetMock();
+
+        assert(asset.attrExists("path"));
+        assertFalse(asset.attrExists("duck"));
+        assert(asset.attrExists("nestedSource.nestedKey"));
+        assertFalse(asset.attrExists("notPresentKey.AlsoNotPresentKey"));
+    }
+
+    @Test
+    public void testRemoveAttribute(){
+        Asset asset = getNestedAttributesAssetMock();
+
+        assert(asset.attrExists("path"));
+
+        asset.removeAttr("path");
+
+        assertFalse(asset.attrExists("path"));
+    }
+
+    @Test
+    public void testAttributeContains(){
+        Asset asset = getNestedAttributesAssetMock();
+
+        asset.setAttr("list", Arrays.asList(1,2,3,4));
+
+        assert(asset.attrContains("path", "http"));
+        assertFalse(asset.attrContains("path", "jpeg"));
+
+        assert(asset.attrContains("list",1));
+        assert(asset.attrContains("list",2));
+        assert(asset.attrContains("list",3));
+        assert(asset.attrContains("list",4));
+        assertFalse(asset.attrContains("list",5));
+    }
+
+
+
+    //Mocks
     private Asset getTestAsset() {
         Map document = new HashMap();
         document.put("files", getTestFiles());
@@ -109,4 +181,18 @@ public class AssetTests {
 
         return testFiles;
     }
+
+    private Asset getNestedAttributesAssetMock() {
+
+        Map document = new HashMap();
+        document.put("path", "https://i.imgur.com/SSN26nN.jpg");
+        Map nestedSourceMap = new HashMap();
+        nestedSourceMap.put("nestedKey", "nestedValue");
+        document.put("nestedSource", nestedSourceMap);
+
+        Asset asset = new Asset("dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg", document);
+
+        return asset;
+    }
+
 }
