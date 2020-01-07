@@ -107,8 +107,8 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
     override fun getProjectRoute(): IndexRoute {
         return throwWhenNotFound("Project has no index") {
             return jdbc.queryForObject(
-                "$GET WHERE pk_project=? AND index_route.int_state=?",
-                MAPPER, getProjectId(), IndexRouteState.CURRENT.ordinal
+                GET_PROJECT_DEFAULT,
+                MAPPER, getProjectId()
             )
         }
     }
@@ -194,6 +194,16 @@ class IndexRouteDaoImpl : AbstractDao(), IndexRouteDao {
             "index_route " +
             "JOIN " +
             "index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster)"
+
+        const val GET_PROJECT_DEFAULT = "SELECT index_cluster.str_url, index_route.* " +
+            "FROM " +
+            "index_route " +
+            "JOIN " +
+            "index_cluster ON (index_route.pk_index_cluster = index_cluster.pk_index_cluster) " +
+            "JOIN " +
+            "project_settings ON (index_route.pk_index_route = project_settings.pk_index_route_default) " +
+            "AND " +
+            "project_settings.pk_project=?"
 
         const val COUNT = "SELECT COUNT(1) " +
             "FROM " +
