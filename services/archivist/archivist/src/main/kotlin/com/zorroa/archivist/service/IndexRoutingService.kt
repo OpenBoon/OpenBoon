@@ -167,7 +167,8 @@ constructor(
     val indexRouteDao: IndexRouteDao,
     val indexClusterDao: IndexClusterDao,
     val indexClusterService: IndexClusterService,
-    val properties: ApplicationProperties
+    val properties: ApplicationProperties,
+    val txEvent: TransactionEventManager
 ) : IndexRoutingService {
 
     @Autowired
@@ -196,7 +197,11 @@ constructor(
 
         spec.clusterId = cluster.id
         val route = indexRouteDao.create(spec)
-        syncIndexRouteVersion(route)
+
+        // Makes the ES Index after its committed to db.
+        txEvent.afterCommit {
+            syncIndexRouteVersion(route)
+        }
         return route
     }
 

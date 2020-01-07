@@ -1,5 +1,6 @@
 package com.zorroa.archivist.security
 
+import com.zorroa.auth.client.Permission
 import com.zorroa.auth.client.ZmlpActor
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
@@ -74,11 +75,12 @@ fun getAnalyst(): AnalystAuthentication {
     }
 }
 
-fun hasPermission(perms: Collection<String>): Boolean {
+fun hasPermission(perms: Collection<Permission>): Boolean {
+    val strPerms = perms.map { it.name }
     val auth = SecurityContextHolder.getContext().authentication
     auth?.authorities?.let { authorities ->
         for (g in authorities) {
-            if (perms.contains(g.authority)) {
+            if (strPerms.contains(g.authority)) {
                 return true
             }
         }
