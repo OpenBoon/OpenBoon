@@ -8,13 +8,6 @@ import javax.persistence.Converter
 
 object JdbcUtils {
 
-    private val UUID_REGEX = Pattern.compile("[0-9a-f\\-]{36}",
-            Pattern.CASE_INSENSITIVE)
-
-    fun isUUID(value: String): Boolean {
-        return UUID_REGEX.matcher(value).matches()
-    }
-
     /**
      * Create and return an insert query.  Supports the postgres cast operator (::)
      * for on column names.
@@ -143,14 +136,15 @@ object JdbcUtils {
      */
     fun getTsWordVector(vararg keywords: String?): String {
         var result = keywords.filterNotNull()
-                .flatMap {
-                    it.split(Regex("[:_\\.\\-/]+")).filter { it2 -> it2.isNotEmpty() }
-                .flatMap { it3 ->
-                    it3.split(Regex("(?<=[a-z])(?=[A-Z])"))
-                }
-        }.joinToString(" ")
+            .flatMap {
+                it.split(Regex("[:_\\.\\-/]+")).filter { it2 -> it2.isNotEmpty() }
+                    .flatMap { it3 ->
+                        it3.split(Regex("(?<=[a-z])(?=[A-Z])"))
+                    }
+            }.joinToString(" ")
         return result.toLowerCase()
     }
+
     /**
      * Create a WHERE clause fragment using a LongRangeFilter
      *
@@ -159,7 +153,9 @@ object JdbcUtils {
      */
     fun rangeClause(col: String, rng: LongRangeFilter): String {
         val sb = StringBuilder(32)
-        val eq = if (rng.inclusive) { "=" } else ""
+        val eq = if (rng.inclusive) {
+            "="
+        } else ""
 
         if (rng.greaterThan != null) {
             sb.append(" $col>$eq? ")

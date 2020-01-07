@@ -121,16 +121,21 @@ class ProcessorRef(
     var args: Map<String, Any>? = mutableMapOf(),
 
     @ApiModelProperty("List of Processor Refs to execute as part of this Processor Ref.")
-    var execute: List<ProcessorRef>? = mutableListOf(),
+    var execute: List<ProcessorRef>? = null,
 
     @ApiModelProperty("Filters to apply to this Processor Ref.")
-    var filters: List<ZpsFilter>? = mutableListOf(),
+    var filters: List<ZpsFilter>? = null,
 
     @ApiModelProperty("File types to filter on.")
-    var fileTypes: List<String>? = mutableListOf(),
+    var fileTypes: List<String>? = null,
 
-    @ApiModelProperty("Envrironment variables that should be present during processor execution.")
-    val env: Map<String, String> = mutableMapOf()
-)
+    @ApiModelProperty("Environment variables that should be present during processor execution.")
+    val env: Map<String, String>? = null
+
+) {
+    override fun toString(): String {
+        return "ProcessorRef(className='$className', image='$image')"
+    }
+}
 
 var LIST_OF_PREFS: TypeReference<List<ProcessorRef>> = object : TypeReference<List<ProcessorRef>>() {}

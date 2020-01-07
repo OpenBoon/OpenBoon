@@ -76,8 +76,8 @@ class BatchCreateAssetsRequest(
         "further analysis, or false to stay in the provisioned state.")
     val analyze: Boolean = true,
 
-    @ApiModelProperty("The analysis to apply.")
-    val analysis: List<String>? = null,
+    @ApiModelProperty("The pipeline to execute, defaults to the project's default pipeline.")
+    val pipeline: String? = null,
 
     @JsonIgnore
     @ApiModelProperty("The task that is creating the assets")
@@ -114,8 +114,9 @@ class BatchUploadAssetsRequest(
     )
     val analyze: Boolean = true,
 
-    @ApiModelProperty("The analysis to apply.")
-    val analysis: List<String>? = null
+    @ApiModelProperty("The pipeline to execute, defaults to the project's default pipeline.")
+    val pipeline: String? = null
+
 ) {
 
     lateinit var files: Array<MultipartFile>

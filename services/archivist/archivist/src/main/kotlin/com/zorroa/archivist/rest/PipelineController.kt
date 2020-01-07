@@ -3,10 +3,14 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineFilter
 import com.zorroa.archivist.domain.PipelineSpec
+import com.zorroa.archivist.domain.PipelineUpdate
+import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.service.PipelineResolverService
 import com.zorroa.archivist.service.PipelineService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.Json
+import com.zorroa.archivist.util.isUUID
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -30,13 +34,13 @@ import javax.servlet.http.HttpServletResponse
 @Timed
 @Api(tags = ["Pipeline"], description = "Operations for interacting with Pipelines.")
 class PipelineController @Autowired constructor(
-    val pipelineService: PipelineService
+    val pipelineService: PipelineService,
+    val pipeineResolverService: PipelineResolverService
 ) {
 
     @ApiOperation("Get a Pipeline.")
     @GetMapping(value = ["/api/v1/pipelines/{id}"])
-    fun get(@ApiParam("UUID of the Pipeline.") @PathVariable id: String): Pipeline {
-        // handles UUID and string at lower level
+    fun get(@ApiParam("UUID of the Pipeline.") @PathVariable id: UUID): Pipeline {
         return pipelineService.get(id)
     }
 
@@ -48,8 +52,8 @@ class PipelineController @Autowired constructor(
 
     @ApiOperation("Returns a Pipeline as a json file.")
     @GetMapping(value = ["/api/v1/pipelines/{id}/_export"], produces = ["application/octet-stream"])
-    fun export(@ApiParam("UUID of the Pipeline.") @PathVariable id: String, rsp: HttpServletResponse): ByteArray {
-        val pipeline: Pipeline = getPipeline(id)
+    fun export(@ApiParam("UUID of the Pipeline.") @PathVariable id: UUID, rsp: HttpServletResponse): ByteArray {
+        val pipeline: Pipeline = pipelineService.get(id)
         rsp.setHeader("Content-disposition", "attachment; filename=\"" + pipeline.name + ".json\"")
         return Json.prettyString(pipeline).toByteArray()
     }
@@ -58,7 +62,8 @@ class PipelineController @Autowired constructor(
         "Get all Pipelines.",
         notes = "Results are paginated."
     )
-    @GetMapping(value = ["/api/v1/pipelines"])
+
+    @RequestMapping(value = ["/api/v1/pipelines/_search"], method = [RequestMethod.GET, RequestMethod.POST])
     fun getAll(@RequestBody(required = false) filter: PipelineFilter?): KPagedList<Pipeline> {
         return pipelineService.getAll(filter ?: PipelineFilter())
     }
@@ -72,9 +77,9 @@ class PipelineController @Autowired constructor(
     @PutMapping(value = ["/api/v1/pipelines/{id}"])
     fun update(
         @ApiParam("UUID of the Pipeline.") @PathVariable id: UUID,
-        @ApiParam("Updated Pipeline.") @RequestBody spec: Pipeline
+        @ApiParam("Updated Pipeline.") @RequestBody spec: PipelineUpdate
     ): Any {
-        return HttpUtils.updated("pipelines", id, pipelineService.update(spec), pipelineService.get(id))
+        return HttpUtils.updated("pipelines", id, pipelineService.update(id, spec))
     }
 
     @ApiOperation("Delete a Pipeline.")
@@ -83,11 +88,9 @@ class PipelineController @Autowired constructor(
         return HttpUtils.deleted("pipelines", id, pipelineService.delete(id))
     }
 
-    fun getPipeline(nameOrId: String): Pipeline {
-        return try {
-            pipelineService.get(UUID.fromString(nameOrId))
-        } catch (e: IllegalArgumentException) {
-            pipelineService.get(nameOrId)
-        }
+    @ApiOperation("Resolve a Pipeline to its list of processors.")
+    @GetMapping(value = ["/api/v1/pipelines/{id}/_resolve"])
+    fun resolve(@ApiParam("UUID of the Pipeline.") @PathVariable id: UUID): List<ProcessorRef> {
+        return pipeineResolverService.resolve(id)
     }
 }

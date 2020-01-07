@@ -17,6 +17,7 @@ import org.springframework.boot.web.servlet.error.ErrorController
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.dao.IncorrectResultSizeDataAccessException
 import org.springframework.http.HttpStatus
@@ -63,7 +64,7 @@ class RestApiExceptionHandler {
 
         val status = if (annotation != null) {
             annotation.value
-        } else if (e is EmptyResultDataAccessException || e is EntityNotFoundException) {
+        } else if (e is DataRetrievalFailureException || e is EntityNotFoundException ) {
             HttpStatus.NOT_FOUND
         } else if (e is IncorrectResultSizeDataAccessException) {
             // We're borrowing this http status

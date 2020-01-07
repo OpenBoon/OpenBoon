@@ -6,14 +6,15 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineFilter
+import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
-import com.zorroa.archivist.domain.ZpsSlot
+import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils.insert
-import com.zorroa.archivist.util.JdbcUtils.isUUID
-import com.zorroa.archivist.util.JdbcUtils.update
 import com.zorroa.archivist.util.Json
+import com.zorroa.archivist.util.isUUID
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -23,7 +24,7 @@ interface PipelineDao {
     fun create(spec: PipelineSpec): Pipeline
     fun get(name: String): Pipeline
     fun get(id: UUID): Pipeline
-    fun update(pipeline: Pipeline): Boolean
+    fun update(id: UUID, update: PipelineUpdate): Boolean
     fun refresh(obj: Pipeline): Pipeline
     fun delete(id: UUID): Boolean
     fun getAll(filter: PipelineFilter): KPagedList<Pipeline>
@@ -36,22 +37,33 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
 
     override fun create(spec: PipelineSpec): Pipeline {
         Preconditions.checkNotNull(spec.name)
-        Preconditions.checkNotNull(spec.processors)
 
         val id = uuid1.generate()
         val time = System.currentTimeMillis()
+        val actor = getZmlpActor().toString()
+        val projectId = spec.projectId ?: getProjectId()
 
         jdbc.update { connection ->
             val ps = connection.prepareStatement(INSERT)
             ps.setObject(1, id)
-            ps.setObject(2, getProjectId())
+            ps.setObject(2, projectId)
             ps.setString(3, spec.name)
-            ps.setInt(4, spec.slot.ordinal)
+            ps.setInt(4, spec.mode.ordinal)
             ps.setString(5, Json.serializeToString(spec.processors, "[]"))
             ps.setLong(6, time)
             ps.setLong(7, time)
+            ps.setString(8, actor)
+            ps.setString(9, actor)
             ps
         }
+
+        if (spec.mode == PipelineMode.MODULAR) {
+            spec.modules?.forEach {
+                jdbc.update("INSERT INTO x_module_pipeline VALUES (?, ?, ?)",
+                    UUID.randomUUID(), it, id)
+            }
+        }
+
         logger.event(
             LogObject.PIPELINE, LogAction.CREATE,
             mapOf("pipelineId" to id, "pipelineName" to spec.name)
@@ -71,7 +83,7 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
     }
 
     override fun get(name: String): Pipeline {
-        if (isUUID(name)) {
+        if (name.isUUID()) {
             return get(UUID.fromString(name))
         }
         try {
@@ -88,12 +100,19 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
         return get(obj.id)
     }
 
-    override fun update(pipeline: Pipeline): Boolean {
-        return jdbc.update(
-            UPDATE, pipeline.name,
-            Json.serializeToString(pipeline.processors),
-            pipeline.id
-        ) == 1
+    override fun update(id: UUID, update: PipelineUpdate): Boolean {
+        var updates = jdbc.update(
+            UPDATE, update.name, Json.serializeToString(update.processors), id, getProjectId())
+
+        update.modules?.let {
+            jdbc.update("DELETE FROM x_module_pipeline WHERE pk_pipeline=?", id)
+            it.forEach {
+                updates += jdbc.update("INSERT INTO x_module_pipeline VALUES (?,?,?)",
+                    UUID.randomUUID(), it, id)
+            }
+        }
+
+        return updates > 0
     }
 
     override fun delete(id: UUID): Boolean {
@@ -123,35 +142,47 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
         }
     }
 
+    private val MAPPER = RowMapper { rs, _ ->
+        Pipeline(
+            rs.getObject("pk_pipeline") as UUID,
+            rs.getObject("pk_project") as UUID,
+            rs.getString("str_name"),
+            PipelineMode.values()[rs.getInt("int_mode")],
+            Json.Mapper.readValue(rs.getString("json_processors"), LIST_OF_PREFS),
+            jdbc.queryForList(
+                "SELECT x.pk_module FROM x_module_pipeline x WHERE x.pk_pipeline=?", UUID::class.java,
+                rs.getObject("pk_pipeline")
+            ),
+            rs.getLong("time_created"),
+            rs.getLong("time_modified"),
+            rs.getString("actor_created"),
+            rs.getString("actor_modified")
+        )
+    }
+
     companion object {
 
-        private val MAPPER = RowMapper { rs, _ ->
-            Pipeline(
-                rs.getObject("pk_pipeline") as UUID,
-                rs.getString("str_name"),
-                ZpsSlot.values()[rs.getInt("int_slot")],
-                Json.Mapper.readValue(rs.getString("json_processors"), LIST_OF_PREFS)
-            )
-        }
-
-        private val GET = "SELECT * FROM pipeline"
-        private val COUNT = "SELECT COUNT(1) FROM pipeline"
+        private const val GET = "SELECT * FROM pipeline"
+        private const val COUNT = "SELECT COUNT(1) FROM pipeline"
+        private const val UPDATE = "UPDATE " +
+            "pipeline " +
+            "SET " +
+                "str_name=?, " +
+                "json_processors=?::jsonb " +
+            "WHERE " +
+                "pk_pipeline=? AND pk_project=?"
 
         private val INSERT = insert(
             "pipeline",
             "pk_pipeline",
             "pk_project",
             "str_name",
-            "int_slot",
-            "json_processors",
+            "int_mode",
+            "json_processors::jsonb",
             "time_created",
-            "time_modified"
-        )
-
-        private val UPDATE = update(
-            "pipeline", "pk_pipeline",
-            "str_name",
-            "json_processors"
+            "time_modified",
+            "actor_created",
+            "actor_modified"
         )
     }
 }

@@ -3,6 +3,7 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Before
@@ -79,6 +80,43 @@ class ProjectControllerTests : MockMvcTest() {
             .andExpect(jsonPath("$.id", CoreMatchers.equalTo(testProject.id.toString())))
             .andExpect(jsonPath("$.timeCreated", CoreMatchers.anything()))
             .andExpect(jsonPath("$.timeModified", CoreMatchers.anything()))
+            .andReturn()
+    }
+
+    @Test
+    fun getSettings() {
+        val pid = getProjectId()
+        val settings = projectService.getSettings(pid)
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/projects/$pid/_settings")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.defaultPipelineId",
+                CoreMatchers.equalTo(settings.defaultPipelineId.toString())))
+            .andExpect(jsonPath("$.defaultIndexRouteId",
+                CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())))
+            .andReturn()
+    }
+
+    @Test
+    fun updateSettings() {
+        val pid = getProjectId()
+        val settings = projectService.getSettings(pid)
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/projects/$pid/_settings")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(settings))
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.defaultPipelineId", CoreMatchers.equalTo(
+                settings.defaultPipelineId.toString())))
+            .andExpect(jsonPath("$.defaultIndexRouteId",
+                CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())))
             .andReturn()
     }
 }
