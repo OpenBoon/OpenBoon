@@ -3,8 +3,8 @@ package com.zorroa.archivist.storage
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.FileCategory
 import com.zorroa.archivist.domain.FileGroup
-import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.ProjectFileLocator
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -16,7 +16,7 @@ class FileStorageServiceTests : AbstractTest() {
 
     @Test
     fun testStore() {
-        val loc = FileStorageLocator(FileGroup.ASSET, "1234", FileCategory.SOURCE, "bob.jpg")
+        val loc = ProjectFileLocator(FileGroup.ASSET, "1234", FileCategory.SOURCE, "bob.jpg")
         val spec = FileStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
 
         val result = fileStorageService.store(spec)
