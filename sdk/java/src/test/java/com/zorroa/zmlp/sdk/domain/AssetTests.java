@@ -130,11 +130,11 @@ public class AssetTests {
     public void testRemoveAttribute() {
         Asset asset = getNestedAttributesAssetMock();
 
-        assert (asset.attrExists("path"));
+        assertEquals(true, asset.attrExists("path"));
 
         asset.removeAttr("path");
 
-        assertEquals(false,asset.attrExists("path"));
+        assertEquals(false, asset.attrExists("path"));
     }
 
     //Mocks
