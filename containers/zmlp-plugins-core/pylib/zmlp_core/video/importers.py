@@ -4,11 +4,11 @@ from pathlib2 import Path
 
 from zmlp.asset import Clip
 from zmlp.analysis.storage import file_storage
-from zmlp.analysis.base import AssetBuilder, ZmlpProcessorException
+from zmlp.analysis.base import AssetProcessor, ZmlpProcessorException
 from ..util.media import get_video_metadata, create_video_thumbnail, set_resolution_attrs
 
 
-class VideoImporter(AssetBuilder):
+class VideoImporter(AssetProcessor):
     """Processor that handles ingestion of video files. This processor will add video
     file related metadata to the the media namespace. Additionally it will handle breaking
     the video into individual clips and creating web proxies.

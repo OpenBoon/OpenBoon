@@ -7,7 +7,7 @@ import collections
 from PIL import Image
 from pathlib2 import Path
 
-from zmlp.analysis import AssetBuilder, Argument
+from zmlp.analysis import AssetProcessor, Argument
 from zmlp.analysis.storage import file_storage
 from zmlp.analysis.proxy import store_proxy_media, get_proxy_level
 from zmlp_core.util.media import get_output_dimension, media_size
@@ -16,7 +16,7 @@ from zmlp_core.util.media import get_output_dimension, media_size
 logger = logging.getLogger(__file__)
 
 
-class ImageProxyProcessor(AssetBuilder):
+class ImageProxyProcessor(AssetProcessor):
     toolTips = {
         'force': 'Force re-creation of proxies, even if they already exist.',
         'sizes': 'Sizes of the proxies to create.',

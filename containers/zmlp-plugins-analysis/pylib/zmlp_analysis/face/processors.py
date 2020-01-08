@@ -6,11 +6,11 @@ import cv2
 import face_recognition
 import numpy as np
 
-from zmlp.analysis import AssetBuilder, Argument
+from zmlp.analysis import AssetProcessor, Argument
 from zmlp.analysis.proxy import get_proxy_level
 
 
-class FaceRecognitionProcessor(AssetBuilder):
+class FaceRecognitionProcessor(AssetProcessor):
     """Detect and recognize faces.
     Generate a face similarity hash
     """

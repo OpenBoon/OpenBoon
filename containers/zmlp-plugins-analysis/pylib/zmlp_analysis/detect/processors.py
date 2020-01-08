@@ -7,12 +7,12 @@ from cvlib.object_detection import draw_bbox
 
 import zmlp.analysis.proxy
 from zmlp.asset import Element
-from zmlp.analysis import AssetBuilder
+from zmlp.analysis import AssetProcessor
 
 from zmlp.analysis.storage import file_storage
 
 
-class ZmlpObjectDetectionProcessor(AssetBuilder):
+class ZmlpObjectDetectionProcessor(AssetProcessor):
 
     def process(self, frame):
         asset = frame.asset

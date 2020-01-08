@@ -1,14 +1,14 @@
 import json
 
 from zmlp import FileImport, Clip
-from zmlp.analysis import AssetBuilder, Argument, ExpandFrame, ZmlpFatalProcessorException
+from zmlp.analysis import AssetProcessor, Argument, ExpandFrame, ZmlpFatalProcessorException
 from zmlp.analysis.storage import file_storage, ZmlpStorageException
 from .oclient import OfficerClient
 
 __all__ = ['OfficeImporter', '_content_sanitizer']
 
 
-class OfficeImporter(AssetBuilder):
+class OfficeImporter(AssetProcessor):
     file_types = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']
 
     # The tmp_loc_attribute store the document
