@@ -6,7 +6,7 @@ import org.junit.Before;
 
 import java.io.IOException;
 
-public abstract class AbstractAppTest {
+public abstract class AbstractAppTests {
 
     protected MockWebServer webServer;
 

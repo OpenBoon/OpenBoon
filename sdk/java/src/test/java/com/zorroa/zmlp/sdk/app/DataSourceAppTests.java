@@ -13,7 +13,7 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-public class DataSourceAppTests extends AbstractAppTest {
+public class DataSourceAppTests extends AbstractAppTests {
 
     DataSourceApp dataSourceApp;
 

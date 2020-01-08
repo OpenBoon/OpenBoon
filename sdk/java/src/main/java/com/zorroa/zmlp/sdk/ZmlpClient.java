@@ -7,9 +7,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.zmlp.sdk.domain.ZmlpClientException;
 import okhttp3.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ZmlpClient {
@@ -131,5 +134,44 @@ public class ZmlpClient {
         claimBuilder.withClaim("accessKey", apiKey.getAccessKey());
         Algorithm secretKey = Algorithm.HMAC512(apiKey.getSecretKey());
         builder.header("Authorization", "Bearer " + claimBuilder.sign(secretKey));
+    }
+
+    public <T> T uploadFiles(String path, List<String> uris, Map body, Class<T> type) {
+        return marshallResponse(multiPartFileUpload(path, uris, body), type);
+    }
+
+    private byte[] multiPartFileUpload(String path, List<String> uris, Map body) {
+
+        try {
+            path = getUrl(path);
+            MultipartBody.Builder multiPartBuilder = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("body", Json.mapper.writeValueAsString(body));
+
+            // Adding Files to Request
+            uris.forEach(value -> {
+                File file = new File(value);
+                MediaType mimeType = MediaType.parse("application/octet-stream");
+                RequestBody fileRequestBody = RequestBody.create(
+                        mimeType, file);
+
+                multiPartBuilder.addFormDataPart("files", file.getName(), fileRequestBody);
+
+            });
+
+            Request.Builder requestBuilder = new Request.Builder()
+                    .url(path)
+                    .post(multiPartBuilder.build());
+            applyHeaders(requestBuilder);
+
+
+            try (Response response = http.newCall(requestBuilder.build()).execute()) {
+                return response.body().bytes();
+            }
+
+        } catch (IOException e) {
+            String msg = "Multipart Request" + " + request to " + path + " failed. " + e.getMessage();
+            throw new ZmlpClientException(msg, e);
+        }
     }
 }

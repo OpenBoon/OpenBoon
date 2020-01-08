@@ -10,12 +10,12 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.zorroa.zmlp.sdk.TestUtils.updateEnvVariables;
+import static com.zorroa.zmlp.sdk.UtilsTests.updateEnvVariables;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @DisplayName("ZMLP App Test")
-public class ZmlpAppTest {
+public class ZmlpAppTests {
 
     Map<String, String> keyDict = new HashMap<>();
     String base64Key;

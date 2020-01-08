@@ -1,0 +1,14 @@
+{
+  "assets" : [ {
+    "document" : {
+      "source" : {
+        "path" : "zmlp:///abc123/source/toucan.jpg"
+      }
+    },
+    "id" : "abc123"
+  } ],
+  "status" : [ {
+    "assetId" : "abc123",
+    "failed" : false
+  } ]
+}
