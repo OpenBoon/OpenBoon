@@ -20,9 +20,9 @@ public class AssetTests {
         Asset asset = getTestAsset();
 
         String array[] = {"proxy_200x200.jpg"};
-        assertEquals(asset.getFilesByName(array).size(), 1);
-        assertEquals(asset.getFilesByName("proxy_200x200.jpg").size(), 1);
-        assertEquals(asset.getFilesByName("spock").size(), 0);
+        assertEquals(1, asset.getFilesByName(array).size());
+        assertEquals(1, asset.getFilesByName("proxy_200x200.jpg").size());
+        assertEquals(0, asset.getFilesByName("spock").size());
     }
 
     @Test
@@ -30,9 +30,9 @@ public class AssetTests {
         Asset asset = getTestAsset();
 
         String array[] = {"proxy"};
-        assertEquals(asset.getFilesByCategory(array).size(), 1);
-        assertEquals(asset.getFilesByCategory("proxy").size(), 1);
-        assertEquals(asset.getFilesByCategory("face").size(), 0);
+        assertEquals(1, asset.getFilesByCategory(array).size());
+        assertEquals(1, asset.getFilesByCategory("proxy").size());
+        assertEquals(0, asset.getFilesByCategory("face").size());
     }
 
     @Test
@@ -40,9 +40,9 @@ public class AssetTests {
         Asset asset = getTestAsset();
 
         String array[] = {"image/", "video/mp4"};
-        assertEquals(asset.getFilesByMimetype(array).size(), 1);
-        assertEquals(asset.getFilesByMimetype("image/jpeg").size(), 1);
-        assertEquals(asset.getFilesByMimetype("video/mp4").size(), 0);
+        assertEquals(1, asset.getFilesByMimetype(array).size());
+        assertEquals(1, asset.getFilesByMimetype("image/jpeg").size());
+        assertEquals(0, asset.getFilesByMimetype("video/mp4").size());
     }
 
     @Test
@@ -50,9 +50,9 @@ public class AssetTests {
         Asset asset = getTestAsset();
 
         String array[] = {"png", "jpg"};
-        assertEquals(asset.getFilesByExtension(array).size(), 1);
-        assertEquals(asset.getFilesByExtension("jpg").size(), 1);
-        assertEquals(asset.getFilesByExtension("png").size(), 0);
+        assertEquals(1, asset.getFilesByExtension(array).size());
+        assertEquals(1, asset.getFilesByExtension("jpg").size());
+        assertEquals(0, asset.getFilesByExtension("png").size());
     }
 
     @Test
@@ -67,8 +67,8 @@ public class AssetTests {
         attr2.put("width", 200);
         attr2.put("height", 100);
 
-        assertEquals(asset.getFilesByAttrs(attr1).size(), 1);
-        assertEquals(asset.getFilesByAttrs(attr2).size(), 0);
+        assertEquals(1, asset.getFilesByAttrs(attr1).size());
+        assertEquals(0, asset.getFilesByAttrs(attr2).size());
     }
 
     @Test
@@ -79,23 +79,23 @@ public class AssetTests {
         String array1[] = {"width"};
         String array2[] = {"kirk"};
 
-        assertEquals(asset.getFilesByAttrsKey(array1).size(), 1);
-        assertEquals(asset.getFilesByAttrsKey("width").size(), 1);
-        assertEquals(asset.getFilesByAttrsKey(array2).size(), 0);
+        assertEquals(1, asset.getFilesByAttrsKey(array1).size());
+        assertEquals(1, asset.getFilesByAttrsKey("width").size());
+        assertEquals(0, asset.getFilesByAttrsKey(array2).size());
     }
 
     @Test
-    public void testGetAttribute(){
+    public void testGetAttribute() {
 
         Asset asset = getNestedAttributesAssetMock();
 
         String attr = asset.getAttr("path");
 
-        assertEquals(attr, "https://i.imgur.com/SSN26nN.jpg");
+        assertEquals("https://i.imgur.com/SSN26nN.jpg", attr);
     }
 
     @Test
-    public void testSetAttribute(){
+    public void testSetAttribute() {
 
         Asset asset = getNestedAttributesAssetMock();
 
@@ -107,7 +107,7 @@ public class AssetTests {
     }
 
     @Test
-    public void testSetNestedAttribute(){
+    public void testSetNestedAttribute() {
 
         Asset asset = getNestedAttributesAssetMock();
 
@@ -118,23 +118,23 @@ public class AssetTests {
     }
 
     @Test
-    public void testAttributeExists(){
+    public void testAttributeExists() {
         Asset asset = getNestedAttributesAssetMock();
-        assertTrue(asset.attrExists("path"));
-        assertFalse(asset.attrExists("duck"));
-        assertTrue(asset.attrExists("nestedSource.nestedKey"));
-        assertFalse(asset.attrExists("notPresentKey.AlsoNotPresentKey"));
+        assertEquals(true, asset.attrExists("path"));
+        assertEquals(false, asset.attrExists("duck"));
+        assertEquals(true, asset.attrExists("nestedSource.nestedKey"));
+        assertEquals(false, asset.attrExists("notPresentKey.AlsoNotPresentKey"));
     }
 
     @Test
-    public void testRemoveAttribute(){
+    public void testRemoveAttribute() {
         Asset asset = getNestedAttributesAssetMock();
 
-        assert(asset.attrExists("path"));
+        assert (asset.attrExists("path"));
 
         asset.removeAttr("path");
 
-        assertFalse(asset.attrExists("path"));
+        assertEquals(false,asset.attrExists("path"));
     }
 
     //Mocks
