@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.zorroa.zmlp.sdk.Json;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -20,8 +18,6 @@ public class Asset {
 
     private String id;
     private Map<String, Object> document;
-
-    private static final Logger logger = LoggerFactory.getLogger(Asset.class);
 
     private static final Pattern ATTR_SPLIT_PATTERN = Pattern.compile(".", Pattern.LITERAL);
 
@@ -240,6 +236,12 @@ public class Asset {
         return getChild(container, attrName(attr)) != null;
     }
 
+    /**
+     * Set a an attribute value.
+     *
+     * @param attr The name of the attr in dot notation.
+     * @param value The value of the attr.
+     */
     public void setAttr(String attr, Object value) {
         Object current = getContainer(attr, true);
         try {
@@ -261,7 +263,12 @@ public class Asset {
         }
     }
 
-
+    /**
+     * Remove an attribute.
+     *
+     * @param attr The name of the attr in dot notation.
+     * @return True if the attr was removed.
+     */
     public boolean removeAttr(String attr) {
         Object current = getContainer(attr, true);
         try {
@@ -277,17 +284,20 @@ public class Asset {
     }
 
     /**
-     * @param attr
-     * @param forceExapand
+     * Get the parent Map that is storing the given attribute.  If create
+     * is true, all parent maps will be made.
+     *
+     * @param attr The attribute name in dot notation.
+     * @param create If the container should be created.
      * @return
      */
-    private Object getContainer(String attr, boolean forceExapand) {
+    private Object getContainer(String attr, boolean create) {
         String[] parts = ATTR_SPLIT_PATTERN.split(attr);
         Object current = document;
         for (int i = 0; i < parts.length - 1; i++) {
             Object child = getChild(current, parts[i]);
             if (child == null) {
-                if (forceExapand) {
+                if (create) {
                     child = createChild(current, parts[i]);
                 } else {
                     return null;
@@ -299,22 +309,31 @@ public class Asset {
     }
 
     /**
-     * @param container
-     * @param key
-     * @return
+     * Get a child value in the given container.
+     *
+     * @param parent The container, will be cast to a map.
+     * @param key The element name.
+     * @return The data in the map or null.
      */
-    private Object getChild(Object container, String key) {
-        if (container == null) {
+    private Object getChild(Object parent, String key) {
+        if (parent == null) {
             return null;
         }
         try {
-            Map<String, Object> map = (Map<String, Object>) container;
+            Map<String, Object> map = (Map<String, Object>) parent;
             return map.get(key);
         } catch (ClassCastException ex) {
             return null;
         }
     }
 
+    /**
+     * Create a child value in the given container.
+     *
+     * @param parent The container, will be cast to a map.
+     * @param key The element name.
+     * @return The data in the map or null.
+     */
     private Object createChild(Object parent, String key) {
         Map<String, Object> result = new HashMap<>();
         try {
