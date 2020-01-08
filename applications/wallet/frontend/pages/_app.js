@@ -12,13 +12,17 @@ if (process.env.NODE_ENV === 'production') {
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
+    const versions = {
+      COMMIT_SHA: process.env.CI_COMMIT_SHA,
+    }
+
     if (Component.getInitialProps) {
       const pageProps = await Component.getInitialProps(ctx)
 
-      return { pageProps }
+      return { ...versions, pageProps }
     }
 
-    return {}
+    return { ...versions }
   }
 
   render() {
