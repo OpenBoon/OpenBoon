@@ -1,0 +1,34 @@
+{
+  "hits" : {
+    "hits" : [ {
+      "_index" : "litvqrkus86sna2w",
+      "_type" : "asset",
+      "_source" : {
+        "source" : {
+          "path" : "https://i.imgur.com/SSN26nN.jpg",
+          "nestedSource" : {
+            "nestedKey" : "nestedValue"
+          }
+        }
+      },
+      "_id" : "dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg",
+      "_score" : 0.2876821
+    }, {
+      "_index" : "litvqrkus86sna2w",
+      "_type" : "asset",
+      "_source" : {
+        "source" : {
+          "path" : "https://i.imgur.com/foo.jpg"
+        }
+      },
+      "_id" : "dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg",
+      "_score" : 0.2876821
+    } ],
+    "total" : {
+      "value" : 2
+    },
+    "max_score" : 0.2876821
+  },
+  "took" : 4,
+  "timed_out" : false
+}

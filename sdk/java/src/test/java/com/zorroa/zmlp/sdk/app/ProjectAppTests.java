@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
-public class ProjectAppTests extends AbstractAppTest {
+public class ProjectAppTests extends AbstractAppTests {
 
     ProjectApp projectApp;
 
