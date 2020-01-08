@@ -3,7 +3,7 @@ package com.zorroa.zmlp.sdk;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-public class TestUtils {
+public class UtilsTests {
 
     public static void updateEnvVariables(String name, String val) {
         try {
