@@ -11,6 +11,16 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 class MyApp extends App {
+  static async getInitialProps({ Component, ctx }) {
+    if (Component.getInitialProps) {
+      const pageProps = await Component.getInitialProps(ctx)
+
+      return { pageProps }
+    }
+
+    return {}
+  }
+
   render() {
     const { Component, pageProps, router, err = '' } = this.props
 
