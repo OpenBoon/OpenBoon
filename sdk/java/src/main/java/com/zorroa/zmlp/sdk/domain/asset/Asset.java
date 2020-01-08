@@ -295,7 +295,6 @@ public class Asset {
             }
             current = child;
         }
-
         return current;
     }
 

@@ -4,18 +4,21 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.zorroa.zmlp.sdk.ApiKey;
 import com.zorroa.zmlp.sdk.Json;
 import com.zorroa.zmlp.sdk.ZmlpClient;
-import com.zorroa.zmlp.sdk.domain.asset.*;
 import com.zorroa.zmlp.sdk.domain.PagedList;
+import com.zorroa.zmlp.sdk.domain.asset.*;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class AssetAppTests extends AbstractAppTest {
+public class AssetAppTests extends AbstractAppTests {
 
     AssetApp assetApp;
 
@@ -30,7 +33,7 @@ public class AssetAppTests extends AbstractAppTest {
     @Test
     public void testImportFiles() {
 
-        webServer.enqueue(new MockResponse().setBody(Json.asJson(getImportFilesMock())));
+        webServer.enqueue(new MockResponse().setBody(getImportFilesMock()));
 
         AssetSpec fileImport = new AssetSpec("gs://zorroa-dev-data/image/pluto.png");
 
@@ -46,7 +49,7 @@ public class AssetAppTests extends AbstractAppTest {
     @Test
     public void testGetById() {
 
-        webServer.enqueue(new MockResponse().setBody(Json.asJson(getGetByIdMock())));
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock()));
 
         Asset asset = assetApp.getById("abc123");
 
@@ -57,7 +60,7 @@ public class AssetAppTests extends AbstractAppTest {
     @Test
     public void testUploadAssets() {
 
-        webServer.enqueue(new MockResponse().setBody(Json.asJson(getUploadAssetsMock())));
+        webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
 
         List<AssetSpec> assetSpecList = Arrays.asList(new AssetSpec("../../../zorroa-test-data/images/set01/toucan.jpg"));
         BatchCreateAssetResponse response = assetApp.uploadFiles(assetSpecList);
@@ -68,7 +71,7 @@ public class AssetAppTests extends AbstractAppTest {
     @Test
     public void testSearchRaw() {
 
-        webServer.enqueue(new MockResponse().setBody(Json.asJson(getMockSearchResult())));
+        webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
 
         Map query = new HashMap();
         query.put("match_all", new HashMap());
@@ -85,7 +88,7 @@ public class AssetAppTests extends AbstractAppTest {
     @Test
     public void testSearchElement() {
 
-        webServer.enqueue(new MockResponse().setBody(Json.asJson(getMockSearchResult())));
+        webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
 
         Map query = new HashMap();
         query.put("match_all", new HashMap());
@@ -97,15 +100,16 @@ public class AssetAppTests extends AbstractAppTest {
         AssetSearch assetSearch = new AssetSearch(query, elementQuery);
 
         PagedList<Asset> searchResult = assetApp.search(assetSearch);
-        Asset asset = searchResult.getList().get(0);
-        String path = asset.getAttr("path");
+        Asset asset = searchResult.get(0);
+        String path = asset.getAttr("source.path");
 
         assertEquals(path, "https://i.imgur.com/SSN26nN.jpg");
     }
 
     @Test
     public void testSearchWrapped() {
-        webServer.enqueue(new MockResponse().setBody(Json.asJson(getMockSearchResult())));
+
+        webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
 
         Map query = new HashMap();
         query.put("match_all", new HashMap());
@@ -113,124 +117,37 @@ public class AssetAppTests extends AbstractAppTest {
         AssetSearch assetSearch = new AssetSearch(query);
         PagedList<Asset> searchResult = assetApp.search(assetSearch);
 
-        Asset asset = searchResult.getList().get(0);
-        String nestedValue = asset.getAttr("nestedSource.nestedKey");
-        String path = asset.getAttr("path");
+        Asset asset = searchResult.get(0);
+        String nestedValue = asset.getAttr("source.nestedSource.nestedKey");
+        String path = asset.getAttr("source.path");
 
-        assertEquals(searchResult.getList().size(), 2);
-        assertEquals(nestedValue, "nestedValue");
-        assertEquals(path, "https://i.imgur.com/SSN26nN.jpg");
+        assertEquals(2, searchResult.getList().size());
+        assertEquals("nestedValue", nestedValue);
+        assertEquals("https://i.imgur.com/SSN26nN.jpg", path);
     }
     
     // Mocks
-    private Map getImportFilesMock() {
-        Map mock = new HashMap();
-
-        List statusMockList = new ArrayList();
-        Map statusMockMap1 = new HashMap();
-        statusMockMap1.put("assetId", "abc123");
-        statusMockMap1.put("failed", false);
-        statusMockList.add(statusMockMap1);
-        mock.put("status", statusMockList);
-
-        List assetsMockList = new ArrayList();
-        Map assetsMockMap1 = new HashMap();
-        assetsMockMap1.put("id", "abc123");
-        Map documentMockMap = new HashMap();
-        Map sourceMockMap = new HashMap();
-        sourceMockMap.put("path", "gs://zorroa-dev-data/image/pluto.png");
-        documentMockMap.put("source", sourceMockMap);
-        assetsMockMap1.put("document", documentMockMap);
-        assetsMockList.add(assetsMockMap1);
-        mock.put("assets", assetsMockList);
-
-        return mock;
-
+    private String getImportFilesMock() {
+        return getMockData("mock-import-files");
     }
 
-    private Map getGetByIdMock() {
-        Map mock = new HashMap();
-
-        mock.put("id", "abc123");
-        Map documentMock = new HashMap();
-        Map sourceMock = new HashMap();
-        sourceMock.put("path", "gs://zorroa-dev-data/image/pluto.png");
-        documentMock.put("source", sourceMock);
-        mock.put("document", documentMock);
-
-        return mock;
+    private String getGetByIdMock() {
+        return getMockData("mock-get-by-id");
     }
 
-    private Map getUploadAssetsMock() {
-        Map mock = new HashMap();
-        List<Map> statusListMock = new ArrayList();
-        Map statusMock = new HashMap();
-        statusMock.put("assetId", "abc123");
-        statusMock.put("failed", false);
-        statusListMock.add(statusMock);
-        mock.put("status", statusListMock);
-
-        Map sourceMock = new HashMap();
-        sourceMock.put("path", "zmlp:///abc123/source/toucan.jpg");
-        Map documentMock = new HashMap();
-        documentMock.put("source", sourceMock);
-
-        List<Map> assetsListMock = new ArrayList();
-        Map assetsMock = new HashMap();
-        assetsMock.put("id", "abc123");
-        assetsMock.put("document", documentMock);
-        assetsListMock.add(assetsMock);
-
-        mock.put("assets", assetsListMock);
-
-        return mock;
-
+    private String getUploadAssetsMock() {
+        return getMockData("mock-upload-assets");
     }
 
-    private Map getMockSearchResult() {
-        Map mock = new HashMap();
-        mock.put("took", 4);
-        mock.put("timed_out", false);
-
-        Map hitsMock = new HashMap();
-        List hitsListMock = new ArrayList();
-        Map hit1 = new HashMap();
-        hit1.put("_index", "litvqrkus86sna2w");
-        hit1.put("_type", "asset");
-        hit1.put("_id", "dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg");
-        hit1.put("_score", 0.2876821);
-        Map hit1_Source = new HashMap();
-        Map hit1Source = new HashMap();
-        hit1Source.put("path", "https://i.imgur.com/SSN26nN.jpg");
-        Map nestedSourceMap = new HashMap();
-        nestedSourceMap.put("nestedKey", "nestedValue");
-        hit1Source.put("nestedSource", nestedSourceMap);
-        hit1_Source.put("source", hit1Source);
-        hit1.put("_source", hit1_Source);
-        hitsListMock.add(hit1);
-
-
-        Map hit2 = new HashMap();
-        hit2.put("_index", "litvqrkus86sna2w");
-        hit2.put("_type", "asset");
-        hit2.put("_id", "dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg");
-        hit2.put("_score", 0.2876821);
-        Map hit2_Source = new HashMap();
-        Map hit2Source = new HashMap();
-        hit2Source.put("path", "https://i.imgur.com/foo.jpg");
-        hit2_Source.put("source", hit2Source);
-        hit2.put("_source", hit2_Source);
-        hitsListMock.add(hit2);
-
-        hitsMock.put("hits", hitsListMock);
-        hitsMock.put("max_score", 0.2876821);
-
-        Map hitsMockTotal = new HashMap();
-        hitsMockTotal.put("value", 2);
-        hitsMock.put("total", hitsMockTotal);
-        mock.put("hits", hitsMock);
-
-        return mock;
+    private String getMockSearchResult() {
+        return getMockData("mock-search-result");
     }
 
+    private String getMockData(String name) {
+        try {
+            return new String(Files.readAllBytes(Paths.get("src/test/resources/" + name + ".json")));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to find mock data: " + name, e);
+        }
+    }
 }

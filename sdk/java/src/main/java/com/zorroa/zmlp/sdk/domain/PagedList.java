@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 /**
  * Paginated list of items.
+ *
  * @param <T>
  */
 public class PagedList<T> implements Iterable<T> {
@@ -28,6 +29,10 @@ public class PagedList<T> implements Iterable<T> {
 
     public List<T> getList() {
         return this.list;
+    }
+
+    public T get(int index) {
+        return this.list.get(index);
     }
 
     public Page getPage() {

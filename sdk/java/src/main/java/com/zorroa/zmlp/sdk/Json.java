@@ -26,7 +26,15 @@ public class Json {
         try {
             return mapper.writeValueAsString(value);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Unable to convert value to JSON");
+            throw new RuntimeException("Unable to convert value to JSON", e);
+        }
+    }
+
+    public static String asPrettyJson(Object value) {
+        try {
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(value);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Unable to convert value to JSON", e);
         }
     }
 }

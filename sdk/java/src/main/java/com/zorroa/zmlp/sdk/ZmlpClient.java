@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.zmlp.sdk.domain.ZmlpClientException;
 import okhttp3.*;
 
-import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
@@ -152,8 +151,7 @@ public class ZmlpClient {
             // Adding Files to Request
             uris.forEach(value -> {
                 File file = new File(value);
-                String contentType = new MimetypesFileTypeMap().getContentType(file);
-                MediaType mimeType = MediaType.parse(contentType);
+                MediaType mimeType = MediaType.parse("application/octet-stream");
                 RequestBody fileRequestBody = RequestBody.create(
                         mimeType, file);
 
