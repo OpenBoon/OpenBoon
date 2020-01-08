@@ -174,7 +174,10 @@ ARCHIVIST_URL = os.environ.get('ARCHIVIST_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
 
 # Google OAUTH2
-GOOGLE_OAUTH_CLIENT_ID = os.environ.get('GOOGLE_OAUTH_CLIENT_ID')
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get(
+    'GOOGLE_OAUTH_CLIENT_ID',
+    ''
+) + '.apps.googleusercontent.com'
 
 # Mail Server
 EMAIL_HOST = 'smtp.mailgun.org'
