@@ -375,7 +375,7 @@ class DispatcherServiceImpl @Autowired constructor(
 
         val name = "Expand ${result.status.size} assets"
         val parentScript = taskDao.getScript(parentTask.taskId)
-        val newScript = ZpsScript(name, null, result.assets, STANDARD_PIPELINE)
+        val newScript = ZpsScript(name, null, result.assets, parentScript.execute)
 
         newScript.globalArgs = parentScript.globalArgs
         newScript.type = parentScript.type

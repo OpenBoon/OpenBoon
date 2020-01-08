@@ -129,6 +129,9 @@ class AssetServiceImpl : AssetService {
     @Autowired
     lateinit var fileStorageService: FileStorageService
 
+    @Autowired
+    lateinit var pipelineResolverService: PipelineResolverService
+
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
         val rsp = rest.client.get(rest.newGetRequest(id), RequestOptions.DEFAULT)
@@ -450,7 +453,7 @@ class AssetServiceImpl : AssetService {
 
     fun createAnalysisJob(assets: List<Asset>): Job {
         val name = "Analyze ${assets.size} created assets"
-        val script = ZpsScript(name, null, assets, STANDARD_PIPELINE)
+        val script = ZpsScript(name, null, assets, pipelineResolverService.resolve())
         val spec = JobSpec(name, script)
 
         return jobService.create(spec)

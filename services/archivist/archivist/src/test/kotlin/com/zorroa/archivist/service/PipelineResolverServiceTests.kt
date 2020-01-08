@@ -34,6 +34,12 @@ class PipelineResolverServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testResolveDefaultPipeline() {
+        val resolved = pipelineResolverService.resolve()
+        assertEquals(STANDARD_PIPELINE.size, resolved.size)
+    }
+
+    @Test
     fun resolveAppendOp() {
         val spec = PipelineModSpec(
             "test", "A test module",

@@ -8,6 +8,8 @@ import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.repository.PipelineModDao
+import com.zorroa.archivist.repository.ProjectCustomDao
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -42,6 +44,12 @@ val STANDARD_PIPELINE = listOf(
  *
  */
 interface PipelineResolverService {
+
+    /**
+     * Resolve the projects default pipeline.
+     */
+    fun resolve(): List<ProcessorRef>
+
     /**
      * Resolve the given [Pipeline] ID into a list of [ProcessorRef]
      */
@@ -62,8 +70,15 @@ interface PipelineResolverService {
 @Transactional
 class PipelineResolverServiceImpl(
     val pipelineService: PipelineService,
-    val pipelineModDao: PipelineModDao
+    val pipelineModDao: PipelineModDao,
+    val projectCustomDao: ProjectCustomDao
 ) : PipelineResolverService {
+
+    @Transactional(readOnly = true)
+    override fun resolve(): List<ProcessorRef> {
+        val settings = projectCustomDao.getSettings(getProjectId())
+        return resolve(settings.defaultPipelineId)
+    }
 
     @Transactional(readOnly = true)
     override fun resolve(id: UUID): List<ProcessorRef> {
