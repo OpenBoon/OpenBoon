@@ -152,6 +152,9 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -160,112 +163,10 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  color: #c92300;
+  text-align: center;
+  color: #808080;
   font-size: 16px;
   line-height: 20px;
-}
-
-.emotion-17 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-}
-
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
-  border: none;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.emotion-12:hover {
-  opacity: 1;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11 {
-  color: #191919;
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-}
-
-.emotion-13 {
-  padding: 8px 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #b3b3b3;
-  background-color: #000000;
-}
-
-.emotion-14 {
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #b3b3b3;
-}
-
-.emotion-16 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
-  border: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-16:hover {
-  opacity: 1;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15 {
-  color: #191919;
-  -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  transform: rotate(-90deg);
 }
 
 <div>
@@ -343,43 +244,6 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
     </table>
     <div>
        
-    </div>
-    <div
-      className="emotion-17"
-    >
-      <button
-        className="emotion-12"
-        disabled={true}
-        type="button"
-      >
-        <svg
-          className="emotion-11"
-          data-file-name="chevron.svg"
-          width={16}
-        />
-      </button>
-      <div
-        className="emotion-13"
-      >
-        1
-      </div>
-      <div
-        className="emotion-14"
-      >
-        of 
-        0
-      </div>
-      <button
-        className="emotion-16"
-        disabled={true}
-        type="button"
-      >
-        <svg
-          className="emotion-15"
-          data-file-name="chevron.svg"
-          width={16}
-        />
-      </button>
     </div>
   </div>
 </div>
@@ -890,6 +754,9 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -898,112 +765,10 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  color: #c92300;
+  text-align: center;
+  color: #808080;
   font-size: 16px;
   line-height: 20px;
-}
-
-.emotion-17 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-}
-
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
-  border: none;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.emotion-12:hover {
-  opacity: 1;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11 {
-  color: #191919;
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-}
-
-.emotion-13 {
-  padding: 8px 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #b3b3b3;
-  background-color: #000000;
-}
-
-.emotion-14 {
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #b3b3b3;
-}
-
-.emotion-16 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
-  border: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-16:hover {
-  opacity: 1;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-15 {
-  color: #191919;
-  -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  transform: rotate(-90deg);
 }
 
 <div>
@@ -1081,43 +846,6 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
     </table>
     <div>
        
-    </div>
-    <div
-      className="emotion-17"
-    >
-      <button
-        className="emotion-12"
-        disabled={true}
-        type="button"
-      >
-        <svg
-          className="emotion-11"
-          data-file-name="chevron.svg"
-          width={16}
-        />
-      </button>
-      <div
-        className="emotion-13"
-      >
-        1
-      </div>
-      <div
-        className="emotion-14"
-      >
-        of 
-        0
-      </div>
-      <button
-        className="emotion-16"
-        disabled={true}
-        type="button"
-      >
-        <svg
-          className="emotion-15"
-          data-file-name="chevron.svg"
-          width={16}
-        />
-      </button>
     </div>
   </div>
 </div>
