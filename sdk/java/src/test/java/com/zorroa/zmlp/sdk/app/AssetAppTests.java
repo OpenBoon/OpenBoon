@@ -35,12 +35,13 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getImportFilesMock()));
 
-        AssetSpec fileImport = new AssetSpec("gs://zorroa-dev-data/image/pluto.png");
 
-        BatchCreateAssetRequest batchCreateAssetRequest = new BatchCreateAssetRequest();
-        batchCreateAssetRequest.setAssets(Arrays.asList(fileImport));
+        AssetCreateBuilder assetCreateBuilder = new AssetCreateBuilder()
+                .addAsset(new AssetSpec("gs://zorroa-dev-data/image/pluto.png"))
+                .addAsset("gs://zorroa-dev-data/image/earth.png")
+                .withAnalyze(false);
 
-        BatchCreateAssetResponse batchCreateAssetResponse = assetApp.importFiles(batchCreateAssetRequest);
+        BatchCreateAssetResponse batchCreateAssetResponse = assetApp.importFiles(assetCreateBuilder);
 
         assertEquals(batchCreateAssetResponse.getStatus().get(0).getAssetId(), "abc123");
         assertEquals(batchCreateAssetResponse.getStatus().get(0).getFailed(), false);

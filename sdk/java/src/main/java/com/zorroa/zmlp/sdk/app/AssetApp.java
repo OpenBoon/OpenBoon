@@ -19,11 +19,11 @@ public class AssetApp {
     /**
      * Import a list of FileImport instances.
      *
-     * @param batchCreateAssetRequest The list of files to import as Assets.
+     * @param assetCreateBuilder The list of files to import as Assets.
      * @return A dictionary containing the provisioning status of each asset, a list of assets to be processed, and a analysis job id.
      */
-    public BatchCreateAssetResponse importFiles(BatchCreateAssetRequest batchCreateAssetRequest) {
-        return client.post("/api/v3/assets/_batchCreate", batchCreateAssetRequest, BatchCreateAssetResponse.class);
+    public BatchCreateAssetResponse importFiles(AssetCreateBuilder assetCreateBuilder) {
+        return client.post("/api/v3/assets/_batchCreate", assetCreateBuilder, BatchCreateAssetResponse.class);
     }
 
     /**
