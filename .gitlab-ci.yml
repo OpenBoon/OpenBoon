@@ -146,9 +146,23 @@ sdk-unit-tests:
       - sdk/**/*
       - containers/zmlp-plugins-base/**/*
 
+sdk-java-unit-tests:
+  image: maven:3.6-jdk-11
+  stage: test
+  allow_failure: true
+  script:
+    - mvn test verify -f sdk/java -q
+  only:
+    refs:
+      - merge_requests
+    changes:
+      - sdk/**/*
+      - containers/zmlp-plugins-base/**/*
+
 sdk-unit-tests-all-stable-branches:
   extends:
     - sdk-unit-tests
+    - sdk-java-unit-tests
     - .all-stable-branches
 
 docker_hub_build_push:
