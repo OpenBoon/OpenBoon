@@ -41,6 +41,7 @@ const JobsMenu = ({ projectId, jobId, revalidate }) => {
           aria-label="Toggle Actions Menu"
           variant={VARIANTS.NEUTRAL}
           style={{
+            color: colors.structure.coal,
             padding: spacing.moderate / 2,
             borderRadius: constants.borderRadius.round,
             ':hover': { backgroundColor: colors.structure.steel },

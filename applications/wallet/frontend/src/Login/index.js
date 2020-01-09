@@ -47,7 +47,7 @@ const Login = ({
           flexDirection: 'column',
           padding: spacing.colossal,
           width: WIDTH,
-          backgroundColor: colors.secondaryBackground,
+          backgroundColor: colors.structure.mattGrey,
           borderRadius: constants.borderRadius.small,
           boxShadow: constants.boxShadows.default,
         }}>
@@ -98,9 +98,10 @@ const Login = ({
               variant={VARIANTS.NEUTRAL}
               onClick={() => setShowPassword(!showPassword)}
               style={{
+                color: colors.structure.zinc,
                 padding: spacing.moderate,
                 outlineOffset: -2,
-                '&:hover': { color: colors.primary },
+                '&:hover': { color: colors.key.one },
               }}>
               {showPassword ? (
                 <VisibleSvg width={20} />

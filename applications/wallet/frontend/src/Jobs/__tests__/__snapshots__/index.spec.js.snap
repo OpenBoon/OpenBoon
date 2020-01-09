@@ -443,8 +443,10 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  color: #ffffff;
   background-color: transparent;
   padding: 0;
+  color: #191919;
   padding: 6px;
   border-radius: 32px;
 }
@@ -452,6 +454,10 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
 .emotion-20:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+}
+
+.emotion-20[aria-disabled=true] {
+  color: #2e2e2e;
 }
 
 .emotion-20:hover {

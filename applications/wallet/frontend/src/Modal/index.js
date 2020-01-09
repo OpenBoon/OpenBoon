@@ -1,8 +1,12 @@
 import { useState } from 'react'
 import AriaModal from 'react-aria-modal'
+
+import { colors, constants, spacing } from '../Styles'
+
+import Button, { VARIANTS } from '../Button'
+
 import WarningSvg from '../Icons/warning.svg'
 import CrossSvg from '../Icons/cross.svg'
-import { colors, constants, spacing } from '../Styles'
 
 const BUTTON_HEIGHT = 40
 const MODAL_HEIGHT = 200
@@ -38,7 +42,7 @@ const Modal = () => {
             }}>
             <header
               css={{
-                backgroundColor: colors.grey4,
+                backgroundColor: colors.structure.iron,
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
@@ -63,7 +67,7 @@ const Modal = () => {
             <div
               css={{
                 height: '100%',
-                backgroundColor: colors.grey1,
+                backgroundColor: colors.structure.mattGrey,
                 padding: spacing.spacious,
               }}>
               <div
@@ -72,7 +76,7 @@ const Modal = () => {
                   alignItems: 'center',
                   color: colors.marble,
                 }}>
-                <WarningSvg width={20} color={colors.warning} />
+                <WarningSvg width={20} color={colors.signal.warning.base} />
                 <div css={{ paddingLeft: spacing.base }}>
                   Deleting this key cannot be undone.
                 </div>
@@ -89,29 +93,25 @@ const Modal = () => {
                     borderRadius: constants.borderRadius.small,
                   },
                 }}>
-                <button
+                <Button
                   type="button"
+                  variant={VARIANTS.SECONDARY}
                   css={{
-                    backgroundColor: colors.structure.steel,
-                    color: colors.rocks.granite,
                     marginRight: spacing.normal,
                   }}
                   onClick={() => {
                     setShowModal(false)
                   }}>
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
-                  css={{
-                    backgroundColor: colors.warning,
-                    color: colors.primaryFont,
-                  }}
+                  variant={VARIANTS.WARNING}
                   onClick={() => {
                     setShowModal(false)
                   }}>
                   Delete Permanently
-                </button>
+                </Button>
               </div>
             </div>
           </div>
