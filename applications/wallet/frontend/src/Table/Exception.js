@@ -13,10 +13,11 @@ const TableException = ({ numColumns, children }) => {
             height: HEIGHT,
             width: '100%',
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            flexDirection: 'column',
-            color: colors.signal.warning.base,
+            textAlign: 'center',
+            color: colors.structure.steel,
             fontSize: typography.size.kilo,
             lineHeight: typography.height.kilo,
           }}>

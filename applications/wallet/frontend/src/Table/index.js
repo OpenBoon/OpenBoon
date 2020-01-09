@@ -18,7 +18,7 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
   const parsedPage = parseInt(page, 10)
   const from = parsedPage * SIZE - SIZE
 
-  const { data: { count = 0, results } = {}, revalidate } = useSWR(
+  const { data: { count = 0, results } = {}, error, revalidate } = useSWR(
     `${url}?from=${from}&size=${SIZE}`,
   )
 
@@ -93,6 +93,7 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
         <tbody>
           <TableContent
             numColumns={columns.length}
+            hasError={!!error}
             isLoading={!results}
             results={results || []}
             renderEmpty={renderEmpty}
@@ -104,10 +105,12 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
 
       <div>&nbsp;</div>
 
-      <Pagination
-        currentPage={parsedPage}
-        totalPages={Math.ceil(count / SIZE)}
-      />
+      {count > 0 && (
+        <Pagination
+          currentPage={parsedPage}
+          totalPages={Math.ceil(count / SIZE)}
+        />
+      )}
     </div>
   )
 }

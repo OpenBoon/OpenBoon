@@ -4,12 +4,22 @@ import TableException from './Exception'
 
 const TableContent = ({
   numColumns,
+  hasError,
   isLoading,
   results,
   renderEmpty,
   renderRow,
   revalidate,
 }) => {
+  if (hasError) {
+    return (
+      <TableException numColumns={numColumns}>
+        Hmmm, something went wrong.
+        <br /> Please try refreshing.
+      </TableException>
+    )
+  }
+
   if (isLoading) {
     return <TableException numColumns={numColumns}>Loading...</TableException>
   }
@@ -25,6 +35,7 @@ const TableContent = ({
 
 TableContent.propTypes = {
   numColumns: PropTypes.number.isRequired,
+  hasError: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
   renderEmpty: PropTypes.node.isRequired,
