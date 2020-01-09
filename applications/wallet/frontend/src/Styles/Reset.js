@@ -24,8 +24,8 @@ const StylesReset = () => (
           fontSize: typography.size.hecto,
           lineHeight: typography.height.hecto,
           fontWeight: typography.weight.regular,
-          color: colors.primaryFont,
-          backgroundColor: colors.primaryBackground,
+          color: colors.structure.white,
+          backgroundColor: colors.structure.coal,
         },
         'input, textarea, select, button': {
           fontFamily: 'inherit',
@@ -36,7 +36,7 @@ const StylesReset = () => (
           lineHeight: typography.height.uno,
         },
         a: {
-          color: colors.primaryFont,
+          color: colors.structure.white,
           textDecoration: 'none',
           '&:hover': {
             textDecoration: 'underline',

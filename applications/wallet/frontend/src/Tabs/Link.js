@@ -17,9 +17,9 @@ const TabsLink = ({ title, href }) => {
       <Link href={`/[projectId]${href}`} as={`/${projectId}${href}`} passHref>
         <a
           css={{
-            border: `0 ${colors.green2} solid`,
+            border: `0 ${colors.key.two} solid`,
             borderBottomWidth: isCurrentPage ? 2 : 0,
-            color: isCurrentPage ? colors.white : colors.grey2,
+            color: isCurrentPage ? colors.white : colors.structure.zinc,
             display: 'flex',
             alignItems: 'center',
             paddingTop: spacing.base,

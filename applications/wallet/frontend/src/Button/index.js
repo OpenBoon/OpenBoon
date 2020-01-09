@@ -19,23 +19,47 @@ const BASE = ({ isDisabled }) => ({
   fontWeight: typography.weight.medium,
   border: 'none',
   cursor: isDisabled ? 'not-allowed' : 'pointer',
+  color: colors.structure.white,
   backgroundColor: colors.transparent,
   ':hover': {
     textDecoration: 'none',
+  },
+  '&[aria-disabled=true]': {
+    color: colors.structure.mattGrey,
   },
 })
 
 const STYLES = {
   PRIMARY: {
     '&,&:hover,&:visited': {
-      color: colors.primaryFont,
-      backgroundColor: colors.primary,
+      backgroundColor: colors.key.one,
     },
     '&:hover': {
-      backgroundColor: colors.primaryHover,
+      backgroundColor: colors.key.two,
     },
     '&[aria-disabled=true]': {
-      color: colors.structure.mattGrey,
+      backgroundColor: colors.structure.steel,
+    },
+  },
+  SECONDARY: {
+    '&,&:hover,&:visited': {
+      backgroundColor: colors.structure.steel,
+    },
+    '&:hover': {
+      opacity: constants.opacity.half,
+    },
+    '&[aria-disabled=true]': {
+      backgroundColor: colors.structure.steel,
+    },
+  },
+  WARNING: {
+    '&,&:hover,&:visited': {
+      backgroundColor: colors.signal.warning.base,
+    },
+    '&:hover': {
+      opacity: constants.opacity.half,
+    },
+    '&[aria-disabled=true]': {
       backgroundColor: colors.structure.steel,
     },
   },
@@ -45,7 +69,7 @@ const STYLES = {
   MENU: {
     flex: 1,
     padding: `${spacing.small}px ${spacing.base}px`,
-    color: colors.primary,
+    color: colors.key.one,
     fontWeight: typography.weight.regular,
     height: '100%',
     ':hover': {
@@ -55,7 +79,6 @@ const STYLES = {
   MENU_ITEM: {
     flex: '1',
     alignItems: 'flex-start',
-    color: colors.structure.white,
     padding: `${spacing.base}px ${spacing.normal}px`,
     fontWeight: typography.weight.regular,
     borderRadius: 0,

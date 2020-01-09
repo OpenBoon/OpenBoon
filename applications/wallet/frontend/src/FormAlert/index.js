@@ -30,7 +30,7 @@ const FormAlert = ({ errorMessage, setErrorMessage }) => {
           borderRadius: constants.borderRadius.small,
           padding: PADDING_INNER,
         }}>
-        <WarningSvg height={ICON_HEIGHT} color={colors.warning} />
+        <WarningSvg height={ICON_HEIGHT} color={colors.signal.warning.base} />
 
         <div
           role="alert"
