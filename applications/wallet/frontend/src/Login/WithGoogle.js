@@ -42,12 +42,12 @@ const LoginWithGoogle = ({ googleAuth, hasGoogleLoaded, onSubmit }) => {
           width: WIDTH,
           minWidth: WIDTH,
           maxWidth: WIDTH,
-          color: colors.structure.white,
           backgroundColor: GOOGLE_COLORS.default,
           padding: spacing.mini,
           ':hover': { backgroundColor: GOOGLE_COLORS.hover },
           '&[aria-disabled=true]': {
             opacity: constants.opacity.half,
+            color: colors.structure.white,
             backgroundColor: GOOGLE_COLORS.default,
           },
         }}

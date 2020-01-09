@@ -153,8 +153,8 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: #82be3c;
-  border: 2px solid #82be3c;
+  background-color: #73b61c;
+  border: 2px solid #73b61c;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -258,6 +258,7 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   font-weight: 500;
   border: none;
   cursor: not-allowed;
+  color: #ffffff;
   background-color: transparent;
 }
 
@@ -266,19 +267,21 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   text-decoration: none;
 }
 
+.emotion-45[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
 .emotion-45,
 .emotion-45:hover,
 .emotion-45:visited {
-  color: #fff;
-  background-color: #82be3c;
+  background-color: #73b61c;
 }
 
 .emotion-45:hover {
-  background-color: #a7d374;
+  background-color: #b8d652;
 }
 
 .emotion-45[aria-disabled=true] {
-  color: #2e2e2e;
   background-color: #808080;
 }
 
