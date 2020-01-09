@@ -29,6 +29,7 @@ exports[`<Button /> should have a type "button" and be aria-disabled, and not cl
   font-weight: 500;
   border: none;
   cursor: not-allowed;
+  color: #ffffff;
   background-color: transparent;
 }
 
@@ -37,19 +38,21 @@ exports[`<Button /> should have a type "button" and be aria-disabled, and not cl
   text-decoration: none;
 }
 
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
-  color: #fff;
-  background-color: #82be3c;
+  background-color: #73b61c;
 }
 
 .emotion-0:hover {
-  background-color: #a7d374;
+  background-color: #b8d652;
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -92,6 +95,7 @@ exports[`<Button /> should have a type "button", pass additional props, and be c
   font-weight: 500;
   border: none;
   cursor: pointer;
+  color: #ffffff;
   background-color: transparent;
 }
 
@@ -100,19 +104,21 @@ exports[`<Button /> should have a type "button", pass additional props, and be c
   text-decoration: none;
 }
 
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
-  color: #fff;
-  background-color: #82be3c;
+  background-color: #73b61c;
 }
 
 .emotion-0:hover {
-  background-color: #a7d374;
+  background-color: #b8d652;
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -154,6 +160,7 @@ exports[`<Button /> should render a link as an anchor tag with no onClick 1`] = 
   font-weight: 500;
   border: none;
   cursor: pointer;
+  color: #ffffff;
   background-color: transparent;
 }
 
@@ -162,19 +169,21 @@ exports[`<Button /> should render a link as an anchor tag with no onClick 1`] = 
   text-decoration: none;
 }
 
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
-  color: #fff;
-  background-color: #82be3c;
+  background-color: #73b61c;
 }
 
 .emotion-0:hover {
-  background-color: #a7d374;
+  background-color: #b8d652;
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -217,12 +226,13 @@ exports[`<Button /> should render properly for MENU Button 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  color: #ffffff;
   background-color: transparent;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   padding: 4px 8px;
-  color: #82be3c;
+  color: #73b61c;
   font-weight: 400;
   height: 100%;
 }
@@ -230,6 +240,10 @@ exports[`<Button /> should render properly for MENU Button 1`] = `
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
 }
 
 .emotion-0:hover {
@@ -274,12 +288,13 @@ exports[`<Button /> should render properly for MENU Link 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  color: #ffffff;
   background-color: transparent;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   padding: 4px 8px;
-  color: #82be3c;
+  color: #73b61c;
   font-weight: 400;
   height: 100%;
 }
@@ -287,6 +302,10 @@ exports[`<Button /> should render properly for MENU Link 1`] = `
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
 }
 
 .emotion-0:hover {
@@ -330,6 +349,7 @@ exports[`<Button /> should render properly for MENU_ITEM Button 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  color: #ffffff;
   background-color: transparent;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -338,7 +358,6 @@ exports[`<Button /> should render properly for MENU_ITEM Button 1`] = `
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  color: #ffffff;
   padding: 8px 16px;
   font-weight: 400;
   border-radius: 0;
@@ -347,6 +366,10 @@ exports[`<Button /> should render properly for MENU_ITEM Button 1`] = `
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
 }
 
 .emotion-0:hover {
@@ -391,6 +414,7 @@ exports[`<Button /> should render properly for MENU_ITEM Link 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  color: #ffffff;
   background-color: transparent;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -399,7 +423,6 @@ exports[`<Button /> should render properly for MENU_ITEM Link 1`] = `
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  color: #ffffff;
   padding: 8px 16px;
   font-weight: 400;
   border-radius: 0;
@@ -408,6 +431,10 @@ exports[`<Button /> should render properly for MENU_ITEM Link 1`] = `
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
 }
 
 .emotion-0:hover {
@@ -451,6 +478,7 @@ exports[`<Button /> should render properly for NEUTRAL Button 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  color: #ffffff;
   background-color: transparent;
   padding: 0;
 }
@@ -458,6 +486,10 @@ exports[`<Button /> should render properly for NEUTRAL Button 1`] = `
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
 }
 
 <button
@@ -498,6 +530,7 @@ exports[`<Button /> should render properly for NEUTRAL Link 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  color: #ffffff;
   background-color: transparent;
   padding: 0;
 }
@@ -505,6 +538,10 @@ exports[`<Button /> should render properly for NEUTRAL Link 1`] = `
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
 }
 
 <a
@@ -544,6 +581,7 @@ exports[`<Button /> should render properly for PRIMARY Button 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  color: #ffffff;
   background-color: transparent;
 }
 
@@ -552,19 +590,21 @@ exports[`<Button /> should render properly for PRIMARY Button 1`] = `
   text-decoration: none;
 }
 
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
-  color: #fff;
-  background-color: #82be3c;
+  background-color: #73b61c;
 }
 
 .emotion-0:hover {
-  background-color: #a7d374;
+  background-color: #b8d652;
 }
 
 .emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
   background-color: #808080;
 }
 
@@ -606,6 +646,7 @@ exports[`<Button /> should render properly for PRIMARY Link 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  color: #ffffff;
   background-color: transparent;
 }
 
@@ -614,19 +655,279 @@ exports[`<Button /> should render properly for PRIMARY Link 1`] = `
   text-decoration: none;
 }
 
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
 .emotion-0,
 .emotion-0:hover,
 .emotion-0:visited {
-  color: #fff;
-  background-color: #82be3c;
+  background-color: #73b61c;
 }
 
 .emotion-0:hover {
-  background-color: #a7d374;
+  background-color: #b8d652;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<a
+  className="emotion-0"
+  href="/hello"
+>
+  Hello
+</a>
+`;
+
+exports[`<Button /> should render properly for SECONDARY Button 1`] = `
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
 }
 
 .emotion-0[aria-disabled=true] {
   color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #808080;
+}
+
+.emotion-0:hover {
+  opacity: 0.5;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<button
+  className="emotion-0"
+  onClick={[Function]}
+  type="button"
+>
+  Hello
+</button>
+`;
+
+exports[`<Button /> should render properly for SECONDARY Link 1`] = `
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #808080;
+}
+
+.emotion-0:hover {
+  opacity: 0.5;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<a
+  className="emotion-0"
+  href="/hello"
+>
+  Hello
+</a>
+`;
+
+exports[`<Button /> should render properly for WARNING Button 1`] = `
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #c92300;
+}
+
+.emotion-0:hover {
+  opacity: 0.5;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<button
+  className="emotion-0"
+  onClick={[Function]}
+  type="button"
+>
+  Hello
+</button>
+`;
+
+exports[`<Button /> should render properly for WARNING Link 1`] = `
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #c92300;
+}
+
+.emotion-0:hover {
+  opacity: 0.5;
+}
+
+.emotion-0[aria-disabled=true] {
   background-color: #808080;
 }
 

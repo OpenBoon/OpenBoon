@@ -7,7 +7,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   height: calc(100% - 44px);
   overflow-y: auto;
   z-index: 90;
-  background-color: #4d4948;
+  background-color: #4a4a4a;
   padding-bottom: 32px;
   -webkit-transition: left ease-in-out .3s,visibility ease-in-out .3s;
   transition: left ease-in-out .3s,visibility ease-in-out .3s;
@@ -87,7 +87,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   left: 0;
   bottom: 0;
   z-index: 80;
-  background-color: #000;
+  background-color: #000000;
   opacity: 0;
   width: 0;
   -webkit-transition: opacity ease-in-out .3s,width ease-in 0s .3s;
@@ -219,7 +219,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   height: calc(100% - 44px);
   overflow-y: auto;
   z-index: 90;
-  background-color: #4d4948;
+  background-color: #4a4a4a;
   padding-bottom: 32px;
   -webkit-transition: left ease-in-out .3s,visibility ease-in-out .3s;
   transition: left ease-in-out .3s,visibility ease-in-out .3s;
@@ -235,7 +235,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   left: 0;
   bottom: 0;
   z-index: 80;
-  background-color: #000;
+  background-color: #000000;
   opacity: 0.5;
   width: 100%;
   -webkit-transition: opacity ease-in-out .3s,width ease-in 0s 0s;

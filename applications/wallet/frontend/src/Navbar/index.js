@@ -29,7 +29,7 @@ const Navbar = ({ user, isSidebarOpen, setSidebarOpen, logout }) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: colors.grey1,
+        backgroundColor: colors.structure.mattGrey,
         boxShadow: constants.boxShadows.navBar,
         zIndex: zIndex.layout.navbar,
         paddingLeft: spacing.normal,

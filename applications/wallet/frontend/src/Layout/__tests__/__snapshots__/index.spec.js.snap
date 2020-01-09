@@ -104,12 +104,13 @@ exports[`<Layout /> should render properly 1`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  color: #ffffff;
   background-color: transparent;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   padding: 4px 8px;
-  color: #82be3c;
+  color: #73b61c;
   font-weight: 400;
   height: 100%;
 }
@@ -117,6 +118,10 @@ exports[`<Layout /> should render properly 1`] = `
 .emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
 }
 
 .emotion-6:hover {
@@ -348,12 +353,13 @@ exports[`<Layout /> should render properly 2`] = `
   font-weight: 500;
   border: none;
   cursor: pointer;
+  color: #ffffff;
   background-color: transparent;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   padding: 4px 8px;
-  color: #82be3c;
+  color: #73b61c;
   font-weight: 400;
   height: 100%;
 }
@@ -361,6 +367,10 @@ exports[`<Layout /> should render properly 2`] = `
 .emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
 }
 
 .emotion-6:hover {

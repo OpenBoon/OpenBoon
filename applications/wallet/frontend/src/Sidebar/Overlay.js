@@ -15,7 +15,7 @@ const SidebarOverlay = ({ isSidebarOpen, setSidebarOpen }) => (
       left: 0,
       bottom: 0,
       zIndex: zIndex.layout.overlay,
-      backgroundColor: colors.black,
+      backgroundColor: colors.structure.black,
       opacity: isSidebarOpen ? 0.5 : 0,
       width: isSidebarOpen ? '100%' : 0,
       transition: isSidebarOpen
