@@ -34,19 +34,15 @@ public class Asset {
         this.document = document;
     }
 
+
     /**
-     * Return all stored files associated with this asset.  Optionally
-     * filter the results.
+     * Return all stored files associated with this asset.  Optionally filter the results.
      *
-     * @param name      The associated files name.
-     * @param category  The associated files category, eg proxy, backup, etc.
-     * @param mimetype  The mimetype must start with this string.
-     * @param extension The file name must have the given extension.
-     * @param attrs     The file must have all of the given attributes.
-     * @return List of Dict Pixml file records.
+     * @param assetFilesFilter Filter Description
+     * @return
      */
 
-    public List getFiles(List<String> name, List<String> category, List<String> mimetype, List<String> extension, Map attrs, List attrKeys) {
+    public List getFiles(AssetFilesFilter assetFilesFilter) {
 
         // Get Files Object
         List<Map<String, Object>> files = (List) document.getOrDefault("files", new ArrayList());
@@ -54,32 +50,32 @@ public class Asset {
         // Create Name Filter
         Predicate<Map<String, Object>> namePredicate = f -> {
             String fileNameAttr = (String) f.get("name");
-            return fileNameAttr == null ? false : name.contains(fileNameAttr);
+            return fileNameAttr == null ? false : assetFilesFilter.getName().contains(fileNameAttr);
         };
 
         //Create Category Filter
         Predicate<Map<String, Object>> categoryPredicate = f -> {
             String categoryAttr = (String) f.get("category");
-            return category.contains(categoryAttr);
+            return assetFilesFilter.getCategory().contains(categoryAttr);
         };
 
         //Create mimetype Filter
         Predicate<Map<String, Object>> mimeTypePredicate = f ->
-                (mimetype.parallelStream().filter((String mimeType) -> {
+                (assetFilesFilter.getMimetype().parallelStream().filter((String mimeType) -> {
                     String mimetypeAttr = (String) f.get("mimetype");
                     return mimetypeAttr == null ? false : mimetypeAttr.startsWith(mimeType);
                 }).collect(Collectors.toList()).size() > 0);
 
         //Create Extension Filter
         Predicate<Map<String, Object>> extensionPredicate = f ->
-                (extension.parallelStream().filter((String ext) -> {
+                (assetFilesFilter.getExtension().parallelStream().filter((String ext) -> {
                     String nameAttr = (String) f.get("name");
                     return nameAttr == null ? false : nameAttr.endsWith(ext);
                 })).collect(Collectors.toList()).size() > 0;
 
         //Create Attrs Filter
         Predicate<Map<String, Object>> attrsPredicate = f ->
-                (Boolean) attrs.entrySet().stream()
+                (Boolean) assetFilesFilter.getAttrs().entrySet().stream()
                         .map((entry) -> {
                                     Map.Entry key = (Map.Entry) entry;
                                     Map attrsObject = (Map) f.get("attrs");
@@ -94,95 +90,25 @@ public class Asset {
         // Create Attrs Keys Filter
         Predicate<Map<String, Object>> attrsKeysPredicate = f -> {
             Map attributes = (Map) f.get("attrs");
-            return attributes == null ? false : attributes.keySet().containsAll(attrKeys);
+            return attributes == null ? false : attributes.keySet().containsAll(assetFilesFilter.getAttrKeys());
         };
 
         // Check which of predicates will be used
         List<Predicate> elegiblePredicates = new ArrayList();
-        Optional.ofNullable(name).ifPresent((ignore) -> elegiblePredicates.add(namePredicate));
-        Optional.ofNullable(category).ifPresent((ignore) -> elegiblePredicates.add(categoryPredicate));
-        Optional.ofNullable(mimetype).ifPresent((ignore) -> elegiblePredicates.add(mimeTypePredicate));
-        Optional.ofNullable(extension).ifPresent((ignore) -> elegiblePredicates.add(extensionPredicate));
-        Optional.ofNullable(attrs).ifPresent((ignore) -> elegiblePredicates.add(attrsPredicate));
-        Optional.ofNullable(attrKeys).ifPresent((ignore) -> elegiblePredicates.add(attrsKeysPredicate));
+
+        //Add Each Existent Predicate
+        if (!assetFilesFilter.getName().isEmpty()) elegiblePredicates.add(namePredicate);
+        if (!assetFilesFilter.getCategory().isEmpty()) elegiblePredicates.add(categoryPredicate);
+        if (!assetFilesFilter.getMimetype().isEmpty()) elegiblePredicates.add(mimeTypePredicate);
+        if (!assetFilesFilter.getExtension().isEmpty()) elegiblePredicates.add(extensionPredicate);
+        if (!assetFilesFilter.getAttrs().isEmpty()) elegiblePredicates.add(attrsPredicate);
+        if (!assetFilesFilter.getAttrKeys().isEmpty()) elegiblePredicates.add(attrsKeysPredicate);
 
         //Join All predicates
         Predicate compositePredicate = elegiblePredicates.stream().reduce(w -> true, Predicate::and);
 
         return (List) files.parallelStream().filter(compositePredicate).collect(Collectors.toList());
 
-    }
-
-    /**
-     * Return all stored files associated with this asset filtered by name.
-     *
-     * @param name The associated files name.
-     * @return List of Dict Pixml file records.
-     */
-    public List getFilesByName(String... name) {
-        if (name == null)
-            return new ArrayList();
-        return this.getFiles(Arrays.asList(name), null, null, null, null, null);
-    }
-
-    /**
-     * Return all stored files associated with this asset filtered by category.
-     *
-     * @param category The associated files category, eg proxy, backup, etc.
-     * @return List of Dict Pixml file records.
-     */
-    public List getFilesByCategory(String... category) {
-        if (category == null)
-            return new ArrayList();
-        return this.getFiles(null, Arrays.asList(category), null, null, null, null);
-    }
-
-    /**
-     * Return all stored files associated with this asset filtered by mimetype.
-     *
-     * @param mimetype The mimetype must start with this string.
-     * @return List of Dict Pixml file records.
-     */
-    public List getFilesByMimetype(String... mimetype) {
-        if (mimetype == null)
-            return new ArrayList();
-        return this.getFiles(null, null, Arrays.asList(mimetype), null, null, null);
-    }
-
-    /**
-     * Return all stored files associated with this asset filtered by extension.
-     *
-     * @param extension The file name must have the given extension.
-     * @return List of Dict Pixml file records.
-     */
-    public List getFilesByExtension(String... extension) {
-        if (extension == null)
-            return new ArrayList();
-        return this.getFiles(null, null, null, Arrays.asList(extension), null, null);
-    }
-
-    /**
-     * Return all stored files associated with this asset filtered by File Attrs.
-     *
-     * @param attrs The file must have all of the given attributes.
-     * @return List of Dict Pixml file records.
-     */
-    public List getFilesByAttrs(Map attrs) {
-        if (attrs == null)
-            return new ArrayList();
-        return this.getFiles(null, null, null, null, attrs, null);
-    }
-
-    /**
-     * Return all stored files associated with this asset filtered by by File Attrs Keys.
-     *
-     * @param attrsKey The file must have all of the given attributes.
-     * @return List of Dict Pixml file records.
-     */
-    public List getFilesByAttrsKey(String... attrsKey) {
-        if (attrsKey == null)
-            return new ArrayList();
-        return this.getFiles(null, null, null, null, null, Arrays.asList(attrsKey));
     }
 
     /**
@@ -239,7 +165,7 @@ public class Asset {
     /**
      * Set a an attribute value.
      *
-     * @param attr The name of the attr in dot notation.
+     * @param attr  The name of the attr in dot notation.
      * @param value The value of the attr.
      */
     public void setAttr(String attr, Object value) {
@@ -287,7 +213,7 @@ public class Asset {
      * Get the parent Map that is storing the given attribute.  If create
      * is true, all parent maps will be made.
      *
-     * @param attr The attribute name in dot notation.
+     * @param attr   The attribute name in dot notation.
      * @param create If the container should be created.
      * @return
      */
@@ -312,7 +238,7 @@ public class Asset {
      * Get a child value in the given container.
      *
      * @param parent The container, will be cast to a map.
-     * @param key The element name.
+     * @param key    The element name.
      * @return The data in the map or null.
      */
     private Object getChild(Object parent, String key) {
@@ -331,7 +257,7 @@ public class Asset {
      * Create a child value in the given container.
      *
      * @param parent The container, will be cast to a map.
-     * @param key The element name.
+     * @param key    The element name.
      * @return The data in the map or null.
      */
     private Object createChild(Object parent, String key) {

@@ -33,6 +33,16 @@ public class AssetSearch {
         this.elementQuery = new HashMap();
     }
 
+    public AssetSearch addSearchParam(String key, Object value){
+        this.search.put(key, value);
+        return this;
+    }
+
+    public AssetSearch addElementQueryParam(String key, Object value){
+        this.elementQuery.put(key,value);
+        return this;
+    }
+
     public Map<String, Object> getSearch() {
         return search;
     }

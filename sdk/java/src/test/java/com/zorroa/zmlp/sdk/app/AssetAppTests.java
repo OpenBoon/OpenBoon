@@ -74,9 +74,10 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
 
-        Map query = new HashMap();
-        query.put("match_all", new HashMap());
-        AssetSearch assetSearch = new AssetSearch(query);
+        AssetSearch assetSearch =
+                new AssetSearch()
+                .addSearchParam("match_all", new HashMap());
+
 
         Map searchResult = assetApp.rawSearch(assetSearch);
         JsonNode jsonNode = Json.mapper.valueToTree(searchResult);
@@ -91,14 +92,12 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
 
-        Map query = new HashMap();
-        query.put("match_all", new HashMap());
-        Map elementQuery = new HashMap();
         Map elementQueryTerms = new HashMap();
         elementQueryTerms.put("element.labels", "cat");
-        elementQuery.put("terms", elementQueryTerms);
 
-        AssetSearch assetSearch = new AssetSearch(query, elementQuery);
+        AssetSearch assetSearch = new AssetSearch()
+                .addSearchParam("match_all", new HashMap())
+                .addElementQueryParam("terms", elementQueryTerms);
 
         PagedList<Asset> searchResult = assetApp.search(assetSearch);
         Asset asset = searchResult.get(0);
@@ -112,10 +111,9 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
 
-        Map query = new HashMap();
-        query.put("match_all", new HashMap());
+        AssetSearch assetSearch = new AssetSearch()
+                .addSearchParam("match_all", new HashMap());
 
-        AssetSearch assetSearch = new AssetSearch(query);
         PagedList<Asset> searchResult = assetApp.search(assetSearch);
 
         Asset asset = searchResult.get(0);
