@@ -73,15 +73,15 @@ resource "kubernetes_deployment" "officer" {
           image = "zmlp/officer:${var.container-tag}"
           image_pull_policy = "Always"
           env {
-            name = "ZMLP_ISTORAGE_URL"
+            name = "ZMLP_PIPELINE_STORAGE_URL"
             value = "${var.minio-url}"
           }
           env {
-            name = "ZMLP_ISTORAGE_ACCESSKEY"
+            name = "ZMLP_PIPELINE_STORAGE_ACCESSKEY"
             value = "${var.minio-access-key}"
           }
           env {
-            name = "ZMLP_ISTORAGE_SECRETKEY"
+            name = "ZMLP_PIPELINE_STORAGE_SECRETKEY"
             value = "${var.minio-secret-key}"
           }
           liveness_probe = {
