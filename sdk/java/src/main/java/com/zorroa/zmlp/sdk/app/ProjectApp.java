@@ -3,9 +3,9 @@ package com.zorroa.zmlp.sdk.app;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.zmlp.sdk.ZmlpClient;
 import com.zorroa.zmlp.sdk.domain.PagedList;
-import com.zorroa.zmlp.sdk.domain.Project;
-import com.zorroa.zmlp.sdk.domain.ProjectFilter;
-import com.zorroa.zmlp.sdk.domain.ProjectSpec;
+import com.zorroa.zmlp.sdk.domain.project.Project;
+import com.zorroa.zmlp.sdk.domain.project.ProjectFilter;
+import com.zorroa.zmlp.sdk.domain.project.ProjectSpec;
 
 import java.util.UUID;
 
