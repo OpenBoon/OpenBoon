@@ -6,10 +6,11 @@ import matplotlib.pyplot as plt
 from cvlib.object_detection import draw_bbox
 
 import zmlp.analysis.proxy
-from zmlp.asset import Element
 from zmlp.analysis import AssetProcessor
-
 from zmlp.analysis.storage import file_storage
+from zmlp.elements import Element
+
+NAMESPACE = "zmlpObjectDetection"
 
 
 class ZmlpObjectDetectionProcessor(AssetProcessor):
@@ -24,13 +25,18 @@ class ZmlpObjectDetectionProcessor(AssetProcessor):
 
         # Write out file with boxes around detected objects
         # We'll use this file for all elements.
-        name = "zmlp-object-detection.jpg"
+        name = "{}.jpg".format(NAMESPACE)
         with tempfile.NamedTemporaryFile(suffix=".jpg") as tf:
             plt.imsave(tf.name, output)
             attrs = {"width": output.shape[1], "height": output.shape[0]}
-            efile = file_storage.store_asset_file(asset, tf.name, 'element',
-                                                  rename=name, attrs=attrs)
+            efile = file_storage.assets.store_file(asset, tf.name, 'element',
+                                                   rename=name, attrs=attrs)
 
         for elem in zip(bbox, label, conf):
-            element = Element("object", elem[1], rect=elem[0], score=elem[2], stored_file=efile)
+            element = Element("object",
+                              NAMESPACE,
+                              labels=elem[1],
+                              rect=elem[0],
+                              score=elem[2],
+                              proxy=efile)
             asset.add_element(element)

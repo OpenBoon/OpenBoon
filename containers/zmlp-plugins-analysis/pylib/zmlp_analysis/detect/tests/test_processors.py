@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from zmlp import ZmlpClient
 from zmlp.analysis import Frame
-from zmlp.analysis.proxy import store_proxy_media
+from zmlp.analysis.proxy import store_asset_proxy
 from zmlp.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 
 from zmlp_analysis.detect.processors import ZmlpObjectDetectionProcessor
@@ -28,13 +28,12 @@ class ZmlpObjectDetectionProcessorTests(PluginUnitTestCase):
 
         # We have to add a proxy to use ML, there is no source
         # fallback currently.
-        store_proxy_media(self.frame.asset, self.image_path, (2322, 4128))
+        store_asset_proxy(self.frame.asset, self.image_path, (2322, 4128))
         processor = self.init_processor(ZmlpObjectDetectionProcessor(), {})
         processor.process(self.frame)
 
         elements = self.frame.asset.document["elements"]
         grouped = dict([(e["labels"][0], e) for e in elements])
-        print(elements)
         assert grouped["dog"]["regions"] == ["SW", "SE"]
         assert grouped["toilet"]["regions"] == ["SW"]
         assert grouped["bicycle"]["regions"] == ["NW", "NE", "SW", "SE", "CENTER"]
