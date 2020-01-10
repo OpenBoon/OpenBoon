@@ -36,7 +36,7 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
           height: `calc(100% - ${constants.navbar.height}px)`,
           overflowY: 'auto',
           zIndex: zIndex.layout.drawer,
-          backgroundColor: colors.grey5,
+          backgroundColor: colors.structure.iron,
           paddingBottom: spacing.spacious,
           transition: 'left ease-in-out .3s, visibility ease-in-out .3s',
           overscrollBehavior: 'contain',

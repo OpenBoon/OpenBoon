@@ -21,13 +21,15 @@ describe('<Fetch /> helpers', () => {
 
       fetch.mockResponseOnce(null, { status: 500 })
 
-      const response = await fetcher('/url')
+      try {
+        await fetcher('/url')
+      } catch (response) {
+        expect(response.status).toBe(500)
 
-      expect(response.status).toBe(500)
+        expect(response.statusText).toBe('Internal Server Error')
 
-      expect(response.statusText).toBe('Internal Server Error')
-
-      expect(response).toMatchSnapshot()
+        expect(response).toMatchSnapshot()
+      }
     })
 
     it('should logout the user', async () => {
