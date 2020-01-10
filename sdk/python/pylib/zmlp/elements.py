@@ -17,7 +17,7 @@ class Element(object):
             the stored_file size.
 
     """
-    def __init__(self, type, labels, score=None, rect=None, stored_file=None):
+    def __init__(self, type, labels, score=None, rect=None, proxy_file=None, vector=None):
         """
         Create a new Element instance.
 
@@ -31,21 +31,22 @@ class Element(object):
             score (float): If a prediction is made, a score describes the confidence level.
             rect (list[int]): A list of 4 integers describe the rectangle containing the element.
                 The ints represent the upper left point and lower left point of the rectangle.
-            stored_file (dict): A stored file record which contains a proxy image for the Element.
-
+            proxy_file (dict): A stored file record which contains a proxy image for the Element.
+            vector (str): The similarity vector.
         """
         self.type = type
         self.labels = as_collection(labels)
         self.score = score
         self.rect = rect
+        self.vector = vector
 
-        if stored_file:
-            self.file = '{}/{}'.format(stored_file['category'], stored_file['name'])
+        if proxy_file:
+            self.file = '{}/{}'.format(proxy_file['category'], proxy_file['name'])
         else:
             self.file = None
 
-        if self.rect and stored_file:
-            self.regions = self.calculate_regions(stored_file)
+        if self.rect and proxy_file:
+            self.regions = self.calculate_regions(proxy_file)
         else:
             self.regions = None
 
