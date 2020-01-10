@@ -15,6 +15,10 @@ public class DataSourceCredentials {
 
     private UUID dataSourceId;
 
+    public DataSourceCredentials(UUID dataSourceId) {
+        this.dataSourceId = dataSourceId;
+    }
+
     public DataSourceCredentials withBlob(String blob){
         this.blob = blob;
         return this;

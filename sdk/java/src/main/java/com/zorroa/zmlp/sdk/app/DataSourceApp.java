@@ -5,10 +5,7 @@ import com.zorroa.zmlp.sdk.domain.datasource.DataSource;
 import com.zorroa.zmlp.sdk.domain.datasource.DataSourceCredentials;
 import com.zorroa.zmlp.sdk.domain.datasource.DataSourceSpec;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class DataSourceApp {
 

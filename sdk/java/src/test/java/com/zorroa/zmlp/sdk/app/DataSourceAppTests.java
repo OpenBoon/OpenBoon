@@ -68,7 +68,7 @@ public class DataSourceAppTests extends AbstractAppTests {
 
         DataSource dataSource = dataSourceApp.importDataSource((String) body.get("id"));
 
-        assertEquals(body.get("id"), dataSource.getId());
+        assertEquals(body.get("id"), dataSource.getId().toString());
         assertEquals(body.get("name"), dataSource.getName());
         assertEquals(body.get("uri"), dataSource.getUri());
         assertEquals(body.get("file_types"), dataSource.getFileTypes());
@@ -86,8 +86,7 @@ public class DataSourceAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
 
-        DataSourceCredentials dataSourceCredentials = new DataSourceCredentials()
-                .withDataSourceId(id)
+        DataSourceCredentials dataSourceCredentials = new DataSourceCredentials(id)
                 .withBlob("UpdatedCredentials");
 
         Map status = dataSourceApp.updateCredentials(dataSourceCredentials);
