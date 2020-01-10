@@ -2,10 +2,10 @@ import glob
 import hashlib
 import logging
 import os
+import pickle
 import shutil
 import tempfile
 import urllib
-import pickle
 from urllib.parse import urlparse
 
 from pathlib2 import Path
@@ -148,7 +148,7 @@ class ProjectStorage(object):
 
     def localize_file(self, entity, category, name):
         _, suffix = os.path.splitext(name)
-        key = "".join(entity, category, name)
+        key = "".join((entity, category, name))
         cache_path = self.lfc.get_path(key, suffix)
         self.app.client.stream('/api/v3/project/files/{}/{}/{}'.format(
             entity, category, name), cache_path)
