@@ -41,7 +41,7 @@ import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
-import com.zorroa.archivist.storage.InternalStorageServiceConfiguration
+import com.zorroa.archivist.storage.PipelineStorageConfiguration
 import com.zorroa.archivist.util.Json
 import com.zorroa.auth.client.AuthServerClient
 import com.zorroa.auth.client.Permission
@@ -109,7 +109,7 @@ class DispatchQueueManager @Autowired constructor(
     val analystService: AnalystService,
     val properties: ApplicationProperties,
     val authServerClient: AuthServerClient,
-    val internalStoragProperties: InternalStorageServiceConfiguration,
+    val pipelineStoragProperties: PipelineStorageConfiguration,
     val meterRegistry: MeterRegistry
 ) {
 
@@ -208,9 +208,9 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZMLP_APIKEY"] = key.getSigningKey().toBase64()
 
             // So the container can access shared
-            task.env["ZMLP_ISTORAGE_URL"] = internalStoragProperties.url
-            task.env["ZMLP_ISTORAGE_ACCESSKEY"] = internalStoragProperties.accessKey
-            task.env["ZMLP_ISTORAGE_SECRETKEY"] = internalStoragProperties.secretKey
+            task.env["ZMLP_PIPELINE_STORAGE_URL"] = pipelineStoragProperties.url
+            task.env["ZMLP_PIPELINE_STORAGE_ACCESSKEY"] = pipelineStoragProperties.accessKey
+            task.env["ZMLP_PIPELINE_STORAGE_SECRETKEY"] = pipelineStoragProperties.secretKey
 
             return true
         } else {

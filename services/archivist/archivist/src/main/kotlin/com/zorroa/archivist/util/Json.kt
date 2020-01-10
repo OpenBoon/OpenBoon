@@ -37,6 +37,7 @@ object Json {
     val GENERIC_MAP: TypeReference<Map<String, Any>> = object : TypeReference<Map<String, Any>>() {}
     val LIST_OF_GENERIC_MAP: TypeReference<List<Map<String, Any>>> = object : TypeReference<List<Map<String, Any>>>() {}
     val LIST_OF_FILE_STORAGE: TypeReference<List<FileStorage>> = object : TypeReference<List<FileStorage>>() {}
+    val LIST_OF_STRING: TypeReference<List<String>> = object : TypeReference<List<String>>() {}
     val SET_OF_ELEMENTS: TypeReference<Set<Element>> = object : TypeReference<Set<Element>>() {}
 
     val Mapper = ObjectMapper()

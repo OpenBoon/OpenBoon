@@ -2,35 +2,41 @@ package com.zorroa.auth.client
 
 import io.swagger.annotations.ApiModelProperty
 
-enum class Permission(val description: String) {
+enum class Permission() {
 
     @ApiModelProperty("Allows access to monitoring endpoints")
-    SystemMonitor("Allows access to monitoring endpoints"),
+    SystemMonitor,
 
     @ApiModelProperty("Allows access to platform management endpoints")
-    SystemManage("Allows access to platform management endpoints"),
+    SystemManage,
 
     @ApiModelProperty("Provides ability to switch projects")
-    SystemProjectOverride("Provides ability to switch projects"),
+    SystemProjectOverride,
 
     @ApiModelProperty("Provides ability to view encrypted project data")
-    SystemProjectDecrypt("Provides ability to view encrypted project data"),
+    SystemProjectDecrypt,
 
     @ApiModelProperty("Provides ability to manage API keys")
-    ApiKeyManage("Provides ability to manage API keys"),
+    ApiKeyManage,
 
     @ApiModelProperty("Provides ability to read assets and associated files")
-    AssetsRead("Provides ability to read assets and associated files"),
+    AssetsRead,
 
     @ApiModelProperty("Provides ability to import assets. (created and update)")
-    AssetsImport("Provides ability to import assets. (created and update)"),
+    AssetsImport,
 
     @ApiModelProperty("Provides ability to remove assets")
-    AssetsDelete("Provides ability to remove assets"),
+    AssetsDelete,
 
-    @ApiModelProperty("Povides ability to manage projects.")
-    ProjectManage("Povides ability to manage projects."),
+    @ApiModelProperty("Provides ability to manage projects.")
+    ProjectManage,
 
     @ApiModelProperty("Provides ability to create projects.")
-    ProjectCreate("Provides ability to create projects.")
+    ProjectCreate,
+
+    @ApiModelProperty("Provides ability to read project files from cloud storage.")
+    ProjectFilesRead,
+
+    @ApiModelProperty("Provides ability to store project files in cloud storage.")
+    ProjectFilesWrite
 }
