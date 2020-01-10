@@ -280,7 +280,7 @@ class LocalFileCache(object):
         # Set during processing.
         project_id = ZmlpEnv.get_project_id()
         if project_id:
-            sha.update(project_id.encode('uft-8'))
+            sha.update(project_id.encode('utf-8'))
         sha.update(key.encode('utf-8'))
         sha.update(suffix.encode('utf-8'))
         filename = sha.hexdigest()

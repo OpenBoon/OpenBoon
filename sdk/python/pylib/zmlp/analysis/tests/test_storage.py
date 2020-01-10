@@ -54,6 +54,15 @@ class LocalFileCacheTests(TestCase):
         filename = '1a569625e9949f82ab1be5257ab2cab1f7524c6d.kirk'
         assert path.endswith(filename)
 
+    def test_get_path(self):
+        os.environ['ZMLP_PROJECT_ID'] = "abc123"
+        try:
+            path = self.lfc.get_path('spock', '.kirk')
+            filename = 'c85be874d0f9c380a790f583c2bec6633109386e.kirk'
+            assert path.endswith(filename)
+        finally:
+            del os.environ['ZMLP_PROJECT_ID']
+
     def test_clear(self):
         path = self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
         assert os.path.exists(path)
