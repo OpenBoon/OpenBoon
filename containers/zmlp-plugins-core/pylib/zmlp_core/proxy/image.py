@@ -9,7 +9,7 @@ from pathlib2 import Path
 
 from zmlp.analysis import AssetProcessor, Argument
 from zmlp.analysis.storage import file_storage
-from zmlp.analysis.proxy import store_proxy_file, get_proxy_level
+from zmlp.analysis.proxy import store_asset_proxy, get_proxy_level
 from zmlp_core.util.media import get_output_dimension, media_size
 
 
@@ -65,7 +65,7 @@ class ImageProxyProcessor(AssetProcessor):
                                                           source_path))
         proxy_paths = self._create_proxy_images(asset)
         for proxy in proxy_paths:
-            store_proxy_file(asset, proxy[2], (proxy[0], proxy[1]))
+            store_asset_proxy(asset, proxy[2], (proxy[0], proxy[1]))
         set_tiny_proxy_colors(asset)
 
     def _create_proxy_images(self, asset):

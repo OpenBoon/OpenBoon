@@ -17,7 +17,7 @@ class ExtractVideoClipProxyProcessorTests(PluginUnitTestCase):
         self.processor = self.init_processor(ExtractVideoClipProxyProcessor(), {})
 
     @patch.object(ZmlpClient, 'upload_file')
-    @patch('zmlp_core.proxy.video.store_proxy_file')
+    @patch('zmlp_core.proxy.video.store_asset_proxy')
     def test_process(self, store_patch, post_patch):
         post_patch.return_value = {
             "name": "video_512x341.jpg",
@@ -44,7 +44,7 @@ class ExtractVideoClipProxyProcessorTests(PluginUnitTestCase):
         assert attrs['frames'] == 125
         assert attrs['frameRate'] == 25.0
 
-    @patch('zmlp_core.proxy.video.store_proxy_file')
+    @patch('zmlp_core.proxy.video.store_asset_proxy')
     def test_process_skipped_no_clip(self, store_patch):
         # No clip defined so it was skipped
         asset = self.frame.asset
@@ -52,7 +52,7 @@ class ExtractVideoClipProxyProcessorTests(PluginUnitTestCase):
         self.processor.process(self.frame)
         assert len(store_patch.call_args_list) == 0
 
-    @patch('zmlp_core.proxy.video.store_proxy_file')
+    @patch('zmlp_core.proxy.video.store_asset_proxy')
     def test_process_skipped_full(self, store_patch):
         # A clip is on the full timeline, so its skipped.
         asset = self.frame.asset
@@ -70,7 +70,7 @@ class VideoProxyProcessorTests(PluginUnitTestCase):
         self.processor = self.init_processor(VideoProxyProcessor(), {})
 
     @patch.object(ZmlpClient, 'upload_file')
-    @patch('zmlp_core.proxy.video.store_proxy_file')
+    @patch('zmlp_core.proxy.video.store_asset_proxy')
     def test_process(self, store_patch, post_patch):
         post_patch.return_value = {
             "name": "video_640x360.jpg",

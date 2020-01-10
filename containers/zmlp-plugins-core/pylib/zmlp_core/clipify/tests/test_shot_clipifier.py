@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from zmlp import ZmlpClient
 from zmlp.analysis import Frame
-from zmlp.analysis.proxy import store_proxy_file
+from zmlp.analysis.proxy import store_asset_proxy
 from zmlp.analysis.testing import PluginUnitTestCase, TestAsset, zorroa_test_data
 from zmlp_core.clipify.shot_clipify import ShotDetectionVideoClipifier
 
@@ -33,7 +33,7 @@ class ShotDetectionVideoClipifierTests(PluginUnitTestCase):
 
         # We have to add a proxy to use ML, there is no source
         # fallback currently.
-        store_proxy_file(frame.asset, video_path, (1, 1), type='video')
+        store_asset_proxy(frame.asset, video_path, (1, 1), type='video')
         processor = self.init_processor(ShotDetectionVideoClipifier(), {})
         processor.process(frame)
 
@@ -60,7 +60,7 @@ class ShotDetectionVideoClipifierTests(PluginUnitTestCase):
 
         # We have to add a proxy to use ML, there is no source
         # fallback currently.
-        store_proxy_file(frame.asset, video_path, (1, 1), type='video')
+        store_asset_proxy(frame.asset, video_path, (1, 1), type='video')
         processor = self.init_processor(ShotDetectionVideoClipifier(), {})
         processor.process(frame)
 
