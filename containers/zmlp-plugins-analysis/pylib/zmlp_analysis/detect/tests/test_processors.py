@@ -21,14 +21,14 @@ class ZmlpObjectDetectionProcessorTests(PluginUnitTestCase):
             "category": "proxy",
             "mimetype": "image/jpeg",
             "attrs": {
-                "width": 2322,
-                "height": 4128
+                "width": 576,
+                "height": 1024
             }
         }
 
         # We have to add a proxy to use ML, there is no source
         # fallback currently.
-        store_asset_proxy(self.frame.asset, self.image_path, (2322, 4128))
+        store_asset_proxy(self.frame.asset, self.image_path, (576, 1024))
         processor = self.init_processor(ZmlpObjectDetectionProcessor(), {})
         processor.process(self.frame)
 
