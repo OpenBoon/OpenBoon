@@ -18,7 +18,7 @@ requirements = [
     "backoff",
     "pytest",
     "minio",
-    "cv2"
+    "opencv-python"
 ]
 
 setup(
