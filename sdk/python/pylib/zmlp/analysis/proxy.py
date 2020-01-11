@@ -75,6 +75,7 @@ def store_element_proxy(asset, img, name, rects=None, labels=None, color=None):
     Args:
         asset (Asset): The asset
         img (cvImage): An openCV image
+        name (str): An identifying name for the image.
         rects (list[list]): A list of rects to draw.
         labels: (list): A list of labels to draw.
         color (tuple): A BGR tuple for box or label colors. Color only matters if you have rects.
@@ -93,10 +94,11 @@ def store_element_proxy(asset, img, name, rects=None, labels=None, color=None):
         if not color:
             color = (255, 0, 0)
         for i, rect in enumerate(rects):
-            cv2.rectangle(img, (rect[0], rect[1]), (rect[2], rect[3]), color, 1, cv2.LINE_AA)
+            cv2.rectangle(img, (rect[0], rect[1]), (rect[2], rect[3]),
+                          color, 2, cv2.LINE_AA)
             if labels:
                 cv2.putText(img, ",".join(labels[i]), (rect[2], max(0, rect[3] - 10)),
-                            cv2.FONT_HERSHEY_PLAIN, 1, color, 2, cv2.LINE_AA)
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.50, color, 1, cv2.LINE_AA)
 
     with tempfile.NamedTemporaryFile(suffix=".jpg") as tf:
         cv2.imwrite(tf.name, img)
