@@ -29,7 +29,7 @@ class AssetStorage(object):
     files are stored in cloud storage.
     """
 
-    def __init__(self,lfc):
+    def __init__(self, lfc):
         self.lfc = lfc
         self.app = lfc.app
 

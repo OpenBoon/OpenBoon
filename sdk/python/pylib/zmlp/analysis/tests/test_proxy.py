@@ -113,7 +113,7 @@ class ProxyFunctionTests(TestCase):
     @patch.object(file_storage.assets, 'store_file')
     @patch.object(ZmlpClient, 'upload_file')
     def test_store_element_proxy(self, upload_patch, store_file_patch):
-        upload_patch.return_value = { }
+        upload_patch.return_value = {}
 
         asset = TestAsset(IMAGE_JPG)
         image = cv2.imread(zorroa_test_data('images/set01/faces.jpg', False))

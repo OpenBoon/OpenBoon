@@ -147,7 +147,6 @@ class TestAssetStorage(TestCase):
         path = self.lfc.assets.localize_file(TestAsset(id='123456'), pfile, bird)
         assert os.path.getsize(path) == os.path.getsize(bird)
 
-
     @patch.object(ZmlpClient, 'stream')
     def test_localize_file(self, post_patch):
         post_patch.return_value = '/tmp/toucan.jpg'
@@ -157,7 +156,6 @@ class TestAssetStorage(TestCase):
         }
         path = self.lfc.assets.localize_file(TestAsset(id='123456'), pfile)
         assert path.endswith('c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg')
-
 
     @patch.object(ZmlpClient, 'stream')
     def test_localize_asset_file_with_asset_override(self, post_patch):
@@ -189,7 +187,6 @@ class TestProjectStorage(TestCase):
             'entity': 'model'
         }
         path = os.path.dirname(__file__) + "/fake_model.dat"
-        asset = TestAsset(id='123456')
         result = self.lfc.projects.store_file(path, "model", "face_model", "celebs.dat")
         assert 'celebs.dat' == result['name']
         assert 'face_model' == result['category']
@@ -204,4 +201,3 @@ class TestProjectStorage(TestCase):
         result = self.lfc.projects.store_file(path, 'model', 'fake', 'fake_model.dat')
         assert 'fake_model.dat' == result['name']
         assert 'fake' == result['category']
-
