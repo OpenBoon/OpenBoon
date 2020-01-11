@@ -17,6 +17,7 @@ NAMESPACE = 'zmlpFaceRecognition'
 
 BOX_COLOR = (0, 255, 255)
 
+
 class ZmlpBuildFaceRecognitionModel(AssetProcessor):
     """
     Builds a ZmlpFaceRecognitionModel.
