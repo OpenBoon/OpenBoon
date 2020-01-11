@@ -54,7 +54,7 @@ class LocalFileCacheTests(TestCase):
         filename = '1a569625e9949f82ab1be5257ab2cab1f7524c6d.kirk'
         assert path.endswith(filename)
 
-    def test_get_path(self):
+    def test_get_path_with_project_env(self):
         os.environ['ZMLP_PROJECT_ID'] = "abc123"
         try:
             path = self.lfc.get_path('spock', '.kirk')
