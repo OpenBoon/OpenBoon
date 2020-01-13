@@ -15,15 +15,14 @@ import java.util.UUID
  */
 @ApiModel("SigningiKey", description = "The attributes required to sign JWT requests.")
 class SigningiKey(
-    @ApiModelProperty("The unique ID of the ApiKey")
-    val keyId: UUID,
 
-    @ApiModelProperty("The project ID of the ApiKey")
-    val projectId: UUID,
+    @ApiModelProperty("Uniquely identifies account")
+    val accessKey: String,
 
     @ApiModelProperty("A shared key used to sign API requests.")
-    val sharedKey: String
-) {
+    val secretKey: String
+
+    ) {
     fun toBase64(): String {
         return Base64.getEncoder().encodeToString(Json.mapper.writeValueAsBytes(this))
     }
@@ -33,13 +32,16 @@ class SigningiKey(
 class ApiKey(
 
     @ApiModelProperty("The unique ID of the ApiKey")
-    val keyId: UUID,
+    val id: UUID,
 
     @ApiModelProperty("The Project ID the ApiKey belongs in.")
     val projectId: UUID,
 
+    @ApiModelProperty("Uniquely identifies account")
+    val accessKey: String,
+
     @ApiModelProperty("A shared key used to sign API requests.")
-    val sharedKey: String,
+    val secretKey: String,
 
     @ApiModelProperty("A unique name for the key.")
     val name: String,
@@ -50,10 +52,9 @@ class ApiKey(
 
     @JsonIgnore
     fun getJwtToken(timeout: Int = 60, projId: UUID? = null): String {
-        val algo = Algorithm.HMAC512(sharedKey)
+        val algo = Algorithm.HMAC512(secretKey)
         val spec = JWT.create().withIssuer("zmlp")
-            .withClaim("keyId", keyId.toString())
-            .withClaim("projectId", (projId ?: projectId).toString())
+            .withClaim("accessKey", accessKey)
 
         if (timeout > 0) {
             val c = Calendar.getInstance()
@@ -66,12 +67,12 @@ class ApiKey(
 
     @JsonIgnore
     fun getSigningKey(): SigningiKey {
-        return SigningiKey(keyId, projectId, sharedKey)
+        return SigningiKey(accessKey, secretKey)
     }
 
     @JsonIgnore
     fun getZmlpActor(): ZmlpActor {
-        return ZmlpActor(keyId, projectId, name, permissions)
+        return ZmlpActor(id, projectId, name, permissions)
     }
 
     fun toBase64(): String {
@@ -81,7 +82,7 @@ class ApiKey(
     }
 
     override fun toString(): String {
-        return "ApiKey(keyId=$keyId, projectId=$projectId)"
+        return "ApiKey(id=$id, projectId=$projectId)"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -90,17 +91,17 @@ class ApiKey(
 
         other as ApiKey
 
-        if (keyId != other.keyId) return false
+        if (id != other.id) return false
         if (projectId != other.projectId) return false
-        if (sharedKey != other.sharedKey) return false
+        if (secretKey != other.secretKey) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = keyId.hashCode()
+        var result = id.hashCode()
         result = 31 * result + projectId.hashCode()
-        result = 31 * result + sharedKey.hashCode()
+        result = 31 * result + secretKey.hashCode()
         return result
     }
 }

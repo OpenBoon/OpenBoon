@@ -36,7 +36,7 @@ fun ZmlpActor.getAuthorities(): List<GrantedAuthority> {
 fun ZmlpActor.getAuthentication(): Authentication {
     return UsernamePasswordAuthenticationToken(
         this,
-        this.keyId,
+        this.id,
         this.permissions.map { SimpleGrantedAuthority(it.name) }
     )
 }

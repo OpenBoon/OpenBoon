@@ -15,9 +15,8 @@ class ZmlpAppTests(unittest.TestCase):
     def setUp(self):
         # This is not a valid key
         self.key_dict = {
-            'projectId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
-            'keyId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
-            'sharedKey': 'test123test135'
+            'accessKey': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
+            'secretKey': 'test123test135'
         }
         self.key_str = base64.b64encode(json.dumps(self.key_dict).encode())
 

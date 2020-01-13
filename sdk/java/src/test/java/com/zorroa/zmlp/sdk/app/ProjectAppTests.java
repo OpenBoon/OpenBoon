@@ -25,7 +25,7 @@ public class ProjectAppTests extends AbstractAppTests {
 
     @Before
     public void setup() {
-        ApiKey key = new ApiKey(UUID.randomUUID(), "1234");
+        ApiKey key = new ApiKey("abcd", "1234");
         projectApp = new ProjectApp(
                 new ZmlpClient(key, webServer.url("/").toString()));
     }
