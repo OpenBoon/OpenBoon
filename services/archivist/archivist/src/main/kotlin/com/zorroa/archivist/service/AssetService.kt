@@ -15,13 +15,13 @@ import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.FileCategory
 import com.zorroa.archivist.domain.FileGroup
-import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.FileStorageService
@@ -128,6 +128,9 @@ class AssetServiceImpl : AssetService {
 
     @Autowired
     lateinit var fileStorageService: FileStorageService
+
+    @Autowired
+    lateinit var pipelineResolverService: PipelineResolverService
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -261,7 +264,7 @@ class AssetServiceImpl : AssetService {
             asset.setAttr("source.filesize", mpfile.size)
             asset.setAttr("source.checksum", idgen.checksum)
 
-            val locator = FileStorageLocator(
+            val locator = ProjectFileLocator(
                 FileGroup.ASSET,
                 id, FileCategory.SOURCE, mpfile.originalFilename
             )
@@ -450,7 +453,7 @@ class AssetServiceImpl : AssetService {
 
     fun createAnalysisJob(assets: List<Asset>): Job {
         val name = "Analyze ${assets.size} created assets"
-        val script = ZpsScript(name, null, assets, STANDARD_PIPELINE)
+        val script = ZpsScript(name, null, assets, pipelineResolverService.resolve())
         val spec = JobSpec(name, script)
 
         return jobService.create(spec)

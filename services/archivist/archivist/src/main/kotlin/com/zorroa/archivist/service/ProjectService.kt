@@ -3,7 +3,6 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.FileCategory
 import com.zorroa.archivist.domain.FileGroup
-import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteSpec
@@ -14,6 +13,7 @@ import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.Project
+import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
@@ -151,7 +151,7 @@ class ProjectServiceImpl constructor(
     }
 
     override fun getCredentialsKey(): String {
-        val loc = FileStorageLocator(FileGroup.INTERNAL, "project", FileCategory.KEYS, "project.key")
+        val loc = ProjectFileLocator(FileGroup.INTERNAL, "project", FileCategory.KEYS, "project.key")
         return String(fileStorageService.fetch(loc))
     }
 
@@ -209,7 +209,7 @@ class ProjectServiceImpl constructor(
     }
 
     private fun createProjectCryptoKey(project: Project) {
-        val projectKeyLocation = FileStorageLocator(
+        val projectKeyLocation = ProjectFileLocator(
             FileGroup.INTERNAL, "project", FileCategory.KEYS, "project.key",
             projectId = project.id
         )

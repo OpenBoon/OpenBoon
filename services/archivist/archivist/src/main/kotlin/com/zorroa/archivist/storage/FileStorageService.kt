@@ -1,7 +1,7 @@
 package com.zorroa.archivist.storage
 
 import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.archivist.domain.FileStorageLocator
+import com.zorroa.archivist.domain.CloudStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
@@ -37,12 +37,12 @@ interface FileStorageService {
     /**
      * Stream the given file as a ResponseEntity.
      */
-    fun stream(locator: FileStorageLocator): ResponseEntity<Resource>
+    fun stream(locator: CloudStorageLocator): ResponseEntity<Resource>
 
     /**
      * Fetch the bytes for the given file.
      */
-    fun fetch(locator: FileStorageLocator): ByteArray
+    fun fetch(locator: CloudStorageLocator): ByteArray
 
     /**
      * Log the storage of a file.
