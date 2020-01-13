@@ -11,7 +11,7 @@ import java.util.UUID
  * An Authentication class for authorizing background threads.
  */
 class InternalThreadAuthentication constructor(
-    projectId: UUID, perms: Set<Permission>
+    projectId: UUID, perms: Set<Permission> = setOf()
 ) :
     AbstractAuthenticationToken(perms.map { SimpleGrantedAuthority(it.name) }) {
 

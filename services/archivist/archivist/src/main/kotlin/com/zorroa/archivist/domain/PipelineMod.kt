@@ -122,7 +122,9 @@ enum class ModOpType() {
     @ApiModelProperty("Replace matched processor")
     REPLACE,
     @ApiModelProperty("Remove matched processors")
-    REMOVE
+    REMOVE,
+    @ApiModelProperty("Append processors as far back as possible.")
+    LAST
 }
 
 @ApiModel("Pipeline Mod Operation", description = "An operation to apply to a Pipeline")

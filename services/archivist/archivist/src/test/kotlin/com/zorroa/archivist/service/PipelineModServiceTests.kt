@@ -9,9 +9,11 @@ import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.repository.PipelineModDao
 import com.zorroa.archivist.util.Json
 import org.junit.Before
 import org.junit.Test
+import org.junit.jupiter.api.TestFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
 import java.util.UUID
@@ -25,6 +27,9 @@ class PipelineModServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var pipelineModService: PipelineModService
+
+    @Autowired
+    lateinit var pipelineModDao: PipelineModDao
 
     lateinit var mod: PipelineMod
 
@@ -110,5 +115,14 @@ class PipelineModServiceTests : AbstractTest() {
         pipelineModService.delete(mod.id)
         entityManager.flush()
         pipelineModService.get(mod.name)
+    }
+
+    @Test
+    fun testUpdateStandardMods()  {
+        val count = pipelineModDao.count()
+        pipelineModService.updateStandardMods()
+        entityManager.flush()
+        pipelineModService.updateStandardMods()
+        assertTrue(pipelineModDao.count() > count)
     }
 }

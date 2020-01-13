@@ -73,6 +73,7 @@
                 <version>${kotlin.version}</version>
                 <scope>test</scope>
             </dependency>
+
             <dependency>
                 <groupId>com.google.cloud</groupId>
                 <artifactId>google-cloud-storage</artifactId>
@@ -106,7 +107,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.6</version>
+                <version>3.9</version>
             </dependency>
 
             <dependency>
@@ -115,12 +116,6 @@
                 <version>1.11.683</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>1.1.11</version>
             </dependency>
 
             <dependency>

@@ -13,7 +13,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
 import com.google.cloud.storage.StorageException
 import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.archivist.domain.FileStorageLocator
+import com.zorroa.archivist.domain.CloudStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.util.Json
@@ -98,7 +98,7 @@ class AwsFileStorageServiceImpl constructor(
         )
     }
 
-    override fun stream(locator: FileStorageLocator): ResponseEntity<Resource> {
+    override fun stream(locator: CloudStorageLocator): ResponseEntity<Resource> {
         val path = locator.getPath()
         val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path))
 
@@ -113,7 +113,7 @@ class AwsFileStorageServiceImpl constructor(
         }
     }
 
-    override fun fetch(locator: FileStorageLocator): ByteArray {
+    override fun fetch(locator: CloudStorageLocator): ByteArray {
         val path = locator.getPath()
         val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path))
         return s3obj.objectContent.readAllBytes()

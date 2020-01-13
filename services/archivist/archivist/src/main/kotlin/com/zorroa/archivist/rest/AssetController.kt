@@ -10,8 +10,8 @@ import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.FileCategory
 import com.zorroa.archivist.domain.FileGroup
 import com.zorroa.archivist.domain.FileStorageAttrs
-import com.zorroa.archivist.domain.FileStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.storage.FileStorageService
 import com.zorroa.archivist.util.RawByteArrayOutputStream
@@ -80,7 +80,7 @@ class AssetController @Autowired constructor(
         @ApiParam("Unique ID of the Asset.") @PathVariable id: String
     ): ResponseEntity<Resource> {
         val asset = assetService.getAsset(id)
-        val locator = FileStorageLocator(FileGroup.ASSET, id, FileCategory.SOURCE,
+        val locator = ProjectFileLocator(FileGroup.ASSET, id, FileCategory.SOURCE,
             asset.getAttr("source.filename", String::class.java) as String
         )
         return fileStorageService.stream(locator)
@@ -124,7 +124,7 @@ class AssetController @Autowired constructor(
         @RequestPart(value = "body") req: FileStorageAttrs
     ): Any {
         val asset = assetService.getAsset(id)
-        val locator = FileStorageLocator(FileGroup.ASSET, asset.id,
+        val locator = ProjectFileLocator(FileGroup.ASSET, asset.id,
             FileCategory.valueOf(category.toUpperCase()), req.name)
         val spec = FileStorageSpec(locator, req.attrs, file.bytes)
         return fileStorageService.store(spec)
@@ -139,7 +139,7 @@ class AssetController @Autowired constructor(
         @PathVariable category: String,
         @PathVariable name: String
     ): ResponseEntity<Resource> {
-        val locator = FileStorageLocator(FileGroup.ASSET, id,
+        val locator = ProjectFileLocator(FileGroup.ASSET, id,
             FileCategory.valueOf(category.toUpperCase()), name)
         return fileStorageService.stream(locator)
     }
