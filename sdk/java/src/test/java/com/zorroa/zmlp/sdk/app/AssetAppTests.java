@@ -43,8 +43,8 @@ public class AssetAppTests extends AbstractAppTests {
 
         BatchCreateAssetResponse batchCreateAssetResponse = assetApp.importFiles(assetCreateBuilder);
 
-        assertEquals(batchCreateAssetResponse.getStatus().get(0).getAssetId(), "abc123");
-        assertEquals(batchCreateAssetResponse.getStatus().get(0).getFailed(), false);
+        assertEquals("abc123", batchCreateAssetResponse.getStatus().get(0).getAssetId());
+        assertEquals(false, batchCreateAssetResponse.getStatus().get(0).getFailed());
     }
 
     @Test
@@ -66,7 +66,7 @@ public class AssetAppTests extends AbstractAppTests {
         List<AssetSpec> assetSpecList = Arrays.asList(new AssetSpec("../../../zorroa-test-data/images/set01/toucan.jpg"));
         BatchCreateAssetResponse response = assetApp.uploadFiles(assetSpecList);
 
-        assertEquals(response.getStatus().get(0).getAssetId(), "abc123");
+        assertEquals("abc123", response.getStatus().get(0).getAssetId());
     }
 
     @Test
@@ -83,7 +83,7 @@ public class AssetAppTests extends AbstractAppTests {
 
         String path = jsonNode.get("hits").get("hits").get(0).get("_source").get("source").get("path").asText();
 
-        assertEquals(path, "https://i.imgur.com/SSN26nN.jpg");
+        assertEquals("https://i.imgur.com/SSN26nN.jpg", path);
     }
 
     @Test
@@ -98,7 +98,7 @@ public class AssetAppTests extends AbstractAppTests {
         Asset asset = searchResult.get(0);
         String path = asset.getAttr("source.path");
 
-        assertEquals(path, "https://i.imgur.com/SSN26nN.jpg");
+        assertEquals("https://i.imgur.com/SSN26nN.jpg", path);
     }
 
     @Test

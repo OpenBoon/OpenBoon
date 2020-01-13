@@ -6,7 +6,7 @@ import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageException
 import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.archivist.domain.FileStorageLocator
+import com.zorroa.archivist.domain.CloudStorageLocator
 import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.util.Json
@@ -70,7 +70,7 @@ class GcsFileStorageServiceImpl constructor(
         )
     }
 
-    override fun stream(locator: FileStorageLocator): ResponseEntity<Resource> {
+    override fun stream(locator: CloudStorageLocator): ResponseEntity<Resource> {
         val path = locator.getPath()
         val blobId = BlobId.of(properties.bucket, path)
         val blob = gcs.get(blobId)
@@ -86,7 +86,7 @@ class GcsFileStorageServiceImpl constructor(
         }
     }
 
-    override fun fetch(locator: FileStorageLocator): ByteArray {
+    override fun fetch(locator: CloudStorageLocator): ByteArray {
         val path = locator.getPath()
         val blobId = BlobId.of(properties.bucket, path)
         val blob = gcs.get(blobId)

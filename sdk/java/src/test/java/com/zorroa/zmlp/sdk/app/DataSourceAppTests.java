@@ -54,11 +54,11 @@ public class DataSourceAppTests extends AbstractAppTests {
 
         DataSource dataSource = dataSourceApp.getDataSource((String) body.get("id"));
 
-        assertEquals(dataSource.getId().toString(), body.get("id"));
-        assertEquals(dataSource.getName(), body.get("name"));
-        assertEquals(dataSource.getUri(), body.get("uri"));
-        assertEquals(dataSource.getFileTypes(), body.get("file_types"));
-        assertEquals(dataSource.getAnalysis(), body.get("analysis"));
+        assertEquals(body.get("id"), dataSource.getId().toString());
+        assertEquals(body.get("name"), dataSource.getName());
+        assertEquals(body.get("uri"), dataSource.getUri());
+        assertEquals(body.get("file_types"), dataSource.getFileTypes());
+        assertEquals(body.get("analysis"), dataSource.getAnalysis());
     }
 
     @Test
@@ -91,8 +91,8 @@ public class DataSourceAppTests extends AbstractAppTests {
 
         Map status = dataSourceApp.updateCredentials(dataSourceCredentials);
 
-        assertEquals(status.get("type"), "DATASOURCE");
-        assertEquals(status.get("id"), id.toString());
+        assertEquals("DATASOURCE", status.get("type"));
+        assertEquals(id.toString(), status.get("id"));
     }
 
     public Map getDataSourceBody() {

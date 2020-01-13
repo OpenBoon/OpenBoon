@@ -37,11 +37,11 @@ public class ProjectAppTests extends AbstractAppTests {
         UUID id = UUID.randomUUID();
         Project proj = projectApp.getProject(id);
 
-        assertEquals(proj.getId().toString(), body.get("id").toString());
-        assertEquals(proj.getActorCreated(), body.get("actorCreated"));
-        assertEquals(proj.getActorModified(), body.get("actorModified"));
-        assertEquals(proj.getTimeCreated(), new Date((Long) body.get("timeCreated")));
-        assertEquals(proj.getTimeModified(), new Date((Long) body.get("timeModified")));
+        assertEquals(body.get("id").toString(), proj.getId().toString());
+        assertEquals(body.get("actorCreated"), proj.getActorCreated());
+        assertEquals(body.get("actorModified"), proj.getActorModified());
+        assertEquals(new Date((Long) body.get("timeCreated")), proj.getTimeCreated());
+        assertEquals(new Date((Long) body.get("timeModified")), proj.getTimeModified());
     }
 
     @Test
@@ -53,11 +53,11 @@ public class ProjectAppTests extends AbstractAppTests {
         ProjectSpec unittest = new ProjectSpec().withName("unittest");
         Project proj = projectApp.createProject(unittest);
 
-        assertEquals(proj.getId().toString(), body.get("id").toString());
-        assertEquals(proj.getActorCreated(), body.get("actorCreated"));
-        assertEquals(proj.getActorModified(), body.get("actorModified"));
-        assertEquals(proj.getTimeCreated(), new Date((Long) body.get("timeCreated")));
-        assertEquals(proj.getTimeModified(), new Date((Long) body.get("timeModified")));
+        assertEquals(body.get("id").toString(), proj.getId().toString());
+        assertEquals(body.get("actorCreated"), proj.getActorCreated());
+        assertEquals(body.get("actorModified"), proj.getActorModified());
+        assertEquals(new Date((Long) body.get("timeCreated")), proj.getTimeCreated());
+        assertEquals(new Date((Long) body.get("timeModified")), proj.getTimeModified());
     }
 
     @Test
@@ -70,11 +70,11 @@ public class ProjectAppTests extends AbstractAppTests {
                 .withIds(Lists.newArrayList(UUID.randomUUID()));
         Project proj = projectApp.findProject(filter);
 
-        assertEquals(proj.getId().toString(), body.get("id").toString());
-        assertEquals(proj.getActorCreated(), body.get("actorCreated"));
-        assertEquals(proj.getActorModified(), body.get("actorModified"));
-        assertEquals(proj.getTimeCreated(), new Date((Long) body.get("timeCreated")));
-        assertEquals(proj.getTimeModified(), new Date((Long) body.get("timeModified")));
+        assertEquals(body.get("id").toString(), proj.getId().toString());
+        assertEquals(body.get("actorCreated"), proj.getActorCreated());
+        assertEquals(body.get("actorModified"), proj.getActorModified());
+        assertEquals(new Date((Long) body.get("timeCreated")), proj.getTimeCreated());
+        assertEquals(new Date((Long) body.get("timeModified")), proj.getTimeModified());
     }
 
     @Test
@@ -92,11 +92,11 @@ public class ProjectAppTests extends AbstractAppTests {
         assertEquals(1, projects.size());
         Project proj = projects.getList().get(0);
 
-        assertEquals(proj.getId().toString(), responseProject.get("id").toString());
-        assertEquals(proj.getActorCreated(), responseProject.get("actorCreated"));
-        assertEquals(proj.getActorModified(), responseProject.get("actorModified"));
-        assertEquals(proj.getTimeCreated(), new Date((Long) responseProject.get("timeCreated")));
-        assertEquals(proj.getTimeModified(), new Date((Long) responseProject.get("timeModified")));
+        assertEquals(responseProject.get("id").toString(), proj.getId().toString());
+        assertEquals(responseProject.get("actorCreated"), proj.getActorCreated());
+        assertEquals(responseProject.get("actorModified"), proj.getActorModified());
+        assertEquals(new Date((Long) responseProject.get("timeCreated")), proj.getTimeCreated());
+        assertEquals(new Date((Long) responseProject.get("timeModified")), proj.getTimeModified());
     }
 
     private Map<String, Object> getProjectBody() {

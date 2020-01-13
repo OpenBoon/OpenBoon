@@ -8,7 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.UUID
 
 
-
 object KnownKeys {
 
     /**
@@ -27,6 +26,11 @@ object KnownKeys {
      * background thread.
      */
     val SUKEY = UUID.fromString("00000000-1234-1234-1234-000000000000")
+
+    /**
+     * A special project ID for when we don't need a project ID.
+     */
+    val PROJZERO = UUID.fromString("00000000-0000-0000-0000-000000000000")
 }
 
 fun ZmlpActor.getAuthorities(): List<GrantedAuthority> {

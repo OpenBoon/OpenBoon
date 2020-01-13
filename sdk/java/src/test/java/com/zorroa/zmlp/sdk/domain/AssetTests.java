@@ -1,6 +1,5 @@
 package com.zorroa.zmlp.sdk.domain;
 
-import com.zorroa.zmlp.sdk.Json;
 import com.zorroa.zmlp.sdk.domain.asset.Asset;
 import com.zorroa.zmlp.sdk.domain.asset.AssetFilesFilter;
 import org.junit.Test;
@@ -10,15 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AssetTests {
 
     @Test
     public void testAssetGetFilesFilterName() {
         Asset asset = getTestAsset();
+
 
         List files1 = asset.getFiles(new AssetFilesFilter().addName("proxy_200x200.jpg"));
         List files2 = asset.getFiles(new AssetFilesFilter().addName("spock"));
@@ -49,6 +47,7 @@ public class AssetTests {
         assertEquals(1, asset.getFiles(both).size());
         assertEquals(1, asset.getFiles(image).size());
         assertEquals(0, asset.getFiles(video).size());
+
     }
 
     @Test
@@ -95,7 +94,7 @@ public class AssetTests {
 
         String attr = asset.getAttr("path");
 
-        assertEquals(attr, "https://i.imgur.com/SSN26nN.jpg");
+        assertEquals("https://i.imgur.com/SSN26nN.jpg", attr);
     }
 
     @Test
@@ -124,21 +123,18 @@ public class AssetTests {
     @Test
     public void testAttributeExists() {
         Asset asset = getNestedAttributesAssetMock();
-        assertTrue(asset.attrExists("path"));
-        assertFalse(asset.attrExists("duck"));
-        assertTrue(asset.attrExists("nestedSource.nestedKey"));
-        assertFalse(asset.attrExists("notPresentKey.AlsoNotPresentKey"));
+        assertEquals(true, asset.attrExists("path"));
+        assertEquals(false, asset.attrExists("duck"));
+        assertEquals(true, asset.attrExists("nestedSource.nestedKey"));
+        assertEquals(false, asset.attrExists("notPresentKey.AlsoNotPresentKey"));
     }
 
     @Test
     public void testRemoveAttribute() {
         Asset asset = getNestedAttributesAssetMock();
-
         assert (asset.attrExists("path"));
-
         asset.removeAttr("path");
-
-        assertFalse(asset.attrExists("path"));
+        assertEquals(false, asset.attrExists("path"));
     }
 
     //Mocks
