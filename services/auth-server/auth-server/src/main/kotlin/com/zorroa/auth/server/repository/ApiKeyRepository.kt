@@ -16,7 +16,9 @@ interface ApiKeyRepository : JpaRepository<ApiKey, UUID> {
 
     fun findAllByProjectId(projectId: UUID): List<ApiKey>
 
-    fun findByProjectIdAndKeyId(keyId: UUID, projectId: UUID): ApiKey
+    fun findByProjectIdAndId(id: UUID, projectId: UUID): ApiKey
+
+    fun findByAccessKey(accesKey: String): ApiKey?
 }
 
 /**
@@ -46,8 +48,8 @@ class ApiKeySearchRepositoryImpl : ApiKeySearchRepository {
         val root = criteria.from(ApiKey::class.java)
         val where = mutableListOf<Predicate>()
 
-        filter.keyIds?.let {
-            val ic: CriteriaBuilder.In<UUID> = cb.`in`(root.get("keyId"))
+        filter.ids?.let {
+            val ic: CriteriaBuilder.In<UUID> = cb.`in`(root.get("id"))
             it.forEach { v ->
                 ic.value(v)
             }

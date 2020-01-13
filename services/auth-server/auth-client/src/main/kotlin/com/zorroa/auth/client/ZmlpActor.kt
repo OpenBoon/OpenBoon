@@ -11,7 +11,7 @@ import java.util.UUID
 class ZmlpActor(
 
     @ApiModelProperty("The unique ID of the ApiKey")
-    val keyId: UUID,
+    val id: UUID,
 
     @ApiModelProperty("The project ID of the ApiKey")
     val projectId: UUID,
@@ -27,6 +27,6 @@ class ZmlpActor(
     }
 
     override fun toString() : String {
-        return "${name}/${keyId}"
+        return "${id}/${name}"
     }
 }

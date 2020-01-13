@@ -1,33 +1,31 @@
 package com.zorroa.zmlp.sdk;
 
-import java.util.UUID;
-
 public class ApiKey {
 
-    private String sharedKey;
-    private UUID keyId;
+    private String secretKey;
+    private String accessKey;
 
     public ApiKey() {
     }
 
-    public ApiKey(UUID keyId, String sharedKey) {
-        this.keyId = keyId;
-        this.sharedKey = sharedKey;
+    public ApiKey(String accessKey, String secretKey) {
+        this.accessKey = accessKey;
+        this.secretKey = secretKey;
     }
 
-    public String getSharedKey() {
-        return sharedKey;
+    public String getSecretKey() {
+        return secretKey;
     }
 
-    public void setSharedKey(String sharedKey) {
-        this.sharedKey = sharedKey;
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
     }
 
-    public UUID getKeyId() {
-        return keyId;
+    public String getAccessKey() {
+        return accessKey;
     }
 
-    public void setKeyId(UUID keyId) {
-        this.keyId = keyId;
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
     }
 }

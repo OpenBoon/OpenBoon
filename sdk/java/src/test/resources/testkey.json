@@ -1,5 +1,4 @@
 {
-  "projectId": "97271bd2-5b51-427a-8fbf-93b4cdb2ba85",
-  "keyId": "4338a83f-a920-40ab-a251-a123b17df1ba",
-  "sharedKey": "abc123"
+  "accessKey": "4338a83f-a920-40ab-a251-a123b17df1ba",
+  "secretKey": "abc123"
 }

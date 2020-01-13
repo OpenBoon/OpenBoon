@@ -1,9 +1,8 @@
 {
   "name": "admin-key",
   "projectId": "50550AAC-6C5A-41CD-B779-2821BB5B535F",
-  "keyId": "76094317-D968-43A8-B9DC-D0680A899AD7",
-  "sharedKey": "pcekjDV_ipSMXAaBqqtq6Jwy5FAMnjehUQrMEhbG8W01giVqVLfEN9FdMIvzu0rb",
-  "permissions": [
-    "ProjectOverride", "ApiKeyManage"
-  ]
+  "id": "76094317-D968-43A8-B9DC-D0680A899AD7",
+  "accessKey": "BFBACB55067340F284C959DC5595EBA3",
+  "secretKey": "pcekjDV_ipSMXAaBqqtq6Jwy5FAMnjehUQrMEhbG8W01giVqVLfEN9FdMIvzu0rb",
+  "permissions": []
 }
