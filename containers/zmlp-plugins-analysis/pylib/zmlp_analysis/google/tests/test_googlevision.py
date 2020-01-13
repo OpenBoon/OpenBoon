@@ -4,9 +4,9 @@ from mock import patch
 
 from ..processors import CloudVisionProcessor
 from zmlp import ZmlpClient
-from zmlp.analysis.proxy import store_asset_proxy
-from zmlp.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
-from zmlp.analysis import Frame, ZmlpFatalProcessorException
+from zmlpsdk.proxy import store_asset_proxy
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
+from zmlpsdk import Frame, ZmlpFatalProcessorException
 
 patch_path = 'zmlp_analysis.google.processors.vision.ImageAnnotatorClient'
 

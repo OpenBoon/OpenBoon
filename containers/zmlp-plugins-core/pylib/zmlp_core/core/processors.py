@@ -2,8 +2,8 @@ import logging
 import os
 from zlib import adler32
 
-from zmlp.analysis import AssetProcessor, Argument, ZmlpFatalProcessorException
-from zmlp.analysis.storage import file_storage
+from zmlpsdk import AssetProcessor, Argument, ZmlpFatalProcessorException
+from zmlpsdk.storage import file_storage
 
 logger = logging.getLogger(__name__)
 

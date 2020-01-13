@@ -49,7 +49,7 @@ class TestZpsExecutor(unittest.TestCase):
             "script": {
                 "generate": [
                     {
-                        "className": "zmlp.analysis.testing.TestGenerator",
+                        "className": "zmlpsdk.testing.TestGenerator",
                         "args": {
                             "files": ["/test-data/images/set01/toucan.jpg"]
                         },

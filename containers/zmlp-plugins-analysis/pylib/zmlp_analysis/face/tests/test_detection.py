@@ -3,9 +3,9 @@ import logging
 from unittest.mock import patch
 
 from zmlp import ZmlpClient
-from zmlp.analysis import Frame
-from zmlp.analysis.proxy import store_asset_proxy
-from zmlp.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
+from zmlpsdk import Frame
+from zmlpsdk.proxy import store_asset_proxy
+from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from zmlp_analysis.face.detection import ZmlpFaceDetectionProcessor
 
 logging.basicConfig(level=logging.DEBUG)

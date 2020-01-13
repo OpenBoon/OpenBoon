@@ -1,5 +1,5 @@
-from zmlp.analysis.proxy import get_proxy_level
-from zmlp.analysis.base import ExpandFrame
+from zmlpsdk.proxy import get_proxy_level
+from zmlpsdk.base import ExpandFrame
 from zmlp.asset import Clip, FileImport
 
 

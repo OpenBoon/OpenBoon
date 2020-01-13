@@ -4,10 +4,10 @@ import os
 from unittest.mock import patch
 
 from zmlp import ZmlpClient, AssetApp, Asset
-from zmlp.analysis import Frame
-from zmlp.analysis.proxy import store_asset_proxy
-from zmlp.analysis.storage import ProjectStorage
-from zmlp.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
+from zmlpsdk import Frame
+from zmlpsdk.proxy import store_asset_proxy
+from zmlpsdk.storage import ProjectStorage
+from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from zmlp.client import SearchResult
 from zmlp_analysis.face.recognition import ZmlpFaceRecognitionProcessor, \
     ZmlpBuildFaceRecognitionModel

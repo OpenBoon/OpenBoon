@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 
-from zmlp.analysis import Generator, Argument
-from zmlp.analysis.cloud import get_google_storage_client
+from zmlpsdk import Generator, Argument
+from zmlpsdk.cloud import get_google_storage_client
 from zmlp.asset import FileImport
 
 

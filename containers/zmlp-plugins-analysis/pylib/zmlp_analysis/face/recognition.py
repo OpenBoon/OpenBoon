@@ -7,9 +7,9 @@ import face_recognition
 import numpy as np
 
 import zmlp
-from zmlp.analysis import AssetProcessor
-from zmlp.analysis.proxy import get_proxy_level, store_element_proxy
-from zmlp.analysis.storage import file_storage
+from zmlpsdk import AssetProcessor
+from zmlpsdk.proxy import get_proxy_level, store_element_proxy
+from zmlpsdk.storage import file_storage
 from zmlp.elements import Element
 from zmlp.util import as_collection
 

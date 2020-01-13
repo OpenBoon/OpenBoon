@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from zmlpcd.process import ProcessorExecutor, AssetConsumer, is_file_type_allowed
 from zmlpcd.reactor import Reactor
-from zmlp.analysis.testing import TestEventEmitter, TestAsset
+from zmlpsdk.testing import TestEventEmitter, TestAsset
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -31,7 +31,7 @@ class ProcessorExecutorTests(unittest.TestCase):
     def test_execute_processor(self):
         req = {
             "ref": {
-                "className": "zmlp.analysis.testing.TestProcessor",
+                "className": "zmlpsdk.testing.TestProcessor",
                 "args": {},
                 "image": "plugins-py3-base:latest"
             },
@@ -47,7 +47,7 @@ class ProcessorExecutorTests(unittest.TestCase):
     def test_execute_processor_and_raise_fatal(self):
         req = {
             "ref": {
-                "className": "zmlp.analysis.testing.TestProcessor",
+                "className": "zmlpsdk.testing.TestProcessor",
                 "args": {"raise_fatal": True},
                 "image": "plugins-py3-base:latest"
             },
@@ -66,7 +66,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert self.emitter.event_total() == 2
 
         error = self.emitter.get_events("error")[0]
-        assert error["payload"]["processor"] == "zmlp.analysis.testing.TestProcessor"
+        assert error["payload"]["processor"] == "zmlpsdk.testing.TestProcessor"
         assert error["payload"]["fatal"] is True
         assert error["payload"]["phase"] == "execute"
         assert error["payload"]["path"] == "/foo/bing.jpg"
@@ -75,7 +75,7 @@ class ProcessorExecutorTests(unittest.TestCase):
     def test_teardown_processor(self, react_patch):
         req = {
             "ref": {
-                "className": "zmlp.analysis.testing.TestProcessor",
+                "className": "zmlpsdk.testing.TestProcessor",
                 "args": {},
                 "image": "plugins-py3-base:latest"
             },
@@ -92,7 +92,7 @@ class ProcessorExecutorTests(unittest.TestCase):
 
     def test_get_processor_wrapper(self):
         ref = {
-            "className": "zmlp.analysis.testing.TestProcessor",
+            "className": "zmlpsdk.testing.TestProcessor",
             "args": {},
             "image": "plugins-py3-base:latest"
         }
@@ -106,7 +106,7 @@ class ProcessorExecutorTests(unittest.TestCase):
 
     def test_new_processor_instance(self):
         ref = {
-            "className": "zmlp.analysis.testing.TestProcessor",
+            "className": "zmlpsdk.testing.TestProcessor",
             "args": {},
             "image": "plugins-py3-base:latest"
         }

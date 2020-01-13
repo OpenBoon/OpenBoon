@@ -1,8 +1,8 @@
 import unittest
 
 from zmlpcd.reactor import Reactor
-from zmlp.analysis.base import ExpandFrame, Frame
-from zmlp.analysis.testing import TestEventEmitter, TestAsset
+from zmlpsdk.base import ExpandFrame, Frame
+from zmlpsdk.testing import TestEventEmitter, TestAsset
 from zmlp.asset import FileImport
 
 

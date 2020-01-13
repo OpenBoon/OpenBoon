@@ -3,8 +3,8 @@ from unittest.mock import patch
 
 from pathlib2 import Path
 
-from zmlp.analysis.storage import file_storage
-from zmlp.analysis.testing import TestAsset, MockRequestsResponse, zorroa_test_data
+from zmlpsdk.storage import file_storage
+from zmlpsdk.testing import TestAsset, MockRequestsResponse, zorroa_test_data
 from zmlp_core.office.oclient import OfficerClient
 
 

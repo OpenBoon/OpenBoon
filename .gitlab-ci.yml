@@ -89,13 +89,14 @@ backend-py-lint:
   allow_failure: false
   script:
     - python -m pip install flake8
-    - flake8 --config .flake8.cfg sdk/python containers/zmlp-py3-base services/analyst
+    - flake8 --config .flake8.cfg sdk client/python containers/zmlp-py3-base services/analyst
     - flake8 --config .flake8.cfg containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis
   only:
     refs:
       - merge_requests
     changes:
-      - sdk/python/**/*.py
+      - client/python/**/*.py
+      - sdk/**/.py
       - containers/**/*.py
       - services/analyst/**/*.py
 
@@ -133,17 +134,21 @@ sdk-unit-tests:
   allow_failure: true
   script:
     - python -m pip install pipenv pytest
-    - cd sdk/python
+    - cd client/python
     - python setup.py install
     - pytest
-    - cd ../../containers/zmlp-plugins-base
+    - cd ../../sdk
+    - python setup.py install
+    - pytest
+    - cd ../containers/zmlp-plugins-base
     - pip install -r requirements.txt
     - pytest
   only:
     refs:
       - merge_requests
     changes:
-      - sdk/**/*
+      - client/python/*
+      - sdk/*
       - containers/zmlp-plugins-base/**/*
 
 sdk-java-unit-tests:
@@ -151,12 +156,12 @@ sdk-java-unit-tests:
   stage: test
   allow_failure: true
   script:
-    - mvn test verify -f sdk/java -q
+    - mvn test verify -f client/java -q
   only:
     refs:
       - merge_requests
     changes:
-      - sdk/**/*
+      - client/java/*
       - containers/zmlp-plugins-base/**/*
 
 sdk-unit-tests-all-stable-branches:
@@ -186,6 +191,7 @@ docker_hub_build_push:
     - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
     - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
     - docker tag zmlp/py3-base:latest zmlp/py3-base:development; docker push zmlp/py3-base:development
+    - docker tag zmlp/py3-client:latest zmlp/py3-client:development; docker push zmlp/py3-client:development
     - docker tag zmlp/py3-sdk:latest zmlp/py3-sdk:development; docker push zmlp/py3-sdk:development
     - docker tag zmlp/plugins-base:latest zmlp/plugins-base:development; docker push zmlp/plugins-base:development
     - docker tag zmlp/plugins-core:latest zmlp/plugins-core:development; docker push zmlp/plugins-core:development
