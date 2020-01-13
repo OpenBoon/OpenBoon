@@ -3,7 +3,7 @@ import tempfile
 
 import cv2
 
-from zmlp.analysis.storage import file_storage
+from zmlpsdk.storage import file_storage
 
 __all__ = [
     'store_asset_proxy',

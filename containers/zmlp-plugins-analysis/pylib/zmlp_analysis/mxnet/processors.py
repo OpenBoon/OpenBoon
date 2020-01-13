@@ -6,8 +6,8 @@ import mxnet
 import numpy as np
 from pathlib2 import Path
 
-from zmlp.analysis import AssetProcessor, Argument
-from zmlp.analysis.proxy import get_proxy_level
+from zmlpsdk import AssetProcessor, Argument
+from zmlpsdk.proxy import get_proxy_level
 
 package_directory = os.path.dirname(os.path.abspath(__file__))
 

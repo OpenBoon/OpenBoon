@@ -5,9 +5,9 @@ from unittest.mock import patch
 import pytest
 from pathlib2 import Path
 
-from zmlp.analysis import Frame, ZmlpFatalProcessorException
-from zmlp.analysis.storage import file_storage
-from zmlp.analysis.testing import PluginUnitTestCase, TestAsset
+from zmlpsdk import Frame, ZmlpFatalProcessorException
+from zmlpsdk.storage import file_storage
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset
 from zmlp_core.office.importers import OfficeImporter, _content_sanitizer
 from zmlp_core.office.oclient import OfficerClient
 

@@ -2,7 +2,7 @@ import numpy as np
 from pathlib2 import Path
 from tensorflow.keras.models import load_model
 
-from zmlp.analysis import AssetProcessor, Argument
+from zmlpsdk import AssetProcessor, Argument
 
 
 class NeuralNetClassifierProcessor(AssetProcessor):

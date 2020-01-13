@@ -80,42 +80,6 @@ class AnalystController @Autowired constructor(
         return HttpUtils.updated("analyst", analyst.id, analystService.setLockState(analyst, newState))
     }
 
-    @ApiOperation(
-        "Download the ZSDK.",
-        notes = "Downloads a universal python wheel file which can be used to install the Python SDK."
-    )
-    @GetMapping(value = ["/download-zsdk"])
-    @PreAuthorize("permitAll()")
-    fun downloadZsdk(requestEntity: RequestEntity<Any>): Any {
-        if (!properties.getBoolean("archivist.zsdk-download-enabled")) {
-            return ResponseEntity<Any>(HttpStatus.NOT_FOUND)
-        }
-
-        val acceptingTrustStrategy = { chain: Array<X509Certificate>, authType: String -> true }
-        val sslContext = org.apache.http.ssl.SSLContexts.custom()
-            .loadTrustMaterial(null, acceptingTrustStrategy)
-            .loadTrustMaterial(null, TrustSelfSignedStrategy())
-            .build()
-        val csf = SSLConnectionSocketFactory(sslContext)
-        val httpClient = HttpClients.custom()
-            .setSSLSocketFactory(csf)
-            .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-            .build()
-        val requestFactory = HttpComponentsClientHttpRequestFactory()
-        requestFactory.httpClient = httpClient
-        val restTemplate = RestTemplate(requestFactory)
-        val analysts = analystService.getAll(AnalystFilter(states = listOf(AnalystState.Up)))
-        for (analyst in analysts) {
-            val url = analyst.endpoint + "/zsdk"
-            try {
-                return restTemplate.exchange(url, HttpMethod.GET, requestEntity, ByteArray::class.java)
-            } catch (e: Exception) {
-                logger.warn("Failed to communicate with Analyst '${analyst.endpoint}", e)
-            }
-        }
-        return ResponseEntity<Any>(HttpStatus.NOT_FOUND)
-    }
-
     companion object {
         private val logger = LoggerFactory.getLogger(AnalystController::class.java)
     }

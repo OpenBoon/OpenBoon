@@ -2,8 +2,8 @@
 
 import os
 
-from zmlp.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
-from zmlp.analysis import Frame
+from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
+from zmlpsdk import Frame
 from ..processors import AutoMLNLPModelProcessor
 
 

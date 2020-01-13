@@ -17,8 +17,8 @@ from google.api_core.exceptions import ResourceExhausted
 from .base import GoogleApiDocumentProcessor
 from .base import AutoMLModelProcessor
 
-from zmlp.analysis import Argument, ZmlpFatalProcessorException
-from zmlp.analysis.proxy import get_proxy_level
+from zmlpsdk import Argument, ZmlpFatalProcessorException
+from zmlpsdk.proxy import get_proxy_level
 
 
 class CloudVisionProcessor(GoogleApiDocumentProcessor):

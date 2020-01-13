@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from zmlp import Asset
 from zmlp import ZmlpClient, app_from_env
-from zmlp.analysis.testing import zorroa_test_data
+from zmlpsdk.testing import zorroa_test_data
 from zmlp.asset import FileImport, FileUpload, Clip
 
 logging.basicConfig(level=logging.DEBUG)

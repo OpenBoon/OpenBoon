@@ -4,7 +4,7 @@ import shutil
 
 from unittest.mock import patch
 from zmlp_core.util import media
-from zmlp.analysis.testing import zorroa_test_data
+from zmlpsdk.testing import zorroa_test_data
 
 IMAGE_EXR = zorroa_test_data('images/set06/SquaresSwirls.exr', False)
 IMAGE_PSD = zorroa_test_data('images/set06/psd_123.psd', False)

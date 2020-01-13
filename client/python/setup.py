@@ -13,22 +13,19 @@ requirements = [
     "requests",
     "pyOpenSSL",
     "PyJWT",
-    "google-cloud-storage>=1.20.0",
     "pathlib2>=2.3.0",
     "backoff",
-    "pytest",
-    "minio",
-    "opencv-python-headless"
+    "pytest"
 ]
 
 setup(
     name='zmlp',
     version=open("VERSION").read().strip(),
-    description='ZMLP Python SDK',
+    description='ZMLP Python Client',
     url='https://www.zorroa.com',
     license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
     package_dir={'': 'pylib'},
-    packages=['zmlp', 'zmlp.analysis'],
+    packages=['zmlp'],
     scripts=[],
 
     classifiers=[

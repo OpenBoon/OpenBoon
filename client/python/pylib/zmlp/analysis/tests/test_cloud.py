@@ -4,7 +4,7 @@ import logging
 from unittest import TestCase
 from unittest.mock import patch
 
-from zmlp.analysis.cloud import get_google_storage_client, get_pipeline_storage_client
+from zmlpsdk.cloud import get_google_storage_client, get_pipeline_storage_client
 from zmlp.client import ZmlpClient
 
 logging.basicConfig(level=logging.DEBUG)

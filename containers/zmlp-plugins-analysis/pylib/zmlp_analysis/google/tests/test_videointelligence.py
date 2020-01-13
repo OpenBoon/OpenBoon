@@ -5,8 +5,8 @@ import os
 from unittest.mock import patch
 from ..processors import CloudVideoIntelligenceProcessor
 
-from zmlp.analysis import Frame
-from zmlp.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
+from zmlpsdk import Frame
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 
 
 # Mocks Google's VideoAnnotationResults object

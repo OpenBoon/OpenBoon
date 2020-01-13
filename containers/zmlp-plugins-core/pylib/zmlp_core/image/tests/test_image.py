@@ -1,5 +1,5 @@
 from zmlp import analysis
-from zmlp.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
+from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from zmlp_core.image.importers import ImageImporter
 
 TOUCAN = zorroa_test_data("images/set01/toucan.jpg")

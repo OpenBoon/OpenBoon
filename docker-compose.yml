@@ -149,12 +149,20 @@ services:
     build:
       context: containers/zmlp-py3-base
 
-  zmlp-py3-sdk:
-    image: zmlp/py3-sdk:latest
+  zmlp-py3-client:
+    image: zmlp/py3-client:latest
     depends_on:
       - zmlp-py3-base
     build:
       context: client/python
+    command: echo
+
+  zmlp-py3-sdk:
+    image: zmlp/py3-sdk:latest
+    depends_on:
+      - zmlp-py3-client
+    build:
+      context: sdk
     command: echo
 
   zmlp-plugins-base:

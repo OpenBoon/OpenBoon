@@ -7,8 +7,8 @@ import dateutil.parser
 from pathlib2 import Path
 
 from zmlp import Clip, FileImport
-from zmlp.analysis import AssetProcessor, Argument, ExpandFrame
-from zmlp.analysis.storage import file_storage
+from zmlpsdk import AssetProcessor, Argument, ExpandFrame
+from zmlpsdk.storage import file_storage
 from ..util.media import get_image_metadata, set_resolution_attrs
 
 

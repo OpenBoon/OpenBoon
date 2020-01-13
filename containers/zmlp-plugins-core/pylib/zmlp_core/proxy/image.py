@@ -7,9 +7,9 @@ import collections
 from PIL import Image
 from pathlib2 import Path
 
-from zmlp.analysis import AssetProcessor, Argument
-from zmlp.analysis.storage import file_storage
-from zmlp.analysis.proxy import store_asset_proxy, get_proxy_level
+from zmlpsdk import AssetProcessor, Argument
+from zmlpsdk.storage import file_storage
+from zmlpsdk.proxy import store_asset_proxy, get_proxy_level
 from zmlp_core.util.media import get_output_dimension, media_size
 
 
