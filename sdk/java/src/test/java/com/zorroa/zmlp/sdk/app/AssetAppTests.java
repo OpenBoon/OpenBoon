@@ -63,7 +63,7 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
 
-        List<AssetSpec> assetSpecList = Arrays.asList(new AssetSpec("../../../zorroa-test-data/images/set01/toucan.jpg"));
+        List<AssetSpec> assetSpecList = Arrays.asList(new AssetSpec("src/test/resources/toucan.jpg"));
         BatchCreateAssetResponse response = assetApp.uploadFiles(assetSpecList);
 
         assertEquals("abc123", response.getStatus().get(0).getAssetId());
