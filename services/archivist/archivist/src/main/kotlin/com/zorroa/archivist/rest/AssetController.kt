@@ -7,13 +7,12 @@ import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
-import com.zorroa.archivist.domain.FileCategory
-import com.zorroa.archivist.domain.FileGroup
-import com.zorroa.archivist.domain.FileStorageAttrs
-import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.domain.ProjectFileLocator
+import com.zorroa.archivist.domain.ProjectStorageCategory
+import com.zorroa.archivist.domain.ProjectStorageRequest
+import com.zorroa.archivist.domain.ProjectStorageSpec
+import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.service.AssetService
-import com.zorroa.archivist.storage.FileStorageService
+import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.RawByteArrayOutputStream
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
@@ -48,7 +47,7 @@ import javax.servlet.ServletOutputStream
 )
 class AssetController @Autowired constructor(
     val assetService: AssetService,
-    val fileStorageService: FileStorageService
+    val projectStorageService: ProjectStorageService
 ) {
 
     @PreAuthorize("hasAuthority('AssetsRead')")
@@ -80,10 +79,10 @@ class AssetController @Autowired constructor(
         @ApiParam("Unique ID of the Asset.") @PathVariable id: String
     ): ResponseEntity<Resource> {
         val asset = assetService.getAsset(id)
-        val locator = ProjectFileLocator(FileGroup.ASSET, id, FileCategory.SOURCE,
+        val locator = AssetFileLocator(id, ProjectStorageCategory.SOURCE,
             asset.getAttr("source.filename", String::class.java) as String
         )
-        return fileStorageService.stream(locator)
+        return projectStorageService.stream(locator)
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
@@ -115,19 +114,17 @@ class AssetController @Autowired constructor(
 
     @ApiOperation("Store an additional file to an asset.")
     @PreAuthorize("hasAuthority('AssetsImport')")
-    @PostMapping(value = ["/api/v3/assets/{id}/files/{category}"], consumes = ["multipart/form-data"])
+    @PostMapping(value = ["/api/v3/assets/{id}/files"], consumes = ["multipart/form-data"])
     @ResponseBody
     fun uploadFile(
         @PathVariable id: String,
-        @PathVariable category: String,
         @RequestPart(value = "file") file: MultipartFile,
-        @RequestPart(value = "body") req: FileStorageAttrs
+        @RequestPart(value = "body") req: ProjectStorageRequest
     ): Any {
         val asset = assetService.getAsset(id)
-        val locator = ProjectFileLocator(FileGroup.ASSET, asset.id,
-            FileCategory.valueOf(category.toUpperCase()), req.name)
-        val spec = FileStorageSpec(locator, req.attrs, file.bytes)
-        return fileStorageService.store(spec)
+        val locator = AssetFileLocator(asset.id, req.category, req.name)
+        val spec = ProjectStorageSpec(locator, req.attrs, file.bytes)
+        return projectStorageService.store(spec)
     }
 
     @ApiOperation("Store an additional file to an asset.")
@@ -139,9 +136,8 @@ class AssetController @Autowired constructor(
         @PathVariable category: String,
         @PathVariable name: String
     ): ResponseEntity<Resource> {
-        val locator = ProjectFileLocator(FileGroup.ASSET, id,
-            FileCategory.valueOf(category.toUpperCase()), name)
-        return fileStorageService.stream(locator)
+        val locator = AssetFileLocator(id, category, name)
+        return projectStorageService.stream(locator)
     }
 
     companion object {

@@ -1,9 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteSpec
-import com.zorroa.archivist.domain.IndexRouteState
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectSpec
@@ -96,5 +94,11 @@ class ProjectServiceTests : AbstractTest() {
         val settings = projectService.getSettings(getProjectId())
         settings.defaultPipelineId = UUID.randomUUID()
         projectService.updateSettings(getProjectId(), settings)
+    }
+
+    @Test
+    fun testGetCryptoKey() {
+        val key = projectService.getCryptoKey()
+        assertEquals(99, key.length)
     }
 }

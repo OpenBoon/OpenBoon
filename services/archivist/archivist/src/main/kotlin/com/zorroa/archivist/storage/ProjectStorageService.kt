@@ -1,10 +1,10 @@
 package com.zorroa.archivist.storage
 
 import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.archivist.domain.CloudStorageLocator
-import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
+import com.zorroa.archivist.domain.ProjectStorageLocator
+import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.event
 import org.slf4j.LoggerFactory
 import org.springframework.boot.context.properties.ConfigurationProperties
@@ -13,7 +13,7 @@ import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
 
 @Configuration
-@ConfigurationProperties("archivist.storage")
+@ConfigurationProperties("archivist.project.storage")
 class StorageProperties {
 
     lateinit var bucket: String
@@ -27,29 +27,35 @@ class StorageProperties {
     var url: String? = null
 }
 
-interface FileStorageService {
+/**
+ * The FileStorageService handles storing files to bucket storage
+ * using a standard naming convention defined by [ProjectStorageLocator]
+ * class.
+ */
+interface ProjectStorageService {
 
     /**
-     * Store the file described by the [FileStorageSpec] in bucket storage.
+     * Store the file described by the [ProjectStorageSpec] in bucket storage.
      */
-    fun store(spec: FileStorageSpec): FileStorage
+    fun store(spec: ProjectStorageSpec): FileStorage
 
     /**
-     * Stream the given file as a ResponseEntity.
+     * Stream the given file as a ResponseEntity.  This is used for serving
+     * the resource via the HTTP server.
      */
-    fun stream(locator: CloudStorageLocator): ResponseEntity<Resource>
+    fun stream(locator: ProjectStorageLocator): ResponseEntity<Resource>
 
     /**
      * Fetch the bytes for the given file.
      */
-    fun fetch(locator: CloudStorageLocator): ByteArray
+    fun fetch(locator: ProjectStorageLocator): ByteArray
 
     /**
      * Log the storage of a file.
      */
-    fun logStoreEvent(spec: FileStorageSpec ) {
+    fun logStoreEvent(spec: ProjectStorageSpec ) {
         logger.event(
-            LogObject.FILE_STORAGE, LogAction.CREATE,
+            LogObject.PROJECT_STORAGE, LogAction.CREATE,
             mapOf(
                 "newFilePath" to spec.locator.getPath(),
                 "size" to spec.data.size.toLong(),
@@ -59,6 +65,6 @@ interface FileStorageService {
     }
 
     companion object {
-        val logger = LoggerFactory.getLogger(FileStorageService::class.java)
+        val logger = LoggerFactory.getLogger(ProjectStorageService::class.java)
     }
 }

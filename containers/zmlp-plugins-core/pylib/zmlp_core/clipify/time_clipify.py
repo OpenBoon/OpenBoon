@@ -1,8 +1,8 @@
-from zmlp.analysis import AssetBuilder, Argument
+from zmlp.analysis import AssetProcessor, Argument
 from .util import check_video_clip_preconditions, make_video_clip_file_import
 
 
-class TimeBasedVideoClipifier(AssetBuilder):
+class TimeBasedVideoClipifier(AssetProcessor):
 
     def __init__(self):
         super(TimeBasedVideoClipifier, self).__init__()

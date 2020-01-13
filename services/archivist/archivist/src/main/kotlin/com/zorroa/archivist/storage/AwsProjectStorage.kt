@@ -13,10 +13,11 @@ import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
 import com.google.cloud.storage.StorageException
 import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.archivist.domain.CloudStorageLocator
-import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.ProjectStorageLocator
+import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.util.Json
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -31,7 +32,7 @@ import javax.annotation.PostConstruct
 
 @Configuration
 @Profile("aws")
-class AwsFileStorageServiceConfiguration(val properties: StorageProperties) {
+class AwsStorageConfiguration(val properties: StorageProperties) {
 
     @Bean
     fun getS3Client(): AmazonS3 {
@@ -60,15 +61,15 @@ class AwsFileStorageServiceConfiguration(val properties: StorageProperties) {
 
 @Service
 @Profile("aws")
-class AwsFileStorageServiceImpl constructor(
+class AwsProjectStorageServiceImpl constructor(
     val properties: StorageProperties,
     val indexRoutingService: IndexRoutingService,
     val s3Client: AmazonS3
-) : FileStorageService {
+) : ProjectStorageService {
 
     @PostConstruct
     fun initialize() {
-        FileStorageService.logger.info("Initializing AWS Storage Backend (bucket='${properties.bucket}')")
+        logger.info("Initializing AWS Storage Backend (bucket='${properties.bucket}')")
         if (properties.createBucket) {
             if (!s3Client.doesBucketExistV2(properties.bucket)) {
                 s3Client.createBucket(properties.bucket)
@@ -76,7 +77,7 @@ class AwsFileStorageServiceImpl constructor(
         }
     }
 
-    override fun store(spec: FileStorageSpec): FileStorage {
+    override fun store(spec: ProjectStorageSpec): FileStorage {
 
         val path = spec.locator.getPath()
         val metadata = ObjectMetadata()
@@ -91,14 +92,14 @@ class AwsFileStorageServiceImpl constructor(
 
         return FileStorage(
             spec.locator.name,
-            spec.locator.category.toString().toLowerCase(),
+            spec.locator.category,
             spec.mimetype,
             spec.data.size.toLong(),
             spec.attrs
         )
     }
 
-    override fun stream(locator: CloudStorageLocator): ResponseEntity<Resource> {
+    override fun stream(locator: ProjectStorageLocator): ResponseEntity<Resource> {
         val path = locator.getPath()
         val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path))
 
@@ -113,9 +114,13 @@ class AwsFileStorageServiceImpl constructor(
         }
     }
 
-    override fun fetch(locator: CloudStorageLocator): ByteArray {
+    override fun fetch(locator: ProjectStorageLocator): ByteArray {
         val path = locator.getPath()
         val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path))
         return s3obj.objectContent.readAllBytes()
+    }
+
+    companion object {
+        val logger = LoggerFactory.getLogger(AwsProjectStorageServiceImpl::class.java)
     }
 }

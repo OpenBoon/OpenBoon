@@ -68,7 +68,7 @@ class TestServer {
 
         val content = Json.mapper.readValue(rsp.body(), Map::class.java)
         val prefix = IOHandler.PREFIX
-        assertEquals("zmlp://istorage/$prefix/render_test", content["location"])
+        assertEquals("zmlp://pipeline-storage/$prefix/render_test", content["location"])
 
         val exists = HttpRequest.post("http://localhost:9876/exists")
             .send(Json.mapper.writeValueAsString(opts))

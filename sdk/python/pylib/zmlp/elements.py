@@ -17,7 +17,13 @@ class Element(object):
             the stored_file size.
 
     """
-    def __init__(self, type, labels, score=None, rect=None, stored_file=None):
+
+    # The attributes that get serialized for json.  If you change this, you'll likely
+    # have to change the ES mapping.
+    attrs = ['type', 'labels', 'rect', 'score', 'proxy', 'regions', 'analysis', 'vector']
+
+    def __init__(self, type,
+                 analysis=None, labels=None, score=None, rect=None, proxy=None, vector=None):
         """
         Create a new Element instance.
 
@@ -27,29 +33,43 @@ class Element(object):
         Args:
             type (str): The type of element, typically 'object' or 'face' but
                 it can be an arbitrary value.
+            analysis: (str): The type of analysis that created this element.
             labels (list[str]): A list of predicted labels.
             score (float): If a prediction is made, a score describes the confidence level.
             rect (list[int]): A list of 4 integers describe the rectangle containing the element.
                 The ints represent the upper left point and lower left point of the rectangle.
-            stored_file (dict): A stored file record which contains a proxy image for the Element.
-
+            proxy (dict): The asset file record which contains a proxy image for the Element.
+            vector (str): The similarity vector.
         """
         self.type = type
         self.labels = as_collection(labels)
-        self.score = score
+        self.score = float(score) if score else None
         self.rect = rect
+        self.vector = vector
+        self.analysis = analysis
 
-        if stored_file:
-            self.file = '{}/{}'.format(stored_file['category'], stored_file['name'])
-        else:
-            self.file = None
+        self.proxy = None
+        self.regions = None
 
-        if self.rect and stored_file:
-            self.regions = self.calculate_regions(stored_file)
-        else:
-            self.regions = None
+        if proxy:
+            self.set_proxy(proxy)
 
-    def calculate_regions(self, stored_file):
+    def set_proxy(self, proxy):
+        """
+
+        Args:
+            proxy (dict): The file spec for the proxy image
+
+        Returns:
+        """
+        self.proxy = '{}/{}'.format(proxy['category'], proxy['name'])
+        if self.rect:
+            self.set_regions(proxy)
+
+    def set_regions(self, proxy):
+        self.regions = self.calculate_regions(proxy)
+
+    def calculate_regions(self, proxy):
         """
         Calculate the regions where the element exists.  Possible
         value are:
@@ -66,16 +86,19 @@ class Element(object):
             list[str]: An array of regions or None if no regions can be calculated.
 
         """
+        if not self.rect or not self.proxy:
+            return
+
         Point = collections.namedtuple("Point", "x y")
 
         l1 = Point(self.rect[0], self.rect[1])
         r1 = Point(self.rect[2], self.rect[3])
 
         # Use rect to determine region
-        keys = stored_file.get('attrs', {}).keys()
+        keys = proxy.get('attrs', {}).keys()
         if 'width' in keys and 'height' in keys:
-            width = stored_file['attrs']['width']
-            height = stored_file['attrs']['height']
+            width = proxy['attrs']['width']
+            height = proxy['attrs']['height']
             regions = {
                 'NW': (Point(0, 0), Point(width / 2, height / 2)),
                 'NE': (Point(width / 2, 0), Point(width, height / 2)),
@@ -102,8 +125,7 @@ class Element(object):
             dict: A serialized Element
         """
         serializable_dict = {}
-        attrs = ['type', 'labels', 'rect', 'score', 'file', 'regions']
-        for attr in attrs:
+        for attr in self.attrs:
             if getattr(self, attr, None) is not None:
                 serializable_dict[attr] = getattr(self, attr)
         return serializable_dict

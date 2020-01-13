@@ -1,11 +1,11 @@
 import subprocess
 
-from zmlp.analysis import AssetBuilder, Argument
+from zmlp.analysis import AssetProcessor, Argument
 from zmlp.analysis.proxy import get_proxy_level
 from .util import check_video_clip_preconditions, make_video_clip_file_import
 
 
-class ShotDetectionVideoClipifier(AssetBuilder):
+class ShotDetectionVideoClipifier(AssetProcessor):
 
     def __init__(self):
         super(ShotDetectionVideoClipifier, self).__init__()

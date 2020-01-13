@@ -17,7 +17,8 @@ requirements = [
     "pathlib2>=2.3.0",
     "backoff",
     "pytest",
-    "minio"
+    "minio",
+    "opencv-python-headless"
 ]
 
 setup(
