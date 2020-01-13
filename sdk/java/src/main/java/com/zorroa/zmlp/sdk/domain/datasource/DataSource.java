@@ -1,4 +1,4 @@
-package com.zorroa.zmlp.sdk.domain;
+package com.zorroa.zmlp.sdk.domain.datasource;
 
 import java.util.List;
 import java.util.UUID;
@@ -8,12 +8,30 @@ import java.util.UUID;
  */
 public class DataSource {
 
-    UUID id;
-    String name;
-    String uri;
-    String credentials;
-    List<String> fileTypes;
-    List<String> analysis;
+    /**
+     * The Unique ID of the DataSource
+     */
+    private UUID id;
+    /**
+     * The unique name of the DataSource
+     */
+    private String name;
+    /**
+     * The URI of the DataSource
+     */
+    private String uri;
+    /**
+     * An optional credentials blob for the DataSource, this will be encrypted.
+     */
+    private String credentials;
+    /**
+     * A list of file type filters.
+     */
+    private List<String> fileTypes;
+    /**
+     * The default Analysis modules for this data source
+     */
+    private List<String> analysis;
 
     public DataSource() {
     }
@@ -64,5 +82,10 @@ public class DataSource {
 
     public void setAnalysis(List<String> analysis) {
         this.analysis = analysis;
+    }
+
+    public DataSource withId(UUID id) {
+        this.id = id;
+        return this;
     }
 }

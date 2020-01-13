@@ -5,6 +5,9 @@ import com.zorroa.zmlp.sdk.ApiKey;
 import com.zorroa.zmlp.sdk.Json;
 import com.zorroa.zmlp.sdk.ZmlpClient;
 import com.zorroa.zmlp.sdk.domain.*;
+import com.zorroa.zmlp.sdk.domain.project.Project;
+import com.zorroa.zmlp.sdk.domain.project.ProjectFilter;
+import com.zorroa.zmlp.sdk.domain.project.ProjectSpec;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +49,9 @@ public class ProjectAppTests extends AbstractAppTests {
         Map<String, Object> body = getProjectBody();
 
         webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
-        Project proj = projectApp.createProject(new ProjectSpec("unittest"));
+
+        ProjectSpec unittest = new ProjectSpec().withName("unittest");
+        Project proj = projectApp.createProject(unittest);
 
         assertEquals(body.get("id").toString(), proj.getId().toString());
         assertEquals(body.get("actorCreated"), proj.getActorCreated());
@@ -60,8 +65,10 @@ public class ProjectAppTests extends AbstractAppTests {
         Map<String, Object> body = getProjectBody();
 
         webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
-        Project proj = projectApp.findProject(new ProjectFilter()
-                .setIds(Lists.newArrayList(UUID.randomUUID())));
+
+        ProjectFilter filter = new ProjectFilter()
+                .withIds(Lists.newArrayList(UUID.randomUUID()));
+        Project proj = projectApp.findProject(filter);
 
         assertEquals(body.get("id").toString(), proj.getId().toString());
         assertEquals(body.get("actorCreated"), proj.getActorCreated());
@@ -78,8 +85,9 @@ public class ProjectAppTests extends AbstractAppTests {
         responseBody.put("page", new Page().setSize(10));
 
         webServer.enqueue(new MockResponse().setBody(Json.asJson(responseBody)));
-        PagedList<Project> projects = projectApp.searchProjects(new ProjectFilter()
-                .setIds(Lists.newArrayList(UUID.randomUUID())));
+        ProjectFilter filter = new ProjectFilter()
+                .withIds(Lists.newArrayList(UUID.randomUUID()));
+        PagedList<Project> projects = projectApp.searchProjects(filter);
 
         assertEquals(1, projects.size());
         Project proj = projects.getList().get(0);
