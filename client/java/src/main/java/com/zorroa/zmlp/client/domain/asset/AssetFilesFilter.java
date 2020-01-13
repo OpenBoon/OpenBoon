@@ -79,47 +79,53 @@ public class AssetFilesFilter {
         return name;
     }
 
-    public void setName(List<String> name) {
+    public AssetFilesFilter setName(List<String> name) {
         this.name = name;
+        return this;
     }
 
     public List<String> getCategory() {
         return category;
     }
 
-    public void setCategory(List<String> category) {
+    public AssetFilesFilter setCategory(List<String> category) {
         this.category = category;
+        return this;
     }
 
     public List<String> getMimetype() {
         return mimetype;
     }
 
-    public void setMimetype(List<String> mimetype) {
+    public AssetFilesFilter setMimetype(List<String> mimetype) {
         this.mimetype = mimetype;
+        return this;
     }
 
     public List<String> getExtension() {
         return extension;
     }
 
-    public void setExtension(List<String> extension) {
+    public AssetFilesFilter setExtension(List<String> extension) {
         this.extension = extension;
+        return this;
     }
 
     public Map<String, Object> getAttrs() {
         return attrs;
     }
 
-    public void setAttrs(Map<String, Object> attrs) {
+    public AssetFilesFilter setAttrs(Map<String, Object> attrs) {
         this.attrs = attrs;
+        return this;
     }
 
     public List getAttrKeys() {
         return attrKeys;
     }
 
-    public void setAttrKeys(List attrKeys) {
+    public AssetFilesFilter setAttrKeys(List attrKeys) {
         this.attrKeys = attrKeys;
+        return this;
     }
 }

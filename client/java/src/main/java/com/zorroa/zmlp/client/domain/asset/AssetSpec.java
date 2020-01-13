@@ -35,23 +35,26 @@ public class AssetSpec {
         return uri;
     }
 
-    public void setUri(String uri) {
+    public AssetSpec setUri(String uri) {
         this.uri = uri;
+        return this;
     }
 
     public Map getAttrs() {
         return attrs;
     }
 
-    public void setAttrs(Map attrs) {
+    public AssetSpec setAttrs(Map attrs) {
         this.attrs = attrs;
+        return this;
     }
 
     public Clip getClip() {
         return clip;
     }
 
-    public void setClip(Clip clip) {
+    public AssetSpec setClip(Clip clip) {
         this.clip = clip;
+        return this;
     }
 }

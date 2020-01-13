@@ -17,15 +17,17 @@ public class ApiKey {
         return secretKey;
     }
 
-    public void setSecretKey(String secretKey) {
+    public ApiKey setSecretKey(String secretKey) {
         this.secretKey = secretKey;
+        return this;
     }
 
     public String getAccessKey() {
         return accessKey;
     }
 
-    public void setAccessKey(String accessKey) {
+    public ApiKey setAccessKey(String accessKey) {
         this.accessKey = accessKey;
+        return this;
     }
 }
