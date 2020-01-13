@@ -31,54 +31,54 @@ public class DataSourceAppTests extends AbstractAppTests {
         webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
 
         DataSourceSpec dataSourceSpec = new DataSourceSpec();
-        dataSourceSpec.setName((String)body.get("name"));
-        dataSourceSpec.setUri((String)body.get("uri"));
-        dataSourceSpec.setFileTypes((List<String>)body.get("file_types"));
-        dataSourceSpec.setAnalysis((List<String>)body.get("analysis"));
+        dataSourceSpec.setName((String) body.get("name"));
+        dataSourceSpec.setUri((String) body.get("uri"));
+        dataSourceSpec.setFileTypes((List<String>) body.get("file_types"));
+        dataSourceSpec.setAnalysis((List<String>) body.get("analysis"));
 
         DataSource dataSource = dataSourceApp.createDataSource(dataSourceSpec);
 
-        assertEquals(dataSource.getId().toString(), body.get("id"));
-        assertEquals(dataSource.getName(), body.get("name"));
-        assertEquals(dataSource.getUri(), body.get("uri"));
-        assertEquals(dataSource.getFileTypes(), body.get("file_types"));
-        assertEquals(dataSource.getAnalysis(), body.get("analysis"));
+        assertEquals(body.get("id"), dataSource.getId().toString());
+        assertEquals(body.get("name"), dataSource.getName());
+        assertEquals(body.get("uri"), dataSource.getUri());
+        assertEquals(body.get("file_types"), dataSource.getFileTypes());
+        assertEquals(body.get("analysis"), dataSource.getAnalysis());
 
     }
 
     @Test
-    public void testGetDataSource(){
+    public void testGetDataSource() {
         Map<String, Object> body = getDataSourceBody();
         webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
 
-        DataSource dataSource = dataSourceApp.getDataSource((String)body.get("id"));
+        DataSource dataSource = dataSourceApp.getDataSource((String) body.get("id"));
 
-        assertEquals(dataSource.getId().toString(), body.get("id"));
-        assertEquals(dataSource.getName(), body.get("name"));
-        assertEquals(dataSource.getUri(), body.get("uri"));
-        assertEquals(dataSource.getFileTypes(), body.get("file_types"));
-        assertEquals(dataSource.getAnalysis(), body.get("analysis"));
+        assertEquals(body.get("id"), dataSource.getId().toString());
+        assertEquals(body.get("name"), dataSource.getName());
+        assertEquals(body.get("uri"), dataSource.getUri());
+        assertEquals(body.get("file_types"), dataSource.getFileTypes());
+        assertEquals(body.get("analysis"), dataSource.getAnalysis());
     }
 
     @Test
-    public void testImportFiles(){
+    public void testImportFiles() {
         Map<String, Object> body = getDataSourceBody();
         webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
 
         DataSource emptyDataSource = new DataSource();
-        emptyDataSource.setId(UUID.fromString((String)body.get("id")));
+        emptyDataSource.setId(UUID.fromString((String) body.get("id")));
 
         Map dataSourceMap = dataSourceApp.importDataSource(emptyDataSource);
 
-        assertEquals(dataSourceMap.get("id"), body.get("id"));
-        assertEquals(dataSourceMap.get("name"), body.get("name"));
-        assertEquals(dataSourceMap.get("uri"), body.get("uri"));
-        assertEquals(dataSourceMap.get("file_types"), body.get("file_types"));
-        assertEquals(dataSourceMap.get("analysis"), body.get("analysis"));
+        assertEquals(body.get("id"), dataSourceMap.get("id"));
+        assertEquals(body.get("name"), dataSourceMap.get("name"));
+        assertEquals(body.get("uri"), dataSourceMap.get("uri"));
+        assertEquals(body.get("file_types"), dataSourceMap.get("file_types"));
+        assertEquals(body.get("analysis"), dataSourceMap.get("analysis"));
     }
 
     @Test
-    public void testUpdateCredentials(){
+    public void testUpdateCredentials() {
 
         UUID id = UUID.randomUUID();
         Map<String, Object> body = new HashMap<>();
@@ -92,8 +92,8 @@ public class DataSourceAppTests extends AbstractAppTests {
 
         Map status = dataSourceApp.updateCredentials(dataSource, "UpdatedCredentials");
 
-        assertEquals(status.get("type"),"DATASOURCE");
-        assertEquals(status.get("id"),id.toString());
+        assertEquals("DATASOURCE", status.get("type"));
+        assertEquals(id.toString(), status.get("id"));
     }
 
     public Map getDataSourceBody() {
