@@ -155,7 +155,7 @@ sdk-java-unit-tests:
   stage: test
   allow_failure: true
   script:
-    - mvn test verify -f sdk/java -q
+    - mvn test verify -f client/java -q
   only:
     refs:
       - merge_requests
@@ -190,6 +190,7 @@ docker_hub_build_push:
     - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
     - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
     - docker tag zmlp/py3-base:latest zmlp/py3-base:development; docker push zmlp/py3-base:development
+    - docker tag zmlp/py3-client:latest zmlp/py3-client:development; docker push zmlp/py3-client:development
     - docker tag zmlp/py3-sdk:latest zmlp/py3-sdk:development; docker push zmlp/py3-sdk:development
     - docker tag zmlp/plugins-base:latest zmlp/plugins-base:development; docker push zmlp/plugins-base:development
     - docker tag zmlp/plugins-core:latest zmlp/plugins-core:development; docker push zmlp/plugins-core:development
