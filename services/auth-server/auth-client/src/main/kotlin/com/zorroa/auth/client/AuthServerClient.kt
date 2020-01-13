@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import org.slf4j.LoggerFactory
+import java.util.Date
 
 /**
  * Exceptions thrown from [AuthServerClient]
@@ -38,16 +39,16 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         val path = Paths.get(apiKey)
         return if (Files.exists(path)) {
             val key = Json.mapper.readValue<SigningiKey>(path.toFile())
-            logger.debug("Loaded signing key: ${key.keyId.prefix(8)} from: '$apiKey'")
+            logger.debug("Loaded signing key: ${key.accessKey.substring(8)} from: '$apiKey'")
             key
         } else {
             try {
                 val decoded = Base64.getUrlDecoder().decode(apiKey)
                 val key = Json.mapper.readValue<SigningiKey>(decoded)
-                logger.debug("Loaded signing key: ${key.keyId.prefix(8)}")
+                logger.debug("Loaded signing key: ${key.accessKey.substring(8)}")
                 key
             } catch (e: Exception) {
-                logger.warn("NO signing KEY WAS LOADED")
+                logger.warn("NO signing KEY WAS LOADED", e)
                 null
             }
         }
@@ -64,9 +65,14 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
             .header("Authorization", "Bearer $jwtToken")
             .get()
             .build()
-        val responseBody = client.newCall(request).execute().body()
-            ?: throw AuthServerClientException("Null response from server")
-        return Json.mapper.readValue(responseBody.byteStream())
+        val rsp = client.newCall(request).execute()
+        if (rsp.isSuccessful) {
+            val body = rsp.body() ?: throw AuthServerClientException("Invalid APIKey")
+            return Json.mapper.readValue(body.byteStream())
+        }
+        else {
+            throw AuthServerClientException("Invalid APIKey")
+        }
     }
 
     override fun createApiKey(project: UUID, name: String, perms: Collection<Permission>): ApiKey {
@@ -107,11 +113,11 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
      */
     fun signRequest(req: Request.Builder): Request.Builder {
         serviceKey?.let {
-            val algo = Algorithm.HMAC512(it.sharedKey)
+            val algo = Algorithm.HMAC512(it.secretKey)
             val token = JWT.create()
-                .withIssuer("auth-server")
-                .withClaim("projectId", it.projectId.toString())
-                .withClaim("keyId", it.keyId.toString())
+                .withIssuer("zmlp")
+                .withExpiresAt(Date(System.currentTimeMillis() + (60 * 1000L)))
+                .withClaim("accessKey", it.accessKey)
                 .sign(algo)
             req.header("Authorization", "Bearer $token")
         }

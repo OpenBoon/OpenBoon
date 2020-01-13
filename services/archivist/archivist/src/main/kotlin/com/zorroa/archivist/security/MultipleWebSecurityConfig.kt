@@ -179,7 +179,7 @@ class MultipleWebSecurityConfig {
             properties.getString("zmlp.security.auth-server.url"),
             properties.getString("zmlp.security.inception-key")
         )
-        logger.info("Loaded inception key: {}", client.serviceKey?.keyId?.prefix(8))
+        logger.info("Loaded inception key: {}", client.serviceKey?.accessKey?.substring(8))
         return client
     }
 

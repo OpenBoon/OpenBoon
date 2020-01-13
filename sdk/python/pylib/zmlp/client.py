@@ -367,7 +367,7 @@ class ZmlpClient(object):
         claims = {
             'aud': self.server,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60),
-            'keyId': self.apikey["keyId"],
+            'accessKey': self.apikey["accessKey"],
         }
 
         if os.environ.get("ZMLP_TASK_ID"):
@@ -376,7 +376,7 @@ class ZmlpClient(object):
 
         if self.project_id:
             claims["projectId"] = self.project_id
-        return jwt.encode(claims, self.apikey['sharedKey'], algorithm='HS512').decode("utf-8")
+        return jwt.encode(claims, self.apikey['secretKey'], algorithm='HS512').decode("utf-8")
 
 
 class SearchResult(object):

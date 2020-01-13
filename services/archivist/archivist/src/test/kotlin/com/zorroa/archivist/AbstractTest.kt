@@ -178,6 +178,7 @@ abstract class AbstractTest {
             ApiKey(
                 UUID.randomUUID(),
                 proj.value,
+                randomString(24),
                 randomString(64),
                 "key-name",
                 permissions.value
@@ -193,6 +194,7 @@ abstract class AbstractTest {
             ApiKey(
                 UUID.randomUUID(),
                 project.id,
+                randomString(24),
                 randomString(64),
                 "key-name",
                 setOf()

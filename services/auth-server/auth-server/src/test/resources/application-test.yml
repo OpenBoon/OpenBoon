@@ -7,8 +7,9 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test
 
-security:
-  service-key: src/test/resources/key.json
+zmlp:
+  security:
+    inception-key: src/test/resources/key.json
 
 management:
   endpoints:

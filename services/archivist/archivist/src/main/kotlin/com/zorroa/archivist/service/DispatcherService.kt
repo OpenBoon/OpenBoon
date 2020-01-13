@@ -203,8 +203,9 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZMLP_ARCHIVIST_MAX_RETRIES"] = "0"
 
             // So the container can make API calls as the JobRunner
+            // This call is made with inception key
             val key = authServerClient.getApiKey(task.projectId, KnownKeys.JOB_RUNNER)
-            task.env["ZMLP_APIKEY"] = key.toBase64()
+            task.env["ZMLP_APIKEY"] = key.getSigningKey().toBase64()
 
             // So the container can access shared
             task.env["ZMLP_ISTORAGE_URL"] = internalStoragProperties.url

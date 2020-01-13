@@ -22,22 +22,23 @@ class SecurityUtilTests {
 
         assertEquals(
             UUID.fromString("76094317-D968-43A8-B9DC-D0680A899AD7"),
-            apikey.keyId
+            apikey.id
         )
 
         assertEquals(
             "pcekjDV_ipSMXAaBqqtq6Jwy5FAMnjehUQrMEhbG8W01giVqVLfEN9FdMIvzu0rb",
-            apikey.sharedKey
+            apikey.secretKey
         )
     }
 
     @Test
     fun loadServiceKeyFromBase64() {
-        val base64 = "ewogICJuYW1lIjogImFkbWluLWtleSIsCiAgInByb2plY3RJZCI6ICI1MDU1ME" +
-            "FBQy02QzVBLTQxQ0QtQjc3OS0yODIxQkI1QjUzNUYiLAogICJrZXlJZCI6ICI3NjA5NDMxNy" +
-            "1EOTY4LTQzQTgtQjlEQy1EMDY4MEE4OTlBRDciLAogICJzaGFyZWRLZXkiOiAicGNla2pEVl9" +
-            "pcFNNWEFhQnFxdHE2Snd5NUZBTW5qZWhVUXJNRWhiRzhXMDFnaVZxVkxmRU45RmRNSXZ6dTByY" +
-            "iIsCiAgInBlcm1pc3Npb25zIjogWyJTdXBlckFkbWluIl0KfQoK"
+        val base64 = "ewogICJuYW1lIjogImFkbWluLWtleSIsCiAgInByb2plY3RJZCI6ICI1MDU1MEFBQy02" +
+            "QzVBLTQxQ0QtQjc3OS0yODIxQkI1QjUzNUYiLAogICJpZCI6ICI3NjA5NDMxNy1EOTY4LTQzQTgtQj" +
+            "lEQy1EMDY4MEE4OTlBRDciLAogICJhY2Nlc3NLZXkiOiAiQkZCQUNCNTUwNjczNDBGMjg0Qzk1OURD" +
+            "NTU5NUVCQTMiLAogICJzZWNyZXRLZXkiOiAicGNla2pEVl9pcFNNWEFhQnFxdHE2Snd5NUZBTW5qZWh" +
+            "VUXJNRWhiRzhXMDFnaVZxVkxmRU45RmRNSXZ6dTByYiIsCiAgInBlcm1pc3Npb25zIjogW10KfQ=="
+
         val apikey = loadServiceKey(base64)
 
         assertEquals(
@@ -47,12 +48,12 @@ class SecurityUtilTests {
 
         assertEquals(
             UUID.fromString("76094317-D968-43A8-B9DC-D0680A899AD7"),
-            apikey.keyId
+            apikey.id
         )
 
         assertEquals(
             "pcekjDV_ipSMXAaBqqtq6Jwy5FAMnjehUQrMEhbG8W01giVqVLfEN9FdMIvzu0rb",
-            apikey.sharedKey
+            apikey.secretKey
         )
     }
 }
