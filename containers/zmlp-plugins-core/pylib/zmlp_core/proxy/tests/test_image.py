@@ -2,8 +2,8 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp.analysis import Frame
-from zmlp.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
+from zmlpsdk import Frame
+from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from zmlp.client import ZmlpClient
 from zmlp_core.proxy.image import ImageProxyProcessor, get_tiny_proxy_colors
 

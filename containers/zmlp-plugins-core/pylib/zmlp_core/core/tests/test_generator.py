@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import unittest
 
-from zmlp.analysis import Context
+from zmlpsdk import Context
 from zmlp_core.core.generators import GcsBucketGenerator
 
 

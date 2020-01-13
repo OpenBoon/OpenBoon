@@ -1,7 +1,7 @@
 
 import backoff
-from zmlp.analysis import AbstractClipifier
-from zmlp.analysis import ZmlpFatalProcessorException
+from zmlpsdk import AbstractClipifier
+from zmlpsdk import ZmlpFatalProcessorException
 
 from google.cloud import videointelligence
 from google.cloud import storage

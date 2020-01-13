@@ -5,7 +5,7 @@ import pytest
 
 from zmlpcd.daemon import ZmlpContainerDaemon
 from zmlpcd.reactor import Reactor
-from zmlp.analysis.testing import TestEventEmitter
+from zmlpsdk.testing import TestEventEmitter
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -24,7 +24,7 @@ class ZmlpContainerDaemonTests(unittest.TestCase):
             "type": "generate",
             "payload": {
                 "ref": {
-                    "className": "zmlp.analysis.testing.TestGenerator",
+                    "className": "zmlpsdk.testing.TestGenerator",
                     "image": "zmlp/plugins-base",
                     "args": {
                         "files": [
@@ -45,7 +45,7 @@ class ZmlpContainerDaemonTests(unittest.TestCase):
             "type": "execute",
             "payload": {
                 "ref": {
-                    "className": "zmlp.analysis.testing.TestProcessor",
+                    "className": "zmlpsdk.testing.TestProcessor",
                     "image": "zmlp/plugins-base",
                     "args": {
 
@@ -100,7 +100,7 @@ class ZmlpContainerDaemonTests(unittest.TestCase):
 
     def test_handle_teardown(self):
         ref = {
-            "className": "zmlp.analysis.testing.TestProcessor",
+            "className": "zmlpsdk.testing.TestProcessor",
             "image": "zmlp/plugins-base",
             "args": {}
         }

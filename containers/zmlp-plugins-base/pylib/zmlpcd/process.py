@@ -6,7 +6,7 @@ import time
 import os
 
 from zmlp.asset import Asset
-from zmlp.analysis import Frame, Context, ZmlpFatalProcessorException
+from zmlpsdk import Frame, Context, ZmlpFatalProcessorException
 
 logger = logging.getLogger(__name__)
 

@@ -1,7 +1,7 @@
 import pytest
 
-from zmlp.analysis import Frame, ZmlpFatalProcessorException
-from zmlp.analysis.testing import PluginUnitTestCase, TestAsset, zorroa_test_data
+from zmlpsdk import Frame, ZmlpFatalProcessorException
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_data
 from zmlp_core.core.processors import SetAttributesProcessor, AssertAttributesProcessor, \
     PreCacheSourceFileProcessor
 

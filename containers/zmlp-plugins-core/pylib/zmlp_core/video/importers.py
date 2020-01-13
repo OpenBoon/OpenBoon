@@ -3,8 +3,8 @@ import os
 from pathlib2 import Path
 
 from zmlp.asset import Clip
-from zmlp.analysis.storage import file_storage
-from zmlp.analysis.base import AssetProcessor, ZmlpProcessorException
+from zmlpsdk.storage import file_storage
+from zmlpsdk.base import AssetProcessor, ZmlpProcessorException
 from ..util.media import get_video_metadata, create_video_thumbnail, set_resolution_attrs
 
 

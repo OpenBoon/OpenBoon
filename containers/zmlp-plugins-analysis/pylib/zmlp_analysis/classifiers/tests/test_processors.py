@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from zmlp.analysis.testing import PluginUnitTestCase, TestAsset
-from zmlp.analysis import Frame
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset
+from zmlpsdk import Frame
 from zmlp_analysis.classifiers.processors import NeuralNetClassifierProcessor
 
 
