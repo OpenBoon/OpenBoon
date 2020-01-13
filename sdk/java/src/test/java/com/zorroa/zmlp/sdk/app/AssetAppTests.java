@@ -25,7 +25,7 @@ public class AssetAppTests extends AbstractAppTests {
     @Before
     public void setup() {
 
-        ApiKey key = new ApiKey(UUID.randomUUID(), "1234");
+        ApiKey key = new ApiKey(UUID.randomUUID().toString(), "1234");
         assetApp = new AssetApp(
                 new ZmlpClient(key, webServer.url("/").toString()));
     }
