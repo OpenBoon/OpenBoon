@@ -1,4 +1,4 @@
-package com.zorroa.zmlp.sdk.domain;
+package com.zorroa.zmlp.sdk.domain.project;
 
 import java.util.Date;
 import java.util.UUID;

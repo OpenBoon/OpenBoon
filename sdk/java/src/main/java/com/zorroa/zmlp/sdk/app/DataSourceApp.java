@@ -1,13 +1,11 @@
 package com.zorroa.zmlp.sdk.app;
 
 import com.zorroa.zmlp.sdk.ZmlpClient;
-import com.zorroa.zmlp.sdk.domain.DataSource;
-import com.zorroa.zmlp.sdk.domain.DataSourceSpec;
+import com.zorroa.zmlp.sdk.domain.datasource.DataSource;
+import com.zorroa.zmlp.sdk.domain.datasource.DataSourceCredentials;
+import com.zorroa.zmlp.sdk.domain.datasource.DataSourceSpec;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class DataSourceApp {
 
@@ -36,26 +34,25 @@ public class DataSourceApp {
      * If the DataSource URI contains less Assets, no assets will be
      * removed from PixelML.
      *
-     * @param ds A DataSource object or the name of a data source.
+     * @param id A DataSource id or the name of a data source.
      * @return An import DataSource result dictionary.
      */
-    public Map importDataSource(DataSource ds) {
-        String url = String.format("%s/%s/_import", BASE_URI, ds.getId());
-        return client.post(url, null, Map.class);
+    public DataSource importDataSource(String id) {
+        String url = String.format("%s/%s/_import", BASE_URI, id);
+        return client.post(url, null, DataSource.class);
     }
 
     /**
      * Update the DataSource credentials.  Set the blob to None to delete the credentials.
      *
-     * @param ds   A DataSource object or the name of a data source.
-     * @param blob A credentials blob.
+     * @param dataSourceCredentials   A DataSourceCredentials contains information about Datasource and its credentials.
      * @return A status dict.
      */
 
-    public Map updateCredentials(DataSource ds, String blob) {
-        String url = String.format("%s/%s/_credentials", BASE_URI, ds.getId());
+    public Map updateCredentials(DataSourceCredentials dataSourceCredentials) {
+        String url = String.format("%s/%s/_credentials", BASE_URI, dataSourceCredentials.getDataSourceId());
         Map body = new HashMap();
-        body.put("blob", blob);
+        body.put("blob", dataSourceCredentials.getBlob());
         return client.put(url, body, Map.class);
     }
 

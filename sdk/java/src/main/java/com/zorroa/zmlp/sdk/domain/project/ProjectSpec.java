@@ -1,4 +1,4 @@
-package com.zorroa.zmlp.sdk.domain;
+package com.zorroa.zmlp.sdk.domain.project;
 
 import java.util.UUID;
 
@@ -23,6 +23,16 @@ public class ProjectSpec {
 
     public ProjectSpec(String name) {
         this.name = name;
+    }
+
+    public ProjectSpec withName(String name){
+        this.name = name;
+        return this;
+    }
+
+    public ProjectSpec withProjectId(UUID projectId){
+        this.projectId = projectId;
+        return this;
     }
 
     public String getName() {

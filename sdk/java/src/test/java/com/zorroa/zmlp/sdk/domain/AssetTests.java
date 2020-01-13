@@ -1,7 +1,7 @@
 package com.zorroa.zmlp.sdk.domain;
 
-import com.zorroa.zmlp.sdk.Json;
 import com.zorroa.zmlp.sdk.domain.asset.Asset;
+import com.zorroa.zmlp.sdk.domain.asset.AssetFilesFilter;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -9,9 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AssetTests {
 
@@ -19,40 +17,50 @@ public class AssetTests {
     public void testAssetGetFilesFilterName() {
         Asset asset = getTestAsset();
 
-        String array[] = {"proxy_200x200.jpg"};
-        assertEquals(1, asset.getFilesByName(array).size());
-        assertEquals(1, asset.getFilesByName("proxy_200x200.jpg").size());
-        assertEquals(0, asset.getFilesByName("spock").size());
+
+        List files1 = asset.getFiles(new AssetFilesFilter().addName("proxy_200x200.jpg"));
+        List files2 = asset.getFiles(new AssetFilesFilter().addName("spock"));
+
+        assertEquals(1, files1.size());
+        assertEquals(0, files2.size());
     }
 
     @Test
     public void testAssetGetFilesFilterCategory() {
         Asset asset = getTestAsset();
 
-        String array[] = {"proxy"};
-        assertEquals(1, asset.getFilesByCategory(array).size());
-        assertEquals(1, asset.getFilesByCategory("proxy").size());
-        assertEquals(0, asset.getFilesByCategory("face").size());
+        AssetFilesFilter proxy = new AssetFilesFilter().addCategory("proxy");
+        AssetFilesFilter face = new AssetFilesFilter().addCategory("face");
+
+        assertEquals(1, asset.getFiles(proxy).size());
+        assertEquals(0, asset.getFiles(face).size());
     }
 
     @Test
     public void testAssetGetFilesFilterMimetype() {
         Asset asset = getTestAsset();
 
-        String array[] = {"image/", "video/mp4"};
-        assertEquals(1, asset.getFilesByMimetype(array).size());
-        assertEquals(1, asset.getFilesByMimetype("image/jpeg").size());
-        assertEquals(0, asset.getFilesByMimetype("video/mp4").size());
+        AssetFilesFilter image = new AssetFilesFilter().addMimetype("image/jpeg");
+        AssetFilesFilter video = new AssetFilesFilter().addMimetype("video/mp4");
+        AssetFilesFilter both = new AssetFilesFilter().addMimetype("video/mp4").addMimetype("image/jpeg");
+
+        assertEquals(1, asset.getFiles(both).size());
+        assertEquals(1, asset.getFiles(image).size());
+        assertEquals(0, asset.getFiles(video).size());
+
     }
 
     @Test
     public void testAssetGetFilesFilterByExtension() {
         Asset asset = getTestAsset();
 
-        String array[] = {"png", "jpg"};
-        assertEquals(1, asset.getFilesByExtension(array).size());
-        assertEquals(1, asset.getFilesByExtension("jpg").size());
-        assertEquals(0, asset.getFilesByExtension("png").size());
+        AssetFilesFilter png = new AssetFilesFilter().addExtension("png");
+        AssetFilesFilter jpg = new AssetFilesFilter().addExtension("jpg");
+        AssetFilesFilter both = new AssetFilesFilter().addExtension("jpg").addExtension("png");
+
+        assertEquals(1, asset.getFiles(both).size());
+        assertEquals(1, asset.getFiles(jpg).size());
+        assertEquals(0, asset.getFiles(png).size());
     }
 
     @Test
@@ -60,15 +68,11 @@ public class AssetTests {
 
         Asset asset = getTestAsset();
 
-        Map attr1 = new HashMap();
-        attr1.put("width", 200);
+        AssetFilesFilter width = new AssetFilesFilter().addAttr("width", 200);
+        AssetFilesFilter widthHeight = new AssetFilesFilter().addAttr("width", 200).addAttr("height", 100);
 
-        Map attr2 = new HashMap();
-        attr2.put("width", 200);
-        attr2.put("height", 100);
-
-        assertEquals(1, asset.getFilesByAttrs(attr1).size());
-        assertEquals(0, asset.getFilesByAttrs(attr2).size());
+        assertEquals(1, asset.getFiles(width).size());
+        assertEquals(0, asset.getFiles(widthHeight).size());
     }
 
     @Test
@@ -76,12 +80,11 @@ public class AssetTests {
 
         Asset asset = getTestAsset();
 
-        String array1[] = {"width"};
-        String array2[] = {"kirk"};
+        AssetFilesFilter width = new AssetFilesFilter().addAttrKey("width");
+        AssetFilesFilter kirk = new AssetFilesFilter().addAttrKey("kirk");
 
-        assertEquals(1, asset.getFilesByAttrsKey(array1).size());
-        assertEquals(1, asset.getFilesByAttrsKey("width").size());
-        assertEquals(0, asset.getFilesByAttrsKey(array2).size());
+        assertEquals(1, asset.getFiles(width).size());
+        assertEquals(0, asset.getFiles(kirk).size());
     }
 
     @Test
@@ -129,11 +132,8 @@ public class AssetTests {
     @Test
     public void testRemoveAttribute() {
         Asset asset = getNestedAttributesAssetMock();
-
-        assertEquals(true, asset.attrExists("path"));
-
+        assert (asset.attrExists("path"));
         asset.removeAttr("path");
-
         assertEquals(false, asset.attrExists("path"));
     }
 

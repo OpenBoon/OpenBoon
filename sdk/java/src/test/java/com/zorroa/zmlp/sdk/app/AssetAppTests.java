@@ -25,7 +25,7 @@ public class AssetAppTests extends AbstractAppTests {
     @Before
     public void setup() {
 
-        ApiKey key = new ApiKey(UUID.randomUUID(), "1234");
+        ApiKey key = new ApiKey(UUID.randomUUID().toString(), "1234");
         assetApp = new AssetApp(
                 new ZmlpClient(key, webServer.url("/").toString()));
     }
@@ -35,12 +35,13 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getImportFilesMock()));
 
-        AssetSpec fileImport = new AssetSpec("gs://zorroa-dev-data/image/pluto.png");
 
-        BatchCreateAssetRequest batchCreateAssetRequest = new BatchCreateAssetRequest();
-        batchCreateAssetRequest.setAssets(Arrays.asList(fileImport));
+        AssetCreateBuilder assetCreateBuilder = new AssetCreateBuilder()
+                .addAsset(new AssetSpec("gs://zorroa-dev-data/image/pluto.png"))
+                .addAsset("gs://zorroa-dev-data/image/earth.png")
+                .withAnalyze(false);
 
-        BatchCreateAssetResponse batchCreateAssetResponse = assetApp.importFiles(batchCreateAssetRequest);
+        BatchCreateAssetResponse batchCreateAssetResponse = assetApp.importFiles(assetCreateBuilder);
 
         assertEquals("abc123", batchCreateAssetResponse.getStatus().get(0).getAssetId());
         assertEquals(false, batchCreateAssetResponse.getStatus().get(0).getFailed());
@@ -62,7 +63,7 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
 
-        List<AssetSpec> assetSpecList = Arrays.asList(new AssetSpec("../../../zorroa-test-data/images/set01/toucan.jpg"));
+        List<AssetSpec> assetSpecList = Arrays.asList(new AssetSpec("src/test/resources/toucan.jpg"));
         BatchCreateAssetResponse response = assetApp.uploadFiles(assetSpecList);
 
         assertEquals("abc123", response.getStatus().get(0).getAssetId());
@@ -73,11 +74,11 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
 
-        Map query = new HashMap();
-        query.put("match_all", new HashMap());
-        AssetSearch assetSearch = new AssetSearch(query);
+        Map search = new HashMap();
+        search.put("match_all", new HashMap());
 
-        Map searchResult = assetApp.rawSearch(assetSearch);
+
+        Map searchResult = assetApp.rawSearch(search);
         JsonNode jsonNode = Json.mapper.valueToTree(searchResult);
 
         String path = jsonNode.get("hits").get("hits").get(0).get("_source").get("source").get("path").asText();
@@ -90,16 +91,10 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
 
-        Map query = new HashMap();
-        query.put("match_all", new HashMap());
-        Map elementQuery = new HashMap();
         Map elementQueryTerms = new HashMap();
         elementQueryTerms.put("element.labels", "cat");
-        elementQuery.put("terms", elementQueryTerms);
 
-        AssetSearch assetSearch = new AssetSearch(query, elementQuery);
-
-        PagedList<Asset> searchResult = assetApp.search(assetSearch);
+        PagedList<Asset> searchResult = assetApp.search(elementQueryTerms);
         Asset asset = searchResult.get(0);
         String path = asset.getAttr("source.path");
 
@@ -111,11 +106,10 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
 
-        Map query = new HashMap();
-        query.put("match_all", new HashMap());
+        Map search = new HashMap();
+        search.put("match_all", new HashMap());
 
-        AssetSearch assetSearch = new AssetSearch(query);
-        PagedList<Asset> searchResult = assetApp.search(assetSearch);
+        PagedList<Asset> searchResult = assetApp.search(search);
 
         Asset asset = searchResult.get(0);
         String nestedValue = asset.getAttr("source.nestedSource.nestedKey");
