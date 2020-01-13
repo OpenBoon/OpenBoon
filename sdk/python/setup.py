@@ -17,8 +17,7 @@ requirements = [
     "pathlib2>=2.3.0",
     "backoff",
     "pytest",
-    "minio",
-    "opencv-python"
+    "minio"
 ]
 
 setup(
