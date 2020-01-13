@@ -6,10 +6,11 @@ import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageException
 import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.domain.FileStorage
-import com.zorroa.archivist.domain.CloudStorageLocator
-import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.ProjectStorageLocator
+import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.archivist.util.Json
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -26,7 +27,7 @@ import javax.annotation.PostConstruct
 
 @Configuration
 @Profile("gcs")
-class GcsFileStorageServiceConfiguration {
+class GcsStorageConfiguration {
 
     @Bean
     fun getGcs(): Storage {
@@ -37,19 +38,19 @@ class GcsFileStorageServiceConfiguration {
 
 @Service
 @Profile("gcs")
-class GcsFileStorageServiceImpl constructor(
+class GcsProjectStorageServiceImpl constructor(
     val properties: StorageProperties,
     val indexRoutingService: IndexRoutingService,
     val gcs: Storage
 
-) : FileStorageService {
+) : ProjectStorageService {
 
     @PostConstruct
     fun initialize() {
-        FileStorageService.logger.info("Initializing GCS Storage Backend (bucket='${properties.bucket}')")
+        logger.info("Initializing GCS Storage Backend (bucket='${properties.bucket}')")
     }
 
-    override fun store(spec: FileStorageSpec): FileStorage {
+    override fun store(spec: ProjectStorageSpec): FileStorage {
 
         val path = spec.locator.getPath()
         val blobId = BlobId.of(properties.bucket, path)
@@ -70,7 +71,7 @@ class GcsFileStorageServiceImpl constructor(
         )
     }
 
-    override fun stream(locator: CloudStorageLocator): ResponseEntity<Resource> {
+    override fun stream(locator: ProjectStorageLocator): ResponseEntity<Resource> {
         val path = locator.getPath()
         val blobId = BlobId.of(properties.bucket, path)
         val blob = gcs.get(blobId)
@@ -86,11 +87,15 @@ class GcsFileStorageServiceImpl constructor(
         }
     }
 
-    override fun fetch(locator: CloudStorageLocator): ByteArray {
+    override fun fetch(locator: ProjectStorageLocator): ByteArray {
         val path = locator.getPath()
         val blobId = BlobId.of(properties.bucket, path)
         val blob = gcs.get(blobId)
         return blob.getContent()
+    }
+
+    companion object {
+        val logger = LoggerFactory.getLogger(GcsProjectStorageServiceImpl::class.java)
     }
 }
 

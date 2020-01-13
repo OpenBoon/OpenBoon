@@ -10,7 +10,7 @@ from pathlib2 import Path
 from google.cloud import automl_v1beta1 as automl
 from google.api_core.exceptions import ResourceExhausted
 
-from zmlp.analysis import Argument, AssetBuilder, Generator
+from zmlp.analysis import Argument, AssetProcessor, Generator
 
 
 class GoogleApiProcessorMixin(object):
@@ -29,7 +29,7 @@ class GoogleApiProcessorMixin(object):
             return client_class()
 
 
-class GoogleApiDocumentProcessor(AssetBuilder, GoogleApiProcessorMixin):
+class GoogleApiDocumentProcessor(AssetProcessor, GoogleApiProcessorMixin):
     pass
 
 

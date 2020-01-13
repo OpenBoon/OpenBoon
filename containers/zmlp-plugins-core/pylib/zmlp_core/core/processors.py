@@ -2,13 +2,13 @@ import logging
 import os
 from zlib import adler32
 
-from zmlp.analysis import AssetBuilder, Argument, ZmlpFatalProcessorException
+from zmlp.analysis import AssetProcessor, Argument, ZmlpFatalProcessorException
 from zmlp.analysis.storage import file_storage
 
 logger = logging.getLogger(__name__)
 
 
-class GroupProcessor(AssetBuilder):
+class GroupProcessor(AssetProcessor):
     """A GroupProcessor is for holding sub processors. By itself, GroupProcessor is a no-op."""
 
     def __init__(self):
@@ -18,7 +18,7 @@ class GroupProcessor(AssetBuilder):
         pass
 
 
-class PreCacheSourceFileProcessor(AssetBuilder):
+class PreCacheSourceFileProcessor(AssetProcessor):
     """PreCacheSourceFileProcessor pre-caches the source path and adds some additional
     data to the source namespace
     """
@@ -55,7 +55,7 @@ class PreCacheSourceFileProcessor(AssetBuilder):
         return checksum
 
 
-class AssertAttributesProcessor(AssetBuilder):
+class AssertAttributesProcessor(AssetProcessor):
     """AssertAttributesProcessor checks for the existence of a list of attributes.
 
     Args:
@@ -81,7 +81,7 @@ class AssertAttributesProcessor(AssetBuilder):
                     "The '{}' attr was missing from the asset '{}'".format(attr, asset.uri))
 
 
-class SetAttributesProcessor(AssetBuilder):
+class SetAttributesProcessor(AssetProcessor):
     """SetAttributesProcessor accepts a map of attributes and sets them on the document.
 
     Args:

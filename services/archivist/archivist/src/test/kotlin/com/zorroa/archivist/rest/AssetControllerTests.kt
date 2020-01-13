@@ -1,14 +1,13 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
-import com.zorroa.archivist.domain.FileCategory
-import com.zorroa.archivist.domain.FileGroup
-import com.zorroa.archivist.domain.FileStorageSpec
-import com.zorroa.archivist.domain.ProjectFileLocator
-import com.zorroa.archivist.storage.FileStorageService
+import com.zorroa.archivist.domain.ProjectStorageCategory
+import com.zorroa.archivist.domain.ProjectStorageSpec
+import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Test
@@ -23,7 +22,7 @@ import java.io.File
 class AssetControllerTests : MockMvcTest() {
 
     @Autowired
-    lateinit var fileStorageService: FileStorageService
+    lateinit var projectStorageService: ProjectStorageService
 
     @Test
     fun testBatchCreate() {
@@ -124,13 +123,15 @@ class AssetControllerTests : MockMvcTest() {
     @Test
     fun testSteamFile() {
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        val rsp = assetService.batchCreate(BatchCreateAssetsRequest(
-            assets=listOf(spec)
-        ))
+        val rsp = assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                assets = listOf(spec)
+            )
+        )
         val id = rsp.assets[0].id
-        val loc = ProjectFileLocator(FileGroup.ASSET, id, FileCategory.PROXY, "bob.jpg")
-        val storage = FileStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
-        fileStorageService.store(storage)
+        val loc = AssetFileLocator(id, ProjectStorageCategory.PROXY, "bob.jpg")
+        val storage = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
+        projectStorageService.store(storage)
 
 
         mvc.perform(
@@ -153,7 +154,8 @@ class AssetControllerTests : MockMvcTest() {
 
         val body = MockMultipartFile(
             "body", "",
-            "application/json", "{\"name\": \"toucan.jpg\", \"attrs\": {\"foo\": \"bar\"}}".toByteArray()
+            "application/json",
+            "{\"category\": \"proxy\", \"name\": \"toucan.jpg\", \"attrs\": {\"foo\": \"bar\"}}".toByteArray()
 
         )
 
@@ -163,7 +165,7 @@ class AssetControllerTests : MockMvcTest() {
         val id = rsp.assets[0].id
 
         mvc.perform(
-            multipart("/api/v3/assets/$id/files/proxy")
+            multipart("/api/v3/assets/$id/files")
                 .file(body)
                 .file(file)
                 .headers(admin())

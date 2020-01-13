@@ -7,12 +7,12 @@ import dateutil.parser
 from pathlib2 import Path
 
 from zmlp import Clip, FileImport
-from zmlp.analysis import AssetBuilder, Argument, ExpandFrame
+from zmlp.analysis import AssetProcessor, Argument, ExpandFrame
 from zmlp.analysis.storage import file_storage
 from ..util.media import get_image_metadata, set_resolution_attrs
 
 
-class ImageImporter(AssetBuilder):
+class ImageImporter(AssetProcessor):
     default_fields = ['XResolution', 'YResolution', 'ResolutionUnit',
                       'Exif.ExposureBiasValue', 'Exif.ExposureProgram', 'ExposureTime',
                       'Exif.ExposureTime', 'Exif.Flash', 'FNumber', 'Exif.FNumber',

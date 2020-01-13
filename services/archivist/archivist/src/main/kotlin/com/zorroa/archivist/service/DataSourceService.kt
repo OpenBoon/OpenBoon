@@ -123,7 +123,7 @@ class DataSourceServiceImpl(
         val creds = dataSourceJdbcDao.getCredentials(id)
         return DataSourceCredentials(
             blob = Encryptors.text(
-                projectService.getCredentialsKey(), creds.salt
+                projectService.getCryptoKey(), creds.salt
             ).decrypt(creds.blob)
         )
     }
@@ -139,7 +139,7 @@ class DataSourceServiceImpl(
         return if (creds == null) {
             creds
         } else {
-            Encryptors.text(projectService.getCredentialsKey(), salt).encrypt(creds)
+            Encryptors.text(projectService.getCryptoKey(), salt).encrypt(creds)
         }
     }
 

@@ -12,7 +12,7 @@ __all__ = [
     "Context",
     "Processor",
     "Generator",
-    "AssetBuilder",
+    "AssetProcessor",
     "Argument",
     "ProcessorHelper",
     "ZmlpFatalProcessorException",
@@ -396,7 +396,7 @@ class Generator(Processor):
         pass
 
 
-class AssetBuilder(Processor):
+class AssetProcessor(Processor):
     """
     Base class for AssetBuilder processors. An AssetBuilder is handed a Frame
     which contains the Asset being processed.

@@ -2,10 +2,10 @@ import numpy as np
 from pathlib2 import Path
 from tensorflow.keras.models import load_model
 
-from zmlp.analysis import AssetBuilder, Argument
+from zmlp.analysis import AssetProcessor, Argument
 
 
-class NeuralNetClassifierProcessor(AssetBuilder):
+class NeuralNetClassifierProcessor(AssetProcessor):
     """A neural network that takes a similarity hash as input.
     Use Tools/ML/trainClassifier.py to create the model
     """

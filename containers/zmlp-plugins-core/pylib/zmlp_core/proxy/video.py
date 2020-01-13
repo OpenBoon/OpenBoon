@@ -1,13 +1,13 @@
 import subprocess
 import tempfile
 
-from zmlp.analysis.base import AssetBuilder
-from zmlp.analysis.proxy import store_proxy_media
+from zmlp.analysis.base import AssetProcessor
+from zmlp.analysis.proxy import store_asset_proxy
 from zmlp.analysis.storage import file_storage
 from zmlp_core.util.media import get_video_metadata
 
 
-class VideoProxyProcessor(AssetBuilder):
+class VideoProxyProcessor(AssetProcessor):
     """
     Makes a proxy video for a full video file.  Clip assets will reference
     this video file.
@@ -48,7 +48,7 @@ class VideoProxyProcessor(AssetBuilder):
             store_video_proxy(asset, tf.name)
 
 
-class ExtractVideoClipProxyProcessor(AssetBuilder):
+class ExtractVideoClipProxyProcessor(AssetProcessor):
     """
     Extracts a physical video clip proxy at assets clip start/stop.  This
     processor will only run on non-full video clips.
@@ -108,4 +108,4 @@ def store_video_proxy(asset, path):
     props = get_video_metadata(path)
     attrs = {"frames": props['frames'], 'frameRate': props['frameRate']}
     size = (props['width'], props['height'])
-    return store_proxy_media(asset, path, size, 'video', attrs)
+    return store_asset_proxy(asset, path, size, 'video', attrs)

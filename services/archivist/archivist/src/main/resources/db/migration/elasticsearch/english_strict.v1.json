@@ -110,7 +110,8 @@
                 "dynamic": "strict",
                 "properties": {
                   "vector": {
-                    "type": "keyword"
+                    "type": "keyword",
+                    "index": false
                   },
                   "debug": {
                     "type": "object",
@@ -254,7 +255,7 @@
           "type": {
             "type": "keyword"
           },
-          "file": {
+          "proxy": {
             "type": "keyword"
           },
           "labels": {
@@ -273,9 +274,13 @@
             "type": "double"
           },
           "vector": {
-            "type": "keyword"
+            "type": "keyword",
+            "index": false
           },
           "regions": {
+            "type": "keyword"
+          },
+          "analysis": {
             "type": "keyword"
           }
         }

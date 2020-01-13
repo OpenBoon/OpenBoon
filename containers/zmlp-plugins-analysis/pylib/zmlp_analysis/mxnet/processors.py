@@ -6,13 +6,13 @@ import mxnet
 import numpy as np
 from pathlib2 import Path
 
-from zmlp.analysis import AssetBuilder, Argument
+from zmlp.analysis import AssetProcessor, Argument
 from zmlp.analysis.proxy import get_proxy_level
 
 package_directory = os.path.dirname(os.path.abspath(__file__))
 
 
-class ResNetClassifyProcessor(AssetBuilder):
+class ResNetClassifyProcessor(AssetProcessor):
     """
     Classify with ResNet
     """
@@ -80,7 +80,7 @@ class ResNetClassifyProcessor(AssetBuilder):
         asset.add_analysis('zmlp.labels', struct)
 
 
-class ResNetSimilarityProcessor(AssetBuilder):
+class ResNetSimilarityProcessor(AssetProcessor):
     """
     make a hash with ResNet
     """
