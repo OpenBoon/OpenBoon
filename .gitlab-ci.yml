@@ -137,17 +137,18 @@ sdk-unit-tests:
     - cd client/python
     - python setup.py install
     - pytest
-    - cd /sdk
+    - cd ../../sdk
     - python setup.py install
     - pytest
-    - cd ../../containers/zmlp-plugins-base
+    - cd ../containers/zmlp-plugins-base
     - pip install -r requirements.txt
     - pytest
   only:
     refs:
       - merge_requests
     changes:
-      - client/**/*
+      - client/python/*
+      - sdk/*
       - containers/zmlp-plugins-base/**/*
 
 sdk-java-unit-tests:
