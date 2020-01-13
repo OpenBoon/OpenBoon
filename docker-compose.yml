@@ -154,7 +154,7 @@ services:
     depends_on:
       - zmlp-py3-base
     build:
-      context: sdk/python
+      context: client/python
     command: echo
 
   zmlp-plugins-base:
