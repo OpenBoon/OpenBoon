@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.DEBUG)
 class LocalFileCacheTests(TestCase):
 
     def setUp(self):
-        os.environ['ZMLP_ISTORAGE_URL'] = "http://localhost:9000"
+        os.environ['ZMLP_PIPELINE_STORAGE_URL'] = "http://localhost:9000"
         self.lfc = storage.LocalFileCache()
 
     def tearDown(self):
@@ -54,48 +54,23 @@ class LocalFileCacheTests(TestCase):
         filename = '1a569625e9949f82ab1be5257ab2cab1f7524c6d.kirk'
         assert path.endswith(filename)
 
+    def test_get_path_with_project_env(self):
+        os.environ['ZMLP_PROJECT_ID'] = "abc123"
+        try:
+            path = self.lfc.get_path('spock', '.kirk')
+            filename = 'c85be874d0f9c380a790f583c2bec6633109386e.kirk'
+            assert path.endswith(filename)
+        finally:
+            del os.environ['ZMLP_PROJECT_ID']
+
     def test_clear(self):
         path = self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
         assert os.path.exists(path)
         self.lfc.clear()
         assert not os.path.exists(path)
 
-    @patch.object(ZmlpClient, 'upload_file')
-    def test_store_asset_file(self, upload_patch):
-        upload_patch.return_value = {
-            'name': 'cat.jpg',
-            'category': 'proxy'
-        }
-        asset = TestAsset(id='123456')
-        result = self.lfc.store_asset_file(
-            asset, zorroa_test_data('images/set01/toucan.jpg', uri=False), 'test')
-        assert 'cat.jpg' == result['name']
-        assert 'proxy' == result['category']
-
     @patch.object(ZmlpClient, 'stream')
-    def test_localize_asset_file(self, post_patch):
-        pfile = {
-            'name': 'cat.jpg',
-            'category': 'proxy'
-        }
-        post_patch.return_value = '/tmp/cat.jpg'
-        path = self.lfc.localize_asset_file(TestAsset(id='123456'), pfile)
-        assert path.endswith('c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg')
-
-    @patch.object(ZmlpClient, 'stream')
-    def test_localize_asset_file_with_asset_override(self, post_patch):
-        pfile = {
-            'name': 'cat.jpg',
-            'category': 'proxy',
-            'sourceAssetId': 'bingo'
-        }
-        post_patch.return_value = '/tmp/cat.jpg'
-        asset = TestAsset(id='123456')
-        self.lfc.localize_asset_file(asset, pfile)
-        assert "assets/bingo/files" in post_patch.call_args_list[0][0][0]
-
-    @patch.object(ZmlpClient, 'stream')
-    def test_localize_asset_source_file(self, post_patch):
+    def test_localize_remote_file(self, post_patch):
         pfile = {
             'name': 'cat.jpg',
             'category': 'source'
@@ -105,17 +80,6 @@ class LocalFileCacheTests(TestCase):
         asset.set_attr('files', [pfile])
         path = self.lfc.localize_remote_file(asset)
         assert path.endswith('3c25baa7cf0b59d64c0179a1e0030072444eac3b.jpg')
-
-    @patch.object(ZmlpClient, 'stream')
-    def test_localize_asset_file_with_copy(self, post_patch):
-        pfile = {
-            'name': 'cat.jpg',
-            'category': 'proxy'
-        }
-        post_patch.return_value = '/tmp/toucan.jpg'
-        bird = zorroa_test_data('images/set01/toucan.jpg', uri=False)
-        path = self.lfc.localize_asset_file(TestAsset(id='123456'), pfile, bird)
-        assert os.path.getsize(path) == os.path.getsize(bird)
 
     def test_localize_file_obj_with_uri(self):
         test_asset = TestAsset('https://i.imgur.com/WkomVeG.jpg')
@@ -137,25 +101,103 @@ class LocalFileCacheTests(TestCase):
         assert os.path.exists(path)
         assert os.path.getsize(path) == 267493
 
-    @patch.object(ZmlpClient, 'stream')
-    def test_localize_asset_file_dict(self, post_patch):
-        post_patch.return_value = '/tmp/toucan.jpg'
-        pfile = {
-            'name': 'cat.jpg',
-            'category': 'proxy'
-        }
-        path = self.lfc.localize_asset_file(TestAsset(id='123456'), pfile)
-        assert path.endswith('c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg')
-
     def test_close(self):
         pfile = {
             'name': 'cat.jpg',
             'category': 'proxy'
         }
-        self.lfc.localize_asset_file(TestAsset(), pfile,
-                                     zorroa_test_data('images/set01/toucan.jpg'))
+        self.lfc.assets.localize_file(TestAsset(), pfile,
+                                      zorroa_test_data('images/set01/toucan.jpg'))
         self.lfc.close()
 
         with pytest.raises(FileNotFoundError):
-            self.lfc.localize_asset_file(TestAsset(), pfile,
-                                         zorroa_test_data('images/set01/toucan.jpg'))
+            self.lfc.assets.localize_file(TestAsset(), pfile,
+                                          zorroa_test_data('images/set01/toucan.jpg'))
+
+
+class TestAssetStorage(TestCase):
+
+    def setUp(self):
+        os.environ['ZMLP_PIPELINE_STORAGE_URL'] = "http://localhost:9000"
+        self.lfc = storage.LocalFileCache()
+
+    def tearDown(self):
+        self.lfc.clear()
+
+    @patch.object(ZmlpClient, 'upload_file')
+    def test_store_file(self, upload_patch):
+        upload_patch.return_value = {
+            'name': 'cat.jpg',
+            'category': 'proxy'
+        }
+        asset = TestAsset(id='123456')
+        result = self.lfc.assets.store_file(
+            asset, zorroa_test_data('images/set01/toucan.jpg', uri=False), 'test')
+        assert 'cat.jpg' == result['name']
+        assert 'proxy' == result['category']
+
+    @patch.object(ZmlpClient, 'stream')
+    def test_localize_file_with_copy(self, post_patch):
+        pfile = {
+            'name': 'cat.jpg',
+            'category': 'proxy'
+        }
+        post_patch.return_value = '/tmp/toucan.jpg'
+        bird = zorroa_test_data('images/set01/toucan.jpg', uri=False)
+        path = self.lfc.assets.localize_file(TestAsset(id='123456'), pfile, bird)
+        assert os.path.getsize(path) == os.path.getsize(bird)
+
+    @patch.object(ZmlpClient, 'stream')
+    def test_localize_file(self, post_patch):
+        post_patch.return_value = '/tmp/toucan.jpg'
+        pfile = {
+            'name': 'cat.jpg',
+            'category': 'proxy'
+        }
+        path = self.lfc.assets.localize_file(TestAsset(id='123456'), pfile)
+        assert path.endswith('c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg')
+
+    @patch.object(ZmlpClient, 'stream')
+    def test_localize_asset_file_with_asset_override(self, post_patch):
+        pfile = {
+            'name': 'cat.jpg',
+            'category': 'proxy',
+            'sourceAssetId': 'bingo'
+        }
+        post_patch.return_value = '/tmp/cat.jpg'
+        asset = TestAsset(id='123456')
+        self.lfc.assets.localize_file(asset, pfile)
+        assert "assets/bingo/files" in post_patch.call_args_list[0][0][0]
+
+
+class TestProjectStorage(TestCase):
+
+    def setUp(self):
+        os.environ['ZMLP_PIPELINE_STORAGE_URL'] = "http://localhost:9000"
+        self.lfc = storage.LocalFileCache()
+
+    def tearDown(self):
+        self.lfc.clear()
+
+    @patch.object(ZmlpClient, 'upload_file')
+    def test_store_file_with_rename(self, upload_patch):
+        upload_patch.return_value = {
+            'name': 'celebs.dat',
+            'category': 'face_model',
+            'entity': 'model'
+        }
+        path = os.path.dirname(__file__) + "/fake_model.dat"
+        result = self.lfc.projects.store_file(path, "model", "face_model", "celebs.dat")
+        assert 'celebs.dat' == result['name']
+        assert 'face_model' == result['category']
+
+    @patch.object(ZmlpClient, 'upload_file')
+    def test_store_file(self, upload_patch):
+        upload_patch.return_value = {
+            'name': 'fake_model.dat',
+            'category': 'fake'
+        }
+        path = os.path.dirname(__file__) + '/fake_model.dat'
+        result = self.lfc.projects.store_file(path, 'model', 'fake', 'fake_model.dat')
+        assert 'fake_model.dat' == result['name']
+        assert 'fake' == result['category']

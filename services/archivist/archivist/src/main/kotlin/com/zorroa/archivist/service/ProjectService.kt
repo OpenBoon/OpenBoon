@@ -1,9 +1,6 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.FileCategory
-import com.zorroa.archivist.domain.FileGroup
-import com.zorroa.archivist.domain.FileStorageSpec
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
@@ -13,7 +10,6 @@ import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.Project
-import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
@@ -24,10 +20,12 @@ import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.repository.throwWhenNotFound
 import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.KnownKeys
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.security.withAuth
-import com.zorroa.archivist.storage.FileStorageService
+import com.zorroa.archivist.storage.SystemStorageService
+import com.zorroa.archivist.util.Json
 import com.zorroa.auth.client.AuthServerClient
 import com.zorroa.auth.client.Permission
 import org.slf4j.LoggerFactory
@@ -70,7 +68,7 @@ interface ProjectService {
      * key, any stored data would first have to be decrypted with the
      * old key.
      */
-    fun getCredentialsKey(): String
+    fun getCryptoKey(): String
 
     /**
      * Get the project settings
@@ -89,7 +87,7 @@ class ProjectServiceImpl constructor(
     val projectDao: ProjectDao,
     val projectCustomDao: ProjectCustomDao,
     val authServerClient: AuthServerClient,
-    val fileStorageService: FileStorageService,
+    val systemStorageService: SystemStorageService,
     val properties: ApplicationProperties,
     val txEvent: TransactionEventManager
 ) : ProjectService {
@@ -125,7 +123,7 @@ class ProjectServiceImpl constructor(
             )
         }
         txEvent.afterCommit(sync = true) {
-            createProjectCryptoKey(project)
+            createCryptoKey(project)
             createStandardApiKeys(project)
         }
 
@@ -150,9 +148,14 @@ class ProjectServiceImpl constructor(
         )
     }
 
-    override fun getCredentialsKey(): String {
-        val loc = ProjectFileLocator(FileGroup.INTERNAL, "project", FileCategory.KEYS, "project.key")
-        return String(fileStorageService.fetch(loc))
+    override fun getCryptoKey(): String {
+        val pid = getProjectId()
+        val keys = systemStorageService.fetchObject(
+            "projects/$pid/keys.json", Json.LIST_OF_STRING)
+        // If this ever changes, things will break.
+        val mod1 = (pid.leastSignificantBits % keys.size).toInt()
+        val mod2 = (pid.mostSignificantBits % keys.size).toInt()
+        return "${keys[mod1]}_${keys[mod2].reversed()}_${keys.last()}}"
     }
 
     @Transactional(readOnly = true)
@@ -198,7 +201,9 @@ class ProjectServiceImpl constructor(
             project.id, KnownKeys.JOB_RUNNER, setOf(
                 Permission.AssetsImport,
                 Permission.AssetsRead,
-                Permission.SystemProjectDecrypt
+                Permission.SystemProjectDecrypt,
+                Permission.ProjectFilesRead,
+                Permission.ProjectFilesWrite
             )
         )
     }
@@ -208,18 +213,18 @@ class ProjectServiceImpl constructor(
         return pipelineService.create(spec)
     }
 
-    private fun createProjectCryptoKey(project: Project) {
-        val projectKeyLocation = ProjectFileLocator(
-            FileGroup.INTERNAL, "project", FileCategory.KEYS, "project.key",
-            projectId = project.id
-        )
-
-        val key = Base64.getUrlEncoder().encodeToString(
-            KeyGenerators.secureRandom(32).generateKey()
-        ).trim('=')
-
-        val spec = FileStorageSpec(projectKeyLocation, mapOf(), key.toByteArray())
-        fileStorageService.store(spec)
+    /**
+     * Create a set of crypto keys for the project.  These are used
+     * to encrypt data stored in the database.
+     */
+    private fun createCryptoKey(project: Project) {
+        val result = (1..16).map {
+            Base64.getUrlEncoder()
+                .encodeToString(KeyGenerators.secureRandom(24).generateKey())
+                .trim('=')
+        }
+        systemStorageService.storeObject(
+            "projects/${project.id}/keys.json", result.toList())
     }
 
     companion object {

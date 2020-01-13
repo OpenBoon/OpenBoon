@@ -10,14 +10,14 @@ from urllib.parse import urlparse
 
 import requests
 
-from zmlp.analysis.base import Context, AssetBuilder, Generator, Argument, \
+from zmlp.analysis.base import Context, AssetProcessor, Generator, Argument, \
     ZmlpFatalProcessorException
 from zmlp.asset import FileImport, Asset
 
 logger = logging.getLogger(__name__)
 
 
-class TestProcessor(AssetBuilder):
+class TestProcessor(AssetProcessor):
     """
     A processor for running simple execution tests.  Having a test
     processor in the SDK allows us to use the core image for

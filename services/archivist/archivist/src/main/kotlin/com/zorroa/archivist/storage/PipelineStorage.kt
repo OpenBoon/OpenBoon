@@ -9,13 +9,15 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Service
 import javax.annotation.PostConstruct
 
-interface InternalStorageService {
-
-}
+/**
+ * The PipelineStorage tier provides the Pipeline with the ability to store
+ * and retrieve analysis runtime data.
+ */
+interface PipelineStorage
 
 @Configuration
-@ConfigurationProperties("zmlp.istorage")
-class InternalStorageServiceConfiguration {
+@ConfigurationProperties("zmlp.pipeline.storage")
+class PipelineStorageConfiguration {
     lateinit var bucket: String
     lateinit var accessKey: String
     lateinit var secretKey: String
@@ -23,11 +25,11 @@ class InternalStorageServiceConfiguration {
 }
 
 @Service
-class InternalStorageServiceImpl(
-    val config : InternalStorageServiceConfiguration
-) : InternalStorageService {
+class PipelineStorageImpl(
+    val config: PipelineStorageConfiguration
+) : PipelineStorage {
 
-    val client : MinioClient
+    val client: MinioClient
 
     init {
         logger.info("Initializing shared storage: url='${config.url}' bucket='${config.bucket}'")
@@ -52,7 +54,7 @@ class InternalStorageServiceImpl(
     }
 
     companion object {
-        val logger: Logger = LoggerFactory.getLogger(InternalStorageServiceImpl::class.java)
+        val logger: Logger = LoggerFactory.getLogger(PipelineStorageImpl::class.java)
 
         // Setup the tmp-files lifecycle
         const val LIFECYCLE = """<LifecycleConfiguration><Rule>

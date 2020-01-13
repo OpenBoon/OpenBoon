@@ -31,6 +31,8 @@ def as_collection(value):
         :obj:`list` of :obj:`mixed`: The value wrapped in alist.
 
     """
+    if value is None:
+        return None
     if isinstance(value, (set, list, tuple, dict)):
         return value
     return [value]

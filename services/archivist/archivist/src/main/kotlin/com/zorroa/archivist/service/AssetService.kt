@@ -13,18 +13,17 @@ import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
-import com.zorroa.archivist.domain.FileCategory
-import com.zorroa.archivist.domain.FileGroup
-import com.zorroa.archivist.domain.FileStorageSpec
+import com.zorroa.archivist.domain.ProjectStorageCategory
+import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.domain.ProjectFileLocator
+import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.storage.FileStorageService
+import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.ElasticSearchErrorTranslator
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.Json
@@ -127,7 +126,7 @@ class AssetServiceImpl : AssetService {
     lateinit var indexRoutingService: IndexRoutingService
 
     @Autowired
-    lateinit var fileStorageService: FileStorageService
+    lateinit var projectStorageService: ProjectStorageService
 
     @Autowired
     lateinit var pipelineResolverService: PipelineResolverService
@@ -189,7 +188,7 @@ class AssetServiceImpl : AssetService {
             val files = clipSource.getAttr("files", Json.LIST_OF_FILE_STORAGE) ?: listOf()
             val sourceFiles = files.let {
                 it.filter { file ->
-                    file.category == FileCategory.SOURCE.lower()
+                    file.category == ProjectStorageCategory.SOURCE
                 }
             }
 
@@ -264,13 +263,12 @@ class AssetServiceImpl : AssetService {
             asset.setAttr("source.filesize", mpfile.size)
             asset.setAttr("source.checksum", idgen.checksum)
 
-            val locator = ProjectFileLocator(
-                FileGroup.ASSET,
-                id, FileCategory.SOURCE, mpfile.originalFilename
+            val locator = AssetFileLocator(
+                id, ProjectStorageCategory.SOURCE, mpfile.originalFilename
             )
 
-            val file = fileStorageService.store(
-                FileStorageSpec(locator, mapOf(), mpfile.bytes)
+            val file = projectStorageService.store(
+                ProjectStorageSpec(locator, mapOf(), mpfile.bytes)
             )
             asset.setAttr("files", listOf(file))
 

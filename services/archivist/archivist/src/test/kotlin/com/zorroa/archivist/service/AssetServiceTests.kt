@@ -209,8 +209,8 @@ class AssetServiceTests : AbstractTest() {
         var asset = assetService.getAsset(createRsp.status[0].assetId)
 
         // These are considered duplicate elements
-        val element1 = Element("object", listOf("cat"), listOf(0, 0, 100, 100))
-        val element2 = Element("object", listOf("cat"), listOf(0, 0, 100, 100))
+        val element1 = Element("object", "catDetector", listOf(0, 0, 100, 100), listOf("cat"))
+        val element2 = Element("object", "catDetector", listOf(0, 0, 100, 100), listOf("cat"))
         asset.setAttr("elements", listOf(element1, element2))
 
         val batchIndex = BatchUpdateAssetsRequest(assets = listOf(asset))
@@ -231,7 +231,7 @@ class AssetServiceTests : AbstractTest() {
 
         val elements = mutableSetOf<Element>()
         for (i in 0 .. AssetServiceImpl.maxElementCount + 1) {
-            elements.add(Element("object", listOf("cat$i"), listOf(i, i, 100, 100)))
+            elements.add(Element("object", "catDetector", listOf(i, i, 100, 100), listOf("cat$i")))
         }
         asset.setAttr("elements", elements)
 
@@ -322,10 +322,11 @@ class AssetServiceTests : AbstractTest() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec(
                 "https://i.imgur.com/LRoLTlK.jpg",
-                attrs=mapOf("elements" to listOf(Element("object", listOf("cat"), listOf(0, 0, 100, 100)))))
+                attrs=mapOf("elements" to listOf(Element("object", "catDetector",
+                    listOf(0, 0, 100, 100), listOf("cat")))))
         ))
 
-        val createRsp = assetService.batchCreate(batchCreate)
+        assetService.batchCreate(batchCreate)
 
         val search = AssetSearch(
             mapOf("query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg"))),

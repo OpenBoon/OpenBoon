@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.FileUtils
 import io.swagger.annotations.ApiModel
@@ -7,9 +8,10 @@ import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 /**
- * Internal enum class which describes the file storage group
+ * Internal enum class which describes the file storage entity,
+ * such as an Asset, Job, Task,etc.
  */
-enum class FileGroup {
+enum class ProjectStorageEntity {
 
     /**
      * The stored file is associated with an asset.
@@ -17,71 +19,57 @@ enum class FileGroup {
     ASSET,
 
     /**
-     * The stored file is for internal use.
+     * The stored file is a model.
      */
-    INTERNAL;
+    MODEL;
 
     fun lower() = this.toString().toLowerCase()
 }
 
 /**
- * Internal class for the category of FileStorage.
+ * Internal class for commonly use storage categories.   Processors can pass up
+ * whatever they want but these are used by the backend.
  */
-enum class FileCategory {
+object ProjectStorageCategory {
 
     /**
      * The file is considered a source file.  These are typically added by file uploads."
      */
-    SOURCE,
+    const val SOURCE = "source"
 
     /**
      * The file is a proxy or alternative low resolution representation."
      */
-    PROXY,
-
-    /**
-     * The file is some form of metadata, text, json, etc."
-     */
-    METADATA,
-
-    /**
-     * The file is a encryption key.
-     */
-    KEYS,
-
-    /**
-     * The file is elated to an element.
-     */
-    ELEMENT,
-
-    /**
-     * Configuration files.
-     */
-    CONFIG;
-
-    fun lower() = this.toString().toLowerCase()
+    const val PROXY = "proxy"
 }
 
-@ApiModel("FileStorageAttrs", description = "Additional attributes that can be stored with a file.")
-class FileStorageAttrs(
+@ApiModel("ProjectS torage Request", description = "Properties needed to store a file into ProjectStorage.")
+class ProjectStorageRequest(
 
     @ApiModelProperty("The name of the file, overrides the local file name.")
     var name: String,
 
+    @ApiModelProperty("The category of the file.")
+    var category: String,
+
     @ApiModelProperty("The file used internally by ZMLP.  Internal files cannot be created by REST calls.")
-    var attrs: Map<String, Any>
+    var attrs: Map<String, Any>,
+
+    @ApiModelProperty("The entity the file is related to.")
+    var entity: ProjectStorageEntity? = null
 )
 
 /**
- * FileStorageLocator Interface defines the base properties and methods
- * a file stored in CloudStorage.
+ * The ProjectStorageLocator Interface defines the based properties needed
+ * for a project storage locator. A Locator handles converting properties
+ * into an actual bucket path.
  */
-interface CloudStorageLocator {
+interface ProjectStorageLocator {
 
     /**
-     * The category is the overall group of file.
+     * The category is the final directory before the file.
      */
-    val category: FileCategory
+    val category: String
 
     /**
      * The actual name of the file.
@@ -94,13 +82,25 @@ interface CloudStorageLocator {
     fun getPath(): String
 }
 
-class SystemFileLocator(
-    override val category: FileCategory,
-    override val name: String
-) : CloudStorageLocator  {
+/**
+ *
+ */
+class ProjectFileLocator(
+    val entity : ProjectStorageEntity,
+    override val category: String,
+    override val name: String,
+    val id: String? = null,
+    @JsonIgnore
+    val projectId: UUID? = null
+) : ProjectStorageLocator  {
 
     override fun getPath(): String {
-        return "system/${category.name.toLowerCase()}/$name"
+        val pid = projectId ?: getProjectId()
+        return if (id != null) {
+            "projects/${pid}/${entity.lower()}/${category}/$name"
+        } else {
+            "projects/${pid}/${entity.lower()}/${id}/${category}/$name"
+        }
     }
 }
 
@@ -113,13 +113,15 @@ class SystemFileLocator(
  * @property name The name of the file.
  * @property projectId An optional projectId for superadmin ops.
  */
-class ProjectFileLocator(
-    val group: FileGroup,
+class AssetFileLocator(
     val id: String,
-    override val category: FileCategory,
+    override val category: String,
     override val name: String,
+    @JsonIgnore
     val projectId: UUID? = null
-) : CloudStorageLocator {
+) : ProjectStorageLocator {
+
+    val entity = ProjectStorageEntity.ASSET
 
     override fun getPath(): String {
 
@@ -127,25 +129,25 @@ class ProjectFileLocator(
             throw IllegalArgumentException("File name has no extension: $name")
         }
 
-        if ("/" in name) {
-            throw IllegalArgumentException("File name cannot contain slashes")
+        if ("/" in name || ".." in name) {
+            throw IllegalArgumentException("Illegal characters in file name")
         }
 
         val proj = projectId ?: getProjectId()
-        return "projects/$proj/${group.lower()}/$id/${category.lower()}/$name"
+        return "projects/$proj/$id/${entity.lower()}/${category}/$name"
     }
 }
 
 /**
- * Internal class for storing a file against a [CloudStorageLocator]
+ * Internal class for storing a file against a [ProjectStorageLocator]
  *
  * @property locator The location of the file.
  * @property attrs Arbitrary attrs to store with the file.
  * @property data The actual file data in the form of a ByteArray
  * @property mimetype The mimetype (aka MediaType) of the file which is auto detected.
  */
-class FileStorageSpec(
-    val locator: CloudStorageLocator,
+class ProjectStorageSpec(
+    val locator: ProjectStorageLocator,
     var attrs: Map<String, Any>,
     val data: ByteArray
 
