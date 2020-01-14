@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import { spacing } from '../Styles'
 
+import Form from '../Form'
 import Input from '../Input'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS } from '../Button'
@@ -13,13 +14,7 @@ const ApiKeysAddForm = ({ onSubmit }) => {
   const [state, dispatch] = useReducer(reducer, { name: '' })
 
   return (
-    <form
-      method="post"
-      onSubmit={event => event.preventDefault()}
-      css={{
-        display: 'flex',
-        flexDirection: 'column',
-      }}>
+    <Form>
       <Input
         autoFocus
         id="name"
@@ -72,7 +67,7 @@ const ApiKeysAddForm = ({ onSubmit }) => {
           Generate Key &amp; Download
         </Button>
       </div>
-    </form>
+    </Form>
   )
 }
 
