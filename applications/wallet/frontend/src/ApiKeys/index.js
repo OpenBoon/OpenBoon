@@ -22,8 +22,8 @@ const ApiKeys = () => {
 
       <Tabs
         tabs={[
-          { title: 'View all', href: '/api-keys' },
-          { title: 'Create API key', href: '/api-keys/add' },
+          { title: 'View all', href: '/[projectId]/api-keys' },
+          { title: 'Create API key', href: '/[projectId]/api-keys/add' },
         ]}
       />
 
