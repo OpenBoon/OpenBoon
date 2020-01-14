@@ -10,11 +10,11 @@ const TabsLink = ({ title, href }) => {
     query: { projectId },
   } = useRouter()
 
-  const isCurrentPage = pathname === `/[projectId]${href}`
+  const isCurrentPage = pathname === href
 
   return (
     <li css={{ paddingRight: spacing.normal }}>
-      <Link href={`/[projectId]${href}`} as={`/${projectId}${href}`} passHref>
+      <Link href={href} as={href.replace('[projectId]', projectId)} passHref>
         <a
           css={{
             border: `0 ${colors.key.two} solid`,

@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types'
 
+import { spacing } from '../Styles'
+
 import TabsLink from './Link'
 
 const Tabs = ({ tabs }) => {
   return (
-    <nav>
+    <nav css={{ padding: spacing.normal, paddingLeft: 0, paddingRight: 0 }}>
       <ul
         css={{
           listStyleType: 'none',
