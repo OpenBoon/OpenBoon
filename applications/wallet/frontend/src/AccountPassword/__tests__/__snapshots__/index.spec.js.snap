@@ -1,0 +1,303 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AccountPassword /> should render properly 1`] = `
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-bottom: 16px;
+}
+
+.emotion-6 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-5 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+}
+
+.emotion-1 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+.emotion-3 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-10 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-7 {
+  display: block;
+  padding-bottom: 8px;
+}
+
+.emotion-9 {
+  position: relative;
+}
+
+.emotion-8 {
+  outline-offset: 0;
+  padding: 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  border: 1px solid transparent;
+}
+
+.emotion-20 {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-19 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-19:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-19[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-19,
+.emotion-19:hover,
+.emotion-19:visited {
+  background-color: #73b61c;
+}
+
+.emotion-19:hover {
+  background-color: #b8d652;
+}
+
+.emotion-19[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div>
+  <h2
+    className="emotion-0"
+  >
+    Account Profile
+  </h2>
+  <nav
+    className="emotion-6"
+  >
+    <ul
+      className="emotion-5"
+    >
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-1"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/account"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Profile
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/account/password"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Change Password
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <form
+    action=""
+    className="emotion-21"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-10"
+    >
+      <label
+        className="emotion-7"
+        htmlFor="currentPassword"
+      >
+        Current Password
+      </label>
+      <div
+        className="emotion-9"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-8"
+          id="currentPassword"
+          name="currentPassword"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-10"
+    >
+      <label
+        className="emotion-7"
+        htmlFor="newPassword"
+      >
+        New Password
+      </label>
+      <div
+        className="emotion-9"
+      >
+        <input
+          className="emotion-8"
+          id="newPassword"
+          name="newPassword"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-10"
+    >
+      <label
+        className="emotion-7"
+        htmlFor="confirmPassword"
+      >
+        Confirm Password
+      </label>
+      <div
+        className="emotion-9"
+      >
+        <input
+          className="emotion-8"
+          id="confirmPassword"
+          name="confirmPassword"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-20"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-19"
+        onClick={[Function]}
+        type="submit"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>
+`;
