@@ -19,6 +19,14 @@ exports[`<Jobs /> should render properly while loading 1`] = `
   background-color: #252525;
 }
 
+.emotion-11 tr .gear {
+  opacity: 0;
+}
+
+.emotion-11 tr .gear:focus {
+  opacity: 1;
+}
+
 .emotion-11 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
@@ -40,6 +48,10 @@ exports[`<Jobs /> should render properly while loading 1`] = `
 
 .emotion-11 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
+}
+
+.emotion-11 tr:hover .gear {
+  opacity: 1;
 }
 
 .emotion-11 td {
@@ -201,6 +213,14 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
   background-color: #252525;
 }
 
+.emotion-135 tr .gear {
+  opacity: 0;
+}
+
+.emotion-135 tr .gear:focus {
+  opacity: 1;
+}
+
 .emotion-135 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
@@ -222,6 +242,10 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
 
 .emotion-135 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
+}
+
+.emotion-135 tr:hover .gear {
+  opacity: 1;
 }
 
 .emotion-135 td {
@@ -693,7 +717,7 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="emotion-20"
+                  className="gear emotion-20"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -779,7 +803,7 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="emotion-20"
+                  className="gear emotion-20"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -862,7 +886,7 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="emotion-20"
+                  className="gear emotion-20"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -939,7 +963,7 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="emotion-20"
+                  className="gear emotion-20"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1016,7 +1040,7 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="emotion-20"
+                  className="gear emotion-20"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1093,7 +1117,7 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="emotion-20"
+                  className="gear emotion-20"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1164,7 +1188,7 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="emotion-20"
+                  className="gear emotion-20"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1235,7 +1259,7 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="emotion-20"
+                  className="gear emotion-20"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1306,7 +1330,7 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="emotion-20"
+                  className="gear emotion-20"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1377,7 +1401,7 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="emotion-20"
+                  className="gear emotion-20"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1457,7 +1481,7 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
               >
                 <button
                   aria-label="Toggle Actions Menu"
-                  className="emotion-20"
+                  className="gear emotion-20"
                   onBlur={[Function]}
                   onClick={[Function]}
                   type="button"
@@ -1503,6 +1527,14 @@ exports[`<Jobs /> should render properly with no jobs 1`] = `
   background-color: #252525;
 }
 
+.emotion-12 tr .gear {
+  opacity: 0;
+}
+
+.emotion-12 tr .gear:focus {
+  opacity: 1;
+}
+
 .emotion-12 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
@@ -1524,6 +1556,10 @@ exports[`<Jobs /> should render properly with no jobs 1`] = `
 
 .emotion-12 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
+}
+
+.emotion-12 tr:hover .gear {
+  opacity: 1;
 }
 
 .emotion-12 td {

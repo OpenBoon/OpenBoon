@@ -32,6 +32,12 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
           whiteSpace: 'nowrap',
           tr: {
             backgroundColor: colors.structure.lead,
+            '.gear': {
+              opacity: 0,
+              '&:focus': {
+                opacity: 1,
+              },
+            },
             '&:nth-of-type(2n)': {
               backgroundColor: colors.structure.mattGrey,
             },
@@ -48,6 +54,9 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
                 '&:last-of-type': {
                   borderRight: constants.borders.tableRow,
                 },
+              },
+              '.gear': {
+                opacity: 1,
               },
             },
           },
