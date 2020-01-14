@@ -71,6 +71,19 @@ class PipelineMod(
             timeCreated, System.currentTimeMillis(), actorCreated,
             getZmlpActor().toString())
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is PipelineMod) return false
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
 }
 
 @ApiModel("PipelineModUpdate", description = "All the Pipeline mod fields that can be updated.")

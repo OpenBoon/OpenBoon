@@ -12,7 +12,6 @@ import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
-import com.zorroa.archivist.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -57,9 +56,8 @@ class JobServiceTests : AbstractTest() {
         val job2 = jobService.create(spec2, JobType.Import)
         assertEquals(JobPriority.Standard, job2.priority)
         assertEquals(JobType.Import, job2.type)
-        val tasks = jobService.getJobTasks(job2.id)
+        val tasks = jobService.getTasks(job2.id)
         assertEquals(1, tasks.count())
-        val script = jobService.getZpsScript(tasks[0].id)
     }
 
     @Test

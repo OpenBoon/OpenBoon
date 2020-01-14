@@ -1,15 +1,14 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.OpFilter
-import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
+import com.zorroa.archivist.domain.OpFilter
+import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.ProcessorRef
-import com.zorroa.archivist.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import javax.persistence.EntityManager
@@ -34,18 +33,62 @@ class PipelineResolverServiceTests : AbstractTest() {
     }
 
     @Test
+    fun resolveUsingPipelineName() {
+        pipelineModService.updateStandardMods()
+
+        val pspec = PipelineSpec("test", modules = listOf("zmlp-video-shot-detection"))
+        val pipeline = pipelineService.create(pspec)
+
+        val resolved = pipelineResolverService.resolve(pipeline.name, null)
+        val last = resolved.last()
+        assertEquals(last.className, "zmlp_core.clipify.ShotDetectionVideoClipifier")
+        assertEquals(last.image, "zmlp/plugins-core")
+    }
+
+    @Test
+    fun resolveUsingPipelineNameAndPlusModules() {
+        pipelineModService.updateStandardMods()
+
+        val pspec = PipelineSpec("test", modules = listOf("+zmlp-video-shot-detection"))
+        val pipeline = pipelineService.create(pspec)
+
+        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("zmlp-labels"))
+        val last = resolved.last()
+        assertEquals(last.className, "zmlp_analysis.mxnet.processors.ResNetClassifyProcessor")
+        assertEquals(last.image, "zmlp/plugins-analysis")
+
+        val beforeLast = resolved[resolved.size - 2]
+        assertEquals(beforeLast.className, "zmlp_core.clipify.ShotDetectionVideoClipifier")
+        assertEquals(beforeLast.image, "zmlp/plugins-core")
+    }
+
+    @Test
+    fun resolveUsingPipelineNameAndMinusModules() {
+        pipelineModService.updateStandardMods()
+
+        val pspec = PipelineSpec("test", modules = listOf("zmlp-video-shot-detection"))
+        val pipeline = pipelineService.create(pspec)
+
+        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("-zmlp-video-shot-detection"))
+        val last = resolved.last()
+
+        assertEquals(last.className, "zmlp_analysis.mxnet.processors.ResNetSimilarityProcessor")
+        assertEquals(last.image, "zmlp/plugins-analysis")
+    }
+
+    @Test
     fun resolveNoOps() {
         val pipeline = pipelineService.create(PipelineSpec("test"))
         val resolved = pipelineResolverService.resolve(pipeline.id)
         // The resolved size is 1 less because the prepend marker is removed.
-        assertEquals(resolved.size, pipelineResolverService.getStandardPipeline().size -1)
+        assertEquals(resolved.size, pipelineResolverService.getStandardPipeline().size - 1)
     }
 
     @Test
     fun testResolveDefaultPipeline() {
         val resolved = pipelineResolverService.resolve()
         // The resolved size is 1 less because the prepend marker is removed.
-        assertEquals(resolved.size, pipelineResolverService.getStandardPipeline().size -1)
+        assertEquals(resolved.size, pipelineResolverService.getStandardPipeline().size - 1)
     }
 
     @Test
@@ -72,8 +115,10 @@ class PipelineResolverServiceTests : AbstractTest() {
         val mod2 = pipelineModService.create(spec2)
         entityManager.flush()
 
-        val pipeline = pipelineService.create(PipelineSpec("test",
-            modules = listOf(mod1.id, mod2.id))
+        val pipeline = pipelineService.create(PipelineSpec(
+            "test",
+            modules = listOf(mod1.name, mod2.name)
+        )
         )
         val resolved = pipelineResolverService.resolve(pipeline.id)
         assertEquals("last_processor", resolved.last().className)

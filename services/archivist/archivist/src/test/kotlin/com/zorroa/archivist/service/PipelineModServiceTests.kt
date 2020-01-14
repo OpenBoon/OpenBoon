@@ -125,4 +125,33 @@ class PipelineModServiceTests : AbstractTest() {
         pipelineModService.updateStandardMods()
         assertTrue(pipelineModDao.count() > count)
     }
+
+    @Test
+    fun testGetByNames()  {
+        pipelineModService.updateStandardMods()
+        val names = listOf("zmlp-labels", "zmlp-object-detection")
+        val mods = pipelineModService.getByNames(names)
+        assertEquals(names.size, mods.size)
+    }
+
+    @Test(expected=DataRetrievalFailureException::class)
+    fun testGetByNames_notFound()  {
+        pipelineModService.updateStandardMods()
+        val names = listOf("zmlp-labels", "boom!")
+        pipelineModService.getByNames(names)
+    }
+
+    @Test
+    fun testGetByIds()  {
+        pipelineModService.updateStandardMods()
+        val mod = pipelineModService.get("zmlp-labels")
+        pipelineModService.getByIds(listOf(mod.id))
+    }
+
+    @Test(expected=DataRetrievalFailureException::class)
+    fun testGetByIds_notFound()  {
+        pipelineModService.updateStandardMods()
+        val ids = listOf(UUID.randomUUID())
+        pipelineModService.getByIds(ids)
+    }
 }

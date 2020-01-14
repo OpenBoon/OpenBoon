@@ -122,7 +122,7 @@ class TaskControllerTests : MockMvcTest() {
 
     @Test
     fun testRetry() {
-        jobService.getJobTasks(task.jobId).list.forEach {
+        jobService.getTasks(task.jobId).list.forEach {
             assertTrue(jobService.setTaskState(it, TaskState.Failure, null))
         }
         var job = jobService.get(task.jobId)
