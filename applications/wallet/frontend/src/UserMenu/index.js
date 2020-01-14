@@ -89,8 +89,8 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
             <ul>
               <li>
                 <Link
-                  href="/[projectId]/account/profile"
-                  as={`/${projectId}/account/profile`}
+                  href="/[projectId]/account"
+                  as={`/${projectId}/account`}
                   passHref>
                   <Button
                     variant={VARIANTS.MENU_ITEM}
