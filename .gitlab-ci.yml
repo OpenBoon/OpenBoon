@@ -90,6 +90,7 @@ backend-py-lint:
   script:
     - python -m pip install flake8
     - flake8 --config .flake8.cfg sdk client/python containers/zmlp-py3-base services/analyst
+    - flake8 --config .flake8.cfg containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis
   only:
     refs:
       - merge_requests
