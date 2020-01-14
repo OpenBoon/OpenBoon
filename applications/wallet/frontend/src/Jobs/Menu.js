@@ -38,6 +38,7 @@ const JobsMenu = ({ projectId, jobId, revalidate }) => {
       open="left"
       button={({ onBlur, onClick }) => (
         <Button
+          className="gear"
           aria-label="Toggle Actions Menu"
           variant={VARIANTS.NEUTRAL}
           style={{
