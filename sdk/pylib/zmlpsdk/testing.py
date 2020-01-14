@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 
 import requests
 
-from zmlp.analysis.base import Context, AssetProcessor, Generator, Argument, \
+from zmlpsdk.base import Context, AssetProcessor, Generator, Argument, \
     ZmlpFatalProcessorException
 from zmlp.asset import FileImport, Asset
 
@@ -276,7 +276,7 @@ def zorroa_test_data(rel_path="", uri=True):
         path = os.path.join("/test-data", rel_path)
     else:
         path = os.path.join(os.path.join(os.path.dirname(__file__)),
-                            "../../../../../test-data", rel_path)
+                            "../../../test-data", rel_path)
 
     full_path = os.path.abspath(os.path.normpath(path))
     if uri:

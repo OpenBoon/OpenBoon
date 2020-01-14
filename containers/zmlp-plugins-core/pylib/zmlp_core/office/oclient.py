@@ -5,8 +5,8 @@ import os
 import backoff
 import requests
 
-from zmlp.analysis import ZmlpFatalProcessorException
-from zmlp.analysis.storage import file_storage, ZmlpStorageException
+from zmlpsdk import ZmlpFatalProcessorException
+from zmlpsdk.storage import file_storage, ZmlpStorageException
 from zmlp.client import ZmlpJsonEncoder
 
 logger = logging.getLogger(__name__)

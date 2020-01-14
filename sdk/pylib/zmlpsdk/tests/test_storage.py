@@ -7,9 +7,9 @@ import pytest
 import urllib3
 from minio.api import Minio
 
-from zmlp.analysis import storage
-from zmlp.analysis.testing import zorroa_test_data, TestAsset
 from zmlp.client import ZmlpClient
+from zmlpsdk import storage
+from zmlpsdk.testing import zorroa_test_data, TestAsset
 
 logging.basicConfig(level=logging.DEBUG)
 

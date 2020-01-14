@@ -2,9 +2,9 @@
 
 import os
 
-from zmlp.analysis.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
-from zmlp.analysis import Frame
-from zmlp.analysis.proxy import store_asset_proxy
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
+from zmlpsdk import Frame
+from zmlpsdk.proxy import store_asset_proxy
 
 from ..processors import AutoMLVisionModelProcessor
 

@@ -10,7 +10,7 @@ from pathlib2 import Path
 from google.cloud import automl_v1beta1 as automl
 from google.api_core.exceptions import ResourceExhausted
 
-from zmlp.analysis import Argument, AssetProcessor, Generator
+from zmlpsdk import Argument, AssetProcessor, Generator
 
 
 class GoogleApiProcessorMixin(object):

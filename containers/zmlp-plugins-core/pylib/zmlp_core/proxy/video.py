@@ -1,9 +1,9 @@
 import subprocess
 import tempfile
 
-from zmlp.analysis.base import AssetProcessor
-from zmlp.analysis.proxy import store_asset_proxy
-from zmlp.analysis.storage import file_storage
+from zmlpsdk.base import AssetProcessor
+from zmlpsdk.proxy import store_asset_proxy
+from zmlpsdk.storage import file_storage
 from zmlp_core.util.media import get_video_metadata
 
 

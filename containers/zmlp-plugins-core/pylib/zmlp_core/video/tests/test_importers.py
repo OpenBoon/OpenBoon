@@ -1,8 +1,8 @@
 from pathlib2 import Path
 
 from zmlp_core.video.importers import VideoImporter
-from zmlp.analysis import Frame, ZmlpProcessorException
-from zmlp.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
+from zmlpsdk import Frame, ZmlpProcessorException
+from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 
 
 class VideoImporterUnitTestCase(PluginUnitTestCase):

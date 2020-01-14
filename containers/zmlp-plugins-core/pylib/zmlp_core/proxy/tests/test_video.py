@@ -1,8 +1,8 @@
 import logging
 from unittest.mock import patch
 
-from zmlp.analysis import Frame
-from zmlp.analysis.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
+from zmlpsdk import Frame
+from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from zmlp.client import ZmlpClient
 from zmlp_core.proxy.video import ExtractVideoClipProxyProcessor, VideoProxyProcessor
 

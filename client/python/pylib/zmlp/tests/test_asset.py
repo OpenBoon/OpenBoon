@@ -1,10 +1,10 @@
+import os
 import logging
 import unittest
 from unittest.mock import patch
 
 from zmlp import Asset
 from zmlp import ZmlpClient, app_from_env
-from zmlp.analysis.testing import zorroa_test_data
 from zmlp.asset import FileImport, FileUpload, Clip
 
 logging.basicConfig(level=logging.DEBUG)
@@ -214,7 +214,8 @@ class AssetAppTests(unittest.TestCase):
                 }
             ]
         }
-        assets = [FileUpload(zorroa_test_data("images/set01/toucan.jpg", False))]
+        path = os.path.dirname(__file__) + "/../../../../../test-data/images/set01/toucan.jpg"
+        assets = [FileUpload(path)]
         rsp = self.app.assets.upload_files(assets)
         assert rsp["status"][0]["assetId"] == "abc123"
 

@@ -5,7 +5,7 @@ RUN apk update && apk upgrade && apk add --no-cache postgresql postgresql-dev gc
 COPY applications/wallet /applications/wallet
 
 # Copy SDK
-COPY sdk /sdk
+COPY client /client
 
 # Copy Nginx conf
 COPY applications/wallet/nginx/local.conf /etc/nginx/conf.d/default.conf

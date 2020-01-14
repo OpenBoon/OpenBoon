@@ -1,8 +1,8 @@
 import cv2
 import cvlib
 
-from zmlp.analysis import AssetProcessor
-from zmlp.analysis.proxy import get_proxy_level, store_element_proxy
+from zmlpsdk import AssetProcessor
+from zmlpsdk.proxy import get_proxy_level, store_element_proxy
 from zmlp.elements import Element
 
 BOX_COLOR = (0, 255, 255)

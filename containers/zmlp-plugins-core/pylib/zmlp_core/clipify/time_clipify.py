@@ -1,4 +1,4 @@
-from zmlp.analysis import AssetProcessor, Argument
+from zmlpsdk import AssetProcessor, Argument
 from .util import check_video_clip_preconditions, make_video_clip_file_import
 
 

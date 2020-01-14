@@ -10,22 +10,23 @@ from datetime import datetime
 # python3 setup.py sdist bdist_wheel
 
 requirements = [
-    "requests",
-    "pyOpenSSL",
-    "PyJWT",
+    "zmlp",
+    "minio",
+    "google-cloud-storage>=1.20.0",
     "pathlib2>=2.3.0",
     "backoff",
-    "pytest"
+    "pytest",
+    "opencv-python-headless"
 ]
 
 setup(
-    name='zmlp',
+    name='zmlpsdk',
     version=open("VERSION").read().strip(),
-    description='ZMLP Python Client',
+    description='ZMLP Python SDK',
     url='https://www.zorroa.com',
     license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
     package_dir={'': 'pylib'},
-    packages=['zmlp'],
+    packages=['zmlpsdk'],
     scripts=[],
 
     classifiers=[

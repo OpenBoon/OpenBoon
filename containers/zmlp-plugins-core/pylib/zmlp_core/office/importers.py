@@ -1,8 +1,8 @@
 import json
 
 from zmlp import FileImport, Clip
-from zmlp.analysis import AssetProcessor, Argument, ExpandFrame, ZmlpFatalProcessorException
-from zmlp.analysis.storage import file_storage, ZmlpStorageException
+from zmlpsdk import AssetProcessor, Argument, ExpandFrame, ZmlpFatalProcessorException
+from zmlpsdk.storage import file_storage, ZmlpStorageException
 from .oclient import OfficerClient
 
 __all__ = ['OfficeImporter', '_content_sanitizer']

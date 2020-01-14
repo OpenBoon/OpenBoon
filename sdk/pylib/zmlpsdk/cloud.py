@@ -9,8 +9,8 @@ from google.cloud import storage as gcs
 from google.oauth2 import service_account
 
 from .base import ZmlpEnv
-from ..app import app_from_env
-from ..util import memoize
+from zmlp.app import app_from_env
+from zmlp.util import memoize
 
 logger = logging.getLogger(__name__)
 

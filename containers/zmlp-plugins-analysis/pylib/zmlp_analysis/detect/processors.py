@@ -2,8 +2,8 @@ import cv2
 import cvlib as cv
 from cvlib.object_detection import draw_bbox
 
-from zmlp.analysis import AssetProcessor
-from zmlp.analysis.proxy import get_proxy_level, store_element_proxy
+from zmlpsdk import AssetProcessor
+from zmlpsdk.proxy import get_proxy_level, store_element_proxy
 from zmlp.elements import Element
 
 NAMESPACE = "zmlpObjectDetection"
