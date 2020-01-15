@@ -4,17 +4,20 @@ import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceCredentials
 import com.zorroa.archivist.domain.DataSourceFilter
 import com.zorroa.archivist.domain.DataSourceSpec
+import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.repository.DataSourceJdbcDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.DataSourceService
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.RestUtils
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -39,14 +42,27 @@ class DataSourceController(
         return dataSourceService.create(spec)
     }
 
+    @PutMapping("/api/v1/data-sources/{id}")
+    fun update(
+        @ApiParam("The DataSource unique Id.") @PathVariable id: UUID,
+        @ApiParam("Create a new data set.") @RequestBody update: DataSourceUpdate): DataSource {
+        return dataSourceService.update(id, update)
+    }
+
+    @DeleteMapping("/api/v1/data-sources/{id}")
+    fun delete(@ApiParam("The DataSource unique Id.") @PathVariable id: UUID) : Any {
+        dataSourceService.delete(id)
+        return HttpUtils.deleted("DataSource", id, true)
+    }
+
     @ApiOperation("Get a DataSource by id.")
     @GetMapping("/api/v1/data-sources/{id}")
     fun get(@ApiParam("The DataSource unique Id.") @PathVariable id: UUID): DataSource {
         return dataSourceService.get(id)
     }
 
-    @ApiOperation("Get a DataSource by id.")
-    @PostMapping("/api/v1/data-sources/_find")
+    @ApiOperation("Search for datasources.")
+    @PostMapping("/api/v1/data-sources/_search")
     fun find(@RequestBody(required = false) filter: DataSourceFilter?): KPagedList<DataSource> {
         return dataSourceJdbcDao.find(filter ?: DataSourceFilter())
     }

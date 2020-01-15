@@ -68,8 +68,8 @@ class PipelineModServiceTests : AbstractTest() {
     @Test
     fun testUpdate() {
         val update = PipelineModUpdate(
-            "test",
-            "test",
+            "hodoor",
+            "spock",
             true,
             listOf(ModOp(ModOpType.PREPEND, listOf(ProcessorRef("foo", "zmlp-plugins-foo"))))
         )
@@ -80,6 +80,10 @@ class PipelineModServiceTests : AbstractTest() {
         assertEquals(update.description, updated.description)
         assertEquals(Json.serializeToString(update.ops ?: ""), Json.serializeToString(updated.ops))
         assertNotEquals(mod.timeModified, updated.timeModified)
+
+        val ds2 = pipelineModService.get(mod.id)
+        assertEquals(update.name, ds2.name)
+        assertEquals(update.description, ds2.description)
     }
 
     @Test
@@ -120,8 +124,6 @@ class PipelineModServiceTests : AbstractTest() {
     @Test
     fun testUpdateStandardMods()  {
         val count = pipelineModDao.count()
-        pipelineModService.updateStandardMods()
-        entityManager.flush()
         pipelineModService.updateStandardMods()
         assertTrue(pipelineModDao.count() > count)
     }

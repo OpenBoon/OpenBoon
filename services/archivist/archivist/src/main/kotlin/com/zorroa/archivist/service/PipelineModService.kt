@@ -101,7 +101,9 @@ class PipelineModServiceImpl(
 
     override fun update(id: UUID, update: PipelineModUpdate): PipelineMod {
         logger.event(LogObject.PIPELINE_MODULE, LogAction.UPDATE, mapOf("pipelineModId" to id))
-        return get(id).getUpdated(update)
+        val updated = get(id).getUpdated(update)
+        pipelineModDao.saveAndFlush(updated)
+        return updated
     }
 
     override fun delete(id: UUID) {

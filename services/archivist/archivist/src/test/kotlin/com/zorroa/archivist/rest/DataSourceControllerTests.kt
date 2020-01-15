@@ -4,6 +4,7 @@ import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.DataSourceCredentials
 import com.zorroa.archivist.domain.DataSourceFilter
 import com.zorroa.archivist.domain.DataSourceSpec
+import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.service.DataSourceService
 import com.zorroa.archivist.util.Json
 import org.hamcrest.CoreMatchers
@@ -38,6 +39,33 @@ class DataSourceControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testUpdate() {
+        val ds = dataSourceService.create(testSpec)
+        val update = DataSourceUpdate("spock", "gs://foo/bar", ds.fileTypes, ds.pipelineId)
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/data-sources/${ds.id}")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(update))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.uri", CoreMatchers.equalTo(update.uri)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(update.name)))
+            .andReturn()
+    }
+
+    @Test
+    fun testDelete() {
+        val ds = dataSourceService.create(testSpec)
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/api/v1/data-sources/${ds.id}")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
+    @Test
     fun testGet() {
         val ds = dataSourceService.create(testSpec)
 
@@ -51,7 +79,6 @@ class DataSourceControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(testSpec.name)))
             .andReturn()
     }
-
 
     @Test
     fun testFindOne() {
@@ -77,7 +104,7 @@ class DataSourceControllerTests : MockMvcTest() {
         val filter = DataSourceFilter(ids=listOf(ds.id))
 
         mvc.perform(
-            MockMvcRequestBuilders.post("/api/v1/data-sources/_find")
+            MockMvcRequestBuilders.post("/api/v1/data-sources/_search")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(filter))

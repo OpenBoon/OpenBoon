@@ -29,9 +29,9 @@ class DataSourceDaoTests : AbstractTest() {
         val spec = DataSource(
             id,
             getProjectId(),
-            "test",
+            projectService.getSettings().defaultPipelineId,
+            "tedt",
             "gs://foo-bar",
-            null,
             null,
             System.currentTimeMillis(),
             System.currentTimeMillis(),
@@ -47,7 +47,6 @@ class DataSourceDaoTests : AbstractTest() {
         val creds = dataSourceJdbcDao.getCredentials(ds.id)
         assertEquals(blob, creds.blob)
         assertEquals(salt, creds.salt)
-
     }
 
     @Test
