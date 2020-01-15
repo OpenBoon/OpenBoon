@@ -1,28 +1,27 @@
 package examples.assets;
 
-import com.zorroa.zmlp.client.ApiKey;
-import com.zorroa.zmlp.client.ZmlpClient;
 import com.zorroa.zmlp.client.app.AssetApp;
 import com.zorroa.zmlp.client.domain.asset.AssetSpec;
 import com.zorroa.zmlp.client.domain.asset.BatchCreateAssetResponse;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
-public class UploadAssets {
+public class UploadAssets extends AssetBase {
 
-    //Load ApiKey
-    ApiKey key = new ApiKey(UUID.randomUUID().toString(), "1234");
+    public static void main(String[] args) {
 
-    // Initialize AssetApp with default server URL
-    AssetApp assetApp = new AssetApp(
-            new ZmlpClient(key, null));
+        AssetApp assetApp = createAssetApp();
 
+        // Initialize AssetSpec List
+        List<AssetSpec> assetSpecList =
+                Arrays.asList(new AssetSpec("/Documents/1040.tiff"),
+                              new AssetSpec("/Documents/1099-MISC.tiff"),
+                              new AssetSpec("/Documents/W2.pdf"));
 
-    // Initialize AssetSpec List
-    List<AssetSpec> assetSpecList = Arrays.asList(new AssetSpec("src/test/resources/toucan.jpg"));
+        // Upload Asset list
+        BatchCreateAssetResponse response = assetApp.uploadFiles(assetSpecList);
 
-    // Upload Asset list
-    BatchCreateAssetResponse response = assetApp.uploadFiles(assetSpecList);
+    }
+
 }
