@@ -3,15 +3,15 @@ package com.zorroa.auth.client
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.module.kotlin.readValue
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.util.Base64
-import java.util.UUID
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import org.slf4j.LoggerFactory
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.Base64
 import java.util.Date
+import java.util.UUID
 
 /**
  * Exceptions thrown from [AuthServerClient]
@@ -75,29 +75,24 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         }
     }
 
-    override fun createApiKey(project: UUID, name: String, perms: Collection<Permission>): ApiKey {
+    override fun createApiKey(projectId: UUID, name: String, perms: Collection<Permission>): ApiKey {
         val data = mapOf(
-            "projectId" to project,
             "name" to name,
             "permissions" to perms
         )
-        return post("auth/v1/apikey", data)
+        return post("auth/v1/apikey", data, projectId)
     }
 
     override fun getApiKey(projectId: UUID, name: String): ApiKey {
         val data = mapOf(
-            "projectIds" to listOf(projectId),
             "names" to listOf(name)
         )
-        return post("auth/v1/apikey/_findOne", data)
+        return post("auth/v1/apikey/_findOne", data, projectId)
     }
 
-    private inline fun <reified T> post(path: String, body: Map<String, Any>): T {
+    private inline fun <reified T> post(path: String, body: Map<String, Any>, projectId: UUID? = null): T {
         val rbody = RequestBody.create(Json.mediaType, Json.mapper.writeValueAsString(body))
-        val req = signRequest(
-            Request.Builder()
-                .url("$baseUri/$path".replace("//", "/"))
-        )
+        val req = signRequest(Request.Builder().url("$baseUri/$path".replace("//", "/")), projectId)
             .post(rbody)
             .build()
         val rsp = client.newCall(req).execute()
@@ -111,14 +106,18 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
     /**
      * Signs requests with the servers key.
      */
-    fun signRequest(req: Request.Builder): Request.Builder {
+    fun signRequest(req: Request.Builder, projectId: UUID?): Request.Builder {
         serviceKey?.let {
             val algo = Algorithm.HMAC512(it.secretKey)
-            val token = JWT.create()
+            val jwt = JWT.create()
                 .withIssuer("zmlp")
                 .withExpiresAt(Date(System.currentTimeMillis() + (60 * 1000L)))
                 .withClaim("accessKey", it.accessKey)
-                .sign(algo)
+
+            projectId?.let {
+                jwt.withClaim("projectId", it.toString())
+            }
+            val token = jwt.sign(algo)
             req.header("Authorization", "Bearer $token")
         }
         return req

@@ -9,7 +9,6 @@ import com.zorroa.auth.server.domain.ApiKeySpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.io.File
-import java.util.UUID
 import kotlin.test.assertEquals
 
 class JwtAuthenticationTests : AbstractTest() {
@@ -21,8 +20,7 @@ class JwtAuthenticationTests : AbstractTest() {
     fun testValidateToken() {
         val spec = ApiKeySpec(
             "test",
-            setOf(Permission.AssetsRead),
-            UUID.randomUUID()
+            setOf(Permission.AssetsRead)
         )
         val apiKey = apiKeyService.create(spec)
         val token = apiKey.getJwtToken()
