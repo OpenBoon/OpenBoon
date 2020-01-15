@@ -42,6 +42,10 @@ variable "google-oauth-client-id" {
   description = "Client ID to enable Google OAuth based login."
 }
 
+variable "frontend-sentry-dsn" {
+  description = "Identifier for sending error messages to Sentry for collection."
+}
+
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"
