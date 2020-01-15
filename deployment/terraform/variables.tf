@@ -38,6 +38,10 @@ variable "smtp-password" {
   description = "Password for the SMTP server wallet uses to send mail."
 }
 
+variable "google-oauth-client-id" {
+  description = "Client ID to enable Google OAuth based login."
+}
+
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"

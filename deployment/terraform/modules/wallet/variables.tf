@@ -7,6 +7,7 @@ variable "container-cluster-name" {}
 variable "image-pull-secret" {}
 variable "archivist-url" {}
 variable "smtp-password" {}
+variable "google-oauth-client-id" {}
 
 variable "container-tag" {default = "development"}
 variable "namespace" {default = "default"}
