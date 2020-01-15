@@ -73,7 +73,7 @@
     {
       "//": "app",
       "path": ".next/static/**/pages/_app.js",
-      "maxSize": "30 kB"
+      "maxSize": "32 kB"
     },
     {
       "//": "main runtime",
@@ -104,6 +104,7 @@
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "body-scroll-lock": "2.6.4",
     "dotenv": "8.2.0",
+    "focus-visible": "5.0.2",
     "jwt-decode": "2.2.0",
     "next": "9.1.6",
     "prop-types": "15.7.2",

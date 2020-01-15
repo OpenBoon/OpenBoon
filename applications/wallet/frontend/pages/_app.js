@@ -2,6 +2,7 @@
 import App from 'next/app'
 import getConfig from 'next/config'
 import * as Sentry from '@sentry/browser'
+import 'focus-visible'
 
 import Authentication from '../src/Authentication'
 

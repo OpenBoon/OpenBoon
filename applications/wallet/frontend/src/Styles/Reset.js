@@ -47,6 +47,9 @@ const StylesReset = () => (
           padding: spacing.normal,
           fontSize: typography.size.hecto,
         },
+        '.js-focus-visible :focus:not(.focus-visible)': {
+          outline: 'none',
+        },
       }}
     />
     <Global

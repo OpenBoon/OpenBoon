@@ -30,31 +30,35 @@ public class Clip {
         return type;
     }
 
-    public void setType(String type) {
+    public Clip setType(String type) {
         this.type = type;
+        return this;
     }
 
     public Float getStart() {
         return start;
     }
 
-    public void setStart(Float start) {
+    public Clip setStart(Float start) {
         this.start = start;
+        return this;
     }
 
     public Float getStop() {
         return stop;
     }
 
-    public void setStop(Float stop) {
+    public Clip setStop(Float stop) {
         this.stop = stop;
+        return this;
     }
 
     public String getTimeline() {
         return timeline;
     }
 
-    public void setTimeline(String timeline) {
+    public Clip setTimeline(String timeline) {
         this.timeline = timeline;
+        return this;
     }
 }

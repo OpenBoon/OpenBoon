@@ -30,55 +30,39 @@ public class ProjectFilter {
         sort = new ArrayList();
     }
 
-    public ProjectFilter withIds(List<UUID> ids){
-        this.ids = ids;
-        return this;
-    }
-
-    public ProjectFilter withNames(List<String> names){
-        this.names = names;
-        return this;
-    }
-
-    public ProjectFilter withPage(Page page){
-        this.page = page;
-        return this;
-    }
-
-    public ProjectFilter withSort(List<String> sort){
-        this.sort = sort;
-        return this;
-    }
-
     public List<UUID> getIds() {
         return ids;
     }
 
-    public void setIds(List<UUID> ids) {
+    public ProjectFilter setIds(List<UUID> ids) {
         this.ids = ids;
+        return this;
     }
 
     public List<String> getNames() {
         return names;
     }
 
-    public void setNames(List<String> names) {
+    public ProjectFilter setNames(List<String> names) {
         this.names = names;
+        return this;
     }
 
     public Page getPage() {
         return page;
     }
 
-    public void setPage(Page page) {
+    public ProjectFilter setPage(Page page) {
         this.page = page;
+        return this;
     }
 
     public List<String> getSort() {
         return sort;
     }
 
-    public void setSort(List<String> sort) {
+    public ProjectFilter setSort(List<String> sort) {
         this.sort = sort;
+        return this;
     }
 }

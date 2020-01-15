@@ -19,43 +19,31 @@ public class DataSourceCredentials {
         this.dataSourceId = dataSourceId;
     }
 
-    public DataSourceCredentials withBlob(String blob){
-        this.blob = blob;
-        return this;
-    }
-
-    public DataSourceCredentials withSalt(String salt){
-        this.salt = salt;
-        return this;
-    }
-
-    public DataSourceCredentials withDataSourceId(UUID id){
-        this.dataSourceId = id;
-        return this;
-    }
-
     public String getBlob() {
         return blob;
     }
 
-    public void setBlob(String blob) {
+    public DataSourceCredentials setBlob(String blob) {
         this.blob = blob;
+        return this;
     }
 
     public String getSalt() {
         return salt;
     }
 
-    public void setSalt(String salt) {
+    public DataSourceCredentials setSalt(String salt) {
         this.salt = salt;
+        return this;
     }
 
     public UUID getDataSourceId() {
         return dataSourceId;
     }
 
-    public void setDataSourceId(UUID dataSourceId) {
+    public DataSourceCredentials setDataSourceId(UUID dataSourceId) {
         this.dataSourceId = dataSourceId;
+        return this;
     }
 }
 

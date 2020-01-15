@@ -8,6 +8,12 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   padding-bottom: 16px;
 }
 
+.emotion-6 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .emotion-5 {
   list-style-type: none;
   padding: 0;
@@ -72,41 +78,53 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   color: #73b61c;
 }
 
-.emotion-10 {
+.emotion-11 {
   width: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
   white-space: nowrap;
 }
 
-.emotion-10 tr {
+.emotion-11 tr {
   background-color: #252525;
 }
 
-.emotion-10 tr:nth-of-type(2n) {
+.emotion-11 tr .gear {
+  opacity: 0;
+}
+
+.emotion-11 tr .gear:focus {
+  opacity: 1;
+}
+
+.emotion-11 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-10 tr:hover {
+.emotion-11 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-10 tr:hover td {
+.emotion-11 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-10 tr:hover td:first-of-type {
+.emotion-11 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-10 tr:hover td:last-of-type {
+.emotion-11 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-10 td {
+.emotion-11 tr:hover .gear {
+  opacity: 1;
+}
+
+.emotion-11 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -114,15 +132,15 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   border-right: 0;
 }
 
-.emotion-10 td:first-of-type {
+.emotion-11 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-10 td:last-of-type {
+.emotion-11 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
-.emotion-6 {
+.emotion-7 {
   text-align: left;
   font-size: 16px;
   line-height: 20px;
@@ -133,19 +151,19 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(2) {
+.emotion-7:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-7:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-9 {
+.emotion-10 {
   pointer-events: none;
 }
 
-.emotion-8 {
+.emotion-9 {
   height: 300px;
   width: 100%;
   display: -webkit-box;
@@ -175,7 +193,9 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   >
     Project API Keys
   </h2>
-  <nav>
+  <nav
+    className="emotion-6"
+  >
     <ul
       className="emotion-5"
     >
@@ -210,17 +230,17 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
   </div>
   <div>
     <table
-      className="emotion-10"
+      className="emotion-11"
     >
       <thead>
         <tr>
           <th
-            className="emotion-6"
+            className="emotion-7"
           >
             API Key Name
           </th>
           <th
-            className="emotion-6"
+            className="emotion-7"
           >
             Permissions
           </th>
@@ -228,13 +248,13 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
       </thead>
       <tbody>
         <tr
-          className="emotion-9"
+          className="emotion-10"
         >
           <td
             colSpan={2}
           >
             <div
-              className="emotion-8"
+              className="emotion-9"
             >
               Loading...
             </div>
@@ -257,6 +277,12 @@ exports[`<ApiKeys /> should render properly with api keys 1`] = `
   padding-bottom: 16px;
 }
 
+.emotion-6 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .emotion-5 {
   list-style-type: none;
   padding: 0;
@@ -321,41 +347,53 @@ exports[`<ApiKeys /> should render properly with api keys 1`] = `
   color: #73b61c;
 }
 
-.emotion-8 {
+.emotion-9 {
   width: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
   white-space: nowrap;
 }
 
-.emotion-8 tr {
+.emotion-9 tr {
   background-color: #252525;
 }
 
-.emotion-8 tr:nth-of-type(2n) {
+.emotion-9 tr .gear {
+  opacity: 0;
+}
+
+.emotion-9 tr .gear:focus {
+  opacity: 1;
+}
+
+.emotion-9 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-8 tr:hover {
+.emotion-9 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-8 tr:hover td {
+.emotion-9 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-8 tr:hover td:first-of-type {
+.emotion-9 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-8 tr:hover td:last-of-type {
+.emotion-9 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-8 td {
+.emotion-9 tr:hover .gear {
+  opacity: 1;
+}
+
+.emotion-9 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -363,15 +401,15 @@ exports[`<ApiKeys /> should render properly with api keys 1`] = `
   border-right: 0;
 }
 
-.emotion-8 td:first-of-type {
+.emotion-9 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-8 td:last-of-type {
+.emotion-9 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
-.emotion-6 {
+.emotion-7 {
   text-align: left;
   font-size: 16px;
   line-height: 20px;
@@ -382,15 +420,15 @@ exports[`<ApiKeys /> should render properly with api keys 1`] = `
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(2) {
+.emotion-7:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-7:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-15 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -401,7 +439,7 @@ exports[`<ApiKeys /> should render properly with api keys 1`] = `
   justify-content: flex-end;
 }
 
-.emotion-10 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -419,20 +457,20 @@ exports[`<ApiKeys /> should render properly with api keys 1`] = `
   border-bottom-right-radius: 0;
 }
 
-.emotion-10:hover {
+.emotion-11:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-9 {
+.emotion-10 {
   color: #191919;
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-11 {
+.emotion-12 {
   padding: 8px 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -446,7 +484,7 @@ exports[`<ApiKeys /> should render properly with api keys 1`] = `
   background-color: #000000;
 }
 
-.emotion-12 {
+.emotion-13 {
   padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -459,7 +497,7 @@ exports[`<ApiKeys /> should render properly with api keys 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-14 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -477,13 +515,13 @@ exports[`<ApiKeys /> should render properly with api keys 1`] = `
   border-bottom-right-radius: 2px;
 }
 
-.emotion-14:hover {
+.emotion-15:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-13 {
+.emotion-14 {
   color: #191919;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -496,7 +534,9 @@ exports[`<ApiKeys /> should render properly with api keys 1`] = `
   >
     Project API Keys
   </h2>
-  <nav>
+  <nav
+    className="emotion-6"
+  >
     <ul
       className="emotion-5"
     >
@@ -531,17 +571,17 @@ exports[`<ApiKeys /> should render properly with api keys 1`] = `
   </div>
   <div>
     <table
-      className="emotion-8"
+      className="emotion-9"
     >
       <thead>
         <tr>
           <th
-            className="emotion-6"
+            className="emotion-7"
           >
             API Key Name
           </th>
           <th
-            className="emotion-6"
+            className="emotion-7"
           >
             Permissions
           </th>
@@ -562,37 +602,37 @@ exports[`<ApiKeys /> should render properly with api keys 1`] = `
        
     </div>
     <div
-      className="emotion-15"
+      className="emotion-16"
     >
       <button
-        className="emotion-10"
+        className="emotion-11"
         disabled={true}
         type="button"
       >
         <svg
-          className="emotion-9"
+          className="emotion-10"
           data-file-name="chevron.svg"
           width={16}
         />
       </button>
       <div
-        className="emotion-11"
+        className="emotion-12"
       >
         1
       </div>
       <div
-        className="emotion-12"
+        className="emotion-13"
       >
         of 
         1
       </div>
       <button
-        className="emotion-14"
+        className="emotion-15"
         disabled={true}
         type="button"
       >
         <svg
-          className="emotion-13"
+          className="emotion-14"
           data-file-name="chevron.svg"
           width={16}
         />
@@ -608,6 +648,12 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
   line-height: 21px;
   font-weight: 400;
   padding-bottom: 16px;
+}
+
+.emotion-6 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .emotion-5 {
@@ -674,41 +720,53 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
   color: #73b61c;
 }
 
-.emotion-10 {
+.emotion-11 {
   width: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
   white-space: nowrap;
 }
 
-.emotion-10 tr {
+.emotion-11 tr {
   background-color: #252525;
 }
 
-.emotion-10 tr:nth-of-type(2n) {
+.emotion-11 tr .gear {
+  opacity: 0;
+}
+
+.emotion-11 tr .gear:focus {
+  opacity: 1;
+}
+
+.emotion-11 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-10 tr:hover {
+.emotion-11 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-10 tr:hover td {
+.emotion-11 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-10 tr:hover td:first-of-type {
+.emotion-11 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-10 tr:hover td:last-of-type {
+.emotion-11 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-10 td {
+.emotion-11 tr:hover .gear {
+  opacity: 1;
+}
+
+.emotion-11 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -716,15 +774,15 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
   border-right: 0;
 }
 
-.emotion-10 td:first-of-type {
+.emotion-11 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-10 td:last-of-type {
+.emotion-11 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
-.emotion-6 {
+.emotion-7 {
   text-align: left;
   font-size: 16px;
   line-height: 20px;
@@ -735,19 +793,19 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-6:nth-of-type(2) {
+.emotion-7:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-6:not(:last-child) {
+.emotion-7:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-9 {
+.emotion-10 {
   pointer-events: none;
 }
 
-.emotion-8 {
+.emotion-9 {
   height: 300px;
   width: 100%;
   display: -webkit-box;
@@ -777,7 +835,9 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
   >
     Project API Keys
   </h2>
-  <nav>
+  <nav
+    className="emotion-6"
+  >
     <ul
       className="emotion-5"
     >
@@ -812,17 +872,17 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
   </div>
   <div>
     <table
-      className="emotion-10"
+      className="emotion-11"
     >
       <thead>
         <tr>
           <th
-            className="emotion-6"
+            className="emotion-7"
           >
             API Key Name
           </th>
           <th
-            className="emotion-6"
+            className="emotion-7"
           >
             Permissions
           </th>
@@ -830,13 +890,13 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
       </thead>
       <tbody>
         <tr
-          className="emotion-9"
+          className="emotion-10"
         >
           <td
             colSpan={2}
           >
             <div
-              className="emotion-8"
+              className="emotion-9"
             >
               No api keys
             </div>

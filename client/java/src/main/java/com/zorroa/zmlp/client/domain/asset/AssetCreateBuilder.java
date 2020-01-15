@@ -43,44 +43,21 @@ public class AssetCreateBuilder {
         return this;
     }
 
-    /**
-     *
-     * Set Analyze Attribute and returns the same instance.
-     *
-     * @param analyze
-     * @return
-     */
-    public AssetCreateBuilder withAnalyze(Boolean analyze){
-        this.analyze = analyze;
-        return this;
-    }
-
-    /**
-     * Set Assets attribute and returns the same instance.
-     *
-     * @param assetsSpecList
-     * @return
-     */
-    public AssetCreateBuilder withAssets(List<AssetSpec> assetsSpecList){
-        this.assets = assetsSpecList;
-        return this;
-    }
-
     public List<AssetSpec> getAssets() {
         return assets;
     }
 
-    public void setAssets(List<AssetSpec> assets) {
+    public AssetCreateBuilder setAssets(List<AssetSpec> assets) {
         this.assets = assets;
+        return this;
     }
 
     public Boolean getAnalyze() {
         return analyze;
     }
 
-    public void setAnalyze(Boolean analyze) {
+    public AssetCreateBuilder setAnalyze(Boolean analyze) {
         this.analyze = analyze;
+        return this;
     }
-
-
 }
