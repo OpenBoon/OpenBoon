@@ -45,47 +45,53 @@ public class Project {
         return id;
     }
 
-    public void setId(UUID id) {
+    public Project setId(UUID id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Project setName(String name) {
         this.name = name;
+        return this;
     }
 
     public Date getTimeCreated() {
         return timeCreated;
     }
 
-    public void setTimeCreated(Date timeCreated) {
+    public Project setTimeCreated(Date timeCreated) {
         this.timeCreated = timeCreated;
+        return this;
     }
 
     public Date getTimeModified() {
         return timeModified;
     }
 
-    public void setTimeModified(Date timeModified) {
+    public Project setTimeModified(Date timeModified) {
         this.timeModified = timeModified;
+        return this;
     }
 
     public String getActorCreated() {
         return actorCreated;
     }
 
-    public void setActorCreated(String actorCreated) {
+    public Project setActorCreated(String actorCreated) {
         this.actorCreated = actorCreated;
+        return this;
     }
 
     public String getActorModified() {
         return actorModified;
     }
 
-    public void setActorModified(String actorModified) {
+    public Project setActorModified(String actorModified) {
         this.actorModified = actorModified;
+        return this;
     }
 }

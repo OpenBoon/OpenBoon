@@ -32,10 +32,10 @@ public class DataSourceAppTests extends AbstractAppTests {
         webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
 
         DataSourceSpec dataSourceSpec = new DataSourceSpec()
-                .withName((String) body.get("name"))
-                .withUri((String) body.get("uri"))
-                .withFileTypes((List<String>) body.get("file_types"))
-                .withAnalysis((List<String>) body.get("analysis"));
+                .setName((String) body.get("name"))
+                .setUri((String) body.get("uri"))
+                .setFileTypes((List<String>) body.get("file_types"))
+                .setAnalysis((List<String>) body.get("analysis"));
 
         DataSource dataSource = dataSourceApp.createDataSource(dataSourceSpec);
 
@@ -87,7 +87,7 @@ public class DataSourceAppTests extends AbstractAppTests {
         webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
 
         DataSourceCredentials dataSourceCredentials = new DataSourceCredentials(id)
-                .withBlob("UpdatedCredentials");
+                .setBlob("UpdatedCredentials");
 
         Map status = dataSourceApp.updateCredentials(dataSourceCredentials);
 

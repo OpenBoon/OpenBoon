@@ -40,52 +40,53 @@ public class DataSource {
         return id;
     }
 
-    public void setId(UUID id) {
+    public DataSource setId(UUID id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public DataSource setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getUri() {
         return uri;
     }
 
-    public void setUri(String uri) {
+    public DataSource setUri(String uri) {
         this.uri = uri;
+        return this;
     }
 
     public String getCredentials() {
         return credentials;
     }
 
-    public void setCredentials(String credentials) {
+    public DataSource setCredentials(String credentials) {
         this.credentials = credentials;
+        return this;
     }
 
     public List<String> getFileTypes() {
         return fileTypes;
     }
 
-    public void setFileTypes(List<String> fileTypes) {
+    public DataSource setFileTypes(List<String> fileTypes) {
         this.fileTypes = fileTypes;
+        return this;
     }
 
     public List<String> getAnalysis() {
         return analysis;
     }
 
-    public void setAnalysis(List<String> analysis) {
+    public DataSource setAnalysis(List<String> analysis) {
         this.analysis = analysis;
-    }
-
-    public DataSource withId(UUID id) {
-        this.id = id;
         return this;
     }
 }
