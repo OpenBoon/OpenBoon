@@ -28,44 +28,19 @@ public class DataSourceSpec {
      * A list of analysis modules to apply to the DataSource,
      * this overrides project defaults if set.
      */
-    private  List<String> analysis;
+    private List<String> analysis;
 
     public DataSourceSpec() {
         fileTypes = new ArrayList();
         analysis = new ArrayList();
     }
 
-    public DataSourceSpec withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public DataSourceSpec withUri(String uri) {
-        this.uri = uri;
-        return this;
-    }
-
-    public DataSourceSpec withCredentials(String credentials) {
-        this.credentials = credentials;
-        return this;
-    }
-
-    public DataSourceSpec withFileTypes(List<String> fileTypes){
-        this.fileTypes = fileTypes;
-        return this;
-    }
-
-    public DataSourceSpec withAnalysis(List<String> analysis){
-        this.analysis = analysis;
-        return this;
-    }
-
-    public DataSourceSpec addFileTypes(String fileType){
+    public DataSourceSpec addFileTypes(String fileType) {
         this.fileTypes.add(fileType);
         return this;
     }
 
-    public DataSourceSpec addAnalysis(String analysis){
+    public DataSourceSpec addAnalysis(String analysis) {
         this.analysis.add(analysis);
         return this;
     }

@@ -24,29 +24,30 @@ public class BatchCreateAssetResponse {
      */
     private UUID jobId;
 
-
-
     public List<Asset> getAssets() {
         return assets;
     }
 
-    public void setAssets(List<Asset> assets) {
+    public BatchCreateAssetResponse setAssets(List<Asset> assets) {
         this.assets = assets;
+        return this;
     }
 
     public List<BatchAssetOpStatus> getStatus() {
         return status;
     }
 
-    public void setStatus(List<BatchAssetOpStatus> status) {
+    public BatchCreateAssetResponse setStatus(List<BatchAssetOpStatus> status) {
         this.status = status;
+        return this;
     }
 
     public UUID getJobId() {
         return jobId;
     }
 
-    public void setJobId(UUID jobId) {
+    public BatchCreateAssetResponse setJobId(UUID jobId) {
         this.jobId = jobId;
+        return this;
     }
 }

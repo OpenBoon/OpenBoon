@@ -25,16 +25,6 @@ public class ProjectSpec {
         this.name = name;
     }
 
-    public ProjectSpec withName(String name){
-        this.name = name;
-        return this;
-    }
-
-    public ProjectSpec withProjectId(UUID projectId){
-        this.projectId = projectId;
-        return this;
-    }
-
     public String getName() {
         return name;
     }

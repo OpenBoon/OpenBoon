@@ -46,27 +46,30 @@ public class AssetUploadBuilder {
         return this;
     }
 
-    /**
-     * Set Analyze Attribute and returns the same instance.
-     *
-     * @param analyze
-     * @return
-     */
-    public AssetUploadBuilder withAnalyze(Boolean analyze) {
+    public List<AssetSpec> getAssets() {
+        return assets;
+    }
+
+    public AssetUploadBuilder setAssets(List<AssetSpec> assets) {
+        this.assets = assets;
+        return this;
+    }
+
+    public Boolean getAnalyze() {
+        return analyze;
+    }
+
+    public AssetUploadBuilder setAnalyze(Boolean analyze) {
         this.analyze = analyze;
         return this;
     }
 
-    /**
-     * Set Assets attribute and returns the same instance.
-     *
-     * @param assetsSpecList
-     * @return
-     */
-    public AssetUploadBuilder withAssets(List<AssetSpec> assetsSpecList) {
-        this.assets = assetsSpecList;
-        return this;
+    public List<AssetSpec> getFiles() {
+        return files;
     }
 
-
+    public AssetUploadBuilder setFiles(List<AssetSpec> files) {
+        this.files = files;
+        return this;
+    }
 }

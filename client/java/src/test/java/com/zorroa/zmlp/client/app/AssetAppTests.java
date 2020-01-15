@@ -39,7 +39,7 @@ public class AssetAppTests extends AbstractAppTests {
         AssetCreateBuilder assetCreateBuilder = new AssetCreateBuilder()
                 .addAsset(new AssetSpec("gs://zorroa-dev-data/image/pluto.png"))
                 .addAsset("gs://zorroa-dev-data/image/earth.png")
-                .withAnalyze(false);
+                .setAnalyze(false);
 
         BatchCreateAssetResponse batchCreateAssetResponse = assetApp.importFiles(assetCreateBuilder);
 

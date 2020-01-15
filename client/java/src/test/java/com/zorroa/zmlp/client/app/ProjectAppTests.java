@@ -50,7 +50,7 @@ public class ProjectAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
 
-        ProjectSpec unittest = new ProjectSpec().withName("unittest");
+        ProjectSpec unittest = new ProjectSpec().setName("unittest");
         Project proj = projectApp.createProject(unittest);
 
         assertEquals(body.get("id").toString(), proj.getId().toString());
@@ -67,7 +67,7 @@ public class ProjectAppTests extends AbstractAppTests {
         webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
 
         ProjectFilter filter = new ProjectFilter()
-                .withIds(Lists.newArrayList(UUID.randomUUID()));
+                .setIds(Lists.newArrayList(UUID.randomUUID()));
         Project proj = projectApp.findProject(filter);
 
         assertEquals(body.get("id").toString(), proj.getId().toString());
@@ -86,7 +86,7 @@ public class ProjectAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(Json.asJson(responseBody)));
         ProjectFilter filter = new ProjectFilter()
-                .withIds(Lists.newArrayList(UUID.randomUUID()));
+                .setIds(Lists.newArrayList(UUID.randomUUID()));
         PagedList<Project> projects = projectApp.searchProjects(filter);
 
         assertEquals(1, projects.size());

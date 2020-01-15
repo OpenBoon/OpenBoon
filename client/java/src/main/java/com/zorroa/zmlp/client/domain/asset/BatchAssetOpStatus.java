@@ -33,23 +33,26 @@ public class BatchAssetOpStatus {
         return assetId;
     }
 
-    public void setAssetId(String assetId) {
+    public BatchAssetOpStatus setAssetId(String assetId) {
         this.assetId = assetId;
+        return this;
     }
 
     public String getFailureMessage() {
         return failureMessage;
     }
 
-    public void setFailureMessage(String failureMessage) {
+    public BatchAssetOpStatus setFailureMessage(String failureMessage) {
         this.failureMessage = failureMessage;
+        return this;
     }
 
     public Boolean getFailed() {
         return failed;
     }
 
-    public void setFailed(Boolean failed) {
+    public BatchAssetOpStatus setFailed(Boolean failed) {
         this.failed = failed;
+        return this;
     }
 }
