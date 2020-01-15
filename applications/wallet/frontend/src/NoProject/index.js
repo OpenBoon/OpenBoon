@@ -2,7 +2,7 @@ import Head from 'next/head'
 
 import NoProjectSvg from '../Icons/noProject.svg'
 
-import { colors } from '../Styles'
+import { constants, spacing, colors } from '../Styles'
 
 const NoProject = () => {
   return (
@@ -15,6 +15,9 @@ const NoProject = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'center',
+          height: `calc(100vh - ${constants.navbar.height}px - ${2 *
+            spacing.comfy}px)`,
         }}>
         <NoProjectSvg width={250} />
         <h3 css={{ color: colors.structure.steel }}>
