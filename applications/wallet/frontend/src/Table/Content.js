@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 
 import TableException from './Exception'
 
+import ErrorSvg from '../Icons/error.svg'
+
 const TableContent = ({
   numColumns,
   hasError,
@@ -14,7 +16,8 @@ const TableContent = ({
   if (hasError) {
     return (
       <TableException numColumns={numColumns}>
-        Hmmm, something went wrong.
+        <ErrorSvg />
+        <br /> Hmmm, something went wrong.
         <br /> Please try refreshing.
       </TableException>
     )
