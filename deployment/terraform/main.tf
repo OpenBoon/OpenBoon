@@ -160,4 +160,6 @@ module "wallet" {
   sql-connection-name = "${module.postgres.connection-name}"
   archivist-url = "http://${module.archivist.ip-address}"
   smtp-password = "${var.smtp-password}"
+  google-oauth-client-id = "${var.google-oauth-client-id}"
+  frontend-sentry-dsn = "${var.frontend-sentry-dsn}"
 }

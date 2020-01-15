@@ -90,7 +90,7 @@ resource "kubernetes_deployment" "wallet" {
             period_seconds = 5
             http_get {
               scheme = "HTTP"
-              path = "/health/"
+              path = "/api/v1/health/"
               port = "80"
             }
           }
@@ -99,7 +99,7 @@ resource "kubernetes_deployment" "wallet" {
             period_seconds = 30
             http_get {
               scheme = "HTTP"
-              path = "/health/"
+              path = "/api/v1/health/"
               port = "80"
             }
           }
@@ -132,6 +132,14 @@ resource "kubernetes_deployment" "wallet" {
             {
               name = "SMTP_PASSWORD"
               value = "${var.smtp-password}"
+            },
+            {
+              name = "GOOGLE_OAUTH_CLIENT_ID"
+              value = "${var.google-oauth-client-id}"
+            },
+            {
+              name = "FRONTEND_SENTRY_DSN"
+              value = "${var.frontend-sentry-dsn}"
             }
           ]
         }
