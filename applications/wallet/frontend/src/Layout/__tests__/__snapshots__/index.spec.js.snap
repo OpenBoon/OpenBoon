@@ -169,7 +169,6 @@ exports[`<Layout /> should render properly 1`] = `
 
 .emotion-10 {
   margin-top: 44px;
-  padding: 24px;
   padding-left: 32px;
   padding-right: 32px;
 }
@@ -418,7 +417,6 @@ exports[`<Layout /> should render properly 2`] = `
 
 .emotion-10 {
   margin-top: 44px;
-  padding: 24px;
   padding-left: 32px;
   padding-right: 32px;
 }

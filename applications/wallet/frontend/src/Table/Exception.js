@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { colors, typography } from '../Styles'
 
-const HEIGHT = 300
+const HEIGHT = 600
 
 const TableException = ({ numColumns, children }) => {
   return (

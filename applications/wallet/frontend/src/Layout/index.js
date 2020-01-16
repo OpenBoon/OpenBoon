@@ -40,7 +40,6 @@ const Layout = ({ user, logout, children }) => {
       <div
         css={{
           marginTop: constants.navbar.height,
-          padding: spacing.comfy,
           paddingLeft: spacing.spacious,
           paddingRight: spacing.spacious,
         }}>
