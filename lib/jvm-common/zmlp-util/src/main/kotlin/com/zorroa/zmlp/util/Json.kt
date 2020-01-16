@@ -71,8 +71,7 @@ object Json {
     fun serializeToString(value: Any?, onNull: String?): String? {
         return if (value == null) {
             onNull
-        }
-        else {
+        } else {
             Mapper.writeValueAsString(value)
         }
     }

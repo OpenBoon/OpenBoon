@@ -1,12 +1,12 @@
 package com.zorroa.zmlp.apikey
 
+import java.util.UUID
+import kotlin.test.assertEquals
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import java.util.UUID
-import kotlin.test.assertEquals
 
 class AuthServerClientTests {
 
@@ -30,7 +30,7 @@ class AuthServerClientTests {
 
         val client = AuthServerClientImpl("http://localhost:9090", base64)
         val serviceKey = client.serviceKey
-        //assertEquals(UUID.fromString("50550AAC-6C5A-41CD-B779-2821BB5B535F"), serviceKey?.projectId)
+        // assertEquals(UUID.fromString("50550AAC-6C5A-41CD-B779-2821BB5B535F"), serviceKey?.projectId)
         assertEquals("4338a83fa92040aba251a123b17df1ba", serviceKey?.accessKey)
         assertEquals("pcekjDV_ipSMXAaBqqtq6Jwy5FAMnjehUQrMEhbG8W01giVqVLfEN9FdMIvzu0rb", serviceKey?.secretKey)
     }
@@ -39,7 +39,7 @@ class AuthServerClientTests {
     fun testLoadKeyFile() {
         val client = AuthServerClientImpl("http://localhost:9090", "src/test/resources/signing-key.json")
         val serviceKey = client.serviceKey
-        //assertEquals(UUID.fromString("00000000-0000-0000-0000-000000000000"), serviceKey?.projectId)
+        // assertEquals(UUID.fromString("00000000-0000-0000-0000-000000000000"), serviceKey?.projectId)
         assertEquals("4338a83fa92040aba251a123b17df1ba", serviceKey?.accessKey)
     }
 

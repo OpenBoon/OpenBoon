@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 
 @Service
 @Profile("aws")
-class AwsSystemStorageServiceImpl constructor(
+class AwsSystemStorageService constructor(
     override val properties: SystemStorageProperties,
     val s3Client: AmazonS3
 ) : SystemStorageService {
@@ -54,6 +54,6 @@ class AwsSystemStorageServiceImpl constructor(
     }
 
     companion object {
-        val logger = LoggerFactory.getLogger(AwsSystemStorageServiceImpl::class.java)
+        val logger = LoggerFactory.getLogger(AwsSystemStorageService::class.java)
     }
 }

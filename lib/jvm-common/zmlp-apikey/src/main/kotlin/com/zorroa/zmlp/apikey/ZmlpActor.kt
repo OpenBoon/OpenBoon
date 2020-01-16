@@ -1,6 +1,5 @@
 package com.zorroa.zmlp.apikey
 
-
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
@@ -27,7 +26,7 @@ class ZmlpActor(
         return perm.any { it in permissions }
     }
 
-    override fun toString() : String {
-        return "${id}/${name}"
+    override fun toString(): String {
+        return "$id/$name"
     }
 }

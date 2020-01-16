@@ -4,9 +4,9 @@ import com.zorroa.zmlp.service.security.getZmlpActorOrNull
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
+import org.slf4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
-import org.slf4j.Logger
 
 /**
  * All the different actions we can take against any data within the Archivist.
@@ -160,4 +160,3 @@ fun Logger.warnEvent(obj: LogObject, action: LogAction, message: String, kvp: Ma
         this.warn(formatLogMessage(obj, action, kvp, kotlin.collections.mapOf("message" to message)), ex)
     }
 }
-

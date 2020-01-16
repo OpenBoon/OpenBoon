@@ -1,9 +1,9 @@
 package com.zorroa.zmlp.service.security
 
 import com.zorroa.zmlp.apikey.ZmlpActor
+import java.util.UUID
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.UUID
 
 fun getAuthentication(): Authentication? {
     return SecurityContextHolder.getContext().authentication

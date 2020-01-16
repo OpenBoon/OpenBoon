@@ -23,7 +23,7 @@ class SigningiKey(
     @ApiModelProperty("A shared key used to sign API requests.")
     val secretKey: String
 
-    ) {
+) {
     fun toBase64(): String {
         return Base64.getEncoder().encodeToString(Json.Mapper.writeValueAsBytes(this))
     }

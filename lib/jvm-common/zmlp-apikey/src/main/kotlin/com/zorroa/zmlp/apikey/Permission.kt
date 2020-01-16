@@ -1,6 +1,5 @@
 package com.zorroa.zmlp.apikey
 
-
 import io.swagger.annotations.ApiModelProperty
 
 enum class Permission() {

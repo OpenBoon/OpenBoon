@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 
 @Service
 @Profile("gcs")
-class GcsSystemStorageServiceImpl constructor(
+class GcsSystemStorageService constructor(
     override val properties: SystemStorageProperties,
     val gcs: Storage
 
@@ -47,6 +47,6 @@ class GcsSystemStorageServiceImpl constructor(
     }
 
     companion object {
-        val logger = LoggerFactory.getLogger(GcsSystemStorageServiceImpl::class.java)
+        val logger = LoggerFactory.getLogger(GcsSystemStorageService::class.java)
     }
 }

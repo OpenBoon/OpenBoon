@@ -39,4 +39,3 @@ interface SystemStorageService {
      */
     fun <T> fetchObject(path: String, valueType: TypeReference<T>): T
 }
-
