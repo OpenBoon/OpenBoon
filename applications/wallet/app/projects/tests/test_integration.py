@@ -1,8 +1,8 @@
 import json
 import pytest
 from base64 import b64encode
-from django.http import JsonResponse, HttpResponseForbidden
-from django.test import RequestFactory
+from django.http import JsonResponse, HttpResponseForbidden, Http404
+from django.test import RequestFactory, override_settings
 from django.urls import reverse
 
 from zmlp import ZmlpClient
@@ -51,6 +51,25 @@ def test_project_view_user_does_not_belong_to_project(user, project):
                                 b'6abc33f0-4acf-4196-95ff-4cbb7f640a06')
 
 
+@override_settings(PLATFORM='zvi')
+def test_zmlp_only_flag(user, project):
+
+    class FakeViewSet(BaseProjectViewSet):
+        ZMLP_ONLY = True
+
+        def get(self, request, project):
+            return JsonResponse({'success': True})
+
+    request = RequestFactory().get('/fake-path')
+    request.user = user
+    view = FakeViewSet()
+    view.request = request
+    view.args = []
+    view.kwargs = {'project_pk': project.id}
+    response = view.dispatch(view.request, *view.args, **view.kwargs)
+    assert type(response) == Http404
+
+
 def test_projects_view_no_projects(project, user, api_client):
     api_client.force_authenticate(user)
     response = api_client.get(reverse('project-list')).json()
@@ -67,7 +86,7 @@ def test_projects_view_with_projects(project, zmlp_project_user, api_client):
 def test_project_serializer_detail(project):
     serializer = ProjectSerializer(project, context={'request': None})
     data = serializer.data
-    expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'users']
+    expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'users', 'permissions']
     assert expected_fields == list(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
@@ -75,6 +94,7 @@ def test_project_serializer_detail(project):
     assert data['url'] == f'/api/v1/projects/{project.id}/'
     assert data['jobs'] == f'/api/v1/projects/{project.id}/jobs/'
     assert data['apikeys'] == f'/api/v1/projects/{project.id}/apikeys/'
+    assert data['permissions'] == f'/api/v1/projects/{project.id}/permissions/'
 
 
 def test_project_serializer_list(project, project2):

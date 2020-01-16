@@ -7,7 +7,7 @@ from projects.models import Project
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Project
-        fields = ('id', 'name', 'url', 'jobs', 'apikeys', 'users')
+        fields = ('id', 'name', 'url', 'jobs', 'apikeys', 'users', 'permissions')
 
     jobs = HyperlinkedIdentityField(
         view_name='job-list',
@@ -16,4 +16,8 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     apikeys = HyperlinkedIdentityField(
         view_name='apikey-list',
         lookup_url_kwarg='project_pk'
+    )
+    permissions = HyperlinkedIdentityField(
+        view_name='permission-list',
+        lookup_url_kwarg='project_pk',
     )
