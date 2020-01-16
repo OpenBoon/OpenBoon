@@ -3,11 +3,13 @@ package com.zorroa.auth.server.domain
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.zmlp.apikey.Permission
-import com.zorroa.zmlp.apikey.ZmlpActor
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.zorroa.auth.server.repository.AbstractJpaFilter
 import com.zorroa.auth.server.repository.StringSetConverter
 import com.zorroa.auth.server.security.getProjectId
+import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.apikey.ZmlpActor
+import com.zorroa.zmlp.service.security.EncryptionService
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.security.core.GrantedAuthority
@@ -65,6 +67,7 @@ class ApiKey(
 
     @Column(name = "secret_key", nullable = false)
     @ApiModelProperty("A secret key used to sign API requests.")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     val secretKey: String,
 
     @Column(name = "name", nullable = false)
@@ -105,8 +108,8 @@ class ApiKey(
     }
 
     @JsonIgnore
-    fun getMinimalApiKey(): SigningApiKey {
-        return SigningApiKey(accessKey, secretKey)
+    fun getSigningApiKey(encryptionService: EncryptionService): SigningApiKey {
+        return SigningApiKey(accessKey, encryptionService.decryptString(secretKey, CRYPT_VARIANCE))
     }
 
     @JsonIgnore
@@ -136,6 +139,14 @@ class ApiKey(
         result = 31 * result + projectId.hashCode()
         result = 31 * result + secretKey.hashCode()
         return result
+    }
+
+    companion object {
+        /**
+         * Adds variance to the key used to encrypt this data.  Each form
+         * of data gets is own variance integer.
+         */
+        const val CRYPT_VARIANCE = 1023
     }
 }
 

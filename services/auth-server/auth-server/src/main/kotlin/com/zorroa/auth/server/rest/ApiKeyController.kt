@@ -1,14 +1,14 @@
 package com.zorroa.auth.server.rest
 
-import com.zorroa.zmlp.util.Json
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
 import com.zorroa.auth.server.repository.PagedList
 import com.zorroa.auth.server.service.ApiKeyService
+import com.zorroa.zmlp.service.security.EncryptionService
+import com.zorroa.zmlp.util.Json
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -27,10 +27,10 @@ import java.util.UUID
 @RestController
 @PreAuthorize("hasAuthority('ApiKeyManage')")
 @Api(tags = ["API Key"], description = "Operations for managing API Keys.")
-class ApiKeyController {
-
-    @Autowired
-    lateinit var apiKeyService: ApiKeyService
+class ApiKeyController(
+    val apiKeyService: ApiKeyService,
+    val encryptionService: EncryptionService
+) {
 
     @PostMapping("/auth/v1/apikey")
     @ApiOperation("Create Api Key")
@@ -60,7 +60,7 @@ class ApiKeyController {
     @ApiOperation("Download API Key")
     fun download(@PathVariable id: UUID): ResponseEntity<ByteArray> {
         val key = apiKeyService.get(id)
-        val bytes = Json.Mapper.writeValueAsBytes(key.getMinimalApiKey())
+        val bytes = Json.Mapper.writeValueAsBytes(key.getSigningApiKey(encryptionService))
 
         val responseHeaders = HttpHeaders()
         responseHeaders.set("charset", "utf-8")

@@ -2,6 +2,8 @@ server:
   port: 9090
 
 spring:
+  profiles:
+    active: aws
   flyway:
     schemas: auth
   datasource:
@@ -15,6 +17,13 @@ spring:
 zmlp:
   security:
     inception-key: /service/config/inception-key.json
+  storage:
+    system:
+      access-key: foo
+      secret-key: bar
+      url: http://foo
+      bucket: "1235"
+      create-bucket: true
 
 management:
   metrics:

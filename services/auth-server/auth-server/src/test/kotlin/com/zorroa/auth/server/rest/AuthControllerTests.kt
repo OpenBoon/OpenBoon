@@ -1,8 +1,8 @@
 package com.zorroa.auth.server.rest
 
-import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.auth.server.MockMvcTest
 import com.zorroa.auth.server.domain.ApiKeySpec
+import com.zorroa.zmlp.apikey.Permission
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders

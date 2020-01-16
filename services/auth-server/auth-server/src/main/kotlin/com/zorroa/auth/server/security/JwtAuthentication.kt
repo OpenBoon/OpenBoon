@@ -2,10 +2,11 @@ package com.zorroa.auth.server.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.zorroa.zmlp.apikey.Permission
-import com.zorroa.zmlp.apikey.ZmlpActor
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.repository.ApiKeyRepository
+import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.apikey.ZmlpActor
+import com.zorroa.zmlp.service.security.EncryptionService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AbstractAuthenticationToken
@@ -34,6 +35,9 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
 
     @Autowired
     lateinit var inceptionKey: ApiKey
+
+    @Autowired
+    lateinit var encryptionService: EncryptionService
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(
@@ -112,7 +116,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
         })
             ?: throw RuntimeException("Invalid JWT token")
 
-        val alg = Algorithm.HMAC512(apiKey.secretKey)
+        val alg = Algorithm.HMAC512(encryptionService.decryptString(apiKey.secretKey, ApiKey.CRYPT_VARIANCE))
         alg.verify(jwt)
 
         return JwtAuthenticationToken(

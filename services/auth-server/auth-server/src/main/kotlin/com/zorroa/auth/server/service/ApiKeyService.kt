@@ -8,6 +8,8 @@ import com.zorroa.auth.server.repository.ApiKeyRepository
 import com.zorroa.auth.server.repository.PagedList
 import com.zorroa.auth.server.security.KeyGenerator
 import com.zorroa.auth.server.security.getProjectId
+import com.zorroa.zmlp.service.security.EncryptionService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -38,12 +40,15 @@ class ApiKeyServiceImpl constructor(
 
 ) : ApiKeyService {
 
+    @Autowired
+    lateinit var encryptionService: EncryptionService
+
     override fun create(spec: ApiKeySpec): ApiKey {
         val key = ApiKey(
             UUID.randomUUID(),
             getProjectId(),
             KeyGenerator.generate(24),
-            KeyGenerator.generate(64),
+            encryptionService.encryptString(KeyGenerator.generate(64), ApiKey.CRYPT_VARIANCE),
             spec.name,
             spec.permissions.map { it.name }.toSet()
         )
