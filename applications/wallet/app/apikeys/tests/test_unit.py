@@ -8,10 +8,11 @@ from apikeys.serializers import ApikeySerializer
 @pytest.fixture
 def data():
     return {
-        'keyId': 'b3a09695-b9fb-40bd-8ea8-bbe0c2cba33f',
+        'id': 'b3a09695-b9fb-40bd-8ea8-bbe0c2cba33f',
         'name': 'Test',
         'projectId': '2fb4e52b-8791-4544-aafb-c16af66f19f8',
-        'sharedKey': 'stuff',
+        'accessKey': 'P1klR1U1RgT3YfdLYN4-AHPlnOhXZHeD',
+        'secretKey': '6Ti7kZZ7IcmWnR1bfdvCMUataoMh9Mbq9Kqvs3xctOM7y1OwbefdFiLewuEDAGBof_lV5y_JKuFtY11bmRjFEg',
         'permissions': ['AssetsRead']
     }
 
@@ -26,10 +27,11 @@ def test_apikey_all_field_validation(data, context):
     serializer = ApikeySerializer(data=data, context=context)
     assert serializer.is_valid()
     validated = serializer.validated_data
-    assert validated['keyId'] == UUID(data['keyId'])
+    assert validated['id'] == UUID(data['id'])
     assert validated['name'] == data['name']
     assert validated['projectId'] == UUID(data['projectId'])
-    assert validated['sharedKey'] == data['sharedKey']
+    assert validated['accessKey'] == data['accessKey']
+    assert validated['secretKey'] == data['secretKey']
     assert validated['permissions'] == data['permissions']
 
 
@@ -37,7 +39,7 @@ def test_apikey_url_generation(data, context):
     serializer = ApikeySerializer(data=data, context=context)
     assert serializer.is_valid()
     assert serializer.data['url'].endswith(
-        f'api/v1/projects/id/apikeys/{serializer.data["keyId"]}/'
+        f'api/v1/projects/id/apikeys/{serializer.data["id"]}/'
     )
 
 
