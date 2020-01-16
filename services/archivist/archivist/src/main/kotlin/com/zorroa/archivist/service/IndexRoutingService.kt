@@ -14,7 +14,7 @@ import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.repository.IndexClusterDao
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.Request

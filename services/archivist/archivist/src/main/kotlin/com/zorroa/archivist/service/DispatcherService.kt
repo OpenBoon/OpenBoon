@@ -42,9 +42,9 @@ import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.storage.PipelineStorageConfiguration
-import com.zorroa.archivist.util.Json
-import com.zorroa.auth.client.AuthServerClient
-import com.zorroa.auth.client.Permission
+import com.zorroa.zmlp.util.Json
+import com.zorroa.zmlp.apikey.AuthServerClient
+import com.zorroa.zmlp.apikey.Permission
 import io.micrometer.core.instrument.MeterRegistry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

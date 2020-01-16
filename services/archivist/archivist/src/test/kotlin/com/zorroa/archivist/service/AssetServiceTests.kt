@@ -11,7 +11,6 @@ import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.Element
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.TaskState
-import com.zorroa.archivist.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
@@ -274,7 +273,7 @@ class AssetServiceTests : AbstractTest() {
         assetService.batchUpdate(batchIndex)
 
         asset = assetService.getAsset(createRsp.status[0].assetId)
-        assertEquals(1, asset.getAttr("elements", Json.SET_OF_ELEMENTS)!!.size)
+        assertEquals(1, asset.getAttr("elements", Element.JSON_SET_OF)!!.size)
     }
 
     @Test(expected = IllegalStateException::class)
@@ -296,7 +295,7 @@ class AssetServiceTests : AbstractTest() {
         assetService.batchUpdate(batchIndex)
 
         asset = assetService.getAsset(createRsp.status[0].assetId)
-        assertEquals(1, asset.getAttr("elements", Json.SET_OF_ELEMENTS)!!.size)
+        assertEquals(1, asset.getAttr("elements", Element.JSON_SET_OF)!!.size)
     }
 
     /**

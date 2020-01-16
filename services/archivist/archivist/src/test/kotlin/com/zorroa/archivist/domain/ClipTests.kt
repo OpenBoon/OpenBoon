@@ -1,6 +1,6 @@
 package com.zorroa.archivist.domain
 
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import kotlin.test.assertEquals
 

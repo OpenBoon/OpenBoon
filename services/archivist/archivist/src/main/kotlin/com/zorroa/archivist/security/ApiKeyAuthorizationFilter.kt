@@ -1,7 +1,7 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.auth.client.AuthServerClient
-import com.zorroa.auth.client.ZmlpActor
+import com.zorroa.zmlp.apikey.AuthServerClient
+import com.zorroa.zmlp.apikey.ZmlpActor
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.authentication.AuthenticationProvider

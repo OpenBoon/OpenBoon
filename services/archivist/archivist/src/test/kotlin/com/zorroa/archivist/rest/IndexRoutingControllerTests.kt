@@ -5,7 +5,7 @@ import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Value

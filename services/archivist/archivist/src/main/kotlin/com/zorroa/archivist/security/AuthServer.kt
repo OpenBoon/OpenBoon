@@ -1,6 +1,6 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.auth.client.ZmlpActor
+import com.zorroa.zmlp.apikey.ZmlpActor
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority

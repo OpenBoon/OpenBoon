@@ -9,7 +9,7 @@ import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.ProjectStorageLocator
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.IndexRoutingService
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

@@ -1,6 +1,7 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.FileUtils
 import io.swagger.annotations.ApiModel
@@ -176,3 +177,8 @@ class FileStorage(
     @ApiModelProperty("Overrides which Asset")
     var sourceAssetId: String? = null
 )
+{
+    companion object {
+        val JSON_LIST_OF : TypeReference<List<FileStorage>> = object : TypeReference<List<FileStorage>>() {}
+    }
+}

@@ -10,7 +10,7 @@ import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.repository.PipelineModDao
 import com.zorroa.archivist.repository.ProjectCustomDao
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
