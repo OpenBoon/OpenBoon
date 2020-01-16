@@ -64,6 +64,10 @@ object Json {
         return value.hashCode()
     }
 
+    fun serializeToString(value: Any): String {
+        return Mapper.writeValueAsString(value)
+    }
+
     fun serializeToString(value: Any?, onNull: String?): String? {
         return if (value == null) {
             onNull

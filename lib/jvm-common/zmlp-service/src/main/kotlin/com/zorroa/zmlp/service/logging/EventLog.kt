@@ -1,6 +1,6 @@
-package com.zorroa.zmlp.logging
+package com.zorroa.zmlp.service.logging
 
-import com.zorroa.zmlp.security.getZmlpActorOrNull
+import com.zorroa.zmlp.service.security.getZmlpActorOrNull
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag

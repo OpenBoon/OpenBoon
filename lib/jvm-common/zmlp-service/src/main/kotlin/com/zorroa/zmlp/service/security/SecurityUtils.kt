@@ -1,4 +1,4 @@
-package com.zorroa.zmlp.security
+package com.zorroa.zmlp.service.security
 
 import com.zorroa.zmlp.apikey.ZmlpActor
 import org.springframework.security.core.Authentication

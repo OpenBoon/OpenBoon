@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zorroa.zmlp.storage</groupId>
+    <groupId>com.zorroa.zmlp.service.storage</groupId>
     <artifactId>zmlp-service</artifactId>
     <packaging>jar</packaging>
     <name>zmlp-service</name>

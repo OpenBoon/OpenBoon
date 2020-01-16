@@ -3,7 +3,7 @@ package com.zorroa.zmlp.apikey
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.zorroa.zmlp.util.Json
+import com.zorroa.zmlp.util.Json.Mapper
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -41,13 +41,13 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         }
         val path = Paths.get(apiKey)
         return if (Files.exists(path)) {
-            val key = Json.Mapper.readValue<SigningiKey>(path.toFile())
+            val key = Mapper.readValue<SigningiKey>(path.toFile())
             logger.debug("Loaded signing key: ${key.accessKey.substring(8)} from: '$apiKey'")
             key
         } else {
             try {
                 val decoded = Base64.getUrlDecoder().decode(apiKey)
-                val key = Json.Mapper.readValue<SigningiKey>(decoded)
+                val key = Mapper.readValue<SigningiKey>(decoded)
                 logger.debug("Loaded signing key: ${key.accessKey.substring(8)}")
                 key
             } catch (e: Exception) {
@@ -71,7 +71,7 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         val rsp = client.newCall(request).execute()
         if (rsp.isSuccessful) {
             val body = rsp.body() ?: throw AuthServerClientException("Invalid APIKey")
-            return Json.Mapper.readValue(body.byteStream())
+            return Mapper.readValue(body.byteStream())
         } else {
             throw AuthServerClientException("Invalid APIKey")
         }
@@ -93,7 +93,7 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
     }
 
     private inline fun <reified T> post(path: String, body: Map<String, Any>, projectId: UUID? = null): T {
-        val rbody = RequestBody.create(MEDIA_TYPE_JSON, Json.Mapper.writeValueAsString(body))
+        val rbody = RequestBody.create(MEDIA_TYPE_JSON, Mapper.writeValueAsString(body))
         val req = signRequest(Request.Builder().url("$baseUri/$path".replace("//", "/")), projectId)
             .post(rbody)
             .build()
@@ -102,7 +102,7 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
             throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")
         }
         val body = rsp.body() ?: throw AuthServerClientException("AuthServerClient failure, null response body")
-        return Json.Mapper.readValue(body.byteStream())
+        return Mapper.readValue(body.byteStream())
     }
 
     /**

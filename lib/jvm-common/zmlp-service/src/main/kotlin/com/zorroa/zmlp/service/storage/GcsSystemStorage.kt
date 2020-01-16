@@ -1,12 +1,12 @@
-package com.zorroa.zmlp.storage
+package com.zorroa.zmlp.service.storage
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.Storage
-import com.zorroa.zmlp.logging.LogAction
-import com.zorroa.zmlp.logging.LogObject
-import com.zorroa.zmlp.logging.event
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
+import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile

@@ -29,6 +29,7 @@
         <dependency>
             <groupId>com.zorroa.zmlp</groupId>
             <artifactId>zmlp-util</artifactId>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>

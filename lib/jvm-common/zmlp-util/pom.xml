@@ -7,6 +7,7 @@
     <artifactId>zmlp-util</artifactId>
     <packaging>jar</packaging>
     <name>zmlp-util</name>
+    <version>1.0.0</version>
 
     <parent>
         <relativePath>../pom.xml</relativePath>

@@ -1,4 +1,4 @@
-package com.zorroa.zmlp.storage
+package com.zorroa.zmlp.service.storage
 
 import com.fasterxml.jackson.core.type.TypeReference
 import org.springframework.boot.context.properties.ConfigurationProperties
