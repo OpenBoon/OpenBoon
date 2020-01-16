@@ -1,6 +1,6 @@
 package com.zorroa.auth.server.rest
 
-import com.zorroa.auth.client.Json
+import com.zorroa.zmlp.util.Json
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
@@ -60,7 +60,7 @@ class ApiKeyController {
     @ApiOperation("Download API Key")
     fun download(@PathVariable id: UUID): ResponseEntity<ByteArray> {
         val key = apiKeyService.get(id)
-        val bytes = Json.mapper.writeValueAsBytes(key.getMinimalApiKey())
+        val bytes = Json.Mapper.writeValueAsBytes(key.getMinimalApiKey())
 
         val responseHeaders = HttpHeaders()
         responseHeaders.set("charset", "utf-8")

@@ -1,7 +1,7 @@
 package com.zorroa.auth.server.rest
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.zorroa.auth.client.Permission
+import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.auth.server.MockMvcTest
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
