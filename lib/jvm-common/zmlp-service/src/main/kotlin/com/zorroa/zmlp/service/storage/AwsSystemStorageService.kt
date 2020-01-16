@@ -17,9 +17,10 @@ import org.springframework.stereotype.Service
 @Service
 @Profile("aws")
 class AwsSystemStorageService constructor(
-    override val properties: SystemStorageProperties,
-    val s3Client: AmazonS3
+    override val properties: SystemStorageProperties
 ) : SystemStorageService {
+
+    private val s3Client = getS3Client(properties)
 
     @PostConstruct
     fun initialize() {
