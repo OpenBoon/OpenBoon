@@ -2,14 +2,11 @@ package com.zorroa.auth.server.repository
 
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.domain.ApiKeyFilter
-import java.util.UUID
-import javax.persistence.EntityManager
-import javax.persistence.TypedQuery
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Predicate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
+import java.util.UUID
+import javax.persistence.EntityManager
 
 @Repository("apiKeyRepository")
 interface ApiKeyRepository : JpaRepository<ApiKey, UUID> {
@@ -24,54 +21,37 @@ interface ApiKeyRepository : JpaRepository<ApiKey, UUID> {
 /**
  * A repository class for doing custom queries.
  */
-interface ApiKeySearchRepository {
+interface ApiKeyCustomRepository {
 
     /**
      * Find a single result. Throws if there is not one result and one result only.
      */
     fun findOne(filter: ApiKeyFilter): ApiKey
+
+    fun search(filter: ApiKeyFilter): PagedList<ApiKey>
 }
 
 @Repository
-class ApiKeySearchRepositoryImpl : ApiKeySearchRepository {
+class ApiKeyCustomRepositoryImpl : ApiKeyCustomRepository {
 
     @Autowired
     lateinit var entityManager: EntityManager
 
     override fun findOne(filter: ApiKeyFilter): ApiKey {
-        return builQuery(filter).singleResult
+        val pager = JpaQuery(entityManager, filter, ApiKey::class.java)
+        return entityManager.createQuery(pager.getQuery()).singleResult
     }
 
-    fun builQuery(filter: ApiKeyFilter): TypedQuery<ApiKey> {
-        val cb = entityManager.criteriaBuilder
-        val criteria = cb.createQuery(ApiKey::class.java)
-        val root = criteria.from(ApiKey::class.java)
-        val where = mutableListOf<Predicate>()
+    override fun search(filter: ApiKeyFilter): PagedList<ApiKey> {
+        val query = JpaQuery(entityManager, filter, ApiKey::class.java)
+        val page = filter.page
 
-        filter.ids?.let {
-            val ic: CriteriaBuilder.In<UUID> = cb.`in`(root.get("id"))
-            it.forEach { v ->
-                ic.value(v)
-            }
-            where.add(ic)
-        }
+        val list = entityManager.createQuery(query.getQuery())
+            .setFirstResult(page.from)
+            .setMaxResults(page.size)
+            .resultList
 
-        filter.projectIds?.let {
-            val ic: CriteriaBuilder.In<UUID> = cb.`in`(root.get("projectId"))
-            it.forEach { v ->
-                ic.value(v)
-            }
-            where.add(ic)
-        }
-
-        filter.names?.let {
-            val ic: CriteriaBuilder.In<String> = cb.`in`(root.get("name"))
-            it.forEach { v ->
-                ic.value(v)
-            }
-            where.add(ic)
-        }
-
-        return entityManager.createQuery(criteria.select(root).where(*where.toTypedArray()))
+        val count = entityManager.createQuery(query.getQueryForCount()).singleResult
+        return PagedList(page.withTotal(count), list)
     }
 }

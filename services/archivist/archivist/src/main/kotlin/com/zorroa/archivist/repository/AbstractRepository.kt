@@ -102,31 +102,3 @@ open class AbstractDao {
         this.jdbc = JdbcTemplate(dataSource)
     }
 }
-
-@ApiModel("Long Range Filter", description = "Filters on a range using Longs.")
-class LongRangeFilter(
-
-    @ApiModelProperty("Values must be greater than this.")
-    val greaterThan: Long?,
-
-    @ApiModelProperty("Values must be less than this.")
-    val lessThan: Long?,
-
-    @ApiModelProperty("If true values matching the bounds will be included.")
-    val inclusive: Boolean = true
-
-) {
-    /**
-     * Return values needed to satisfy SQL query as list.
-     */
-    fun getFilterValues(): Iterable<Long> {
-        val res = mutableListOf<Long>()
-        if (greaterThan != null) {
-            res.add(greaterThan)
-        }
-        if (lessThan != null) {
-            res.add(lessThan)
-        }
-        return res
-    }
-}

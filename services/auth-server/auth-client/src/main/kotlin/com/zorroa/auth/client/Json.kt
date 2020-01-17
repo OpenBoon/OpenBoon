@@ -25,4 +25,12 @@ object Json {
     }
 
     val mediaType: MediaType? = MediaType.parse("application/json; charset=utf-8")
+
+    /**
+     * Pretty print the given object.
+     */
+    fun prettyPrint(obj: Any) {
+        println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj))
+    }
+
 }

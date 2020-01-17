@@ -63,6 +63,8 @@ services:
     image: zmlp/authserver
     depends_on:
       - postgres
+    ports:
+      - "9090:9090"
     build:
       context: services/auth-server
     environment:

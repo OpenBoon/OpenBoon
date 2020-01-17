@@ -21,8 +21,7 @@ class JwtAuthenticationTests : AbstractTest() {
     fun testValidateToken() {
         val spec = ApiKeySpec(
             "test",
-            setOf(Permission.AssetsRead),
-            UUID.randomUUID()
+            setOf(Permission.AssetsRead)
         )
         val apiKey = apiKeyService.create(spec)
         val token = apiKey.getJwtToken()
@@ -38,5 +37,16 @@ class JwtAuthenticationTests : AbstractTest() {
 
         val auth = jwtAuthenticationFilter.validateToken(token)
         assertEquals(auth.user.id, apiKey.id)
+    }
+
+    @Test
+    fun testValidateInceptionTokenWithProjectHeader() {
+        val apiKey = Json.mapper.readValue<ApiKey>(File("src/test/resources/key.json"))
+        val token = apiKey.getJwtToken()
+        val pid = UUID.randomUUID()
+
+        val auth = jwtAuthenticationFilter.validateToken(token, pid)
+        assertEquals(auth.user.id, apiKey.id)
+        assertEquals(auth.user.projectId, pid)
     }
 }
