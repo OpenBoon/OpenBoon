@@ -3,14 +3,12 @@ package com.zorroa.auth.server.domain
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.zorroa.auth.server.repository.AbstractJpaFilter
 import com.zorroa.auth.server.repository.EncryptedConverter
 import com.zorroa.auth.server.repository.StringSetConverter
 import com.zorroa.auth.server.security.getProjectId
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
-import com.zorroa.zmlp.service.security.EncryptionService
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.security.core.GrantedAuthority
@@ -69,6 +67,9 @@ class ApiKey(
     val permissions: Set<String>
 ) {
 
+    /**
+     * Only used in tests.
+     */
     @JsonIgnore
     fun getJwtToken(timeout: Int = 60, projId: UUID? = null): String {
         val algo = Algorithm.HMAC512(secretKey)
@@ -159,10 +160,10 @@ class ValidationKey(
 
 
     /**
-     * Return the [ZmlpActor] for this key.
+     * Return the [ZmlpActor] for this key.  Optionally override the project Id.
      */
-    fun getZmlpActor(): ZmlpActor {
-        return ZmlpActor(id, projectId, name, permissions.map { Permission.valueOf(it) }.toSet())
+    fun getZmlpActor(projectId: UUID? = null): ZmlpActor {
+        return ZmlpActor(id, projectId ?: this.projectId, name, permissions.map { Permission.valueOf(it) }.toSet())
     }
 }
 

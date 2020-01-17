@@ -98,16 +98,9 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
          */
         val isInceptionKey = inceptionKey.accessKey == accessKey
         val apiKey = if (isInceptionKey) {
-
-            // The inception key is allowed to claim a projectId.
-            val projectId = if (jwt.claims.containsKey("projectId")
-            ) {
-                UUID.fromString(jwt.claims.getValue("projectId").asString())
-            } else projectIdOverride ?: inceptionKey.projectId
-
             ValidationKey(
                 inceptionKey.id,
-                projectId,
+                inceptionKey.projectId,
                 inceptionKey.accessKey,
                 inceptionKey.secretKey,
                 inceptionKey.name,
@@ -117,21 +110,40 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
             apiKeyCustomRepository.getValidationKey(accessKey)
         }
 
-        // Decrypt key if needed.
+        /**
+         * Decrypt the secret key if needed.
+         */
         val secretKey = if (isInceptionKey) {
             inceptionKey.secretKey
-        }
-        else {
+        } else {
             encryptionService.decryptString(apiKey.projectId, apiKey.secretKey, ApiKey.CRYPT_VARIANCE)
         }
 
+        /**
+         * Validate the signage
+         */
         val alg = Algorithm.HMAC512(secretKey)
         alg.verify(jwt)
 
-        return JwtAuthenticationToken(
-            apiKey.getZmlpActor(),
-            apiKey.getGrantedAuthorities()
-        )
+        /**
+         * Allow SystemProjectOverride keys to override the project.
+         */
+        val actor = if (apiKey.permissions.contains(Permission.SystemProjectOverride.name)) {
+            /**
+             * Check for a project ID claim, otherwise a project ID header, and then
+             * fallback on the key's project Id.
+             */
+            val projectId = if (jwt.claims.containsKey("projectId")) {
+                UUID.fromString(jwt.claims.getValue("projectId").asString())
+            } else {
+                projectIdOverride ?: apiKey.projectId
+            }
+            apiKey.getZmlpActor(projectId)
+        } else {
+            apiKey.getZmlpActor()
+        }
+
+        return JwtAuthenticationToken(actor, apiKey.getGrantedAuthorities())
     }
 
     companion object {
