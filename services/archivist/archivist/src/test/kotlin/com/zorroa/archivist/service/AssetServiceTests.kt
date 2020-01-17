@@ -277,7 +277,7 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test(expected = IllegalStateException::class)
-    fun testIndexhUpdateAssetsWithTooManyElements() {
+    fun testIndexUpdateAssetsWithTooManyElements() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec("gs://cats/large-brown-cat.jpg"))
@@ -352,44 +352,6 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(1582911032, rsp.assets[0].getAttr("source.checksum", Int::class.java))
         assertEquals(97221, rsp.assets[0].getAttr("source.filesize", Long::class.java))
         assertFalse(rsp.status[0].failed)
-    }
-
-    @Test
-    fun testSearch() {
-        val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec("https://i.imgur.com/LRoLTlK.jpg"))
-        )
-        assetService.batchCreate(batchCreate)
-
-        // Note that here, scroll is not allowed yet the result should have no scroll id.
-        val search = AssetSearch(
-            mapOf(
-                "query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg")),
-                "scroll" to "2s"
-            )
-        )
-        val rsp = assetService.search(search)
-        assertEquals(1, rsp.hits.hits.size)
-        assertNull(rsp.scrollId)
-    }
-
-    @Test
-    fun testElementSearch() {
-        val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec(
-                "https://i.imgur.com/LRoLTlK.jpg",
-                attrs = mapOf("elements" to listOf(Element("object", "catDetector",
-                    listOf(0, 0, 100, 100), listOf("cat")))))
-        ))
-
-        assetService.batchCreate(batchCreate)
-
-        val search = AssetSearch(
-            mapOf("query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg"))),
-            mapOf("term" to mapOf("elements.type" to "object")))
-
-        val rsp = assetService.search(search)
-        assertEquals(1L, rsp.hits.totalHits.value)
     }
 
     @Test

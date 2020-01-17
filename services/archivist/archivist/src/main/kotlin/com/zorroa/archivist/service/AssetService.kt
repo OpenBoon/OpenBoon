@@ -2,8 +2,8 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.AssetIdBuilder
-import com.zorroa.archivist.domain.AssetSearch
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchAssetOpStatus
@@ -13,39 +13,26 @@ import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
 import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
-import com.zorroa.archivist.domain.ProjectStorageCategory
-import com.zorroa.archivist.domain.ProjectStorageSpec
+import com.zorroa.archivist.domain.Element
+import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
-import com.zorroa.archivist.domain.AssetFileLocator
-import com.zorroa.archivist.domain.Element
-import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.ProjectStorageCategory
+import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.ElasticSearchErrorTranslator
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.zmlp.util.Json
-import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
-import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.RequestOptions
-import org.elasticsearch.common.Strings
-import org.elasticsearch.common.settings.Settings
-import org.elasticsearch.common.xcontent.DeprecationHandler
-import org.elasticsearch.common.xcontent.NamedXContentRegistry
-import org.elasticsearch.common.xcontent.XContentFactory
-import org.elasticsearch.common.xcontent.XContentType
-import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.search.SearchModule
-import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -61,20 +48,19 @@ import org.springframework.stereotype.Service
  * the full doc, we could switch this behavior.
  */
 interface AssetService {
-
-    /**
-     * Execute an arbitrary ES search and send the result
-     * to the given OutputStream.
-     */
-    fun search(search: AssetSearch): SearchResponse
-
     /**
      * Get an Asset by ID.
      */
     fun getAsset(assetId: String): Asset
 
+    /**
+     * Get all assets by their unique ID.
+     */
     fun getAll(ids: List<String>): List<Asset>
 
+    /**
+     * Take a list of asset ids and return a set of valid ones.
+     */
     fun getValidAssetIds(ids: List<String>): Set<String>
 
     /**
@@ -471,62 +457,9 @@ class AssetServiceImpl : AssetService {
         return jobService.create(spec)
     }
 
-    fun getElementQuery(search: AssetSearch): QueryBuilder? {
-        return if (search.elementQuery == null) {
-            null
-        } else {
-            val parser = XContentFactory.xContent(XContentType.JSON).createParser(
-                xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION,
-                Json.serializeToString(mapOf("query" to search.elementQuery))
-            )
-            val ssb = SearchSourceBuilder.fromXContent(parser)
-            ssb.query()
-        }
-    }
-
-    fun prepSearch(search: AssetSearch): SearchSourceBuilder {
-
-        // Filters out search options that are not supported.
-        val searchSource = (search.search ?: mutableMapOf())
-            .filterKeys { it in allowedSearchProperties }
-
-        val parser = XContentFactory.xContent(XContentType.JSON).createParser(
-            xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION,
-            Json.serializeToString(searchSource)
-        )
-
-        val ssb = SearchSourceBuilder.fromXContent(parser)
-        val query = QueryBuilders.boolQuery()
-        if (ssb.query() == null) {
-            query.must(QueryBuilders.matchAllQuery())
-        } else {
-            query.must(ssb.query())
-        }
-
-        getElementQuery(search)?.let {
-            query.must(QueryBuilders.nestedQuery("elements", it, ScoreMode.Avg))
-        }
-
-        // Replace the query in the SearchSourceBuilder with wrapped versions
-        ssb.query(query)
-
-        if (logger.isDebugEnabled) {
-            logger.debug("SEARCH : {}", Strings.toString(ssb, true, true))
-        }
-
-        return ssb
-    }
-
-    override fun search(search: AssetSearch): SearchResponse {
-        val client = indexRoutingService.getProjectRestClient()
-        val req = client.newSearchRequest()
-        req.source(prepSearch(search))
-        req.preference(getProjectId().toString())
-
-        return client.client.search(req, RequestOptions.DEFAULT)
-    }
-
     companion object {
+
+        val logger: Logger = LoggerFactory.getLogger(AssetServiceImpl::class.java)
 
         /**
          * These namespaces get removed from [AssetSpec] at creation time.
@@ -541,22 +474,8 @@ class AssetServiceImpl : AssetService {
         val removeFieldsOnUpdate = setOf("tmp", "temp")
 
         /**
-         * These SearchRequest Attributes are allowed.
-         */
-        val allowedSearchProperties = setOf(
-            "query", "from", "size", "timeout",
-            "post_filter", "minscore", "suggest",
-            "highlight", "collapse",
-            "slice", "aggs", "aggregations", "sort"
-        )
-
-        /**
          * Maximum number of elements you can have in an asset.
          */
-        val maxElementCount = 25
-
-        private val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
-        val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)
-        val logger: Logger = LoggerFactory.getLogger(AssetServiceImpl::class.java)
+        const val maxElementCount = 25
     }
 }
