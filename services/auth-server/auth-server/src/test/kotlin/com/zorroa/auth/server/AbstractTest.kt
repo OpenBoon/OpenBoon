@@ -40,7 +40,9 @@ abstract class AbstractTest {
     @MockBean
     lateinit var encryptionService: EncryptionService
 
-    protected lateinit var standardKey: ApiKey
+    protected lateinit var mockKey: ApiKey
+
+    protected val mockSecret = "pcekjDV_ipSMXAaBqqtq6Jwy5FAMnjehUQrMEhbG8W01giVqVLfEN9FdMIvzu0rb"
 
     @Before
     fun setup() {
@@ -59,23 +61,21 @@ abstract class AbstractTest {
             "standard-key",
             setOf(Permission.AssetsRead.name)
         )
+        val validationKey = keySpec.getValidationKey()
 
         SecurityContextHolder.getContext().authentication =
             UsernamePasswordAuthenticationToken(
-                keySpec.getZmlpActor(),
+                validationKey.getZmlpActor(),
                 keySpec.id,
-                keySpec.getGrantedAuthorities()
+                validationKey.getGrantedAuthorities()
             )
-
-        standardKey = apiKeyRepository.save(keySpec)
+        mockKey = apiKeyRepository.saveAndFlush(keySpec)
     }
 
     fun setupMocks() {
-        whenever(
-            encryptionService.encryptString(any(), any())
-        ).thenReturn("pcekjDV_ipSMXAaBqqtq6Jwy5FAMnjehUQrMEhbG8W01giVqVLfEN9FdMIvzu0rb")
-        whenever(
-            encryptionService.decryptString(any(), any())
-        ).thenReturn("pcekjDV_ipSMXAaBqqtq6Jwy5FAMnjehUQrMEhbG8W01giVqVLfEN9FdMIvzu0rb")
+        whenever(encryptionService.encryptString(any(), any())).thenReturn(mockSecret)
+        whenever(encryptionService.decryptString(any(), any())).thenReturn(mockSecret)
+        whenever(encryptionService.encryptString(any(), any(), any())).thenReturn(mockSecret)
+        whenever(encryptionService.decryptString(any(), any(), any())).thenReturn(mockSecret)
     }
 }

@@ -12,8 +12,6 @@ zmlp:
     inception-key: src/test/resources/key.json
   storage:
     system:
-      access-key: qwerty123
-      secret-key: 123qwerty
       url: http://localhost:9000
       bucket: system-storage-test
       create-bucket: true

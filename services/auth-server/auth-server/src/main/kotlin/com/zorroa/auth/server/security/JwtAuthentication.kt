@@ -3,7 +3,8 @@ package com.zorroa.auth.server.security
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.zorroa.auth.server.domain.ApiKey
-import com.zorroa.auth.server.repository.ApiKeyRepository
+import com.zorroa.auth.server.domain.ValidationKey
+import com.zorroa.auth.server.repository.ApiKeyCustomRepository
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
 import com.zorroa.zmlp.service.security.EncryptionService
@@ -31,7 +32,7 @@ const val PROJ_HEADER = "X-Zorroa-ProjectId"
 class JWTAuthorizationFilter : OncePerRequestFilter() {
 
     @Autowired
-    lateinit var apiKeyRepository: ApiKeyRepository
+    lateinit var apiKeyCustomRepository: ApiKeyCustomRepository
 
     @Autowired
     lateinit var inceptionKey: ApiKey
@@ -95,7 +96,8 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
         /**
          * Check to see if the key is the inception key.
          */
-        val apiKey = (if (inceptionKey.accessKey == accessKey) {
+        val isInceptionKey = inceptionKey.accessKey == accessKey
+        val apiKey = if (isInceptionKey) {
 
             // The inception key is allowed to claim a projectId.
             val projectId = if (jwt.claims.containsKey("projectId")
@@ -103,7 +105,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
                 UUID.fromString(jwt.claims.getValue("projectId").asString())
             } else projectIdOverride ?: inceptionKey.projectId
 
-            ApiKey(
+            ValidationKey(
                 inceptionKey.id,
                 projectId,
                 inceptionKey.accessKey,
@@ -112,11 +114,18 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
                 INCEPTION_PERMISSIONS
             )
         } else {
-            apiKeyRepository.findByAccessKey(accessKey)
-        })
-            ?: throw RuntimeException("Invalid JWT token")
+            apiKeyCustomRepository.getValidationKey(accessKey)
+        }
 
-        val alg = Algorithm.HMAC512(encryptionService.decryptString(apiKey.secretKey, ApiKey.CRYPT_VARIANCE))
+        // Decrypt key if needed.
+        val secretKey = if (isInceptionKey) {
+            inceptionKey.secretKey
+        }
+        else {
+            encryptionService.decryptString(apiKey.projectId, apiKey.secretKey, ApiKey.CRYPT_VARIANCE)
+        }
+
+        val alg = Algorithm.HMAC512(secretKey)
         alg.verify(jwt)
 
         return JwtAuthenticationToken(

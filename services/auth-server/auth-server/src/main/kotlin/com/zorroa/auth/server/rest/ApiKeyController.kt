@@ -3,9 +3,9 @@ package com.zorroa.auth.server.rest
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
+import com.zorroa.auth.server.repository.ApiKeyCustomRepository
 import com.zorroa.auth.server.repository.PagedList
 import com.zorroa.auth.server.service.ApiKeyService
-import com.zorroa.zmlp.service.security.EncryptionService
 import com.zorroa.zmlp.util.Json
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -29,7 +29,7 @@ import java.util.UUID
 @Api(tags = ["API Key"], description = "Operations for managing API Keys.")
 class ApiKeyController(
     val apiKeyService: ApiKeyService,
-    val encryptionService: EncryptionService
+    val apikeyCustomRepository: ApiKeyCustomRepository
 ) {
 
     @PostMapping("/auth/v1/apikey")
@@ -59,14 +59,29 @@ class ApiKeyController(
     @GetMapping("/auth/v1/apikey/{id}/_download")
     @ApiOperation("Download API Key")
     fun download(@PathVariable id: UUID): ResponseEntity<ByteArray> {
-        val key = apiKeyService.get(id)
-        val bytes = Json.Mapper.writeValueAsBytes(key.getSigningApiKey(encryptionService))
+        val key = apikeyCustomRepository.getSigningKey(id)
+        val bytes = Json.Mapper.writeValueAsBytes(key)
 
         val responseHeaders = HttpHeaders()
         responseHeaders.set("charset", "utf-8")
         responseHeaders.contentType = MediaType.valueOf("application/json")
         responseHeaders.contentLength = bytes.size.toLong()
-        responseHeaders.set("Content-disposition", "attachment; filename=zorroa-${key.name}.json")
+        responseHeaders.set("Content-disposition", "attachment; filename=zorroa-${key.accessKey}.json")
+
+        return ResponseEntity(bytes, responseHeaders, HttpStatus.OK)
+    }
+
+    @GetMapping("/auth/v1/apikey/{name}/_downloadByName")
+    @ApiOperation("Download API Key")
+    fun downloadNamed(@PathVariable name: String): ResponseEntity<ByteArray> {
+        val key = apikeyCustomRepository.getSigningKey(name)
+        val bytes = Json.Mapper.writeValueAsBytes(key)
+
+        val responseHeaders = HttpHeaders()
+        responseHeaders.set("charset", "utf-8")
+        responseHeaders.contentType = MediaType.valueOf("application/json")
+        responseHeaders.contentLength = bytes.size.toLong()
+        responseHeaders.set("Content-disposition", "attachment; filename=zorroa-${key.accessKey}.json")
 
         return ResponseEntity(bytes, responseHeaders, HttpStatus.OK)
     }

@@ -19,11 +19,11 @@ zmlp:
     inception-key: /service/config/inception-key.json
   storage:
     system:
-      access-key: foo
-      secret-key: bar
-      url: http://foo
-      bucket: "1235"
-      create-bucket: true
+      access-key: qwerty123
+      secret-key: 123qwerty
+      url: http://minio:9000
+      bucket: system-storage
+      create-bucket: false
 
 management:
   metrics:

@@ -52,7 +52,7 @@ class ApiKeyServiceImpl constructor(
             spec.name,
             spec.permissions.map { it.name }.toSet()
         )
-        return apiKeyRepository.save(key)
+        return apiKeyRepository.saveAndFlush(key)
     }
 
     @Transactional(readOnly = true)

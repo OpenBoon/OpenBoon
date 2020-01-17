@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.zorroa.auth.server.repository.AbstractJpaFilter
+import com.zorroa.auth.server.repository.EncryptedConverter
 import com.zorroa.auth.server.repository.StringSetConverter
 import com.zorroa.auth.server.security.getProjectId
 import com.zorroa.zmlp.apikey.Permission
@@ -35,18 +36,6 @@ class ApiKeySpec(
     val permissions: Set<Permission>
 )
 
-/**
- * The minimum properties needed for a valid API signing key.
- */
-@ApiModel("SigningApiKey", description = "The attributes required to sign JWT requests.")
-class SigningApiKey(
-    @ApiModelProperty("The access Key")
-    val accessKey: String,
-
-    @ApiModelProperty("A shared key used to sign API requests.")
-    val secretKey: String
-)
-
 @Entity
 @Table(name = "api_key")
 @ApiModel("ApiKey", description = "An API key allows remote users to access ZMLP resources.")
@@ -67,7 +56,7 @@ class ApiKey(
 
     @Column(name = "secret_key", nullable = false)
     @ApiModelProperty("A secret key used to sign API requests.")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Convert(converter = EncryptedConverter::class)
     val secretKey: String,
 
     @Column(name = "name", nullable = false)
@@ -79,14 +68,6 @@ class ApiKey(
     @ApiModelProperty("The permissions or roles for the ApiKey")
     val permissions: Set<String>
 ) {
-    @JsonIgnore
-    fun getGrantedAuthorities(): List<GrantedAuthority> {
-        return if (permissions.isNullOrEmpty()) {
-            listOf()
-        } else {
-            permissions.map { SimpleGrantedAuthority(it) }
-        }
-    }
 
     @JsonIgnore
     fun getJwtToken(timeout: Int = 60, projId: UUID? = null): String {
@@ -107,14 +88,8 @@ class ApiKey(
         return spec.sign(algo)
     }
 
-    @JsonIgnore
-    fun getSigningApiKey(encryptionService: EncryptionService): SigningApiKey {
-        return SigningApiKey(accessKey, encryptionService.decryptString(secretKey, CRYPT_VARIANCE))
-    }
-
-    @JsonIgnore
-    fun getZmlpActor(): ZmlpActor {
-        return ZmlpActor(id, projectId, name, permissions.map { Permission.valueOf(it) }.toSet())
+    fun getValidationKey() : ValidationKey {
+        return ValidationKey(id, projectId, accessKey, secretKey, name, permissions)
     }
 
     override fun toString(): String {
@@ -149,6 +124,48 @@ class ApiKey(
         const val CRYPT_VARIANCE = 1023
     }
 }
+
+/**
+ * A minimal key used for JWT validation and creation of the [ZmlpActor]
+ *
+ * @property id The key id.
+ * @property projectId The project Id.
+ * @property accessKey The access key.
+ * @property secretKey The secret key.
+ * @property name The name of the key.
+ * @property permissions The permissions for the key.
+ *
+ */
+class ValidationKey(
+    val id: UUID,
+    val projectId: UUID,
+    val accessKey: String,
+    val secretKey: String,
+    val name: String,
+    val permissions: Set<String>
+)
+{
+
+    /**
+     * Return the permissions as [GrantedAuthority]
+     */
+    fun getGrantedAuthorities(): List<GrantedAuthority> {
+        return if (permissions.isNullOrEmpty()) {
+            listOf()
+        } else {
+            permissions.map { SimpleGrantedAuthority(it) }
+        }
+    }
+
+
+    /**
+     * Return the [ZmlpActor] for this key.
+     */
+    fun getZmlpActor(): ZmlpActor {
+        return ZmlpActor(id, projectId, name, permissions.map { Permission.valueOf(it) }.toSet())
+    }
+}
+
 
 /**
  * Used for getting a filtered list of API keys.
