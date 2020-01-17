@@ -1,6 +1,6 @@
 package com.zorroa.auth.server
 
-import com.zorroa.auth.client.Permission
+import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.repository.ApiKeyRepository
 import com.zorroa.auth.server.security.KeyGenerator

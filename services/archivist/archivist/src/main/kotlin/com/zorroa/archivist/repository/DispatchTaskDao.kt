@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.DispatchTask
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.UUID

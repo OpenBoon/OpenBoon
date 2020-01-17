@@ -21,14 +21,15 @@ import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.AssetFileLocator
+import com.zorroa.archivist.domain.Element
+import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.ElasticSearchErrorTranslator
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.archivist.util.Json
-import com.zorroa.archivist.util.Json.SET_OF_ELEMENTS
+import com.zorroa.zmlp.util.Json
 import org.apache.lucene.search.join.ScoreMode
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
@@ -186,7 +187,7 @@ class AssetServiceImpl : AssetService {
                 ?: throw IllegalArgumentException("The source asset for a clip cannot have a null URI")
 
             // Copy over source files if any
-            val files = clipSource.getAttr("files", Json.LIST_OF_FILE_STORAGE) ?: listOf()
+            val files = clipSource.getAttr("files", FileStorage.JSON_LIST_OF) ?: listOf()
             val sourceFiles = files.let {
                 it.filter { file ->
                     file.category == ProjectStorageCategory.SOURCE
@@ -414,7 +415,7 @@ class AssetServiceImpl : AssetService {
 
                 // Uniquify the elments
                 if (asset.attrExists("elements")) {
-                    val elements = asset.getAttr("elements", SET_OF_ELEMENTS)
+                    val elements = asset.getAttr("elements", Element.JSON_SET_OF)
                     if (elements != null && elements.size > maxElementCount) {
                         throw IllegalStateException(
                             "Asset ${asset.id} has to many elements, > $maxElementCount"

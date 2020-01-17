@@ -1,6 +1,6 @@
 package com.zorroa.auth.server.rest
 
-import com.zorroa.auth.client.Permission
+import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.auth.server.MockMvcTest
 import com.zorroa.auth.server.domain.ApiKeySpec
 import org.hamcrest.CoreMatchers

@@ -1,6 +1,6 @@
 package com.zorroa.auth.server.rest
 
-import com.zorroa.auth.client.Permission
+import com.zorroa.zmlp.apikey.Permission
 import io.swagger.annotations.ApiModelProperty
 import io.swagger.annotations.ApiOperation
 import org.springframework.web.bind.annotation.RequestMapping

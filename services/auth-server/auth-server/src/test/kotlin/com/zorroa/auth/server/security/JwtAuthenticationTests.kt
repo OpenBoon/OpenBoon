@@ -1,11 +1,11 @@
 package com.zorroa.auth.server.security
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.zorroa.auth.client.ApiKey
-import com.zorroa.auth.client.Json
-import com.zorroa.auth.client.Permission
 import com.zorroa.auth.server.AbstractTest
 import com.zorroa.auth.server.domain.ApiKeySpec
+import com.zorroa.zmlp.apikey.ApiKey
+import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.io.File
@@ -32,7 +32,7 @@ class JwtAuthenticationTests : AbstractTest() {
 
     @Test
     fun testValidateInceptionToken() {
-        val apiKey = Json.mapper.readValue<ApiKey>(File("src/test/resources/key.json"))
+        val apiKey = Json.Mapper.readValue<ApiKey>(File("src/test/resources/key.json"))
         val token = apiKey.getJwtToken()
 
         val auth = jwtAuthenticationFilter.validateToken(token)
@@ -41,7 +41,7 @@ class JwtAuthenticationTests : AbstractTest() {
 
     @Test
     fun testValidateInceptionTokenWithProjectHeader() {
-        val apiKey = Json.mapper.readValue<ApiKey>(File("src/test/resources/key.json"))
+        val apiKey = Json.Mapper.readValue<ApiKey>(File("src/test/resources/key.json"))
         val token = apiKey.getJwtToken()
         val pid = UUID.randomUUID()
 

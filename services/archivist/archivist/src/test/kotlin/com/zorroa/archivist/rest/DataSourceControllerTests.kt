@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.DataSourceFilter
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.service.DataSourceService
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired

@@ -11,7 +11,7 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.lang.IllegalStateException

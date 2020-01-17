@@ -17,7 +17,7 @@ import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.repository.KPagedList
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.randomString
 import org.junit.Before
 import org.junit.Test

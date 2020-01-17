@@ -2,7 +2,7 @@ package com.zorroa.archivist.clients
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.EsClientCacheKey
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.elasticsearch.action.delete.DeleteRequest
 import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.index.IndexRequest
