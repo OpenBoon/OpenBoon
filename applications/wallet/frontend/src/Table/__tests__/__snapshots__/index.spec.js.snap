@@ -87,7 +87,7 @@ exports[`<Table /> should render properly with an error 1`] = `
 }
 
 .emotion-1 {
-  height: 300px;
+  height: calc(100vh - 182px);
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -133,7 +133,11 @@ exports[`<Table /> should render properly with an error 1`] = `
           <div
             className="emotion-1"
           >
-            Hmmm, something went wrong.
+            <svg
+              data-file-name="error.svg"
+            />
+            <br />
+             Hmmm, something went wrong.
             <br />
              Please try refreshing.
           </div>
@@ -234,7 +238,7 @@ exports[`<Table /> should render properly without data 1`] = `
 }
 
 .emotion-1 {
-  height: 300px;
+  height: calc(100vh - 182px);
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
