@@ -3,6 +3,7 @@ package com.zorroa.archivist.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.util.StringListConverter
 import io.swagger.annotations.ApiModel
@@ -30,12 +31,25 @@ class DataSourceSpec(
     @Convert(converter = StringListConverter::class)
     var fileTypes: List<String>? = null,
 
-    @ApiModelProperty(
-        "A list of analysis modules to apply to the DataSource, " +
-            "this overrides project defaults if set."
-    )
+    @ApiModelProperty("Override the project default pipeline with different.")
+    val pipeline: String? = null
+)
+
+@ApiModel("DataSourceUodate", description = "Defines a DataSource fields that can be updated")
+class DataSourceUpdate(
+
+    @ApiModelProperty("The name of the DataSource")
+    var name: String,
+
+    @ApiModelProperty("The URI the DataSource points to.")
+    var uri: String,
+
+    @ApiModelProperty("A list of file extensions to filter", example = "[jpg,png]")
     @Convert(converter = StringListConverter::class)
-    var analysis: List<String>? = null
+    var fileTypes: List<String>?,
+
+    @ApiModelProperty("Override the project default pipeline with different.")
+    val pipelineId: UUID
 )
 
 @Entity
@@ -51,6 +65,10 @@ class DataSource(
     @ApiModelProperty("The Unique ID of the Project.")
     val projectId: UUID,
 
+    @ApiModelProperty("The Pipeline this DataSource is using.")
+    @Column(name = "pk_pipeline")
+    val pipelineId: UUID,
+
     @Column(name = "str_name")
     @ApiModelProperty("The unique name of the DataSource")
     val name: String,
@@ -63,11 +81,6 @@ class DataSource(
     @Convert(converter = StringListConverter::class)
     @Column(name = "str_file_types")
     var fileTypes: List<String>?,
-
-    @ApiModelProperty("The default Analysis modules for this data source")
-    @Convert(converter = StringListConverter::class)
-    @Column(name = "str_analysis")
-    var analysis: List<String>?,
 
     @Column(name = "time_created")
     @ApiModelProperty("The time the datasource was created.")
@@ -86,6 +99,20 @@ class DataSource(
     val actorModified: String
 
 ) {
+
+    fun getUpdated(update: DataSourceUpdate) : DataSource{
+        return DataSource(id,
+            projectId,
+            update.pipelineId,
+            update.name,
+            update.uri,
+            update.fileTypes,
+            timeCreated,
+            System.currentTimeMillis(),
+            actorCreated,
+            getZmlpActor().toString())
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

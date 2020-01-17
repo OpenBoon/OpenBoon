@@ -76,6 +76,11 @@ interface ProjectService {
     fun getSettings(projectId: UUID): ProjectSettings
 
     /**
+     * Get the current key's project settings
+     */
+    fun getSettings(): ProjectSettings
+
+    /**
      * Get the project settings blob.
      */
     fun updateSettings(projectId: UUID, settings: ProjectSettings): Boolean
@@ -169,6 +174,9 @@ class ProjectServiceImpl constructor(
 
     @Transactional(readOnly = true)
     override fun findOne(filter: ProjectFilter): Project = projectCustomDao.findOne(filter)
+
+    @Transactional(readOnly = true)
+    override fun getSettings(): ProjectSettings = projectCustomDao.getSettings(getProjectId())
 
     @Transactional(readOnly = true)
     override fun getSettings(projectId: UUID): ProjectSettings = projectCustomDao.getSettings(get(projectId).id)

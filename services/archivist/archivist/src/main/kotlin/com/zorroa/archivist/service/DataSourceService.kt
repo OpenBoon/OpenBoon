@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceCredentials
 import com.zorroa.archivist.domain.DataSourceSpec
+import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.LogAction
@@ -15,6 +16,7 @@ import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.encrypt.Encryptors
 import org.springframework.security.crypto.keygen.KeyGenerators
 import org.springframework.stereotype.Service
@@ -27,6 +29,16 @@ interface DataSourceService {
      * Create a new [DataSource]
      */
     fun create(spec: DataSourceSpec): DataSource
+
+    /**
+     * Update an existing [DataSource]
+     */
+    fun update(id: UUID, updates: DataSourceUpdate): DataSource
+
+    /**
+     * Delete an existing [DataSource]
+     */
+    fun delete(id: UUID)
 
     /**
      * Get a [DataSource] by its unique ID.
@@ -58,24 +70,37 @@ interface DataSourceService {
 @Transactional
 class DataSourceServiceImpl(
     val dataSourceDao: DataSourceDao,
-    val dataSourceJdbcDao: DataSourceJdbcDao,
-    val projectService: ProjectService,
-    val jobService: JobService
+    val dataSourceJdbcDao: DataSourceJdbcDao
 ) : DataSourceService {
+
+    @Autowired
+    lateinit var projectService: ProjectService
+
+    @Autowired
+    lateinit var jobService: JobService
+
+    @Autowired
+    lateinit var pipelineService: PipelineService
 
     override fun create(spec: DataSourceSpec): DataSource {
 
         val time = System.currentTimeMillis()
         val actor = getZmlpActor()
         val id = UUIDGen.uuid1.generate()
+        val pipelineId = if (spec.pipeline == null) {
+            projectService.getSettings(getProjectId()).defaultPipelineId
+        } else {
+            pipelineService.get(spec.pipeline).id
+        }
+
         val result = dataSourceDao.saveAndFlush(
             DataSource(
                 id,
                 getProjectId(),
+                pipelineId,
                 spec.name,
                 spec.uri,
                 spec.fileTypes,
-                spec.analysis,
                 time,
                 time,
                 actor.name,
@@ -92,6 +117,17 @@ class DataSourceServiceImpl(
             )
         )
         return result
+    }
+
+    override fun update(id: UUID, updates: DataSourceUpdate): DataSource {
+        logger.event(LogObject.DATASOURCE, LogAction.UPDATE, mapOf("dataSourceId" to id))
+        return dataSourceDao.saveAndFlush(get(id).getUpdated(updates))
+    }
+
+    override fun delete(id: UUID) {
+        logger.event(LogObject.DATASOURCE, LogAction.DELETE, mapOf("dataSourceId" to id))
+        val ds = get(id)
+        dataSourceDao.delete(ds)
     }
 
     override fun createAnalysisJob(dataSource: DataSource): Job {

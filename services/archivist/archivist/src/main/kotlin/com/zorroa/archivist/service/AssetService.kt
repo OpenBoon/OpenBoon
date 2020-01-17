@@ -21,6 +21,7 @@ import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.AssetFileLocator
+import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
@@ -248,6 +249,13 @@ class AssetServiceImpl : AssetService {
     override fun batchUpload(req: BatchUploadAssetsRequest)
         : BatchCreateAssetsResponse {
 
+        val pipeline = if (req.analyze) {
+            pipelineResolverService.resolve(req.pipeline, req.modules)
+        }
+        else {
+            null
+        }
+
         val rest = indexRoutingService.getProjectRestClient()
         val bulkRequest = BulkRequest()
         bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
@@ -296,8 +304,8 @@ class AssetServiceImpl : AssetService {
         }
 
         // Launch analysis job.
-        val jobId = if (req.analyze) {
-            createAnalysisJob(assets).id
+        val jobId = if (pipeline != null) {
+            createAnalysisJob(assets, pipeline).id
         } else {
             null
         }
@@ -311,6 +319,13 @@ class AssetServiceImpl : AssetService {
     override fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
         if (request.assets.size > 100) {
             throw IllegalArgumentException("Cannot create more than 100 assets at a time.")
+        }
+
+        val pipeline = if (request.analyze && request.task == null) {
+            pipelineResolverService.resolve(request.pipeline, request.modules)
+        }
+        else {
+            null
         }
 
         val rest = indexRoutingService.getProjectRestClient()
@@ -346,8 +361,8 @@ class AssetServiceImpl : AssetService {
         }
 
         // Launch analysis job.
-        val jobId = if (request.analyze) {
-            createAnalysisJob(assets).id
+        val jobId = if (pipeline != null) {
+            createAnalysisJob(assets, pipeline).id
         } else {
             null
         }
@@ -449,9 +464,9 @@ class AssetServiceImpl : AssetService {
         return result
     }
 
-    fun createAnalysisJob(assets: List<Asset>): Job {
+    fun createAnalysisJob(assets: List<Asset>, processors: List<ProcessorRef>): Job {
         val name = "Analyze ${assets.size} created assets"
-        val script = ZpsScript(name, null, assets, pipelineResolverService.resolve())
+        val script = ZpsScript(name, null, assets, processors)
         val spec = JobSpec(name, script)
 
         return jobService.create(spec)

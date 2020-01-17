@@ -36,6 +36,7 @@ class PipelineServiceTests : AbstractTest() {
     val modularSpec = PipelineSpec(
         "mod-test",
         mode = PipelineMode.MODULAR,
+        // these are ignoed
         processors = listOf(
             ProcessorRef("com.zorroa.IngestImages", "image-foo"),
             ProcessorRef("com.zorroa.IngestVideo", "image-foo")
@@ -54,13 +55,13 @@ class PipelineServiceTests : AbstractTest() {
 
     @Test
     fun testCreateModular() {
-        modularSpec.modules = listOf(createTestModule("test0").id)
-
+        modularSpec.modules = listOf(createTestModule("test0").name)
         val pipeline = pipelineService.create(modularSpec)
+
         assertEquals(modularSpec.name, pipeline.name)
         assertEquals(getProjectId(), pipeline.projectId)
-        assertTrue(pipeline.processors.isEmpty())
-        assertTrue(pipeline.modules.isNotEmpty())
+        assertTrue(pipeline.processors.isNullOrEmpty())
+        assertEquals(1, pipeline.modules.size)
     }
 
     @Test
