@@ -1,18 +1,18 @@
 package com.zorroa.auth.server.service
 
-import com.zorroa.zmlp.apikey.Permission
-import com.zorroa.zmlp.apikey.ZmlpActor
 import com.zorroa.auth.server.AbstractTest
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
 import com.zorroa.auth.server.security.getProjectId
+import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.apikey.ZmlpActor
+import java.util.UUID
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import org.junit.Test
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.UUID
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class ApiKeyServiceTests : AbstractTest() {
 

@@ -1,14 +1,14 @@
 package com.zorroa.auth.server.repository
 
 import com.zorroa.auth.server.AbstractTest
+import kotlin.test.assertEquals
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import kotlin.test.assertEquals
 
 class ApiKeyCustomRepositoryTests : AbstractTest() {
 
     @Autowired
-    lateinit var apiKeyCustomRepository : ApiKeyCustomRepository
+    lateinit var apiKeyCustomRepository: ApiKeyCustomRepository
 
     @Test
     fun testGetSigningKeyById() {

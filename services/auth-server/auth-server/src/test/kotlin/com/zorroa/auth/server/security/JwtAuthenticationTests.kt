@@ -6,11 +6,11 @@ import com.zorroa.auth.server.domain.ApiKeySpec
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.SigningKey
 import com.zorroa.zmlp.util.Json
-import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
 import java.io.File
 import java.util.UUID
 import kotlin.test.assertEquals
+import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
 class JwtAuthenticationTests : AbstractTest() {
 

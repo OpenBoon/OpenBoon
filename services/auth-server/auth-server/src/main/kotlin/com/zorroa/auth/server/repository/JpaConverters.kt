@@ -23,4 +23,3 @@ class EncryptedConverter : AttributeConverter<String, String> {
         return "ENCRYPTED"
     }
 }
-

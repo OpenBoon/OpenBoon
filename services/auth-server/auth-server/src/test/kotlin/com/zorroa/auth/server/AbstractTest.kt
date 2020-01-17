@@ -8,6 +8,7 @@ import com.zorroa.auth.server.security.KeyGenerator
 import com.zorroa.auth.server.service.ApiKeyService
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.service.security.EncryptionService
+import java.util.UUID
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 
 @Transactional
 @RunWith(SpringRunner::class)

@@ -11,8 +11,6 @@ import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
@@ -24,6 +22,8 @@ import javax.persistence.Table
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 @ApiModel("ApiKey Spec", description = "The attributes required to create a new API key.")
 class ApiKeySpec(
@@ -89,7 +89,7 @@ class ApiKey(
         return spec.sign(algo)
     }
 
-    fun getValidationKey() : ValidationKey {
+    fun getValidationKey(): ValidationKey {
         return ValidationKey(id, projectId, accessKey, secretKey, name, permissions)
     }
 
@@ -144,8 +144,7 @@ class ValidationKey(
     val secretKey: String,
     val name: String,
     val permissions: Set<String>
-)
-{
+) {
 
     /**
      * Return the permissions as [GrantedAuthority]
@@ -158,7 +157,6 @@ class ValidationKey(
         }
     }
 
-
     /**
      * Return the [ZmlpActor] for this key.  Optionally override the project Id.
      */
@@ -166,7 +164,6 @@ class ValidationKey(
         return ZmlpActor(id, projectId ?: this.projectId, name, permissions.map { Permission.valueOf(it) }.toSet())
     }
 }
-
 
 /**
  * Used for getting a filtered list of API keys.

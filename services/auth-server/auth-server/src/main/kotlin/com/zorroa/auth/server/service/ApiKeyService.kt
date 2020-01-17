@@ -9,10 +9,10 @@ import com.zorroa.auth.server.repository.PagedList
 import com.zorroa.auth.server.security.KeyGenerator
 import com.zorroa.auth.server.security.getProjectId
 import com.zorroa.zmlp.service.security.EncryptionService
+import java.util.UUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 
 interface ApiKeyService {
 

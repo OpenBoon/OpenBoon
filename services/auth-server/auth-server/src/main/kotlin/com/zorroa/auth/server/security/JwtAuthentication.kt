@@ -8,6 +8,13 @@ import com.zorroa.auth.server.repository.ApiKeyCustomRepository
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
 import com.zorroa.zmlp.service.security.EncryptionService
+import java.io.IOException
+import java.util.Date
+import java.util.UUID
+import javax.servlet.FilterChain
+import javax.servlet.ServletException
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AbstractAuthenticationToken
@@ -18,13 +25,6 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import java.io.IOException
-import java.util.Date
-import java.util.UUID
-import javax.servlet.FilterChain
-import javax.servlet.ServletException
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 const val TOKEN_PREFIX = "Bearer "
 const val AUTH_HEADER = "Authorization"
@@ -73,7 +73,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
         }
     }
 
-    fun validateToken(token: String, projectIdOverride: UUID?=null): JwtAuthenticationToken {
+    fun validateToken(token: String, projectIdOverride: UUID? = null): JwtAuthenticationToken {
         val jwt = JWT.decode(token)
 
         if (jwt.expiresAt == null) {

@@ -6,16 +6,16 @@ import com.zorroa.auth.server.domain.ValidationKey
 import com.zorroa.zmlp.apikey.SigningKey
 import com.zorroa.zmlp.service.security.EncryptionService
 import com.zorroa.zmlp.service.security.getProjectId
+import java.util.UUID
+import javax.annotation.PostConstruct
+import javax.persistence.EntityManager
+import javax.sql.DataSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
-import java.util.UUID
-import javax.annotation.PostConstruct
-import javax.persistence.EntityManager
-import javax.sql.DataSource
 
 @Repository("apiKeyRepository")
 interface ApiKeyRepository : JpaRepository<ApiKey, UUID> {
@@ -45,7 +45,7 @@ interface ApiKeyCustomRepository {
     /**
      * Load the validation key by the unique accessKey value.  This is used for authentication.
      */
-    fun getValidationKey(accessKey: String) : ValidationKey
+    fun getValidationKey(accessKey: String): ValidationKey
 
     /**
      * Find a single result. Throws if there is not one result and one result only.
@@ -119,7 +119,7 @@ class ApiKeyCustomRepositoryImpl(
         )
     }
 
-    private val signingKeyMapper = RowMapper{ rs, _ ->
+    private val signingKeyMapper = RowMapper { rs, _ ->
         SigningKey(rs.getString(1), encryptionService.decryptString(rs.getString(2), ApiKey.CRYPT_VARIANCE))
     }
 
