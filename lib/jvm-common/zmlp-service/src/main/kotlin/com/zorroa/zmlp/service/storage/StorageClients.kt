@@ -22,7 +22,7 @@ open class StorageProperties {
     var url: String? = null
 }
 
-fun getS3Client(properties: StorageProperties) : AmazonS3 {
+fun getS3Client(properties: StorageProperties): AmazonS3 {
 
     val credentials: AWSCredentials = BasicAWSCredentials(
         properties.accessKey, properties.secretKey

@@ -6,6 +6,8 @@ import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.zmlp.apikey.ZmlpActor
 import com.zorroa.zmlp.service.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
+import java.util.UUID
+import kotlin.test.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,8 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
-import java.util.UUID
-import kotlin.test.assertEquals
 
 @RunWith(SpringRunner::class)
 @ContextConfiguration(classes = [TestConfiguration::class])
@@ -28,7 +28,7 @@ class EncryptionServiceTests {
     lateinit var encryptionService: EncryptionService
 
     val projectId = UUID.fromString("BED46E21-81F2-4E3D-AF09-18CA5C90A34C")
-    lateinit var actor : ZmlpActor
+    lateinit var actor: ZmlpActor
 
     val mockKeys = listOf(
         "abc", "124", "45a", "76m",
@@ -36,7 +36,6 @@ class EncryptionServiceTests {
         "2bc", "129", "45c", "76o",
         "3bc", "121", "45d", "76p"
     )
-
 
     @Before
     fun setupAuth() {

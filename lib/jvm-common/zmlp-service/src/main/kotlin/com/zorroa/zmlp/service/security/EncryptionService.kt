@@ -2,9 +2,9 @@ package com.zorroa.zmlp.service.security
 
 import com.zorroa.zmlp.service.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
+import java.util.UUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.encrypt.Encryptors
-import java.util.UUID
 
 /**
  * A service for encrypting stings using keys in system storage.  The
@@ -44,7 +44,6 @@ interface EncryptionService {
      */
     fun decryptString(projectId: UUID, value: String, variance: Int): String
 }
-
 
 class EncryptionServiceImpl : EncryptionService {
 

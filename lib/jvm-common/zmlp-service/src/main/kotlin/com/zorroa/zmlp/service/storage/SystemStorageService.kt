@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration
 @ConfigurationProperties("zmlp.storage.system")
 class SystemStorageProperties : StorageProperties()
 
-
 /**
  * A service for storing JSON serialized blobs of configuration data for project
  * or system specific purposes.  This service uses a different bucket than

@@ -1,6 +1,5 @@
 package com.zorroa.zmlp.service.storage
 
-import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.GetObjectRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest

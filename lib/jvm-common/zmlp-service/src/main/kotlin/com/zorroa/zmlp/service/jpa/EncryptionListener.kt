@@ -1,6 +1,9 @@
 package com.zorroa.zmlp.service.jpa
 
 import com.zorroa.zmlp.service.security.EncryptionService
+import java.lang.reflect.Field
+import javax.annotation.PostConstruct
+import javax.persistence.EntityManagerFactory
 import org.hibernate.event.service.spi.EventListenerRegistry
 import org.hibernate.event.spi.EventType
 import org.hibernate.event.spi.PreInsertEvent
@@ -13,9 +16,6 @@ import org.hibernate.internal.SessionFactoryImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.util.ReflectionUtils
-import java.lang.reflect.Field
-import javax.annotation.PostConstruct
-import javax.persistence.EntityManagerFactory
 
 class EncryptionListener : PreInsertEventListener, PreUpdateEventListener, PreLoadEventListener {
 
@@ -119,4 +119,3 @@ object EncryptionUtils {
         throw IllegalArgumentException("No property was found for name $name")
     }
 }
-
