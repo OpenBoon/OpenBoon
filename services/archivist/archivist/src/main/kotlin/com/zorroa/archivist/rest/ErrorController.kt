@@ -18,7 +18,6 @@ import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.dao.DataRetrievalFailureException
-import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.dao.IncorrectResultSizeDataAccessException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -78,7 +77,6 @@ class RestApiExceptionHandler {
             HttpStatus.METHOD_NOT_ALLOWED
         } else if (e is ArchivistException ||
                 e is ElasticsearchException ||
-                e is InvalidObjectException ||
                 e is InvalidRequestException ||
                 e is DataAccessException ||
                 e is NullPointerException ||

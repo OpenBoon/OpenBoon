@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse
 
 const val TOKEN_PREFIX = "Bearer "
 const val AUTH_HEADER = "Authorization"
-
+const val PROJ_HEADER = "X-Zorroa-ProjectId"
 class JWTAuthorizationFilter : OncePerRequestFilter() {
 
     @Autowired
@@ -51,8 +51,15 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
             } ?: req.getParameter("token")
             ?: throw RuntimeException("No token specified")
 
+            val projectIdHeader = req.getHeader(PROJ_HEADER)
+            val projectIdOverride = if (projectIdHeader != null) {
+                UUID.fromString(projectIdHeader)
+            } else {
+                null
+            }
+
             SecurityContextHolder.getContext().authentication =
-                validateToken(token)
+                validateToken(token, projectIdOverride)
 
             chain.doFilter(req, res)
         } catch (e: Exception) {
@@ -61,7 +68,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
         }
     }
 
-    fun validateToken(token: String): JwtAuthenticationToken {
+    fun validateToken(token: String, projectIdOverride: UUID?=null): JwtAuthenticationToken {
         val jwt = JWT.decode(token)
 
         if (jwt.expiresAt == null) {
@@ -90,9 +97,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
             val projectId = if (jwt.claims.containsKey("projectId")
             ) {
                 UUID.fromString(jwt.claims.getValue("projectId").asString())
-            } else {
-                inceptionKey.projectId
-            }
+            } else projectIdOverride ?: inceptionKey.projectId
 
             ApiKey(
                 inceptionKey.id,
