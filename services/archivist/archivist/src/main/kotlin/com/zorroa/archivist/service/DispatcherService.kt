@@ -7,7 +7,7 @@ import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
+import com.zorroa.archivist.domain.BatchIndexAssetsRequest
 import com.zorroa.archivist.domain.DispatchPriority
 import com.zorroa.archivist.domain.DispatchTask
 import com.zorroa.archivist.domain.IndexAssetsEvent
@@ -445,7 +445,7 @@ class DispatcherServiceImpl @Autowired constructor(
                 val index = Json.Mapper.convertValue<IndexAssetsEvent>(event.payload)
                 withAuth(InternalThreadAuthentication(task.projectId,
                     setOf(Permission.AssetsImport))) {
-                    assetService.batchUpdate(BatchUpdateAssetsRequest(index.assets))
+                    assetService.batchIndex(BatchIndexAssetsRequest(index.assets))
                 }
             }
         }

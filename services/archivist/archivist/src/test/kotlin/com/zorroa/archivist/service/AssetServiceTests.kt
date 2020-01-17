@@ -4,7 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
+import com.zorroa.archivist.domain.BatchIndexAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.Element
@@ -191,7 +191,7 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchUpdateAssets() {
+    fun testBatchIndexAssets() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
@@ -199,15 +199,15 @@ class AssetServiceTests : AbstractTest() {
         val asset = assetService.getAsset(createRsp.status[0].assetId)
         asset.setAttr("aux.field", 1)
 
-        val batchIndex = BatchUpdateAssetsRequest(
+        val batchIndex = BatchIndexAssetsRequest(
             assets = listOf(asset)
         )
-        val indexRsp = assetService.batchUpdate(batchIndex)
+        val indexRsp = assetService.batchIndex(batchIndex)
         assertFalse(indexRsp.status[0]!!.failed)
     }
 
     @Test
-    fun testBatchUpdateAssetsWithTempFields() {
+    fun testBatchIndexAssetsWithTempFields() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
@@ -216,10 +216,10 @@ class AssetServiceTests : AbstractTest() {
         asset.setAttr("aux.field", 1)
         asset.setAttr("tmp.field", 1)
 
-        val batchIndex = BatchUpdateAssetsRequest(
+        val batchIndex = BatchIndexAssetsRequest(
             assets = listOf(asset)
         )
-        val updateRsp = assetService.batchUpdate(batchIndex)
+        val updateRsp = assetService.batchIndex(batchIndex)
         assertFalse(updateRsp.status[0]!!.failed)
 
         asset = assetService.getAsset(createRsp.status[0].assetId)
@@ -228,7 +228,7 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchUpdateAssetsWithClip() {
+    fun testBatchIndexAssetsWithClip() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
@@ -236,8 +236,8 @@ class AssetServiceTests : AbstractTest() {
         var asset = assetService.getAsset(createRsp.status[0].assetId)
         asset.setAttr("clip", mapOf("type" to "page", "start" to 2f, "stop" to 2f))
 
-        val batchIndex = BatchUpdateAssetsRequest(assets = listOf(asset))
-        assetService.batchUpdate(batchIndex)
+        val batchIndex = BatchIndexAssetsRequest(assets = listOf(asset))
+        assetService.batchIndex(batchIndex)
 
         asset = assetService.getAsset(createRsp.status[0].assetId)
         assertEquals("page", asset.getAttr<String?>("clip.type"))
@@ -255,7 +255,7 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testIndexhUpdateAssetsWithDuplicateElements() {
+    fun testIndexhAssetsWithDuplicateElements() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec("gs://cats/large-brown-cat.jpg"))
@@ -268,15 +268,15 @@ class AssetServiceTests : AbstractTest() {
         val element2 = Element("object", "catDetector", listOf(0, 0, 100, 100), listOf("cat"))
         asset.setAttr("elements", listOf(element1, element2))
 
-        val batchIndex = BatchUpdateAssetsRequest(assets = listOf(asset))
-        assetService.batchUpdate(batchIndex)
+        val batchIndex = BatchIndexAssetsRequest(assets = listOf(asset))
+        assetService.batchIndex(batchIndex)
 
         asset = assetService.getAsset(createRsp.status[0].assetId)
         assertEquals(1, asset.getAttr("elements", Element.JSON_SET_OF)!!.size)
     }
 
     @Test(expected = IllegalStateException::class)
-    fun testIndexUpdateAssetsWithTooManyElements() {
+    fun testIndexAssetsWithTooManyElements() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec("gs://cats/large-brown-cat.jpg"))
@@ -290,8 +290,8 @@ class AssetServiceTests : AbstractTest() {
         }
         asset.setAttr("elements", elements)
 
-        val batchIndex = BatchUpdateAssetsRequest(assets = listOf(asset))
-        assetService.batchUpdate(batchIndex)
+        val batchIndex = BatchIndexAssetsRequest(assets = listOf(asset))
+        assetService.batchIndex(batchIndex)
 
         asset = assetService.getAsset(createRsp.status[0].assetId)
         assertEquals(1, asset.getAttr("elements", Element.JSON_SET_OF)!!.size)
@@ -301,11 +301,11 @@ class AssetServiceTests : AbstractTest() {
      * Trying to update assets that don't exist should fail.
      */
     @Test
-    fun testBatchUpdateAssets_failNotCreatedSingle() {
-        val req = BatchUpdateAssetsRequest(
+    fun testBatchIndexAssets_failNotCreatedSingle() {
+        val req = BatchIndexAssetsRequest(
             assets = listOf(Asset())
         )
-        val rsp = assetService.batchUpdate(req)
+        val rsp = assetService.batchIndex(req)
         assertTrue(rsp.status[0]!!.failed)
     }
 
@@ -317,7 +317,7 @@ class AssetServiceTests : AbstractTest() {
         val createRsp = assetService.batchCreate(batchCreate)
         val asset = assetService.getAsset(createRsp.status[0].assetId)
 
-        val req = BatchUpdateAssetsRequest(
+        val req = BatchIndexAssetsRequest(
             assets = listOf(
                 Asset(),
                 Asset(asset.id),
@@ -326,7 +326,7 @@ class AssetServiceTests : AbstractTest() {
             )
         )
 
-        val rsp = assetService.batchUpdate(req)
+        val rsp = assetService.batchIndex(req)
         assertTrue(rsp.status[0]!!.failed)
         assertFalse(rsp.status[1]!!.failed)
         assertTrue(rsp.status[2]!!.failed)

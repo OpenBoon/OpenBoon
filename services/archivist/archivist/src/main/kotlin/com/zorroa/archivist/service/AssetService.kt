@@ -9,8 +9,8 @@ import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchAssetOpStatus
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
-import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
-import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
+import com.zorroa.archivist.domain.BatchIndexAssetsRequest
+import com.zorroa.archivist.domain.BatchIndexAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.Element
@@ -74,16 +74,6 @@ interface AssetService {
     fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse
 
     /**
-     * Batch update the given batch of Assets. The fully composed asset must be
-     * provided, not a partial update.
-     *
-     * @param request: A BatchUpdateAssetsRequest
-     * @return A BatchUpdateAssetsResponse which contains success/fail status for each asst.
-     *
-     */
-    fun batchUpdate(request: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse
-
-    /**
      * Handle a batch upload request and return a BatchCreateAssetsResponse
      *
      * @param req: a BatchUploadAssetsRequest
@@ -91,6 +81,16 @@ interface AssetService {
      */
     fun batchUpload(req: BatchUploadAssetsRequest): BatchCreateAssetsResponse
 
+    /**
+     * Batch index the given batch of Assets. The fully composed asset must be
+     * provided, not a partial update.
+     *
+     * @param request: A BatchUpdateAssetsRequest
+     * @return A BatchUpdateAssetsResponse which contains success/fail status for each asst.
+     *
+     */
+    fun batchIndex(request: BatchIndexAssetsRequest): BatchIndexAssetsResponse
+    
     /**
      * Augment the newAsset with the clip definition found in the [AssetSpec] used
      * to create it.
@@ -357,8 +357,8 @@ class AssetServiceImpl : AssetService {
         return result
     }
 
-    override fun batchUpdate(request: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
-        val result = BatchUpdateAssetsResponse(request.assets.size)
+    override fun batchIndex(request: BatchIndexAssetsRequest): BatchIndexAssetsResponse {
+        val result = BatchIndexAssetsResponse(request.assets.size)
         val assets = request.assets
         if (assets.isEmpty()) {
             return result

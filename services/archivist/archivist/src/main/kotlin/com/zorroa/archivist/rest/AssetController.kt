@@ -5,8 +5,8 @@ import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.AssetSearch
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
-import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
-import com.zorroa.archivist.domain.BatchUpdateAssetsResponse
+import com.zorroa.archivist.domain.BatchIndexAssetsRequest
+import com.zorroa.archivist.domain.BatchIndexAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageRequest
@@ -96,8 +96,8 @@ class AssetController @Autowired constructor(
 
     @PreAuthorize("hasAuthority('AssetsImport')")
     @PutMapping("/api/v3/assets/_batchUpdate")
-    fun batchUpdate(@RequestBody request: BatchUpdateAssetsRequest): BatchUpdateAssetsResponse {
-        return assetService.batchUpdate(request)
+    fun batchUpdate(@RequestBody request: BatchIndexAssetsRequest): BatchIndexAssetsResponse {
+        return assetService.batchIndex(request)
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")

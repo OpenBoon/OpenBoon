@@ -45,7 +45,7 @@ class BatchAssetOpStatus(
 
 @ApiModel("Batch Index Assets Request",
     description = "Defines the properties necessary to reindex a batch of Assets.")
-class BatchUpdateAssetsRequest(
+class BatchIndexAssetsRequest(
 
     @ApiModelProperty("The list of assets to be indexed.  The assets must already exist.")
     val assets: List<Asset>,
@@ -57,7 +57,7 @@ class BatchUpdateAssetsRequest(
 
 @ApiModel("Batch Index Assets Response",
     description = "Defines the properties necessary to index a batch of assets. ")
-class BatchUpdateAssetsResponse(size: Int) {
+class BatchIndexAssetsResponse(size: Int) {
 
     @ApiModelProperty("A map of the assetId to indexed status. " +
         "An asset will fail to index unless it already exists")
