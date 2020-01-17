@@ -1,6 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.AssetSearch
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
@@ -10,7 +11,6 @@ import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageRequest
 import com.zorroa.archivist.domain.ProjectStorageSpec
-import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.service.AssetSearchService
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.storage.ProjectStorageService
