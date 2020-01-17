@@ -1,8 +1,8 @@
 package com.zorroa.archivist.util
 
-import com.zorroa.archivist.repository.LongRangeFilter
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 import org.apache.commons.lang3.StringUtils
-import java.util.regex.Pattern
 import javax.persistence.AttributeConverter
 import javax.persistence.Converter
 
@@ -185,3 +185,32 @@ class StringListConverter : AttributeConverter<List<String>, String> {
         return joined?.split(",")?.map { it.trim() } ?: null
     }
 }
+
+@ApiModel("Long Range Filter", description = "Filters on a range using Longs.")
+class LongRangeFilter(
+
+    @ApiModelProperty("Values must be greater than this.")
+    val greaterThan: Long?,
+
+    @ApiModelProperty("Values must be less than this.")
+    val lessThan: Long?,
+
+    @ApiModelProperty("If true values matching the bounds will be included.")
+    val inclusive: Boolean = true
+
+) {
+    /**
+     * Return values needed to satisfy SQL query as list.
+     */
+    fun getFilterValues(): Iterable<Long> {
+        val res = mutableListOf<Long>()
+        if (greaterThan != null) {
+            res.add(greaterThan)
+        }
+        if (lessThan != null) {
+            res.add(lessThan)
+        }
+        return res
+    }
+}
+

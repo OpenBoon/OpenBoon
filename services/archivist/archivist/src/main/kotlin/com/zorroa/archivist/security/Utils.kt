@@ -1,7 +1,7 @@
 package com.zorroa.archivist.security
 
-import com.zorroa.auth.client.Permission
-import com.zorroa.auth.client.ZmlpActor
+import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.apikey.ZmlpActor
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException

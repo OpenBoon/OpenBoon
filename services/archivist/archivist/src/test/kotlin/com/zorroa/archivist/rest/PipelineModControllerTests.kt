@@ -9,7 +9,7 @@ import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.service.PipelineModService
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired

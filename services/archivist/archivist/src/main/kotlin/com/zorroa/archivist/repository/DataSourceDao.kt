@@ -99,10 +99,10 @@ class JdbcDataSourceJdbcDaoImpl : AbstractDao(), DataSourceJdbcDao {
             DataSource(
                 rs.getObject("pk_datasource") as UUID,
                 rs.getObject("pk_project") as UUID,
+                rs.getObject("pk_pipeline") as UUID,
                 rs.getString("str_name"),
                 rs.getString("str_uri"),
                 converter.convertToEntityAttribute(rs.getString("str_file_types")),
-                converter.convertToEntityAttribute(rs.getString("str_analysis")),
                 rs.getLong("time_created"),
                 rs.getLong("time_modified"),
                 rs.getString("actor_created"),

@@ -42,7 +42,7 @@ interface JobService {
     fun create(spec: JobSpec, type: JobType): Job
     fun get(id: UUID, forClient: Boolean = false): Job
     fun getTask(id: UUID): Task
-    fun getJobTasks(jobId: UUID): KPagedList<Task>
+    fun getTasks(jobId: UUID): KPagedList<Task>
     fun getInternalTask(id: UUID): InternalTask
     fun createTask(job: JobId, spec: TaskSpec): Task
     fun getAll(filter: JobFilter?): KPagedList<Job>
@@ -172,7 +172,7 @@ class JobServiceImpl @Autowired constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun getJobTasks(jobId: UUID): KPagedList<Task> {
+    override fun getTasks(jobId: UUID): KPagedList<Task> {
         val filter = TaskFilter(jobIds = arrayListOf(jobId))
         return taskDao.getAll(filter)
     }

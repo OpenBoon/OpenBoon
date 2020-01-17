@@ -1,7 +1,7 @@
 package com.zorroa.archivist.clients
 
 import com.fasterxml.jackson.core.type.TypeReference
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.apache.commons.codec.binary.Hex
 import org.apache.http.HttpEntity
 import org.apache.http.HttpHost

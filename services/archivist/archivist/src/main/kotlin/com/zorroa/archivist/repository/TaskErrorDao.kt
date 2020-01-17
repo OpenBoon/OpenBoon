@@ -13,8 +13,8 @@ import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.warnEvent
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.archivist.util.Json
-import com.zorroa.archivist.util.readValueOrNull
+import com.zorroa.zmlp.util.Json
+import com.zorroa.zmlp.util.readValueOrNull
 import io.micrometer.core.instrument.Tag
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.RowMapper

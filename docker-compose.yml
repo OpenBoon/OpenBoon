@@ -63,6 +63,10 @@ services:
     image: zmlp/authserver
     depends_on:
       - postgres
+      - minio
+      - zmlp-jvm-common
+    ports:
+      - "9090:9090"
     build:
       context: services/auth-server
     environment:
@@ -74,7 +78,8 @@ services:
     depends_on:
       - es1
       - postgres
-      - auth-server
+      - minio
+      - zmlp-jvm-common
     environment:
       SENTRY_ENVIRONMENT: localdev
       ARCHIVIST_PROJECT_STORAGE_ACCESSKEY: qwerty123
@@ -94,6 +99,7 @@ services:
   officer:
     image: zmlp/officer
     depends_on:
+      - zmlp-jvm-common
       - minio
     build:
       context: services/officer
@@ -144,6 +150,11 @@ services:
       - postgres
 
   # These services are only here because their images need to be built.
+  zmlp-jvm-common:
+    image: zmlp/jvm-common:latest
+    build:
+      context: lib/jvm-common
+
   zmlp-py3-base:
     image: zmlp/py3-base:latest
     build:

@@ -12,7 +12,7 @@ import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.service.PipelineModService
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Before
 import org.junit.Test
@@ -54,7 +54,7 @@ class PipelineControllerTests : MockMvcTest() {
         val mod = pipelineModService.create(modSpec)
         entityManager.flush()
 
-        spec = PipelineSpec("Zorroa Test", modules = listOf(mod.id))
+        spec = PipelineSpec("Zorroa Test", modules = listOf(mod.name))
         pl = pipelineService.create(spec)
     }
 

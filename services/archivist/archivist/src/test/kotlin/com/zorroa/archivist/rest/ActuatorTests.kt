@@ -1,7 +1,7 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.test.context.web.WebAppConfiguration
@@ -28,7 +28,7 @@ class ActuatorTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
-        val result = Json.deserialize(rsp.response.contentAsString, Json.GENERIC_MAP)
+        val result = Json.Mapper.readValue(rsp.response.contentAsString, Json.GENERIC_MAP)
         assertEquals("Zorroa Archivist Server", result["description"])
         assertTrue("build.version" in result.keys)
     }

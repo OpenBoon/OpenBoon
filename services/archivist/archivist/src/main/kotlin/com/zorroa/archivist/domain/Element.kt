@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain
 
+import com.fasterxml.jackson.core.type.TypeReference
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 
@@ -49,5 +50,9 @@ class Element(
         result = 31 * result + (analysis.hashCode())
         result = 31 * result + (rect?.joinToString(",")?.hashCode() ?: 0)
         return result
+    }
+
+    companion object {
+        val JSON_SET_OF : TypeReference<Set<Element>> = object : TypeReference<Set<Element>>() {}
     }
 }

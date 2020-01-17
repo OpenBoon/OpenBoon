@@ -18,7 +18,7 @@ import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.service.JobService
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.randomString
 import org.junit.Before
 import org.junit.Test
@@ -122,7 +122,7 @@ class TaskControllerTests : MockMvcTest() {
 
     @Test
     fun testRetry() {
-        jobService.getJobTasks(task.jobId).list.forEach {
+        jobService.getTasks(task.jobId).list.forEach {
             assertTrue(jobService.setTaskState(it, TaskState.Failure, null))
         }
         var job = jobService.get(task.jobId)

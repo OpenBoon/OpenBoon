@@ -1,9 +1,8 @@
 package com.zorroa.auth.server.rest
 
-import com.zorroa.auth.client.Permission
+import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.auth.server.MockMvcTest
 import com.zorroa.auth.server.domain.ApiKeySpec
-import java.util.UUID
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -31,8 +30,7 @@ class AuthControllerTests : MockMvcTest() {
     fun testAuthUserToken() {
         val spec = ApiKeySpec(
             "test",
-            setOf(Permission.AssetsRead),
-            UUID.randomUUID()
+            setOf(Permission.AssetsRead)
         )
         val apiKey = apiKeyService.create(spec)
         mvc.perform(

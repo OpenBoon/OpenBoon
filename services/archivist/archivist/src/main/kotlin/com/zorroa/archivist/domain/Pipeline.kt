@@ -92,8 +92,8 @@ data class PipelineSpec(
     @ApiModelProperty("List of the Pipeline's processors, only used in Custom mode.")
     var processors: List<ProcessorRef>? = null,
 
-    @ApiModelProperty("List of the Pipeline's processors, only used in Modular mode.")
-    var modules: List<UUID>? = null,
+    @ApiModelProperty("List of Pipeline Module names, only used in Modular mode.")
+    var modules: List<String>? = null,
 
     @JsonIgnore
     @ApiModelProperty("List of the Pipeline's processors, only used in Modular mode.", hidden = true)

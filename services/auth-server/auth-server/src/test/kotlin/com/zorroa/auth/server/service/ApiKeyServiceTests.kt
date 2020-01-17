@@ -1,33 +1,20 @@
 package com.zorroa.auth.server.service
 
-import com.zorroa.auth.client.Permission
-import com.zorroa.auth.client.ZmlpActor
+import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.apikey.ZmlpActor
 import com.zorroa.auth.server.AbstractTest
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
-import java.util.UUID
-import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
-import kotlin.test.assertTrue
+import com.zorroa.auth.server.security.getProjectId
 import org.junit.Test
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import java.util.UUID
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ApiKeyServiceTests : AbstractTest() {
-
-    @Test
-    fun testCreateIgnoreProjectOverride() {
-        val spec = ApiKeySpec(
-            "test",
-            setOf(Permission.AssetsRead),
-            UUID.randomUUID()
-        )
-        val key = apiKeyService.create(spec)
-        assertEquals(spec.name, key.name)
-        assertNotEquals(spec.projectId, key.projectId)
-        assertTrue(Permission.AssetsRead.name in key.permissions)
-    }
 
     @Test
     fun testCreateOverrideProject() {
@@ -48,12 +35,11 @@ class ApiKeyServiceTests : AbstractTest() {
 
         val spec = ApiKeySpec(
             "test",
-            setOf(Permission.AssetsRead),
-            UUID.randomUUID()
+            setOf(Permission.AssetsRead)
         )
         val key = apiKeyService.create(spec)
         assertEquals(spec.name, key.name)
-        assertEquals(spec.projectId, key.projectId)
+        assertEquals(getProjectId(), key.projectId)
         assertTrue(Permission.AssetsRead.name in key.permissions)
     }
 
@@ -77,6 +63,19 @@ class ApiKeyServiceTests : AbstractTest() {
         val key1 = apiKeyService.create(spec)
         val key2 = apiKeyService.findOne(ApiKeyFilter(names = listOf("test")))
         assertEquals(key1, key2)
+    }
+
+    @Test
+    fun testSearch() {
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead)
+        )
+        val key1 = apiKeyService.create(spec)
+        val keys = apiKeyService.search(ApiKeyFilter(names = listOf("test")))
+
+        assertEquals(1, keys.list.size)
+        assertEquals("test", keys.list[0].name)
     }
 
     @Test(expected = EmptyResultDataAccessException::class)

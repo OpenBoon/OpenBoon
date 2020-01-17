@@ -6,7 +6,7 @@ import com.google.cloud.pubsub.v1.Publisher
 import com.google.protobuf.ByteString
 import com.google.pubsub.v1.ProjectTopicName
 import com.google.pubsub.v1.PubsubMessage
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import java.util.UUID
 

@@ -93,7 +93,7 @@
     {
       "//": "all pages",
       "path": ".next/static/**/!(commons|_app|_error|main|polyfill|webpack)*.js",
-      "maxSize": "10 kB"
+      "maxSize": "12 kB"
     }
   ],
   "dependencies": {

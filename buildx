@@ -26,7 +26,7 @@ def main():
     if args.core:
         containers.update(['zmlp-py3-sdk', 'zmlp-plugins-base', 'zmlp-plugins-core'])
     if args.jvm:
-        containers.update(['archivist', 'auth-server'])
+        containers.update(['zmlp-jvm-common', 'archivist', 'auth-server'])
     if args.analysis:
         containers.update(['zmlp-py3-sdk', 'zmlp-plugins-base', 'zmlp-plugins-analysis'])
 

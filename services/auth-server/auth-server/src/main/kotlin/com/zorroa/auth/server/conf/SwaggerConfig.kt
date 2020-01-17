@@ -32,7 +32,7 @@ class SwaggerConfigurationProperties {
 
 @Configuration
 @EnableSwagger2
-class SwaggerConfig : WebMvcConfigurer {
+class SwaggerConfig {
 
     @Autowired
     lateinit var config: SwaggerConfigurationProperties
@@ -59,15 +59,5 @@ class SwaggerConfig : WebMvcConfigurer {
             config.licenseUrl,
             Collections.emptyList()
         )
-    }
-
-    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-        registry.addResourceHandler("swagger-ui.html")
-            .addResourceLocations("classpath:/META-INF/resources/")
-
-        registry.addResourceHandler("/webjars/**")
-            .addResourceLocations("classpath:/META-INF/resources/webjars/")
-
-        registry.addResourceHandler("**/**").addResourceLocations("/dist/")
     }
 }

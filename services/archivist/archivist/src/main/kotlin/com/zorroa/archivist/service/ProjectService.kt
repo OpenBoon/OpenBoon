@@ -25,9 +25,9 @@ import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.security.hasPermission
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.storage.SystemStorageService
-import com.zorroa.archivist.util.Json
-import com.zorroa.auth.client.AuthServerClient
-import com.zorroa.auth.client.Permission
+import com.zorroa.zmlp.util.Json
+import com.zorroa.zmlp.apikey.AuthServerClient
+import com.zorroa.zmlp.apikey.Permission
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
@@ -74,6 +74,11 @@ interface ProjectService {
      * Get the project settings
      */
     fun getSettings(projectId: UUID): ProjectSettings
+
+    /**
+     * Get the current key's project settings
+     */
+    fun getSettings(): ProjectSettings
 
     /**
      * Get the project settings blob.
@@ -169,6 +174,9 @@ class ProjectServiceImpl constructor(
 
     @Transactional(readOnly = true)
     override fun findOne(filter: ProjectFilter): Project = projectCustomDao.findOne(filter)
+
+    @Transactional(readOnly = true)
+    override fun getSettings(): ProjectSettings = projectCustomDao.getSettings(getProjectId())
 
     @Transactional(readOnly = true)
     override fun getSettings(projectId: UUID): ProjectSettings = projectCustomDao.getSettings(get(projectId).id)

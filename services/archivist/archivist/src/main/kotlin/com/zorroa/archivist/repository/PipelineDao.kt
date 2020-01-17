@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineFilter
+import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
@@ -13,7 +14,7 @@ import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils.insert
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.isUUID
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -30,6 +31,7 @@ interface PipelineDao {
     fun getAll(filter: PipelineFilter): KPagedList<Pipeline>
     fun findOne(filter: PipelineFilter): Pipeline
     fun count(filter: PipelineFilter): Long
+    fun setPipelineMods(id: UUID, mods: List<PipelineMod>)
 }
 
 @Repository
@@ -57,18 +59,19 @@ class PipelineDaoImpl : AbstractDao(), PipelineDao {
             ps
         }
 
-        if (spec.mode == PipelineMode.MODULAR) {
-            spec.modules?.forEach {
-                jdbc.update("INSERT INTO x_module_pipeline VALUES (?, ?, ?)",
-                    UUID.randomUUID(), it, id)
-            }
-        }
-
         logger.event(
             LogObject.PIPELINE, LogAction.CREATE,
             mapOf("pipelineId" to id, "pipelineName" to spec.name)
         )
         return get(id)
+    }
+
+    override fun setPipelineMods(id: UUID, mods: List<PipelineMod>) {
+        jdbc.update("DELETE FROM x_module_pipeline WHERE pk_pipeline=?", id)
+        mods?.forEach {
+            jdbc.update("INSERT INTO x_module_pipeline VALUES (?, ?, ?)",
+                UUID.randomUUID(), it.id, id)
+        }
     }
 
     override fun get(id: UUID): Pipeline {

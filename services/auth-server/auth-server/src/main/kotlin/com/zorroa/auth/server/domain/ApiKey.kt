@@ -3,11 +3,15 @@ package com.zorroa.auth.server.domain
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.auth.client.Permission
-import com.zorroa.auth.client.ZmlpActor
+import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.apikey.ZmlpActor
+import com.zorroa.auth.server.repository.AbstractJpaFilter
 import com.zorroa.auth.server.repository.StringSetConverter
+import com.zorroa.auth.server.security.getProjectId
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
@@ -16,8 +20,9 @@ import javax.persistence.Convert
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
+import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.Predicate
+import javax.persistence.criteria.Root
 
 @ApiModel("ApiKey Spec", description = "The attributes required to create a new API key.")
 class ApiKeySpec(
@@ -25,10 +30,7 @@ class ApiKeySpec(
     val name: String,
 
     @ApiModelProperty("A list of permissions associated with key.")
-    val permissions: Set<Permission>,
-
-    @ApiModelProperty("A project ID for the ApiKey.", hidden = true)
-    val projectId: UUID? = null
+    val permissions: Set<Permission>
 )
 
 /**
@@ -150,14 +152,36 @@ class ApiKeyFilter(
     val ids: List<UUID>? = null,
 
     /**
-     * A list of unqiue Project ids
-     */
-    @ApiModelProperty("The project IDs to match")
-    val projectIds: List<UUID>? = null,
-
-    /**
      * A list of unique names.
      */
     @ApiModelProperty("The key names to match")
     val names: List<String>? = null
-)
+) : AbstractJpaFilter<ApiKey>() {
+
+    override fun buildWhereClause(root: Root<ApiKey>, cb: CriteriaBuilder): Array<Predicate> {
+        val where = mutableListOf<Predicate>()
+
+        cb.equal(root.get<UUID>("projectId"), getProjectId())
+
+        ids?.let {
+            val ic: CriteriaBuilder.In<UUID> = cb.`in`(root.get("id"))
+            it.forEach { v ->
+                ic.value(v)
+            }
+            where.add(ic)
+        }
+
+        names?.let {
+            val ic: CriteriaBuilder.In<String> = cb.`in`(root.get("name"))
+            it.forEach { v ->
+                ic.value(v)
+            }
+            where.add(ic)
+        }
+
+        return where.toTypedArray()
+    }
+
+    override val sortFields: Set<String>
+        get() = setOf("id", "name")
+}

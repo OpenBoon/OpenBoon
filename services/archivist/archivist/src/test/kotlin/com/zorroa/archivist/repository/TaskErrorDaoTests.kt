@@ -11,6 +11,7 @@ import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskSpec
+import com.zorroa.archivist.util.LongRangeFilter
 import com.zorroa.archivist.util.randomString
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
