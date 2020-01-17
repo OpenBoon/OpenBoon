@@ -11,10 +11,7 @@ class AssetSearch(
         "The search to execute",
         reference = "https://www.elastic.co/guide/en/elasticsearch/reference/7.5/query-filter-context.html"
     )
-    val search: Map<String, Any>? = null,
-
-    @ApiModelProperty("A query to execute on nested elements.")
-    val elementQuery: Map<String, Any>? = null
+    val search: Map<String, Any>? = null
 )
 
 /**

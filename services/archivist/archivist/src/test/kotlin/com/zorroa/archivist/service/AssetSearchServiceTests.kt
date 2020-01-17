@@ -4,7 +4,6 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetSearch
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.Element
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -53,28 +52,5 @@ class AssetSearchServiceTests : AbstractTest() {
         )
         val rsp = assetSearchService.search(search)
         assertEquals(1, rsp.hits.hits.size)
-    }
-
-
-    @Test
-    fun testElementSearch() {
-        val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(
-                AssetSpec(
-                    "https://i.imgur.com/LRoLTlK.jpg",
-                    attrs = mapOf("elements" to listOf(
-                        Element("object", "catDetector",
-                            listOf(0, 0, 100, 100), listOf("cat"))
-                    )))
-            ))
-
-        assetService.batchCreate(batchCreate)
-
-        val search = AssetSearch(
-            mapOf("query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg"))),
-            mapOf("term" to mapOf("elements.type" to "object")))
-
-        val rsp = assetSearchService.search(search)
-        assertEquals(1L, rsp.hits.totalHits.value)
     }
 }

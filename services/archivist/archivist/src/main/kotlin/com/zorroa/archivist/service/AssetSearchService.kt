@@ -15,7 +15,6 @@ import org.elasticsearch.common.xcontent.DeprecationHandler
 import org.elasticsearch.common.xcontent.NamedXContentRegistry
 import org.elasticsearch.common.xcontent.XContentFactory
 import org.elasticsearch.common.xcontent.XContentType
-import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders
 import org.elasticsearch.script.Script
@@ -37,17 +36,13 @@ class AssetSearchServiceImpl : AssetSearchService {
     @Autowired
     lateinit var indexRoutingService: IndexRoutingService
 
-    fun getElementQuery(search: AssetSearch): QueryBuilder? {
-        return if (search.elementQuery == null) {
-            null
-        } else {
-            val parser = XContentFactory.xContent(XContentType.JSON).createParser(
-                xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION,
-                Json.serializeToString(mapOf("query" to search.elementQuery))
-            )
-            val ssb = SearchSourceBuilder.fromXContent(parser)
-            ssb.query()
-        }
+    override fun search(search: AssetSearch): SearchResponse {
+        val client = indexRoutingService.getProjectRestClient()
+        val req = client.newSearchRequest()
+        req.source(prepSearch(search))
+        req.preference(getProjectId().toString())
+
+        return client.client.search(req, RequestOptions.DEFAULT)
     }
 
     fun prepSearch(search: AssetSearch): SearchSourceBuilder {
@@ -56,27 +51,15 @@ class AssetSearchServiceImpl : AssetSearchService {
         val searchSource = (search.search ?: mutableMapOf())
             .filterKeys { it in allowedSearchProperties }
 
-        Json.prettyPrint(parseZmlpPlugins(searchSource))
-
         val parser = XContentFactory.xContent(XContentType.JSON).createParser(
             xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION,
             Json.serializeToString(parseZmlpPlugins(searchSource))
         )
 
         val ssb = SearchSourceBuilder.fromXContent(parser)
-        val query = QueryBuilders.boolQuery()
         if (ssb.query() == null) {
-            query.must(QueryBuilders.matchAllQuery())
-        } else {
-            query.must(ssb.query())
+            ssb.query(QueryBuilders.matchAllQuery())
         }
-
-        getElementQuery(search)?.let {
-            query.must(QueryBuilders.nestedQuery("elements", it, ScoreMode.Avg))
-        }
-
-        // Replace the query in the SearchSourceBuilder with wrapped versions
-        ssb.query(query)
 
         if (logger.isDebugEnabled) {
             logger.debug("SEARCH : {}", Strings.toString(ssb, true, true))
@@ -150,15 +133,6 @@ class AssetSearchServiceImpl : AssetSearchService {
         }
         val dsl = Strings.toString(hammingBool, true, true)
         return Json.Mapper.readValue(dsl, Json.GENERIC_MAP).getValue("bool")
-    }
-
-    override fun search(search: AssetSearch): SearchResponse {
-        val client = indexRoutingService.getProjectRestClient()
-        val req = client.newSearchRequest()
-        req.source(prepSearch(search))
-        req.preference(getProjectId().toString())
-
-        return client.client.search(req, RequestOptions.DEFAULT)
     }
 
     companion object {
