@@ -30,8 +30,6 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
           borderSpacing: 0,
           boxShadow: constants.boxShadows.table,
           whiteSpace: 'nowrap',
-          // marginTop: spacing.comfy,
-          // marginBottom: spacing.comfy,
           tr: {
             backgroundColor: colors.structure.lead,
             '.gear': {
