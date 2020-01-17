@@ -30,7 +30,7 @@ class IndexRouteDaoTests : AbstractTest() {
             clusterId = indexClusterService.getNextAutoPoolCluster().id
         )
     }
-    
+
     @Test
     fun testCreate() {
         val spec = getTestSpec()

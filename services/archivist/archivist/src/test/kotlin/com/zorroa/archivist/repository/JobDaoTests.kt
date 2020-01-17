@@ -211,7 +211,6 @@ class JobDaoTests : AbstractTest() {
         assertFalse(jobDao.delete(job))
     }
 
-
     @Test
     fun testGetExpired() {
         assertTrue(jobDao.getExpired(1, TimeUnit.DAYS, 100).isEmpty())

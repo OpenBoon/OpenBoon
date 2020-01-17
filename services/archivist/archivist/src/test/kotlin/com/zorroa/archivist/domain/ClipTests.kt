@@ -55,6 +55,5 @@ class ClipTests() {
     @Test(expected = IllegalStateException::class)
     fun testIllegalClip() {
         Clip("scene", 1023.23f, 1f)
-
     }
 }

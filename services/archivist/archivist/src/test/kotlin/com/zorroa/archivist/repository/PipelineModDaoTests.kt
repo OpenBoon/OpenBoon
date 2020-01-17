@@ -21,7 +21,7 @@ class PipelineModDaoTests : AbstractTest() {
     @Autowired
     lateinit var pipelineModService: PipelineModService
 
-    lateinit var module : PipelineMod
+    lateinit var module: PipelineMod
 
     @Before
     fun init() {

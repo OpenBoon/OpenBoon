@@ -54,7 +54,7 @@ class DataSourceDaoTests : AbstractTest() {
         val spec = DataSourceSpec("test", "gs://foo/bar")
         dataSourceService.create(spec)
 
-        val filter = DataSourceFilter(names=listOf("test"))
+        val filter = DataSourceFilter(names = listOf("test"))
         val ds = dataSourceJdbcDao.findOne(filter)
         assertEquals("test", ds.name)
     }
@@ -64,11 +64,11 @@ class DataSourceDaoTests : AbstractTest() {
         val spec = DataSourceSpec("test", "gs://foo/bar")
         dataSourceService.create(spec)
 
-        val filter = DataSourceFilter(names=listOf("test"))
+        val filter = DataSourceFilter(names = listOf("test"))
         val all = dataSourceJdbcDao.find(filter)
         assertEquals(1, all.size())
 
-        val none = dataSourceJdbcDao.find(DataSourceFilter(names=listOf("dog")))
+        val none = dataSourceJdbcDao.find(DataSourceFilter(names = listOf("dog")))
         assertEquals(0, none.size())
     }
 }
