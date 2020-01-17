@@ -38,6 +38,12 @@ const constants = {
   navbar: {
     height: 44,
   },
+  pageTitle: {
+    height: 61,
+  },
+  tableHeader: {
+    height: 45,
+  },
 }
 
 export default constants
