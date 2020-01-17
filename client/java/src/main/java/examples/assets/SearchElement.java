@@ -3,7 +3,6 @@ package examples.assets;
 import com.zorroa.zmlp.client.ZmlpApp;
 import com.zorroa.zmlp.client.domain.PagedList;
 import com.zorroa.zmlp.client.domain.asset.Asset;
-import examples.ZmplUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +13,7 @@ public class SearchElement {
     public static void main(String[] args) {
 
         // Initialize ZmlpApp
-        ZmlpApp zmlpApp = ZmplUtil.createZmplApp(UUID.randomUUID(), "PIXML-APIKEY");
+        ZmlpApp zmlpApp = new ZmlpApp(UUID.randomUUID().toString(), "PIXML-APIKEY");
 
         //Create Query String
         Map simpleElementQueryString = new HashMap();

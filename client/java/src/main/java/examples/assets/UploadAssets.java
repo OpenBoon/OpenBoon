@@ -3,7 +3,6 @@ package examples.assets;
 import com.zorroa.zmlp.client.ZmlpApp;
 import com.zorroa.zmlp.client.domain.asset.AssetSpec;
 import com.zorroa.zmlp.client.domain.asset.BatchCreateAssetResponse;
-import examples.ZmplUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +13,7 @@ public class UploadAssets {
     public static void main(String[] args) {
 
         // Initialize ZmlpApp
-        ZmlpApp zmlpApp = ZmplUtil.createZmplApp(UUID.randomUUID(), "PIXML-APIKEY");
+        ZmlpApp zmlpApp = new ZmlpApp(UUID.randomUUID().toString(), "PIXML-APIKEY");
 
         // Initialize AssetSpec List
         List<AssetSpec> assetSpecList =

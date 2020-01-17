@@ -3,7 +3,6 @@ package examples.datasource;
 import com.zorroa.zmlp.client.ZmlpApp;
 import com.zorroa.zmlp.client.domain.datasource.DataSource;
 import com.zorroa.zmlp.client.domain.datasource.DataSourceSpec;
-import examples.ZmplUtil;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -12,7 +11,7 @@ public class CreateDataSource {
     public static void main(String[] args) {
 
         // Initialize ZmlpApp
-        ZmlpApp zmlpApp = ZmplUtil.createZmplApp(UUID.randomUUID(), "PIXML-APIKEY");
+        ZmlpApp zmlpApp = new ZmlpApp(UUID.randomUUID().toString(), "PIXML-APIKEY");
 
         DataSourceSpec dataSourceSpec = new DataSourceSpec()
                 .setName("legal-files")
