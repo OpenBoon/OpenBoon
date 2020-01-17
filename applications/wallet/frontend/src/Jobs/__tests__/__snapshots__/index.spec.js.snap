@@ -5,6 +5,7 @@ exports[`<Jobs /> should render properly while loading 1`] = `
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
+  padding-top: 24px;
   padding-bottom: 16px;
 }
 
@@ -94,7 +95,7 @@ exports[`<Jobs /> should render properly while loading 1`] = `
 }
 
 .emotion-9 {
-  height: 300px;
+  height: calc(100vh - 182px);
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -199,6 +200,7 @@ exports[`<Jobs /> should render properly with jobs 1`] = `
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
+  padding-top: 24px;
   padding-bottom: 16px;
 }
 
@@ -1513,6 +1515,7 @@ exports[`<Jobs /> should render properly with no jobs 1`] = `
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
+  padding-top: 24px;
   padding-bottom: 16px;
 }
 
@@ -1602,7 +1605,7 @@ exports[`<Jobs /> should render properly with no jobs 1`] = `
 }
 
 .emotion-10 {
-  height: 300px;
+  height: calc(100vh - 182px);
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
