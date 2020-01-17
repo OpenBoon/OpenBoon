@@ -14,13 +14,13 @@ import java.util.UUID
 /**
  * The minimum properties needed for a valid API signing key.
  */
-@ApiModel("SigningiKey", description = "The attributes required to sign JWT requests.")
-class SigningiKey(
+@ApiModel("SigningKey", description = "The attributes required to sign JWT requests.")
+class SigningKey(
 
     @ApiModelProperty("Uniquely identifies account")
     val accessKey: String,
 
-    @ApiModelProperty("A shared key used to sign API requests.")
+    @ApiModelProperty("A secret key used to sign API requests.")
     val secretKey: String
 
 ) {
@@ -67,19 +67,8 @@ class ApiKey(
     }
 
     @JsonIgnore
-    fun getSigningKey(): SigningiKey {
-        return SigningiKey(accessKey, secretKey)
-    }
-
-    @JsonIgnore
     fun getZmlpActor(): ZmlpActor {
         return ZmlpActor(id, projectId, name, permissions)
-    }
-
-    fun toBase64(): String {
-        return Base64.getEncoder().encodeToString(
-            Json.Mapper.writeValueAsBytes(getSigningKey())
-        )
     }
 
     override fun toString(): String {
