@@ -5,13 +5,12 @@ import com.zorroa.zmlp.client.domain.datasource.DataSource;
 import com.zorroa.zmlp.client.domain.datasource.DataSourceSpec;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 public class CreateDataSource {
     public static void main(String[] args) {
 
         // Initialize ZmlpApp
-        ZmlpApp zmlpApp = new ZmlpApp(UUID.randomUUID().toString(), "PIXML-APIKEY");
+        ZmlpApp zmlpApp = new ZmlpApp("PIXML-APIKEY", "Server URL or Null for Default");
 
         DataSourceSpec dataSourceSpec = new DataSourceSpec()
                 .setName("legal-files")

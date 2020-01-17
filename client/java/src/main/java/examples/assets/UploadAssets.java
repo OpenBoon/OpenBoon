@@ -6,14 +6,13 @@ import com.zorroa.zmlp.client.domain.asset.BatchCreateAssetResponse;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class UploadAssets {
 
     public static void main(String[] args) {
 
         // Initialize ZmlpApp
-        ZmlpApp zmlpApp = new ZmlpApp(UUID.randomUUID().toString(), "PIXML-APIKEY");
+        ZmlpApp zmlpApp = new ZmlpApp("PIXML-APIKEY", "Server URL or Null for Default");
 
         // Initialize AssetSpec List
         List<AssetSpec> assetSpecList =

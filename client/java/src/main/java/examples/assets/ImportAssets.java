@@ -5,13 +5,11 @@ import com.zorroa.zmlp.client.domain.asset.AssetCreateBuilder;
 import com.zorroa.zmlp.client.domain.asset.AssetSpec;
 import com.zorroa.zmlp.client.domain.asset.BatchCreateAssetResponse;
 
-import java.util.UUID;
-
 public class ImportAssets {
     public static void main(String[] args) {
 
         // Initialize ZmlpApp
-        ZmlpApp zmlpApp = new ZmlpApp(UUID.randomUUID().toString(), "PIXML-APIKEY");
+        ZmlpApp zmlpApp = new ZmlpApp("PIXML-APIKEY", "Server URL or Null for Default");
 
         // Setup import params
         AssetCreateBuilder assetCreateBuilder = new AssetCreateBuilder()

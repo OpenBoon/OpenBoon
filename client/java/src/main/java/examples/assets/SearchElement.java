@@ -6,14 +6,13 @@ import com.zorroa.zmlp.client.domain.asset.Asset;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class SearchElement {
 
     public static void main(String[] args) {
 
         // Initialize ZmlpApp
-        ZmlpApp zmlpApp = new ZmlpApp(UUID.randomUUID().toString(), "PIXML-APIKEY");
+        ZmlpApp zmlpApp = new ZmlpApp("PIXML-APIKEY", "Server URL or Null for Default");
 
         //Create Query String
         Map simpleElementQueryString = new HashMap();
