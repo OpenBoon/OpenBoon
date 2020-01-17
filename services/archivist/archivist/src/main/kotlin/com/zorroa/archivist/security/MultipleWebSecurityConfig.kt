@@ -192,8 +192,8 @@ class MultipleWebSecurityConfig {
 
     @Bean
     @Autowired
-    fun analystFilterRegistration(analystAuthenticationFilter: AnalystAuthenticationFilter)
-        : FilterRegistrationBean<AnalystAuthenticationFilter> {
+    fun analystFilterRegistration(analystAuthenticationFilter: AnalystAuthenticationFilter):
+        FilterRegistrationBean<AnalystAuthenticationFilter> {
         val bean = FilterRegistrationBean<AnalystAuthenticationFilter>()
         bean.filter = analystAuthenticationFilter
         bean.isEnabled = false

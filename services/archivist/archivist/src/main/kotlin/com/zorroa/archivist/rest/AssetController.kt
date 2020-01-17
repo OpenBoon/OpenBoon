@@ -52,8 +52,8 @@ class AssetController @Autowired constructor(
 
     @PreAuthorize("hasAuthority('AssetsRead')")
     @RequestMapping("/api/v3/assets/_search", method = [RequestMethod.GET, RequestMethod.POST])
-    fun search(@RequestBody(required = false) search: AssetSearch?, output: ServletOutputStream)
-        : ResponseEntity<Resource> {
+    fun search(@RequestBody(required = false) search: AssetSearch?, output: ServletOutputStream):
+        ResponseEntity<Resource> {
 
         val rsp = assetService.search(search ?: AssetSearch())
         val output = RawByteArrayOutputStream(1024 * 64)
@@ -68,7 +68,7 @@ class AssetController @Autowired constructor(
 
     @PreAuthorize("hasAuthority('AssetsRead')")
     @GetMapping("/api/v3/assets/{id}")
-    fun get(@ApiParam("Unique ID of the Asset") @PathVariable id: String) : Asset {
+    fun get(@ApiParam("Unique ID of the Asset") @PathVariable id: String): Asset {
         return assetService.getAsset(id)
     }
 
@@ -87,8 +87,8 @@ class AssetController @Autowired constructor(
 
     @PreAuthorize("hasAuthority('AssetsImport')")
     @PostMapping("/api/v3/assets/_batchCreate")
-    fun batchCreate(@RequestBody request: BatchCreateAssetsRequest)
-        : BatchCreateAssetsResponse {
+    fun batchCreate(@RequestBody request: BatchCreateAssetsRequest):
+        BatchCreateAssetsResponse {
         return assetService.batchCreate(request)
     }
 

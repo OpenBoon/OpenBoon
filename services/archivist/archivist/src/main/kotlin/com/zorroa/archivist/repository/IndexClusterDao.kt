@@ -5,8 +5,6 @@ import com.zorroa.archivist.domain.IndexCluster
 import com.zorroa.archivist.domain.IndexClusterFilter
 import com.zorroa.archivist.domain.IndexClusterSpec
 import com.zorroa.archivist.domain.IndexClusterState
-import com.zorroa.archivist.domain.IndexRoute
-import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.service.event
@@ -113,7 +111,7 @@ class IndexClusterDaoImpl : AbstractDao(), IndexClusterDao {
 
     override fun getNextAutoPoolCluster(): IndexCluster {
         val counts = mutableMapOf<String, Int>()
-        jdbc.query(GET_POOL_COUNTS) { rs->
+        jdbc.query(GET_POOL_COUNTS) { rs ->
             counts[rs.getString("pk_index_cluster")] = rs.getInt("c")
         }
         if (counts.isEmpty()) {
@@ -223,6 +221,5 @@ class IndexClusterDaoImpl : AbstractDao(), IndexClusterDao {
                 "pk_index_cluster=? " +
             "AND " +
                 "int_state!=?"
-
     }
 }

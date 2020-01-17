@@ -20,9 +20,7 @@ import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalArgumentException
 import java.util.UUID
-
 
 interface PipelineModService {
     fun create(spec: PipelineModSpec): PipelineMod
@@ -61,10 +59,9 @@ class PipelineModServiceImpl(
         return found
     }
 
-
     @Transactional(readOnly = true)
     override fun getByNames(names: List<String>): List<PipelineMod> {
-        val trimmedNames = names.map { it.trim('+', '-')}
+        val trimmedNames = names.map { it.trim('+', '-') }
         val found = pipelineModDao.findByNameIn(trimmedNames)
         if (found.size != names.size) {
             val missing = trimmedNames.minus(found.map { it.name })

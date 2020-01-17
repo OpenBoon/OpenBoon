@@ -36,13 +36,12 @@ class BatchAssetOpStatus(
     val assetId: String,
 
     @ApiModelProperty("A failure message will be set if the operation filed.")
-    val failureMessage: String?=null
+    val failureMessage: String? = null
 ) {
 
     @ApiModelProperty("True of the operation failed.")
-    val failed : Boolean = failureMessage != null
+    val failed: Boolean = failureMessage != null
 }
-
 
 @ApiModel("Batch Index Assets Request",
     description = "Defines the properties necessary to reindex a batch of Assets.")
@@ -164,7 +163,6 @@ class AssetCounters(
     val replaced: Int = 0
 )
 
-
 @ApiModel("Asset",
     description = "The file information and all the metadata generated during Analysis.")
 open class Asset(
@@ -264,8 +262,7 @@ open class Asset(
         try {
             if (value == null) {
                 (current as MutableMap<String, Any?>)[key] = null
-            }
-            else {
+            } else {
                 (current as MutableMap<String, Any?>)[key] = Json.Mapper.convertValue(value)
             }
         } catch (ex: ClassCastException) {

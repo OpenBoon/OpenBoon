@@ -13,7 +13,6 @@ import com.zorroa.archivist.util.JdbcUtils
 import io.micrometer.core.instrument.Tag
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
-import java.util.EnumSet
 import java.util.UUID
 
 /**
@@ -51,10 +50,9 @@ enum class TaskState {
         return Tag.of("task-state", this.toString())
     }
 
-    fun isFinishedState() : Boolean {
+    fun isFinishedState(): Boolean {
         return this == Success || this == Failure || this == Skipped
     }
-
 }
 
 class TaskSpec(

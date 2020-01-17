@@ -58,7 +58,7 @@ interface DataSourceService {
      * Update the credentials blob, can be null.  Return true
      * if the value was updated.
      */
-    fun updateCredentials(id: UUID, blob: String?) : Boolean
+    fun updateCredentials(id: UUID, blob: String?): Boolean
 
     /**
      * Create an Analysis job to process the [DataSource]
@@ -164,7 +164,7 @@ class DataSourceServiceImpl(
         )
     }
 
-    override fun updateCredentials(id: UUID, blob: String?) : Boolean {
+    override fun updateCredentials(id: UUID, blob: String?): Boolean {
         val salt = KeyGenerators.string().generateKey()
         return dataSourceJdbcDao.updateCredentials(
             id, encryptCredentials(blob, salt), salt

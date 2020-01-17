@@ -15,7 +15,7 @@ import javax.persistence.Table
  * All properties needed to create a Project
  */
 @ApiModel("Project Spec", description = "All properties necessary to create a Project.")
-class ProjectSpec (
+class ProjectSpec(
 
     @ApiModelProperty("A unique name of the project.")
     val name: String,
@@ -25,7 +25,7 @@ class ProjectSpec (
      * for REST clients.
      */
     @ApiModelProperty("An optional unique ID for the project.")
-    val projectId: UUID?=null
+    val projectId: UUID? = null
 )
 
 /**
@@ -34,21 +34,21 @@ class ProjectSpec (
 @Entity
 @Table(name = "project")
 @ApiModel("Project", description = "A ZMLP Project")
-class Project (
+class Project(
     @Id
-    @Column(name="pk_project")
+    @Column(name = "pk_project")
     @ApiModelProperty("The Unique ID of the project.")
     val id: UUID,
 
-    @Column(name="str_name")
+    @Column(name = "str_name")
     @ApiModelProperty("The name of the Project")
     val name: String,
 
-    @Column(name="time_created")
+    @Column(name = "time_created")
     @ApiModelProperty("The time the Project was created..")
     val timeCreated: Long,
 
-    @Column(name="time_modified")
+    @Column(name = "time_modified")
     @ApiModelProperty("The last time the Project was modified.")
     val timeModified: Long,
 
@@ -88,7 +88,7 @@ class ProjectSettings(
 )
 
 @ApiModel("Project Filter", description = "Search filter for finding Projects")
-class ProjectFilter (
+class ProjectFilter(
 
     /**
      * A list of unique Project IDs.
@@ -102,8 +102,7 @@ class ProjectFilter (
     @ApiModelProperty("The project names to match")
     val names: List<String>? = null
 
-) : KDaoFilter()
-{
+) : KDaoFilter() {
     @JsonIgnore
     override val sortMap: Map<String, String> = mapOf(
         "name" to "str_name",

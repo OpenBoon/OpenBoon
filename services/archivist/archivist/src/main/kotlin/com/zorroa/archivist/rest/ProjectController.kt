@@ -109,7 +109,7 @@ class ProjectController constructor(
         @PathVariable name: String
     ): ResponseEntity<Resource> {
         val locator = ProjectFileLocator(
-            ProjectStorageEntity.valueOf(entity.toUpperCase()),category, name)
+            ProjectStorageEntity.valueOf(entity.toUpperCase()), category, name)
         return projectStorageService.stream(locator)
     }
 }

@@ -8,21 +8,14 @@ import com.fasterxml.uuid.UUIDTimer
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.fasterxml.uuid.impl.TimeBasedGenerator
 import com.zorroa.archivist.config.ApplicationProperties
-import com.zorroa.archivist.domain.Project
 import io.micrometer.core.instrument.MeterRegistry
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import java.util.Random
-import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
-import javax.persistence.EntityManager
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Predicate
 import javax.sql.DataSource
 
 /**
@@ -88,7 +81,7 @@ open class AbstractDao {
     protected lateinit var jdbc: JdbcTemplate
 
     protected lateinit var properties: ApplicationProperties
-    
+
     @Autowired
     lateinit var meterRegistry: MeterRegistry
 

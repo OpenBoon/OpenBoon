@@ -63,7 +63,7 @@ class RestApiExceptionHandler {
 
         val status = if (annotation != null) {
             annotation.value
-        } else if (e is DataRetrievalFailureException || e is EntityNotFoundException ) {
+        } else if (e is DataRetrievalFailureException || e is EntityNotFoundException) {
             HttpStatus.NOT_FOUND
         } else if (e is IncorrectResultSizeDataAccessException) {
             // We're borrowing this http status

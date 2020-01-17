@@ -5,7 +5,6 @@ import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.domain.TaskFilter
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.TaskDao
-import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
@@ -71,7 +70,7 @@ class TaskController @Autowired constructor(
     @Throws(ExecutionException::class, IOException::class)
     fun retry(@ApiParam("UUID of the Task.") @PathVariable id: UUID): Any {
         val task = jobService.getInternalTask(id)
-        val result =  dispatcherService.retryTask(task,
+        val result = dispatcherService.retryTask(task,
             "Retried by ${getZmlpActor()}")
         if (result) {
             jobService.restartJob(task)

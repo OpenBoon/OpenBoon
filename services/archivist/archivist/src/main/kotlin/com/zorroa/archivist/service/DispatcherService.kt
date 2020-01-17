@@ -350,7 +350,7 @@ class DispatcherServiceImpl @Autowired constructor(
                 val assetCount = script.assets?.size ?: 0
 
                 // TODO: part of job and asset stats
-                //jobService.incrementAssetCounters(task, AssetCounters(errors = assetCount))
+                // jobService.incrementAssetCounters(task, AssetCounters(errors = assetCount))
 
                 taskErrorDao.batchCreate(task, script.assets?.map {
                     TaskErrorEvent(
@@ -372,7 +372,7 @@ class DispatcherServiceImpl @Autowired constructor(
     override fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task {
 
         val result = assetService.batchCreate(
-            BatchCreateAssetsRequest(event.assets, analyze = false, task=parentTask)
+            BatchCreateAssetsRequest(event.assets, analyze = false, task = parentTask)
         )
 
         val name = "Expand ${result.status.size} assets"
@@ -399,7 +399,7 @@ class DispatcherServiceImpl @Autowired constructor(
     override fun handleTaskError(task: InternalTask, error: TaskErrorEvent) {
         taskErrorDao.create(task, error)
         // TODO: part of job stats update
-        //jobService.incrementAssetCounters(task, AssetCounters(errors = 1))
+        // jobService.incrementAssetCounters(task, AssetCounters(errors = 1))
     }
 
     override fun handleStatsEvent(stats: List<TaskStatsEvent>) {

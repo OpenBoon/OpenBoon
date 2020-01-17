@@ -5,7 +5,6 @@ import com.zorroa.archivist.domain.IndexRouteFilter
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.IndexRoutingService
-import io.micrometer.core.annotation.Timed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping

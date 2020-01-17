@@ -60,7 +60,7 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
         val query = filter.getQuery(GET, false)
         val values = filter.getValues(false)
         return throwWhenNotFound("Project not found") {
-            return KPagedList(1L, filter.page, jdbc.query(query,MAPPER, *values))[0]
+            return KPagedList(1L, filter.page, jdbc.query(query, MAPPER, *values))[0]
         }
     }
 
