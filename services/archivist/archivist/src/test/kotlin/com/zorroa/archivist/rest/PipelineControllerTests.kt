@@ -54,7 +54,7 @@ class PipelineControllerTests : MockMvcTest() {
         val mod = pipelineModService.create(modSpec)
         entityManager.flush()
 
-        spec = PipelineSpec("Zorroa Test", modules = listOf(mod.id))
+        spec = PipelineSpec("Zorroa Test", modules = listOf(mod.name))
         pl = pipelineService.create(spec)
     }
 

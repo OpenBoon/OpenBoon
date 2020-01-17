@@ -152,7 +152,7 @@ class JobControllerTests : MockMvcTest() {
     @Test
     fun testRetryAllFailures() {
         val t = jobService.createTask(job, TaskSpec("foo", emptyZpsScript("bar")))
-        jobService.getJobTasks(job.id).list.forEach {
+        jobService.getTasks(job.id).list.forEach {
             assertTrue(jobService.setTaskState(it, TaskState.Failure, null))
         }
 

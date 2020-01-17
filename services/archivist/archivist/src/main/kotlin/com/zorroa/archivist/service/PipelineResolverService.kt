@@ -12,6 +12,7 @@ import com.zorroa.archivist.repository.ProjectCustomDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.Json
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -24,6 +25,8 @@ import java.util.UUID
  *
  */
 interface PipelineResolverService {
+
+    fun resolve(pipeline: String?, modules: List<String>?): List<ProcessorRef>
 
     /**
      * Return a copy of the standard pipeline.
@@ -49,15 +52,59 @@ interface PipelineResolverService {
      * Resolve a lis of [ProcessorRef] into a new list of [ProcessorRef]
      */
     fun resolveCustom(refs: List<ProcessorRef>?): MutableList<ProcessorRef>
+
 }
 
 @Service
 @Transactional
 class PipelineResolverServiceImpl(
-    val pipelineService: PipelineService,
-    val pipelineModDao: PipelineModDao,
     val projectCustomDao: ProjectCustomDao
 ) : PipelineResolverService {
+
+    @Autowired
+    lateinit var pipelineModService: PipelineModService
+
+    @Autowired
+    lateinit var  pipelineService: PipelineService
+
+    @Transactional(readOnly = true)
+    override fun resolve(pipeline: String?, modules: List<String>?): List<ProcessorRef> {
+        // Fetch the specified pipeline or default
+        val pipe = if (pipeline != null) {
+            pipelineService.get(pipeline)
+        }
+        else {
+            val settings = projectCustomDao.getSettings(getProjectId())
+            pipelineService.get(settings.defaultPipelineId)
+        }
+
+        if (pipe.mode == PipelineMode.MODULAR) {
+
+            // Find the pipelines standard modules and convert
+            // it into a mutable list.
+            val mods = pipelineModService.getByIds(pipe.modules).toMutableList()
+
+            modules?.let {
+                // If the mod starts with -, we remove it from the pipeline
+                // otherwise it's plussed on.
+                val addOrRemoves = it?.map { mod-> !mod.startsWith("-") }
+                val modMods =  pipelineModService.getByNames(it)
+
+                for ((addOrRemove, modMod) in addOrRemoves.zip(modMods)) {
+                    if (addOrRemove) {
+                        mods.add(modMod)
+                    }
+                    else {
+                        mods.remove(modMod)
+                    }
+                }
+            }
+            return resolveModular(mods)
+        }
+        else {
+            return resolveCustom(pipe.processors)
+        }
+    }
 
     @Transactional(readOnly = true)
     override fun resolve(): List<ProcessorRef> {
@@ -69,12 +116,13 @@ class PipelineResolverServiceImpl(
     override fun resolve(id: UUID): List<ProcessorRef> {
         val pipeline = pipelineService.get(id)
         return if (pipeline.mode == PipelineMode.MODULAR) {
-            val modules = pipelineModDao.findByIdIn(pipeline.modules)
+            val modules = pipelineModService.getByIds(pipeline.modules)
             resolveModular(modules)
         } else {
             resolveCustom(pipeline.processors)
         }
     }
+
 
     @Transactional(readOnly = true)
     override fun resolveModular(mods: List<PipelineMod>): List<ProcessorRef> {
@@ -223,8 +271,6 @@ class PipelineResolverServiceImpl(
             ProcessorRef("zmlp_core.proxy.ImageProxyProcessor", "zmlp/plugins-core"),
             ProcessorRef("zmlp_core.proxy.VideoProxyProcessor", "zmlp/plugins-core"),
             ProcessorRef("zmlp_analysis.mxnet.processors.ResNetSimilarityProcessor", "zmlp/plugins-analysis"),
-            ProcessorRef("zmlp_analysis.face.ZmlpFaceDetectionProcessor", "zmlp/plugins-analysis"),
-            ProcessorRef("zmlp_analysis.detect.ZmlpObjectDetectionProcessor", "zmlp/plugins-analysis"),
             ProcessorRef("PrependMarker", "none")
         )
     }

@@ -13,6 +13,8 @@ import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.util.Json
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.mock.web.MockMultipartFile
 import java.io.File
 import java.util.UUID
@@ -24,6 +26,12 @@ import kotlin.test.assertTrue
 
 class AssetServiceTests : AbstractTest() {
 
+    @Autowired
+    lateinit var pipelineModuleService: PipelineModService
+
+    @Autowired
+    lateinit var jobService: JobService
+
     override fun requiresElasticSearch(): Boolean {
         return true
     }
@@ -33,7 +41,54 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchCreateAssets() {
+    fun testBatchCreateAssetsWithPipelineAndModule() {
+        pipelineModuleService.updateStandardMods()
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
+            pipeline = "default",
+            modules = listOf("zmlp-labels")
+        )
+
+        val rsp = assetService.batchCreate(req)
+        val jobId = rsp.jobId
+
+        val tasks = jobService.getTasks(jobId!!)
+        val script = jobService.getZpsScript(tasks[0].id)
+
+        // Check the module was applied.
+        assertEquals(
+            "zmlp_analysis.mxnet.processors.ResNetClassifyProcessor",
+            script.execute!!.last().className
+        )
+    }
+
+    @Test(expected = DataRetrievalFailureException::class)
+    fun testBatchCreateAssets_moduleNotFound() {
+        pipelineModuleService.updateStandardMods()
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
+            modules = listOf("zmlp-arg!")
+        )
+
+        assetService.batchCreate(req)
+    }
+
+    @Test(expected = DataRetrievalFailureException::class)
+    fun testBatchCreateAssets_pipelineNotFound() {
+        pipelineModuleService.updateStandardMods()
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
+            pipeline = "cats"
+        )
+
+        assetService.batchCreate(req)
+    }
+
+    @Test
+    fun testBatchCreateAssetsWithTask() {
         val req = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
             task = InternalTask(
@@ -42,7 +97,9 @@ class AssetServiceTests : AbstractTest() {
                 UUID.randomUUID(),
                 UUID.randomUUID(),
                 "test",
-                TaskState.Success))
+                TaskState.Success
+            )
+        )
 
         val rsp = assetService.batchCreate(req)
         assertEquals(1, rsp.status.size)

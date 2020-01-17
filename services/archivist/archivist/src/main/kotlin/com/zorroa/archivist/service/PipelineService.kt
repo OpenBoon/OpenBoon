@@ -7,7 +7,6 @@ import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.PipelineDao
-import com.zorroa.archivist.repository.PipelineModDao
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -33,13 +32,20 @@ class PipelineServiceImpl @Autowired constructor(
     val pipelineDao: PipelineDao
 ) : PipelineService {
 
+    @Autowired
+    lateinit var pipelineModService: PipelineModService
+
     override fun create(spec: PipelineSpec): Pipeline {
         if (spec.mode == PipelineMode.CUSTOM) {
-            spec.modules = listOf()
+            spec.modules = null
         } else {
-            spec.processors = listOf()
+            spec.processors = null
         }
-        return pipelineDao.create(spec)
+        val pipeline =  pipelineDao.create(spec)
+        spec.modules?.let {
+            pipelineDao.setPipelineMods(pipeline.id, pipelineModService.getByNames(it))
+        }
+        return get(pipeline.id)
     }
 
     override fun update(id: UUID, update: PipelineUpdate): Boolean {
