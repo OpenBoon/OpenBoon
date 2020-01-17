@@ -1,6 +1,6 @@
 package com.zorroa.auth.server.rest
 
-import com.zorroa.auth.client.ZmlpActor
+import com.zorroa.zmlp.apikey.ZmlpActor
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpHeaders

@@ -1,6 +1,5 @@
 package com.zorroa.auth.server.service
 
-import com.zorroa.auth.client.Permission
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
@@ -9,7 +8,6 @@ import com.zorroa.auth.server.repository.ApiKeyRepository
 import com.zorroa.auth.server.repository.PagedList
 import com.zorroa.auth.server.security.KeyGenerator
 import com.zorroa.auth.server.security.getProjectId
-import com.zorroa.auth.server.security.getZmlpActor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID

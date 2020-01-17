@@ -13,7 +13,7 @@ import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.security.getAnalyst
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

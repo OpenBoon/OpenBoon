@@ -5,7 +5,7 @@ import com.zorroa.archivist.domain.ProcessorFilter
 import com.zorroa.archivist.domain.ProcessorSpec
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.archivist.util.JdbcUtils.getTsWordVector
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -112,7 +112,7 @@ class ProcessorDaoImpl : AbstractDao(), ProcessorDao {
                     rs.getString("str_type"),
                     rs.getString("str_file"),
                     (rs.getArray("list_file_types").array as Array<String>).toList(),
-                    Json.deserialize(rs.getString("json_display"), Json.LIST_OF_GENERIC_MAP),
+                    Json.Mapper.readValue(rs.getString("json_display"), Json.LIST_OF_GENERIC_MAP),
                     rs.getLong("time_updated")
             )
         }

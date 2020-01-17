@@ -7,7 +7,7 @@ import com.zorroa.archivist.domain.AnalystFilter
 import com.zorroa.archivist.domain.AnalystSpec
 import com.zorroa.archivist.domain.AnalystState
 import com.zorroa.archivist.repository.KPagedList
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired

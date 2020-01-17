@@ -19,7 +19,7 @@ import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.service.DispatchQueueManager
 import com.zorroa.archivist.service.DispatcherService
 import com.zorroa.archivist.service.JobService
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.randomString
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired

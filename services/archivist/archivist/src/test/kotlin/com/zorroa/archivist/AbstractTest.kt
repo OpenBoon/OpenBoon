@@ -21,12 +21,12 @@ import com.zorroa.archivist.service.PipelineService
 import com.zorroa.archivist.service.ProjectService
 import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.randomString
-import com.zorroa.auth.client.ApiKey
-import com.zorroa.auth.client.AuthServerClient
-import com.zorroa.auth.client.Permission
-import com.zorroa.auth.client.ZmlpActor
+import com.zorroa.zmlp.apikey.ApiKey
+import com.zorroa.zmlp.apikey.AuthServerClient
+import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.apikey.ZmlpActor
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions

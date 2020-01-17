@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.google.common.hash.Hashing
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.randomString
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty

@@ -10,7 +10,7 @@ import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.repository.PipelineModDao
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.TestFactory

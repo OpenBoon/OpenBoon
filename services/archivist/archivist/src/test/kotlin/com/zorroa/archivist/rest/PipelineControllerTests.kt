@@ -12,7 +12,7 @@ import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.service.PipelineModService
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
 import org.junit.Before
 import org.junit.Test

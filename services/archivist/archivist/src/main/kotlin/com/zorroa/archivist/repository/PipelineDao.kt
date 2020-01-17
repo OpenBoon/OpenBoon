@@ -14,7 +14,7 @@ import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils.insert
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.isUUID
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper

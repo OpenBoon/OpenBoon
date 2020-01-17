@@ -3,8 +3,8 @@ package com.zorroa.auth.server.domain
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.auth.client.Permission
-import com.zorroa.auth.client.ZmlpActor
+import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.apikey.ZmlpActor
 import com.zorroa.auth.server.repository.AbstractJpaFilter
 import com.zorroa.auth.server.repository.StringSetConverter
 import com.zorroa.auth.server.security.getProjectId

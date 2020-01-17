@@ -1,5 +1,6 @@
 package com.zorroa.archivist.repository
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.InternalTask
@@ -16,7 +17,7 @@ import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
@@ -113,7 +114,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             "SELECT json_script FROM task WHERE pk_task=?",
             String::class.java, id
         )
-        return Json.deserialize(script, ZpsScript::class.java)
+        return Json.Mapper.readValue(script)
     }
 
     override fun setState(task: TaskId, newState: TaskState, oldState: TaskState?): Boolean {

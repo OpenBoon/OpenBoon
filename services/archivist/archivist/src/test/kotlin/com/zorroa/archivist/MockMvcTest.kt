@@ -9,9 +9,9 @@ import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.AnalystTokenValidator
-import com.zorroa.archivist.util.Json
-import com.zorroa.auth.client.Permission
-import com.zorroa.auth.client.ZmlpActor
+import com.zorroa.zmlp.util.Json
+import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.apikey.ZmlpActor
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -126,11 +126,11 @@ abstract class MockMvcTest : AbstractTest() {
     }
 
     protected fun <T> deserialize(result: MvcResult, type: Class<T>): T {
-        return Json.deserialize(result.response.contentAsByteArray, type)
+        return Json.Mapper.readValue(result.response.contentAsByteArray, type)
     }
 
     protected fun <T> deserialize(result: MvcResult, type: TypeReference<T>): T {
-        return Json.deserialize(result.response.contentAsByteArray, type)
+        return Json.Mapper.readValue(result.response.contentAsByteArray, type)
     }
 
     protected fun admin(): HttpHeaders {

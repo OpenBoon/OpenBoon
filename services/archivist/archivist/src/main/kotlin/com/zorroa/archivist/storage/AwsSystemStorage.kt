@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.service.event
-import com.zorroa.archivist.util.Json
+import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
