@@ -165,7 +165,7 @@ exports[`<ApiKeys /> should render properly while loading 1`] = `
 }
 
 .emotion-9 {
-  height: 600px;
+  height: calc(100vh - 182px);
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -809,7 +809,7 @@ exports[`<ApiKeys /> should render properly with no api keys 1`] = `
 }
 
 .emotion-9 {
-  height: 600px;
+  height: calc(100vh - 182px);
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
