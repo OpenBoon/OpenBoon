@@ -12,7 +12,7 @@ def data():
         'name': 'Test',
         'projectId': '2fb4e52b-8791-4544-aafb-c16af66f19f8',
         'accessKey': 'P1klR1U1RgT3YfdLYN4-AHPlnOhXZHeD',
-        'secretKey': '6Ti7kZZ7IcmWnR1bfdvCMUataoMh9Mbq9Kqvs3xctOM7y1OwbefdFiLewuEDAGBof_lV5y_JKuFtY11bmRjFEg',
+        'secretKey': '6Ti7kZZ7IcmWnR1bfdvCMUataoMh9Mbq9Kqvs3xctOM7y1OwbefdFiLewuEDAGBof_lV5y_JKuFtY11bmRjFEg',  # noqa
         'permissions': ['AssetsRead']
     }
 
