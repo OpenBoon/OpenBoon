@@ -98,9 +98,9 @@ class PipelineServiceTests : AbstractTest() {
         assertTrue(pipeline.processors.isEmpty())
     }
 
-    fun createTestModule(name: String) : PipelineMod {
+    fun createTestModule(name: String): PipelineMod {
         val modSpec = PipelineModSpec(name, "test", listOf(), false)
-        val mod =  pipelineModService.create(modSpec)
+        val mod = pipelineModService.create(modSpec)
         entityManager.flush()
         return mod
     }

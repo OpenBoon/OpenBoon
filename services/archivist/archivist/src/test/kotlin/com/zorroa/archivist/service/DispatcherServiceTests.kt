@@ -132,7 +132,6 @@ class DispatcherServiceTests : AbstractTest() {
         )
         jobService.create(spec2)
 
-
         val priority = dispatcherService.getDispatchPriority()
         assertEquals(0, priority[0].priority)
         assertEquals(100, priority[1].priority)

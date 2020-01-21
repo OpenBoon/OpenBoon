@@ -133,7 +133,6 @@ class AssetControllerTests : MockMvcTest() {
         val storage = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         projectStorageService.store(storage)
 
-
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/assets/$id/files/proxy/bob.jpg")
                 .headers(admin())
@@ -160,7 +159,7 @@ class AssetControllerTests : MockMvcTest() {
         )
 
         val rsp = assetService.batchCreate(BatchCreateAssetsRequest(
-            assets=listOf(AssetSpec("https://i.imgur.com/SSN26nN.jpg"))
+            assets = listOf(AssetSpec("https://i.imgur.com/SSN26nN.jpg"))
         ))
         val id = rsp.assets[0].id
 
@@ -172,8 +171,8 @@ class AssetControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.category", CoreMatchers.equalTo("proxy")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.name",CoreMatchers.equalTo("toucan.jpg")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.size",CoreMatchers.equalTo(97221)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("toucan.jpg")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.size", CoreMatchers.equalTo(97221)))
             .andReturn()
     }
 

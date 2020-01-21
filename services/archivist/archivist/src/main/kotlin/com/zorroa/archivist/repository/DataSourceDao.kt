@@ -21,12 +21,12 @@ interface DataSourceJdbcDao {
      * Update a [DataSource] credentials blob. Setting the blob to null
      * will remove it.  The blob must be encrypted before calling this.
      */
-    fun updateCredentials(id: UUID, creds: String?, salt: String) : Boolean
+    fun updateCredentials(id: UUID, creds: String?, salt: String): Boolean
 
     /**
      * Get an encrypted [DataSourceCredentials] blob.
      */
-    fun getCredentials(id: UUID) : DataSourceCredentials
+    fun getCredentials(id: UUID): DataSourceCredentials
 
     /**
      * Find a [KPagedList] of [DataSources] that match the given [DataSourceFilter]
@@ -46,7 +46,6 @@ interface DataSourceJdbcDao {
      */
     fun count(filter: DataSourceFilter): Long
 }
-
 
 @Repository
 class JdbcDataSourceJdbcDaoImpl : AbstractDao(), DataSourceJdbcDao {
@@ -73,12 +72,12 @@ class JdbcDataSourceJdbcDaoImpl : AbstractDao(), DataSourceJdbcDao {
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
     }
 
-    override fun updateCredentials(id: UUID, creds: String?, salt: String) : Boolean {
+    override fun updateCredentials(id: UUID, creds: String?, salt: String): Boolean {
         return jdbc.update("UPDATE datasource SET str_credentials=?, str_salt=? WHERE pk_datasource=? AND pk_project=?",
             creds, salt, id, getProjectId()) == 1
     }
 
-    override fun getCredentials(id: UUID) : DataSourceCredentials {
+    override fun getCredentials(id: UUID): DataSourceCredentials {
         return jdbc.queryForObject(
             GET_CREDS,
             RowMapper { rs, _ ->

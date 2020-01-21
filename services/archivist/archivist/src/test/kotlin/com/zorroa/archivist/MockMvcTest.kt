@@ -150,5 +150,4 @@ abstract class MockMvcTest : AbstractTest() {
         headers["Authorization"] = "Bearer ANALYST"
         return headers
     }
-
 }

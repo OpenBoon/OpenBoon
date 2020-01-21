@@ -247,13 +247,12 @@ class AssetServiceImpl : AssetService {
         return asset
     }
 
-    override fun batchUpload(req: BatchUploadAssetsRequest)
-        : BatchCreateAssetsResponse {
+    override fun batchUpload(req: BatchUploadAssetsRequest):
+        BatchCreateAssetsResponse {
 
         val pipeline = if (req.analyze) {
             pipelineResolverService.resolve(req.pipeline, req.modules)
-        }
-        else {
+        } else {
             null
         }
 
@@ -324,8 +323,7 @@ class AssetServiceImpl : AssetService {
 
         val pipeline = if (request.analyze && request.task == null) {
             pipelineResolverService.resolve(request.pipeline, request.modules)
-        }
-        else {
+        } else {
             null
         }
 

@@ -7,7 +7,6 @@ import com.zorroa.archivist.domain.JobPriority.Standard
 import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.JdbcUtils
-import io.micrometer.core.instrument.Tag
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
@@ -21,7 +20,6 @@ enum class JobType {
     Batch,
     Generate
 }
-
 
 enum class JobState {
     /**
@@ -53,7 +51,7 @@ enum class JobState {
      * Return true if transitioning to the current state puts the job
      * in an inactive state.
      */
-    fun isInactiveState() : Boolean {
+    fun isInactiveState(): Boolean {
         return this == Success || this == Failure || this == Cancelled
     }
 
@@ -61,7 +59,7 @@ enum class JobState {
      * Return true if transitioning to the current state puts the job
      * in an active state.
      */
-    fun isActiveState() : Boolean {
+    fun isActiveState(): Boolean {
         return this == InProgress
     }
 }
@@ -298,13 +296,13 @@ class TaskStateCounts(
     val counts: Map<TaskState, Int>,
     val total: Int
 ) {
-    fun hasPendingTasks() : Boolean {
+    fun hasPendingTasks(): Boolean {
         return (counts.getValue(TaskState.Waiting) > 0 ||
             counts.getValue(TaskState.Running) > 0 ||
             counts.getValue(TaskState.Queued) > 0)
     }
 
-    fun hasFailures() : Boolean {
+    fun hasFailures(): Boolean {
         return counts.getValue(TaskState.Failure) > 0
     }
 }

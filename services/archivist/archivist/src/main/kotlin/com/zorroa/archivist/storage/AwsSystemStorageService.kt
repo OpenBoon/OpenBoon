@@ -9,14 +9,14 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.service.event
 import com.zorroa.zmlp.util.Json
+import javax.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
-import javax.annotation.PostConstruct
 
 @Service
 @Profile("aws")
-class AwsSystemStorageServiceImpl constructor(
+class AwsSystemStorageService constructor(
     override val properties: SystemStorageProperties,
     val s3Client: AmazonS3
 ) : SystemStorageService {
@@ -53,6 +53,6 @@ class AwsSystemStorageServiceImpl constructor(
     }
 
     companion object {
-        val logger = LoggerFactory.getLogger(AwsSystemStorageServiceImpl::class.java)
+        val logger = LoggerFactory.getLogger(AwsSystemStorageService::class.java)
     }
 }

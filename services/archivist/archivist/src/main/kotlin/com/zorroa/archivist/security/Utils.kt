@@ -91,4 +91,3 @@ fun hasPermission(perms: Collection<Permission>): Boolean {
 fun getProjectFilter(): QueryBuilder {
     return QueryBuilders.termQuery("system.projectId", getZmlpActor().projectId.toString())
 }
-

@@ -100,7 +100,7 @@ class DataSource(
 
 ) {
 
-    fun getUpdated(update: DataSourceUpdate) : DataSource{
+    fun getUpdated(update: DataSourceUpdate): DataSource {
         return DataSource(id,
             projectId,
             update.pipelineId,
@@ -144,7 +144,7 @@ class DataSourceCredentials(
 )
 
 @ApiModel("DataSource Filter", description = "A search filter for DataSources")
-class DataSourceFilter (
+class DataSourceFilter(
 
     /**
      * A list of unique Project IDs.
@@ -158,8 +158,7 @@ class DataSourceFilter (
     @ApiModelProperty("The DataSource names to match")
     val names: List<String>? = null
 
-) : KDaoFilter()
-{
+) : KDaoFilter() {
     @JsonIgnore
     override val sortMap: Map<String, String> = mapOf(
         "name" to "datasource.str_name",

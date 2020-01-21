@@ -158,7 +158,7 @@ class ProjectControllerTests : MockMvcTest() {
         val body = MockMultipartFile(
             "body", "",
             "application/json",
-           payload.toByteArray()
+            payload.toByteArray()
         )
 
         mvc.perform(

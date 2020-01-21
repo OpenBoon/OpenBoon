@@ -7,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.UUID
 
-
 object KnownKeys {
 
     /**

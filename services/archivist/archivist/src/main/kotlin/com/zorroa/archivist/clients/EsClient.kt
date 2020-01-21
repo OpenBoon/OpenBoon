@@ -75,7 +75,7 @@ class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient)
     }
 
     fun newIndexRequest(id: String): IndexRequest {
-       val req = IndexRequest(route.indexName)
+        val req = IndexRequest(route.indexName)
         req.id(id)
         return req
     }

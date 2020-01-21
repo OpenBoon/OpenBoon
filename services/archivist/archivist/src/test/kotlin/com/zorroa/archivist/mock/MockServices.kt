@@ -38,4 +38,3 @@ class MockServiceConfiguration {
         return MockAsyncThreadExecutor()
     }
 }
-

@@ -122,7 +122,7 @@ class PipelineResolverServiceTests : AbstractTest() {
         )
         val resolved = pipelineResolverService.resolve(pipeline.id)
         assertEquals("last_processor", resolved.last().className)
-        assertEquals("append_processor", resolved[resolved.size-2].className)
+        assertEquals("append_processor", resolved[resolved.size - 2].className)
     }
 
     @Test

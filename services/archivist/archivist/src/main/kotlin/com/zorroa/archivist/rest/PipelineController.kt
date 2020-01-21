@@ -10,7 +10,6 @@ import com.zorroa.archivist.service.PipelineResolverService
 import com.zorroa.archivist.service.PipelineService
 import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.zmlp.util.Json
-import com.zorroa.archivist.util.isUUID
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation

@@ -17,6 +17,8 @@ import com.zorroa.archivist.domain.ProjectStorageLocator
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.zmlp.util.Json
+import java.util.concurrent.TimeUnit
+import javax.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -27,8 +29,6 @@ import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import java.util.concurrent.TimeUnit
-import javax.annotation.PostConstruct
 
 @Configuration
 @Profile("aws")
@@ -58,10 +58,9 @@ class AwsStorageConfiguration(val properties: StorageProperties) {
     }
 }
 
-
 @Service
 @Profile("aws")
-class AwsProjectStorageServiceImpl constructor(
+class AwsProjectStorageService constructor(
     val properties: StorageProperties,
     val indexRoutingService: IndexRoutingService,
     val s3Client: AmazonS3
@@ -86,7 +85,7 @@ class AwsProjectStorageServiceImpl constructor(
         metadata.userMetadata = mapOf("attrs" to Json.serializeToString(spec.attrs))
 
         s3Client.putObject(PutObjectRequest(properties.bucket, path,
-           spec.data.inputStream(), metadata))
+            spec.data.inputStream(), metadata))
 
         logStoreEvent(spec)
 
@@ -121,6 +120,6 @@ class AwsProjectStorageServiceImpl constructor(
     }
 
     companion object {
-        val logger = LoggerFactory.getLogger(AwsProjectStorageServiceImpl::class.java)
+        val logger = LoggerFactory.getLogger(AwsProjectStorageService::class.java)
     }
 }

@@ -88,7 +88,7 @@ class JobControllerTests : MockMvcTest() {
         assertEquals(1, t1.taskCounts!!["tasksTotal"])
         assertEquals(1, t1.taskCounts!!["tasksWaiting"])
     }
-    
+
     @Test
     fun testUpdate() {
         val spec = JobUpdateSpec("silly_bazilly", 5, true, System.currentTimeMillis(), 5)

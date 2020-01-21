@@ -1,6 +1,5 @@
 package com.zorroa.archivist.config
 
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor
@@ -9,11 +8,9 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.annotation.EnableTransactionManagement
-import java.util.*
+import java.util.Properties
 import javax.persistence.EntityManagerFactory
 import javax.sql.DataSource
-import org.springframework.jdbc.datasource.DataSourceTransactionManager
-
 
 @EnableTransactionManagement
 @Configuration
@@ -25,7 +22,7 @@ class DatabaseConfiguration {
         emf.dataSource = dataSource
         emf.setPackagesToScan("com.zorroa.archivist.domain")
 
-        val ad = HibernateJpaVendorAdapter();
+        val ad = HibernateJpaVendorAdapter()
         emf.jpaVendorAdapter = ad
         emf.setJpaProperties(additionalProperties())
 
@@ -38,7 +35,7 @@ class DatabaseConfiguration {
         txm.entityManagerFactory = emf
         return txm
     }
-    
+
     @Bean
     fun exceptionTranslation(): PersistenceExceptionTranslationPostProcessor {
         return PersistenceExceptionTranslationPostProcessor()

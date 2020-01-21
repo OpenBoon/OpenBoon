@@ -53,7 +53,7 @@ interface ProjectStorageService {
     /**
      * Log the storage of a file.
      */
-    fun logStoreEvent(spec: ProjectStorageSpec ) {
+    fun logStoreEvent(spec: ProjectStorageSpec) {
         logger.event(
             LogObject.PROJECT_STORAGE, LogAction.CREATE,
             mapOf(

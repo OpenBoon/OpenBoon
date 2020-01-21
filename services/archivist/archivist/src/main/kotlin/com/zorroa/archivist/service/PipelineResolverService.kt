@@ -7,7 +7,6 @@ import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.ProcessorRef
-import com.zorroa.archivist.repository.PipelineModDao
 import com.zorroa.archivist.repository.ProjectCustomDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.util.Json
@@ -52,7 +51,6 @@ interface PipelineResolverService {
      * Resolve a lis of [ProcessorRef] into a new list of [ProcessorRef]
      */
     fun resolveCustom(refs: List<ProcessorRef>?): MutableList<ProcessorRef>
-
 }
 
 @Service
@@ -65,15 +63,14 @@ class PipelineResolverServiceImpl(
     lateinit var pipelineModService: PipelineModService
 
     @Autowired
-    lateinit var  pipelineService: PipelineService
+    lateinit var pipelineService: PipelineService
 
     @Transactional(readOnly = true)
     override fun resolve(pipeline: String?, modules: List<String>?): List<ProcessorRef> {
         // Fetch the specified pipeline or default
         val pipe = if (pipeline != null) {
             pipelineService.get(pipeline)
-        }
-        else {
+        } else {
             val settings = projectCustomDao.getSettings(getProjectId())
             pipelineService.get(settings.defaultPipelineId)
         }
@@ -87,21 +84,19 @@ class PipelineResolverServiceImpl(
             modules?.let {
                 // If the mod starts with -, we remove it from the pipeline
                 // otherwise it's plussed on.
-                val addOrRemoves = it?.map { mod-> !mod.startsWith("-") }
-                val modMods =  pipelineModService.getByNames(it)
+                val addOrRemoves = it?.map { mod -> !mod.startsWith("-") }
+                val modMods = pipelineModService.getByNames(it)
 
                 for ((addOrRemove, modMod) in addOrRemoves.zip(modMods)) {
                     if (addOrRemove) {
                         mods.add(modMod)
-                    }
-                    else {
+                    } else {
                         mods.remove(modMod)
                     }
                 }
             }
             return resolveModular(mods)
-        }
-        else {
+        } else {
             return resolveCustom(pipe.processors)
         }
     }
@@ -122,7 +117,6 @@ class PipelineResolverServiceImpl(
             resolveCustom(pipeline.processors)
         }
     }
-
 
     @Transactional(readOnly = true)
     override fun resolveModular(mods: List<PipelineMod>): List<ProcessorRef> {

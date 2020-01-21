@@ -41,7 +41,7 @@ class PipelineServiceImpl @Autowired constructor(
         } else {
             spec.processors = null
         }
-        val pipeline =  pipelineDao.create(spec)
+        val pipeline = pipelineDao.create(spec)
         spec.modules?.let {
             pipelineDao.setPipelineMods(pipeline.id, pipelineModService.getByNames(it))
         }
@@ -71,7 +71,7 @@ class PipelineServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun findOne(filter: PipelineFilter): Pipeline = pipelineDao.findOne(filter)
 
-    override fun delete(id: UUID): Boolean  = pipelineDao.delete(id)
+    override fun delete(id: UUID): Boolean = pipelineDao.delete(id)
 
     companion object {
         private val logger = LoggerFactory.getLogger(PipelineServiceImpl::class.java)

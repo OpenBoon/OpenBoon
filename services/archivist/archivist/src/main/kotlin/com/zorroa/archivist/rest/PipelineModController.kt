@@ -34,13 +34,13 @@ class PipelineModController(val pipelineModService: PipelineModService) {
 
     @ApiOperation("Update a Pipeline Mpd")
     @PutMapping("$URL/{id}")
-    fun update(@PathVariable id: UUID, @RequestBody update: PipelineModUpdate) : PipelineMod {
+    fun update(@PathVariable id: UUID, @RequestBody update: PipelineModUpdate): PipelineMod {
         return pipelineModService.update(id, update)
     }
 
     @ApiOperation("Delete a Pipeline Mod, assuming it's not in use.")
     @DeleteMapping("$URL/{id}")
-    fun delete(@PathVariable id: UUID) : Any {
+    fun delete(@PathVariable id: UUID): Any {
         pipelineModService.delete(id)
         return HttpUtils.deleted("pipeline-mod", id, true)
     }

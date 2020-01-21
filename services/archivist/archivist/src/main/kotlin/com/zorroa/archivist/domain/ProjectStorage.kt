@@ -87,20 +87,20 @@ interface ProjectStorageLocator {
  *
  */
 class ProjectFileLocator(
-    val entity : ProjectStorageEntity,
+    val entity: ProjectStorageEntity,
     override val category: String,
     override val name: String,
     val id: String? = null,
     @JsonIgnore
     val projectId: UUID? = null
-) : ProjectStorageLocator  {
+) : ProjectStorageLocator {
 
     override fun getPath(): String {
         val pid = projectId ?: getProjectId()
         return if (id != null) {
-            "projects/${pid}/${entity.lower()}/${category}/$name"
+            "projects/$pid/${entity.lower()}/$category/$name"
         } else {
-            "projects/${pid}/${entity.lower()}/${id}/${category}/$name"
+            "projects/$pid/${entity.lower()}/$id/$category/$name"
         }
     }
 }
@@ -135,7 +135,7 @@ class AssetFileLocator(
         }
 
         val proj = projectId ?: getProjectId()
-        return "projects/$proj/$id/${entity.lower()}/${category}/$name"
+        return "projects/$proj/$id/${entity.lower()}/$category/$name"
     }
 }
 
@@ -176,9 +176,8 @@ class FileStorage(
 
     @ApiModelProperty("Overrides which Asset")
     var sourceAssetId: String? = null
-)
-{
+) {
     companion object {
-        val JSON_LIST_OF : TypeReference<List<FileStorage>> = object : TypeReference<List<FileStorage>>() {}
+        val JSON_LIST_OF: TypeReference<List<FileStorage>> = object : TypeReference<List<FileStorage>>() {}
     }
 }
