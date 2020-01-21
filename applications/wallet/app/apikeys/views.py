@@ -11,6 +11,8 @@ class ApikeyViewSet(BaseProjectViewSet):
     serializer_class = ApikeySerializer
     pagination_class = FromSizePagination
 
+    ZMLP_ONLY = True
+
     def list(self, request, project_pk, client):
         # Need to be able to paginate and filter by project key
         # currently the api is automatically filtering by the project the users
