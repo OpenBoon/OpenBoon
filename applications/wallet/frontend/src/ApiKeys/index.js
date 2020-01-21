@@ -13,7 +13,7 @@ const ApiKeys = () => {
   } = useRouter()
 
   return (
-    <div>
+    <>
       <Head>
         <title>API Keys</title>
       </Head>
@@ -37,7 +37,7 @@ const ApiKeys = () => {
           <ApiKeysRow key={result.id} apiKey={result} />
         )}
       />
-    </div>
+    </>
   )
 }
 

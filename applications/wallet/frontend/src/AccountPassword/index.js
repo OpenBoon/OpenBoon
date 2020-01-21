@@ -7,7 +7,7 @@ import AccountPasswordForm from './Form'
 
 const AccountPassword = () => {
   return (
-    <div>
+    <>
       <Head>
         <title>Account Profile</title>
       </Head>
@@ -22,7 +22,7 @@ const AccountPassword = () => {
       />
 
       <AccountPasswordForm onSubmit={console.warn} />
-    </div>
+    </>
   )
 }
 

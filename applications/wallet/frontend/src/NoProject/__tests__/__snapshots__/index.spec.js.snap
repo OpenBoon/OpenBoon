@@ -2,6 +2,9 @@
 
 exports[`<NoProject /> should render properly 1`] = `
 .emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -17,7 +20,6 @@ exports[`<NoProject /> should render properly 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: calc(100vh - 44px);
 }
 
 .emotion-0 {
@@ -25,19 +27,17 @@ exports[`<NoProject /> should render properly 1`] = `
   font-weight: 400;
 }
 
-<div>
-  <div
-    className="emotion-1"
+<div
+  className="emotion-1"
+>
+  <svg
+    data-file-name="noProject.svg"
+    width={250}
+  />
+  <h3
+    className="emotion-0"
   >
-    <svg
-      data-file-name="noProject.svg"
-      width={250}
-    />
-    <h3
-      className="emotion-0"
-    >
-      You currently have no projects.
-    </h3>
-  </div>
+    You currently have no projects.
+  </h3>
 </div>
 `;
