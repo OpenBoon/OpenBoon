@@ -322,19 +322,6 @@ open class Asset(
     }
 }
 
-@ApiModel("Asset Search", description = "Stores an Asset search, is modeled after an ElasticSearch request.")
-class AssetSearch(
-
-    @ApiModelProperty(
-        "The search to execute",
-        reference = "https://www.elastic.co/guide/en/elasticsearch/reference/6.4/query-filter-context.html"
-    )
-    val search: Map<String, Any>? = null,
-
-    @ApiModelProperty("A query to execute on nested elements.")
-    val elementQuery: Map<String, Any>? = null
-)
-
 object Attr {
 
     const val DELIMITER = "."
