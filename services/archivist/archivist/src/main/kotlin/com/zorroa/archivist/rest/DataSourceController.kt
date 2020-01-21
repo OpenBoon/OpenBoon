@@ -45,12 +45,13 @@ class DataSourceController(
     @PutMapping("/api/v1/data-sources/{id}")
     fun update(
         @ApiParam("The DataSource unique Id.") @PathVariable id: UUID,
-        @ApiParam("Create a new data set.") @RequestBody update: DataSourceUpdate): DataSource {
+        @ApiParam("Create a new data set.") @RequestBody update: DataSourceUpdate
+    ): DataSource {
         return dataSourceService.update(id, update)
     }
 
     @DeleteMapping("/api/v1/data-sources/{id}")
-    fun delete(@ApiParam("The DataSource unique Id.") @PathVariable id: UUID) : Any {
+    fun delete(@ApiParam("The DataSource unique Id.") @PathVariable id: UUID): Any {
         dataSourceService.delete(id)
         return HttpUtils.deleted("DataSource", id, true)
     }

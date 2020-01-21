@@ -4,7 +4,6 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.JobSpec

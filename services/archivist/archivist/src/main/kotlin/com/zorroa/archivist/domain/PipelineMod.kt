@@ -60,9 +60,8 @@ class PipelineMod(
     @Column(name = "actor_modified")
     @ApiModelProperty("The actor that last made the last modification the Pipeline Mod.")
     var actorModified: String
-)
-{
-    fun getUpdated(update: PipelineModUpdate) : PipelineMod {
+) {
+    fun getUpdated(update: PipelineModUpdate): PipelineMod {
         return PipelineMod(id,
             update.name,
             update.description,
@@ -101,7 +100,6 @@ class PipelineModUpdate(
     @ApiModelProperty("A list of operations to apply to the pipeline")
     val ops: List<ModOp>
 )
-
 
 @ApiModel("PipelineModSpec", description = "Fields for creating a new Pipeline Mod")
 class PipelineModSpec(
@@ -149,14 +147,13 @@ class ModOp(
     @ApiModelProperty("Matchers which determine if an Op is applied.")
     var filter: OpFilter? = null,
     @ApiModelProperty("The max number of times the Op should be applied")
-    val maxApplyCount : Int = 1
+    val maxApplyCount: Int = 1
 ) {
     /**
      * This is incremented every time an Op is applied.
      */
     @JsonIgnore
-    var applyCount : Int = 0
-
+    var applyCount: Int = 0
 }
 
 @ApiModel("Filter Type", description = "The type of Filter.")
@@ -180,5 +177,3 @@ class OpFilter(
     @ApiModelProperty("The text to Match")
     val processor: String?
 )
-
-

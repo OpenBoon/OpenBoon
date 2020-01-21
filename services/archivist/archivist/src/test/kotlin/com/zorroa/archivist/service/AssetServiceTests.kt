@@ -286,7 +286,7 @@ class AssetServiceTests : AbstractTest() {
         var asset = assetService.getAsset(createRsp.status[0].assetId)
 
         val elements = mutableSetOf<Element>()
-        for (i in 0 .. AssetServiceImpl.maxElementCount + 1) {
+        for (i in 0..AssetServiceImpl.maxElementCount + 1) {
             elements.add(Element("object", "catDetector", listOf(i, i, 100, 100), listOf("cat$i")))
         }
         asset.setAttr("elements", elements)
@@ -378,7 +378,7 @@ class AssetServiceTests : AbstractTest() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec(
                 "https://i.imgur.com/LRoLTlK.jpg",
-                attrs=mapOf("elements" to listOf(Element("object", "catDetector",
+                attrs = mapOf("elements" to listOf(Element("object", "catDetector",
                     listOf(0, 0, 100, 100), listOf("cat")))))
         ))
 
@@ -402,7 +402,7 @@ class AssetServiceTests : AbstractTest() {
 
         val spec = AssetSpec(
             "asset:${sourceAsset.id}",
-            clip=Clip("scene", 10.24f, 12.48f))
+            clip = Clip("scene", 10.24f, 12.48f))
 
         val newAsset = Asset()
         val clip = assetService.deriveClip(newAsset, spec)
@@ -420,7 +420,7 @@ class AssetServiceTests : AbstractTest() {
     fun testDeriveClipFromSelf() {
 
         val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v", clip=Clip("scene", 10.24f, 12.48f)))
+            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v", clip = Clip("scene", 10.24f, 12.48f)))
         )
         val sourceAsset = assetService.batchCreate(batchCreate).assets[0]
         val clip = sourceAsset.getAttr("clip", Clip::class.java) ?: throw IllegalStateException(

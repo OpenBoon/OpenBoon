@@ -83,7 +83,7 @@ class DataSourceControllerTests : MockMvcTest() {
     @Test
     fun testFindOne() {
         val ds = dataSourceService.create(testSpec)
-        val filter = DataSourceFilter(ids=listOf(ds.id))
+        val filter = DataSourceFilter(ids = listOf(ds.id))
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/data-sources/_findOne")
@@ -97,11 +97,10 @@ class DataSourceControllerTests : MockMvcTest() {
             .andReturn()
     }
 
-
     @Test
     fun testFind() {
         val ds = dataSourceService.create(testSpec)
-        val filter = DataSourceFilter(ids=listOf(ds.id))
+        val filter = DataSourceFilter(ids = listOf(ds.id))
 
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v1/data-sources/_search")
@@ -132,7 +131,7 @@ class DataSourceControllerTests : MockMvcTest() {
     @Test
     fun testUpdateCredentials() {
         val ds = dataSourceService.create(testSpec)
-        val creds = DataSourceCredentials(blob="YAY")
+        val creds = DataSourceCredentials(blob = "YAY")
 
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/data-sources/${ds.id}/_credentials")

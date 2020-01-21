@@ -5,7 +5,7 @@ import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.randomString
 import java.io.File
 
-class TestAsset (
+class TestAsset(
     val path: File
 ) : Asset(randomString(16)) {
 

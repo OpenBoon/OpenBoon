@@ -88,7 +88,7 @@ class AnalystTokenValidator() {
         }
 
         val endpoint = if (preferHostnames && analystHost != null) {
-            "http://${analystHost}:$analystPort"
+            "http://$analystHost:$analystPort"
         } else {
             "http://$remoteAddr:$analystPort"
         }

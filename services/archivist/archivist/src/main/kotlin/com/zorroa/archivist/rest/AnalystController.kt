@@ -3,26 +3,15 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Analyst
 import com.zorroa.archivist.domain.AnalystFilter
-import com.zorroa.archivist.domain.AnalystState
 import com.zorroa.archivist.domain.LockState
 import com.zorroa.archivist.service.AnalystService
 import com.zorroa.archivist.util.HttpUtils
-import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
-import org.apache.http.conn.ssl.NoopHostnameVerifier
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy
-import org.apache.http.impl.client.HttpClients
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.task.AsyncListenableTaskExecutor
-import org.springframework.http.HttpMethod
-import org.springframework.http.HttpStatus
-import org.springframework.http.RequestEntity
-import org.springframework.http.ResponseEntity
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -31,8 +20,6 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.client.RestTemplate
-import java.security.cert.X509Certificate
 import java.util.UUID
 
 @PreAuthorize("hasAuthority('SystemManage')")

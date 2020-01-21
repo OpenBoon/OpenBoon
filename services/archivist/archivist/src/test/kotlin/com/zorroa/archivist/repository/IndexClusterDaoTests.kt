@@ -12,9 +12,9 @@ import kotlin.test.assertTrue
 class IndexClusterDaoTests : AbstractTest() {
 
     @Autowired
-    lateinit var indexClusterDao : IndexClusterDao
+    lateinit var indexClusterDao: IndexClusterDao
 
-    override fun requiresElasticSearch(): Boolean  = true
+    override fun requiresElasticSearch(): Boolean = true
 
     val testSpec = IndexClusterSpec(
         "http://foo", false)
@@ -53,7 +53,7 @@ class IndexClusterDaoTests : AbstractTest() {
         assertTrue(indexClusterDao.exists(cluster1.url))
         assertFalse(indexClusterDao.exists("https://foobar"))
     }
-    
+
     @Test
     fun getNextAutoPoolCluster() {
         val spec = IndexClusterSpec(

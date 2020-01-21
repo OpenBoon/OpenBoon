@@ -10,6 +10,10 @@ import com.zorroa.archivist.domain.ProjectStorageLocator
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.zmlp.util.Json
+import java.nio.ByteBuffer
+import java.nio.channels.Channels
+import java.util.concurrent.TimeUnit
+import javax.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,10 +24,6 @@ import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import java.nio.ByteBuffer
-import java.nio.channels.Channels
-import java.util.concurrent.TimeUnit
-import javax.annotation.PostConstruct
 
 @Configuration
 @Profile("gcs")
@@ -35,10 +35,9 @@ class GcsStorageConfiguration {
     }
 }
 
-
 @Service
 @Profile("gcs")
-class GcsProjectStorageServiceImpl constructor(
+class GcsProjectStorageService constructor(
     val properties: StorageProperties,
     val indexRoutingService: IndexRoutingService,
     val gcs: Storage
@@ -95,7 +94,6 @@ class GcsProjectStorageServiceImpl constructor(
     }
 
     companion object {
-        val logger = LoggerFactory.getLogger(GcsProjectStorageServiceImpl::class.java)
+        val logger = LoggerFactory.getLogger(GcsProjectStorageService::class.java)
     }
 }
-

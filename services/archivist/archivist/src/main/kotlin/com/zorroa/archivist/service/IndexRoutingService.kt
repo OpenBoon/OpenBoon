@@ -288,12 +288,11 @@ constructor(
             result = patch
         }
 
-
         return result
     }
 
     override fun getMajorVersionMappingFile(mappingType: String, majorVersion: Int): ElasticMapping {
-        val path = "db/migration/elasticsearch/${mappingType}.v${majorVersion}.json"
+        val path = "db/migration/elasticsearch/$mappingType.v$majorVersion.json"
         val resource = ClassPathResource(path)
         val mapping = Json.Mapper.readValue<MutableMap<String, Any>>(resource.inputStream)
         return ElasticMapping(mappingType, majorVersion, 0, mapping)

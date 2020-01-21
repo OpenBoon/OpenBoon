@@ -110,15 +110,13 @@ backend-kotlin-lint:
   image: kkopper/ktlint
   stage: pretest
   script:
-    - ktlint services/archivist/src/**/*.kt
-    - ktlint services/auth-server/src/**/*.kt
-    - ktlint services/elasticsearch/es-kwconf/src/main/kotlin/**/*.kt
-    - ktlint services/officer/src/**/*.kt
+    - ktlint services/**/*.kt lib/**/*.kt
   only:
     refs:
       - merge_requests
     changes:
       - services/**/*.kt
+      - lib/**/*.kt
 
 backend-kotlin-lint-all-stable-branches:
   extends:

@@ -26,8 +26,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class PipelineControllerTests : MockMvcTest() {
 
@@ -134,8 +132,12 @@ class PipelineControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.name",
-                CoreMatchers.equalTo(spec.name)))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.name",
+                    CoreMatchers.equalTo(spec.name)
+                )
+            )
             .andReturn()
     }
 
@@ -145,22 +147,26 @@ class PipelineControllerTests : MockMvcTest() {
         val filter = PipelineFilter()
         filter.sort = filter.sortMap.keys.map { "$it:asc" }
 
-         mvc.perform(
+        mvc.perform(
             get("/api/v1/pipelines/_search")
                 .headers(admin())
                 .content(Json.serialize(filter))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.list[0].name",
-                CoreMatchers.equalTo("default")))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.list[0].name",
+                    CoreMatchers.equalTo("default")
+                )
+            )
             .andReturn()
     }
 
     @Test
     fun testSearchByNameAndType() {
         // sort by everything
-        val filter = PipelineFilter(names=listOf("default"), modes=listOf(PipelineMode.MODULAR))
+        val filter = PipelineFilter(names = listOf("default"), modes = listOf(PipelineMode.MODULAR))
         mvc.perform(
             get("/api/v1/pipelines/_search")
                 .headers(admin())
@@ -176,7 +182,7 @@ class PipelineControllerTests : MockMvcTest() {
     @Test
     fun testSearchById() {
         // sort by everything
-        val filter = PipelineFilter(ids=listOf(pl.id))
+        val filter = PipelineFilter(ids = listOf(pl.id))
         mvc.perform(
             get("/api/v1/pipelines/_search")
                 .headers(admin())

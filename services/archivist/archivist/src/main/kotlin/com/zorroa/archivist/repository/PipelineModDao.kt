@@ -19,7 +19,6 @@ interface PipelineModDao : JpaRepository<PipelineMod, UUID> {
      */
     fun findByIdIn(ids: Collection<UUID>): List<PipelineMod>
 
-
     /**
      * Get the list of mods by name.  It may be better to use the [PipelineModService.getByNames]
      * method which throws if all Ids are not found.

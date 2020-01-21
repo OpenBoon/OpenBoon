@@ -28,7 +28,6 @@ import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
 import java.io.File
 import java.io.IOException
-import java.nio.file.Path
 import java.util.Properties
 
 @Configuration

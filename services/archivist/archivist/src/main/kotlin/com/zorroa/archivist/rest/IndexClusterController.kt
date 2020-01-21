@@ -5,7 +5,6 @@ import com.zorroa.archivist.domain.IndexClusterFilter
 import com.zorroa.archivist.domain.IndexClusterSpec
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.IndexClusterService
-import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.security.access.prepost.PreAuthorize

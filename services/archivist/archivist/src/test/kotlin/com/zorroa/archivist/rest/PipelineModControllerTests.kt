@@ -56,7 +56,7 @@ class PipelineModControllerTests : MockMvcTest() {
         )
 
         val mod = pipelineModService.create(spec)
-        val update = PipelineModUpdate(name="cats", description="dogs",
+        val update = PipelineModUpdate(name = "cats", description = "dogs",
             restricted = true, ops = listOf(op))
 
         mvc.perform(

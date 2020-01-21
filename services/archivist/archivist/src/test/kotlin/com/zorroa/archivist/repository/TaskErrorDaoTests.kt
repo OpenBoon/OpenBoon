@@ -238,7 +238,7 @@ class TaskErrorDaoTests : AbstractTest() {
         filter = TaskErrorFilter(timeCreated = LongRangeFilter(System.currentTimeMillis() + 1000, null))
         assertEquals(0, taskErrorDao.count(filter))
     }
-    
+
     @Test
     fun testGetAllByKeywords() {
         createTaskErrors()

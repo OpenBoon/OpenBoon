@@ -43,14 +43,13 @@ object ElasticSearchErrorTranslator {
 
     val logger: Logger = LoggerFactory.getLogger(ElasticSearchErrorTranslator::class.java)
 
-    fun translate(message: String) : String {
+    fun translate(message: String): String {
         val errorId = randomString(24)
-        logger.warn("ElasticSearch Error '${errorId}' $message")
+        logger.warn("ElasticSearch Error '$errorId' $message")
 
         if ("document already exists" in message) {
             return "asset already exists"
-        }
-        else {
+        } else {
             for (pattern in RECOVERABLE_BULK_ERRORS) {
                 val matcher = pattern.matcher(message)
 

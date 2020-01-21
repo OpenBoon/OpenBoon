@@ -31,7 +31,7 @@ object StaticUtils {
 
 private const val SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321"
 
-fun randomString(length: Int=16): String {
+fun randomString(length: Int = 16): String {
     val random = ThreadLocalRandom.current()
     val buf = CharArray(length)
     for (i in 0 until length) {
@@ -43,7 +43,7 @@ fun randomString(length: Int=16): String {
 /**
  * Extension function for printing UUID chars
  */
-fun UUID.prefix(size: Int= 8): String {
+fun UUID.prefix(size: Int = 8): String {
     return this.toString().substring(0, size)
 }
 

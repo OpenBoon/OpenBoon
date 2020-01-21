@@ -8,15 +8,15 @@ import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.service.event
 import com.zorroa.zmlp.util.Json
+import java.nio.ByteBuffer
+import javax.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
-import java.nio.ByteBuffer
-import javax.annotation.PostConstruct
 
 @Service
 @Profile("gcs")
-class GcsSystemStorageServiceImpl constructor(
+class GcsSystemStorageService constructor(
     override val properties: SystemStorageProperties,
     val gcs: Storage
 
@@ -47,6 +47,6 @@ class GcsSystemStorageServiceImpl constructor(
     }
 
     companion object {
-        val logger = LoggerFactory.getLogger(GcsSystemStorageServiceImpl::class.java)
+        val logger = LoggerFactory.getLogger(GcsSystemStorageService::class.java)
     }
 }

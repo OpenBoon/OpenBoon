@@ -13,7 +13,6 @@ import com.zorroa.archivist.repository.PipelineModDao
 import com.zorroa.zmlp.util.Json
 import org.junit.Before
 import org.junit.Test
-import org.junit.jupiter.api.TestFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
 import java.util.UUID
@@ -122,36 +121,36 @@ class PipelineModServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testUpdateStandardMods()  {
+    fun testUpdateStandardMods() {
         val count = pipelineModDao.count()
         pipelineModService.updateStandardMods()
         assertTrue(pipelineModDao.count() > count)
     }
 
     @Test
-    fun testGetByNames()  {
+    fun testGetByNames() {
         pipelineModService.updateStandardMods()
         val names = listOf("zmlp-labels", "zmlp-object-detection")
         val mods = pipelineModService.getByNames(names)
         assertEquals(names.size, mods.size)
     }
 
-    @Test(expected=DataRetrievalFailureException::class)
-    fun testGetByNames_notFound()  {
+    @Test(expected = DataRetrievalFailureException::class)
+    fun testGetByNames_notFound() {
         pipelineModService.updateStandardMods()
         val names = listOf("zmlp-labels", "boom!")
         pipelineModService.getByNames(names)
     }
 
     @Test
-    fun testGetByIds()  {
+    fun testGetByIds() {
         pipelineModService.updateStandardMods()
         val mod = pipelineModService.get("zmlp-labels")
         pipelineModService.getByIds(listOf(mod.id))
     }
 
-    @Test(expected=DataRetrievalFailureException::class)
-    fun testGetByIds_notFound()  {
+    @Test(expected = DataRetrievalFailureException::class)
+    fun testGetByIds_notFound() {
         pipelineModService.updateStandardMods()
         val ids = listOf(UUID.randomUUID())
         pipelineModService.getByIds(ids)
