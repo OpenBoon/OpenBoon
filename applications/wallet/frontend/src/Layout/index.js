@@ -42,6 +42,10 @@ const Layout = ({ user, logout, children }) => {
           marginTop: constants.navbar.height,
           paddingLeft: spacing.spacious,
           paddingRight: spacing.spacious,
+          paddingBottom: spacing.spacious,
+          height: `calc(100vh - ${constants.navbar.height}px)`,
+          display: 'flex',
+          flexDirection: 'column',
         }}>
         {children}
       </div>
