@@ -11,11 +11,12 @@ import javax.persistence.criteria.Root
 class JpaQuery<T> (
     entityManager: EntityManager,
     private val filter: AbstractJpaFilter<T>,
-    private val type: Class<T>) {
+    private val type: Class<T>
+) {
 
     private val criteriaBuilder: CriteriaBuilder = entityManager.criteriaBuilder
 
-    fun getQuery() : CriteriaQuery<T> {
+    fun getQuery(): CriteriaQuery<T> {
         val query = criteriaBuilder.createQuery(type)
         val root = query.from(type)
 
@@ -41,8 +42,7 @@ class JpaQuery<T> (
             val (col, dir) = it.split(":")
             if (dir.startsWith("a", ignoreCase = true)) {
                 criteriaBuilder.asc(root.get<T>(col))
-            }
-            else {
+            } else {
                 criteriaBuilder.desc(root.get<T>(col))
             }
         })
@@ -65,17 +65,15 @@ class Page(
     val size: Int,
     @ApiModelProperty("The total number of results for all pages.   ")
     val totalCount: Long = 0
-)
-{
+) {
     fun withTotal(total: Long): Page {
         return Page(from, size, total)
     }
 }
 
-
 abstract class AbstractJpaFilter<T> {
 
-    abstract val sortFields : Set<String>
+    abstract val sortFields: Set<String>
 
     var page: Page = Page(0, 50)
 

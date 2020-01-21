@@ -25,6 +25,11 @@
     <dependencies>
         <dependency>
             <groupId>com.zorroa.zmlp</groupId>
+            <artifactId>zmlp-service</artifactId>
+            <version>${zmlp-common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zorroa.zmlp</groupId>
             <artifactId>zmlp-util</artifactId>
             <version>${zmlp-common.version}</version>
         </dependency>
@@ -144,6 +149,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.nhaarman</groupId>
+            <artifactId>mockito-kotlin</artifactId>
+            <version>1.6.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path-assert</artifactId>
             <version>2.4.0</version>
@@ -224,7 +236,6 @@
                         <artifactId>kotlin-maven-allopen</artifactId>
                         <version>${kotlin.version}</version>
                     </dependency>
-
                 </dependencies>
             </plugin>
             <plugin>

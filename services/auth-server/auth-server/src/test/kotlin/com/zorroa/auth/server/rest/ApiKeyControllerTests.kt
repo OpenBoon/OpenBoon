@@ -1,17 +1,17 @@
 package com.zorroa.auth.server.rest
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.auth.server.MockMvcTest
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
+import com.zorroa.zmlp.apikey.Permission
+import java.util.UUID
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import java.util.UUID
 
 class ApiKeyControllerTests : MockMvcTest() {
 
@@ -51,7 +51,7 @@ class ApiKeyControllerTests : MockMvcTest() {
 
         mvc.perform(
             MockMvcRequestBuilders.post("/auth/v1/apikey")
-                .headers(standardUser(standardKey))
+                .headers(standardUser(mockKey))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json.writeValueAsBytes(spec))
         )
@@ -62,8 +62,8 @@ class ApiKeyControllerTests : MockMvcTest() {
     @Test
     fun testGet() {
         mvc.perform(
-            MockMvcRequestBuilders.get("/auth/v1/apikey/${standardKey.id}")
-                .headers(superAdmin(standardKey.projectId))
+            MockMvcRequestBuilders.get("/auth/v1/apikey/${mockKey.id}")
+                .headers(superAdmin(mockKey.projectId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -83,7 +83,7 @@ class ApiKeyControllerTests : MockMvcTest() {
 
         mvc.perform(
             MockMvcRequestBuilders.get("/auth/v1/apikey/_findOne")
-                .headers(superAdmin(standardKey.projectId))
+                .headers(superAdmin(mockKey.projectId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json.writeValueAsBytes(filter))
         )
@@ -105,7 +105,7 @@ class ApiKeyControllerTests : MockMvcTest() {
 
         mvc.perform(
             MockMvcRequestBuilders.get("/auth/v1/apikey/_search")
-                .headers(superAdmin(standardKey.projectId))
+                .headers(superAdmin(mockKey.projectId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json.writeValueAsBytes(filter))
         )
@@ -126,7 +126,7 @@ class ApiKeyControllerTests : MockMvcTest() {
 
         mvc.perform(
             MockMvcRequestBuilders.get("/auth/v1/apikey/_findOne")
-                .headers(superAdmin(standardKey.projectId))
+                .headers(superAdmin(mockKey.projectId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json.writeValueAsBytes(filter))
         )
@@ -137,8 +137,8 @@ class ApiKeyControllerTests : MockMvcTest() {
     @Test
     fun testDownload() {
         mvc.perform(
-            MockMvcRequestBuilders.get("/auth/v1/apikey/${standardKey.id}/_download")
-                .headers(superAdmin(standardKey.projectId))
+            MockMvcRequestBuilders.get("/auth/v1/apikey/${mockKey.id}/_download")
+                .headers(superAdmin(mockKey.projectId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -150,7 +150,7 @@ class ApiKeyControllerTests : MockMvcTest() {
     fun testGetAll() {
         mvc.perform(
             MockMvcRequestBuilders.get("/auth/v1/apikey")
-                .headers(superAdmin(standardKey.projectId))
+                .headers(superAdmin(mockKey.projectId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -167,8 +167,8 @@ class ApiKeyControllerTests : MockMvcTest() {
     @Test
     fun testDelete() {
         mvc.perform(
-            MockMvcRequestBuilders.delete("/auth/v1/apikey/${standardKey.id}")
-                .headers(superAdmin(standardKey.projectId))
+            MockMvcRequestBuilders.delete("/auth/v1/apikey/${mockKey.id}")
+                .headers(superAdmin(mockKey.projectId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)

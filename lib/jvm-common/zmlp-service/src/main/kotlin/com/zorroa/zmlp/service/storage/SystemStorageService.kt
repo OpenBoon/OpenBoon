@@ -5,13 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConfigurationProperties("archivist.system.storage")
-class SystemStorageProperties {
-
-    lateinit var bucket: String
-
-    var createBucket: Boolean = false
-}
+@ConfigurationProperties("zmlp.storage.system")
+class SystemStorageProperties : StorageProperties()
 
 /**
  * A service for storing JSON serialized blobs of configuration data for project

@@ -7,7 +7,7 @@ import java.util.UUID
 /**
  * The minimal properties for a ZMLP Actor.
  */
-@ApiModel("AuthenticatedApiKey", description = "An authenticated ApiKey")
+@ApiModel("ZmlpActor", description = "An authenticated ApiKey")
 class ZmlpActor(
 
     @ApiModelProperty("The unique ID of the ApiKey")

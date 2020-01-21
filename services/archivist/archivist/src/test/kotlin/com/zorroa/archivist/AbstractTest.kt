@@ -26,6 +26,7 @@ import com.zorroa.archivist.util.randomString
 import com.zorroa.zmlp.apikey.ApiKey
 import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.apikey.SigningKey
 import com.zorroa.zmlp.apikey.ZmlpActor
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.client.Request
@@ -187,17 +188,13 @@ abstract class AbstractTest {
 
         // Get ApiKey
         whenever(
-            authServerClient.getApiKey(
+            authServerClient.getSigningKey(
                 any(), any()
             )
         ).then {
-            ApiKey(
-                UUID.randomUUID(),
-                project.id,
+            SigningKey(
                 randomString(24),
-                randomString(64),
-                "key-name",
-                setOf()
+                randomString(64)
             )
         }
 

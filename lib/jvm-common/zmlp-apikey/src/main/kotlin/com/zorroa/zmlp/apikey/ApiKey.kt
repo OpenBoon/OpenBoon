@@ -13,49 +13,39 @@ import java.util.UUID
 
 /**
  * The minimum properties needed for a valid API signing key.
+ *
+ * @property accessKey The unique key identifier.
+ * @property secretKey A secret key used to sign API requests.
  */
-@ApiModel("SigningiKey", description = "The attributes required to sign JWT requests.")
-class SigningiKey(
-
-    @ApiModelProperty("Uniquely identifies account")
+class SigningKey(
     val accessKey: String,
-
-    @ApiModelProperty("A shared key used to sign API requests.")
     val secretKey: String
 
 ) {
+    /**
+     * Return a base64 encoded version of this key.
+     */
     fun toBase64(): String {
         return Base64.getEncoder().encodeToString(Json.Mapper.writeValueAsBytes(this))
     }
-}
 
-@ApiModel("ApiKey", description = "An API key allows remote users to access ZMLP resources.")
-class ApiKey(
-
-    @ApiModelProperty("The unique ID of the ApiKey")
-    val id: UUID,
-
-    @ApiModelProperty("The Project ID the ApiKey belongs in.")
-    val projectId: UUID,
-
-    @ApiModelProperty("Uniquely identifies account")
-    val accessKey: String,
-
-    @ApiModelProperty("A shared key used to sign API requests.")
-    val secretKey: String,
-
-    @ApiModelProperty("A unique name for the key.")
-    val name: String,
-
-    @ApiModelProperty("The permissions or roles for the ApiKey")
-    val permissions: Set<Permission>
-) {
-
+    /**
+     * Obtain a signed JWT token for this signing Key.
+     *
+     * @param timeout The token timeout, defaults to 60 seconds.
+     * @param projectId An optional projectId, if this key has access to ore than 1 project.
+     *
+     * @return A base64 encoded JWT token.
+     */
     @JsonIgnore
-    fun getJwtToken(timeout: Int = 60, projId: UUID? = null): String {
+    fun getJwtToken(timeout: Int = 60, projectId: UUID? = null): String {
         val algo = Algorithm.HMAC512(secretKey)
         val spec = JWT.create().withIssuer("zmlp")
             .withClaim("accessKey", accessKey)
+
+        projectId?.let {
+            spec.withClaim("projectId", projectId.toString())
+        }
 
         if (timeout > 0) {
             val c = Calendar.getInstance()
@@ -65,22 +55,35 @@ class ApiKey(
         }
         return spec.sign(algo)
     }
+}
 
-    @JsonIgnore
-    fun getSigningKey(): SigningiKey {
-        return SigningiKey(accessKey, secretKey)
-    }
+/**
+ * A API key record.
+ *
+ * @param id The unique id the key.
+ * @param projectId The projectId the key belongs to.
+ * @param accessKey The key's username.
+ * @param secretKey The key's password, this field is not populated, you must request a signing key.
+ * @param name The name of the key.
+ * @param permissions The key's permissions.
+ *
+ */
+@ApiModel("ApiKey", description = "An API key record.")
+class ApiKey(
 
-    @JsonIgnore
-    fun getZmlpActor(): ZmlpActor {
-        return ZmlpActor(id, projectId, name, permissions)
-    }
-
-    fun toBase64(): String {
-        return Base64.getEncoder().encodeToString(
-            Json.Mapper.writeValueAsBytes(getSigningKey())
-        )
-    }
+    @ApiModelProperty("The unique ID of the ApiKey")
+    val id: UUID,
+    @ApiModelProperty("The project ID of the ApiKey")
+    val projectId: UUID,
+    @ApiModelProperty("The key's username")
+    val accessKey: String,
+    @ApiModelProperty("The key's password, this field is not populated, you must request a signing key.")
+    val secretKey: String,
+    @ApiModelProperty("The name of the key.")
+    val name: String,
+    @ApiModelProperty("The key's permissions.")
+    val permissions: Set<Permission>
+) {
 
     override fun toString(): String {
         return "ApiKey(id=$id, projectId=$projectId)"
@@ -88,25 +91,14 @@ class ApiKey(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as ApiKey
+        if (other !is ApiKey) return false
 
         if (id != other.id) return false
-        if (projectId != other.projectId) return false
-        if (secretKey != other.secretKey) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = id.hashCode()
-        result = 31 * result + projectId.hashCode()
-        result = 31 * result + secretKey.hashCode()
-        return result
+        return id.hashCode()
     }
-}
-
-fun UUID.prefix(size: Int = 8): String {
-    return this.toString().substring(0, size)
 }

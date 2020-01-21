@@ -1,9 +1,7 @@
 package com.zorroa.auth.server.repository
 
 import javax.persistence.AttributeConverter
-import javax.persistence.Converter
 
-@Converter
 class StringSetConverter : AttributeConverter<Set<String>, String> {
 
     override fun convertToDatabaseColumn(list: Set<String>): String {
@@ -15,4 +13,13 @@ class StringSetConverter : AttributeConverter<Set<String>, String> {
     }
 }
 
+class EncryptedConverter : AttributeConverter<String, String> {
 
+    override fun convertToDatabaseColumn(value: String): String {
+        return value
+    }
+
+    override fun convertToEntityAttribute(value: String): String {
+        return "ENCRYPTED"
+    }
+}

@@ -1,9 +1,9 @@
 package com.zorroa.auth.server.security
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.zorroa.zmlp.util.Json
-import com.zorroa.zmlp.apikey.ZmlpActor
 import com.zorroa.auth.server.domain.ApiKey
+import com.zorroa.zmlp.apikey.ZmlpActor
+import com.zorroa.zmlp.util.Json
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.Base64
@@ -50,8 +50,7 @@ fun loadServiceKey(serviceKey: String?): ApiKey {
                 logger.warn("Failed to load inception key, decode failed, unexpected", e)
                 null
             }
-        }
-        else {
+        } else {
             null
         }
 

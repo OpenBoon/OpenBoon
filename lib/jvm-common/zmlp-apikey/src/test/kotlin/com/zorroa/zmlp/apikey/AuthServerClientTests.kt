@@ -71,6 +71,24 @@ class AuthServerClientTests {
     }
 
     @Test
+    fun testGetSigningKey() {
+        val responseBody = """
+        {
+            "accessKey": "abc123",
+            "secretKey": "abc123"
+        }
+        """.trimIndent()
+
+        mockServer.enqueue(MockResponse().setBody(responseBody))
+
+        val client = AuthServerClientImpl(mockServer.url("/").toString(), "src/test/resources/signing-key.json")
+        val apikey = client.getSigningKey(UUID.fromString("cc7c2e6f-1e36-4731-9154-9598e22408b7"), "foo")
+
+        assertEquals("abc123", apikey.accessKey)
+        assertEquals("abc123", apikey.secretKey)
+    }
+
+    @Test
     fun testGetApiKey() {
         val responseBody = """
         {

@@ -3,15 +3,14 @@ package com.zorroa.auth.server.domain
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zorroa.zmlp.apikey.Permission
-import com.zorroa.zmlp.apikey.ZmlpActor
 import com.zorroa.auth.server.repository.AbstractJpaFilter
+import com.zorroa.auth.server.repository.EncryptedConverter
 import com.zorroa.auth.server.repository.StringSetConverter
 import com.zorroa.auth.server.security.getProjectId
+import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.apikey.ZmlpActor
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
@@ -23,6 +22,8 @@ import javax.persistence.Table
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 @ApiModel("ApiKey Spec", description = "The attributes required to create a new API key.")
 class ApiKeySpec(
@@ -31,18 +32,6 @@ class ApiKeySpec(
 
     @ApiModelProperty("A list of permissions associated with key.")
     val permissions: Set<Permission>
-)
-
-/**
- * The minimum properties needed for a valid API signing key.
- */
-@ApiModel("SigningApiKey", description = "The attributes required to sign JWT requests.")
-class SigningApiKey(
-    @ApiModelProperty("The access Key")
-    val accessKey: String,
-
-    @ApiModelProperty("A shared key used to sign API requests.")
-    val secretKey: String
 )
 
 @Entity
@@ -65,6 +54,7 @@ class ApiKey(
 
     @Column(name = "secret_key", nullable = false)
     @ApiModelProperty("A secret key used to sign API requests.")
+    @Convert(converter = EncryptedConverter::class)
     val secretKey: String,
 
     @Column(name = "name", nullable = false)
@@ -76,15 +66,10 @@ class ApiKey(
     @ApiModelProperty("The permissions or roles for the ApiKey")
     val permissions: Set<String>
 ) {
-    @JsonIgnore
-    fun getGrantedAuthorities(): List<GrantedAuthority> {
-        return if (permissions.isNullOrEmpty()) {
-            listOf()
-        } else {
-            permissions.map { SimpleGrantedAuthority(it) }
-        }
-    }
 
+    /**
+     * Only used in tests.
+     */
     @JsonIgnore
     fun getJwtToken(timeout: Int = 60, projId: UUID? = null): String {
         val algo = Algorithm.HMAC512(secretKey)
@@ -104,14 +89,8 @@ class ApiKey(
         return spec.sign(algo)
     }
 
-    @JsonIgnore
-    fun getMinimalApiKey(): SigningApiKey {
-        return SigningApiKey(accessKey, secretKey)
-    }
-
-    @JsonIgnore
-    fun getZmlpActor(): ZmlpActor {
-        return ZmlpActor(id, projectId, name, permissions.map { Permission.valueOf(it) }.toSet())
+    fun getValidationKey(): ValidationKey {
+        return ValidationKey(id, projectId, accessKey, secretKey, name, permissions)
     }
 
     override fun toString(): String {
@@ -136,6 +115,53 @@ class ApiKey(
         result = 31 * result + projectId.hashCode()
         result = 31 * result + secretKey.hashCode()
         return result
+    }
+
+    companion object {
+        /**
+         * Adds variance to the key used to encrypt this data.  Each form
+         * of data gets is own variance integer.
+         */
+        const val CRYPT_VARIANCE = 1023
+    }
+}
+
+/**
+ * A minimal key used for JWT validation and creation of the [ZmlpActor]
+ *
+ * @property id The key id.
+ * @property projectId The project Id.
+ * @property accessKey The access key.
+ * @property secretKey The secret key.
+ * @property name The name of the key.
+ * @property permissions The permissions for the key.
+ *
+ */
+class ValidationKey(
+    val id: UUID,
+    val projectId: UUID,
+    val accessKey: String,
+    val secretKey: String,
+    val name: String,
+    val permissions: Set<String>
+) {
+
+    /**
+     * Return the permissions as [GrantedAuthority]
+     */
+    fun getGrantedAuthorities(): List<GrantedAuthority> {
+        return if (permissions.isNullOrEmpty()) {
+            listOf()
+        } else {
+            permissions.map { SimpleGrantedAuthority(it) }
+        }
+    }
+
+    /**
+     * Return the [ZmlpActor] for this key.  Optionally override the project Id.
+     */
+    fun getZmlpActor(projectId: UUID? = null): ZmlpActor {
+        return ZmlpActor(id, projectId ?: this.projectId, name, permissions.map { Permission.valueOf(it) }.toSet())
     }
 }
 

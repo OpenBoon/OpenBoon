@@ -2,10 +2,19 @@ package com.zorroa.auth.server.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.zorroa.auth.server.domain.ApiKey
+import com.zorroa.auth.server.domain.ValidationKey
+import com.zorroa.auth.server.repository.ApiKeyCustomRepository
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
-import com.zorroa.auth.server.domain.ApiKey
-import com.zorroa.auth.server.repository.ApiKeyRepository
+import com.zorroa.zmlp.service.security.EncryptionService
+import java.io.IOException
+import java.util.Date
+import java.util.UUID
+import javax.servlet.FilterChain
+import javax.servlet.ServletException
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AbstractAuthenticationToken
@@ -16,13 +25,6 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import java.io.IOException
-import java.util.Date
-import java.util.UUID
-import javax.servlet.FilterChain
-import javax.servlet.ServletException
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 const val TOKEN_PREFIX = "Bearer "
 const val AUTH_HEADER = "Authorization"
@@ -30,10 +32,13 @@ const val PROJ_HEADER = "X-Zorroa-ProjectId"
 class JWTAuthorizationFilter : OncePerRequestFilter() {
 
     @Autowired
-    lateinit var apiKeyRepository: ApiKeyRepository
+    lateinit var apiKeyCustomRepository: ApiKeyCustomRepository
 
     @Autowired
     lateinit var inceptionKey: ApiKey
+
+    @Autowired
+    lateinit var encryptionService: EncryptionService
 
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(
@@ -68,7 +73,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
         }
     }
 
-    fun validateToken(token: String, projectIdOverride: UUID?=null): JwtAuthenticationToken {
+    fun validateToken(token: String, projectIdOverride: UUID? = null): JwtAuthenticationToken {
         val jwt = JWT.decode(token)
 
         if (jwt.expiresAt == null) {
@@ -91,34 +96,54 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
         /**
          * Check to see if the key is the inception key.
          */
-        val apiKey = (if (inceptionKey.accessKey == accessKey) {
-
-            // The inception key is allowed to claim a projectId.
-            val projectId = if (jwt.claims.containsKey("projectId")
-            ) {
-                UUID.fromString(jwt.claims.getValue("projectId").asString())
-            } else projectIdOverride ?: inceptionKey.projectId
-
-            ApiKey(
+        val isInceptionKey = inceptionKey.accessKey == accessKey
+        val apiKey = if (isInceptionKey) {
+            ValidationKey(
                 inceptionKey.id,
-                projectId,
+                inceptionKey.projectId,
                 inceptionKey.accessKey,
                 inceptionKey.secretKey,
                 inceptionKey.name,
                 INCEPTION_PERMISSIONS
             )
         } else {
-            apiKeyRepository.findByAccessKey(accessKey)
-        })
-            ?: throw RuntimeException("Invalid JWT token")
+            apiKeyCustomRepository.getValidationKey(accessKey)
+        }
 
-        val alg = Algorithm.HMAC512(apiKey.secretKey)
+        /**
+         * Decrypt the secret key if needed.
+         */
+        val secretKey = if (isInceptionKey) {
+            inceptionKey.secretKey
+        } else {
+            encryptionService.decryptString(apiKey.projectId, apiKey.secretKey, ApiKey.CRYPT_VARIANCE)
+        }
+
+        /**
+         * Validate the signage
+         */
+        val alg = Algorithm.HMAC512(secretKey)
         alg.verify(jwt)
 
-        return JwtAuthenticationToken(
-            apiKey.getZmlpActor(),
-            apiKey.getGrantedAuthorities()
-        )
+        /**
+         * Allow SystemProjectOverride keys to override the project.
+         */
+        val actor = if (apiKey.permissions.contains(Permission.SystemProjectOverride.name)) {
+            /**
+             * Check for a project ID claim, otherwise a project ID header, and then
+             * fallback on the key's project Id.
+             */
+            val projectId = if (jwt.claims.containsKey("projectId")) {
+                UUID.fromString(jwt.claims.getValue("projectId").asString())
+            } else {
+                projectIdOverride ?: apiKey.projectId
+            }
+            apiKey.getZmlpActor(projectId)
+        } else {
+            apiKey.getZmlpActor()
+        }
+
+        return JwtAuthenticationToken(actor, apiKey.getGrantedAuthorities())
     }
 
     companion object {
