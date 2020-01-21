@@ -1,22 +1,13 @@
 import PropTypes from 'prop-types'
 
-import { colors, typography, constants, spacing } from '../Styles'
-
-const TD_PADDING = spacing.base * 2
-const NBSP_HEIGHT = spacing.normal
+import { colors, typography } from '../Styles'
 
 const TableException = ({ numColumns, children }) => {
   return (
-    <tr css={{ pointerEvents: 'none' }}>
+    <tr css={{ height: '100%', pointerEvents: 'none' }}>
       <td colSpan={numColumns}>
         <div
           css={{
-            height: `calc(100vh - ${constants.navbar.height +
-              constants.pageTitle.height +
-              constants.tableHeader.height +
-              TD_PADDING +
-              NBSP_HEIGHT}px)`,
-            width: '100%',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
