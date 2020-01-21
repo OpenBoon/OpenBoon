@@ -24,6 +24,7 @@ interface AuthServerClient {
     fun authenticate(jwtToken: String): ZmlpActor
     fun createApiKey(project: UUID, name: String, perms: Collection<Permission>): ApiKey
     fun getApiKey(projectId: UUID, name: String): ApiKey
+    fun getSigningKey(projectId: UUID, name: String): SigningKey
 }
 
 /**
@@ -33,21 +34,21 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
 
     val client = OkHttpClient()
 
-    val serviceKey: SigningiKey? = loadSigningKey()
+    val serviceKey: SigningKey? = loadSigningKey()
 
-    private fun loadSigningKey(): SigningiKey? {
+    private fun loadSigningKey(): SigningKey? {
         if (apiKey == null) {
             return null
         }
         val path = Paths.get(apiKey)
         return if (Files.exists(path)) {
-            val key = Mapper.readValue<SigningiKey>(path.toFile())
+            val key = Mapper.readValue<SigningKey>(path.toFile())
             logger.debug("Loaded signing key: ${key.accessKey.substring(8)} from: '$apiKey'")
             key
         } else {
             try {
                 val decoded = Base64.getUrlDecoder().decode(apiKey)
-                val key = Mapper.readValue<SigningiKey>(decoded)
+                val key = Mapper.readValue<SigningKey>(decoded)
                 logger.debug("Loaded signing key: ${key.accessKey.substring(8)}")
                 key
             } catch (e: Exception) {
@@ -92,10 +93,25 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         return post("auth/v1/apikey/_findOne", data, projectId)
     }
 
+    override fun getSigningKey(projectId: UUID, name: String): SigningKey {
+        return get("auth/v1/apikey/$name/_downloadByName", projectId)
+    }
+
     private inline fun <reified T> post(path: String, body: Map<String, Any>, projectId: UUID? = null): T {
         val rbody = RequestBody.create(MEDIA_TYPE_JSON, Mapper.writeValueAsString(body))
         val req = signRequest(Request.Builder().url("$baseUri/$path".replace("//", "/")), projectId)
             .post(rbody)
+            .build()
+        val rsp = client.newCall(req).execute()
+        if (rsp.code() >= 400) {
+            throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")
+        }
+        val body = rsp.body() ?: throw AuthServerClientException("AuthServerClient failure, null response body")
+        return Mapper.readValue(body.byteStream())
+    }
+
+    private inline fun <reified T> get(path: String, projectId: UUID? = null): T {
+        val req = signRequest(Request.Builder().url("$baseUri/$path".replace("//", "/")), projectId)
             .build()
         val rsp = client.newCall(req).execute()
         if (rsp.code() >= 400) {
@@ -116,8 +132,8 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
                 .withExpiresAt(Date(System.currentTimeMillis() + (60 * 1000L)))
                 .withClaim("accessKey", it.accessKey)
 
-            projectId?.let {
-                jwt.withClaim("projectId", it.toString())
+            projectId?.let { pid ->
+                jwt.withClaim("projectId", pid.toString())
             }
             val token = jwt.sign(algo)
             req.header("Authorization", "Bearer $token")

@@ -1,5 +1,7 @@
 package com.zorroa.auth.server.conf
 
+import com.zorroa.zmlp.service.security.EncryptionService
+import com.zorroa.zmlp.service.security.EncryptionServiceImpl
 import java.util.Properties
 import javax.persistence.EntityManagerFactory
 import javax.sql.DataSource
@@ -39,6 +41,11 @@ class DatabaseConfiguration {
     @Bean
     fun exceptionTranslation(): PersistenceExceptionTranslationPostProcessor {
         return PersistenceExceptionTranslationPostProcessor()
+    }
+
+    @Bean
+    fun encryptionService(): EncryptionService {
+        return EncryptionServiceImpl()
     }
 
     fun additionalProperties(): Properties {

@@ -1,6 +1,5 @@
 package com.zorroa.zmlp.service.storage
 
-import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.GetObjectRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
@@ -17,9 +16,10 @@ import org.springframework.stereotype.Service
 @Service
 @Profile("aws")
 class AwsSystemStorageService constructor(
-    override val properties: SystemStorageProperties,
-    val s3Client: AmazonS3
+    override val properties: SystemStorageProperties
 ) : SystemStorageService {
+
+    private val s3Client = getS3Client(properties)
 
     @PostConstruct
     fun initialize() {

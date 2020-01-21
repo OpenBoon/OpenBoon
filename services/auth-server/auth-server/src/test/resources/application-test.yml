@@ -10,6 +10,11 @@ spring:
 zmlp:
   security:
     inception-key: src/test/resources/key.json
+  storage:
+    system:
+      url: http://localhost:9000
+      bucket: system-storage-test
+      create-bucket: true
 
 management:
   endpoints:

@@ -71,6 +71,8 @@ services:
       context: services/auth-server
     environment:
       ZMLP_SECURITY_INCEPTIONKEY: ewogICAgIm5hbWUiOiAiYWRtaW4ta2V5IiwKICAgICJwcm9qZWN0SWQiOiAiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwKICAgICJpZCI6ICI0MzM4YTgzZi1hOTIwLTQwYWItYTI1MS1hMTIzYjE3ZGYxYmEiLAogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiLAogICAgInBlcm1pc3Npb25zIjogW10KfQoK
+      ZMLP_STORAGE_SYSTEM_ACCESSKEY: qwerty123
+      ZMLP_STORAGE_SYSTEM_SECRETKEY: 123qwerty
 
   # Local Archivist server.
   archivist:
@@ -154,11 +156,13 @@ services:
     image: zmlp/jvm-common:latest
     build:
       context: lib/jvm-common
+    command: echo
 
   zmlp-py3-base:
     image: zmlp/py3-base:latest
     build:
       context: containers/zmlp-py3-base
+    command: echo
 
   zmlp-py3-client:
     image: zmlp/py3-client:latest
