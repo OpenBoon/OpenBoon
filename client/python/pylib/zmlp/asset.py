@@ -460,7 +460,7 @@ class AssetApp(object):
         return self.app.client.upload_files("/api/v3/assets/_batchUpload",
                                             files, body)
 
-    def search(self, search=None, element_query=None, raw=False):
+    def search(self, search=None, raw=False):
         """
         Perform an asset search using the ElasticSearch query DSL.  Note that for
         load and security purposes, not all ElasticSearch search options are accepted.
@@ -471,9 +471,6 @@ class AssetApp(object):
 
         Args:
             search (dict): The ElasticSearch search to execute
-            element_query (dict): An ElasticSearch query which will match nested
-                elements within an asset. This is merely a shortcut for setting up
-                a nested query which could be passed in the search parameter.
             raw (bool): Return the raw ElasticSearch dict result rather than a SearchResult
         Returns:
             mixed: A SearchResult containing assets or in raw mode an
@@ -481,7 +478,6 @@ class AssetApp(object):
         """
         body = {
             'search': search,
-            'elementQuery': element_query
         }
         rsp = self.app.client.post("/api/v3/assets/_search", body)
         if raw:
