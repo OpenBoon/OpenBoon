@@ -2,8 +2,8 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.JobId
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.LogObject
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskErrorFilter

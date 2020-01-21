@@ -5,8 +5,8 @@ import com.zorroa.archivist.domain.IndexCluster
 import com.zorroa.archivist.domain.IndexClusterFilter
 import com.zorroa.archivist.domain.IndexClusterSpec
 import com.zorroa.archivist.domain.IndexClusterState
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.LogObject
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.zmlp.util.Json

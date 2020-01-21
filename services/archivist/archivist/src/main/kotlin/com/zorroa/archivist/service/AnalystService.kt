@@ -6,8 +6,8 @@ import com.zorroa.archivist.domain.AnalystFilter
 import com.zorroa.archivist.domain.AnalystSpec
 import com.zorroa.archivist.domain.AnalystState
 import com.zorroa.archivist.domain.LockState
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.LogObject
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.KPagedList
