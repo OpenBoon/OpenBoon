@@ -56,8 +56,8 @@ const Login = ({
         <h3
           css={{
             textAlign: 'center',
-            fontSize: typography.size.mega,
-            lineHeight: typography.height.mega,
+            fontSize: typography.size.large,
+            lineHeight: typography.height.large,
             paddingTop: spacing.spacious,
             paddingBottom: spacing.spacious,
           }}>
