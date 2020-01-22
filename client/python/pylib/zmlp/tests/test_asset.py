@@ -290,7 +290,7 @@ class AssetAppTests(unittest.TestCase):
         self.app.assets.batch_update(req)
         args = post_patch.call_args_list
         body = args[0][0][1]
-        assert body['abc123'] == {'doc': {'foo' : 'bar'}}
+        assert body['abc123'] == {'doc': {'foo': 'bar'}}
 
 
 class FileImportTests(unittest.TestCase):
