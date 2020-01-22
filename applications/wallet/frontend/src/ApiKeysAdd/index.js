@@ -7,7 +7,7 @@ import ApiKeysAddForm from './Form'
 
 const ApiKeysAdd = () => {
   return (
-    <div>
+    <>
       <Head>
         <title>Create API key</title>
       </Head>
@@ -22,7 +22,7 @@ const ApiKeysAdd = () => {
       />
 
       <ApiKeysAddForm onSubmit={console.warn} />
-    </div>
+    </>
   )
 }
 

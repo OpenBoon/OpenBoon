@@ -1,7 +1,7 @@
 from django.db import transaction
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, Http404
 from zmlp import ZmlpClient
 from zmlp.client import ZmlpDuplicateException
 
@@ -25,11 +25,20 @@ class BaseProjectViewSet(ViewSet):
     create and use Serializers for proxied endpoint responses, as you would with a
     GenericAPIView.
     """
+
+    ZMLP_ONLY = False
+
     def dispatch(self, request, *args, **kwargs):
         """Overrides the dispatch method to include an instance of an archivist client
         to the view.
 
         """
+
+        if self.ZMLP_ONLY and settings.PLATFORM != 'zmlp':
+            # This is needed to keep from returning terrible stacktraces on endpoints
+            # not meant for dual platform usage
+            return Http404()
+
         try:
             kwargs['client'] = self._get_archivist_client(request, kwargs['project_pk'])
         except ObjectDoesNotExist:

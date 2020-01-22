@@ -1,20 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ApiKeysAdd /> should render properly 1`] = `
-.emotion-0 {
+Array [
+  .emotion-0 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
+  padding-top: 24px;
   padding-bottom: 16px;
 }
 
-.emotion-6 {
+<h2
+    className="emotion-0"
+  >
+    Project API Keys
+  </h2>,
+  .emotion-5 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
 }
 
-.emotion-5 {
+.emotion-4 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -24,11 +31,11 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   display: flex;
 }
 
-.emotion-2 {
+.emotion-1 {
   padding-right: 16px;
 }
 
-.emotion-1 {
+.emotion-0 {
   border: 0 #b8d652 solid;
   border-bottom-width: 0;
   color: #b3b3b3;
@@ -48,13 +55,13 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   font-weight: 700;
 }
 
-.emotion-1:hover {
+.emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
 }
 
-.emotion-3 {
+.emotion-2 {
   border: 0 #b8d652 solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -73,12 +80,44 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   font-weight: 700;
 }
 
-.emotion-3:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-48 {
+<nav
+    className="emotion-5"
+  >
+    <ul
+      className="emotion-4"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create API key
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-41 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -92,21 +131,21 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   padding-right: 0;
 }
 
-.emotion-10 {
+.emotion-3 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-7 {
+.emotion-0 {
   display: block;
   padding-bottom: 8px;
 }
 
-.emotion-9 {
+.emotion-2 {
   position: relative;
 }
 
-.emotion-8 {
+.emotion-1 {
   outline-offset: 0;
   padding: 12px;
   border-radius: 2px;
@@ -115,24 +154,24 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   border: 1px solid transparent;
 }
 
-.emotion-45 {
+.emotion-38 {
   border: none;
   padding: 0;
   margin: 0;
   padding-top: 12px;
 }
 
-.emotion-11 {
+.emotion-4 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
 }
 
-.emotion-12 {
+.emotion-5 {
   clear: both;
 }
 
-.emotion-20 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -145,7 +184,7 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   padding-bottom: 12px;
 }
 
-.emotion-16 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -153,7 +192,7 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   position: relative;
 }
 
-.emotion-13 {
+.emotion-6 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -165,7 +204,7 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-15 {
+.emotion-8 {
   position: absolute;
   top: 0;
   left: 0;
@@ -185,13 +224,13 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   display: flex;
 }
 
-.emotion-14 path {
+.emotion-7 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
 }
 
-.emotion-19 {
+.emotion-12 {
   padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -202,18 +241,18 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-17 {
+.emotion-10 {
   color: #b3b3b3;
   font-size: 14px;
   line-height: 16px;
   font-weight: 700;
 }
 
-.emotion-18 {
+.emotion-11 {
   color: #808080;
 }
 
-.emotion-21 {
+.emotion-14 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -225,18 +264,18 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-22 path {
+.emotion-15 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-47 {
+.emotion-40 {
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-.emotion-46 {
+.emotion-39 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -268,88 +307,50 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-46:hover {
+.emotion-39:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-46[aria-disabled=true] {
+.emotion-39[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-46,
-.emotion-46:hover,
-.emotion-46:visited {
+.emotion-39,
+.emotion-39:hover,
+.emotion-39:visited {
   background-color: #73b61c;
 }
 
-.emotion-46:hover {
+.emotion-39:hover {
   background-color: #b8d652;
 }
 
-.emotion-46[aria-disabled=true] {
+.emotion-39[aria-disabled=true] {
   background-color: #808080;
 }
 
-<div>
-  <h2
-    className="emotion-0"
-  >
-    Project API Keys
-  </h2>
-  <nav
-    className="emotion-6"
-  >
-    <ul
-      className="emotion-5"
-    >
-      <li
-        className="emotion-2"
-      >
-        <a
-          className="emotion-1"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          View all
-        </a>
-      </li>
-      <li
-        className="emotion-2"
-      >
-        <a
-          className="emotion-3"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys/add"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Create API key
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <form
+<form
     action=""
-    className="emotion-48"
+    className="emotion-41"
     method="post"
     onSubmit={[Function]}
   >
     <div
-      className="emotion-10"
+      className="emotion-3"
     >
       <label
-        className="emotion-7"
+        className="emotion-0"
         htmlFor="name"
       >
         Name
       </label>
       <div
-        className="emotion-9"
+        className="emotion-2"
       >
         <input
           autoFocus={true}
-          className="emotion-8"
+          className="emotion-1"
           id="name"
           name="name"
           onChange={[Function]}
@@ -359,159 +360,159 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
       </div>
     </div>
     <fieldset
-      className="emotion-45"
+      className="emotion-38"
     >
       <legend
-        className="emotion-11"
+        className="emotion-4"
       >
         Permissions
       </legend>
       <div
-        className="emotion-12"
+        className="emotion-5"
       />
       <label
-        className="emotion-20"
+        className="emotion-13"
       >
         <div
-          className="emotion-16"
+          className="emotion-9"
         >
           <input
-            className="emotion-13"
+            className="emotion-6"
             defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
           />
           <div
-            className="emotion-15"
+            className="emotion-8"
           >
             <svg
-              className="emotion-14"
+              className="emotion-7"
               data-file-name="checkmark.svg"
               width={14}
             />
           </div>
         </div>
         <div
-          className="emotion-19"
+          className="emotion-12"
         >
           <span
-            className="emotion-17"
+            className="emotion-10"
           >
             API
           </span>
           <span
-            className="emotion-18"
+            className="emotion-11"
           >
             Dude You're Getting A Telescope
           </span>
         </div>
       </label>
       <label
-        className="emotion-20"
+        className="emotion-13"
       >
         <div
-          className="emotion-16"
+          className="emotion-9"
         >
           <input
-            className="emotion-21"
+            className="emotion-14"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
           />
           <div
-            className="emotion-15"
+            className="emotion-8"
           >
             <svg
-              className="emotion-22"
+              className="emotion-15"
               data-file-name="checkmark.svg"
               width={14}
             />
           </div>
         </div>
         <div
-          className="emotion-19"
+          className="emotion-12"
         >
           <span
-            className="emotion-17"
+            className="emotion-10"
           >
             Kuphalfort
           </span>
           <span
-            className="emotion-18"
+            className="emotion-11"
           >
             Space The Final Frontier
           </span>
         </div>
       </label>
       <label
-        className="emotion-20"
+        className="emotion-13"
       >
         <div
-          className="emotion-16"
+          className="emotion-9"
         >
           <input
-            className="emotion-21"
+            className="emotion-14"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
           />
           <div
-            className="emotion-15"
+            className="emotion-8"
           >
             <svg
-              className="emotion-22"
+              className="emotion-15"
               data-file-name="checkmark.svg"
               width={14}
             />
           </div>
         </div>
         <div
-          className="emotion-19"
+          className="emotion-12"
         >
           <span
-            className="emotion-17"
+            className="emotion-10"
           >
             West Courtney
           </span>
           <span
-            className="emotion-18"
+            className="emotion-11"
           >
             Astronomy Binoculars A Great Alternative
           </span>
         </div>
       </label>
       <label
-        className="emotion-20"
+        className="emotion-13"
       >
         <div
-          className="emotion-16"
+          className="emotion-9"
         >
           <input
-            className="emotion-21"
+            className="emotion-14"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
           />
           <div
-            className="emotion-15"
+            className="emotion-8"
           >
             <svg
-              className="emotion-22"
+              className="emotion-15"
               data-file-name="checkmark.svg"
               width={14}
             />
           </div>
         </div>
         <div
-          className="emotion-19"
+          className="emotion-12"
         >
           <span
-            className="emotion-17"
+            className="emotion-10"
           >
             Murphyside
           </span>
           <span
-            className="emotion-18"
+            className="emotion-11"
           >
             Asteroids
           </span>
@@ -519,17 +520,17 @@ exports[`<ApiKeysAdd /> should render properly 1`] = `
       </label>
     </fieldset>
     <div
-      className="emotion-47"
+      className="emotion-40"
     >
       <button
         aria-disabled={true}
-        className="emotion-46"
+        className="emotion-39"
         onClick={[Function]}
         type="submit"
       >
         Generate Key & Download
       </button>
     </div>
-  </form>
-</div>
+  </form>,
+]
 `;

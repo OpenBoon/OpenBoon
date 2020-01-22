@@ -23,10 +23,11 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
   )
 
   return (
-    <div>
+    <div css={{ height: !results || error ? '100%' : 'auto' }}>
       <table
         css={{
           width: '100%',
+          height: !results || error ? '100%' : 'auto',
           borderSpacing: 0,
           boxShadow: constants.boxShadows.table,
           whiteSpace: 'nowrap',
@@ -114,12 +115,14 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
 
       <div>&nbsp;</div>
 
-      {count > 0 && (
+      {count > 0 && !error && (
         <Pagination
           currentPage={parsedPage}
           totalPages={Math.ceil(count / SIZE)}
         />
       )}
+
+      <div>&nbsp;</div>
     </div>
   )
 }

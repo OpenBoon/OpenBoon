@@ -9,6 +9,7 @@ const PageTitle = ({ children }) => {
         fontSize: typography.size.mega,
         lineHeight: typography.height.mega,
         fontWeight: typography.weight.regular,
+        paddingTop: spacing.comfy,
         paddingBottom: spacing.normal,
       }}>
       {children}

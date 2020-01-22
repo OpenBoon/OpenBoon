@@ -2,16 +2,12 @@ import PropTypes from 'prop-types'
 
 import { colors, typography } from '../Styles'
 
-const HEIGHT = 300
-
 const TableException = ({ numColumns, children }) => {
   return (
-    <tr css={{ pointerEvents: 'none' }}>
+    <tr css={{ height: '100%', pointerEvents: 'none' }}>
       <td colSpan={numColumns}>
         <div
           css={{
-            height: HEIGHT,
-            width: '100%',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

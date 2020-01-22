@@ -13,7 +13,7 @@ const Jobs = () => {
   } = useRouter()
 
   return (
-    <div>
+    <>
       <Head>
         <title>Job Queue</title>
       </Head>
@@ -42,7 +42,7 @@ const Jobs = () => {
           />
         )}
       />
-    </div>
+    </>
   )
 }
 
