@@ -7,7 +7,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest
 import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
-import com.zorroa.archivist.service.event
+import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
 import javax.annotation.PostConstruct
 import org.slf4j.LoggerFactory

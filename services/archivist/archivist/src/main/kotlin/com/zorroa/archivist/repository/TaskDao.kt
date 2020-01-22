@@ -14,8 +14,8 @@ import com.zorroa.archivist.domain.TaskId
 import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.ZpsScript
-import com.zorroa.archivist.service.MeterRegistryHolder.getTags
-import com.zorroa.archivist.service.event
+import com.zorroa.zmlp.service.logging.MeterRegistryHolder.getTags
+import com.zorroa.zmlp.service.logging.event
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.zmlp.util.Json
 import org.springframework.beans.factory.annotation.Value

@@ -14,7 +14,7 @@ import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStateCounts
 import com.zorroa.archivist.security.getZmlpActor
-import com.zorroa.archivist.service.event
+import com.zorroa.zmlp.service.logging.event
 import com.zorroa.archivist.util.JdbcUtils.insert
 import com.zorroa.zmlp.util.Json
 import org.springframework.jdbc.core.RowMapper

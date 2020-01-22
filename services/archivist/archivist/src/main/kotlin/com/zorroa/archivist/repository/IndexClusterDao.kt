@@ -7,8 +7,8 @@ import com.zorroa.archivist.domain.IndexClusterSpec
 import com.zorroa.archivist.domain.IndexClusterState
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
-import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils
+import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository

@@ -12,7 +12,7 @@ import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
-import com.zorroa.archivist.service.event
+import com.zorroa.zmlp.service.logging.event
 import com.zorroa.archivist.util.JdbcUtils.insert
 import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.isUUID

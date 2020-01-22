@@ -6,7 +6,7 @@ import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.Storage
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
-import com.zorroa.archivist.service.event
+import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
 import java.nio.ByteBuffer
 import javax.annotation.PostConstruct

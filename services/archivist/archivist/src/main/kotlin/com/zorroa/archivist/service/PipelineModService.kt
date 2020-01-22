@@ -13,6 +13,7 @@ import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.security.withAuth
+import com.zorroa.zmlp.service.logging.event
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener

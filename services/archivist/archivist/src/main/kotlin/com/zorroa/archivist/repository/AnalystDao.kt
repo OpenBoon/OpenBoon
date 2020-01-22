@@ -8,9 +8,9 @@ import com.zorroa.archivist.domain.LockState
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.security.getAnalyst
-import com.zorroa.archivist.service.event
 import com.zorroa.archivist.util.JdbcUtils.insert
 import com.zorroa.archivist.util.JdbcUtils.update
+import com.zorroa.zmlp.service.logging.event
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.net.URI

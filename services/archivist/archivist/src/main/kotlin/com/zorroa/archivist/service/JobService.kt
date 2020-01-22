@@ -28,6 +28,7 @@ import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.zmlp.service.logging.event
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

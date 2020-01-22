@@ -32,6 +32,7 @@ import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.RequestOptions
+import com.zorroa.zmlp.service.logging.event
 import org.elasticsearch.index.query.QueryBuilders
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

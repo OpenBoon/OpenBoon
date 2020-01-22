@@ -28,6 +28,7 @@ import com.zorroa.archivist.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
 import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.service.logging.event
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException

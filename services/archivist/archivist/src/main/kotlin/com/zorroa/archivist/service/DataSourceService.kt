@@ -15,6 +15,7 @@ import com.zorroa.archivist.repository.DataSourceJdbcDao
 import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.zmlp.service.logging.event
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.encrypt.Encryptors

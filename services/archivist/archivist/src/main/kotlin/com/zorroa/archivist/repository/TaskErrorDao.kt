@@ -9,8 +9,8 @@ import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.service.MeterRegistryHolder.getTags
-import com.zorroa.archivist.service.warnEvent
+import com.zorroa.zmlp.service.logging.MeterRegistryHolder.getTags
+import com.zorroa.zmlp.service.logging.warnEvent
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.JdbcUtils
 import com.zorroa.zmlp.util.Json
