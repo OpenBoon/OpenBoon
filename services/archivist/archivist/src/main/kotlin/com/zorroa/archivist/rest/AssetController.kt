@@ -77,7 +77,7 @@ class AssetController @Autowired constructor(
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
-    @PutMapping("/api/v3/assets/{id}/_update")
+    @PostMapping("/api/v3/assets/{id}/_update")
     fun update(
         @ApiParam("Unique ID of the Asset") @PathVariable id: String,
         @RequestBody(required = true) update: UpdateAssetRequest
@@ -145,9 +145,14 @@ class AssetController @Autowired constructor(
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
-    @PutMapping("/api/v3/assets/_batch_index")
-    fun batchIndex(@RequestBody req: Map<String, MutableMap<String, Any>>): Any {
-        return assetService.batchIndex(req)
+    @PostMapping("/api/v3/assets/_batch_index")
+    fun batchIndex(@RequestBody req: Map<String, MutableMap<String, Any>>): ResponseEntity<Resource> {
+        val rsp = assetService.batchIndex(req)
+        val content = Strings.toString(rsp)
+        return ResponseEntity.ok()
+            .contentLength(content.length.toLong())
+            .body(InputStreamResource(content.byteInputStream()))
+
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")

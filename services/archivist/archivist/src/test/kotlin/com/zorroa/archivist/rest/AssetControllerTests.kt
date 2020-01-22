@@ -27,7 +27,7 @@ class AssetControllerTests : MockMvcTest() {
     @Test
     fun testBatchCreate() {
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        mvc.perform(
+        val rsp = mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/_batch_create")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -77,14 +77,13 @@ class AssetControllerTests : MockMvcTest() {
             .andReturn()
     }
 
-
     @Test
-    fun testBatchIndex() {
+    fun testBatchIndex_withError() {
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        val rsp = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
-        val id = rsp.created[0]
+        val batch = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+        val id = batch.created[0]
 
-        val payload = """{
+        val brokenPayload = """{
                 "$id": {
                     "doc": {
                         "source": {
@@ -95,16 +94,42 @@ class AssetControllerTests : MockMvcTest() {
             }
         """.trimIndent()
 
-        val res = mvc.perform(
-            MockMvcRequestBuilders.put("/api/v3/assets/_batch_index")
+         mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/assets/_batch_index")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(payload)
+                .content(brokenPayload)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.items.length()", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index._id", CoreMatchers.equalTo(id)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index.status", CoreMatchers.equalTo(400)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index.error.reason",
+                CoreMatchers.containsString("strict_dynamic_mapping_exception")))
             .andReturn()
-        println(res.response.contentAsString)
+    }
 
+    @Test
+    fun testBatchIndex() {
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val batch = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+        val id = batch.created[0]
+        val asset = assetService.getAsset(id)
+        asset.setAttr("aux.captain", "kirk")
+        val payload = mapOf(asset.id to asset.document)
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/assets/_batch_index")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serializeToString(payload))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors", CoreMatchers.equalTo(false)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.items.length()", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index._id", CoreMatchers.equalTo(asset.id)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index._shards.failed",
+                CoreMatchers.equalTo(0)))
     }
 
 
@@ -115,7 +140,7 @@ class AssetControllerTests : MockMvcTest() {
         val id = created.created[0]
         val asset = assetService.getAsset(id)
 
-        mvc.perform(
+        val rsp = mvc.perform(
             MockMvcRequestBuilders.put("/api/v3/assets/$id/_index")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -142,8 +167,8 @@ class AssetControllerTests : MockMvcTest() {
             }
         """.trimIndent()
 
-        mvc.perform(
-            MockMvcRequestBuilders.put("/api/v3/assets/$id/_update")
+        val res = mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/assets/$id/_update")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(update)
@@ -199,7 +224,7 @@ class AssetControllerTests : MockMvcTest() {
             }
         """.trimIndent()
 
-        val res = mvc.perform(
+        mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/_batch_update")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -207,7 +232,6 @@ class AssetControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
-        println(res.response.contentAsString)
     }
 
     @Test
@@ -241,7 +265,7 @@ class AssetControllerTests : MockMvcTest() {
             """{"assets":[{"uri": "src/test/resources/test-data/toucan.jpg"}]}""".toByteArray()
         )
 
-        mvc.perform(
+        val rsp = mvc.perform(
             multipart("/api/v3/assets/_batch_upload")
                 .file(body)
                 .file(file)
@@ -250,6 +274,7 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.created[0]", CoreMatchers.anything()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.failed.length()", CoreMatchers.equalTo(0)))
+            .andReturn()
     }
 
     @Test
