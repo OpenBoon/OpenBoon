@@ -248,6 +248,50 @@ class AssetAppTests(unittest.TestCase):
             count += 1
         assert count == 2
 
+    @patch.object(ZmlpClient, 'put')
+    def test_index(self, put_patch):
+        asset = Asset({'id': '123'})
+        asset.set_attr('foo.bar', 'bing')
+        self.app.assets.index(asset)
+        args = put_patch.call_args_list
+        body = args[0][0][1]
+        assert body['foo'] == {'bar': 'bing'}
+
+    @patch.object(ZmlpClient, 'post')
+    def test_batch_index(self, post_patch):
+        asset = Asset({'id': '123'})
+        asset.set_attr('foo.bar', 'bing')
+        self.app.assets.batch_index([asset])
+        args = post_patch.call_args_list
+        body = args[0][0][1]
+        assert body['123'] == {'foo': {'bar': 'bing'}}
+
+    @patch.object(ZmlpClient, 'post')
+    def test_update(self, post_patch):
+        req = {
+            'foo': 'bar'
+        }
+
+        self.app.assets.update('123', req)
+        args = post_patch.call_args_list
+        body = args[0][0][1]
+        assert body['doc'] == {'foo': 'bar'}
+
+    @patch.object(ZmlpClient, 'post')
+    def test_batch_update(self, post_patch):
+        req = {
+            'abc123': {
+                'doc': {
+                    'foo': 'bar'
+                }
+            }
+        }
+
+        self.app.assets.batch_update(req)
+        args = post_patch.call_args_list
+        body = args[0][0][1]
+        assert body['abc123'] == {'doc': {'foo' : 'bar'}}
+
 
 class FileImportTests(unittest.TestCase):
 

@@ -1,10 +1,10 @@
+import json
 import logging
 import os
-import json
 
 from .client import SearchResult, ZmlpJsonEncoder
-from .util import as_collection
 from .elements import Element
+from .util import as_collection
 
 __all__ = [
     "Asset",
@@ -435,7 +435,7 @@ class AssetApp(object):
             assets (list of FileImport): The list of files to import as Assets.
 
         Notes:
-            Example output:
+            Example return value:
                 {
                   "bulkResponse" : {
                     "took" : 15,
@@ -482,7 +482,7 @@ class AssetApp(object):
             assets (list of FileUpload):
 
         Notes:
-            Example output:
+            Example return value:
                 {
                   "bulkResponse" : {
                     "took" : 15,
@@ -522,6 +522,150 @@ class AssetApp(object):
         }
         return self.app.client.upload_files("/api/v3/assets/_batch_upload",
                                             files, body)
+
+    def index(self, asset):
+        """
+        Re-index an existing asset.  The metadata for the entire asset
+        is overwritten by the local copy.
+
+        Args:
+            asset (Asset): The asset
+
+        Notes:
+            Example return value:
+                {
+                  "_index" : "v4mtygyqqpsjlcnv",
+                  "_type" : "_doc",
+                  "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
+                  "_version" : 2,
+                  "result" : "updated",
+                  "_shards" : {
+                    "total" : 1,
+                    "successful" : 1,
+                    "failed" : 0
+                  },
+                  "_seq_no" : 1,
+                  "_primary_term" : 1
+                }
+
+        Examples:
+            asset = app.assets.get_by_id(id)
+            asset.set_attr("aux.my_field", 1000)
+            asset.remove_attr("aux.other_field")
+            app.assets.index(asset)
+
+        Returns:
+            dict: An ES update response.
+        """
+        return self.app.client.put("/api/v3/assets/{}/_index".format(asset.id),
+                                   asset.document)
+
+    def update(self, asset, doc):
+        """
+        Update a given Asset with a partial document dictionary.
+
+        Args:
+            asset: (mixed): An Asset object or unique asset id.
+            doc: (dict): the changes to apply.
+
+        Notes:
+            Doc argument example:
+                {
+                    "aux": {
+                        "captain": "kirk"
+                    }
+                }
+
+            Example return value:
+                {
+                  "_index" : "9l0l2skwmuesufff",
+                  "_type" : "_doc",
+                  "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
+                  "_version" : 2,
+                  "result" : "updated",
+                  "_shards" : {
+                    "total" : 1,
+                    "successful" : 1,
+                    "failed" : 0
+                  },
+                  "_seq_no" : 1,
+                  "_primary_term" : 1
+                }
+
+        Returns
+            dict: The ES update response object.
+        """
+        asset_id = getattr(asset, "id", "") or asset
+        body = {
+            "doc": doc
+        }
+        return self.app.client.post("/api/v3/assets/{}/_update".format(asset_id), body)
+
+    def batch_index(self, assets):
+        """
+        Reindex multiple existing assets.  The metadata for the entire asset
+        is overwritten by the local copy.
+
+        Notes:
+            Example return value:
+                {
+                  "took" : 11,
+                  "errors" : false,
+                  "items" : [ {
+                    "index" : {
+                      "_index" : "qjdjbpkvwg0sgusl",
+                      "_type" : "_doc",
+                      "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
+                      "_version" : 2,
+                      "result" : "updated",
+                      "_shards" : {
+                        "total" : 1,
+                        "successful" : 1,
+                        "failed" : 0
+                      },
+                      "_seq_no" : 1,
+                      "_primary_term" : 1,
+                      "status" : 200
+                    }
+                  } ]
+                }
+
+        Returns:
+            dict: An ES BulkResponse object.
+
+        """
+        body = dict([(a.id, a.document) for a in assets])
+        return self.app.client.post("/api/v3/assets/_batch_index", body)
+
+    def batch_update(self, docs):
+        """
+        Args:
+            docs (dict): A dictionary of asset Id to document.
+
+        Notes:
+            Example request dictionary
+                {
+                    "assetId1": {
+                        "doc": {
+                            "aux": {
+                                "captain": "kirk"
+                            }
+                        }
+                    },
+                    "assetId2": {
+                        "doc": {
+                            "aux": {
+                                "captain": "kirk"
+                            }
+                        }
+                    }
+                }
+
+        Returns:
+            dict: An ES BulkResponse object.
+
+        """
+        return self.app.client.post("/api/v3/assets/_batch_update", docs)
 
     def search(self, search=None, raw=False):
         """
