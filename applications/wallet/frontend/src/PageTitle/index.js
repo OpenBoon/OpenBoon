@@ -6,8 +6,8 @@ const PageTitle = ({ children }) => {
   return (
     <h2
       css={{
-        fontSize: typography.size.mega,
-        lineHeight: typography.height.mega,
+        fontSize: typography.size.large,
+        lineHeight: typography.height.large,
         fontWeight: typography.weight.regular,
         paddingTop: spacing.comfy,
         paddingBottom: spacing.normal,

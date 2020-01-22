@@ -1,13 +1,13 @@
 const typography = {
   size: {
-    hecto: 15,
-    kilo: 17,
-    mega: 18,
+    regular: 15,
+    medium: 17,
+    large: 18,
   },
   height: {
-    hecto: '18px',
-    kilo: '20px',
-    mega: '21px',
+    regular: '18px',
+    medium: '20px',
+    large: '21px',
   },
   weight: {
     regular: 400,
