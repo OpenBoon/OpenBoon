@@ -427,37 +427,100 @@ class AssetApp(object):
     def __init__(self, app):
         self.app = app
 
-    def import_files(self, assets):
+    def batch_import_files(self, assets):
         """
         Import a list of FileImport instances.
 
         Args:
             assets (list of FileImport): The list of files to import as Assets.
 
+        Notes:
+            Example output:
+                {
+                  "bulkResponse" : {
+                    "took" : 15,
+                    "errors" : false,
+                    "items" : [ {
+                      "create" : {
+                        "_index" : "yvqg1901zmu5bw9q",
+                        "_type" : "_doc",
+                        "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
+                        "_version" : 1,
+                        "result" : "created",
+                        "forced_refresh" : true,
+                        "_shards" : {
+                          "total" : 1,
+                          "successful" : 1,
+                          "failed" : 0
+                        },
+                        "_seq_no" : 0,
+                        "_primary_term" : 1,
+                        "status" : 201
+                      }
+                    } ]
+                  },
+                  "failed" : [ ],
+                  "created" : [ "dd0KZtqyec48n1q1fniqVMV5yllhRRGx" ],
+                  "jobId" : "ba310246-1f87-1ece-b67c-be3f79a80d11"
+                }
+
         Returns:
-            dict: A dictionary containing the provisioning status of each asset,
-                a list of assets to be processed, and a analysis job id.
+            dict: A dictionary containing an ES bulk response, failed files,
+            and created asset ids.
 
         """
         body = {"assets": assets}
-        return self.app.client.post("/api/v3/assets/_batchCreate", body)
+        return self.app.client.post("/api/v3/assets/_batch_create", body)
 
-    def upload_files(self, assets):
+    def batch_upload_files(self, assets):
         """
-        Batch upload a list of files.
+        Batch upload a list of files and return a structure which contains
+        an ES bulk response object, a list of failed file paths, a list of created
+        asset Ids, and a processing jobId.
 
         Args:
             assets (list of FileUpload):
 
-        Returns:
+        Notes:
+            Example output:
+                {
+                  "bulkResponse" : {
+                    "took" : 15,
+                    "errors" : false,
+                    "items" : [ {
+                      "create" : {
+                        "_index" : "yvqg1901zmu5bw9q",
+                        "_type" : "_doc",
+                        "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
+                        "_version" : 1,
+                        "result" : "created",
+                        "forced_refresh" : true,
+                        "_shards" : {
+                          "total" : 1,
+                          "successful" : 1,
+                          "failed" : 0
+                        },
+                        "_seq_no" : 0,
+                        "_primary_term" : 1,
+                        "status" : 201
+                      }
+                    } ]
+                  },
+                  "failed" : [ ],
+                  "created" : [ "dd0KZtqyec48n1q1fniqVMV5yllhRRGx" ],
+                  "jobId" : "ba310246-1f87-1ece-b67c-be3f79a80d11"
+                }
 
+        Returns:
+            dict: A dictionary containing an ES bulk response, failed files,
+            and created asset ids.
         """
         assets = as_collection(assets)
         files = [asset.uri for asset in assets]
         body = {
             "assets": assets
         }
-        return self.app.client.upload_files("/api/v3/assets/_batchUpload",
+        return self.app.client.upload_files("/api/v3/assets/_batch_upload",
                                             files, body)
 
     def search(self, search=None, raw=False):

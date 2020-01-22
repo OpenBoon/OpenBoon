@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 import unittest
 from unittest.mock import patch
 
@@ -125,6 +125,34 @@ class AssetAppTests(unittest.TestCase):
     def setUp(self):
         self.app = app_from_env()
 
+        self.mock_import_result = {
+            "bulkResponse": {
+                "took": 15,
+                "errors": False,
+                "items": [{
+                    "create": {
+                        "_index": "yvqg1901zmu5bw9q",
+                        "_type": "_doc",
+                        "_id": "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
+                        "_version": 1,
+                        "result": "created",
+                        "forced_refresh": True,
+                        "_shards": {
+                            "total": 1,
+                            "successful": 1,
+                            "failed": 0
+                        },
+                        "_seq_no": 0,
+                        "_primary_term": 1,
+                        "status": 201
+                    }
+                }]
+            },
+            "failed": [],
+            "created": ["dd0KZtqyec48n1q1fniqVMV5yllhRRGx"],
+            "jobId": "ba310246-1f87-1ece-b67c-be3f79a80d11"
+        }
+
         # A mock search result used for asset search tests
         self.mock_search_result = {
             "took": 4,
@@ -161,25 +189,10 @@ class AssetAppTests(unittest.TestCase):
 
     @patch.object(ZmlpClient, 'post')
     def test_import_files(self, post_patch):
-        post_patch.return_value = {
-            "status": [
-                {"assetId": "abc123", "failed": False}
-            ],
-            "assets": [
-                {
-                    "id": "abc123",
-                    "document": {
-                        "source": {
-                            "path": "gs://zorroa-dev-data/image/pluto.png"
-                        }
-                    }
-                }
-            ]
-        }
+        post_patch.return_value = self.mock_import_result
         assets = [FileImport("gs://zorroa-dev-data/image/pluto.png")]
-        rsp = self.app.assets.import_files(assets)
-        assert rsp["status"][0]["assetId"] == "abc123"
-        assert not rsp["status"][0]["failed"]
+        rsp = self.app.assets.batch_import_files(assets)
+        assert rsp["created"][0] == "dd0KZtqyec48n1q1fniqVMV5yllhRRGx"
 
     @patch.object(ZmlpClient, 'get')
     def test_get_by_id(self, get_patch):
@@ -199,25 +212,12 @@ class AssetAppTests(unittest.TestCase):
 
     @patch.object(ZmlpClient, 'upload_files')
     def test_upload_assets(self, post_patch):
-        post_patch.return_value = {
-            "status": [
-                {"assetId": "abc123", "failed": False}
-            ],
-            "assets": [
-                {
-                    "id": "abc123",
-                    "document": {
-                        "source": {
-                            "path": "zmlp:///abc123/source/toucan.jpg"
-                        }
-                    }
-                }
-            ]
-        }
+        post_patch.return_value = self.mock_import_result
+
         path = os.path.dirname(__file__) + "/../../../../../test-data/images/set01/toucan.jpg"
         assets = [FileUpload(path)]
-        rsp = self.app.assets.upload_files(assets)
-        assert rsp["status"][0]["assetId"] == "abc123"
+        rsp = self.app.assets.batch_upload_files(assets)
+        assert rsp["created"][0] == "dd0KZtqyec48n1q1fniqVMV5yllhRRGx"
 
     @patch.object(ZmlpClient, 'post')
     def test_search_raw(self, post_patch):
