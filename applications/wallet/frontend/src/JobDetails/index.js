@@ -9,9 +9,7 @@ const JobDetails = () => {
         <title>Job Details</title>
       </Head>
 
-      <PageTitle>
-        <span css={{ color: 'grey' }}>Job Queue /</span> Job Details
-      </PageTitle>
+      <PageTitle>Job Queue / Job Details</PageTitle>
     </>
   )
 }
