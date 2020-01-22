@@ -1,7 +1,6 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.AssetSearch
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import org.junit.Test
@@ -22,12 +21,11 @@ class AssetSearchServiceTests : AbstractTest() {
         assetService.batchCreate(batchCreate)
 
         // Note that here, scroll is not allowed yet the result should have no scroll id.
-        val search = AssetSearch(
-            mapOf(
-                "query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg")),
-                "scroll" to "2s"
-            )
+        val search = mapOf(
+            "query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg")),
+            "scroll" to "2s"
         )
+
         val rsp = assetSearchService.search(search)
         assertEquals(1, rsp.hits.hits.size)
         assertNull(rsp.scrollId)
@@ -44,12 +42,15 @@ class AssetSearchServiceTests : AbstractTest() {
         assetService.batchCreate(batchCreate)
 
         // Note that here, scroll is not allowed yet the result should have no scroll id.
-        val search = AssetSearch(
+        val search =
             mapOf(
-                "query" to mapOf("similarity" to mapOf(
-                    "analysis.zmlp.similarity.vector" to listOf(mapOf("hash" to "AABBDD11"))))
+                "query" to mapOf(
+                    "similarity" to mapOf(
+                        "analysis.zmlp.similarity.vector" to listOf(mapOf("hash" to "AABBDD11"))
+                    )
+                )
             )
-        )
+
         val rsp = assetSearchService.search(search)
         assertEquals(1, rsp.hits.hits.size)
     }

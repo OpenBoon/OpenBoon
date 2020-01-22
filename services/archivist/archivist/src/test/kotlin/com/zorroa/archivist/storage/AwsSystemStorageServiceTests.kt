@@ -23,7 +23,7 @@ class AwsSystemStorageServiceTests : AbstractTest() {
 
     @Test
     fun testFetchScalarType() {
-        val clip1 = Clip("foo", 1.0f, 2.0f, "hats")
+        val clip1 = Clip("foo", 1.0, 2.0, "hats")
         systemStorageService.storeObject("/crew/members.json", clip1)
 
         val clip2 = systemStorageService.fetchObject("/crew/members.json", Clip::class.java)
