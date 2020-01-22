@@ -286,6 +286,21 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
+    fun tesIndexAsset() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
+        )
+        val createRsp = assetService.batchCreate(batchCreate)
+        var asset = assetService.getAsset(createRsp.created[0])
+        asset.setAttr("aux.field", 1)
+
+        assetService.index(asset.id, asset.document)
+        asset = assetService.getAsset(createRsp.created[0])
+        assertEquals("gs://cats/large-brown-cat.jpg", asset.getAttr("source.path", String::class.java))
+        assertEquals(1, asset.getAttr("aux.field", Int::class.java))
+    }
+
+    @Test
     fun testBatchIndexAssets() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))

@@ -104,13 +104,13 @@ interface AssetService {
      * @return An ES [BulkResponse] which contains the result of the operation.
      *
      */
-    fun batchIndex(req: Map<String, MutableMap<String, Any>>): BulkResponse
+    fun batchIndex(docs: Map<String, MutableMap<String, Any>>): BulkResponse
 
     /**
      * Reindex a single asset.  The fully composed asset metadata must be provided,
      * not a partial update.
      */
-    fun index(id: String, req: MutableMap<String, Any>): Response
+    fun index(id: String, doc: MutableMap<String, Any>): Response
 
     /**
      * Update a group of assets utilizing a query and a script.
@@ -306,22 +306,23 @@ class AssetServiceImpl : AssetService {
         return rest.client.lowLevelClient.performRequest(request)
     }
 
-    override fun index(id: String, req: MutableMap<String, Any>): Response {
+    override fun index(id: String, doc: MutableMap<String, Any>): Response {
         val rest = indexRoutingService.getProjectRestClient()
         val request = Request("PUT", "/${rest.route.indexName}/_doc/${id}")
-        request.setJsonEntity(Json.serializeToString(prepAssetForUpdate(id, req)))
+        prepAssetForUpdate(id, doc)
+        request.setJsonEntity(Json.serializeToString(doc))
         return rest.client.lowLevelClient.performRequest(request)
     }
 
-    override fun batchIndex(req: Map<String, MutableMap<String, Any>>): BulkResponse {
-        if (req.isEmpty()) {
+    override fun batchIndex(docs: Map<String, MutableMap<String, Any>>): BulkResponse {
+        if (docs.isEmpty()) {
             throw IllegalArgumentException("Nothing to batch index.")
         }
 
         val rest = indexRoutingService.getProjectRestClient()
         val bulk = BulkRequest()
 
-        req.forEach { (id, doc) ->
+        docs.forEach { (id, doc) ->
             prepAssetForUpdate(id, doc)
             bulk.add(
                 rest.newIndexRequest(id)
@@ -331,7 +332,7 @@ class AssetServiceImpl : AssetService {
         }
 
         logger.event(
-            LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to req.size)
+            LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to docs.size)
         )
 
         return rest.client.bulk(bulk, RequestOptions.DEFAULT)
