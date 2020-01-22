@@ -2,6 +2,8 @@
 FROM zmlp/py3-client:latest
 USER root
 
+RUN pip install -U pip
+
 RUN mkdir /build
 COPY ./ /build
 WORKDIR /build
