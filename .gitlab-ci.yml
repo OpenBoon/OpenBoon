@@ -312,7 +312,7 @@ services_unit_tests:
     - ZMLP_PIPELINE_STORAGE_URL="http://${IP}:9000"
     - ARCHIVIST_ES_URL="http://${IP}:9200"
     - ARCHIVIST_PROJECT_STORAGE_URL="http://${IP}:9000"
-    - ZMLP_PIPELINE_STORAGE_URL="http://${IP}:9000"
+    - ZMLP_STORAGE_SYSTEM_URL="http://${IP}:9000"
     - mvn clean install -f lib/jvm-common -q -Dmaven.test.skip=true
     - mvn test verify -f lib/jvm-common -q
     - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true
