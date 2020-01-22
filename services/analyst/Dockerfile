@@ -10,7 +10,7 @@ COPY . /service
 WORKDIR /service
 
 COPY ./requirements.txt /service/requirements.txt
-RUN pip install -r /service/requirements.txt
+RUN pip3 install -r /service/requirements.txt
 RUN python3 -c "import time; v = open('VERSION').read().strip(); print('{}-{}'.format(v, int(time.time())))" > ./BUILD
 RUN rm /service/requirements.txt
 
