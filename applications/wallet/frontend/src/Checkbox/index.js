@@ -35,8 +35,8 @@ const Checkbox = ({ label, legend, initialValue, onClick }) => {
         <span
           css={{
             color: colors.structure.zinc,
-            fontSize: typography.size.hecto,
-            lineHeight: typography.height.hecto,
+            fontSize: typography.size.regular,
+            lineHeight: typography.height.regular,
             fontWeight: typography.weight.bold,
           }}>
           {label}

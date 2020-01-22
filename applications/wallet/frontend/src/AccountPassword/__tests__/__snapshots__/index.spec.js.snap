@@ -50,7 +50,7 @@ Array [
   padding-top: 8px;
   padding-bottom: 8px;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 20px;
   font-weight: 700;
 }
@@ -75,7 +75,7 @@ Array [
   padding-top: 8px;
   padding-bottom: 8px;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 20px;
   font-weight: 700;
 }
@@ -182,8 +182,8 @@ Array [
   margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 15px;
+  line-height: 18px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;

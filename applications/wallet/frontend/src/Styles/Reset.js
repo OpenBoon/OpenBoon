@@ -21,8 +21,8 @@ const StylesReset = () => (
         },
         body: {
           fontFamily: `Roboto, Avenir, "sans-serif"`,
-          fontSize: typography.size.hecto,
-          lineHeight: typography.height.hecto,
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
           fontWeight: typography.weight.regular,
           color: colors.structure.white,
           backgroundColor: colors.structure.coal,
@@ -31,10 +31,6 @@ const StylesReset = () => (
           fontFamily: 'inherit',
         },
         'h1, h2, h3, h4': { margin: 0, padding: 0 },
-        small: {
-          fontSize: typography.size.uno,
-          lineHeight: typography.height.uno,
-        },
         a: {
           color: colors.structure.white,
           textDecoration: 'none',
@@ -45,7 +41,7 @@ const StylesReset = () => (
         input: {
           border: 0,
           padding: spacing.normal,
-          fontSize: typography.size.hecto,
+          fontSize: typography.size.regular,
         },
         '.js-focus-visible :focus:not(.focus-visible)': {
           outline: 'none',
