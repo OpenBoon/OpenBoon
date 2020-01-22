@@ -137,7 +137,7 @@ interface AssetService {
     /**
      * Delete assets by query.
      */
-    fun deleteByQuery(req: Map<String, Any>) : BulkByScrollResponse
+    fun deleteByQuery(req: Map<String, Any>): BulkByScrollResponse
 
     /**
      * Augment the newAsset with the clip definition found in the [AssetSpec] used
@@ -166,7 +166,6 @@ class AssetServiceImpl : AssetService {
 
     @Autowired
     lateinit var pipelineResolverService: PipelineResolverService
-
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -282,12 +281,12 @@ class AssetServiceImpl : AssetService {
 
     override fun update(assetId: String, req: UpdateAssetRequest): Response {
         val rest = indexRoutingService.getProjectRestClient()
-        val request = Request("POST", "/${rest.route.indexName}/_update/${assetId}")
+        val request = Request("POST", "/${rest.route.indexName}/_update/$assetId")
         request.setJsonEntity(Json.serializeToString(req))
         return rest.client.lowLevelClient.performRequest(request)
     }
 
-    override fun batchUpdate(batch: Map<String, UpdateAssetRequest>) : BulkResponse {
+    override fun batchUpdate(batch: Map<String, UpdateAssetRequest>): BulkResponse {
         if (batch.size > 1000) {
             throw IllegalArgumentException("Batch size must be under 1000")
         }
@@ -308,7 +307,7 @@ class AssetServiceImpl : AssetService {
 
     override fun index(id: String, doc: MutableMap<String, Any>): Response {
         val rest = indexRoutingService.getProjectRestClient()
-        val request = Request("PUT", "/${rest.route.indexName}/_doc/${id}")
+        val request = Request("PUT", "/${rest.route.indexName}/_doc/$id")
         prepAssetForUpdate(id, doc)
         request.setJsonEntity(Json.serializeToString(doc))
         return rest.client.lowLevelClient.performRequest(request)
@@ -338,13 +337,13 @@ class AssetServiceImpl : AssetService {
         return rest.client.bulk(bulk, RequestOptions.DEFAULT)
     }
 
-    override fun delete(id: String) : Response {
+    override fun delete(id: String): Response {
         val rest = indexRoutingService.getProjectRestClient()
-        val request = Request("DELETE", "/${rest.route.indexName}/_doc/${id}")
+        val request = Request("DELETE", "/${rest.route.indexName}/_doc/$id")
         return rest.client.lowLevelClient.performRequest(request)
     }
 
-    override fun deleteByQuery(req: Map<String, Any>) : BulkByScrollResponse {
+    override fun deleteByQuery(req: Map<String, Any>): BulkByScrollResponse {
         val rest = indexRoutingService.getProjectRestClient()
         return rest.client.deleteByQuery(
             DeleteByQueryRequest(rest.route.indexName)
@@ -393,8 +392,8 @@ class AssetServiceImpl : AssetService {
         return clip
     }
 
-    private fun processBulkRequest(bulkRequest: BulkRequest, assets: List<Asset>, procs: List<ProcessorRef>?)
-        : BatchCreateAssetsResponse {
+    private fun processBulkRequest(bulkRequest: BulkRequest, assets: List<Asset>, procs: List<ProcessorRef>?):
+        BatchCreateAssetsResponse {
         val rest = indexRoutingService.getProjectRestClient()
         val bulk = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
 
@@ -405,7 +404,7 @@ class AssetServiceImpl : AssetService {
 
             if (it.isFailed) {
                 val path = assets[idx].getAttr<String?>("source.path")
-                val msg =  ElasticSearchErrorTranslator.translate(it.failureMessage)
+                val msg = ElasticSearchErrorTranslator.translate(it.failureMessage)
                 logger.warnEvent(
                     LogObject.ASSET, LogAction.CREATE, "failed to create asset $path, $msg"
                 )

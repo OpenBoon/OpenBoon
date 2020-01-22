@@ -20,4 +20,3 @@ class BatchCreateAssetsResponse(
     @ApiModelProperty("The ID of the analysis job, if analysis was selected")
     var jobId: UUID? = null
 )
-

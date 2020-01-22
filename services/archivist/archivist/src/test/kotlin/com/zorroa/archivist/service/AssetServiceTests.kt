@@ -103,7 +103,6 @@ class AssetServiceTests : AbstractTest() {
         val rsp = assetService.batchCreate(req)
         assertEquals(1, rsp.created.size)
 
-
         val asset = assetService.getAsset(rsp.created[0])
         assertEquals(req.assets[0].uri, asset.getAttr("source.path", String::class.java))
         assertNotNull(asset.getAttr("system.jobId"))

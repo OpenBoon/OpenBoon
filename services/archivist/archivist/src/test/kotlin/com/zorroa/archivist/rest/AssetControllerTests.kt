@@ -94,7 +94,7 @@ class AssetControllerTests : MockMvcTest() {
             }
         """.trimIndent()
 
-         mvc.perform(
+        mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/_batch_index")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -104,8 +104,12 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.items.length()", CoreMatchers.equalTo(1)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index._id", CoreMatchers.equalTo(id)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index.status", CoreMatchers.equalTo(400)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index.error.reason",
-                CoreMatchers.containsString("strict_dynamic_mapping_exception")))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath(
+                    "$.items[0].index.error.reason",
+                    CoreMatchers.containsString("strict_dynamic_mapping_exception")
+                )
+            )
             .andReturn()
     }
 
@@ -131,7 +135,6 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.items[0].index._shards.failed",
                 CoreMatchers.equalTo(0)))
     }
-
 
     @Test
     fun testIndex() {

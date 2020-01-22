@@ -152,7 +152,6 @@ class AssetController @Autowired constructor(
         return ResponseEntity.ok()
             .contentLength(content.length.toLong())
             .body(InputStreamResource(content.byteInputStream()))
-
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
@@ -201,7 +200,7 @@ class AssetController @Autowired constructor(
     @PreAuthorize("hasAuthority('AssetsImport')")
     @DeleteMapping(value = ["/api/v3/assets/{id}"])
     @ResponseBody
-    fun delete(@PathVariable id: String) : ResponseEntity<Resource> {
+    fun delete(@PathVariable id: String): ResponseEntity<Resource> {
         val rsp = assetService.delete(id)
         val bytes = EntityUtils.toByteArray(rsp.entity)
         return ResponseEntity.ok()
@@ -213,7 +212,7 @@ class AssetController @Autowired constructor(
     @PreAuthorize("hasAuthority('AssetsImport')")
     @DeleteMapping(value = ["/api/v3/assets/_delete_by_query"])
     @ResponseBody
-    fun deleteByQuery(@RequestBody req: Map<String, Any>) : ResponseEntity<Resource> {
+    fun deleteByQuery(@RequestBody req: Map<String, Any>): ResponseEntity<Resource> {
         val rsp = assetService.deleteByQuery(req)
         val content = Strings.toString(rsp)
         return ResponseEntity.ok()
