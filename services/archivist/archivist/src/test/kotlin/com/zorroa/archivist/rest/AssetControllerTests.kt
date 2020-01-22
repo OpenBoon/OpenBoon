@@ -38,6 +38,47 @@ class AssetControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testDelete() {
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val id = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec))).created[0]
+
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/api/v3/assets/$id")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$._id", CoreMatchers.equalTo(id)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.result", CoreMatchers.equalTo("deleted")))
+            .andReturn()
+    }
+
+    @Test
+    fun testDeleteByQuery() {
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+
+        val payload = """{
+                "query": {
+                    "match_all": { }
+                }
+            }
+        """.trimIndent()
+
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/api/v3/assets/_delete_by_query")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(payload)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.total", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.deleted", CoreMatchers.equalTo(1)))
+            .andReturn()
+    }
+
+
+    @Test
     fun testBatchIndex() {
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         val rsp = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))

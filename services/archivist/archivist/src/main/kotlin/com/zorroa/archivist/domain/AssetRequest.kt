@@ -5,10 +5,10 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.web.multipart.MultipartFile
 
-@ApiModel("Update Asset Request", description = "Request structure to update an Asset.")
+@ApiModel("Update Asset By Query Request", description = "Request structure to update an Asset.")
 class UpdateAssetsByQueryRequest(
 
-    @ApiModelProperty("A script to run on the doc")
+    @ApiModelProperty("A query to select assets")
     val query: Map<String, Any>? = null,
 
     @ApiModelProperty("A script to run on the doc")

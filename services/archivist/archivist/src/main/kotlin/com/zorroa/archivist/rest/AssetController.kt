@@ -28,6 +28,7 @@ import org.springframework.core.io.InputStreamResource
 import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -189,6 +190,30 @@ class AssetController @Autowired constructor(
     ): ResponseEntity<Resource> {
         val locator = AssetFileLocator(id, category, name)
         return projectStorageService.stream(locator)
+    }
+
+    @ApiOperation("Store an additional file to an asset.")
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @DeleteMapping(value = ["/api/v3/assets/{id}"])
+    @ResponseBody
+    fun delete(@PathVariable id: String) : ResponseEntity<Resource> {
+        val rsp = assetService.delete(id)
+        val bytes = EntityUtils.toByteArray(rsp.entity)
+        return ResponseEntity.ok()
+            .contentLength(bytes.size.toLong())
+            .body(InputStreamResource(bytes.inputStream()))
+    }
+
+    @ApiOperation("Store an additional file to an asset.")
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @DeleteMapping(value = ["/api/v3/assets/_delete_by_query"])
+    @ResponseBody
+    fun deleteByQuery(@RequestBody req: Map<String, Any>) : ResponseEntity<Resource> {
+        val rsp = assetService.deleteByQuery(req)
+        val content = Strings.toString(rsp)
+        return ResponseEntity.ok()
+            .contentLength(content.length.toLong())
+            .body(InputStreamResource(content.byteInputStream()))
     }
 
     companion object {

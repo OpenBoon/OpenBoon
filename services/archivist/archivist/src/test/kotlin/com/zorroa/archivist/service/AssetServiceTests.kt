@@ -195,14 +195,41 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testDeleteAsset() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
+        )
+        val assetId = assetService.batchCreate(batchCreate).created[0]
+        val rsp = assetService.delete(assetId)
+        assertEquals(rsp.statusLine.statusCode, 200)
+    }
+
+    @Test
+    fun testDeleteAssetsByQuery() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-cat.jpg"),
+                AssetSpec("gs://dogs/large-brown-dog.jpg")
+            )
+        )
+        assetService.batchCreate(batchCreate)
+        val rsp = assetService.deleteByQuery(
+            mapOf("query" to mapOf("match_all" to mapOf<String, Any>()))
+        )
+        assertEquals(2, rsp.deleted)
+    }
+
+    @Test
     fun tesUpdateAsset() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
         val assetId = assetService.batchCreate(batchCreate).created[0]
 
-        assetService.update(assetId,
-            UpdateAssetRequest(mapOf("source" to mapOf("mimetype" to "cat"))))
+        assetService.update(
+            assetId,
+            UpdateAssetRequest(mapOf("source" to mapOf("mimetype" to "cat")))
+        )
         var asset = assetService.getAsset(assetId)
         assertEquals("cat", asset.getAttr("source.mimetype", String::class.java))
     }
@@ -243,7 +270,6 @@ class AssetServiceTests : AbstractTest() {
         val rsp = assetService.batchUpdate(update)
         assertFalse(rsp.hasFailures())
     }
-
 
     @Test
     fun testBatchUpdateAssets_failOnDoesNotExist() {

@@ -23,6 +23,7 @@ import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.search.SearchSourceMapper
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.ElasticSearchErrorTranslator
@@ -37,6 +38,8 @@ import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.Response
 import org.elasticsearch.common.Strings
 import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.index.reindex.BulkByScrollResponse
+import org.elasticsearch.index.reindex.DeleteByQueryRequest
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -125,6 +128,16 @@ interface AssetService {
      * utilize either a script or a document, but not both.
      */
     fun update(assetId: String, req: UpdateAssetRequest): Response
+
+    /**
+     * Delete the given asset id.
+     */
+    fun delete(assetId: String): Response
+
+    /**
+     * Delete assets by query.
+     */
+    fun deleteByQuery(req: Map<String, Any>) : BulkByScrollResponse
 
     /**
      * Augment the newAsset with the clip definition found in the [AssetSpec] used
@@ -322,6 +335,19 @@ class AssetServiceImpl : AssetService {
         )
 
         return rest.client.bulk(bulk, RequestOptions.DEFAULT)
+    }
+
+    override fun delete(id: String) : Response {
+        val rest = indexRoutingService.getProjectRestClient()
+        val request = Request("DELETE", "/${rest.route.indexName}/_doc/${id}")
+        return rest.client.lowLevelClient.performRequest(request)
+    }
+
+    override fun deleteByQuery(req: Map<String, Any>) : BulkByScrollResponse {
+        val rest = indexRoutingService.getProjectRestClient()
+        return rest.client.deleteByQuery(
+            DeleteByQueryRequest(rest.route.indexName)
+                .setQuery(SearchSourceMapper.convert(req).query()), RequestOptions.DEFAULT)
     }
 
     fun createAnalysisJob(assetIds: List<String>, processors: List<ProcessorRef>): Job {
