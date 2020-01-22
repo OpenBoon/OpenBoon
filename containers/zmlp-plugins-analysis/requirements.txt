@@ -1,6 +1,6 @@
 scikit-learn
 scipy
-mxnet==1.5.1
+mxnet
 protobuf
 tensorflow==2.0.0
 opencv-python-headless
