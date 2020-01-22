@@ -14,8 +14,8 @@ const TableException = ({ numColumns, children }) => {
             justifyContent: 'center',
             textAlign: 'center',
             color: colors.structure.steel,
-            fontSize: typography.size.kilo,
-            lineHeight: typography.height.kilo,
+            fontSize: typography.size.hecto,
+            lineHeight: typography.height.hecto,
           }}>
           {children}
         </div>

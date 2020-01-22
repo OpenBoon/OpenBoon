@@ -28,8 +28,8 @@ exports[`<JobsMenu /> should render properly 1`] = `
   margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 15px;
+  line-height: 18px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -103,8 +103,8 @@ exports[`<JobsMenu /> should render properly 1`] = `
   margin: 0;
   padding: 12px 32px;
   white-space: nowrap;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 15px;
+  line-height: 18px;
   font-weight: 500;
   border: none;
   cursor: pointer;

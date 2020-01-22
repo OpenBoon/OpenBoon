@@ -31,10 +31,6 @@ const StylesReset = () => (
           fontFamily: 'inherit',
         },
         'h1, h2, h3, h4': { margin: 0, padding: 0 },
-        small: {
-          fontSize: typography.size.uno,
-          lineHeight: typography.height.uno,
-        },
         a: {
           color: colors.structure.white,
           textDecoration: 'none',

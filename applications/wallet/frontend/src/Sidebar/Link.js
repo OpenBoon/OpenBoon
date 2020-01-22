@@ -20,8 +20,8 @@ const SidebarLink = ({ href, children }) => {
             display: 'flex',
             alignItems: 'center',
             padding: spacing.moderate,
-            fontSize: typography.size.kilo,
-            lineHeight: typography.height.kilo,
+            fontSize: typography.size.hecto,
+            lineHeight: typography.height.hecto,
             backgroundColor: isCurrentPage ? colors.structure.smoke : 'none',
             color: isCurrentPage ? colors.key.one : colors.structure.steel,
             svg: {
