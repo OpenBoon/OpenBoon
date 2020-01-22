@@ -64,7 +64,7 @@ class AssetStorage(object):
         # handle file:// urls
         path = urlparse(str(src_path)).path
         result = self.app.client.upload_file(
-            "/api/v3/assets/{}/files".format(asset.id), path, spec)
+            "/api/v3/assets/{}/_files".format(asset.id), path, spec)
 
         # Store the path to the proxy in our local file storage
         # because a processor will need it down the line.
@@ -110,7 +110,7 @@ class AssetStorage(object):
             logger.debug("Pre-caching {} to {}".format(precache_path, cache_path))
             shutil.copy(urlparse(precache_path).path, cache_path)
         elif not os.path.exists(cache_path):
-            self.app.client.stream('/api/v3/assets/{}/files/{}/{}'
+            self.app.client.stream('/api/v3/assets/{}/_files/{}/{}'
                                    .format(asset_id, category, name), cache_path)
         return cache_path
 
@@ -131,7 +131,7 @@ class ProjectStorage(object):
             "attrs": {}
         }
         path = urlparse(str(src_path)).path
-        return self.app.client.upload_file("/api/v3/project/files".format, path, spec)
+        return self.app.client.upload_file("/api/v3/project/_files".format, path, spec)
 
     def store_blob(self, src_blob, entity, category, name, attrs=None):
         spec = {
@@ -142,7 +142,7 @@ class ProjectStorage(object):
         }
         with tempfile.NamedTemporaryFile(suffix=".dat") as tf:
             pickle.dump(src_blob, tf)
-            result = self.app.client.upload_file("/api/v3/project/files".format, tf.name, spec)
+            result = self.app.client.upload_file("/api/v3/project/_files".format, tf.name, spec)
 
         return result
 
