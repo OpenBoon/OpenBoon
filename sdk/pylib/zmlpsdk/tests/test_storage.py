@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.DEBUG)
 class LocalFileCacheTests(TestCase):
 
     def setUp(self):
-        os.environ['ZMLP_PIPELINE_STORAGE_URL'] = "http://localhost:9000"
+        os.environ['ZMLP_STORAGE_PIPELINE_URL'] = "http://localhost:9000"
         self.lfc = storage.LocalFileCache()
 
     def tearDown(self):
@@ -118,7 +118,7 @@ class LocalFileCacheTests(TestCase):
 class TestAssetStorage(TestCase):
 
     def setUp(self):
-        os.environ['ZMLP_PIPELINE_STORAGE_URL'] = "http://localhost:9000"
+        os.environ['ZMLP_STORAGE_PIPELINE_URL'] = "http://localhost:9000"
         self.lfc = storage.LocalFileCache()
 
     def tearDown(self):
@@ -173,7 +173,7 @@ class TestAssetStorage(TestCase):
 class TestProjectStorage(TestCase):
 
     def setUp(self):
-        os.environ['ZMLP_PIPELINE_STORAGE_URL'] = "http://localhost:9000"
+        os.environ['ZMLP_STORAGE_PIPELINE_URL'] = "http://localhost:9000"
         self.lfc = storage.LocalFileCache()
 
     def tearDown(self):

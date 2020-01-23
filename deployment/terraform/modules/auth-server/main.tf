@@ -118,7 +118,7 @@ resource "kubernetes_deployment" "auth-server" {
               value = "jdbc:postgresql://localhost/${google_sql_database.auth.name}?currentSchema=auth&useSSL=false&cloudSqlInstance=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${google_sql_user.auth-server.name}&password=${random_string.sql-password.result}"
             },
             {
-              name = "SECURITY_SERVICEKEY"
+              name = "ZMLP_SECURITY_INCEPTIONKEY"
               value = "${var.inception-key-b64}"
             },
             {

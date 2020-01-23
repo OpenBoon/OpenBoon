@@ -13,7 +13,7 @@ import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
 
 @Configuration
-@ConfigurationProperties("archivist.project.storage")
+@ConfigurationProperties("zmlp.storage.project")
 class StorageProperties {
 
     lateinit var bucket: String

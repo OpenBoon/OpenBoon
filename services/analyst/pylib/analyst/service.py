@@ -6,22 +6,15 @@ import socket
 import tempfile
 import threading
 import time
-from sys import platform
 
 import jwt
 import psutil
 import requests
+import urllib3
 
 from .executor import ZpsExecutor
 
-if platform == "darwin":
-    from requests.packages.urllib3.exceptions import InsecureRequestWarning
-
-    requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-else:
-    import urllib3
-
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = logging.getLogger(__name__)
 

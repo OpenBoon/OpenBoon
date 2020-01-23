@@ -78,8 +78,8 @@ resource "kubernetes_deployment" "analyst" {
             value = "${var.archivist-url}"
           }
           env {
-            name = "ZORROA_ARCHIVIST_URL"
-            value = "${var.archivist-url}"
+            name = "ANALYST_SHAREDKEY"
+            value = "QjZEQzRDQTgtOUUwRC00NUE1LUFCNjktRUYwQTA4ODc4MTM3Cg"
           }
           liveness_probe = {
             initial_delay_seconds = 120
