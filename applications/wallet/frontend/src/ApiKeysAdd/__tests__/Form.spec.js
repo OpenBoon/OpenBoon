@@ -16,6 +16,8 @@ describe('<ApiKeysAddForm />', () => {
 
     const component = TestRenderer.create(<ApiKeysAddForm onSubmit={mockFn} />)
 
+    expect(component.toJSON()).toMatchSnapshot()
+
     act(() => {
       component.root
         .findByProps({ id: 'name' })
