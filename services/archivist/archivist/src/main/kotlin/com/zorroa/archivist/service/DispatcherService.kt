@@ -207,9 +207,9 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZMLP_APIKEY"] = key.toBase64()
 
             // So the container can access shared
-            task.env["ZMLP_PIPELINE_STORAGE_URL"] = pipelineStoragProperties.url
-            task.env["ZMLP_PIPELINE_STORAGE_ACCESSKEY"] = pipelineStoragProperties.accessKey
-            task.env["ZMLP_PIPELINE_STORAGE_SECRETKEY"] = pipelineStoragProperties.secretKey
+            task.env["ZMLP_STORAGE_PIPELINE_URL"] = pipelineStoragProperties.url
+            task.env["ZMLP_STORAGE_PIPELINE_ACCESSKEY"] = pipelineStoragProperties.accessKey
+            task.env["ZMLP_STORAGE_PIPELINE_SECRETKEY"] = pipelineStoragProperties.secretKey
 
             return true
         } else {

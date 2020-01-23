@@ -149,8 +149,8 @@ sdk-unit-tests:
     refs:
       - merge_requests
     changes:
-      - client/python/*
-      - sdk/*
+      - client/python/**/*
+      - sdk/**/*
       - containers/zmlp-plugins-base/**/*
       - .gitlab-ci.yml
 
@@ -295,12 +295,12 @@ services_unit_tests:
     SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/zorroa?currentSchema=archivist_test"
     LOGGING_LEVEL_COM_ZORROA: "WARN"
     USER: "gitlab"
-    ARCHIVIST_PROJECT_STORAGE_ACCESSKEY: "qwerty123"
-    ARCHIVIST_PROJECT_STORAGE_SECRETKEY: "123qwerty"
-    ARCHIVIST_PROJECT_STORAGE_URL: "http://localhost:9000"
-    ZMLP_PIPELINE_STORAGE_ACCESSKEY: "qwerty123"
-    ZMLP_PIPELINE_STORAGE_SECRETKEY: "123qwerty"
-    ZMLP_PIPELINE_STORAGE_URL: "http://localhost:9000"
+    ZMLP_STORAGE_PROJECT_ACCESSKEY: "qwerty123"
+    ZMLP_STORAGE_PROJECT_SECRETKEY: "123qwerty"
+    ZMLP_STORAGE_PROJECT_URL: "http://localhost:9000"
+    ZMLP_STORAGE_PIPELINE_ACCESSKEY: "qwerty123"
+    ZMLP_STORAGE_PIPELINE_SECRETKEY: "123qwerty"
+    ZMLP_STORAGE_PIPELINE_URL: "http://localhost:9000"
     ZMLP_STORAGE_SYSTEM_ACCESSKEY: "qwerty123"
     ZMLP_STORAGE_SYSTEM_SECRETKEY: "123qwerty"
     ZMLP_STORAGE_SYSTEM_URL: "http://localhost:9000"
@@ -309,9 +309,9 @@ services_unit_tests:
   script:
     - export
     - IP="$(cat /etc/hosts |grep $HOSTNAME|cut -d$'\t' -f1)"
-    - ZMLP_PIPELINE_STORAGE_URL="http://${IP}:9000"
     - ARCHIVIST_ES_URL="http://${IP}:9200"
-    - ARCHIVIST_PROJECT_STORAGE_URL="http://${IP}:9000"
+    - ZMLP_STORAGE_PIPELINE_URL="http://${IP}:9000"
+    - ZMLP_STORAGE_PROJECT_URL="http://${IP}:9000"
     - ZMLP_STORAGE_SYSTEM_URL="http://${IP}:9000"
     - mvn clean install -f lib/jvm-common -q -Dmaven.test.skip=true
     - mvn test verify -f lib/jvm-common -q

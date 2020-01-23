@@ -22,8 +22,8 @@ class TestPdfDocument {
         doc.renderImage(1)
 
         val image = ImageIO.read(doc.getImage(1))
-        assertEquals(637, image.width)
-        assertEquals(825, image.height)
+        assertEquals(850, image.width)
+        assertEquals(1100, image.height)
     }
 
     @Test

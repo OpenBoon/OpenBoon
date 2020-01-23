@@ -19,8 +19,11 @@ import org.springframework.context.event.EventListener
 import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 interface PipelineModService {
     fun create(spec: PipelineModSpec): PipelineMod
@@ -38,6 +41,9 @@ interface PipelineModService {
 class PipelineModServiceImpl(
     val pipelineModDao: PipelineModDao
 ) : PipelineModService {
+
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
 
     @Transactional(readOnly = true)
     override fun get(id: UUID): PipelineMod = pipelineModDao.getOne(id)
@@ -98,8 +104,10 @@ class PipelineModServiceImpl(
 
     override fun update(id: UUID, update: PipelineModUpdate): PipelineMod {
         logger.event(LogObject.PIPELINE_MODULE, LogAction.UPDATE, mapOf("pipelineModId" to id))
-        val updated = get(id).getUpdated(update)
-        pipelineModDao.saveAndFlush(updated)
+        val current = get(id)
+        entityManager.detach(current)
+        val updated = current.getUpdated(update)
+        pipelineModDao.save(updated)
         return updated
     }
 
@@ -120,18 +128,23 @@ class PipelineModServiceImpl(
     /**
      * Update the standard set of PipelineModules.
      */
+    @Transactional(propagation = Propagation.SUPPORTS)
     override fun updateStandardMods() {
         logger.info("Updating Standard Pipeline Mods")
         withAuth(InternalThreadAuthentication(KnownKeys.PROJZERO)) {
             for (mod in getStandardModules()) {
                 val pmod = pipelineModDao.getByName(mod.name)
-                if (pmod == null) {
-                    create(mod)
-                } else {
-                    val update = PipelineModUpdate(
-                        pmod.name, pmod.description, pmod.restricted, pmod.ops
-                    )
-                    update(pmod.id, update)
+                try {
+                    if (pmod == null) {
+                        create(mod)
+                    } else {
+                        val update = PipelineModUpdate(
+                            pmod.name, pmod.description, pmod.restricted, pmod.ops
+                        )
+                        update(pmod.id, update)
+                    }
+                } catch (ex: Exception) {
+                    logger.warn("Failed to update standard pipeline mod, $pmod", ex)
                 }
             }
         }

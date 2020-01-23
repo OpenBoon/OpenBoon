@@ -144,7 +144,7 @@ resource "kubernetes_deployment" "archivist" {
               value = "jdbc:postgresql://localhost/${var.database-name}?currentSchema=zorroa&useSSL=false&cloudSqlInstance=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${var.database-user}&password=${random_string.sql-password.result}"
             },
             {
-              name = "ARCHIVIST_STORAGE_BUCKET"
+              name = "ZMLP_STORAGE_PROJECT_BUCKET"
               value = "${google_storage_bucket.data.name}"
             },
             {
@@ -152,20 +152,24 @@ resource "kubernetes_deployment" "archivist" {
               value = "http://elasticsearch-0.elasticsearch.${var.namespace}.svc.cluster.local:9200"
             },
             {
-              name = "SECURITY_SERVICEKEY"
+              name = "ZMLP_SECURITY_AUTHSERVER_SERVICEKEY"
               value = "${var.inception-key-b64}"
             },
             {
-              name = "ZMLP_PIPELINE_STORAGE_URL"
+              name = "ZMLP_STORAGE_PIPELINE_URL"
               value = "${var.minio-url}"
             },
             {
-              name = "ZMLP_PIPELINE_STORAGE_SECRETKEY"
+              name = "ZMLP_STORAGE_PIPELINE_SECRETKEY"
               value = "${var.minio-secret-key}"
             },
             {
-              name = "ZMLP_PIPELINE_STORAGE_ACCESSKEY"
+              name = "ZMLP_STORAGE_PIPELINE_ACCESSKEY"
               value = "${var.minio-access-key}"
+            },
+            {
+              name = "ANALYST_SHAREDKEY"
+              value = "QjZEQzRDQTgtOUUwRC00NUE1LUFCNjktRUYwQTA4ODc4MTM3Cg"
             }
           ]
         }
