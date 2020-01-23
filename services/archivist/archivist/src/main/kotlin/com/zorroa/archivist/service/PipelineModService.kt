@@ -4,9 +4,12 @@ import com.zorroa.archivist.config.ArchivistConfiguration
 import com.zorroa.archivist.domain.LogAction
 import com.zorroa.archivist.domain.LogObject
 import com.zorroa.archivist.domain.PipelineMod
+import com.zorroa.archivist.domain.PipelineModFilter
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
 import com.zorroa.archivist.domain.getStandardModules
+import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.repository.PipelineModCustomDao
 import com.zorroa.archivist.repository.PipelineModDao
 import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.InternalThreadAuthentication
@@ -31,6 +34,8 @@ interface PipelineModService {
     fun get(name: String): PipelineMod
     fun getByNames(names: List<String>): List<PipelineMod>
     fun getByIds(names: List<UUID>): List<PipelineMod>
+    fun search(filter: PipelineModFilter): KPagedList<PipelineMod>
+    fun findOne(filter: PipelineModFilter): PipelineMod
     fun update(id: UUID, update: PipelineModUpdate): PipelineMod
     fun delete(id: UUID)
     fun updateStandardMods()
@@ -39,7 +44,8 @@ interface PipelineModService {
 @Service
 @Transactional
 class PipelineModServiceImpl(
-    val pipelineModDao: PipelineModDao
+    val pipelineModDao: PipelineModDao,
+    val pipelineModCustomDao: PipelineModCustomDao
 ) : PipelineModService {
 
     @PersistenceContext
@@ -74,6 +80,16 @@ class PipelineModServiceImpl(
             throw DataRetrievalFailureException("The Pipeline Mods ${missing.joinToString(",")} do not exist.")
         }
         return found
+    }
+
+    @Transactional(readOnly = true)
+    override fun search(filter: PipelineModFilter): KPagedList<PipelineMod> {
+        return pipelineModCustomDao.getAll(filter)
+    }
+
+    @Transactional(readOnly = true)
+    override fun findOne(filter: PipelineModFilter): PipelineMod {
+        return pipelineModCustomDao.findOne(filter)
     }
 
     override fun create(spec: PipelineModSpec): PipelineMod {
