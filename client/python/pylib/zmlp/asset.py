@@ -595,7 +595,7 @@ class AssetApp(object):
         Returns
             dict: The ES update response object.
         """
-        asset_id = getattr(asset, "id", "") or asset
+        asset_id = getattr(asset, "id", None) or asset
         body = {
             "doc": doc
         }
@@ -666,6 +666,45 @@ class AssetApp(object):
 
         """
         return self.app.client.post("/api/v3/assets/_batch_update", docs)
+
+    def delete(self, asset):
+        """
+        Delete the given asset.
+
+        Args:
+            asset:
+
+        Returns:
+            An ES Delete response.
+
+        """
+        asset_id = getattr(asset, "id", None) or asset
+        return self.app.client.delete("/api/v3/assets/{}".format(asset_id))
+
+    def delete_by_query(self, search):
+        """
+        Delete assets by the given search.
+
+        Args:
+            search (dict): An ES search.
+
+        Notes:
+            Example Request:
+                {
+                    "query": {
+                        "terms": {
+                            "source.filename": {
+                                "bob.jpg"
+                            }
+                        }
+                    }
+                }
+
+        Returns:
+            An ES delete by query response.
+
+        """
+        return self.app.client.delete("/api/v3/assets/_delete_by_query", search)
 
     def search(self, search=None, raw=False):
         """

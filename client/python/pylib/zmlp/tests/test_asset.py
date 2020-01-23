@@ -292,6 +292,30 @@ class AssetAppTests(unittest.TestCase):
         body = args[0][0][1]
         assert body['abc123'] == {'doc': {'foo': 'bar'}}
 
+    @patch.object(ZmlpClient, 'delete')
+    def test_delete_with_asset_object(self, del_patch):
+        asset = Asset({'id': '123'})
+        self.app.assets.delete(asset)
+        args = del_patch.call_args_list
+        uri = args[0][0][0]
+        assert '/api/v3/assets/123' == uri
+
+    @patch.object(ZmlpClient, 'delete')
+    def test_delete_with_asset_id(self, del_patch):
+        self.app.assets.delete('123')
+        args = del_patch.call_args_list
+        uri = args[0][0][0]
+        assert '/api/v3/assets/123' == uri
+
+    @patch.object(ZmlpClient, 'delete')
+    def test_delete_by_query(self, del_patch):
+        q = {'query': {'match_all': {}}}
+        self.app.assets.delete_by_query(q)
+        args = del_patch.call_args_list
+        uri = args[0][0][0]
+        assert '/api/v3/assets/_delete_by_query' == args[0][0][0]
+        assert q == args[0][0][1]
+
 
 class FileImportTests(unittest.TestCase):
 
