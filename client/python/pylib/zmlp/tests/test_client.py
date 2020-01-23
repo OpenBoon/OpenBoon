@@ -2,7 +2,15 @@ import unittest
 
 from zmlp import Asset
 from zmlp.datasource import DataSource
-from zmlp.client import SearchResult
+from zmlp.client import SearchResult, to_json
+
+
+class TestClientFunctions(unittest.TestCase):
+
+    def test_to_json(self):
+        asset = Asset({"id": "abc123", "document": {"foo": "bar"}})
+        value = to_json(asset)
+        assert "{\"id\": \"abc123\", \"document\": {\"foo\": \"bar\"}}" == value
 
 
 class SearchResultTests(unittest.TestCase):

@@ -1,13 +1,13 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.domain.ProjectStorageEntity
-import com.zorroa.archivist.domain.ProjectStorageRequest
 import com.zorroa.archivist.domain.Project
-import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.domain.ProjectStorageEntity
+import com.zorroa.archivist.domain.ProjectStorageRequest
+import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.ProjectService
 import com.zorroa.archivist.storage.ProjectStorageService
@@ -83,7 +83,7 @@ class ProjectController constructor(
 
     @ApiOperation("Upload a file into project cloud storage.")
     @PreAuthorize("hasAuthority('ProjectFilesWrite')")
-    @PostMapping(value = ["/api/v3/project/files"], consumes = ["multipart/form-data"])
+    @PostMapping(value = ["/api/v3/project/_files"], consumes = ["multipart/form-data"])
     @ResponseBody
     fun uploadFile(
         @RequestPart(value = "file") file: MultipartFile,
@@ -101,7 +101,7 @@ class ProjectController constructor(
 
     @ApiOperation("Fetch a file from project cloud storage.")
     @PreAuthorize("hasAuthority('ProjectFilesRead')")
-    @GetMapping(value = ["/api/v3/project/files/{entity}/{category}/{name}"])
+    @GetMapping(value = ["/api/v3/project/_files/{entity}/{category}/{name}"])
     @ResponseBody
     fun streamFile(
         @PathVariable entity: String,

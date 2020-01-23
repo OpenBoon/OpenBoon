@@ -15,10 +15,10 @@ class Clip(
     val type: String,
 
     @ApiModelProperty("The starting point of the clip")
-    val start: Float,
+    val start: Double,
 
     @ApiModelProperty("The ending point of a clip.")
-    val stop: Float,
+    val stop: Double,
 
     @ApiModelProperty("An optional timeline name for the clip in case case multiple [ClipSpec] configurations collide.")
     val timeline: String? = null
@@ -30,11 +30,11 @@ class Clip(
     }
 
     @ApiModelProperty("The length of the the clip, this is auto-calculated")
-    val length = if (stop - start == 0f) {
-        1f
+    val length = if (stop - start == 0.0) {
+        1.0
     } else {
         val x = (stop - start)
-        0.01f * kotlin.math.ceil(x * 100.0f)
+        0.01 * kotlin.math.round(x * 100.0)
     }
 
     @ApiModelProperty("A unique identifier for a related set of clips on a specific timeline.  This can be overridden")
