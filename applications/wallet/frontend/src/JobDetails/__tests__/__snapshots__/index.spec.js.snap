@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<JobDetails /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Job Queue / Job Details
+  </h2>,
+  <div>
+    Job ID: 
+    82d5308b-67c2-1433-8fef-0a580a000956
+  </div>,
+]
+`;
