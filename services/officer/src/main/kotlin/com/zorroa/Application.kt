@@ -21,7 +21,7 @@ class RenderRequest(
     val fileName: String,
     var page: Int = -1,
     var outputDir: String = UUID.randomUUID().toString().replace("-", ""),
-    var dpi : Int = 100
+    var dpi: Int = 100
 )
 
 /**
