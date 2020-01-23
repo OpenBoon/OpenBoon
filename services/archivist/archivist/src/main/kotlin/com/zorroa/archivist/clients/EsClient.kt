@@ -10,6 +10,7 @@ import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.index.reindex.UpdateByQueryRequest
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.LoggerFactory
 import java.io.IOException
@@ -72,6 +73,10 @@ class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient)
 
     fun newUpdateRequest(id: String): UpdateRequest {
         return UpdateRequest(route.indexName, id)
+    }
+
+    fun newUpdateByQueryRequest(): UpdateByQueryRequest {
+        return UpdateByQueryRequest(route.indexName)
     }
 
     fun newIndexRequest(id: String): IndexRequest {

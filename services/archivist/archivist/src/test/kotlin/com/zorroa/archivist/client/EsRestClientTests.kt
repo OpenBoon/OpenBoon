@@ -33,7 +33,7 @@ class EsRestClientTests : AbstractTest() {
             )
         )
         val mapping = client.getMapping()
-        val doc = Asset(mapping)
+        val doc = Asset(mapping.toMutableMap())
         val index = client.route.indexName
         assertEquals("keyword", doc.getAttr("$index.mappings.properties.name.type", String::class.java))
     }

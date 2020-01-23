@@ -56,8 +56,11 @@ class ZpsExecutor(object):
             if self.script.get("assets"):
                 assets = self.process()
                 if assets and self.exit_status == 0:
+                    # Batch indexing expects map<id, document
+                    payload = dict([(asset["id"], asset["document"]) for asset in assets])
                     self.client.emit_event(
-                        self.task, "index", {"assets": assets})
+                        self.task, "index", {
+                            "assets": payload, "settings": self.script.get("settings", {})})
         except Exception as e:
             logger.warning("Failed to execute ZPS script, {}".format(e))
             self.exit_status = 1

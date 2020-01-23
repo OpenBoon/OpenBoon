@@ -104,7 +104,7 @@ class ZmlpClient(object):
             post_files = [("file", (os.path.basename(file), open(file, 'rb')))]
             if body is not None:
                 post_files.append(
-                    ["body", (None, json.dumps(body, cls=ZmlpJsonEncoder), 'application/json')])
+                    ["body", (None, to_json(body), 'application/json')])
 
             return self.__handle_rsp(requests.post(
                 self.get_url(path), headers=self.headers(content_type=""),
@@ -134,7 +134,7 @@ class ZmlpClient(object):
 
             if body is not None:
                 post_files.append(
-                    ("body", ("", json.dumps(body, cls=ZmlpJsonEncoder),
+                    ("body", ("", to_json(body),
                               'application/json')))
 
             return self.__handle_rsp(requests.post(
@@ -257,7 +257,7 @@ class ZmlpClient(object):
     def _make_request(self, method, path, body=None, is_json=True):
         request_function = getattr(requests, method)
         if body is not None:
-            data = json.dumps(body, cls=ZmlpJsonEncoder)
+            data = to_json(body)
         else:
             data = body
 
@@ -415,6 +415,24 @@ class SearchResult(object):
 
     def __getitem__(self, idx):
         return self.items[idx]
+
+
+def to_json(obj):
+    """
+    Convert the given object to a JSON string using
+    the ZmlpJsonEncoder.
+
+    Args:
+        obj (mixed): any json serializable python object.
+
+    Returns:
+        str: The serialized object
+
+    """
+    val = json.dumps(obj, cls=ZmlpJsonEncoder)
+    if logger.getEffectiveLevel() == logging.DEBUG:
+        logger.debug("json: %s" % val)
+    return val
 
 
 class ZmlpJsonEncoder(json.JSONEncoder):

@@ -127,7 +127,7 @@ class ProjectControllerTests : MockMvcTest() {
         projectStorageService.store(storage)
 
         mvc.perform(
-            MockMvcRequestBuilders.get("/api/v3/project/files/model/face_v1/model.txt")
+            MockMvcRequestBuilders.get("/api/v3/project/_files/model/face_v1/model.txt")
                 .headers(admin())
                 .contentType(MediaType.IMAGE_JPEG_VALUE)
         )
@@ -162,7 +162,7 @@ class ProjectControllerTests : MockMvcTest() {
         )
 
         mvc.perform(
-            MockMvcRequestBuilders.multipart("/api/v3/project/files")
+            MockMvcRequestBuilders.multipart("/api/v3/project/_files")
                 .file(body)
                 .file(file)
                 .headers(admin())

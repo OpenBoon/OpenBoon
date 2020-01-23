@@ -1,16 +1,14 @@
 package com.zorroa.archivist.domain
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.google.common.hash.Hashing
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.randomString
+import com.zorroa.zmlp.util.Json
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.slf4j.LoggerFactory
-import org.springframework.web.multipart.MultipartFile
 import java.nio.ByteBuffer
 import java.security.MessageDigest
 import java.util.Base64
@@ -26,105 +24,6 @@ enum class AssetState {
 
     @ApiModelProperty("The Asset has been analyzed and augmented with fields.")
     Analyzed
-}
-
-@ApiModel("Batch Asset Op Status",
-    description = "Used to describe the result of a batch asset operation")
-class BatchAssetOpStatus(
-
-    @ApiModelProperty("The ID of the asset.")
-    val assetId: String,
-
-    @ApiModelProperty("A failure message will be set if the operation filed.")
-    val failureMessage: String? = null
-) {
-
-    @ApiModelProperty("True of the operation failed.")
-    val failed: Boolean = failureMessage != null
-}
-
-@ApiModel("Batch Index Assets Request",
-    description = "Defines the properties necessary to reindex a batch of Assets.")
-class BatchUpdateAssetsRequest(
-
-    @ApiModelProperty("The list of assets to be indexed.  The assets must already exist.")
-    val assets: List<Asset>,
-
-    @ApiModelProperty("Set to true if the batch should be flushed immedately.")
-    val resfresh: Boolean = false
-
-)
-
-@ApiModel("Batch Index Assets Response",
-    description = "Defines the properties necessary to index a batch of assets. ")
-class BatchUpdateAssetsResponse(size: Int) {
-
-    @ApiModelProperty("A map of the assetId to indexed status. " +
-        "An asset will fail to index unless it already exists")
-    val status: Array<BatchAssetOpStatus?> = arrayOfNulls<BatchAssetOpStatus?>(size)
-}
-
-@ApiModel("Batch Create Assets Request",
-    description = "Defines the properties necessary to provision a batch of assets.")
-class BatchCreateAssetsRequest(
-
-    @ApiModelProperty("The list of assets to be created")
-    val assets: List<AssetSpec>,
-
-    @ApiModelProperty("Set to true if the assets should undergo " +
-        "further analysis, or false to stay in the provisioned state.")
-    val analyze: Boolean = true,
-
-    @ApiModelProperty("The pipeline to execute, defaults to the project's default pipeline.")
-    val pipeline: String? = null,
-
-    @ApiModelProperty("The pipeline modules to execute if any, otherwise utilize the default Pipeline.")
-    val modules: List<String>? = null,
-
-    @JsonIgnore
-    @ApiModelProperty("The taskId that is creating the assets via expand.", hidden = true)
-    val task: InternalTask? = null
-)
-
-@ApiModel("Batch Provision Assets Response",
-    description = "The response returned after provisioning assets.")
-class BatchCreateAssetsResponse(
-
-    @ApiModelProperty("The initial state of the assets added to the database.")
-    var assets: List<Asset>,
-
-    @ApiModelProperty("A map of the assetId to provisioned status. " +
-        "An asset will fail to provision if it already exists.")
-    val status: MutableList<BatchAssetOpStatus> = mutableListOf(),
-
-    @ApiModelProperty("The ID of the analysis job, if analysis was selected")
-    var jobId: UUID? = null
-)
-
-@ApiModel(
-    "Batch Upload Assets Request",
-    description = "Defines the properties required to batch upload a list of assets."
-)
-class BatchUploadAssetsRequest(
-
-    @ApiModelProperty("A list of AssetSpec objects which define the Assets starting metadata.")
-    var assets: List<AssetSpec>,
-
-    @ApiModelProperty(
-        "Set to true if the assets should undergo " +
-            "further analysis, or false to stay in the provisioned state."
-    )
-    val analyze: Boolean = true,
-
-    @ApiModelProperty("The pipeline to utilize, otherwise use the default Pipeline")
-    val pipeline: String? = null,
-
-    @ApiModelProperty("The pipeline modules to execute if any, otherwise utilize the default Pipeline.")
-    val modules: List<String>? = null
-
-) {
-
-    lateinit var files: Array<MultipartFile>
 }
 
 @ApiModel("Asset Spec",
@@ -171,12 +70,14 @@ open class Asset(
     val id: String,
 
     @ApiModelProperty("The assets metadata.")
-    val document: Map<String, Any> = mutableMapOf()
+    val document: MutableMap<String, Any>
 ) {
 
-    constructor() : this(randomString(24))
+    constructor() : this(randomString(24), mutableMapOf())
 
-    constructor(document: Map<String, Any>) :
+    constructor(id: String) : this(id, mutableMapOf())
+
+    constructor(document: MutableMap<String, Any>) :
         this(randomString(24), document)
 
     /**
@@ -390,9 +291,9 @@ class AssetIdBuilder(val spec: AssetSpec) {
             it.timeline?.let { timeline ->
                 digester.update(timeline.toByteArray())
             }
-            val buf = ByteBuffer.allocate(8)
-            buf.putFloat(it.start)
-            buf.putFloat(it.stop)
+            val buf = ByteBuffer.allocate(16)
+            buf.putDouble(it.start)
+            buf.putDouble(it.stop)
             digester.update(buf.array())
         }
 
