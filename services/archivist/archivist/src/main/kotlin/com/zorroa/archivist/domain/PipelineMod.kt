@@ -49,17 +49,15 @@ class PipelineMod(
 
     @Column(name = "time_modified")
     @ApiModelProperty("The last time the Pipeline Mod was modified.")
-    @LastModifiedDate
-    @Version
-    var timeModified: Long,
+    val timeModified: Long,
 
     @Column(name = "actor_created", updatable = false)
     @ApiModelProperty("The actor which created this Pipeline Mod")
-    var actorCreated: String,
+    val actorCreated: String,
 
     @Column(name = "actor_modified")
     @ApiModelProperty("The actor that last made the last modification the Pipeline Mod.")
-    var actorModified: String
+    val actorModified: String
 ) {
     fun getUpdated(update: PipelineModUpdate): PipelineMod {
         return PipelineMod(id,
@@ -67,7 +65,9 @@ class PipelineMod(
             update.description,
             update.restricted,
             update.ops,
-            timeCreated, System.currentTimeMillis(), actorCreated,
+            timeCreated,
+            System.currentTimeMillis(),
+            actorCreated,
             getZmlpActor().toString())
     }
 
