@@ -312,7 +312,6 @@ class AssetAppTests(unittest.TestCase):
         q = {'query': {'match_all': {}}}
         self.app.assets.delete_by_query(q)
         args = del_patch.call_args_list
-        uri = args[0][0][0]
         assert '/api/v3/assets/_delete_by_query' == args[0][0][0]
         assert q == args[0][0][1]
 
