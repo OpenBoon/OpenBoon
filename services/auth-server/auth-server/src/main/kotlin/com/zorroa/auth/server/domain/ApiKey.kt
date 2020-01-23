@@ -89,6 +89,7 @@ class ApiKey(
         return spec.sign(algo)
     }
 
+    @JsonIgnore
     fun getValidationKey(): ValidationKey {
         return ValidationKey(id, projectId, accessKey, secretKey, name, permissions)
     }
