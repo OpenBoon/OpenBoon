@@ -30,8 +30,7 @@ class ApikeyViewSet(BaseProjectViewSet):
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
             return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
-        body = {'projectId': project_pk,
-                'name': serializer.validated_data['name'],
+        body = {'name': serializer.validated_data['name'],
                 'permissions': serializer.validated_data['permissions']}
         response = client.post('/auth/v1/apikey', body)
         return Response(status=status.HTTP_201_CREATED, data=response)
