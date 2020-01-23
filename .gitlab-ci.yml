@@ -36,6 +36,7 @@ wallet-frontend-test-suite:
       - merge_requests
     changes:
       - applications/wallet/frontend/**/*
+      - .gitlab-ci.yml
 
 wallet-frontend-test-suite-all-stable-branches:
   extends:
@@ -65,6 +66,7 @@ wallet-backend-test-suite:
       - merge_requests
     changes:
       - applications/wallet/app/**/*
+      - .gitlab-ci.yml
 
 wallet-backend-test-suite-all-stable-branches:
   extends:
@@ -99,6 +101,7 @@ backend-py-lint:
       - sdk/**/.py
       - containers/**/*.py
       - services/analyst/**/*.py
+      - .gitlab-ci.yml
 
 backend-py-lint-all-stable-branches:
   extends:
@@ -117,6 +120,7 @@ backend-kotlin-lint:
     changes:
       - services/**/*.kt
       - lib/**/*.kt
+      - .gitlab-ci.yml
 
 backend-kotlin-lint-all-stable-branches:
   extends:
@@ -148,6 +152,7 @@ sdk-unit-tests:
       - client/python/*
       - sdk/*
       - containers/zmlp-plugins-base/**/*
+      - .gitlab-ci.yml
 
 sdk-java-unit-tests:
   image: maven:3.6-jdk-11
@@ -161,6 +166,7 @@ sdk-java-unit-tests:
     changes:
       - client/java/*
       - containers/zmlp-plugins-base/**/*
+      - .gitlab-ci.yml
 
 sdk-unit-tests-all-stable-branches:
   extends:
@@ -235,6 +241,7 @@ services_build_artifacts:
     changes:
       - services/**/*
       - lib/**/*
+      - .gitlab-ci.yml
 
 services_build_artifacts-all-stable-branches:
   extends:
@@ -258,6 +265,7 @@ services_push_to_local_registry:
       - merge_requests
     changes:
       - services/**/*
+      - .gitlab-ci.yml
 
 services_push_to_local_registry-all-stable-branches:
   extends:
@@ -293,6 +301,9 @@ services_unit_tests:
     ZMLP_PIPELINE_STORAGE_ACCESSKEY: "qwerty123"
     ZMLP_PIPELINE_STORAGE_SECRETKEY: "123qwerty"
     ZMLP_PIPELINE_STORAGE_URL: "http://localhost:9000"
+    ZMLP_STORAGE_SYSTEM_ACCESSKEY: "qwerty123"
+    ZMLP_STORAGE_SYSTEM_SECRETKEY: "123qwerty"
+    ZMLP_STORAGE_SYSTEM_URL: "http://localhost:9000"
     MINIO_ACCESS_KEY: "qwerty123"
     MINIO_SECRET_KEY: "123qwerty"
   script:
@@ -301,6 +312,7 @@ services_unit_tests:
     - ZMLP_PIPELINE_STORAGE_URL="http://${IP}:9000"
     - ARCHIVIST_ES_URL="http://${IP}:9200"
     - ARCHIVIST_PROJECT_STORAGE_URL="http://${IP}:9000"
+    - ZMLP_STORAGE_SYSTEM_URL="http://${IP}:9000"
     - mvn clean install -f lib/jvm-common -q -Dmaven.test.skip=true
     - mvn test verify -f lib/jvm-common -q
     - mvn clean install -f services/auth-server -q -Dmaven.test.skip=true
@@ -313,6 +325,7 @@ services_unit_tests:
       - merge_requests
     changes:
       - services/**/*
+      - .gitlab-cy.yml
 
 services_unit_tests-all-stable-branches:
   extends:

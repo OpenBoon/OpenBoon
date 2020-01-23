@@ -83,8 +83,8 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
                 key={column}
                 css={{
                   textAlign: 'left',
-                  fontSize: typography.size.kilo,
-                  lineHeight: typography.height.kilo,
+                  fontSize: typography.size.regular,
+                  lineHeight: typography.height.regular,
                   fontWeight: typography.weight.medium,
                   color: colors.structure.pebble,
                   backgroundColor: colors.structure.iron,
