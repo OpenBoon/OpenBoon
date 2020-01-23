@@ -1,12 +1,18 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import permissions from '../../Permissions/__mocks__/permissions'
+
 import ApiKeysAddForm from '../Form'
 
 const noop = () => () => {}
 
 describe('<ApiKeysAddForm />', () => {
-  it('should render properly', () => {
+  it('should render properly after permissions are loaded', () => {
     const mockFn = jest.fn()
+
+    require('swr').__setMockUseSWRResponse({
+      data: permissions,
+    })
 
     const component = TestRenderer.create(<ApiKeysAddForm onSubmit={mockFn} />)
 
@@ -28,6 +34,10 @@ describe('<ApiKeysAddForm />', () => {
   it('should not POST the form', () => {
     const mockFn = jest.fn()
     const mockOnSubmit = jest.fn()
+
+    require('swr').__setMockUseSWRResponse({
+      data: permissions,
+    })
 
     const component = TestRenderer.create(
       <ApiKeysAddForm onSubmit={mockOnSubmit} />,

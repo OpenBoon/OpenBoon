@@ -1,5 +1,7 @@
 import { useReducer } from 'react'
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
 import { spacing } from '../Styles'
 
@@ -11,7 +13,17 @@ import Button, { VARIANTS } from '../Button'
 const reducer = (state, action) => ({ ...state, ...action })
 
 const ApiKeysAddForm = ({ onSubmit }) => {
+  const {
+    query: { projectId },
+  } = useRouter()
+
+  const { data: { results: permissions } = {} } = useSWR(
+    `/api/v1/projects/${projectId}/permissions/`,
+  )
+
   const [state, dispatch] = useReducer(reducer, { name: '' })
+
+  if (!Array.isArray(permissions)) return 'Loading...'
 
   return (
     <Form>
@@ -24,35 +36,18 @@ const ApiKeysAddForm = ({ onSubmit }) => {
         onChange={({ target: { value } }) => dispatch({ name: value })}
         hasError={false}
       />
+
+      <div>&nbsp;</div>
+
       <CheckboxGroup
-        legend="Permissions"
+        legend="Add Scope"
         onClick={dispatch}
-        options={[
-          {
-            key: 'api',
-            label: 'API',
-            legend: "Dude You're Getting A Telescope",
-            initialValue: true,
-          },
-          {
-            key: 'kuphalfort',
-            label: 'Kuphalfort',
-            legend: 'Space The Final Frontier',
-            initialValue: false,
-          },
-          {
-            key: 'west_courtney',
-            label: 'West Courtney',
-            legend: 'Astronomy Binoculars A Great Alternative',
-            initialValue: false,
-          },
-          {
-            key: 'murphyside',
-            label: 'Murphyside',
-            legend: 'Asteroids',
-            initialValue: false,
-          },
-        ]}
+        options={permissions.map(({ name, description }, index) => ({
+          key: name,
+          label: name.replace(/([A-Z])/g, match => ` ${match}`),
+          legend: description,
+          initialValue: index === 0,
+        }))}
       />
       <div
         css={{
