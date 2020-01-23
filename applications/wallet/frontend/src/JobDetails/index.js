@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import PageTitle from '../PageTitle'
+import Breadcrumbs from '../Breadcrumbs'
 
 const JobDetails = () => {
   const {
@@ -14,8 +14,7 @@ const JobDetails = () => {
         <title>Job Details</title>
       </Head>
 
-      <PageTitle>Job Queue / Job Details</PageTitle>
-
+      <Breadcrumbs crumbs={['Job Queue', 'Job Details']} />
       <div>Job ID: {jobId}</div>
     </>
   )
