@@ -24,6 +24,7 @@ def test_get_zmlp_client(zmlp_project_user, project, settings):
     view = BaseProjectViewSet()
     client = view._get_archivist_client(request, project)
     assert type(client) == ZmlpClient
+    assert client.project_id == project
 
 
 def test_get_zvi_client(zvi_project_user, project, settings):
@@ -66,8 +67,8 @@ def test_zmlp_only_flag(user, project):
     view.request = request
     view.args = []
     view.kwargs = {'project_pk': project.id}
-    response = view.dispatch(view.request, *view.args, **view.kwargs)
-    assert type(response) == Http404
+    with pytest.raises(Http404):
+        view.dispatch(view.request, *view.args, **view.kwargs)
 
 
 def test_projects_view_no_projects(project, user, api_client):
@@ -172,7 +173,6 @@ class TestProjectViewSet:
         api_client.force_authenticate(project_zero_user)
         body = {'name': 'Create Project Test'}
         monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
-        api_client.force_authenticate(project_zero_user)
 
         with pytest.raises(Project.DoesNotExist):
             Project.objects.get(name='Create Project Test')
@@ -181,3 +181,34 @@ class TestProjectViewSet:
         assert response.status_code == 201
         project = Project.objects.get(name='Create Project Test')
         assert project.name == 'Create Project Test'
+
+    def test_post_create_dup_in_both(self, project_zero, project_zero_user, api_client,
+                                     monkeypatch):
+
+        def mock_api_response(*args, **kwargs):
+            raise ZmlpDuplicateException(data={'msg': 'Duplicate'})
+
+        api_client.force_authenticate(project_zero_user)
+        Project.objects.create(id='af29eb00-9adc-45be-8be4-50589211d300',
+                               name='Test Project').save()
+        body = {'id': 'af29eb00-9adc-45be-8be4-50589211d300',
+                'name': 'Test Project'}
+        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
+
+        response = api_client.post(reverse('project-list'), body)
+        assert response.status_code == 400
+        assert response.json()['id'][0] == ('A project with this id already '
+                                            'exists in Wallet and ZMLP.')
+
+    def test_post_bad_id(self, project_zero, project_zero_user, api_client, monkeypatch):
+
+        def mock_api_response(*args, **kwargs):
+            return True
+
+        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
+        api_client.force_authenticate(project_zero_user)
+
+        body = {'id': 1234, 'name': 'Test'}
+        response = api_client.post(reverse('project-list'), body)
+        assert response.status_code == 400
+        assert response.json()['id'][0] == 'Must be a valid UUID.'
