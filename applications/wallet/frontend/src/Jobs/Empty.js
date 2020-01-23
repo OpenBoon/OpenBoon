@@ -1,12 +1,18 @@
-import NoJobsSvg from '../Icons/noJobs.svg'
+import { typography } from '../Styles'
 
-import { colors } from '../Styles'
+import NoJobsSvg from './noJobs.svg'
 
 const JobsEmpty = () => {
   return (
     <div
-      css={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <NoJobsSvg width={40} color={colors.signal.warning.base} />
+      css={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        fontSize: typography.size.large,
+        lineHeight: typography.height.large,
+      }}>
+      <NoJobsSvg width={200} />
       <div>There are currently no jobs in the queue.</div>
       <div>Any new job will appear here.</div>
     </div>
