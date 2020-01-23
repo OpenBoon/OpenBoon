@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.Storage
+import com.google.cloud.storage.StorageOptions
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
@@ -11,8 +12,20 @@ import com.zorroa.zmlp.util.Json
 import java.nio.ByteBuffer
 import javax.annotation.PostConstruct
 import org.slf4j.LoggerFactory
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
+
+@Configuration
+@Profile("gcs")
+class GcsStorageConfiguration {
+
+    @Bean
+    fun getGcs(): Storage {
+        return StorageOptions.getDefaultInstance().service
+    }
+}
 
 @Service
 @Profile("gcs")

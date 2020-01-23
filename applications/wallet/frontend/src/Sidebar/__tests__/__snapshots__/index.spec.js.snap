@@ -37,8 +37,8 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 12px;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 18px;
   background-color: #3b3b3b;
   color: #73b61c;
 }
@@ -64,8 +64,8 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 12px;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 18px;
   background-color: none;
   color: #808080;
 }
@@ -169,8 +169,8 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 12px;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 18px;
   background-color: #3b3b3b;
   color: #73b61c;
 }
@@ -196,8 +196,8 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   -ms-flex-align: center;
   align-items: center;
   padding: 12px;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 18px;
   background-color: none;
   color: #808080;
 }

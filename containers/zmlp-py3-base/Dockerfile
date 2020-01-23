@@ -8,7 +8,8 @@ RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y i
     wget \
      --no-install-recommends
 
-RUN pip3 install --no-cache-dir -U pip
+# pip20 causing issues
+RUN pip3 install pip==19.3.1
 COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install -r requirements.txt
 RUN rm requirements.txt

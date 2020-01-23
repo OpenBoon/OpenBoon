@@ -49,7 +49,7 @@ Array [
   padding-top: 8px;
   padding-bottom: 8px;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 20px;
   font-weight: 700;
 }
@@ -74,7 +74,7 @@ Array [
   padding-top: 8px;
   padding-bottom: 8px;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 20px;
   font-weight: 700;
 }
@@ -189,8 +189,8 @@ Array [
 
 .emotion-0 {
   text-align: left;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 18px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
@@ -229,8 +229,8 @@ Array [
   justify-content: center;
   text-align: center;
   color: #808080;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 18px;
 }
 
 <div
@@ -328,7 +328,7 @@ Array [
   padding-top: 8px;
   padding-bottom: 8px;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 20px;
   font-weight: 700;
 }
@@ -353,7 +353,7 @@ Array [
   padding-top: 8px;
   padding-bottom: 8px;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 20px;
   font-weight: 700;
 }
@@ -401,8 +401,8 @@ Array [
   </div>,
   .emotion-0 {
   text-align: left;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 18px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
@@ -712,7 +712,7 @@ Array [
   padding-top: 8px;
   padding-bottom: 8px;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 20px;
   font-weight: 700;
 }
@@ -737,7 +737,7 @@ Array [
   padding-top: 8px;
   padding-bottom: 8px;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 20px;
   font-weight: 700;
 }
@@ -785,8 +785,8 @@ Array [
   </div>,
   .emotion-0 {
   text-align: left;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 18px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
@@ -825,8 +825,8 @@ Array [
   justify-content: center;
   text-align: center;
   color: #808080;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 18px;
 }
 
 .emotion-5 {

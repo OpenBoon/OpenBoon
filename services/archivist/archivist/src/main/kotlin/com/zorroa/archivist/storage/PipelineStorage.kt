@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct
 interface PipelineStorage
 
 @Configuration
-@ConfigurationProperties("zmlp.pipeline.storage")
+@ConfigurationProperties("zmlp.storage.pipeline")
 class PipelineStorageConfiguration {
     lateinit var bucket: String
     lateinit var accessKey: String

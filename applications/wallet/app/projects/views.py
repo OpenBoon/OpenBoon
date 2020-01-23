@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 
 from projects.clients import ZviClient
-from projects.models import Membership
+from projects.models import Membership, Project
 from projects.serializers import ProjectSerializer
 
 
@@ -37,7 +37,7 @@ class BaseProjectViewSet(ViewSet):
         if self.ZMLP_ONLY and settings.PLATFORM != 'zmlp':
             # This is needed to keep from returning terrible stacktraces on endpoints
             # not meant for dual platform usage
-            return Http404()
+            raise Http404()
 
         try:
             kwargs['client'] = self._get_archivist_client(request, kwargs['project_pk'])
@@ -65,7 +65,8 @@ class BaseProjectViewSet(ViewSet):
         if settings.PLATFORM == 'zvi':
             return ZviClient(apikey=apikey, server=settings.ARCHIVIST_URL)
         else:
-            return ZmlpClient(apikey=apikey, server=settings.ARCHIVIST_URL)
+            return ZmlpClient(apikey=apikey, server=settings.ARCHIVIST_URL,
+                              project_id=project)
 
     def get_serializer(self, *args, **kwargs):
         """
@@ -111,6 +112,9 @@ class ProjectViewSet(ListModelMixin,
     """
     API endpoint that allows Projects to be viewed and created.
 
+    If a fresh project is being created, only the `name` argument needs to be sent. The ID
+    will be auto-generated.
+
     **Note:** The POST to create against this endpoint is not supported for ZVI
     configured instances. In that case, please create projects directly in the Django
     Admin panel.
@@ -131,6 +135,10 @@ class ProjectViewSet(ListModelMixin,
         project with ID: `00000000-0000-0000-0000-000000000000`, and then create the
         subsequent membership for that project using the ZMLP Inception Key.
 
+        If a requested Project does not exist in either ZMLP or Wallet it will be created.
+        If the Project exists in both locations a 400 response will be returned. This
+        allows for the projects between both platforms to be synced.
+
         *Note* This endpoint does not work for ZVI configured instances.
 
         Args:
@@ -140,9 +148,25 @@ class ProjectViewSet(ListModelMixin,
             DRF Response object on whether or not the request succeeded.
         """
         # Create it in Django first using the standard DRF pattern
+        exists_in_wallet = False
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            try:
+                if serializer.errors['id'][0].code == 'unique':
+                    project = Project.objects.get(id=serializer.data['id'],
+                                                  name=serializer.data['name'])
+                    if project:
+                        # If it already exists in Wallet let's wait and check if it
+                        # needs to be created in ZMLP
+                        exists_in_wallet = True
+                else:
+                    # If it's not an expected error let's immediately raise
+                    serializer.is_valid(raise_exception=True)
+            except (KeyError, IndexError):
+                # If the errors didn't match what we were expecting let's also raise
+                serializer.is_valid(raise_exception=True)
 
         # Create it in ZMLP now
         client = self._get_zmlp_superuser_client(request)
@@ -151,8 +175,11 @@ class ProjectViewSet(ListModelMixin,
         try:
             client.post('/api/v1/projects', body)
         except ZmlpDuplicateException:
-            # It's ok if it already exists in ZMLP at this point.
-            pass
+            # We only need to error if it already existed in Wallet as well
+            if exists_in_wallet:
+                return Response({'id': ["A project with this id already "
+                                        "exists in Wallet and ZMLP."]},
+                                status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
