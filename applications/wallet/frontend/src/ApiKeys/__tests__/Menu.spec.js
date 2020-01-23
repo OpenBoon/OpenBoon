@@ -19,6 +19,7 @@ describe('<ApiKeysMenu />', () => {
       />,
     )
 
+    // Open Menu
     act(() => {
       component.root
         .findByProps({ 'aria-label': 'Toggle Actions Menu' })
@@ -27,8 +28,33 @@ describe('<ApiKeysMenu />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    await act(async () => {
+    // Select Delete
+    act(() => {
       component.root.findByProps({ children: 'Delete' }).props.onClick()
+    })
+
+    // Cancel
+    act(() => {
+      component.root.findByProps({ children: 'Cancel' }).props.onClick()
+    })
+
+    // Open Menu
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Toggle Actions Menu' })
+        .props.onClick()
+    })
+
+    // Select Delete
+    act(() => {
+      component.root.findByProps({ children: 'Delete' }).props.onClick()
+    })
+
+    // Confirm
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Delete Permanently' })
+        .props.onClick()
     })
 
     expect(fetch.mock.calls.length).toEqual(1)

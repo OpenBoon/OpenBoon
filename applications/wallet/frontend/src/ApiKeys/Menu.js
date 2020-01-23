@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { colors, spacing, constants } from '../Styles'
@@ -6,17 +7,13 @@ import { fetcher } from '../Fetch/helpers'
 
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
+import Modal from '../Modal'
 
 import GearSvg from '../Icons/gear.svg'
 
-const ACTIONS = [
-  {
-    name: 'Delete',
-    action: 'delete',
-  },
-]
-
 const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+
   return (
     <Menu
       open="left"
@@ -37,29 +34,40 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
           <GearSvg width={20} />
         </Button>
       )}>
-      {({ onBlur, onClick }) => (
+      {({ onClick }) => (
         <div>
           <ul>
-            {ACTIONS.map(({ name, action }) => (
-              <li key={action}>
+            <li>
+              <>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
-                  onBlur={onBlur}
-                  onClick={async () => {
-                    onClick()
-
-                    await fetcher(
-                      `/api/v1/projects/${projectId}/apikeys/${apiKeyId}/${action}/`,
-                      { method: 'PUT' },
-                    )
-
-                    revalidate()
+                  onClick={() => {
+                    setDeleteModalOpen(true)
                   }}
                   isDisabled={false}>
-                  {name}
+                  Delete
                 </Button>
-              </li>
-            ))}
+                {isDeleteModalOpen && (
+                  <Modal
+                    onCancel={() => {
+                      setDeleteModalOpen(false)
+                      onClick()
+                    }}
+                    onConfirm={async () => {
+                      setDeleteModalOpen(false)
+                      onClick()
+
+                      await fetcher(
+                        `/api/v1/projects/${projectId}/apikeys/${apiKeyId}/delete/`,
+                        { method: 'PUT' },
+                      )
+
+                      revalidate()
+                    }}
+                  />
+                )}
+              </>
+            </li>
           </ul>
         </div>
       )}

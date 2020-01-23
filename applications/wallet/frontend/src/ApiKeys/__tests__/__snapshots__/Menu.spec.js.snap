@@ -158,7 +158,6 @@ exports[`<ApiKeysMenu /> should render properly 1`] = `
         <li>
           <button
             className="emotion-1"
-            onBlur={[Function]}
             onClick={[Function]}
             type="button"
           >
