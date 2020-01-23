@@ -17,6 +17,7 @@ import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder.getTags
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.archivist.util.JdbcUtils
+import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
 import com.zorroa.zmlp.util.Json
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.dao.EmptyResultDataAccessException

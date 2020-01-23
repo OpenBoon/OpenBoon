@@ -141,7 +141,7 @@ class ProjectControllerTests : MockMvcTest() {
 
         val file = MockMultipartFile(
             "file", "toucan.jpg", "image/jpeg",
-            File("src/test/resources/test-data/toucan.jpg").inputStream().readAllBytes()
+            File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
         )
 
         val payload = """

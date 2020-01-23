@@ -116,7 +116,7 @@ class AwsProjectStorageService constructor(
     override fun fetch(locator: ProjectStorageLocator): ByteArray {
         val path = locator.getPath()
         val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path))
-        return s3obj.objectContent.readAllBytes()
+        return s3obj.objectContent.readBytes()
     }
 
     companion object {

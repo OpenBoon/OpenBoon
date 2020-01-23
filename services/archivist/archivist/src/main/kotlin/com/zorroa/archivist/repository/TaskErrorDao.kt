@@ -13,6 +13,7 @@ import com.zorroa.zmlp.service.logging.MeterRegistryHolder.getTags
 import com.zorroa.zmlp.service.logging.warnEvent
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.JdbcUtils
+import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
 import com.zorroa.zmlp.util.Json
 import com.zorroa.zmlp.util.readValueOrNull
 import io.micrometer.core.instrument.Tag
