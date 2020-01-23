@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Breadcrumbs /> should render properly 1`] = `
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-1 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 0;
+  color: #ffffff;
+}
+
+<div
+  className="emotion-2"
+>
+  <div
+    className="emotion-0"
+  >
+    Bread /
+  </div>
+  <div
+    className="emotion-1"
+  >
+    Crumb
+  </div>
+</div>
+`;
