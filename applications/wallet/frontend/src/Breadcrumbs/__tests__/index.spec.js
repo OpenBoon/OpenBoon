@@ -5,7 +5,12 @@ import Breadcrumbs from '..'
 describe('<Breadcrumbs />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(
-      <Breadcrumbs crumbs={['Bread', 'Crumb']} />,
+      <Breadcrumbs
+        crumbs={[
+          { title: 'Bread', href: '/bread' },
+          { title: 'Crumb', href: '/bread/crumb' },
+        ]}
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

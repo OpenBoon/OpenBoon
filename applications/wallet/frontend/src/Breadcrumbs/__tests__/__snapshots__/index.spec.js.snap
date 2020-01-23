@@ -18,6 +18,10 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
   color: #808080;
 }
 
+.emotion-0:hover {
+  color: #ffffff;
+}
+
 .emotion-1 {
   font-size: 18px;
   line-height: 21px;
@@ -28,16 +32,24 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
   color: #ffffff;
 }
 
+.emotion-1:hover {
+  color: #ffffff;
+}
+
 <div
   className="emotion-2"
 >
   <div
     className="emotion-0"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
   >
     Bread /
   </div>
   <div
     className="emotion-1"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
   >
     Crumb
   </div>

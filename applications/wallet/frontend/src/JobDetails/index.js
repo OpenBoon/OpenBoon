@@ -5,7 +5,7 @@ import Breadcrumbs from '../Breadcrumbs'
 
 const JobDetails = () => {
   const {
-    query: { jobId },
+    query: { projectId, jobId },
   } = useRouter()
 
   return (
@@ -14,7 +14,12 @@ const JobDetails = () => {
         <title>Job Details</title>
       </Head>
 
-      <Breadcrumbs crumbs={['Job Queue', 'Job Details']} />
+      <Breadcrumbs
+        crumbs={[
+          { title: 'Job Queue', href: `/${projectId}/jobs` },
+          { title: 'Job Details', href: `/${projectId}/jobs/${jobId}` },
+        ]}
+      />
       <div>Job ID: {jobId}</div>
     </>
   )
