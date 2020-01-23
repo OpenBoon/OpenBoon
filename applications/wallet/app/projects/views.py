@@ -164,7 +164,7 @@ class ProjectViewSet(ListModelMixin,
                 else:
                     # If it's not an expected error let's immediately raise
                     serializer.is_valid(raise_exception=True)
-            except (KeyError, IndexError) as e:
+            except (KeyError, IndexError):
                 # If the errors didn't match what we were expecting let's also raise
                 serializer.is_valid(raise_exception=True)
 
