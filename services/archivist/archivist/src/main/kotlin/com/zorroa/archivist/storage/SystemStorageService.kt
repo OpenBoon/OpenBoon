@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConfigurationProperties("archivist.system.storage")
+@ConfigurationProperties("zmlp.storage.system")
 class SystemStorageProperties {
 
     lateinit var bucket: String

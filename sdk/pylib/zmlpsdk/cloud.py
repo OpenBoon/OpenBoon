@@ -65,14 +65,14 @@ def get_pipeline_storage_client():
         Minio: A Minio client.
 
     """
-    url = urlparse(os.environ.get("ZMLP_PIPELINE_STORAGE_URL", "http://localhost:9000").strip())
+    url = urlparse(os.environ.get("ZMLP_STORAGE_PIPELINE_URL", "http://localhost:9000").strip())
     if not url.scheme or not url.netloc:
-        raise RuntimeError("The 'ZMLP_PIPELINE_STORAGE_URL' env var is not a valid URL")
+        raise RuntimeError("The 'ZMLP_STORAGE_PIPELINE_URL' env var is not a valid URL")
     logger.debug("Initializing Internal Storage client: '{}'".format(url.netloc))
 
     return minio.Minio(url.netloc,
-                       access_key=os.environ.get("ZMLP_PIPELINE_STORAGE_ACCESSKEY"),
-                       secret_key=os.environ.get("ZMLP_PIPELINE_STORAGE_SECRETKEY"),
+                       access_key=os.environ.get("ZMLP_STORAGE_PIPELINE_ACCESSKEY"),
+                       secret_key=os.environ.get("ZMLP_STORAGE_PIPELIN_SECRETKEY"),
                        secure=False)
 
 
