@@ -20,7 +20,8 @@ const val ASPOSE_LICENSE_FILE = "Aspose.Total.Java.lic"
 class RenderRequest(
     val fileName: String,
     var page: Int = -1,
-    var outputDir: String = UUID.randomUUID().toString().replace("-", "")
+    var outputDir: String = UUID.randomUUID().toString().replace("-", ""),
+    var dpi: Int = 100
 )
 
 /**
