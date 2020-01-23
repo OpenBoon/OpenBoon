@@ -7,13 +7,11 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
-import org.springframework.data.annotation.LastModifiedDate
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
-import javax.persistence.Version
 
 @Entity
 @Table(name = "module")
