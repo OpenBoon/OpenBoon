@@ -149,8 +149,8 @@ sdk-unit-tests:
     refs:
       - merge_requests
     changes:
-      - client/python/*
-      - sdk/*
+      - client/python/**/*
+      - sdk/**/*
       - containers/zmlp-plugins-base/**/*
       - .gitlab-ci.yml
 
