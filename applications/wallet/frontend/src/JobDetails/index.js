@@ -1,8 +1,13 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 import PageTitle from '../PageTitle'
 
 const JobDetails = () => {
+  const {
+    query: { jobId },
+  } = useRouter()
+
   return (
     <>
       <Head>
@@ -10,6 +15,8 @@ const JobDetails = () => {
       </Head>
 
       <PageTitle>Job Queue / Job Details</PageTitle>
+
+      <div>Job ID: {jobId}</div>
     </>
   )
 }

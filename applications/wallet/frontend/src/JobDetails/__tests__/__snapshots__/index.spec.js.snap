@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<JobsDetail /> should render properly 1`] = `
-.emotion-0 {
+exports[`<JobDetails /> should render properly 1`] = `
+Array [
+  .emotion-0 {
   font-size: 18px;
   line-height: 21px;
   font-weight: 400;
@@ -10,8 +11,12 @@ exports[`<JobsDetail /> should render properly 1`] = `
 }
 
 <h2
-  className="emotion-0"
->
-  Job Queue / Job Details
-</h2>
+    className="emotion-0"
+  >
+    Job Queue / Job Details
+  </h2>,
+  <div>
+    Job ID: 
+  </div>,
+]
 `;
