@@ -1,11 +1,28 @@
 import PropTypes from 'prop-types'
 
+import { colors, spacing, constants } from '../Styles'
+
 const ApiKeysRow = ({ apiKey: { name, permissions } }) => {
   return (
     <tr>
       <td>{name}</td>
       <td>
-        {permissions.join(', ').replace(/([A-Z])/g, match => ` ${match}`)}
+        {permissions.map(permission => (
+          <span
+            key={permission}
+            css={{
+              display: 'inline-block',
+              color: colors.structure.coal,
+              backgroundColor: colors.structure.zinc,
+              padding: spacing.moderate,
+              paddingTop: spacing.small,
+              paddingBottom: spacing.small,
+              marginRight: spacing.base,
+              borderRadius: constants.borderRadius.large,
+            }}>
+            {permission.replace(/([A-Z])/g, match => ` ${match}`)}
+          </span>
+        ))}
       </td>
     </tr>
   )

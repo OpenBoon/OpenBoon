@@ -418,11 +418,11 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-10 {
+.emotion-14 {
   height: auto;
 }
 
-.emotion-2 {
+.emotion-6 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -430,46 +430,46 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-2 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-2 tr .gear {
+.emotion-6 tr .gear {
   opacity: 0;
 }
 
-.emotion-2 tr .gear:focus {
+.emotion-6 tr .gear:focus {
   opacity: 1;
 }
 
-.emotion-2 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-2 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-2 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-2 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-2 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-2 tr:hover .gear {
+.emotion-6 tr:hover .gear {
   opacity: 1;
 }
 
-.emotion-2 td {
+.emotion-6 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -477,15 +477,26 @@ Array [
   border-right: 0;
 }
 
-.emotion-2 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-2 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
-.emotion-9 {
+.emotion-2 {
+  display: inline-block;
+  color: #191919;
+  background-color: #b3b3b3;
+  padding: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-right: 8px;
+  border-radius: 14px;
+}
+
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -496,7 +507,7 @@ Array [
   justify-content: flex-end;
 }
 
-.emotion-4 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -514,20 +525,20 @@ Array [
   border-bottom-right-radius: 0;
 }
 
-.emotion-4:hover {
+.emotion-8:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-3 {
+.emotion-7 {
   color: #191919;
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-5 {
+.emotion-9 {
   padding: 8px 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -541,7 +552,7 @@ Array [
   background-color: #000000;
 }
 
-.emotion-6 {
+.emotion-10 {
   padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -554,7 +565,7 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-8 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -572,13 +583,13 @@ Array [
   border-bottom-right-radius: 2px;
 }
 
-.emotion-8:hover {
+.emotion-12:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7 {
+.emotion-11 {
   color: #191919;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -586,10 +597,10 @@ Array [
 }
 
 <div
-    className="emotion-10"
+    className="emotion-14"
   >
     <table
-      className="emotion-2"
+      className="emotion-6"
     >
       <thead>
         <tr>
@@ -611,7 +622,26 @@ Array [
             admin-key
           </td>
           <td>
-             Super Admin,  Project Admin,  Assets Read,  Assets Import
+            <span
+              className="emotion-2"
+            >
+               Super Admin
+            </span>
+            <span
+              className="emotion-2"
+            >
+               Project Admin
+            </span>
+            <span
+              className="emotion-2"
+            >
+               Assets Read
+            </span>
+            <span
+              className="emotion-2"
+            >
+               Assets Import
+            </span>
           </td>
         </tr>
       </tbody>
@@ -620,30 +650,8 @@ Array [
        
     </div>
     <div
-      className="emotion-9"
+      className="emotion-13"
     >
-      <button
-        className="emotion-4"
-        disabled={true}
-        type="button"
-      >
-        <svg
-          className="emotion-3"
-          data-file-name="chevron.svg"
-          width={16}
-        />
-      </button>
-      <div
-        className="emotion-5"
-      >
-        1
-      </div>
-      <div
-        className="emotion-6"
-      >
-        of 
-        1
-      </div>
       <button
         className="emotion-8"
         disabled={true}
@@ -651,6 +659,28 @@ Array [
       >
         <svg
           className="emotion-7"
+          data-file-name="chevron.svg"
+          width={16}
+        />
+      </button>
+      <div
+        className="emotion-9"
+      >
+        1
+      </div>
+      <div
+        className="emotion-10"
+      >
+        of 
+        1
+      </div>
+      <button
+        className="emotion-12"
+        disabled={true}
+        type="button"
+      >
+        <svg
+          className="emotion-11"
           data-file-name="chevron.svg"
           width={16}
         />
