@@ -80,6 +80,13 @@ class AnalystServicImpl @Autowired constructor(
     }
 
     override fun setLockState(analyst: Analyst, state: LockState): Boolean {
+
+        logger.event(
+            LogObject.ANALYST, LogAction.UPDATE,
+            mapOf(
+                "analystLock" to analyst.lock
+            )
+        )
         return analystDao.setLockState(analyst, state)
     }
 
@@ -89,10 +96,26 @@ class AnalystServicImpl @Autowired constructor(
     }
 
     override fun setTaskId(analyst: Analyst, taskId: UUID?): Boolean {
+
+        logger.event(
+            LogObject.ANALYST, LogAction.UPDATE,
+            mapOf(
+                "analystTaskId" to analyst.taskId
+            )
+        )
+
         return analystDao.setTaskId(analyst.endpoint, taskId)
     }
 
     override fun setState(analyst: Analyst, state: AnalystState): Boolean {
+
+        logger.event(
+            LogObject.ANALYST, LogAction.UPDATE,
+            mapOf(
+                "analystState" to analyst.state
+            )
+        )
+
         return analystDao.setState(analyst, state)
     }
 
@@ -130,6 +153,14 @@ class AnalystServicImpl @Autowired constructor(
     }
 
     override fun delete(analyst: Analyst): Boolean {
+
+        logger.event(
+            LogObject.ANALYST, LogAction.DELETE,
+            mapOf(
+                "analystId" to analyst.id
+            )
+        )
+
         return analystDao.delete(analyst)
     }
 
