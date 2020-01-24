@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
 import com.zorroa.archivist.domain.PipelineMod
+import com.zorroa.archivist.domain.PipelineModFilter
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
 import com.zorroa.archivist.domain.ProcessorRef
@@ -92,6 +93,23 @@ class PipelineModServiceTests : AbstractTest() {
         assertEquals(mod.restricted, module2.restricted)
         assertEquals(mod.description, module2.description)
         assertEquals(Json.serializeToString(mod.ops), Json.serializeToString(module2.ops))
+    }
+
+    @Test
+    fun testSearch() {
+        entityManager.flush()
+        val filter = PipelineModFilter(names = listOf(mod.name), ids = listOf(mod.id))
+        filter.sort = filter.sortMap.keys.map { "$it:a" }
+        val paged = pipelineModService.search(filter)
+        assertEquals(1, paged.size())
+    }
+
+    @Test
+    fun testFindOne() {
+        entityManager.flush()
+        val filter = PipelineModFilter(ids = listOf(mod.id))
+        val mod2 = pipelineModService.findOne(filter)
+        assertEquals(mod.id, mod2.id)
     }
 
     @Test(expected = DataRetrievalFailureException::class)
