@@ -82,7 +82,7 @@ wallet-container-build-validation:
   services:
     - docker:18.09.8-dind
   script:
-    - docker build --pull --no-cache -f applications/wallet/Dockerfile .
+    - docker build --pull --no-cache --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA --file applications/wallet/Dockerfile .
 
 ## Backend Python Lint
 backend-py-lint:
@@ -203,6 +203,7 @@ docker_hub_build_push:
     - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
   only:
     - development
+    - dv/env-vars-arg
 
 deploy_development:
   image: google/cloud-sdk
@@ -212,6 +213,7 @@ deploy_development:
   stage: deploy
   only:
     - development
+    - dv/env-vars-arg
   before_script:
     - echo $SA_JSON > ./sa.json
     - gcloud auth activate-service-account $SA_EMAIL --key-file=./sa.json
