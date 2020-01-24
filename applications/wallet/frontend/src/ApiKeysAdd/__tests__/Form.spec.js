@@ -26,11 +26,20 @@ describe('<ApiKeysAddForm />', () => {
 
     act(() => {
       component.root
+        .findByProps({ type: 'checkbox', value: 'ProjectManage' })
+        .props.onClick()
+    })
+
+    act(() => {
+      component.root
         .findByProps({ type: 'submit' })
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockFn).toHaveBeenCalledWith({ name: 'API Key Name' })
+    expect(mockFn).toHaveBeenCalledWith({
+      name: 'API Key Name',
+      permissions: { ProjectManage: true },
+    })
   })
 
   it('should not POST the form', () => {

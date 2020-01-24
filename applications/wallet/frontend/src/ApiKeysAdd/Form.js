@@ -21,7 +21,7 @@ const ApiKeysAddForm = ({ onSubmit }) => {
     `/api/v1/projects/${projectId}/permissions/`,
   )
 
-  const [state, dispatch] = useReducer(reducer, { name: '' })
+  const [state, dispatch] = useReducer(reducer, { name: '', permissions: {} })
 
   if (!Array.isArray(permissions)) return 'Loading...'
 
@@ -41,14 +41,17 @@ const ApiKeysAddForm = ({ onSubmit }) => {
 
       <CheckboxGroup
         legend="Add Scope"
-        onClick={dispatch}
-        options={permissions.map(({ name, description }, index) => ({
+        onClick={permission =>
+          dispatch({ permissions: { ...state.permissions, ...permission } })
+        }
+        options={permissions.map(({ name, description }) => ({
           key: name,
           label: name.replace(/([A-Z])/g, match => ` ${match}`),
           legend: description,
-          initialValue: index === 0,
+          initialValue: false,
         }))}
       />
+
       <div
         css={{
           paddingTop: spacing.moderate,

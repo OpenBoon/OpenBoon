@@ -28,6 +28,7 @@ const CheckboxGroup = ({ legend, options, onClick }) => {
       {options.map(option => (
         <Checkbox
           key={option.key}
+          value={option.key}
           label={option.label}
           legend={option.legend}
           initialValue={option.initialValue}

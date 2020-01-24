@@ -85,8 +85,8 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: #73b61c;
-  border: 2px solid #73b61c;
+  background-color: transparent;
+  border: 2px solid #808080;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -114,7 +114,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 .emotion-7 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 0;
 }
 
 .emotion-12 {
@@ -137,24 +137,6 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 
 .emotion-11 {
   color: #808080;
-}
-
-.emotion-14 {
-  margin: 0;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #808080;
-  border-radius: 2px;
-  cursor: pointer;
-}
-
-.emotion-15 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 0;
 }
 
 .emotion-104 {
@@ -268,9 +250,10 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
       >
         <input
           className="emotion-6"
-          defaultChecked={true}
+          defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
+          value="SystemMonitor"
         />
         <div
           className="emotion-8"
@@ -304,16 +287,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         className="emotion-9"
       >
         <input
-          className="emotion-14"
+          className="emotion-6"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
+          value="SystemManage"
         />
         <div
           className="emotion-8"
         >
           <svg
-            className="emotion-15"
+            className="emotion-7"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -341,16 +325,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         className="emotion-9"
       >
         <input
-          className="emotion-14"
+          className="emotion-6"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
+          value="SystemProjectOverride"
         />
         <div
           className="emotion-8"
         >
           <svg
-            className="emotion-15"
+            className="emotion-7"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -378,16 +363,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         className="emotion-9"
       >
         <input
-          className="emotion-14"
+          className="emotion-6"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
+          value="SystemProjectDecrypt"
         />
         <div
           className="emotion-8"
         >
           <svg
-            className="emotion-15"
+            className="emotion-7"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -415,16 +401,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         className="emotion-9"
       >
         <input
-          className="emotion-14"
+          className="emotion-6"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
+          value="ApiKeyManage"
         />
         <div
           className="emotion-8"
         >
           <svg
-            className="emotion-15"
+            className="emotion-7"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -452,16 +439,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         className="emotion-9"
       >
         <input
-          className="emotion-14"
+          className="emotion-6"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
+          value="AssetsRead"
         />
         <div
           className="emotion-8"
         >
           <svg
-            className="emotion-15"
+            className="emotion-7"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -489,16 +477,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         className="emotion-9"
       >
         <input
-          className="emotion-14"
+          className="emotion-6"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
+          value="AssetsImport"
         />
         <div
           className="emotion-8"
         >
           <svg
-            className="emotion-15"
+            className="emotion-7"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -526,16 +515,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         className="emotion-9"
       >
         <input
-          className="emotion-14"
+          className="emotion-6"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
+          value="AssetsDelete"
         />
         <div
           className="emotion-8"
         >
           <svg
-            className="emotion-15"
+            className="emotion-7"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -563,16 +553,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         className="emotion-9"
       >
         <input
-          className="emotion-14"
+          className="emotion-6"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
+          value="ProjectManage"
         />
         <div
           className="emotion-8"
         >
           <svg
-            className="emotion-15"
+            className="emotion-7"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -600,16 +591,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         className="emotion-9"
       >
         <input
-          className="emotion-14"
+          className="emotion-6"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
+          value="ProjectCreate"
         />
         <div
           className="emotion-8"
         >
           <svg
-            className="emotion-15"
+            className="emotion-7"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -637,16 +629,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         className="emotion-9"
       >
         <input
-          className="emotion-14"
+          className="emotion-6"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
+          value="ProjectFilesRead"
         />
         <div
           className="emotion-8"
         >
           <svg
-            className="emotion-15"
+            className="emotion-7"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -674,16 +667,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         className="emotion-9"
       >
         <input
-          className="emotion-14"
+          className="emotion-6"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
+          value="ProjectFilesWrite"
         />
         <div
           className="emotion-8"
         >
           <svg
-            className="emotion-15"
+            className="emotion-7"
             data-file-name="checkmark.svg"
             width={14}
           />
