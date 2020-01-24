@@ -104,9 +104,9 @@ class TaskStatsEvent(
     "IndexAssetsEvent",
     description = "An event containing assets to index"
 )
-class IndexAssetsEvent(
+class BatchIndexAssetsEvent(
     @ApiModelProperty("A list of documents to index.")
-    val assets: List<Asset>,
+    val assets: Map<String, MutableMap<String, Any>>,
 
     @ApiModelProperty("The task settings, if any.  Used for various types of behavior switching ")
     val settings: Map<String, Any>?

@@ -93,11 +93,12 @@ class IOHandler(val options: RenderRequest) {
 
     fun exists(page: Int = 1): Boolean {
         val path = getMetadataPath(page)
+        logger.info("Checking path: {}", path)
         return try {
             StorageManager.minioClient.statObject(Config.bucket.name, path)
             true
         } catch (e: ErrorResponseException) {
-            logger.info("Object does not exist: {}", path)
+            logger.warn("Object does not exist: {}", path, e)
             false
         }
     }

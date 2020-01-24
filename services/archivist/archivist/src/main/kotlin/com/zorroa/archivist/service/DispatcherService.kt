@@ -7,10 +7,9 @@ import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.BatchUpdateAssetsRequest
+import com.zorroa.archivist.domain.BatchIndexAssetsEvent
 import com.zorroa.archivist.domain.DispatchPriority
 import com.zorroa.archivist.domain.DispatchTask
-import com.zorroa.archivist.domain.IndexAssetsEvent
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobPriority
@@ -41,12 +40,12 @@ import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
 import com.zorroa.archivist.storage.PipelineStorageConfiguration
-import com.zorroa.zmlp.util.Json
 import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder.getTags
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
 import com.zorroa.zmlp.service.logging.event
+import com.zorroa.zmlp.util.Json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -374,9 +373,9 @@ class DispatcherServiceImpl @Autowired constructor(
             BatchCreateAssetsRequest(event.assets, analyze = false, task = parentTask)
         )
 
-        val name = "Expand ${result.status.size} assets"
+        val name = "Expand ${result.created.size} assets"
         val parentScript = taskDao.getScript(parentTask.taskId)
-        val newScript = ZpsScript(name, null, result.assets, parentScript.execute)
+        val newScript = ZpsScript(name, null, assetService.getAll(result.created), parentScript.execute)
 
         newScript.globalArgs = parentScript.globalArgs
         newScript.type = parentScript.type
@@ -441,10 +440,10 @@ class DispatcherServiceImpl @Autowired constructor(
                 handleStatsEvent(stats)
             }
             TaskEventType.INDEX -> {
-                val index = Json.Mapper.convertValue<IndexAssetsEvent>(event.payload)
+                val index = Json.Mapper.convertValue<BatchIndexAssetsEvent>(event.payload)
                 withAuth(InternalThreadAuthentication(task.projectId,
                     setOf(Permission.AssetsImport))) {
-                    assetService.batchUpdate(BatchUpdateAssetsRequest(index.assets))
+                    assetService.batchIndex(index.assets)
                 }
             }
         }

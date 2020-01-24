@@ -82,7 +82,7 @@ wallet-container-build-validation:
   services:
     - docker:18.09.8-dind
   script:
-    - docker build --pull --no-cache -f applications/wallet/Dockerfile .
+    - docker build --pull --no-cache --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA --file applications/wallet/Dockerfile .
 
 ## Backend Python Lint
 backend-py-lint:

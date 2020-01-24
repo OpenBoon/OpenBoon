@@ -140,8 +140,6 @@ services:
       DJANGO_SETTINGS_MODULE: wallet.settings
       PG_HOST: postgres
       ARCHIVIST_URL: http://api-gateway:80
-      GOOGLE_OAUTH_CLIENT_ID: 683985502197-140kfdlheorkbc6e9vo748v5260df3pf
-      SENTRY_DSN: https://09e9c3fc777c469ab784ff4367ff54bb@sentry.io/1848515
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/api/v1/health"]
       interval: 30s

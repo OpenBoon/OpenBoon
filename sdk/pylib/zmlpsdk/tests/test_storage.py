@@ -167,7 +167,7 @@ class TestAssetStorage(TestCase):
         post_patch.return_value = '/tmp/cat.jpg'
         asset = TestAsset(id='123456')
         self.lfc.assets.localize_file(asset, pfile)
-        assert "assets/bingo/files" in post_patch.call_args_list[0][0][0]
+        assert "assets/bingo/_files" in post_patch.call_args_list[0][0][0]
 
 
 class TestProjectStorage(TestCase):

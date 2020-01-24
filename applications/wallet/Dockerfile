@@ -19,7 +19,8 @@ RUN pip3 install --upgrade pip \
 
 # Set up Node.js
 WORKDIR /applications/wallet/frontend
-RUN npm ci && npm run build
+ARG CI_COMMIT_SHA
+RUN npm ci && CI_COMMIT_SHA=$CI_COMMIT_SHA npm run build
 
 # Collect static files
 WORKDIR /applications/wallet/app
