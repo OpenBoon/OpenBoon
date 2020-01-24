@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Breadcrumbs /> should render properly 1`] = `
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-1 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+<div
+  className="emotion-2"
+>
+  <div
+    className="emotion-2"
+  >
+    <a
+      className="emotion-0"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/bread"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      Bread
+    </a>
+    <span
+      className="emotion-1"
+    >
+      /
+    </span>
+  </div>
+  <PageTitle>
+    Crumb
+  </PageTitle>
+</div>
+`;
