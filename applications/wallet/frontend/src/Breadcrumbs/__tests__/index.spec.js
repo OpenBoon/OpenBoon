@@ -2,6 +2,8 @@ import TestRenderer from 'react-test-renderer'
 
 import Breadcrumbs from '..'
 
+jest.mock('../../PageTitle', () => 'PageTitle')
+
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
 describe('<Breadcrumbs />', () => {

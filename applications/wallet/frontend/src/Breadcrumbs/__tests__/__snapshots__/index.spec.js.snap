@@ -34,16 +34,6 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-3 {
-  font-size: 18px;
-  line-height: 21px;
-  font-weight: 400;
-  padding-top: 24px;
-  padding-bottom: 16px;
-  padding-right: 4px;
-  color: #ffffff;
-}
-
 <div
   className="emotion-2"
 >
@@ -64,10 +54,8 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
       /
     </span>
   </div>
-  <div
-    className="emotion-3"
-  >
+  <PageTitle>
     Crumb
-  </div>
+  </PageTitle>
 </div>
 `;

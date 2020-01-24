@@ -4,6 +4,8 @@ import Link from 'next/link'
 
 import { spacing, typography, colors } from '../Styles'
 
+import PageTitle from '../PageTitle'
+
 const BASE_STYLE = {
   fontSize: typography.size.large,
   lineHeight: typography.height.large,
@@ -46,16 +48,7 @@ const Breadcrumbs = ({ crumbs }) => {
             </div>
           )
         }
-        return (
-          <div
-            key={title}
-            css={{
-              ...BASE_STYLE,
-              color: colors.structure.white,
-            }}>
-            {title}
-          </div>
-        )
+        return <PageTitle key={title}>{title}</PageTitle>
       })}
     </div>
   )
