@@ -1,34 +1,57 @@
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import { spacing, typography, colors } from '../Styles'
 
+const BASE_STYLE = {
+  fontSize: typography.size.large,
+  lineHeight: typography.height.large,
+  fontWeight: typography.weight.regular,
+  paddingTop: spacing.comfy,
+  paddingBottom: spacing.normal,
+  paddingRight: spacing.small,
+  color: colors.structure.steel,
+}
+
 const Breadcrumbs = ({ crumbs }) => {
+  const {
+    query: { projectId },
+  } = useRouter()
+
   return (
     <div css={{ display: 'flex' }}>
       {crumbs.map(({ title, href }, index) => {
         const isLastCrumb = index === crumbs.length - 1
-        const content = !isLastCrumb ? `${title} /` : `${title}`
-        return (
-          <Link key={title} href={href}>
-            <div
-              css={{
-                fontSize: typography.size.large,
-                lineHeight: typography.height.large,
-                fontWeight: typography.weight.regular,
-                paddingTop: spacing.comfy,
-                paddingBottom: spacing.normal,
-                paddingRight: isLastCrumb ? 0 : spacing.small,
-                color: isLastCrumb
-                  ? colors.structure.white
-                  : colors.structure.steel,
-                ':hover': {
-                  color: colors.structure.white,
-                },
-              }}>
-              {content}
+
+        if (!isLastCrumb) {
+          return (
+            <div key={title} css={{ display: 'flex' }}>
+              <Link href={href} as={href.replace('[projectId]', projectId)}>
+                <a
+                  css={{
+                    ...BASE_STYLE,
+                    ':hover': {
+                      textDecoration: 'none',
+                      color: colors.structure.white,
+                    },
+                  }}>
+                  {title}
+                </a>
+              </Link>
+              <span css={{ ...BASE_STYLE }}>/</span>
             </div>
-          </Link>
+          )
+        }
+        return (
+          <div
+            key={title}
+            css={{
+              ...BASE_STYLE,
+              color: colors.structure.white,
+            }}>
+            {title}
+          </div>
         )
       })}
     </div>
@@ -39,7 +62,7 @@ Breadcrumbs.propTypes = {
   crumbs: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string.isRequired,
-      href: PropTypes.string.isRequired,
+      href: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     }),
   ).isRequired,
 }

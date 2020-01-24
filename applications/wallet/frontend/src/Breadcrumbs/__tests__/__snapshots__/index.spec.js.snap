@@ -19,6 +19,8 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
 }
 
 .emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
@@ -28,11 +30,17 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
   font-weight: 400;
   padding-top: 24px;
   padding-bottom: 16px;
-  padding-right: 0;
-  color: #ffffff;
+  padding-right: 4px;
+  color: #808080;
 }
 
-.emotion-1:hover {
+.emotion-3 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
   color: #ffffff;
 }
 
@@ -40,16 +48,23 @@ exports[`<Breadcrumbs /> should render properly 1`] = `
   className="emotion-2"
 >
   <div
-    className="emotion-0"
-    onClick={[Function]}
-    onMouseEnter={[Function]}
+    className="emotion-2"
   >
-    Bread /
+    <a
+      className="emotion-0"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      Bread
+    </a>
+    <span
+      className="emotion-1"
+    >
+      /
+    </span>
   </div>
   <div
-    className="emotion-1"
-    onClick={[Function]}
-    onMouseEnter={[Function]}
+    className="emotion-3"
   >
     Crumb
   </div>
