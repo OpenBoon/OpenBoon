@@ -14,6 +14,9 @@ import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.repository.IndexClusterDao
 import com.zorroa.archivist.repository.IndexRouteDao
 import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
+import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
 import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
@@ -197,6 +200,14 @@ constructor(
 
         spec.clusterId = cluster.id
         val route = indexRouteDao.create(spec)
+
+        logger.event(
+            LogObject.INDEX_ROUTE, LogAction.CREATE,
+            mapOf(
+                "indexRouteId" to route.id,
+                "indexRouteName" to route.indexName
+            )
+        )
 
         // Makes the ES Index after its committed to db.
         txEvent.afterCommit {
@@ -420,6 +431,13 @@ constructor(
         val rsp = getClusterRestClient(route).client.indices()
             .delete(DeleteIndexRequest(route.indexName), RequestOptions.DEFAULT)
         if (rsp.isAcknowledged) {
+            logger.event(
+                LogObject.INDEX_ROUTE, LogAction.DELETE,
+                mapOf(
+                    "indexRouteId" to route.id,
+                    "indexRouteName" to route.indexName
+                )
+            )
             return indexRouteDao.delete(route)
         }
         return false

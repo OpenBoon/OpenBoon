@@ -84,6 +84,7 @@ class AnalystServicImpl @Autowired constructor(
         logger.event(
             LogObject.ANALYST, LogAction.UPDATE,
             mapOf(
+                "analystId" to analyst.id,
                 "analystLock" to analyst.lock
             )
         )
@@ -100,6 +101,7 @@ class AnalystServicImpl @Autowired constructor(
         logger.event(
             LogObject.ANALYST, LogAction.UPDATE,
             mapOf(
+                "analystId" to analyst.id,
                 "analystTaskId" to analyst.taskId
             )
         )
@@ -112,6 +114,7 @@ class AnalystServicImpl @Autowired constructor(
         logger.event(
             LogObject.ANALYST, LogAction.UPDATE,
             mapOf(
+                "analystId" to analyst.id,
                 "analystState" to analyst.state
             )
         )

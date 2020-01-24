@@ -139,7 +139,7 @@ class JobServiceImpl @Autowired constructor(
             taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         }
 
-        AssetServiceImpl.logger.event(
+        logger.event(
             LogObject.JOB, LogAction.CREATE, mapOf(
                 "jobId" to job.id,
                 "jobName" to job.name)
@@ -150,7 +150,7 @@ class JobServiceImpl @Autowired constructor(
 
     override fun updateJob(job: Job, spec: JobUpdateSpec): Boolean {
 
-        AssetServiceImpl.logger.event(
+        logger.event(
             LogObject.JOB, LogAction.UPDATE, mapOf(
                 "jobId" to job.id,
                 "jobName" to job.name)
@@ -161,7 +161,7 @@ class JobServiceImpl @Autowired constructor(
 
     override fun deleteJob(job: JobId): Boolean {
 
-        AssetServiceImpl.logger.event(
+        logger.event(
             LogObject.JOB, LogAction.DELETE, mapOf(
                 "jobId" to job.jobId
         ))
@@ -218,7 +218,7 @@ class JobServiceImpl @Autowired constructor(
 
         val newTask = taskDao.create(job, spec)
 
-        AssetServiceImpl.logger.event(
+        logger.event(
             LogObject.TASK, LogAction.CREATE, mapOf(
                 "taskId" to newTask.id,
                 "taskName" to newTask.name
@@ -239,7 +239,7 @@ class JobServiceImpl @Autowired constructor(
             eventBus.post(JobStateChangeEvent(get(job.jobId), newState, oldState))
         }
 
-        AssetServiceImpl.logger.event(
+        logger.event(
             LogObject.JOB, LogAction.UPDATE, mapOf(
                 "jobId" to job.jobId,
                 "jobState" to newState.name
@@ -260,7 +260,7 @@ class JobServiceImpl @Autowired constructor(
             eventBus.post(TaskStateChangeEvent(task, newState, oldState))
         }
 
-        AssetServiceImpl.logger.event(
+        logger.event(
             LogObject.TASK, LogAction.UPDATE, mapOf(
                 "taskId" to task.taskId,
                 "taskState" to newState.name
@@ -302,7 +302,7 @@ class JobServiceImpl @Autowired constructor(
 
     override fun deleteTaskError(id: UUID): Boolean {
 
-        AssetServiceImpl.logger.event(
+        logger.event(
             LogObject.TASK_ERROR, LogAction.DELETE, mapOf(
                 "taskId" to id
             ))
