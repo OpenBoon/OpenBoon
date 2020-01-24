@@ -27,7 +27,10 @@ const Breadcrumbs = ({ crumbs }) => {
         if (!isLastCrumb) {
           return (
             <div key={title} css={{ display: 'flex' }}>
-              <Link href={href} as={href.replace('[projectId]', projectId)}>
+              <Link
+                href={href}
+                as={href.replace('[projectId]', projectId)}
+                passHref>
                 <a
                   css={{
                     ...BASE_STYLE,
