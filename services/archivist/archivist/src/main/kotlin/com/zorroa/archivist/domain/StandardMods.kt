@@ -20,7 +20,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.SET_ARGS,
                     mapOf("extract_pages" to true),
-                    OpFilter(OpFilterType.EQUAL, "*.OfficeImporter")
+                    OpFilter(OpFilterType.REGEX, ".*OfficeImporter")
                 )
             )
         ),
@@ -32,7 +32,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.SET_ARGS,
                     mapOf("extract_pages" to true),
-                    OpFilter(OpFilterType.EQUAL, "*.ImageImporter")
+                    OpFilter(OpFilterType.REGEX, ".*ImageImporter")
                 )
             )
         ),

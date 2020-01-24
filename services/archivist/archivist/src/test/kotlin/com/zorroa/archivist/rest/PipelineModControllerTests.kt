@@ -16,8 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 class PipelineModControllerTests : MockMvcTest() {
+
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
 
     @Autowired
     lateinit var pipelineModService: PipelineModService
@@ -99,5 +104,78 @@ class PipelineModControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
+    }
+
+    @Test
+    fun testSearchNoBody() {
+        pipelineModService.create(spec)
+        entityManager.flush()
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/pipeline-mods/_search")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list.length()", CoreMatchers.equalTo(1)))
+            .andReturn()
+    }
+
+    @Test
+    fun testSearchWithFilter() {
+        pipelineModService.create(spec)
+        entityManager.flush()
+
+        val filter = """{
+            "names": ["arg!"]
+        }
+        """.trimIndent()
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/pipeline-mods/_search")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(filter)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list.length()", CoreMatchers.equalTo(0)))
+    }
+
+    @Test
+    fun testFindOne_404() {
+        pipelineModService.create(spec)
+        entityManager.flush()
+
+        val filter = """{
+            "names": ["arg!"]
+        }
+        """.trimIndent()
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/pipeline-mods/_find_one")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(filter)
+        )
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+    }
+
+    @Test
+    fun testFindOne() {
+        pipelineModService.create(spec)
+        entityManager.flush()
+
+        val filter = """{
+            "names": ["test"]
+        }
+        """.trimIndent()
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/pipeline-mods/_find_one")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(filter)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("test")))
     }
 }

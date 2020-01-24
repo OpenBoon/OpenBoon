@@ -2,7 +2,9 @@ package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType
+import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.archivist.util.JdbcUtils
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.annotations.Type
@@ -80,6 +82,43 @@ class PipelineMod(
 
     override fun hashCode(): Int {
         return id.hashCode()
+    }
+}
+
+@ApiModel("PipelineModFilter", description = "Used to search for PipelineMods.")
+class PipelineModFilter(
+
+    @ApiModelProperty("The mod IDs to match.")
+    val ids: List<UUID>? = null,
+
+    @ApiModelProperty("The mod names to match")
+    val names: List<String>? = null
+
+) : KDaoFilter() {
+
+    override val sortMap: Map<String, String> =
+        mapOf(
+            "name" to "module.str_name",
+            "timeCreated" to "module.time_created",
+            "timeModified" to "module.time_modified",
+            "id" to "module.pk_module"
+        )
+
+    override fun build() {
+
+        if (sort.isNullOrEmpty()) {
+            sort = listOf("name:asc")
+        }
+
+        ids?.let {
+            addToWhere(JdbcUtils.inClause("module.pk_module", it.size))
+            addToValues(it)
+        }
+
+        names?.let {
+            addToWhere(JdbcUtils.inClause("module.str_name", it.size))
+            addToValues(it)
+        }
     }
 }
 
