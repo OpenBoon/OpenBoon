@@ -33,8 +33,13 @@ const ApiKeys = () => {
         url={`/api/v1/projects/${projectId}/apikeys/`}
         columns={['API Key Name', 'Permissions']}
         renderEmpty="No api keys"
-        renderRow={({ result }) => (
-          <ApiKeysRow key={result.id} apiKey={result} />
+        renderRow={({ result, revalidate }) => (
+          <ApiKeysRow
+            key={result.id}
+            projectId={projectId}
+            apiKey={result}
+            revalidate={revalidate}
+          />
         )}
       />
     </>
