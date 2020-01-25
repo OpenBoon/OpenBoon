@@ -21,9 +21,10 @@ class AssetSearchScroller(object):
         Args:
             app (ZmlpApp): A ZmlpApp instance.
             search: (dict): The ES search
-            timeout (str): The maximum amount of time the ES scroll will be active unless it's refreshed.
-            raw_response (bool): Yield the raw ES response rather than assets. The raw response will
-                contain the entire page, not individual assets.
+            timeout (str): The maximum amount of time the ES scroll will be active unless it's
+                refreshed.
+            raw_response (bool): Yield the raw ES response rather than assets. The raw
+                response will contain the entire page, not individual assets.
         """
         self.app = app
         self.search = copy.deepcopy(search or {})
@@ -60,7 +61,8 @@ class AssetSearchScroller(object):
 
                 scroll_id = result.get("_scroll_id")
                 if not scroll_id:
-                    raise ZmlpException("No scroll ID returned with scroll search, has it timed out?")
+                    raise ZmlpException(
+                        "No scroll ID returned with scroll search, has it timed out?")
                 result = self.app.client.post("api/v3/assets/_search/scroll", {
                     "scroll": self.timeout,
                     "scroll_id": scroll_id

@@ -117,7 +117,6 @@ class AssetTests(unittest.TestCase):
         assert asset["foo.bar.bing"] == "123"
 
 
-
 class FileImportTests(unittest.TestCase):
 
     def test_get_item_and_set_item(self):

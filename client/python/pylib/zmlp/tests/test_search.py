@@ -21,7 +21,8 @@ class AssetSearchScrollerTests(unittest.TestCase):
         post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
         del_patch.return_value = {}
 
-        scroller = AssetSearchScroller(self.app, {"query": {"term": {"source.filename": "dog.jpg"}}})
+        scroller = AssetSearchScroller(self.app,
+                                       {"query": {"term": {"source.filename": "dog.jpg"}}})
         results = list(scroller)
         assert 2 == len(results)
 

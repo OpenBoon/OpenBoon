@@ -1,3 +1,5 @@
+import os
+
 from ..datasource import DataSource
 from ..util import is_valid_uuid
 
