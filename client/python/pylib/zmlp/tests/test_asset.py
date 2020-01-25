@@ -1,11 +1,15 @@
+import copy
 import logging
 import os
 import unittest
 from unittest.mock import patch
 
+import pytest
+
 from zmlp import Asset
 from zmlp import ZmlpClient, app_from_env
 from zmlp.asset import FileImport, FileUpload, Clip
+from zmlp.exception import ZmlpException
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -220,17 +224,43 @@ class AssetAppTests(unittest.TestCase):
         assert rsp["created"][0] == "dd0KZtqyec48n1q1fniqVMV5yllhRRGx"
 
     @patch.object(ZmlpClient, 'post')
-    def test_search_raw(self, post_patch):
+    def test_search_defaults(self, post_patch):
+        post_patch.return_value = self.mock_search_result
+        assets = self.app.assets.search().assets
+        assert "https://i.imgur.com/SSN26nN.jpg" == assets[0].get_attr('source.path')
+
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(ZmlpClient, 'post')
+    def test_scroll_search_raises_on_no_scroll_id(self, post_patch, del_patch):
+        post_patch.return_value = self.mock_search_result
+        del_patch.return_value = {}
+        with pytest.raises(ZmlpException):
+            for _ in self.app.assets.scroll_search():
+                pass
+
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(ZmlpClient, 'post')
+    def test_scroll_search(self, post_patch, del_patch):
+        scroll_result = copy.deepcopy(self.mock_search_result)
+        scroll_result["_scroll_id"] = "abc123"
+
+        post_patch.side_effect = [scroll_result, {"hits": {"hits": []}}]
+        del_patch.return_value = {}
+        for asset in self.app.assets.scroll_search():
+            print(asset)
+
+    @patch.object(ZmlpClient, 'post')
+    def test_search_raw_response(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {
             "query": {"match_all": {}}
         }
-        rsp = self.app.assets.search(search=search, raw=True)
-        path = rsp["hits"]["hits"][0]["_source"]["source"]["path"]
+        rsp = self.app.assets.search(search=search)
+        path = rsp.raw_response["hits"]["hits"][0]["_source"]["source"]["path"]
         assert path == "https://i.imgur.com/SSN26nN.jpg"
 
     @patch.object(ZmlpClient, 'post')
-    def test_search_wrapped(self, post_patch):
+    def test_search_iter(self, post_patch):
         post_patch.return_value = self.mock_search_result
         search = {
             "query": {"match_all": {}}
@@ -239,12 +269,10 @@ class AssetAppTests(unittest.TestCase):
         path = rsp[0].get_attr("source.path")
         assert path == "https://i.imgur.com/SSN26nN.jpg"
         assert 2 == rsp.size
-        assert 0 == rsp.offset
-        assert 2 == rsp.total
 
         # Iterate the result to test iteration.
         count = 0
-        for item in rsp:
+        for _ in rsp:
             count += 1
         assert count == 2
 

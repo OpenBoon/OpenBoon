@@ -2,7 +2,7 @@ import json
 import logging
 import os
 
-from .client import SearchResult, ZmlpJsonEncoder
+from .client import ZmlpJsonEncoder
 from .elements import Element
 from .util import as_collection
 
@@ -706,10 +706,25 @@ class AssetApp(object):
         """
         return self.app.client.delete("/api/v3/assets/_delete_by_query", search)
 
-    def search(self, search=None, raw=False):
+    def search(self, search=None):
         """
-        Perform an asset search using the ElasticSearch query DSL.  Note that for
-        load and security purposes, not all ElasticSearch search options are accepted.
+        Perform an asset search using the ElasticSearch query DSL.
+
+        See Also:
+            For search/query format.
+            https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-body.html
+
+        Args:
+            search (dict): The ElasticSearch search to execute.
+        Returns:
+            AssetSearchResult - an AssetSearchResult instance.
+        """
+        from .search import AssetSearchResult
+        return AssetSearchResult(self.app, search)
+
+    def scroll_search(self, search=None, timeout="1m"):
+        """
+        Perform an asset scrolled search using the ElasticSearch query DSL.
 
         See Also:
             For search/query format.
@@ -717,20 +732,12 @@ class AssetApp(object):
 
         Args:
             search (dict): The ElasticSearch search to execute
-            raw (bool): Return the raw ElasticSearch dict result rather than a SearchResult
+            timeout (str): The scroll timeout.
         Returns:
-            mixed: A SearchResult containing assets or in raw mode an
-                ElasticSearch search result dictionary.
+            AssetSearchScroll - an AssetSearch instance.
         """
-        body = {
-            'search': search,
-        }
-        rsp = self.app.client.post("/api/v3/assets/_search", body)
-        if raw:
-            return rsp
-        else:
-            rsp["hits"]["offset"] = search.get("from", 0)
-            return SearchResult(rsp, Asset)
+        from .search import AssetSearchScroller
+        return AssetSearchScroller(self.app, search, timeout)
 
     def get_by_id(self, id):
         """
