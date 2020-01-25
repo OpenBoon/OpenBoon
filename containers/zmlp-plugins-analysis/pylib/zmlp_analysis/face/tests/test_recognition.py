@@ -3,7 +3,8 @@ import logging
 import os
 from unittest.mock import patch
 
-from zmlp import ZmlpClient, AssetApp, Asset
+from zmlp import ZmlpClient, Asset
+from zmlp.app import AssetApp
 from zmlpsdk import Frame
 from zmlpsdk.proxy import store_asset_proxy
 from zmlpsdk.storage import ProjectStorage

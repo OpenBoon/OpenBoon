@@ -1,17 +1,17 @@
+import collections
 import json
 import logging
 import os
 
 from .client import ZmlpJsonEncoder
-from .elements import Element
 from .util import as_collection
 
 __all__ = [
     "Asset",
     "FileImport",
     "FileUpload",
-    "AssetApp",
-    "Clip"
+    "Clip",
+    "Element"
 ]
 
 logger = logging.getLogger(__name__)
@@ -422,331 +422,129 @@ class Clip(object):
         return serializable_dict
 
 
-class AssetApp(object):
+class Element(object):
+    """
+    An Element describes a region within an image which contains a specific prediction,
+    such as a face or object.  Elements are stored as nested objects in ElasticSearch
+    which allows for specific combinations of types, labels, regions, etc to be searched.
 
-    def __init__(self, app):
-        self.app = app
+    Elements are considered unique by type, labels, rect, and stored_file name.
 
-    def batch_import_files(self, assets):
+    Attributes:
+        regions (list[str]): The region of the image where the Element exists. This
+            is automatically set if it can be calculated from the rect and
+            the stored_file size.
+
+    """
+
+    # The attributes that get serialized for json.  If you change this, you'll likely
+    # have to change the ES mapping.
+    attrs = ['type', 'labels', 'rect', 'score', 'proxy', 'regions', 'analysis', 'vector']
+
+    def __init__(self, type,
+                 analysis=None, labels=None, score=None, rect=None, proxy=None, vector=None):
         """
-        Import a list of FileImport instances.
+        Create a new Element instance.
+
+        If a rect and stored_file arg with width/height attributes is provided, the
+        element regions will be calculated automatically.
 
         Args:
-            assets (list of FileImport): The list of files to import as Assets.
-
-        Notes:
-            Example return value:
-                {
-                  "bulkResponse" : {
-                    "took" : 15,
-                    "errors" : false,
-                    "items" : [ {
-                      "create" : {
-                        "_index" : "yvqg1901zmu5bw9q",
-                        "_type" : "_doc",
-                        "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
-                        "_version" : 1,
-                        "result" : "created",
-                        "forced_refresh" : true,
-                        "_shards" : {
-                          "total" : 1,
-                          "successful" : 1,
-                          "failed" : 0
-                        },
-                        "_seq_no" : 0,
-                        "_primary_term" : 1,
-                        "status" : 201
-                      }
-                    } ]
-                  },
-                  "failed" : [ ],
-                  "created" : [ "dd0KZtqyec48n1q1fniqVMV5yllhRRGx" ],
-                  "jobId" : "ba310246-1f87-1ece-b67c-be3f79a80d11"
-                }
-
-        Returns:
-            dict: A dictionary containing an ES bulk response, failed files,
-            and created asset ids.
-
+            type (str): The type of element, typically 'object' or 'face' but
+                it can be an arbitrary value.
+            analysis: (str): The type of analysis that created this element.
+            labels (list[str]): A list of predicted labels.
+            score (float): If a prediction is made, a score describes the confidence level.
+            rect (list[int]): A list of 4 integers describe the rectangle containing the element.
+                The ints represent the upper left point and lower left point of the rectangle.
+            proxy (dict): The asset file record which contains a proxy image for the Element.
+            vector (str): The similarity vector.
         """
-        body = {"assets": assets}
-        return self.app.client.post("/api/v3/assets/_batch_create", body)
+        self.type = type
+        self.labels = as_collection(labels)
+        self.score = float(score) if score else None
+        self.rect = rect
+        self.vector = vector
+        self.analysis = analysis
 
-    def batch_upload_files(self, assets):
+        self.proxy = None
+        self.regions = None
+
+        if proxy:
+            self.set_proxy(proxy)
+
+    def set_proxy(self, proxy):
         """
-        Batch upload a list of files and return a structure which contains
-        an ES bulk response object, a list of failed file paths, a list of created
-        asset Ids, and a processing jobId.
 
         Args:
-            assets (list of FileUpload):
-
-        Notes:
-            Example return value:
-                {
-                  "bulkResponse" : {
-                    "took" : 15,
-                    "errors" : false,
-                    "items" : [ {
-                      "create" : {
-                        "_index" : "yvqg1901zmu5bw9q",
-                        "_type" : "_doc",
-                        "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
-                        "_version" : 1,
-                        "result" : "created",
-                        "forced_refresh" : true,
-                        "_shards" : {
-                          "total" : 1,
-                          "successful" : 1,
-                          "failed" : 0
-                        },
-                        "_seq_no" : 0,
-                        "_primary_term" : 1,
-                        "status" : 201
-                      }
-                    } ]
-                  },
-                  "failed" : [ ],
-                  "created" : [ "dd0KZtqyec48n1q1fniqVMV5yllhRRGx" ],
-                  "jobId" : "ba310246-1f87-1ece-b67c-be3f79a80d11"
-                }
+            proxy (dict): The file spec for the proxy image
 
         Returns:
-            dict: A dictionary containing an ES bulk response, failed files,
-            and created asset ids.
         """
-        assets = as_collection(assets)
-        files = [asset.uri for asset in assets]
-        body = {
-            "assets": assets
-        }
-        return self.app.client.upload_files("/api/v3/assets/_batch_upload",
-                                            files, body)
+        self.proxy = '{}/{}'.format(proxy['category'], proxy['name'])
+        if self.rect:
+            self.set_regions(proxy)
 
-    def index(self, asset):
+    def set_regions(self, proxy):
+        self.regions = self.calculate_regions(proxy)
+
+    def calculate_regions(self, proxy):
         """
-        Re-index an existing asset.  The metadata for the entire asset
-        is overwritten by the local copy.
+        Calculate the regions where the element exists.  Possible
+        value are:
+            - NW
+            - NE
+            - SW
+            - SE
+            - CENTER
 
         Args:
-            asset (Asset): The asset
-
-        Notes:
-            Example return value:
-                {
-                  "_index" : "v4mtygyqqpsjlcnv",
-                  "_type" : "_doc",
-                  "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
-                  "_version" : 2,
-                  "result" : "updated",
-                  "_shards" : {
-                    "total" : 1,
-                    "successful" : 1,
-                    "failed" : 0
-                  },
-                  "_seq_no" : 1,
-                  "_primary_term" : 1
-                }
-
-        Examples:
-            asset = app.assets.get_by_id(id)
-            asset.set_attr("aux.my_field", 1000)
-            asset.remove_attr("aux.other_field")
-            app.assets.index(asset)
+            stored_file (dict): A stored file dict.
 
         Returns:
-            dict: An ES update response.
+            list[str]: An array of regions or None if no regions can be calculated.
+
         """
-        return self.app.client.put("/api/v3/assets/{}/_index".format(asset.id),
-                                   asset.document)
+        if not self.rect or not self.proxy:
+            return
 
-    def update(self, asset, doc):
+        Point = collections.namedtuple("Point", "x y")
+
+        l1 = Point(self.rect[0], self.rect[1])
+        r1 = Point(self.rect[2], self.rect[3])
+
+        # Use rect to determine region
+        keys = proxy.get('attrs', {}).keys()
+        if 'width' in keys and 'height' in keys:
+            width = proxy['attrs']['width']
+            height = proxy['attrs']['height']
+            regions = {
+                'NW': (Point(0, 0), Point(width / 2, height / 2)),
+                'NE': (Point(width / 2, 0), Point(width, height / 2)),
+                'SW': (Point(0, height / 2), Point(width / 2, height)),
+                'SE': (Point(width / 2, height / 2), Point(width, height))
+            }
+            result = []
+            for reg, points in regions.items():
+                if l1.x > points[1].x or points[0].x > r1.x:
+                    continue
+                if l1.y > points[1].y or points[0].y > r1.y:
+                    continue
+                result.append(reg)
+            # Add Center if we're in all 4
+            if len(result) == 4:
+                result.append("CENTER")
+            return result or None
+        return None
+
+    def for_json(self):
         """
-        Update a given Asset with a partial document dictionary.
-
-        Args:
-            asset: (mixed): An Asset object or unique asset id.
-            doc: (dict): the changes to apply.
-
-        Notes:
-            Doc argument example:
-                {
-                    "aux": {
-                        "captain": "kirk"
-                    }
-                }
-
-            Example return value:
-                {
-                  "_index" : "9l0l2skwmuesufff",
-                  "_type" : "_doc",
-                  "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
-                  "_version" : 2,
-                  "result" : "updated",
-                  "_shards" : {
-                    "total" : 1,
-                    "successful" : 1,
-                    "failed" : 0
-                  },
-                  "_seq_no" : 1,
-                  "_primary_term" : 1
-                }
-
-        Returns
-            dict: The ES update response object.
-        """
-        asset_id = getattr(asset, "id", None) or asset
-        body = {
-            "doc": doc
-        }
-        return self.app.client.post("/api/v3/assets/{}/_update".format(asset_id), body)
-
-    def batch_index(self, assets):
-        """
-        Reindex multiple existing assets.  The metadata for the entire asset
-        is overwritten by the local copy.
-
-        Notes:
-            Example return value:
-                {
-                  "took" : 11,
-                  "errors" : false,
-                  "items" : [ {
-                    "index" : {
-                      "_index" : "qjdjbpkvwg0sgusl",
-                      "_type" : "_doc",
-                      "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
-                      "_version" : 2,
-                      "result" : "updated",
-                      "_shards" : {
-                        "total" : 1,
-                        "successful" : 1,
-                        "failed" : 0
-                      },
-                      "_seq_no" : 1,
-                      "_primary_term" : 1,
-                      "status" : 200
-                    }
-                  } ]
-                }
-
+        Serialize the Element to JSON.
         Returns:
-            dict: An ES BulkResponse object.
-
+            dict: A serialized Element
         """
-        body = dict([(a.id, a.document) for a in assets])
-        return self.app.client.post("/api/v3/assets/_batch_index", body)
-
-    def batch_update(self, docs):
-        """
-        Args:
-            docs (dict): A dictionary of asset Id to document.
-
-        Notes:
-            Example request dictionary
-                {
-                    "assetId1": {
-                        "doc": {
-                            "aux": {
-                                "captain": "kirk"
-                            }
-                        }
-                    },
-                    "assetId2": {
-                        "doc": {
-                            "aux": {
-                                "captain": "kirk"
-                            }
-                        }
-                    }
-                }
-
-        Returns:
-            dict: An ES BulkResponse object.
-
-        """
-        return self.app.client.post("/api/v3/assets/_batch_update", docs)
-
-    def delete(self, asset):
-        """
-        Delete the given asset.
-
-        Args:
-            asset:
-
-        Returns:
-            An ES Delete response.
-
-        """
-        asset_id = getattr(asset, "id", None) or asset
-        return self.app.client.delete("/api/v3/assets/{}".format(asset_id))
-
-    def delete_by_query(self, search):
-        """
-        Delete assets by the given search.
-
-        Args:
-            search (dict): An ES search.
-
-        Notes:
-            Example Request:
-                {
-                    "query": {
-                        "terms": {
-                            "source.filename": {
-                                "bob.jpg"
-                            }
-                        }
-                    }
-                }
-
-        Returns:
-            An ES delete by query response.
-
-        """
-        return self.app.client.delete("/api/v3/assets/_delete_by_query", search)
-
-    def search(self, search=None):
-        """
-        Perform an asset search using the ElasticSearch query DSL.
-
-        See Also:
-            For search/query format.
-            https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-body.html
-
-        Args:
-            search (dict): The ElasticSearch search to execute.
-        Returns:
-            AssetSearchResult - an AssetSearchResult instance.
-        """
-        from .search import AssetSearchResult
-        return AssetSearchResult(self.app, search)
-
-    def scroll_search(self, search=None, timeout="1m"):
-        """
-        Perform an asset scrolled search using the ElasticSearch query DSL.
-
-        See Also:
-            For search/query format.
-            https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-body.html
-
-        Args:
-            search (dict): The ElasticSearch search to execute
-            timeout (str): The scroll timeout.
-        Returns:
-            AssetSearchScroll - an AssetSearch instance.
-        """
-        from .search import AssetSearchScroller
-        return AssetSearchScroller(self.app, search, timeout)
-
-    def get_by_id(self, id):
-        """
-        Return the asset with the given unique Id.
-
-        Args:
-            id (str): The unique ID of the asset.
-
-        Returns:
-            Asset: The Asset
-        """
-        return Asset(self.app.client.get("/api/v3/assets/{}".format(id)))
+        serializable_dict = {}
+        for attr in self.attrs:
+            if getattr(self, attr, None) is not None:
+                serializable_dict[attr] = getattr(self, attr)
+        return serializable_dict
