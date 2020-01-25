@@ -82,7 +82,7 @@ class ZmlpClient(object):
 
             for line in response.iter_lines():
                 if line:
-                    yield (line)
+                    yield line
 
         except requests.exceptions.ConnectionError as e:
             raise ZmlpConnectionException(e)
@@ -396,19 +396,10 @@ class SearchResult(object):
             data (dict): A search response body from the ZMLP servers.
             clazz (mixed): A class to wrap each item in the response body.
         """
-        # the "hits" key indicates its an ElasticSearch result.
-        if "hits" in data:
-            hits = data["hits"]
-            self.items = [clazz({"id": hit["_id"], "document": hit["_source"]})
-                          for hit in data["hits"]["hits"]]
-            self.offset = hits.get("offset", 0)
-            self.size = len(hits["hits"])
-            self.total = hits["total"]["value"]
-        else:
-            self.items = [clazz(item) for item in data["list"]]
-            self.offset = data["page"]["from"]
-            self.size = len(data["list"])
-            self.total = data["page"]["totalCount"]
+        self.items = [clazz(item) for item in data["list"]]
+        self.offset = data["page"]["from"]
+        self.size = len(data["list"])
+        self.total = data["page"]["totalCount"]
 
     def __iter__(self):
         return iter(self.items)

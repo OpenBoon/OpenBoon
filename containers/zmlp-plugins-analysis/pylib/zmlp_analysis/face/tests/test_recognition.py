@@ -3,13 +3,11 @@ import logging
 import os
 from unittest.mock import patch
 
-from zmlp import ZmlpClient, Asset
-from zmlp.app import AssetApp
+from zmlp import ZmlpClient
 from zmlpsdk import Frame
 from zmlpsdk.proxy import store_asset_proxy
 from zmlpsdk.storage import ProjectStorage
 from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
-from zmlp.client import SearchResult
 from zmlp_analysis.face.recognition import ZmlpFaceRecognitionProcessor, \
     ZmlpBuildFaceRecognitionModel
 
@@ -48,11 +46,11 @@ class BuildFaceRecognitionModelTests(PluginUnitTestCase):
         }
     }
 
-    @patch.object(AssetApp, 'search')
+    @patch.object(ZmlpClient, 'post')
     @patch('zmlp_analysis.face.recognition.get_proxy_level')
     @patch.object(ZmlpClient, 'upload_file')
     def test_build_model(self, upload_patch, proxy_patch, search_patch):
-        search_patch.return_value = SearchResult(self.mock_search_result, Asset)
+        search_patch.return_value = self.mock_search_result
         proxy_patch.return_value = zorroa_test_data("images/face-recognition/face1.jpg", False)
         upload_patch.return_value = {
             "name": "encodings.dat",
