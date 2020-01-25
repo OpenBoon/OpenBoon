@@ -25,7 +25,7 @@ setup(
     url='https://www.zorroa.com',
     license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
     package_dir={'': 'pylib'},
-    packages=['zmlp'],
+    packages=['zmlp', 'zmlp.app'],
     scripts=[],
 
     classifiers=[
