@@ -253,7 +253,7 @@ class AssetApp(object):
         Delete the given asset.
 
         Args:
-            asset:
+            asset (mixed): unique Id or Asset instance.
 
         Returns:
             An ES Delete response.
