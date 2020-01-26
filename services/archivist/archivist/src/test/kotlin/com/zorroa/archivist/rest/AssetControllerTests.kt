@@ -263,7 +263,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val file = MockMultipartFile(
             "files", "file-name.data", "image/jpeg",
-            File("src/test/resources/test-data/toucan.jpg").inputStream().readAllBytes()
+            File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
         )
 
         val body = MockMultipartFile(
@@ -292,7 +292,7 @@ class AssetControllerTests : MockMvcTest() {
         batchUpload.files = arrayOf(
             MockMultipartFile(
                 "files", "toucan.jpg", "image/jpeg",
-                File("src/test/resources/test-data/toucan.jpg").inputStream().readAllBytes()
+                File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
             )
         )
 
@@ -337,7 +337,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val file = MockMultipartFile(
             "file", "toucan.jpg", "image/jpeg",
-            File("src/test/resources/test-data/toucan.jpg").inputStream().readAllBytes()
+            File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
         )
 
         val body = MockMultipartFile(

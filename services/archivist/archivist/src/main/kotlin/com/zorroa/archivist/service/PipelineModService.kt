@@ -1,8 +1,8 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ArchivistConfiguration
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.LogObject
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModFilter
 import com.zorroa.archivist.domain.PipelineModSpec
@@ -16,6 +16,7 @@ import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.security.withAuth
+import com.zorroa.zmlp.service.logging.event
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener

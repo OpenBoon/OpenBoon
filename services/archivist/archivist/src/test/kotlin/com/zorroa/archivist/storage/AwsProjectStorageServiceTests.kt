@@ -45,7 +45,7 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
 
         val entity = projectStorageService.stream(loc)
-        val value = String(entity.body.inputStream.readAllBytes())
+        val value = String(entity.body.inputStream.readBytes())
         assertEquals("test", value)
     }
 }

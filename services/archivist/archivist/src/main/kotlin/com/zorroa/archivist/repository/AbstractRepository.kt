@@ -8,7 +8,6 @@ import com.fasterxml.uuid.UUIDTimer
 import com.fasterxml.uuid.impl.NameBasedGenerator
 import com.fasterxml.uuid.impl.TimeBasedGenerator
 import com.zorroa.archivist.config.ApplicationProperties
-import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -81,9 +80,6 @@ open class AbstractDao {
     protected lateinit var jdbc: JdbcTemplate
 
     protected lateinit var properties: ApplicationProperties
-
-    @Autowired
-    lateinit var meterRegistry: MeterRegistry
 
     @Autowired
     fun setApplicationProperties(properties: ApplicationProperties) {
