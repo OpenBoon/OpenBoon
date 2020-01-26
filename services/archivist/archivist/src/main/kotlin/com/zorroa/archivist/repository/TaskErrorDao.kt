@@ -2,17 +2,18 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.JobId
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.LogObject
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.service.MeterRegistryHolder.getTags
-import com.zorroa.archivist.service.warnEvent
+import com.zorroa.zmlp.service.logging.MeterRegistryHolder.getTags
+import com.zorroa.zmlp.service.logging.warnEvent
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.archivist.util.JdbcUtils
+import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
 import com.zorroa.zmlp.util.Json
 import com.zorroa.zmlp.util.readValueOrNull
 import io.micrometer.core.instrument.Tag

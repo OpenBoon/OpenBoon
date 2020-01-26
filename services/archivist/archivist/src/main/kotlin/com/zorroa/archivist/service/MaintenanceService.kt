@@ -3,7 +3,7 @@ package com.zorroa.archivist.service
 import com.google.common.util.concurrent.AbstractScheduledService
 import com.zorroa.archivist.domain.AnalystState
 import com.zorroa.archivist.repository.JobDao
-import io.micrometer.core.instrument.MeterRegistry
+import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
 import io.micrometer.core.instrument.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -148,7 +148,6 @@ class MaintenanceServiceImpl @Autowired constructor(
     val jobService: JobService,
     val dispatcherService: DispatcherService,
     val analystService: AnalystService,
-    val meterRegistry: MeterRegistry,
     val config: MaintenanceConfiguration
 ) : AbstractScheduledService(), MaintenanceService, ApplicationListener<ContextRefreshedEvent> {
 

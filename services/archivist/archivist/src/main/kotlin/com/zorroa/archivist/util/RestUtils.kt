@@ -1,6 +1,6 @@
 package com.zorroa.archivist.util
 
-import com.zorroa.archivist.domain.LogObject
+import com.zorroa.zmlp.service.logging.LogObject
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream

@@ -15,8 +15,8 @@ import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobStateChangeEvent
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.LogObject
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
@@ -39,12 +39,13 @@ import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.security.getAnalyst
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.security.withAuth
-import com.zorroa.archivist.service.MeterRegistryHolder.getTags
 import com.zorroa.archivist.storage.PipelineStorageConfiguration
 import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
+import com.zorroa.zmlp.service.logging.MeterRegistryHolder.getTags
+import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
+import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
-import io.micrometer.core.instrument.MeterRegistry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -108,8 +109,7 @@ class DispatchQueueManager @Autowired constructor(
     val analystService: AnalystService,
     val properties: ApplicationProperties,
     val authServerClient: AuthServerClient,
-    val pipelineStoragProperties: PipelineStorageConfiguration,
-    val meterRegistry: MeterRegistry
+    val pipelineStoragProperties: PipelineStorageConfiguration
 ) {
 
     /**
@@ -253,8 +253,7 @@ class DispatcherServiceImpl @Autowired constructor(
     private val taskErrorDao: TaskErrorDao,
     private val analystDao: AnalystDao,
     private val eventBus: EventBus,
-    private val assetService: AssetService,
-    private val meterRegistry: MeterRegistry
+    private val assetService: AssetService
 ) : DispatcherService {
 
     @Autowired

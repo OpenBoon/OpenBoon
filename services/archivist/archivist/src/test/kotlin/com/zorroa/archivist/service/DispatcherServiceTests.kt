@@ -21,7 +21,7 @@ import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.getProjectId
-import io.micrometer.core.instrument.MeterRegistry
+import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
@@ -51,9 +51,6 @@ class DispatcherServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var dispatchQueueManager: DispatchQueueManager
-
-    @Autowired
-    lateinit var meterRegistry: MeterRegistry
 
     @Test
     fun testHandleStatsEvent() {

@@ -2,6 +2,7 @@ package com.zorroa.archivist.storage
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Clip
+import com.zorroa.zmlp.service.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
