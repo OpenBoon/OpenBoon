@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Input /> should render properly with an error 1`] = `
-.emotion-3 {
+.emotion-5 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
@@ -11,7 +11,7 @@ exports[`<Input /> should render properly with an error 1`] = `
   padding-bottom: 8px;
 }
 
-.emotion-2 {
+.emotion-4 {
   position: relative;
 }
 
@@ -21,11 +21,22 @@ exports[`<Input /> should render properly with an error 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  border: 1px solid #c92300;
+  color: #000000;
+  background-color: #ffffff;
+  border: 2px solid #c92300;
+}
+
+.emotion-3 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
+  color: #c92300;
+  font-style: italic;
 }
 
 <div
-  className="emotion-3"
+  className="emotion-5"
 >
   <label
     className="emotion-0"
@@ -34,7 +45,7 @@ exports[`<Input /> should render properly with an error 1`] = `
     Email
   </label>
   <div
-    className="emotion-2"
+    className="emotion-4"
   >
     <input
       autoFocus={true}
@@ -45,6 +56,15 @@ exports[`<Input /> should render properly with an error 1`] = `
       type="text"
       value="foo@bar.baz"
     />
+    <div
+      className="emotion-3"
+    >
+      <span
+        className="emotion-2"
+      >
+        Error
+      </span>
+    </div>
   </div>
 </div>
 `;
