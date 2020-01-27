@@ -4,13 +4,11 @@ import AccountPasswordForm from '../Form'
 
 const noop = () => () => {}
 
+jest.mock('../helpers')
+
 describe('<AccountPasswordForm />', () => {
   it('should render properly', () => {
-    const mockFn = jest.fn()
-
-    const component = TestRenderer.create(
-      <AccountPasswordForm onSubmit={mockFn} />,
-    )
+    const component = TestRenderer.create(<AccountPasswordForm />)
 
     act(() => {
       component.root
@@ -36,10 +34,11 @@ describe('<AccountPasswordForm />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockFn).toHaveBeenCalledWith({
-      currentPassword: 'foo',
-      newPassword: 'bar',
-      confirmPassword: 'bar',
-    })
+    expect(component.toJSON()).toMatchSnapshot()
+    // expect(mockFn).toHaveBeenCalledWith({
+    //   currentPassword: 'foo',
+    //   newPassword: 'bar',
+    //   confirmPassword: 'bar',
+    // })
   })
 })
