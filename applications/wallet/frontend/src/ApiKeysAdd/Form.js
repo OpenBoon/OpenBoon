@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 import { spacing } from '../Styles'
 
 import Form from '../Form'
-import Input from '../Input'
+import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import CheckboxGroup from '../Checkbox/Group'
-import Button, { VARIANTS } from '../Button'
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 const reducer = (state, action) => ({ ...state, ...action })
 
@@ -18,6 +18,7 @@ const ApiKeysAddForm = ({ onSubmit }) => {
       <Input
         autoFocus
         id="name"
+        variant={INPUT_VARIANTS.SECONDARY}
         label="Name"
         type="text"
         value={state.name}
@@ -61,7 +62,7 @@ const ApiKeysAddForm = ({ onSubmit }) => {
         }}>
         <Button
           type="submit"
-          variant={VARIANTS.PRIMARY}
+          variant={BUTTON_VARIANTS.PRIMARY}
           onClick={() => onSubmit(state)}
           isDisabled={!state.name}>
           Generate Key &amp; Download
