@@ -35,10 +35,5 @@ describe('<AccountPasswordForm />', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
-    // expect(mockFn).toHaveBeenCalledWith({
-    //   currentPassword: 'foo',
-    //   newPassword: 'bar',
-    //   confirmPassword: 'bar',
-    // })
   })
 })

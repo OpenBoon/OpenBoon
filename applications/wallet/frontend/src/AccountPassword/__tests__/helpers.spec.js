@@ -3,7 +3,6 @@ import { onSubmit } from '../helpers'
 describe('<AccountPassword /> helpers', () => {
   describe('onSubmit()', () => {
     const mockDispatch = jest.fn()
-    const mockSetErrors = jest.fn()
 
     it('should update the password ', async () => {
       fetch.mockResponseOnce(
@@ -16,11 +15,12 @@ describe('<AccountPassword /> helpers', () => {
 
       await onSubmit({
         dispatch: mockDispatch,
-        setErrors: mockSetErrors,
         projectId: 'iud',
-        currentPassword: 'password',
-        newPassword: 'password1',
-        confirmPassword: 'password1',
+        state: {
+          currentPassword: 'password',
+          newPassword: 'password1',
+          confirmPassword: 'password1',
+        },
       })
 
       expect(fetch.mock.calls.length).toEqual(1)
@@ -39,6 +39,7 @@ describe('<AccountPassword /> helpers', () => {
         currentPassword: '',
         newPassword: '',
         confirmPassword: '',
+        errors: {},
       })
     })
 
@@ -49,11 +50,12 @@ describe('<AccountPassword /> helpers', () => {
 
       await onSubmit({
         dispatch: mockDispatch,
-        setErrors: mockSetErrors,
         projectId: 'projectId',
-        currentPassword: 'password',
-        newPassword: 'password1',
-        confirmPassword: 'password2',
+        state: {
+          currentPassword: 'password',
+          newPassword: 'password1',
+          confirmPassword: 'password2',
+        },
       })
 
       expect(fetch.mock.calls.length).toEqual(1)
@@ -68,8 +70,10 @@ describe('<AccountPassword /> helpers', () => {
           '{"oldPassword":"password","newPassword1":"password1","newPassword2":"password2"}',
       })
 
-      expect(mockSetErrors).toHaveBeenCalledWith({
-        newPassword2: 'Error message',
+      expect(mockDispatch).toHaveBeenCalledWith({
+        errors: {
+          newPassword2: 'Error message',
+        },
       })
     })
   })

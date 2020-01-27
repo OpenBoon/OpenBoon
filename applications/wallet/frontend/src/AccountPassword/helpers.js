@@ -4,11 +4,8 @@ import { fetcher } from '../Fetch/helpers'
 
 export const onSubmit = async ({
   dispatch,
-  setErrors,
   projectId,
-  currentPassword,
-  newPassword,
-  confirmPassword,
+  state: { currentPassword, newPassword, confirmPassword },
 }) => {
   try {
     await fetcher(`/api/v1/password/change/`, {
@@ -24,18 +21,18 @@ export const onSubmit = async ({
       currentPassword: '',
       newPassword: '',
       confirmPassword: '',
+      errors: {},
     })
 
     Router.push('/[projectId]/account', `/${projectId}/account`)
   } catch (response) {
-    response.json().then(errors => {
-      const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
-        acc[errorKey] = errors[errorKey].join(' ')
+    const errors = await response.json()
+    const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
+      acc[errorKey] = errors[errorKey].join(' ')
 
-        return acc
-      }, {})
+      return acc
+    }, {})
 
-      setErrors(parsedErrors)
-    })
+    dispatch({ errors: parsedErrors })
   }
 }

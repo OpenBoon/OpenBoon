@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useState, useReducer } from 'react'
+import { useReducer } from 'react'
 
 import { spacing } from '../Styles'
 
@@ -16,11 +16,11 @@ const AccountPasswordForm = () => {
     query: { projectId },
   } = useRouter()
 
-  const [errors, setErrors] = useState({})
   const [state, dispatch] = useReducer(reducer, {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
+    errors: {},
   })
 
   return (
@@ -35,8 +35,8 @@ const AccountPasswordForm = () => {
         onChange={({ target: { value } }) =>
           dispatch({ currentPassword: value })
         }
-        hasError={errors.oldPassword !== undefined}
-        errorMessage={errors.oldPassword}
+        hasError={state.errors.oldPassword !== undefined}
+        errorMessage={state.errors.oldPassword}
       />
 
       <Input
@@ -46,8 +46,8 @@ const AccountPasswordForm = () => {
         type="password"
         value={state.newPassword}
         onChange={({ target: { value } }) => dispatch({ newPassword: value })}
-        hasError={errors.newPassword1 !== undefined}
-        errorMessage={errors.newPassword1}
+        hasError={state.errors.newPassword1 !== undefined}
+        errorMessage={state.errors.newPassword1}
       />
 
       <Input
@@ -59,8 +59,8 @@ const AccountPasswordForm = () => {
         onChange={({ target: { value } }) =>
           dispatch({ confirmPassword: value })
         }
-        hasError={errors.newPassword2 !== undefined}
-        errorMessage={errors.newPassword2}
+        hasError={state.errors.newPassword2 !== undefined}
+        errorMessage={state.errors.newPassword2}
       />
 
       <div
@@ -71,7 +71,7 @@ const AccountPasswordForm = () => {
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() => onSubmit({ dispatch, setErrors, projectId, ...state })}
+          onClick={() => onSubmit({ dispatch, projectId, state })}
           isDisabled={
             !state.currentPassword ||
             !state.newPassword ||
