@@ -54,7 +54,8 @@ enum class LogObject {
     PROJECT_STORAGE,
     SYSTEM_STORAGE,
     PIPELINE_STORAGE,
-    PIPELINE_MODULE
+    PIPELINE_MODULE,
+    API_KEY
 }
 
 /**

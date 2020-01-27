@@ -8,7 +8,11 @@ import com.zorroa.auth.server.repository.ApiKeyRepository
 import com.zorroa.auth.server.repository.PagedList
 import com.zorroa.auth.server.security.KeyGenerator
 import com.zorroa.auth.server.security.getProjectId
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
+import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.service.security.EncryptionService
+import org.slf4j.LoggerFactory
 import java.util.UUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -52,6 +56,15 @@ class ApiKeyServiceImpl constructor(
             spec.name,
             spec.permissions.map { it.name }.toSet()
         )
+
+        logger.event(
+            LogObject.API_KEY, LogAction.CREATE,
+            mapOf(
+                "apiKeyId" to key.id,
+                "apiKeyName" to key.name
+            )
+        )
+
         return apiKeyRepository.saveAndFlush(key)
     }
 
@@ -76,6 +89,17 @@ class ApiKeyServiceImpl constructor(
     }
 
     override fun delete(apiKey: ApiKey) {
+        logger.event(
+            LogObject.API_KEY, LogAction.DELETE,
+            mapOf(
+                "apiKeyId" to apiKey.id,
+                "apiKeyName" to apiKey.name
+            )
+        )
         apiKeyRepository.delete(apiKey)
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(ApiKeyServiceImpl::class.java)
     }
 }
