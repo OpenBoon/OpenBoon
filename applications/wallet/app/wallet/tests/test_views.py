@@ -136,7 +136,7 @@ def test_api_logout(api_client, user):
 def test_password_change(api_client, user):
     api_client.force_login(user)
     response = api_client.post(reverse('api-password-change'),
-                               {'old_password': 'letmein'
+                               {'old_password': 'letmein',
                                 'new_password1': '7BMQv5Pb(KpdS+!z',
                                 'new_password2': '7BMQv5Pb(KpdS+!z'})
     assert response.status_code == 200
