@@ -10,7 +10,7 @@ import zmlp
 from zmlpsdk import AssetProcessor
 from zmlpsdk.proxy import get_proxy_level, store_element_proxy
 from zmlpsdk.storage import file_storage
-from zmlp.elements import Element
+from zmlp.asset import Element
 from zmlp.util import as_collection
 
 NAMESPACE = 'zmlpFaceRecognition'

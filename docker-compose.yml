@@ -136,6 +136,8 @@ services:
     build:
       context: .
       dockerfile: applications/wallet/Dockerfile
+      args:
+        CI_COMMIT_SHA: $CI_COMMIT_SHA
     environment:
       DJANGO_SETTINGS_MODULE: wallet.settings
       PG_HOST: postgres

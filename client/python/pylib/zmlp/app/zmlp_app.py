@@ -2,9 +2,8 @@ import base64
 import logging
 import os
 
-from .asset import AssetApp
-from .datasource import DataSourceApp
-from .client import ZmlpClient
+from . import AssetApp, DataSourceApp
+from ..client import ZmlpClient
 
 logger = logging.getLogger(__name__)
 

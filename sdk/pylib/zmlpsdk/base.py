@@ -1,7 +1,7 @@
 import logging
 import os
 
-from zmlp.app import app_from_env
+from zmlp import app_from_env
 from zmlp.exception import ZmlpException
 
 logger = logging.getLogger(__name__)
