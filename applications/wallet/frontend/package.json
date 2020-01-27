@@ -133,7 +133,7 @@
     "esm": "3.2.25",
     "express": "4.17.1",
     "http-proxy-middleware": "0.20.0",
-    "husky": "4.0.10",
+    "husky": "4.2.1",
     "jest": "24.9.0",
     "jest-emotion": "10.0.27",
     "jest-fetch-mock": "3.0.1",
