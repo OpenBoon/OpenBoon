@@ -137,7 +137,7 @@
     "jest": "24.9.0",
     "jest-emotion": "10.0.27",
     "jest-fetch-mock": "3.0.1",
-    "lint-staged": "9.5.0",
+    "lint-staged": "10.0.2",
     "morgan": "1.9.1",
     "prettier": "1.19.1",
     "react-test-renderer": "16.12.0",
