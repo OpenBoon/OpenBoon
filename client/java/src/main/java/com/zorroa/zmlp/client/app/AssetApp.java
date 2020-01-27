@@ -83,6 +83,18 @@ public class AssetApp {
         return client.post("/api/v3/assets/_search", assetSearch, Map.class);
     }
 
+    /**
+     * Re-index an existing asset.  The metadata for the entire asset
+     * is overwritten by the local copy.
+     *
+     * @param asset The asset
+     * @return EL Object
+     */
+
+    public Map index(Asset asset) {
+        return client.post(String.format("/api/v3/assets/%s/_index", asset.getId()), asset.getDocument(), Map.class);
+    }
+
     private PagedList<Asset> buildAssetListResult(Map map) {
 
         Map hits = (Map) map.get("hits");

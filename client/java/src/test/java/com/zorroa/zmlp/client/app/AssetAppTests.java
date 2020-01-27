@@ -119,7 +119,21 @@ public class AssetAppTests extends AbstractAppTests {
         assertEquals("nestedValue", nestedValue);
         assertEquals("https://i.imgur.com/SSN26nN.jpg", path);
     }
-    
+
+    @Test
+    public void testIndex() throws IOException {
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock()));
+        webServer.enqueue(new MockResponse().setBody(getMockIndex()));
+
+        Asset asset = assetApp.getById("abc123");
+
+        asset.setAttr("aux.my_field", 1000);
+        asset.setAttr("aux.other_field", "fieldValue");
+        Map indexedAsset = assetApp.index(asset);
+
+        assertEquals(Json.mapper.readValue(getMockIndex().getBytes(), Map.class), indexedAsset);
+    }
+
     // Mocks
     private String getImportFilesMock() {
         return getMockData("mock-import-files");
@@ -135,6 +149,10 @@ public class AssetAppTests extends AbstractAppTests {
 
     private String getMockSearchResult() {
         return getMockData("mock-search-result");
+    }
+
+    private String getMockIndex() {
+        return getMockData("mock-index-assets");
     }
 
     private String getMockData(String name) {
