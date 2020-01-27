@@ -2,8 +2,8 @@ package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.LIST_OF_PREFS
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.LogObject
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.Pipeline
 import com.zorroa.archivist.domain.PipelineFilter
 import com.zorroa.archivist.domain.PipelineMod
@@ -12,7 +12,7 @@ import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
-import com.zorroa.archivist.service.event
+import com.zorroa.zmlp.service.logging.event
 import com.zorroa.archivist.util.JdbcUtils.insert
 import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.isUUID

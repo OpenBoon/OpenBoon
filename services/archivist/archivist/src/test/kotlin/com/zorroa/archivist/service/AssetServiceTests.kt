@@ -421,7 +421,7 @@ class AssetServiceTests : AbstractTest() {
         batchUpload.files = arrayOf(
             MockMultipartFile(
                 "files", "file-name.data", "image/jpeg",
-                File("src/test/resources/test-data/toucan.jpg").inputStream().readAllBytes()
+                File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
             )
         )
 

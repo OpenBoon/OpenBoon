@@ -15,8 +15,8 @@ import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.archivist.domain.LogAction
-import com.zorroa.archivist.domain.LogObject
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageSpec
@@ -35,6 +35,8 @@ import org.elasticsearch.action.bulk.BulkResponse
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
+import com.zorroa.zmlp.service.logging.event
+import com.zorroa.zmlp.service.logging.warnEvent
 import org.elasticsearch.client.Response
 import org.elasticsearch.common.Strings
 import org.elasticsearch.index.query.QueryBuilders

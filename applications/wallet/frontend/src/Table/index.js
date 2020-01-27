@@ -22,12 +22,14 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
     `${url}?from=${from}&size=${SIZE}`,
   )
 
+  const hasException = !results || results.length === 0 || error
+
   return (
-    <div css={{ height: !results || error ? '100%' : 'auto' }}>
+    <div css={{ height: hasException ? '100%' : 'auto' }}>
       <table
         css={{
           width: '100%',
-          height: !results || error ? '100%' : 'auto',
+          height: hasException ? '100%' : 'auto',
           borderSpacing: 0,
           boxShadow: constants.boxShadows.table,
           whiteSpace: 'nowrap',

@@ -6,7 +6,7 @@ import com.zorroa.archivist.domain.DataSourceFilter
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.LogObject
+import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.repository.DataSourceJdbcDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.DataSourceService

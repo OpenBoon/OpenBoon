@@ -1,11 +1,8 @@
 import logging
-import os
 import unittest
-from unittest.mock import patch
 
-from zmlp import Asset
-from zmlp import ZmlpClient, app_from_env
-from zmlp.asset import FileImport, FileUpload, Clip
+from zmlp import Asset, Element
+from zmlp.asset import FileImport, Clip
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -120,202 +117,6 @@ class AssetTests(unittest.TestCase):
         assert asset["foo.bar.bing"] == "123"
 
 
-class AssetAppTests(unittest.TestCase):
-
-    def setUp(self):
-        self.app = app_from_env()
-
-        self.mock_import_result = {
-            "bulkResponse": {
-                "took": 15,
-                "errors": False,
-                "items": [{
-                    "create": {
-                        "_index": "yvqg1901zmu5bw9q",
-                        "_type": "_doc",
-                        "_id": "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
-                        "_version": 1,
-                        "result": "created",
-                        "forced_refresh": True,
-                        "_shards": {
-                            "total": 1,
-                            "successful": 1,
-                            "failed": 0
-                        },
-                        "_seq_no": 0,
-                        "_primary_term": 1,
-                        "status": 201
-                    }
-                }]
-            },
-            "failed": [],
-            "created": ["dd0KZtqyec48n1q1fniqVMV5yllhRRGx"],
-            "jobId": "ba310246-1f87-1ece-b67c-be3f79a80d11"
-        }
-
-        # A mock search result used for asset search tests
-        self.mock_search_result = {
-            "took": 4,
-            "timed_out": False,
-            "hits": {
-                "total": {"value": 2},
-                "max_score": 0.2876821,
-                "hits": [
-                    {
-                        "_index": "litvqrkus86sna2w",
-                        "_type": "asset",
-                        "_id": "dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg",
-                        "_score": 0.2876821,
-                        "_source": {
-                            "source": {
-                                "path": "https://i.imgur.com/SSN26nN.jpg"
-                            }
-                        }
-                    },
-                    {
-                        "_index": "litvqrkus86sna2w",
-                        "_type": "asset",
-                        "_id": "aabbccddec48n1q1fginVMV5yllhRRGx2WKyKLjDphg",
-                        "_score": 0.2876821,
-                        "_source": {
-                            "source": {
-                                "path": "https://i.imgur.com/foo.jpg"
-                            }
-                        }
-                    }
-                ]
-            }
-        }
-
-    @patch.object(ZmlpClient, 'post')
-    def test_import_files(self, post_patch):
-        post_patch.return_value = self.mock_import_result
-        assets = [FileImport("gs://zorroa-dev-data/image/pluto.png")]
-        rsp = self.app.assets.batch_import_files(assets)
-        assert rsp["created"][0] == "dd0KZtqyec48n1q1fniqVMV5yllhRRGx"
-
-    @patch.object(ZmlpClient, 'get')
-    def test_get_by_id(self, get_patch):
-        get_patch.return_value = {
-            "id": "abc13",
-            "document": {
-                "source": {
-                    "path": "gs://zorroa-dev-data/image/pluto.png"
-                }
-            }
-        }
-        asset = self.app.assets.get_by_id("abc123")
-        assert type(asset) == Asset
-        assert asset.uri is not None
-        assert asset.id is not None
-        assert asset.document is not None
-
-    @patch.object(ZmlpClient, 'upload_files')
-    def test_upload_assets(self, post_patch):
-        post_patch.return_value = self.mock_import_result
-
-        path = os.path.dirname(__file__) + "/../../../../../test-data/images/set01/toucan.jpg"
-        assets = [FileUpload(path)]
-        rsp = self.app.assets.batch_upload_files(assets)
-        assert rsp["created"][0] == "dd0KZtqyec48n1q1fniqVMV5yllhRRGx"
-
-    @patch.object(ZmlpClient, 'post')
-    def test_search_raw(self, post_patch):
-        post_patch.return_value = self.mock_search_result
-        search = {
-            "query": {"match_all": {}}
-        }
-        rsp = self.app.assets.search(search=search, raw=True)
-        path = rsp["hits"]["hits"][0]["_source"]["source"]["path"]
-        assert path == "https://i.imgur.com/SSN26nN.jpg"
-
-    @patch.object(ZmlpClient, 'post')
-    def test_search_wrapped(self, post_patch):
-        post_patch.return_value = self.mock_search_result
-        search = {
-            "query": {"match_all": {}}
-        }
-        rsp = self.app.assets.search(search=search)
-        path = rsp[0].get_attr("source.path")
-        assert path == "https://i.imgur.com/SSN26nN.jpg"
-        assert 2 == rsp.size
-        assert 0 == rsp.offset
-        assert 2 == rsp.total
-
-        # Iterate the result to test iteration.
-        count = 0
-        for item in rsp:
-            count += 1
-        assert count == 2
-
-    @patch.object(ZmlpClient, 'put')
-    def test_index(self, put_patch):
-        asset = Asset({'id': '123'})
-        asset.set_attr('foo.bar', 'bing')
-        self.app.assets.index(asset)
-        args = put_patch.call_args_list
-        body = args[0][0][1]
-        assert body['foo'] == {'bar': 'bing'}
-
-    @patch.object(ZmlpClient, 'post')
-    def test_batch_index(self, post_patch):
-        asset = Asset({'id': '123'})
-        asset.set_attr('foo.bar', 'bing')
-        self.app.assets.batch_index([asset])
-        args = post_patch.call_args_list
-        body = args[0][0][1]
-        assert body['123'] == {'foo': {'bar': 'bing'}}
-
-    @patch.object(ZmlpClient, 'post')
-    def test_update(self, post_patch):
-        req = {
-            'foo': 'bar'
-        }
-
-        self.app.assets.update('123', req)
-        args = post_patch.call_args_list
-        body = args[0][0][1]
-        assert body['doc'] == {'foo': 'bar'}
-
-    @patch.object(ZmlpClient, 'post')
-    def test_batch_update(self, post_patch):
-        req = {
-            'abc123': {
-                'doc': {
-                    'foo': 'bar'
-                }
-            }
-        }
-
-        self.app.assets.batch_update(req)
-        args = post_patch.call_args_list
-        body = args[0][0][1]
-        assert body['abc123'] == {'doc': {'foo': 'bar'}}
-
-    @patch.object(ZmlpClient, 'delete')
-    def test_delete_with_asset_object(self, del_patch):
-        asset = Asset({'id': '123'})
-        self.app.assets.delete(asset)
-        args = del_patch.call_args_list
-        uri = args[0][0][0]
-        assert '/api/v3/assets/123' == uri
-
-    @patch.object(ZmlpClient, 'delete')
-    def test_delete_with_asset_id(self, del_patch):
-        self.app.assets.delete('123')
-        args = del_patch.call_args_list
-        uri = args[0][0][0]
-        assert '/api/v3/assets/123' == uri
-
-    @patch.object(ZmlpClient, 'delete')
-    def test_delete_by_query(self, del_patch):
-        q = {'query': {'match_all': {}}}
-        self.app.assets.delete_by_query(q)
-        args = del_patch.call_args_list
-        assert '/api/v3/assets/_delete_by_query' == args[0][0][0]
-        assert q == args[0][0][1]
-
-
 class FileImportTests(unittest.TestCase):
 
     def test_get_item_and_set_item(self):
@@ -345,3 +146,55 @@ class ClipTests(unittest.TestCase):
         assert clip.stop == 2
         assert clip.type == 'scene'
         assert clip.timeline == 'faces'
+
+
+class ElementTests(unittest.TestCase):
+    stored_file = {
+        'name': 'cat_object.jpg',
+        'category': 'element',
+        'attrs': {
+            'width': 300,
+            'height': 300
+        }
+    }
+
+    def test_create_min_element(self):
+        element = Element('object', labels='cat')
+        assert element.type == 'object'
+        assert element.labels == ['cat']
+        assert element.proxy is None
+        assert element.rect is None
+        assert element.score is None
+
+    def test_create_rect_element_with_file(self):
+        element = Element('object', labels='cat', proxy=self.stored_file)
+
+        assert element.type == 'object'
+        assert element.labels == ['cat']
+        assert element.proxy == 'element/cat_object.jpg'
+
+    def test_create_rect_element_with_nw_region(self):
+        element = Element('object', labels='cat',
+                          rect=[0, 0, 100, 100], proxy=self.stored_file)
+        assert element.regions == ['NW']
+
+    def test_create_rect_element_with_sw_region(self):
+        element = Element('object', labels='cat',
+                          rect=[0, 175, 10, 200], proxy=self.stored_file)
+        assert element.regions == ['SW']
+
+    def test_create_rect_element_with_ne_region(self):
+        element = Element('object', labels='cat',
+                          rect=[175, 0, 200, 10], proxy=self.stored_file)
+        assert element.regions == ['NE']
+
+    def test_create_rect_element_with_se_region(self):
+        element = Element('object', labels='cat',
+                          rect=[200, 200, 300, 300], proxy=self.stored_file)
+        assert element.regions == ['SE']
+
+    def test_create_rect_element_with_center_region(self):
+        element = Element('object', labels='cat',
+                          rect=[10, 10, 250, 250], proxy=self.stored_file)
+        assert len(element.regions) == 5
+        assert 'CENTER' in element.regions

@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageSpec
+import com.zorroa.archivist.service.AssetSearchService
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
@@ -24,10 +25,13 @@ class AssetControllerTests : MockMvcTest() {
     @Autowired
     lateinit var projectStorageService: ProjectStorageService
 
+    @Autowired
+    lateinit var assetSearchService: AssetSearchService
+
     @Test
     fun testBatchCreate() {
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        val rsp = mvc.perform(
+        mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/_batch_create")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -259,7 +263,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val file = MockMultipartFile(
             "files", "file-name.data", "image/jpeg",
-            File("src/test/resources/test-data/toucan.jpg").inputStream().readAllBytes()
+            File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
         )
 
         val body = MockMultipartFile(
@@ -288,7 +292,7 @@ class AssetControllerTests : MockMvcTest() {
         batchUpload.files = arrayOf(
             MockMultipartFile(
                 "files", "toucan.jpg", "image/jpeg",
-                File("src/test/resources/test-data/toucan.jpg").inputStream().readAllBytes()
+                File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
             )
         )
 
@@ -333,7 +337,7 @@ class AssetControllerTests : MockMvcTest() {
 
         val file = MockMultipartFile(
             "file", "toucan.jpg", "image/jpeg",
-            File("src/test/resources/test-data/toucan.jpg").inputStream().readAllBytes()
+            File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
         )
 
         val body = MockMultipartFile(
@@ -405,6 +409,83 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.hits.total.value", CoreMatchers.equalTo(2)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.hits.hits.length()", CoreMatchers.equalTo(1)))
+            .andReturn()
+    }
+
+    @Test
+    fun testSearchWithScroll() {
+
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                listOf(
+                    AssetSpec("https://i.imgur.com/SSN26nN.jpg"),
+                    AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
+                )
+            )
+        )
+
+        val search = """{ "size": 1, "query": { "match_all": {}} }"""
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/assets/_search?scroll=1m")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(search)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$._scroll_id", CoreMatchers.anything()))
+            .andReturn()
+    }
+
+    @Test
+    fun testScroll() {
+
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                listOf(
+                    AssetSpec("https://i.imgur.com/SSN26nN.jpg"),
+                    AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
+                )
+            )
+        )
+
+        val search = """{ "size": 1, "query": { "match_all": {}} }"""
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/assets/_search?scroll=1m")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(search)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$._scroll_id", CoreMatchers.anything()))
+            .andReturn()
+    }
+
+    @Test
+    fun testClearScroll() {
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                listOf(
+                    AssetSpec("https://i.imgur.com/SSN26nN.jpg"),
+                    AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
+                )
+            )
+        )
+
+        val search = assetSearchService.search(mapOf(), mapOf("scroll" to arrayOf("1m")))
+        val body = """
+            {"scroll_id": "${search.scrollId}" }
+        """.trimIndent()
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/api/v3/assets/_search/scroll")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(body)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.succeeded", CoreMatchers.equalTo(true)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.num_freed", CoreMatchers.anything()))
             .andReturn()
     }
 }

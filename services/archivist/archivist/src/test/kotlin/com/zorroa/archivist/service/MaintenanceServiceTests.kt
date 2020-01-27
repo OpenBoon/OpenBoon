@@ -7,7 +7,8 @@ import com.zorroa.archivist.domain.AnalystSpec
 import com.zorroa.archivist.domain.AnalystState
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.TaskState
-import io.micrometer.core.instrument.MeterRegistry
+import com.zorroa.zmlp.service.logging.MeterRegistryHolder
+import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.Duration
@@ -21,9 +22,6 @@ class MaintenanceServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var analystService: AnalystService
-
-    @Autowired
-    lateinit var meterRegistry: MeterRegistry
 
     @Autowired
     lateinit var jobService: JobService

@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.context.request.WebRequest
 import org.springframework.web.multipart.MultipartFile
 import javax.servlet.ServletOutputStream
 
@@ -56,11 +57,45 @@ class AssetController @Autowired constructor(
 
     @PreAuthorize("hasAuthority('AssetsRead')")
     @RequestMapping("/api/v3/assets/_search", method = [RequestMethod.GET, RequestMethod.POST])
-    fun search(@RequestBody(required = false) search: Map<String, Object>?, output: ServletOutputStream):
+    fun search(
+        @RequestBody(required = false) search: Map<String, Any>?,
+        request: WebRequest,
+        output: ServletOutputStream
+    ): ResponseEntity<Resource> {
+
+        val rsp = assetSearchService.search(search ?: mapOf(), request.parameterMap)
+        val output = RawByteArrayOutputStream(1024 * 64)
+        XContentFactory.jsonBuilder(output).use {
+            rsp.toXContent(it, ToXContent.EMPTY_PARAMS)
+        }
+
+        return ResponseEntity.ok()
+            .contentLength(output.size().toLong())
+            .body(InputStreamResource(output.toInputStream()))
+    }
+
+    @PreAuthorize("hasAuthority('AssetsRead')")
+    @PostMapping("/api/v3/assets/_search/scroll")
+    fun scroll(@RequestBody(required = false) scroll: Map<String, String>, output: ServletOutputStream):
         ResponseEntity<Resource> {
 
-        val rsp = assetSearchService.search(search ?: mapOf())
+        val rsp = assetSearchService.scroll(scroll)
         val output = RawByteArrayOutputStream(1024 * 64)
+        XContentFactory.jsonBuilder(output).use {
+            rsp.toXContent(it, ToXContent.EMPTY_PARAMS)
+        }
+
+        return ResponseEntity.ok()
+            .contentLength(output.size().toLong())
+            .body(InputStreamResource(output.toInputStream()))
+    }
+
+    @PreAuthorize("hasAuthority('AssetsRead')")
+    @DeleteMapping("/api/v3/assets/_search/scroll")
+    fun clear_scroll(@RequestBody(required = false) scroll: Map<String, String>, output: ServletOutputStream):
+        ResponseEntity<Resource> {
+        val rsp = assetSearchService.clearScroll(scroll)
+        val output = RawByteArrayOutputStream(1024 * 1)
         XContentFactory.jsonBuilder(output).use {
             rsp.toXContent(it, ToXContent.EMPTY_PARAMS)
         }

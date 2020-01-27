@@ -2,8 +2,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
-import zmlp
-from zmlp import ZmlpClient
+from zmlp import ZmlpClient, ZmlpApp
 from zmlp.datasource import DataSource
 
 logging.basicConfig(level=logging.DEBUG)
@@ -19,7 +18,7 @@ class ZmlpDataSourceAppTests(unittest.TestCase):
             'keyId': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'sharedKey': 'test123test135'
         }
-        self.app = zmlp.app.ZmlpApp(self.key_dict)
+        self.app = ZmlpApp(self.key_dict)
 
     @patch.object(ZmlpClient, 'post')
     def test_create_datasource(self, post_patch):

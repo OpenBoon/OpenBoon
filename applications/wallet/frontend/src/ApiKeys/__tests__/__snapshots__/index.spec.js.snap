@@ -418,11 +418,11 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-10 {
+.emotion-23 {
   height: auto;
 }
 
-.emotion-2 {
+.emotion-15 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -430,46 +430,46 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-2 tr {
+.emotion-15 tr {
   background-color: #252525;
 }
 
-.emotion-2 tr .gear {
+.emotion-15 tr .gear {
   opacity: 0;
 }
 
-.emotion-2 tr .gear:focus {
+.emotion-15 tr .gear:focus {
   opacity: 1;
 }
 
-.emotion-2 tr:nth-of-type(2n) {
+.emotion-15 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-2 tr:hover {
+.emotion-15 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-2 tr:hover td {
+.emotion-15 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-2 tr:hover td:first-of-type {
+.emotion-15 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-2 tr:hover td:last-of-type {
+.emotion-15 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-2 tr:hover .gear {
+.emotion-15 tr:hover .gear {
   opacity: 1;
 }
 
-.emotion-2 td {
+.emotion-15 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -477,15 +477,90 @@ Array [
   border-right: 0;
 }
 
-.emotion-2 td:first-of-type {
+.emotion-15 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-2 td:last-of-type {
+.emotion-15 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
 .emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.emotion-2 {
+  display: inline-block;
+  color: #191919;
+  background-color: #b3b3b3;
+  padding: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-right: 8px;
+  border-radius: 14px;
+}
+
+.emotion-8 {
+  position: relative;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  color: #191919;
+  padding: 6px;
+  border-radius: 32px;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7:hover {
+  background-color: #808080;
+}
+
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -496,7 +571,7 @@ Array [
   justify-content: flex-end;
 }
 
-.emotion-4 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -514,20 +589,20 @@ Array [
   border-bottom-right-radius: 0;
 }
 
-.emotion-4:hover {
+.emotion-17:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-3 {
+.emotion-16 {
   color: #191919;
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-5 {
+.emotion-18 {
   padding: 8px 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -541,7 +616,7 @@ Array [
   background-color: #000000;
 }
 
-.emotion-6 {
+.emotion-19 {
   padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -554,7 +629,7 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-8 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -572,13 +647,13 @@ Array [
   border-bottom-right-radius: 2px;
 }
 
-.emotion-8:hover {
+.emotion-21:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7 {
+.emotion-20 {
   color: #191919;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -586,10 +661,10 @@ Array [
 }
 
 <div
-    className="emotion-10"
+    className="emotion-23"
   >
     <table
-      className="emotion-2"
+      className="emotion-15"
     >
       <thead>
         <tr>
@@ -608,10 +683,91 @@ Array [
       <tbody>
         <tr>
           <td>
-            admin-key
+            job-runner
           </td>
+          <td
+            className="emotion-9"
+          >
+            <div>
+              <span
+                className="emotion-2"
+              >
+                 Assets Read
+              </span>
+              <span
+                className="emotion-2"
+              >
+                 Assets Import
+              </span>
+              <span
+                className="emotion-2"
+              >
+                 Project Files Read
+              </span>
+              <span
+                className="emotion-2"
+              >
+                 System Project Decrypt
+              </span>
+              <span
+                className="emotion-2"
+              >
+                 Project Files Write
+              </span>
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="gear emotion-7"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr>
           <td>
-             Super Admin,  Project Admin,  Assets Read,  Assets Import
+            My ApiKey
+          </td>
+          <td
+            className="emotion-9"
+          >
+            <div>
+              <span
+                className="emotion-2"
+              >
+                 Api Key Manage
+              </span>
+              <span
+                className="emotion-2"
+              >
+                 Project Manage
+              </span>
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="gear emotion-7"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -620,37 +776,37 @@ Array [
        
     </div>
     <div
-      className="emotion-9"
+      className="emotion-22"
     >
       <button
-        className="emotion-4"
+        className="emotion-17"
         disabled={true}
         type="button"
       >
         <svg
-          className="emotion-3"
+          className="emotion-16"
           data-file-name="chevron.svg"
           width={16}
         />
       </button>
       <div
-        className="emotion-5"
+        className="emotion-18"
       >
         1
       </div>
       <div
-        className="emotion-6"
+        className="emotion-19"
       >
         of 
         1
       </div>
       <button
-        className="emotion-8"
+        className="emotion-21"
         disabled={true}
         type="button"
       >
         <svg
-          className="emotion-7"
+          className="emotion-20"
           data-file-name="chevron.svg"
           width={16}
         />
@@ -783,59 +939,13 @@ Array [
   <div>
      
   </div>,
-  .emotion-0 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-}
-
-.emotion-0:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-0:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-3 {
+  .emotion-5 {
   height: 100%;
-  pointer-events: none;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-  color: #808080;
-  font-size: 15px;
-  line-height: 18px;
-}
-
-.emotion-5 {
-  height: auto;
 }
 
 .emotion-4 {
   width: 100%;
-  height: auto;
+  height: 100%;
   border-spacing: 0;
   box-shadow: 0 0 5px 0 #000000;
   white-space: nowrap;
@@ -894,6 +1004,52 @@ Array [
 
 .emotion-4 td:last-of-type {
   border-right: 1px solid transparent;
+}
+
+.emotion-0 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-0:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-0:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-3 {
+  height: 100%;
+  pointer-events: none;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  font-size: 15px;
+  line-height: 18px;
 }
 
 <div
