@@ -4,17 +4,17 @@ import permissions from '../../Permissions/__mocks__/permissions'
 
 import ApiKeysAddForm from '../Form'
 
+jest.mock('../helpers')
+
 const noop = () => () => {}
 
 describe('<ApiKeysAddForm />', () => {
   it('should render properly after permissions are loaded', () => {
-    const mockFn = jest.fn()
-
     require('swr').__setMockUseSWRResponse({
       data: permissions,
     })
 
-    const component = TestRenderer.create(<ApiKeysAddForm onSubmit={mockFn} />)
+    const component = TestRenderer.create(<ApiKeysAddForm />)
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -35,30 +35,21 @@ describe('<ApiKeysAddForm />', () => {
         .findByProps({ type: 'submit' })
         .props.onClick({ preventDefault: noop })
     })
-
-    expect(mockFn).toHaveBeenCalledWith({
-      name: 'API Key Name',
-      permissions: { ProjectManage: true },
-    })
   })
 
   it('should not POST the form', () => {
     const mockFn = jest.fn()
-    const mockOnSubmit = jest.fn()
 
     require('swr').__setMockUseSWRResponse({
       data: permissions,
     })
 
-    const component = TestRenderer.create(
-      <ApiKeysAddForm onSubmit={mockOnSubmit} />,
-    )
+    const component = TestRenderer.create(<ApiKeysAddForm />)
 
     component.root
       .findByProps({ method: 'post' })
       .props.onSubmit({ preventDefault: mockFn })
 
-    expect(mockOnSubmit).not.toHaveBeenCalled()
     expect(mockFn).toHaveBeenCalled()
   })
 })

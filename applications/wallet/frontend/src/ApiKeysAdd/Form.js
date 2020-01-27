@@ -1,5 +1,4 @@
 import { useReducer } from 'react'
-import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
@@ -10,9 +9,11 @@ import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
+import { onSubmit } from './helpers'
+
 const reducer = (state, action) => ({ ...state, ...action })
 
-const ApiKeysAddForm = ({ onSubmit }) => {
+const ApiKeysAddForm = () => {
   const {
     query: { projectId },
   } = useRouter()
@@ -61,17 +62,13 @@ const ApiKeysAddForm = ({ onSubmit }) => {
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() => onSubmit(state)}
+          onClick={() => onSubmit({ dispatch, projectId, state })}
           isDisabled={!state.name}>
           Generate Key &amp; Download
         </Button>
       </div>
     </Form>
   )
-}
-
-ApiKeysAddForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 }
 
 export default ApiKeysAddForm

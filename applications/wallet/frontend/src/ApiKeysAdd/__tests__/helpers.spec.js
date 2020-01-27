@@ -7,15 +7,21 @@ const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 describe('<ApiKeysAdd /> helpers', () => {
   describe('onSubmit()', () => {
     it('should call the API', () => {
+      const mockFn = jest.fn()
+
       fetch.mockResponseOnce(JSON.stringify(apikeysadd))
 
-      onSubmit({ projectId: PROJECT_ID })({
-        name: 'FooBarApiKey',
-        permissions: {
-          SuperAdmin: true,
-          ProjectAdmin: false,
-          AssetsRead: true,
-          AssetsImport: false,
+      onSubmit({
+        dispatch: mockFn,
+        projectId: PROJECT_ID,
+        state: {
+          name: 'FooBarApiKey',
+          permissions: {
+            SuperAdmin: true,
+            ProjectAdmin: false,
+            AssetsRead: true,
+            AssetsImport: false,
+          },
         },
       })
 
