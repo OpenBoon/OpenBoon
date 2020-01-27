@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { spacing } from '../Styles'
+import { spacing, typography } from '../Styles'
 
 import Checkbox from '.'
 
@@ -18,6 +18,9 @@ const CheckboxGroup = ({ legend, options, onClick }) => {
           float: 'left',
           padding: 0,
           paddingBottom: spacing.moderate,
+          fontSize: typography.size.medium,
+          lineHeight: typography.height.medium,
+          fontWeight: typography.weight.medium,
         }}>
         {legend}
       </legend>
@@ -25,6 +28,7 @@ const CheckboxGroup = ({ legend, options, onClick }) => {
       {options.map(option => (
         <Checkbox
           key={option.key}
+          value={option.key}
           label={option.label}
           legend={option.legend}
           initialValue={option.initialValue}
