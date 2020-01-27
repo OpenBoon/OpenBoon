@@ -118,10 +118,10 @@ exports[`<AccountProfile /> should render properly 1`] = `
   border: 1px solid transparent;
 }
 
-.emotion-8.focus-visible {
-  border: 1px solid #73b61c;
+.emotion-8:focus {
+  border: 2px solid #73b61c;
   background-color: #ffffff;
-  outline: none;
+  outline: #73b61c;
   color: #000000;
 }
 

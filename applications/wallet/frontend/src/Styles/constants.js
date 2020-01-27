@@ -13,7 +13,7 @@ const borders = {
   separator: `1px solid ${colors.structure.zinc}`,
   error: `2px solid ${colors.signal.warning.base}`,
   tableRow: `1px solid ${colors.structure.steel}`,
-  input: `1px solid ${colors.key.one}`,
+  input: `2px solid ${colors.key.one}`,
 }
 
 const opacity = {

@@ -20,10 +20,10 @@ const STYLES = {
   SECONDARY: {
     color: colors.structure.white,
     backgroundColor: colors.structure.mattGrey,
-    '&.focus-visible': {
+    '&:focus': {
       border: constants.borders.input,
       backgroundColor: colors.structure.white,
-      outline: 'none',
+      outline: colors.key.one,
       color: colors.structure.black,
     },
   },
