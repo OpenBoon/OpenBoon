@@ -7,10 +7,11 @@ import CheckmarkSvg from '../Icons/checkmark.svg'
 
 const SIZE = 20
 
-const CheckboxIcon = ({ isChecked, onClick }) => (
+const CheckboxIcon = ({ value, isChecked, onClick }) => (
   <div css={{ display: 'flex', position: 'relative' }}>
     <input
       type="checkbox"
+      value={value}
       defaultChecked={isChecked}
       onClick={onClick}
       css={{
@@ -53,6 +54,7 @@ const CheckboxIcon = ({ isChecked, onClick }) => (
 )
 
 CheckboxIcon.propTypes = {
+  value: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   isChecked: PropTypes.bool.isRequired,
 }
