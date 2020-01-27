@@ -91,7 +91,7 @@ class PipelineServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun findOne(filter: PipelineFilter): Pipeline = pipelineDao.findOne(filter)
 
-    override fun delete(id: UUID): Boolean{
+    override fun delete(id: UUID): Boolean {
 
         logger.event(
             LogObject.PIPELINE, LogAction.DELETE,
