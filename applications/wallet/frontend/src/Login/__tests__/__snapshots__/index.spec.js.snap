@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Login /> should render properly 1`] = `
-.emotion-23 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -17,7 +17,7 @@ exports[`<Login /> should render properly 1`] = `
   height: 100vh;
 }
 
-.emotion-22 {
+.emotion-24 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -170,7 +170,7 @@ exports[`<Login /> should render properly 1`] = `
   height: 20px;
 }
 
-.emotion-13 {
+.emotion-14 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
@@ -180,7 +180,7 @@ exports[`<Login /> should render properly 1`] = `
   padding-bottom: 8px;
 }
 
-.emotion-12 {
+.emotion-13 {
   position: relative;
 }
 
@@ -192,10 +192,14 @@ exports[`<Login /> should render properly 1`] = `
   width: 100%;
   color: #000000;
   background-color: #ffffff;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
 }
 
-.emotion-17 {
+.emotion-12 {
+  padding-top: 8px;
+}
+
+.emotion-18 {
   position: absolute;
   right: 0;
   top: 0;
@@ -210,7 +214,7 @@ exports[`<Login /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-16 {
+.emotion-17 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -246,20 +250,20 @@ exports[`<Login /> should render properly 1`] = `
   outline-offset: -2px;
 }
 
-.emotion-16:hover {
+.emotion-17:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-16[aria-disabled=true] {
+.emotion-17[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-16:hover {
+.emotion-17:hover {
   color: #73b61c;
 }
 
-.emotion-21 {
+.emotion-23 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -271,7 +275,7 @@ exports[`<Login /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-20 {
+.emotion-22 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -303,34 +307,34 @@ exports[`<Login /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-20:hover {
+.emotion-22:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-20[aria-disabled=true] {
+.emotion-22[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-20,
-.emotion-20:hover,
-.emotion-20:visited {
+.emotion-22,
+.emotion-22:hover,
+.emotion-22:visited {
   background-color: #73b61c;
 }
 
-.emotion-20:hover {
+.emotion-22:hover {
   background-color: #b8d652;
 }
 
-.emotion-20[aria-disabled=true] {
+.emotion-22[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-  className="emotion-23"
+  className="emotion-25"
 >
   <form
-    className="emotion-22"
+    className="emotion-24"
     method="post"
     onSubmit={[Function]}
   >
@@ -384,7 +388,7 @@ exports[`<Login /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-14"
     >
       <label
         className="emotion-10"
@@ -393,7 +397,7 @@ exports[`<Login /> should render properly 1`] = `
         Email
       </label>
       <div
-        className="emotion-12"
+        className="emotion-13"
       >
         <input
           autoFocus={true}
@@ -404,10 +408,15 @@ exports[`<Login /> should render properly 1`] = `
           type="text"
           value=""
         />
+        <div
+          className="emotion-12"
+        >
+           
+        </div>
       </div>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-14"
     >
       <label
         className="emotion-10"
@@ -416,7 +425,7 @@ exports[`<Login /> should render properly 1`] = `
         Password
       </label>
       <div
-        className="emotion-12"
+        className="emotion-13"
       >
         <input
           className="emotion-11"
@@ -427,11 +436,11 @@ exports[`<Login /> should render properly 1`] = `
           value=""
         />
         <div
-          className="emotion-17"
+          className="emotion-18"
         >
           <button
             aria-label="Show password"
-            className="emotion-16"
+            className="emotion-17"
             onClick={[Function]}
             type="button"
           >
@@ -441,14 +450,19 @@ exports[`<Login /> should render properly 1`] = `
             />
           </button>
         </div>
+        <div
+          className="emotion-12"
+        >
+           
+        </div>
       </div>
     </div>
     <div
-      className="emotion-21"
+      className="emotion-23"
     >
       <button
         aria-disabled={true}
-        className="emotion-20"
+        className="emotion-22"
         onClick={[Function]}
         type="submit"
       >

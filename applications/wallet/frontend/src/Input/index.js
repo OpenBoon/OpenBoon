@@ -78,8 +78,9 @@ const Input = ({
           {after}
         </div>
       )}
-      {hasError && errorMessage && (
-        <div css={{ paddingTop: PADDING }}>
+      <div css={{ paddingTop: PADDING }}>
+        &nbsp;
+        {hasError && errorMessage && (
           <span
             css={{
               color: colors.signal.warning.base,
@@ -87,8 +88,8 @@ const Input = ({
             }}>
             {errorMessage}
           </span>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   </div>
 )

@@ -174,17 +174,17 @@ Array [
 .emotion-4 td {
   color: #e0e0e0;
   padding: 8px 16px;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   border-left: 0;
   border-right: 0;
 }
 
 .emotion-4 td:first-of-type {
-  border-left: 1px solid transparent;
+  border-left: 2px solid transparent;
 }
 
 .emotion-4 td:last-of-type {
-  border-right: 1px solid transparent;
+  border-right: 2px solid transparent;
 }
 
 .emotion-0 {
@@ -472,17 +472,17 @@ Array [
 .emotion-15 td {
   color: #e0e0e0;
   padding: 8px 16px;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   border-left: 0;
   border-right: 0;
 }
 
 .emotion-15 td:first-of-type {
-  border-left: 1px solid transparent;
+  border-left: 2px solid transparent;
 }
 
 .emotion-15 td:last-of-type {
-  border-right: 1px solid transparent;
+  border-right: 2px solid transparent;
 }
 
 .emotion-9 {
@@ -993,17 +993,17 @@ Array [
 .emotion-4 td {
   color: #e0e0e0;
   padding: 8px 16px;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   border-left: 0;
   border-right: 0;
 }
 
 .emotion-4 td:first-of-type {
-  border-left: 1px solid transparent;
+  border-left: 2px solid transparent;
 }
 
 .emotion-4 td:last-of-type {
-  border-right: 1px solid transparent;
+  border-right: 2px solid transparent;
 }
 
 .emotion-0 {

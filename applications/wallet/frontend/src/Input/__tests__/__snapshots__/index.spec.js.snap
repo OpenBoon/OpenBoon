@@ -59,6 +59,7 @@ exports[`<Input /> should render properly with an error 1`] = `
     <div
       className="emotion-3"
     >
+       
       <span
         className="emotion-2"
       >
