@@ -97,18 +97,36 @@ public class AssetApp {
     }
 
     /**
-     *  Update a given Asset with a partial document dictionary.
+     * Update a given Asset with a partial document dictionary.
      *
-     * @param asset Asset that contains and Id and a Document to be updated.
+     * @param assetId  Unique Asset Id
+     * @param document The changes to apply.
      * @return
      */
 
-    public Map update(Asset asset){
-        String id = Optional.of(asset.getId()).orElseThrow(() -> new ZmlpClientException("Asset Id is missing"));
+    public Map update(String assetId, Map<String, Object> document) {
+        String id = Optional.of(assetId).orElseThrow(() -> new ZmlpClientException("Asset Id is missing"));
         Map body = new HashMap();
-        body.put("doc", asset.getDocument());
+        body.put("doc", document);
 
         return client.post(String.format("/api/v3/assets/%s/_update", id), body, Map.class);
+    }
+
+    /**
+     * Reindex multiple existing assets.  The metadata for the entire asset
+     * is overwritten by the local copy.
+     *
+     * @param assetList
+     * @return An ES BulkResponse object.
+     */
+
+    public Map batchIndex(List<Asset> assetList) {
+        Map<String, Object> body =
+                        assetList
+                        .stream()
+                        .collect(Collectors.toMap(Asset::getId, Asset::getDocument));
+
+        return client.post("/api/v3/assets/_batch_index", body, Map.class);
     }
 
     private PagedList<Asset> buildAssetListResult(Map map) {

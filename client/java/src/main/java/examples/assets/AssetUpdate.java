@@ -15,17 +15,14 @@ public class AssetUpdate {
         // Get an Asset by Id
         Asset asset = zmlpApp.assets.getById("abc123");
 
-        // Initialize a new Document
+        // Initialize a new Document for partial update
         Map<String, Object> newDocument = new HashMap();
         Map<String, Object> aux = new HashMap();
         aux.put("captain", "kirk");
         newDocument.put("aux", aux);
 
-        //Overwrite the Asset's Document with a new Document
-        asset.setDocument(newDocument);
-
         // Update Asset returns an Elastic Search Object
-        Map elObject = zmlpApp.assets.update(asset);
+        Map elObject = zmlpApp.assets.update(asset.getId(), newDocument);
 
         /**
          * Example return value:

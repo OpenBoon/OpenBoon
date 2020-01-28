@@ -295,9 +295,4 @@ public class Asset {
     public Map<String, Object> getDocument() {
         return document;
     }
-
-    public Asset setDocument(Map<String, Object> document) {
-        this.document = document;
-        return this;
-    }
 }

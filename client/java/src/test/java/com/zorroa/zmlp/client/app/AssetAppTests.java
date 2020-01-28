@@ -135,7 +135,7 @@ public class AssetAppTests extends AbstractAppTests {
     }
 
     @Test
-    public void testAssetUpdate(){
+    public void testAssetUpdate() {
         webServer.enqueue(new MockResponse().setBody(getGetByIdMock()));
         webServer.enqueue(new MockResponse().setBody(getMockUpdate()));
 
@@ -147,12 +147,26 @@ public class AssetAppTests extends AbstractAppTests {
 
         newDocument.put("aux", aux);
 
-        //Setup a new state for Document
-        asset.setDocument(newDocument);
-
-        Map elObject = assetApp.update(asset);
+        Map elObject = assetApp.update(asset.getId(), newDocument);
 
         assertEquals("updated", elObject.get("result"));
+    }
+
+    @Test
+    public void testBatchIndex() {
+
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock()));
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock2()));
+        webServer.enqueue(new MockResponse().setBody(getMockUpdate()));
+
+        Asset asset1 = assetApp.getById("abc123");
+        Asset asset2 = assetApp.getById("123abc");
+
+        List<Asset> assetList = Arrays.asList(asset1, asset2);
+
+        Map elasticSearchMap = assetApp.batchIndex(assetList);
+
+        assertEquals("updated", elasticSearchMap.get("result"));
     }
 
     // Mocks
@@ -162,6 +176,10 @@ public class AssetAppTests extends AbstractAppTests {
 
     private String getGetByIdMock() {
         return getMockData("mock-get-by-id");
+    }
+
+    private String getGetByIdMock2() {
+        return getMockData("mock-get-by-id-2");
     }
 
     private String getUploadAssetsMock() {
