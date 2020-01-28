@@ -1,5 +1,7 @@
 package com.zorroa.zmlp.client.app;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.zorroa.zmlp.client.Json;
 import com.zorroa.zmlp.client.ZmlpClient;
 import com.zorroa.zmlp.client.domain.Page;
 import com.zorroa.zmlp.client.domain.PagedList;
@@ -158,6 +160,27 @@ public class AssetApp {
         String id = Optional.of(asset.getId()).orElseThrow(() -> new ZmlpClientException("Asset Id is missing"));
         return client.delete(String.format("/api/v3/assets/%s", id), null, Map.class);
 
+    }
+
+    /**
+     * Delete assets by the given search in Map format.
+     * @param query An ES search.
+     * @return An ES delete by query response.
+     */
+    public Map deleteByQuery(Map query){
+        return client.delete("/api/v3/assets/_delete_by_query", query, Map.class);
+    }
+
+    /**
+     * Delete assets by the given search in String format.
+     *
+     * @param queryString An ES search.
+     * @return An ES delete by query response.
+     * @throws JsonProcessingException
+     */
+    public Map deleteByQuery(String queryString) throws JsonProcessingException {
+        Map queryMap = Json.mapper.readValue(queryString, Map.class);
+        return deleteByQuery(queryMap);
     }
 
     private PagedList<Asset> buildAssetListResult(Map map) {

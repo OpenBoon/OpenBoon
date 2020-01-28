@@ -1,5 +1,6 @@
 package com.zorroa.zmlp.client.app;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.zorroa.zmlp.client.ApiKey;
 import com.zorroa.zmlp.client.Json;
@@ -200,6 +201,15 @@ public class AssetAppTests extends AbstractAppTests {
         assertEquals("deleted", deleteES.get("result"));
     }
 
+    @Test
+    public void testDeleteByQuery() throws JsonProcessingException {
+        webServer.enqueue(new MockResponse().setBody(getMockDelete()));
+
+        Map deleteES = assetApp.deleteByQuery(getRequestMockDeleteByQuery());
+
+        assertEquals("deleted", deleteES.get("result"));
+    }
+
     // Mocks
     private String getImportFilesMock() {
         return getMockData("mock-import-files");
@@ -231,6 +241,10 @@ public class AssetAppTests extends AbstractAppTests {
 
     private String getMockDelete() {
         return getMockData("mock-delete");
+    }
+
+    private String getRequestMockDeleteByQuery() {
+        return getMockData("mock-delete-by-query-request");
     }
 
     private String getMockData(String name) {
