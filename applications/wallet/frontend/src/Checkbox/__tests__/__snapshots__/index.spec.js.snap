@@ -89,6 +89,7 @@ exports[`<Checkbox /> should render properly 1`] = `
       defaultChecked={false}
       onClick={[Function]}
       type="checkbox"
+      value="checkbox"
     />
     <div
       className="emotion-2"
@@ -201,6 +202,7 @@ exports[`<Checkbox /> should render properly 2`] = `
       defaultChecked={true}
       onClick={[Function]}
       type="checkbox"
+      value="checkbox"
     />
     <div
       className="emotion-2"
