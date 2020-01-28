@@ -95,7 +95,14 @@ const ApiKeysAddFormSuccess = ({
             Copy Key
           </Button>
           <span css={{ padding: spacing.small }}>|</span>
-          <Button variant={VARIANTS.LINK}>Download</Button>
+          <Button
+            variant={VARIANTS.LINK}
+            download="api-key.txt"
+            href={`data:application/octet-stream;charset=utf-8;base64,${window.btoa(
+              secretKey,
+            )}`}>
+            Download
+          </Button>
         </div>
       </div>
       <div css={{ display: 'flex' }}>
