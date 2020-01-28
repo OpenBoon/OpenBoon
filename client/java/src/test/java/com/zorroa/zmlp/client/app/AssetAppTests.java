@@ -188,6 +188,18 @@ public class AssetAppTests extends AbstractAppTests {
         assertEquals("updated", elasticSearchMap.get("result"));
     }
 
+    @Test
+    public void testDelete(){
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock()));
+        webServer.enqueue(new MockResponse().setBody(getMockDelete()));
+
+        Asset asset = assetApp.getById("abc123");
+
+        Map deleteES = assetApp.delete(asset);
+
+        assertEquals("deleted", deleteES.get("result"));
+    }
+
     // Mocks
     private String getImportFilesMock() {
         return getMockData("mock-import-files");
@@ -215,6 +227,10 @@ public class AssetAppTests extends AbstractAppTests {
 
     private String getMockUpdate() {
         return getMockData("mock-update-asset");
+    }
+
+    private String getMockDelete() {
+        return getMockData("mock-delete");
     }
 
     private String getMockData(String name) {

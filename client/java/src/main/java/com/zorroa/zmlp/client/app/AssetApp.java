@@ -147,6 +147,19 @@ public class AssetApp {
         return client.post("/api/v3/assets/_batch_update", body, Map.class);
     }
 
+    /**
+     * Delete the given asset.
+     *
+     * @param asset Asset instance.
+     * @return An ES Delete response.
+     */
+
+    public Map delete(Asset asset){
+        String id = Optional.of(asset.getId()).orElseThrow(() -> new ZmlpClientException("Asset Id is missing"));
+        return client.delete(String.format("/api/v3/assets/%s", id), null, Map.class);
+
+    }
+
     private PagedList<Asset> buildAssetListResult(Map map) {
 
         Map hits = (Map) map.get("hits");
