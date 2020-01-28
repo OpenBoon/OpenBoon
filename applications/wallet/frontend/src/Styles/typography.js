@@ -14,6 +14,9 @@ const typography = {
     medium: 500,
     bold: 700,
   },
+  style: {
+    italic: 'italic',
+  },
 }
 
 export default typography
