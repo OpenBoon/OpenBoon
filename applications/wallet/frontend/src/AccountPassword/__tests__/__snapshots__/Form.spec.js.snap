@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AccountProfileForm /> should render properly 1`] = `
-.emotion-12 {
+exports[`<AccountPasswordForm /> should render properly 1`] = `
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -52,12 +52,12 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
   padding-top: 8px;
 }
 
-.emotion-11 {
+.emotion-16 {
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-.emotion-10 {
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -89,32 +89,32 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-10:hover {
+.emotion-15:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited {
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
   background-color: #73b61c;
 }
 
-.emotion-10:hover {
+.emotion-15:hover {
   background-color: #b8d652;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-12"
+  className="emotion-17"
   method="post"
   onSubmit={[Function]}
 >
@@ -123,9 +123,9 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
   >
     <label
       className="emotion-0"
-      htmlFor="firstName"
+      htmlFor="currentPassword"
     >
-      First Name
+      Current Password
     </label>
     <div
       className="emotion-3"
@@ -133,11 +133,11 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
       <input
         autoFocus={true}
         className="emotion-1"
-        id="firstName"
-        name="firstName"
+        id="currentPassword"
+        name="currentPassword"
         onChange={[Function]}
-        type="text"
-        value="Jane"
+        type="password"
+        value="foo"
       />
       <div
         className="emotion-2"
@@ -151,20 +151,20 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
   >
     <label
       className="emotion-0"
-      htmlFor="lastName"
+      htmlFor="newPassword"
     >
-      Last Name
+      New Password
     </label>
     <div
       className="emotion-3"
     >
       <input
         className="emotion-1"
-        id="lastName"
-        name="lastName"
+        id="newPassword"
+        name="newPassword"
         onChange={[Function]}
-        type="text"
-        value="Doe"
+        type="password"
+        value="bar"
       />
       <div
         className="emotion-2"
@@ -174,14 +174,41 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="emotion-11"
+    className="emotion-4"
+  >
+    <label
+      className="emotion-0"
+      htmlFor="confirmPassword"
+    >
+      Confirm Password
+    </label>
+    <div
+      className="emotion-3"
+    >
+      <input
+        className="emotion-1"
+        id="confirmPassword"
+        name="confirmPassword"
+        onChange={[Function]}
+        type="password"
+        value="bar"
+      />
+      <div
+        className="emotion-2"
+      >
+         
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-16"
   >
     <button
-      className="emotion-10"
+      className="emotion-15"
       onClick={[Function]}
       type="submit"
     >
-      Save Changes
+      Save
     </button>
   </div>
 </form>

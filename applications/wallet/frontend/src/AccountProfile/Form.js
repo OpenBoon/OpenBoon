@@ -3,8 +3,8 @@ import { useReducer } from 'react'
 import { spacing } from '../Styles'
 
 import Form from '../Form'
-import Input from '../Input'
-import Button, { VARIANTS } from '../Button'
+import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import { getUser } from '../Authentication/helpers'
 
@@ -27,20 +27,24 @@ const AccountProfileForm = () => {
       <Input
         autoFocus
         id="firstName"
+        variant={INPUT_VARIANTS.SECONDARY}
         label="First Name"
         type="text"
         value={state.firstName}
         onChange={({ target: { value } }) => dispatch({ firstName: value })}
-        hasError={false}
+        hasError={state.errors.firstName !== undefined}
+        errorMessage={state.errors.firstName}
       />
 
       <Input
         id="lastName"
+        variant={INPUT_VARIANTS.SECONDARY}
         label="Last Name"
         type="text"
         value={state.lastName}
         onChange={({ target: { value } }) => dispatch({ lastName: value })}
-        hasError={false}
+        hasError={state.errors.lastName !== undefined}
+        errorMessage={state.errors.lastName}
       />
 
       <div
@@ -50,7 +54,7 @@ const AccountProfileForm = () => {
         }}>
         <Button
           type="submit"
-          variant={VARIANTS.PRIMARY}
+          variant={BUTTON_VARIANTS.PRIMARY}
           onClick={() => onSubmit({ dispatch, state })}
           isDisabled={!state.firstName || !state.lastName}>
           Save Changes
