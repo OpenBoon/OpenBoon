@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { constants, spacing, colors, typography } from '../Styles'
 
 const PADDING = spacing.base
+const BORDER_WIDTH = 2
 
 const BASE = {
   outlineOffset: 0,
@@ -31,6 +32,7 @@ const STYLES = {
 
 const BORDER_STYLES = ({ hasError }) => ({
   border: hasError ? constants.borders.error : constants.borders.transparent,
+  borderWidth: BORDER_WIDTH,
 })
 
 export const VARIANTS = Object.keys(STYLES).reduce(
@@ -80,7 +82,7 @@ const Input = ({
       )}
       <div css={{ paddingTop: PADDING }}>
         &nbsp;
-        {hasError && errorMessage && (
+        {hasError && (
           <span
             css={{
               color: colors.signal.warning.base,

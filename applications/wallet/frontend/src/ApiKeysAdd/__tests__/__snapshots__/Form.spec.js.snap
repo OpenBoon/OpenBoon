@@ -37,7 +37,8 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   width: 100%;
   color: #ffffff;
   background-color: #2e2e2e;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
+  border-width: 2px;
 }
 
 .emotion-1:focus {

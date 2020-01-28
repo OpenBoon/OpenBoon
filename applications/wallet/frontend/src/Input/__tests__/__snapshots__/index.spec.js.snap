@@ -24,6 +24,7 @@ exports[`<Input /> should render properly with an error 1`] = `
   color: #000000;
   background-color: #ffffff;
   border: 2px solid #c92300;
+  border-width: 2px;
 }
 
 .emotion-3 {

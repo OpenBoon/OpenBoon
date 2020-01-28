@@ -192,7 +192,8 @@ exports[`<Login /> should render properly 1`] = `
   width: 100%;
   color: #000000;
   background-color: #ffffff;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
+  border-width: 2px;
 }
 
 .emotion-12 {

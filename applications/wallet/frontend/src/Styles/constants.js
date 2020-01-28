@@ -9,7 +9,7 @@ const borderRadius = {
 
 const borders = {
   default: `1px solid ${colors.structure.mattGrey}`,
-  transparent: `2px solid transparent`,
+  transparent: `1px solid transparent`,
   separator: `1px solid ${colors.structure.zinc}`,
   error: `2px solid ${colors.signal.warning.base}`,
   tableRow: `1px solid ${colors.structure.steel}`,
