@@ -63,6 +63,16 @@ const STYLES = {
       backgroundColor: colors.structure.steel,
     },
   },
+  LINK: {
+    padding: spacing.small,
+    fontWeight: typography.weight.regular,
+    '&,&:hover,&:visited': {
+      color: colors.key.one,
+    },
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
   NEUTRAL: {
     padding: 0,
   },

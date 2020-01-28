@@ -4,17 +4,29 @@ import permissions from '../../Permissions/__mocks__/permissions'
 
 import ApiKeysAddForm from '../Form'
 
+const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
+
+jest.mock('../helpers', () => ({
+  onSubmit: ({ dispatch }) =>
+    dispatch({
+      apikey: { permissions: ['ApiKeyManage'], secretKey: 'FooBarSecretKey' },
+    }),
+}))
+
 const noop = () => () => {}
 
 describe('<ApiKeysAddForm />', () => {
   it('should render properly after permissions are loaded', () => {
-    const mockFn = jest.fn()
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/api-keys/add',
+      query: { projectId: PROJECT_ID },
+    })
 
     require('swr').__setMockUseSWRResponse({
       data: permissions,
     })
 
-    const component = TestRenderer.create(<ApiKeysAddForm onSubmit={mockFn} />)
+    const component = TestRenderer.create(<ApiKeysAddForm />)
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -36,29 +48,30 @@ describe('<ApiKeysAddForm />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockFn).toHaveBeenCalledWith({
-      name: 'API Key Name',
-      permissions: { ProjectManage: true },
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ children: 'Create Another Key' })
+        .props.onClick()
     })
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should not POST the form', () => {
     const mockFn = jest.fn()
-    const mockOnSubmit = jest.fn()
 
     require('swr').__setMockUseSWRResponse({
       data: permissions,
     })
 
-    const component = TestRenderer.create(
-      <ApiKeysAddForm onSubmit={mockOnSubmit} />,
-    )
+    const component = TestRenderer.create(<ApiKeysAddForm />)
 
     component.root
       .findByProps({ method: 'post' })
       .props.onSubmit({ preventDefault: mockFn })
 
-    expect(mockOnSubmit).not.toHaveBeenCalled()
     expect(mockFn).toHaveBeenCalled()
   })
 })
