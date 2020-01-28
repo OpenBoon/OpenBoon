@@ -11,6 +11,15 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import { onSubmit } from './helpers'
 
+import ApiKeysAddFormSuccess from './FormSuccess'
+
+const INITIAL_STATE = {
+  name: '',
+  permissions: {},
+  apikey: {},
+  errors: {},
+}
+
 const reducer = (state, action) => ({ ...state, ...action })
 
 const ApiKeysAddForm = () => {
@@ -22,9 +31,21 @@ const ApiKeysAddForm = () => {
     `/api/v1/projects/${projectId}/permissions/`,
   )
 
-  const [state, dispatch] = useReducer(reducer, { name: '', permissions: {} })
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   if (!Array.isArray(permissions)) return 'Loading...'
+
+  const { apikey } = state
+
+  if (apikey.secretKey) {
+    return (
+      <ApiKeysAddFormSuccess
+        projectId={projectId}
+        apikey={apikey}
+        onReset={() => dispatch(INITIAL_STATE)}
+      />
+    )
+  }
 
   return (
     <Form>
@@ -36,7 +57,8 @@ const ApiKeysAddForm = () => {
         type="text"
         value={state.name}
         onChange={({ target: { value } }) => dispatch({ name: value })}
-        hasError={false}
+        hasError={state.errors.name !== undefined}
+        errorMessage={state.errors.name}
       />
 
       <div>&nbsp;</div>
