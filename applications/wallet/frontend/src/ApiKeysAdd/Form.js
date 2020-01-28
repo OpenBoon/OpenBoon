@@ -61,8 +61,6 @@ const ApiKeysAddForm = () => {
         errorMessage={state.errors.name}
       />
 
-      <div>&nbsp;</div>
-
       <CheckboxGroup
         legend="Add Scope"
         onClick={permission =>

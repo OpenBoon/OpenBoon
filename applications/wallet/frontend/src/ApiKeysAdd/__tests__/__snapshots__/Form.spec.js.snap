@@ -247,9 +247,6 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
       </div>
     </div>
   </div>
-  <div>
-     
-  </div>
   <fieldset
     className="emotion-103"
   >
@@ -899,8 +896,68 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   text-decoration: underline;
 }
 
+.emotion-5:active {
+  opacity: 0;
+  -webkit-transition: opacity .3s ease;
+  transition: opacity .3s ease;
+}
+
 .emotion-6 {
   padding: 4px;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 4px;
+  font-weight: 400;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
+  color: #73b61c;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .emotion-12 {
@@ -1017,7 +1074,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         |
       </span>
       <button
-        className="emotion-5"
+        className="emotion-7"
         onClick={[Function]}
         type="button"
       >
@@ -1293,9 +1350,6 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
          
       </div>
     </div>
-  </div>
-  <div>
-     
   </div>
   <fieldset
     className="emotion-103"
