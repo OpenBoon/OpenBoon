@@ -3,6 +3,7 @@ package com.zorroa.zmlp.client.app;
 import com.zorroa.zmlp.client.ZmlpClient;
 import com.zorroa.zmlp.client.domain.Page;
 import com.zorroa.zmlp.client.domain.PagedList;
+import com.zorroa.zmlp.client.domain.ZmlpClientException;
 import com.zorroa.zmlp.client.domain.asset.*;
 
 import java.util.*;
@@ -93,6 +94,21 @@ public class AssetApp {
 
     public Map index(Asset asset) {
         return client.post(String.format("/api/v3/assets/%s/_index", asset.getId()), asset.getDocument(), Map.class);
+    }
+
+    /**
+     *  Update a given Asset with a partial document dictionary.
+     *
+     * @param asset Asset that contains and Id and a Document to be updated.
+     * @return
+     */
+
+    public Map update(Asset asset){
+        String id = Optional.of(asset.getId()).orElseThrow(() -> new ZmlpClientException("Asset Id is missing"));
+        Map body = new HashMap();
+        body.put("doc", asset.getDocument());
+
+        return client.post(String.format("/api/v3/assets/%s/_update", id), body, Map.class);
     }
 
     private PagedList<Asset> buildAssetListResult(Map map) {

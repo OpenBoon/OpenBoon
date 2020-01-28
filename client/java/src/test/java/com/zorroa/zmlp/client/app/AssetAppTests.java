@@ -134,6 +134,27 @@ public class AssetAppTests extends AbstractAppTests {
         assertEquals(Json.mapper.readValue(getMockIndex().getBytes(), Map.class), indexedAsset);
     }
 
+    @Test
+    public void testAssetUpdate(){
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock()));
+        webServer.enqueue(new MockResponse().setBody(getMockUpdate()));
+
+        Asset asset = assetApp.getById("abc123");
+
+        Map<String, Object> newDocument = new HashMap();
+        Map<String, Object> aux = new HashMap();
+        aux.put("captain", "kirk");
+
+        newDocument.put("aux", aux);
+
+        //Setup a new state for Document
+        asset.setDocument(newDocument);
+
+        Map elObject = assetApp.update(asset);
+
+        assertEquals("updated", elObject.get("result"));
+    }
+
     // Mocks
     private String getImportFilesMock() {
         return getMockData("mock-import-files");
@@ -153,6 +174,10 @@ public class AssetAppTests extends AbstractAppTests {
 
     private String getMockIndex() {
         return getMockData("mock-index-assets");
+    }
+
+    private String getMockUpdate() {
+        return getMockData("mock-update-asset");
     }
 
     private String getMockData(String name) {
