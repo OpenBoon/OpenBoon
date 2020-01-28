@@ -169,6 +169,25 @@ public class AssetAppTests extends AbstractAppTests {
         assertEquals("updated", elasticSearchMap.get("result"));
     }
 
+    @Test
+    public void testBatchUpdate() {
+
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock()));
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock2()));
+        webServer.enqueue(new MockResponse().setBody(getMockUpdate()));
+
+        Asset asset1 = assetApp.getById("abc123");
+        asset1.setAttr("update.attr1","updatedValue");
+        Asset asset2 = assetApp.getById("123abc");
+        asset2.setAttr("update.attr2", "updatedAttribute");
+
+        List<Asset> assetList = Arrays.asList(asset1, asset2);
+
+        Map elasticSearchMap = assetApp.batchUpdate(assetList);
+
+        assertEquals("updated", elasticSearchMap.get("result"));
+    }
+
     // Mocks
     private String getImportFilesMock() {
         return getMockData("mock-import-files");

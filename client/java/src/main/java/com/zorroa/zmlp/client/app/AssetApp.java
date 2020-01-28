@@ -122,11 +122,29 @@ public class AssetApp {
 
     public Map batchIndex(List<Asset> assetList) {
         Map<String, Object> body =
-                        assetList
+                assetList
                         .stream()
                         .collect(Collectors.toMap(Asset::getId, Asset::getDocument));
 
         return client.post("/api/v3/assets/_batch_index", body, Map.class);
+    }
+
+    /**
+     *
+     * @param assetList List of assets to be updated
+     * @return An ES BulkResponse object.
+     */
+    public Map batchUpdate(List<Asset> assetList) {
+        Map<String, Object> body = new HashMap();
+
+        assetList.forEach(asset -> {
+            Map<String, Object> map = new HashMap();
+            map.put("doc", asset.getDocument());
+            body.put(asset.getId(), map);
+        });
+
+
+        return client.post("/api/v3/assets/_batch_update", body, Map.class);
     }
 
     private PagedList<Asset> buildAssetListResult(Map map) {

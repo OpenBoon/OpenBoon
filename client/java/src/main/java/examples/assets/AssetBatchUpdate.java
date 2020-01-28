@@ -22,32 +22,8 @@ public class AssetBatchUpdate {
         // Wrap assets into a list
         List<Asset> assetList = Arrays.asList(asset1, asset2);
 
-        // Batch Index returns an Elastic Search Object
-        Map elasticSearchMap = zmlpApp.assets.batchIndex(assetList);
+        // Batch Update returns an Elastic Search Object
+        Map elasticSearchMap = zmlpApp.assets.batchUpdate(assetList);
 
-        /**
-         * Example return value:
-         *  {
-         *    "took" : 11,
-         *    "errors" : false,
-         *    "items" : [ {
-         *      "index" : {
-         *        "_index" : "qjdjbpkvwg0sgusl",
-         *        "_type" : "_doc",
-         *        "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
-         *        "_version" : 2,
-         *        "result" : "updated",
-         *        "_shards" : {
-         *          "total" : 1,
-         *          "successful" : 1,
-         *          "failed" : 0
-         *        },
-         *        "_seq_no" : 1,
-         *        "_primary_term" : 1,
-         *        "status" : 200
-         *      }
-         *    } ]
-         *  }
-         */
     }
 }
