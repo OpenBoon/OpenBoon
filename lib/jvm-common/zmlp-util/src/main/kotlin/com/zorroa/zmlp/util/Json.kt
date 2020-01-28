@@ -38,7 +38,7 @@ object Json {
         mapper.registerModule(KotlinModule())
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-        mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, true)
+        mapper.configure(SerializationFeature.WRITE_ENUMS_USING_INDEX, false)
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
         mapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, false)
