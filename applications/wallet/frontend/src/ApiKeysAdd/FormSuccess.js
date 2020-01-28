@@ -1,9 +1,12 @@
+import { useRef } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
 import { spacing, colors, constants, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
+
+import { onCopy } from './helpers'
 
 const MAX_WIDTH = 470
 
@@ -12,6 +15,7 @@ const ApiKeysAddFormSuccess = ({
   apikey: { permissions, secretKey },
   onReset,
 }) => {
+  const textareaRef = useRef()
   return (
     <div>
       <div>Key Generated &amp; Copied to Clipboard</div>
@@ -57,6 +61,7 @@ const ApiKeysAddFormSuccess = ({
           paddingBottom: spacing.normal,
         }}>
         <textarea
+          ref={textareaRef}
           defaultValue={secretKey}
           rows="1"
           css={{
@@ -78,7 +83,17 @@ const ApiKeysAddFormSuccess = ({
             paddingLeft: spacing.small,
             paddingRight: spacing.small,
           }}>
-          <Button variant={VARIANTS.LINK}>Copy Key</Button>
+          <Button
+            variant={VARIANTS.LINK}
+            style={{
+              '&:active': {
+                opacity: 0,
+                transition: 'opacity .3s ease',
+              },
+            }}
+            onClick={() => onCopy({ textareaRef })}>
+            Copy Key
+          </Button>
           <span css={{ padding: spacing.small }}>|</span>
           <Button variant={VARIANTS.LINK}>Download</Button>
         </div>
