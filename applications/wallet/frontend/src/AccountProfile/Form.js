@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import { spacing } from '../Styles'
 
 import Form from '../Form'
-import Input from '../Input'
-import Button, { VARIANTS } from '../Button'
+import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 const reducer = (state, action) => ({ ...state, ...action })
 
@@ -17,6 +17,7 @@ const AccountProfileForm = ({ onSubmit }) => {
       <Input
         autoFocus
         id="firstName"
+        variant={INPUT_VARIANTS.SECONDARY}
         label="First Name"
         type="text"
         value={state.firstName}
@@ -26,6 +27,7 @@ const AccountProfileForm = ({ onSubmit }) => {
 
       <Input
         id="lastName"
+        variant={INPUT_VARIANTS.SECONDARY}
         label="Last Name"
         type="text"
         value={state.lastName}
@@ -40,7 +42,7 @@ const AccountProfileForm = ({ onSubmit }) => {
         }}>
         <Button
           type="submit"
-          variant={VARIANTS.PRIMARY}
+          variant={BUTTON_VARIANTS.PRIMARY}
           onClick={() => onSubmit(state)}
           isDisabled={!state.firstName || !state.lastName}>
           Save Changes
