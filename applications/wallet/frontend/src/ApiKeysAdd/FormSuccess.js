@@ -63,7 +63,7 @@ const ApiKeysAddFormSuccess = ({
         <textarea
           ref={textareaRef}
           defaultValue={secretKey}
-          rows="1"
+          rows="5"
           css={{
             width: MAX_WIDTH,
             fontSize: typography.size.regular,
@@ -71,7 +71,7 @@ const ApiKeysAddFormSuccess = ({
             color: colors.structure.white,
             backgroundColor: colors.structure.mattGrey,
             borderRadius: constants.borderRadius.small,
-            padding: spacing.normal,
+            padding: spacing.base,
             border: 'none',
             resize: 'none',
           }}
