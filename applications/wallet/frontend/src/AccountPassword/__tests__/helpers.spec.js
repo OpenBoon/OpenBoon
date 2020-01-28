@@ -2,9 +2,9 @@ import { onSubmit } from '../helpers'
 
 describe('<AccountPassword /> helpers', () => {
   describe('onSubmit()', () => {
-    const mockDispatch = jest.fn()
-
     it('should update the password ', async () => {
+      const mockDispatch = jest.fn()
+
       fetch.mockResponseOnce(
         JSON.stringify({
           oldPassword: 'password',
@@ -44,6 +44,8 @@ describe('<AccountPassword /> helpers', () => {
     })
 
     it('should display an error message with mismatching new passwords', async () => {
+      const mockDispatch = jest.fn()
+
       fetch.mockRejectOnce({
         json: () => Promise.resolve({ newPassword2: ['Error message'] }),
       })
