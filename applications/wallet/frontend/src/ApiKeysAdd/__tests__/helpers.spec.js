@@ -1,6 +1,6 @@
 import apikeysadd from '../__mocks__/apikeysadd'
 
-import { onSubmit } from '../helpers'
+import { onSubmit, onCopy } from '../helpers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
@@ -77,6 +77,22 @@ describe('<ApiKeysAdd /> helpers', () => {
       errors: {
         name: 'This API key name is already in use.',
       },
+    })
+  })
+
+  describe('onCopy()', () => {
+    it('should copy text to clipboard', () => {
+      const mockRef = { current: { select: jest.fn(), blur: jest.fn() } }
+
+      const mockFn = jest.fn()
+
+      Object.defineProperty(document, 'execCommand', { value: mockFn })
+
+      onCopy({ textareaRef: mockRef })
+
+      expect(mockRef.current.select).toHaveBeenCalledWith()
+      expect(mockFn).toHaveBeenCalledWith('copy')
+      expect(mockRef.current.blur).toHaveBeenCalledWith()
     })
   })
 })

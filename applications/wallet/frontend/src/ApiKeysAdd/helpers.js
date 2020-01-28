@@ -25,3 +25,9 @@ export const onSubmit = async ({
     dispatch({ errors: parsedErrors })
   }
 }
+
+export const onCopy = ({ textareaRef }) => {
+  textareaRef.current.select()
+  document.execCommand('copy')
+  textareaRef.current.blur()
+}
