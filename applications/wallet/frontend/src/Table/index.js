@@ -12,7 +12,7 @@ import GearSvg from '../Icons/gear.svg'
 
 const SIZE = 20
 
-const Table = ({ url, columns, renderEmpty, renderRow }) => {
+const Table = ({ url, columns, expandColumn, renderEmpty, renderRow }) => {
   const {
     query: { page = 1 },
   } = useRouter()
@@ -85,7 +85,7 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
                   backgroundColor: colors.structure.iron,
                   padding: `${spacing.moderate}px ${spacing.normal}px`,
                   borderBottom: constants.borders.default,
-                  ':nth-of-type(2)': { width: '100%' },
+                  [`:nth-of-type(${expandColumn})`]: { width: '100%' },
                   '&:not(:last-child)': {
                     borderRight: constants.borders.default,
                   },
@@ -131,6 +131,7 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
 Table.propTypes = {
   url: PropTypes.string.isRequired,
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+  expandColumn: PropTypes.number.isRequired,
   renderEmpty: PropTypes.node.isRequired,
   renderRow: PropTypes.func.isRequired,
 }
