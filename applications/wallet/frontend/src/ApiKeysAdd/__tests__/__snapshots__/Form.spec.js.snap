@@ -824,7 +824,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   color: #ffffff;
   background-color: #2e2e2e;
   border-radius: 2px;
-  padding: 16px;
+  padding: 8px;
   border: none;
   resize: none;
 }
@@ -1056,7 +1056,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
     <textarea
       className="emotion-4"
       defaultValue="FooBarSecretKey"
-      rows="1"
+      rows="5"
     />
     <div
       className="emotion-8"
@@ -1073,13 +1073,13 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
       >
         |
       </span>
-      <button
+      <a
         className="emotion-7"
-        onClick={[Function]}
-        type="button"
+        download="api-key.txt"
+        href="data:application/octet-stream;charset=utf-8;base64,Rm9vQmFyU2VjcmV0S2V5"
       >
         Download
-      </button>
+      </a>
     </div>
   </div>
   <div
