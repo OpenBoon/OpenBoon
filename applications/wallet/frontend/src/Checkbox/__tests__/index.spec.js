@@ -8,6 +8,7 @@ describe('<Checkbox />', () => {
 
     const component = TestRenderer.create(
       <Checkbox
+        value="checkbox"
         label="Checkbox"
         legend=""
         onClick={mockFn}

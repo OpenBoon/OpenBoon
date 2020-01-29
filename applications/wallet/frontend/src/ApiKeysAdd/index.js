@@ -21,7 +21,7 @@ const ApiKeysAdd = () => {
         ]}
       />
 
-      <ApiKeysAddForm onSubmit={console.warn} />
+      <ApiKeysAddForm />
     </>
   )
 }

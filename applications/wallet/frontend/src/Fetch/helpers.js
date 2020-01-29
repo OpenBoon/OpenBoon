@@ -36,7 +36,7 @@ export const initialize = ({ setUser }) => {
       return {}
     }
 
-    if (response.status !== 200) throw response
+    if (response.status >= 400) throw response
 
     return response.json()
   }
