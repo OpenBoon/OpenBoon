@@ -6,6 +6,7 @@ import morgan from 'morgan'
 import user from './src/User/__mocks__/user'
 import projects from './src/Projects/__mocks__/projects'
 import jobs from './src/Jobs/__mocks__/jobs'
+import job from './src/Job/__mocks__/job'
 import permissions from './src/Permissions/__mocks__/permissions'
 import apikeys from './src/ApiKeys/__mocks__/apikeys'
 import apikeysadd from './src/ApiKeysAdd/__mocks__/apikeysadd'
@@ -32,6 +33,7 @@ app.prepare().then(() => {
     server.post('/api/v1/login/', mock(user))
     server.get('/api/v1/projects/', mock(projects))
     server.get('/api/v1/projects/:projectId/jobs/', mock(jobs))
+    server.get('/api/v1/projects/:projectId/jobs/:jobId/', mock(job))
     server.get('/api/v1/projects/:projectId/permissions/', mock(permissions))
     server.get('/api/v1/projects/:projectId/apikeys/', mock(apikeys))
     server.post('/api/v1/projects/:projectId/apikeys/', mock(apikeysadd))
