@@ -186,7 +186,7 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-0:nth-of-type(2) {
+.emotion-0:nth-of-type(3) {
   width: 100%;
 }
 
@@ -477,7 +477,7 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-0:nth-of-type(2) {
+.emotion-0:nth-of-type(3) {
   width: 100%;
 }
 
@@ -713,7 +713,7 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-0:nth-of-type(2) {
+.emotion-0:nth-of-type(3) {
   width: 100%;
 }
 

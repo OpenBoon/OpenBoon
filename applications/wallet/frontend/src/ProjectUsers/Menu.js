@@ -57,8 +57,8 @@ const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
                       onClick()
 
                       await fetcher(
-                        `/api/v1/projects/${projectId}/users/${userId}/delete/`,
-                        { method: 'PUT' },
+                        `/api/v1/projects/${projectId}/users/${userId}/`,
+                        { method: 'DELETE' },
                       )
 
                       revalidate()
