@@ -31,6 +31,7 @@ const Jobs = () => {
           '# Assets',
           'Errors',
           'Task Progress',
+          '#Actions#',
         ]}
         renderEmpty={<JobsEmpty />}
         renderRow={({ result, revalidate }) => (
