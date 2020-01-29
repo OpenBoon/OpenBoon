@@ -90,7 +90,13 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
                     borderRight: constants.borders.default,
                   },
                 }}>
-                {column === '#Actions#' ? <GearSvg width={20} /> : column}
+                {column === '#Actions#' ? (
+                  <div css={{ display: 'flex' }}>
+                    <GearSvg width={20} />
+                  </div>
+                ) : (
+                  column
+                )}
               </th>
             ))}
           </tr>
