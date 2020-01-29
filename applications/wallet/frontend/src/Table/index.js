@@ -8,6 +8,8 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import Pagination from '../Pagination'
 
+import GearSvg from '../Icons/gear.svg'
+
 const SIZE = 20
 
 const Table = ({ url, columns, renderEmpty, renderRow }) => {
@@ -35,12 +37,6 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
           whiteSpace: 'nowrap',
           tr: {
             backgroundColor: colors.structure.lead,
-            '.gear': {
-              opacity: 0,
-              '&:focus': {
-                opacity: 1,
-              },
-            },
             '&:nth-of-type(2n)': {
               backgroundColor: colors.structure.mattGrey,
             },
@@ -57,9 +53,6 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
                 '&:last-of-type': {
                   borderRight: constants.borders.tableRow,
                 },
-              },
-              '.gear': {
-                opacity: 1,
               },
             },
           },
@@ -97,7 +90,13 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
                     borderRight: constants.borders.default,
                   },
                 }}>
-                {column}
+                {column === '#Actions#' ? (
+                  <div css={{ display: 'flex' }}>
+                    <GearSvg width={20} />
+                  </div>
+                ) : (
+                  column
+                )}
               </th>
             ))}
           </tr>
