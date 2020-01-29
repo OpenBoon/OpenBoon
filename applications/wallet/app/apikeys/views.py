@@ -34,3 +34,7 @@ class ApikeyViewSet(BaseProjectViewSet):
                 'permissions': serializer.validated_data['permissions']}
         response = client.post('/auth/v1/apikey', body)
         return Response(status=status.HTTP_201_CREATED, data=response)
+
+    def destroy(self, request, project_pk, client, pk):
+        response = client.delete(f'/auth/v1/apikey/{pk}')
+        return Response(response)

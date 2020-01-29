@@ -1,18 +1,11 @@
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 
 import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
 
-import { onSubmit } from './helpers'
-
 import ApiKeysAddForm from './Form'
 
 const ApiKeysAdd = () => {
-  const {
-    query: { projectId },
-  } = useRouter()
-
   return (
     <>
       <Head>
@@ -28,7 +21,7 @@ const ApiKeysAdd = () => {
         ]}
       />
 
-      <ApiKeysAddForm onSubmit={onSubmit({ projectId })} />
+      <ApiKeysAddForm />
     </>
   )
 }
