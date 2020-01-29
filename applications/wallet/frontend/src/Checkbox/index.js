@@ -7,7 +7,7 @@ import { colors, spacing, typography } from '../Styles'
 
 import CheckboxIcon from './Icon'
 
-const Checkbox = ({ label, legend, initialValue, onClick }) => {
+const Checkbox = ({ value, label, legend, initialValue, onClick }) => {
   const [isChecked, setIsChecked] = useState(initialValue)
 
   return (
@@ -20,6 +20,7 @@ const Checkbox = ({ label, legend, initialValue, onClick }) => {
         paddingBottom: spacing.moderate,
       }}>
       <CheckboxIcon
+        value={value}
         isChecked={isChecked}
         onClick={() => {
           setIsChecked(!isChecked)
@@ -50,6 +51,7 @@ const Checkbox = ({ label, legend, initialValue, onClick }) => {
 }
 
 Checkbox.propTypes = {
+  value: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   legend: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,

@@ -9,8 +9,8 @@ import HiddenSvg from '../Icons/hidden.svg'
 import VisibleSvg from '../Icons/visible.svg'
 
 import FormAlert from '../FormAlert'
-import Input from '../Input'
-import Button, { VARIANTS } from '../Button'
+import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import LoginWithGoogle from './WithGoogle'
 
@@ -78,6 +78,7 @@ const Login = ({
         <Input
           autoFocus
           id="username"
+          variant={INPUT_VARIANTS.PRIMARY}
           label="Email"
           type="text"
           value={username}
@@ -87,6 +88,7 @@ const Login = ({
 
         <Input
           id="password"
+          variant={INPUT_VARIANTS.PRIMARY}
           label="Password"
           type={showPassword ? 'text' : 'password'}
           value={password}
@@ -95,7 +97,7 @@ const Login = ({
           after={
             <Button
               aria-label={showPassword ? 'Hide password' : 'Show password'}
-              variant={VARIANTS.NEUTRAL}
+              variant={BUTTON_VARIANTS.NEUTRAL}
               onClick={() => setShowPassword(!showPassword)}
               style={{
                 color: colors.structure.zinc,
@@ -120,7 +122,7 @@ const Login = ({
           }}>
           <Button
             type="submit"
-            variant={VARIANTS.PRIMARY}
+            variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() => onSubmit({ username, password })}
             isDisabled={!username || !password}>
             Login

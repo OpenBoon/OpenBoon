@@ -79,3 +79,16 @@ class TestApikey:
         assert response.status_code == 400
         assert response.content == (b'{"name":["This field is required."],"permissions":'
                                     b'["This field is required."]}')
+
+    @override_settings(PLATFORM='zmlp')
+    def test_delete_detail(self, zmlp_project_user, project, api_client, monkeypatch, data):
+        def mock_api_response(*args, **kwargs):
+            return {}
+
+        monkeypatch.setattr(ZmlpClient, 'get', mock_api_response)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        response = api_client.get(reverse('apikey-detail',
+                                          kwargs={'project_pk': project.id,
+                                                  'pk': '9a27e6fd-3396-4d98-8641-37f6d05e3275'}))
+        assert response.status_code == 200
