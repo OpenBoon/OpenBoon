@@ -5,9 +5,9 @@ import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
 import Table from '../Table'
 
-import ApiKeysRow from './Row'
+import ProjectUsersRow from './Row'
 
-const ApiKeys = () => {
+const ProjectUsers = () => {
   const {
     query: { projectId },
   } = useRouter()
@@ -15,30 +15,30 @@ const ApiKeys = () => {
   return (
     <>
       <Head>
-        <title>API Keys</title>
+        <title>User Admin</title>
       </Head>
 
-      <PageTitle>Project API Keys</PageTitle>
+      <PageTitle>Project User Admin</PageTitle>
 
       <Tabs
         tabs={[
-          { title: 'View all', href: '/[projectId]/api-keys' },
-          { title: 'Create API key', href: '/[projectId]/api-keys/add' },
+          { title: 'Users', href: '/[projectId]/users' },
+          { title: 'Create User', href: '/[projectId]/users/add' },
         ]}
       />
 
       <div>&nbsp;</div>
 
       <Table
-        url={`/api/v1/projects/${projectId}/apikeys/`}
-        columns={['API Key Name', 'Permissions', '#Actions#']}
-        expandColumn={2}
-        renderEmpty="No api keys"
+        url={`/api/v1/projects/${projectId}/users/`}
+        columns={['User Name', 'Email', 'Permissions', '#Actions#']}
+        expandColumn={3}
+        renderEmpty="No users"
         renderRow={({ result, revalidate }) => (
-          <ApiKeysRow
+          <ProjectUsersRow
             key={result.id}
             projectId={projectId}
-            apiKey={result}
+            user={result}
             revalidate={revalidate}
           />
         )}
@@ -47,4 +47,4 @@ const ApiKeys = () => {
   )
 }
 
-export default ApiKeys
+export default ProjectUsers
