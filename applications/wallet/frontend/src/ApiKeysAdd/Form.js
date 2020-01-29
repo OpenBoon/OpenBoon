@@ -1,5 +1,4 @@
 import { useReducer } from 'react'
-import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
@@ -10,9 +9,20 @@ import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
+import { onSubmit } from './helpers'
+
+import ApiKeysAddFormSuccess from './FormSuccess'
+
+const INITIAL_STATE = {
+  name: '',
+  permissions: {},
+  apikey: {},
+  errors: {},
+}
+
 const reducer = (state, action) => ({ ...state, ...action })
 
-const ApiKeysAddForm = ({ onSubmit }) => {
+const ApiKeysAddForm = () => {
   const {
     query: { projectId },
   } = useRouter()
@@ -21,9 +31,21 @@ const ApiKeysAddForm = ({ onSubmit }) => {
     `/api/v1/projects/${projectId}/permissions/`,
   )
 
-  const [state, dispatch] = useReducer(reducer, { name: '', permissions: {} })
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   if (!Array.isArray(permissions)) return 'Loading...'
+
+  const { apikey } = state
+
+  if (apikey.secretKey) {
+    return (
+      <ApiKeysAddFormSuccess
+        projectId={projectId}
+        apikey={apikey}
+        onReset={() => dispatch(INITIAL_STATE)}
+      />
+    )
+  }
 
   return (
     <Form>
@@ -35,10 +57,9 @@ const ApiKeysAddForm = ({ onSubmit }) => {
         type="text"
         value={state.name}
         onChange={({ target: { value } }) => dispatch({ name: value })}
-        hasError={false}
+        hasError={state.errors.name !== undefined}
+        errorMessage={state.errors.name}
       />
-
-      <div>&nbsp;</div>
 
       <CheckboxGroup
         legend="Add Scope"
@@ -61,17 +82,13 @@ const ApiKeysAddForm = ({ onSubmit }) => {
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() => onSubmit(state)}
+          onClick={() => onSubmit({ dispatch, projectId, state })}
           isDisabled={!state.name}>
           Generate Key &amp; Download
         </Button>
       </div>
     </Form>
   )
-}
-
-ApiKeysAddForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 }
 
 export default ApiKeysAddForm
