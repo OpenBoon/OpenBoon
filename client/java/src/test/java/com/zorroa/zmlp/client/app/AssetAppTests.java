@@ -88,37 +88,39 @@ public class AssetAppTests extends AbstractAppTests {
     }
 
     @Test
-    public void testSearchElement() {
+    public void testSearchProperties() throws JsonProcessingException {
 
         webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
 
-        Map elementQueryTerms = new HashMap();
-        elementQueryTerms.put("element.labels", "cat");
+        String query = "{\"query\": {\"term\": {\"source.filename\": \"dog.jpg\"}}}";
+        Map elementQueryTerms = Json.mapper.readValue(query, Map.class);
 
-        PagedList<Asset> searchResult = assetApp.search(elementQueryTerms);
-        Asset asset = searchResult.get(0);
-        String path = asset.getAttr("source.path");
 
-        assertEquals("https://i.imgur.com/SSN26nN.jpg", path);
+        AssetSearchResult searchResult = assetApp.search(elementQueryTerms);
+
+        assertEquals(2, searchResult.assets().size());
+        assertEquals(2, searchResult.size());
+        assertEquals(100, searchResult.totalSize());
+        System.out.println(Json.asPrettyJson(searchResult.rawResponse()));
+        assertEquals(getMockSearchResult(), Json.asPrettyJson(searchResult.rawResponse()));
     }
 
     @Test
-    public void testSearchWrapped() {
+    public void testSearchNextPage() throws JsonProcessingException {
 
         webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
+        String secondPageMock = "{\"hits\":{\"hits\":[]}}";
+        webServer.enqueue(new MockResponse().setBody(secondPageMock));
 
-        Map search = new HashMap();
-        search.put("match_all", new HashMap());
 
-        PagedList<Asset> searchResult = assetApp.search(search);
+        String query = "{\"query\": {\"term\": {\"source.filename\": \"dog.jpg\"}}}";
+        Map elementQueryTerms = Json.mapper.readValue(query, Map.class);
 
-        Asset asset = searchResult.get(0);
-        String nestedValue = asset.getAttr("source.nestedSource.nestedKey");
-        String path = asset.getAttr("source.path");
 
-        assertEquals(2, searchResult.getList().size());
-        assertEquals("nestedValue", nestedValue);
-        assertEquals("https://i.imgur.com/SSN26nN.jpg", path);
+        AssetSearchResult searchResult = assetApp.search(elementQueryTerms);
+        AssetSearchResult secondPage = searchResult.nextPage();
+
+        assertEquals(secondPageMock, Json.asJson(secondPage.rawResponse()));
     }
 
     @Test

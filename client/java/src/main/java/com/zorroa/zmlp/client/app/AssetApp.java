@@ -61,13 +61,11 @@ public class AssetApp {
      * https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-body.html
      *
      * @param assetSearch The Elastic Search and Element Query
-     * @return A SearchResult containing assets ElasticSearch search result dictionary.
+     * @return A AssetSearchResult containing assets ElasticSearch search.
      */
 
-    public PagedList<Asset> search(Map assetSearch) {
-        Map post = client.post("/api/v3/assets/_search", assetSearch, Map.class);
-
-        return buildAssetListResult(post);
+    public AssetSearchResult search(Map assetSearch) {
+        return new AssetSearchResult(this.client, assetSearch);
     }
 
     /**
@@ -83,7 +81,7 @@ public class AssetApp {
      */
 
     public Map rawSearch(Map assetSearch) {
-        return client.post("/api/v3/assets/_search", assetSearch, Map.class);
+        return new AssetSearchResult(this.client, assetSearch).rawResponse();
     }
 
     /**
@@ -182,28 +180,4 @@ public class AssetApp {
         Map queryMap = Json.mapper.readValue(queryString, Map.class);
         return deleteByQuery(queryMap);
     }
-
-    private PagedList<Asset> buildAssetListResult(Map map) {
-
-        Map hits = (Map) map.get("hits");
-        List<Asset> assetList = new ArrayList<Asset>();
-        PagedList<Asset> pagedList = new PagedList(new Page(), assetList);
-
-        if (hits != null) {
-
-            Optional.ofNullable(hits.get("hits")).ifPresent(
-                    (hitsHits) -> {
-                        ((List<Map>) hitsHits).forEach(hit -> {
-                            String id = (String) hit.get("_id");
-                            Map document = (Map) hit.get("_source");
-                            Asset asset = new Asset(id, document);
-                            assetList.add(asset);
-                        });
-                    }
-            );
-        }
-        return pagedList;
-    }
-
-
 }
