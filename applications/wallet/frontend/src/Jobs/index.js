@@ -33,6 +33,7 @@ const Jobs = () => {
           'Task Progress',
           '#Actions#',
         ]}
+        expandColumn={2}
         renderEmpty={<JobsEmpty />}
         renderRow={({ result, revalidate }) => (
           <JobsRow
