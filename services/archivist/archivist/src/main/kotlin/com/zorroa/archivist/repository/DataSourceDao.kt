@@ -4,7 +4,7 @@ import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceCredentials
 import com.zorroa.archivist.domain.DataSourceFilter
 import com.zorroa.archivist.security.getProjectId
-import com.zorroa.archivist.util.StringListConverter
+import com.zorroa.zmlp.service.jpa.StringListConverter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository

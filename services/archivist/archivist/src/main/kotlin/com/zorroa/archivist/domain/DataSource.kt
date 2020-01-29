@@ -5,7 +5,7 @@ import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.archivist.util.StringListConverter
+import com.zorroa.zmlp.service.jpa.StringListConverter
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
@@ -118,9 +118,7 @@ class DataSource(
         if (javaClass != other?.javaClass) return false
 
         other as DataSource
-
         if (id != other.id) return false
-
         return true
     }
 
