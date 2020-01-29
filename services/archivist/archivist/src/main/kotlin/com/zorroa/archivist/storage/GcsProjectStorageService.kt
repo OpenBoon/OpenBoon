@@ -31,7 +31,7 @@ class GcsProjectStorageService constructor(
 
 ) : ProjectStorageService {
 
-    val gcs : Storage = StorageOptions.getDefaultInstance().service
+    val gcs: Storage = StorageOptions.getDefaultInstance().service
 
     @PostConstruct
     fun initialize() {

@@ -22,7 +22,7 @@ class GcsSystemStorageService constructor(
 
 ) : SystemStorageService {
 
-    val gcs : Storage = StorageOptions.getDefaultInstance().service
+    val gcs: Storage = StorageOptions.getDefaultInstance().service
 
     @PostConstruct
     fun initialize() {
