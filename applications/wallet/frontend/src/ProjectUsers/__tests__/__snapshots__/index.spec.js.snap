@@ -120,11 +120,11 @@ Array [
   <div>
      
   </div>,
-  .emotion-7 {
+  .emotion-8 {
   height: 100%;
 }
 
-.emotion-6 {
+.emotion-7 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -132,46 +132,34 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-6 tr {
+.emotion-7 tr {
   background-color: #252525;
 }
 
-.emotion-6 tr .gear {
-  opacity: 0;
-}
-
-.emotion-6 tr .gear:focus {
-  opacity: 1;
-}
-
-.emotion-6 tr:nth-of-type(2n) {
+.emotion-7 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-6 tr:hover {
+.emotion-7 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-6 tr:hover td {
+.emotion-7 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-6 tr:hover td:first-of-type {
+.emotion-7 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-6 tr:hover td:last-of-type {
+.emotion-7 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-6 tr:hover .gear {
-  opacity: 1;
-}
-
-.emotion-6 td {
+.emotion-7 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -179,11 +167,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-6 td:first-of-type {
+.emotion-7 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-6 td:last-of-type {
+.emotion-7 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
@@ -206,12 +194,19 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-5 {
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-6 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -234,10 +229,10 @@ Array [
 }
 
 <div
-    className="emotion-7"
+    className="emotion-8"
   >
     <table
-      className="emotion-6"
+      className="emotion-7"
     >
       <thead>
         <tr>
@@ -259,19 +254,26 @@ Array [
           <th
             className="emotion-0"
           >
-            #Actions#
+            <div
+              className="emotion-3"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </div>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr
-          className="emotion-5"
+          className="emotion-6"
         >
           <td
             colSpan={4}
           >
             <div
-              className="emotion-4"
+              className="emotion-5"
             >
               Loading...
             </div>
@@ -409,11 +411,11 @@ Array [
   <div>
      
   </div>,
-  .emotion-7 {
+  .emotion-8 {
   height: 100%;
 }
 
-.emotion-6 {
+.emotion-7 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -421,46 +423,34 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-6 tr {
+.emotion-7 tr {
   background-color: #252525;
 }
 
-.emotion-6 tr .gear {
-  opacity: 0;
-}
-
-.emotion-6 tr .gear:focus {
-  opacity: 1;
-}
-
-.emotion-6 tr:nth-of-type(2n) {
+.emotion-7 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-6 tr:hover {
+.emotion-7 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-6 tr:hover td {
+.emotion-7 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-6 tr:hover td:first-of-type {
+.emotion-7 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-6 tr:hover td:last-of-type {
+.emotion-7 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-6 tr:hover .gear {
-  opacity: 1;
-}
-
-.emotion-6 td {
+.emotion-7 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -468,11 +458,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-6 td:first-of-type {
+.emotion-7 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-6 td:last-of-type {
+.emotion-7 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
@@ -495,12 +485,19 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-5 {
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-6 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -523,10 +520,10 @@ Array [
 }
 
 <div
-    className="emotion-7"
+    className="emotion-8"
   >
     <table
-      className="emotion-6"
+      className="emotion-7"
     >
       <thead>
         <tr>
@@ -548,19 +545,26 @@ Array [
           <th
             className="emotion-0"
           >
-            #Actions#
+            <div
+              className="emotion-3"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </div>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr
-          className="emotion-5"
+          className="emotion-6"
         >
           <td
             colSpan={4}
           >
             <div
-              className="emotion-4"
+              className="emotion-5"
             >
               No users
             </div>
@@ -717,11 +721,18 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-16 {
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-17 {
   height: auto;
 }
 
-.emotion-8 {
+.emotion-9 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -729,46 +740,34 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-8 tr {
+.emotion-9 tr {
   background-color: #252525;
 }
 
-.emotion-8 tr .gear {
-  opacity: 0;
-}
-
-.emotion-8 tr .gear:focus {
-  opacity: 1;
-}
-
-.emotion-8 tr:nth-of-type(2n) {
+.emotion-9 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-8 tr:hover {
+.emotion-9 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-8 tr:hover td {
+.emotion-9 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-8 tr:hover td:first-of-type {
+.emotion-9 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-8 tr:hover td:last-of-type {
+.emotion-9 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-8 tr:hover .gear {
-  opacity: 1;
-}
-
-.emotion-8 td {
+.emotion-9 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -776,15 +775,15 @@ Array [
   border-right: 0;
 }
 
-.emotion-8 td:first-of-type {
+.emotion-9 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-8 td:last-of-type {
+.emotion-9 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -795,11 +794,11 @@ Array [
   border-radius: 14px;
 }
 
-.emotion-7 {
+.emotion-8 {
   position: relative;
 }
 
-.emotion-6 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -835,20 +834,20 @@ Array [
   border-radius: 32px;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-6[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   background-color: #808080;
 }
 
-.emotion-15 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -859,7 +858,7 @@ Array [
   justify-content: flex-end;
 }
 
-.emotion-10 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -877,20 +876,20 @@ Array [
   border-bottom-right-radius: 0;
 }
 
-.emotion-10:hover {
+.emotion-11:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-9 {
+.emotion-10 {
   color: #191919;
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-11 {
+.emotion-12 {
   padding: 8px 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -904,7 +903,7 @@ Array [
   background-color: #000000;
 }
 
-.emotion-12 {
+.emotion-13 {
   padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -917,7 +916,7 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-14 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -935,13 +934,13 @@ Array [
   border-bottom-right-radius: 2px;
 }
 
-.emotion-14:hover {
+.emotion-15:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-13 {
+.emotion-14 {
   color: #191919;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -949,10 +948,10 @@ Array [
 }
 
 <div
-    className="emotion-16"
+    className="emotion-17"
   >
     <table
-      className="emotion-8"
+      className="emotion-9"
     >
       <thead>
         <tr>
@@ -974,7 +973,14 @@ Array [
           <th
             className="emotion-0"
           >
-            #Actions#
+            <div
+              className="emotion-3"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </div>
           </th>
         </tr>
       </thead>
@@ -988,23 +994,23 @@ Array [
           </td>
           <td>
             <span
-              className="emotion-4"
+              className="emotion-5"
             >
                Api Key Manage
             </span>
             <span
-              className="emotion-4"
+              className="emotion-5"
             >
                Project Manage
             </span>
           </td>
           <td>
             <div
-              className="emotion-7"
+              className="emotion-8"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-6"
+                className="emotion-7"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -1023,37 +1029,37 @@ Array [
        
     </div>
     <div
-      className="emotion-15"
+      className="emotion-16"
     >
       <button
-        className="emotion-10"
+        className="emotion-11"
         disabled={true}
         type="button"
       >
         <svg
-          className="emotion-9"
+          className="emotion-10"
           data-file-name="chevron.svg"
           width={16}
         />
       </button>
       <div
-        className="emotion-11"
+        className="emotion-12"
       >
         1
       </div>
       <div
-        className="emotion-12"
+        className="emotion-13"
       >
         of 
         1
       </div>
       <button
-        className="emotion-14"
+        className="emotion-15"
         disabled={true}
         type="button"
       >
         <svg
-          className="emotion-13"
+          className="emotion-14"
           data-file-name="chevron.svg"
           width={16}
         />
