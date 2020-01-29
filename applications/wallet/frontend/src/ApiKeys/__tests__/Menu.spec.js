@@ -60,7 +60,7 @@ describe('<ApiKeysMenu />', () => {
     expect(fetch.mock.calls.length).toEqual(1)
 
     expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/projects/${PROJECT_ID}/apikeys/${API_KEY_ID}/delete/`,
+      `/api/v1/projects/${PROJECT_ID}/apikeys/${API_KEY_ID}/`,
     )
 
     expect(fetch.mock.calls[0][1]).toEqual({
@@ -68,7 +68,7 @@ describe('<ApiKeysMenu />', () => {
         'X-CSRFToken': 'CSRF_TOKEN',
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      method: 'PUT',
+      method: 'DELETE',
     })
 
     expect(mockFn).toHaveBeenCalledWith()

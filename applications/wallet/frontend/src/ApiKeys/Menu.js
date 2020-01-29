@@ -58,8 +58,8 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
                       onClick()
 
                       await fetcher(
-                        `/api/v1/projects/${projectId}/apikeys/${apiKeyId}/delete/`,
-                        { method: 'PUT' },
+                        `/api/v1/projects/${projectId}/apikeys/${apiKeyId}/`,
+                        { method: 'DELETE' },
                       )
 
                       revalidate()
