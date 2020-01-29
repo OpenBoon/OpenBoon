@@ -37,6 +37,30 @@ Array [
 
 .emotion-0 {
   border: 0 #b8d652 solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2 {
+  border: 0 #b8d652 solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -55,7 +79,7 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
@@ -83,7 +107,7 @@ Array [
         className="emotion-1"
       >
         <a
-          className="emotion-0"
+          className="emotion-2"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -96,11 +120,11 @@ Array [
   <div>
      
   </div>,
-  .emotion-6 {
+  .emotion-7 {
   height: 100%;
 }
 
-.emotion-5 {
+.emotion-6 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -108,46 +132,46 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-5 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-5 tr .gear {
+.emotion-6 tr .gear {
   opacity: 0;
 }
 
-.emotion-5 tr .gear:focus {
+.emotion-6 tr .gear:focus {
   opacity: 1;
 }
 
-.emotion-5 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-5 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-5 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-5 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-5 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-5 tr:hover .gear {
+.emotion-6 tr:hover .gear {
   opacity: 1;
 }
 
-.emotion-5 td {
+.emotion-6 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -155,11 +179,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-5 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-5 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
@@ -182,12 +206,12 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-4 {
+.emotion-5 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -210,10 +234,10 @@ Array [
 }
 
 <div
-    className="emotion-6"
+    className="emotion-7"
   >
     <table
-      className="emotion-5"
+      className="emotion-6"
     >
       <thead>
         <tr>
@@ -232,17 +256,22 @@ Array [
           >
             Permissions
           </th>
+          <th
+            className="emotion-0"
+          >
+            #Actions#
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr
-          className="emotion-4"
+          className="emotion-5"
         >
           <td
-            colSpan={3}
+            colSpan={4}
           >
             <div
-              className="emotion-3"
+              className="emotion-4"
             >
               Loading...
             </div>
@@ -297,6 +326,30 @@ Array [
 
 .emotion-0 {
   border: 0 #b8d652 solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2 {
+  border: 0 #b8d652 solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -315,7 +368,7 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
@@ -343,7 +396,7 @@ Array [
         className="emotion-1"
       >
         <a
-          className="emotion-0"
+          className="emotion-2"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -356,11 +409,11 @@ Array [
   <div>
      
   </div>,
-  .emotion-6 {
+  .emotion-7 {
   height: 100%;
 }
 
-.emotion-5 {
+.emotion-6 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -368,46 +421,46 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-5 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-5 tr .gear {
+.emotion-6 tr .gear {
   opacity: 0;
 }
 
-.emotion-5 tr .gear:focus {
+.emotion-6 tr .gear:focus {
   opacity: 1;
 }
 
-.emotion-5 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-5 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-5 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-5 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-5 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-5 tr:hover .gear {
+.emotion-6 tr:hover .gear {
   opacity: 1;
 }
 
-.emotion-5 td {
+.emotion-6 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -415,11 +468,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-5 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-5 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
@@ -442,12 +495,12 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-4 {
+.emotion-5 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -470,10 +523,10 @@ Array [
 }
 
 <div
-    className="emotion-6"
+    className="emotion-7"
   >
     <table
-      className="emotion-5"
+      className="emotion-6"
     >
       <thead>
         <tr>
@@ -492,17 +545,22 @@ Array [
           >
             Permissions
           </th>
+          <th
+            className="emotion-0"
+          >
+            #Actions#
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr
-          className="emotion-4"
+          className="emotion-5"
         >
           <td
-            colSpan={3}
+            colSpan={4}
           >
             <div
-              className="emotion-3"
+              className="emotion-4"
             >
               No users
             </div>
@@ -557,6 +615,30 @@ Array [
 
 .emotion-0 {
   border: 0 #b8d652 solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2 {
+  border: 0 #b8d652 solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -575,7 +657,7 @@ Array [
   font-weight: 700;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
@@ -603,7 +685,7 @@ Array [
         className="emotion-1"
       >
         <a
-          className="emotion-0"
+          className="emotion-2"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -702,18 +784,7 @@ Array [
   border-right: 1px solid transparent;
 }
 
-.emotion-7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-}
-
-.emotion-3 {
+.emotion-4 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -724,11 +795,11 @@ Array [
   border-radius: 14px;
 }
 
-.emotion-6 {
+.emotion-7 {
   position: relative;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -764,16 +835,16 @@ Array [
   border-radius: 32px;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   background-color: #808080;
 }
 
@@ -900,6 +971,11 @@ Array [
           >
             Permissions
           </th>
+          <th
+            className="emotion-0"
+          >
+            #Actions#
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -910,27 +986,25 @@ Array [
           <td>
             jane@zorroa.com
           </td>
-          <td
-            className="emotion-7"
-          >
-            <div>
-              <span
-                className="emotion-3"
-              >
-                 Api Key Manage
-              </span>
-              <span
-                className="emotion-3"
-              >
-                 Project Manage
-              </span>
-            </div>
+          <td>
+            <span
+              className="emotion-4"
+            >
+               Api Key Manage
+            </span>
+            <span
+              className="emotion-4"
+            >
+               Project Manage
+            </span>
+          </td>
+          <td>
             <div
-              className="emotion-6"
+              className="emotion-7"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="gear emotion-5"
+                className="emotion-6"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"

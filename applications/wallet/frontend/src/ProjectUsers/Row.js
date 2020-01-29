@@ -13,25 +13,25 @@ const ProjectUsersRow = ({
     <tr>
       <td>{name}</td>
       <td>{email}</td>
-      <td css={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div>
-          {permissions.map(permission => (
-            <span
-              key={permission}
-              css={{
-                display: 'inline-block',
-                color: colors.structure.coal,
-                backgroundColor: colors.structure.zinc,
-                padding: spacing.moderate,
-                paddingTop: spacing.small,
-                paddingBottom: spacing.small,
-                marginRight: spacing.base,
-                borderRadius: constants.borderRadius.large,
-              }}>
-              {permission.replace(/([A-Z])/g, match => ` ${match}`)}
-            </span>
-          ))}
-        </div>
+      <td>
+        {permissions.map(permission => (
+          <span
+            key={permission}
+            css={{
+              display: 'inline-block',
+              color: colors.structure.coal,
+              backgroundColor: colors.structure.zinc,
+              padding: spacing.moderate,
+              paddingTop: spacing.small,
+              paddingBottom: spacing.small,
+              marginRight: spacing.base,
+              borderRadius: constants.borderRadius.large,
+            }}>
+            {permission.replace(/([A-Z])/g, match => ` ${match}`)}
+          </span>
+        ))}
+      </td>
+      <td>
         <ProjectUsersMenu
           projectId={projectId}
           userId={userId}
