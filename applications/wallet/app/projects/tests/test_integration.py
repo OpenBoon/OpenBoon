@@ -91,9 +91,9 @@ def test_project_serializer_detail(project):
     assert expected_fields == list(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
-    assert data['users'] == []
     assert data['url'] == f'/api/v1/projects/{project.id}/'
     assert data['jobs'] == f'/api/v1/projects/{project.id}/jobs/'
+    assert data['users'] == f'/api/v1/projects/{project.id}/users/'
     assert data['apikeys'] == f'/api/v1/projects/{project.id}/apikeys/'
     assert data['permissions'] == f'/api/v1/projects/{project.id}/permissions/'
 

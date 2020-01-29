@@ -2,13 +2,13 @@ from rest_framework.response import Response
 
 from permissions.serializers import PermissionSerializer
 from projects.views import BaseProjectViewSet
-from wallet.paginators import FromSizePagination
+from wallet.paginators import ZMLPFromSizePagination
 
 
 class PermissionViewSet(BaseProjectViewSet):
 
     serializer_class = PermissionSerializer
-    pagination_class = FromSizePagination
+    pagination_class = ZMLPFromSizePagination
 
     ZMLP_ONLY = True
 

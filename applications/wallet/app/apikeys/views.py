@@ -3,13 +3,13 @@ from rest_framework.response import Response
 
 from apikeys.serializers import ApikeySerializer
 from projects.views import BaseProjectViewSet
-from wallet.paginators import FromSizePagination
+from wallet.paginators import ZMLPFromSizePagination
 
 
 class ApikeyViewSet(BaseProjectViewSet):
 
     serializer_class = ApikeySerializer
-    pagination_class = FromSizePagination
+    pagination_class = ZMLPFromSizePagination
 
     ZMLP_ONLY = True
 
