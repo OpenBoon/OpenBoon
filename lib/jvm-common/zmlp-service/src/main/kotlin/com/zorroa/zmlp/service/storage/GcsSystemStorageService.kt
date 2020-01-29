@@ -17,23 +17,14 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 
-@Configuration
-@Profile("gcs")
-class GcsStorageConfiguration {
-
-    @Bean
-    fun getGcs(): Storage {
-        return StorageOptions.getDefaultInstance().service
-    }
-}
-
 @Service
 @Profile("gcs")
 class GcsSystemStorageService constructor(
-    override val properties: SystemStorageProperties,
-    val gcs: Storage
+    override val properties: SystemStorageProperties
 
 ) : SystemStorageService {
+
+    val gcs : Storage = StorageOptions.getDefaultInstance().service
 
     @PostConstruct
     fun initialize() {
