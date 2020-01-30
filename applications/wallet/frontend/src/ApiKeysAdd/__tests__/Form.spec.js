@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import permissions from '../../Permissions/__mocks__/permissions'
+import permissions from '../../ProjectPermissions/__mocks__/permissions'
 
 import ApiKeysAddForm from '../Form'
 
