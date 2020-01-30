@@ -3,6 +3,8 @@ import Head from 'next/head'
 import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
 
+import ProjectUsersAddForm from './Form'
+
 const ProjectUsersAdd = () => {
   return (
     <>
@@ -19,7 +21,7 @@ const ProjectUsersAdd = () => {
         ]}
       />
 
-      <div>&nbsp;</div>
+      <ProjectUsersAddForm />
     </>
   )
 }
