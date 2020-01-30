@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
@@ -17,6 +17,11 @@ const ApiKeysAddFormSuccess = ({
   onReset,
 }) => {
   const textareaRef = useRef()
+
+  useEffect(() => {
+    onCopy({ textareaRef })
+  }, [])
+
   return (
     <div>
       <FormSuccess>Key Generated &amp; Copied to Clipboard</FormSuccess>
