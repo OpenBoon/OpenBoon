@@ -17,7 +17,6 @@ export const onSubmit = async ({
       errors: {},
     })
 
-    console.log(user)
     storeUser({ user })
   } catch (response) {
     const errors = await response.json()
