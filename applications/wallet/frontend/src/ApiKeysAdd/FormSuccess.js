@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import { spacing, colors, constants, typography } from '../Styles'
 
+import FormSuccess from '../FormSuccess'
 import Button, { VARIANTS } from '../Button'
 
 import { onCopy } from './helpers'
@@ -18,7 +19,7 @@ const ApiKeysAddFormSuccess = ({
   const textareaRef = useRef()
   return (
     <div>
-      <div>Key Generated &amp; Copied to Clipboard</div>
+      <FormSuccess>Key Generated &amp; Copied to Clipboard</FormSuccess>
       <div
         css={{
           fontSize: typography.size.medium,
@@ -63,7 +64,7 @@ const ApiKeysAddFormSuccess = ({
         <textarea
           ref={textareaRef}
           defaultValue={secretKey}
-          rows="1"
+          rows="5"
           css={{
             width: MAX_WIDTH,
             fontSize: typography.size.regular,
@@ -71,7 +72,7 @@ const ApiKeysAddFormSuccess = ({
             color: colors.structure.white,
             backgroundColor: colors.structure.mattGrey,
             borderRadius: constants.borderRadius.small,
-            padding: spacing.normal,
+            padding: spacing.base,
             border: 'none',
             resize: 'none',
           }}
@@ -95,7 +96,14 @@ const ApiKeysAddFormSuccess = ({
             Copy Key
           </Button>
           <span css={{ padding: spacing.small }}>|</span>
-          <Button variant={VARIANTS.LINK}>Download</Button>
+          <Button
+            variant={VARIANTS.LINK}
+            download="api-key.txt"
+            href={`data:application/octet-stream;charset=utf-8;base64,${window.btoa(
+              secretKey,
+            )}`}>
+            Download
+          </Button>
         </div>
       </div>
       <div css={{ display: 'flex' }}>

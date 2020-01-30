@@ -45,7 +45,10 @@ class BatchUploadAssetsRequest(
     val pipeline: String? = null,
 
     @ApiModelProperty("The pipeline modules to execute if any, otherwise utilize the default Pipeline.")
-    val modules: List<String>? = null
+    val modules: List<String>? = null,
+
+    @ApiModelProperty("A list of available credentials for the analysis job.")
+    val credentials: Set<String>? = null
 
 ) {
 
@@ -68,6 +71,9 @@ class BatchCreateAssetsRequest(
 
     @ApiModelProperty("The pipeline modules to execute if any, otherwise utilize the default Pipeline.")
     val modules: List<String>? = null,
+
+    @ApiModelProperty("A list of available credentials for the analysis job.")
+    val credentials: Set<String>? = null,
 
     @JsonIgnore
     @ApiModelProperty("The taskId that is creating the assets via expand.", hidden = true)

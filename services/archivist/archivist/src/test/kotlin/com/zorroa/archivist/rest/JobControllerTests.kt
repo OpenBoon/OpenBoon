@@ -2,6 +2,8 @@ package com.zorroa.archivist.rest
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.domain.CredentialsSpec
+import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
@@ -17,8 +19,10 @@ import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.service.CredentialsService
 import com.zorroa.zmlp.util.Json
 import com.zorroa.archivist.util.randomString
+import org.hamcrest.CoreMatchers
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,6 +36,9 @@ class JobControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var jobService: JobService
+
+    @Autowired
+    lateinit var credentialsService: CredentialsService
 
     @Autowired
     lateinit var taskErrorDao: TaskErrorDao
@@ -250,5 +257,31 @@ class JobControllerTests : MockMvcTest() {
             args = mutableMapOf("${name}_arg" to 1),
             env = mutableMapOf("${name}_env_var" to "${name}_env_value")
         )
+    }
+
+    @Test
+    fun testGetDescryptedCredentials() {
+        credentialsService.create(
+            CredentialsSpec("test",
+                CredentialsType.AWS, """{"foo": "bar"}""")
+        )
+
+        val spec2 = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar"),
+            credentials = setOf("test")
+        )
+        val job2 = jobService.create(spec2)
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/jobs/${job2.id}/_credentials/AWS")
+                .headers(job())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.foo", CoreMatchers.equalTo("bar")))
+            .andReturn()
     }
 }
