@@ -1,0 +1,921 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<JobErrorsTable /> should render properly while loading 1`] = `
+.emotion-11 {
+  height: 100%;
+}
+
+.emotion-10 {
+  width: 100%;
+  height: 100%;
+  border-spacing: 0;
+  box-shadow: 0 0 5px 0 #000000;
+  white-space: nowrap;
+}
+
+.emotion-10 tr {
+  background-color: #252525;
+}
+
+.emotion-10 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-10 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-10 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-10 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-10 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-10 td {
+  max-width: calc(100vw / 6);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-10 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-10 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-0 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-0:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-0:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-9 {
+  height: 100%;
+  pointer-events: none;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+<div
+  className="emotion-11"
+>
+  <table
+    className="emotion-10"
+  >
+    <thead>
+      <tr>
+        <th
+          className="emotion-0"
+        >
+          Error Type
+        </th>
+        <th
+          className="emotion-0"
+        >
+          Phase
+        </th>
+        <th
+          className="emotion-0"
+        >
+          Message
+        </th>
+        <th
+          className="emotion-0"
+        >
+          File Name
+        </th>
+        <th
+          className="emotion-0"
+        >
+          Processor
+        </th>
+        <th
+          className="emotion-0"
+        >
+          Time
+        </th>
+        <th
+          className="emotion-0"
+        >
+          <div
+            className="emotion-6"
+          >
+            <svg
+              data-file-name="gear.svg"
+              width={20}
+            />
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        className="emotion-9"
+      >
+        <td
+          colSpan={7}
+        >
+          <div
+            className="emotion-8"
+          >
+            Loading...
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+     
+  </div>
+  <div>
+     
+  </div>
+</div>
+`;
+
+exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
+.emotion-0 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-0:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-0:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-21 {
+  height: auto;
+}
+
+.emotion-20 {
+  width: 100%;
+  height: auto;
+  border-spacing: 0;
+  box-shadow: 0 0 5px 0 #000000;
+  white-space: nowrap;
+}
+
+.emotion-20 tr {
+  background-color: #252525;
+}
+
+.emotion-20 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-20 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-20 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-20 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-20 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-20 td {
+  max-width: calc(100vw / 6);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-20 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-20 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-9 {
+  position: relative;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  color: #191919;
+  padding: 6px;
+  margin: -6px;
+  border-radius: 32px;
+}
+
+.emotion-8:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-8[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-8:hover {
+  background-color: #808080;
+}
+
+<div
+  className="emotion-21"
+>
+  <table
+    className="emotion-20"
+  >
+    <thead>
+      <tr>
+        <th
+          className="emotion-0"
+        >
+          Error Type
+        </th>
+        <th
+          className="emotion-0"
+        >
+          Phase
+        </th>
+        <th
+          className="emotion-0"
+        >
+          Message
+        </th>
+        <th
+          className="emotion-0"
+        >
+          File Name
+        </th>
+        <th
+          className="emotion-0"
+        >
+          Processor
+        </th>
+        <th
+          className="emotion-0"
+        >
+          Time
+        </th>
+        <th
+          className="emotion-0"
+        >
+          <div
+            className="emotion-6"
+          >
+            <svg
+              data-file-name="gear.svg"
+              width={20}
+            />
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          Warning
+        </td>
+        <td>
+          execute
+        </td>
+        <td
+          style={
+            Object {
+              "width": "55%",
+            }
+          }
+        >
+          AttributeError: 'NoneType' object has no attribute 'startswith'
+        </td>
+        <td
+          style={
+            Object {
+              "width": "50%",
+            }
+          }
+        >
+          gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
+        </td>
+        <td>
+          HSVSimilarityProcessor
+        </td>
+        <td>
+          2020-01-17 00:25:26
+        </td>
+        <td>
+          <div
+            className="emotion-9"
+          >
+            <button
+              aria-label="Toggle Actions Menu"
+              className="emotion-8"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Fatal
+        </td>
+        <td>
+          execute
+        </td>
+        <td
+          style={
+            Object {
+              "width": "55%",
+            }
+          }
+        >
+          NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)
+        </td>
+        <td
+          style={
+            Object {
+              "width": "50%",
+            }
+          }
+        >
+          gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
+        </td>
+        <td>
+          DuplicateDetectionProcessor
+        </td>
+        <td>
+          2020-01-17 00:25:26
+        </td>
+        <td>
+          <div
+            className="emotion-9"
+          >
+            <button
+              aria-label="Toggle Actions Menu"
+              className="emotion-8"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Warning
+        </td>
+        <td>
+          execute
+        </td>
+        <td
+          style={
+            Object {
+              "width": "55%",
+            }
+          }
+        >
+          AttributeError: 'NoneType' object has no attribute 'startswith'
+        </td>
+        <td
+          style={
+            Object {
+              "width": "50%",
+            }
+          }
+        >
+          gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
+        </td>
+        <td>
+          ResNetSimilarityProcessor
+        </td>
+        <td>
+          2020-01-17 00:25:26
+        </td>
+        <td>
+          <div
+            className="emotion-9"
+          >
+            <button
+              aria-label="Toggle Actions Menu"
+              className="emotion-8"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Fatal
+        </td>
+        <td>
+          execute
+        </td>
+        <td
+          style={
+            Object {
+              "width": "55%",
+            }
+          }
+        >
+          AttributeError: 'NoneType' object has no attribute 'startswith'
+        </td>
+        <td
+          style={
+            Object {
+              "width": "50%",
+            }
+          }
+        >
+          gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
+        </td>
+        <td>
+          ResNetClassifyProcessor
+        </td>
+        <td>
+          2020-01-17 00:25:26
+        </td>
+        <td>
+          <div
+            className="emotion-9"
+          >
+            <button
+              aria-label="Toggle Actions Menu"
+              className="emotion-8"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Warning
+        </td>
+        <td>
+          execute
+        </td>
+        <td
+          style={
+            Object {
+              "width": "55%",
+            }
+          }
+        >
+          AttributeError: 'NoneType' object has no attribute 'startswith'
+        </td>
+        <td
+          style={
+            Object {
+              "width": "50%",
+            }
+          }
+        >
+          gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
+        </td>
+        <td>
+          FaceRecognitionProcessor
+        </td>
+        <td>
+          2020-01-17 00:25:26
+        </td>
+        <td>
+          <div
+            className="emotion-9"
+          >
+            <button
+              aria-label="Toggle Actions Menu"
+              className="emotion-8"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Warning
+        </td>
+        <td>
+          execute
+        </td>
+        <td
+          style={
+            Object {
+              "width": "55%",
+            }
+          }
+        >
+          NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)
+        </td>
+        <td
+          style={
+            Object {
+              "width": "50%",
+            }
+          }
+        >
+          gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
+        </td>
+        <td>
+          ImageImporter
+        </td>
+        <td>
+          2020-01-17 00:25:26
+        </td>
+        <td>
+          <div
+            className="emotion-9"
+          >
+            <button
+              aria-label="Toggle Actions Menu"
+              className="emotion-8"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+     
+  </div>
+  <Pagination
+    currentPage={1}
+    totalPages={1}
+  />
+  <div>
+     
+  </div>
+</div>
+`;
+
+exports[`<JobErrorsTable /> should render properly with no job errors 1`] = `
+.emotion-12 {
+  height: 100%;
+}
+
+.emotion-11 {
+  width: 100%;
+  height: 100%;
+  border-spacing: 0;
+  box-shadow: 0 0 5px 0 #000000;
+  white-space: nowrap;
+}
+
+.emotion-11 tr {
+  background-color: #252525;
+}
+
+.emotion-11 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-11 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-11 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-11 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-11 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-11 td {
+  max-width: calc(100vw / 6);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-11 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-11 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-0 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-0:nth-of-type(0) {
+  width: 100%;
+}
+
+.emotion-0:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-10 {
+  height: 100%;
+  pointer-events: none;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+<div
+  className="emotion-12"
+>
+  <table
+    className="emotion-11"
+  >
+    <thead>
+      <tr>
+        <th
+          className="emotion-0"
+        >
+          Error Type
+        </th>
+        <th
+          className="emotion-0"
+        >
+          Phase
+        </th>
+        <th
+          className="emotion-0"
+        >
+          Message
+        </th>
+        <th
+          className="emotion-0"
+        >
+          File Name
+        </th>
+        <th
+          className="emotion-0"
+        >
+          Processor
+        </th>
+        <th
+          className="emotion-0"
+        >
+          Time
+        </th>
+        <th
+          className="emotion-0"
+        >
+          <div
+            className="emotion-6"
+          >
+            <svg
+              data-file-name="gear.svg"
+              width={20}
+            />
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        className="emotion-10"
+      >
+        <td
+          colSpan={7}
+        >
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-8"
+            >
+              <svg
+                data-file-name="noJobs.svg"
+                width={200}
+              />
+              <div>
+                This job has no errors.
+              </div>
+              <div>
+                Any new error will appear here.
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+     
+  </div>
+  <div>
+     
+  </div>
+</div>
+`;

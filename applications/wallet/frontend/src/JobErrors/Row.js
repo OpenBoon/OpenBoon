@@ -7,24 +7,15 @@ import JobErrorsMenu from './Menu'
 const JobErrorsRow = ({
   projectId,
   jobId,
-  error: {
-    id: errorId,
-    taskId,
-    message,
-    processor,
-    fatal,
-    timeCreated,
-    stackTrace,
-  },
+  error: { path, message, processor, fatal, phase, timeCreated },
   revalidate,
 }) => {
   return (
     <tr>
       <td>{fatal ? 'Fatal' : 'Warning'}</td>
-      <td>{errorId}</td>
-      <td>{taskId}</td>
-      <td>{message}</td>
-      <td>{stackTrace[stackTrace.length - 1].file}</td>
+      <td>{phase}</td>
+      <td style={{ width: '55%' }}>{message}</td>
+      <td style={{ width: '50%' }}>{path}</td>
       <td>{processor}</td>
       <td>{formatFullDate({ timestamp: timeCreated })}</td>
       <td>
@@ -44,9 +35,11 @@ JobErrorsRow.propTypes = {
   error: PropTypes.shape({
     id: PropTypes.string.isRequired,
     taskId: PropTypes.string.isRequired,
+    path: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,
     processor: PropTypes.string.isRequired,
     fatal: PropTypes.bool.isRequired,
+    phase: PropTypes.string.isRequired,
     timeCreated: PropTypes.number.isRequired,
     stackTrace: PropTypes.arrayOf(
       PropTypes.shape({

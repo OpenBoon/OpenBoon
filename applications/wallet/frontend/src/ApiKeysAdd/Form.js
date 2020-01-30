@@ -33,7 +33,11 @@ const ApiKeysAddForm = () => {
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
-  if (!Array.isArray(permissions)) return 'Loading...'
+  if (!Array.isArray(permissions)) {
+    return (
+      <div css={{ padding: spacing.normal, paddingLeft: 0 }}>Loading...</div>
+    )
+  }
 
   const { apikey } = state
 
