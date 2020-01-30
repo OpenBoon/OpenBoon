@@ -189,6 +189,8 @@ docker_hub_build_push:
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
     - ./buildx
+    - docker run -it zmlp/plugins-core:latest pytest /zps/pylib
+    - docker run -it zmlp/plugins-analysis:latest pytest /zps/pylib
     - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
     - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
     - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
