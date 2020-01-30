@@ -1,11 +1,8 @@
 import logging
-import minio
 import os
 from unittest import TestCase
-from unittest.mock import patch
 
 from zmlpsdk.base import ZmlpEnv
-from zmlp.client import ZmlpClient
 
 logging.basicConfig(level=logging.DEBUG)
 
