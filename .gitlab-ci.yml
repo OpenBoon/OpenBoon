@@ -164,7 +164,7 @@ sdk-java-unit-tests:
     refs:
       - merge_requests
     changes:
-      - client/java/*
+      - client/java/**/*
       - containers/zmlp-plugins-base/**/*
       - .gitlab-ci.yml
 
