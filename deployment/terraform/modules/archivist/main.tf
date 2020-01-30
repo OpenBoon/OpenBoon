@@ -149,11 +149,15 @@ resource "kubernetes_deployment" "archivist" {
             },
             {
               name = "ARCHIVIST_ES_URL"
-              value = "http://elasticsearch-0.elasticsearch.${var.namespace}.svc.cluster.local:9200"
+              value = "${var.elasticsearch-url}:9200"
             },
             {
               name = "ZMLP_SECURITY_AUTHSERVER_SERVICEKEY"
               value = "${var.inception-key-b64}"
+            },
+            {
+              name = "ZMLP_SECURITY_AUTHSERVER_URL"
+              value = "${var.auth-server-url}"
             },
             {
               name = "ZMLP_STORAGE_PIPELINE_URL"
@@ -170,7 +174,11 @@ resource "kubernetes_deployment" "archivist" {
             {
               name = "ANALYST_SHAREDKEY"
               value = "QjZEQzRDQTgtOUUwRC00NUE1LUFCNjktRUYwQTA4ODc4MTM3Cg"
-            }
+            },
+            {
+              name = "ZMLP_STORAGE_SYSTEM_BUCKET"
+              value = "${var.system-bucket}"
+            },
           ]
         }
       }

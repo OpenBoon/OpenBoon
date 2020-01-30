@@ -7,6 +7,7 @@ variable "sql-service-account-key" {}
 variable "inception-key-b64" {}
 variable "minio-access-key" {}
 variable "minio-secret-key" {}
+variable "system-bucket" {}
 
 variable "data-bucket-name" {default = "archivist-data"}
 variable "container-tag" {default = "development"}
@@ -18,3 +19,5 @@ variable "database-name" {default = "zorroa"}
 variable "database-user" {default = "zorroa"}
 variable "namespace" {default = "default"}
 variable "minio-url" {default = "http://10.3.240.102:9000"}
+variable "auth-server-url" {default = "http://10.3.240.101"}
+variable "elasticsearch-url" {default = "http://10.3.240.106"}

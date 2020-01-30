@@ -190,6 +190,7 @@ docker_hub_build_push:
   script:
     - ./buildx
     - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
+    - docker tag zmlp/officer:latest zmlp/officer:development; docker push zmlp/officer:development
     - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
     - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
     - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development

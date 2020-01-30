@@ -41,6 +41,7 @@ resource "kubernetes_deployment" "analyst" {
     }
   }
   spec {
+    replicas = 2
     selector {
       match_labels {
         app = "analyst"
@@ -85,7 +86,7 @@ resource "kubernetes_deployment" "analyst" {
             initial_delay_seconds = 120
             period_seconds = 5
             http_get {
-              scheme = "HTTPS"
+              scheme = "HTTP"
               path = "/"
               port = "5000"
             }
@@ -95,7 +96,7 @@ resource "kubernetes_deployment" "analyst" {
             initial_delay_seconds = 1
             period_seconds = 30
             http_get {
-              scheme = "HTTPS"
+              scheme = "HTTP"
               path = "/"
               port = "5000"
             }
