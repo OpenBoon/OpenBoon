@@ -21,8 +21,13 @@ enum class CredentialsType {
     description = "Field necessary for creating a new credentials blob.")
 class CredentialsSpec(
 
+    @ApiModelProperty("A unique name for the credentials.")
     val name: String,
+
+    @ApiModelProperty("The credentials type")
     val type: CredentialsType,
+
+    @ApiModelProperty("The credentials blob, a json formatted string")
     val blob: String
 )
 

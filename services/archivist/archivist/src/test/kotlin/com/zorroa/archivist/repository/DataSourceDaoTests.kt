@@ -1,16 +1,15 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.DataSource
+import com.zorroa.archivist.domain.CredentialsSpec
+import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.DataSourceFilter
 import com.zorroa.archivist.domain.DataSourceSpec
-import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.service.CredentialsService
 import com.zorroa.archivist.service.DataSourceService
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.UUID
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class DataSourceDaoTests : AbstractTest() {
 
@@ -18,35 +17,23 @@ class DataSourceDaoTests : AbstractTest() {
     lateinit var dataSourceJdbcDao: DataSourceJdbcDao
 
     @Autowired
-    lateinit var dataSourceDao: DataSourceDao
-
-    @Autowired
     lateinit var dataSourceService: DataSourceService
 
+    @Autowired
+    lateinit var credentialsService: CredentialsService
+
     @Test
-    fun testSetAndGetCredentials() {
-        val id = UUID.randomUUID()
-        val spec = DataSource(
-            id,
-            getProjectId(),
-            projectService.getSettings().defaultPipelineId,
-            "tedt",
-            "gs://foo-bar",
-            null,
-            System.currentTimeMillis(),
-            System.currentTimeMillis(),
-            "admin",
-            "admin"
+    fun testSetCredentials() {
+        val creds = credentialsService.create(
+            CredentialsSpec("test",
+                CredentialsType.AWS, """{"foo": "bar"}""")
         )
+        val ds = dataSourceService.create(DataSourceSpec("test", "gs://foo/bar"))
+        dataSourceJdbcDao.setCredentials(ds.id, listOf(creds))
 
-        val ds = dataSourceDao.saveAndFlush(spec)
-        val blob = "ABC123"
-        val salt = "ababababababab"
-        assertTrue(dataSourceJdbcDao.updateCredentials(ds.id, blob, salt))
-
-        val creds = dataSourceJdbcDao.getCredentials(ds.id)
-        assertEquals(blob, creds.blob)
-        assertEquals(salt, creds.salt)
+        assertEquals(1, jdbc.queryForObject(
+            "SELECT COUNT(1) FROM x_credentials_datasource WHERE pk_datasource=?",
+            Int::class.java, ds.id))
     }
 
     @Test

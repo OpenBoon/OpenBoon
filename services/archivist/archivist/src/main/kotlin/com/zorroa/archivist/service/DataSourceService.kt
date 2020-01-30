@@ -1,25 +1,24 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.domain.DataSource
-import com.zorroa.archivist.domain.DataSourceCredentials
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.zmlp.service.logging.LogAction
-import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.StandardContainers
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.DataSourceDao
 import com.zorroa.archivist.repository.DataSourceJdbcDao
 import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.archivist.util.isUUID
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.crypto.encrypt.Encryptors
-import org.springframework.security.crypto.keygen.KeyGenerators
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -47,31 +46,22 @@ interface DataSourceService {
     fun get(id: UUID): DataSource
 
     /**
-     * Returns the decrypted dataset credentials.  This method should only be
-     * called from the JobRunner Key.
-     *
-     * @param id The UUID of the dataset.
-     * @return The credentials blob.
-     */
-    fun getCredentials(id: UUID): DataSourceCredentials
-
-    /**
-     * Update the credentials blob, can be null.  Return true
-     * if the value was updated.
-     */
-    fun updateCredentials(id: UUID, blob: String?): Boolean
-
-    /**
      * Create an Analysis job to process the [DataSource]
      */
     fun createAnalysisJob(dataSource: DataSource): Job
+
+    /**
+     * Set available credentials blobs for this job.
+     */
+    fun setCredentials(id: UUID, names: Set<String>)
 }
 
 @Service
 @Transactional
 class DataSourceServiceImpl(
     val dataSourceDao: DataSourceDao,
-    val dataSourceJdbcDao: DataSourceJdbcDao
+    val dataSourceJdbcDao: DataSourceJdbcDao,
+    val credentialsService: CredentialsService
 ) : DataSourceService {
 
     @Autowired
@@ -82,6 +72,9 @@ class DataSourceServiceImpl(
 
     @Autowired
     lateinit var pipelineService: PipelineService
+
+    @Autowired
+    lateinit var pipelineResolverService: PipelineResolverService
 
     override fun create(spec: DataSourceSpec): DataSource {
 
@@ -102,13 +95,16 @@ class DataSourceServiceImpl(
                 spec.name,
                 spec.uri,
                 spec.fileTypes,
+                listOf(),
                 time,
                 time,
                 actor.name,
                 actor.name
             )
         )
-        updateCredentials(id, spec.credentials)
+
+        val creds = credentialsService.getAll(spec.credentials)
+        dataSourceJdbcDao.setCredentials(id, creds)
 
         logger.event(
             LogObject.DATASOURCE, LogAction.CREATE,
@@ -122,13 +118,15 @@ class DataSourceServiceImpl(
 
     override fun update(id: UUID, updates: DataSourceUpdate): DataSource {
         logger.event(LogObject.DATASOURCE, LogAction.UPDATE, mapOf("dataSourceId" to id))
+        updates.credentials?.let {
+            setCredentials(id, it)
+        }
         return dataSourceDao.saveAndFlush(get(id).getUpdated(updates))
     }
 
     override fun delete(id: UUID) {
         logger.event(LogObject.DATASOURCE, LogAction.DELETE, mapOf("dataSourceId" to id))
-        val ds = get(id)
-        dataSourceDao.delete(ds)
+        dataSourceDao.delete(get(id))
     }
 
     override fun createAnalysisJob(dataSource: DataSource): Job {
@@ -138,46 +136,36 @@ class DataSourceServiceImpl(
 
         val gen = ProcessorRef(
             "zmlp_core.core.generators.GcsBucketGenerator",
-            "zmlp-plugins-core",
+            StandardContainers.CORE,
             args = mapOf("uri" to dataSource.uri)
         )
 
-        val script = ZpsScript("GcsBucketGenerator ${dataSource.uri}", listOf(gen), null, null)
+        val script = ZpsScript("GcsBucketGenerator ${dataSource.uri}", listOf(gen), null,
+            pipelineResolverService.resolve(dataSource.pipelineId))
+
         script.setSettting("fileTypes", dataSource.fileTypes)
         script.setSettting("batchSize", 10)
 
-        val spec = JobSpec(name, script, dataSourceId = dataSource.id)
+        val spec = JobSpec(name, script,
+            dataSourceId = dataSource.id,
+            credentials = dataSource.credentials.map { it.toString() }.toSet())
         return jobService.create(spec)
     }
 
     @Transactional(readOnly = true)
     override fun get(id: UUID): DataSource {
-        return dataSourceDao.getOne(id)
+        return dataSourceDao.getOneByProjectIdAndId(getProjectId(), id)
     }
 
-    @Transactional(readOnly = true)
-    override fun getCredentials(id: UUID): DataSourceCredentials {
-        val creds = dataSourceJdbcDao.getCredentials(id)
-        return DataSourceCredentials(
-            blob = Encryptors.text(
-                projectService.getCryptoKey(), creds.salt
-            ).decrypt(creds.blob)
-        )
-    }
-
-    override fun updateCredentials(id: UUID, blob: String?): Boolean {
-        val salt = KeyGenerators.string().generateKey()
-        return dataSourceJdbcDao.updateCredentials(
-            id, encryptCredentials(blob, salt), salt
-        )
-    }
-
-    fun encryptCredentials(creds: String?, salt: String): String? {
-        return if (creds == null) {
-            creds
-        } else {
-            Encryptors.text(projectService.getCryptoKey(), salt).encrypt(creds)
+    override fun setCredentials(id: UUID, names: Set<String>) {
+        val creds = names.map {
+            if (it.isUUID()) {
+                credentialsService.get(UUID.fromString(it))
+            } else {
+                credentialsService.get(it)
+            }
         }
+        dataSourceJdbcDao.setCredentials(id, creds)
     }
 
     companion object {

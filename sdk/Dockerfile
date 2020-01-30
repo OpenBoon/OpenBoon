@@ -8,7 +8,7 @@ USER root
 RUN mkdir /build
 COPY ./ /build
 WORKDIR /build
-RUN --mount=type=cache,target=/root/.cache/pip python3 setup.py install
+RUN --mount=type=cache,target=/root/.cache/pip pip install .
 
 WORKDIR /zps
 

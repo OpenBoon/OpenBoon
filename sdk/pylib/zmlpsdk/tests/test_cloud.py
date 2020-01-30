@@ -1,6 +1,7 @@
 import minio
 import os
 import logging
+import json
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -35,18 +36,20 @@ class TetCloudUtilFunction(TestCase):
             del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
     @patch.object(ZmlpClient, 'get')
-    def test_get_google_storage_client_datasource(self, get_patch):
+    def test_get_google_storage_client_from_job_creds(self, get_patch):
         with open(os.path.dirname(__file__) + '/fake_gcs_account.json', 'r') as fp:
-            gcs_creds = {'blob': fp.read()}
+            gcs_creds = fp.read()
 
-        get_patch.return_value = gcs_creds
-        os.environ['ZMLP_DATASOURCE_ID'] = 'abc123'
+        get_patch.return_value = json.loads(gcs_creds)
+        os.environ['ZMLP_JOB_ID'] = 'abc123'
+        os.environ['ZMLP_CREDENTIALS_TYPES'] = 'GCP'
         try:
             client = get_google_storage_client()
             assert 'fake_service_account@zorroa-deploy.iam.gserviceaccount.com' == \
                    client._credentials._service_account_email
         finally:
-            del os.environ['ZMLP_DATASOURCE_ID']
+            del os.environ['ZMLP_JOB_ID']
+            del os.environ['ZMLP_CREDENTIALS_TYPES']
 
     def test_get_zmlp_storage_client(self):
         os.environ['ZMLP_STORAGE_PIPELINE_URL'] = "http://localhost:9000"
