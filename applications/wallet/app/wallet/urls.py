@@ -29,6 +29,7 @@ from wallet.views import WalletAPIRootView
 from apikeys.views import ApikeyViewSet
 from jobs.views import JobsViewSet
 from projects.views import ProjectViewSet
+from projectusers.views import ProjectUserViewSet
 from permissions.views import PermissionViewSet
 
 router = routers.DefaultRouter()
@@ -39,6 +40,7 @@ router.register('projects', ProjectViewSet, basename='project')
 
 projects_router = NestedSimpleRouter(router, 'projects', lookup='project')
 projects_router.register('jobs', JobsViewSet, basename='job')
+projects_router.register('users', ProjectUserViewSet, basename='projectuser')
 projects_router.register('apikeys', ApikeyViewSet, basename='apikey')
 projects_router.register('permissions', PermissionViewSet, basename='permission')
 
