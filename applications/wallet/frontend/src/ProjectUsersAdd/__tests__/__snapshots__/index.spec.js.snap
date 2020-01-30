@@ -117,8 +117,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  <div>
-     
-  </div>,
+  "Loading...",
 ]
 `;
