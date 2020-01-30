@@ -5,7 +5,6 @@ import JobErrors from '..'
 import jobErrors from '../__mocks__/jobErrors'
 
 jest.mock('../../Pagination', () => 'Pagination')
-jest.mock('../../UserMenu', () => 'UserMenu')
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const JOB_ID = 'c097596f-62ef-1f81-83f8-0a580a000954'
