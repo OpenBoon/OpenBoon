@@ -5,6 +5,9 @@ class FromSizePagination(LimitOffsetPagination):
     limit_query_param = 'size'
     offset_query_param = 'from'
 
+
+class ZMLPFromSizePagination(FromSizePagination):
+
     def prep_pagination_for_api_response(self, content, request):
         """
         Allows you to use this Paginator to prep responses returned from the ZMLP api.
