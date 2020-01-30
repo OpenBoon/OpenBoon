@@ -55,6 +55,10 @@ Array [
 }
 
 .emotion-12 td {
+  max-width: calc(100vw / 8);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -68,6 +72,7 @@ Array [
 
 .emotion-12 td:last-of-type {
   border-right: 1px solid transparent;
+  overflow: visible;
 }
 
 .emotion-0 {
@@ -292,6 +297,10 @@ Array [
 }
 
 .emotion-114 td {
+  max-width: calc(100vw / 8);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -305,6 +314,7 @@ Array [
 
 .emotion-114 td:last-of-type {
   border-right: 1px solid transparent;
+  overflow: visible;
 }
 
 .emotion-10 {
@@ -352,6 +362,12 @@ Array [
   border-radius: 32px;
   color: #c92300;
   background-color: #191919;
+}
+
+.emotion-13:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .emotion-19 {
@@ -691,11 +707,14 @@ Array [
             4
           </td>
           <td>
-            <div
+            <a
               className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/errors"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
             >
               4
-            </div>
+            </a>
           </td>
           <td>
             <div
@@ -772,11 +791,14 @@ Array [
             40
           </td>
           <td>
-            <div
+            <a
               className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000955/errors"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
             >
               40
-            </div>
+            </a>
           </td>
           <td>
             <div
@@ -853,11 +875,14 @@ Array [
             400
           </td>
           <td>
-            <div
+            <a
               className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308a-67c2-1433-8fef-0a580a000955/errors"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
             >
               400
-            </div>
+            </a>
           </td>
           <td>
             <div
@@ -931,11 +956,14 @@ Array [
             4000
           </td>
           <td>
-            <div
+            <a
               className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d53089-67c2-1433-8fef-0a580a000955/errors"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
             >
               4000
-            </div>
+            </a>
           </td>
           <td>
             <div
@@ -1003,11 +1031,14 @@ Array [
             40000
           </td>
           <td>
-            <div
+            <a
               className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c0975970-62ef-1f81-83f8-0a580a000954/errors"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
             >
               40000
-            </div>
+            </a>
           </td>
           <td>
             <div
@@ -1075,11 +1106,14 @@ Array [
             400000
           </td>
           <td>
-            <div
+            <a
               className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
             >
               400000
-            </div>
+            </a>
           </td>
           <td>
             <div
@@ -1411,11 +1445,14 @@ Array [
             49
           </td>
           <td>
-            <div
+            <a
               className="emotion-13"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd9153f-08c1-199f-b899-0a580a00091e/errors"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
             >
               49
-            </div>
+            </a>
           </td>
           <td>
             <div
@@ -1529,6 +1566,10 @@ Array [
 }
 
 .emotion-13 td {
+  max-width: calc(100vw / 8);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -1542,6 +1583,7 @@ Array [
 
 .emotion-13 td:last-of-type {
   border-right: 1px solid transparent;
+  overflow: visible;
 }
 
 .emotion-0 {

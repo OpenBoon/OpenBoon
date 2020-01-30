@@ -6,6 +6,8 @@ import morgan from 'morgan'
 import user from './src/User/__mocks__/user'
 import projects from './src/Projects/__mocks__/projects'
 import jobs from './src/Jobs/__mocks__/jobs'
+import job from './src/Job/__mocks__/job'
+import jobErrors from './src/JobErrors/__mocks__/jobErrors'
 import projectPermissions from './src/ProjectPermissions/__mocks__/permissions'
 import projectUsersPermissions from './src/ProjectUsersPermissions/__mocks__/permissions'
 import apikeys from './src/ApiKeys/__mocks__/apikeys'
@@ -40,6 +42,11 @@ app.prepare().then(() => {
     server.get(
       '/api/v1/projects/:projectId/permissions/',
       mock(projectPermissions),
+    )
+    server.get('/api/v1/projects/:projectId/jobs/:jobId/', mock(job))
+    server.get(
+      '/api/v1/projects/:projectId/jobs/:jobId/errors',
+      mock(jobErrors),
     )
     server.get('/api/v1/projects/:projectId/apikeys/', mock(apikeys))
     server.post('/api/v1/projects/:projectId/apikeys/', mock(apikeysadd))
