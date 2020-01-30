@@ -1,20 +1,26 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.CredentialsSpec
+import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.domain.PipelineSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.UUID
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class DataSourceServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var dataSourceService: DataSourceService
+
+    @Autowired
+    lateinit var credentialsService: CredentialsService
 
     @PersistenceContext
     lateinit var entityManager: EntityManager
@@ -22,7 +28,6 @@ class DataSourceServiceTests : AbstractTest() {
     val spec = DataSourceSpec(
         "dev-data",
         "gs://zorroa-dev-data",
-        credentials = "SECRET BLOB",
         fileTypes = listOf("jpg")
     )
 
@@ -36,6 +41,26 @@ class DataSourceServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testCreateWithCredentials() {
+        credentialsService.create(CredentialsSpec("test", CredentialsType.AWS, "abc123"))
+        val spec2 = DataSourceSpec(
+            "dev-data",
+            "gs://zorroa-dev-data",
+            fileTypes = listOf("jpg"),
+            credentials = setOf("test")
+        )
+
+        val ds = dataSourceService.create(spec2)
+
+        entityManager.flush()
+        entityManager.clear()
+
+        val ds2 = dataSourceService.get(ds.id)
+        assertEquals(1, jdbc.queryForObject("SELECT COUNT(1) FROM x_credentials_datasource", Int::class.java))
+        assertTrue(ds2.credentials.isNotEmpty())
+    }
+
+    @Test
     fun testCreateWithPipeline() {
         val pipe = pipelineService.create(PipelineSpec("foo"))
 
@@ -43,7 +68,6 @@ class DataSourceServiceTests : AbstractTest() {
             "dev-data",
             "gs://zorroa-dev-data",
             pipeline = "foo",
-            credentials = "SECRET BLOB",
             fileTypes = listOf("jpg")
         )
 
@@ -62,7 +86,8 @@ class DataSourceServiceTests : AbstractTest() {
             "cats",
             "gs://foo/bar",
             listOf("jpg"),
-            pipe.id
+            pipe.id,
+            setOf()
         )
         dataSourceService.update(ds.id, update)
 
@@ -71,6 +96,36 @@ class DataSourceServiceTests : AbstractTest() {
         assertEquals(update.fileTypes, ds2.fileTypes)
         assertEquals(update.uri, ds2.uri)
         assertEquals(update.pipelineId, ds2.pipelineId)
+    }
+
+    @Test
+    fun testUpdateWithCredentials() {
+        val pipe = pipelineService.create(PipelineSpec("foo"))
+        val ds = dataSourceService.create(spec)
+        val creds = credentialsService.create(
+            CredentialsSpec("test",
+                CredentialsType.AWS, """{"foo": "bar"}""")
+        )
+
+        val update = DataSourceUpdate(
+            "cats",
+            "gs://foo/bar",
+            listOf("jpg"),
+            pipe.id,
+            setOf(creds.name)
+        )
+        dataSourceService.update(ds.id, update)
+
+        val ds2 = dataSourceService.get(ds.id)
+        assertEquals(update.name, ds2.name)
+        assertEquals(update.fileTypes, ds2.fileTypes)
+        assertEquals(update.uri, ds2.uri)
+        assertEquals(update.pipelineId, ds2.pipelineId)
+
+        val credsIds = jdbc.queryForList(
+            "SELECT pk_credentials FROM x_credentials_datasource WHERE pk_datasource=?",
+            UUID::class.java, ds2.id)
+        assertTrue(creds.id in credsIds)
     }
 
     @Test
@@ -91,19 +146,26 @@ class DataSourceServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testGetCredentials() {
-        val ds1 = dataSourceService.create(spec)
-        val creds = dataSourceService.getCredentials(ds1.id)
-        assertEquals(spec.credentials, creds.blob)
-        assertNull(creds.salt)
-    }
+    fun testCreateAnalysisJobWithCredentials() {
+        credentialsService.create(
+            CredentialsSpec("test",
+                CredentialsType.AWS, """{"foo": "bar"}""")
+        )
+        val spec2 = DataSourceSpec(
+            "dev-data",
+            "gs://zorroa-dev-data",
+            fileTypes = listOf("jpg"),
+            credentials = setOf("test")
+        )
+        val ds = dataSourceService.create(spec2)
+        entityManager.flush()
+        entityManager.clear()
+        val ds2 = dataSourceService.get(ds.id)
+        val job = dataSourceService.createAnalysisJob(ds2)
 
-    @Test
-    fun testUpdateCredentials() {
-        val ds1 = dataSourceService.create(spec)
-        dataSourceService.updateCredentials(ds1.id, "BINGO")
-        val creds = dataSourceService.getCredentials(ds1.id)
-        assertEquals("BINGO", creds.blob)
+        assertEquals(1, jdbc.queryForObject(
+            "SELECT COUNT(1) FROM x_credentials_job WHERE pk_job=?",
+            Int::class.java, job.jobId))
     }
 
     @Test

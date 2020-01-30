@@ -9,10 +9,13 @@ import com.zorroa.zmlp.service.jpa.StringListConverter
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
+import javax.persistence.CollectionTable
 import javax.persistence.Column
 import javax.persistence.Convert
+import javax.persistence.ElementCollection
 import javax.persistence.Entity
 import javax.persistence.Id
+import javax.persistence.JoinColumn
 import javax.persistence.Table
 
 @ApiModel("DataSourceSpec", description = "Defines a DataSource containing assets to import.")
@@ -24,18 +27,17 @@ class DataSourceSpec(
     @ApiModelProperty("The URI the DataSource points to.")
     var uri: String,
 
-    @ApiModelProperty("An optional credentials blob for the DataSource, this will be encrypted.")
-    var credentials: String? = null,
+    @ApiModelProperty("An optional list of credentials blobs to populate import jobs.")
+    var credentials: Set<String>? = null,
 
     @ApiModelProperty("A list of file extensions to filter", example = "[jpg,png]")
-    @Convert(converter = StringListConverter::class)
     var fileTypes: List<String>? = null,
 
     @ApiModelProperty("Override the project default pipeline with different.")
     val pipeline: String? = null
 )
 
-@ApiModel("DataSourceUodate", description = "Defines a DataSource fields that can be updated")
+@ApiModel("DataSource Update", description = "Defines a DataSource fields that can be updated")
 class DataSourceUpdate(
 
     @ApiModelProperty("The name of the DataSource")
@@ -49,7 +51,10 @@ class DataSourceUpdate(
     var fileTypes: List<String>?,
 
     @ApiModelProperty("Override the project default pipeline with different.")
-    val pipelineId: UUID
+    val pipelineId: UUID,
+
+    @ApiModelProperty("An optional list of credentials blobs to populate import jobs.")
+    var credentials: Set<String>?
 )
 
 @Entity
@@ -82,8 +87,14 @@ class DataSource(
     @Column(name = "str_file_types")
     var fileTypes: List<String>?,
 
+    @ApiModelProperty("A list Credential IDS this datasource will use.")
+    @ElementCollection
+    @CollectionTable(name = "x_credentials_datasource", joinColumns = [JoinColumn(name = "pk_datasource")])
+    @Column(name = "pk_credentials", insertable = false, updatable = false)
+    var credentials: List<UUID>,
+
     @Column(name = "time_created")
-    @ApiModelProperty("The time the datasource was created.")
+    @ApiModelProperty("The time the DataSource was created.")
     val timeCreated: Long,
 
     @Column(name = "time_modified")
@@ -107,6 +118,7 @@ class DataSource(
             update.name,
             update.uri,
             update.fileTypes,
+            listOf(),
             timeCreated,
             System.currentTimeMillis(),
             actorCreated,
@@ -126,20 +138,6 @@ class DataSource(
         return id.hashCode()
     }
 }
-
-@ApiModel(
-    "DataSourceCredentials",
-    description = "A DataSource credentials blob."
-)
-class DataSourceCredentials(
-
-    @ApiModelProperty("A credentials blob of some kind. See docs for more details.")
-    var blob: String? = null,
-
-    @JsonIgnore
-    @ApiModelProperty("The SALT used to encrypt the credentials.", hidden = true)
-    var salt: String? = null
-)
 
 @ApiModel("DataSource Filter", description = "A search filter for DataSources")
 class DataSourceFilter(

@@ -2,6 +2,8 @@ package com.zorroa.archivist.repository
 
 import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.AssetCounters
+import com.zorroa.archivist.domain.Credentials
+import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobFilter
 import com.zorroa.archivist.domain.JobId
@@ -36,6 +38,8 @@ interface JobDao {
     fun resumePausedJobs(): Int
     fun findOneJob(filter: JobFilter): Job
     fun getTaskStateCounts(job: JobId): TaskStateCounts
+    fun setCredentials(job: JobId, creds: List<Credentials>)
+    fun getCredentialsTypes(job: JobId): List<String>
 }
 
 @Repository
@@ -203,6 +207,28 @@ class JobDaoImpl : AbstractDao(), JobDao {
             counts.replaced,
             job.jobId
         ) == 1
+    }
+
+    override fun setCredentials(job: JobId, creds: List<Credentials>) {
+        logger.event(
+            LogObject.JOB, LogAction.UPDATE,
+            mapOf(
+                "jobId" to job.jobId,
+                "credentialsId" to creds.map { it.id }
+            )
+        )
+        jdbc.update("DELETE FROM x_credentials_job WHERE pk_job=?", job.jobId)
+        creds.forEach {
+            jdbc.update("INSERT INTO x_credentials_job VALUES (?,?,?,?)",
+                UUID.randomUUID(), it.id, job.jobId, it.type.ordinal)
+        }
+    }
+
+    override fun getCredentialsTypes(job: JobId): List<String> {
+        return jdbc.queryForList("SELECT int_type FROM x_credentials_job WHERE pk_job=?", Int::class.java,
+            job.jobId).map {
+                CredentialsType.values()[it].toString()
+        }
     }
 
     override fun resumePausedJobs(): Int {

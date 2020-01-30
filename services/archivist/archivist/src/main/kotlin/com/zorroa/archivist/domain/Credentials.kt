@@ -31,7 +31,6 @@ class CredentialsSpec(
     val blob: String
 )
 
-
 @Entity
 @Table(name = "credentials")
 @ApiModel("Credentials", description = "Credentials for accessing storage in various cloud services.")
