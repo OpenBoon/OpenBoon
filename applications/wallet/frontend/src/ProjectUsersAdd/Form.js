@@ -2,7 +2,8 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { spacing } from '../Styles'
+import { spacing, typography } from '../Styles'
+
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import CheckboxGroup from '../Checkbox/Group'
@@ -31,11 +32,22 @@ const ProjectUsersAddForm = () => {
 
   return (
     <Form>
+      <h2
+        css={{
+          fontSize: typography.size.medium,
+          lineHeight: typography.height.medium,
+          fontWeight: typography.weight.medium,
+          paddingTop: spacing.normal,
+          paddingBottom: spacing.normal,
+        }}>
+        Invite User to view projects
+      </h2>
+
       <Input
         autoFocus
         id="email"
         variant={INPUT_VARIANTS.SECONDARY}
-        label="Email"
+        label="Email(s)"
         type="text"
         value={state.email}
         onChange={({ target: { value } }) => dispatch({ email: value })}
@@ -65,8 +77,8 @@ const ProjectUsersAddForm = () => {
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
           onClick={console.warn}
-          isDisabled={!state.name}>
-          Generate Key &amp; Download
+          isDisabled={!state.email}>
+          Send Invite
         </Button>
       </div>
     </Form>
