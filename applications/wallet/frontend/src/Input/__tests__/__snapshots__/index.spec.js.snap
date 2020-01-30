@@ -11,7 +11,7 @@ exports[`<Input /> should render properly with an error 1`] = `
   padding-bottom: 8px;
 }
 
-.emotion-4 {
+.emotion-2 {
   position: relative;
 }
 
@@ -27,11 +27,11 @@ exports[`<Input /> should render properly with an error 1`] = `
   border-width: 2px;
 }
 
-.emotion-3 {
+.emotion-4 {
   padding-top: 8px;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #c92300;
   font-style: italic;
 }
@@ -46,7 +46,7 @@ exports[`<Input /> should render properly with an error 1`] = `
     Email
   </label>
   <div
-    className="emotion-4"
+    className="emotion-2"
   >
     <input
       autoFocus={true}
@@ -57,16 +57,16 @@ exports[`<Input /> should render properly with an error 1`] = `
       type="text"
       value="foo@bar.baz"
     />
-    <div
+  </div>
+  <div
+    className="emotion-4"
+  >
+     
+    <span
       className="emotion-3"
     >
-       
-      <span
-        className="emotion-2"
-      >
-        Error
-      </span>
-    </div>
+      Error
+    </span>
   </div>
 </div>
 `;

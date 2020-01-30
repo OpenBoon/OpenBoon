@@ -141,7 +141,7 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-3 {
+.emotion-2 {
   position: relative;
 }
 
@@ -164,7 +164,7 @@ Array [
   color: #000000;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding-top: 8px;
 }
 
@@ -244,7 +244,7 @@ Array [
         Current Password
       </label>
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <input
           autoFocus={true}
@@ -255,11 +255,11 @@ Array [
           type="password"
           value=""
         />
-        <div
-          className="emotion-2"
-        >
-           
-        </div>
+      </div>
+      <div
+        className="emotion-3"
+      >
+         
       </div>
     </div>
     <div
@@ -272,7 +272,7 @@ Array [
         New Password
       </label>
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <input
           className="emotion-1"
@@ -282,11 +282,11 @@ Array [
           type="password"
           value=""
         />
-        <div
-          className="emotion-2"
-        >
-           
-        </div>
+      </div>
+      <div
+        className="emotion-3"
+      >
+         
       </div>
     </div>
     <div
@@ -299,7 +299,7 @@ Array [
         Confirm Password
       </label>
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <input
           className="emotion-1"
@@ -309,11 +309,11 @@ Array [
           type="password"
           value=""
         />
-        <div
-          className="emotion-2"
-        >
-           
-        </div>
+      </div>
+      <div
+        className="emotion-3"
+      >
+         
       </div>
     </div>
     <div
