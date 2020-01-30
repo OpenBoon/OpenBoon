@@ -47,13 +47,13 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
     def create(self, request, project_pk, client):
         # Get the User and add the  appropriate Membership & ApiKey
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def update(self, request, project_pk, client, *args, **kwargs):
         # Modify the attributes of the specified user, updating the apikey & membership
         # if necessary
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def destroy(self, request, project_pk, client):
         # Remove the User's Membership and delete the associated apikey
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
