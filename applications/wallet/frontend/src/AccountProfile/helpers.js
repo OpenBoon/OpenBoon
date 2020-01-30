@@ -11,13 +11,14 @@ export const onSubmit = async ({
       body: JSON.stringify({ firstName, lastName }),
     })
 
-    storeUser({ user })
-
     dispatch({
       firstName: user.firstName,
       lastName: user.lastName,
       errors: {},
     })
+
+    console.log(user)
+    storeUser({ user })
   } catch (response) {
     const errors = await response.json()
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
