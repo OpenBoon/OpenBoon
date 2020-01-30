@@ -6,6 +6,7 @@ import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.domain.PipelineSpec
+import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
@@ -22,6 +23,9 @@ class DataSourceServiceTests : AbstractTest() {
     @Autowired
     lateinit var credentialsService: CredentialsService
 
+    @Autowired
+    lateinit var piplineModService: PipelineModService
+
     @PersistenceContext
     lateinit var entityManager: EntityManager
 
@@ -36,8 +40,24 @@ class DataSourceServiceTests : AbstractTest() {
         val ds = dataSourceService.create(spec)
         assertEquals(spec.name, ds.name)
         assertEquals(spec.fileTypes, ds.fileTypes)
-        val settings = projectService.getSettings()
-        assertEquals(settings.defaultPipelineId, ds.pipelineId)
+    }
+
+    @Test
+    fun testCreateWithModules() {
+        piplineModService.updateStandardMods()
+
+        val spec2 = DataSourceSpec(
+            "dev-data",
+            "gs://zorroa-dev-data",
+            fileTypes = listOf("jpg"),
+            modules = setOf("zmlp-object-detection")
+        )
+
+        val ds = dataSourceService.create(spec2)
+        assertEquals(spec.name, ds.name)
+        assertEquals(spec.fileTypes, ds.fileTypes)
+        assertTrue(ds.modules.isNotEmpty())
+        assertEquals(1, jdbc.queryForObject("SELECT COUNT(1) FROM x_module_datasource", Int::class.java))
     }
 
     @Test
@@ -67,14 +87,12 @@ class DataSourceServiceTests : AbstractTest() {
         val spec = DataSourceSpec(
             "dev-data",
             "gs://zorroa-dev-data",
-            pipeline = "foo",
             fileTypes = listOf("jpg")
         )
 
         val ds = dataSourceService.create(spec)
         assertEquals(spec.name, ds.name)
         assertEquals(spec.fileTypes, ds.fileTypes)
-        assertEquals(pipe.id, ds.pipelineId)
     }
 
     @Test
@@ -86,7 +104,7 @@ class DataSourceServiceTests : AbstractTest() {
             "cats",
             "gs://foo/bar",
             listOf("jpg"),
-            pipe.id,
+            setOf(),
             setOf()
         )
         dataSourceService.update(ds.id, update)
@@ -95,12 +113,32 @@ class DataSourceServiceTests : AbstractTest() {
         assertEquals(update.name, ds2.name)
         assertEquals(update.fileTypes, ds2.fileTypes)
         assertEquals(update.uri, ds2.uri)
-        assertEquals(update.pipelineId, ds2.pipelineId)
+    }
+
+    @Test
+    fun testUpdateWithModules() {
+        piplineModService.updateStandardMods()
+        val ds = dataSourceService.create(spec)
+
+        val update = DataSourceUpdate(
+            "cats",
+            "gs://foo/bar",
+            listOf("jpg"),
+            setOf(),
+            setOf("zmlp-object-detection")
+        )
+        dataSourceService.update(ds.id, update)
+
+        val ds2 = dataSourceService.get(ds.id)
+        assertEquals(update.name, ds2.name)
+        assertEquals(update.fileTypes, ds2.fileTypes)
+        assertEquals(update.uri, ds2.uri)
+        assertEquals(1, ds2.modules.size)
+        assertEquals(1, jdbc.queryForObject("SELECT COUNT(1) FROM x_module_datasource", Int::class.java))
     }
 
     @Test
     fun testUpdateWithCredentials() {
-        val pipe = pipelineService.create(PipelineSpec("foo"))
         val ds = dataSourceService.create(spec)
         val creds = credentialsService.create(
             CredentialsSpec("test",
@@ -111,8 +149,8 @@ class DataSourceServiceTests : AbstractTest() {
             "cats",
             "gs://foo/bar",
             listOf("jpg"),
-            pipe.id,
-            setOf(creds.name)
+            setOf(creds.name),
+            setOf()
         )
         dataSourceService.update(ds.id, update)
 
@@ -120,7 +158,6 @@ class DataSourceServiceTests : AbstractTest() {
         assertEquals(update.name, ds2.name)
         assertEquals(update.fileTypes, ds2.fileTypes)
         assertEquals(update.uri, ds2.uri)
-        assertEquals(update.pipelineId, ds2.pipelineId)
 
         val credsIds = jdbc.queryForList(
             "SELECT pk_credentials FROM x_credentials_datasource WHERE pk_datasource=?",
