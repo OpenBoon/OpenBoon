@@ -3,6 +3,7 @@ import useSWR from 'swr'
 
 import { spacing, typography, colors } from '../Styles'
 
+import Loading from '../Loading'
 import Tabs from '../Tabs'
 import Value from '../Value'
 import ProgressBar from '../ProgressBar'
@@ -19,11 +20,7 @@ const JobErrorsContent = () => {
     `/api/v1/projects/${projectId}/jobs/${jobId}`,
   )
 
-  if (typeof job !== 'object') {
-    return (
-      <div css={{ padding: spacing.normal, paddingLeft: 0 }}>Loading...</div>
-    )
-  }
+  if (typeof job !== 'object') return <Loading />
 
   const {
     name,

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import Router, { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { spacing } from '../Styles'
+import Loading from '../Loading'
 
 const Projects = ({ children }) => {
   const {
@@ -11,11 +11,7 @@ const Projects = ({ children }) => {
 
   const { data: { results: projects } = {} } = useSWR('/api/v1/projects/')
 
-  if (!Array.isArray(projects)) {
-    return (
-      <div css={{ padding: spacing.normal, paddingLeft: 0 }}>Loading...</div>
-    )
-  }
+  if (!Array.isArray(projects)) return <Loading />
 
   if (projects.length === 0) {
     if (projectId) {
