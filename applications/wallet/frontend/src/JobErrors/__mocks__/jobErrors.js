@@ -55,7 +55,7 @@ const jobErrors = {
       message:
         "NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)",
       processor: 'DuplicateDetectionProcessor',
-      fatal: false,
+      fatal: true,
       analyst: 'https://10.0.4.3:5000',
       phase: 'execute',
       timeCreated: 1579220726642,
@@ -159,7 +159,7 @@ const jobErrors = {
       message:
         "AttributeError: 'NoneType' object has no attribute 'startswith'",
       processor: 'ResNetClassifyProcessor',
-      fatal: false,
+      fatal: true,
       analyst: 'https://10.0.4.3:5000',
       phase: 'execute',
       timeCreated: 1579220726533,
