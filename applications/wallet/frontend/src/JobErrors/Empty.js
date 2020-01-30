@@ -2,7 +2,7 @@ import { typography } from '../Styles'
 
 import NoJobsSvg from '../Icons/noJobs.svg'
 
-const JobsEmpty = () => {
+const JobErrorsEmpty = () => {
   return (
     <div
       css={{
@@ -13,10 +13,10 @@ const JobsEmpty = () => {
         lineHeight: typography.height.large,
       }}>
       <NoJobsSvg width={200} />
-      <div>There are currently no jobs in the queue.</div>
-      <div>Any new job will appear here.</div>
+      <div>This job has no errors.</div>
+      <div>Any new error will appear here.</div>
     </div>
   )
 }
 
-export default JobsEmpty
+export default JobErrorsEmpty
