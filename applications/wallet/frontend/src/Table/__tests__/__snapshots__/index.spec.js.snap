@@ -41,6 +41,10 @@ exports[`<Table /> should render properly with an error 1`] = `
 }
 
 .emotion-3 td {
+  max-width: calc(100vw / 0);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -54,6 +58,7 @@ exports[`<Table /> should render properly with an error 1`] = `
 
 .emotion-3 td:last-of-type {
   border-right: 1px solid transparent;
+  overflow: visible;
 }
 
 .emotion-0 {
@@ -189,6 +194,10 @@ exports[`<Table /> should render properly without data 1`] = `
 }
 
 .emotion-3 td {
+  max-width: calc(100vw / 0);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -202,6 +211,7 @@ exports[`<Table /> should render properly without data 1`] = `
 
 .emotion-3 td:last-of-type {
   border-right: 1px solid transparent;
+  overflow: visible;
 }
 
 .emotion-0 {

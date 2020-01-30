@@ -8,28 +8,12 @@ import ButtonGear from '../Button/Gear'
 
 const ACTIONS = [
   {
-    name: 'Pause',
-    action: 'pause',
-  },
-  {
-    name: 'Resume',
-    action: 'resume',
-  },
-  {
-    name: 'Cancel',
-    action: 'cancel',
-  },
-  {
-    name: 'Restart',
-    action: 'restart',
-  },
-  {
-    name: 'Retry All Failures',
-    action: 'retry_all_failures',
+    name: 'Retry',
+    action: 'retry',
   },
 ]
 
-const JobsMenu = ({ projectId, jobId, revalidate }) => {
+const JobErrorsMenu = ({ projectId, jobId, revalidate }) => {
   return (
     <Menu open="left" button={ButtonGear}>
       {({ onBlur, onClick }) => (
@@ -62,10 +46,10 @@ const JobsMenu = ({ projectId, jobId, revalidate }) => {
   )
 }
 
-JobsMenu.propTypes = {
+JobErrorsMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   jobId: PropTypes.string.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 
-export default JobsMenu
+export default JobErrorsMenu

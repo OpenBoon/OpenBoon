@@ -161,6 +161,10 @@ Array [
 }
 
 .emotion-6 td {
+  max-width: calc(100vw / 2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -174,6 +178,7 @@ Array [
 
 .emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
+  overflow: visible;
 }
 
 .emotion-0 {
@@ -474,6 +479,10 @@ Array [
 }
 
 .emotion-15 td {
+  max-width: calc(100vw / 2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -487,6 +496,7 @@ Array [
 
 .emotion-15 td:last-of-type {
   border-right: 1px solid transparent;
+  overflow: visible;
 }
 
 .emotion-4 {
@@ -982,6 +992,10 @@ Array [
 }
 
 .emotion-6 td {
+  max-width: calc(100vw / 2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -995,6 +1009,7 @@ Array [
 
 .emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
+  overflow: visible;
 }
 
 .emotion-0 {

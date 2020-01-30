@@ -57,6 +57,10 @@ const Table = ({ url, columns, expandColumn, renderEmpty, renderRow }) => {
             },
           },
           td: {
+            maxWidth: `calc(100vw / ${columns.length - 1})`,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
             fontWeight: typography.weight.extraLight,
             color: colors.structure.pebble,
             padding: `${spacing.base}px ${spacing.normal}px`,
@@ -68,6 +72,7 @@ const Table = ({ url, columns, expandColumn, renderEmpty, renderRow }) => {
             },
             ':last-of-type': {
               borderRight: constants.borders.transparent,
+              overflow: 'visible',
             },
           },
         }}>
