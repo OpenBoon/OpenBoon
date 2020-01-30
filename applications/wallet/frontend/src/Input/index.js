@@ -82,7 +82,6 @@ const Input = ({
       )}
     </div>
     <div css={{ paddingTop: PADDING }}>
-      &nbsp;
       {hasError && (
         <span
           css={{
@@ -92,6 +91,7 @@ const Input = ({
           {errorMessage}
         </span>
       )}
+      &nbsp;
     </div>
   </div>
 )
