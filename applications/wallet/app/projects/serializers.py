@@ -17,6 +17,10 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         view_name='apikey-list',
         lookup_url_kwarg='project_pk'
     )
+    users = HyperlinkedIdentityField(
+        view_name='projectuser-list',
+        lookup_url_kwarg='project_pk'
+    )
     permissions = HyperlinkedIdentityField(
         view_name='permission-list',
         lookup_url_kwarg='project_pk',

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<JobDetails /> should render properly 1`] = `
+exports[`<Job /> should render properly 1`] = `
 Array [
   <Breadcrumbs
     crumbs={

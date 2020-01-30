@@ -4,12 +4,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 
 from projects.views import BaseProjectViewSet
-from wallet.paginators import FromSizePagination
+from wallet.paginators import ZMLPFromSizePagination
 
 
 class JobsViewSet(BaseProjectViewSet):
 
-    pagination_class = FromSizePagination
+    pagination_class = ZMLPFromSizePagination
 
     def list(self, request, project_pk, client):
         payload = {'page': {'from': request.GET.get('from', 0),
