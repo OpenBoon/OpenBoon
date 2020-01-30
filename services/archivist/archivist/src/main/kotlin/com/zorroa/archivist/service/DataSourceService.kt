@@ -5,7 +5,6 @@ import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.StandardContainers
 import com.zorroa.archivist.domain.ZpsScript
@@ -83,7 +82,7 @@ class DataSourceServiceImpl(
         val actor = getZmlpActor()
         val id = UUIDGen.uuid1.generate()
 
-        val mods = pipelineModService.getByNames(spec.modules?: setOf())
+        val mods = pipelineModService.getByNames(spec.modules ?: setOf())
 
         val result = dataSourceDao.saveAndFlush(
             DataSource(
