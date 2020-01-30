@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { spacing } from '../Styles'
+import { spacing, constants } from '../Styles'
 
 import TabsLink from './Link'
 
@@ -13,6 +13,7 @@ const Tabs = ({ tabs }) => {
           padding: 0,
           margin: 0,
           display: 'flex',
+          borderBottom: constants.borders.tabs,
         }}>
         {tabs.map(({ title, href }) => (
           <TabsLink key={href} title={title} href={href} />
