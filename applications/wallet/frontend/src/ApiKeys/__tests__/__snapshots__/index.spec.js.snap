@@ -120,11 +120,11 @@ Array [
   <div>
      
   </div>,
-  .emotion-5 {
+  .emotion-7 {
   height: 100%;
 }
 
-.emotion-4 {
+.emotion-6 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -132,46 +132,34 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-4 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-4 tr .gear {
-  opacity: 0;
-}
-
-.emotion-4 tr .gear:focus {
-  opacity: 1;
-}
-
-.emotion-4 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-4 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-4 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-4 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-4 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-4 tr:hover .gear {
-  opacity: 1;
-}
-
-.emotion-4 td {
+.emotion-6 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -179,11 +167,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-4 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-4 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
@@ -206,12 +194,19 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-3 {
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-2 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -234,10 +229,10 @@ Array [
 }
 
 <div
-    className="emotion-5"
+    className="emotion-7"
   >
     <table
-      className="emotion-4"
+      className="emotion-6"
     >
       <thead>
         <tr>
@@ -251,17 +246,29 @@ Array [
           >
             Permissions
           </th>
+          <th
+            className="emotion-0"
+          >
+            <div
+              className="emotion-2"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </div>
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr
-          className="emotion-3"
+          className="emotion-5"
         >
           <td
-            colSpan={2}
+            colSpan={3}
           >
             <div
-              className="emotion-2"
+              className="emotion-4"
             >
               Loading...
             </div>
@@ -418,6 +425,13 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-23 {
   height: auto;
 }
@@ -432,14 +446,6 @@ Array [
 
 .emotion-15 tr {
   background-color: #252525;
-}
-
-.emotion-15 tr .gear {
-  opacity: 0;
-}
-
-.emotion-15 tr .gear:focus {
-  opacity: 1;
 }
 
 .emotion-15 tr:nth-of-type(2n) {
@@ -465,10 +471,6 @@ Array [
   border-right: 1px solid #808080;
 }
 
-.emotion-15 tr:hover .gear {
-  opacity: 1;
-}
-
 .emotion-15 td {
   color: #e0e0e0;
   padding: 8px 16px;
@@ -485,18 +487,7 @@ Array [
   border-right: 1px solid transparent;
 }
 
-.emotion-9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-}
-
-.emotion-2 {
+.emotion-4 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -507,11 +498,11 @@ Array [
   border-radius: 14px;
 }
 
-.emotion-8 {
+.emotion-10 {
   position: relative;
 }
 
-.emotion-7 {
+.emotion-9 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -544,19 +535,20 @@ Array [
   padding: 0;
   color: #191919;
   padding: 6px;
+  margin: -6px;
   border-radius: 32px;
 }
 
-.emotion-7:hover {
+.emotion-9:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-7[aria-disabled=true] {
+.emotion-9[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-7:hover {
+.emotion-9:hover {
   background-color: #808080;
 }
 
@@ -678,6 +670,18 @@ Array [
           >
             Permissions
           </th>
+          <th
+            className="emotion-0"
+          >
+            <div
+              className="emotion-2"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </div>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -685,42 +689,40 @@ Array [
           <td>
             job-runner
           </td>
-          <td
-            className="emotion-9"
-          >
-            <div>
-              <span
-                className="emotion-2"
-              >
-                 Assets Read
-              </span>
-              <span
-                className="emotion-2"
-              >
-                 Assets Import
-              </span>
-              <span
-                className="emotion-2"
-              >
-                 Project Files Read
-              </span>
-              <span
-                className="emotion-2"
-              >
-                 System Project Decrypt
-              </span>
-              <span
-                className="emotion-2"
-              >
-                 Project Files Write
-              </span>
-            </div>
+          <td>
+            <span
+              className="emotion-4"
+            >
+               Assets Read
+            </span>
+            <span
+              className="emotion-4"
+            >
+               Assets Import
+            </span>
+            <span
+              className="emotion-4"
+            >
+               Project Files Read
+            </span>
+            <span
+              className="emotion-4"
+            >
+               System Project Decrypt
+            </span>
+            <span
+              className="emotion-4"
+            >
+               Project Files Write
+            </span>
+          </td>
+          <td>
             <div
-              className="emotion-8"
+              className="emotion-10"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="gear emotion-7"
+                className="emotion-9"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -737,27 +739,25 @@ Array [
           <td>
             My ApiKey
           </td>
-          <td
-            className="emotion-9"
-          >
-            <div>
-              <span
-                className="emotion-2"
-              >
-                 Api Key Manage
-              </span>
-              <span
-                className="emotion-2"
-              >
-                 Project Manage
-              </span>
-            </div>
+          <td>
+            <span
+              className="emotion-4"
+            >
+               Api Key Manage
+            </span>
+            <span
+              className="emotion-4"
+            >
+               Project Manage
+            </span>
+          </td>
+          <td>
             <div
-              className="emotion-8"
+              className="emotion-10"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="gear emotion-7"
+                className="emotion-9"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -939,11 +939,11 @@ Array [
   <div>
      
   </div>,
-  .emotion-5 {
+  .emotion-7 {
   height: 100%;
 }
 
-.emotion-4 {
+.emotion-6 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -951,46 +951,34 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-4 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-4 tr .gear {
-  opacity: 0;
-}
-
-.emotion-4 tr .gear:focus {
-  opacity: 1;
-}
-
-.emotion-4 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-4 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-4 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-4 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-4 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-4 tr:hover .gear {
-  opacity: 1;
-}
-
-.emotion-4 td {
+.emotion-6 td {
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -998,11 +986,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-4 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-4 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
 }
 
@@ -1025,12 +1013,19 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-3 {
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-2 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1053,10 +1048,10 @@ Array [
 }
 
 <div
-    className="emotion-5"
+    className="emotion-7"
   >
     <table
-      className="emotion-4"
+      className="emotion-6"
     >
       <thead>
         <tr>
@@ -1070,17 +1065,29 @@ Array [
           >
             Permissions
           </th>
+          <th
+            className="emotion-0"
+          >
+            <div
+              className="emotion-2"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </div>
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr
-          className="emotion-3"
+          className="emotion-5"
         >
           <td
-            colSpan={2}
+            colSpan={3}
           >
             <div
-              className="emotion-2"
+              className="emotion-4"
             >
               No api keys
             </div>

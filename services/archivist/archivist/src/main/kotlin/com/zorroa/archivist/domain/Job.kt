@@ -117,8 +117,10 @@ class JobSpec(
     val replace: Boolean = false,
 
     @ApiModelProperty("The maximum number of running tasks on the job.")
-    val maxRunningTasks: Int = 1024
+    val maxRunningTasks: Int = 1024,
 
+    @ApiModelProperty("The name of the credentials blobs available to this job.")
+    val credentials: Set<String>? = null
 )
 
 @ApiModel("Job Update Spec", description = "Attributes required to update a Job.")

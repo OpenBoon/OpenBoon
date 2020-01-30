@@ -19,12 +19,12 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
       open="left"
       button={({ onBlur, onClick }) => (
         <Button
-          className="gear"
           aria-label="Toggle Actions Menu"
           variant={VARIANTS.NEUTRAL}
           style={{
             color: colors.structure.coal,
             padding: spacing.moderate / 2,
+            margin: -spacing.moderate / 2,
             borderRadius: constants.borderRadius.round,
             ':hover': { backgroundColor: colors.structure.steel },
           }}
@@ -58,8 +58,8 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
                       onClick()
 
                       await fetcher(
-                        `/api/v1/projects/${projectId}/apikeys/${apiKeyId}/delete/`,
-                        { method: 'PUT' },
+                        `/api/v1/projects/${projectId}/apikeys/${apiKeyId}/`,
+                        { method: 'DELETE' },
                       )
 
                       revalidate()

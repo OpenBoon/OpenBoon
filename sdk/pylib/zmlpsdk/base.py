@@ -508,6 +508,16 @@ class ZmlpEnv:
         """
         return os.environ.get("ZMLP_DATASOURCE_ID")
 
+    @staticmethod
+    def get_available_credentials_types():
+        """
+        Get a list of the available credentials types available to this job.
+
+        Returns:
+            list: list of credentials types.
+        """
+        return os.environ.get("ZMLP_CREDENTIALS_TYPES", "").split(",")
+
 
 class ZmlpProcessorException(ZmlpException):
     """

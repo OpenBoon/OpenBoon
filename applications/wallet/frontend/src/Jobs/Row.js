@@ -63,17 +63,10 @@ const JobsRow = ({
         )}
       </td>
       <td>
-        <div css={{ display: 'flex', alignItems: 'center' }}>
-          <ProgressBar taskCounts={taskCounts} />
-
-          <div css={{ width: spacing.base }} />
-
-          <JobsMenu
-            projectId={projectId}
-            jobId={jobId}
-            revalidate={revalidate}
-          />
-        </div>
+        <ProgressBar taskCounts={taskCounts} />
+      </td>
+      <td>
+        <JobsMenu projectId={projectId} jobId={jobId} revalidate={revalidate} />
       </td>
     </tr>
   )

@@ -1,10 +1,10 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
-import com.zorroa.archivist.domain.DataSourceCredentials
 import com.zorroa.archivist.domain.DataSourceFilter
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
+import com.zorroa.archivist.service.CredentialsService
 import com.zorroa.archivist.service.DataSourceService
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 class DataSourceControllerTests : MockMvcTest() {
 
@@ -23,6 +25,12 @@ class DataSourceControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var dataSourceService: DataSourceService
+
+    @Autowired
+    lateinit var credentialsService: CredentialsService
+
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
 
     @Test
     fun testCreate() {
@@ -41,7 +49,7 @@ class DataSourceControllerTests : MockMvcTest() {
     @Test
     fun testUpdate() {
         val ds = dataSourceService.create(testSpec)
-        val update = DataSourceUpdate("spock", "gs://foo/bar", ds.fileTypes, ds.pipelineId)
+        val update = DataSourceUpdate("spock", "gs://foo/bar", ds.fileTypes, ds.pipelineId, setOf())
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/data-sources/${ds.id}")
                 .headers(admin())
@@ -125,52 +133,6 @@ class DataSourceControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.dataSourceId", CoreMatchers.equalTo(ds.id.toString())))
-            .andReturn()
-    }
-
-    @Test
-    fun testUpdateCredentials() {
-        val ds = dataSourceService.create(testSpec)
-        val creds = DataSourceCredentials(blob = "YAY")
-
-        mvc.perform(
-            MockMvcRequestBuilders.put("/api/v1/data-sources/${ds.id}/_credentials")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Json.serialize(creds))
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.type", CoreMatchers.equalTo("DATASOURCE")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.equalTo(ds.id.toString())))
-            .andReturn()
-    }
-
-    @Test
-    fun testGetCredentialsFailureAsSuperAdmin() {
-        val ds = dataSourceService.create(testSpec)
-        dataSourceService.updateCredentials(ds.id, "YAY")
-
-        mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/data-sources/${ds.id}/_credentials")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
-            .andReturn()
-    }
-
-    @Test
-    fun testGetCredentials() {
-        val ds = dataSourceService.create(testSpec)
-        dataSourceService.updateCredentials(ds.id, "YAY")
-
-        mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/data-sources/${ds.id}/_credentials")
-                .headers(job())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.blob", CoreMatchers.equalTo("YAY")))
             .andReturn()
     }
 }

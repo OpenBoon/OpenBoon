@@ -2,12 +2,15 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetCounters
+import com.zorroa.archivist.domain.CredentialsSpec
+import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.JobFilter
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.service.CredentialsService
 import com.zorroa.archivist.service.JobService
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,10 +25,13 @@ import kotlin.test.assertTrue
 class JobDaoTests : AbstractTest() {
 
     @Autowired
-    internal lateinit var jobDao: JobDao
+    lateinit var jobDao: JobDao
 
     @Autowired
-    internal lateinit var jobService: JobService
+    lateinit var jobService: JobService
+
+    @Autowired
+    lateinit var credentialsService: CredentialsService
 
     @Test
     fun testCreate() {
@@ -238,5 +244,35 @@ class JobDaoTests : AbstractTest() {
         assertTrue(jobDao.setState(job, JobState.InProgress, null))
         job = jobDao.get(job.id)
         assertEquals(job.timeStopped, -1L)
+    }
+
+    @Test
+    fun testSetCredentials() {
+        val creds = credentialsService.create(
+            CredentialsSpec("test",
+                CredentialsType.AWS, """{"foo": "bar"}""")
+        )
+
+        val spec = JobSpec("test_job", emptyZpsScript("foo"))
+        var job = jobDao.create(spec, JobType.Import)
+        jobDao.setCredentials(job, listOf(creds))
+
+        assertEquals(1, jdbc.queryForObject(
+            "SELECT COUNT(1) FROM x_credentials_job WHERE pk_job=?",
+            Int::class.java, job.jobId))
+    }
+
+    @Test
+    fun testGetCredentialsTypes() {
+        val creds = credentialsService.create(
+            CredentialsSpec("test",
+                CredentialsType.AWS, """{"foo": "bar"}""")
+        )
+
+        val spec = JobSpec("test_job", emptyZpsScript("foo"))
+        var job = jobDao.create(spec, JobType.Import)
+        jobDao.setCredentials(job, listOf(creds))
+
+        assertTrue(jobDao.getCredentialsTypes(job).contains("AWS"))
     }
 }

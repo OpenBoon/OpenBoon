@@ -731,6 +731,239 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 `;
 
 exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 2`] = `
+.emotion-15 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
+  background-color: #73b61c;
+}
+
+.emotion-15:hover {
+  background-color: #b8d652;
+}
+
+.emotion-15[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  justify-self: flex-start;
+  color: #000000;
+  font-weight: 500;
+  background-color: #ffffff;
+  border: 1px solid #4ac565;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-0 {
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  background-color: #4ac565;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-4 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-6 {
+  color: #b3b3b3;
+}
+
+.emotion-7 {
+  color: #808080;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 400;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-8 {
+  width: 470px;
+  font-size: 15px;
+  line-height: 18px;
+  color: #ffffff;
+  background-color: #2e2e2e;
+  border-radius: 2px;
+  padding: 8px;
+  border: none;
+  resize: none;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.emotion-9 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 4px;
+  font-weight: 400;
+}
+
+.emotion-9:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-9[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-9,
+.emotion-9:hover,
+.emotion-9:visited {
+  color: #73b61c;
+}
+
+.emotion-9:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.emotion-9:active {
+  opacity: 0;
+  -webkit-transition: opacity .3s ease;
+  transition: opacity .3s ease;
+}
+
+.emotion-10 {
+  padding: 4px;
+}
+
 .emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -761,6 +994,8 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 4px;
+  font-weight: 400;
 }
 
 .emotion-11:hover {
@@ -775,199 +1010,22 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 .emotion-11,
 .emotion-11:hover,
 .emotion-11:visited {
-  background-color: #73b61c;
+  color: #73b61c;
 }
 
 .emotion-11:hover {
-  background-color: #b8d652;
-}
-
-.emotion-11[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 500;
-  padding-top: 16px;
-}
-
-.emotion-2 {
-  color: #b3b3b3;
-}
-
-.emotion-3 {
-  color: #808080;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 400;
-}
-
-.emotion-9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.emotion-4 {
-  width: 470px;
-  font-size: 15px;
-  line-height: 18px;
-  color: #ffffff;
-  background-color: #2e2e2e;
-  border-radius: 2px;
-  padding: 16px;
-  border: none;
-  resize: none;
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-.emotion-5 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited {
-  color: #73b61c;
-}
-
-.emotion-5:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
-.emotion-5:active {
-  opacity: 0;
-  -webkit-transition: opacity .3s ease;
-  transition: opacity .3s ease;
-}
-
-.emotion-6 {
-  padding: 4px;
-}
-
-.emotion-7 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 4px;
-  font-weight: 400;
-}
-
-.emotion-7:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-7[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-7,
-.emotion-7:hover,
-.emotion-7:visited {
-  color: #73b61c;
-}
-
-.emotion-7:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.emotion-12 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-10 {
+.emotion-14 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1000,100 +1058,118 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   margin-right: 16px;
 }
 
-.emotion-10:hover {
+.emotion-14:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-14[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited {
+.emotion-14,
+.emotion-14:hover,
+.emotion-14:visited {
   background-color: #808080;
 }
 
-.emotion-10:hover {
+.emotion-14:hover {
   opacity: 0.5;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-14[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div>
-  <div>
-    Key Generated & Copied to Clipboard
+  <div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-0"
+      >
+        <svg
+          data-file-name="checkmark.svg"
+          width={20}
+        />
+      </div>
+      <div
+        className="emotion-1"
+      >
+        Key Generated & Copied to Clipboard
+      </div>
+    </div>
   </div>
   <div
-    className="emotion-0"
+    className="emotion-4"
   >
     Project 
     76917058-b147-4556-987a-0a0f11e46d9b
   </div>
   <h2
-    className="emotion-0"
+    className="emotion-4"
   >
     Scope
   </h2>
   <ul
-    className="emotion-2"
+    className="emotion-6"
   >
     <li>
        Api Key Manage
     </li>
   </ul>
   <h3
-    className="emotion-3"
+    className="emotion-7"
   >
     API Key
   </h3>
   <div
-    className="emotion-9"
+    className="emotion-13"
   >
     <textarea
-      className="emotion-4"
+      className="emotion-8"
       defaultValue="FooBarSecretKey"
-      rows="1"
+      rows="5"
     />
     <div
-      className="emotion-8"
+      className="emotion-12"
     >
       <button
-        className="emotion-5"
+        className="emotion-9"
         onClick={[Function]}
         type="button"
       >
         Copy Key
       </button>
       <span
-        className="emotion-6"
+        className="emotion-10"
       >
         |
       </span>
-      <button
-        className="emotion-7"
-        onClick={[Function]}
-        type="button"
+      <a
+        className="emotion-11"
+        download="api-key.txt"
+        href="data:application/octet-stream;charset=utf-8;base64,Rm9vQmFyU2VjcmV0S2V5"
       >
         Download
-      </button>
+      </a>
     </div>
   </div>
   <div
-    className="emotion-12"
+    className="emotion-16"
   >
     <button
-      className="emotion-10"
+      className="emotion-14"
       onClick={[Function]}
       type="button"
     >
       Create Another Key
     </button>
     <a
-      className="emotion-11"
+      className="emotion-15"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
       onClick={[Function]}
       onMouseEnter={[Function]}

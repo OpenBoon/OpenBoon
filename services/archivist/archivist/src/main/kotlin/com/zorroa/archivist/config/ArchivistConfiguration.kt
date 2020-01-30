@@ -8,6 +8,8 @@ import com.zorroa.archivist.service.NullMessagingService
 import com.zorroa.archivist.service.PubSubMessagingService
 import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
+import com.zorroa.zmlp.service.security.EncryptionService
+import com.zorroa.zmlp.service.security.EncryptionServiceImpl
 import io.sentry.spring.SentryExceptionResolver
 import io.sentry.spring.SentryServletContextInitializer
 import org.slf4j.LoggerFactory
@@ -123,6 +125,11 @@ class ArchivistConfiguration {
     @Bean
     fun eventBus(): EventBus {
         return EventBus()
+    }
+
+    @Bean
+    fun encryptionService(): EncryptionService {
+        return EncryptionServiceImpl()
     }
 
     @Bean
