@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.zorroa.zmlp.client.ApiKey;
 import com.zorroa.zmlp.client.Json;
 import com.zorroa.zmlp.client.ZmlpClient;
-import com.zorroa.zmlp.client.domain.PagedList;
 import com.zorroa.zmlp.client.domain.asset.*;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.Before;
@@ -101,7 +100,6 @@ public class AssetAppTests extends AbstractAppTests {
         assertEquals(2, searchResult.assets().size());
         assertEquals(2, searchResult.size());
         assertEquals(100, searchResult.totalSize());
-        System.out.println(Json.asPrettyJson(searchResult.rawResponse()));
         assertEquals(getMockSearchResult(), Json.asPrettyJson(searchResult.rawResponse()));
     }
 
@@ -121,6 +119,29 @@ public class AssetAppTests extends AbstractAppTests {
         AssetSearchResult secondPage = searchResult.nextPage();
 
         assertEquals(secondPageMock, Json.asJson(secondPage.rawResponse()));
+    }
+
+
+    @Test
+    public void testScrollSearch() throws JsonProcessingException {
+        webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
+        // Second Page Mock
+        webServer.enqueue(new MockResponse().setBody("{\"hits\":{\"hits\":[]}}"));
+        //Delete response
+        webServer.enqueue(new MockResponse().setBody("{}"));
+
+        String query = "{\"query\": {\"term\": {\"source.filename\": \"dog.jpg\"}}}";
+        Map elementQueryTerms = Json.mapper.readValue(query, Map.class);
+
+        AssetSearchScroller searchScroller = assetApp.scrollSearch(elementQueryTerms, null);
+
+        int size = 0;
+        while(searchScroller.hasNext()){
+            size++;
+            searchScroller.next();
+        }
+
+        assertEquals(2, size);
     }
 
     @Test

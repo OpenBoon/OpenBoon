@@ -3,12 +3,13 @@ package com.zorroa.zmlp.client.app;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zorroa.zmlp.client.Json;
 import com.zorroa.zmlp.client.ZmlpClient;
-import com.zorroa.zmlp.client.domain.Page;
-import com.zorroa.zmlp.client.domain.PagedList;
 import com.zorroa.zmlp.client.domain.ZmlpClientException;
 import com.zorroa.zmlp.client.domain.asset.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AssetApp {
@@ -82,6 +83,20 @@ public class AssetApp {
 
     public Map rawSearch(Map assetSearch) {
         return new AssetSearchResult(this.client, assetSearch).rawResponse();
+    }
+
+    /**
+     * Perform an asset scrolled search using the ElasticSearch query DSL.
+     *
+     * @param search The ElasticSearch search to execute
+     * @param timeout The scroll timeout.
+     * @return An AssetSearchScroller instance
+     */
+    public AssetSearchScroller scrollSearch(Map search, String timeout){
+        search = Optional.ofNullable(search).orElse(new HashMap());
+        timeout = Optional.ofNullable(timeout).orElse("1m");
+        return new AssetSearchScroller(this.client, search, timeout);
+
     }
 
     /**

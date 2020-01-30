@@ -1,6 +1,5 @@
 package com.zorroa.zmlp.client.domain.asset;
 
-import com.zorroa.zmlp.client.ZmlpApp;
 import com.zorroa.zmlp.client.ZmlpClient;
 import com.zorroa.zmlp.client.domain.Page;
 import com.zorroa.zmlp.client.domain.PagedList;
