@@ -92,6 +92,7 @@ class JobServiceImpl @Autowired constructor(
             } else {
                 spec.script!!.type
             }
+
             return create(spec, type)
         } else {
             throw IllegalArgumentException("Cannot launch job without script to determine type")
@@ -113,6 +114,7 @@ class JobServiceImpl @Autowired constructor(
         }
 
         val job = jobDao.create(spec, type)
+
         if (spec.replace) {
             /**
              * If old job is being replaced, then add a commit hook to kill
@@ -143,6 +145,12 @@ class JobServiceImpl @Autowired constructor(
             taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         }
 
+        logger.event(
+            LogObject.JOB, LogAction.CREATE, mapOf(
+                "jobId" to job.id,
+                "jobName" to job.name)
+        )
+
         spec.credentials?.let {
             setCredentials(job, it)
         }
@@ -151,10 +159,23 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun updateJob(job: Job, spec: JobUpdateSpec): Boolean {
+
+        logger.event(
+            LogObject.JOB, LogAction.UPDATE, mapOf(
+                "jobId" to job.id,
+                "jobName" to job.name)
+        )
+
         return jobDao.update(job, spec)
     }
 
     override fun deleteJob(job: JobId): Boolean {
+
+        logger.event(
+            LogObject.JOB, LogAction.DELETE, mapOf(
+                "jobId" to job.jobId
+        ))
+
         return jobDao.delete(job)
     }
 
@@ -204,7 +225,16 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun createTask(job: JobId, spec: TaskSpec): Task {
-        return taskDao.create(job, spec)
+
+        val newTask = taskDao.create(job, spec)
+
+        logger.event(
+            LogObject.TASK, LogAction.CREATE, mapOf(
+                "taskId" to newTask.id,
+                "taskName" to newTask.name
+            ))
+
+        return newTask
     }
 
     override fun incrementAssetCounters(task: InternalTask, counts: AssetCounters) {
@@ -213,10 +243,18 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun setJobState(job: JobId, newState: JobState, oldState: JobState?): Boolean {
+
         val result = jobDao.setState(job, newState, oldState)
         if (result) {
             eventBus.post(JobStateChangeEvent(get(job.jobId), newState, oldState))
         }
+
+        logger.event(
+            LogObject.JOB, LogAction.UPDATE, mapOf(
+                "jobId" to job.jobId,
+                "jobState" to newState.name
+            ))
+
         return result
     }
 
@@ -231,6 +269,13 @@ class JobServiceImpl @Autowired constructor(
             }
             eventBus.post(TaskStateChangeEvent(task, newState, oldState))
         }
+
+        logger.event(
+            LogObject.TASK, LogAction.UPDATE, mapOf(
+                "taskId" to task.taskId,
+                "taskState" to newState.name
+            ))
+
         return result
     }
 
@@ -267,6 +312,12 @@ class JobServiceImpl @Autowired constructor(
     }
 
     override fun deleteTaskError(id: UUID): Boolean {
+
+        logger.event(
+            LogObject.TASK_ERROR, LogAction.DELETE, mapOf(
+                "taskId" to id
+            ))
+
         return taskErrorDao.delete(id)
     }
 
