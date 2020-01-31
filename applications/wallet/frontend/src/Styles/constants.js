@@ -11,8 +11,11 @@ const borders = {
   default: `1px solid ${colors.structure.mattGrey}`,
   transparent: `1px solid transparent`,
   separator: `1px solid ${colors.structure.zinc}`,
-  error: `1px solid ${colors.signal.warning.base}`,
+  tabs: `1px solid ${colors.structure.iron}`,
+  error: `2px solid ${colors.signal.warning.base}`,
+  success: `1px solid ${colors.signal.grass.base}`,
   tableRow: `1px solid ${colors.structure.steel}`,
+  input: `2px solid ${colors.key.one}`,
 }
 
 const opacity = {

@@ -59,6 +59,7 @@ class PipelineMod(
     @ApiModelProperty("The actor that last made the last modification the Pipeline Mod.")
     val actorModified: String
 ) {
+    @JsonIgnore
     fun getUpdated(update: PipelineModUpdate): PipelineMod {
         return PipelineMod(id,
             update.name,

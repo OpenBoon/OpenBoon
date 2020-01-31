@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import Link from 'next/link'
 
 import { colors, spacing, typography } from '../Styles'
 
@@ -41,39 +42,41 @@ const JobsRow = ({
       </td>
       <td>
         {assetCounts.assetErrorCount > 0 && (
-          <div
-            css={{
-              margin: '0 auto',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 'fit-content',
-              minWidth: ERROR_COUNT_HEIGHT,
-              height: ERROR_COUNT_HEIGHT,
-              padding: spacing.base,
-              fontWeight: typography.weight.bold,
-              fontSize: typography.size.regular,
-              lineHeight: typography.height.regular,
-              borderRadius: ERROR_COUNT_HEIGHT,
-              color: colors.signal.warning.base,
-              backgroundColor: colors.structure.coal,
-            }}>
-            {assetCounts.assetErrorCount}
-          </div>
+          <Link
+            href="/[projectId]/jobs/[jobId]/errors"
+            as={`/${projectId}/jobs/${jobId}/errors`}
+            passHref>
+            <a
+              css={{
+                margin: '0 auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 'fit-content',
+                minWidth: ERROR_COUNT_HEIGHT,
+                height: ERROR_COUNT_HEIGHT,
+                padding: spacing.base,
+                fontWeight: typography.weight.bold,
+                fontSize: typography.size.regular,
+                lineHeight: typography.height.regular,
+                borderRadius: ERROR_COUNT_HEIGHT,
+                color: colors.signal.warning.base,
+                backgroundColor: colors.structure.coal,
+                '&:hover': {
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                },
+              }}>
+              {assetCounts.assetErrorCount}
+            </a>
+          </Link>
         )}
       </td>
       <td>
-        <div css={{ display: 'flex', alignItems: 'center' }}>
-          <ProgressBar taskCounts={taskCounts} />
-
-          <div css={{ width: spacing.base }} />
-
-          <JobsMenu
-            projectId={projectId}
-            jobId={jobId}
-            revalidate={revalidate}
-          />
-        </div>
+        <ProgressBar taskCounts={taskCounts} />
+      </td>
+      <td>
+        <JobsMenu projectId={projectId} jobId={jobId} revalidate={revalidate} />
       </td>
     </tr>
   )

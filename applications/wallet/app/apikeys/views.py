@@ -3,13 +3,13 @@ from rest_framework.response import Response
 
 from apikeys.serializers import ApikeySerializer
 from projects.views import BaseProjectViewSet
-from wallet.paginators import FromSizePagination
+from wallet.paginators import ZMLPFromSizePagination
 
 
 class ApikeyViewSet(BaseProjectViewSet):
 
     serializer_class = ApikeySerializer
-    pagination_class = FromSizePagination
+    pagination_class = ZMLPFromSizePagination
 
     ZMLP_ONLY = True
 
@@ -34,3 +34,7 @@ class ApikeyViewSet(BaseProjectViewSet):
                 'permissions': serializer.validated_data['permissions']}
         response = client.post('/auth/v1/apikey', body)
         return Response(status=status.HTTP_201_CREATED, data=response)
+
+    def destroy(self, request, project_pk, client, pk):
+        response = client.delete(f'/auth/v1/apikey/{pk}')
+        return Response(response)

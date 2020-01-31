@@ -5,7 +5,6 @@ import Jobs from '..'
 import jobs from '../__mocks__/jobs'
 
 jest.mock('../../Pagination', () => 'Pagination')
-jest.mock('../../UserMenu', () => 'UserMenu')
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 

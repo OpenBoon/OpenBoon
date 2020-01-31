@@ -9,31 +9,19 @@ import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
-import java.nio.ByteBuffer
-import javax.annotation.PostConstruct
 import org.slf4j.LoggerFactory
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
-
-@Configuration
-@Profile("gcs")
-class GcsStorageConfiguration {
-
-    @Bean
-    fun getGcs(): Storage {
-        return StorageOptions.getDefaultInstance().service
-    }
-}
+import javax.annotation.PostConstruct
 
 @Service
 @Profile("gcs")
 class GcsSystemStorageService constructor(
-    override val properties: SystemStorageProperties,
-    val gcs: Storage
+    override val properties: SystemStorageProperties
 
 ) : SystemStorageService {
+
+    val gcs: Storage = StorageOptions.getDefaultInstance().service
 
     @PostConstruct
     fun initialize() {
@@ -42,8 +30,8 @@ class GcsSystemStorageService constructor(
 
     override fun storeObject(path: String, any: Any) {
         val blobId = BlobId.of(properties.bucket, path.trimStart('/'))
-        val info = BlobInfo.newBuilder(blobId)
-        gcs.writer(info.build()).write(ByteBuffer.wrap(Json.serialize(any)))
+        val info = BlobInfo.newBuilder(blobId).setContentType("application/json").build()
+        gcs.create(info, Json.Mapper.writeValueAsBytes(any))
         logger.event(LogObject.SYSTEM_STORAGE, LogAction.CREATE, mapOf("path" to path))
     }
 

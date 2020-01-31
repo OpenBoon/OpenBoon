@@ -2,6 +2,8 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetCounters
+import com.zorroa.archivist.domain.CredentialsSpec
+import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.domain.Job
@@ -23,6 +25,9 @@ class JobServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var jobService: JobService
+
+    @Autowired
+    lateinit var credentialsService: CredentialsService
 
     lateinit var spec: JobSpec
     lateinit var job: Job
@@ -145,5 +150,22 @@ class JobServiceTests : AbstractTest() {
         var updatedJob = jobService.get(job.id)
         val count = jobService.retryAllTaskFailures(updatedJob)
         assertEquals(1, count)
+    }
+
+    @Test
+    fun testSetCredentials() {
+        val creds = credentialsService.create(
+            CredentialsSpec("test",
+                CredentialsType.AWS, """{"foo": "bar"}""")
+        )
+
+        val spec2 = JobSpec("test_job2",
+            emptyZpsScript("foo"),
+            credentials = setOf(creds.id.toString()))
+        val job2 = jobService.create(spec2)
+
+        assertEquals(1, jdbc.queryForObject(
+            "SELECT COUNT(1) FROM x_credentials_job WHERE pk_job=?",
+            Int::class.java, job2.jobId))
     }
 }

@@ -109,7 +109,8 @@ class DispatchQueueManager @Autowired constructor(
     val analystService: AnalystService,
     val properties: ApplicationProperties,
     val authServerClient: AuthServerClient,
-    val pipelineStoragProperties: PipelineStorageConfiguration
+    val pipelineStoragProperties: PipelineStorageConfiguration,
+    val jobService: JobService
 ) {
 
     /**
@@ -210,6 +211,8 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZMLP_STORAGE_PIPELINE_URL"] = pipelineStoragProperties.url
             task.env["ZMLP_STORAGE_PIPELINE_ACCESSKEY"] = pipelineStoragProperties.accessKey
             task.env["ZMLP_STORAGE_PIPELINE_SECRETKEY"] = pipelineStoragProperties.secretKey
+
+            task.env["ZMLP_CREDENTIALS_TYPES"] = jobService.getCredentialsTypes(task).joinToString(",")
 
             return true
         } else {

@@ -17,14 +17,6 @@ exports[`<Table /> should render properly with an error 1`] = `
   background-color: #252525;
 }
 
-.emotion-3 tr .gear {
-  opacity: 0;
-}
-
-.emotion-3 tr .gear:focus {
-  opacity: 1;
-}
-
 .emotion-3 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
@@ -48,11 +40,11 @@ exports[`<Table /> should render properly with an error 1`] = `
   border-right: 1px solid #808080;
 }
 
-.emotion-3 tr:hover .gear {
-  opacity: 1;
-}
-
 .emotion-3 td {
+  max-width: calc(100vw / 0);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -66,6 +58,7 @@ exports[`<Table /> should render properly with an error 1`] = `
 
 .emotion-3 td:last-of-type {
   border-right: 1px solid transparent;
+  overflow: visible;
 }
 
 .emotion-0 {
@@ -177,14 +170,6 @@ exports[`<Table /> should render properly without data 1`] = `
   background-color: #252525;
 }
 
-.emotion-3 tr .gear {
-  opacity: 0;
-}
-
-.emotion-3 tr .gear:focus {
-  opacity: 1;
-}
-
 .emotion-3 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
@@ -208,11 +193,11 @@ exports[`<Table /> should render properly without data 1`] = `
   border-right: 1px solid #808080;
 }
 
-.emotion-3 tr:hover .gear {
-  opacity: 1;
-}
-
 .emotion-3 td {
+  max-width: calc(100vw / 0);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #e0e0e0;
   padding: 8px 16px;
   border: 1px solid transparent;
@@ -226,6 +211,7 @@ exports[`<Table /> should render properly without data 1`] = `
 
 .emotion-3 td:last-of-type {
   border-right: 1px solid transparent;
+  overflow: visible;
 }
 
 .emotion-0 {

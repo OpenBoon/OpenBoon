@@ -1,12 +1,15 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobFilter
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobUpdateSpec
 import com.zorroa.archivist.domain.TaskErrorFilter
+import com.zorroa.archivist.service.CredentialsService
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.util.HttpUtils
+import com.zorroa.zmlp.util.Json
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -30,7 +33,8 @@ import java.util.UUID
 @Timed
 @Api(tags = ["Job"], description = "Operations for interacting with jobs.")
 class JobController @Autowired constructor(
-    val jobService: JobService
+    val jobService: JobService,
+    val credentialsService: CredentialsService
 ) {
 
     @ApiOperation("Search for Jobs.")
@@ -123,5 +127,17 @@ class JobController @Autowired constructor(
             jobService.restartJob(job)
         }
         return HttpUtils.status("Job", id, "retryAllFailures", result > 0)
+    }
+
+    @PreAuthorize("hasAuthority('SystemProjectDecrypt')")
+    @ApiOperation("Get credentials attached to Job", hidden = true)
+    @GetMapping(value = ["/api/v1/jobs/{id}/_credentials/{type}"])
+    fun getCredentials(
+        @ApiParam("UUID of the DataSource") @PathVariable id: UUID,
+        @ApiParam("Type of credentials") @PathVariable type: String
+    ): Any {
+        return Json.Mapper.readValue(
+            credentialsService.getDecryptedBlobByJob(id,
+                CredentialsType.valueOf(type.toUpperCase())), Json.GENERIC_MAP)
     }
 }

@@ -8,9 +8,11 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import Pagination from '../Pagination'
 
+import GearSvg from '../Icons/gear.svg'
+
 const SIZE = 20
 
-const Table = ({ url, columns, renderEmpty, renderRow }) => {
+const Table = ({ url, columns, expandColumn, renderEmpty, renderRow }) => {
   const {
     query: { page = 1 },
   } = useRouter()
@@ -35,12 +37,6 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
           whiteSpace: 'nowrap',
           tr: {
             backgroundColor: colors.structure.lead,
-            '.gear': {
-              opacity: 0,
-              '&:focus': {
-                opacity: 1,
-              },
-            },
             '&:nth-of-type(2n)': {
               backgroundColor: colors.structure.mattGrey,
             },
@@ -58,12 +54,13 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
                   borderRight: constants.borders.tableRow,
                 },
               },
-              '.gear': {
-                opacity: 1,
-              },
             },
           },
           td: {
+            maxWidth: `calc(100vw / ${columns.length - 1})`,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
             fontWeight: typography.weight.extraLight,
             color: colors.structure.pebble,
             padding: `${spacing.base}px ${spacing.normal}px`,
@@ -75,6 +72,7 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
             },
             ':last-of-type': {
               borderRight: constants.borders.transparent,
+              overflow: 'visible',
             },
           },
         }}>
@@ -92,12 +90,18 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
                   backgroundColor: colors.structure.iron,
                   padding: `${spacing.moderate}px ${spacing.normal}px`,
                   borderBottom: constants.borders.default,
-                  ':nth-of-type(2)': { width: '100%' },
+                  [`:nth-of-type(${expandColumn})`]: { width: '100%' },
                   '&:not(:last-child)': {
                     borderRight: constants.borders.default,
                   },
                 }}>
-                {column}
+                {column === '#Actions#' ? (
+                  <div css={{ display: 'flex' }}>
+                    <GearSvg width={20} />
+                  </div>
+                ) : (
+                  column
+                )}
               </th>
             ))}
           </tr>
@@ -132,6 +136,7 @@ const Table = ({ url, columns, renderEmpty, renderRow }) => {
 Table.propTypes = {
   url: PropTypes.string.isRequired,
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+  expandColumn: PropTypes.number.isRequired,
   renderEmpty: PropTypes.node.isRequired,
   renderRow: PropTypes.func.isRequired,
 }

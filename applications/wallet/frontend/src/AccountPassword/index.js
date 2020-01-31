@@ -21,7 +21,7 @@ const AccountPassword = () => {
         ]}
       />
 
-      <AccountPasswordForm onSubmit={console.warn} />
+      <AccountPasswordForm />
     </>
   )
 }

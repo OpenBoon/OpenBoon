@@ -248,7 +248,7 @@ class AssetServiceImpl : AssetService {
             assets.add(asset)
         }
 
-        return processBulkRequest(bulkRequest, assets, pipeline)
+        return processBulkRequest(bulkRequest, assets, pipeline, req.credentials)
     }
 
     override fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
@@ -279,7 +279,7 @@ class AssetServiceImpl : AssetService {
             bulkRequest.add(ireq)
         }
 
-        return processBulkRequest(bulkRequest, assets, pipeline)
+        return processBulkRequest(bulkRequest, assets, pipeline, request.credentials)
     }
 
     override fun update(assetId: String, req: UpdateAssetRequest): Response {
@@ -369,10 +369,10 @@ class AssetServiceImpl : AssetService {
                 .setQuery(SearchSourceMapper.convert(req).query()), RequestOptions.DEFAULT)
     }
 
-    fun createAnalysisJob(assetIds: List<String>, processors: List<ProcessorRef>): Job {
+    fun createAnalysisJob(assetIds: List<String>, processors: List<ProcessorRef>, creds: Set<String>?): Job {
         val name = "Analyze ${assetIds.size} created assets"
         val script = ZpsScript(name, null, getAll(assetIds), processors)
-        val spec = JobSpec(name, script)
+        val spec = JobSpec(name, script, credentials = creds)
 
         return jobService.create(spec)
     }
@@ -411,7 +411,12 @@ class AssetServiceImpl : AssetService {
         return clip
     }
 
-    private fun processBulkRequest(bulkRequest: BulkRequest, assets: List<Asset>, procs: List<ProcessorRef>?):
+    private fun processBulkRequest(
+        bulkRequest: BulkRequest,
+        assets: List<Asset>,
+        procs: List<ProcessorRef>?,
+        creds: Set<String>?
+    ):
         BatchCreateAssetsResponse {
         val rest = indexRoutingService.getProjectRestClient()
         val bulk = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
@@ -443,7 +448,7 @@ class AssetServiceImpl : AssetService {
 
         // Launch analysis job.
         val jobId = if (procs != null && created.size > 0) {
-            createAnalysisJob(created, procs).id
+            createAnalysisJob(created, procs, creds).id
         } else {
             null
         }

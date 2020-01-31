@@ -1,0 +1,1091 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProjectUsers /> should render properly while loading 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Project User Admin
+  </h2>,
+  .emotion-5 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-4 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+}
+
+.emotion-0 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+<nav
+    className="emotion-5"
+  >
+    <ul
+      className="emotion-4"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Users
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create User
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  <div>
+     
+  </div>,
+  .emotion-8 {
+  height: 100%;
+}
+
+.emotion-7 {
+  width: 100%;
+  height: 100%;
+  border-spacing: 0;
+  box-shadow: 0 0 5px 0 #000000;
+  white-space: nowrap;
+}
+
+.emotion-7 tr {
+  background-color: #252525;
+}
+
+.emotion-7 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-7 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-7 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-7 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-7 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-7 td {
+  max-width: calc(100vw / 3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-7 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-7 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-0 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-0:nth-of-type(3) {
+  width: 100%;
+}
+
+.emotion-0:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-6 {
+  height: 100%;
+  pointer-events: none;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+<div
+    className="emotion-8"
+  >
+    <table
+      className="emotion-7"
+    >
+      <thead>
+        <tr>
+          <th
+            className="emotion-0"
+          >
+            User Name
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Email
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Permissions
+          </th>
+          <th
+            className="emotion-0"
+          >
+            <div
+              className="emotion-3"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="emotion-6"
+        >
+          <td
+            colSpan={4}
+          >
+            <div
+              className="emotion-5"
+            >
+              Loading...
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+       
+    </div>
+    <div>
+       
+    </div>
+  </div>,
+]
+`;
+
+exports[`<ProjectUsers /> should render properly with no project users 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Project User Admin
+  </h2>,
+  .emotion-5 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-4 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+}
+
+.emotion-0 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+<nav
+    className="emotion-5"
+  >
+    <ul
+      className="emotion-4"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Users
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create User
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  <div>
+     
+  </div>,
+  .emotion-8 {
+  height: 100%;
+}
+
+.emotion-7 {
+  width: 100%;
+  height: 100%;
+  border-spacing: 0;
+  box-shadow: 0 0 5px 0 #000000;
+  white-space: nowrap;
+}
+
+.emotion-7 tr {
+  background-color: #252525;
+}
+
+.emotion-7 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-7 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-7 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-7 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-7 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-7 td {
+  max-width: calc(100vw / 3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-7 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-7 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-0 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-0:nth-of-type(3) {
+  width: 100%;
+}
+
+.emotion-0:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-6 {
+  height: 100%;
+  pointer-events: none;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+<div
+    className="emotion-8"
+  >
+    <table
+      className="emotion-7"
+    >
+      <thead>
+        <tr>
+          <th
+            className="emotion-0"
+          >
+            User Name
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Email
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Permissions
+          </th>
+          <th
+            className="emotion-0"
+          >
+            <div
+              className="emotion-3"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="emotion-6"
+        >
+          <td
+            colSpan={4}
+          >
+            <div
+              className="emotion-5"
+            >
+              No users
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+       
+    </div>
+    <div>
+       
+    </div>
+  </div>,
+]
+`;
+
+exports[`<ProjectUsers /> should render properly with project users 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Project User Admin
+  </h2>,
+  .emotion-5 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-4 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+}
+
+.emotion-0 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+<nav
+    className="emotion-5"
+  >
+    <ul
+      className="emotion-4"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Users
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create User
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  <div>
+     
+  </div>,
+  .emotion-0 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-0:nth-of-type(3) {
+  width: 100%;
+}
+
+.emotion-0:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-17 {
+  height: auto;
+}
+
+.emotion-9 {
+  width: 100%;
+  height: auto;
+  border-spacing: 0;
+  box-shadow: 0 0 5px 0 #000000;
+  white-space: nowrap;
+}
+
+.emotion-9 tr {
+  background-color: #252525;
+}
+
+.emotion-9 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-9 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-9 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-9 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-9 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-9 td {
+  max-width: calc(100vw / 3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-9 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-9 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-5 {
+  display: inline-block;
+  color: #191919;
+  background-color: #b3b3b3;
+  padding: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-right: 8px;
+  border-radius: 14px;
+}
+
+.emotion-8 {
+  position: relative;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  color: #191919;
+  padding: 6px;
+  border-radius: 32px;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-7:hover {
+  background-color: #808080;
+}
+
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #808080;
+  border: none;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.emotion-11:hover {
+  opacity: 1;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-10 {
+  color: #191919;
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-12 {
+  padding: 8px 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #b3b3b3;
+  background-color: #000000;
+}
+
+.emotion-13 {
+  padding: 8px 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #b3b3b3;
+}
+
+.emotion-15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #808080;
+  border: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.emotion-15:hover {
+  opacity: 1;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-14 {
+  color: #191919;
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+<div
+    className="emotion-17"
+  >
+    <table
+      className="emotion-9"
+    >
+      <thead>
+        <tr>
+          <th
+            className="emotion-0"
+          >
+            User Name
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Email
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Permissions
+          </th>
+          <th
+            className="emotion-0"
+          >
+            <div
+              className="emotion-3"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            Jane Doe
+          </td>
+          <td>
+            jane@zorroa.com
+          </td>
+          <td>
+            <span
+              className="emotion-5"
+            >
+               Api Key Manage
+            </span>
+            <span
+              className="emotion-5"
+            >
+               Project Manage
+            </span>
+          </td>
+          <td>
+            <div
+              className="emotion-8"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-7"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+       
+    </div>
+    <div
+      className="emotion-16"
+    >
+      <button
+        className="emotion-11"
+        disabled={true}
+        type="button"
+      >
+        <svg
+          className="emotion-10"
+          data-file-name="chevron.svg"
+          width={16}
+        />
+      </button>
+      <div
+        className="emotion-12"
+      >
+        1
+      </div>
+      <div
+        className="emotion-13"
+      >
+        of 
+        1
+      </div>
+      <button
+        className="emotion-15"
+        disabled={true}
+        type="button"
+      >
+        <svg
+          className="emotion-14"
+          data-file-name="chevron.svg"
+          width={16}
+        />
+      </button>
+    </div>
+    <div>
+       
+    </div>
+  </div>,
+]
+`;

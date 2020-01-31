@@ -12,6 +12,7 @@ describe('<Table />', () => {
       <Table
         url=""
         columns={['ColumnOne, ColumnTwo']}
+        expandColumn={2}
         renderEmpty="Empty"
         renderRow={noop}
       />,
@@ -27,6 +28,7 @@ describe('<Table />', () => {
       <Table
         url=""
         columns={['ColumnOne, ColumnTwo']}
+        expandColumn={2}
         renderEmpty="Empty"
         renderRow={noop}
       />,

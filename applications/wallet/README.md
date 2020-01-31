@@ -109,14 +109,11 @@ see what is available.
 
 ---
 
-### Docker Compose Setup
+### Docker Compose Environment
 
 Use this to emulate a Production-like deployment. The Docker compose file will
 spin up a complete deployment locally. The containers will be built from your
-local development code. To start the environment or rebuild it after a code
-change just run the following commmand:
-
-`docker-compose up --build -d`
+local development code. Instructions can be found in the [gitbook](https://app.gitbook.com/@zorroa/s/developers/guidelines/local-development)
 
 Additionally the standard django runserver can be used for rapid development
 that doesn't require a full deployment. More information is

@@ -1,0 +1,58 @@
+const job = {
+  id: '223fd17d-7028-1519-94a8-d2f0132bc0c8',
+  organizationId: '00000000-9998-8888-7777-666666666666',
+  name: 'image_similarity.json',
+  type: 'Import',
+  state: 'Finished',
+  assetCounts: {
+    assetCreatedCount: 15,
+    assetReplacedCount: 0,
+    assetWarningCount: 0,
+    assetErrorCount: 6,
+  },
+  taskCounts: {
+    tasksTotal: 3,
+    tasksWaiting: 0,
+    tasksRunning: 0,
+    tasksSuccess: 3,
+    tasksFailure: 0,
+    tasksSkipped: 0,
+    tasksQueued: 0,
+  },
+  createdUser: {
+    id: '00000000-7b0b-480e-8c36-f06f04aed2f1',
+    username: 'admin',
+    email: 'admin@zorroa.com',
+    permissionId: '00000000-fc08-4e4a-aa7a-a183f42c9fa0',
+    homeFolderId: '00000000-2395-4e71-9e4c-dacceef6ad53',
+    organizationId: '00000000-9998-8888-7777-666666666666',
+  },
+  timeStarted: 1579220709790,
+  timeUpdated: 1579220816592,
+  timeCreated: 1579220705734,
+  priority: 100,
+  paused: false,
+  timePauseExpired: -1,
+  maxRunningTasks: 1024,
+  jobId: '223fd17d-7028-1519-94a8-d2f0132bc0c8',
+  actions: {
+    cancel:
+      'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/cancel/',
+    errors:
+      'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/errors/',
+    'max-running-tasks':
+      'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/max_running_tasks/',
+    pause:
+      'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/pause/',
+    priority:
+      'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/priority/',
+    restart:
+      'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/restart/',
+    resume:
+      'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/resume/',
+    'retry-all-failures':
+      'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/retry_all_failures/',
+  },
+}
+
+export default job

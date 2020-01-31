@@ -28,6 +28,7 @@ import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.TaskDao
 import com.zorroa.archivist.repository.TaskErrorDao
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.archivist.util.isUUID
 import com.zorroa.zmlp.service.logging.event
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -63,6 +64,8 @@ interface JobService {
     fun getOrphanTasks(duration: Duration): List<InternalTask>
     fun findOneJob(filter: JobFilter): Job
     fun findOneTaskError(filter: TaskErrorFilter): TaskError
+    fun setCredentials(job: JobId, names: Collection<String>)
+    fun getCredentialsTypes(job: JobId): List<String>
 }
 
 @Service
@@ -78,6 +81,9 @@ class JobServiceImpl @Autowired constructor(
 
     @Autowired
     private lateinit var pipelineResolverService: PipelineResolverService
+
+    @Autowired
+    private lateinit var credentialsService: CredentialsService
 
     override fun create(spec: JobSpec): Job {
         if (spec.script != null) {
@@ -144,6 +150,10 @@ class JobServiceImpl @Autowired constructor(
                 "jobId" to job.id,
                 "jobName" to job.name)
         )
+
+        spec.credentials?.let {
+            setCredentials(job, it)
+        }
 
         return get(job.id)
     }
@@ -296,6 +306,7 @@ class JobServiceImpl @Autowired constructor(
         return taskErrorDao.getAll(filter)
     }
 
+    @Transactional(readOnly = true)
     override fun findOneTaskError(filter: TaskErrorFilter): TaskError {
         return taskErrorDao.findOneTaskError(filter)
     }
@@ -321,6 +332,22 @@ class JobServiceImpl @Autowired constructor(
             return setJobState(job, newState, JobState.InProgress)
         }
         return false
+    }
+
+    override fun setCredentials(job: JobId, names: Collection<String>) {
+        val creds = names.map {
+            if (it.isUUID()) {
+                credentialsService.get(UUID.fromString(it))
+            } else {
+                credentialsService.get(it)
+            }
+        }
+        jobDao.setCredentials(job, creds)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getCredentialsTypes(job: JobId): List<String> {
+        return jobDao.getCredentialsTypes(job)
     }
 
     companion object {
