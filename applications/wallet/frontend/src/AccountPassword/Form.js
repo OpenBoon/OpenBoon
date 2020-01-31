@@ -9,6 +9,16 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import { onSubmit } from './helpers'
 
+import AccountPasswordFormSuccess from './FormSuccess'
+
+const INITIAL_STATE = {
+  currentPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+  success: false,
+  errors: {},
+}
+
 const reducer = (state, action) => ({ ...state, ...action })
 
 const AccountPasswordForm = () => {
@@ -16,12 +26,13 @@ const AccountPasswordForm = () => {
     query: { projectId },
   } = useRouter()
 
-  const [state, dispatch] = useReducer(reducer, {
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-    errors: {},
-  })
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+
+  if (state.success) {
+    return (
+      <AccountPasswordFormSuccess onReset={() => dispatch(INITIAL_STATE)} />
+    )
+  }
 
   return (
     <Form>
