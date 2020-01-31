@@ -1,6 +1,6 @@
 import { typography } from '../Styles'
 
-import NoJobsSvg from './noJobs.svg'
+import NoJobsSvg from '../Icons/noJobs.svg'
 
 const JobsEmpty = () => {
   return (
