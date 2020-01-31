@@ -19,6 +19,7 @@ const colors = {
     },
     canary: {
       base: '#ebb52e',
+      strong: '#d6680b',
     },
     sky: {
       base: '#4a90e2',

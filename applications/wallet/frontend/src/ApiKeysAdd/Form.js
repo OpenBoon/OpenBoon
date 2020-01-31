@@ -4,6 +4,7 @@ import useSWR from 'swr'
 
 import { spacing } from '../Styles'
 
+import Loading from '../Loading'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import CheckboxGroup from '../Checkbox/Group'
@@ -33,7 +34,7 @@ const ApiKeysAddForm = () => {
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
-  if (!Array.isArray(permissions)) return 'Loading...'
+  if (!Array.isArray(permissions)) return <Loading />
 
   const { apikey } = state
 
