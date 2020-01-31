@@ -1,0 +1,40 @@
+import { useRouter } from 'next/router'
+
+import Table from '../Table'
+
+import JobErrorsEmpty from './Empty'
+import JobErrorsRow from './Row'
+
+const JobErrorsTable = () => {
+  const {
+    query: { projectId, jobId },
+  } = useRouter()
+
+  return (
+    <Table
+      url={`/api/v1/projects/${projectId}/jobs/${jobId}/errors`}
+      columns={[
+        'Error Type',
+        'Phase',
+        'Message',
+        'File Name',
+        'Processor',
+        'Time',
+        '#Actions#',
+      ]}
+      expandColumn={0}
+      renderEmpty={<JobErrorsEmpty />}
+      renderRow={({ result, revalidate }) => (
+        <JobErrorsRow
+          key={result.id}
+          projectId={projectId}
+          jobId={jobId}
+          error={result}
+          revalidate={revalidate}
+        />
+      )}
+    />
+  )
+}
+
+export default JobErrorsTable
