@@ -1,6 +1,4 @@
 import PropTypes from 'prop-types'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
 
 import userShape from '../User/shape'
 
@@ -15,10 +13,6 @@ const SIZE = 28
 const CHEVRON_WIDTH = 20
 
 const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
-  const {
-    query: { projectId },
-  } = useRouter()
-
   return (
     <div css={{ marginRight: -spacing.moderate }}>
       <Menu
@@ -87,19 +81,6 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
               <div>{email}</div>
             </div>
             <ul>
-              <li>
-                <Link
-                  href="/[projectId]/account"
-                  as={`/${projectId}/account`}
-                  passHref>
-                  <Button
-                    variant={VARIANTS.MENU_ITEM}
-                    onBlur={onBlur}
-                    isDisabled={false}>
-                    Manage Account
-                  </Button>
-                </Link>
-              </li>
               <li>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
