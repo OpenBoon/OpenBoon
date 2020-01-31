@@ -12,7 +12,6 @@ import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
-import java.nio.ByteBuffer
 import javax.annotation.PostConstruct
 
 @Service
@@ -31,8 +30,8 @@ class GcsSystemStorageService constructor(
 
     override fun storeObject(path: String, any: Any) {
         val blobId = BlobId.of(properties.bucket, path.trimStart('/'))
-        val info = BlobInfo.newBuilder(blobId)
-        gcs.writer(info.build()).write(ByteBuffer.wrap(Json.serialize(any)))
+        val info = BlobInfo.newBuilder(blobId).setContentType("application/json").build()
+        gcs.create(info, Json.Mapper.writeValueAsBytes(any))
         logger.event(LogObject.SYSTEM_STORAGE, LogAction.CREATE, mapOf("path" to path))
     }
 
