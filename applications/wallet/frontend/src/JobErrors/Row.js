@@ -2,7 +2,11 @@ import PropTypes from 'prop-types'
 
 import { formatFullDate } from '../Date/helpers'
 
+import ErrorFatalSvg from '../Icons/errorFatal.svg'
+import ErrorWarningSvg from '../Icons/errorWarning.svg'
+
 import JobErrorsMenu from './Menu'
+import { colors, spacing, typography } from '../Styles'
 
 const JobErrorsRow = ({
   projectId,
@@ -12,7 +16,30 @@ const JobErrorsRow = ({
 }) => {
   return (
     <tr>
-      <td>{fatal ? 'Fatal' : 'Warning'}</td>
+      <td>
+        <div
+          css={{
+            display: 'flex',
+            aligntItems: 'center',
+            justifyContent: 'flex-start',
+            span: {
+              paddingLeft: spacing.moderate,
+              fontWeight: typography.weight.medium,
+            },
+          }}>
+          {fatal ? (
+            <>
+              <ErrorFatalSvg width={18} color={colors.signal.warning.base} />
+              <span>Fatal</span>
+            </>
+          ) : (
+            <>
+              <ErrorWarningSvg width={18} color={colors.signal.canary.strong} />
+              <span>Warning</span>
+            </>
+          )}
+        </div>
+      </td>
       <td>{phase}</td>
       <td style={{ width: '55%' }}>{message}</td>
       <td style={{ width: '50%' }}>{path}</td>

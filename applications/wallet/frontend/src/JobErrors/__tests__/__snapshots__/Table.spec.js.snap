@@ -218,11 +218,11 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
   display: flex;
 }
 
-.emotion-21 {
+.emotion-27 {
   height: auto;
 }
 
-.emotion-20 {
+.emotion-26 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -230,34 +230,34 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
   white-space: nowrap;
 }
 
-.emotion-20 tr {
+.emotion-26 tr {
   background-color: #252525;
 }
 
-.emotion-20 tr:nth-of-type(2n) {
+.emotion-26 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-20 tr:hover {
+.emotion-26 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-20 tr:hover td {
+.emotion-26 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-20 tr:hover td:first-of-type {
+.emotion-26 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-20 tr:hover td:last-of-type {
+.emotion-26 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-20 td {
+.emotion-26 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -269,20 +269,37 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
   border-right: 0;
 }
 
-.emotion-20 td:first-of-type {
+.emotion-26 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-20 td:last-of-type {
+.emotion-26 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-9 {
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  alignt-items: center;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+
+.emotion-8 span {
+  padding-left: 12px;
+  font-weight: 500;
+}
+
+.emotion-10 {
   position: relative;
 }
 
-.emotion-8 {
+.emotion-9 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -319,24 +336,24 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
   border-radius: 32px;
 }
 
-.emotion-8:hover {
+.emotion-9:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-9[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-8:hover {
+.emotion-9:hover {
   background-color: #808080;
 }
 
 <div
-  className="emotion-21"
+  className="emotion-27"
 >
   <table
-    className="emotion-20"
+    className="emotion-26"
   >
     <thead>
       <tr>
@@ -387,7 +404,18 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
     <tbody>
       <tr>
         <td>
-          Warning
+          <div
+            className="emotion-8"
+          >
+            <svg
+              color="#d6680b"
+              data-file-name="errorWarning.svg"
+              width={18}
+            />
+            <span>
+              Warning
+            </span>
+          </div>
         </td>
         <td>
           execute
@@ -418,11 +446,11 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-9"
+            className="emotion-10"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="emotion-8"
+              className="emotion-9"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -437,7 +465,18 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
       </tr>
       <tr>
         <td>
-          Fatal
+          <div
+            className="emotion-8"
+          >
+            <svg
+              color="#c92300"
+              data-file-name="errorFatal.svg"
+              width={18}
+            />
+            <span>
+              Fatal
+            </span>
+          </div>
         </td>
         <td>
           execute
@@ -468,11 +507,11 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-9"
+            className="emotion-10"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="emotion-8"
+              className="emotion-9"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -487,7 +526,18 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
       </tr>
       <tr>
         <td>
-          Warning
+          <div
+            className="emotion-8"
+          >
+            <svg
+              color="#d6680b"
+              data-file-name="errorWarning.svg"
+              width={18}
+            />
+            <span>
+              Warning
+            </span>
+          </div>
         </td>
         <td>
           execute
@@ -518,11 +568,11 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-9"
+            className="emotion-10"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="emotion-8"
+              className="emotion-9"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -537,7 +587,18 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
       </tr>
       <tr>
         <td>
-          Fatal
+          <div
+            className="emotion-8"
+          >
+            <svg
+              color="#c92300"
+              data-file-name="errorFatal.svg"
+              width={18}
+            />
+            <span>
+              Fatal
+            </span>
+          </div>
         </td>
         <td>
           execute
@@ -568,11 +629,11 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-9"
+            className="emotion-10"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="emotion-8"
+              className="emotion-9"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -587,7 +648,18 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
       </tr>
       <tr>
         <td>
-          Warning
+          <div
+            className="emotion-8"
+          >
+            <svg
+              color="#d6680b"
+              data-file-name="errorWarning.svg"
+              width={18}
+            />
+            <span>
+              Warning
+            </span>
+          </div>
         </td>
         <td>
           execute
@@ -618,11 +690,11 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-9"
+            className="emotion-10"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="emotion-8"
+              className="emotion-9"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -637,7 +709,18 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
       </tr>
       <tr>
         <td>
-          Warning
+          <div
+            className="emotion-8"
+          >
+            <svg
+              color="#d6680b"
+              data-file-name="errorWarning.svg"
+              width={18}
+            />
+            <span>
+              Warning
+            </span>
+          </div>
         </td>
         <td>
           execute
@@ -668,11 +751,11 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-9"
+            className="emotion-10"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="emotion-8"
+              className="emotion-9"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
