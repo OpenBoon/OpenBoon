@@ -33,7 +33,7 @@ interface DataSourceService {
     /**
      * Update an existing [DataSource]
      */
-    fun update(id: UUID, updates: DataSourceUpdate): DataSource
+    fun update(id: UUID, update: DataSourceUpdate): DataSource
 
     /**
      * Delete an existing [DataSource]
@@ -65,13 +65,13 @@ class DataSourceServiceImpl(
 ) : DataSourceService {
 
     @Autowired
-    lateinit var projectService: ProjectService
-
-    @Autowired
     lateinit var jobService: JobService
 
     @Autowired
     lateinit var pipelineService: PipelineService
+
+    @Autowired
+    lateinit var pipelineModService: PipelineModService
 
     @Autowired
     lateinit var pipelineResolverService: PipelineResolverService
@@ -81,21 +81,18 @@ class DataSourceServiceImpl(
         val time = System.currentTimeMillis()
         val actor = getZmlpActor()
         val id = UUIDGen.uuid1.generate()
-        val pipelineId = if (spec.pipeline == null) {
-            projectService.getSettings(getProjectId()).defaultPipelineId
-        } else {
-            pipelineService.get(spec.pipeline).id
-        }
+
+        val mods = pipelineModService.getByNames(spec.modules ?: setOf())
 
         val result = dataSourceDao.saveAndFlush(
             DataSource(
                 id,
                 getProjectId(),
-                pipelineId,
                 spec.name,
                 spec.uri,
                 spec.fileTypes,
                 listOf(),
+                mods.map { it.id },
                 time,
                 time,
                 actor.name,
@@ -116,12 +113,28 @@ class DataSourceServiceImpl(
         return result
     }
 
-    override fun update(id: UUID, updates: DataSourceUpdate): DataSource {
+    override fun update(id: UUID, update: DataSourceUpdate): DataSource {
         logger.event(LogObject.DATASOURCE, LogAction.UPDATE, mapOf("dataSourceId" to id))
-        updates.credentials?.let {
+
+        val mods = pipelineModService.getByNames(update.modules ?: listOf())
+        val ds = get(id)
+
+        val updated = DataSource(ds.id,
+            ds.projectId,
+            update.name,
+            update.uri,
+            update.fileTypes,
+            listOf(),
+            mods.map { it.id },
+            ds.timeCreated,
+            System.currentTimeMillis(),
+            ds.actorCreated,
+            getZmlpActor().toString())
+
+        update.credentials?.let {
             setCredentials(id, it)
         }
-        return dataSourceDao.saveAndFlush(get(id).getUpdated(updates))
+        return dataSourceDao.saveAndFlush(updated)
     }
 
     override fun delete(id: UUID) {
@@ -140,11 +153,12 @@ class DataSourceServiceImpl(
             args = mapOf("uri" to dataSource.uri)
         )
 
+        val mods = pipelineModService.getByIds(dataSource.modules)
         val script = ZpsScript("GcsBucketGenerator ${dataSource.uri}", listOf(gen), null,
-            pipelineResolverService.resolve(dataSource.pipelineId))
+            pipelineResolverService.resolveModular(mods))
 
         script.setSettting("fileTypes", dataSource.fileTypes)
-        script.setSettting("batchSize", 10)
+        script.setSettting("batchSize", 20)
 
         val spec = JobSpec(name, script,
             dataSourceId = dataSource.id,

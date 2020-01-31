@@ -77,11 +77,12 @@ class JdbcDataSourceJdbcDaoImpl : AbstractDao(), DataSourceJdbcDao {
         DataSource(
             rs.getObject("pk_datasource") as UUID,
             rs.getObject("pk_project") as UUID,
-            rs.getObject("pk_pipeline") as UUID,
             rs.getString("str_name"),
             rs.getString("str_uri"),
             converter.convertToEntityAttribute(rs.getString("str_file_types")),
             jdbc.queryForList("SELECT pk_credentials FROM x_credentials_datasource WHERE pk_datasource=?",
+                UUID::class.java, rs.getObject("pk_datasource")),
+            jdbc.queryForList("SELECT pk_module FROM x_module_datasource WHERE pk_datasource=?",
                 UUID::class.java, rs.getObject("pk_datasource")),
             rs.getLong("time_created"),
             rs.getLong("time_modified"),
