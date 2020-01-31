@@ -21,7 +21,8 @@ class Membership(models.Model):
     api key the user needs to access the ZMLP project.
 
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='memberships',
+                             on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     apikey = encrypt(models.TextField())
 

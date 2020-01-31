@@ -5,16 +5,19 @@ import { useRouter } from 'next/router'
 import { colors, spacing, typography } from '../Styles'
 
 const TabsLink = ({ title, href }) => {
-  const {
-    pathname,
-    query: { projectId },
-  } = useRouter()
+  const { pathname, query } = useRouter()
 
   const isCurrentPage = pathname === href
 
   return (
     <li css={{ paddingRight: spacing.normal }}>
-      <Link href={href} as={href.replace('[projectId]', projectId)} passHref>
+      <Link
+        href={href}
+        as={href
+          .split('/')
+          .map(s => s.replace(/\[(.*)\]/gi, (_, group) => query[group]))
+          .join('/')}
+        passHref>
         <a
           css={{
             border: `0 ${colors.key.two} solid`,

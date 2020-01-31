@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import Breadcrumbs from '../Breadcrumbs'
 
-const JobDetails = () => {
+const Job = () => {
   const {
     query: { jobId },
   } = useRouter()
@@ -25,4 +25,4 @@ const JobDetails = () => {
   )
 }
 
-export default JobDetails
+export default Job

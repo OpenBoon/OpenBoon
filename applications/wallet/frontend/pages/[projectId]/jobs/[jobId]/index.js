@@ -1,3 +1,3 @@
-import JobDetails from '../../../../src/JobDetails'
+import Job from '../../../../src/Job'
 
-export default JobDetails
+export default Job
