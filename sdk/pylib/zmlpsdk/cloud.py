@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 from urllib.parse import urlparse
@@ -8,10 +7,10 @@ from google.auth.exceptions import DefaultCredentialsError
 from google.cloud import storage as gcs
 from google.oauth2 import service_account
 
-from .base import ZmlpEnv
 from zmlp import app_from_env
 from zmlp.client import ZmlpNotFoundException
 from zmlp.util import memoize
+from .base import ZmlpEnv
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +50,7 @@ def get_google_storage_client():
             creds = app.client.get('/api/v1/jobs/{}/_credentials/GCP'.format(job_id))
             gcp_creds = service_account.Credentials.from_service_account_info(creds)
             return gcs.Client(project=creds['project_id'], credentials=gcp_creds)
-        except ZmlpNotFoundException as e:
+        except ZmlpNotFoundException:
             pass
 
     logger.info("No GCP credentials specified, using defaults")

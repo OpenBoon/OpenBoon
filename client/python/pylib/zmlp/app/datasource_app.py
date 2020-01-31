@@ -1,7 +1,7 @@
 import os
 
 from ..datasource import DataSource
-from ..util import is_valid_uuid
+from ..util import is_valid_uuid, as_collection
 
 
 class DataSourceApp(object):
@@ -9,17 +9,16 @@ class DataSourceApp(object):
     def __init__(self, app):
         self.app = app
 
-    def create_datasource(self, name, uri, credentials=None, file_types=None, analysis=None):
+    def create_datasource(self, name, uri, modules=None, credentials=None, file_types=None):
         """
         Create a new DataSource.
 
         Args:
             name (str): The name of the data source.
             uri (str): The URI where the data can be found.
-            credentials (str): A file path to an associated credentials file.
+            modules (list): A list of PipelineMods names to apply to the data
             file_types (list of str): a list of file paths or mimetypes to match.
-            analysis (list): A list of Analysis Modules to apply to the data.
-
+            credentials (str): A file path to an associated credentials file.
         Returns:
             DataSource: The created DataSource
 
@@ -36,7 +35,7 @@ class DataSourceApp(object):
             'uri': uri,
             'credentials': credentials,
             'fileTypes': file_types,
-            'analysis': analysis
+            'modules': as_collection(modules)
         }
         return DataSource(self.app.client.post(url, body=body))
 
