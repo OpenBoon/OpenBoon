@@ -10,6 +10,8 @@ describe('<AccountPasswordForm />', () => {
   it('should render properly', () => {
     const component = TestRenderer.create(<AccountPasswordForm />)
 
+    expect(component.toJSON()).toMatchSnapshot()
+
     act(() => {
       component.root
         .findByProps({ id: 'currentPassword' })
@@ -31,6 +33,14 @@ describe('<AccountPasswordForm />', () => {
     act(() => {
       component.root
         .findByProps({ type: 'submit' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ type: 'button' })
         .props.onClick({ preventDefault: noop })
     })
 

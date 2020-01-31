@@ -21,6 +21,7 @@ export const onSubmit = async ({
       currentPassword: '',
       newPassword: '',
       confirmPassword: '',
+      success: true,
       errors: {},
     })
 
@@ -33,6 +34,6 @@ export const onSubmit = async ({
       return acc
     }, {})
 
-    dispatch({ errors: parsedErrors })
+    dispatch({ success: false, errors: parsedErrors })
   }
 }
