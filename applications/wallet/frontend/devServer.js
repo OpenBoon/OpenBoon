@@ -33,19 +33,16 @@ app.prepare().then(() => {
   if (MOCKED) {
     server.post('/api/v1/login/', mock(user))
     server.get('/api/v1/projects/', mock(projects))
-    server.get('/api/v1/projects/:projectId/jobs/', mock(jobs))
-    server.get(
-      '/api/v1/projects/:projectId/users/permissions/',
-      mock(permissions),
-    )
-    server.get('/api/v1/projects/:projectId/jobs/:jobId/', mock(job))
-    server.get(
-      '/api/v1/projects/:projectId/jobs/:jobId/errors',
-      mock(jobErrors),
-    )
-    server.get('/api/v1/projects/:projectId/apikeys/', mock(apikeys))
-    server.post('/api/v1/projects/:projectId/apikeys/', mock(apikeysadd))
-    server.get('/api/v1/projects/:projectId/users/', mock(projectUsers))
+
+    const PID_API_BASE = '/api/v1/projects/:projectId'
+
+    server.get(`${PID_API_BASE}/jobs/`, mock(jobs))
+    server.get(`${PID_API_BASE}/permissions/`, mock(permissions))
+    server.get(`${PID_API_BASE}/jobs/:jobId/`, mock(job))
+    server.get(`${PID_API_BASE}/jobs/:jobId/errors`, mock(jobErrors))
+    server.get(`${PID_API_BASE}/apikeys/`, mock(apikeys))
+    server.post(`${PID_API_BASE}/apikeys/`, mock(apikeysadd))
+    server.get(`${PID_API_BASE}/users/`, mock(projectUsers))
   }
 
   // Proxy API calls
