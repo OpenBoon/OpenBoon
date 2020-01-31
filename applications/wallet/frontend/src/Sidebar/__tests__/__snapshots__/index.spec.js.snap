@@ -166,7 +166,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
             data-file-name="gear.svg"
             width={20}
           />
-          User Admin
+          Account
         </a>
       </li>
     </ul>
@@ -348,7 +348,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
             data-file-name="gear.svg"
             width={20}
           />
-          User Admin
+          Account
         </a>
       </li>
     </ul>

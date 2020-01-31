@@ -69,7 +69,7 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
 
           <SidebarLink href="/account">
             <GearSvg width={ICON_WIDTH} aria-hidden />
-            User Admin
+            Account
           </SidebarLink>
         </ul>
       </nav>
