@@ -1,7 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ProjectUsersMenu /> should render properly 1`] = `
-.emotion-3 {
+exports[`<JobErrorsMenu /> should render properly 1`] = `
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: -4px;
+}
+
+.emotion-7 {
   position: relative;
 }
 
@@ -35,11 +43,20 @@ exports[`<ProjectUsersMenu /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 0;
-  color: #191919;
-  padding: 6px;
-  margin: -6px;
-  border-radius: 32px;
+  width: 200px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  color: #000000;
 }
 
 .emotion-0:hover {
@@ -51,11 +68,21 @@ exports[`<ProjectUsersMenu /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
   background-color: #808080;
 }
 
-.emotion-2 {
+.emotion-0:hover {
+  opacity: 0.5;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-6 {
   position: absolute;
   z-index: 1;
   top: 100%;
@@ -66,7 +93,7 @@ exports[`<ProjectUsersMenu /> should render properly 1`] = `
   width: 200px;
 }
 
-.emotion-2 ul {
+.emotion-6 ul {
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
@@ -74,7 +101,7 @@ exports[`<ProjectUsersMenu /> should render properly 1`] = `
   margin: 0;
 }
 
-.emotion-2 li {
+.emotion-6 li {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -137,35 +164,81 @@ exports[`<ProjectUsersMenu /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-3"
+  className="emotion-8"
 >
-  <button
-    aria-label="Toggle Actions Menu"
-    className="emotion-0"
-    onBlur={[Function]}
-    onClick={[Function]}
-    type="button"
-  >
-    <svg
-      data-file-name="gear.svg"
-      width={20}
-    />
-  </button>
   <div
-    className="emotion-2"
+    className="emotion-7"
   >
-    <div>
-      <ul>
-        <li>
-          <button
-            className="emotion-1"
-            onClick={[Function]}
-            type="button"
-          >
-            Delete
-          </button>
-        </li>
-      </ul>
+    <button
+      aria-label="Toggle Job Actions Menu"
+      className="emotion-0"
+      onBlur={[Function]}
+      onClick={[Function]}
+      type="button"
+    >
+      Modify Job
+      <svg
+        data-file-name="chevron.svg"
+        width={20}
+      />
+    </button>
+    <div
+      className="emotion-6"
+    >
+      <div>
+        <ul>
+          <li>
+            <button
+              className="emotion-1"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              Pause
+            </button>
+          </li>
+          <li>
+            <button
+              className="emotion-1"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              Resume
+            </button>
+          </li>
+          <li>
+            <button
+              className="emotion-1"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              Cancel
+            </button>
+          </li>
+          <li>
+            <button
+              className="emotion-1"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              Restart
+            </button>
+          </li>
+          <li>
+            <button
+              className="emotion-1"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              Retry All Failures
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

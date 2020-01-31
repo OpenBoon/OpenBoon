@@ -5,7 +5,7 @@ import { colors, constants, zIndex, spacing } from '../Styles'
 
 import { onBlur as onBlurHelper } from './helpers'
 
-const WIDTH = 200
+export const WIDTH = 200
 
 const Menu = ({ button, children, open }) => {
   const container = useRef(null)
