@@ -33,7 +33,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   padding-bottom: 8px;
 }
 
-.emotion-4 {
+.emotion-3 {
   position: relative;
 }
 
@@ -56,7 +56,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   color: #000000;
 }
 
-.emotion-3 {
+.emotion-4 {
   padding-top: 8px;
 }
 
@@ -242,7 +242,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
       Email(s)
     </label>
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <input
         autoFocus={true}
@@ -253,11 +253,11 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         type="text"
         value=""
       />
-      <div
-        className="emotion-3"
-      >
-         
-      </div>
+    </div>
+    <div
+      className="emotion-4"
+    >
+       
     </div>
   </div>
   <fieldset
@@ -776,7 +776,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   padding-bottom: 8px;
 }
 
-.emotion-4 {
+.emotion-3 {
   position: relative;
 }
 
@@ -799,7 +799,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   color: #000000;
 }
 
-.emotion-3 {
+.emotion-4 {
   padding-top: 8px;
 }
 
@@ -1003,7 +1003,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
       Email(s)
     </label>
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <input
         autoFocus={true}
@@ -1014,11 +1014,11 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         type="text"
         value="jane@email.com"
       />
-      <div
-        className="emotion-3"
-      >
-         
-      </div>
+    </div>
+    <div
+      className="emotion-4"
+    >
+       
     </div>
   </div>
   <fieldset

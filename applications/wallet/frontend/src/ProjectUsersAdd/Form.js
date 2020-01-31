@@ -23,7 +23,7 @@ const ProjectUsersAddForm = () => {
   } = useRouter()
 
   const { data: { results: permissions } = {} } = useSWR(
-    `/api/v1/projects/${projectId}/users/permissions/`,
+    `/api/v1/projects/${projectId}/permissions/`,
   )
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
