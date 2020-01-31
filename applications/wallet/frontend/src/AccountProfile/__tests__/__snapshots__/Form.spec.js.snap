@@ -1,0 +1,188 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AccountProfileForm /> should render properly 1`] = `
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-4 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
+  display: block;
+  padding-bottom: 8px;
+}
+
+.emotion-2 {
+  position: relative;
+}
+
+.emotion-1 {
+  outline-offset: 0;
+  padding: 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #2e2e2e;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-1:focus {
+  border: 2px solid #73b61c;
+  background-color: #ffffff;
+  outline: #73b61c;
+  color: #000000;
+}
+
+.emotion-3 {
+  padding-top: 8px;
+}
+
+.emotion-11 {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-10:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-10[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited {
+  background-color: #73b61c;
+}
+
+.emotion-10:hover {
+  background-color: #b8d652;
+}
+
+.emotion-10[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<form
+  action=""
+  className="emotion-12"
+  method="post"
+  onSubmit={[Function]}
+>
+  <div
+    className="emotion-4"
+  >
+    <label
+      className="emotion-0"
+      htmlFor="firstName"
+    >
+      First Name
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        autoFocus={true}
+        className="emotion-1"
+        id="firstName"
+        name="firstName"
+        onChange={[Function]}
+        type="text"
+        value="Jane"
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
+    </div>
+  </div>
+  <div
+    className="emotion-4"
+  >
+    <label
+      className="emotion-0"
+      htmlFor="lastName"
+    >
+      Last Name
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        className="emotion-1"
+        id="lastName"
+        name="lastName"
+        onChange={[Function]}
+        type="text"
+        value="Doe"
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
+    </div>
+  </div>
+  <div
+    className="emotion-11"
+  >
+    <button
+      className="emotion-10"
+      onClick={[Function]}
+      type="submit"
+    >
+      Save Changes
+    </button>
+  </div>
+</form>
+`;
