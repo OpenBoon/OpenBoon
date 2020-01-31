@@ -22,7 +22,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-20 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -176,13 +176,13 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
   border-bottom-right-radius: 4px;
 }
 
-.emotion-24 {
+.emotion-21 {
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
 }
 
-.emotion-23 {
+.emotion-20 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -193,11 +193,11 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-22 {
+.emotion-19 {
   padding-right: 16px;
 }
 
-.emotion-21 {
+.emotion-18 {
   border: 0 #b8d652 solid;
   border-bottom-width: 2px;
   display: -webkit-box;
@@ -216,7 +216,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
   font-weight: 700;
 }
 
-.emotion-21:hover {
+.emotion-18:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
@@ -229,7 +229,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
     image_similarity.json
   </h3>
   <div
-    className="emotion-20"
+    className="emotion-17"
   >
     <div
       className="emotion-3"
@@ -317,33 +317,18 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
         100
       </div>
     </div>
-    <div
-      className="emotion-7"
-    >
-      <div
-        className="emotion-4"
-      >
-        Created By
-        :
-      </div>
-      <div
-        className="emotion-6"
-      >
-        admin
-      </div>
-    </div>
   </div>
   <nav
-    className="emotion-24"
+    className="emotion-21"
   >
     <ul
-      className="emotion-23"
+      className="emotion-20"
     >
       <li
-        className="emotion-22"
+        className="emotion-19"
       >
         <a
-          className="emotion-21"
+          className="emotion-18"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors"
           onClick={[Function]}
           onMouseEnter={[Function]}
