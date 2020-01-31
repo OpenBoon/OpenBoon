@@ -125,7 +125,7 @@ public class AssetAppTests extends AbstractAppTests {
     @Test
     public void testScrollSearch() throws JsonProcessingException {
         webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
-        // Second Page Mock
+        // Second/last Page Mock
         webServer.enqueue(new MockResponse().setBody("{\"hits\":{\"hits\":[]}}"));
         //Delete response
         webServer.enqueue(new MockResponse().setBody("{}"));
@@ -141,7 +141,7 @@ public class AssetAppTests extends AbstractAppTests {
             searchScroller.next();
         }
 
-        assertEquals(2, size);
+        assertEquals(1, size);
     }
 
     @Test

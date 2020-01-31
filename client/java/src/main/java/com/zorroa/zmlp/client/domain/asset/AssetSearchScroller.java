@@ -43,25 +43,16 @@ public class AssetSearchScroller implements Iterator<List<Asset>> {
 
     @Override
     public boolean hasNext() {
-        return result != null && result.get("hits") != null && (((Map<String, Object>) result.get("hits")).get("hits") != null);
+        List<Asset> currentAssetList = getCurrentAssetList();
+        return currentAssetList != null && !currentAssetList.isEmpty();
     }
 
     @Override
     public List<Asset> next() {
 
-        Map hits = (Map) result.get("hits");
+        List<Asset> currentResult = getCurrentAssetList();
 
-        if (hits == null || hits.get("hits") == null)
-            return null;
-
-        List hitsHits = (List) hits.get("hits");
-
-        //Current Value
-        List<Asset> currentResult = (List<Asset>) hitsHits.stream().map(h ->
-        {
-            Map asset = (Map) h;
-            return new Asset((String) asset.get("_id"), (Map<String, Object>) asset.get("_source"));
-        }).collect(Collectors.toList());
+        if (currentResult == null) return null;
 
         try {
             // Check if current Scroll Id value is valid
@@ -76,6 +67,23 @@ public class AssetSearchScroller implements Iterator<List<Asset>> {
             result = null;
         }
 
+        return currentResult;
+    }
+
+    private List<Asset> getCurrentAssetList() {
+        Map hits = (Map) result.get("hits");
+
+        if (hits == null || hits.get("hits") == null)
+            return null;
+
+        List hitsHits = (List) hits.get("hits");
+
+        //Current Value
+        List<Asset> currentResult = (List<Asset>) hitsHits.stream().map(h ->
+        {
+            Map asset = (Map) h;
+            return new Asset((String) asset.get("_id"), (Map<String, Object>) asset.get("_source"));
+        }).collect(Collectors.toList());
         return currentResult;
     }
 
