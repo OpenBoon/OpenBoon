@@ -80,18 +80,18 @@ const Input = ({
           {after}
         </div>
       )}
-      <div css={{ paddingTop: PADDING }}>
-        &nbsp;
-        {hasError && (
-          <span
-            css={{
-              color: colors.signal.warning.base,
-              fontStyle: typography.style.italic,
-            }}>
-            {errorMessage}
-          </span>
-        )}
-      </div>
+    </div>
+    <div css={{ paddingTop: PADDING }}>
+      {hasError && (
+        <span
+          css={{
+            color: colors.signal.warning.base,
+            fontStyle: typography.style.italic,
+          }}>
+          {errorMessage}
+        </span>
+      )}
+      &nbsp;
     </div>
   </div>
 )
