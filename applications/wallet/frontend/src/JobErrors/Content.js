@@ -22,13 +22,7 @@ const JobErrorsContent = () => {
 
   if (typeof job !== 'object') return <Loading />
 
-  const {
-    name,
-    state,
-    createdUser: { username },
-    priority,
-    taskCounts: tC,
-  } = job
+  const { name, state, priority, taskCounts: tC } = job
 
   const taskCounts = { ...tC, tasksPending: tC.tasksWaiting + tC.tasksQueued }
 
@@ -67,8 +61,6 @@ const JobErrorsContent = () => {
         </Value>
 
         <Value legend="Priority">{priority}</Value>
-
-        <Value legend="Created By">{username}</Value>
       </div>
 
       <Tabs
