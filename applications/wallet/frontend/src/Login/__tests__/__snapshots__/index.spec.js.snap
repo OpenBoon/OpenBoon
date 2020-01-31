@@ -180,7 +180,7 @@ exports[`<Login /> should render properly 1`] = `
   padding-bottom: 8px;
 }
 
-.emotion-13 {
+.emotion-12 {
   position: relative;
 }
 
@@ -196,7 +196,7 @@ exports[`<Login /> should render properly 1`] = `
   border-width: 2px;
 }
 
-.emotion-12 {
+.emotion-13 {
   padding-top: 8px;
 }
 
@@ -398,7 +398,7 @@ exports[`<Login /> should render properly 1`] = `
         Email
       </label>
       <div
-        className="emotion-13"
+        className="emotion-12"
       >
         <input
           autoFocus={true}
@@ -409,11 +409,11 @@ exports[`<Login /> should render properly 1`] = `
           type="text"
           value=""
         />
-        <div
-          className="emotion-12"
-        >
-           
-        </div>
+      </div>
+      <div
+        className="emotion-13"
+      >
+         
       </div>
     </div>
     <div
@@ -426,7 +426,7 @@ exports[`<Login /> should render properly 1`] = `
         Password
       </label>
       <div
-        className="emotion-13"
+        className="emotion-12"
       >
         <input
           className="emotion-11"
@@ -451,11 +451,11 @@ exports[`<Login /> should render properly 1`] = `
             />
           </button>
         </div>
-        <div
-          className="emotion-12"
-        >
-           
-        </div>
+      </div>
+      <div
+        className="emotion-13"
+      >
+         
       </div>
     </div>
     <div
