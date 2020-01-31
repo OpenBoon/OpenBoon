@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ProjectUsersAddForm /> should render properly after permissions are loaded 1`] = `
-.emotion-67 {
+.emotion-107 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -60,7 +60,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   padding-top: 8px;
 }
 
-.emotion-64 {
+.emotion-104 {
   border: none;
   padding: 0;
   margin: 0;
@@ -161,12 +161,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   color: #808080;
 }
 
-.emotion-66 {
+.emotion-106 {
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-.emotion-65 {
+.emotion-105 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -198,32 +198,32 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   background-color: transparent;
 }
 
-.emotion-65:hover {
+.emotion-105:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-65[aria-disabled=true] {
+.emotion-105[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-65,
-.emotion-65:hover,
-.emotion-65:visited {
+.emotion-105,
+.emotion-105:hover,
+.emotion-105:visited {
   background-color: #73b61c;
 }
 
-.emotion-65:hover {
+.emotion-105:hover {
   background-color: #b8d652;
 }
 
-.emotion-65[aria-disabled=true] {
+.emotion-105[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-67"
+  className="emotion-107"
   method="post"
   onSubmit={[Function]}
 >
@@ -261,7 +261,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
     </div>
   </div>
   <fieldset
-    className="emotion-64"
+    className="emotion-104"
   >
     <legend
       className="emotion-6"
@@ -282,7 +282,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="ManageApiKeys"
+          value="SystemMonitor"
         />
         <div
           className="emotion-10"
@@ -300,12 +300,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Manage Api Keys
+           System Monitor
         </span>
         <span
           className="emotion-13"
         >
-          Ability to manage API keys
+          Allows access to monitoring endpoints
         </span>
       </div>
     </label>
@@ -320,7 +320,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="Read"
+          value="SystemManage"
         />
         <div
           className="emotion-10"
@@ -338,12 +338,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Read
+           System Manage
         </span>
         <span
           className="emotion-13"
         >
-          Ability to read assets and associated files
+          Allows access to platform management endpoints
         </span>
       </div>
     </label>
@@ -358,7 +358,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="Import"
+          value="SystemProjectOverride"
         />
         <div
           className="emotion-10"
@@ -376,12 +376,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Import
+           System Project Override
         </span>
         <span
           className="emotion-13"
         >
-          Ability to import assets (create and update)
+          Provides ability to switch projects
         </span>
       </div>
     </label>
@@ -396,7 +396,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="Delete"
+          value="SystemProjectDecrypt"
         />
         <div
           className="emotion-10"
@@ -414,12 +414,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Delete
+           System Project Decrypt
         </span>
         <span
           className="emotion-13"
         >
-          Ability to remove assets
+          Provides ability to view encrypted project data
         </span>
       </div>
     </label>
@@ -434,7 +434,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="ManageProjects"
+          value="ApiKeyManage"
         />
         <div
           className="emotion-10"
@@ -452,12 +452,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Manage Projects
+           Api Key Manage
         </span>
         <span
           className="emotion-13"
         >
-          Ability to manage projects
+          Provides ability to manage API keys
         </span>
       </div>
     </label>
@@ -472,7 +472,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="CreateProjects"
+          value="AssetsRead"
         />
         <div
           className="emotion-10"
@@ -490,12 +490,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Create Projects
+           Assets Read
         </span>
         <span
           className="emotion-13"
         >
-          Ability to create projects
+          Provides ability to read assets and associated files
         </span>
       </div>
     </label>
@@ -510,7 +510,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="ReadProjects"
+          value="AssetsImport"
         />
         <div
           className="emotion-10"
@@ -528,22 +528,212 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Read Projects
+           Assets Import
         </span>
         <span
           className="emotion-13"
         >
-          Ability to read project files from cloud storage
+          Provides ability to import assets. (created and update)
+        </span>
+      </div>
+    </label>
+    <label
+      className="emotion-15"
+    >
+      <div
+        className="emotion-11"
+      >
+        <input
+          className="emotion-8"
+          defaultChecked={false}
+          onClick={[Function]}
+          type="checkbox"
+          value="AssetsDelete"
+        />
+        <div
+          className="emotion-10"
+        >
+          <svg
+            className="emotion-9"
+            data-file-name="checkmark.svg"
+            width={14}
+          />
+        </div>
+      </div>
+      <div
+        className="emotion-14"
+      >
+        <span
+          className="emotion-12"
+        >
+           Assets Delete
+        </span>
+        <span
+          className="emotion-13"
+        >
+          Provides ability to remove assets
+        </span>
+      </div>
+    </label>
+    <label
+      className="emotion-15"
+    >
+      <div
+        className="emotion-11"
+      >
+        <input
+          className="emotion-8"
+          defaultChecked={false}
+          onClick={[Function]}
+          type="checkbox"
+          value="ProjectManage"
+        />
+        <div
+          className="emotion-10"
+        >
+          <svg
+            className="emotion-9"
+            data-file-name="checkmark.svg"
+            width={14}
+          />
+        </div>
+      </div>
+      <div
+        className="emotion-14"
+      >
+        <span
+          className="emotion-12"
+        >
+           Project Manage
+        </span>
+        <span
+          className="emotion-13"
+        >
+          Provides ability to manage projects.
+        </span>
+      </div>
+    </label>
+    <label
+      className="emotion-15"
+    >
+      <div
+        className="emotion-11"
+      >
+        <input
+          className="emotion-8"
+          defaultChecked={false}
+          onClick={[Function]}
+          type="checkbox"
+          value="ProjectCreate"
+        />
+        <div
+          className="emotion-10"
+        >
+          <svg
+            className="emotion-9"
+            data-file-name="checkmark.svg"
+            width={14}
+          />
+        </div>
+      </div>
+      <div
+        className="emotion-14"
+      >
+        <span
+          className="emotion-12"
+        >
+           Project Create
+        </span>
+        <span
+          className="emotion-13"
+        >
+          Provides ability to create projects.
+        </span>
+      </div>
+    </label>
+    <label
+      className="emotion-15"
+    >
+      <div
+        className="emotion-11"
+      >
+        <input
+          className="emotion-8"
+          defaultChecked={false}
+          onClick={[Function]}
+          type="checkbox"
+          value="ProjectFilesRead"
+        />
+        <div
+          className="emotion-10"
+        >
+          <svg
+            className="emotion-9"
+            data-file-name="checkmark.svg"
+            width={14}
+          />
+        </div>
+      </div>
+      <div
+        className="emotion-14"
+      >
+        <span
+          className="emotion-12"
+        >
+           Project Files Read
+        </span>
+        <span
+          className="emotion-13"
+        >
+          Provides ability to read project files from cloud storage.
+        </span>
+      </div>
+    </label>
+    <label
+      className="emotion-15"
+    >
+      <div
+        className="emotion-11"
+      >
+        <input
+          className="emotion-8"
+          defaultChecked={false}
+          onClick={[Function]}
+          type="checkbox"
+          value="ProjectFilesWrite"
+        />
+        <div
+          className="emotion-10"
+        >
+          <svg
+            className="emotion-9"
+            data-file-name="checkmark.svg"
+            width={14}
+          />
+        </div>
+      </div>
+      <div
+        className="emotion-14"
+      >
+        <span
+          className="emotion-12"
+        >
+           Project Files Write
+        </span>
+        <span
+          className="emotion-13"
+        >
+          Provides ability to store project files in cloud storage.
         </span>
       </div>
     </label>
   </fieldset>
   <div
-    className="emotion-66"
+    className="emotion-106"
   >
     <button
       aria-disabled={true}
-      className="emotion-65"
+      className="emotion-105"
       onClick={[Function]}
       type="submit"
     >
@@ -554,7 +744,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 `;
 
 exports[`<ProjectUsersAddForm /> should render properly after permissions are loaded 2`] = `
-.emotion-67 {
+.emotion-107 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -613,7 +803,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   padding-top: 8px;
 }
 
-.emotion-64 {
+.emotion-104 {
   border: none;
   padding: 0;
   margin: 0;
@@ -654,7 +844,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   position: relative;
 }
 
-.emotion-16 {
+.emotion-8 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -686,7 +876,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   display: flex;
 }
 
-.emotion-17 path {
+.emotion-9 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
@@ -714,12 +904,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   color: #808080;
 }
 
-.emotion-66 {
+.emotion-106 {
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-.emotion-65 {
+.emotion-105 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -751,30 +941,30 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   background-color: transparent;
 }
 
-.emotion-65:hover {
+.emotion-105:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-65[aria-disabled=true] {
+.emotion-105[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-65,
-.emotion-65:hover,
-.emotion-65:visited {
+.emotion-105,
+.emotion-105:hover,
+.emotion-105:visited {
   background-color: #73b61c;
 }
 
-.emotion-65:hover {
+.emotion-105:hover {
   background-color: #b8d652;
 }
 
-.emotion-65[aria-disabled=true] {
+.emotion-105[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-8 {
+.emotion-24 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -786,7 +976,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   cursor: pointer;
 }
 
-.emotion-9 path {
+.emotion-25 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
@@ -794,7 +984,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 
 <form
   action=""
-  className="emotion-67"
+  className="emotion-107"
   method="post"
   onSubmit={[Function]}
 >
@@ -832,7 +1022,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
     </div>
   </div>
   <fieldset
-    className="emotion-64"
+    className="emotion-104"
   >
     <legend
       className="emotion-6"
@@ -850,10 +1040,10 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
       >
         <input
           className="emotion-8"
-          defaultChecked={true}
+          defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="ManageApiKeys"
+          value="SystemMonitor"
         />
         <div
           className="emotion-10"
@@ -871,12 +1061,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Manage Api Keys
+           System Monitor
         </span>
         <span
           className="emotion-13"
         >
-          Ability to manage API keys
+          Allows access to monitoring endpoints
         </span>
       </div>
     </label>
@@ -887,17 +1077,17 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         className="emotion-11"
       >
         <input
-          className="emotion-16"
+          className="emotion-8"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="Read"
+          value="SystemManage"
         />
         <div
           className="emotion-10"
         >
           <svg
-            className="emotion-17"
+            className="emotion-9"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -909,12 +1099,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Read
+           System Manage
         </span>
         <span
           className="emotion-13"
         >
-          Ability to read assets and associated files
+          Allows access to platform management endpoints
         </span>
       </div>
     </label>
@@ -925,17 +1115,17 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         className="emotion-11"
       >
         <input
-          className="emotion-16"
-          defaultChecked={false}
+          className="emotion-24"
+          defaultChecked={true}
           onClick={[Function]}
           type="checkbox"
-          value="Import"
+          value="SystemProjectOverride"
         />
         <div
           className="emotion-10"
         >
           <svg
-            className="emotion-17"
+            className="emotion-25"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -947,12 +1137,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Import
+           System Project Override
         </span>
         <span
           className="emotion-13"
         >
-          Ability to import assets (create and update)
+          Provides ability to switch projects
         </span>
       </div>
     </label>
@@ -963,17 +1153,17 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         className="emotion-11"
       >
         <input
-          className="emotion-16"
+          className="emotion-8"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="Delete"
+          value="SystemProjectDecrypt"
         />
         <div
           className="emotion-10"
         >
           <svg
-            className="emotion-17"
+            className="emotion-9"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -985,12 +1175,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Delete
+           System Project Decrypt
         </span>
         <span
           className="emotion-13"
         >
-          Ability to remove assets
+          Provides ability to view encrypted project data
         </span>
       </div>
     </label>
@@ -1001,17 +1191,17 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         className="emotion-11"
       >
         <input
-          className="emotion-16"
+          className="emotion-8"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="ManageProjects"
+          value="ApiKeyManage"
         />
         <div
           className="emotion-10"
         >
           <svg
-            className="emotion-17"
+            className="emotion-9"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -1023,12 +1213,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Manage Projects
+           Api Key Manage
         </span>
         <span
           className="emotion-13"
         >
-          Ability to manage projects
+          Provides ability to manage API keys
         </span>
       </div>
     </label>
@@ -1039,17 +1229,17 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         className="emotion-11"
       >
         <input
-          className="emotion-16"
+          className="emotion-8"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="CreateProjects"
+          value="AssetsRead"
         />
         <div
           className="emotion-10"
         >
           <svg
-            className="emotion-17"
+            className="emotion-9"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -1061,12 +1251,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Create Projects
+           Assets Read
         </span>
         <span
           className="emotion-13"
         >
-          Ability to create projects
+          Provides ability to read assets and associated files
         </span>
       </div>
     </label>
@@ -1077,17 +1267,17 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         className="emotion-11"
       >
         <input
-          className="emotion-16"
+          className="emotion-8"
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="ReadProjects"
+          value="AssetsImport"
         />
         <div
           className="emotion-10"
         >
           <svg
-            className="emotion-17"
+            className="emotion-9"
             data-file-name="checkmark.svg"
             width={14}
           />
@@ -1099,21 +1289,211 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         <span
           className="emotion-12"
         >
-           Read Projects
+           Assets Import
         </span>
         <span
           className="emotion-13"
         >
-          Ability to read project files from cloud storage
+          Provides ability to import assets. (created and update)
+        </span>
+      </div>
+    </label>
+    <label
+      className="emotion-15"
+    >
+      <div
+        className="emotion-11"
+      >
+        <input
+          className="emotion-8"
+          defaultChecked={false}
+          onClick={[Function]}
+          type="checkbox"
+          value="AssetsDelete"
+        />
+        <div
+          className="emotion-10"
+        >
+          <svg
+            className="emotion-9"
+            data-file-name="checkmark.svg"
+            width={14}
+          />
+        </div>
+      </div>
+      <div
+        className="emotion-14"
+      >
+        <span
+          className="emotion-12"
+        >
+           Assets Delete
+        </span>
+        <span
+          className="emotion-13"
+        >
+          Provides ability to remove assets
+        </span>
+      </div>
+    </label>
+    <label
+      className="emotion-15"
+    >
+      <div
+        className="emotion-11"
+      >
+        <input
+          className="emotion-8"
+          defaultChecked={false}
+          onClick={[Function]}
+          type="checkbox"
+          value="ProjectManage"
+        />
+        <div
+          className="emotion-10"
+        >
+          <svg
+            className="emotion-9"
+            data-file-name="checkmark.svg"
+            width={14}
+          />
+        </div>
+      </div>
+      <div
+        className="emotion-14"
+      >
+        <span
+          className="emotion-12"
+        >
+           Project Manage
+        </span>
+        <span
+          className="emotion-13"
+        >
+          Provides ability to manage projects.
+        </span>
+      </div>
+    </label>
+    <label
+      className="emotion-15"
+    >
+      <div
+        className="emotion-11"
+      >
+        <input
+          className="emotion-8"
+          defaultChecked={false}
+          onClick={[Function]}
+          type="checkbox"
+          value="ProjectCreate"
+        />
+        <div
+          className="emotion-10"
+        >
+          <svg
+            className="emotion-9"
+            data-file-name="checkmark.svg"
+            width={14}
+          />
+        </div>
+      </div>
+      <div
+        className="emotion-14"
+      >
+        <span
+          className="emotion-12"
+        >
+           Project Create
+        </span>
+        <span
+          className="emotion-13"
+        >
+          Provides ability to create projects.
+        </span>
+      </div>
+    </label>
+    <label
+      className="emotion-15"
+    >
+      <div
+        className="emotion-11"
+      >
+        <input
+          className="emotion-8"
+          defaultChecked={false}
+          onClick={[Function]}
+          type="checkbox"
+          value="ProjectFilesRead"
+        />
+        <div
+          className="emotion-10"
+        >
+          <svg
+            className="emotion-9"
+            data-file-name="checkmark.svg"
+            width={14}
+          />
+        </div>
+      </div>
+      <div
+        className="emotion-14"
+      >
+        <span
+          className="emotion-12"
+        >
+           Project Files Read
+        </span>
+        <span
+          className="emotion-13"
+        >
+          Provides ability to read project files from cloud storage.
+        </span>
+      </div>
+    </label>
+    <label
+      className="emotion-15"
+    >
+      <div
+        className="emotion-11"
+      >
+        <input
+          className="emotion-8"
+          defaultChecked={false}
+          onClick={[Function]}
+          type="checkbox"
+          value="ProjectFilesWrite"
+        />
+        <div
+          className="emotion-10"
+        >
+          <svg
+            className="emotion-9"
+            data-file-name="checkmark.svg"
+            width={14}
+          />
+        </div>
+      </div>
+      <div
+        className="emotion-14"
+      >
+        <span
+          className="emotion-12"
+        >
+           Project Files Write
+        </span>
+        <span
+          className="emotion-13"
+        >
+          Provides ability to store project files in cloud storage.
         </span>
       </div>
     </label>
   </fieldset>
   <div
-    className="emotion-66"
+    className="emotion-106"
   >
     <button
-      className="emotion-65"
+      className="emotion-105"
       onClick={[Function]}
       type="submit"
     >

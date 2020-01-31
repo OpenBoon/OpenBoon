@@ -8,8 +8,7 @@ import projects from './src/Projects/__mocks__/projects'
 import jobs from './src/Jobs/__mocks__/jobs'
 import job from './src/Job/__mocks__/job'
 import jobErrors from './src/JobErrors/__mocks__/jobErrors'
-import projectPermissions from './src/ProjectPermissions/__mocks__/permissions'
-import projectUsersPermissions from './src/ProjectUsersPermissions/__mocks__/permissions'
+import permissions from './src/Permissions/__mocks__/permissions'
 import apikeys from './src/ApiKeys/__mocks__/apikeys'
 import apikeysadd from './src/ApiKeysAdd/__mocks__/apikeysadd'
 import projectUsers from './src/ProjectUsers/__mocks__/projectUsers'
@@ -37,11 +36,7 @@ app.prepare().then(() => {
     server.get('/api/v1/projects/:projectId/jobs/', mock(jobs))
     server.get(
       '/api/v1/projects/:projectId/users/permissions/',
-      mock(projectUsersPermissions),
-    )
-    server.get(
-      '/api/v1/projects/:projectId/permissions/',
-      mock(projectPermissions),
+      mock(permissions),
     )
     server.get('/api/v1/projects/:projectId/jobs/:jobId/', mock(job))
     server.get(

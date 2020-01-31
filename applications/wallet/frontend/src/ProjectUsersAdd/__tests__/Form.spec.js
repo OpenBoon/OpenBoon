@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import permissions from '../../ProjectUsersPermissions/__mocks__/permissions'
+import permissions from '../../Permissions/__mocks__/permissions'
 
 import ProjectUsersAddForm from '../Form'
 
@@ -31,7 +31,7 @@ describe('<ProjectUsersAddForm />', () => {
     // Check permission box
     act(() => {
       component.root
-        .findByProps({ type: 'checkbox', value: 'ManageApiKeys' })
+        .findByProps({ type: 'checkbox', value: 'SystemProjectOverride' })
         .props.onClick()
     })
 
