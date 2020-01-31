@@ -222,7 +222,8 @@ deploy_development:
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} api-gateway
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} archivist
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} auth-server
-    - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch
+    - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch-master
+    - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch-data
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
 
