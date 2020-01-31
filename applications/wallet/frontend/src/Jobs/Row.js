@@ -18,7 +18,6 @@ const JobsRow = ({
     id: jobId,
     state,
     name,
-    createdUser: { username },
     assetCounts,
     priority,
     timeCreated,
@@ -34,7 +33,6 @@ const JobsRow = ({
         <Status jobStatus={state} />
       </td>
       <td>{name}</td>
-      <td>{username}</td>
       <td css={{ textAlign: 'center' }}>{priority}</td>
       <td>{formatFullDate({ timestamp: timeCreated })}</td>
       <td css={{ textAlign: 'center' }}>
@@ -88,9 +86,6 @@ JobsRow.propTypes = {
     id: PropTypes.string.isRequired,
     state: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    createdUser: PropTypes.shape({
-      username: PropTypes.string.isRequired,
-    }).isRequired,
     assetCounts: PropTypes.shape({
       assetCreatedCount: PropTypes.number.isRequired,
       assetReplacedCount: PropTypes.number.isRequired,
