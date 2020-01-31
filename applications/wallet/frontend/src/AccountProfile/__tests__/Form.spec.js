@@ -4,13 +4,11 @@ import AccountProfileForm from '../Form'
 
 const noop = () => () => {}
 
+jest.mock('../helpers')
+
 describe('<AccountProfileForm />', () => {
   it('should render properly', () => {
-    const mockFn = jest.fn()
-
-    const component = TestRenderer.create(
-      <AccountProfileForm onSubmit={mockFn} />,
-    )
+    const component = TestRenderer.create(<AccountProfileForm />)
 
     act(() => {
       component.root
@@ -30,6 +28,6 @@ describe('<AccountProfileForm />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockFn).toHaveBeenCalledWith({ firstName: 'Jane', lastName: 'Doe' })
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

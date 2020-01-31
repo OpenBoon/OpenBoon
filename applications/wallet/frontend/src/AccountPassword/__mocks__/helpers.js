@@ -1,3 +1,7 @@
+/**
+ * onSubmit
+ */
+
 export const onSubmit = ({ dispatch }) =>
   dispatch({
     currentPassword: '',

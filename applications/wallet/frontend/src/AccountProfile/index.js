@@ -21,7 +21,7 @@ const AccountProfile = () => {
         ]}
       />
 
-      <AccountProfileForm onSubmit={console.warn} />
+      <AccountProfileForm />
     </div>
   )
 }
