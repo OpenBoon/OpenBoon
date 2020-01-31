@@ -34,12 +34,15 @@ app.prepare().then(() => {
     server.post('/api/v1/login/', mock(user))
     server.get('/api/v1/projects/', mock(projects))
     server.get('/api/v1/projects/:projectId/jobs/', mock(jobs))
+    server.get(
+      '/api/v1/projects/:projectId/users/permissions/',
+      mock(permissions),
+    )
     server.get('/api/v1/projects/:projectId/jobs/:jobId/', mock(job))
     server.get(
       '/api/v1/projects/:projectId/jobs/:jobId/errors',
       mock(jobErrors),
     )
-    server.get('/api/v1/projects/:projectId/permissions/', mock(permissions))
     server.get('/api/v1/projects/:projectId/apikeys/', mock(apikeys))
     server.post('/api/v1/projects/:projectId/apikeys/', mock(apikeysadd))
     server.get('/api/v1/projects/:projectId/users/', mock(projectUsers))
