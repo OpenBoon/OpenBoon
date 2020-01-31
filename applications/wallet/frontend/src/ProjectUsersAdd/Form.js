@@ -2,68 +2,61 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { spacing } from '../Styles'
+import { spacing, typography } from '../Styles'
 
-import Loading from '../Loading'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
-import { onSubmit } from './helpers'
-
-import ApiKeysAddFormSuccess from './FormSuccess'
-
 const INITIAL_STATE = {
-  name: '',
+  email: '',
   permissions: {},
-  apikey: {},
   errors: {},
 }
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-const ApiKeysAddForm = () => {
+const ProjectUsersAddForm = () => {
   const {
     query: { projectId },
   } = useRouter()
 
   const { data: { results: permissions } = {} } = useSWR(
-    `/api/v1/projects/${projectId}/permissions/`,
+    `/api/v1/projects/${projectId}/users/permissions/`,
   )
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
-  if (!Array.isArray(permissions)) return <Loading />
-
-  const { apikey } = state
-
-  if (apikey.secretKey) {
-    return (
-      <ApiKeysAddFormSuccess
-        projectId={projectId}
-        apikey={apikey}
-        onReset={() => dispatch(INITIAL_STATE)}
-      />
-    )
-  }
+  if (!Array.isArray(permissions)) return 'Loading...'
 
   return (
     <Form>
+      <h2
+        css={{
+          fontSize: typography.size.medium,
+          lineHeight: typography.height.medium,
+          fontWeight: typography.weight.medium,
+          paddingTop: spacing.normal,
+          paddingBottom: spacing.normal,
+        }}>
+        Invite User to view projects
+      </h2>
+
       <Input
         autoFocus
-        id="name"
+        id="email"
         variant={INPUT_VARIANTS.SECONDARY}
-        label="Name"
+        label="Email(s)"
         type="text"
-        value={state.name}
-        onChange={({ target: { value } }) => dispatch({ name: value })}
+        value={state.email}
+        onChange={({ target: { value } }) => dispatch({ email: value })}
         hasError={state.errors.name !== undefined}
         errorMessage={state.errors.name}
       />
 
       <CheckboxGroup
-        legend="Add Scope"
+        legend="Add Permissions"
         onClick={permission =>
           dispatch({ permissions: { ...state.permissions, ...permission } })
         }
@@ -83,13 +76,13 @@ const ApiKeysAddForm = () => {
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() => onSubmit({ dispatch, projectId, state })}
-          isDisabled={!state.name}>
-          Generate Key &amp; Download
+          onClick={console.warn}
+          isDisabled={!state.email}>
+          Send Invite
         </Button>
       </div>
     </Form>
   )
 }
 
-export default ApiKeysAddForm
+export default ProjectUsersAddForm

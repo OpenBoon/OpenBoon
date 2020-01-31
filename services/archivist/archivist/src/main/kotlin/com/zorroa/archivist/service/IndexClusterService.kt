@@ -8,6 +8,9 @@ import com.zorroa.archivist.domain.IndexClusterSpec
 import com.zorroa.archivist.domain.IndexClusterState
 import com.zorroa.archivist.repository.IndexClusterDao
 import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
+import com.zorroa.zmlp.service.logging.event
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
@@ -108,7 +111,17 @@ class IndexClusterServiceImpl constructor(
     }
 
     override fun createIndexCluster(spec: IndexClusterSpec): IndexCluster {
-        return indexClusterDao.create(spec)
+
+        val indexCluster = indexClusterDao.create(spec)
+
+        logger.event(
+            LogObject.INDEX_CLUSTER, LogAction.CREATE,
+            mapOf(
+                "indexClusterId" to indexCluster.id
+            )
+        )
+
+        return indexCluster
     }
 
     override fun getIndexCluster(id: UUID): IndexCluster {

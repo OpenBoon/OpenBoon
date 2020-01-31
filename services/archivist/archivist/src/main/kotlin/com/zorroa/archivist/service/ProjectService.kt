@@ -198,6 +198,15 @@ class ProjectServiceImpl constructor(
         throwWhenNotFound("Unable to find Index ID ${settings.defaultIndexRouteId}") {
             indexRoutingService.getIndexRoute(settings.defaultIndexRouteId)
         }
+
+        logger.event(
+            LogObject.PROJECT, LogAction.UPDATE,
+            mapOf(
+                "projectId" to project.id,
+                "projectName" to project.name
+            )
+        )
+
         return projectCustomDao.updateSettings(project.id, settings)
     }
 

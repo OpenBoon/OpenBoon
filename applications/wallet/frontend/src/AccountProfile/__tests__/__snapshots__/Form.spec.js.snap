@@ -25,7 +25,7 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
   padding-bottom: 8px;
 }
 
-.emotion-3 {
+.emotion-2 {
   position: relative;
 }
 
@@ -48,7 +48,7 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
   color: #000000;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding-top: 8px;
 }
 
@@ -128,7 +128,7 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
       First Name
     </label>
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <input
         autoFocus={true}
@@ -139,11 +139,11 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
         type="text"
         value="Jane"
       />
-      <div
-        className="emotion-2"
-      >
-         
-      </div>
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
     </div>
   </div>
   <div
@@ -156,7 +156,7 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
       Last Name
     </label>
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <input
         className="emotion-1"
@@ -166,11 +166,11 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
         type="text"
         value="Doe"
       />
-      <div
-        className="emotion-2"
-      >
-         
-      </div>
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
     </div>
   </div>
   <div

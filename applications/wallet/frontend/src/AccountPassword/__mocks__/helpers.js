@@ -4,7 +4,8 @@
 
 export const onSubmit = ({ dispatch }) =>
   dispatch({
-    currentPassword: 'foo',
-    newPassword: 'bar',
-    confirmPassword: 'bar',
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+    success: true,
   })

@@ -398,7 +398,15 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     override fun handleTaskError(task: InternalTask, error: TaskErrorEvent) {
-        taskErrorDao.create(task, error)
+
+        val taskError = taskErrorDao.create(task, error)
+
+        logger.event(
+            LogObject.TASK_ERROR, LogAction.CREATE,
+            mapOf(
+                "taskErrorId" to taskError.id
+            ))
+
         // TODO: part of job stats update
         // jobService.incrementAssetCounters(task, AssetCounters(errors = 1))
     }
