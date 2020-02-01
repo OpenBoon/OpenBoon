@@ -27,7 +27,7 @@ resource "kubernetes_deployment" "auth-server" {
     }
   }
   spec {
-    replicas = 2
+//    replicas = 2
     selector {
       match_labels {
         app = "auth-server"
@@ -124,6 +124,14 @@ resource "kubernetes_deployment" "auth-server" {
             {
               name = "SWAGGER_ISPUBLIC"
               value = "false"
+            },
+            {
+              name = "SPRING_PROFILES_ACTIVE"
+              value = "gcs"
+            },
+            {
+              name = "ZMLP_STORAGE_SYSTEM_BUCKET"
+              value = "${var.system-bucket}"
             }
           ]
         }

@@ -7,8 +7,10 @@ import { colors, spacing, zIndex, constants } from '../Styles'
 import SidebarLink from './Link'
 import SidebarOverlay from './Overlay'
 
-import QueueSvg from './icons/queue.svg'
-import KeySvg from './icons/key.svg'
+import QueueSvg from '../Icons/queue.svg'
+import KeySvg from '../Icons/key.svg'
+import UsersSvg from '../Icons/users.svg'
+import GearSvg from '../Icons/gear.svg'
 
 const WIDTH = 240
 const ICON_WIDTH = 20
@@ -58,6 +60,16 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
           <SidebarLink href="/api-keys">
             <KeySvg width={ICON_WIDTH} aria-hidden />
             API Keys
+          </SidebarLink>
+
+          <SidebarLink href="/users">
+            <UsersSvg width={ICON_WIDTH} aria-hidden />
+            User Admin
+          </SidebarLink>
+
+          <SidebarLink href="/account">
+            <GearSvg width={ICON_WIDTH} aria-hidden />
+            Account
           </SidebarLink>
         </ul>
       </nav>

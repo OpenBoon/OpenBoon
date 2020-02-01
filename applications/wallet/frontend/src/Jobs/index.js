@@ -25,7 +25,6 @@ const Jobs = () => {
         columns={[
           'Status',
           'Job Name',
-          'Created By',
           'Priority',
           'Created',
           '# Assets',
