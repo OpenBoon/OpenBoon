@@ -104,7 +104,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
   padding-bottom: 8px;
 }
 
-.emotion-10 {
+.emotion-9 {
   position: relative;
 }
 
@@ -127,7 +127,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
   color: #000000;
 }
 
-.emotion-9 {
+.emotion-10 {
   padding-top: 8px;
 }
 
@@ -245,7 +245,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
         First Name
       </label>
       <div
-        className="emotion-10"
+        className="emotion-9"
       >
         <input
           autoFocus={true}
@@ -256,11 +256,11 @@ exports[`<AccountProfile /> should render properly 1`] = `
           type="text"
           value=""
         />
-        <div
-          className="emotion-9"
-        >
-           
-        </div>
+      </div>
+      <div
+        className="emotion-10"
+      >
+         
       </div>
     </div>
     <div
@@ -273,7 +273,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
         Last Name
       </label>
       <div
-        className="emotion-10"
+        className="emotion-9"
       >
         <input
           className="emotion-8"
@@ -283,11 +283,11 @@ exports[`<AccountProfile /> should render properly 1`] = `
           type="text"
           value=""
         />
-        <div
-          className="emotion-9"
-        >
-           
-        </div>
+      </div>
+      <div
+        className="emotion-10"
+      >
+         
       </div>
     </div>
     <div

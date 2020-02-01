@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 import Router, { useRouter } from 'next/router'
 import useSWR from 'swr'
 
+import Loading from '../Loading'
+
 const Projects = ({ children }) => {
   const {
     query: { projectId },
@@ -9,7 +11,7 @@ const Projects = ({ children }) => {
 
   const { data: { results: projects } = {} } = useSWR('/api/v1/projects/')
 
-  if (!Array.isArray(projects)) return 'Loading...'
+  if (!Array.isArray(projects)) return <Loading />
 
   if (projects.length === 0) {
     if (projectId) {

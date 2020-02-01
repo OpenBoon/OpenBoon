@@ -11,16 +11,16 @@ terraform {
 provider "google" {
   credentials = "${var.terraform-credentials}"
   project = "${var.project}"
-  region = "${local.region}"
-  zone = "${local.zone}"
+  region = "${var.country}-${var.region}"
+  zone = "${var.country}-${var.region}-${var.zone}"
   version = ">= 2.11.0"
 }
 
 provider "google-beta" {
   credentials = "${var.terraform-credentials}"
   project = "${var.project}"
-  region = "${local.region}"
-  zone = "${local.zone}"
+  region = "${var.country}-${var.region}"
+  zone = "${var.country}-${var.region}-${var.zone}"
   version = ">= 2.11.0"
 }
 
@@ -54,20 +54,31 @@ module "minio" {
   source = "./modules/minio"
 }
 
+resource "google_storage_bucket" "system" {
+  name = "${var.project}-zmlp-system-bucket"
+}
+
 ## Secrets ###############################################################################
-resource "random_string" "shared-key" {
+resource "random_string" "access-key" {
+  length = 50
+  special = false
+}
+
+resource "random_string" "secret-key" {
   length = 64
   special = false
 }
 
 locals {
   inception-key = <<EOF
-{"name": "admin-key",
+{
+    "name": "admin-key",
     "projectId": "00000000-0000-0000-0000-000000000000",
-    "keyId": "${uuid()}",
-    "sharedKey": "${random_string.shared-key.result}",
+    "id": "${uuid()}",
+    "accessKey": "${random_string.access-key.result}",
+    "secretKey": "${random_string.secret-key.result}",
     "permissions": [
-        "SuperAdmin", "ProjectAdmin", "AssetsRead", "AssetsImport"
+        "SuperAdmin", "ProjectAdmin", "AssetsRead", "AssetsImport", "ApiKeyManage", "ProjectManage"
     ]
 }
 EOF
@@ -112,6 +123,7 @@ module "archivist" {
   inception-key-b64 = "${base64encode(local.inception-key)}"
   minio-access-key = "${module.minio.access-key}"
   minio-secret-key = "${module.minio.secret-key}"
+  system-bucket = "${google_storage_bucket.system.name}"
 }
 
 module "auth-server" {
@@ -120,6 +132,7 @@ module "auth-server" {
   sql-connection-name = "${module.postgres.connection-name}"
   image-pull-secret = "${kubernetes_secret.dockerhub.metadata.0.name}"
   inception-key-b64 = "${base64encode(local.inception-key)}"
+  system-bucket = "${google_storage_bucket.system.name}"
 }
 
 module "api-gateway" {
@@ -158,7 +171,7 @@ module "wallet" {
   sql-instance-name = "${module.postgres.instance-name}"
   sql-service-account-key = "${module.postgres.sql-service-account-key}"
   sql-connection-name = "${module.postgres.connection-name}"
-  archivist-url = "http://${module.archivist.ip-address}"
+  archivist-url = "http://${module.api-gateway.ip-address}"
   smtp-password = "${var.smtp-password}"
   google-oauth-client-id = "${var.google-oauth-client-id}"
   frontend-sentry-dsn = "${var.frontend-sentry-dsn}"

@@ -1,0 +1,245 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<JobErrorsMenu /> should render properly 1`] = `
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: -4px;
+}
+
+.emotion-7 {
+  position: relative;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  width: 200px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  color: #000000;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #808080;
+}
+
+.emotion-0:hover {
+  opacity: 0.5;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-6 {
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  right: 0;
+  background-color: #808080;
+  border-radius: 2px;
+  box-shadow: 0 4px 7px 0 #000000;
+  width: 200px;
+}
+
+.emotion-6 ul {
+  list-style-type: none;
+  padding: 0;
+  padding-top: 4px;
+  padding-bottom: 8px;
+  margin: 0;
+}
+
+.emotion-6 li {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding: 8px 16px;
+  font-weight: 400;
+  border-radius: 0;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1:hover {
+  background-color: #4a4a4a;
+}
+
+<div
+  className="emotion-8"
+>
+  <div
+    className="emotion-7"
+  >
+    <button
+      aria-label="Toggle Job Actions Menu"
+      className="emotion-0"
+      onBlur={[Function]}
+      onClick={[Function]}
+      type="button"
+    >
+      Modify Job
+      <svg
+        data-file-name="chevron.svg"
+        width={20}
+      />
+    </button>
+    <div
+      className="emotion-6"
+    >
+      <div>
+        <ul>
+          <li>
+            <button
+              className="emotion-1"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              Pause
+            </button>
+          </li>
+          <li>
+            <button
+              className="emotion-1"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              Resume
+            </button>
+          </li>
+          <li>
+            <button
+              className="emotion-1"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              Cancel
+            </button>
+          </li>
+          <li>
+            <button
+              className="emotion-1"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              Restart
+            </button>
+          </li>
+          <li>
+            <button
+              className="emotion-1"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              Retry All Failures
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;

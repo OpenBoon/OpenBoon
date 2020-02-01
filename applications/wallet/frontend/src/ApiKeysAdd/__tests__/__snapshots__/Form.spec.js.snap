@@ -25,7 +25,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding-bottom: 8px;
 }
 
-.emotion-3 {
+.emotion-2 {
   position: relative;
 }
 
@@ -48,7 +48,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   color: #000000;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding-top: 8px;
 }
 
@@ -229,7 +229,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
       Name
     </label>
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <input
         autoFocus={true}
@@ -240,11 +240,11 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         type="text"
         value=""
       />
-      <div
-        className="emotion-2"
-      >
-         
-      </div>
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
     </div>
   </div>
   <fieldset
@@ -1205,7 +1205,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding-bottom: 8px;
 }
 
-.emotion-3 {
+.emotion-2 {
   position: relative;
 }
 
@@ -1228,7 +1228,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   color: #000000;
 }
 
-.emotion-2 {
+.emotion-3 {
   padding-top: 8px;
 }
 
@@ -1409,7 +1409,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
       Name
     </label>
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <input
         autoFocus={true}
@@ -1420,11 +1420,11 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
         type="text"
         value=""
       />
-      <div
-        className="emotion-2"
-      >
-         
-      </div>
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
     </div>
   </div>
   <fieldset

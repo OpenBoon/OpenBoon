@@ -39,6 +39,7 @@ describe('<AccountPassword /> helpers', () => {
         currentPassword: '',
         newPassword: '',
         confirmPassword: '',
+        success: true,
         errors: {},
       })
     })
@@ -76,6 +77,7 @@ describe('<AccountPassword /> helpers', () => {
         errors: {
           newPassword2: 'Error message',
         },
+        success: false,
       })
     })
   })

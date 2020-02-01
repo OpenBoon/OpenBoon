@@ -16,6 +16,7 @@ import com.zorroa.archivist.security.InternalThreadAuthentication
 import com.zorroa.archivist.security.KnownKeys
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.security.withAuth
+import com.zorroa.archivist.util.isUUID
 import com.zorroa.zmlp.service.logging.event
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.ContextRefreshedEvent
@@ -33,8 +34,8 @@ interface PipelineModService {
     fun create(spec: PipelineModSpec): PipelineMod
     fun get(id: UUID): PipelineMod
     fun get(name: String): PipelineMod
-    fun getByNames(names: List<String>): List<PipelineMod>
-    fun getByIds(names: List<UUID>): List<PipelineMod>
+    fun getByNames(names: Collection<String>): List<PipelineMod>
+    fun getByIds(names: Collection<UUID>): List<PipelineMod>
     fun search(filter: PipelineModFilter): KPagedList<PipelineMod>
     fun findOne(filter: PipelineModFilter): PipelineMod
     fun update(id: UUID, update: PipelineModUpdate): PipelineMod
@@ -63,7 +64,7 @@ class PipelineModServiceImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun getByIds(names: List<UUID>): List<PipelineMod> {
+    override fun getByIds(names: Collection<UUID>): List<PipelineMod> {
         val found = pipelineModDao.findByIdIn(names)
         if (found.size != names.size) {
             val missing = names.minus(found.map { it.name })
@@ -73,14 +74,19 @@ class PipelineModServiceImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun getByNames(names: List<String>): List<PipelineMod> {
+    override fun getByNames(names: Collection<String>): List<PipelineMod> {
         val trimmedNames = names.map { it.trim('+', '-') }
-        val found = pipelineModDao.findByNameIn(trimmedNames)
-        if (found.size != names.size) {
-            val missing = trimmedNames.minus(found.map { it.name })
+        val byIds = trimmedNames.filter { it.isUUID() }.map { UUID.fromString(it) }
+        val byNames = trimmedNames.filter { !it.isUUID() }
+
+        val namesFound = pipelineModDao.findByNameIn(byNames)
+        if (namesFound.size != names.size) {
+            val missing = trimmedNames.minus(namesFound.map { it.name })
             throw DataRetrievalFailureException("The Pipeline Mods ${missing.joinToString(",")} do not exist.")
         }
-        return found
+
+        val idsFound = getByIds(byIds)
+        return namesFound.plus(idsFound)
     }
 
     @Transactional(readOnly = true)

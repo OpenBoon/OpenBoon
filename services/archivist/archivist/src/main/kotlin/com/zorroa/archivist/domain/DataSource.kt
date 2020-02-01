@@ -33,8 +33,8 @@ class DataSourceSpec(
     @ApiModelProperty("A list of file extensions to filter", example = "[jpg,png]")
     var fileTypes: List<String>? = null,
 
-    @ApiModelProperty("Override the project default pipeline with different.")
-    val pipeline: String? = null
+    @ApiModelProperty("Pipeline Modules for this DataSource.")
+    var modules: Set<String>? = null
 )
 
 @ApiModel("DataSource Update", description = "Defines a DataSource fields that can be updated")
@@ -50,11 +50,11 @@ class DataSourceUpdate(
     @Convert(converter = StringListConverter::class)
     var fileTypes: List<String>?,
 
-    @ApiModelProperty("Override the project default pipeline with different.")
-    val pipelineId: UUID,
-
     @ApiModelProperty("An optional list of credentials blobs to populate import jobs.")
-    var credentials: Set<String>?
+    var credentials: Set<String>?,
+
+    @ApiModelProperty("Pipeline Modules for this DataSource.")
+    val modules: Set<String>?
 )
 
 @Entity
@@ -69,10 +69,6 @@ class DataSource(
     @Column(name = "pk_project")
     @ApiModelProperty("The Unique ID of the Project.")
     val projectId: UUID,
-
-    @ApiModelProperty("The Pipeline this DataSource is using.")
-    @Column(name = "pk_pipeline")
-    val pipelineId: UUID,
 
     @Column(name = "str_name")
     @ApiModelProperty("The unique name of the DataSource")
@@ -92,6 +88,12 @@ class DataSource(
     @CollectionTable(name = "x_credentials_datasource", joinColumns = [JoinColumn(name = "pk_datasource")])
     @Column(name = "pk_credentials", insertable = false, updatable = false)
     var credentials: List<UUID>,
+
+    @ElementCollection
+    @CollectionTable(name = "x_module_datasource", joinColumns = [JoinColumn(name = "pk_datasource")])
+    @Column(name = "pk_module", insertable = false, updatable = false)
+    @ApiModelProperty("The Pipeline this DataSource is using.")
+    val modules: List<UUID>,
 
     @Column(name = "time_created")
     @ApiModelProperty("The time the DataSource was created.")
@@ -114,10 +116,10 @@ class DataSource(
     fun getUpdated(update: DataSourceUpdate): DataSource {
         return DataSource(id,
             projectId,
-            update.pipelineId,
             update.name,
             update.uri,
             update.fileTypes,
+            listOf(),
             listOf(),
             timeCreated,
             System.currentTimeMillis(),

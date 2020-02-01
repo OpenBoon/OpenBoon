@@ -38,6 +38,7 @@ exports[`<ProjectUsersMenu /> should render properly 1`] = `
   padding: 0;
   color: #191919;
   padding: 6px;
+  margin: -6px;
   border-radius: 32px;
 }
 

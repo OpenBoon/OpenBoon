@@ -1,6 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Projects /> should render properly while loading 1`] = `"Loading..."`;
+exports[`<Projects /> should render properly while loading 1`] = `
+.emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+}
+
+<div
+  className="emotion-0"
+>
+  Loading...
+</div>
+`;
 
 exports[`<Projects /> should render properly with no projects 1`] = `"You have 0 projects"`;
 

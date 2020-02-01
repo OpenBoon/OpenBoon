@@ -278,6 +278,7 @@ class AssetServiceImpl : AssetService {
             ireq.source(it.document)
             bulkRequest.add(ireq)
         }
+
         return processBulkRequest(bulkRequest, assets, pipeline, request.credentials)
     }
 
@@ -285,6 +286,11 @@ class AssetServiceImpl : AssetService {
         val rest = indexRoutingService.getProjectRestClient()
         val request = Request("POST", "/${rest.route.indexName}/_update/$assetId")
         request.setJsonEntity(Json.serializeToString(req))
+
+        logger.event(
+            LogObject.ASSET, LogAction.UPDATE, mapOf("assetId" to assetId)
+        )
+
         return rest.client.lowLevelClient.performRequest(request)
     }
 
@@ -297,6 +303,11 @@ class AssetServiceImpl : AssetService {
         batch.forEach { (id, req) ->
             bulkRequest.add(rest.newUpdateRequest(id).doc(req.doc))
         }
+
+        logger.event(
+            LogObject.ASSET, LogAction.BATCH_UPDATE, mapOf("assetsUpdated" to batch.size)
+        )
+
         return rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
     }
 
@@ -342,11 +353,17 @@ class AssetServiceImpl : AssetService {
     override fun delete(id: String): Response {
         val rest = indexRoutingService.getProjectRestClient()
         val request = Request("DELETE", "/${rest.route.indexName}/_doc/$id")
+
+        logger.event(
+            LogObject.ASSET, LogAction.DELETE, mapOf("assetId" to id)
+        )
+
         return rest.client.lowLevelClient.performRequest(request)
     }
 
     override fun deleteByQuery(req: Map<String, Any>): BulkByScrollResponse {
         val rest = indexRoutingService.getProjectRestClient()
+
         return rest.client.deleteByQuery(
             DeleteByQueryRequest(rest.route.indexName)
                 .setQuery(SearchSourceMapper.convert(req).query()), RequestOptions.DEFAULT)

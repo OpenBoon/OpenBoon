@@ -7,6 +7,9 @@ import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.PipelineDao
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
+import com.zorroa.zmlp.service.logging.event
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -42,6 +45,15 @@ class PipelineServiceImpl @Autowired constructor(
             spec.processors = null
         }
         val pipeline = pipelineDao.create(spec)
+
+        logger.event(
+            LogObject.PIPELINE, LogAction.CREATE,
+            mapOf(
+                "pipelineId" to pipeline.id,
+                "pipelineName" to pipeline.name
+            )
+        )
+
         spec.modules?.let {
             pipelineDao.setPipelineMods(pipeline.id, pipelineModService.getByNames(it))
         }
@@ -55,6 +67,14 @@ class PipelineServiceImpl @Autowired constructor(
         } else {
             update.processors = listOf()
         }
+
+        logger.event(
+            LogObject.PIPELINE, LogAction.UPDATE,
+            mapOf(
+                "pipelineId" to pipeline.id,
+                "pipelineName" to pipeline.name
+            )
+        )
 
         return pipelineDao.update(pipeline.id, update)
     }
@@ -71,7 +91,17 @@ class PipelineServiceImpl @Autowired constructor(
     @Transactional(readOnly = true)
     override fun findOne(filter: PipelineFilter): Pipeline = pipelineDao.findOne(filter)
 
-    override fun delete(id: UUID): Boolean = pipelineDao.delete(id)
+    override fun delete(id: UUID): Boolean {
+
+        logger.event(
+            LogObject.PIPELINE, LogAction.DELETE,
+            mapOf(
+                "pipelineId" to id
+            )
+        )
+
+        return pipelineDao.delete(id)
+    }
 
     companion object {
         private val logger = LoggerFactory.getLogger(PipelineServiceImpl::class.java)
