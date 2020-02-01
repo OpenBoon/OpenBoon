@@ -9,7 +9,12 @@ import Layout from '../Layout'
 
 import { initialize } from '../Fetch/helpers'
 
-import { getUser, authenticateUser, logout } from './helpers'
+import {
+  getUser,
+  authenticateUser,
+  initializeUserstorer,
+  logout,
+} from './helpers'
 
 const {
   publicRuntimeConfig: { GOOGLE_OAUTH_CLIENT_ID },
@@ -26,6 +31,8 @@ const Authentication = ({ children }) => {
   const [user, setUser] = useState({})
 
   const fetcher = initialize({ setUser })
+
+  initializeUserstorer({ setUser })
 
   useEffect(() => {
     window.onload = () => {
@@ -57,7 +64,7 @@ const Authentication = ({ children }) => {
         hasGoogleLoaded={hasGoogleLoaded}
         errorMessage={errorMessage}
         setErrorMessage={setErrorMessage}
-        onSubmit={authenticateUser({ setErrorMessage, setUser })}
+        onSubmit={authenticateUser({ setErrorMessage })}
       />
     )
   }

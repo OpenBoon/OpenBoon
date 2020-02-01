@@ -1,6 +1,10 @@
-import { USER, getUser, authenticateUser, logout } from '../helpers'
-
-const noop = () => () => {}
+import {
+  USER,
+  getUser,
+  authenticateUser,
+  logout,
+  initializeUserstorer,
+} from '../helpers'
 
 describe('<Authentication /> helpers', () => {
   describe('getUser()', () => {
@@ -35,8 +39,8 @@ describe('<Authentication /> helpers', () => {
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
       const mockSetErrorMessage = jest.fn()
-      const mockSetUser = jest.fn()
       const mockSetItem = jest.fn()
+      initializeUserstorer({ setUser: mockSetItem })
 
       Object.defineProperty(window, 'localStorage', {
         writable: true,
@@ -47,7 +51,6 @@ describe('<Authentication /> helpers', () => {
 
       await authenticateUser({
         setErrorMessage: mockSetErrorMessage,
-        setUser: mockSetUser,
       })({
         username: 'username',
         password: 'password',
@@ -63,8 +66,6 @@ describe('<Authentication /> helpers', () => {
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
-      expect(mockSetUser).toHaveBeenCalledWith({ id: 12345 })
-
       expect(mockSetItem).toHaveBeenCalledWith(
         USER,
         JSON.stringify({ id: 12345 }),
@@ -75,7 +76,6 @@ describe('<Authentication /> helpers', () => {
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
       const mockSetErrorMessage = jest.fn()
-      const mockSetUser = jest.fn()
       const mockSetItem = jest.fn()
 
       Object.defineProperty(window, 'localStorage', {
@@ -87,7 +87,6 @@ describe('<Authentication /> helpers', () => {
 
       await authenticateUser({
         setErrorMessage: mockSetErrorMessage,
-        setUser: mockSetUser,
       })({
         idToken: 'ID_TOKEN',
       })
@@ -104,8 +103,6 @@ describe('<Authentication /> helpers', () => {
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
-      expect(mockSetUser).toHaveBeenCalledWith({ id: 12345 })
-
       expect(mockSetItem).toHaveBeenCalledWith(
         USER,
         JSON.stringify({ id: 12345 }),
@@ -119,7 +116,6 @@ describe('<Authentication /> helpers', () => {
 
       await authenticateUser({
         setErrorMessage: mockSetErrorMessage,
-        setUser: noop,
       })({
         username: 'username',
         password: 'password',
@@ -137,7 +133,6 @@ describe('<Authentication /> helpers', () => {
 
       await authenticateUser({
         setErrorMessage: mockSetErrorMessage,
-        setUser: noop,
       })({
         username: 'username',
         password: 'password',

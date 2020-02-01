@@ -1,5 +1,6 @@
 import { fetcher } from '../Fetch/helpers'
-import { storeUser } from '../Authentication/helpers'
+
+import { userstorer } from '../Authentication/helpers'
 
 export const onSubmit = async ({
   dispatch,
@@ -17,7 +18,7 @@ export const onSubmit = async ({
       errors: {},
     })
 
-    storeUser({ user })
+    userstorer({ user })
   } catch (response) {
     const errors = await response.json()
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
