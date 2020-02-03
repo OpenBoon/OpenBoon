@@ -184,3 +184,19 @@ Emails is configured to be sent via SMTP by [MailGun](https://app.mailgun.com/).
 The credentials to MailGun are stored in 1password. The SMTP_PASSWORD can found
 by going to the MailGun console [here](https://app.mailgun.com/) and looking at
 mg.zorroa.com under the domains menu.
+
+### Deployment Options
+Many of the configuration options can be set using environment variables. Below 
+are the current options. These environment variables need to be set on the running
+wallet container.
+
+| Environment Variable | Effect |
+| -------------------- | ------ |
+| ENABLE_SENTRY | Enables Sentry error logging if "true". |
+| ZMLP_API_URL | FQDN for the ZMLP REST API. |
+| PG_HOST | Hostname of the Postgres DB server. |
+| PG_PASSWORD | Password to be used by the wallet Postgres user. |
+| SMTP_PASSWORD | Password for the MailGun SMTP server used for sending emails. |
+| GOOGLE_OAUTH_CLIENT_ID | Client ID for Google OAuth used for Google sign in. |
+| FRONTEND_SENTRY_DSN | DSN of the Sentry project to log frontend errors to. |
+   
