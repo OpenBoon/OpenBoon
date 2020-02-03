@@ -1,4 +1,4 @@
-import { getUser } from '../../Authentication/helpers'
+import { getUser, initializeUserstorer } from '../../Authentication/helpers'
 
 import { onSubmit } from '../helpers'
 
@@ -8,6 +8,8 @@ describe('<AccountProfile /> helpers', () => {
   describe('onSubmit()', () => {
     it('should update the first and last name ', async () => {
       const mockDispatch = jest.fn()
+
+      initializeUserstorer({ setUser: jest.fn() })
 
       fetch.mockResponseOnce(
         JSON.stringify({
