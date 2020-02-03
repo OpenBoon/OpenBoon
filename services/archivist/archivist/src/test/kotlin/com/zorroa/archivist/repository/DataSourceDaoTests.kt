@@ -26,7 +26,7 @@ class DataSourceDaoTests : AbstractTest() {
     fun testSetCredentials() {
         val creds = credentialsService.create(
             CredentialsSpec("test",
-                CredentialsType.AWS, """{"foo": "bar"}""")
+                CredentialsType.AWS, TEST_AWS_CREDS)
         )
         val ds = dataSourceService.create(DataSourceSpec("test", "gs://foo/bar"))
         dataSourceJdbcDao.setCredentials(ds.id, listOf(creds))

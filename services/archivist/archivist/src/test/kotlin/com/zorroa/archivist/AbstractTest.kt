@@ -93,6 +93,9 @@ abstract class AbstractTest {
 
     protected lateinit var project: Project
 
+    protected val TEST_AWS_CREDS =
+        """{"aws_access_key_id": "foo", "aws_secret_access_key": "kirkspockbones"}"""
+
     init {
         ArchivistConfiguration.unittest = true
         Json.Mapper.registerModule(KotlinModule())

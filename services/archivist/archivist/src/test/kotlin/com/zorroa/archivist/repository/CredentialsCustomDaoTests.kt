@@ -19,14 +19,16 @@ class CredentialsCustomDaoTests : AbstractTest() {
 
     @Test
     fun getEncryptedBlob() {
-        val creds = credentialsService.create(CredentialsSpec("test", CredentialsType.AWS, "foo"))
+        val creds = credentialsService.create(CredentialsSpec("test",
+            CredentialsType.AWS, TEST_AWS_CREDS))
         val value = credentialsCustomDao.getEncryptedBlob(creds.id)
         assertTrue(value.matches(Regex("[0-9a-fA-F]+")))
     }
 
     @Test
     fun updateEncryptedBlob() {
-        val creds1 = credentialsService.create(CredentialsSpec("test", CredentialsType.AWS, "foo"))
+        val creds1 = credentialsService.create(CredentialsSpec("test",
+            CredentialsType.AWS, TEST_AWS_CREDS))
         val value1 = credentialsCustomDao.getEncryptedBlob(creds1.id)
         credentialsCustomDao.setEncryptedBlob(creds1.id, "bar")
         val value2 = credentialsCustomDao.getEncryptedBlob(creds1.id)
@@ -35,7 +37,8 @@ class CredentialsCustomDaoTests : AbstractTest() {
 
     @Test
     fun getEncryptedDataSourceBlob() {
-        val creds1 = credentialsService.create(CredentialsSpec("test", CredentialsType.AWS, "foo"))
+        val creds1 = credentialsService.create(CredentialsSpec("test",
+            CredentialsType.AWS, TEST_AWS_CREDS))
         val value1 = credentialsCustomDao.getEncryptedBlob(creds1.id)
         credentialsCustomDao.setEncryptedBlob(creds1.id, "bar")
         val value2 = credentialsCustomDao.getEncryptedBlob(creds1.id)
