@@ -29,7 +29,7 @@ interface CredentialsService {
     fun update(id: UUID, update: CredentialsUpdate): Credentials
     fun getDecryptedBlob(id: UUID): String
     fun getDecryptedBlobByJob(jobId: UUID, type: CredentialsType): String
-    fun setEncryptedBlob(id: UUID, clearText: String)
+    fun setEncryptedBlob(id: UUID, type: CredentialsType, clearText: String)
     fun getAll(idsOrNames: Collection<String>?): List<Credentials>
 }
 
@@ -60,9 +60,9 @@ class CredentialsServiceImpl(
             actor.toString()
         )
 
-        logger.event(LogObject.CREDENTIALS, LogAction.CREATE, mapOf("newCredentialsId" to id))
         val created = credentialsDao.saveAndFlush(creds)
-        setEncryptedBlob(id, spec.blob)
+        setEncryptedBlob(id, spec.type, spec.blob)
+        logger.event(LogObject.CREDENTIALS, LogAction.CREATE, mapOf("newCredentialsId" to id))
         return created
     }
 
@@ -101,6 +101,7 @@ class CredentialsServiceImpl(
         entityManager.detach(current)
 
         update.blob?.let {
+            current.type.validate(it)
             val cryptedText = encryptionService.encryptString(it, Credentials.CRYPT_VARIANCE)
             credentialsCustomDao.setEncryptedBlob(id, cryptedText)
         }
@@ -110,7 +111,8 @@ class CredentialsServiceImpl(
         return get(creds.id)
     }
 
-    override fun setEncryptedBlob(id: UUID, clearText: String) {
+    override fun setEncryptedBlob(id: UUID, type: CredentialsType, clearText: String) {
+        type.validate(clearText)
         val cryptedText = encryptionService.encryptString(clearText, Credentials.CRYPT_VARIANCE)
         credentialsCustomDao.setEncryptedBlob(id, cryptedText)
     }

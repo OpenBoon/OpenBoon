@@ -250,7 +250,7 @@ class JobDaoTests : AbstractTest() {
     fun testSetCredentials() {
         val creds = credentialsService.create(
             CredentialsSpec("test",
-                CredentialsType.AWS, """{"foo": "bar"}""")
+                CredentialsType.AWS, TEST_AWS_CREDS)
         )
 
         val spec = JobSpec("test_job", emptyZpsScript("foo"))
@@ -266,7 +266,7 @@ class JobDaoTests : AbstractTest() {
     fun testGetCredentialsTypes() {
         val creds = credentialsService.create(
             CredentialsSpec("test",
-                CredentialsType.AWS, """{"foo": "bar"}""")
+                CredentialsType.AWS, TEST_AWS_CREDS)
         )
 
         val spec = JobSpec("test_job", emptyZpsScript("foo"))

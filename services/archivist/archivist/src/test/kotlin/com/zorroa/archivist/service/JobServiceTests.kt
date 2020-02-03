@@ -156,7 +156,7 @@ class JobServiceTests : AbstractTest() {
     fun testSetCredentials() {
         val creds = credentialsService.create(
             CredentialsSpec("test",
-                CredentialsType.AWS, """{"foo": "bar"}""")
+                CredentialsType.AWS, TEST_AWS_CREDS)
         )
 
         val spec2 = JobSpec("test_job2",
