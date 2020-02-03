@@ -1,11 +1,15 @@
+import json
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
+from django.http import Http404
+from django.db import transaction
 
 from projects.views import BaseProjectViewSet
-from projects.models import Project
+from projects.models import Project, Membership
 from projectusers.serializers import ProjectUserSerializer
 from wallet.paginators import FromSizePagination
+from apikeys.utils import decode_apikey
 
 User = get_user_model()
 
@@ -15,6 +19,12 @@ class ProjectUserViewSet(BaseProjectViewSet):
     ZMLP_ONLY = True
     pagination_class = FromSizePagination
     serializer_class = ProjectUserSerializer
+
+    def get_object(self, pk):
+        try:
+            return User.objects.get(id=pk)
+        except User.DoesNotExist:
+            raise Http404
 
     def list(self, request, project_pk, client):
         # Need to handle pagination
@@ -30,12 +40,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
     def retrieve(self, request, project_pk, client, pk):
         # List details about the current project User
-        try:
-            user = User.objects.get(id=pk)
-        except User.DoesNotExist:
-            return Response('The specified user does not exist or is not a part of this '
-                            'project.',
-                            status=status.HTTP_404_NOT_FOUND)
+        user = self.get_object(pk)
         try:
             user.projects.get(id=project_pk)
         except Project.DoesNotExist:
@@ -54,6 +59,28 @@ class ProjectUserViewSet(BaseProjectViewSet):
         # if necessary
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def destroy(self, request, project_pk, client):
+    @transaction.atomic
+    def destroy(self, request, project_pk, client, pk):
         # Remove the User's Membership and delete the associated apikey
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        user = self.get_object(pk)
+        try:
+            membership = user.memberships.get(project=project_pk)
+        except Membership.DoesNotExist:
+            return Response('User has no membership to the specified project.',
+                            status=status.HTTP_404_NOT_FOUND)
+        apikey = membership.apikey
+        # Delete Users Apikey
+        try:
+            key_data = decode_apikey(apikey)
+        except (ValueError, json.decodeer.JSONDecodeError):
+            return Response('Unable to parse apikey.', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            apikey_id = key_data['id']
+        except KeyError:
+            return Response('Apikey is incomplete.', status=status.HTTP_400_BAD_REQUEST)
+        response = client.delete(f'/auth/v1/apikey/{apikey_id}')
+        if not response.status_code == 200:
+            return Response('Unable to delete apikey.',
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        membership.delete()
+        return Response(status=status.HTTP_200_OK)

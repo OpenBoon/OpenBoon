@@ -42,15 +42,20 @@ def project2():
 
 
 @pytest.fixture
-def zmlp_project_membership(project, user):
-    apikey = b"""{
+def zmlp_apikey():
+    return b"""{
     "name": "admin-key",
     "projectId": "97271bd2-5b51-427a-8fbf-93b4cdb2ba85",
-    "keyId": "4338a83f-a920-hedb-a251-a123b17df1ba",
-    "sharedKey": "beecda19ed4120b8172309e47242ea88bf35d86aca19bdefb189fe468641b48c8e17241ec955b6a6653b5f1b96ed6e88ccb5f251a04efe70d0e2ef93b60bf9b3",
+    "id": "4338a83f-a920-hedb-a251-a123b17df1ba",
+    "accessKey": "Nn6RoLw9TRe2vTUXmy74CZWPDkVwVbcp",
+    "secretKey": "beecda19ed4120b8172309e47242ea88bf35d86aca19bdefb189fe468641b48c8e17241ec955b6a6653b5f1b96ed6e88ccb5f251a04efe70d0e2ef93b60bf9b3",
     "permissions": ["SuperAdmin", "ProjectAdmin", "AssetsRead", "AssetsImport"]
 }""" # noqa
-    apikey = b64encode(apikey).decode('utf-8')
+
+
+@pytest.fixture
+def zmlp_project_membership(project, user, zmlp_apikey):
+    apikey = b64encode(zmlp_apikey).decode('utf-8')
     return Membership.objects.create(user=user, project=project, apikey=apikey)
 
 
