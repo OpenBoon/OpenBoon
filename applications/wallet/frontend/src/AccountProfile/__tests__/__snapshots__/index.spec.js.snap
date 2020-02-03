@@ -205,12 +205,12 @@ exports[`<AccountProfile /> should render properly 1`] = `
   <div
     className="emotion-7"
   >
-    User ID: Danny@Zorroa.com
+    User ID: undefined
   </div>
   <div
     className="emotion-8"
   >
-    Permissions: User Admin, Job Management, API Key Management
+    Permissions:  System Monitor,  System Manage,  System Project Override,  System Project Decrypt,  Api Key Manage,  Assets Read,  Assets Import,  Assets Delete,  Project Manage,  Project Create,  Project Files Read,  Project Files Write
   </div>
   <div
     className="emotion-9"
@@ -220,7 +220,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
   <div
     className="emotion-10"
   >
-    Danny Tiesling
+     
   </div>
   <button
     className="emotion-11"

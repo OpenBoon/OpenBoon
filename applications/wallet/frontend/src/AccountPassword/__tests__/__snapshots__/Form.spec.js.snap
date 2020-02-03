@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AccountPasswordForm /> should render properly 1`] = `
-.emotion-17 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -52,12 +52,75 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   padding-top: 8px;
 }
 
-.emotion-16 {
+.emotion-18 {
   padding-top: 12px;
   padding-bottom: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-16 {
+  margin-right: 16px;
 }
 
 .emotion-15 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
+  background-color: #808080;
+}
+
+.emotion-15:hover {
+  opacity: 0.5;
+}
+
+.emotion-15[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-17 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -89,32 +152,32 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-15:hover {
+.emotion-17:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-17[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-15,
-.emotion-15:hover,
-.emotion-15:visited {
+.emotion-17,
+.emotion-17:hover,
+.emotion-17:visited {
   background-color: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-17:hover {
   background-color: #b8d652;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-17[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-17"
+  className="emotion-19"
   method="post"
   onSubmit={[Function]}
 >
@@ -201,11 +264,22 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="emotion-16"
+    className="emotion-18"
   >
+    <div
+      className="emotion-16"
+    >
+      <button
+        className="emotion-15"
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
     <button
       aria-disabled={true}
-      className="emotion-15"
+      className="emotion-17"
       onClick={[Function]}
       type="submit"
     >
@@ -374,7 +448,7 @@ exports[`<AccountPasswordForm /> should render properly 2`] = `
 `;
 
 exports[`<AccountPasswordForm /> should render properly 3`] = `
-.emotion-17 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -425,12 +499,75 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   padding-top: 8px;
 }
 
-.emotion-16 {
+.emotion-18 {
   padding-top: 12px;
   padding-bottom: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-16 {
+  margin-right: 16px;
 }
 
 .emotion-15 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
+  background-color: #808080;
+}
+
+.emotion-15:hover {
+  opacity: 0.5;
+}
+
+.emotion-15[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-17 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -462,32 +599,32 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   background-color: transparent;
 }
 
-.emotion-15:hover {
+.emotion-17:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-17[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-15,
-.emotion-15:hover,
-.emotion-15:visited {
+.emotion-17,
+.emotion-17:hover,
+.emotion-17:visited {
   background-color: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-17:hover {
   background-color: #b8d652;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-17[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-17"
+  className="emotion-19"
   method="post"
   onSubmit={[Function]}
 >
@@ -574,11 +711,311 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
     </div>
   </div>
   <div
-    className="emotion-16"
+    className="emotion-18"
   >
+    <div
+      className="emotion-16"
+    >
+      <button
+        className="emotion-15"
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
     <button
       aria-disabled={true}
-      className="emotion-15"
+      className="emotion-17"
+      onClick={[Function]}
+      type="submit"
+    >
+      Save
+    </button>
+  </div>
+</form>
+`;
+
+exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] = `
+.emotion-19 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-4 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
+  display: block;
+  padding-bottom: 8px;
+}
+
+.emotion-2 {
+  position: relative;
+}
+
+.emotion-1 {
+  outline-offset: 0;
+  padding: 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #2e2e2e;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-1:focus {
+  border: 2px solid #73b61c;
+  background-color: #ffffff;
+  outline: #73b61c;
+  color: #000000;
+}
+
+.emotion-3 {
+  padding-top: 8px;
+}
+
+.emotion-18 {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-16 {
+  margin-right: 16px;
+}
+
+.emotion-15 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
+  background-color: #808080;
+}
+
+.emotion-15:hover {
+  opacity: 0.5;
+}
+
+.emotion-15[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-17 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-17:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-17[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-17,
+.emotion-17:hover,
+.emotion-17:visited {
+  background-color: #73b61c;
+}
+
+.emotion-17:hover {
+  background-color: #b8d652;
+}
+
+.emotion-17[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<form
+  action=""
+  className="emotion-19"
+  method="post"
+  onSubmit={[Function]}
+>
+  <div
+    className="emotion-4"
+  >
+    <label
+      className="emotion-0"
+      htmlFor="currentPassword"
+    >
+      Current Password
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        autoFocus={true}
+        className="emotion-1"
+        id="currentPassword"
+        name="currentPassword"
+        onChange={[Function]}
+        type="password"
+        value=""
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
+    </div>
+  </div>
+  <div
+    className="emotion-4"
+  >
+    <label
+      className="emotion-0"
+      htmlFor="newPassword"
+    >
+      New Password
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        className="emotion-1"
+        id="newPassword"
+        name="newPassword"
+        onChange={[Function]}
+        type="password"
+        value=""
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
+    </div>
+  </div>
+  <div
+    className="emotion-4"
+  >
+    <label
+      className="emotion-0"
+      htmlFor="confirmPassword"
+    >
+      Confirm Password
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        className="emotion-1"
+        id="confirmPassword"
+        name="confirmPassword"
+        onChange={[Function]}
+        type="password"
+        value=""
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
+    </div>
+  </div>
+  <div
+    className="emotion-18"
+  >
+    <div
+      className="emotion-16"
+    >
+      <button
+        className="emotion-15"
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+    <button
+      aria-disabled={true}
+      className="emotion-17"
       onClick={[Function]}
       type="submit"
     >

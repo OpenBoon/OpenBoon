@@ -1,6 +1,15 @@
 import { typography, colors, spacing } from '../Styles'
 
+import permissions from '../Permissions/__mocks__/permissions'
+
+import { getUser } from '../Authentication/helpers'
+
 const AccountProfileInfo = () => {
+  const { email } = getUser()
+  const permissionsList = permissions.results
+    .map(p => p.name.replace(/([A-Z])/g, match => ` ${match}`))
+    .join(', ')
+
   return (
     <>
       <div
@@ -10,7 +19,7 @@ const AccountProfileInfo = () => {
           fontWeight: typography.weight.medium,
           paddingTop: spacing.normal,
         }}>
-        User ID: Danny@Zorroa.com
+        {`User ID: ${email}`}
       </div>
 
       <div
@@ -20,7 +29,7 @@ const AccountProfileInfo = () => {
           lineHeight: typography.height.regular,
           fontWeight: typography.weight.regular,
         }}>
-        Permissions: User Admin, Job Management, API Key Management
+        {`Permissions: ${permissionsList}`}
       </div>
     </>
   )

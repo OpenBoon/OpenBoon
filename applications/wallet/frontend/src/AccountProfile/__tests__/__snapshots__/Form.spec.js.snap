@@ -12,7 +12,7 @@ Array [
 <div
     className="emotion-0"
   >
-    User ID: Danny@Zorroa.com
+    User ID: undefined
   </div>,
   .emotion-0 {
   color: #808080;
@@ -24,7 +24,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Permissions: User Admin, Job Management, API Key Management
+    Permissions:  System Monitor,  System Manage,  System Project Override,  System Project Decrypt,  Api Key Manage,  Assets Read,  Assets Import,  Assets Delete,  Project Manage,  Project Create,  Project Files Read,  Project Files Write
   </div>,
   .emotion-0 {
   padding-top: 24px;
@@ -49,7 +49,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Danny Tiesling
+     
   </div>,
   .emotion-0 {
   -webkit-flex: 0;
@@ -128,7 +128,7 @@ Array [
 <div
     className="emotion-0"
   >
-    User ID: Danny@Zorroa.com
+    User ID: undefined
   </div>,
   .emotion-0 {
   color: #808080;
@@ -140,7 +140,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Permissions: User Admin, Job Management, API Key Management
+    Permissions:  System Monitor,  System Manage,  System Project Override,  System Project Decrypt,  Api Key Manage,  Assets Read,  Assets Import,  Assets Delete,  Project Manage,  Project Create,  Project Files Read,  Project Files Write
   </div>,
   .emotion-0 {
   padding-top: 24px;
@@ -165,7 +165,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Danny Tiesling
+     
   </div>,
   .emotion-0 {
   -webkit-flex: 0;
@@ -244,7 +244,7 @@ Array [
 <div
     className="emotion-0"
   >
-    User ID: Danny@Zorroa.com
+    User ID: undefined
   </div>,
   .emotion-0 {
   color: #808080;
@@ -256,7 +256,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Permissions: User Admin, Job Management, API Key Management
+    Permissions:  System Monitor,  System Manage,  System Project Override,  System Project Decrypt,  Api Key Manage,  Assets Read,  Assets Import,  Assets Delete,  Project Manage,  Project Create,  Project Files Read,  Project Files Write
   </div>,
   .emotion-14 {
   display: -webkit-box;
@@ -610,7 +610,7 @@ Array [
 <div
     className="emotion-0"
   >
-    User ID: Danny@Zorroa.com
+    User ID: undefined
   </div>,
   .emotion-0 {
   color: #808080;
@@ -622,7 +622,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Permissions: User Admin, Job Management, API Key Management
+    Permissions:  System Monitor,  System Manage,  System Project Override,  System Project Decrypt,  Api Key Manage,  Assets Read,  Assets Import,  Assets Delete,  Project Manage,  Project Create,  Project Files Read,  Project Files Write
   </div>,
   .emotion-0 {
   padding-top: 24px;
@@ -647,7 +647,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Danny Tiesling
+     
   </div>,
   .emotion-0 {
   -webkit-flex: 0;

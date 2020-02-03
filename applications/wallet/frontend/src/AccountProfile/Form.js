@@ -55,7 +55,7 @@ const AccountProfileForm = () => {
               fontWeight: typography.weight.regular,
               paddingBottom: spacing.comfy,
             }}>
-            Danny Tiesling
+            {`${firstName} ${lastName}`}
           </div>
 
           <Button
