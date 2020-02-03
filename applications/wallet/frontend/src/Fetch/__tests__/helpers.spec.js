@@ -1,13 +1,13 @@
 import { USER } from '../../Authentication/helpers'
 
-import { initialize, fetcher } from '../helpers'
+import { initializeFetcher, fetcher } from '../helpers'
 
 const noop = () => () => {}
 
 describe('<Fetch /> helpers', () => {
   describe('fetcher()', () => {
     it('should fetch data', async () => {
-      initialize({ setUser: noop })
+      initializeFetcher({ setUser: noop })
 
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
@@ -17,7 +17,7 @@ describe('<Fetch /> helpers', () => {
     })
 
     it('should return the raw response in case of error', async () => {
-      initialize({ setUser: noop })
+      initializeFetcher({ setUser: noop })
 
       fetch.mockResponseOnce(null, { status: 500 })
 
@@ -36,7 +36,7 @@ describe('<Fetch /> helpers', () => {
       const mockSetUser = jest.fn()
       const mockRemoveItem = jest.fn()
 
-      initialize({ setUser: mockSetUser })
+      initializeFetcher({ setUser: mockSetUser })
 
       fetch.mockResponseOnce(null, { status: 401 })
 
