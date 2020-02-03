@@ -1,6 +1,9 @@
 import pytest
+import base64
 from django.urls import reverse
 from django.test import override_settings
+from rest_framework.response import Response
+from rest_framework import status
 
 from zmlp import ZmlpClient
 from projects.models import Project, Membership
@@ -10,11 +13,12 @@ pytestmark = pytest.mark.django_db
 
 class TestProjectUser:
 
-    def _make_users_for_project(self, project, count, user_model):
+    def _make_users_for_project(self, project, count, user_model, apikey):
         for index in range(0, count):
             username = f'user_{index}'
             user = user_model.objects.create_user(username, f'{username}@fake.com', 'letmein')  # noqa
-            Membership.objects.create(user=user, project=project, apikey='')
+            Membership.objects.create(user=user, project=project,
+                                      apikey=base64.b64encode(apikey).decode('utf-8'))
 
     @override_settings(PLATFORM='zmlp')
     def test_get_list(self, project, zmlp_project_user, zmlp_project_membership, api_client):
@@ -27,10 +31,10 @@ class TestProjectUser:
 
     @override_settings(PLATFORM='zmlp')
     def test_get_paginated_list(self, project, zmlp_project_user, zmlp_project_membership,
-                                api_client, django_user_model):
+                                api_client, django_user_model, zmlp_apikey):
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        self._make_users_for_project(project, 5, django_user_model)
+        self._make_users_for_project(project, 5, django_user_model, zmlp_apikey)
         uri = reverse('projectuser-list', kwargs={'project_pk': project.id})
         response = api_client.get(f'{uri}?from=0&size=2')
         assert response.status_code == 200
@@ -90,8 +94,7 @@ class TestProjectUser:
                                                   'pk': 9999}))
         assert response.status_code == 404
         content = response.json()
-        assert content == ('The specified user does not exist or '
-                           'is not a part of this project.')
+        assert content['detail'] == 'Not found.'
 
     @override_settings(PLATFORM='zmlp')
     def test_get_retrieve_non_member_user(self, project, zmlp_project_user,
@@ -105,5 +108,22 @@ class TestProjectUser:
                                                   'pk': user.id}))
         assert response.status_code == 404
         content = response.json()
-        assert content == ('The specified user does not exist or '
-                           'is not a part of this project.')
+        assert content == ('The specified user does not exist '
+                           'or is not a part of this project.')
+
+    @override_settings(PLATFORM='zmlp')
+    def test_delete(self, project, zmlp_project_user, zmlp_project_membership, api_client,
+                    monkeypatch):
+
+        def mock_return(*args, **kwargs):
+            return Response(status=status.HTTP_200_OK)
+
+        monkeypatch.setattr(ZmlpClient, 'delete', mock_return)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        response = api_client.delete(reverse('projectuser-detail',
+                                             kwargs={'project_pk': project.id,
+                                                     'pk': zmlp_project_user.id}))
+        assert response.status_code == 200
+        with pytest.raises(Membership.DoesNotExist):
+            zmlp_project_user.memberships.get(project=project.id)
