@@ -7,7 +7,7 @@ import Login from '../Login'
 import Projects from '../Projects'
 import Layout from '../Layout'
 
-import { initialize } from '../Fetch/helpers'
+import { initializeFetcher } from '../Fetch/helpers'
 
 import {
   getUser,
@@ -30,7 +30,7 @@ const Authentication = ({ children }) => {
   const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState({})
 
-  const fetcher = initialize({ setUser })
+  const fetcher = initializeFetcher({ setUser })
 
   initializeUserstorer({ setUser })
 

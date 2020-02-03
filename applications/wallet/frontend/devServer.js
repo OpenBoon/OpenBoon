@@ -4,7 +4,6 @@ import p from 'http-proxy-middleware'
 import morgan from 'morgan'
 
 import user from './src/User/__mocks__/user'
-import accountprofile from './src/AccountProfile/__mocks__/accountprofile'
 import projects from './src/Projects/__mocks__/projects'
 import jobs from './src/Jobs/__mocks__/jobs'
 import job from './src/Job/__mocks__/job'
@@ -33,8 +32,10 @@ app.prepare().then(() => {
   // Mock API calls
   if (MOCKED) {
     server.post('/api/v1/login/', mock(user))
-    server.patch(`/api/v1/users/:userId`, mock(accountprofile))
     server.get('/api/v1/projects/', mock(projects))
+
+    const userpatch = { ...user, firstName: 'David', lastName: 'Smith' }
+    server.patch(`/api/v1/users/:userId`, mock(userpatch))
 
     const PID_API_BASE = '/api/v1/projects/:projectId'
 

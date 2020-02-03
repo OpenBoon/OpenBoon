@@ -39,8 +39,9 @@ describe('<Authentication /> helpers', () => {
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
       const mockSetErrorMessage = jest.fn()
+      const mockSetUser = jest.fn()
       const mockSetItem = jest.fn()
-      initializeUserstorer({ setUser: mockSetItem })
+      initializeUserstorer({ setUser: mockSetUser })
 
       Object.defineProperty(window, 'localStorage', {
         writable: true,
@@ -66,6 +67,8 @@ describe('<Authentication /> helpers', () => {
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
+      expect(mockSetUser).toHaveBeenCalledWith({ id: 12345 })
+
       expect(mockSetItem).toHaveBeenCalledWith(
         USER,
         JSON.stringify({ id: 12345 }),
@@ -76,7 +79,9 @@ describe('<Authentication /> helpers', () => {
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
       const mockSetErrorMessage = jest.fn()
+      const mockSetUser = jest.fn()
       const mockSetItem = jest.fn()
+      initializeUserstorer({ setUser: mockSetUser })
 
       Object.defineProperty(window, 'localStorage', {
         writable: true,
@@ -102,6 +107,8 @@ describe('<Authentication /> helpers', () => {
       })
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
+
+      expect(mockSetUser).toHaveBeenCalledWith({ id: 12345 })
 
       expect(mockSetItem).toHaveBeenCalledWith(
         USER,
