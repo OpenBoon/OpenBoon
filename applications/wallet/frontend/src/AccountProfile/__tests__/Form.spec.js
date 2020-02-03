@@ -12,6 +12,7 @@ describe('<AccountProfileForm />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Click edit username
     act(() => {
       component.root
         .findByProps({ type: 'submit' })
@@ -32,6 +33,7 @@ describe('<AccountProfileForm />', () => {
         .props.onChange({ target: { value: 'Doe' } })
     })
 
+    // Submit the form
     act(() => {
       component.root
         .findByProps({ type: 'submit' })
@@ -44,12 +46,14 @@ describe('<AccountProfileForm />', () => {
   it('should render properly when a user cancels', () => {
     const component = TestRenderer.create(<AccountProfileForm />)
 
+    // Click edit username
     act(() => {
       component.root
         .findByProps({ type: 'submit' })
         .props.onClick({ preventDefault: noop })
     })
 
+    // Click cancel
     act(() => {
       component.root
         .findByProps({ type: 'button' })
