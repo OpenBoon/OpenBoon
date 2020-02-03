@@ -72,7 +72,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
         # Delete Users Apikey
         try:
             key_data = decode_apikey(apikey)
-        except (ValueError, json.decodeer.JSONDecodeError):
+        except ValueError:
             return Response('Unable to parse apikey.', status=status.HTTP_400_BAD_REQUEST)
         try:
             apikey_id = key_data['id']
@@ -80,7 +80,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
             return Response('Apikey is incomplete.', status=status.HTTP_400_BAD_REQUEST)
         response = client.delete(f'/auth/v1/apikey/{apikey_id}')
         if not response.status_code == 200:
-            return Response('Unable to delete apikey.',
+            return Response('Unable to delete apikey in ZMLP.',
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         membership.delete()
         return Response(status=status.HTTP_200_OK)

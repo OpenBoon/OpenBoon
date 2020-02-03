@@ -34,8 +34,7 @@ class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
     def _get_decoded_permissions(self, apikey):
         try:
             key_data = decode_apikey(apikey)
-        except (ValueError, json.decoder.JSONDecodeError):
+        except ValueError:
             # Something wrong with the json string
             return 'Could not parse apikey, please check.'
-
         return key_data['permissions']
