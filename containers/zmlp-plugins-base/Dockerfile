@@ -4,7 +4,7 @@ USER root
 RUN mkdir /build
 COPY ./ /build
 WORKDIR /build
-RUN python3 setup.py install
+RUN pip3 install .
 
 RUN mkdir -p /zps
 WORKDIR /zps

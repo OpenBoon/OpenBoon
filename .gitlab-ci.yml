@@ -154,6 +154,33 @@ sdk-unit-tests:
       - containers/zmlp-plugins-base/**/*
       - .gitlab-ci.yml
 
+plugin-container-tests:
+  image: zmlp/docker-buildx
+  stage: test
+  services:
+    - docker:19.03-dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+  retry: 2
+  before_script:
+    - apk add docker-compose
+    - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
+  script:
+    - ./buildx analyst zmlp-py3-base zmlp-py3-client zmlp-py3-sdk zmlp-plugins-base zmlp-plugins-core zmlp-plugins-analysis
+    - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-core:latest pytest -s /zps/pylib
+    - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-analysis:latest pytest -s /zps/pylib
+  only:
+    refs:
+      - merge_requests
+    changes:
+      - client/python/**/*
+      - sdk/**/*
+      - containers/**/*
+      - .gitlab-ci.yml
+
+
 sdk-java-unit-tests:
   image: maven:3.6-jdk-11
   stage: test
