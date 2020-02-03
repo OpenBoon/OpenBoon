@@ -24,12 +24,7 @@ class CredentialsServiceTests : AbstractTest() {
     @Autowired
     lateinit var credentialsService: CredentialsService
 
-    val blob = """{
-            "aws_access_key_id": "your_access_key_id"
-            "aws_secret_access_key" : "your_secret_access_key"
-        """.trimIndent()
-
-    val spec = CredentialsSpec("gcp", CredentialsType.AWS, blob)
+    val spec = CredentialsSpec("gcp", CredentialsType.AWS, TEST_AWS_CREDS)
 
     lateinit var creds: Credentials
 
@@ -69,7 +64,7 @@ class CredentialsServiceTests : AbstractTest() {
 
     @Test
     fun testUpdate() {
-        val update = CredentialsUpdate("dog", "foo:bar")
+        val update = CredentialsUpdate("dog", TEST_AWS_CREDS)
         val creds2 = credentialsService.update(creds.id, update)
         assertEquals(creds.id, creds2.id)
         assertEquals(update.name, creds2.name)
@@ -82,14 +77,14 @@ class CredentialsServiceTests : AbstractTest() {
     fun testGetDecrypted() {
         entityManager.flush()
         val blob2 = credentialsService.getDecryptedBlob(creds.id)
-        assertEquals(blob, blob2)
+        assertEquals(TEST_AWS_CREDS, blob2)
     }
 
     @Test
     fun testSetEncryptedBlob() {
         entityManager.flush()
-        credentialsService.setEncryptedBlob(creds.id, "booyaa")
+        credentialsService.setEncryptedBlob(creds.id, spec.type, TEST_AWS_CREDS)
         val value = credentialsService.getDecryptedBlob(creds.id)
-        assertEquals("booyaa", value)
+        assertEquals(TEST_AWS_CREDS, value)
     }
 }

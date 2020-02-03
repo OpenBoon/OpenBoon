@@ -1,20 +1,32 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.zmlp.util.Json
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import java.lang.IllegalArgumentException
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
-enum class CredentialsType {
-    GCP,
-    AWS,
-    AZURE,
-    CLARIFAI
+enum class CredentialsType(vararg val keys: String) {
+    GCP("type", "project_id", "private_key_id", "private_key", "client_email",
+        "client_id", "auth_uri", "token_uri", "auth_provider_x509_cert_url",
+        "client_x509_cert_url"),
+    AWS("aws_access_key_id", "aws_secret_access_key");
+
+    fun validate(blob: String) {
+        val parsed = Json.Mapper.readValue<Map<String, Any>>(blob)
+        this.keys.forEach {
+            if (!parsed.containsKey(it)) {
+                throw IllegalArgumentException("Credentials blob is missing $it property")
+            }
+        }
+    }
 }
 
 @ApiModel("Credentials Spec",

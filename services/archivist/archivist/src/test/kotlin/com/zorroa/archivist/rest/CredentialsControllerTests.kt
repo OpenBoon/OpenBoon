@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.Credentials
 import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.service.CredentialsService
+import io.micrometer.core.instrument.util.StringEscapeUtils
 import org.hamcrest.CoreMatchers
 import org.junit.Before
 import org.junit.Test
@@ -24,12 +25,7 @@ class CredentialsControllerTests : MockMvcTest() {
     @Autowired
     lateinit var credentialsService: CredentialsService
 
-    val blob = """{
-            "aws_access_key_id": "your_access_key_id"
-            "aws_secret_access_key" : "your_secret_access_key"
-        """.trimIndent()
-
-    val spec = CredentialsSpec("gcp", CredentialsType.AWS, blob)
+    val spec = CredentialsSpec("gcp", CredentialsType.AWS, TEST_AWS_CREDS)
 
     lateinit var creds: Credentials
 
@@ -42,8 +38,8 @@ class CredentialsControllerTests : MockMvcTest() {
     fun testCreate() {
         val payload = """{
             "name": "gcp_service_account",
-            "type": "gcp",
-            "blob": "a blob"
+            "type": "aws",
+            "blob": "${StringEscapeUtils.escapeJson(TEST_AWS_CREDS)}"
         }
         """.trimIndent()
 
@@ -107,7 +103,7 @@ class CredentialsControllerTests : MockMvcTest() {
     fun testUpdate_withBlob() {
         val payload = """{
             "name": "booya",
-            "blob": "kirk_bones_spock"
+            "blob": "${StringEscapeUtils.escapeJson(TEST_AWS_CREDS)}"
         }
         """.trimIndent()
         mvc.perform(
@@ -121,7 +117,7 @@ class CredentialsControllerTests : MockMvcTest() {
             .andReturn()
 
         authenticate(creds.projectId)
-        assertEquals("kirk_bones_spock", credentialsService.getDecryptedBlob(creds.id))
+        assertEquals(TEST_AWS_CREDS, credentialsService.getDecryptedBlob(creds.id))
     }
 
     @Test
@@ -146,6 +142,6 @@ class CredentialsControllerTests : MockMvcTest() {
             .andReturn()
 
         val blob2 = res.response.contentAsString
-        assertEquals(blob, blob2)
+        assertEquals(TEST_AWS_CREDS, blob2)
     }
 }
