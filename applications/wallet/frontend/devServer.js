@@ -12,6 +12,7 @@ import permissions from './src/Permissions/__mocks__/permissions'
 import apikeys from './src/ApiKeys/__mocks__/apikeys'
 import apikeysadd from './src/ApiKeysAdd/__mocks__/apikeysadd'
 import projectUsers from './src/ProjectUsers/__mocks__/projectUsers'
+import projectUser from './src/ProjectUser/__mocks__/projectUser'
 
 const { MOCKED, SLOW } = process.env
 
@@ -35,17 +36,22 @@ app.prepare().then(() => {
     server.get('/api/v1/projects/', mock(projects))
 
     const userpatch = { ...user, firstName: 'David', lastName: 'Smith' }
-    server.patch(`/api/v1/users/:userId`, mock(userpatch))
+    server.patch(`/api/v1/users/:userId/`, mock(userpatch))
 
     const PID_API_BASE = '/api/v1/projects/:projectId'
 
-    server.get(`${PID_API_BASE}/jobs/`, mock(jobs))
     server.get(`${PID_API_BASE}/permissions/`, mock(permissions))
+
+    server.get(`${PID_API_BASE}/jobs/`, mock(jobs))
     server.get(`${PID_API_BASE}/jobs/:jobId/`, mock(job))
     server.get(`${PID_API_BASE}/jobs/:jobId/errors`, mock(jobErrors))
+
     server.get(`${PID_API_BASE}/apikeys/`, mock(apikeys))
     server.post(`${PID_API_BASE}/apikeys/`, mock(apikeysadd))
+
     server.get(`${PID_API_BASE}/users/`, mock(projectUsers))
+    server.get(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
+    server.patch(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
   }
 
   // Proxy API calls

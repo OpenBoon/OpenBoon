@@ -8,6 +8,7 @@ import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import Loading from '../Loading'
 
 const INITIAL_STATE = {
   email: '',
@@ -28,7 +29,7 @@ const ProjectUsersAddForm = () => {
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
-  if (!Array.isArray(permissions)) return 'Loading...'
+  if (!Array.isArray(permissions)) return <Loading />
 
   return (
     <Form>
