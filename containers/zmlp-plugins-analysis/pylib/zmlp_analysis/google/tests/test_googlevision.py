@@ -1,6 +1,6 @@
 
 from google.cloud.vision import types
-from mock import patch
+from unittest.mock import patch
 
 from ..processors import CloudVisionProcessor
 from zmlp import ZmlpClient
