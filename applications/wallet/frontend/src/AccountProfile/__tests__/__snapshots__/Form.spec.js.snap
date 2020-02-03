@@ -258,7 +258,7 @@ Array [
   >
     Permissions: User Admin, Job Management, API Key Management
   </div>,
-  .emotion-13 {
+  .emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -309,13 +309,16 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-12 {
-  padding-top: 12px;
+.emotion-13 {
   padding-bottom: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.emotion-11 {
+  margin-right: 16px;
 }
 
 .emotion-10 {
@@ -373,7 +376,7 @@ Array [
   background-color: #808080;
 }
 
-.emotion-11 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -405,32 +408,32 @@ Array [
   background-color: transparent;
 }
 
-.emotion-11:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited {
   background-color: #73b61c;
 }
 
-.emotion-11:hover {
+.emotion-12:hover {
   background-color: #b8d652;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-13"
+    className="emotion-14"
     method="post"
     onSubmit={[Function]}
   >
@@ -490,18 +493,22 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-12"
+      className="emotion-13"
     >
-      <button
-        className="emotion-10"
-        onClick={[Function]}
-        type="button"
+      <div
+        className="emotion-11"
       >
-        Cancel
-      </button>
+        <button
+          className="emotion-10"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
       <button
         aria-disabled={true}
-        className="emotion-11"
+        className="emotion-12"
         onClick={[Function]}
         type="submit"
       >
