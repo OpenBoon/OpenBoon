@@ -14,6 +14,8 @@ export const onSubmit = async ({
     dispatch({
       firstName: user.firstName,
       lastName: user.lastName,
+      showForm: false,
+      success: true,
       errors: {},
     })
 
@@ -26,6 +28,6 @@ export const onSubmit = async ({
       return acc
     }, {})
 
-    dispatch({ errors: parsedErrors })
+    dispatch({ success: false, errors: parsedErrors })
   }
 }
