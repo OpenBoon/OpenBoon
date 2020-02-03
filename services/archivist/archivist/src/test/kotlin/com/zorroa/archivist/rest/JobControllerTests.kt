@@ -263,7 +263,7 @@ class JobControllerTests : MockMvcTest() {
     fun testGetDescryptedCredentials() {
         credentialsService.create(
             CredentialsSpec("test",
-                CredentialsType.AWS, """{"foo": "bar"}""")
+                CredentialsType.AWS, TEST_AWS_CREDS)
         )
 
         val spec2 = JobSpec(
@@ -281,7 +281,10 @@ class JobControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.foo", CoreMatchers.equalTo("bar")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.aws_access_key_id",
+                CoreMatchers.equalTo("foo")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.aws_secret_access_key",
+                CoreMatchers.equalTo("kirkspockbones")))
             .andReturn()
     }
 }

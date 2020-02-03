@@ -61,7 +61,7 @@ class DataSourceServiceTests : AbstractTest() {
 
     @Test
     fun testCreateWithCredentials() {
-        credentialsService.create(CredentialsSpec("test", CredentialsType.AWS, "abc123"))
+        credentialsService.create(CredentialsSpec("test", CredentialsType.AWS, TEST_AWS_CREDS))
         val spec2 = DataSourceSpec(
             "dev-data",
             "gs://zorroa-dev-data",
@@ -141,7 +141,7 @@ class DataSourceServiceTests : AbstractTest() {
         val ds = dataSourceService.create(spec)
         val creds = credentialsService.create(
             CredentialsSpec("test",
-                CredentialsType.AWS, """{"foo": "bar"}""")
+                CredentialsType.AWS, TEST_AWS_CREDS)
         )
 
         val update = DataSourceUpdate(
@@ -185,7 +185,7 @@ class DataSourceServiceTests : AbstractTest() {
     fun testCreateAnalysisJobWithCredentials() {
         credentialsService.create(
             CredentialsSpec("test",
-                CredentialsType.AWS, """{"foo": "bar"}""")
+                CredentialsType.AWS, TEST_AWS_CREDS)
         )
         val spec2 = DataSourceSpec(
             "dev-data",
