@@ -13,6 +13,12 @@ export const getUser = () => {
 }
 
 /**
+ * initializeUserstorer()
+ */
+
+export const initializeUserstorer = () => {}
+
+/**
  * isUserAuthenticated()
  */
 

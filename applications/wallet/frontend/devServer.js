@@ -34,6 +34,9 @@ app.prepare().then(() => {
     server.post('/api/v1/login/', mock(user))
     server.get('/api/v1/projects/', mock(projects))
 
+    const userpatch = { ...user, firstName: 'David', lastName: 'Smith' }
+    server.patch(`/api/v1/users/:userId`, mock(userpatch))
+
     const PID_API_BASE = '/api/v1/projects/:projectId'
 
     server.get(`${PID_API_BASE}/jobs/`, mock(jobs))

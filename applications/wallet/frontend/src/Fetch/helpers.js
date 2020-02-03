@@ -15,7 +15,7 @@ export const getCsrfToken = () => {
   return csrftoken
 }
 
-export const initialize = ({ setUser }) => {
+export const initializeFetcher = ({ setUser }) => {
   enhancedFetch = async (url, options = {}) => {
     const csrftoken = getCsrfToken()
 
