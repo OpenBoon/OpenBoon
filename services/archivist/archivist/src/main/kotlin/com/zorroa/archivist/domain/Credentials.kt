@@ -17,7 +17,7 @@ enum class CredentialsType(vararg val keys: String) {
     GCP("type", "project_id", "private_key_id", "private_key", "client_email",
         "client_id", "auth_uri", "token_uri", "auth_provider_x509_cert_url",
         "client_x509_cert_url"),
-    AWS("aws_access_key_id","aws_secret_access_key");
+    AWS("aws_access_key_id", "aws_secret_access_key");
 
     fun validate(blob: String) {
         val parsed = Json.Mapper.readValue<Map<String, Any>>(blob)
@@ -28,8 +28,6 @@ enum class CredentialsType(vararg val keys: String) {
         }
     }
 }
-
-
 
 @ApiModel("Credentials Spec",
     description = "Field necessary for creating a new credentials blob.")

@@ -1,6 +1,5 @@
 package com.zorroa.archivist.service
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.Credentials
 import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
@@ -15,7 +14,6 @@ import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.service.security.EncryptionService
-import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
