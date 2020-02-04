@@ -174,5 +174,5 @@ module "wallet" {
   zmlp-api-url = "http://${module.api-gateway.ip-address}"
   smtp-password = "${var.smtp-password}"
   google-oauth-client-id = "${var.google-oauth-client-id}"
-  frontend-sentry-dsn = "${var.frontend-sentry-dsn}"
+  environment = 'staging'
 }

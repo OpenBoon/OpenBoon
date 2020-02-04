@@ -138,8 +138,8 @@ resource "kubernetes_deployment" "wallet" {
               value = "${var.google-oauth-client-id}"
             },
             {
-              name = "FRONTEND_SENTRY_DSN"
-              value = "${var.frontend-sentry-dsn}"
+              name = "ENVIRONMENT"
+              value = "${var.environment}"
             },
             {
               name = "ENABLE_SENTRY"

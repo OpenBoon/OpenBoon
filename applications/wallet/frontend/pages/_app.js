@@ -6,12 +6,13 @@ import 'focus-visible'
 
 import Authentication from '../src/Authentication'
 
-const { publicRuntimeConfig: { FRONTEND_SENTRY_DSN } = {} } = getConfig()
+const { publicRuntimeConfig: { ENVIRONMENT, ENABLE_SENTRY } = {} } = getConfig()
 
-if (process.env.ENABLE_SENTRY === 'true' && FRONTEND_SENTRY_DSN) {
+if (ENABLE_SENTRY === 'true') {
   Sentry.init({
-    dsn: FRONTEND_SENTRY_DSN,
+    dsn: 'https://09e9c3fc777c469ab784ff4367ff54bb@sentry.io/1848515',
     release: process.env.CI_COMMIT_SHA,
+    environment: ENVIRONMENT
   })
 }
 

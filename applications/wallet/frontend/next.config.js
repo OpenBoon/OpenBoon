@@ -6,7 +6,8 @@ const {
   ANALYZE,
   CI_COMMIT_SHA,
   GOOGLE_OAUTH_CLIENT_ID,
-  FRONTEND_SENTRY_DSN,
+  ENVIRONMENT,
+  ENABLE_SENTRY
 } = process.env
 
 module.exports = withSourceMaps({
@@ -15,7 +16,8 @@ module.exports = withSourceMaps({
   },
   publicRuntimeConfig: {
     GOOGLE_OAUTH_CLIENT_ID,
-    FRONTEND_SENTRY_DSN,
+    ENVIRONMENT,
+    ENABLE_SENTRY
   },
   webpack: (config, { isServer }) => {
     if (ANALYZE && !isServer) {

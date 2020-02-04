@@ -8,7 +8,7 @@ variable "image-pull-secret" {}
 variable "zmlp-api-url" {}
 variable "smtp-password" {}
 variable "google-oauth-client-id" {}
-variable "frontend-sentry-dsn" {}
+variable "environment" {}
 
 variable "container-tag" {default = "development"}
 variable "namespace" {default = "default"}

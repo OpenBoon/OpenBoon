@@ -193,10 +193,9 @@ wallet container.
 | Environment Variable | Effect |
 | -------------------- | ------ |
 | ENABLE_SENTRY | Enables Sentry error logging if "true". |
+| ENVIRONMENT | Name of the environment wallet is running in. |
 | ZMLP_API_URL | FQDN for the ZMLP REST API. |
 | PG_HOST | Hostname of the Postgres DB server. |
 | PG_PASSWORD | Password to be used by the wallet Postgres user. |
 | SMTP_PASSWORD | Password for the MailGun SMTP server used for sending emails. |
 | GOOGLE_OAUTH_CLIENT_ID | Client ID for Google OAuth used for Google sign in. |
-| FRONTEND_SENTRY_DSN | DSN of the Sentry project to log frontend errors to. |
-   
