@@ -5,6 +5,7 @@ import com.zorroa.zmlp.client.Json;
 import com.zorroa.zmlp.client.ZmlpClient;
 import com.zorroa.zmlp.client.domain.ZmlpClientException;
 import com.zorroa.zmlp.client.domain.asset.*;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -61,11 +62,33 @@ public class AssetApp {
      * For search/query format.
      * https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-body.html
      *
-     * @param assetSearch The Elastic Search and Element Query
+     * @param assetSearch The Elastic Search and Element Query in Map format
      * @return A AssetSearchResult containing assets ElasticSearch search.
      */
 
     public AssetSearchResult search(Map assetSearch) {
+        return new AssetSearchResult(this.client, assetSearch);
+    }
+
+    /**
+     *  Perform an asset search using the ElasticSearch query DSL.  Note that for
+     *  load and security purposes, not all ElasticSearch search options are accepted.
+     *  <p>
+     *  See Also:
+     *  For search/query format.
+     *  https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-body.html
+     *
+     * @param searchSourceBuilder
+     * @return
+     */
+    public AssetSearchResult search(SearchSourceBuilder searchSourceBuilder){
+        Map assetSearch;
+        try {
+            assetSearch = Json.mapper.readValue(searchSourceBuilder.toString(), Map.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
         return new AssetSearchResult(this.client, assetSearch);
     }
 
@@ -88,7 +111,7 @@ public class AssetApp {
     /**
      * Perform an asset scrolled search using the ElasticSearch query DSL.
      *
-     * @param search The ElasticSearch search to execute
+     * @param search The ElasticSearch search, in Map format, to execute
      * @param timeout The scroll timeout.
      * @return An AssetSearchScroller instance
      */
@@ -97,6 +120,24 @@ public class AssetApp {
         timeout = Optional.ofNullable(timeout).orElse("1m");
         return new AssetSearchScroller(this.client, search, timeout);
 
+    }
+
+    /**
+     * Perform an asset scrolled search using the ElasticSearch query DSL.
+     *
+     * @param search The ElasticSearch search to execute
+     * @param timeout The scroll timeout.
+     * @return An AssetSearchScroller instance
+     */
+    public AssetSearchScroller scrollSearch(SearchSourceBuilder search, String timeout){
+        Map assetSearch;
+        try {
+            assetSearch = Json.mapper.readValue(search.toString(), Map.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return this.scrollSearch(assetSearch, timeout);
     }
 
     /**
