@@ -1,4 +1,4 @@
-const apikeys = {
+const apiKeys = {
   count: 2,
   next: null,
   previous: null,
@@ -28,4 +28,4 @@ const apikeys = {
   ],
 }
 
-export default apikeys
+export default apiKeys

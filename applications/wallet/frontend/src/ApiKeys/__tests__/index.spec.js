@@ -2,7 +2,7 @@ import TestRenderer from 'react-test-renderer'
 
 import ApiKeys from '..'
 
-import apikeys from '../__mocks__/apikeys'
+import apiKeys from '../__mocks__/apiKeys'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
@@ -49,7 +49,7 @@ describe('<ApiKeys />', () => {
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: apikeys,
+      data: apiKeys,
     })
 
     const component = TestRenderer.create(<ApiKeys />)

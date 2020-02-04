@@ -9,8 +9,8 @@ import jobs from './src/Jobs/__mocks__/jobs'
 import job from './src/Job/__mocks__/job'
 import jobErrors from './src/JobErrors/__mocks__/jobErrors'
 import permissions from './src/Permissions/__mocks__/permissions'
-import apikeys from './src/ApiKeys/__mocks__/apikeys'
-import apikeysadd from './src/ApiKeysAdd/__mocks__/apikeysadd'
+import apiKeys from './src/ApiKeys/__mocks__/apiKeys'
+import apiKey from './src/ApiKey/__mocks__/apiKey'
 import projectUsers from './src/ProjectUsers/__mocks__/projectUsers'
 import projectUser from './src/ProjectUser/__mocks__/projectUser'
 
@@ -46,8 +46,8 @@ app.prepare().then(() => {
     server.get(`${PID_API_BASE}/jobs/:jobId/`, mock(job))
     server.get(`${PID_API_BASE}/jobs/:jobId/errors`, mock(jobErrors))
 
-    server.get(`${PID_API_BASE}/apikeys/`, mock(apikeys))
-    server.post(`${PID_API_BASE}/apikeys/`, mock(apikeysadd))
+    server.get(`${PID_API_BASE}/apikeys/`, mock(apiKeys))
+    server.post(`${PID_API_BASE}/apikeys/`, mock(apiKey))
 
     server.get(`${PID_API_BASE}/users/`, mock(projectUsers))
     server.get(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
