@@ -6,6 +6,8 @@ import projectUsers from '../__mocks__/projectUsers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
+jest.mock('../../FormSuccess', () => 'FormSuccess')
+
 describe('<ProjectUsers />', () => {
   it('should render properly while loading', () => {
     require('next/router').__setUseRouter({
@@ -45,7 +47,7 @@ describe('<ProjectUsers />', () => {
   it('should render properly with project users', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/users',
-      query: { projectId: PROJECT_ID },
+      query: { projectId: PROJECT_ID, action: 'edit-user-success' },
     })
 
     require('swr').__setMockUseSWRResponse({
