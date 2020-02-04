@@ -3,6 +3,7 @@ package examples.assets;
 import com.zorroa.zmlp.client.ZmlpApp;
 import com.zorroa.zmlp.client.domain.PagedList;
 import com.zorroa.zmlp.client.domain.asset.Asset;
+import com.zorroa.zmlp.client.domain.asset.AssetSearchResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,8 @@ public class SearchElement {
         simpleElementQueryString.put("simple_query_string", query);
 
         //Search Asset
-        PagedList<Asset> searchResult = zmlpApp.assets.search(simpleElementQueryString);
+        AssetSearchResult assetSearchResult = zmlpApp.assets.search(simpleElementQueryString);
+        PagedList<Asset> searchResult = assetSearchResult.assets();
 
         for (Asset asset : searchResult)
             System.out.println(String.format("this is a cat: %s", asset.getAttr("source.path")));
