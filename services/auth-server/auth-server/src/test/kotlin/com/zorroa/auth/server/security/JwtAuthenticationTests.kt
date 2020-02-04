@@ -24,7 +24,7 @@ class JwtAuthenticationTests : AbstractTest() {
             setOf(Permission.AssetsRead)
         )
         val apiKey = apiKeyService.create(spec)
-        val token = apiKey.getJwtToken()
+        val token = apiKey.getValidationKey().getJwtToken()
 
         val auth = jwtAuthenticationFilter.validateToken(token)
         assertEquals(auth.user.id, apiKey.id)

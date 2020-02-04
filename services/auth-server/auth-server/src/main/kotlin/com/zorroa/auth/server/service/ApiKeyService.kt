@@ -55,13 +55,18 @@ class ApiKeyServiceImpl constructor(
             validatePermissionsCanBeAssigned(spec.permissions)
         }
 
+        val time = System.currentTimeMillis()
+        val actor = getZmlpActor()
         val key = ApiKey(
             UUID.randomUUID(),
             getProjectId(),
             KeyGenerator.generate(24),
             encryptionService.encryptString(KeyGenerator.generate(64), ApiKey.CRYPT_VARIANCE),
             spec.name,
-            spec.permissions.map { it.name }.toSet()
+            spec.permissions.map { it.name }.toSet(),
+            time, time,
+            actor.toString(),
+            actor.toString()
         )
 
         logger.event(

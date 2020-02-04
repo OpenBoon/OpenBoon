@@ -35,7 +35,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
     lateinit var apiKeyCustomRepository: ApiKeyCustomRepository
 
     @Autowired
-    lateinit var inceptionKey: ApiKey
+    lateinit var inceptionKey: ValidationKey
 
     @Autowired
     lateinit var encryptionService: EncryptionService
