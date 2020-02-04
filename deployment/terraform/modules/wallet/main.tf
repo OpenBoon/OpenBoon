@@ -126,8 +126,8 @@ resource "kubernetes_deployment" "wallet" {
               value = "${random_string.sql-password.result}"
             },
             {
-              name = "ARCHIVIST_URL"
-              value = "${var.archivist-url}"
+              name = "ZMLP_API_URL"
+              value = "${var.zmlp-api-url}"
             },
             {
               name = "SMTP_PASSWORD"
@@ -138,8 +138,12 @@ resource "kubernetes_deployment" "wallet" {
               value = "${var.google-oauth-client-id}"
             },
             {
-              name = "FRONTEND_SENTRY_DSN"
-              value = "${var.frontend-sentry-dsn}"
+              name = "ENVIRONMENT"
+              value = "${var.environment}"
+            },
+            {
+              name = "ENABLE_SENTRY"
+              value = "true"
             }
           ]
         }

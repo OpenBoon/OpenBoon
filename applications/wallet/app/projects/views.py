@@ -63,9 +63,9 @@ class BaseProjectViewSet(ViewSet):
         """
         apikey = Membership.objects.get(user=request.user, project=project).apikey
         if settings.PLATFORM == 'zvi':
-            return ZviClient(apikey=apikey, server=settings.ARCHIVIST_URL)
+            return ZviClient(apikey=apikey, server=settings.ZMLP_API_URL)
         else:
-            return ZmlpClient(apikey=apikey, server=settings.ARCHIVIST_URL,
+            return ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL,
                               project_id=project)
 
     def get_serializer(self, *args, **kwargs):
@@ -237,4 +237,4 @@ class ProjectViewSet(ListModelMixin,
             raise PermissionDenied(detail=(f'{request.user.username} does not have a membership '
                                            f'to {project.name} setup yet. Please create in the '
                                            f'Admin console to continue.'))
-        return ZmlpClient(apikey=apikey, server=settings.ARCHIVIST_URL)
+        return ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL)
