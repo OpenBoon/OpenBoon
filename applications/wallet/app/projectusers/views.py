@@ -14,15 +14,27 @@ User = get_user_model()
 
 
 class ProjectUserViewSet(BaseProjectViewSet):
+    """Users who are Members of this Project.
+
+    Available HTTP methods, endpoints, and what they do:
+
+    * **GET** _api/v1/projects/$Project_Id/users/_ - List the Users who are members of $Project_Id
+    * **GET** _api/v1/projects/$Project_Id/users/$User_Id/_ - Detail info on $User_Id
+    * **POST** _api/v1/projects/$Project_Id/users/_ - Create a membership to $Project_Id
+        - Ex. Post Body: `{"email": "user@email.com", "permissions": ["AssetsRead"]}`
+    * **PUT/PATCH** _api/v1/projects/$Project_Id/users/$User_Id/_ - Update a Users permissions
+    * **DELETE** _api/v1/projects/$Project_Id/users/$User_Id/_ - Remove $User_Id from $Project_Id
+
+    """
 
     ZMLP_ONLY = True
     pagination_class = FromSizePagination
     serializer_class = ProjectUserSerializer
 
-    def get_object(self, pk):
+    def get_object(self, pk, project_pk):
         try:
-            return User.objects.get(id=pk)
-        except User.DoesNotExist:
+            return Membership.objects.get(user=pk, project=project_pk)
+        except Membership.DoesNotExist:
             raise Http404
 
     def list(self, request, project_pk, client):
@@ -39,13 +51,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
     def retrieve(self, request, project_pk, client, pk):
         # List details about the current project User
-        user = self.get_object(pk)
-        try:
-            user.projects.get(id=project_pk)
-        except Project.DoesNotExist:
-            return Response('The specified user does not exist or is not a part of this '
-                            'project.',
-                            status=status.HTTP_404_NOT_FOUND)
+        user = self.get_object(pk, project_pk).user
         serializer = self.get_serializer(user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -61,12 +67,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
     @transaction.atomic
     def destroy(self, request, project_pk, client, pk):
         # Remove the User's Membership and delete the associated apikey
-        user = self.get_object(pk)
-        try:
-            membership = user.memberships.get(project=project_pk)
-        except Membership.DoesNotExist:
-            return Response('User has no membership to the specified project.',
-                            status=status.HTTP_404_NOT_FOUND)
+        membership = self.get_object(pk, project_pk)
         apikey = membership.apikey
         # Delete Users Apikey
         try:
