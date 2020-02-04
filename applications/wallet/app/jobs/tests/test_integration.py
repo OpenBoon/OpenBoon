@@ -49,7 +49,43 @@ class TestJobViewSet:
         assert len(content['results']) == 1
         assert len(content['results'][0]) > 0
 
-    def test_get_detail(self, zmlp_project_user, project, api_client, monkeypatch, job_pk):
+    @override_settings(PLATFORM='zmlp')
+    def test_get_detail_zmlp(self, zmlp_project_user, project, api_client, monkeypatch, job_pk):
+
+        def mock_api_response(*args, **kwargs):
+            response = {'id': 'b8ec649d-67bc-1ab4-a0ae-0242ac120007',
+                        'organizationId': '00000000-9998-8888-7777-666666666666',
+                        'name': 'import-test-data-all.json', 'type': 'Import',
+                        'state': 'Finished', 'assetCounts': {'assetCreatedCount': 246,
+                                                             'assetReplacedCount': 54,
+                                                             'assetWarningCount': 0,
+                                                             'assetErrorCount': 1},
+                        'taskCounts': {'tasksTotal': 8, 'tasksWaiting': 0,
+                                       'tasksRunning': 0, 'tasksSuccess': 8,
+                                       'tasksFailure': 0, 'tasksSkipped': 0,
+                                       'tasksQueued': 0},
+                        'createdUser': {'id': '00000000-7b0b-480e-8c36-f06f04aed2f1',
+                                        'username': 'admin', 'email': 'admin@zorroa.com',
+                                        'permissionId': '00000000-fc08-4e4a-aa7a-a183f42c9fa0',
+                                        'homeFolderId': '00000000-2395-4e71-9e4c-dacceef6ad53',
+                                        'organizationId': '00000000-9998-8888-7777-666666666666'},
+                        'timeStarted': 1574891251035, 'timeUpdated': 1574891738399,
+                        'timeCreated': 1574891249308, 'priority': 100, 'paused': False,
+                        'timePauseExpired': -1, 'maxRunningTasks': 1024,
+                        'jobId': 'b8ec649d-67bc-1ab4-a0ae-0242ac120007'}  # noqa
+            return response
+
+        monkeypatch.setattr(ZmlpClient, 'get', mock_api_response)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        response = api_client.get(reverse('job-detail',
+                                          kwargs={'project_pk': project.id,
+                                                  'pk': job_pk}))
+        assert response.status_code == 200
+        content = response.json()
+        assert content['id'] == 'b8ec649d-67bc-1ab4-a0ae-0242ac120007'
+
+    def test_get_detail_zvi_response(self, zmlp_project_user, project, api_client, monkeypatch, job_pk):
 
         def mock_api_response(*args, **kwargs):
             response = Response()
