@@ -16,13 +16,16 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 VERSION = '0.1.0'
+ENVIRONMENT = os.environ.get('ENVIRONMENT', 'localdev')
 
-# Sentry Configuration
-sentry_sdk.init(
-    dsn="https://d772538aae2649d38a8931583ed7719b@sentry.io/1504338",
-    integrations=[DjangoIntegration()],
-    release=f'wallet-{VERSION}'
-)
+if os.environ.get('ENABLE_SENTRY', 'false').lower() == 'true':
+    # Sentry Configuration
+    sentry_sdk.init(
+        dsn="https://d772538aae2649d38a8931583ed7719b@sentry.io/1504338",
+        integrations=[DjangoIntegration()],
+        release=f'wallet-{VERSION}',
+        environment=ENVIRONMENT
+    )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -170,7 +173,7 @@ REST_FRAMEWORK = {
 }
 
 # General Application Configuration
-ARCHIVIST_URL = os.environ.get('ARCHIVIST_URL', 'archivist')
+ZMLP_API_URL = os.environ.get('ZMLP_API_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
 
 # Google OAUTH2
