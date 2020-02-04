@@ -81,16 +81,12 @@ const AccountPasswordForm = () => {
           paddingBottom: spacing.moderate,
           display: 'flex',
         }}>
-        <div
-          css={{
-            marginRight: spacing.normal,
-          }}>
-          <Button
-            variant={BUTTON_VARIANTS.SECONDARY}
-            onClick={() => dispatch(INITIAL_STATE)}>
-            Cancel
-          </Button>
-        </div>
+        <Button
+          css={{ marginRight: spacing.normal }}
+          variant={BUTTON_VARIANTS.SECONDARY}
+          onClick={() => dispatch(INITIAL_STATE)}>
+          Cancel
+        </Button>
 
         <Button
           type="submit"

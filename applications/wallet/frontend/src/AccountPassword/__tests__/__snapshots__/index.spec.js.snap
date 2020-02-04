@@ -118,7 +118,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-19 {
+  .emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -169,17 +169,13 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-18 {
+.emotion-17 {
   padding-top: 12px;
   padding-bottom: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-16 {
-  margin-right: 16px;
 }
 
 .emotion-15 {
@@ -212,6 +208,7 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  margin-right: 16px;
 }
 
 .emotion-15:hover {
@@ -237,7 +234,7 @@ Array [
   background-color: #808080;
 }
 
-.emotion-17 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -269,32 +266,32 @@ Array [
   background-color: transparent;
 }
 
-.emotion-17:hover {
+.emotion-16:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-17[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-17,
-.emotion-17:hover,
-.emotion-17:visited {
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited {
   background-color: #73b61c;
 }
 
-.emotion-17:hover {
+.emotion-16:hover {
   background-color: #b8d652;
 }
 
-.emotion-17[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-19"
+    className="emotion-18"
     method="post"
     onSubmit={[Function]}
   >
@@ -381,22 +378,18 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-18"
+      className="emotion-17"
     >
-      <div
-        className="emotion-16"
+      <button
+        className="emotion-15"
+        onClick={[Function]}
+        type="button"
       >
-        <button
-          className="emotion-15"
-          onClick={[Function]}
-          type="button"
-        >
-          Cancel
-        </button>
-      </div>
+        Cancel
+      </button>
       <button
         aria-disabled={true}
-        className="emotion-17"
+        className="emotion-16"
         onClick={[Function]}
         type="submit"
       >

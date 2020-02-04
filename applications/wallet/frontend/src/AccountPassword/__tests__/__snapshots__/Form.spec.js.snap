@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AccountPasswordForm /> should render properly 1`] = `
-.emotion-19 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -52,17 +52,13 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   padding-top: 8px;
 }
 
-.emotion-18 {
+.emotion-17 {
   padding-top: 12px;
   padding-bottom: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-16 {
-  margin-right: 16px;
 }
 
 .emotion-15 {
@@ -95,6 +91,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  margin-right: 16px;
 }
 
 .emotion-15:hover {
@@ -120,7 +117,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   background-color: #808080;
 }
 
-.emotion-17 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -152,32 +149,32 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-17:hover {
+.emotion-16:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-17[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-17,
-.emotion-17:hover,
-.emotion-17:visited {
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited {
   background-color: #73b61c;
 }
 
-.emotion-17:hover {
+.emotion-16:hover {
   background-color: #b8d652;
 }
 
-.emotion-17[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-19"
+  className="emotion-18"
   method="post"
   onSubmit={[Function]}
 >
@@ -264,22 +261,18 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="emotion-18"
+    className="emotion-17"
   >
-    <div
-      className="emotion-16"
+    <button
+      className="emotion-15"
+      onClick={[Function]}
+      type="button"
     >
-      <button
-        className="emotion-15"
-        onClick={[Function]}
-        type="button"
-      >
-        Cancel
-      </button>
-    </div>
+      Cancel
+    </button>
     <button
       aria-disabled={true}
-      className="emotion-17"
+      className="emotion-16"
       onClick={[Function]}
       type="submit"
     >
@@ -448,7 +441,7 @@ exports[`<AccountPasswordForm /> should render properly 2`] = `
 `;
 
 exports[`<AccountPasswordForm /> should render properly 3`] = `
-.emotion-19 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -499,17 +492,13 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   padding-top: 8px;
 }
 
-.emotion-18 {
+.emotion-17 {
   padding-top: 12px;
   padding-bottom: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-16 {
-  margin-right: 16px;
 }
 
 .emotion-15 {
@@ -542,6 +531,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  margin-right: 16px;
 }
 
 .emotion-15:hover {
@@ -567,7 +557,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   background-color: #808080;
 }
 
-.emotion-17 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -599,32 +589,32 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   background-color: transparent;
 }
 
-.emotion-17:hover {
+.emotion-16:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-17[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-17,
-.emotion-17:hover,
-.emotion-17:visited {
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited {
   background-color: #73b61c;
 }
 
-.emotion-17:hover {
+.emotion-16:hover {
   background-color: #b8d652;
 }
 
-.emotion-17[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-19"
+  className="emotion-18"
   method="post"
   onSubmit={[Function]}
 >
@@ -711,22 +701,18 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
     </div>
   </div>
   <div
-    className="emotion-18"
+    className="emotion-17"
   >
-    <div
-      className="emotion-16"
+    <button
+      className="emotion-15"
+      onClick={[Function]}
+      type="button"
     >
-      <button
-        className="emotion-15"
-        onClick={[Function]}
-        type="button"
-      >
-        Cancel
-      </button>
-    </div>
+      Cancel
+    </button>
     <button
       aria-disabled={true}
-      className="emotion-17"
+      className="emotion-16"
       onClick={[Function]}
       type="submit"
     >
@@ -737,7 +723,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 `;
 
 exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] = `
-.emotion-19 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -788,17 +774,13 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   padding-top: 8px;
 }
 
-.emotion-18 {
+.emotion-17 {
   padding-top: 12px;
   padding-bottom: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-16 {
-  margin-right: 16px;
 }
 
 .emotion-15 {
@@ -831,6 +813,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  margin-right: 16px;
 }
 
 .emotion-15:hover {
@@ -856,7 +839,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   background-color: #808080;
 }
 
-.emotion-17 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -888,32 +871,32 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   background-color: transparent;
 }
 
-.emotion-17:hover {
+.emotion-16:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-17[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-17,
-.emotion-17:hover,
-.emotion-17:visited {
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited {
   background-color: #73b61c;
 }
 
-.emotion-17:hover {
+.emotion-16:hover {
   background-color: #b8d652;
 }
 
-.emotion-17[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-19"
+  className="emotion-18"
   method="post"
   onSubmit={[Function]}
 >
@@ -1000,22 +983,18 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
     </div>
   </div>
   <div
-    className="emotion-18"
+    className="emotion-17"
   >
-    <div
-      className="emotion-16"
+    <button
+      className="emotion-15"
+      onClick={[Function]}
+      type="button"
     >
-      <button
-        className="emotion-15"
-        onClick={[Function]}
-        type="button"
-      >
-        Cancel
-      </button>
-    </div>
+      Cancel
+    </button>
     <button
       aria-disabled={true}
-      className="emotion-17"
+      className="emotion-16"
       onClick={[Function]}
       type="submit"
     >
