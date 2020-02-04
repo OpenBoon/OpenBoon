@@ -6,7 +6,7 @@ from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 from zmlpsdk import Frame
 from zmlpsdk.proxy import store_asset_proxy
 
-from ..processors import AutoMLVisionModelProcessor
+from ..automl import AutoMLVisionModelProcessor
 
 
 class AutoMLVisionUnitTests(PluginUnitTestCase):

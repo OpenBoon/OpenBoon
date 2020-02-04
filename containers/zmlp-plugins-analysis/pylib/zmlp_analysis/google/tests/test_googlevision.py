@@ -2,13 +2,13 @@
 from google.cloud.vision import types
 from unittest.mock import patch
 
-from ..processors import CloudVisionProcessor
+from ..cloud_vision import CloudVisionProcessor
 from zmlp import ZmlpClient
 from zmlpsdk.proxy import store_asset_proxy
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 from zmlpsdk import Frame, ZmlpFatalProcessorException
 
-patch_path = 'zmlp_analysis.google.processors.vision.ImageAnnotatorClient'
+patch_path = 'zmlp_analysis.google.cloud_vision.vision.ImageAnnotatorClient'
 
 TOUCAN = zorroa_test_data("images/set01/toucan.jpg")
 EIFFEL = zorroa_test_data("images/set08/eiffel_tower.jpg")
