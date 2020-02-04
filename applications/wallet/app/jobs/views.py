@@ -1,19 +1,18 @@
-from django.conf import settings
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
 
 class JobsViewSet(BaseProjectViewSet):
-
     pagination_class = ZMLPFromSizePagination
 
     def list(self, request, project_pk, client):
         payload = {'page': {'from': request.GET.get('from', 0),
-                            'size': request.GET.get('size', self.pagination_class.default_limit)}}
+                            'size': request.GET.get('size',
+                                                    self.pagination_class.default_limit)}}
         response = client.post('/api/v1/jobs/_search', payload)
         content = self._get_content(response)
         current_url = request.build_absolute_uri(request.path)
@@ -66,7 +65,8 @@ class JobsViewSet(BaseProjectViewSet):
         """
         payload = {'jobIds': [pk],
                    'page': {'from': request.GET.get('from', 0),
-                            'size': request.GET.get('size', self.pagination_class.default_limit)}}
+                            'size': request.GET.get('size',
+                                                    self.pagination_class.default_limit)}}
         response = client.post(f'/api/v1/taskerrors/_search', payload)
         content = self._get_content(response)
         paginator = self.pagination_class()

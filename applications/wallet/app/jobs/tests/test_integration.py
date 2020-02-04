@@ -85,7 +85,8 @@ class TestJobViewSet:
         content = response.json()
         assert content['id'] == 'b8ec649d-67bc-1ab4-a0ae-0242ac120007'
 
-    def test_get_detail_zvi_response(self, zmlp_project_user, project, api_client, monkeypatch, job_pk):
+    def test_get_detail_zvi_response(self, zmlp_project_user, project, api_client,
+                                     monkeypatch, job_pk):
 
         def mock_api_response(*args, **kwargs):
             response = Response()
