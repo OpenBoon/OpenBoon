@@ -1,4 +1,4 @@
-const apikeysadd = {
+const apiKey = {
   id: '16fba9b7-f584-4d01-b2a2-62194941549d',
   projectId: '00000000-0000-0000-0000-000000000000',
   accessKey: 'RyAtpOM9GoBseFA5WvGJMzzgPn9FDDWw',
@@ -18,4 +18,4 @@ const apikeysadd = {
   },
 }
 
-export default apikeysadd
+export default apiKey

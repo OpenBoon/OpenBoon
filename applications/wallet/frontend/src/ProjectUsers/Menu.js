@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import Link from 'next/link'
 
 import { fetcher } from '../Fetch/helpers'
 
@@ -16,6 +17,16 @@ const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
       {({ onClick }) => (
         <div>
           <ul>
+            <li>
+              <Link
+                href="/[projectId]/users/[userId]/edit"
+                as={`/${projectId}/users/${userId}/edit`}
+                passHref>
+                <Button variant={VARIANTS.MENU_ITEM} isDisabled={false}>
+                  Edit
+                </Button>
+              </Link>
+            </li>
             <li>
               <>
                 <Button

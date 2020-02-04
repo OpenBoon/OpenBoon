@@ -171,8 +171,8 @@ module "wallet" {
   sql-instance-name = "${module.postgres.instance-name}"
   sql-service-account-key = "${module.postgres.sql-service-account-key}"
   sql-connection-name = "${module.postgres.connection-name}"
-  archivist-url = "http://${module.api-gateway.ip-address}"
+  zmlp-api-url = "http://${module.api-gateway.ip-address}"
   smtp-password = "${var.smtp-password}"
   google-oauth-client-id = "${var.google-oauth-client-id}"
-  frontend-sentry-dsn = "${var.frontend-sentry-dsn}"
+  environment = 'staging'
 }

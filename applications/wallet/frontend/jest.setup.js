@@ -5,12 +5,12 @@ const noop = () => () => {}
  */
 require('jest-fetch-mock').enableMocks()
 
-const { initialize } = require('./src/Fetch/helpers')
+const { initializeFetcher } = require('./src/Fetch/helpers')
 
 beforeEach(() => {
   fetch.resetMocks()
 
-  initialize({ setUser: noop })
+  initializeFetcher({ setUser: noop })
 })
 
 /**

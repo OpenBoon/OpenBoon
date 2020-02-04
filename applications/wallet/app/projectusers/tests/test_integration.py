@@ -111,8 +111,7 @@ class TestProjectUser:
                                                   'pk': user.id}))
         assert response.status_code == 404
         content = response.json()
-        assert content == ('The specified user does not exist '
-                           'or is not a part of this project.')
+        assert content['detail'] == 'Not found.'
 
     @override_settings(PLATFORM='zmlp')
     def test_delete(self, project, zmlp_project_user, zmlp_project_membership, api_client,
@@ -142,7 +141,7 @@ class TestProjectUser:
                                                      'pk': user.id}))
         assert response.status_code == 404
         content = response.json()
-        assert content == 'User has no membership to the specified project.'
+        assert content['detail'] == 'Not found.'
 
     @override_settings(PLATFORM='zmlp')
     def test_delete_bad_apikey(self, project, zmlp_project_user, zmlp_project_membership,
