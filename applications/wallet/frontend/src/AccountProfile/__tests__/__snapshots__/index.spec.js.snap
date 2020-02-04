@@ -88,20 +88,13 @@ exports[`<AccountProfile /> should render properly 1`] = `
 }
 
 .emotion-8 {
-  color: #808080;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 400;
-}
-
-.emotion-9 {
   padding-top: 24px;
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
 }
 
-.emotion-10 {
+.emotion-9 {
   color: #808080;
   font-size: 15px;
   line-height: 18px;
@@ -109,7 +102,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
   padding-bottom: 24px;
 }
 
-.emotion-11 {
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -141,26 +134,26 @@ exports[`<AccountProfile /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-11:hover {
+.emotion-10:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited {
   background-color: #73b61c;
 }
 
-.emotion-11:hover {
+.emotion-10:hover {
   background-color: #b8d652;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
   background-color: #808080;
 }
 
@@ -210,20 +203,15 @@ exports[`<AccountProfile /> should render properly 1`] = `
   <div
     className="emotion-8"
   >
-    Permissions:  System Monitor,  System Manage,  System Project Override,  System Project Decrypt,  Api Key Manage,  Assets Read,  Assets Import,  Assets Delete,  Project Manage,  Project Create,  Project Files Read,  Project Files Write
+    Username
   </div>
   <div
     className="emotion-9"
   >
-    Username
-  </div>
-  <div
-    className="emotion-10"
-  >
      
   </div>
   <button
-    className="emotion-11"
+    className="emotion-10"
     onClick={[Function]}
     type="submit"
   >

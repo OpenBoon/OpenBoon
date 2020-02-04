@@ -15,18 +15,6 @@ Array [
     User ID: undefined
   </div>,
   .emotion-0 {
-  color: #808080;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 400;
-}
-
-<div
-    className="emotion-0"
-  >
-    Permissions:  System Monitor,  System Manage,  System Project Override,  System Project Decrypt,  Api Key Manage,  Assets Read,  Assets Import,  Assets Delete,  Project Manage,  Project Create,  Project Files Read,  Project Files Write
-  </div>,
-  .emotion-0 {
   padding-top: 24px;
   font-size: 17px;
   line-height: 20px;
@@ -131,18 +119,6 @@ Array [
     User ID: undefined
   </div>,
   .emotion-0 {
-  color: #808080;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 400;
-}
-
-<div
-    className="emotion-0"
-  >
-    Permissions:  System Monitor,  System Manage,  System Project Override,  System Project Decrypt,  Api Key Manage,  Assets Read,  Assets Import,  Assets Delete,  Project Manage,  Project Create,  Project Files Read,  Project Files Write
-  </div>,
-  .emotion-0 {
   padding-top: 24px;
   font-size: 17px;
   line-height: 20px;
@@ -245,18 +221,6 @@ Array [
     className="emotion-0"
   >
     User ID: undefined
-  </div>,
-  .emotion-0 {
-  color: #808080;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 400;
-}
-
-<div
-    className="emotion-0"
-  >
-    Permissions:  System Monitor,  System Manage,  System Project Override,  System Project Decrypt,  Api Key Manage,  Assets Read,  Assets Import,  Assets Delete,  Project Manage,  Project Create,  Project Files Read,  Project Files Write
   </div>,
   .emotion-13 {
   display: -webkit-box;
@@ -604,18 +568,6 @@ Array [
     className="emotion-0"
   >
     User ID: undefined
-  </div>,
-  .emotion-0 {
-  color: #808080;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 400;
-}
-
-<div
-    className="emotion-0"
-  >
-    Permissions:  System Monitor,  System Manage,  System Project Override,  System Project Decrypt,  Api Key Manage,  Assets Read,  Assets Import,  Assets Delete,  Project Manage,  Project Create,  Project Files Read,  Project Files Write
   </div>,
   .emotion-0 {
   padding-top: 24px;
