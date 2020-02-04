@@ -1,10 +1,9 @@
+import datetime
 import logging
 import unittest
-import datetime
 from unittest.mock import patch
 
 from zmlp import ZmlpClient, ZmlpApp
-from zmlp.datasource import DataSource
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -27,7 +26,7 @@ class ZmlpProjectAppTests(unittest.TestCase):
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'test',
             'actorCreated': '123',
-            'actorModified':'456',
+            'actorModified': '456',
             'timeCreated':  1580830037232,
             'timeModified': 1580830037999
         }
@@ -37,7 +36,7 @@ class ZmlpProjectAppTests(unittest.TestCase):
         assert value['name'] == proj.name
         assert isinstance(proj.time_created, datetime.datetime)
         assert isinstance(proj.time_modified, datetime.datetime)
-        assert value['actorCreated'] =='123'
+        assert value['actorCreated'] == '123'
         assert value['actorModified'] == '456'
 
     @patch.object(ZmlpClient, 'get')
@@ -61,4 +60,3 @@ class ZmlpProjectAppTests(unittest.TestCase):
         settings = self.app.projects.update_project_settings(updated)
         assert updated['defaultPipelineId'] == settings['defaultPipelineId']
         assert updated['defaultIndexRouteId'] == settings['defaultIndexRouteId']
-
