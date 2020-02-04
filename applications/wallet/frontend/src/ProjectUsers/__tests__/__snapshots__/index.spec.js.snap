@@ -712,6 +712,9 @@ Array [
       </li>
     </ul>
   </nav>,
+  <FormSuccess>
+    User permissions saved
+  </FormSuccess>,
   <div>
      
   </div>,

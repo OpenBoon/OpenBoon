@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import PageTitle from '../PageTitle'
+import FormSuccess from '../FormSuccess'
 import Tabs from '../Tabs'
 import Table from '../Table'
 
@@ -9,7 +10,7 @@ import ProjectUsersRow from './Row'
 
 const ProjectUsers = () => {
   const {
-    query: { projectId },
+    query: { projectId, action },
   } = useRouter()
 
   return (
@@ -26,6 +27,10 @@ const ProjectUsers = () => {
           { title: 'Create User', href: '/[projectId]/users/add' },
         ]}
       />
+
+      {action === 'edit-user-success' && (
+        <FormSuccess>User permissions saved</FormSuccess>
+      )}
 
       <div>&nbsp;</div>
 
