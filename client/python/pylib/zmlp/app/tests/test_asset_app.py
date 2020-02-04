@@ -10,7 +10,7 @@ from zmlp import Asset
 from zmlp import ZmlpClient, app_from_env
 from zmlp.asset import FileImport, FileUpload
 from zmlp.exception import ZmlpException
-from zmlp.client import requests
+
 
 class AssetAppTests(unittest.TestCase):
 
