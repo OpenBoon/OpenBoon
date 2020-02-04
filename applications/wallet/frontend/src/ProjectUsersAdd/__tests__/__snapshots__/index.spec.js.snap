@@ -118,6 +118,15 @@ Array [
       </li>
     </ul>
   </nav>,
-  "Loading...",
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+}
+
+<div
+    className="emotion-0"
+  >
+    Loading...
+  </div>,
 ]
 `;

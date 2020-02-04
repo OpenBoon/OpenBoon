@@ -1,9 +1,25 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
 import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
+import Loading from '../Loading'
+
+import ProjectUsersEditForm from './Form'
 
 const ProjectUsersEdit = () => {
+  const {
+    query: { projectId, userId },
+  } = useRouter()
+
+  const { data: user = {} } = useSWR(
+    `/api/v1/projects/${projectId}/users/${userId}`,
+  )
+  const { data: { results: permissions } = {} } = useSWR(
+    `/api/v1/projects/${projectId}/permissions/`,
+  )
+
   return (
     <>
       <Head>
@@ -19,6 +35,16 @@ const ProjectUsersEdit = () => {
           { title: 'Edit User', href: '/[projectId]/users/[userId]/edit' },
         ]}
       />
+
+      {!user.id || !Array.isArray(permissions) ? (
+        <Loading />
+      ) : (
+        <ProjectUsersEditForm
+          projectId={projectId}
+          user={user}
+          permissions={permissions}
+        />
+      )}
     </>
   )
 }
