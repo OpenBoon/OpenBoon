@@ -1,20 +1,41 @@
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
+from django.http import Http404
+from django.db import transaction
 
 from projects.views import BaseProjectViewSet
-from projects.models import Project
+from projects.models import Project, Membership
 from projectusers.serializers import ProjectUserSerializer
 from wallet.paginators import FromSizePagination
+from apikeys.utils import decode_apikey
 
 User = get_user_model()
 
 
 class ProjectUserViewSet(BaseProjectViewSet):
+    """Users who are Members of this Project.
+
+    Available HTTP methods, endpoints, and what they do:
+
+    * **GET** _api/v1/projects/$Project_Id/users/_ - List the Users who are members of $Project_Id
+    * **GET** _api/v1/projects/$Project_Id/users/$User_Id/_ - Detail info on $User_Id
+    * **POST** _api/v1/projects/$Project_Id/users/_ - Create a membership to $Project_Id
+        - Ex. Post Body: `{"email": "user@email.com", "permissions": ["AssetsRead"]}`
+    * **PUT/PATCH** _api/v1/projects/$Project_Id/users/$User_Id/_ - Update a Users permissions
+    * **DELETE** _api/v1/projects/$Project_Id/users/$User_Id/_ - Remove $User_Id from $Project_Id
+
+    """
 
     ZMLP_ONLY = True
     pagination_class = FromSizePagination
     serializer_class = ProjectUserSerializer
+
+    def get_object(self, pk, project_pk):
+        try:
+            return Membership.objects.get(user=pk, project=project_pk)
+        except Membership.DoesNotExist:
+            raise Http404
 
     def list(self, request, project_pk, client):
         # Need to handle pagination
@@ -30,18 +51,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
     def retrieve(self, request, project_pk, client, pk):
         # List details about the current project User
-        try:
-            user = User.objects.get(id=pk)
-        except User.DoesNotExist:
-            return Response('The specified user does not exist or is not a part of this '
-                            'project.',
-                            status=status.HTTP_404_NOT_FOUND)
-        try:
-            user.projects.get(id=project_pk)
-        except Project.DoesNotExist:
-            return Response('The specified user does not exist or is not a part of this '
-                            'project.',
-                            status=status.HTTP_404_NOT_FOUND)
+        user = self.get_object(pk, project_pk).user
         serializer = self.get_serializer(user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -54,6 +64,23 @@ class ProjectUserViewSet(BaseProjectViewSet):
         # if necessary
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def destroy(self, request, project_pk, client):
+    @transaction.atomic
+    def destroy(self, request, project_pk, client, pk):
         # Remove the User's Membership and delete the associated apikey
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        membership = self.get_object(pk, project_pk)
+        apikey = membership.apikey
+        # Delete Users Apikey
+        try:
+            key_data = decode_apikey(apikey)
+        except ValueError:
+            return Response('Unable to parse apikey.', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            apikey_id = key_data['id']
+        except KeyError:
+            return Response('Apikey is incomplete.', status=status.HTTP_400_BAD_REQUEST)
+        response = client.delete(f'/auth/v1/apikey/{apikey_id}')
+        if not response.status_code == 200:
+            return Response('Unable to delete apikey in ZMLP.',
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        membership.delete()
+        return Response(status=status.HTTP_200_OK)
