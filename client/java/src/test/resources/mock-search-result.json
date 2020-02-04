@@ -1,34 +1,32 @@
 {
+  "took" : 4,
+  "timed_out" : false,
+  "_scroll_id" : "bob",
   "hits" : {
+    "total" : {
+      "value" : 100
+    },
+    "max_score" : 0.2876821,
     "hits" : [ {
       "_index" : "litvqrkus86sna2w",
       "_type" : "asset",
+      "_id" : "dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg",
+      "_score" : 0.2876821,
       "_source" : {
         "source" : {
-          "path" : "https://i.imgur.com/SSN26nN.jpg",
-          "nestedSource" : {
-            "nestedKey" : "nestedValue"
-          }
+          "path" : "https://i.imgur.com/SSN26nN.jpg"
         }
-      },
-      "_id" : "dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg",
-      "_score" : 0.2876821
+      }
     }, {
       "_index" : "litvqrkus86sna2w",
       "_type" : "asset",
+      "_id" : "aabbccddec48n1q1fginVMV5yllhRRGx2WKyKLjDphg",
+      "_score" : 0.2876821,
       "_source" : {
         "source" : {
           "path" : "https://i.imgur.com/foo.jpg"
         }
-      },
-      "_id" : "dd0KZtqyec48n1q1ffogVMV5yzthRRGx2WKzKLjDphg",
-      "_score" : 0.2876821
-    } ],
-    "total" : {
-      "value" : 2
-    },
-    "max_score" : 0.2876821
-  },
-  "took" : 4,
-  "timed_out" : false
+      }
+    } ]
+  }
 }
