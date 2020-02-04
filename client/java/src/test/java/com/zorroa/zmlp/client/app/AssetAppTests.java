@@ -87,7 +87,7 @@ public class AssetAppTests extends AbstractAppTests {
     }
 
     @Test
-    public void searchElasticSearch() {
+    public void testSearchElasticSearch() {
         webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
