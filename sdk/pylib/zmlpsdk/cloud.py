@@ -77,7 +77,7 @@ def get_pipeline_storage_client():
 
     return minio.Minio(url.netloc,
                        access_key=os.environ.get("ZMLP_STORAGE_PIPELINE_ACCESSKEY"),
-                       secret_key=os.environ.get("ZMLP_STORAGE_PIPELIN_SECRETKEY"),
+                       secret_key=os.environ.get("ZMLP_STORAGE_PIPELINE_SECRETKEY"),
                        secure=False)
 
 
