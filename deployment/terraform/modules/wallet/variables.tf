@@ -5,10 +5,10 @@ variable "sql-service-account-key" {}
 variable "sql-connection-name" {}
 variable "container-cluster-name" {}
 variable "image-pull-secret" {}
-variable "archivist-url" {}
+variable "zmlp-api-url" {}
 variable "smtp-password" {}
 variable "google-oauth-client-id" {}
-variable "frontend-sentry-dsn" {}
+variable "environment" {}
 
 variable "container-tag" {default = "development"}
 variable "namespace" {default = "default"}
