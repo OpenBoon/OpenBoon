@@ -185,7 +185,10 @@ The credentials to MailGun are stored in 1password. The SMTP_PASSWORD can found
 by going to the MailGun console [here](https://app.mailgun.com/) and looking at
 mg.zorroa.com under the domains menu.
 
-### Deployment Options
+---
+
+## Deployment Options
+
 Many of the configuration options can be set using environment variables. Below 
 are the current options. These environment variables need to be set on the running
 wallet container.
@@ -193,7 +196,7 @@ wallet container.
 | Environment Variable | Effect |
 | -------------------- | ------ |
 | ENABLE_SENTRY | Enables Sentry error logging if "true". |
-| ENVIRONMENT | Name of the environment wallet is running in. |
+| ENVIRONMENT | Name of the environment wallet is running in (i.e. qa, staging). |
 | ZMLP_API_URL | FQDN for the ZMLP REST API. |
 | PG_HOST | Hostname of the Postgres DB server. |
 | PG_PASSWORD | Password to be used by the wallet Postgres user. |
