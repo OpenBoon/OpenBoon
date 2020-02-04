@@ -97,16 +97,21 @@ const AccountProfileForm = () => {
               paddingBottom: spacing.moderate,
               display: 'flex',
             }}>
-            <div
-              css={{
-                marginRight: spacing.normal,
-              }}>
-              <Button
-                variant={BUTTON_VARIANTS.SECONDARY}
-                onClick={() => dispatch({ showForm: false })}>
-                Cancel
-              </Button>
-            </div>
+            <Button
+              css={{ marginRight: spacing.normal }}
+              variant={BUTTON_VARIANTS.SECONDARY}
+              onClick={() =>
+                dispatch({
+                  id,
+                  firstName,
+                  lastName,
+                  showForm: false,
+                  success: false,
+                  errors: {},
+                })
+              }>
+              Cancel
+            </Button>
 
             <Button
               type="submit"

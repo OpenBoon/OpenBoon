@@ -258,7 +258,7 @@ Array [
   >
     Permissions:  System Monitor,  System Manage,  System Project Override,  System Project Decrypt,  Api Key Manage,  Assets Read,  Assets Import,  Assets Delete,  Project Manage,  Project Create,  Project Files Read,  Project Files Write
   </div>,
-  .emotion-14 {
+  .emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -309,16 +309,12 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-13 {
+.emotion-12 {
   padding-bottom: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-11 {
-  margin-right: 16px;
 }
 
 .emotion-10 {
@@ -351,6 +347,7 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  margin-right: 16px;
 }
 
 .emotion-10:hover {
@@ -376,7 +373,7 @@ Array [
   background-color: #808080;
 }
 
-.emotion-12 {
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -408,32 +405,32 @@ Array [
   background-color: transparent;
 }
 
-.emotion-12:hover {
+.emotion-11:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-12,
-.emotion-12:hover,
-.emotion-12:visited {
+.emotion-11,
+.emotion-11:hover,
+.emotion-11:visited {
   background-color: #73b61c;
 }
 
-.emotion-12:hover {
+.emotion-11:hover {
   background-color: #b8d652;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-14"
+    className="emotion-13"
     method="post"
     onSubmit={[Function]}
   >
@@ -493,22 +490,18 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-12"
     >
-      <div
-        className="emotion-11"
+      <button
+        className="emotion-10"
+        onClick={[Function]}
+        type="button"
       >
-        <button
-          className="emotion-10"
-          onClick={[Function]}
-          type="button"
-        >
-          Cancel
-        </button>
-      </div>
+        Cancel
+      </button>
       <button
         aria-disabled={true}
-        className="emotion-12"
+        className="emotion-11"
         onClick={[Function]}
         type="submit"
       >

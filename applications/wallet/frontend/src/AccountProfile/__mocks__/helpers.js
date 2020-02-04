@@ -8,5 +8,5 @@ export const onSubmit = ({ dispatch }) =>
     lastName: 'Doe',
     showForm: false,
     success: true,
-    errors: false,
+    errors: {},
   })
