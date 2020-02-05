@@ -5,7 +5,7 @@ from google.api_core.exceptions import ResourceExhausted
 from google.cloud import automl_v1beta1 as automl
 
 from zmlpsdk import Argument, AssetProcessor
-
+from zmlpsdk.proxy import get_proxy_level
 
 class AutoMLModelProcessor(AssetProcessor):
     """Use a pre-trained Google AutoML model to label and score assets."""
@@ -204,6 +204,7 @@ class AutoMLNLPModelProcessor(AutoMLModelProcessor):
                 "mime_type": "text/plain"
             }
         }
+
 
 class AutoMLVisionModelProcessor(AutoMLModelProcessor):
     def _announce(self, asset):

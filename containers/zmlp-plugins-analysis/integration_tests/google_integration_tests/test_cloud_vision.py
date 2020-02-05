@@ -6,6 +6,7 @@ from zmlp_analysis.google.cloud_vision import CloudVisionProcessor
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset
 
+
 class CloudVisionProcessorTestCase(PluginUnitTestCase):
 
     def setUp(self):
@@ -78,12 +79,3 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         processor = self.init_processor(CloudVisionProcessor(), {'detect_objects': True})
         processor.process(frame)
         assert 'Dog' in frame.asset.get_attr('analysis.google.labelDetection.keywords')
-
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
-    def test_object_detection(self, proxy_patch):
-        path = zorroa_test_path('images/detect/dogbike.jpg')
-        proxy_patch.return_value = path
-        frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionProcessor(), {'detect_objects': True})
-        processor.process(frame)
-        assert 'Dog' in frame.asset.get_attr('analysis.google.objectDetection.keywords')

@@ -1,3 +1,4 @@
+# flake8: noqa
 from .automl import AutoMLModelProcessor
 from .cloud_vision import CloudVisionProcessor
 from .cloud_video import CloudVideoIntelligenceProcessor

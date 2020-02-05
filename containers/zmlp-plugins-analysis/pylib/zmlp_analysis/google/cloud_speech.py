@@ -12,6 +12,7 @@ from zmlpsdk.proxy import get_proxy_level
 
 from .gcp_client import initialize_gcp_client
 
+
 class CloudSpeechToTextProcessor(AssetProcessor):
     file_types = ['mov', 'mp4', 'mpg', 'mpeg', 'm4v', 'webm', 'ogv', 'ogg',
                   'aac', 'mp3', 'flac', 'wav']

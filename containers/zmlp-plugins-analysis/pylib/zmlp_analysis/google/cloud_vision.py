@@ -12,6 +12,7 @@ from zmlpsdk.proxy import get_proxy_level
 
 from .gcp_client import initialize_gcp_client
 
+
 class CloudVisionProcessor(AssetProcessor):
     """Use Google Cloud Vision API to analyze images."""
 

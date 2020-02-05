@@ -8,6 +8,7 @@ from zmlpsdk import Argument, AssetProcessor
 
 from .gcp_client import initialize_gcp_client
 
+
 class CloudNaturalLanguageProcessor(AssetProcessor):
     """Use Google Cloud Natural Language API to analyze a text field in the metadata."""
 

@@ -11,6 +11,7 @@ from zmlpsdk.proxy import get_proxy_level
 
 from .gcp_client import initialize_gcp_client
 
+
 class CloudVideoIntelligenceProcessor(AssetProcessor):
     """Use Google Cloud Video Intelligence API to label videos."""
 
@@ -50,7 +51,6 @@ class CloudVideoIntelligenceProcessor(AssetProcessor):
                                          annotation_result.frame_label_annotations)
         if self.arg_value('detect_text'):
             text = ' '.join(t.text for t in annotation_result.text_annotations)
-            print("TEXT {}".format(text))
             if text:
                 asset.add_analysis('google.videoText.content', text)
 
