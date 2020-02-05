@@ -7,6 +7,7 @@ from google.cloud import automl_v1beta1 as automl
 from zmlpsdk import Argument, AssetProcessor
 from zmlpsdk.proxy import get_proxy_level
 
+
 class AutoMLModelProcessor(AssetProcessor):
     """Use a pre-trained Google AutoML model to label and score assets."""
 
