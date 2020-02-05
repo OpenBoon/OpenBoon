@@ -7,7 +7,8 @@ from zmlp import app_from_env
 def main():
     parser = argparse.ArgumentParser(description='Data Source')
 
-    parser.add_argument('-c', '--create', nargs=2, help="a DS name and url, like gs://zorroa-dev-data")
+    parser.add_argument('-c', '--create', nargs=2,
+                        help="a DS name and url, like gs://zorroa-dev-data")
     parser.add_argument('-m', '--module', action='append',
                         help='Modules to assign to the DS')
 
@@ -22,5 +23,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
