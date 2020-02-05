@@ -3,12 +3,13 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from django.http import Http404
 from django.db import transaction
+from zmlp.client import ZmlpInvalidRequestException
 
 from projects.views import BaseProjectViewSet
 from projects.models import Project, Membership
 from projectusers.serializers import ProjectUserSerializer
 from wallet.paginators import FromSizePagination
-from apikeys.utils import decode_apikey
+from apikeys.utils import decode_apikey, encode_apikey
 
 User = get_user_model()
 
@@ -37,10 +38,16 @@ class ProjectUserViewSet(BaseProjectViewSet):
         except Membership.DoesNotExist:
             raise Http404
 
+    def get_project_object(self, pk):
+        try:
+            return Project.objects.get(id=pk)
+        except Project.DoesNotExist:
+            raise Http404
+
     def list(self, request, project_pk, client):
         # Need to handle pagination
         # If the project doesn't exist or user is not a member a 403 is returned
-        project = Project.objects.get(id=project_pk)
+        project = self.get_project_object(project_pk)
         users = project.users.all()
         paginated_users = self.paginate_queryset(users)
         if paginated_users is not None:
@@ -56,10 +63,42 @@ class ProjectUserViewSet(BaseProjectViewSet):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request, project_pk, client):
-        # Get the User and add the  appropriate Membership & ApiKey
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        # Get the User and add the appropriate Membership & ApiKey
+        try:
+            email = request.data['email']
+        except KeyError:
+            return Response('No email given.', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            permissions = request.data['permissions']
+        except KeyError:
+            return Response('No permissions given.', status=status.HTTP_400_BAD_REQUEST)
+        # Get the current project
+        project = self.get_project_object(project_pk)
+        # Search for an existing user
+        try:
+            user = User.objects.get(email=email)
+        except User.MultipleObjectsReturned:
+            return Response('Multiple Users with the given email exist.',
+                            status=status.HTTP_400_BAD_REQUEST)
+        except User.DoesNotExist:
+            # Should we actually silently fail and return a 200 here?
+            return Response('No user with the given email.',
+                            status=status.HTTP_400_BAD_REQUEST)
+        # Create an apikey with the given permissions
+        body = {'name': email, 'permissions': permissions}
+        try:
+            apikey = client.post('/auth/v1/apikey', body)
+        except ZmlpInvalidRequestException:
+            return Response("Unable to create apikey.",
+                            status=status.HTTP_400_BAD_REQUEST)
+        encoded_apikey = encode_apikey(apikey).decode('utf-8')
+        # Create a membership for given user
+        Membership.objects.create(user=user, project=project, apikey=encoded_apikey)
+        # Serialize the Resulting user like the Detail endpoint
+        serializer = self.get_serializer(user, context={'request': request})
+        return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
-    def update(self, request, project_pk, client, *args, **kwargs):
+    def update(self, request, project_pk, client, pk):
         # Modify the attributes of the specified user, updating the apikey & membership
         # if necessary
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
