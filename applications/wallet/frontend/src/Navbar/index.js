@@ -1,20 +1,17 @@
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 
-import userShape from '../User/shape'
-
 import { colors, spacing, constants, zIndex } from '../Styles'
 
 import LogoSvg from '../Icons/logo.svg'
 
 import ProjectSwitcher from '../ProjectSwitcher'
-import UserMenu from '../UserMenu'
 
 import HamburgerSvg from './hamburger.svg'
 
 const LOGO_WIDTH = 110
 
-const Navbar = ({ user, isSidebarOpen, setSidebarOpen, logout }) => {
+const Navbar = ({ isSidebarOpen, setSidebarOpen, children }) => {
   const {
     query: { projectId },
   } = useRouter()
@@ -64,16 +61,15 @@ const Navbar = ({ user, isSidebarOpen, setSidebarOpen, logout }) => {
         <ProjectSwitcher />
       </div>
 
-      <UserMenu user={user} logout={logout} />
+      {children}
     </div>
   )
 }
 
 Navbar.propTypes = {
-  user: PropTypes.shape(userShape).isRequired,
   isSidebarOpen: PropTypes.bool.isRequired,
   setSidebarOpen: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 }
 
 export default Navbar

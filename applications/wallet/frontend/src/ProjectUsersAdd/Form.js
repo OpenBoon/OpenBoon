@@ -2,9 +2,10 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { spacing, typography } from '../Styles'
+import { spacing } from '../Styles'
 
 import Form from '../Form'
+import SectionTitle from '../SectionTitle'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
@@ -33,16 +34,7 @@ const ProjectUsersAddForm = () => {
 
   return (
     <Form>
-      <h2
-        css={{
-          fontSize: typography.size.medium,
-          lineHeight: typography.height.medium,
-          fontWeight: typography.weight.medium,
-          paddingTop: spacing.normal,
-          paddingBottom: spacing.normal,
-        }}>
-        Invite User to view projects
-      </h2>
+      <SectionTitle>Invite User to view projects</SectionTitle>
 
       <Input
         autoFocus
