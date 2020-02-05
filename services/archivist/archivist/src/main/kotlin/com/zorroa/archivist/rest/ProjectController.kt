@@ -9,6 +9,7 @@ import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageRequest
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.repository.KPagedList
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.ProjectService
 import com.zorroa.archivist.storage.ProjectStorageService
 import io.swagger.annotations.Api
@@ -29,6 +30,13 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
+/**
+ * The /api/v1/projects endpoints (plural) are mainly admin endpoints that
+ * can see multiple projects.
+ *
+ * The /api/v1/project endpoints utilize the authed API Key's project.
+ *
+ */
 @RestController
 @Api(tags = ["Project"], description = "Operations for managing Projects.")
 class ProjectController constructor(
@@ -43,7 +51,7 @@ class ProjectController constructor(
         return projectService.create(spec)
     }
 
-    @PreAuthorize("hasAuthority('ProjectManage')")
+    @PreAuthorize("hasAuthority('SystemManage')")
     @GetMapping(value = ["/api/v1/projects/{id}"])
     @ApiOperation("Retrieve Project by Id.")
     fun get(@PathVariable id: UUID): Project {
@@ -64,14 +72,14 @@ class ProjectController constructor(
         return projectService.findOne(filter ?: ProjectFilter())
     }
 
-    @PreAuthorize("hasAuthority('ProjectManage')")
+    @PreAuthorize("hasAuthority('SystemManage')")
     @GetMapping(value = ["/api/v1/projects/{id}/_settings"])
     @ApiOperation("Get the project Settings")
     fun getSettings(@PathVariable id: UUID): ProjectSettings {
         return projectService.getSettings(id)
     }
 
-    @PreAuthorize("hasAuthority('ProjectManage')")
+    @PreAuthorize("hasAuthority('SystemManage')")
     @PutMapping(value = ["/api/v1/projects/{id}/_settings"])
     @ApiOperation("Get the project Settings")
     fun putSettings(@PathVariable id: UUID, @RequestBody(required = true) settings: ProjectSettings): ProjectSettings {
@@ -79,7 +87,31 @@ class ProjectController constructor(
         return projectService.getSettings(id)
     }
 
+    //
     // Methods that default to the API Keys project Id.
+    //
+    @GetMapping(value = ["/api/v1/project"])
+    @ApiOperation("Retrieve my current project.")
+    fun getMyProject(): Project {
+        return projectService.get(getProjectId())
+    }
+
+    @PreAuthorize("hasAuthority('ProjectManage')")
+    @GetMapping(value = ["/api/v1/project/_settings"])
+    @ApiOperation("Retrieve my current project.")
+    fun getMyProjectSettings(): ProjectSettings {
+        return projectService.getSettings(getProjectId())
+    }
+
+    @PreAuthorize("hasAuthority('ProjectManage')")
+    @PutMapping(value = ["/api/v1/project/_settings"])
+    @ApiOperation("Get the project Settings")
+    fun putMyProjectSettings(@RequestBody(required = true) settings: ProjectSettings):
+        ProjectSettings {
+        val id = getProjectId()
+        projectService.updateSettings(id, settings)
+        return projectService.getSettings(id)
+    }
 
     @ApiOperation("Upload a file into project cloud storage.")
     @PreAuthorize("hasAuthority('ProjectFilesWrite')")
