@@ -1,8 +1,7 @@
-import json
-import base64
-from binascii import Error as BinAsciiError
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+
+from apikeys.utils import decode_apikey
 
 
 class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
@@ -33,13 +32,8 @@ class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
 
     def _get_decoded_permissions(self, apikey):
         try:
-            decoded = base64.b64decode(apikey)
-        except BinAsciiError:
-            # Let's pray it's already a json string
-            decoded = apikey
-        try:
-            apikey_json = json.loads(decoded)
-        except json.decoder.JSONDecodeError:
+            key_data = decode_apikey(apikey)
+        except ValueError:
             # Something wrong with the json string
             return 'Could not parse apikey, please check.'
-        return apikey_json['permissions']
+        return key_data['permissions']

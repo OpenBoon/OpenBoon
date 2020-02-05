@@ -113,8 +113,8 @@ class ProjectServiceImpl constructor(
                 spec.name,
                 time,
                 time,
-                actor.name,
-                actor.name
+                actor.toString(),
+                actor.toString()
             )
         )
         withAuth(InternalThreadAuthentication(project.id, setOf())) {
@@ -165,7 +165,9 @@ class ProjectServiceImpl constructor(
     }
 
     @Transactional(readOnly = true)
-    override fun get(id: UUID): Project = projectDao.getOne(id)
+    override fun get(id: UUID): Project {
+        return projectDao.getOne(id)
+    }
 
     @Transactional(readOnly = true)
     override fun get(name: String): Project = projectDao.getByName(name)

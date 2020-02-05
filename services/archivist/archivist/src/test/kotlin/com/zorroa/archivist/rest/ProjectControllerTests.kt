@@ -192,4 +192,48 @@ class ProjectControllerTests : MockMvcTest() {
                 CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())))
             .andReturn()
     }
+
+    @Test
+    fun testGetMyProject() {
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/project")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.name", CoreMatchers.equalTo("unittest")))
+            .andReturn()
+    }
+
+    @Test
+    fun testGetMyProjectSettings() {
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/project/_settings")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.defaultPipelineId", CoreMatchers.anything()))
+            .andExpect(jsonPath("$.defaultIndexRouteId", CoreMatchers.anything()))
+            .andReturn()
+    }
+
+    @Test
+    fun updateMySettings() {
+        val pid = getProjectId()
+        val settings = projectService.getSettings(pid)
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/project/_settings")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(settings))
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.defaultPipelineId", CoreMatchers.equalTo(
+                settings.defaultPipelineId.toString())))
+            .andExpect(jsonPath("$.defaultIndexRouteId",
+                CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())))
+            .andReturn()
+    }
 }
