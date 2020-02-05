@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
+from zmlp.client import ZmlpInvalidRequestException
 
 from apikeys.serializers import ApikeySerializer
 from projects.views import BaseProjectViewSet
@@ -32,7 +33,10 @@ class ApikeyViewSet(BaseProjectViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
         body = {'name': serializer.validated_data['name'],
                 'permissions': serializer.validated_data['permissions']}
-        response = client.post('/auth/v1/apikey', body)
+        try:
+            response = client.post('/auth/v1/apikey', body)
+        except ZmlpInvalidRequestException:
+            return Response("Bad Request", status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_201_CREATED, data=response)
 
     def destroy(self, request, project_pk, client, pk):
