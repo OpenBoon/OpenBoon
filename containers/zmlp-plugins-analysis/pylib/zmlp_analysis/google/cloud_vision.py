@@ -256,7 +256,6 @@ class CloudVisionDetectObjects(AbstractCloudVisionProcessor):
         keywords = []
         for i, object in enumerate(objects):
             # skipping null values prevent images from being omitted from zvi
-            print(object)
             if object.name:
                 keywords.append(object.name)
                 if self.arg_value("debug"):

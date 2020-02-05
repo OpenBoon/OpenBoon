@@ -2,7 +2,7 @@ import os
 
 from unittest.mock import patch
 
-from zmlp_analysis.google.cloud_vision import CloudVisionProcessor
+from zmlp_analysis.google.cloud_vision import *
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset
 
@@ -20,7 +20,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         path = zorroa_test_path('images/set01/visa.jpg')
         proxy_patch.return_value = path
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionProcessor(), {'detect_image_text': True})
+        processor = self.init_processor(CloudVisionDetectImageText())
         processor.process(frame)
         assert ('Giants Franchise History' in
                 frame.asset.get_attr('analysis.google.imageTextDetection.content'))
@@ -30,7 +30,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         path = zorroa_test_path('images/set08/meme.jpg')
         proxy_patch.return_value = path
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionProcessor(), {'detect_document_text': True})
+        processor = self.init_processor(CloudVisionDetectDocumentText())
         processor.process(frame)
         print(frame.asset.get_attr('analysis.google'))
         assert 'HEY GIRL' in frame.asset.get_attr('analysis.google.documentTextDetection.content')
@@ -40,7 +40,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         path = zorroa_test_path('images/set08/eiffel_tower.jpg')
         proxy_patch.return_value = path
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionProcessor(), {'detect_landmarks': True})
+        processor = self.init_processor(CloudVisionDetectLandmarks())
         processor.process(frame)
         assert 'Eiffel Tower' in frame.asset.get_attr('analysis.google.landmarkDetection.keywords')
 
@@ -49,7 +49,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         path = zorroa_test_path('images/set08/meme.jpg')
         proxy_patch.return_value = path
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionProcessor(), {'detect_explicit': True})
+        processor = self.init_processor(CloudVisionDetectExplicit())
         processor.process(frame)
         assert frame.asset.get_attr('analysis.google.explicit.spoof') == 1.0
 
@@ -58,7 +58,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         path = zorroa_test_path('images/set08/meme.jpg')
         proxy_patch.return_value = path
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionProcessor(), {'detect_faces': True})
+        processor = self.init_processor(CloudVisionDetectFaces())
         processor.process(frame)
         assert 'joy' in frame.asset.get_attr('analysis.google.faceDetection.keywords')
 
@@ -67,7 +67,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         path = zorroa_test_path('images/set08/meme.jpg')
         proxy_patch.return_value = path
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionProcessor(), {'detect_labels': True})
+        processor = self.init_processor(CloudVisionDetectLabels())
         processor.process(frame)
         assert 'Hair' in frame.asset.get_attr('analysis.google.labelDetection.keywords')
 
@@ -76,6 +76,6 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         path = zorroa_test_path('images/detect/dogbike.jpg')
         proxy_patch.return_value = path
         frame = Frame(TestAsset(path))
-        processor = self.init_processor(CloudVisionProcessor(), {'detect_objects': True})
+        processor = self.init_processor(CloudVisionDetectObjects())
         processor.process(frame)
         assert 'Dog' in frame.asset.get_attr('analysis.google.labelDetection.keywords')
