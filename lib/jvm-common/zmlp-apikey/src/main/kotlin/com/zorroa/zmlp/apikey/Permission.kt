@@ -40,5 +40,4 @@ enum class Permission(val internal: Boolean) {
 
     @ApiModelProperty("Provides ability to manage projects.")
     ProjectManage(false);
-
 }
