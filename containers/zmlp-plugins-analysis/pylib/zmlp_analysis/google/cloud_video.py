@@ -7,6 +7,7 @@ from google.cloud import videointelligence_v1p2beta1 as videointelligence
 from pathlib2 import Path
 
 from zmlpsdk import Argument, AssetProcessor
+from zmlpsdk.proxy import get_proxy_level
 
 from .gcp_client import initialize_gcp_client
 
@@ -49,6 +50,7 @@ class CloudVideoIntelligenceProcessor(AssetProcessor):
                                          annotation_result.frame_label_annotations)
         if self.arg_value('detect_text'):
             text = ' '.join(t.text for t in annotation_result.text_annotations)
+            print("TEXT {}".format(text))
             if text:
                 asset.add_analysis('google.videoText.content', text)
 
@@ -63,8 +65,8 @@ class CloudVideoIntelligenceProcessor(AssetProcessor):
             str: Byte contents of the video clip that was created.
 
         """
-        clip_start = float(asset.get_attr('media.clip.start'))
-        clip_length = float(asset.get_attr('media.clip.length'))
+        clip_start = float(asset.get_attr('clip.start'))
+        clip_length = float(asset.get_attr('clip.length'))
         video_length = asset.get_attr('media.duration')
         seek = max(clip_start - 0.25, 0)
         duration = min(clip_length + 0.5, video_length)
@@ -72,8 +74,9 @@ class CloudVideoIntelligenceProcessor(AssetProcessor):
                          next(tempfile._get_candidate_names()) + '.mp4')
 
         # Construct ffmpeg command line
+        # check for proxy
         command = ['ffmpeg',
-                   '-i', str(asset.get_local_source_path()),
+                   '-i', get_proxy_level(asset, 3, mimetype="video/"),
                    '-ss', str(seek),
                    '-t', str(duration),
                    '-s', '512x288',

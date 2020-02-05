@@ -43,23 +43,23 @@ class CloudVisionProcessor(AssetProcessor):
 
     def __init__(self):
         super(CloudVisionProcessor, self).__init__()
-        self.add_arg(Argument('detect_image_text', 'bool', default=True,
+        self.add_arg(Argument('detect_image_text', 'bool', default=False,
                               toolTip=self.tool_tips['detect_image_text']))
-        self.add_arg(Argument('detect_document_text', 'bool', default=True,
+        self.add_arg(Argument('detect_document_text', 'bool', default=False,
                               toolTip=self.tool_tips['detect_document_text']))
-        self.add_arg(Argument('detect_landmarks', 'bool', default=True,
+        self.add_arg(Argument('detect_landmarks', 'bool', default=False,
                               toolTip=self.tool_tips['detect_landmarks']))
-        self.add_arg(Argument('detect_explicit', 'bool', default=True,
+        self.add_arg(Argument('detect_explicit', 'bool', default=False,
                               toolTip=self.tool_tips['detect_explicit']))
-        self.add_arg(Argument('detect_faces', 'bool', default=True,
+        self.add_arg(Argument('detect_faces', 'bool', default=False,
                               toolTip=self.tool_tips['detect_faces']))
-        self.add_arg(Argument('detect_labels', 'bool', default=True,
+        self.add_arg(Argument('detect_labels', 'bool', default=False,
                               toolTip=self.tool_tips['detect_labels']))
-        self.add_arg(Argument('detect_web_entities', 'bool', default=True,
+        self.add_arg(Argument('detect_web_entities', 'bool', default=False,
                               toolTip=self.tool_tips['detect_web_entities']))
-        self.add_arg(Argument('detect_logos', 'bool', default=True,
+        self.add_arg(Argument('detect_logos', 'bool', default=False,
                               toolTip=self.tool_tips['detect_logos']))
-        self.add_arg(Argument('detect_objects', 'bool', default=True,
+        self.add_arg(Argument('detect_objects', 'bool', default=False,
                               toolTip=self.tool_tips['detect_objects']))
         self.add_arg(Argument('debug', 'bool', default=False))
         self.image_annotator = None
@@ -200,7 +200,7 @@ class CloudVisionProcessor(AssetProcessor):
         if self.arg_value("debug"):
             struct["type"] = "GCLabelDetection"
             struct["scores"] = labels[0].score
-        asset.add_analysis("google.visionLabelDetection", struct)
+        asset.add_analysis("google.labelDetection", struct)
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
     def _detect_web_entities(self, asset, image):
@@ -260,6 +260,7 @@ class CloudVisionProcessor(AssetProcessor):
         keywords = []
         for i, object in enumerate(objects):
             # skipping null values prevent images from being omitted from zvi
+            print(object)
             if object.name:
                 keywords.append(object.name)
                 if self.arg_value("debug"):
@@ -267,4 +268,3 @@ class CloudVisionProcessor(AssetProcessor):
                     struct["prob" + str(i)] = object.score
         struct["keywords"] = list(set(keywords))
         asset.add_analysis("google.objectDetection", struct)
-

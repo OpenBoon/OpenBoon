@@ -1,5 +1,4 @@
 import re
-import re
 
 import backoff
 from google.api_core.exceptions import ResourceExhausted
@@ -7,6 +6,7 @@ from google.cloud import language
 
 from zmlpsdk import Argument, AssetProcessor
 
+from .gcp_client import initialize_gcp_client
 
 class CloudNaturalLanguageProcessor(AssetProcessor):
     """Use Google Cloud Natural Language API to analyze a text field in the metadata."""
@@ -22,7 +22,7 @@ class CloudNaturalLanguageProcessor(AssetProcessor):
 
     def init(self):
         super(CloudNaturalLanguageProcessor, self).init()
-        self.client = self.initialize_gcp_client(language.LanguageServiceClient)
+        self.client = initialize_gcp_client(language.LanguageServiceClient)
 
     def flatten_content(self, content):
         """Recursively flattens list(s) of strings into a single space-delimited string.

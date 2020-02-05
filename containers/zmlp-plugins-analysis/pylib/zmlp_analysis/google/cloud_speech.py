@@ -8,7 +8,9 @@ from google.api_core.exceptions import ResourceExhausted
 from google.cloud import speech_v1p1beta1 as speech
 
 from zmlpsdk import Argument, AssetProcessor
+from zmlpsdk.proxy import get_proxy_level
 
+from .gcp_client import initialize_gcp_client
 
 class CloudSpeechToTextProcessor(AssetProcessor):
     file_types = ['mov', 'mp4', 'mpg', 'mpeg', 'm4v', 'webm', 'ogv', 'ogg',
@@ -37,7 +39,7 @@ class CloudSpeechToTextProcessor(AssetProcessor):
 
     def init(self):
         super(CloudSpeechToTextProcessor, self).init()
-        self.speech_client = self.initialize_gcp_client(speech.SpeechClient)
+        self.speech_client = initialize_gcp_client(speech.SpeechClient)
 
     def process(self, frame):
         asset = frame.asset
@@ -55,7 +57,6 @@ class CloudSpeechToTextProcessor(AssetProcessor):
             asset.add_analysis(analysis_field, attributes)
         else:
             self.logger.info('Asset contains no discernible speech.')
-            asset.add_analysis(analysis_field, None)
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
     def _recognize_speech(self, audio):
@@ -88,8 +89,8 @@ class CloudSpeechToTextProcessor(AssetProcessor):
         return {'language': language, 'confidence': confidence, 'content': content}
 
     def _get_audio_clip_content(self, asset):
-        clip_start = asset.get_attr('media.clip.start')
-        clip_length = asset.get_attr('media.clip.length')
+        clip_start = asset.get_attr('clip.start')
+        clip_length = asset.get_attr('clip.length')
         video_length = asset.get_attr('media.duration')
         seek = max(clip_start - 0.25, 0)
         duration = min(clip_length + 0.5, video_length)
@@ -100,7 +101,7 @@ class CloudSpeechToTextProcessor(AssetProcessor):
 
         # Construct ffmpeg command line
         cmd_line = ['ffmpeg',
-                    '-i', asset.get_local_source_path(),
+                    '-i', get_proxy_level(asset, 3, mimetype="video/"),
                     '-vn',
                     '-acodec', 'flac',
                     '-ar', str(self.audio_sample_rate),
