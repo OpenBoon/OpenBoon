@@ -7,10 +7,7 @@ import com.zorroa.zmlp.client.domain.ZmlpClientException;
 import com.zorroa.zmlp.client.domain.asset.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AssetApp {
@@ -51,7 +48,22 @@ public class AssetApp {
         body.put("assets", assetSpecList);
 
         return client.uploadFiles("/api/v3/assets/_batchUpload", uris, body, BatchCreateAssetResponse.class);
+    }
 
+    /**
+     * @param assetSpecList List of files to upload
+     * @return Response State after provisioning assets.
+     */
+    public BatchCreateAssetResponse uploadFiles(AssetSpec ...assetSpecList){
+        return uploadFiles(Arrays.asList(assetSpecList));
+    }
+
+    /**
+     * @param batchAssetSpec Batch of Asset Specification
+     * @return Response State after provisioning assets.
+     */
+    public BatchCreateAssetResponse uploadFiles(BatchAssetSpec batchAssetSpec){
+        return uploadFiles(batchAssetSpec.getBatch());
     }
 
     /**
