@@ -12,9 +12,15 @@ if (ENABLE_SENTRY === 'true') {
   Sentry.init({
     dsn: 'https://09e9c3fc777c469ab784ff4367ff54bb@sentry.io/1848515',
     release: process.env.CI_COMMIT_SHA,
-    environment: ENVIRONMENT
+    environment: ENVIRONMENT,
   })
 }
+
+const AUTHENTICATION_LESS_ROUTES = [
+  '/_error',
+  '/create-account',
+  '/reset-password',
+]
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -34,7 +40,7 @@ class MyApp extends App {
   render() {
     const { Component, pageProps, router, err = '' } = this.props
 
-    if (router.route === '/_error') {
+    if (AUTHENTICATION_LESS_ROUTES.includes(router.route)) {
       return <Component {...pageProps} err={err} />
     }
 

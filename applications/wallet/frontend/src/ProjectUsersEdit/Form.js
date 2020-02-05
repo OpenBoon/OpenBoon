@@ -2,9 +2,10 @@ import { useReducer } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
-import { spacing, typography } from '../Styles'
+import { spacing } from '../Styles'
 
 import Form from '../Form'
+import SectionTitle from '../SectionTitle'
 import FormAlert from '../FormAlert'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS } from '../Button'
@@ -24,14 +25,7 @@ const ProjectUsersEditForm = ({ projectId, user, permissions }) => {
 
   return (
     <Form>
-      <h2
-        css={{
-          fontSize: typography.size.medium,
-          lineHeight: typography.height.medium,
-          fontWeight: typography.weight.medium,
-        }}>
-        User ID: {user.email}
-      </h2>
+      <SectionTitle>User ID: {user.email}</SectionTitle>
 
       <FormAlert
         errorMessage={state.error}
