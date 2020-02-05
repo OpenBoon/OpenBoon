@@ -213,7 +213,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
   <button
     className="emotion-10"
     onClick={[Function]}
-    type="submit"
+    type="button"
   >
     Edit Username
   </button>

@@ -97,7 +97,7 @@ Array [
 <button
     className="emotion-0"
     onClick={[Function]}
-    type="submit"
+    type="button"
   >
     Edit Username
   </button>,
@@ -201,7 +201,7 @@ Array [
 <button
     className="emotion-0"
     onClick={[Function]}
-    type="submit"
+    type="button"
   >
     Edit Username
   </button>,
@@ -592,7 +592,7 @@ Array [
 <div
     className="emotion-0"
   >
-     
+    Jane Doe
   </div>,
   .emotion-0 {
   -webkit-flex: 0;
@@ -652,7 +652,7 @@ Array [
 <button
     className="emotion-0"
     onClick={[Function]}
-    type="submit"
+    type="button"
   >
     Edit Username
   </button>,

@@ -13,19 +13,20 @@ import { onSubmit } from './helpers'
 
 import AccountProfileInfo from './Info'
 
+const { id, firstName = '', lastName = '' } = getUser()
+const INITIAL_STATE = {
+  id,
+  firstName,
+  lastName,
+  showForm: false,
+  success: false,
+  errors: {},
+}
+
 const reducer = (state, action) => ({ ...state, ...action })
 
 const AccountProfileForm = () => {
-  const { id, firstName = '', lastName = '' } = getUser()
-
-  const [state, dispatch] = useReducer(reducer, {
-    id,
-    firstName,
-    lastName,
-    showForm: false,
-    success: false,
-    errors: {},
-  })
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   return (
     <>
@@ -55,11 +56,10 @@ const AccountProfileForm = () => {
               fontWeight: typography.weight.regular,
               paddingBottom: spacing.comfy,
             }}>
-            {`${firstName} ${lastName}`}
+            {`${state.firstName} ${state.lastName}`}
           </div>
 
           <Button
-            type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() => dispatch({ showForm: true, success: false })}>
             Edit Username
@@ -100,16 +100,7 @@ const AccountProfileForm = () => {
             <Button
               css={{ marginRight: spacing.normal }}
               variant={BUTTON_VARIANTS.SECONDARY}
-              onClick={() =>
-                dispatch({
-                  id,
-                  firstName,
-                  lastName,
-                  showForm: false,
-                  success: false,
-                  errors: {},
-                })
-              }>
+              onClick={() => dispatch(INITIAL_STATE)}>
               Cancel
             </Button>
 

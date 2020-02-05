@@ -15,7 +15,7 @@ describe('<AccountProfileForm />', () => {
     // Click edit username
     act(() => {
       component.root
-        .findByProps({ type: 'submit' })
+        .findByProps({ children: 'Edit Username' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -36,7 +36,7 @@ describe('<AccountProfileForm />', () => {
     // Submit the form
     act(() => {
       component.root
-        .findByProps({ type: 'submit' })
+        .findByProps({ children: 'Save' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -49,14 +49,14 @@ describe('<AccountProfileForm />', () => {
     // Click edit username
     act(() => {
       component.root
-        .findByProps({ type: 'submit' })
+        .findByProps({ children: 'Edit Username' })
         .props.onClick({ preventDefault: noop })
     })
 
     // Click cancel
     act(() => {
       component.root
-        .findByProps({ type: 'button' })
+        .findByProps({ children: 'Cancel' })
         .props.onClick({ preventDefault: noop })
     })
 
