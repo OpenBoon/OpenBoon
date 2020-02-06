@@ -13,6 +13,7 @@ import { getUser } from '../Authentication/helpers'
 import { onSubmit } from './helpers'
 
 const { id, email, firstName = '', lastName = '' } = getUser()
+
 const INITIAL_STATE = {
   id,
   firstName,

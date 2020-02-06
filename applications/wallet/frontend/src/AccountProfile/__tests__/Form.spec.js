@@ -1,11 +1,13 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import mockUser from '../../User/__mocks__/user'
-
 import AccountProfileForm from '../Form'
 
 jest.mock('../../Authentication/helpers', () => ({
-  getUser: () => mockUser,
+  getUser: () => ({
+    id: 1,
+    username: 'jane.doe',
+    email: 'jane.doe@zorroa.com',
+  }),
 }))
 
 jest.mock('../helpers')

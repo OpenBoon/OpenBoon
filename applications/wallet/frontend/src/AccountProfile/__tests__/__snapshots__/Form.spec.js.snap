@@ -37,7 +37,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Jane Doe
+     
   </div>,
   .emotion-0 {
   -webkit-flex: 0;
@@ -141,7 +141,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Jane Doe
+     
   </div>,
   .emotion-0 {
   -webkit-flex: 0;
@@ -222,62 +222,7 @@ Array [
   >
     User ID: jane.doe@zorroa.com
   </h3>,
-  .emotion-11 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-11:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-11[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
-  background-color: #73b61c;
-}
-
-.emotion-11:hover {
-  background-color: #b8d652;
-}
-
-.emotion-11[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-13 {
+  .emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -392,6 +337,61 @@ Array [
   background-color: #808080;
 }
 
+.emotion-11 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-11:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-11[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-11,
+.emotion-11:hover,
+.emotion-11:visited {
+  background-color: #73b61c;
+}
+
+.emotion-11:hover {
+  background-color: #b8d652;
+}
+
+.emotion-11[aria-disabled=true] {
+  background-color: #808080;
+}
+
 <form
     action=""
     className="emotion-13"
@@ -417,7 +417,7 @@ Array [
           name="firstName"
           onChange={[Function]}
           type="text"
-          value="Jane"
+          value=""
         />
       </div>
       <div
@@ -444,7 +444,7 @@ Array [
           name="lastName"
           onChange={[Function]}
           type="text"
-          value="Doe"
+          value=""
         />
       </div>
       <div
@@ -464,6 +464,7 @@ Array [
         Cancel
       </button>
       <button
+        aria-disabled={true}
         className="emotion-11"
         onClick={[Function]}
         type="submit"
