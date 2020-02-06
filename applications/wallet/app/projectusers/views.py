@@ -21,8 +21,12 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
     * **GET** _api/v1/projects/$Project_Id/users/_ - List the Users who are members of $Project_Id
     * **GET** _api/v1/projects/$Project_Id/users/$User_Id/_ - Detail info on $User_Id
-    * **POST** _api/v1/projects/$Project_Id/users/_ - Create a membership to $Project_Id
-        - Ex. Post Body: `{"email": "user@email.com", "permissions": ["AssetsRead"]}`
+    * **POST** _api/v1/projects/$Project_Id/users/_ - Create membership/s to $Project_Id
+        - To create one: `{"email": "user@email.com", "permissions": ["AssetsRead"]}`
+        - To create multiple: `{"batch": [
+                                    {"email": "user@email.com", "permissions": ["AssetsRead"]},
+                                    {"email": "user2@email.com", "permissions": ["AssetsRead"]}
+                                ]}`
     * **PUT/PATCH** _api/v1/projects/$Project_Id/users/$User_Id/_ - Update a Users permissions
     * **DELETE** _api/v1/projects/$Project_Id/users/$User_Id/_ - Remove $User_Id from $Project_Id
 
@@ -63,33 +67,53 @@ class ProjectUserViewSet(BaseProjectViewSet):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request, project_pk, client):
+        batch = request.data.get('batch')
+        if batch and request.data.get('email'):
+            return Response(data={'detail': 'Batch argument provided with single creation arguments.'},  # noqa
+                            status=status.HTTP_400_BAD_REQUEST)
+        elif batch:
+            response_body = {'results': {'succeeded': [], 'failed': []}}
+            for entry in batch:
+                response = self._create_project_user(request, project_pk, client, entry)
+                content = {'email': entry.get('email'),
+                           'permissions': entry.get('permissions'),
+                           'status_code': response.status_code,
+                           'body': response.data}
+                if response.status_code == status.HTTP_201_CREATED:
+                    response_body['results']['succeeded'].append(content)
+                else:
+                    response_body['results']['failed'].append(content)
+            return Response(data=response_body, status=status.HTTP_207_MULTI_STATUS)
+        else:
+            return self._create_project_user(request, project_pk, client, request.data)
+
+    def _create_project_user(self, request, project_pk, client, data):
         # Get the User and add the appropriate Membership & ApiKey
         try:
-            email = request.data['email']
+            email = data['email']
         except KeyError:
-            return Response('No email given.', status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'detail': 'No email given.'},
+                            status=status.HTTP_400_BAD_REQUEST)
         try:
-            permissions = request.data['permissions']
+            permissions = data['permissions']
         except KeyError:
-            return Response('No permissions given.', status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'detail': 'No permissions given.'},
+                            status=status.HTTP_400_BAD_REQUEST)
         # Get the current project
         project = self.get_project_object(project_pk)
         # Search for an existing user
         try:
-            user = User.objects.get(email=email)
-        except User.MultipleObjectsReturned:
-            return Response('Multiple Users with the given email exist.',
-                            status=status.HTTP_400_BAD_REQUEST)
+            user = User.objects.get(username=email)
         except User.DoesNotExist:
             # Should we actually silently fail and return a 200 here?
-            return Response('No user with the given email.',
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'detail': 'No user with the given email.'},
+                            status=status.HTTP_404_NOT_FOUND)
         # Create an apikey with the given permissions
         body = {'name': email, 'permissions': permissions}
         try:
             apikey = client.post('/auth/v1/apikey', body)
         except ZmlpInvalidRequestException:
-            return Response("Unable to create apikey.",
+            return Response(data={'detail': "Unable to create apikey."},
                             status=status.HTTP_400_BAD_REQUEST)
         encoded_apikey = encode_apikey(apikey).decode('utf-8')
         # Create a membership for given user
@@ -112,14 +136,16 @@ class ProjectUserViewSet(BaseProjectViewSet):
         try:
             key_data = decode_apikey(apikey)
         except ValueError:
-            return Response('Unable to parse apikey.', status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'detail': 'Unable to parse apikey.'},
+                            status=status.HTTP_400_BAD_REQUEST)
         try:
             apikey_id = key_data['id']
         except KeyError:
-            return Response('Apikey is incomplete.', status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'detail': 'Apikey is incomplete.'},
+                            status=status.HTTP_400_BAD_REQUEST)
         response = client.delete(f'/auth/v1/apikey/{apikey_id}')
         if not response.status_code == 200:
-            return Response('Unable to delete apikey in ZMLP.',
+            return Response(data={'detail': 'Unable to delete apikey in ZMLP.'},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         membership.delete()
         return Response(status=status.HTTP_200_OK)
