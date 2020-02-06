@@ -1,14 +1,29 @@
+import json
 import pytest
 import base64
 from django.urls import reverse
 from django.test import override_settings
 from rest_framework.response import Response
 from rest_framework import status
+from zmlp.client import ZmlpInvalidRequestException
 
 from zmlp import ZmlpClient
 from projects.models import Project, Membership
+from apikeys.utils import decode_apikey
 
 pytestmark = pytest.mark.django_db
+
+
+@pytest.fixture
+def data(project):
+    return {
+        'id': 'b3a09695-b9fb-40bd-8ea8-bbe0c2cba33f',
+        'name': 'tester@fake.com',
+        'projectId': project.id,
+        'accessKey': 'P1klR1U1RgT3YfdLYN4-AHPlnOhXZHeD',
+        'secretKey': '6Ti7kZZ7IcmWnR1bfdvCMUataoMh9Mbq9Kqvs3xctOM7y1OwbefdFiLewuEDAGBof_lV5y_JKuFtY11bmRjFEg',  # noqa
+        'permissions': ['AssetsRead']
+    }
 
 
 class TestProjectUser:
@@ -28,7 +43,7 @@ class TestProjectUser:
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         response = api_client.get(reverse('projectuser-list', kwargs={'project_pk': project.id}))
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         content = response.json()
         assert content['results'][0]['id'] == zmlp_project_user.id
 
@@ -40,7 +55,7 @@ class TestProjectUser:
         self._make_users_for_project(project, 5, django_user_model, zmlp_apikey)
         uri = reverse('projectuser-list', kwargs={'project_pk': project.id})
         response = api_client.get(f'{uri}?from=0&size=2')
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         content = response.json()
         assert content['count'] == 6
         assert len(content['results']) == 2
@@ -56,7 +71,7 @@ class TestProjectUser:
         new_project = Project.objects.create(id='0820a307-c3dd-460e-a9c4-0e5f582e09c3',
                                              name='Test Project')
         response = api_client.get(reverse('projectuser-list', kwargs={'project_pk': new_project.id}))  # noqa
-        assert response.status_code == 403
+        assert response.status_code == status.HTTP_403_FORBIDDEN
 
     @override_settings(PLATFORM='zmlp')
     def test_get_retrieve(self, project, zmlp_project_user, zmlp_project_membership, api_client):
@@ -65,7 +80,7 @@ class TestProjectUser:
         response = api_client.get(reverse('projectuser-detail',
                                           kwargs={'project_pk': project.id,
                                                   'pk': zmlp_project_user.id}))
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         content = response.json()
         assert content['id'] == zmlp_project_user.id
         assert content['username'] == zmlp_project_user.username
@@ -83,7 +98,7 @@ class TestProjectUser:
         response = api_client.get(reverse('projectuser-detail',
                                           kwargs={'project_pk': project.id,
                                                   'pk': zmlp_project_user.id}))
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         content = response.json()
         assert content['permissions'] == 'Could not parse apikey, please check.'
 
@@ -95,7 +110,7 @@ class TestProjectUser:
         response = api_client.get(reverse('projectuser-detail',
                                           kwargs={'project_pk': project.id,
                                                   'pk': 9999}))
-        assert response.status_code == 404
+        assert response.status_code == status.HTTP_404_NOT_FOUND
         content = response.json()
         assert content['detail'] == 'Not found.'
 
@@ -109,7 +124,7 @@ class TestProjectUser:
         response = api_client.get(reverse('projectuser-detail',
                                           kwargs={'project_pk': project.id,
                                                   'pk': user.id}))
-        assert response.status_code == 404
+        assert response.status_code == status.HTTP_404_NOT_FOUND
         content = response.json()
         assert content['detail'] == 'Not found.'
 
@@ -126,7 +141,7 @@ class TestProjectUser:
         response = api_client.delete(reverse('projectuser-detail',
                                              kwargs={'project_pk': project.id,
                                                      'pk': zmlp_project_user.id}))
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         with pytest.raises(Membership.DoesNotExist):
             zmlp_project_user.memberships.get(project=project.id)
 
@@ -139,7 +154,7 @@ class TestProjectUser:
         response = api_client.delete(reverse('projectuser-detail',
                                              kwargs={'project_pk': project.id,
                                                      'pk': user.id}))
-        assert response.status_code == 404
+        assert response.status_code == status.HTTP_404_NOT_FOUND
         content = response.json()
         assert content['detail'] == 'Not found.'
 
@@ -153,9 +168,9 @@ class TestProjectUser:
         response = api_client.delete(reverse('projectuser-detail',
                                              kwargs={'project_pk': project.id,
                                                      'pk': user.id}))
-        assert response.status_code == 400
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content == 'Unable to parse apikey.'
+        assert content['detail'] == 'Unable to parse apikey.'
 
     @override_settings(PLATFORM='zmlp')
     def test_delete_incomplete_apikey(self, project, zmlp_project_user, zmlp_project_membership,
@@ -167,9 +182,9 @@ class TestProjectUser:
         response = api_client.delete(reverse('projectuser-detail',
                                              kwargs={'project_pk': project.id,
                                                      'pk': user.id}))
-        assert response.status_code == 400
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content == 'Apikey is incomplete.'
+        assert content['detail'] == 'Apikey is incomplete.'
 
     @override_settings(PLATFORM='zmlp')
     def test_delete_failed_zmlp_delete(self, project, zmlp_project_user,
@@ -183,6 +198,126 @@ class TestProjectUser:
         response = api_client.delete(reverse('projectuser-detail',
                                              kwargs={'project_pk': project.id,
                                                      'pk': zmlp_project_user.id}))
-        assert response.status_code == 500
+        assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
         content = response.json()
-        assert content == 'Unable to delete apikey in ZMLP.'
+        assert content['detail'] == 'Unable to delete apikey in ZMLP.'
+
+    @override_settings(PLATFORM='zmlp')
+    def test_post_create(self, project, zmlp_project_user, zmlp_project_membership,
+                         api_client, monkeypatch, django_user_model, data):
+
+        def mock_api_response(*args, **kwargs):
+            return data
+
+        new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
+        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        body = {'email': 'tester@fake.com', 'permissions': ['AssetsRead']}
+        response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
+        assert response.status_code == status.HTTP_201_CREATED
+        membership = Membership.objects.get(user=new_user, project=project)
+        decoded_apikey = decode_apikey(membership.apikey)
+        assert decoded_apikey['permissions'] == ['AssetsRead']
+
+    @override_settings(PLATFORM='zmlp')
+    def test_post_create_batch(self, project, zmlp_project_user, zmlp_project_membership,
+                               api_client, monkeypatch, django_user_model, data):
+
+        def mock_api_response(*args, **kwargs):
+            return data
+
+        tester1 = django_user_model.objects.create_user('tester1@fake.com', 'tester1@fake.com', 'letmein')  # noqa
+        tester2 = django_user_model.objects.create_user('tester2@fake.com', 'tester2@fake.com', 'letmein')  # noqa
+        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        body = {'batch': [
+            {'email': 'tester1@fake.com', 'permissions': ['AssetsRead']},
+            {'email': 'tester2@fake.com', 'permissions': ['AssetsRead']},
+            {'email': 'tester3@fake.com', 'permissions': ['AssetsRead']}
+        ]}
+        response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}),
+                                   content_type='application/json', data=json.dumps(body))
+        assert response.status_code == status.HTTP_207_MULTI_STATUS
+        # Verify at leaset one membership was created
+        membership1 = Membership.objects.get(user=tester1, project=project)
+        decoded_apikey = decode_apikey(membership1.apikey)
+        assert decoded_apikey['permissions'] == ['AssetsRead']
+        # Verify Individual response objects
+        content = response.json()['results']
+        assert len(content['succeeded']) == 2
+        assert len(content['failed']) == 1
+        assert content['failed'][0]['statusCode'] == status.HTTP_404_NOT_FOUND
+        assert content['failed'][0]['email'] == 'tester3@fake.com'
+        assert content['failed'][0]['permissions'] == ['AssetsRead']
+        assert content['failed'][0]['body']['detail'] == 'No user with the given email.'
+
+    @override_settings(PLATFORM='zmlp')
+    def test_post_create_mixed_args(self, project, zmlp_project_user, zmlp_project_membership,
+                                    api_client, monkeypatch, django_user_model, data):
+        def mock_api_response(*args, **kwargs):
+            return data
+
+        django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')
+        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        body = {'email': 'tester@fake.com',
+                'permissions': ['AssetsRead'],
+                'batch': [{'email': 'fake'}]}
+        response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        content = response.json()
+        assert content['detail'] == 'Batch argument provided with single creation arguments.'
+
+    @override_settings(PLATFORM='zmlp')
+    def test_post_create_missing_email(self, project, zmlp_project_user, zmlp_project_membership,
+                                       api_client):
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        body = {'permissions': ['AssetsRead']}
+        response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        content = response.json()
+        assert content['detail'] == 'No email given.'
+
+    @override_settings(PLATFORM='zmlp')
+    def test_post_create_missing_permissions(self, project, zmlp_project_user,
+                                             zmlp_project_membership, api_client):
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        body = {'email': 'tester@fake.com'}
+        response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        content = response.json()
+        assert content['detail'] == 'No permissions given.'
+
+    @override_settings(PLATFORM='zmlp')
+    def test_post_create_nonexistent_user(self, project, zmlp_project_user, zmlp_project_membership,
+                                          api_client):
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        body = {'email': 'tester@fake.com', 'permissions': ['AssetsRead']}
+        response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}),
+                                   body)  # noqa
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+        content = response.json()
+        assert content['detail'] == 'No user with the given email.'
+
+    @override_settings(PLATFORM='zmlp')
+    def test_post_create_bad_zmlp_response(self, project, zmlp_project_user, monkeypatch, data,
+                                           zmlp_project_membership, api_client, django_user_model):
+
+        def mock_api_response(*args, **kwargs):
+            raise ZmlpInvalidRequestException({'msg': 'bad'})
+
+        django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')
+        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        body = {'email': 'tester@fake.com', 'permissions': ['AssetsRead']}
+        response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        content = response.json()
+        assert content['detail'] == 'Unable to create apikey.'
