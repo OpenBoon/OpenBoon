@@ -1,3 +1,4 @@
+# noqa: F405
 from unittest.mock import patch
 
 from google.cloud.vision import types
@@ -7,6 +8,7 @@ from zmlp_analysis.google.cloud_vision import *
 from zmlpsdk import Frame, ZmlpProcessorException
 from zmlpsdk.proxy import store_asset_proxy
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
+
 
 patch_path = 'zmlp_analysis.google.cloud_vision.vision.ImageAnnotatorClient'
 
@@ -411,7 +413,6 @@ class CloudVisionDetectLabelsTests(PluginUnitTestCase):
         self.assertIn(u'Organism', frame.asset.get_attr(keyword_pth))
         self.assertIn(u'Bird', frame.asset.get_attr(keyword_pth))
         # assert debug values
-
 
         self.assertEqual(frame.asset.get_attr(
             "{}.pred0".format(ns)), u'Toucan')
