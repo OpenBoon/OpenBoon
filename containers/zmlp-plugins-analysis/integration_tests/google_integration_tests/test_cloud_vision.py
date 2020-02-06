@@ -4,13 +4,15 @@ from unittest.mock import patch
 
 from zmlp_analysis.google.cloud_vision import *
 from zmlpsdk import Frame
+from zmlpsdk.proxy import store_asset_proxy
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset
 
+from zmlp import ZmlpClient
 
 class CloudVisionProcessorTestCase(PluginUnitTestCase):
 
     def setUp(self):
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcp-creds.json'
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.dirname(__file__) + '/gcp-creds.json'
 
     def tearDown(self):
         del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
@@ -53,14 +55,27 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         processor.process(frame)
         assert frame.asset.get_attr('analysis.google.explicit.spoof') == 1.0
 
+    @patch.object(ZmlpClient, 'upload_file')
     @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
-    def test_face_detection(self, proxy_patch):
+    def test_face_detection(self, proxy_patch, upload_patch):
+        upload_patch.return_value = {
+            "name": "googleFaceDetection_200x200.jpg",
+            "category": "proxy",
+            "mimetype": "image/jpeg",
+            "attrs": {
+                "width": 512,
+                "height": 339
+            }
+        }
         path = zorroa_test_path('images/set08/meme.jpg')
         proxy_patch.return_value = path
-        frame = Frame(TestAsset(path))
+        asset = TestAsset(path)
+        frame = Frame(asset)
+        store_asset_proxy(frame.asset, path, (512, 339))
         processor = self.init_processor(CloudVisionDetectFaces())
         processor.process(frame)
-        assert 'joy' in frame.asset.get_attr('analysis.google.faceDetection.keywords')
+        assert 1 == asset.get_attr("analysis.google.faceDetection.faceCount")
+        assert 1 == len(asset.get_attr("elements"))
 
     @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
     def test_label_detection(self, proxy_patch):
@@ -78,4 +93,4 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         frame = Frame(TestAsset(path))
         processor = self.init_processor(CloudVisionDetectObjects())
         processor.process(frame)
-        assert 'Dog' in frame.asset.get_attr('analysis.google.labelDetection.keywords')
+        assert 'Dog' in frame.asset.get_attr('analysis.google.objectDetection.keywords')

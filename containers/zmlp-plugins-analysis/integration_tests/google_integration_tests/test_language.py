@@ -10,7 +10,7 @@ from zmlpsdk.base import Frame
 # ~/zorroa/keys/gcloud-integration-test.json.
 class CloudNaturalLanguageProcessorTestCase(PluginUnitTestCase):
     def setUp(self):
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "gcp-creds.json"
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.dirname(__file__) + '/gcp-creds.json'
         self.processor = self.init_processor(CloudNaturalLanguageProcessor())
 
     def tearDown(self):
