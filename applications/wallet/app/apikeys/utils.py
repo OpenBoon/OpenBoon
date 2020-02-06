@@ -28,6 +28,26 @@ def decode_apikey(apikey):
         try:
             key_data = json.loads(base64.b64decode(apikey))
         except (binascii.Error, json.decoder.JSONDecodeError):
-            raise ValueError("Invalid base64 encoded API key.")
+            raise ValueError('Invalid base64 encoded API key.')
 
     return key_data
+
+
+def encode_apikey(apikey):
+    """Encodes an apikey into it's Base64 representation.
+
+    Args: (str) Apikey to encode.
+
+    Returns: (str) The Base64 encoded representation of the apikey data
+
+    """
+    encoded_key = None
+    if not apikey:
+        return encoded_key
+    elif isinstance(apikey, dict):
+        try:
+            encoded_key = base64.b64encode(json.dumps(apikey).encode('utf-8'))
+        except binascii.Error:
+            raise ValueError('Error encoding apikey.')
+
+    return encoded_key
