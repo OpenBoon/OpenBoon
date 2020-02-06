@@ -1,15 +1,15 @@
 import io
+
 import backoff
-
-from pathlib2 import Path
-
+import cv2
+from google.api_core.exceptions import ResourceExhausted
 from google.cloud import vision
 from google.cloud.vision import types
-from google.api_core.exceptions import ResourceExhausted
+from pathlib2 import Path
 
-from zmlpsdk import Argument, ZmlpFatalProcessorException, AssetProcessor
-from zmlpsdk.proxy import get_proxy_level
-
+from zmlp import Element
+from zmlpsdk import Argument, AssetProcessor, ZmlpProcessorException
+from zmlpsdk.proxy import get_proxy_level, store_element_proxy
 from .gcp_client import initialize_gcp_client
 
 __all__ = [
@@ -26,6 +26,14 @@ __all__ = [
 
 
 class AbstractCloudVisionProcessor(AssetProcessor):
+    """
+    This base class is used for all Google Vision features.  Subclasses
+    only have to implement the "detect(asset, image) method.
+    """
+
+    # The max size of the image you can send to google.
+    max_image_size = 10485760
+
     def __init__(self):
         super(AbstractCloudVisionProcessor, self).__init__()
         self.image_annotator = None
@@ -39,17 +47,29 @@ class AbstractCloudVisionProcessor(AssetProcessor):
         path = get_proxy_level(asset, 1)
         if not path:
             return
-        if Path(path).stat().st_size > 10485760:
-            raise ZmlpFatalProcessorException(
-                'The image is too large to submit to Google ML. Image size must '
-                'be < 10485760 bytes')
-        with io.open(path, 'rb') as image_file:
-            content = image_file.read()
-        image = types.Image(content=content)
-        self.detect(asset, image)
+        self.detect(asset, self.get_vision_image(path))
 
     def detect(self, asset, image):
         pass
+
+    def get_vision_image(self, path):
+        """
+        Loads the file path into a Google Vision Image which is
+        used for calling various vision services.
+        Args:
+            path (str): The file path.
+
+        Returns:
+            google.cloud.vision.types.Image
+        """
+        size = Path(path).stat().st_size
+        if size > self.max_image_size:
+            raise ZmlpProcessorException('The image is too large to submit '
+                                         'to Google ML. Image size ({}) '
+                                         'must be < 10485760 bytes'.format(size))
+        with io.open(path, 'rb') as image_file:
+            content = image_file.read()
+        return types.Image(content=content)
 
 
 class CloudVisionDetectImageText(AbstractCloudVisionProcessor):
@@ -128,6 +148,17 @@ class CloudVisionDetectExplicit(AbstractCloudVisionProcessor):
 
 
 class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
+    namespace = "google.faceDetection"
+
+    label_keys = [
+        'joy',
+        'sorrow',
+        'anger',
+        'surprise',
+        'under_exposed',
+        'blurred',
+        'headwear'
+    ]
 
     def __init__(self):
         super(CloudVisionDetectFaces, self).__init__()
@@ -135,26 +166,49 @@ class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
     def detect(self, asset, image):
         """Executes face detection using the Cloud Vision API."""
-        response = self.image_annotator.face_detection(image=image)
+        # Use large proxy for face
+        large_proxy = get_proxy_level(asset, 3)
+        response = self.image_annotator.face_detection(image=self.get_vision_image(large_proxy))
         faces = response.face_annotations
-        if faces:
 
-            # We'll only add the first face found for now. TODO: deal with multiple faces
-            face = faces[0]
-            struct = {}
-            struct['roll_angle'] = face.roll_angle
-            struct['pan_angle'] = face.pan_angle
-            struct['tilt_angle'] = face.tilt_angle
-            struct['detection_confidence'] = face.detection_confidence
-            struct['joy_likelihood'] = face.joy_likelihood
-            struct['sorrow_likelihood'] = face.sorrow_likelihood
-            struct['anger_likelihood'] = face.anger_likelihood
-            struct['surprise_likelihood'] = face.surprise_likelihood
-            struct['under_exposed_likelihood'] = face.under_exposed_likelihood
-            struct['blurred_likelihood'] = face.blurred_likelihood
-            struct['headwear_likelihood'] = face.headwear_likelihood
+        if not faces:
+            return
+        rects = []
+        for face in faces:
+            rect = face.bounding_poly
+            rects.append([rect.vertices[0].x,
+                          rect.vertices[0].y,
+                          rect.vertices[2].x,
+                          rect.vertices[2].y])
 
-            asset.add_analysis("google.faceDetection", struct)
+        # Once we have he rects we can make a proxy with boxes.
+        face_proxy = store_element_proxy(asset,
+                                         cv2.imread(large_proxy),
+                                         self.namespace,
+                                         rects=rects)
+
+        # Once we have a proxy with boxes we can make elements
+        for rect, face in zip(rects, faces):
+            element = Element('face',
+                              analysis=self.namespace,
+                              rect=rect,
+                              labels=self.get_face_labels(face),
+                              score=face.detection_confidence,
+                              proxy=face_proxy)
+            asset.add_element(element)
+
+        struct = {
+            'faceCount': len(faces)
+        }
+
+        asset.add_analysis(self.namespace, struct)
+
+    def get_face_labels(self, face):
+        labels = []
+        for key in self.label_keys:
+            if getattr(face, "{}_likelihood".format(key)) >= 4:
+                labels.append(key)
+        return labels
 
 
 class CloudVisionDetectLabels(AbstractCloudVisionProcessor):

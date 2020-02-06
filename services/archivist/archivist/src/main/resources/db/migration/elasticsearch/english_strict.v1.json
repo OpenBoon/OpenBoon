@@ -99,12 +99,39 @@
       "analysis": {
         "dynamic": "strict",
         "properties": {
+          "google": {
+            "dynamic": "strict",
+            "faceDetection": {
+              "dynamic": "strict",
+              "properties": {
+                "faceCount": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
           "zmlp": {
             "dynamic": "strict",
             "properties": {
               "tinyProxy": {
                 "type": "object",
                 "enabled": false
+              },
+              "faceDetection": {
+                "dynamic": "strict",
+                "properties": {
+                  "faceCount": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "faceRecognition": {
+                "dynamic": "strict",
+                "properties": {
+                  "faceCount": {
+                    "type": "integer"
+                  }
+                }
               },
               "similarity": {
                 "dynamic": "strict",
@@ -252,6 +279,15 @@
         "dynamic": "strict",
         "type": "nested",
         "properties": {
+          "analysis": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          },
           "type": {
             "type": "keyword"
           },
@@ -278,9 +314,6 @@
             "index": false
           },
           "regions": {
-            "type": "keyword"
-          },
-          "analysis": {
             "type": "keyword"
           }
         }

@@ -1,13 +1,12 @@
-
-from google.cloud.vision import types
 from unittest.mock import patch
 
+from google.cloud.vision import types
+
 from zmlp import ZmlpClient
+from zmlp_analysis.google.cloud_vision import *
+from zmlpsdk import Frame, ZmlpProcessorException
 from zmlpsdk.proxy import store_asset_proxy
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
-from zmlpsdk import Frame, ZmlpFatalProcessorException
-
-from zmlp_analysis.google.cloud_vision import *
 
 patch_path = 'zmlp_analysis.google.cloud_vision.vision.ImageAnnotatorClient'
 
@@ -97,31 +96,25 @@ class MockImageAnnotatorClient:
 
     def face_detection(self, image):
         mock_annotations = [
-            types.FaceAnnotation(roll_angle=3.85948371887,
-                                 pan_angle=-4.00120306015,
-                                 tilt_angle=-5.03876304626,
-                                 detection_confidence=0.996880471706,
-                                 landmarking_confidence=0.705760359764,
-                                 joy_likelihood="UNLIKELY",
-                                 sorrow_likelihood="VERY_UNLIKELY",
-                                 anger_likelihood="VERY_UNLIKELY",
-                                 surprise_likelihood="VERY_UNLIKELY",
-                                 under_exposed_likelihood="VERY_UNLIKELY",
-                                 blurred_likelihood="VERY_UNLIKELY",
-                                 headwear_likelihood="VERY_UNLIKELY"),
-            types.FaceAnnotation(roll_angle=-0.48230355978,
-                                 pan_angle=1.49939823151,
-                                 tilt_angle=-10.4569005966,
-                                 detection_confidence=0.973327457905,
-                                 landmarking_confidence=0.679704546928,
-                                 joy_likelihood="UNLIKELY",
-                                 sorrow_likelihood="VERY_UNLIKELY",
-                                 anger_likelihood="VERY_UNLIKELY",
-                                 surprise_likelihood="VERY_UNLIKELY",
-                                 under_exposed_likelihood="VERY_UNLIKELY",
-                                 blurred_likelihood="VERY_UNLIKELY",
-                                 headwear_likelihood="VERY_UNLIKELY")
+            types.FaceAnnotation(
+                bounding_poly=types.geometry_pb2.BoundingPoly(
+                    vertices=[
+                        types.geometry_pb2.Vertex(x=101, y=19),
+                        types.geometry_pb2.Vertex(x=273, y=19),
+                        types.geometry_pb2.Vertex(x=273, y=219),
+                        types.geometry_pb2.Vertex(x=101, y=219),
+                    ]),
+                detection_confidence=0.996880471706,
+                joy_likelihood="UNLIKELY",
+                sorrow_likelihood="VERY_LIKELY",
+                anger_likelihood="VERY_UNLIKELY",
+                surprise_likelihood="VERY_LIKELY",
+                under_exposed_likelihood="VERY_UNLIKELY",
+                blurred_likelihood="VERY_UNLIKELY",
+                headwear_likelihood="VERY_UNLIKELY"
+            )
         ]
+
         res = types.AnnotateImageResponse(face_annotations=mock_annotations)
         return res
 
@@ -359,7 +352,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         processor = self.init_processor(CloudVisionDetectLabels(), {})
 
         # see if the processor throws an exception for the image being too big
-        self.assertRaises(ZmlpFatalProcessorException, processor.process,
+        self.assertRaises(ZmlpProcessorException, processor.process,
                           frame)
 
 
@@ -546,35 +539,13 @@ class CloudVisionDetectFacesTests(PluginUnitTestCase):
 
         # run the processor with declared frame and assert asset attributes
         processor.process(frame)
-        anger_attr = "analysis.google.faceDetection.anger_likelihood"
-        blurr_attr = "analysis.google.faceDetection.blurred_likelihood"
-        detect_attr = "analysis.google.faceDetection.detection_confidence"
-        head_attr = "analysis.google.faceDetection.headwear_likelihood"
-        joy_attr = "analysis.google.faceDetection.joy_likelihood"
-        keywrds_attr = "analysis.google.faceDetection.keywords"
-        pan_attr = "analysis.google.faceDetection.pan_angle"
-        roll_attr = "analysis.google.faceDetection.roll_angle"
-        sorrow_attr = "analysis.google.faceDetection.sorrow_likelihood"
-        surprise_attr = "analysis.google.faceDetection.surprise_likelihood"
-        face_attr = "analysis.google.faceDetection.tilt_angle"
-        ex_attr = "analysis.google.faceDetection.under_exposed_likelihood"
+        assert 1 == len(asset.get_attr("elements"))
+        assert 1 == asset.get_attr("analysis.google.faceDetection.faceCount")
 
-        self.assertEqual(frame.asset.get_attr(anger_attr), 1)
-        self.assertEqual(frame.asset.get_attr(blurr_attr), 1)
-        self.assertAlmostEqual(frame.asset.get_attr(detect_attr),
-                               0.9968804717063904, places=5)
-        self.assertEqual(frame.asset.get_attr(head_attr), 1)
-        self.assertEqual(frame.asset.get_attr(joy_attr), 2)
-        self.assertEqual(frame.asset.get_attr(keywrds_attr), [])
-        self.assertAlmostEqual(frame.asset.get_attr(pan_attr),
-                               -4.0012030601501465, places=5)
-        self.assertAlmostEqual(frame.asset.get_attr(roll_attr),
-                               3.8594837188720703, places=5)
-        self.assertEqual(frame.asset.get_attr(sorrow_attr), 1)
-        self.assertEqual(frame.asset.get_attr(surprise_attr), 1)
-        self.assertAlmostEqual(frame.asset.get_attr(face_attr),
-                               -5.038763046264648, places=5)
-        self.assertEqual(frame.asset.get_attr(ex_attr), 1)
+        element = asset.get_attr("elements")[0]
+        assert 'face' == element["type"]
+        assert 'google.faceDetection' == element["analysis"]
+        assert ['sorrow', 'surprise'] == element["labels"]
 
 
 class CloudVisionDetectImageTextTests(PluginUnitTestCase):
