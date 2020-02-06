@@ -201,7 +201,7 @@ class CloudVisionProcessor(AssetProcessor):
         if self.arg_value("debug"):
             struct["type"] = "GCLabelDetection"
             struct["scores"] = labels[0].score
-        asset.add_analysis("google.labelDetection", struct)
+        asset.add_analysis("google.visionLabelDetection", struct)
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
     def _detect_web_entities(self, asset, image):
