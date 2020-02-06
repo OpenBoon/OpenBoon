@@ -20,7 +20,6 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   line-height: 20px;
   font-weight: 500;
   padding-top: 16px;
-  padding-bottom: 16px;
 }
 
 .emotion-5 {
@@ -31,6 +30,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 .emotion-1 {
   display: block;
   padding-bottom: 8px;
+  color: #808080;
 }
 
 .emotion-3 {
@@ -227,11 +227,11 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   method="post"
   onSubmit={[Function]}
 >
-  <h2
+  <h3
     className="emotion-0"
   >
     Invite User to view projects
-  </h2>
+  </h3>
   <div
     className="emotion-5"
   >
@@ -763,7 +763,6 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   line-height: 20px;
   font-weight: 500;
   padding-top: 16px;
-  padding-bottom: 16px;
 }
 
 .emotion-5 {
@@ -774,6 +773,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 .emotion-1 {
   display: block;
   padding-bottom: 8px;
+  color: #808080;
 }
 
 .emotion-3 {
@@ -988,11 +988,11 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   method="post"
   onSubmit={[Function]}
 >
-  <h2
+  <h3
     className="emotion-0"
   >
     Invite User to view projects
-  </h2>
+  </h3>
   <div
     className="emotion-5"
   >

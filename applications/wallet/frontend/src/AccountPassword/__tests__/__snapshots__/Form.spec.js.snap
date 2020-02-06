@@ -23,6 +23,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 .emotion-0 {
   display: block;
   padding-bottom: 8px;
+  color: #808080;
 }
 
 .emotion-2 {
@@ -463,6 +464,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 .emotion-0 {
   display: block;
   padding-bottom: 8px;
+  color: #808080;
 }
 
 .emotion-2 {
@@ -745,6 +747,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 .emotion-0 {
   display: block;
   padding-bottom: 8px;
+  color: #808080;
 }
 
 .emotion-2 {
