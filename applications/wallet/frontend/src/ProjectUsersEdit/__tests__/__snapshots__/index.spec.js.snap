@@ -291,6 +291,7 @@ Array [
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
+  padding-top: 16px;
 }
 
 .emotion-3 {
@@ -550,12 +551,12 @@ Array [
     method="post"
     onSubmit={[Function]}
   >
-    <h2
+    <h3
       className="emotion-0"
     >
       User ID: 
       jane@zorroa.com
-    </h2>
+    </h3>
     <div
       className="emotion-3"
     >

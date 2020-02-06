@@ -78,6 +78,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
 .emotion-7 {
   display: block;
   padding-bottom: 8px;
+  color: #808080;
 }
 
 .emotion-9 {
