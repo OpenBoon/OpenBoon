@@ -54,12 +54,11 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 }
 
 .emotion-17 {
-  padding-top: 12px;
-  padding-bottom: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding-top: 12px;
 }
 
 .emotion-15 {
@@ -495,12 +494,11 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 }
 
 .emotion-17 {
-  padding-top: 12px;
-  padding-bottom: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding-top: 12px;
 }
 
 .emotion-15 {
@@ -778,12 +776,11 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 }
 
 .emotion-17 {
-  padding-top: 12px;
-  padding-bottom: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding-top: 12px;
 }
 
 .emotion-15 {

@@ -77,9 +77,8 @@ const AccountPasswordForm = () => {
 
       <div
         css={{
-          paddingTop: spacing.moderate,
-          paddingBottom: spacing.moderate,
           display: 'flex',
+          paddingTop: spacing.moderate,
         }}>
         <Button
           css={{ marginRight: spacing.normal }}

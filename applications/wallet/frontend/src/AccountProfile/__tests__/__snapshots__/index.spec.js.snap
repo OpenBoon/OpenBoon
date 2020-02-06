@@ -195,11 +195,11 @@ exports[`<AccountProfile /> should render properly 1`] = `
       </li>
     </ul>
   </nav>
-  <div
+  <h3
     className="emotion-7"
   >
     User ID: undefined
-  </div>
+  </h3>
   <div
     className="emotion-8"
   >

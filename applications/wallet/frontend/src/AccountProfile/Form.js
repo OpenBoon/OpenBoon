@@ -7,13 +7,12 @@ import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import FormSuccess from '../FormSuccess'
+import SectionTitle from '../SectionTitle'
 
 import { getUser } from '../Authentication/helpers'
 import { onSubmit } from './helpers'
 
-import AccountProfileInfo from './Info'
-
-const { id, firstName = '', lastName = '' } = getUser()
+const { id, email, firstName = '', lastName = '' } = getUser()
 const INITIAL_STATE = {
   id,
   firstName,
@@ -34,7 +33,7 @@ const AccountProfileForm = () => {
         <FormSuccess>New Name Saved!</FormSuccess>
       )}
 
-      <AccountProfileInfo />
+      <SectionTitle>{`User ID: ${email}`}</SectionTitle>
 
       {!state.showForm && (
         <>
@@ -92,11 +91,7 @@ const AccountProfileForm = () => {
             errorMessage={state.errors.lastName}
           />
 
-          <div
-            css={{
-              paddingBottom: spacing.moderate,
-              display: 'flex',
-            }}>
+          <div css={{ display: 'flex' }}>
             <Button
               css={{ marginRight: spacing.normal }}
               variant={BUTTON_VARIANTS.SECONDARY}

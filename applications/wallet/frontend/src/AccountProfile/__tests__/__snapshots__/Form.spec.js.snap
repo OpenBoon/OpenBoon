@@ -9,11 +9,11 @@ Array [
   padding-top: 16px;
 }
 
-<div
+<h3
     className="emotion-0"
   >
     User ID: undefined
-  </div>,
+  </h3>,
   .emotion-0 {
   padding-top: 24px;
   font-size: 17px;
@@ -113,11 +113,11 @@ Array [
   padding-top: 16px;
 }
 
-<div
+<h3
     className="emotion-0"
   >
     User ID: undefined
-  </div>,
+  </h3>,
   .emotion-0 {
   padding-top: 24px;
   font-size: 17px;
@@ -217,11 +217,11 @@ Array [
   padding-top: 16px;
 }
 
-<div
+<h3
     className="emotion-0"
   >
     User ID: undefined
-  </div>,
+  </h3>,
   .emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -275,7 +275,6 @@ Array [
 }
 
 .emotion-12 {
-  padding-bottom: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -565,11 +564,11 @@ Array [
   padding-top: 16px;
 }
 
-<div
+<h3
     className="emotion-0"
   >
     User ID: undefined
-  </div>,
+  </h3>,
   .emotion-0 {
   padding-top: 24px;
   font-size: 17px;
