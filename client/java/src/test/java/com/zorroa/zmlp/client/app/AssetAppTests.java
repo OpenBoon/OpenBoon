@@ -1,10 +1,10 @@
 package com.zorroa.zmlp.client.app;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.zorroa.zmlp.client.ApiKey;
 import com.zorroa.zmlp.client.Json;
 import com.zorroa.zmlp.client.ZmlpClient;
-import com.zorroa.zmlp.client.domain.PagedList;
 import com.zorroa.zmlp.client.domain.asset.*;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.Before;
@@ -87,39 +87,152 @@ public class AssetAppTests extends AbstractAppTests {
     }
 
     @Test
-    public void testSearchElement() {
+    public void testSearchProperties() throws JsonProcessingException {
 
         webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
 
-        Map elementQueryTerms = new HashMap();
-        elementQueryTerms.put("element.labels", "cat");
+        String query = "{\"query\": {\"term\": {\"source.filename\": \"dog.jpg\"}}}";
+        Map elementQueryTerms = Json.mapper.readValue(query, Map.class);
 
-        PagedList<Asset> searchResult = assetApp.search(elementQueryTerms);
-        Asset asset = searchResult.get(0);
-        String path = asset.getAttr("source.path");
 
-        assertEquals("https://i.imgur.com/SSN26nN.jpg", path);
+        AssetSearchResult searchResult = assetApp.search(elementQueryTerms);
+
+        assertEquals(2, searchResult.assets().size());
+        assertEquals(2, searchResult.size());
+        assertEquals(100, searchResult.totalSize());
+        assertEquals(getMockSearchResult(), Json.asPrettyJson(searchResult.rawResponse()));
     }
 
     @Test
-    public void testSearchWrapped() {
+    public void testSearchNextPage() throws JsonProcessingException {
 
         webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
+        String secondPageMock = "{\"hits\":{\"hits\":[]}}";
+        webServer.enqueue(new MockResponse().setBody(secondPageMock));
 
-        Map search = new HashMap();
-        search.put("match_all", new HashMap());
 
-        PagedList<Asset> searchResult = assetApp.search(search);
+        String query = "{\"query\": {\"term\": {\"source.filename\": \"dog.jpg\"}}}";
+        Map elementQueryTerms = Json.mapper.readValue(query, Map.class);
 
-        Asset asset = searchResult.get(0);
-        String nestedValue = asset.getAttr("source.nestedSource.nestedKey");
-        String path = asset.getAttr("source.path");
 
-        assertEquals(2, searchResult.getList().size());
-        assertEquals("nestedValue", nestedValue);
-        assertEquals("https://i.imgur.com/SSN26nN.jpg", path);
+        AssetSearchResult searchResult = assetApp.search(elementQueryTerms);
+        AssetSearchResult secondPage = searchResult.nextPage();
+
+        assertEquals(secondPageMock, Json.asJson(secondPage.rawResponse()));
     }
-    
+
+
+    @Test
+    public void testScrollSearch() throws JsonProcessingException {
+        webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
+        // Second/last Page Mock
+        webServer.enqueue(new MockResponse().setBody("{\"hits\":{\"hits\":[]}}"));
+        //Delete response
+        webServer.enqueue(new MockResponse().setBody("{}"));
+
+        String query = "{\"query\": {\"term\": {\"source.filename\": \"dog.jpg\"}}}";
+        Map elementQueryTerms = Json.mapper.readValue(query, Map.class);
+
+        AssetSearchScroller searchScroller = assetApp.scrollSearch(elementQueryTerms, null);
+
+        int size = 0;
+        while(searchScroller.hasNext()){
+            size++;
+            searchScroller.next();
+        }
+
+        assertEquals(1, size);
+    }
+
+    @Test
+    public void testIndex() throws IOException {
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock()));
+        webServer.enqueue(new MockResponse().setBody(getMockIndex()));
+
+        Asset asset = assetApp.getById("abc123");
+
+        asset.setAttr("aux.my_field", 1000);
+        asset.setAttr("aux.other_field", "fieldValue");
+        Map indexedAsset = assetApp.index(asset);
+
+        assertEquals(Json.mapper.readValue(getMockIndex().getBytes(), Map.class), indexedAsset);
+    }
+
+    @Test
+    public void testAssetUpdate() {
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock()));
+        webServer.enqueue(new MockResponse().setBody(getMockUpdate()));
+
+        Asset asset = assetApp.getById("abc123");
+
+        Map<String, Object> newDocument = new HashMap();
+        Map<String, Object> aux = new HashMap();
+        aux.put("captain", "kirk");
+
+        newDocument.put("aux", aux);
+
+        Map elObject = assetApp.update(asset.getId(), newDocument);
+
+        assertEquals("updated", elObject.get("result"));
+    }
+
+    @Test
+    public void testBatchIndex() {
+
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock()));
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock2()));
+        webServer.enqueue(new MockResponse().setBody(getMockUpdate()));
+
+        Asset asset1 = assetApp.getById("abc123");
+        Asset asset2 = assetApp.getById("123abc");
+
+        List<Asset> assetList = Arrays.asList(asset1, asset2);
+
+        Map elasticSearchMap = assetApp.batchIndex(assetList);
+
+        assertEquals("updated", elasticSearchMap.get("result"));
+    }
+
+    @Test
+    public void testBatchUpdate() {
+
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock()));
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock2()));
+        webServer.enqueue(new MockResponse().setBody(getMockUpdate()));
+
+        Asset asset1 = assetApp.getById("abc123");
+        asset1.setAttr("update.attr1","updatedValue");
+        Asset asset2 = assetApp.getById("123abc");
+        asset2.setAttr("update.attr2", "updatedAttribute");
+
+        List<Asset> assetList = Arrays.asList(asset1, asset2);
+
+        Map elasticSearchMap = assetApp.batchUpdate(assetList);
+
+        assertEquals("updated", elasticSearchMap.get("result"));
+    }
+
+    @Test
+    public void testDelete(){
+        webServer.enqueue(new MockResponse().setBody(getGetByIdMock()));
+        webServer.enqueue(new MockResponse().setBody(getMockDelete()));
+
+        Asset asset = assetApp.getById("abc123");
+
+        Map deleteES = assetApp.delete(asset);
+
+        assertEquals("deleted", deleteES.get("result"));
+    }
+
+    @Test
+    public void testDeleteByQuery() throws JsonProcessingException {
+        webServer.enqueue(new MockResponse().setBody(getMockDelete()));
+
+        Map deleteES = assetApp.deleteByQuery(getRequestMockDeleteByQuery());
+
+        assertEquals("deleted", deleteES.get("result"));
+    }
+
     // Mocks
     private String getImportFilesMock() {
         return getMockData("mock-import-files");
@@ -129,12 +242,32 @@ public class AssetAppTests extends AbstractAppTests {
         return getMockData("mock-get-by-id");
     }
 
+    private String getGetByIdMock2() {
+        return getMockData("mock-get-by-id-2");
+    }
+
     private String getUploadAssetsMock() {
         return getMockData("mock-upload-assets");
     }
 
     private String getMockSearchResult() {
         return getMockData("mock-search-result");
+    }
+
+    private String getMockIndex() {
+        return getMockData("mock-index-assets");
+    }
+
+    private String getMockUpdate() {
+        return getMockData("mock-update-asset");
+    }
+
+    private String getMockDelete() {
+        return getMockData("mock-delete");
+    }
+
+    private String getRequestMockDeleteByQuery() {
+        return getMockData("mock-delete-by-query-request");
     }
 
     private String getMockData(String name) {

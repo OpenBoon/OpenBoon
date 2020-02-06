@@ -1,0 +1,1061 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProjectUsersEdit /> should render properly loading 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Project User Admin
+  </h2>,
+  .emotion-7 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-6 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+}
+
+.emotion-0 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+.emotion-4 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-7"
+  >
+    <ul
+      className="emotion-6"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Users
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create User
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-4"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/users/fe39c66b-68f8-4d59-adfd-395f6baaf72c/edit"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Edit User
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+}
+
+<div
+    className="emotion-0"
+  >
+    Loading...
+  </div>,
+]
+`;
+
+exports[`<ProjectUsersEdit /> should render properly with a user and permissions 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Project User Admin
+  </h2>,
+  .emotion-7 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-6 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+}
+
+.emotion-0 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+.emotion-4 {
+  border: 0 #b8d652 solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-7"
+  >
+    <ul
+      className="emotion-6"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Users
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create User
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-4"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/users/fe39c66b-68f8-4d59-adfd-395f6baaf72c/edit"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Edit User
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-106 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-3 {
+  padding: 8px;
+}
+
+.emotion-2 {
+  padding: 12px;
+}
+
+.emotion-1 {
+  height: 20px;
+}
+
+.emotion-102 {
+  border: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+}
+
+.emotion-4 {
+  float: left;
+  padding: 0;
+  padding-bottom: 12px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.emotion-5 {
+  clear: both;
+}
+
+.emotion-13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  cursor: pointer;
+  padding-bottom: 12px;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-6 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-8 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-7 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-12 {
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-10 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 700;
+}
+
+.emotion-11 {
+  color: #808080;
+}
+
+.emotion-38 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: #73b61c;
+  border: 2px solid #73b61c;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-39 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+}
+
+.emotion-105 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-103 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-right: 16px;
+}
+
+.emotion-103:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-103[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-103,
+.emotion-103:hover,
+.emotion-103:visited {
+  background-color: #808080;
+}
+
+.emotion-103:hover {
+  opacity: 0.5;
+}
+
+.emotion-103[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-104 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-104:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-104[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-104,
+.emotion-104:hover,
+.emotion-104:visited {
+  background-color: #73b61c;
+}
+
+.emotion-104:hover {
+  background-color: #b8d652;
+}
+
+.emotion-104[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-106"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <h3
+      className="emotion-0"
+    >
+      User ID: 
+      jane@zorroa.com
+    </h3>
+    <div
+      className="emotion-3"
+    >
+      <div
+        className="emotion-2"
+      >
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
+    <fieldset
+      className="emotion-102"
+    >
+      <legend
+        className="emotion-4"
+      >
+        Edit Permissions
+      </legend>
+      <div
+        className="emotion-5"
+      />
+      <label
+        className="emotion-13"
+      >
+        <div
+          className="emotion-9"
+        >
+          <input
+            className="emotion-6"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="SystemMonitor"
+          />
+          <div
+            className="emotion-8"
+          >
+            <svg
+              className="emotion-7"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-12"
+        >
+          <span
+            className="emotion-10"
+          >
+             System Monitor
+          </span>
+          <span
+            className="emotion-11"
+          >
+            Allows access to monitoring endpoints
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-13"
+      >
+        <div
+          className="emotion-9"
+        >
+          <input
+            className="emotion-6"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="SystemManage"
+          />
+          <div
+            className="emotion-8"
+          >
+            <svg
+              className="emotion-7"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-12"
+        >
+          <span
+            className="emotion-10"
+          >
+             System Manage
+          </span>
+          <span
+            className="emotion-11"
+          >
+            Allows access to platform management endpoints
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-13"
+      >
+        <div
+          className="emotion-9"
+        >
+          <input
+            className="emotion-6"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="SystemProjectOverride"
+          />
+          <div
+            className="emotion-8"
+          >
+            <svg
+              className="emotion-7"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-12"
+        >
+          <span
+            className="emotion-10"
+          >
+             System Project Override
+          </span>
+          <span
+            className="emotion-11"
+          >
+            Provides ability to switch projects
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-13"
+      >
+        <div
+          className="emotion-9"
+        >
+          <input
+            className="emotion-6"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="SystemProjectDecrypt"
+          />
+          <div
+            className="emotion-8"
+          >
+            <svg
+              className="emotion-7"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-12"
+        >
+          <span
+            className="emotion-10"
+          >
+             System Project Decrypt
+          </span>
+          <span
+            className="emotion-11"
+          >
+            Provides ability to view encrypted project data
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-13"
+      >
+        <div
+          className="emotion-9"
+        >
+          <input
+            className="emotion-38"
+            defaultChecked={true}
+            onClick={[Function]}
+            type="checkbox"
+            value="ApiKeyManage"
+          />
+          <div
+            className="emotion-8"
+          >
+            <svg
+              className="emotion-39"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-12"
+        >
+          <span
+            className="emotion-10"
+          >
+             Api Key Manage
+          </span>
+          <span
+            className="emotion-11"
+          >
+            Provides ability to manage API keys
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-13"
+      >
+        <div
+          className="emotion-9"
+        >
+          <input
+            className="emotion-6"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="AssetsRead"
+          />
+          <div
+            className="emotion-8"
+          >
+            <svg
+              className="emotion-7"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-12"
+        >
+          <span
+            className="emotion-10"
+          >
+             Assets Read
+          </span>
+          <span
+            className="emotion-11"
+          >
+            Provides ability to read assets and associated files
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-13"
+      >
+        <div
+          className="emotion-9"
+        >
+          <input
+            className="emotion-6"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="AssetsImport"
+          />
+          <div
+            className="emotion-8"
+          >
+            <svg
+              className="emotion-7"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-12"
+        >
+          <span
+            className="emotion-10"
+          >
+             Assets Import
+          </span>
+          <span
+            className="emotion-11"
+          >
+            Provides ability to import assets. (created and update)
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-13"
+      >
+        <div
+          className="emotion-9"
+        >
+          <input
+            className="emotion-6"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="AssetsDelete"
+          />
+          <div
+            className="emotion-8"
+          >
+            <svg
+              className="emotion-7"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-12"
+        >
+          <span
+            className="emotion-10"
+          >
+             Assets Delete
+          </span>
+          <span
+            className="emotion-11"
+          >
+            Provides ability to remove assets
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-13"
+      >
+        <div
+          className="emotion-9"
+        >
+          <input
+            className="emotion-38"
+            defaultChecked={true}
+            onClick={[Function]}
+            type="checkbox"
+            value="ProjectManage"
+          />
+          <div
+            className="emotion-8"
+          >
+            <svg
+              className="emotion-39"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-12"
+        >
+          <span
+            className="emotion-10"
+          >
+             Project Manage
+          </span>
+          <span
+            className="emotion-11"
+          >
+            Provides ability to manage projects.
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-13"
+      >
+        <div
+          className="emotion-9"
+        >
+          <input
+            className="emotion-6"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="ProjectCreate"
+          />
+          <div
+            className="emotion-8"
+          >
+            <svg
+              className="emotion-7"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-12"
+        >
+          <span
+            className="emotion-10"
+          >
+             Project Create
+          </span>
+          <span
+            className="emotion-11"
+          >
+            Provides ability to create projects.
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-13"
+      >
+        <div
+          className="emotion-9"
+        >
+          <input
+            className="emotion-6"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="ProjectFilesRead"
+          />
+          <div
+            className="emotion-8"
+          >
+            <svg
+              className="emotion-7"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-12"
+        >
+          <span
+            className="emotion-10"
+          >
+             Project Files Read
+          </span>
+          <span
+            className="emotion-11"
+          >
+            Provides ability to read project files from cloud storage.
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-13"
+      >
+        <div
+          className="emotion-9"
+        >
+          <input
+            className="emotion-6"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="ProjectFilesWrite"
+          />
+          <div
+            className="emotion-8"
+          >
+            <svg
+              className="emotion-7"
+              data-file-name="checkmark.svg"
+              width={14}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-12"
+        >
+          <span
+            className="emotion-10"
+          >
+             Project Files Write
+          </span>
+          <span
+            className="emotion-11"
+          >
+            Provides ability to store project files in cloud storage.
+          </span>
+        </div>
+      </label>
+    </fieldset>
+    <div
+      className="emotion-105"
+    >
+      <a
+        className="emotion-103"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        type="button"
+      >
+        Cancel
+      </a>
+      <button
+        className="emotion-104"
+        onClick={[Function]}
+        type="submit"
+      >
+        Save
+      </button>
+    </div>
+  </form>,
+]
+`;

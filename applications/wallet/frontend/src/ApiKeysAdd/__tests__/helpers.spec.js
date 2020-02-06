@@ -1,4 +1,4 @@
-import apikeysadd from '../__mocks__/apikeysadd'
+import apiKey from '../../ApiKey/__mocks__/apiKey'
 
 import { onSubmit, onCopy } from '../helpers'
 
@@ -9,7 +9,7 @@ describe('<ApiKeysAdd /> helpers', () => {
     it('should call the API', () => {
       const mockFn = jest.fn()
 
-      fetch.mockResponseOnce(JSON.stringify(apikeysadd))
+      fetch.mockResponseOnce(JSON.stringify(apiKey))
 
       onSubmit({
         dispatch: mockFn,

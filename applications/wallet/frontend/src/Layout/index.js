@@ -11,6 +11,7 @@ import userShape from '../User/shape'
 import { constants, spacing } from '../Styles'
 
 import Navbar from '../Navbar'
+import UserMenu from '../UserMenu'
 import Sidebar from '../Sidebar'
 
 const Layout = ({ user, logout, children }) => {
@@ -26,17 +27,16 @@ const Layout = ({ user, logout, children }) => {
 
   return (
     <div css={{ height: '100%' }}>
-      <Navbar
-        user={user}
-        isSidebarOpen={isSidebarOpen}
-        setSidebarOpen={setSidebarOpen}
-        logout={logout}
-      />
+      <Navbar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen}>
+        <UserMenu user={user} logout={logout} />
+      </Navbar>
+
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         setSidebarOpen={setSidebarOpen}
         ref={sidebarRef}
       />
+
       <div
         css={{
           marginTop: constants.navbar.height,

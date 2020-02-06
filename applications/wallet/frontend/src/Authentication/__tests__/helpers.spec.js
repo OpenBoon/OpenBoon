@@ -1,6 +1,10 @@
-import { USER, getUser, authenticateUser, logout } from '../helpers'
-
-const noop = () => () => {}
+import {
+  USER,
+  getUser,
+  authenticateUser,
+  logout,
+  initializeUserstorer,
+} from '../helpers'
 
 describe('<Authentication /> helpers', () => {
   describe('getUser()', () => {
@@ -37,6 +41,7 @@ describe('<Authentication /> helpers', () => {
       const mockSetErrorMessage = jest.fn()
       const mockSetUser = jest.fn()
       const mockSetItem = jest.fn()
+      initializeUserstorer({ setUser: mockSetUser })
 
       Object.defineProperty(window, 'localStorage', {
         writable: true,
@@ -47,7 +52,6 @@ describe('<Authentication /> helpers', () => {
 
       await authenticateUser({
         setErrorMessage: mockSetErrorMessage,
-        setUser: mockSetUser,
       })({
         username: 'username',
         password: 'password',
@@ -77,6 +81,7 @@ describe('<Authentication /> helpers', () => {
       const mockSetErrorMessage = jest.fn()
       const mockSetUser = jest.fn()
       const mockSetItem = jest.fn()
+      initializeUserstorer({ setUser: mockSetUser })
 
       Object.defineProperty(window, 'localStorage', {
         writable: true,
@@ -87,7 +92,6 @@ describe('<Authentication /> helpers', () => {
 
       await authenticateUser({
         setErrorMessage: mockSetErrorMessage,
-        setUser: mockSetUser,
       })({
         idToken: 'ID_TOKEN',
       })
@@ -119,7 +123,6 @@ describe('<Authentication /> helpers', () => {
 
       await authenticateUser({
         setErrorMessage: mockSetErrorMessage,
-        setUser: noop,
       })({
         username: 'username',
         password: 'password',
@@ -137,7 +140,6 @@ describe('<Authentication /> helpers', () => {
 
       await authenticateUser({
         setErrorMessage: mockSetErrorMessage,
-        setUser: noop,
       })({
         username: 'username',
         password: 'password',
