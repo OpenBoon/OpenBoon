@@ -101,11 +101,13 @@
         "properties": {
           "google": {
             "dynamic": "strict",
-            "faceDetection": {
-              "dynamic": "strict",
-              "properties": {
-                "faceCount": {
-                  "type": "integer"
+            "properties": {
+              "faceDetection": {
+                "dynamic": "strict",
+                "properties": {
+                  "faceCount": {
+                    "type": "integer"
+                  }
                 }
               }
             }
