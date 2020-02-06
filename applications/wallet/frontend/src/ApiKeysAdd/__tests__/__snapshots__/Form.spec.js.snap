@@ -23,6 +23,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 .emotion-0 {
   display: block;
   padding-bottom: 8px;
+  color: #808080;
 }
 
 .emotion-2 {
@@ -731,7 +732,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 `;
 
 exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 2`] = `
-.emotion-15 {
+.emotion-14 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -763,26 +764,26 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   background-color: transparent;
 }
 
-.emotion-15:hover {
+.emotion-14:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-14[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-15,
-.emotion-15:hover,
-.emotion-15:visited {
+.emotion-14,
+.emotion-14:hover,
+.emotion-14:visited {
   background-color: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-14:hover {
   background-color: #b8d652;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-14[aria-disabled=true] {
   background-color: #808080;
 }
 
@@ -851,18 +852,11 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding-top: 16px;
 }
 
-.emotion-6 {
+.emotion-5 {
   color: #b3b3b3;
 }
 
-.emotion-7 {
-  color: #808080;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 400;
-}
-
-.emotion-13 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -875,7 +869,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding-bottom: 16px;
 }
 
-.emotion-8 {
+.emotion-7 {
   width: 470px;
   font-size: 15px;
   line-height: 18px;
@@ -887,7 +881,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   resize: none;
 }
 
-.emotion-12 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -900,7 +894,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding-right: 4px;
 }
 
-.emotion-9 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -934,37 +928,37 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   font-weight: 400;
 }
 
-.emotion-9:hover {
+.emotion-8:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-9[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-9,
-.emotion-9:hover,
-.emotion-9:visited {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
   color: #73b61c;
 }
 
-.emotion-9:hover {
+.emotion-8:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
-.emotion-9:active {
+.emotion-8:active {
   opacity: 0;
   -webkit-transition: opacity .3s ease;
   transition: opacity .3s ease;
 }
 
-.emotion-10 {
+.emotion-9 {
   padding: 4px;
 }
 
-.emotion-11 {
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -998,34 +992,34 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   font-weight: 400;
 }
 
-.emotion-11:hover {
+.emotion-10:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited {
   color: #73b61c;
 }
 
-.emotion-11:hover {
+.emotion-10:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
-.emotion-16 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-14 {
+.emotion-13 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1058,26 +1052,26 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   margin-right: 16px;
 }
 
-.emotion-14:hover {
+.emotion-13:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-14[aria-disabled=true] {
+.emotion-13[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-14,
-.emotion-14:hover,
-.emotion-14:visited {
+.emotion-13,
+.emotion-13:hover,
+.emotion-13:visited {
   background-color: #808080;
 }
 
-.emotion-14:hover {
+.emotion-13:hover {
   opacity: 0.5;
 }
 
-.emotion-14[aria-disabled=true] {
+.emotion-13[aria-disabled=true] {
   background-color: #808080;
 }
 
@@ -1103,54 +1097,48 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
       </div>
     </div>
   </div>
-  <div
-    className="emotion-4"
-  >
-    Project 
-    76917058-b147-4556-987a-0a0f11e46d9b
-  </div>
-  <h2
+  <h3
     className="emotion-4"
   >
     Scope
-  </h2>
+  </h3>
   <ul
-    className="emotion-6"
+    className="emotion-5"
   >
     <li>
        Api Key Manage
     </li>
   </ul>
   <h3
-    className="emotion-7"
+    className="emotion-4"
   >
     API Key
   </h3>
   <div
-    className="emotion-13"
+    className="emotion-12"
   >
     <textarea
-      className="emotion-8"
+      className="emotion-7"
       defaultValue="FooBarSecretKey"
       rows="5"
     />
     <div
-      className="emotion-12"
+      className="emotion-11"
     >
       <button
-        className="emotion-9"
+        className="emotion-8"
         onClick={[Function]}
         type="button"
       >
         Copy Key
       </button>
       <span
-        className="emotion-10"
+        className="emotion-9"
       >
         |
       </span>
       <a
-        className="emotion-11"
+        className="emotion-10"
         download="api-key.txt"
         href="data:application/octet-stream;charset=utf-8;base64,Rm9vQmFyU2VjcmV0S2V5"
       >
@@ -1159,17 +1147,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
     </div>
   </div>
   <div
-    className="emotion-16"
+    className="emotion-15"
   >
     <button
-      className="emotion-14"
+      className="emotion-13"
       onClick={[Function]}
       type="button"
     >
       Create Another Key
     </button>
     <a
-      className="emotion-15"
+      className="emotion-14"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -1203,6 +1191,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 .emotion-0 {
   display: block;
   padding-bottom: 8px;
+  color: #808080;
 }
 
 .emotion-2 {
