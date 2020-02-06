@@ -1,9 +1,10 @@
+# flake8: noqa
 from unittest.mock import patch
 
 from google.cloud.vision import types
 
 from zmlp import ZmlpClient
-from zmlp_analysis.google.cloud_vision import *  # noqa: F405,F403
+from zmlp_analysis.google.cloud_vision import *
 from zmlpsdk import Frame, ZmlpProcessorException
 from zmlpsdk.proxy import store_asset_proxy
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
