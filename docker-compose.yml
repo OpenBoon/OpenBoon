@@ -144,7 +144,7 @@ services:
     environment:
       DJANGO_SETTINGS_MODULE: wallet.settings
       PG_HOST: postgres
-      ARCHIVIST_URL: http://api-gateway:80
+      ZMLP_API_URL: http://api-gateway:80
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/api/v1/health"]
       interval: 30s
