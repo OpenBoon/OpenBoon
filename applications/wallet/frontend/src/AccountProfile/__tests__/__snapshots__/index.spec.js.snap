@@ -80,64 +80,29 @@ exports[`<AccountProfile /> should render properly 1`] = `
   color: #73b61c;
 }
 
-.emotion-19 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.emotion-11 {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
 .emotion-7 {
-  display: block;
-  padding-bottom: 8px;
-  color: #808080;
-}
-
-.emotion-9 {
-  position: relative;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
 }
 
 .emotion-8 {
-  outline-offset: 0;
-  padding: 12px;
-  border-radius: 2px;
-  box-shadow: inset 0 1px 3px 0 transparent;
-  width: 100%;
-  color: #ffffff;
-  background-color: #2e2e2e;
-  border: 1px solid transparent;
-  border-width: 2px;
+  padding-top: 24px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
 }
 
-.emotion-8:focus {
-  border: 2px solid #73b61c;
-  background-color: #ffffff;
-  outline: #73b61c;
-  color: #000000;
+.emotion-9 {
+  color: #808080;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 400;
+  padding-bottom: 24px;
 }
 
 .emotion-10 {
-  padding-top: 8px;
-}
-
-.emotion-18 {
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-.emotion-17 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -164,31 +129,31 @@ exports[`<AccountProfile /> should render properly 1`] = `
   line-height: 18px;
   font-weight: 500;
   border: none;
-  cursor: not-allowed;
+  cursor: pointer;
   color: #ffffff;
   background-color: transparent;
 }
 
-.emotion-17:hover {
+.emotion-10:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-17[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-17,
-.emotion-17:hover,
-.emotion-17:visited {
+.emotion-10,
+.emotion-10:hover,
+.emotion-10:visited {
   background-color: #73b61c;
 }
 
-.emotion-17:hover {
+.emotion-10:hover {
   background-color: #b8d652;
 }
 
-.emotion-17[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
   background-color: #808080;
 }
 
@@ -230,79 +195,27 @@ exports[`<AccountProfile /> should render properly 1`] = `
       </li>
     </ul>
   </nav>
-  <form
-    action=""
-    className="emotion-19"
-    method="post"
-    onSubmit={[Function]}
+  <h3
+    className="emotion-7"
   >
-    <div
-      className="emotion-11"
-    >
-      <label
-        className="emotion-7"
-        htmlFor="firstName"
-      >
-        First Name
-      </label>
-      <div
-        className="emotion-9"
-      >
-        <input
-          autoFocus={true}
-          className="emotion-8"
-          id="firstName"
-          name="firstName"
-          onChange={[Function]}
-          type="text"
-          value=""
-        />
-      </div>
-      <div
-        className="emotion-10"
-      >
-         
-      </div>
-    </div>
-    <div
-      className="emotion-11"
-    >
-      <label
-        className="emotion-7"
-        htmlFor="lastName"
-      >
-        Last Name
-      </label>
-      <div
-        className="emotion-9"
-      >
-        <input
-          className="emotion-8"
-          id="lastName"
-          name="lastName"
-          onChange={[Function]}
-          type="text"
-          value=""
-        />
-      </div>
-      <div
-        className="emotion-10"
-      >
-         
-      </div>
-    </div>
-    <div
-      className="emotion-18"
-    >
-      <button
-        aria-disabled={true}
-        className="emotion-17"
-        onClick={[Function]}
-        type="submit"
-      >
-        Save Changes
-      </button>
-    </div>
-  </form>
+    User ID: jane.doe@zorroa.com
+  </h3>
+  <div
+    className="emotion-8"
+  >
+    Username
+  </div>
+  <div
+    className="emotion-9"
+  >
+    Jane Doe
+  </div>
+  <button
+    className="emotion-10"
+    onClick={[Function]}
+    type="button"
+  >
+    Edit Username
+  </button>
 </div>
 `;
