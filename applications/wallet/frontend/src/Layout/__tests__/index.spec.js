@@ -12,10 +12,33 @@ const noop = () => () => {}
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
 describe('<Layout />', () => {
-  it('should render properly', () => {
+  it('should render properly with a project id', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
       query: { projectId: PROJECT_ID },
+    })
+
+    const component = TestRenderer.create(
+      <Layout user={mockUser} logout={noop}>
+        Hello World
+      </Layout>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Open Sidebar Menu' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly without a project id for the account pages', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/account',
+      query: {},
     })
 
     const component = TestRenderer.create(
