@@ -67,7 +67,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
         }
     }
 
-    fun getProjectIdOverride(req: HttpServletRequest) : UUID? {
+    fun getProjectIdOverride(req: HttpServletRequest): UUID? {
         val projectIdHeader = req.getHeader(AuthServerClient.PROJECT_ID_HEADER)
         val projectIdParam = req.getParameter(AuthServerClient.PROJECT_ID_PARAM)
 
