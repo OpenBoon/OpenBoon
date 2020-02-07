@@ -1,6 +1,7 @@
 import copy
 import os
 import unittest
+import unittest.mock as mock
 from unittest.mock import patch
 
 import pytest
@@ -229,3 +230,13 @@ class AssetAppTests(unittest.TestCase):
         args = del_patch.call_args_list
         assert '/api/v3/assets/_delete_by_query' == args[0][0][0]
         assert q == args[0][0][1]
+
+    @patch.object(ZmlpClient, 'get')
+    def test_download_file(self, get_patch):
+        data = b'some_data'
+        mockresponse = mock.Mock()
+        mockresponse.content = data
+        get_patch.return_value = mockresponse
+
+        b = self.app.assets.download_file('123', 'proxy/proxy123.jpg')
+        assert "some_data" == b.read().decode()
