@@ -53,7 +53,13 @@ const Input = ({
   ...props
 }) => (
   <div css={{ paddingTop: PADDING, paddingBottom: PADDING }}>
-    <label htmlFor={id} css={{ display: 'block', paddingBottom: PADDING }}>
+    <label
+      htmlFor={id}
+      css={{
+        display: 'block',
+        paddingBottom: PADDING,
+        color: colors.structure.steel,
+      }}>
       {label}
     </label>
     <div css={{ position: 'relative' }}>
