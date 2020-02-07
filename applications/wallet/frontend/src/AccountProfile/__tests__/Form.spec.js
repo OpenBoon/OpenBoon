@@ -2,13 +2,32 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import AccountProfileForm from '../Form'
 
-const noop = () => () => {}
+jest.mock('../../Authentication/helpers', () => ({
+  getUser: () => ({
+    id: 1,
+    username: 'jane.doe',
+    email: 'jane.doe@zorroa.com',
+  }),
+}))
 
 jest.mock('../helpers')
 
+const noop = () => () => {}
+
 describe('<AccountProfileForm />', () => {
-  it('should render properly', () => {
+  it('should render properly when a user edits username', () => {
     const component = TestRenderer.create(<AccountProfileForm />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Click edit username
+    act(() => {
+      component.root
+        .findByProps({ children: 'Edit Username' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
       component.root
@@ -22,9 +41,30 @@ describe('<AccountProfileForm />', () => {
         .props.onChange({ target: { value: 'Doe' } })
     })
 
+    // Submit the form
     act(() => {
       component.root
-        .findByProps({ type: 'submit' })
+        .findByProps({ children: 'Save' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when a user cancels', () => {
+    const component = TestRenderer.create(<AccountProfileForm />)
+
+    // Click edit username
+    act(() => {
+      component.root
+        .findByProps({ children: 'Edit Username' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // Click cancel
+    act(() => {
+      component.root
+        .findByProps({ children: 'Cancel' })
         .props.onClick({ preventDefault: noop })
     })
 

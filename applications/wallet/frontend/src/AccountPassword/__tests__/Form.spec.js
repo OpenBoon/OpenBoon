@@ -38,6 +38,20 @@ describe('<AccountPasswordForm />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Click edit password again
+    act(() => {
+      component.root
+        .findByProps({ type: 'button' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when a user cancels', () => {
+    const component = TestRenderer.create(<AccountPasswordForm />)
+
+    // Click cancel
     act(() => {
       component.root
         .findByProps({ type: 'button' })
