@@ -1,6 +1,6 @@
 import { forwardRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import Router, { useRouter } from 'next/router'
+import Router from 'next/router'
 
 import { colors, spacing, zIndex, constants } from '../Styles'
 
@@ -16,10 +16,6 @@ const WIDTH = 240
 const ICON_WIDTH = 20
 
 const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
-  const {
-    query: { projectId },
-  } = useRouter()
-
   useEffect(() => {
     const handleRouteChange = () => {
       setSidebarOpen(false)
@@ -56,24 +52,22 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
             padding: 0,
             margin: 0,
           }}>
-          <SidebarLink href="/[projectId]/jobs" as={`/${projectId}/jobs`}>
+          <SidebarLink href="/[projectId]/jobs">
             <QueueSvg width={ICON_WIDTH} aria-hidden />
             Job Queue
           </SidebarLink>
 
-          <SidebarLink
-            href="/[projectId]/api-keys"
-            as={`/${projectId}/api-keys`}>
+          <SidebarLink href="/[projectId]/api-keys">
             <KeySvg width={ICON_WIDTH} aria-hidden />
             API Keys
           </SidebarLink>
 
-          <SidebarLink href="/[projectId]/users" as={`/${projectId}/users`}>
+          <SidebarLink href="/[projectId]/users">
             <UsersSvg width={ICON_WIDTH} aria-hidden />
             User Admin
           </SidebarLink>
 
-          <SidebarLink href="/account" as="/account">
+          <SidebarLink href="/account">
             <GearSvg width={ICON_WIDTH} aria-hidden />
             Account
           </SidebarLink>
