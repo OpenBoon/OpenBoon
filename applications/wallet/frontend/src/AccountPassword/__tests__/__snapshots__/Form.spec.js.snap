@@ -59,6 +59,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-17 button,
@@ -293,6 +294,7 @@ exports[`<AccountPasswordForm /> should render properly 2`] = `
   display: -ms-flexbox;
   display: flex;
   padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-5 button,
@@ -508,6 +510,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   display: -ms-flexbox;
   display: flex;
   padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-17 button,
@@ -794,6 +797,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   display: -ms-flexbox;
   display: flex;
   padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-17 button,

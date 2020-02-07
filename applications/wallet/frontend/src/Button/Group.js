@@ -7,6 +7,7 @@ const ButtonGroup = ({ children }) => {
       css={{
         display: 'flex',
         paddingTop: spacing.normal,
+        paddingBottom: spacing.normal,
         'button, a': {
           marginRight: spacing.normal,
         },

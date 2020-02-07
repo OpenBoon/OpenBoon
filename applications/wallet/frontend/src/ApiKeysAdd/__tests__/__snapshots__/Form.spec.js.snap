@@ -160,6 +160,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   display: -ms-flexbox;
   display: flex;
   padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-105 button,
@@ -746,6 +747,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   display: -ms-flexbox;
   display: flex;
   padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-15 button,
@@ -1341,6 +1343,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   display: -ms-flexbox;
   display: flex;
   padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-105 button,

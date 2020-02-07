@@ -146,6 +146,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-36 button,

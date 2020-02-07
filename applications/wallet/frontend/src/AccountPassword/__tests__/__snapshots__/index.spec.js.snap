@@ -176,6 +176,7 @@ Array [
   display: -ms-flexbox;
   display: flex;
   padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-17 button,
