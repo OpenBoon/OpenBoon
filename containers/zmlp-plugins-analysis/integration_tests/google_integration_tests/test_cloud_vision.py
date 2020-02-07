@@ -1,13 +1,13 @@
+# flake8: noqa
 import os
-
 from unittest.mock import patch
 
+from zmlp import ZmlpClient
 from zmlp_analysis.google.cloud_vision import *
 from zmlpsdk import Frame
 from zmlpsdk.proxy import store_asset_proxy
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset
 
-from zmlp import ZmlpClient
 
 class CloudVisionProcessorTestCase(PluginUnitTestCase):
 
