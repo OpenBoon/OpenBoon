@@ -8,7 +8,7 @@ const TabsLink = ({ title, href }) => {
   const { pathname, query } = useRouter()
 
   const isCurrentPage = pathname === href
-  // debugger
+
   return (
     <li css={{ paddingRight: spacing.normal }}>
       <Link
