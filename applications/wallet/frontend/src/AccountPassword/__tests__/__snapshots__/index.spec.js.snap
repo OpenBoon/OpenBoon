@@ -175,7 +175,11 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 12px;
+  padding-top: 16px;
+}
+
+.emotion-17 button {
+  margin-right: 16px;
 }
 
 .emotion-15 {
@@ -208,7 +212,6 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  margin-right: 16px;
 }
 
 .emotion-15:hover {
