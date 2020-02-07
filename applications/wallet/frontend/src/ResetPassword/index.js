@@ -39,7 +39,7 @@ const ResetPassword = () => {
         height: '100vh',
       }}>
       <Head>
-        <title>Login</title>
+        <title>Reset Password</title>
       </Head>
       <form
         method="post"
