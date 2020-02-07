@@ -16,8 +16,8 @@ const AccountPassword = () => {
 
       <Tabs
         tabs={[
-          { title: 'Profile', href: '/[projectId]/account' },
-          { title: 'Change Password', href: '/[projectId]/account/password' },
+          { title: 'Profile', href: '/account' },
+          { title: 'Change Password', href: '/account/password' },
         ]}
       />
 
