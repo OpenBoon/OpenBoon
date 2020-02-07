@@ -9,15 +9,12 @@ import ProjectSwitcher from '../ProjectSwitcher'
 
 import HamburgerSvg from './hamburger.svg'
 
-const NO_PROJECT_ID_ROUTES = ['/account', '/account/password']
 const LOGO_WIDTH = 110
 
 const Navbar = ({ isSidebarOpen, setSidebarOpen, children }) => {
   const {
-    pathname,
     query: { projectId },
   } = useRouter()
-
   return (
     <div
       css={{
@@ -36,8 +33,7 @@ const Navbar = ({ isSidebarOpen, setSidebarOpen, children }) => {
         paddingRight: spacing.normal,
       }}>
       <div css={{ display: 'flex', alignItems: 'stretch' }}>
-        {(!!projectId ||
-          (!projectId && NO_PROJECT_ID_ROUTES.includes(pathname))) && (
+        {!!projectId && (
           <button
             aria-label="Open Sidebar Menu"
             type="button"
