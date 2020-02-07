@@ -2,16 +2,17 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import ResetPassword from '..'
 
-jest.mock('../helpers')
-
 const noop = () => () => {}
 
 describe('<ResetPassword />', () => {
-  it('should render properly', () => {
+  it('should render properly', async () => {
+    const mockFn = jest.fn()
+
     require('next/router').__setUseRouter({
       pathname: '/reset-password',
       query: {},
     })
+    require('next/router').__setMockPushFunction(mockFn)
 
     const component = TestRenderer.create(<ResetPassword />)
 
@@ -19,17 +20,52 @@ describe('<ResetPassword />', () => {
 
     const usernameInput = component.root.findByProps({ id: 'username' })
 
+    // Enter email
     act(() => {
       usernameInput.props.onChange({ target: { value: 'username' } })
     })
 
-    expect(usernameInput.props.value).toEqual('username')
+    // Mock Failure
+    fetch.mockRejectOnce({ error: 'Invalid' }, { status: 400 })
 
-    act(() => {
+    // Click Submit
+    await act(async () => {
       component.root
         .findByProps({ children: 'Request Reset Email' })
         .props.onClick({ preventDefault: noop })
     })
+
+    // Dismiss Error Message
+    await act(async () => {
+      component.root
+        .findByProps({ 'aria-label': 'Close alert' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // Mock Success
+    fetch.mockResponseOnce(JSON.stringify({ email: 'username' }))
+
+    // Click Submit
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Request Reset Email' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(fetch.mock.calls.length).toEqual(2)
+    expect(fetch.mock.calls[0][0]).toEqual(`/api/v1/password/reset/`)
+    expect(mockFn).toHaveBeenCalledWith(
+      '/reset-password/?action=password-reset-request-success',
+    )
+  })
+
+  it('should render properly with <FormSuccess/>', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/reset-password',
+      query: { action: 'password-reset-request-success' },
+    })
+
+    const component = TestRenderer.create(<ResetPassword />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })

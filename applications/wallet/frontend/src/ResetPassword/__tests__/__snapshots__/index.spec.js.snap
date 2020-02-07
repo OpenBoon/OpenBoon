@@ -269,8 +269,8 @@ exports[`<ResetPassword /> should render properly 1`] = `
 </div>
 `;
 
-exports[`<ResetPassword /> should render properly 2`] = `
-.emotion-15 {
+exports[`<ResetPassword /> should render properly with <FormSuccess/> 1`] = `
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -286,7 +286,7 @@ exports[`<ResetPassword /> should render properly 2`] = `
   height: 100vh;
 }
 
-.emotion-14 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -332,26 +332,43 @@ exports[`<ResetPassword /> should render properly 2`] = `
   height: 20px;
 }
 
-.emotion-10 {
+.emotion-15 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-6 {
+.emotion-10 {
   display: block;
   padding-bottom: 8px;
   color: #808080;
 }
 
-.emotion-8 {
+.emotion-12 {
   position: relative;
 }
 
-.emotion-9 {
+.emotion-11 {
+  outline-offset: 0;
+  padding: 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #000000;
+  background-color: #ffffff;
+  border: 2px solid #c92300;
+  border-width: 2px;
+}
+
+.emotion-14 {
   padding-top: 8px;
 }
 
-.emotion-12 {
+.emotion-13 {
+  color: #c92300;
+  font-style: italic;
+}
+
+.emotion-17 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -363,28 +380,7 @@ exports[`<ResetPassword /> should render properly 2`] = `
   justify-content: center;
 }
 
-.emotion-13 {
-  padding-top: 32px;
-  text-align: center;
-}
-
-.emotion-13 a {
-  color: #808080;
-}
-
-.emotion-7 {
-  outline-offset: 0;
-  padding: 12px;
-  border-radius: 2px;
-  box-shadow: inset 0 1px 3px 0 transparent;
-  width: 100%;
-  color: #000000;
-  background-color: #ffffff;
-  border: 1px solid transparent;
-  border-width: 2px;
-}
-
-.emotion-11 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -411,39 +407,106 @@ exports[`<ResetPassword /> should render properly 2`] = `
   line-height: 18px;
   font-weight: 500;
   border: none;
-  cursor: pointer;
+  cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
 }
 
-.emotion-11:hover {
+.emotion-16:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited {
   background-color: #73b61c;
 }
 
-.emotion-11:hover {
+.emotion-16:hover {
   background-color: #b8d652;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   background-color: #808080;
 }
 
+.emotion-18 {
+  padding-top: 32px;
+  text-align: center;
+}
+
+.emotion-18 a {
+  color: #808080;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  justify-self: flex-start;
+  color: #000000;
+  font-weight: 500;
+  background-color: #ffffff;
+  border: 1px solid #4ac565;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-6 {
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  background-color: #4ac565;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
 <div
-  className="emotion-15"
+  className="emotion-20"
 >
   <form
-    className="emotion-14"
+    className="emotion-19"
     method="post"
     onSubmit={[Function]}
   >
@@ -474,38 +537,65 @@ exports[`<ResetPassword /> should render properly 2`] = `
       </div>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-9"
+    >
+      <div
+        className="emotion-8"
+      >
+        <div
+          className="emotion-6"
+        >
+          <svg
+            data-file-name="checkmark.svg"
+            width={20}
+          />
+        </div>
+        <div
+          className="emotion-7"
+        >
+          Password reset email sent.
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-15"
     >
       <label
-        className="emotion-6"
+        className="emotion-10"
         htmlFor="username"
       >
         Email
       </label>
       <div
-        className="emotion-8"
+        className="emotion-12"
       >
         <input
           autoFocus={true}
-          className="emotion-7"
+          className="emotion-11"
           id="username"
           name="username"
           onChange={[Function]}
           type="text"
-          value="username"
+          value=""
         />
       </div>
       <div
-        className="emotion-9"
+        className="emotion-14"
       >
+        <span
+          className="emotion-13"
+        >
+          
+        </span>
          
       </div>
     </div>
     <div
-      className="emotion-12"
+      className="emotion-17"
     >
       <button
-        className="emotion-11"
+        aria-disabled={true}
+        className="emotion-16"
         onClick={[Function]}
         type="submit"
       >
@@ -513,7 +603,7 @@ exports[`<ResetPassword /> should render properly 2`] = `
       </button>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-18"
     >
       <a
         href="/"

@@ -71,12 +71,10 @@ const ResetPassword = () => {
           one.
         </div>
 
-        {action !== 'password-reset-request-success' && (
-          <FormAlert
-            errorMessage={state.error}
-            setErrorMessage={() => dispatch({ error: '' })}
-          />
-        )}
+        <FormAlert
+          errorMessage={state.error}
+          setErrorMessage={() => dispatch({ error: '' })}
+        />
 
         {action === 'password-reset-request-success' && (
           <FormSuccess>Password reset email sent.</FormSuccess>
