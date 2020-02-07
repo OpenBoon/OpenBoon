@@ -166,15 +166,11 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: left;
-  -webkit-justify-content: left;
-  -ms-flex-pack: left;
-  justify-content: left;
   padding-top: 16px;
 }
 
-.emotion-106 button:not(:first-of-type),
-.emotion-106 [type="button"]:not(:first-of-type) {
+.emotion-106 button,
+.emotion-106 a {
   margin-right: 16px;
 }
 
@@ -921,15 +917,11 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: left;
-  -webkit-justify-content: left;
-  -ms-flex-pack: left;
-  justify-content: left;
   padding-top: 16px;
 }
 
-.emotion-106 button:not(:first-of-type),
-.emotion-106 [type="button"]:not(:first-of-type) {
+.emotion-106 button,
+.emotion-106 a {
   margin-right: 16px;
 }
 

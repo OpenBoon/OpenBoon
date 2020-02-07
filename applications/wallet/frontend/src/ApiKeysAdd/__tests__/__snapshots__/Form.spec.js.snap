@@ -159,15 +159,11 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: left;
-  -webkit-justify-content: left;
-  -ms-flex-pack: left;
-  justify-content: left;
   padding-top: 16px;
 }
 
-.emotion-105 button:not(:first-of-type),
-.emotion-105 [type="button"]:not(:first-of-type) {
+.emotion-105 button,
+.emotion-105 a {
   margin-right: 16px;
 }
 
@@ -749,15 +745,11 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: left;
-  -webkit-justify-content: left;
-  -ms-flex-pack: left;
-  justify-content: left;
   padding-top: 16px;
 }
 
-.emotion-15 button:not(:first-of-type),
-.emotion-15 [type="button"]:not(:first-of-type) {
+.emotion-15 button,
+.emotion-15 a {
   margin-right: 16px;
 }
 
@@ -1348,15 +1340,11 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: left;
-  -webkit-justify-content: left;
-  -ms-flex-pack: left;
-  justify-content: left;
   padding-top: 16px;
 }
 
-.emotion-105 button:not(:first-of-type),
-.emotion-105 [type="button"]:not(:first-of-type) {
+.emotion-105 button,
+.emotion-105 a {
   margin-right: 16px;
 }
 

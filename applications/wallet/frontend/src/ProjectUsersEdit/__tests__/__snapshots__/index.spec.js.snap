@@ -430,15 +430,11 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: left;
-  -webkit-justify-content: left;
-  -ms-flex-pack: left;
-  justify-content: left;
   padding-top: 16px;
 }
 
-.emotion-105 button:not(:first-of-type),
-.emotion-105 [type="button"]:not(:first-of-type) {
+.emotion-105 button,
+.emotion-105 a {
   margin-right: 16px;
 }
 
@@ -1051,7 +1047,6 @@ Array [
         href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
         onClick={[Function]}
         onMouseEnter={[Function]}
-        type="button"
       >
         Cancel
       </a>

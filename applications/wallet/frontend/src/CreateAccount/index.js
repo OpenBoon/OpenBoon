@@ -123,9 +123,7 @@ const CreateAccount = () => {
 
           <ButtonGroup>
             <Link href="/" passHref>
-              <Button type="button" variant={BUTTON_VARIANTS.SECONDARY}>
-                Cancel
-              </Button>
+              <Button variant={BUTTON_VARIANTS.SECONDARY}>Cancel</Button>
             </Link>
             <Button
               type="submit"

@@ -279,15 +279,11 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: left;
-  -webkit-justify-content: left;
-  -ms-flex-pack: left;
-  justify-content: left;
   padding-top: 16px;
 }
 
-.emotion-12 button:not(:first-of-type),
-.emotion-12 [type="button"]:not(:first-of-type) {
+.emotion-12 button,
+.emotion-12 a {
   margin-right: 16px;
 }
 

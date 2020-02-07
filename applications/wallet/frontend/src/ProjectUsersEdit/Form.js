@@ -46,9 +46,7 @@ const ProjectUsersEditForm = ({ projectId, user, permissions }) => {
 
       <ButtonGroup>
         <Link href="/[projectId]/users" as={`/${projectId}/users`} passHref>
-          <Button type="button" variant={VARIANTS.SECONDARY}>
-            Cancel
-          </Button>
+          <Button variant={VARIANTS.SECONDARY}>Cancel</Button>
         </Link>
         <Button
           type="submit"

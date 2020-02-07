@@ -266,6 +266,7 @@ exports[`<Login /> should render properly 1`] = `
 }
 
 .emotion-23 {
+  padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -274,12 +275,6 @@ exports[`<Login /> should render properly 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  padding-top: 16px;
-}
-
-.emotion-23 button:not(:first-of-type),
-.emotion-23 [type="button"]:not(:first-of-type) {
-  margin-right: 16px;
 }
 
 .emotion-22 {

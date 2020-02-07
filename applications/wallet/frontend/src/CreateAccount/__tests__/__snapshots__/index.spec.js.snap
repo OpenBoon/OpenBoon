@@ -145,15 +145,11 @@ exports[`<CreateAccount /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: left;
-  -webkit-justify-content: left;
-  -ms-flex-pack: left;
-  justify-content: left;
   padding-top: 16px;
 }
 
-.emotion-36 button:not(:first-of-type),
-.emotion-36 [type="button"]:not(:first-of-type) {
+.emotion-36 button,
+.emotion-36 a {
   margin-right: 16px;
 }
 
@@ -466,7 +462,6 @@ exports[`<CreateAccount /> should render properly 1`] = `
           href="/"
           onClick={[Function]}
           onMouseEnter={[Function]}
-          type="button"
         >
           Cancel
         </a>
