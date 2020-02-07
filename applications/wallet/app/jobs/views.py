@@ -1,37 +1,31 @@
-from django.conf import settings
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
 
 class JobsViewSet(BaseProjectViewSet):
-
     pagination_class = ZMLPFromSizePagination
 
     def list(self, request, project_pk, client):
         payload = {'page': {'from': request.GET.get('from', 0),
-                            'size': request.GET.get('size', self.pagination_class.default_limit)}}
+                            'size': request.GET.get('size',
+                                                    self.pagination_class.default_limit)}}
         response = client.post('/api/v1/jobs/_search', payload)
-        if settings.PLATFORM == 'zvi':
-            content = response.json()
-        else:
-            content = response
-
+        content = self._get_content(response)
         current_url = request.build_absolute_uri(request.path)
         for item in content['list']:
             item['url'] = f'{current_url}{item["id"]}/'
             item['actions'] = self._get_action_links(request, item['url'], detail=True)
-
         paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(content, request)
         return paginator.get_paginated_response(content['list'])
 
     def retrieve(self, request, project_pk, client, pk):
         response = client.get(f'/api/v1/jobs/{pk}')
-        content = response.json()
+        content = self._get_content(response)
         content['actions'] = self._get_action_links(request)
         return Response(content)
 
@@ -71,9 +65,10 @@ class JobsViewSet(BaseProjectViewSet):
         """
         payload = {'jobIds': [pk],
                    'page': {'from': request.GET.get('from', 0),
-                            'size': request.GET.get('size', self.pagination_class.default_limit)}}
+                            'size': request.GET.get('size',
+                                                    self.pagination_class.default_limit)}}
         response = client.post(f'/api/v1/taskerrors/_search', payload)
-        content = response.json()
+        content = self._get_content(response)
         paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(content, request)
         return paginator.get_paginated_response(content['list'])
@@ -89,7 +84,7 @@ class JobsViewSet(BaseProjectViewSet):
         new_values = {'paused': True}
         request_body = self._get_updated_info(client, pk, new_values)
         response = client.put(f'/api/v1/jobs/{pk}', request_body)
-        return Response(response.json())
+        return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'])
     def resume(self, request, project_pk, client, pk):
@@ -102,7 +97,7 @@ class JobsViewSet(BaseProjectViewSet):
         new_values = {'paused': False}
         request_body = self._get_updated_info(client, pk, new_values)
         response = client.put(f'/api/v1/jobs/{pk}', request_body)
-        return Response(response.json())
+        return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'])
     def cancel(self, request, project_pk, client, pk):
@@ -113,7 +108,7 @@ class JobsViewSet(BaseProjectViewSet):
 
         """
         response = client.put(f'/api/v1/jobs/{pk}/_cancel', {})
-        return Response(response.json())
+        return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'])
     def restart(self, request, project_pk, client, pk):
@@ -124,7 +119,7 @@ class JobsViewSet(BaseProjectViewSet):
 
         """
         response = client.put(f'/api/v1/jobs/{pk}/_restart', {})
-        return Response(response.json())
+        return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'])
     def priority(self, request, project_pk, client, pk):
@@ -151,7 +146,7 @@ class JobsViewSet(BaseProjectViewSet):
         new_values = {'priority': priority}
         request_body = self._get_updated_info(client, pk, new_values)
         response = client.put(f'/api/v1/jobs/{pk}', request_body)
-        return Response(response.json())
+        return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'], name='Max Running Tasks')
     def max_running_tasks(self, request, project_pk, client, pk):
@@ -177,7 +172,7 @@ class JobsViewSet(BaseProjectViewSet):
         new_values = {'maxRunningTasks': max_running_tasks}
         request_body = self._get_updated_info(client, pk, new_values)
         response = client.put(f'/api/v1/jobs/{pk}', request_body)
-        return Response(response.json())
+        return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'], name='Retry All Failures')
     def retry_all_failures(self, request, project_pk, client, pk):
@@ -188,7 +183,7 @@ class JobsViewSet(BaseProjectViewSet):
 
         """
         response = client.put(f'/api/v1/jobs/{pk}/_retryAllFailures', {})
-        return Response(response.json())
+        return Response(self._get_content(response))
 
     def _get_updated_info(self, client, pk, new_values):
         """
@@ -204,7 +199,7 @@ class JobsViewSet(BaseProjectViewSet):
             (dict): Full job spec with updated values
         """
         response = client.get(f'/api/v1/jobs/{pk}')
-        body = response.json()
+        body = self._get_content(response)
         job_spec = {
             'name': body['name'],
             'priority': body['priority'],
@@ -213,3 +208,10 @@ class JobsViewSet(BaseProjectViewSet):
         }
         job_spec.update(new_values)
         return job_spec
+
+    def _get_content(self, response):
+        """Returns the content of Response from the ZVI or ZMLP and returns it as a dict."""
+
+        if isinstance(response, dict):
+            return response
+        return response.json()
