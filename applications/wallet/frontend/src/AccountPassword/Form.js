@@ -15,6 +15,7 @@ const INITIAL_STATE = {
   currentPassword: '',
   newPassword: '',
   confirmPassword: '',
+  showForm: false,
   success: false,
   errors: {},
 }
@@ -76,9 +77,16 @@ const AccountPasswordForm = () => {
 
       <div
         css={{
+          display: 'flex',
           paddingTop: spacing.moderate,
-          paddingBottom: spacing.moderate,
         }}>
+        <Button
+          css={{ marginRight: spacing.normal }}
+          variant={BUTTON_VARIANTS.SECONDARY}
+          onClick={() => dispatch(INITIAL_STATE)}>
+          Cancel
+        </Button>
+
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
