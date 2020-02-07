@@ -175,10 +175,15 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: left;
   padding-top: 16px;
 }
 
-.emotion-17 button {
+.emotion-17 button:not(:first-of-type),
+.emotion-17 [type="button"]:not(:first-of-type) {
   margin-right: 16px;
 }
 

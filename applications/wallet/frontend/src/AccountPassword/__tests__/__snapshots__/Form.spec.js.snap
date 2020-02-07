@@ -58,10 +58,15 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: left;
   padding-top: 16px;
 }
 
-.emotion-17 button {
+.emotion-17 button:not(:first-of-type),
+.emotion-17 [type="button"]:not(:first-of-type) {
   margin-right: 16px;
 }
 
@@ -291,10 +296,15 @@ exports[`<AccountPasswordForm /> should render properly 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: left;
   padding-top: 16px;
 }
 
-.emotion-5 button {
+.emotion-5 button:not(:first-of-type),
+.emotion-5 [type="button"]:not(:first-of-type) {
   margin-right: 16px;
 }
 
@@ -505,10 +515,15 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: left;
   padding-top: 16px;
 }
 
-.emotion-17 button {
+.emotion-17 button:not(:first-of-type),
+.emotion-17 [type="button"]:not(:first-of-type) {
   margin-right: 16px;
 }
 
@@ -790,10 +805,15 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: left;
   padding-top: 16px;
 }
 
-.emotion-17 button {
+.emotion-17 button:not(:first-of-type),
+.emotion-17 [type="button"]:not(:first-of-type) {
   margin-right: 16px;
 }
 
