@@ -12,6 +12,7 @@ import VisibleSvg from '../Icons/visible.svg'
 import FormAlert from '../FormAlert'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import ButtonGroup from '../Button/Group'
 
 import LoginWithGoogle from './WithGoogle'
 
@@ -115,12 +116,7 @@ const Login = ({
           }
         />
 
-        <div
-          css={{
-            paddingTop: spacing.normal,
-            display: 'flex',
-            justifyContent: 'center',
-          }}>
+        <ButtonGroup justify="center">
           <Button
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
@@ -128,7 +124,7 @@ const Login = ({
             isDisabled={!username || !password}>
             Login
           </Button>
-        </div>
+        </ButtonGroup>
 
         <div
           css={{

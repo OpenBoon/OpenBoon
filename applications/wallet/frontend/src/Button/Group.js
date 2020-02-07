@@ -1,14 +1,17 @@
 import PropTypes from 'prop-types'
 import { spacing } from '../Styles'
 
-const ButtonGroup = ({ children }) => {
+const ButtonGroup = ({ justify, children }) => {
   return (
     <div
       css={{
         display: 'flex',
+        justifyContent: `${justify}`,
         paddingTop: spacing.normal,
-        button: {
-          marginRight: spacing.normal,
+        'button, [type="button"]': {
+          '&:not(:first-of-type)': {
+            marginRight: spacing.normal,
+          },
         },
       }}>
       {children}
@@ -16,7 +19,12 @@ const ButtonGroup = ({ children }) => {
   )
 }
 
+ButtonGroup.defaultProps = {
+  justify: 'left',
+}
+
 ButtonGroup.propTypes = {
+  justify: PropTypes.string,
   children: PropTypes.node.isRequired,
 }
 

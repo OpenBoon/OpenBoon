@@ -145,8 +145,16 @@ exports[`<CreateAccount /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: left;
+  padding-top: 16px;
+}
+
+.emotion-36 button:not(:first-of-type),
+.emotion-36 [type="button"]:not(:first-of-type) {
+  margin-right: 16px;
 }
 
 .emotion-34 {
@@ -179,7 +187,6 @@ exports[`<CreateAccount /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  margin-right: 16px;
 }
 
 .emotion-34:hover {

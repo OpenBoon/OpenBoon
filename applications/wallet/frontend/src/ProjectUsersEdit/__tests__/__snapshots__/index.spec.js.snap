@@ -430,8 +430,16 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: left;
+  padding-top: 16px;
+}
+
+.emotion-105 button:not(:first-of-type),
+.emotion-105 [type="button"]:not(:first-of-type) {
+  margin-right: 16px;
 }
 
 .emotion-103 {
@@ -464,7 +472,6 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  margin-right: 16px;
 }
 
 .emotion-103:hover {

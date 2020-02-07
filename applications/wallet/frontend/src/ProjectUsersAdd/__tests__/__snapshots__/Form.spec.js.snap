@@ -162,8 +162,20 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 }
 
 .emotion-106 {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: left;
+  padding-top: 16px;
+}
+
+.emotion-106 button:not(:first-of-type),
+.emotion-106 [type="button"]:not(:first-of-type) {
+  margin-right: 16px;
 }
 
 .emotion-105 {
@@ -905,8 +917,20 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 }
 
 .emotion-106 {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: left;
+  padding-top: 16px;
+}
+
+.emotion-106 button:not(:first-of-type),
+.emotion-106 [type="button"]:not(:first-of-type) {
+  margin-right: 16px;
 }
 
 .emotion-105 {
