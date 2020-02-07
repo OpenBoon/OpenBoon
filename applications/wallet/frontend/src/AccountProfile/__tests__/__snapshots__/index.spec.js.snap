@@ -198,7 +198,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
   <h3
     className="emotion-7"
   >
-    User ID: undefined
+    User ID: jane.doe@zorroa.com
   </h3>
   <div
     className="emotion-8"
@@ -208,7 +208,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
   <div
     className="emotion-9"
   >
-     
+    Jane Doe
   </div>
   <button
     className="emotion-10"
