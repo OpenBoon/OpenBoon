@@ -13,7 +13,9 @@ class PermissionController {
     @ApiOperation("Return a list of all permissions and their use.")
     @RequestMapping("/auth/v1/permissions", method = [RequestMethod.GET])
     fun getAll(): List<Map<String, Any?>> {
-        return Permission.values().map {
+        return Permission.values()
+            .filter { !it.internal }
+            .map {
             val descr = it.javaClass.getField(it.name).getAnnotation(ApiModelProperty::class.java).value
             mapOf(
                 "name" to it.name,
