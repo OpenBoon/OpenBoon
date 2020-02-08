@@ -372,7 +372,7 @@ class CloudVisionDetectLabelsTests(PluginUnitTestCase):
 
         # run processor with declared frame and assert asset attributes
         processor.process(frame)
-        keyword_pth = "analysis.google.labelDetection.keywords"
+        keyword_pth = "analysis.google.labelDetection.labels"
 
         self.assertIn(u'Close-up', asset.get_attr(keyword_pth))
         self.assertIn(u'Eye', frame.asset.get_attr(keyword_pth))
@@ -400,7 +400,7 @@ class CloudVisionDetectLabelsTests(PluginUnitTestCase):
         # run processor with declared frame and assert normal and debug values
         processor.process(frame)
         # assert asset's normal visionLabelDetection data
-        keyword_pth = "{}.keywords".format(ns)
+        keyword_pth = "{}.labels".format(ns)
         self.assertIn(u'Close-up', frame.asset.get_attr(keyword_pth))
         self.assertIn(u'Eye', frame.asset.get_attr(keyword_pth))
         self.assertIn(u'Photography', frame.asset.get_attr(keyword_pth))

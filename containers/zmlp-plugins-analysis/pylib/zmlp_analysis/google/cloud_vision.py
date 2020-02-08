@@ -228,11 +228,11 @@ class CloudVisionDetectLabels(AbstractCloudVisionProcessor):
             if self.arg_value("debug"):
                 struct["pred" + str(i)] = label.description
                 struct["prob" + str(i)] = labels[i].score
-        struct["keywords"] = list(set(keywords))
+        struct["labels"] = list(set(keywords))
         if self.arg_value("debug"):
             struct["type"] = "GCLabelDetection"
             struct["scores"] = labels[0].score
-        asset.add_analysis("google.visionLabelDetection", struct)
+        asset.add_analysis("google.labelDetection", struct)
 
 
 class CloudVisionDetectWebEntities(AbstractCloudVisionProcessor):
