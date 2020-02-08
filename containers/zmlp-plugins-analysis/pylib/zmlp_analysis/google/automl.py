@@ -1,43 +1,14 @@
-from __future__ import print_function
-
-import os
 import re
 
 import backoff
-
-from pathlib2 import Path
-
-from google.cloud import automl_v1beta1 as automl
 from google.api_core.exceptions import ResourceExhausted
+from google.cloud import automl_v1beta1 as automl
 
-from zmlpsdk import Argument, AssetProcessor, Generator
-
-
-class GoogleApiProcessorMixin(object):
-    def __init__(self):
-        super(GoogleApiProcessorMixin, self).__init__()
-        self.add_arg(Argument('gcp_credentials_path', 'string', default=None))
-
-    def initialize_gcp_client(self, client_class):
-        """Initiliazes a GC"""
-        if self.arg_value('gcp_credentials_path'):
-            credential_path = Path(self.arg_value('gcp_credentials_path')).expanduser().resolve()
-            if not os.path.isfile(str(credential_path)):
-                raise Exception(u"Can't find credentials file {}".format(credential_path))
-            return client_class.from_service_account_file(str(credential_path))
-        else:
-            return client_class()
+from zmlpsdk import Argument, AssetProcessor
+from zmlpsdk.proxy import get_proxy_level
 
 
-class GoogleApiDocumentProcessor(AssetProcessor, GoogleApiProcessorMixin):
-    pass
-
-
-class GoogleApiGenerator(GoogleApiProcessorMixin, Generator):
-    pass
-
-
-class AutoMLModelProcessor(GoogleApiDocumentProcessor):
+class AutoMLModelProcessor(AssetProcessor):
     """Use a pre-trained Google AutoML model to label and score assets."""
 
     tool_tips = {
@@ -144,3 +115,114 @@ class AutoMLModelProcessor(GoogleApiDocumentProcessor):
         return self.prediction_client.predict(name=self.model_path,
                                               payload=payload,
                                               params={})
+
+
+class AutoMLNLPModelProcessor(AutoMLModelProcessor):
+    tool_tips = {
+        'src_field': 'The metadata field that contains the data to evaluate with AutoML '
+                     '(e.g. "analysis.google.documentTextDetection.content")',
+        'collapse_multipage': 'True if you want to collapse all document pages into a single score,'
+                              ' False if you want a score per page',
+        'ignore_pages': 'List of pages in a document to ignore. Only used when collapse_multipage '
+                        'is True. (e.g. "[1, 4]")'
+    }
+
+    def __init__(self):
+        super(AutoMLNLPModelProcessor, self).__init__()
+        self.add_arg(Argument("src_field", "string", required=True,
+                              toolTip=AutoMLNLPModelProcessor.tool_tips['src_field']))
+        self.add_arg(Argument("collapse_multipage", "bool", default=False,
+                              toolTip=AutoMLNLPModelProcessor.tool_tips['collapse_multipage']))
+        self.add_arg(Argument("ignore_pages", "list", default=[],
+                              toolTip=AutoMLNLPModelProcessor.tool_tips['ignore_pages']))
+
+    def init(self):
+        super(AutoMLNLPModelProcessor, self).init()
+        self.src_field = self.arg_value('src_field')
+        self.collapse_multipage = self.arg_value('collapse_multipage')
+        self.ignore_pages = self.arg_value('ignore_pages')
+
+    def _announce(self, asset):
+        self.logger.info("AutoMLNLPModelProcessor for asset {}".format(asset.id))
+
+    def _proc_fieldname(self):
+        return 'automl_nlp'
+
+    def _concatenate_pages(self, asset):
+        # Get all the child pages of this document and concatenate their contents
+        # in order. Get the contents using self.src_field, and ignore any pages
+        # mentioned in self.ignore_pages.
+
+        page_count = int(asset.get_attr('media.pages'))
+        # self.logger.debug("\tPage count: {}".format(page_count))
+        pages = [''] * (page_count + 1)
+
+        #
+        # TODO: a ZMLP search instead.
+        # archivist.AssetSearch().term_filter("media.clip.parent", asset.id)
+        #
+        search = []
+        for child in search:
+            # self.logger.debug("\t\tChild ID: {}".format(child.id))
+            page_num = int(child.get_attr("media.clip.start"))
+            # self.logger.debug("\t\tPage num {}".format(page_num))
+            val = child.get_attr(self.src_field)
+            # self.logger.debug("\t\tField {} -> {}".format(self.src_field, val))
+
+            # WARNING!!! We're forcing this to be a string, because if "src_field"
+            # refers to a field that isn't a string, concatenation will fail. But
+            # in cases like Commerzbank where the model was trained on UTF-8 data,
+            # this might make things _worse_. We might need to change this to be
+            # something like:  pages[page_num] = val.encode('utf-8')
+            pages[page_num] = str(val)
+
+        for i in range(len(pages)):
+            if i in self.ignore_pages:
+                # self.logger.debug("\t\tIgnoring page {}".format(i))
+                pages[i] = ''
+
+        return "\n".join(pages)
+
+    def _create_payload(self, asset):
+        is_full_document = not asset.get_attr("media.clip.parent")
+        # self.logger.debug("\tfull doc: {}".format(is_full_document))
+
+        if self.collapse_multipage:
+            if is_full_document:
+                content = self._concatenate_pages(asset)
+            else:
+                # If we're collapsing we only care about the parent at this point.
+                # So if we're on a child, bail out.
+                return
+        else:
+            content = asset.get_attr(self.src_field)
+
+        self.logger.info("\tContent is {} bytes".format(len(content)))
+        # self.logger.debug("\tContent: {}".format(content))
+        return {
+            "text_snippet": {
+                "content": content,
+                "mime_type": "text/plain"
+            }
+        }
+
+
+class AutoMLVisionModelProcessor(AutoMLModelProcessor):
+    def _announce(self, asset):
+        self.logger.info("AutoMLVisionModelProcessor for asset {}".format(asset.id))
+
+    def _proc_fieldname(self):
+        return 'automl_vision'
+
+    def _create_payload(self, asset):
+        file_path = get_proxy_level(asset, 1)
+        with open(file_path, 'rb') as fh:
+            content = fh.read()
+
+        self.logger.info("\tRead {} bytes from {}".format(len(content), file_path))
+        # self.logger.debug("\tContent is: {}".format(str(content)))
+        return {
+            "image": {
+                "image_bytes": content
+            }
+        }
