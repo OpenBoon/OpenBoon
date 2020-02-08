@@ -36,7 +36,7 @@ def test_register_already_active_user(api_client, user):
                                                               'firstName': 'Fakey',
                                                               'lastName': 'Fakerson',
                                                               'password': uuid.uuid4()})
-    assert response.status_code == 422
+    assert response.status_code == 409
 
 
 def test_re_register_user(api_client, user):
@@ -76,6 +76,7 @@ def test_register_and_confirm(api_client, mailoutbox):
     response = api_client.post(reverse('api-user-confirm'), {'token': token, 'userId': user_id})
     assert response.status_code == 200
     assert User.objects.get(id=user.id).is_active
+    assert not UserRegistrationToken.objects.filter(token=token, user=user_id).exists()
 
 
 def test_confirm_expired_registration_token(api_client, user):
@@ -86,7 +87,7 @@ def test_confirm_expired_registration_token(api_client, user):
     response = api_client.post(reverse('api-user-confirm'),
                                {'token': token.token, 'userId': user.id})
     assert response.status_code == 403
-    assert response.content == b'Activation token has expired. User must sign up again.'
+    assert response.content == b'The activation link has expired. Please sign up again.'
 
 
 def test_confirm_missing_registration_token(api_client):

@@ -9,3 +9,6 @@ class UserRegistrationToken(models.Model):
     token = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=True)
+
+    def __str__(self):
+        return f'{self.user.username}: {self.token}'

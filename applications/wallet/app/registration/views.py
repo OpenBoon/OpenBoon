@@ -90,7 +90,7 @@ Response Codes:
         body = (f'Click this link to confirm your email address and activate your account.\n'
                 f'https://{settings.HOSTNAME}/accounts/confirm?'
                 f'token={token.token}&userId={user.id}')
-        send_mail(subject=subject, body=body, html_message=html, fail_silently=False,
+        send_mail(subject=subject, message=body, html_message=html, fail_silently=False,
                   from_email='do_not_reply@zorroa.com', recipient_list=[user.username])
 
         return Response(data={'message': 'Success, confirmation email has been sent.'})
