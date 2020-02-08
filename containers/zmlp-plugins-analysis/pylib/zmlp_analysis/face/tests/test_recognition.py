@@ -25,12 +25,14 @@ class BuildFaceRecognitionModelTests(PluginUnitTestCase):
                 "_type": "asset",
                 "_source": {
                     "datasets": {
-                        "zmlpFaceRecognition": [
-                            {
-                                "label": "Bob Dole",
-                                "point": [426, 824]
-                            }
-                        ]
+                        "zmlp": {
+                            "faceRecognition": [
+                                {
+                                    "label": "Bob Dole",
+                                    "point": [426, 824]
+                                }
+                            ]
+                        }
                     },
                     "source": {
                         "path": "https://i.imgur.com/SSN26nN.jpg",
@@ -55,7 +57,7 @@ class BuildFaceRecognitionModelTests(PluginUnitTestCase):
         upload_patch.return_value = {
             "name": "encodings.dat",
             "entity": "model",
-            "category": "zmlpFaceRecognition",
+            "category": "zmlp.faceRecognition",
             "mimetype": "application/octet-stream",
             "attrs": {
             }
@@ -95,7 +97,7 @@ class FaceRecognitionProcessorTests(PluginUnitTestCase):
         assert None is element.get('labels')
         assert [550, 430, 408, 289] == element['rect']
         assert 'proxy/ZmlpFaceRecognition_200x200.jpg' == element['proxy']
-        assert 'zmlpFaceRecognition' == element['analysis']
+        assert 'zmlp.faceRecognition' == element['analysis']
         assert element['vector']
 
     @patch.object(ZmlpClient, 'upload_file')
@@ -125,5 +127,5 @@ class FaceRecognitionProcessorTests(PluginUnitTestCase):
         assert ['Bob Dole'] == element['labels']
         assert [550, 430, 408, 289] == element['rect']
         assert 'proxy/ZmlpFaceRecognition_200x200.jpg' == element['proxy']
-        assert 'zmlpFaceRecognition' == element['analysis']
+        assert 'zmlp.faceRecognition' == element['analysis']
         assert element['vector']

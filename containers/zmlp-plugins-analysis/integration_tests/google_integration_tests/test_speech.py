@@ -10,7 +10,7 @@ from zmlpsdk import Frame
 class CloudSpeechToTextProcessorTestCase(PluginUnitTestCase):
 
     def setUp(self):
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "gcp-creds.json"
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.dirname(__file__) + '/gcp-creds.json'
         self.processor = self.init_processor(
             CloudSpeechToTextProcessor(), {
              'alternate_languages': ['en-US'],

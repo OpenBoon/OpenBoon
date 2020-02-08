@@ -1,12 +1,13 @@
-
-from google.cloud.vision import types
+# flake8: noqa
 from unittest.mock import patch
 
-from ..cloud_vision import CloudVisionProcessor
+from google.cloud.vision import types
+
 from zmlp import ZmlpClient
+from zmlp_analysis.google.cloud_vision import *
+from zmlpsdk import Frame, ZmlpProcessorException
 from zmlpsdk.proxy import store_asset_proxy
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
-from zmlpsdk import Frame, ZmlpFatalProcessorException
 
 patch_path = 'zmlp_analysis.google.cloud_vision.vision.ImageAnnotatorClient'
 
@@ -96,31 +97,25 @@ class MockImageAnnotatorClient:
 
     def face_detection(self, image):
         mock_annotations = [
-            types.FaceAnnotation(roll_angle=3.85948371887,
-                                 pan_angle=-4.00120306015,
-                                 tilt_angle=-5.03876304626,
-                                 detection_confidence=0.996880471706,
-                                 landmarking_confidence=0.705760359764,
-                                 joy_likelihood="UNLIKELY",
-                                 sorrow_likelihood="VERY_UNLIKELY",
-                                 anger_likelihood="VERY_UNLIKELY",
-                                 surprise_likelihood="VERY_UNLIKELY",
-                                 under_exposed_likelihood="VERY_UNLIKELY",
-                                 blurred_likelihood="VERY_UNLIKELY",
-                                 headwear_likelihood="VERY_UNLIKELY"),
-            types.FaceAnnotation(roll_angle=-0.48230355978,
-                                 pan_angle=1.49939823151,
-                                 tilt_angle=-10.4569005966,
-                                 detection_confidence=0.973327457905,
-                                 landmarking_confidence=0.679704546928,
-                                 joy_likelihood="UNLIKELY",
-                                 sorrow_likelihood="VERY_UNLIKELY",
-                                 anger_likelihood="VERY_UNLIKELY",
-                                 surprise_likelihood="VERY_UNLIKELY",
-                                 under_exposed_likelihood="VERY_UNLIKELY",
-                                 blurred_likelihood="VERY_UNLIKELY",
-                                 headwear_likelihood="VERY_UNLIKELY")
+            types.FaceAnnotation(
+                bounding_poly=types.geometry_pb2.BoundingPoly(
+                    vertices=[
+                        types.geometry_pb2.Vertex(x=101, y=19),
+                        types.geometry_pb2.Vertex(x=273, y=19),
+                        types.geometry_pb2.Vertex(x=273, y=219),
+                        types.geometry_pb2.Vertex(x=101, y=219),
+                    ]),
+                detection_confidence=0.996880471706,
+                joy_likelihood="UNLIKELY",
+                sorrow_likelihood="VERY_LIKELY",
+                anger_likelihood="VERY_UNLIKELY",
+                surprise_likelihood="VERY_LIKELY",
+                under_exposed_likelihood="VERY_UNLIKELY",
+                blurred_likelihood="VERY_UNLIKELY",
+                headwear_likelihood="VERY_UNLIKELY"
+            )
         ]
+
         res = types.AnnotateImageResponse(face_annotations=mock_annotations)
         return res
 
@@ -355,38 +350,31 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         asset = TestAsset(TOOBIG)
         frame = Frame(asset)
         store_asset_proxy(asset, TOOBIG, (200, 200))
-        processor = self.init_processor(CloudVisionProcessor(), {})
+        processor = self.init_processor(CloudVisionDetectLabels(), {})
 
         # see if the processor throws an exception for the image being too big
-        self.assertRaises(ZmlpFatalProcessorException, processor.process,
+        self.assertRaises(ZmlpProcessorException, processor.process,
                           frame)
+
+
+class CloudVisionDetectLabelsTests(PluginUnitTestCase):
 
     @patch.object(ZmlpClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_label(self, mock_image_annotator, upload_patch):
+    def test_detect_labels(self, mock_image_annotator, upload_patch):
         # initialize asset and processor
         upload_patch.return_value = PROXY_FILE
         asset = TestAsset(TOUCAN)
         frame = Frame(asset)
         store_asset_proxy(asset, TOUCAN, (200, 200))
 
-        processor = self.init_processor(CloudVisionProcessor(), {
-            "detect_image_text": False,
-            "detect_document_text": False,
-            "detect_landmarks": False,
-            "detect_explicit": False,
-            "detect_faces": False,
-            "detect_web_entities": False,
-            "detect_logos": False,
-            "detect_objects": False,
-            "detect_labels": True
-        })
+        processor = self.init_processor(CloudVisionDetectLabels())
 
         # run processor with declared frame and assert asset attributes
         processor.process(frame)
-        keyword_pth = "analysis.google.visionLabelDetection.keywords"
+        keyword_pth = "analysis.google.labelDetection.keywords"
 
-        self.assertIn(u'Close-up', frame.asset.get_attr(keyword_pth))
+        self.assertIn(u'Close-up', asset.get_attr(keyword_pth))
         self.assertIn(u'Eye', frame.asset.get_attr(keyword_pth))
         self.assertIn(u'Photography', frame.asset.get_attr(keyword_pth))
         self.assertIn(u'Macro photography', frame.asset.get_attr(keyword_pth))
@@ -405,24 +393,14 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         asset = TestAsset(TOUCAN)
         frame = Frame(asset)
         store_asset_proxy(asset, TOUCAN, (200, 200))
-        processor = self.init_processor(CloudVisionProcessor(), {
-            "detect_image_text": False,
-            "detect_document_text": False,
-            "detect_landmarks": False,
-            "detect_explicit": False,
-            "detect_faces": False,
-            "detect_labels": True,
-            "detect_web_entities": False,
-            "detect_logos": False,
-            "detect_objects": False,
-            "debug": True
-        })
+        processor = self.init_processor(CloudVisionDetectLabels(), {'debug': True})
+
+        ns = "analysis.google.labelDetection"
 
         # run processor with declared frame and assert normal and debug values
         processor.process(frame)
-
         # assert asset's normal visionLabelDetection data
-        keyword_pth = "analysis.google.visionLabelDetection.keywords"
+        keyword_pth = "{}.keywords".format(ns)
         self.assertIn(u'Close-up', frame.asset.get_attr(keyword_pth))
         self.assertIn(u'Eye', frame.asset.get_attr(keyword_pth))
         self.assertIn(u'Photography', frame.asset.get_attr(keyword_pth))
@@ -434,62 +412,66 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         self.assertIn(u'Organism', frame.asset.get_attr(keyword_pth))
         self.assertIn(u'Bird', frame.asset.get_attr(keyword_pth))
         # assert debug values
+
         self.assertEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.pred0"), u'Toucan')
+            "{}.pred0".format(ns)), u'Toucan')
         self.assertEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.pred1"), u'Beak')
+            "{}.pred1".format(ns)), u'Beak')
         self.assertEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.pred2"), u'Bird')
+            "{}.pred2".format(ns)), u'Bird')
         self.assertEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.pred3"), u'Close-up')
+            "{}.pred3".format(ns)), u'Close-up')
         self.assertEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.pred4"), u'Piciformes')
+            "{}.pred4".format(ns)), u'Piciformes')
         self.assertEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.pred5"), u'Organism')
+            "{}.pred5".format(ns)), u'Organism')
         self.assertEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.pred6"),
+            "{}.pred6".format(ns)),
             u'Macro photography')
         self.assertEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.pred7"), u'Eye')
+            "{}.pred7".format(ns)), u'Eye')
         self.assertEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.pred8"), u'Photography')
+            "{}.pred8".format(ns)), u'Photography')
         self.assertEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.pred9"), u'Wildlife')
+            "{}.pred9".format(ns)), u'Wildlife')
         self.assertEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.type"), 'GCLabelDetection')
+            "{}.type".format(ns)), 'GCLabelDetection')
         self.assertAlmostEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.prob0"),
+            "{}.prob0".format(ns)),
             0.9937642216682434, places=5)
         self.assertAlmostEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.prob1"),
+            "{}.prob1".format(ns)),
             0.9705232977867126, places=5)
         self.assertAlmostEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.prob2"),
+            "{}.prob2".format(ns)),
             0.9684256315231323, places=5)
         self.assertAlmostEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.prob3"),
+            "{}.prob3".format(ns)),
             0.8934508562088013, places=5)
         self.assertAlmostEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.prob4"),
+            "{}.prob4".format(ns)),
             0.8019669651985168, places=5)
         self.assertAlmostEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.prob5"),
+            "{}.prob5".format(ns)),
             0.7671774625778198, places=5)
         self.assertAlmostEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.prob6"),
+            "{}.prob6".format(ns)),
             0.7665587663650513, places=5)
         self.assertAlmostEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.prob7"),
+            "{}.prob7".format(ns)),
             0.7586227655410767, places=5)
         self.assertAlmostEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.prob8"),
+            "{}.prob8".format(ns)),
             0.6242249608039856, places=5)
         self.assertAlmostEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.prob9"),
+            "{}.prob9".format(ns)),
             0.5761504173278809, places=5)
         self.assertAlmostEqual(frame.asset.get_attr(
-            "analysis.google.visionLabelDetection.scores"),
+            "{}.scores".format(ns)),
             0.9937642216682434, places=5)
+
+
+class CloudVisionDetectLandmarkTests(PluginUnitTestCase):
 
     @patch.object(ZmlpClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
@@ -499,17 +481,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         asset = TestAsset(EIFFEL)
         frame = Frame(asset)
         store_asset_proxy(asset, EIFFEL, (200, 200))
-        processor = self.init_processor(CloudVisionProcessor(), {
-            "detect_image_text": False,
-            "detect_document_text": False,
-            "detect_landmarks": True,
-            "detect_explicit": False,
-            "detect_faces": False,
-            "detect_labels": False,
-            "detect_logos": False,
-            "detect_objects": False,
-            "detect_web_entities": False
-        })
+        processor = self.init_processor(CloudVisionDetectLandmarks())
 
         # run processor with declared frame and assert asset attributes
         processor.process(frame)
@@ -526,6 +498,9 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
             "analysis.google.landmarkDetection.score"),
             0.5427713990211487, places=5)
 
+
+class CloudVisionDetectExplicitTests(PluginUnitTestCase):
+
     @patch.object(ZmlpClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_explicit(self, mock_image_annotator, upload_patch):
@@ -534,17 +509,7 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         asset = TestAsset(PUNCH)
         frame = Frame(asset)
         store_asset_proxy(asset, PUNCH, (200, 200))
-        processor = self.init_processor(CloudVisionProcessor(), {
-            "detect_image_text": False,
-            "detect_document_text": False,
-            "detect_landmarks": False,
-            "detect_explicit": True,
-            "detect_faces": False,
-            "detect_labels": False,
-            "detect_logos": False,
-            "detect_objects": False,
-            "detect_web_entities": False
-        })
+        processor = self.init_processor(CloudVisionDetectExplicit())
 
         # run processor with declared asset and assert asset attributes
         processor.process(frame)
@@ -559,6 +524,9 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         self.assertEqual(frame.asset.get_attr(
             "analysis.google.explicit.violence"), 0.0)
 
+
+class CloudVisionDetectFacesTests(PluginUnitTestCase):
+
     @patch.object(ZmlpClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
     def test_detect_faces(self, mock_image_annotator, upload_patch):
@@ -567,49 +535,20 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         asset = TestAsset(FACES)
         frame = Frame(asset)
         store_asset_proxy(asset, FACES, (200, 200))
-        processor = self.init_processor(CloudVisionProcessor(), {
-            "detect_image_text": False,
-            "detect_document_text": False,
-            "detect_landmarks": False,
-            "detect_explicit": False,
-            "detect_faces": True,
-            "detect_labels": False,
-            "detect_logos": False,
-            "detect_objects": False,
-            "detect_web_entities": False
-        })
+        processor = self.init_processor(CloudVisionDetectFaces())
 
         # run the processor with declared frame and assert asset attributes
         processor.process(frame)
-        anger_attr = "analysis.google.faceDetection.anger_likelihood"
-        blurr_attr = "analysis.google.faceDetection.blurred_likelihood"
-        detect_attr = "analysis.google.faceDetection.detection_confidence"
-        head_attr = "analysis.google.faceDetection.headwear_likelihood"
-        joy_attr = "analysis.google.faceDetection.joy_likelihood"
-        keywrds_attr = "analysis.google.faceDetection.keywords"
-        pan_attr = "analysis.google.faceDetection.pan_angle"
-        roll_attr = "analysis.google.faceDetection.roll_angle"
-        sorrow_attr = "analysis.google.faceDetection.sorrow_likelihood"
-        surprise_attr = "analysis.google.faceDetection.surprise_likelihood"
-        face_attr = "analysis.google.faceDetection.tilt_angle"
-        ex_attr = "analysis.google.faceDetection.under_exposed_likelihood"
+        assert 1 == len(asset.get_attr("elements"))
+        assert 1 == asset.get_attr("analysis.google.faceDetection.faceCount")
 
-        self.assertEqual(frame.asset.get_attr(anger_attr), 1)
-        self.assertEqual(frame.asset.get_attr(blurr_attr), 1)
-        self.assertAlmostEqual(frame.asset.get_attr(detect_attr),
-                               0.9968804717063904, places=5)
-        self.assertEqual(frame.asset.get_attr(head_attr), 1)
-        self.assertEqual(frame.asset.get_attr(joy_attr), 2)
-        self.assertEqual(frame.asset.get_attr(keywrds_attr), [])
-        self.assertAlmostEqual(frame.asset.get_attr(pan_attr),
-                               -4.0012030601501465, places=5)
-        self.assertAlmostEqual(frame.asset.get_attr(roll_attr),
-                               3.8594837188720703, places=5)
-        self.assertEqual(frame.asset.get_attr(sorrow_attr), 1)
-        self.assertEqual(frame.asset.get_attr(surprise_attr), 1)
-        self.assertAlmostEqual(frame.asset.get_attr(face_attr),
-                               -5.038763046264648, places=5)
-        self.assertEqual(frame.asset.get_attr(ex_attr), 1)
+        element = asset.get_attr("elements")[0]
+        assert 'face' == element["type"]
+        assert 'google.faceDetection' == element["analysis"]
+        assert ['sorrow', 'surprise'] == element["labels"]
+
+
+class CloudVisionDetectImageTextTests(PluginUnitTestCase):
 
     @patch.object(ZmlpClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
@@ -619,23 +558,15 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         asset = TestAsset(STREETSIGN)
         frame = Frame(asset)
         store_asset_proxy(asset, STREETSIGN, (200, 200))
-        processor = self.init_processor(CloudVisionProcessor(), {
-            "detect_image_text": True,
-            "detect_document_text": False,
-            "detect_landmarks": False,
-            "detect_explicit": False,
-            "detect_faces": False,
-            "detect_labels": False,
-            "detect_logos": False,
-            "detect_objects": False,
-            "detect_web_entities": False
-        })
-
+        processor = self.init_processor(CloudVisionDetectImageText())
         # run processor with declared frame and assert asset attributes
         processor.process(frame)
         sign_content = u'PASEO TAMAYO\nNIRVANA 6400 N\nNO OUTLET\u2192\nSTOP\n'
         asset_attr = "analysis.google.imageTextDetection.content"
         self.assertEqual(frame.asset.get_attr(asset_attr), sign_content)
+
+
+class CloudVisionDetectDocumentTextTests(PluginUnitTestCase):
 
     @patch.object(ZmlpClient, 'upload_file')
     @patch(patch_path, side_effect=MockImageAnnotatorClient)
@@ -646,17 +577,8 @@ class GoogleVisionUnitTestCase(PluginUnitTestCase):
         asset = TestAsset(MANUAL)
         frame = Frame(asset)
         store_asset_proxy(asset, MANUAL, (200, 200))
-        processor = self.init_processor(CloudVisionProcessor(), {
-            "detect_image_text": False,
-            "detect_document_text": True,
-            "detect_landmarks": False,
-            "detect_explicit": False,
-            "detect_faces": False,
-            "detect_labels": False,
-            "detect_logos": False,
-            "detect_objects": False,
-            "detect_web_entities": False
-        })
+        processor = self.init_processor(CloudVisionDetectDocumentText())
+
         manual_text = u'Notice\nThe information provided in this ' \
                       u'specification ' \
                       u'is believed to be accurate and ' \
