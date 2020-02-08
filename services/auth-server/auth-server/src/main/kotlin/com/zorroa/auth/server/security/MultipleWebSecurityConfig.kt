@@ -1,6 +1,6 @@
 package com.zorroa.auth.server.security
 
-import com.zorroa.auth.server.domain.ApiKey
+import com.zorroa.auth.server.domain.ValidationKey
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -126,7 +126,7 @@ class MultipleWebSecurityConfig {
     }
 
     @Bean
-    fun serviceKey(): ApiKey {
+    fun serviceKey(): ValidationKey {
         return loadServiceKey(securityProperties.inceptionKey)
     }
 

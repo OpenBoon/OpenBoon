@@ -1,7 +1,7 @@
 package com.zorroa.auth.server.security
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.zorroa.auth.server.domain.ApiKey
+import com.zorroa.auth.server.domain.ValidationKey
 import com.zorroa.zmlp.apikey.ZmlpActor
 import com.zorroa.zmlp.util.Json
 import java.nio.file.Files
@@ -32,18 +32,18 @@ fun getZmlpActor(): ZmlpActor {
  *
  * @param serviceKey: The string, or null.
  */
-fun loadServiceKey(serviceKey: String?): ApiKey {
+fun loadServiceKey(serviceKey: String?): ValidationKey {
     serviceKey?.let {
         logger.info("path: {}", serviceKey)
         val path = Paths.get(it)
         val apikey = if (Files.exists(path)) {
-            val key = Json.Mapper.readValue<ApiKey>(path.toFile())
+            val key = Json.Mapper.readValue<ValidationKey>(path.toFile())
             logger.info("Loaded Inception key: ${key.accessKey.substring(8)} from: '$path'")
             key
         } else if (!it.startsWith("/")) {
             try {
                 val decoded = Base64.getUrlDecoder().decode(it)
-                val key = Json.Mapper.readValue<ApiKey>(decoded)
+                val key = Json.Mapper.readValue<ValidationKey>(decoded)
                 logger.info("Loaded Inception key: ${key.accessKey.substring(8)}")
                 key
             } catch (e: Exception) {
