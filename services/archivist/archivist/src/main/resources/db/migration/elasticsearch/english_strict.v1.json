@@ -320,6 +320,66 @@
           }
         }
       },
+      "metrics": {
+        "dynamic": "strict",
+        "type": "object",
+        "properties": {
+          "pipeline": {
+            "type": "nested",
+            "dynamic": "strict",
+            "properties": {
+              "processor": {
+                "type": "keyword",
+                "fields": {
+                  "fulltext": {
+                    "type": "text",
+                    "analyzer": "default"
+                  }
+                }
+              },
+              "module": {
+                "type": "keyword",
+                "fields": {
+                  "fulltext": {
+                    "type": "text",
+                    "analyzer": "default"
+                  }
+                }
+              },
+              "namespace": {
+                "type": "keyword",
+                "fields": {
+                  "fulltext": {
+                    "type": "text",
+                    "analyzer": "default"
+                  }
+                }
+              },
+              "version": {
+                "type": "integer"
+              },
+              "executionCount": {
+                "type": "integer"
+              },
+              "executionTimeTotal": {
+                "type": "double"
+              },
+              "executionTimeLast": {
+                "type": "double"
+              },
+              "executionDateLast": {
+                "type": "date"
+              },
+              "error": {
+                "type": "keyword"
+              },
+              "errorMessage": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
       "system": {
         "dynamic": "strict",
         "properties": {

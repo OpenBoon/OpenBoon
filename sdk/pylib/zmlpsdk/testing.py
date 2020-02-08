@@ -24,6 +24,10 @@ class TestProcessor(AssetProcessor):
     testing the execution module.
     """
 
+    version = 2
+
+    namespace = "test"
+
     def __init__(self):
         super(TestProcessor, self).__init__()
         self.add_arg(Argument('sleep', 'int', default=1))

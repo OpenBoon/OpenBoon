@@ -14,7 +14,7 @@ object StandardContainers {
 fun getStandardModules(): List<PipelineModSpec> {
     return listOf(
         PipelineModSpec(
-            "zmlp-doc-pages",
+            "zmlp-doc-page-extraction",
             "Extract all pages in MS Office/PDF documents into separate assets.",
             listOf(
                 ModOp(
@@ -25,7 +25,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             )
         ),
         PipelineModSpec(
-            "zmlp-image-pages",
+            "zmlp-image-page-extraction",
             "Extract all pages or layers in multi page image formats such as tiff and psd as as " +
                 "separate assets",
             listOf(
@@ -50,7 +50,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             )
         ),
         PipelineModSpec(
-            "zmlp-object-detection",
+            "zmlp-objects",
             "Detect everyday objects in images, video, and documents.",
             listOf(
                 ModOp(
@@ -70,6 +70,19 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef("zmlp_analysis.mxnet.processors.ResNetClassifyProcessor",
+                            StandardContainers.ANALYSIS)
+                    )
+                )
+            )
+        ),
+        PipelineModSpec(
+            "zmlp-faces",
+            "Detect face bounding boxes",
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef("zmlp_analysis.face.ZmlpFaceDetectionProcessor",
                             StandardContainers.ANALYSIS)
                     )
                 )
