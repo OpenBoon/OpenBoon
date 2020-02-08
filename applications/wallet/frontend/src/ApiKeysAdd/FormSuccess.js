@@ -6,6 +6,7 @@ import { spacing, colors, constants, typography } from '../Styles'
 
 import FormSuccess from '../FormSuccess'
 import Button, { VARIANTS } from '../Button'
+import ButtonGroup from '../Button/Group'
 import SectionTitle from '../SectionTitle'
 
 import { onCopy } from './helpers'
@@ -92,13 +93,8 @@ const ApiKeysAddFormSuccess = ({
         </div>
       </div>
 
-      <div css={{ display: 'flex' }}>
-        <Button
-          variant={VARIANTS.SECONDARY}
-          onClick={onReset}
-          css={{
-            marginRight: spacing.normal,
-          }}>
+      <ButtonGroup>
+        <Button variant={VARIANTS.SECONDARY} onClick={onReset}>
           Create Another Key
         </Button>
         <Link
@@ -107,7 +103,7 @@ const ApiKeysAddFormSuccess = ({
           passHref>
           <Button variant={VARIANTS.PRIMARY}>View All</Button>
         </Link>
-      </div>
+      </ButtonGroup>
     </div>
   )
 }
