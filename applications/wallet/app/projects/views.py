@@ -1,3 +1,4 @@
+import zmlp
 from django.db import transaction
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -33,17 +34,25 @@ class BaseProjectViewSet(ViewSet):
         to the view.
 
         """
-
+        project = kwargs["project_pk"]
         if self.ZMLP_ONLY and settings.PLATFORM != 'zmlp':
             # This is needed to keep from returning terrible stacktraces on endpoints
             # not meant for dual platform usage
             raise Http404()
 
         try:
-            kwargs['client'] = self._get_archivist_client(request, kwargs['project_pk'])
+            apikey = Membership.objects.get(user=request.user, project=kwargs['project_pk']).apikey
         except ObjectDoesNotExist:
             return HttpResponseForbidden(f'{request.user.username} is not a member of '
-                                         f'the project {kwargs["project_pk"]}')
+                                         f'the project {project}')
+        if settings.PLATFORM == 'zmlp':
+            request.app = zmlp.ZmlpApp(apikey)
+        try:
+            if settings.PLATFORM == 'zvi':
+                request.client = ZviClient(apikey=apikey, server=settings.ZMLP_API_URL)
+            else:
+                request.client = ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL,
+                                  project_id=project)
         except TypeError:
             # This catches when the user is not authed and the token validation fails.
             # This allows the raised error to return properly, although may not be the
@@ -62,11 +71,7 @@ class BaseProjectViewSet(ViewSet):
 
         """
         apikey = Membership.objects.get(user=request.user, project=project).apikey
-        if settings.PLATFORM == 'zvi':
-            return ZviClient(apikey=apikey, server=settings.ZMLP_API_URL)
-        else:
-            return ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL,
-                              project_id=project)
+
 
     def get_serializer(self, *args, **kwargs):
         """

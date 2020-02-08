@@ -12,9 +12,9 @@ class PermissionViewSet(BaseProjectViewSet):
 
     ZMLP_ONLY = True
 
-    def list(self, request, project_pk, client):
+    def list(self, request, project_pk):
         # Doesn't have a search endpoint to use for pagination
-        response = client.get('/auth/v1/permissions')
+        response = request.client.get('/auth/v1/permissions')
         serializer = self.get_serializer(data=response, many=True)
         serializer.is_valid()
         return Response({'results': serializer.data})

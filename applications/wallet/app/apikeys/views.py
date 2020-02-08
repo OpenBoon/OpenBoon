@@ -14,31 +14,31 @@ class ApikeyViewSet(BaseProjectViewSet):
 
     ZMLP_ONLY = True
 
-    def list(self, request, project_pk, client):
+    def list(self, request, project_pk):
         # Need to be able to paginate and filter by project key
         # currently the api is automatically filtering by the project the users
         # apikey is created against
-        response = client.get('/auth/v1/apikey')
+        response = request.client.get('/auth/v1/apikey')
         serializer = self.get_serializer(data=response, many=True)
         serializer.is_valid()
         return Response({'results': serializer.data})
 
-    def retrieve(self, request, project_pk, client, pk):
-        response = client.get(f'/auth/v1/apikey/{pk}')
+    def retrieve(self, request, project_pk, pk):
+        response = request.client.get(f'/auth/v1/apikey/{pk}')
         return Response(response)
 
-    def create(self, request, project_pk, client):
+    def create(self, request, project_pk):
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
             return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
         body = {'name': serializer.validated_data['name'],
                 'permissions': serializer.validated_data['permissions']}
         try:
-            response = client.post('/auth/v1/apikey', body)
+            response = request.client.post('/auth/v1/apikey', body)
         except ZmlpInvalidRequestException:
             return Response("Bad Request", status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_201_CREATED, data=response)
 
-    def destroy(self, request, project_pk, client, pk):
-        response = client.delete(f'/auth/v1/apikey/{pk}')
+    def destroy(self, request, project_pk, pk):
+        response = request.client.delete(f'/auth/v1/apikey/{pk}')
         return Response(response)

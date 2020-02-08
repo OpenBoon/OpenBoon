@@ -17,25 +17,6 @@ from projects.models import Project, Membership
 pytestmark = pytest.mark.django_db
 
 
-def test_get_zmlp_client(zmlp_project_user, project, settings):
-    settings.PLATFORM = 'zmlp'
-    request = RequestFactory().get('/bunk/')
-    request.user = zmlp_project_user
-    view = BaseProjectViewSet()
-    client = view._get_archivist_client(request, project)
-    assert type(client) == ZmlpClient
-    assert client.project_id == project
-
-
-def test_get_zvi_client(zvi_project_user, project, settings):
-    settings.PLATFORM = 'zvi'
-    request = RequestFactory().get('/bunk/')
-    request.user = zvi_project_user
-    view = BaseProjectViewSet()
-    client = view._get_archivist_client(request, project)
-    assert type(client) == ZviClient
-
-
 def test_project_view_user_does_not_belong_to_project(user, project):
     class FakeViewSet(BaseProjectViewSet):
         def get(self, request, project):
