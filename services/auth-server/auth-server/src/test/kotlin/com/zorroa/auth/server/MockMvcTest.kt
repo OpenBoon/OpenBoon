@@ -1,6 +1,6 @@
 package com.zorroa.auth.server
 
-import com.zorroa.auth.server.domain.ApiKey
+import com.zorroa.auth.server.domain.ValidationKey
 import com.zorroa.auth.server.security.AUTH_HEADER
 import com.zorroa.auth.server.security.TOKEN_PREFIX
 import java.util.UUID
@@ -42,7 +42,7 @@ abstract class MockMvcTest : AbstractTest() {
         return headers
     }
 
-    protected fun standardUser(apiKey: ApiKey): HttpHeaders {
+    protected fun standardUser(apiKey: ValidationKey): HttpHeaders {
         val headers = HttpHeaders()
         headers.set(
             AUTH_HEADER,

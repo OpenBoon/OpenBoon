@@ -165,11 +165,18 @@ class Processor(object):
     * AssetBuilders - process assets created by generators.
 
     Attributes:
-        file_types(list) - An optional set of file types a subclass allows.
-
+        file_types (list): An optional set of file types a subclass allows.
+        version (int): The version of the processor, defaults to 1.  If you
+            increment the version of your processor, it will not be skipped
+            on a re-process operation.
+        namespace (str): The attribute namespace the processor controls.
     """
 
     file_types = None
+
+    version = 1
+
+    namespace = None
 
     def __init__(self):
         self.execute = []

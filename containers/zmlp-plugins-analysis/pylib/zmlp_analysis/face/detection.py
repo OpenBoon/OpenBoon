@@ -12,7 +12,7 @@ class ZmlpFaceDetectionProcessor(AssetProcessor):
     """
     Simple Face Detection processor
     """
-    namespace = "zmlpFaceDetection"
+    namespace = "zmlp.faceDetection"
 
     def __init__(self):
         super(ZmlpFaceDetectionProcessor, self).__init__()
@@ -44,3 +44,5 @@ class ZmlpFaceDetectionProcessor(AssetProcessor):
             element = Element('face', analysis=self.namespace,
                               rect=rect, score=float(conf), proxy=face_proxy)
             asset.add_element(element)
+
+        asset.add_analysis(self.namespace, {"faceCount": len(faces)})

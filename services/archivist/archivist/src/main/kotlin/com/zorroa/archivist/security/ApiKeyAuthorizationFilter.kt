@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
+import java.util.UUID
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
@@ -34,10 +35,10 @@ class ApiKeyAuthorizationFilter constructor(
                 null
             }
         } ?: req.getParameter("token")
+
         if (token != null) {
             try {
-                val apiToken = authServerClient.authenticate(token)
-                SecurityContextHolder.getContext().authentication = ApiTokenAuthentication(apiToken)
+                validate(token, getProjectIdOverride(req))
             } catch (e: Exception) {
                 log.warn("Invalid authentication token: ", e)
                 res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
@@ -46,6 +47,32 @@ class ApiKeyAuthorizationFilter constructor(
         }
 
         chain.doFilter(req, res)
+    }
+
+    fun validate(token: String, projectId: UUID? = null) {
+        val actor = authServerClient.authenticate(token, projectId)
+        SecurityContextHolder.getContext().authentication = ApiTokenAuthentication(actor)
+    }
+
+    /**
+     * Get a project Id param or header and pass it on to auth server.
+     * Only the inception key can override a project.
+     */
+    fun getProjectIdOverride(req: HttpServletRequest): UUID? {
+        val projectIdHeader = req.getHeader(AuthServerClient.PROJECT_ID_HEADER)
+        val projectIdParam = req.getParameter(AuthServerClient.PROJECT_ID_PARAM)
+
+        return when {
+            projectIdHeader != null -> {
+                UUID.fromString(projectIdHeader)
+            }
+            projectIdParam != null -> {
+                UUID.fromString(projectIdParam)
+            }
+            else -> {
+                null
+            }
+        }
     }
 
     companion object {
@@ -72,6 +99,7 @@ class ApiKeyAuthenticationProvider : AuthenticationProvider {
 
     override fun authenticate(auth: Authentication): Authentication {
         val token = auth as ApiTokenAuthentication
+        // extension function.
         return token.zmlpActor.getAuthentication()
     }
 
