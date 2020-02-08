@@ -27,7 +27,7 @@ class ZmlpDataSourceAppTests(unittest.TestCase):
             'name': 'test',
             'uri': 'gs://test/test',
             'file_types': ['jpg'],
-            'analysis': ['google-ocr']
+            'modules': ['google-ocr']
         }
         post_patch.return_value = value
         ds = self.app.datasource.create_datasource('test', 'gs://test/test')
@@ -35,7 +35,7 @@ class ZmlpDataSourceAppTests(unittest.TestCase):
         assert value['name'] == ds.name
         assert value['uri'] == ds.uri
         assert ds.file_types == ['jpg']
-        assert ds.analysis == ['google-ocr']
+        assert ds.modules == ['google-ocr']
 
     @patch.object(ZmlpClient, 'post')
     def test_get_datasource(self, post_patch):
