@@ -152,8 +152,9 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
          * decrypt encrypted project data.
          */
         val INCEPTION_PERMISSIONS = Permission.values()
-            .map { it.name }.toSet().minus(Permission.SystemProjectDecrypt.name)
-
+            .map { it.name }
+            .minus(Permission.SystemProjectDecrypt.name)
+            .toSet()
         /**
          * Maximum TTL for a JWT token.
          */

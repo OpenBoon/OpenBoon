@@ -8,6 +8,8 @@ import com.zorroa.auth.server.repository.ApiKeyRepository
 import com.zorroa.auth.server.repository.PagedList
 import com.zorroa.auth.server.security.KeyGenerator
 import com.zorroa.auth.server.security.getProjectId
+import com.zorroa.auth.server.security.getZmlpActor
+import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
@@ -17,6 +19,7 @@ import java.util.UUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.lang.IllegalArgumentException
 
 interface ApiKeyService {
 
@@ -48,6 +51,10 @@ class ApiKeyServiceImpl constructor(
     lateinit var encryptionService: EncryptionService
 
     override fun create(spec: ApiKeySpec): ApiKey {
+        if (!getZmlpActor().hasAnyPermission(Permission.SystemServiceKey)) {
+            validatePermissionsCanBeAssigned(spec.permissions)
+        }
+
         val key = ApiKey(
             UUID.randomUUID(),
             getProjectId(),
@@ -97,6 +104,14 @@ class ApiKeyServiceImpl constructor(
             )
         )
         apiKeyRepository.delete(apiKey)
+    }
+
+    fun validatePermissionsCanBeAssigned(perms: Set<Permission>) {
+        perms.forEach {
+            if (it.internal) {
+                throw IllegalArgumentException("Permission ${it.name} does not exist")
+            }
+        }
     }
 
     companion object {
