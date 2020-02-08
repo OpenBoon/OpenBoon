@@ -30,6 +30,15 @@ def test_api_login_user_pass(api_client, user):
     assert response_data['lastName'] == ''
 
 
+def test_api_login_inactive_user_fail(api_client, user):
+    api_client.logout()
+    user.is_active = False
+    user.save()
+    response = api_client.post(reverse('api-login'),
+                               {'username': 'user', 'password': 'letmein'})
+    assert response.status_code == 401
+
+
 def test_api_login_fail(api_client, user):
     response = api_client.post(reverse('api-login'),
                                {'username': 'user', 'password': 'fail'})
