@@ -1,72 +1,45 @@
 import io
+
 import backoff
-
-from pathlib2 import Path
-
+import cv2
+from google.api_core.exceptions import ResourceExhausted
 from google.cloud import vision
 from google.cloud.vision import types
-from google.api_core.exceptions import ResourceExhausted
+from pathlib2 import Path
 
-from zmlpsdk import Argument, ZmlpFatalProcessorException, AssetProcessor
-from zmlpsdk.proxy import get_proxy_level
-
+from zmlp import Element
+from zmlpsdk import Argument, AssetProcessor, ZmlpProcessorException
+from zmlpsdk.proxy import get_proxy_level, store_element_proxy
 from .gcp_client import initialize_gcp_client
 
+__all__ = [
+    'CloudVisionDetectImageText',
+    'CloudVisionDetectDocumentText',
+    'CloudVisionDetectLandmarks',
+    'CloudVisionDetectExplicit',
+    'CloudVisionDetectLabels',
+    'CloudVisionDetectFaces',
+    'CloudVisionDetectWebEntities',
+    'CloudVisionDetectLogos',
+    'CloudVisionDetectObjects'
+]
 
-class CloudVisionProcessor(AssetProcessor):
-    """Use Google Cloud Vision API to analyze images."""
 
-    tool_tips = {
-        'detect_image_text': 'If True, Text Detection performs Optical Character Recognition.'
-                             'It detects and extracts text within an image with support for a'
-                             'broad range of languages. It also features automatic language'
-                             'identification.',
-        'detect_document_text': 'If True, Document Text Detection performs Optical Character'
-                                'Recognition. This feature detects dense document text -'
-                                'including handwriting - in an image.',
-        'detect_landmarks': 'If True, Landmark Detection detects popular natural and man-made'
-                            'structures within an image.',
-        'detect_explicit': 'If True, Safe Search Detection detects explicit content such as'
-                           'adult content or violent content within an image. This feature'
-                           'uses five categories ("adult", "spoof", "medical", "violence",'
-                           'and "racy") and returns the likelihood that each is present in'
-                           'a given image',
-        'detect_faces': 'If True Face Detection detects multiple faces within an image along'
-                        'with the associated key facial attributes such as emotional state'
-                        'or wearing headwear.',
-        'detect_labels': 'If True Label Detection detects broad sets of categories within an'
-                         'image, which range from modes of transportation to animals.',
-        'detect_web_entities': 'If True, Web Detection detects Web references to an image.',
-        'detect_logos': 'If True, Logo Detection detects popular product logos within an image.',
-        'detect_objects': 'If True, Object Localization can detect and extract multiple objects'
-                          'in an image.',
-    }
+class AbstractCloudVisionProcessor(AssetProcessor):
+    """
+    This base class is used for all Google Vision features.  Subclasses
+    only have to implement the "detect(asset, image) method.
+    """
+
+    # The max size of the image you can send to google.
+    max_image_size = 10485760
 
     def __init__(self):
-        super(CloudVisionProcessor, self).__init__()
-        self.add_arg(Argument('detect_image_text', 'bool', default=False,
-                              toolTip=self.tool_tips['detect_image_text']))
-        self.add_arg(Argument('detect_document_text', 'bool', default=False,
-                              toolTip=self.tool_tips['detect_document_text']))
-        self.add_arg(Argument('detect_landmarks', 'bool', default=False,
-                              toolTip=self.tool_tips['detect_landmarks']))
-        self.add_arg(Argument('detect_explicit', 'bool', default=False,
-                              toolTip=self.tool_tips['detect_explicit']))
-        self.add_arg(Argument('detect_faces', 'bool', default=False,
-                              toolTip=self.tool_tips['detect_faces']))
-        self.add_arg(Argument('detect_labels', 'bool', default=False,
-                              toolTip=self.tool_tips['detect_labels']))
-        self.add_arg(Argument('detect_web_entities', 'bool', default=False,
-                              toolTip=self.tool_tips['detect_web_entities']))
-        self.add_arg(Argument('detect_logos', 'bool', default=False,
-                              toolTip=self.tool_tips['detect_logos']))
-        self.add_arg(Argument('detect_objects', 'bool', default=False,
-                              toolTip=self.tool_tips['detect_objects']))
-        self.add_arg(Argument('debug', 'bool', default=False))
+        super(AbstractCloudVisionProcessor, self).__init__()
         self.image_annotator = None
+        self.add_arg(Argument('debug', 'bool', default=False))
 
     def init(self):
-        super(CloudVisionProcessor, self).init()
         self.image_annotator = initialize_gcp_client(vision.ImageAnnotatorClient)
 
     def process(self, frame):
@@ -74,34 +47,38 @@ class CloudVisionProcessor(AssetProcessor):
         path = get_proxy_level(asset, 1)
         if not path:
             return
-        if Path(path).stat().st_size > 10485760:
-            raise ZmlpFatalProcessorException(
-                'The image is too large to submit to Google ML. Image size must '
-                'be < 10485760 bytes')
+        self.detect(asset, self.get_vision_image(path))
+
+    def detect(self, asset, image):
+        pass
+
+    def get_vision_image(self, path):
+        """
+        Loads the file path into a Google Vision Image which is
+        used for calling various vision services.
+        Args:
+            path (str): The file path.
+
+        Returns:
+            google.cloud.vision.types.Image
+        """
+        size = Path(path).stat().st_size
+        if size > self.max_image_size:
+            raise ZmlpProcessorException('The image is too large to submit '
+                                         'to Google ML. Image size ({}) '
+                                         'must be < 10485760 bytes'.format(size))
         with io.open(path, 'rb') as image_file:
             content = image_file.read()
-        image = types.Image(content=content)
-        if self.arg_value('detect_image_text'):
-            self._detect_image_text(asset, image)
-        if self.arg_value('detect_document_text'):
-            self._detect_document_text(asset, image)
-        if self.arg_value('detect_landmarks'):
-            self._detect_landmarks(asset, image)
-        if self.arg_value('detect_explicit'):
-            self._detect_explicit(asset, image)
-        if self.arg_value('detect_faces'):
-            self._detect_faces(asset, image)
-        if self.arg_value('detect_labels'):
-            self._detect_labels(asset, image)
-        if self.arg_value('detect_web_entities'):
-            self._detect_web_entities(asset, image)
-        if self.arg_value('detect_logos'):
-            self._detect_logos(asset, image)
-        if self.arg_value('detect_objects'):
-            self._detect_objects(asset, image)
+        return types.Image(content=content)
+
+
+class CloudVisionDetectImageText(AbstractCloudVisionProcessor):
+
+    def __init__(self):
+        super(CloudVisionDetectImageText, self).__init__()
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
-    def _detect_image_text(self, asset, image):
+    def detect(self, asset, image):
         """Executes text detection on images using the Cloud Vision API."""
         response = self.image_annotator.text_detection(image=image)
         text = response.full_text_annotation.text
@@ -110,8 +87,14 @@ class CloudVisionProcessor(AssetProcessor):
                 text = text[:32765]
             asset.add_analysis('google.imageTextDetection', {'content': text})
 
+
+class CloudVisionDetectDocumentText(AbstractCloudVisionProcessor):
+
+    def __init__(self):
+        super(CloudVisionDetectDocumentText, self).__init__()
+
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
-    def _detect_document_text(self, asset, image):
+    def detect(self, asset, image):
         """Executes text detection using the Cloud Vision API."""
         response = self.image_annotator.document_text_detection(image=image)
         text = response.full_text_annotation.text
@@ -120,8 +103,14 @@ class CloudVisionProcessor(AssetProcessor):
                 text = text[:32765]
             asset.add_analysis('google.documentTextDetection', {'content': text})
 
+
+class CloudVisionDetectLandmarks(AbstractCloudVisionProcessor):
+
+    def __init__(self):
+        super(CloudVisionDetectLandmarks, self).__init__()
+
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
-    def _detect_landmarks(self, asset, image):
+    def detect(self, asset, image):
         """Executes landmark detection using the Cloud Vision API."""
         response = self.image_annotator.landmark_detection(image=image)
         landmarks = response.landmark_annotations
@@ -136,8 +125,14 @@ class CloudVisionProcessor(AssetProcessor):
             self.logger.info('Storing: {}'.format(struct))
             asset.add_analysis("google.landmarkDetection", struct)
 
+
+class CloudVisionDetectExplicit(AbstractCloudVisionProcessor):
+
+    def __init__(self):
+        super(CloudVisionDetectExplicit, self).__init__()
+
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
-    def _detect_explicit(self, asset, image):
+    def detect(self, asset, image):
         """Executes safe-search detection using the Cloud Vision API."""
         response = self.image_annotator.safe_search_detection(image=image)
         safe = response.safe_search_annotation
@@ -151,42 +146,78 @@ class CloudVisionProcessor(AssetProcessor):
         if struct:
             asset.add_analysis("google.explicit", struct)
 
+
+class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
+    namespace = "google.faceDetection"
+
+    label_keys = [
+        'joy',
+        'sorrow',
+        'anger',
+        'surprise',
+        'under_exposed',
+        'blurred',
+        'headwear'
+    ]
+
+    def __init__(self):
+        super(CloudVisionDetectFaces, self).__init__()
+
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
-    def _detect_faces(self, asset, image):
+    def detect(self, asset, image):
         """Executes face detection using the Cloud Vision API."""
-        response = self.image_annotator.face_detection(image=image)
+        # Use large proxy for face
+        large_proxy = get_proxy_level(asset, 3)
+        response = self.image_annotator.face_detection(image=self.get_vision_image(large_proxy))
         faces = response.face_annotations
-        if faces:
 
-            # We'll only add the first face found for now. TODO: deal with multiple faces
-            face = faces[0]
-            struct = {}
-            keywords = []
-            struct['roll_angle'] = face.roll_angle
-            struct['pan_angle'] = face.pan_angle
-            struct['tilt_angle'] = face.tilt_angle
-            struct['detection_confidence'] = face.detection_confidence
-            struct['joy_likelihood'] = face.joy_likelihood
-            struct['sorrow_likelihood'] = face.sorrow_likelihood
-            struct['anger_likelihood'] = face.anger_likelihood
-            struct['surprise_likelihood'] = face.surprise_likelihood
-            struct['under_exposed_likelihood'] = face.under_exposed_likelihood
-            struct['blurred_likelihood'] = face.blurred_likelihood
-            struct['headwear_likelihood'] = face.headwear_likelihood
+        if not faces:
+            return
+        rects = []
+        for face in faces:
+            rect = face.bounding_poly
+            rects.append([rect.vertices[0].x,
+                          rect.vertices[0].y,
+                          rect.vertices[2].x,
+                          rect.vertices[2].y])
 
-            # For entries that are likely or very likely, add the attribute name as a keyword.
-            for key, value in struct.items():
-                if 'likelihood' in key and value >= 4:
-                    keywords.append(key.replace('_likelihood', ''))
+        # Once we have he rects we can make a proxy with boxes.
+        face_proxy = store_element_proxy(asset,
+                                         cv2.imread(large_proxy),
+                                         self.namespace,
+                                         rects=rects)
 
-            # This deduplication is unnecessary now but will be necessary when multiple
-            # faces are accounted for
-            struct["keywords"] = list(set(keywords))
+        # Once we have a proxy with boxes we can make elements
+        for rect, face in zip(rects, faces):
+            element = Element('face',
+                              analysis=self.namespace,
+                              rect=rect,
+                              labels=self.get_face_labels(face),
+                              score=face.detection_confidence,
+                              proxy=face_proxy)
+            asset.add_element(element)
 
-            asset.add_analysis("google.faceDetection", struct)
+        struct = {
+            'faceCount': len(faces)
+        }
+
+        asset.add_analysis(self.namespace, struct)
+
+    def get_face_labels(self, face):
+        labels = []
+        for key in self.label_keys:
+            if getattr(face, "{}_likelihood".format(key)) >= 4:
+                labels.append(key)
+        return labels
+
+
+class CloudVisionDetectLabels(AbstractCloudVisionProcessor):
+
+    def __init__(self):
+        super(CloudVisionDetectLabels, self).__init__()
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
-    def _detect_labels(self, asset, image):
+    def detect(self, asset, image):
         """Executes label detection using the Cloud Vision API."""
         response = self.image_annotator.label_detection(image=image)
         labels = response.label_annotations
@@ -203,8 +234,14 @@ class CloudVisionProcessor(AssetProcessor):
             struct["scores"] = labels[0].score
         asset.add_analysis("google.visionLabelDetection", struct)
 
+
+class CloudVisionDetectWebEntities(AbstractCloudVisionProcessor):
+
+    def __init__(self):
+        super(CloudVisionDetectWebEntities, self).__init__()
+
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
-    def _detect_web_entities(self, asset, image):
+    def detect(self, asset, image):
         """Executes web entity detection using the Cloud Vision API.
             Image size limit of 10mb
             Args:
@@ -225,8 +262,14 @@ class CloudVisionProcessor(AssetProcessor):
         struct["keywords"] = list(set(keywords))
         asset.add_analysis("google.webEntityDetection", struct)
 
+
+class CloudVisionDetectLogos(AbstractCloudVisionProcessor):
+
+    def __init__(self):
+        super(CloudVisionDetectLogos, self).__init__()
+
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
-    def _detect_logos(self, asset, image):
+    def detect(self, asset, image):
         """Executes logo detection using the Cloud Vision API.
             Image size limit of 10mb
             Args:
@@ -247,8 +290,14 @@ class CloudVisionProcessor(AssetProcessor):
         struct["keywords"] = list(set(keywords))
         asset.add_analysis("google.logoDetection", struct)
 
+
+class CloudVisionDetectObjects(AbstractCloudVisionProcessor):
+
+    def __init__(self):
+        super(CloudVisionDetectObjects, self).__init__()
+
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
-    def _detect_objects(self, asset, image):
+    def detect(self, asset, image):
         """Executes logo detection using the Cloud Vision API.
             Image size limit of 10mb
             Args:
@@ -261,7 +310,6 @@ class CloudVisionProcessor(AssetProcessor):
         keywords = []
         for i, object in enumerate(objects):
             # skipping null values prevent images from being omitted from zvi
-            print(object)
             if object.name:
                 keywords.append(object.name)
                 if self.arg_value("debug"):

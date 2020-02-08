@@ -11,7 +11,7 @@ from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset
 class CloudVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
     def setUp(self):
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "gcp-creds.json"
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.dirname(__file__) + '/gcp-creds.json'
 
     def tearDown(self):
         del os.environ["GOOGLE_APPLICATION_CREDENTIALS"]

@@ -7,13 +7,13 @@ import face_recognition
 import numpy as np
 
 import zmlp
+from zmlp.asset import Element
+from zmlp.util import as_collection
 from zmlpsdk import AssetProcessor
 from zmlpsdk.proxy import get_proxy_level, store_element_proxy
 from zmlpsdk.storage import file_storage
-from zmlp.asset import Element
-from zmlp.util import as_collection
 
-NAMESPACE = 'zmlpFaceRecognition'
+NAMESPACE = 'zmlp.faceRecognition'
 
 BOX_COLOR = (0, 255, 255)
 
@@ -162,6 +162,8 @@ class ZmlpFaceRecognitionProcessor(AssetProcessor):
         for element in elements:
             element.set_proxy(proxy)
             asset.add_element(element)
+
+        asset.add_analysis(self.namespace, {"faceCount": len(rects)})
 
     def generate_hash(self, encoding):
         fh = np.clip(((np.squeeze(encoding) + 1) * 16).astype(int), 0, 32) + 65
