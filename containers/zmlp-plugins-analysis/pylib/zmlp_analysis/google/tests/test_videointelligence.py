@@ -3,7 +3,7 @@
 import os
 
 from unittest.mock import patch
-from ..processors import CloudVideoIntelligenceProcessor
+from ..cloud_video import CloudVideoIntelligenceProcessor
 
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
@@ -46,7 +46,7 @@ class MockEntity:
 class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
 
     # Mock the processor client to bypass google authentication
-    @patch('zmlp_analysis.google.processors.videointelligence.'
+    @patch('zmlp_analysis.google.cloud_video.videointelligence.'
            'VideoIntelligenceServiceClient', autospec=True)
     def setUp(self, mock_videointelligence_client):
         self.mock_videointelligence_client = mock_videointelligence_client
@@ -63,10 +63,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed.
     # Patch get_video_annotations since it relies on google.cloud and instead return mock results.
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor.'
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor.'
         '_get_clip_bytes')
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor.'
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor.'
         '_get_video_annotations')
     def test_process_not_clip(self, get_video_annotations, get_clip_bytes):
         # Note: In order to prove that the 'process' method is returning early and skipping all of
@@ -111,10 +111,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed. Patch get_video_annotations since it relies on google.cloud and instead return mock
     # results.
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor.'
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor.'
         '_get_clip_bytes')
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor.'
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor.'
         '_get_video_annotations')
     def test_process_no_results(self, get_video_annotations, get_clip_bytes):
         # Note: Here's we run a normal test but we don't pass in any label results
@@ -143,10 +143,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed. Patch get_video_annotations since it relies on google.cloud and instead return mock
     # results.
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor.'
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor.'
         '_get_clip_bytes')
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor.'
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor.'
         '_get_video_annotations')
     def test_process_segment_labels_only(self, get_video_annotations, get_clip_bytes):
         file_path = "/srt/srt_sample.mp4"
@@ -209,10 +209,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed.
     # Patch get_video_annotations since it relies on google.cloud and instead return mock results.
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor.'
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor.'
         '_get_clip_bytes')
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor.'
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor.'
         '_get_video_annotations')
     def test_process_shot_labels_only(self, get_video_annotations, get_clip_bytes):
         file_path = "/srt/srt_sample.mp4"
@@ -267,10 +267,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed.
     # Patch get_video_annotations since it relies on google.cloud and instead return mock results.
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor.'
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor.'
         '_get_clip_bytes')
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor.'
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor.'
         '_get_video_annotations')
     def test_process_frame_labels_only(self, get_video_annotations, get_clip_bytes):
         file_path = "/srt/srt_sample.mp4"
@@ -316,10 +316,10 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed.
     # Patch get_video_annotations since it relies on google.cloud and instead return mock results.
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor.'
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor.'
         '_get_clip_bytes')
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor.'
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor.'
         '_get_video_annotations')
     def test_process_video_text_only(self, get_video_annotations, get_clip_bytes):
         file_path = "/srt/srt_sample.mp4"
@@ -372,9 +372,9 @@ class CloudVideoIntelligenceUnitTest(PluginUnitTestCase):
     # installed.
     # Patch get_video_annotations since it relies on google.cloud and instead return mock results.
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor._get_clip_bytes')
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor._get_clip_bytes')
     @patch(
-        'zmlp_analysis.google.processors.CloudVideoIntelligenceProcessor._get_video_annotations')
+        'zmlp_analysis.google.cloud_video.CloudVideoIntelligenceProcessor._get_video_annotations')
     def test_process_all_annotations(self, get_video_annotations, get_clip_bytes):
         file_path = "/srt/srt_sample.mp4"
 

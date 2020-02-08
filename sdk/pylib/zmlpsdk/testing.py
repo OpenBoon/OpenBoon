@@ -212,7 +212,7 @@ class TestAsset(Asset):
         "png": "image/png"
     }
 
-    def __init__(self, path=None, attrs=None, id=None):
+    def __init__(self, path=None, attrs=None, id=None, clip=None):
         """
         Construct a test Asset.
 
@@ -259,6 +259,19 @@ class TestReactor(object):
 
     def performance_report(self, *args):
         pass
+
+
+def zorroa_test_path(rel_path=""):
+    """
+    Return the absolute path to the given test file.
+
+    Args:
+        rel_path (str): A path relative to the zorroa-test-data local sub module.
+
+    Returns:
+        str: The path to the test data file
+    """
+    return zorroa_test_data(rel_path, False)
 
 
 def zorroa_test_data(rel_path="", uri=True):
