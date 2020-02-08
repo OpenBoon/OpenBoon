@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import { useReducer } from 'react'
 
 import Form from '../Form'
@@ -22,10 +21,6 @@ const INITIAL_STATE = {
 const reducer = (state, action) => ({ ...state, ...action })
 
 const AccountPasswordForm = () => {
-  const {
-    query: { projectId },
-  } = useRouter()
-
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   if (state.success) {
@@ -84,7 +79,7 @@ const AccountPasswordForm = () => {
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() => onSubmit({ dispatch, projectId, state })}
+          onClick={() => onSubmit({ dispatch, state })}
           isDisabled={
             !state.currentPassword ||
             !state.newPassword ||
