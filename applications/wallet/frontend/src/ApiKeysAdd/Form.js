@@ -2,13 +2,12 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { spacing } from '../Styles'
-
 import Loading from '../Loading'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import ButtonGroup from '../Button/Group'
 
 import { onSubmit } from './helpers'
 
@@ -75,11 +74,7 @@ const ApiKeysAddForm = () => {
         }))}
       />
 
-      <div
-        css={{
-          paddingTop: spacing.moderate,
-          paddingBottom: spacing.moderate,
-        }}>
+      <ButtonGroup>
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
@@ -87,7 +82,7 @@ const ApiKeysAddForm = () => {
           isDisabled={!state.name}>
           Generate Key &amp; Download
         </Button>
-      </div>
+      </ButtonGroup>
     </Form>
   )
 }

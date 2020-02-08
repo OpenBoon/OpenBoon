@@ -1,11 +1,10 @@
 import { useRouter } from 'next/router'
 import { useReducer } from 'react'
 
-import { spacing } from '../Styles'
-
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import ButtonGroup from '../Button/Group'
 
 import { onSubmit } from './helpers'
 
@@ -75,13 +74,8 @@ const AccountPasswordForm = () => {
         errorMessage={state.errors.newPassword2}
       />
 
-      <div
-        css={{
-          display: 'flex',
-          paddingTop: spacing.moderate,
-        }}>
+      <ButtonGroup>
         <Button
-          css={{ marginRight: spacing.normal }}
           variant={BUTTON_VARIANTS.SECONDARY}
           onClick={() => dispatch(INITIAL_STATE)}>
           Cancel
@@ -98,7 +92,7 @@ const AccountPasswordForm = () => {
           }>
           Save
         </Button>
-      </div>
+      </ButtonGroup>
     </Form>
   )
 }
