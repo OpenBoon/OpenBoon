@@ -148,31 +148,31 @@ class PipelineResolverServiceImpl(
                             ModOpType.ADD_AFTER -> {
                                 newPipeline.add(ref)
                                 op.apply?.let {
-                                    newPipeline.addAll(Json.Mapper.convertValue<List<ProcessorRef>>(it))
+                                    newPipeline.addAll(parsePipelineFragment(module.name, it))
                                 }
                             }
                             ModOpType.ADD_BEFORE -> {
                                 op.apply?.let {
-                                    newPipeline.addAll(Json.Mapper.convertValue<List<ProcessorRef>>(it))
+                                    newPipeline.addAll(parsePipelineFragment(module.name, it))
                                 }
                                 newPipeline.add(ref)
                             }
                             ModOpType.LAST -> {
                                 newPipeline.add(ref)
                                 op.apply?.let {
-                                    last.addAll(Json.Mapper.convertValue<List<ProcessorRef>>(it))
+                                    last.addAll(parsePipelineFragment(module.name, it))
                                 }
                             }
                             ModOpType.APPEND -> {
                                 newPipeline.add(ref)
                                 op.apply?.let {
-                                    append.addAll(Json.Mapper.convertValue<List<ProcessorRef>>(it))
+                                    append.addAll(parsePipelineFragment(module.name, it))
                                 }
                             }
                             ModOpType.PREPEND -> {
                                 newPipeline.add(ref)
                                 op.apply?.let {
-                                    prepend.addAll(Json.Mapper.convertValue<List<ProcessorRef>>(it))
+                                    prepend.addAll(parsePipelineFragment(module.name, it))
                                 }
                             }
                             ModOpType.REMOVE -> {
@@ -180,7 +180,7 @@ class PipelineResolverServiceImpl(
                             }
                             ModOpType.REPLACE -> {
                                 op.apply?.let {
-                                    newPipeline.addAll(Json.Mapper.convertValue<List<ProcessorRef>>(it))
+                                    newPipeline.addAll(parsePipelineFragment(module.name, it))
                                 }
                             }
                             ModOpType.SET_ARGS -> {
@@ -204,6 +204,12 @@ class PipelineResolverServiceImpl(
         }
 
         return currentPipeline.filterNot { it.className == "PrependMarker" }
+    }
+
+    fun parsePipelineFragment(module: String, frag: Any): List<ProcessorRef> {
+        val result = Json.Mapper.convertValue<List<ProcessorRef>>(frag)
+        result.forEach { it.module = module }
+        return result
     }
 
     @Transactional(readOnly = true)

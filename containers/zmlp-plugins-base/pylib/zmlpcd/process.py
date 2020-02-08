@@ -4,6 +4,7 @@ import logging
 import sys
 import time
 import os
+import datetime
 
 from zmlp.asset import Asset
 from zmlpsdk import Frame, Context, ZmlpFatalProcessorException
@@ -238,31 +239,43 @@ class ProcessorWrapper(object):
 
         """
         start_time = time.monotonic()
+        error = None
+        total_time = 0
+        processed = False
         try:
-            if self.instance and is_file_type_allowed(frame.asset, self.instance.file_types):
-                self.instance.process(frame)
+            if self.instance:
+                if is_file_type_allowed(frame.asset, self.instance.file_types):
+                    retval = self.instance.process(frame)
+                    # a -1 means the processor was skipped internally.
+                    processed = retval != -1
+
+                    total_time = round(time.monotonic() - start_time, 2)
+                    self.increment_stat("process_count")
+                    self.increment_stat("total_time", total_time)
+
+                    # Check the expand queue.  A force check is done at teardown.
+                    self.reactor.check_expand()
             else:
                 logger.warning("Execute warning, instance for '{}' does not exist."
                                .format(self.ref))
-
-            total_time = round(time.monotonic() - start_time, 2)
-            self.increment_stat("process_count")
-            self.increment_stat("total_time", total_time)
-
-            # Check the expand queue.  A force check is done at teardown.
-            self.reactor.check_expand()
 
         except ZmlpFatalProcessorException as upe:
             # Set the asset to be skipped for further processing
             # It will not be included in result
             frame.skip = True
+            error = "fatal"
             self.increment_stat("unrecoverable_error_count")
             self.reactor.error(frame, self.ref,
                                upe, True, "execute", sys.exc_info()[2])
         except Exception as e:
+            error = "warning"
             self.increment_stat("error_count")
             self.reactor.error(frame, self.ref, e, False, "execute", sys.exc_info()[2])
         finally:
+            # If the asset was processed or was attempted to be processed
+            # and failed, we apply metrics.
+            if processed or error:
+                self.apply_metrics(frame.asset, total_time, error)
             self.reactor.emitter.write({
                 "type": "asset",
                 "payload": {
@@ -301,6 +314,55 @@ class ProcessorWrapper(object):
         val = self.stats.get(key, 0) + value
         self.stats[key] = val
         return val
+
+    def apply_metrics(self, asset, exec_time, error):
+        """
+        Apply execution metrics to the given asset.
+
+        Args:
+            asset (Asset): The asset
+            exec_time (float): The time the processor executed.
+            error (str): A type of error, fatal or warning.
+
+        Returns:
+
+        """
+        if not self.instance:
+            return
+        metrics = asset.get_attr("metrics.pipeline")
+        if not metrics:
+            metrics = []
+            asset.set_attr("metrics.pipeline", metrics)
+
+        def find(lst, value):
+            for i, dic in enumerate(lst):
+                if dic.get("processor") == value:
+                    return i
+            return -1
+
+        class_name = self.ref["className"]
+        metric_idx = find(metrics, class_name)
+        if metric_idx == -1:
+            metric = {
+                "processor": class_name,
+                "module": self.ref.get("module"),
+                "version":  self.instance.version,
+                "executionCount": 0,
+                "executionTimeTotal": 0,
+                "executionTimeLast": 0,
+                "executionDateLast": None
+            }
+            metrics.append(metric)
+        else:
+            metric = metrics[metric_idx]
+
+        metric["namespace"] = self.instance.namespace
+        metric["executionCount"] += 1
+        metric["executionTimeTotal"] += exec_time
+        metric["executionTimeLast"] = exec_time
+        metric["executionDateLast"] = datetime.datetime.now().isoformat()
+        if error:
+            metric["error"] = error
 
 
 class AssetConsumer(object):

@@ -12,7 +12,7 @@ class TimeBasedVideoClipifier(AssetProcessor):
         asset = frame.asset
         # Bail out if we fail preconditions
         if not check_video_clip_preconditions(asset):
-            return
+            return -1
 
         self._generate_clips(frame)
 

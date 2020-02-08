@@ -130,11 +130,30 @@ class ProcessorRef(
     var fileTypes: List<String>? = null,
 
     @ApiModelProperty("Environment variables that should be present during processor execution.")
-    val env: Map<String, String>? = null
+    val env: Map<String, String>? = null,
+
+    @ApiModelProperty("The Pipeline module which added this processor.")
+    var module: String? = "standard"
 
 ) {
     override fun toString(): String {
         return "ProcessorRef(className='$className', image='$image')"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ProcessorRef) return false
+
+        if (className != other.className) return false
+        if (image != other.image) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = className.hashCode()
+        result = 31 * result + image.hashCode()
+        return result
     }
 }
 
