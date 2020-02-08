@@ -73,7 +73,6 @@ const Modal = ({ onCancel, onConfirm }) => {
               },
             }}>
             <Button
-              type="button"
               variant={VARIANTS.SECONDARY}
               css={{
                 marginRight: spacing.normal,
@@ -81,10 +80,7 @@ const Modal = ({ onCancel, onConfirm }) => {
               onClick={onCancel}>
               Cancel
             </Button>
-            <Button
-              type="button"
-              variant={VARIANTS.WARNING}
-              onClick={onConfirm}>
+            <Button variant={VARIANTS.WARNING} onClick={onConfirm}>
               Delete Permanently
             </Button>
           </div>
