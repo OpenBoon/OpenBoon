@@ -155,8 +155,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 }
 
 .emotion-105 {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-105 button,
+.emotion-105 a {
+  margin-right: 16px;
 }
 
 .emotion-104 {
@@ -732,6 +741,20 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 `;
 
 exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 2`] = `
+.emotion-15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-15 button,
+.emotion-15 a {
+  margin-right: 16px;
+}
+
 .emotion-14 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -1012,13 +1035,6 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   text-decoration: underline;
 }
 
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
 .emotion-13 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -1049,7 +1065,6 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  margin-right: 16px;
 }
 
 .emotion-13:hover {
@@ -1323,8 +1338,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 }
 
 .emotion-105 {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-105 button,
+.emotion-105 a {
+  margin-right: 16px;
 }
 
 .emotion-104 {

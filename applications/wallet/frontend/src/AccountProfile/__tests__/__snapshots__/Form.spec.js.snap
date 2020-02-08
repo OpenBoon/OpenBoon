@@ -279,6 +279,13 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-12 button,
+.emotion-12 a {
+  margin-right: 16px;
 }
 
 .emotion-10 {
@@ -311,7 +318,6 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  margin-right: 16px;
 }
 
 .emotion-10:hover {

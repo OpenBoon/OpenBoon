@@ -145,8 +145,13 @@ exports[`<CreateAccount /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-36 button,
+.emotion-36 a {
+  margin-right: 16px;
 }
 
 .emotion-34 {
@@ -179,7 +184,6 @@ exports[`<CreateAccount /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  margin-right: 16px;
 }
 
 .emotion-34:hover {
@@ -459,7 +463,6 @@ exports[`<CreateAccount /> should render properly 1`] = `
           href="/"
           onClick={[Function]}
           onMouseEnter={[Function]}
-          type="button"
         >
           Cancel
         </a>
