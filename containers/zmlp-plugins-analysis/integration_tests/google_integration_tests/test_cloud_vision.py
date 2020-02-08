@@ -84,7 +84,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         frame = Frame(TestAsset(path))
         processor = self.init_processor(CloudVisionDetectLabels())
         processor.process(frame)
-        assert 'Hair' in frame.asset.get_attr('analysis.google.labelDetection.keywords')
+        assert 'Hair' in frame.asset.get_attr('analysis.google.labelDetection.labels')
 
     @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
     def test_object_detection(self, proxy_patch):
