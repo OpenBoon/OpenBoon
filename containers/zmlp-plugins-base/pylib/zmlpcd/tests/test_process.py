@@ -139,6 +139,23 @@ class ProcessorExecutorTests(unittest.TestCase):
         instance = self.pe.new_processor_instance(ref)
         assert instance.__class__.__name__ == "TestProcessor"
 
+    def test_is_aleady_processed(self):
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": "plugins-py3-base:latest"
+        }
+        frame = Frame(TestAsset())
+        wrapper = self.pe.get_processor_wrapper(ref)
+
+        assert not wrapper.is_already_processed(frame.asset)
+        wrapper.apply_metrics(frame.asset, 10, None)
+        assert wrapper.is_already_processed(frame.asset)
+
+        # Now override with _force=true
+        ref["args"]["_force"] = True
+        assert not wrapper.is_already_processed(frame.asset)
+
 
 class TestAssetConsumer(unittest.TestCase):
 

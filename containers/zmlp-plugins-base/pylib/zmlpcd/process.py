@@ -242,22 +242,29 @@ class ProcessorWrapper(object):
         error = None
         total_time = 0
         processed = False
+
         try:
-            if self.instance:
-                if is_file_type_allowed(frame.asset, self.instance.file_types):
-                    retval = self.instance.process(frame)
-                    # a -1 means the processor was skipped internally.
-                    processed = retval != -1
-
-                    total_time = round(time.monotonic() - start_time, 2)
-                    self.increment_stat("process_count")
-                    self.increment_stat("total_time", total_time)
-
-                    # Check the expand queue.  A force check is done at teardown.
-                    self.reactor.check_expand()
-            else:
+            if not self.instance:
                 logger.warning("Execute warning, instance for '{}' does not exist."
                                .format(self.ref))
+                return
+
+            if self.is_already_processed(frame.asset):
+                return
+
+            if not is_file_type_allowed(frame.asset, self.instance.file_types):
+                return
+
+            retval = self.instance.process(frame)
+            # a -1 means the processor was skipped internally.
+            processed = retval != -1
+
+            total_time = round(time.monotonic() - start_time, 2)
+            self.increment_stat("process_count")
+            self.increment_stat("total_time", total_time)
+
+            # Check the expand queue.  A force check is done at teardown.
+            self.reactor.check_expand()
 
         except ZmlpFatalProcessorException as upe:
             # Set the asset to be skipped for further processing
@@ -324,8 +331,6 @@ class ProcessorWrapper(object):
             exec_time (float): The time the processor executed.
             error (str): A type of error, fatal or warning.
 
-        Returns:
-
         """
         if not self.instance:
             return
@@ -363,6 +368,27 @@ class ProcessorWrapper(object):
         metric["executionDateLast"] = datetime.datetime.now().isoformat()
         if error:
             metric["error"] = error
+
+    def is_already_processed(self, asset):
+        """
+        Check if the asset has already been processed by this processor.  If
+        the _force arg is set, then this function always returns false.
+
+        Args:
+            asset (Asset): The asset.
+        Returns:
+            bool True if the asset was processed by the processor
+        """
+        # If force is set at all, to anything, then its not already processed
+        if "_force" in self.ref["args"]:
+            return False
+
+        metrics = asset.get_attr("metrics.pipeline")
+        if not metrics:
+            return False
+        else:
+            return any((m["processor"] == self.ref["className"]
+                        and m["version"] == self.instance.version for m in metrics))
 
 
 class AssetConsumer(object):
