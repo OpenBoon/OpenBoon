@@ -22,12 +22,12 @@ class VideoProxyProcessor(AssetProcessor):
         clip = asset.get_attr('clip')
         if not clip:
             self.logger.warning('VideoProxyProcessor cannot continue, no clip defined')
-            return
+            return -1
 
         # We only make proxies for full clips but this isn't
         # an error or warning.
         if clip.get('timeline') != 'full':
-            return
+            return -1
 
         self.make_h264_proxy(asset)
 

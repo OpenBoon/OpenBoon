@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.anyOrNull
+import com.nhaarman.mockito_kotlin.capture
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.archivist.security.AnalystAuthentication
@@ -13,6 +15,7 @@ import com.zorroa.zmlp.util.Json
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
 import org.junit.Before
+import org.mockito.ArgumentCaptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
@@ -55,10 +58,11 @@ abstract class MockMvcTest : AbstractTest() {
          * When using the 'job()' method to authenticate in a controller test,
          * this will be your ZmlpActor.
          */
-        whenever(authServerClient.authenticate(eq("JOBRUNNER"))).then {
+        val proj = ArgumentCaptor.forClass(UUID::class.java)
+        whenever(authServerClient.authenticate(eq("JOBRUNNER"), capture<UUID>(proj))).then {
             ZmlpActor(
                 UUID.fromString("00000000-0000-0000-0000-000000000001"),
-                project.id,
+                proj.value ?: project.id,
                 "JobRunner",
                 setOf(Permission.AssetsImport, Permission.SystemProjectDecrypt)
             )
@@ -68,7 +72,7 @@ abstract class MockMvcTest : AbstractTest() {
          * When using the 'admin()' method to authenticate in a controller test,
          * this will be your ZmlpActor.
          */
-        whenever(authServerClient.authenticate(eq("ADMIN"))).then {
+        whenever(authServerClient.authenticate(eq("ADMIN"), anyOrNull())).then {
             ZmlpActor(
                 UUID.fromString("00000000-0000-0000-0000-000000000000"),
                 project.id,

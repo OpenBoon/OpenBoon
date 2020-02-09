@@ -1,10 +1,7 @@
-import Router from 'next/router'
-
 import { fetcher } from '../Fetch/helpers'
 
 export const onSubmit = async ({
   dispatch,
-  projectId,
   state: { currentPassword, newPassword, confirmPassword },
 }) => {
   try {
@@ -24,8 +21,6 @@ export const onSubmit = async ({
       success: true,
       errors: {},
     })
-
-    Router.push('/[projectId]/account', `/${projectId}/account`)
   } catch (response) {
     const errors = await response.json()
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {

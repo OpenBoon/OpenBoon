@@ -24,8 +24,9 @@ from rest_auth.views import PasswordResetView, PasswordResetConfirmView, \
 from rest_framework import routers
 from rest_framework_nested.routers import NestedSimpleRouter
 
+from registration.views import UserRegistrationView, UserConfirmationView
 from wallet import views as wallet_views
-from wallet.views import WalletAPIRootView
+from wallet.views import WalletAPIRootView, LoginView, LogoutView
 from apikeys.views import ApikeyViewSet
 from jobs.views import JobsViewSet
 from projects.views import ProjectViewSet
@@ -55,13 +56,19 @@ BROWSABLE_API_URLS = [
     ('password-reset-confirmation', path('api/v1/password/reset/confirm/',
                                          PasswordResetConfirmView.as_view(),
                                          name='api-password-reset-confirm')),
-    ('logout', path('api/v1/logout/', wallet_views.LogoutView.as_view(), name='api-logout')),
+    ('logout', path('api/v1/logout/', LogoutView.as_view(), name='api-logout')),
+    ('user-registration', path('api/v1/accounts/register',
+                               UserRegistrationView.as_view(),
+                               name='api-user-register')),
+    ('user-registration-confirmation', path('api/v1/accounts/confirm',
+                                            UserConfirmationView.as_view(),
+                                            name='api-user-confirm'))
 ]
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/login/', wallet_views.LoginView.as_view(), name='api-login'),
+    path('api/v1/login/', LoginView.as_view(), name='api-login'),
     path('api/v1/', include(router.urls)),
     path('api/v1/', include(projects_router.urls)),
     path('api/v1/health/', include('health_check.urls'))

@@ -58,7 +58,7 @@ class DataSourceApp(object):
 
         return DataSource(self.app.client.post(url, body=body))
 
-    def import_files(self, ds):
+    def process_files(self, ds):
         """
         Import or re-import all assets found at the given DataSource.  If the
         DataSource has already been imported then calling this will
@@ -76,25 +76,3 @@ class DataSourceApp(object):
         """
         url = '/api/v1/data-sources/{}/_import'.format(ds.id)
         return self.app.client.post(url)
-
-    def update_credentials(self, ds, blob):
-        """
-        Update the DataSource credentials.  Set the blob to None
-        to delete the credentials.
-
-        Args:
-            ds (DataSource):
-            blob (str): A credentials blob.
-
-        Returns:
-            dict: A status dict.
-
-        Raises:
-            ZmlpNotFoundException: If the DataSource does not exist.
-
-        """
-        url = '/api/v1/data-sources/{}/_credentials'.format(ds.id)
-        body = {
-            'blob': blob
-        }
-        return self.app.client.put(url, body=body)

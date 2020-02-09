@@ -1,19 +1,18 @@
 import PropTypes from 'prop-types'
 
-import { spacing } from '../Styles'
-
 import FormSuccess from '../FormSuccess'
 import Button, { VARIANTS } from '../Button'
+import ButtonGroup from '../Button/Group'
 
 const AccountPasswordFormSuccess = ({ onReset }) => {
   return (
     <div>
       <FormSuccess>New Password Saved!</FormSuccess>
-      <div css={{ display: 'flex', paddingTop: spacing.normal }}>
+      <ButtonGroup>
         <Button variant={VARIANTS.PRIMARY} onClick={onReset}>
           Edit Password Again
         </Button>
-      </div>
+      </ButtonGroup>
     </div>
   )
 }

@@ -8,6 +8,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 class PermissionControllerTests : MockMvcTest() {
 
+    /**
+     * Only returns non-internal permissions.
+     */
     @Test
     fun testGetAll() {
         mvc.perform(
@@ -18,13 +21,7 @@ class PermissionControllerTests : MockMvcTest() {
             .andExpect(
                 MockMvcResultMatchers.jsonPath(
                     "$[0].name",
-                    CoreMatchers.equalTo("SystemMonitor")
-                )
-            )
-            .andExpect(
-                MockMvcResultMatchers.jsonPath(
-                    "$[0].description",
-                    CoreMatchers.equalTo("Allows access to monitoring endpoints")
+                    CoreMatchers.equalTo("AssetsRead")
                 )
             )
             .andReturn()
