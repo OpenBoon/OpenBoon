@@ -8,10 +8,13 @@ import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageRequest
 import com.zorroa.archivist.domain.ProjectStorageSpec
+import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
+import com.zorroa.archivist.domain.ReprocessAssetSearchResponse
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.service.AssetSearchService
 import com.zorroa.archivist.service.AssetService
+import com.zorroa.archivist.service.JobLaunchService
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.RawByteArrayOutputStream
 import io.micrometer.core.annotation.Timed
@@ -52,7 +55,8 @@ import javax.servlet.ServletOutputStream
 class AssetController @Autowired constructor(
     val assetService: AssetService,
     val assetSearchService: AssetSearchService,
-    val projectStorageService: ProjectStorageService
+    val projectStorageService: ProjectStorageService,
+    val jobLaunchService: JobLaunchService
 ) {
 
     @PreAuthorize("hasAuthority('AssetsRead')")
@@ -103,6 +107,12 @@ class AssetController @Autowired constructor(
         return ResponseEntity.ok()
             .contentLength(output.size().toLong())
             .body(InputStreamResource(output.toInputStream()))
+    }
+
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @PostMapping("/api/v3/assets/_search/reprocess")
+    fun processSearch(@RequestBody(required = true) req: ReprocessAssetSearchRequest): ReprocessAssetSearchResponse {
+        return jobLaunchService.launchJob(req)
     }
 
     @PreAuthorize("hasAuthority('AssetsRead')")

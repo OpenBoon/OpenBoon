@@ -45,7 +45,6 @@ class AssetServiceTests : AbstractTest() {
 
         val req = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
-            pipeline = "default",
             modules = listOf("zmlp-labels")
         )
 
@@ -69,18 +68,6 @@ class AssetServiceTests : AbstractTest() {
         val req = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
             modules = listOf("zmlp-arg!")
-        )
-
-        assetService.batchCreate(req)
-    }
-
-    @Test(expected = DataRetrievalFailureException::class)
-    fun testBatchCreateAssets_pipelineNotFound() {
-        pipelineModuleService.updateStandardMods()
-
-        val req = BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
-            pipeline = "cats"
         )
 
         assetService.batchCreate(req)

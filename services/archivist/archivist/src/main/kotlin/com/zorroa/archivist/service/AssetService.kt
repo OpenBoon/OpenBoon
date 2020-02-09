@@ -14,7 +14,6 @@ import com.zorroa.archivist.domain.Element
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.ProcessorRef
@@ -22,7 +21,6 @@ import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
-import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.search.SearchSourceMapper
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
@@ -169,6 +167,9 @@ class AssetServiceImpl : AssetService {
     @Autowired
     lateinit var pipelineResolverService: PipelineResolverService
 
+    @Autowired
+    lateinit var jobLaunchService: JobLaunchService
+
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
         val rsp = rest.client.get(rest.newGetRequest(id), RequestOptions.DEFAULT)
@@ -212,7 +213,7 @@ class AssetServiceImpl : AssetService {
     override fun batchUpload(req: BatchUploadAssetsRequest): BatchCreateAssetsResponse {
 
         val pipeline = if (req.analyze) {
-            pipelineResolverService.resolve(req.pipeline, req.modules)
+            pipelineResolverService.resolveModular(req.modules)
         } else {
             null
         }
@@ -257,7 +258,7 @@ class AssetServiceImpl : AssetService {
         }
 
         val pipeline = if (request.analyze && request.task == null) {
-            pipelineResolverService.resolve(request.pipeline, request.modules)
+            pipelineResolverService.resolveModular(request.modules)
         } else {
             null
         }
@@ -371,10 +372,8 @@ class AssetServiceImpl : AssetService {
 
     fun createAnalysisJob(assetIds: List<String>, processors: List<ProcessorRef>, creds: Set<String>?): Job {
         val name = "Analyze ${assetIds.size} created assets"
-        val script = ZpsScript(name, null, getAll(assetIds), processors)
-        val spec = JobSpec(name, script, credentials = creds)
-
-        return jobService.create(spec)
+        val assets = getAll(assetIds)
+        return jobLaunchService.launchJob(name, assets, processors, creds = creds)
     }
 
     override fun deriveClip(newAsset: Asset, spec: AssetSpec): Clip {

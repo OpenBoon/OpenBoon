@@ -3,11 +3,6 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
-import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.archivist.domain.ProcessorRef
-import com.zorroa.archivist.domain.StandardContainers
-import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.DataSourceDao
 import com.zorroa.archivist.repository.DataSourceJdbcDao
 import com.zorroa.archivist.repository.UUIDGen
@@ -46,11 +41,6 @@ interface DataSourceService {
     fun get(id: UUID): DataSource
 
     /**
-     * Create an Analysis job to process the [DataSource]
-     */
-    fun createAnalysisJob(dataSource: DataSource): Job
-
-    /**
      * Set available credentials blobs for this job.
      */
     fun setCredentials(id: UUID, names: Set<String>)
@@ -72,9 +62,6 @@ class DataSourceServiceImpl(
 
     @Autowired
     lateinit var pipelineModService: PipelineModService
-
-    @Autowired
-    lateinit var pipelineResolverService: PipelineResolverService
 
     override fun create(spec: DataSourceSpec): DataSource {
 
@@ -140,30 +127,6 @@ class DataSourceServiceImpl(
     override fun delete(id: UUID) {
         logger.event(LogObject.DATASOURCE, LogAction.DELETE, mapOf("dataSourceId" to id))
         dataSourceDao.delete(get(id))
-    }
-
-    override fun createAnalysisJob(dataSource: DataSource): Job {
-        val name = "Analyze DataSource '${dataSource.name}'"
-
-        // TODO: check the uri type and make correct generator
-
-        val gen = ProcessorRef(
-            "zmlp_core.core.generators.GcsBucketGenerator",
-            StandardContainers.CORE,
-            args = mapOf("uri" to dataSource.uri)
-        )
-
-        val mods = pipelineModService.getByIds(dataSource.modules)
-        val script = ZpsScript("GcsBucketGenerator ${dataSource.uri}", listOf(gen), null,
-            pipelineResolverService.resolveModular(mods))
-
-        script.setSettting("fileTypes", dataSource.fileTypes)
-        script.setSettting("batchSize", 20)
-
-        val spec = JobSpec(name, script,
-            dataSourceId = dataSource.id,
-            credentials = dataSource.credentials.map { it.toString() }.toSet())
-        return jobService.create(spec)
     }
 
     @Transactional(readOnly = true)

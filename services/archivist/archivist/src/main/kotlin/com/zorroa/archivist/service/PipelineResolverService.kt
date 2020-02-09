@@ -30,7 +30,7 @@ interface PipelineResolverService {
     /**
      * Return a copy of the standard pipeline.
      */
-    fun getStandardPipeline(): List<ProcessorRef>
+    fun getStandardPipeline(trimPrependMarker: Boolean=false): List<ProcessorRef>
 
     /**
      * Resolve the projects default pipeline.
@@ -38,19 +38,24 @@ interface PipelineResolverService {
     fun resolve(): List<ProcessorRef>
 
     /**
-     * Resolve the given [Pipeline] ID into a list of [ProcessorRef]
+     * Resolve the given Pipeline Mods ID into a list of [ProcessorRef]
      */
     fun resolve(id: UUID): List<ProcessorRef>
 
     /**
-     * Resolve a list of [Pipeline]] Mods into a list of [ProcessorRef]
+     * Resolve a list of Pipeline Mods into a list of [ProcessorRef]
      */
     fun resolveModular(mods: List<PipelineMod>): List<ProcessorRef>
 
     /**
-     * Resolve a lis of [ProcessorRef] into a new list of [ProcessorRef]
+     * Resolve a list of [ProcessorRef] into a new list of [ProcessorRef]
      */
     fun resolveCustom(refs: List<ProcessorRef>?): MutableList<ProcessorRef>
+
+    /**
+     * Resolve a list of module names or ids into a new list of [ProcessorRef]
+     */
+    fun resolveModular(mods: Collection<String>?): List<ProcessorRef>
 }
 
 @Service
@@ -116,6 +121,11 @@ class PipelineResolverServiceImpl(
         } else {
             resolveCustom(pipeline.processors)
         }
+    }
+
+    @Transactional(readOnly = true)
+    override fun resolveModular(mods: Collection<String>?): List<ProcessorRef> {
+        return resolveModular(pipelineModService.getByNames(mods ?: listOf()))
     }
 
     @Transactional(readOnly = true)
@@ -258,7 +268,7 @@ class PipelineResolverServiceImpl(
     /**
      * TODO: allow replacement with bucket configuration file.
      */
-    override fun getStandardPipeline(): List<ProcessorRef> {
+    override fun getStandardPipeline(trimPrependMarker: Boolean): List<ProcessorRef> {
         return listOf(
             ProcessorRef("zmlp_core.core.processors.PreCacheSourceFileProcessor", "zmlp/plugins-core"),
             ProcessorRef("zmlp_core.image.importers.ImageImporter", "zmlp/plugins-core"),
@@ -272,7 +282,7 @@ class PipelineResolverServiceImpl(
             ProcessorRef("zmlp_core.proxy.VideoProxyProcessor", "zmlp/plugins-core"),
             ProcessorRef("zmlp_analysis.mxnet.processors.ResNetSimilarityProcessor", "zmlp/plugins-analysis"),
             ProcessorRef("PrependMarker", "none")
-        )
+        ).dropLastWhile { trimPrependMarker }
     }
 
     companion object {

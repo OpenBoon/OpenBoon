@@ -93,7 +93,7 @@ class JobLaunchServiceImpl(
 
         val pipeline = pipelineResolverService.resolveModular(req.modules)
         val settings = mapOf(
-            "batchSize" to batchSize
+            "batchSize" to req.batchSize
         )
 
         val job = launchJob(name, gen, pipeline, settings)
