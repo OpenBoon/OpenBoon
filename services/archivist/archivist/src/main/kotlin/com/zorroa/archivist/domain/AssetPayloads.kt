@@ -41,9 +41,6 @@ class BatchUploadAssetsRequest(
     )
     val analyze: Boolean = true,
 
-    @ApiModelProperty("The pipeline to utilize, otherwise use the default Pipeline")
-    val pipeline: String? = null,
-
     @ApiModelProperty("The pipeline modules to execute if any, otherwise utilize the default Pipeline.")
     val modules: List<String>? = null,
 
@@ -65,9 +62,6 @@ class BatchCreateAssetsRequest(
     @ApiModelProperty("Set to true if the assets should undergo " +
         "further analysis, or false to stay in the provisioned state.")
     val analyze: Boolean = true,
-
-    @ApiModelProperty("The pipeline to execute, defaults to the project's default pipeline.")
-    val pipeline: String? = null,
 
     @ApiModelProperty("The pipeline modules to execute if any, otherwise utilize the default Pipeline.")
     val modules: List<String>? = null,
@@ -95,4 +89,29 @@ class BatchCreateAssetsResponse(
 
     @ApiModelProperty("The ID of the analysis job, if analysis was selected")
     var jobId: UUID? = null
+)
+
+@ApiModel("Batch Process Asset Search Request",
+    description = "Batch reprocess and asset search.")
+class ReprocessAssetSearchRequest(
+
+    @ApiModelProperty("An ElasticSearch query to process.  All assets will be processed that match the search.")
+    val search: Map<String, Any>,
+
+    @ApiModelProperty("The modules to apply.")
+    val modules: List<String>,
+
+    @ApiModelProperty("The number of assets to run per batch.")
+    val batchSize: Int = 64
+)
+
+@ApiModel("Batch Process Asset Search Response",
+    description = "The reponse to a ReprocessAssetSearchRequest")
+class ReprocessAssetSearchResponse(
+
+    @ApiModelProperty("The job running the reprocess")
+    val job: Job,
+
+    @ApiModelProperty("The number of assets expected to be reprocessed.")
+    val assetCount: Long
 )
