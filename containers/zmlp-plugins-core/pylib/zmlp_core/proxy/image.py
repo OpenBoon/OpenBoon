@@ -18,7 +18,6 @@ logger = logging.getLogger(__file__)
 
 class ImageProxyProcessor(AssetProcessor):
     toolTips = {
-        'force': 'Force re-creation of proxies, even if they already exist.',
         'sizes': 'Sizes of the proxies to create.',
         'file_type': 'File type of the proxies to create.',
         'resize_filter': 'Filter to use.',
@@ -30,7 +29,6 @@ class ImageProxyProcessor(AssetProcessor):
     def __init__(self):
         super(ImageProxyProcessor, self).__init__()
         self.created_proxy_count = 0
-        self.add_arg(Argument('force', 'boolean', default=False, toolTip=self.toolTips['force']))
         self.add_arg(Argument('sizes', 'list[int]', default=[1024, 512, 320],
                               toolTip=self.toolTips['sizes']))
         self.add_arg(Argument('file_type', 'str', default='jpg',
@@ -155,11 +153,6 @@ class ImageProxyProcessor(AssetProcessor):
 
             mime_type = self.VALID_FILE_TYPES[self.arg_value('file_type')]
             # If the proxy already exists and we aren't forcing creation then move on.
-
-            if asset.get_files(mimetype=mime_type, attrs={"width": width, "height": height}) \
-                    and not self.arg_value('force'):
-                self.logger.debug('skipping proxy %dx%d %s, already exists.')
-                continue
             output_path = tmp_dir.joinpath('%s_%sx%s.%s' %
                                            (asset.id, width, height, self.arg_value('file_type')))
             proxy_sizes.append((width, height, output_path))
