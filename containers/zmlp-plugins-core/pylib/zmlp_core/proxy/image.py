@@ -150,9 +150,6 @@ class ImageProxyProcessor(AssetProcessor):
         proxy_sizes = []
         for size in self._get_valid_sizes(source_width, source_height):
             width, height = get_output_dimension(size, source_width, source_height)
-
-            mime_type = self.VALID_FILE_TYPES[self.arg_value('file_type')]
-            # If the proxy already exists and we aren't forcing creation then move on.
             output_path = tmp_dir.joinpath('%s_%sx%s.%s' %
                                            (asset.id, width, height, self.arg_value('file_type')))
             proxy_sizes.append((width, height, output_path))
