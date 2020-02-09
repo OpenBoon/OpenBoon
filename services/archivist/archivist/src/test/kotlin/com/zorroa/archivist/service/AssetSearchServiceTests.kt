@@ -37,6 +37,16 @@ class AssetSearchServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testCount() {
+        val search = mapOf(
+            "query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg"))
+        )
+
+        val count = assetSearchService.count(search)
+        assertEquals(1, count)
+    }
+
+    @Test
     fun testScrollSearch() {
         val search = mapOf(
             "query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg"))
