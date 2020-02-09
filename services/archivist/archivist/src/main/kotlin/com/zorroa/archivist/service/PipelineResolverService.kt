@@ -30,7 +30,7 @@ interface PipelineResolverService {
     /**
      * Return a copy of the standard pipeline.
      */
-    fun getStandardPipeline(trimPrependMarker: Boolean=false): List<ProcessorRef>
+    fun getStandardPipeline(trimPrependMarker: Boolean = false): List<ProcessorRef>
 
     /**
      * Resolve the projects default pipeline.

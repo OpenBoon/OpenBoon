@@ -135,7 +135,7 @@ class JobLaunchServiceImpl(
     /**
      * Launch a [JobSpec] and return a [Job] suitable for client side use.
      */
-    fun launchJob(spec: JobSpec) : Job {
+    fun launchJob(spec: JobSpec): Job {
         val job = jobService.create(spec)
         return jobService.get(job.id, forClient = true)
     }

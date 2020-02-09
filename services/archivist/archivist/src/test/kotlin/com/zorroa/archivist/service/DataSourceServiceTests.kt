@@ -5,7 +5,6 @@ import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
-import com.zorroa.archivist.domain.PipelineSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID

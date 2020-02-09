@@ -10,7 +10,6 @@ import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.StandardContainers
-import com.zorroa.zmlp.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
