@@ -172,7 +172,7 @@ exports[`<ProjectUsersMenu /> should render properly 1`] = `
             onClick={[Function]}
             type="button"
           >
-            Delete
+            Remove
           </button>
         </li>
       </ul>

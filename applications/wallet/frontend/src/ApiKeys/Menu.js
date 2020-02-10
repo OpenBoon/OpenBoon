@@ -28,6 +28,9 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
                 </Button>
                 {isDeleteModalOpen && (
                   <Modal
+                    title="Delete API Key"
+                    message="Deleting this key cannot be undone."
+                    action="Delete Permanently"
                     onCancel={() => {
                       setDeleteModalOpen(false)
                       onClick()
