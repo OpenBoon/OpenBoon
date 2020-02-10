@@ -8,8 +8,6 @@ import Table from '../Table'
 
 import ProjectUsersRow from './Row'
 
-import { getUser } from '../Authentication/helpers'
-
 const ProjectUsers = () => {
   const {
     query: { projectId, action },
@@ -47,7 +45,6 @@ const ProjectUsers = () => {
             projectId={projectId}
             user={result}
             revalidate={revalidate}
-            currentUser={getUser()}
           />
         )}
       />
