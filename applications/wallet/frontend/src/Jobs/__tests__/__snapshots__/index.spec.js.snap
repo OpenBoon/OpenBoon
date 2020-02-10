@@ -252,11 +252,11 @@ Array [
   display: flex;
 }
 
-.emotion-114 {
+.emotion-125 {
   height: auto;
 }
 
-.emotion-113 {
+.emotion-124 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -264,34 +264,34 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-113 tr {
+.emotion-124 tr {
   background-color: #252525;
 }
 
-.emotion-113 tr:nth-of-type(2n) {
+.emotion-124 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-113 tr:hover {
+.emotion-124 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-113 tr:hover td {
+.emotion-124 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-113 tr:hover td:first-of-type {
+.emotion-124 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-113 tr:hover td:last-of-type {
+.emotion-124 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-113 td {
+.emotion-124 td {
   max-width: calc(100vw / 7);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -303,11 +303,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-113 td:first-of-type {
+.emotion-124 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-113 td:last-of-type {
+.emotion-124 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -363,6 +363,10 @@ Array [
   -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
+}
+
+.emotion-19 {
+  min-width: 244px;
 }
 
 .emotion-18 {
@@ -455,11 +459,11 @@ Array [
   border-bottom-right-radius: 4px;
 }
 
-.emotion-20 {
+.emotion-21 {
   position: relative;
 }
 
-.emotion-19 {
+.emotion-20 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -496,20 +500,20 @@ Array [
   border-radius: 32px;
 }
 
-.emotion-19:hover {
+.emotion-20:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-19[aria-disabled=true] {
+.emotion-20[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-19:hover {
+.emotion-20:hover {
   background-color: #808080;
 }
 
-.emotion-21 {
+.emotion-22 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -524,7 +528,7 @@ Array [
   background-color: #191919;
 }
 
-.emotion-28 {
+.emotion-29 {
   height: 100%;
   -webkit-flex: 14 0 auto;
   -ms-flex: 14 0 auto;
@@ -532,17 +536,17 @@ Array [
   background-color: #4a90e2;
 }
 
-.emotion-28:first-of-type {
+.emotion-29:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-28:last-of-type {
+.emotion-29:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-33 {
+.emotion-35 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -557,7 +561,7 @@ Array [
   background-color: #191919;
 }
 
-.emotion-38 {
+.emotion-40 {
   height: 100%;
   -webkit-flex: 8 0 auto;
   -ms-flex: 8 0 auto;
@@ -565,17 +569,17 @@ Array [
   background-color: #4ac565;
 }
 
-.emotion-38:first-of-type {
+.emotion-40:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-38:last-of-type {
+.emotion-40:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-39 {
+.emotion-41 {
   height: 100%;
   -webkit-flex: 4 0 auto;
   -ms-flex: 4 0 auto;
@@ -583,17 +587,17 @@ Array [
   background-color: #4a90e2;
 }
 
-.emotion-39:first-of-type {
+.emotion-41:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-39:last-of-type {
+.emotion-41:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-74 {
+.emotion-80 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -601,21 +605,21 @@ Array [
   background-color: #4ac565;
 }
 
-.emotion-74:first-of-type {
+.emotion-80:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-74:last-of-type {
+.emotion-80:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
 <div
-    className="emotion-114"
+    className="emotion-125"
   >
     <table
-      className="emotion-113"
+      className="emotion-124"
     >
       <thead>
         <tr>
@@ -703,7 +707,9 @@ Array [
               4
             </a>
           </td>
-          <td>
+          <td
+            className="emotion-19"
+          >
             <div
               aria-label="Progress Bar"
               className="emotion-18"
@@ -733,11 +739,11 @@ Array [
           </td>
           <td>
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -753,7 +759,7 @@ Array [
         <tr>
           <td>
             <div
-              className="emotion-21"
+              className="emotion-22"
             >
               In Progress
             </div>
@@ -784,7 +790,9 @@ Array [
               40
             </a>
           </td>
-          <td>
+          <td
+            className="emotion-19"
+          >
             <div
               aria-label="Progress Bar"
               className="emotion-18"
@@ -807,18 +815,18 @@ Array [
                   className="emotion-15"
                 />
                 <div
-                  className="emotion-28"
+                  className="emotion-29"
                 />
               </div>
             </div>
           </td>
           <td>
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -834,7 +842,7 @@ Array [
         <tr>
           <td>
             <div
-              className="emotion-33"
+              className="emotion-35"
             >
               Archived
             </div>
@@ -865,7 +873,9 @@ Array [
               400
             </a>
           </td>
-          <td>
+          <td
+            className="emotion-19"
+          >
             <div
               aria-label="Progress Bar"
               className="emotion-18"
@@ -882,21 +892,21 @@ Array [
                   className="emotion-13"
                 />
                 <div
-                  className="emotion-38"
+                  className="emotion-40"
                 />
                 <div
-                  className="emotion-39"
+                  className="emotion-41"
                 />
               </div>
             </div>
           </td>
           <td>
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -943,7 +953,9 @@ Array [
               4000
             </a>
           </td>
-          <td>
+          <td
+            className="emotion-19"
+          >
             <div
               aria-label="Progress Bar"
               className="emotion-18"
@@ -964,11 +976,11 @@ Array [
           </td>
           <td>
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -984,7 +996,7 @@ Array [
         <tr>
           <td>
             <div
-              className="emotion-33"
+              className="emotion-35"
             >
               Finished
             </div>
@@ -1015,7 +1027,9 @@ Array [
               40000
             </a>
           </td>
-          <td>
+          <td
+            className="emotion-19"
+          >
             <div
               aria-label="Progress Bar"
               className="emotion-18"
@@ -1036,11 +1050,11 @@ Array [
           </td>
           <td>
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -1056,7 +1070,7 @@ Array [
         <tr>
           <td>
             <div
-              className="emotion-21"
+              className="emotion-22"
             >
               Active
             </div>
@@ -1087,7 +1101,9 @@ Array [
               400000
             </a>
           </td>
-          <td>
+          <td
+            className="emotion-19"
+          >
             <div
               aria-label="Progress Bar"
               className="emotion-18"
@@ -1108,11 +1124,11 @@ Array [
           </td>
           <td>
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -1128,7 +1144,7 @@ Array [
         <tr>
           <td>
             <div
-              className="emotion-21"
+              className="emotion-22"
             >
               Active
             </div>
@@ -1150,7 +1166,9 @@ Array [
             0
           </td>
           <td />
-          <td>
+          <td
+            className="emotion-19"
+          >
             <div
               aria-label="Progress Bar"
               className="emotion-18"
@@ -1164,18 +1182,18 @@ Array [
                 className="emotion-17"
               >
                 <div
-                  className="emotion-74"
+                  className="emotion-80"
                 />
               </div>
             </div>
           </td>
           <td>
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -1191,7 +1209,7 @@ Array [
         <tr>
           <td>
             <div
-              className="emotion-21"
+              className="emotion-22"
             >
               Active
             </div>
@@ -1213,7 +1231,9 @@ Array [
             0
           </td>
           <td />
-          <td>
+          <td
+            className="emotion-19"
+          >
             <div
               aria-label="Progress Bar"
               className="emotion-18"
@@ -1234,11 +1254,11 @@ Array [
           </td>
           <td>
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -1254,7 +1274,7 @@ Array [
         <tr>
           <td>
             <div
-              className="emotion-21"
+              className="emotion-22"
             >
               Active
             </div>
@@ -1276,7 +1296,9 @@ Array [
             0
           </td>
           <td />
-          <td>
+          <td
+            className="emotion-19"
+          >
             <div
               aria-label="Progress Bar"
               className="emotion-18"
@@ -1297,11 +1319,11 @@ Array [
           </td>
           <td>
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -1317,7 +1339,7 @@ Array [
         <tr>
           <td>
             <div
-              className="emotion-21"
+              className="emotion-22"
             >
               Active
             </div>
@@ -1339,7 +1361,9 @@ Array [
             0
           </td>
           <td />
-          <td>
+          <td
+            className="emotion-19"
+          >
             <div
               aria-label="Progress Bar"
               className="emotion-18"
@@ -1360,11 +1384,11 @@ Array [
           </td>
           <td>
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -1380,7 +1404,7 @@ Array [
         <tr>
           <td>
             <div
-              className="emotion-21"
+              className="emotion-22"
             >
               Active
             </div>
@@ -1411,7 +1435,9 @@ Array [
               49
             </a>
           </td>
-          <td>
+          <td
+            className="emotion-19"
+          >
             <div
               aria-label="Progress Bar"
               className="emotion-18"
@@ -1428,18 +1454,18 @@ Array [
                   className="emotion-13"
                 />
                 <div
-                  className="emotion-74"
+                  className="emotion-80"
                 />
               </div>
             </div>
           </td>
           <td>
             <div
-              className="emotion-20"
+              className="emotion-21"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-19"
+                className="emotion-20"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
