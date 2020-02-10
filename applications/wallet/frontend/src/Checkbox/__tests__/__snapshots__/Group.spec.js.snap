@@ -132,7 +132,7 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
         <svg
           className="emotion-3"
           data-file-name="checkmark.svg"
-          width={14}
+          width={20}
         />
       </div>
     </div>
@@ -286,7 +286,7 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
         <svg
           className="emotion-3"
           data-file-name="checkmark.svg"
-          width={14}
+          width={20}
         />
       </div>
     </div>

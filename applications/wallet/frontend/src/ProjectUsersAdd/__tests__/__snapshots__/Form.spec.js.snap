@@ -299,7 +299,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -337,7 +337,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -375,7 +375,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -413,7 +413,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -451,7 +451,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -489,7 +489,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -527,7 +527,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -565,7 +565,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -603,7 +603,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -641,7 +641,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -679,7 +679,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -717,7 +717,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -1069,7 +1069,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -1107,7 +1107,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -1145,7 +1145,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-25"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -1183,7 +1183,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -1221,7 +1221,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -1259,7 +1259,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -1297,7 +1297,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -1335,7 +1335,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -1373,7 +1373,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -1411,7 +1411,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -1449,7 +1449,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
@@ -1487,7 +1487,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           <svg
             className="emotion-9"
             data-file-name="checkmark.svg"
-            width={14}
+            width={20}
           />
         </div>
       </div>
