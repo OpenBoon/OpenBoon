@@ -12,7 +12,7 @@ Array [
 <h3
     className="emotion-0"
   >
-    User ID: jane.doe@zorroa.com
+    Email: jane.doe@zorroa.com
   </h3>,
   .emotion-0 {
   padding-top: 24px;
@@ -24,7 +24,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Username
+    Name
   </div>,
   .emotion-0 {
   color: #808080;
@@ -99,12 +99,12 @@ Array [
     onClick={[Function]}
     type="button"
   >
-    Edit Username
+    Edit
   </button>,
 ]
 `;
 
-exports[`<AccountProfileForm /> should render properly when a user edits username 1`] = `
+exports[`<AccountProfileForm /> should render properly when a user edits their name 1`] = `
 Array [
   .emotion-0 {
   font-size: 17px;
@@ -116,7 +116,7 @@ Array [
 <h3
     className="emotion-0"
   >
-    User ID: jane.doe@zorroa.com
+    Email: jane.doe@zorroa.com
   </h3>,
   .emotion-0 {
   padding-top: 24px;
@@ -128,7 +128,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Username
+    Name
   </div>,
   .emotion-0 {
   color: #808080;
@@ -203,12 +203,12 @@ Array [
     onClick={[Function]}
     type="button"
   >
-    Edit Username
+    Edit
   </button>,
 ]
 `;
 
-exports[`<AccountProfileForm /> should render properly when a user edits username 2`] = `
+exports[`<AccountProfileForm /> should render properly when a user edits their name 2`] = `
 Array [
   .emotion-0 {
   font-size: 17px;
@@ -220,7 +220,7 @@ Array [
 <h3
     className="emotion-0"
   >
-    User ID: jane.doe@zorroa.com
+    Email: jane.doe@zorroa.com
   </h3>,
   .emotion-13 {
   display: -webkit-box;
@@ -482,7 +482,7 @@ Array [
 ]
 `;
 
-exports[`<AccountProfileForm /> should render properly when a user edits username 3`] = `
+exports[`<AccountProfileForm /> should render properly when a user edits their name 3`] = `
 Array [
   .emotion-3 {
   display: -webkit-box;
@@ -573,7 +573,7 @@ Array [
 <h3
     className="emotion-0"
   >
-    User ID: jane.doe@zorroa.com
+    Email: jane.doe@zorroa.com
   </h3>,
   .emotion-0 {
   padding-top: 24px;
@@ -585,7 +585,7 @@ Array [
 <div
     className="emotion-0"
   >
-    Username
+    Name
   </div>,
   .emotion-0 {
   color: #808080;
@@ -660,7 +660,7 @@ Array [
     onClick={[Function]}
     type="button"
   >
-    Edit Username
+    Edit
   </button>,
 ]
 `;

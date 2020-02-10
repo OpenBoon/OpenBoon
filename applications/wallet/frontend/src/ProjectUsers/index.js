@@ -36,8 +36,8 @@ const ProjectUsers = () => {
 
       <Table
         url={`/api/v1/projects/${projectId}/users/`}
-        columns={['User Name', 'Email', 'Permissions', '#Actions#']}
-        expandColumn={3}
+        columns={['Email', 'Permissions', '#Actions#']}
+        expandColumn={2}
         renderEmpty="No users"
         renderRow={({ result, revalidate }) => (
           <ProjectUsersRow
