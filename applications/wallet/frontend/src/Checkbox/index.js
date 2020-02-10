@@ -17,7 +17,7 @@ const Checkbox = ({ value, label, legend, initialValue, onClick }) => {
         alignItems: legend ? 'flex-start' : 'center',
         color: colors.white,
         cursor: 'pointer',
-        paddingBottom: spacing.moderate,
+        paddingBottom: spacing.normal,
       }}>
       <CheckboxIcon
         value={value}
