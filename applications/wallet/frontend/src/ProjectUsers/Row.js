@@ -6,12 +6,11 @@ import ProjectUsersMenu from './Menu'
 
 const ProjectUsersRow = ({
   projectId,
-  user: { id: userId, name, email, permissions },
+  user: { id: userId, email, permissions },
   revalidate,
 }) => {
   return (
     <tr>
-      <td>{name}</td>
       <td>{email}</td>
       <td>
         {permissions.map(permission => (
