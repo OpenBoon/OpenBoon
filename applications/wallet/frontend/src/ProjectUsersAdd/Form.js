@@ -2,13 +2,12 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { spacing } from '../Styles'
-
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import ButtonGroup from '../Button/Group'
 import Loading from '../Loading'
 
 const INITIAL_STATE = {
@@ -61,11 +60,7 @@ const ProjectUsersAddForm = () => {
         }))}
       />
 
-      <div
-        css={{
-          paddingTop: spacing.moderate,
-          paddingBottom: spacing.moderate,
-        }}>
+      <ButtonGroup>
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
@@ -73,7 +68,7 @@ const ProjectUsersAddForm = () => {
           isDisabled={!state.email}>
           Send Invite
         </Button>
-      </div>
+      </ButtonGroup>
     </Form>
   )
 }

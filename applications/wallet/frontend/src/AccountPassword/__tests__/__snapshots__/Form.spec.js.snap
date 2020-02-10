@@ -58,7 +58,13 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-17 button,
+.emotion-17 a {
+  margin-right: 16px;
 }
 
 .emotion-15 {
@@ -91,7 +97,6 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  margin-right: 16px;
 }
 
 .emotion-15:hover {
@@ -283,6 +288,20 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 `;
 
 exports[`<AccountPasswordForm /> should render properly 2`] = `
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-5 button,
+.emotion-5 a {
+  margin-right: 16px;
+}
+
 .emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -396,14 +415,6 @@ exports[`<AccountPasswordForm /> should render properly 2`] = `
   padding-right: 16px;
 }
 
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 16px;
-}
-
 <div>
   <div
     className="emotion-3"
@@ -498,7 +509,13 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-17 button,
+.emotion-17 a {
+  margin-right: 16px;
 }
 
 .emotion-15 {
@@ -531,7 +548,6 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  margin-right: 16px;
 }
 
 .emotion-15:hover {
@@ -780,7 +796,13 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-17 button,
+.emotion-17 a {
+  margin-right: 16px;
 }
 
 .emotion-15 {
@@ -813,7 +835,6 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  margin-right: 16px;
 }
 
 .emotion-15:hover {

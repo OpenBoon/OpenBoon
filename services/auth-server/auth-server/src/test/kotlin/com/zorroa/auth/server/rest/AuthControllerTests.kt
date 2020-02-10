@@ -35,7 +35,7 @@ class AuthControllerTests : MockMvcTest() {
         val apiKey = apiKeyService.create(spec)
         mvc.perform(
             MockMvcRequestBuilders.post("/auth/v1/auth-token")
-                .headers(standardUser(apiKey))
+                .headers(standardUser(apiKey.getValidationKey()))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()

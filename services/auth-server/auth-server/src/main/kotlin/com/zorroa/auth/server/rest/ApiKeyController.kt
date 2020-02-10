@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@PreAuthorize("hasAuthority('ApiKeyManage')")
+@PreAuthorize("hasAuthority('ProjectManage')")
 @Api(tags = ["API Key"], description = "Operations for managing API Keys.")
 class ApiKeyController(
     val apiKeyService: ApiKeyService,
