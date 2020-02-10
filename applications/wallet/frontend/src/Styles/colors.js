@@ -31,7 +31,7 @@ const colors = {
 
   key: {
     one: '#73b61c',
-    two: '#b8d652',
+    two: '#96c955',
     three: '#5c8f1b',
   },
 

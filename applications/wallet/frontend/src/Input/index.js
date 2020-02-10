@@ -7,7 +7,7 @@ const BORDER_WIDTH = 2
 
 const BASE = {
   outlineOffset: 0,
-  padding: spacing.moderate,
+  padding: `${spacing.moderate - BORDER_WIDTH}px ${spacing.moderate}px`,
   borderRadius: constants.borderRadius.small,
   boxShadow: constants.boxShadows.input,
   width: '100%',
@@ -58,7 +58,7 @@ const Input = ({
       css={{
         display: 'block',
         paddingBottom: PADDING,
-        color: colors.structure.steel,
+        color: colors.structure.zinc,
       }}>
       {label}
     </label>
