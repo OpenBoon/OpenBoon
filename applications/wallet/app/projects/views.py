@@ -1,16 +1,17 @@
+import os
+
 import zmlp
-from django.db import transaction
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 from django.http import HttpResponseForbidden, Http404
-from zmlp import ZmlpClient
-from zmlp.client import ZmlpDuplicateException
-
 from rest_framework import status
-from rest_framework.viewsets import ViewSet, GenericViewSet
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.response import Response
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.viewsets import ViewSet, GenericViewSet
+from zmlp import ZmlpClient
+from zmlp.client import ZmlpDuplicateException
 
 from projects.clients import ZviClient
 from projects.models import Membership, Project
@@ -25,8 +26,9 @@ class BaseProjectViewSet(ViewSet):
     The viewset also includes the necessary Serializer helper methods to allow you to
     create and use Serializers for proxied endpoint responses, as you would with a
     GenericAPIView.
-    """
 
+    """
+    BASE_URL = ''
     ZMLP_ONLY = False
 
     def dispatch(self, request, *args, **kwargs):
@@ -46,32 +48,19 @@ class BaseProjectViewSet(ViewSet):
             return HttpResponseForbidden(f'{request.user.username} is not a member of '
                                          f'the project {project}')
         if settings.PLATFORM == 'zmlp':
-            request.app = zmlp.ZmlpApp(apikey)
+            request.app = zmlp.ZmlpApp(apikey, settings.ZMLP_API_URL)
         try:
             if settings.PLATFORM == 'zvi':
                 request.client = ZviClient(apikey=apikey, server=settings.ZMLP_API_URL)
             else:
                 request.client = ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL,
-                                  project_id=project)
+                                            project_id=project)
         except TypeError:
             # This catches when the user is not authed and the token validation fails.
             # This allows the raised error to return properly, although may not be the
             # best place to handles this
             pass
         return super().dispatch(request, *args, **kwargs)
-
-    def _get_archivist_client(self, request, project):
-        """Returns a client that can be used to interact with the ZMLP Archivist.
-
-        Args:
-            request (HttpRequest): HTTP Request to get an authenticated user from.
-            project (str): Project to configure the client to use.
-
-        Returns (ZmlpClient, ZviClient): Archivist client.
-
-        """
-        apikey = Membership.objects.get(user=request.user, project=project).apikey
-
 
     def get_serializer(self, *args, **kwargs):
         """
@@ -136,6 +125,47 @@ class BaseProjectViewSet(ViewSet):
         """
         assert self.paginator is not None
         return self.paginator.get_paginated_response(data)
+
+    def _list_from_zmlp_search_endpoint(self, request):
+        """The result of this method can be returned for the list method of a concrete api
+        if it just needs to proxy the results of a ZMLP search endpoint.
+
+        Args:
+            request (Request): Request the view method was given.
+            path (str): URL path of the search endpoint to use.
+
+        """
+        payload = {'page': {'from': request.GET.get('from', 0),
+                            'size': request.GET.get('size',
+                                                    self.pagination_class.default_limit)}}
+        path = os.path.join(self.BASE_URL, '_search')
+        response = request.client.post(path, payload)
+        content = self._get_content(response)
+        current_url = request.build_absolute_uri(request.path)
+        for item in content['list']:
+            item['url'] = f'{current_url}{item["id"]}/'
+        paginator = self.pagination_class()
+        paginator.prep_pagination_for_api_response(content, request)
+        return paginator.get_paginated_response(content['list'])
+
+    def _retrieve(self, request, pk):
+        """The result of this method can be returned for the retrieve method of a concrete api
+        if it just needs to proxy the results of a standard ZMLP endpoint for a single object.
+
+        Args:
+            request (Request): Request the view method was given.
+            pk (str): Primary key of the object to return in the response.
+
+        """
+        response = request.client.get(os.path.join(self.BASE_URL, pk))
+        content = self._get_content(response)
+        return Response(content)
+
+    def _get_content(self, response):
+        """Returns the content of Response from the ZVI or ZMLP and returns it as a dict."""
+        if isinstance(response, dict):
+            return response
+        return response.json()
 
 
 class ProjectViewSet(ListModelMixin,

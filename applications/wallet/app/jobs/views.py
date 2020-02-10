@@ -7,6 +7,7 @@ from wallet.paginators import ZMLPFromSizePagination
 
 
 class JobsViewSet(BaseProjectViewSet):
+    """CRUD operations for ZMLP or ZVI processing jobs."""
     pagination_class = ZMLPFromSizePagination
 
     def list(self, request, project_pk):
@@ -208,10 +209,3 @@ class JobsViewSet(BaseProjectViewSet):
         }
         job_spec.update(new_values)
         return job_spec
-
-    def _get_content(self, response):
-        """Returns the content of Response from the ZVI or ZMLP and returns it as a dict."""
-
-        if isinstance(response, dict):
-            return response
-        return response.json()
