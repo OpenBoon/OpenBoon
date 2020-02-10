@@ -64,9 +64,7 @@ const JobErrorsContent = () => {
       </div>
 
       <Tabs
-        tabs={[
-          { title: 'All Errors', href: '/[projectId]/jobs/[jobId]/errors' },
-        ]}
+        tabs={[{ title: 'View All', href: '/[projectId]/jobs/[jobId]/errors' }]}
       />
 
       <JobErrorsTable />
