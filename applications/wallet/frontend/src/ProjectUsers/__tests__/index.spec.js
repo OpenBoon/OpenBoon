@@ -60,7 +60,7 @@ describe('<ProjectUsers />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('Should hide menu gear for self user', () => {
+  it('should hide the menu gear for the active user', () => {
     require('../../Authentication/helpers').__setMockUser({
       id: 1,
       username: 'jane.doe',

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ProjectUsers /> Should hide menu gear for self user 1`] = `
+exports[`<ProjectUsers /> should hide the menu gear for the active user 1`] = `
 Array [
   .emotion-0 {
   font-size: 18px;
