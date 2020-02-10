@@ -3,7 +3,6 @@
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA pg_catalog;
 
 --
 -- Name: after_task_insert(); Type: FUNCTION; Schema: zorroa; Owner: zorroa
