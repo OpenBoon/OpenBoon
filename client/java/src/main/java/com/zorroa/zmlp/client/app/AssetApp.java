@@ -86,7 +86,7 @@ public class AssetApp {
         try {
             assetSearch = Json.mapper.readValue(searchSourceBuilder.toString(), Map.class);
         } catch (JsonProcessingException e) {
-            throw new ZmlpClientException("Bad Json Format");
+            throw new ZmlpClientException("Bad Json Format", e);
         }
         return new AssetSearchResult(this.client, assetSearch);
     }
@@ -133,7 +133,7 @@ public class AssetApp {
         try {
             assetSearch = Json.mapper.readValue(search.toString(), Map.class);
         } catch (JsonProcessingException e) {
-            throw new ZmlpClientException("Bad Json Format");
+            throw new ZmlpClientException("Bad Json Format", e);
         }
         return this.scrollSearch(assetSearch, timeout);
     }
