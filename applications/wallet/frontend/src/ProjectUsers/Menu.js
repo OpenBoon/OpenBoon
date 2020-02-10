@@ -10,7 +10,7 @@ import ButtonGear from '../Button/Gear'
 import Modal from '../Modal'
 
 const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [isRemoveModalOpen, setRemoveModalOpen] = useState(false)
 
   return (
     <Menu open="left" button={ButtonGear}>
@@ -32,19 +32,22 @@ const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
                 <Button
                   variant={VARIANTS.MENU_ITEM}
                   onClick={() => {
-                    setDeleteModalOpen(true)
+                    setRemoveModalOpen(true)
                   }}
                   isDisabled={false}>
-                  Delete
+                  Remove
                 </Button>
-                {isDeleteModalOpen && (
+                {isRemoveModalOpen && (
                   <Modal
+                    title="Remove User from Project"
+                    message="Are your sure you want to remove this user?"
+                    action="Remove User"
                     onCancel={() => {
-                      setDeleteModalOpen(false)
+                      setRemoveModalOpen(false)
                       onClick()
                     }}
                     onConfirm={async () => {
-                      setDeleteModalOpen(false)
+                      setRemoveModalOpen(false)
                       onClick()
 
                       await fetcher(
