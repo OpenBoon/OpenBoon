@@ -58,7 +58,7 @@ const Input = ({
       css={{
         display: 'block',
         paddingBottom: PADDING,
-        color: colors.structure.steel,
+        color: colors.structure.zinc,
       }}>
       {label}
     </label>

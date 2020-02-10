@@ -71,7 +71,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
 .emotion-6 {
   display: block;
   padding-bottom: 8px;
-  color: #808080;
+  color: #b3b3b3;
 }
 
 .emotion-8 {
@@ -340,7 +340,7 @@ exports[`<ResetPassword /> should render properly with <FormSuccess/> 1`] = `
 .emotion-10 {
   display: block;
   padding-bottom: 8px;
-  color: #808080;
+  color: #b3b3b3;
 }
 
 .emotion-12 {
