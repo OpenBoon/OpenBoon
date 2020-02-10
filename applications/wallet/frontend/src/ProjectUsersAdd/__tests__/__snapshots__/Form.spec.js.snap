@@ -39,7 +39,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 
 .emotion-2 {
   outline-offset: 0;
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
@@ -791,7 +791,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 
 .emotion-2 {
   outline-offset: 0;
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;

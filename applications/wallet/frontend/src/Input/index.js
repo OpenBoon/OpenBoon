@@ -7,7 +7,7 @@ const BORDER_WIDTH = 2
 
 const BASE = {
   outlineOffset: 0,
-  padding: spacing.moderate,
+  padding: `${spacing.moderate - BORDER_WIDTH}px ${spacing.moderate}px`,
   borderRadius: constants.borderRadius.small,
   boxShadow: constants.boxShadows.input,
   width: '100%',

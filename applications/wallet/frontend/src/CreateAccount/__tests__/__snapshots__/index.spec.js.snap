@@ -119,7 +119,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
 
 .emotion-9 {
   outline-offset: 0;
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
