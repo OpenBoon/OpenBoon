@@ -37,7 +37,7 @@ Array [
 }
 
 .emotion-0 {
-  border: 0 #b8d652 solid;
+  border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -61,7 +61,7 @@ Array [
 }
 
 .emotion-2 {
-  border: 0 #b8d652 solid;
+  border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -349,7 +349,7 @@ Array [
 }
 
 .emotion-0 {
-  border: 0 #b8d652 solid;
+  border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -373,7 +373,7 @@ Array [
 }
 
 .emotion-2 {
-  border: 0 #b8d652 solid;
+  border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -1048,7 +1048,7 @@ Array [
 }
 
 .emotion-0 {
-  border: 0 #b8d652 solid;
+  border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1072,7 +1072,7 @@ Array [
 }
 
 .emotion-2 {
-  border: 0 #b8d652 solid;
+  border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
