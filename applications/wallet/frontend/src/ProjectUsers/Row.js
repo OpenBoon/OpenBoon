@@ -4,11 +4,14 @@ import { colors, spacing, constants } from '../Styles'
 
 import ProjectUsersMenu from './Menu'
 
+import { getUser } from '../Authentication/helpers'
+
 const ProjectUsersRow = ({
   projectId,
   user: { id: userId, email, permissions },
   revalidate,
 }) => {
+  const { email: currentUserEmail } = getUser()
   return (
     <tr>
       <td>{email}</td>
@@ -31,11 +34,13 @@ const ProjectUsersRow = ({
         ))}
       </td>
       <td>
-        <ProjectUsersMenu
-          projectId={projectId}
-          userId={userId}
-          revalidate={revalidate}
-        />
+        {email !== currentUserEmail && (
+          <ProjectUsersMenu
+            projectId={projectId}
+            userId={userId}
+            revalidate={revalidate}
+          />
+        )}
       </td>
     </tr>
   )
