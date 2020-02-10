@@ -4,16 +4,16 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.zmlp.util.Json.Mapper
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.util.Base64
-import java.util.Date
-import java.util.UUID
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import org.slf4j.LoggerFactory
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.Base64
+import java.util.Date
+import java.util.UUID
 
 /**
  * Exceptions thrown from [AuthServerClient]
@@ -21,10 +21,17 @@ import org.slf4j.LoggerFactory
 class AuthServerClientException(message: String) : RuntimeException(message)
 
 interface AuthServerClient {
-    fun authenticate(jwtToken: String): ZmlpActor
+    fun authenticate(jwtToken: String, projectId: UUID? = null): ZmlpActor
     fun createApiKey(project: UUID, name: String, perms: Collection<Permission>): ApiKey
     fun getApiKey(projectId: UUID, name: String): ApiKey
     fun getSigningKey(projectId: UUID, name: String): SigningKey
+
+    companion object {
+
+        val PROJECT_ID_HEADER = "X-Zorroa-ProjectId"
+
+        val PROJECT_ID_PARAM = "project_id"
+    }
 }
 
 /**
@@ -63,12 +70,17 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
      *
      * @param jwtToken An JWT token.
      */
-    override fun authenticate(jwtToken: String): ZmlpActor {
+    override fun authenticate(jwtToken: String, projectId: UUID?): ZmlpActor {
         val request = Request.Builder()
             .url("$baseUri/auth/v1/auth-token")
             .header("Authorization", "Bearer $jwtToken")
-            .get()
-            .build()
+            .also {
+                if (projectId != null) {
+                    it.header(AuthServerClient.PROJECT_ID_HEADER, it.toString())
+                }
+            }
+            .get().build()
+
         val rsp = client.newCall(request).execute()
         if (rsp.isSuccessful) {
             val body = rsp.body() ?: throw AuthServerClientException("Invalid APIKey")

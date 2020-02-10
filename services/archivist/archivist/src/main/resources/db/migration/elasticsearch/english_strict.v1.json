@@ -99,12 +99,41 @@
       "analysis": {
         "dynamic": "strict",
         "properties": {
+          "google": {
+            "dynamic": "strict",
+            "properties": {
+              "faceDetection": {
+                "dynamic": "strict",
+                "properties": {
+                  "faceCount": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
           "zmlp": {
             "dynamic": "strict",
             "properties": {
               "tinyProxy": {
                 "type": "object",
                 "enabled": false
+              },
+              "faceDetection": {
+                "dynamic": "strict",
+                "properties": {
+                  "faceCount": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "faceRecognition": {
+                "dynamic": "strict",
+                "properties": {
+                  "faceCount": {
+                    "type": "integer"
+                  }
+                }
               },
               "similarity": {
                 "dynamic": "strict",
@@ -252,6 +281,15 @@
         "dynamic": "strict",
         "type": "nested",
         "properties": {
+          "analysis": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          },
           "type": {
             "type": "keyword"
           },
@@ -279,9 +317,66 @@
           },
           "regions": {
             "type": "keyword"
-          },
-          "analysis": {
-            "type": "keyword"
+          }
+        }
+      },
+      "metrics": {
+        "dynamic": "strict",
+        "type": "object",
+        "properties": {
+          "pipeline": {
+            "type": "nested",
+            "dynamic": "strict",
+            "properties": {
+              "processor": {
+                "type": "keyword",
+                "fields": {
+                  "fulltext": {
+                    "type": "text",
+                    "analyzer": "default"
+                  }
+                }
+              },
+              "module": {
+                "type": "keyword",
+                "fields": {
+                  "fulltext": {
+                    "type": "text",
+                    "analyzer": "default"
+                  }
+                }
+              },
+              "namespace": {
+                "type": "keyword",
+                "fields": {
+                  "fulltext": {
+                    "type": "text",
+                    "analyzer": "default"
+                  }
+                }
+              },
+              "version": {
+                "type": "integer"
+              },
+              "executionCount": {
+                "type": "integer"
+              },
+              "executionTimeTotal": {
+                "type": "double"
+              },
+              "executionTimeLast": {
+                "type": "double"
+              },
+              "executionDateLast": {
+                "type": "date"
+              },
+              "error": {
+                "type": "keyword"
+              },
+              "errorMessage": {
+                "type": "keyword"
+              }
+            }
           }
         }
       },

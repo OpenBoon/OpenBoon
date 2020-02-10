@@ -1,7 +1,228 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AccountProfileForm /> should render properly 1`] = `
-.emotion-12 {
+exports[`<AccountProfileForm /> should render properly when a user cancels 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    User ID: jane.doe@zorroa.com
+  </h3>,
+  .emotion-0 {
+  padding-top: 24px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+<div
+    className="emotion-0"
+  >
+    Username
+  </div>,
+  .emotion-0 {
+  color: #808080;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 400;
+  padding-bottom: 24px;
+}
+
+<div
+    className="emotion-0"
+  >
+     
+  </div>,
+  .emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #73b61c;
+}
+
+.emotion-0:hover {
+  background-color: #b8d652;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<button
+    className="emotion-0"
+    onClick={[Function]}
+    type="button"
+  >
+    Edit Username
+  </button>,
+]
+`;
+
+exports[`<AccountProfileForm /> should render properly when a user edits username 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    User ID: jane.doe@zorroa.com
+  </h3>,
+  .emotion-0 {
+  padding-top: 24px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+<div
+    className="emotion-0"
+  >
+    Username
+  </div>,
+  .emotion-0 {
+  color: #808080;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 400;
+  padding-bottom: 24px;
+}
+
+<div
+    className="emotion-0"
+  >
+     
+  </div>,
+  .emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #73b61c;
+}
+
+.emotion-0:hover {
+  background-color: #b8d652;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<button
+    className="emotion-0"
+    onClick={[Function]}
+    type="button"
+  >
+    Edit Username
+  </button>,
+]
+`;
+
+exports[`<AccountProfileForm /> should render properly when a user edits username 2`] = `
+Array [
+  .emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    User ID: jane.doe@zorroa.com
+  </h3>,
+  .emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -53,9 +274,18 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
   padding-top: 8px;
 }
 
-.emotion-11 {
-  padding-top: 12px;
-  padding-bottom: 12px;
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-12 button,
+.emotion-12 a {
+  margin-right: 16px;
 }
 
 .emotion-10 {
@@ -102,88 +332,335 @@ exports[`<AccountProfileForm /> should render properly 1`] = `
 .emotion-10,
 .emotion-10:hover,
 .emotion-10:visited {
-  background-color: #73b61c;
+  background-color: #808080;
 }
 
 .emotion-10:hover {
-  background-color: #b8d652;
+  opacity: 0.5;
 }
 
 .emotion-10[aria-disabled=true] {
   background-color: #808080;
 }
 
+.emotion-11 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-11:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-11[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-11,
+.emotion-11:hover,
+.emotion-11:visited {
+  background-color: #73b61c;
+}
+
+.emotion-11:hover {
+  background-color: #b8d652;
+}
+
+.emotion-11[aria-disabled=true] {
+  background-color: #808080;
+}
+
 <form
-  action=""
-  className="emotion-12"
-  method="post"
-  onSubmit={[Function]}
->
-  <div
-    className="emotion-4"
+    action=""
+    className="emotion-13"
+    method="post"
+    onSubmit={[Function]}
   >
-    <label
-      className="emotion-0"
-      htmlFor="firstName"
+    <div
+      className="emotion-4"
     >
-      First Name
-    </label>
+      <label
+        className="emotion-0"
+        htmlFor="firstName"
+      >
+        First Name
+      </label>
+      <div
+        className="emotion-2"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-1"
+          id="firstName"
+          name="firstName"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-3"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <label
+        className="emotion-0"
+        htmlFor="lastName"
+      >
+        Last Name
+      </label>
+      <div
+        className="emotion-2"
+      >
+        <input
+          className="emotion-1"
+          id="lastName"
+          name="lastName"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-3"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-12"
+    >
+      <button
+        className="emotion-10"
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+      <button
+        aria-disabled={true}
+        className="emotion-11"
+        onClick={[Function]}
+        type="submit"
+      >
+        Save
+      </button>
+    </div>
+  </form>,
+]
+`;
+
+exports[`<AccountProfileForm /> should render properly when a user edits username 3`] = `
+Array [
+  .emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  justify-self: flex-start;
+  color: #000000;
+  font-weight: 500;
+  background-color: #ffffff;
+  border: 1px solid #4ac565;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-0 {
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  background-color: #4ac565;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+<div
+    className="emotion-3"
+  >
     <div
       className="emotion-2"
     >
-      <input
-        autoFocus={true}
+      <div
+        className="emotion-0"
+      >
+        <svg
+          data-file-name="checkmark.svg"
+          width={20}
+        />
+      </div>
+      <div
         className="emotion-1"
-        id="firstName"
-        name="firstName"
-        onChange={[Function]}
-        type="text"
-        value="Jane"
-      />
+      >
+        New Name Saved!
+      </div>
     </div>
-    <div
-      className="emotion-3"
-    >
-       
-    </div>
-  </div>
-  <div
-    className="emotion-4"
+  </div>,
+  .emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+<h3
+    className="emotion-0"
   >
-    <label
-      className="emotion-0"
-      htmlFor="lastName"
-    >
-      Last Name
-    </label>
-    <div
-      className="emotion-2"
-    >
-      <input
-        className="emotion-1"
-        id="lastName"
-        name="lastName"
-        onChange={[Function]}
-        type="text"
-        value="Doe"
-      />
-    </div>
-    <div
-      className="emotion-3"
-    >
-       
-    </div>
-  </div>
-  <div
-    className="emotion-11"
+    User ID: jane.doe@zorroa.com
+  </h3>,
+  .emotion-0 {
+  padding-top: 24px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+<div
+    className="emotion-0"
   >
-    <button
-      className="emotion-10"
-      onClick={[Function]}
-      type="submit"
-    >
-      Save Changes
-    </button>
-  </div>
-</form>
+    Username
+  </div>,
+  .emotion-0 {
+  color: #808080;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 400;
+  padding-bottom: 24px;
+}
+
+<div
+    className="emotion-0"
+  >
+    Jane Doe
+  </div>,
+  .emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #73b61c;
+}
+
+.emotion-0:hover {
+  background-color: #b8d652;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<button
+    className="emotion-0"
+    onClick={[Function]}
+    type="button"
+  >
+    Edit Username
+  </button>,
+]
 `;

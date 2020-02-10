@@ -40,7 +40,7 @@ describe('<Projects />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should redirect if there is no project id', () => {
+  it('should redirect if there is no project id and the route requires a project id', () => {
     const mockFn = jest.fn()
 
     require('next/router').__setMockPushFunction(mockFn)
@@ -62,6 +62,21 @@ describe('<Projects />', () => {
     )
 
     expect(component.toJSON()).toBeNull()
+  })
+
+  it('should not redirect if there is no project id and the route does not require a project id', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/account',
+      query: {},
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: projects,
+    })
+
+    const component = TestRenderer.create(<Projects>Hello World</Projects>)
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should redirect if the projectId is not of an authorized project', () => {

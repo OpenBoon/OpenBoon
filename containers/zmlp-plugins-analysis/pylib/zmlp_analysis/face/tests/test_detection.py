@@ -37,5 +37,5 @@ class ZmlpFaceDetectionProcessorTests(PluginUnitTestCase):
         assert None is element.get('labels')
         assert [559, 464, 401, 259] == element['rect']
         assert 'proxy/zmlpFaceDetection_200x200.jpg' == element['proxy']
-        assert 'zmlpFaceDetection' == element['analysis']
+        assert 'zmlp.faceDetection' == element['analysis']
         assert None is element.get('vector')

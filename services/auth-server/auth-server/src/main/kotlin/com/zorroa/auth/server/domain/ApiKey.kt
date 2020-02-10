@@ -64,30 +64,25 @@ class ApiKey(
     @Column(name = "permissions", nullable = false)
     @Convert(converter = StringSetConverter::class)
     @ApiModelProperty("The permissions or roles for the ApiKey")
-    val permissions: Set<String>
+    val permissions: Set<String>,
+
+    @Column(name = "time_created", nullable = false)
+    @ApiModelProperty("The time the key was created.")
+    val timeCreated: Long,
+
+    @Column(name = "time_modified", nullable = false)
+    @ApiModelProperty("The time the key was modified.")
+    val timeModified: Long,
+
+    @Column(name = "actor_created", nullable = false)
+    @ApiModelProperty("The actor that created the key.")
+    val actorCreated: String,
+
+    @Column(name = "actor_modified", nullable = false)
+    @ApiModelProperty("The actor that modified the key.")
+    val actorModified: String
+
 ) {
-
-    /**
-     * Only used in tests.
-     */
-    @JsonIgnore
-    fun getJwtToken(timeout: Int = 60, projId: UUID? = null): String {
-        val algo = Algorithm.HMAC512(secretKey)
-        val spec = JWT.create().withIssuer("zmlp")
-            .withClaim("accessKey", accessKey)
-
-        if (projId != null) {
-            spec.withClaim("projectId", projId.toString())
-        }
-
-        if (timeout > 0) {
-            val c = Calendar.getInstance()
-            c.time = Date()
-            c.add(Calendar.SECOND, timeout)
-            spec.withExpiresAt(c.time)
-        }
-        return spec.sign(algo)
-    }
 
     @JsonIgnore
     fun getValidationKey(): ValidationKey {
@@ -163,6 +158,28 @@ class ValidationKey(
      */
     fun getZmlpActor(projectId: UUID? = null): ZmlpActor {
         return ZmlpActor(id, projectId ?: this.projectId, name, permissions.map { Permission.valueOf(it) }.toSet())
+    }
+
+    /**
+     * Only used in tests.
+     */
+    @JsonIgnore
+    fun getJwtToken(timeout: Int = 60, projId: UUID? = null): String {
+        val algo = Algorithm.HMAC512(secretKey)
+        val spec = JWT.create().withIssuer("zmlp")
+            .withClaim("accessKey", accessKey)
+
+        if (projId != null) {
+            spec.withClaim("projectId", projId.toString())
+        }
+
+        if (timeout > 0) {
+            val c = Calendar.getInstance()
+            c.time = Date()
+            c.add(Calendar.SECOND, timeout)
+            spec.withExpiresAt(c.time)
+        }
+        return spec.sign(algo)
     }
 }
 

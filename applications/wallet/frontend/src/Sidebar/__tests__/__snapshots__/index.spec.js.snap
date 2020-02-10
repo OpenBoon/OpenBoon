@@ -157,7 +157,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
       >
         <a
           className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/account"
+          href="/account"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -339,7 +339,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
       >
         <a
           className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/account"
+          href="/account"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
