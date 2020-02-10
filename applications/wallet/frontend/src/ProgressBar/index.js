@@ -8,7 +8,7 @@ import ProgressBarLegend from './Legend'
 import { TASK_STATUS_COLORS } from './helpers'
 
 const CONTAINER_HEIGHT = 16
-const CONTAINER_WIDTH = 212
+export const CONTAINER_WIDTH = 212
 
 const ProgressBar = ({ taskCounts }) => {
   const [showLegend, setShowLegend] = useState(false)
