@@ -87,7 +87,7 @@ Array [
 }
 
 .emotion-0:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-0[aria-disabled=true] {
@@ -191,7 +191,7 @@ Array [
 }
 
 .emotion-0:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-0[aria-disabled=true] {
@@ -391,7 +391,7 @@ Array [
 }
 
 .emotion-11:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-11[aria-disabled=true] {
@@ -648,7 +648,7 @@ Array [
 }
 
 .emotion-0:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-0[aria-disabled=true] {

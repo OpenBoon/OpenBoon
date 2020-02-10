@@ -223,7 +223,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 }
 
 .emotion-105:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-105[aria-disabled=true] {
@@ -975,7 +975,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 }
 
 .emotion-105:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-105[aria-disabled=true] {

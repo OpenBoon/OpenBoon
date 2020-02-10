@@ -216,7 +216,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 }
 
 .emotion-104:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-104[aria-disabled=true] {
@@ -803,7 +803,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 }
 
 .emotion-14:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-14[aria-disabled=true] {
@@ -1399,7 +1399,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 }
 
 .emotion-104:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-104[aria-disabled=true] {

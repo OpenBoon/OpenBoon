@@ -257,7 +257,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
 }
 
 .emotion-35:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-35[aria-disabled=true] {

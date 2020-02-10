@@ -170,7 +170,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 }
 
 .emotion-16:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-16[aria-disabled=true] {
@@ -350,7 +350,7 @@ exports[`<AccountPasswordForm /> should render properly 2`] = `
 }
 
 .emotion-4:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-4[aria-disabled=true] {
@@ -621,7 +621,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 }
 
 .emotion-16:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-16[aria-disabled=true] {
@@ -908,7 +908,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 }
 
 .emotion-16:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-16[aria-disabled=true] {

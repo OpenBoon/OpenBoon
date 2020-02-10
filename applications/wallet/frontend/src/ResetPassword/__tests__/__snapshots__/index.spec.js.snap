@@ -159,7 +159,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
 }
 
 .emotion-12:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-12[aria-disabled=true] {
@@ -428,7 +428,7 @@ exports[`<ResetPassword /> should render properly with <FormSuccess/> 1`] = `
 }
 
 .emotion-16:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-16[aria-disabled=true] {

@@ -325,7 +325,7 @@ exports[`<Login /> should render properly 1`] = `
 }
 
 .emotion-22:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-22[aria-disabled=true] {
