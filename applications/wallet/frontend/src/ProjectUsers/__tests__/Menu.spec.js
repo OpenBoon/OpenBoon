@@ -28,9 +28,9 @@ describe('<ProjectUsersMenu />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Select Delete
+    // Select Remove
     act(() => {
-      component.root.findByProps({ children: 'Delete' }).props.onClick()
+      component.root.findByProps({ children: 'Remove' }).props.onClick()
     })
 
     // Cancel
@@ -45,16 +45,14 @@ describe('<ProjectUsersMenu />', () => {
         .props.onClick()
     })
 
-    // Select Delete
+    // Select Remove
     act(() => {
-      component.root.findByProps({ children: 'Delete' }).props.onClick()
+      component.root.findByProps({ children: 'Remove' }).props.onClick()
     })
 
     // Confirm
     await act(async () => {
-      component.root
-        .findByProps({ children: 'Delete Permanently' })
-        .props.onClick()
+      component.root.findByProps({ children: 'Remove User' }).props.onClick()
     })
 
     expect(fetch.mock.calls.length).toEqual(1)

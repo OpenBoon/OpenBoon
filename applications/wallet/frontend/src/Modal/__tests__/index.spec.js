@@ -9,7 +9,13 @@ describe('<Modal />', () => {
     Object.defineProperty(document, 'getElementById', { value: mockFn })
 
     const component = TestRenderer.create(
-      <Modal onCancel={noop} onConfirm={noop} />,
+      <Modal
+        title="Delete API Key"
+        message="Deleting this key cannot be undone."
+        action="Delete Permanently"
+        onCancel={noop}
+        onConfirm={noop}
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
