@@ -70,7 +70,11 @@ const JobsRow = ({
           </Link>
         )}
       </td>
-      <td css={{ minWidth: CONTAINER_WIDTH + spacing.spacious }}>
+      <td
+        css={{
+          minWidth: CONTAINER_WIDTH + spacing.normal * 2,
+          overflow: 'visible',
+        }}>
         <ProgressBar taskCounts={taskCounts} />
       </td>
       <td>

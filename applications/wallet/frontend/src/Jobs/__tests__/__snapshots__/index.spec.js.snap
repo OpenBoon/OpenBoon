@@ -367,6 +367,7 @@ Array [
 
 .emotion-19 {
   min-width: 244px;
+  overflow: visible;
 }
 
 .emotion-18 {
