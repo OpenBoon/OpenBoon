@@ -24,7 +24,7 @@ const ProjectUsersEditForm = ({ projectId, user, permissions }) => {
 
   return (
     <Form>
-      <SectionTitle>User ID: {user.email}</SectionTitle>
+      <SectionTitle>Email: {user.email}</SectionTitle>
 
       <FormAlert
         errorMessage={state.error}

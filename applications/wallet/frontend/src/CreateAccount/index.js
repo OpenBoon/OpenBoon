@@ -59,7 +59,7 @@ const CreateAccount = () => {
             setErrorMessage={() => dispatch({ error: '' })}
           />
 
-          <SectionTitle>User Name</SectionTitle>
+          <SectionTitle>Name</SectionTitle>
 
           <Input
             autoFocus

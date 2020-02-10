@@ -312,7 +312,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
       <h3
         className="emotion-7"
       >
-        User Name
+        Name
       </h3>
       <div
         className="emotion-12"

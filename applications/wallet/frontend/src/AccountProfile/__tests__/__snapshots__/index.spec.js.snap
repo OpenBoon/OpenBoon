@@ -174,12 +174,12 @@ exports[`<AccountProfile /> should render properly 1`] = `
   <h3
     className="emotion-7"
   >
-    User ID: jane.doe@zorroa.com
+    Email: jane.doe@zorroa.com
   </h3>
   <div
     className="emotion-8"
   >
-    Username
+    Name
   </div>
   <div
     className="emotion-9"
@@ -191,7 +191,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
     onClick={[Function]}
     type="button"
   >
-    Edit Username
+    Edit
   </button>
 </div>
 `;
