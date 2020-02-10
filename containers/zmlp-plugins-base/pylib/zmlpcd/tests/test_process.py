@@ -91,11 +91,8 @@ class ProcessorExecutorTests(unittest.TestCase):
         metrics = frame.asset["metrics"]["pipeline"][0]
         assert "zmlpsdk.testing.TestProcessor" == metrics['processor']
         assert None is metrics["module"]
-        assert 2 == metrics["version"]
-        assert 1 == metrics["executionCount"]
-        assert 10 == metrics["executionTimeTotal"]
-        assert None is not metrics["executionDateLast"]
-        assert "test" == metrics["namespace"]
+        assert 10 == metrics["executionTime"]
+        assert None is not metrics["executionDate"]
 
     @patch.object(Reactor, 'check_expand')
     def test_teardown_processor(self, react_patch):
@@ -143,7 +140,8 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
             "args": {},
-            "image": "plugins-py3-base:latest"
+            "image": "plugins-py3-base:latest",
+            "checksum": 122
         }
         frame = Frame(TestAsset())
         wrapper = self.pe.get_processor_wrapper(ref)
@@ -153,7 +151,40 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert wrapper.is_already_processed(frame.asset)
 
         # Now override with _force=true
-        ref["args"]["_force"] = True
+        ref["force"] = True
+        assert not wrapper.is_already_processed(frame.asset)
+
+
+    def test_is_aleady_processed_checksum_check(self):
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": "plugins-py3-base:latest",
+            "checksum": 122
+        }
+        frame = Frame(TestAsset())
+        wrapper = self.pe.get_processor_wrapper(ref)
+
+        assert not wrapper.is_already_processed(frame.asset)
+        wrapper.apply_metrics(frame.asset, 10, None)
+        assert wrapper.is_already_processed(frame.asset)
+
+        frame.asset["metrics"]["pipeline"][0]["checksum"] = 500
+        assert not wrapper.is_already_processed(frame.asset)
+
+    def test_is_aleady_processed_error_check(self):
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": "plugins-py3-base:latest",
+            "checksum": 122
+        }
+        frame = Frame(TestAsset())
+        wrapper = self.pe.get_processor_wrapper(ref)
+
+        assert not wrapper.is_already_processed(frame.asset)
+        wrapper.apply_metrics(frame.asset, 10, "warning")
+        # errors are always not processed.
         assert not wrapper.is_already_processed(frame.asset)
 
 

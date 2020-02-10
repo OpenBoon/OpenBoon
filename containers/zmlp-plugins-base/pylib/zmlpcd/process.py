@@ -244,12 +244,17 @@ class ProcessorWrapper(object):
         processed = False
 
         try:
+            # There is a finally clause down below that still handles
+            # emitting the asset back to the Analyst on these
+            # early return methods.
+
             if not self.instance:
                 logger.warning("Execute warning, instance for '{}' does not exist."
                                .format(self.ref))
                 return
 
             if self.is_already_processed(frame.asset):
+                logger.info("The asset {} is already processed".format(frame.asset.id))
                 return
 
             if not is_file_type_allowed(frame.asset, self.instance.file_types):
@@ -339,6 +344,9 @@ class ProcessorWrapper(object):
             metrics = []
             asset.set_attr("metrics.pipeline", metrics)
 
+        # We're assumimg that processors are unique here.
+        # Which isn't always or technically the case, but we
+        # could move that direction using group processors.
         def find(lst, value):
             for i, dic in enumerate(lst):
                 if dic.get("processor") == value:
@@ -350,22 +358,16 @@ class ProcessorWrapper(object):
         if metric_idx == -1:
             metric = {
                 "processor": class_name,
-                "module": self.ref.get("module"),
-                "version":  self.instance.version,
-                "executionCount": 0,
-                "executionTimeTotal": 0,
-                "executionTimeLast": 0,
-                "executionDateLast": None
+                "module": self.ref.get("module")
             }
             metrics.append(metric)
         else:
             metric = metrics[metric_idx]
 
-        metric["namespace"] = self.instance.namespace
-        metric["executionCount"] += 1
-        metric["executionTimeTotal"] += exec_time
-        metric["executionTimeLast"] = exec_time
-        metric["executionDateLast"] = datetime.datetime.now().isoformat()
+        metric["checksum"] = self.ref.get("checksum", 0)
+        metric["executionTime"] = exec_time
+        metric["executionDate"] = datetime.datetime.now().isoformat()
+
         if error:
             metric["error"] = error
 
@@ -380,15 +382,18 @@ class ProcessorWrapper(object):
             bool True if the asset was processed by the processor
         """
         # If force is set at all, to anything, then its not already processed
-        if "_force" in self.ref["args"]:
+        if self.ref.get("force"):
             return False
 
         metrics = asset.get_attr("metrics.pipeline")
         if not metrics:
             return False
         else:
-            return any((m["processor"] == self.ref["className"]
-                        and m["version"] == self.instance.version for m in metrics))
+            # Check if the class and processor are the same and no error exists
+            value = ((m["processor"] == self.ref["className"]
+                      and m["checksum"] == self.ref.get("checksum"))
+                     and not m.get("error") for m in metrics)
+            return any(value)
 
 
 class AssetConsumer(object):
