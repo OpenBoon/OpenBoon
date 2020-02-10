@@ -25,15 +25,15 @@ const SidebarLink = ({ href, children }) => {
             padding: spacing.moderate,
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
-            backgroundColor: isCurrentPage ? colors.structure.smoke : 'none',
-            color: isCurrentPage ? colors.key.one : colors.structure.steel,
+            backgroundColor: isCurrentPage ? colors.structure.mattGrey : 'none',
+            color: isCurrentPage ? colors.key.white : colors.structure.zinc,
             svg: {
               marginRight: spacing.moderate,
             },
             ':hover': {
               textDecoration: 'none',
-              color: isCurrentPage ? colors.key.one : colors.structure.pebble,
-              backgroundColor: colors.structure.smoke,
+              color: isCurrentPage ? colors.structure.white : colors.key.one,
+              backgroundColor: colors.structure.mattGrey,
             },
           }}>
           {children}
