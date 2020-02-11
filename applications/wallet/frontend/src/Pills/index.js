@@ -13,6 +13,7 @@ const Pills = ({ children }) => {
         paddingBottom: spacing.small,
         marginRight: spacing.base,
         borderRadius: constants.borderRadius.large,
+        fontFamily: 'Roboto Condensed',
       }}>
       {child.replace(/([A-Z])/g, match => ` ${match}`)}
     </span>
