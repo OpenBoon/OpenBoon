@@ -31,6 +31,7 @@ const CheckboxGroup = ({ legend, options, onClick }) => {
           value={option.key}
           label={option.label}
           legend={option.legend}
+          icon={option.icon}
           initialValue={option.initialValue}
           onClick={value => onClick({ [option.key]: value })}
         />
@@ -45,6 +46,7 @@ CheckboxGroup.propTypes = {
     PropTypes.shape({
       key: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
+      icon: PropTypes.node.isRequired,
       legend: PropTypes.string.isRequired,
       initialValue: PropTypes.bool.isRequired,
     }),

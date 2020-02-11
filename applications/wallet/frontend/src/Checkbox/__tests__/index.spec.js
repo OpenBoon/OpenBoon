@@ -10,6 +10,7 @@ describe('<Checkbox />', () => {
       <Checkbox
         value="checkbox"
         label="Checkbox"
+        icon=""
         legend=""
         onClick={mockFn}
         initialValue={false}

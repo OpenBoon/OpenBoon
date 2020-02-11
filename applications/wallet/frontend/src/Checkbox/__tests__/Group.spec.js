@@ -14,6 +14,7 @@ describe('<CheckboxGroup />', () => {
           {
             key: 'api',
             label: 'API',
+            icon: '',
             legend: "Dude You're Getting A Telescope",
             initialValue: true,
           },

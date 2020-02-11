@@ -44,6 +44,13 @@ describe('<DataSourcesAddForm />', () => {
         .props.onChange({ target: { value: 'jkdT9Uherdozguie89FHIJS' } })
     })
 
+    // Select file type
+    act(() => {
+      component.root
+        .findByProps({ type: 'checkbox', value: 'Image Files' })
+        .props.onClick()
+    })
+
     act(() => {
       component.root
         .findByProps({ children: 'Create Data Source' })

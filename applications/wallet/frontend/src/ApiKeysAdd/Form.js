@@ -69,6 +69,7 @@ const ApiKeysAddForm = () => {
         options={permissions.map(({ name, description }) => ({
           key: name,
           label: name.replace(/([A-Z])/g, match => ` ${match}`),
+          icon: '',
           legend: description,
           initialValue: false,
         }))}
