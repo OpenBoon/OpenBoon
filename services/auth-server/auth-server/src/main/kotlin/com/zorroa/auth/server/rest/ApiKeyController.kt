@@ -42,8 +42,7 @@ class ApiKeyController(
     @PutMapping("/auth/v1/apikey/{id}")
     @ApiOperation("Update Api Key")
     fun update(@PathVariable id: UUID, @RequestBody spec: ApiKeySpec): ApiKey {
-        val update = apiKeyService.update(id, spec)
-        return update
+        return apiKeyService.update(id, spec)
     }
 
     @GetMapping("/auth/v1/apikey/{id}")
