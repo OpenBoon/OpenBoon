@@ -118,5 +118,366 @@ Array [
       </li>
     </ul>
   </nav>,
+  .emotion-23 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-3 {
+  position: relative;
+}
+
+.emotion-2 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #2e2e2e;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-2:focus {
+  border: 2px solid #73b61c;
+  background-color: #ffffff;
+  outline: #73b61c;
+  color: #000000;
+}
+
+.emotion-4 {
+  padding-top: 8px;
+}
+
+.emotion-16 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-12 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-14 {
+  position: relative;
+}
+
+.emotion-13 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #2e2e2e;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-13:focus {
+  border: 2px solid #73b61c;
+  background-color: #ffffff;
+  outline: #73b61c;
+  color: #000000;
+}
+
+.emotion-15 {
+  padding-top: 8px;
+}
+
+.emotion-19 {
+  margin: 0;
+  padding-top: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-22 button,
+.emotion-22 a {
+  margin-right: 16px;
+}
+
+.emotion-20 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-20:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-20[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-20,
+.emotion-20:hover,
+.emotion-20:visited {
+  background-color: #808080;
+}
+
+.emotion-20:hover {
+  opacity: 0.5;
+}
+
+.emotion-20[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-21 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-21:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-21[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-21,
+.emotion-21:hover,
+.emotion-21:visited {
+  background-color: #73b61c;
+}
+
+.emotion-21:hover {
+  background-color: #96c955;
+}
+
+.emotion-21[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-23"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <h3
+      className="emotion-0"
+    >
+      Data Source Name
+    </h3>
+    <div
+      className="emotion-5"
+    >
+      <label
+        className="emotion-1"
+        htmlFor="name"
+      >
+        Name
+      </label>
+      <div
+        className="emotion-3"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-2"
+          id="name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-4"
+      >
+         
+      </div>
+    </div>
+    <h3
+      className="emotion-0"
+    >
+      Connect to Source: Google Cloud Storage
+    </h3>
+    <div
+      className="emotion-5"
+    >
+      <label
+        className="emotion-1"
+        htmlFor="url"
+      >
+        Bucket Address
+      </label>
+      <div
+        className="emotion-3"
+      >
+        <input
+          className="emotion-2"
+          id="url"
+          name="url"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-4"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-16"
+    >
+      <label
+        className="emotion-12"
+        htmlFor="key"
+      >
+        If this bucket is private, please paste the JSON service account key:
+      </label>
+      <div
+        className="emotion-14"
+      >
+        <textarea
+          className="emotion-13"
+          id="key"
+          name="key"
+          onChange={[Function]}
+          rows="5"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-15"
+      >
+         
+      </div>
+    </div>
+    <h3
+      className="emotion-0"
+    >
+      Select File Types to Import
+    </h3>
+    <h3
+      className="emotion-0"
+    >
+      Select Analysis
+    </h3>
+    <p
+      className="emotion-19"
+    >
+      Choose the type of analysis you would like performed on your data set:
+    </p>
+    <div
+      className="emotion-22"
+    >
+      <a
+        className="emotion-20"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Cancel
+      </a>
+      <button
+        aria-disabled={true}
+        className="emotion-21"
+        onClick={[Function]}
+        type="submit"
+      >
+        Create Data Source
+      </button>
+    </div>
+  </form>,
 ]
 `;
