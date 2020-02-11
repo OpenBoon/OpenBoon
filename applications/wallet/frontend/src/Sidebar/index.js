@@ -57,6 +57,11 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
             Job Queue
           </SidebarLink>
 
+          <SidebarLink href="/[projectId]/data-sources">
+            <KeySvg width={ICON_WIDTH} aria-hidden />
+            Data Sources
+          </SidebarLink>
+
           <SidebarLink href="/[projectId]/api-keys">
             <KeySvg width={ICON_WIDTH} aria-hidden />
             API Keys
