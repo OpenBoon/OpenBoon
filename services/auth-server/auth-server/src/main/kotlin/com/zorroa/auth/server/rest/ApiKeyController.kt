@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -36,6 +37,13 @@ class ApiKeyController(
     @ApiOperation("Create Api Key")
     fun create(@RequestBody spec: ApiKeySpec): ApiKey {
         return apiKeyService.create(spec)
+    }
+
+    @PutMapping("/auth/v1/apikey/{id}")
+    @ApiOperation("Update Api Key")
+    fun update(@PathVariable id: UUID, @RequestBody spec: ApiKeySpec): ApiKey {
+        val update = apiKeyService.update(id, spec)
+        return update
     }
 
     @GetMapping("/auth/v1/apikey/{id}")
