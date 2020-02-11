@@ -325,6 +325,7 @@ Array [
   border-radius: 2px;
   color: #c92300;
   background-color: #191919;
+  font-family: Roboto Condensed;
 }
 
 .emotion-10 {
@@ -527,6 +528,7 @@ Array [
   border-radius: 2px;
   color: #ebb52e;
   background-color: #191919;
+  font-family: Roboto Condensed;
 }
 
 .emotion-29 {
@@ -560,6 +562,7 @@ Array [
   border-radius: 2px;
   color: #4ac565;
   background-color: #191919;
+  font-family: Roboto Condensed;
 }
 
 .emotion-40 {

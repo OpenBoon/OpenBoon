@@ -1,3 +1,4 @@
+import time
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
@@ -27,7 +28,8 @@ class ProjectUserViewSet(BaseProjectViewSet):
                                     {"email": "user@email.com", "permissions": ["AssetsRead"]},
                                     {"email": "user2@email.com", "permissions": ["AssetsRead"]}
                                 ]}`
-    * **PUT/PATCH** _api/v1/projects/$Project_Id/users/$User_Id/_ - Update a Users permissions
+    * **PUT** _api/v1/projects/$Project_Id/users/$User_Id/_ - Replace a Users permissions
+        - To modify: `{"permissions": ["$NewPermissionList"]}`
     * **DELETE** _api/v1/projects/$Project_Id/users/$User_Id/_ - Remove $User_Id from $Project_Id
 
     """
@@ -91,23 +93,19 @@ class ProjectUserViewSet(BaseProjectViewSet):
         # Get the User and add the appropriate Membership & ApiKey
         try:
             email = data['email']
-        except KeyError:
-            return Response(data={'detail': 'No email given.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        try:
             permissions = data['permissions']
         except KeyError:
-            return Response(data={'detail': 'No permissions given.'},
+            return Response(data={'detail': 'Email and Permissions are required.'},
                             status=status.HTTP_400_BAD_REQUEST)
-        # Get the current project
+
+        # Get the current project and User
         project = self.get_project_object(project_pk)
-        # Search for an existing user
         try:
             user = User.objects.get(username=email)
         except User.DoesNotExist:
-            # Should we actually silently fail and return a 200 here?
             return Response(data={'detail': 'No user with the given email.'},
                             status=status.HTTP_404_NOT_FOUND)
+
         # Create an apikey with the given permissions
         body = {'name': email, 'permissions': permissions}
         try:
@@ -115,17 +113,51 @@ class ProjectUserViewSet(BaseProjectViewSet):
         except ZmlpInvalidRequestException:
             return Response(data={'detail': "Unable to create apikey."},
                             status=status.HTTP_400_BAD_REQUEST)
-        encoded_apikey = encode_apikey(apikey).decode('utf-8')
+
         # Create a membership for given user
+        encoded_apikey = encode_apikey(apikey).decode('utf-8')
         Membership.objects.create(user=user, project=project, apikey=encoded_apikey)
+
         # Serialize the Resulting user like the Detail endpoint
         serializer = self.get_serializer(user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, project_pk, client, pk):
-        # Modify the attributes of the specified user, updating the apikey & membership
-        # if necessary
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        # Modify the permissions of the given user
+        try:
+            new_permissions = request.data['permissions']
+        except KeyError:
+            return Response(data={'detail': 'Permissions must be supplied.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        membership = self.get_object(pk, project_pk)
+        email = membership.user.username
+        apikey = decode_apikey(membership.apikey)
+        apikey_id = apikey['id']
+
+        # TODO: Replace Delete/Create logic when Auth Server supports PUT
+        # Create new Key first and append epoch time (milli) to get a readable unique name
+        body = {'name': f'{email}_{int(time.time()  * 1000)}',
+                'permissions': new_permissions}
+        try:
+            new_apikey = client.post('/auth/v1/apikey', body)
+        except ZmlpInvalidRequestException:
+            return Response(data={'detail': "Unable to create apikey."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Delete old key on success
+        try:
+            response = client.delete(f'/auth/v1/apikey/{apikey_id}')
+        except ZmlpInvalidRequestException:
+            return Response(data={'detail': "Unable to delete apikey."},
+                            status=status.HTTP_400_BAD_REQUEST)
+        if not response.status_code == 200:
+            return Response(data={'detail': 'Error deleting apikey.'},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        membership.apikey = encode_apikey(new_apikey).decode('utf-8')
+        membership.save()
+        serializer = self.get_serializer(membership.user, context={'request': request})
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     @transaction.atomic
     def destroy(self, request, project_pk, client, pk):
@@ -149,9 +181,14 @@ class ProjectUserViewSet(BaseProjectViewSet):
         except KeyError:
             return Response(data={'detail': 'Apikey is incomplete.'},
                             status=status.HTTP_400_BAD_REQUEST)
-        response = client.delete(f'/auth/v1/apikey/{apikey_id}')
+        try:
+            response = client.delete(f'/auth/v1/apikey/{apikey_id}')
+        except ZmlpInvalidRequestException:
+            return Response(data={'detail': "Unable to delete apikey."},
+                            status=status.HTTP_400_BAD_REQUEST)
         if not response.status_code == 200:
-            return Response(data={'detail': 'Unable to delete apikey in ZMLP.'},
+            return Response(data={'detail': 'Error deleting apikey.'},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         membership.delete()
         return Response(status=status.HTTP_200_OK)
