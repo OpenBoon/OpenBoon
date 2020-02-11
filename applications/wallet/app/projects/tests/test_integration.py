@@ -208,7 +208,7 @@ class TestProjectViewSet:
         monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
         api_client.force_authenticate(project_zero_user)
 
-        body = {'id': 1234, 'name': 'Test'}
+        body = {'id': 'zadscadfa', 'name': 'Test'}
         response = api_client.post(reverse('project-list'), body)
         assert response.status_code == 400
         assert response.json()['id'][0] == 'Must be a valid UUID.'
