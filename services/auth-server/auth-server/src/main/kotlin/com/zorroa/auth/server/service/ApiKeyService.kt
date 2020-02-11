@@ -91,7 +91,7 @@ class ApiKeyServiceImpl constructor(
         val time = System.currentTimeMillis()
         val actor = getZmlpActor()
 
-        val apiKey:ApiKey = get(id);
+        val apiKey: ApiKey = get(id)
 
         val key = ApiKey(
             apiKey.id,
