@@ -99,8 +99,8 @@ const DataSourcesAddForm = () => {
         options={FILE_TYPES.map(({ name, description, icon }) => ({
           key: name,
           label: name,
-          legend: description,
           icon: <img src={icon} alt={name} width="40px" />,
+          legend: description,
           initialValue: false,
         }))}
       />

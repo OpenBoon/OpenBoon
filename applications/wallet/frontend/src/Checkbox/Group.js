@@ -30,8 +30,8 @@ const CheckboxGroup = ({ legend, options, onClick }) => {
           key={option.key}
           value={option.key}
           label={option.label}
-          legend={option.legend}
           icon={option.icon}
+          legend={option.legend}
           initialValue={option.initialValue}
           onClick={value => onClick({ [option.key]: value })}
         />
