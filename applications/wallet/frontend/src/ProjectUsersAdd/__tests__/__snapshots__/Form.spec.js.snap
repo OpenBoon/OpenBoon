@@ -246,7 +246,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   >
     <label
       className="emotion-1"
-      htmlFor="email"
+      htmlFor="emails"
     >
       Email(s)
     </label>
@@ -256,8 +256,8 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
       <input
         autoFocus={true}
         className="emotion-2"
-        id="email"
-        name="email"
+        id="emails"
+        name="emails"
         onChange={[Function]}
         type="text"
         value=""
@@ -1016,7 +1016,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   >
     <label
       className="emotion-1"
-      htmlFor="email"
+      htmlFor="emails"
     >
       Email(s)
     </label>
@@ -1026,8 +1026,8 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
       <input
         autoFocus={true}
         className="emotion-2"
-        id="email"
-        name="email"
+        id="emails"
+        name="emails"
         onChange={[Function]}
         type="text"
         value="jane@email.com"

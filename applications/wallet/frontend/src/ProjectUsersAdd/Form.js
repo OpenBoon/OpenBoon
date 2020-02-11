@@ -10,9 +10,16 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import Loading from '../Loading'
 
+import { onSubmit } from './helpers'
+
+import ProjectUsersAddFormSuccess from './FormSuccess'
+
 const INITIAL_STATE = {
-  email: '',
+  emails: '',
   permissions: {},
+  success: false,
+  usersAdded: [],
+  usersNeedAccount: [],
   errors: {},
 }
 
@@ -31,18 +38,30 @@ const ProjectUsersAddForm = () => {
 
   if (!Array.isArray(permissions)) return <Loading />
 
+  if (state.success) {
+    return (
+      <ProjectUsersAddFormSuccess
+        projectId={projectId}
+        usersAdded={state.usersAdded}
+        usersNeedAccount={state.usersNeedAccount}
+        permissions={state.permissions}
+        onReset={() => dispatch(INITIAL_STATE)}
+      />
+    )
+  }
+
   return (
     <Form>
       <SectionTitle>Invite User to view projects</SectionTitle>
 
       <Input
         autoFocus
-        id="email"
+        id="emails"
         variant={INPUT_VARIANTS.SECONDARY}
         label="Email(s)"
         type="text"
-        value={state.email}
-        onChange={({ target: { value } }) => dispatch({ email: value })}
+        value={state.emails}
+        onChange={({ target: { value } }) => dispatch({ emails: value })}
         hasError={state.errors.name !== undefined}
         errorMessage={state.errors.name}
       />
@@ -64,8 +83,8 @@ const ProjectUsersAddForm = () => {
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={console.warn}
-          isDisabled={!state.email}>
+          onClick={() => onSubmit({ projectId, dispatch, state })}
+          isDisabled={!state.emails}>
           Send Invite
         </Button>
       </ButtonGroup>

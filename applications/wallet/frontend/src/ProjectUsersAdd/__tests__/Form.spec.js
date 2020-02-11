@@ -24,7 +24,7 @@ describe('<ProjectUsersAddForm />', () => {
     // Input email
     act(() => {
       component.root
-        .findByProps({ id: 'email' })
+        .findByProps({ id: 'emails' })
         .props.onChange({ target: { value: 'jane@email.com' } })
     })
 
