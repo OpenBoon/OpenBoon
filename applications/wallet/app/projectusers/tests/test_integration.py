@@ -130,20 +130,21 @@ class TestProjectUser:
 
     @override_settings(PLATFORM='zmlp')
     def test_delete(self, project, zmlp_project_user, zmlp_project_membership, api_client,
-                    monkeypatch):
+                    monkeypatch, django_user_model, zmlp_apikey):
 
         def mock_return(*args, **kwargs):
             return Response(status=status.HTTP_200_OK)
 
         monkeypatch.setattr(ZmlpClient, 'delete', mock_return)
+        user = self._make_users_for_project(project, 1, django_user_model, zmlp_apikey)[0]
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         response = api_client.delete(reverse('projectuser-detail',
                                              kwargs={'project_pk': project.id,
-                                                     'pk': zmlp_project_user.id}))
+                                                     'pk': user.id}))
         assert response.status_code == status.HTTP_200_OK
         with pytest.raises(Membership.DoesNotExist):
-            zmlp_project_user.memberships.get(project=project.id)
+            user.memberships.get(project=project.id)
 
     @override_settings(PLATFORM='zmlp')
     def test_delete_non_member_user(self, project, zmlp_project_user,
@@ -187,20 +188,35 @@ class TestProjectUser:
         assert content['detail'] == 'Apikey is incomplete.'
 
     @override_settings(PLATFORM='zmlp')
-    def test_delete_failed_zmlp_delete(self, project, zmlp_project_user,
-                                       zmlp_project_membership, api_client, monkeypatch):
+    def test_delete_failed_zmlp_delete(self, project, zmlp_project_user, django_user_model,
+                                       zmlp_project_membership, api_client, monkeypatch,
+                                       zmlp_apikey):
+
         def mock_return(*args, **kwargs):
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+        user = self._make_users_for_project(project, 1, django_user_model, zmlp_apikey)[0]
         monkeypatch.setattr(ZmlpClient, 'delete', mock_return)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         response = api_client.delete(reverse('projectuser-detail',
                                              kwargs={'project_pk': project.id,
-                                                     'pk': zmlp_project_user.id}))
+                                                     'pk': user.id}))
         assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
         content = response.json()
         assert content['detail'] == 'Unable to delete apikey in ZMLP.'
+
+    @override_settings(PLATFORM='zmlp')
+    def test_stop_deleting_yourself(self, project, zmlp_project_user,
+                                    zmlp_project_membership, api_client, monkeypatch):
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        response = api_client.delete(reverse('projectuser-detail',
+                                             kwargs={'project_pk': project.id,
+                                                     'pk': zmlp_project_user.id}))
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+        content = response.json()
+        assert content['detail'] == 'Cannot remove yourself from a project.'
 
     @override_settings(PLATFORM='zmlp')
     def test_post_create(self, project, zmlp_project_user, zmlp_project_membership,

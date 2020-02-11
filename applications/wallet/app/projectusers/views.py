@@ -132,6 +132,12 @@ class ProjectUserViewSet(BaseProjectViewSet):
         # Remove the User's Membership and delete the associated apikey
         membership = self.get_object(pk, project_pk)
         apikey = membership.apikey
+
+        # Don't allow a User to remove themselves
+        if request.user == membership.user:
+            return Response(data={'detail': 'Cannot remove yourself from a project.'},
+                            status=status.HTTP_403_FORBIDDEN)
+
         # Delete Users Apikey
         try:
             key_data = decode_apikey(apikey)
