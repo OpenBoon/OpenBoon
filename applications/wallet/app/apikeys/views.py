@@ -8,7 +8,7 @@ from wallet.paginators import ZMLPFromSizePagination
 
 
 class ApikeyViewSet(BaseProjectViewSet):
-
+    base_url = '/auth/v1/apikey/'
     serializer_class = ApikeySerializer
     pagination_class = ZMLPFromSizePagination
 
@@ -24,8 +24,7 @@ class ApikeyViewSet(BaseProjectViewSet):
         return Response({'results': serializer.data})
 
     def retrieve(self, request, project_pk, pk):
-        response = request.client.get(f'/auth/v1/apikey/{pk}')
-        return Response(response)
+        return self._retrieve(request, pk)
 
     def create(self, request, project_pk):
         serializer = self.get_serializer(data=request.data)
@@ -39,6 +38,5 @@ class ApikeyViewSet(BaseProjectViewSet):
             return Response("Bad Request", status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_201_CREATED, data=response)
 
-    def destroy(self, request, project_pk, pk):
-        response = request.client.delete(f'/auth/v1/apikey/{pk}')
-        return Response(response)
+    def destroy(self, request, project, pk):
+        return self._destroy(request, pk)

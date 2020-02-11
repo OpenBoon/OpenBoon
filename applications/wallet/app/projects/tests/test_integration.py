@@ -1,18 +1,16 @@
 import json
-import pytest
 from base64 import b64encode
+
+import pytest
 from django.http import JsonResponse, HttpResponseForbidden, Http404
 from django.test import RequestFactory, override_settings
 from django.urls import reverse
-
 from zmlp import ZmlpClient
 from zmlp.client import ZmlpDuplicateException
 
-from projects.clients import ZviClient
-from projects.views import BaseProjectViewSet
-from projects.serializers import ProjectSerializer
 from projects.models import Project, Membership
-
+from projects.serializers import ProjectSerializer
+from projects.views import BaseProjectViewSet
 
 pytestmark = pytest.mark.django_db
 

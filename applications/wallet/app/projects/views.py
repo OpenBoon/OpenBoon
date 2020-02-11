@@ -28,7 +28,7 @@ class BaseProjectViewSet(ViewSet):
     GenericAPIView.
 
     """
-    BASE_URL = ''
+    base_url = ''
     ZMLP_ONLY = False
 
     def dispatch(self, request, *args, **kwargs):
@@ -126,24 +126,28 @@ class BaseProjectViewSet(ViewSet):
         assert self.paginator is not None
         return self.paginator.get_paginated_response(data)
 
-    def _list_from_zmlp_search_endpoint(self, request):
+    def _list_from_zmlp_search_endpoint(self, request, item_modifier=None):
         """The result of this method can be returned for the list method of a concrete api
         if it just needs to proxy the results of a ZMLP search endpoint.
 
         Args:
             request (Request): Request the view method was given.
             path (str): URL path of the search endpoint to use.
+            item_modifier (function): Each item dictionary returned by the API will be
+              passed to this function. The function is expected to modify the item in place.
 
         """
         payload = {'page': {'from': request.GET.get('from', 0),
                             'size': request.GET.get('size',
                                                     self.pagination_class.default_limit)}}
-        path = os.path.join(self.BASE_URL, '_search')
+        path = os.path.join(self.base_url, '_search')
         response = request.client.post(path, payload)
         content = self._get_content(response)
         current_url = request.build_absolute_uri(request.path)
         for item in content['list']:
             item['url'] = f'{current_url}{item["id"]}/'
+            if item_modifier:
+                item_modifier(item)
         paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(content, request)
         return paginator.get_paginated_response(content['list'])
@@ -157,9 +161,13 @@ class BaseProjectViewSet(ViewSet):
             pk (str): Primary key of the object to return in the response.
 
         """
-        response = request.client.get(os.path.join(self.BASE_URL, pk))
+        response = request.client.get(os.path.join(self.base_url, pk))
         content = self._get_content(response)
         return Response(content)
+
+    def _destroy(self, request, pk):
+        response = request.client.delete(os.path.join(self.base_url, pk))
+        return Response(response)
 
     def _get_content(self, response):
         """Returns the content of Response from the ZVI or ZMLP and returns it as a dict."""
