@@ -110,6 +110,19 @@ const StylesReset = () => (
             url('/fonts/roboto/roboto-latin-900.woff') format('woff'),
             url('/fonts/roboto/roboto-latin-900.ttf') format('truetype');
         }
+        @font-face {
+          font-family: 'Roboto Condensed';
+          font-style: normal;
+          font-weight: 400;
+          src: url('/fonts/roboto/roboto-condensed-v18-latin-regular.woff2');
+          src: local('Roboto Condensed'), local('RobotoCondensed-Regular'),
+            url('/fonts/roboto/roboto-condensed-v18-latin-regular.woff2')
+              format('woff2'),
+            url('/fonts/roboto/roboto-condensed-v18-latin-regular.woff')
+              format('woff'),
+            url('/fonts/roboto/roboto-condensed-v18-latin-regular.ttf')
+              format('truetype');
+        }
       `}
     />
   </>

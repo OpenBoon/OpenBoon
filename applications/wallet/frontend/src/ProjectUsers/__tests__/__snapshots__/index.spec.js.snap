@@ -219,6 +219,7 @@ Array [
   padding-bottom: 4px;
   margin-right: 8px;
   border-radius: 14px;
+  font-family: Roboto Condensed;
 }
 
 .emotion-13 {
@@ -1224,6 +1225,7 @@ Array [
   padding-bottom: 4px;
   margin-right: 8px;
   border-radius: 14px;
+  font-family: Roboto Condensed;
 }
 
 .emotion-7 {
