@@ -5,13 +5,13 @@ import com.zorroa.auth.server.MockMvcTest
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
 import com.zorroa.zmlp.apikey.Permission
-import java.util.UUID
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import java.util.UUID
 
 class ApiKeyControllerTests : MockMvcTest() {
 
