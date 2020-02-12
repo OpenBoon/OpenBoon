@@ -40,7 +40,7 @@ const CheckboxIcon = ({ value, isChecked, onClick }) => (
         display: 'flex',
       }}>
       <CheckmarkSvg
-        width={14}
+        width={20}
         css={{
           path: {
             transition: 'all .3s ease',

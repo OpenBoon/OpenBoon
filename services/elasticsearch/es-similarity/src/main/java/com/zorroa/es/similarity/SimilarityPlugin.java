@@ -146,7 +146,7 @@ public class SimilarityPlugin extends Plugin implements ScriptPlugin {
                             public double execute(ExplanationHolder explanationHolder) {
                                 ScriptDocValues.Strings strings;
 
-                                if (getDoc().containsKey(field)) {
+                                if (getDoc().get(field).size() > 0) {
                                     strings = (ScriptDocValues.Strings) getDoc().get(field);
                                 }
                                 else {

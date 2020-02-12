@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.domain.ValidationKey
 import com.zorroa.auth.server.repository.ApiKeyCustomRepository
+import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
 import com.zorroa.zmlp.service.security.EncryptionService
@@ -28,14 +29,14 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 const val TOKEN_PREFIX = "Bearer "
 const val AUTH_HEADER = "Authorization"
-const val PROJ_HEADER = "X-Zorroa-ProjectId"
+
 class JWTAuthorizationFilter : OncePerRequestFilter() {
 
     @Autowired
     lateinit var apiKeyCustomRepository: ApiKeyCustomRepository
 
     @Autowired
-    lateinit var inceptionKey: ApiKey
+    lateinit var inceptionKey: ValidationKey
 
     @Autowired
     lateinit var encryptionService: EncryptionService
@@ -56,20 +57,30 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
             } ?: req.getParameter("token")
             ?: throw RuntimeException("No token specified")
 
-            val projectIdHeader = req.getHeader(PROJ_HEADER)
-            val projectIdOverride = if (projectIdHeader != null) {
-                UUID.fromString(projectIdHeader)
-            } else {
-                null
-            }
-
             SecurityContextHolder.getContext().authentication =
-                validateToken(token, projectIdOverride)
+                validateToken(token, getProjectIdOverride(req))
 
             chain.doFilter(req, res)
         } catch (e: Exception) {
             log.warn("JWT validation error: {}", e.message, e)
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not Authorized")
+        }
+    }
+
+    fun getProjectIdOverride(req: HttpServletRequest): UUID? {
+        val projectIdHeader = req.getHeader(AuthServerClient.PROJECT_ID_HEADER)
+        val projectIdParam = req.getParameter(AuthServerClient.PROJECT_ID_PARAM)
+
+        return when {
+            projectIdHeader != null -> {
+                UUID.fromString(projectIdHeader)
+            }
+            projectIdParam != null -> {
+                UUID.fromString(projectIdParam)
+            }
+            else -> {
+                null
+            }
         }
     }
 
@@ -152,8 +163,9 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
          * decrypt encrypted project data.
          */
         val INCEPTION_PERMISSIONS = Permission.values()
-            .map { it.name }.toSet().minus(Permission.SystemProjectDecrypt.name)
-
+            .map { it.name }
+            .minus(Permission.SystemProjectDecrypt.name)
+            .toSet()
         /**
          * Maximum TTL for a JWT token.
          */

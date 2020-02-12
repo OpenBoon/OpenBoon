@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Projects /> should not redirect if there is no project id and the route does not require a project id 1`] = `"Hello World"`;
+
 exports[`<Projects /> should render properly while loading 1`] = `
 .emotion-0 {
   padding: 16px;

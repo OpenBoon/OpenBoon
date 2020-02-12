@@ -87,7 +87,7 @@ class AssetAppTests(unittest.TestCase):
         assert rsp["created"][0] == "dd0KZtqyec48n1q1fniqVMV5yllhRRGx"
 
     @patch.object(ZmlpClient, 'get')
-    def test_get_by_id(self, get_patch):
+    def test_get_asset(self, get_patch):
         get_patch.return_value = {
             "id": "abc13",
             "document": {
@@ -96,7 +96,7 @@ class AssetAppTests(unittest.TestCase):
                 }
             }
         }
-        asset = self.app.assets.get_by_id("abc123")
+        asset = self.app.assets.get_asset("abc123")
         assert type(asset) == Asset
         assert asset.uri is not None
         assert asset.id is not None

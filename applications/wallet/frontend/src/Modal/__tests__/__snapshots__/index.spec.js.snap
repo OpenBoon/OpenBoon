@@ -198,7 +198,7 @@ exports[`<Modal /> should render properly 1`] = `
       <div
         className="emotion-0"
       >
-        Delete
+        Delete API Key
       </div>
       <div
         aria-label="Close Modal"

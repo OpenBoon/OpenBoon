@@ -31,31 +31,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
 }
 
 .emotion-1 {
-  border: 0 #b8d652 solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-3 {
-  border: 0 #b8d652 solid;
+  border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -74,7 +50,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
   font-weight: 700;
 }
 
-.emotion-3:hover {
+.emotion-1:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
   color: #73b61c;
@@ -150,7 +126,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
 }
 
 .emotion-10:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-10[aria-disabled=true] {
@@ -174,7 +150,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
       >
         <a
           className="emotion-1"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/account"
+          href="/account"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -185,8 +161,8 @@ exports[`<AccountProfile /> should render properly 1`] = `
         className="emotion-2"
       >
         <a
-          className="emotion-3"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/account/password"
+          className="emotion-1"
+          href="/account/password"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -198,12 +174,12 @@ exports[`<AccountProfile /> should render properly 1`] = `
   <h3
     className="emotion-7"
   >
-    User ID: jane.doe@zorroa.com
+    Email: jane.doe@zorroa.com
   </h3>
   <div
     className="emotion-8"
   >
-    Username
+    Name
   </div>
   <div
     className="emotion-9"
@@ -215,7 +191,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
     onClick={[Function]}
     type="button"
   >
-    Edit Username
+    Edit
   </button>
 </div>
 `;

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { colors, spacing, constants } from '../Styles'
+import Pills from '../Pills'
 
 import ApiKeysMenu from './Menu'
 
@@ -13,22 +13,7 @@ const ApiKeysRow = ({
     <tr>
       <td>{name}</td>
       <td>
-        {permissions.map(permission => (
-          <span
-            key={permission}
-            css={{
-              display: 'inline-block',
-              color: colors.structure.coal,
-              backgroundColor: colors.structure.zinc,
-              padding: spacing.moderate,
-              paddingTop: spacing.small,
-              paddingBottom: spacing.small,
-              marginRight: spacing.base,
-              borderRadius: constants.borderRadius.large,
-            }}>
-            {permission.replace(/([A-Z])/g, match => ` ${match}`)}
-          </span>
-        ))}
+        <Pills>{permissions}</Pills>
       </td>
       <td>
         <ApiKeysMenu

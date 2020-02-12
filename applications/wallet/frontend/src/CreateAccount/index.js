@@ -10,6 +10,7 @@ import FormAlert from '../FormAlert'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import ButtonGroup from '../Button/Group'
 import SectionTitle from '../SectionTitle'
 
 import { onSubmit } from './helpers'
@@ -58,7 +59,7 @@ const CreateAccount = () => {
             setErrorMessage={() => dispatch({ error: '' })}
           />
 
-          <SectionTitle>User Name</SectionTitle>
+          <SectionTitle>Name</SectionTitle>
 
           <Input
             autoFocus
@@ -120,21 +121,9 @@ const CreateAccount = () => {
             errorMessage=""
           />
 
-          <div
-            css={{
-              display: 'flex',
-              paddingTop: spacing.moderate,
-              paddingBottom: spacing.moderate,
-            }}>
+          <ButtonGroup>
             <Link href="/" passHref>
-              <Button
-                type="button"
-                variant={BUTTON_VARIANTS.SECONDARY}
-                css={{
-                  marginRight: spacing.normal,
-                }}>
-                Cancel
-              </Button>
+              <Button variant={BUTTON_VARIANTS.SECONDARY}>Cancel</Button>
             </Link>
             <Button
               type="submit"
@@ -148,7 +137,7 @@ const CreateAccount = () => {
               }>
               Save
             </Button>
-          </div>
+          </ButtonGroup>
         </Form>
       </div>
     </div>

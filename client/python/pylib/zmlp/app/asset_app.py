@@ -138,7 +138,7 @@ class AssetApp(object):
                 }
 
         Examples:
-            asset = app.assets.get_by_id(id)
+            asset = app.assets.get_asset(id)
             asset.set_attr("aux.my_field", 1000)
             asset.remove_attr("aux.other_field")
             app.assets.index(asset)
@@ -326,7 +326,7 @@ class AssetApp(object):
         """
         return AssetSearchScroller(self.app, search, timeout)
 
-    def get_by_id(self, id):
+    def get_asset(self, id):
         """
         Return the asset with the given unique Id.
 

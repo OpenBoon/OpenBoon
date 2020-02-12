@@ -1,16 +1,21 @@
 package com.zorroa.auth.server.security
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.nhaarman.mockito_kotlin.eq
+import com.nhaarman.mockito_kotlin.whenever
 import com.zorroa.auth.server.AbstractTest
 import com.zorroa.auth.server.domain.ApiKeySpec
+import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.SigningKey
 import com.zorroa.zmlp.util.Json
+import org.junit.Test
+import org.mockito.Mockito
+import org.springframework.beans.factory.annotation.Autowired
 import java.io.File
 import java.util.UUID
+import javax.servlet.http.HttpServletRequest
 import kotlin.test.assertEquals
-import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
 
 class JwtAuthenticationTests : AbstractTest() {
 
@@ -24,7 +29,7 @@ class JwtAuthenticationTests : AbstractTest() {
             setOf(Permission.AssetsRead)
         )
         val apiKey = apiKeyService.create(spec)
-        val token = apiKey.getJwtToken()
+        val token = apiKey.getValidationKey().getJwtToken()
 
         val auth = jwtAuthenticationFilter.validateToken(token)
         assertEquals(auth.user.id, apiKey.id)
@@ -50,5 +55,21 @@ class JwtAuthenticationTests : AbstractTest() {
         val auth = jwtAuthenticationFilter.validateToken(token, pid)
         assertEquals(auth.user.projectId, pid)
         assertEquals("admin-key", auth.user.name)
+    }
+
+    @Test
+    fun testParamProjectIdParamOverride() {
+        val req: HttpServletRequest = Mockito.mock(HttpServletRequest::class.java)
+        val pid = UUID.randomUUID()
+        whenever(req.getParameter(eq(AuthServerClient.PROJECT_ID_PARAM))).thenReturn(pid.toString())
+        assertEquals(pid, jwtAuthenticationFilter.getProjectIdOverride(req))
+    }
+
+    @Test
+    fun testParamProjectIdHeaderOverride() {
+        val req: HttpServletRequest = Mockito.mock(HttpServletRequest::class.java)
+        val pid = UUID.randomUUID()
+        whenever(req.getHeader(eq(AuthServerClient.PROJECT_ID_HEADER))).thenReturn(pid.toString())
+        assertEquals(pid, jwtAuthenticationFilter.getProjectIdOverride(req))
     }
 }

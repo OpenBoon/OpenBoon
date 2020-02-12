@@ -15,15 +15,15 @@ jest.mock('../helpers')
 const noop = () => () => {}
 
 describe('<AccountProfileForm />', () => {
-  it('should render properly when a user edits username', () => {
+  it('should render properly when a user edits their name', () => {
     const component = TestRenderer.create(<AccountProfileForm />)
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Click edit username
+    // Click edit
     act(() => {
       component.root
-        .findByProps({ children: 'Edit Username' })
+        .findByProps({ children: 'Edit' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -54,10 +54,10 @@ describe('<AccountProfileForm />', () => {
   it('should render properly when a user cancels', () => {
     const component = TestRenderer.create(<AccountProfileForm />)
 
-    // Click edit username
+    // Click edit
     act(() => {
       component.root
-        .findByProps({ children: 'Edit Username' })
+        .findByProps({ children: 'Edit' })
         .props.onClick({ preventDefault: noop })
     })
 

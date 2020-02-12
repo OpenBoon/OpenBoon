@@ -265,7 +265,6 @@ exports[`<UserMenu /> should render properly 2`] = `
 
 .emotion-5 {
   padding: 16px;
-  padding-bottom: 24px;
   border-bottom: 1px solid #b3b3b3;
 }
 

@@ -110,7 +110,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
 .emotion-8 {
   display: block;
   padding-bottom: 8px;
-  color: #808080;
+  color: #b3b3b3;
 }
 
 .emotion-10 {
@@ -119,7 +119,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
 
 .emotion-9 {
   outline-offset: 0;
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
@@ -145,8 +145,13 @@ exports[`<CreateAccount /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-36 button,
+.emotion-36 a {
+  margin-right: 16px;
 }
 
 .emotion-34 {
@@ -179,7 +184,6 @@ exports[`<CreateAccount /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  margin-right: 16px;
 }
 
 .emotion-34:hover {
@@ -253,7 +257,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
 }
 
 .emotion-35:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-35[aria-disabled=true] {
@@ -308,7 +312,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
       <h3
         className="emotion-7"
       >
-        User Name
+        Name
       </h3>
       <div
         className="emotion-12"
@@ -459,7 +463,6 @@ exports[`<CreateAccount /> should render properly 1`] = `
           href="/"
           onClick={[Function]}
           onMouseEnter={[Function]}
-          type="button"
         >
           Cancel
         </a>

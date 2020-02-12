@@ -5,6 +5,7 @@ import { typography, spacing, colors } from '../Styles'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import ButtonGroup from '../Button/Group'
 
 import FormSuccess from '../FormSuccess'
 import SectionTitle from '../SectionTitle'
@@ -34,7 +35,7 @@ const AccountProfileForm = () => {
         <FormSuccess>New Name Saved!</FormSuccess>
       )}
 
-      <SectionTitle>{`User ID: ${email}`}</SectionTitle>
+      <SectionTitle>{`Email: ${email}`}</SectionTitle>
 
       {!state.showForm && (
         <>
@@ -45,7 +46,7 @@ const AccountProfileForm = () => {
               lineHeight: typography.height.medium,
               fontWeight: typography.weight.medium,
             }}>
-            Username
+            Name
           </div>
 
           <div
@@ -62,7 +63,7 @@ const AccountProfileForm = () => {
           <Button
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() => dispatch({ showForm: true, success: false })}>
-            Edit Username
+            Edit
           </Button>
         </>
       )}
@@ -92,9 +93,8 @@ const AccountProfileForm = () => {
             errorMessage={state.errors.lastName}
           />
 
-          <div css={{ display: 'flex' }}>
+          <ButtonGroup>
             <Button
-              css={{ marginRight: spacing.normal }}
               variant={BUTTON_VARIANTS.SECONDARY}
               onClick={() => dispatch(INITIAL_STATE)}>
               Cancel
@@ -107,7 +107,7 @@ const AccountProfileForm = () => {
               isDisabled={!state.firstName || !state.lastName}>
               Save
             </Button>
-          </div>
+          </ButtonGroup>
         </Form>
       )}
     </>

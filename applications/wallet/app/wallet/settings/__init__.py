@@ -11,12 +11,17 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import socket
 
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 VERSION = '0.1.0'
 ENVIRONMENT = os.environ.get('ENVIRONMENT', 'localdev')
+try:
+    HOSTNAME = socket.gethostname()
+except Exception:
+    HOSTNAME = 'localhost'
 
 if os.environ.get('ENABLE_SENTRY', 'false').lower() == 'true':
     # Sentry Configuration
@@ -49,6 +54,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'jobs',
     'projects',
+    'registration',
     'wallet',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -166,10 +172,9 @@ REST_FRAMEWORK = {
         'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
     ),
     'DEFAULT_PARSER_CLASSES': (
-        'djangorestframework_camel_case.parser.CamelCaseFormParser',
-        'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
         'djangorestframework_camel_case.parser.CamelCaseJSONParser',
     ),
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
 # General Application Configuration
@@ -189,3 +194,6 @@ EMAIL_HOST_PASSWORD = os.environ.get('SMTP_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 OLD_PASSWORD_FIELD_ENABLED = True
+
+# Django Registration Settings
+REGISTRATION_TIMEOUT_DAYS = 3  # Numbers of days the confirmation link is valid.

@@ -2,13 +2,12 @@ import { useReducer } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
-import { spacing } from '../Styles'
-
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import FormAlert from '../FormAlert'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS } from '../Button'
+import ButtonGroup from '../Button/Group'
 
 import { onSubmit } from './helpers'
 
@@ -25,7 +24,7 @@ const ProjectUsersEditForm = ({ projectId, user, permissions }) => {
 
   return (
     <Form>
-      <SectionTitle>User ID: {user.email}</SectionTitle>
+      <SectionTitle>Email: {user.email}</SectionTitle>
 
       <FormAlert
         errorMessage={state.error}
@@ -45,21 +44,9 @@ const ProjectUsersEditForm = ({ projectId, user, permissions }) => {
         }))}
       />
 
-      <div
-        css={{
-          display: 'flex',
-          paddingTop: spacing.moderate,
-          paddingBottom: spacing.moderate,
-        }}>
+      <ButtonGroup>
         <Link href="/[projectId]/users" as={`/${projectId}/users`} passHref>
-          <Button
-            type="button"
-            variant={VARIANTS.SECONDARY}
-            css={{
-              marginRight: spacing.normal,
-            }}>
-            Cancel
-          </Button>
+          <Button variant={VARIANTS.SECONDARY}>Cancel</Button>
         </Link>
         <Button
           type="submit"
@@ -72,7 +59,7 @@ const ProjectUsersEditForm = ({ projectId, user, permissions }) => {
           }>
           Save
         </Button>
-      </div>
+      </ButtonGroup>
     </Form>
   )
 }
