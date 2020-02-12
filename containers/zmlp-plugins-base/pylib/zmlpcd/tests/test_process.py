@@ -154,7 +154,6 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref["force"] = True
         assert not wrapper.is_already_processed(frame.asset)
 
-
     def test_is_aleady_processed_checksum_check(self):
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
