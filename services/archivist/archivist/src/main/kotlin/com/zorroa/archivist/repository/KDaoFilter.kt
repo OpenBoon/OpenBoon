@@ -81,7 +81,7 @@ abstract class KDaoFilter {
             }
         }
 
-        if (!forCount) {
+        if (!forCount && !page.disabled) {
             sb.append(" LIMIT ? OFFSET ?")
         }
 
@@ -108,12 +108,12 @@ abstract class KDaoFilter {
 
     fun getValues(forCount: Boolean = false): Array<Any> {
         __build()
-        return if (forCount) {
+        return if (forCount || page.disabled) {
             values.toTypedArray()
         } else {
             val result = Arrays.copyOf(values.toTypedArray(), values.size + 2)
-            result[values.size] = page.size
-            result[values.size + 1] = page.from
+            result[values.size] = page?.size
+            result[values.size + 1] = page?.from
             result
         }
     }
