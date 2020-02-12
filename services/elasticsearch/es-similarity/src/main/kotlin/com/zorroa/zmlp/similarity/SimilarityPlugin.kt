@@ -35,7 +35,8 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
             name: String,
             code: String,
             context: ScriptContext<T>,
-            params: Map<String, String>): T {
+            params: Map<String, String>
+        ): T {
 
             if ("similarity" == code) {
                 return context.factoryClazz.cast(SimilarityFactory()) as T
@@ -53,7 +54,7 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
         private val field: String = params.getValue("field") as String
         private val charHashes: List<String>
         private val weights: List<Double>
-        private val length : Int
+        private val length: Int
         private val minScore: Double = params.getOrDefault("minScore", 0.75) as Double
         private val resolution: Int = 16
         private val numHashes: Int
@@ -69,8 +70,7 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
             val hashesParam = params["hashes"] as List<String>
             val weightsParam = if (params["weights"] != null) {
                 params["weights"] as List<Double>
-            }
-            else {
+            } else {
                 Collections.nCopies(hashesParam.size, 1.0)
             }
 

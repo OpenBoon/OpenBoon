@@ -2,17 +2,12 @@ package com.zorroa.archivist.search
 
 import com.zorroa.zmlp.util.Json
 import org.elasticsearch.common.Strings
-import org.elasticsearch.common.lucene.search.function.CombineFunction
-import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.xcontent.DeprecationHandler
 import org.elasticsearch.common.xcontent.NamedXContentRegistry
 import org.elasticsearch.common.xcontent.XContentFactory
 import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders
-import org.elasticsearch.script.Script
-import org.elasticsearch.script.ScriptType
 import org.elasticsearch.search.SearchModule
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.Logger
@@ -53,5 +48,4 @@ object SearchSourceMapper {
 
         return ssb
     }
-
 }
