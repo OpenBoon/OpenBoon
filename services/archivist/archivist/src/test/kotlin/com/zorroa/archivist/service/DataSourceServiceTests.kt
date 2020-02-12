@@ -5,9 +5,9 @@ import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
+
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
-import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.emptyZpsScript
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -87,24 +87,7 @@ class DataSourceServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testCreateWithPipeline() {
-        val pipe = pipelineService.create(PipelineSpec("foo"))
-
-        val spec = DataSourceSpec(
-            "dev-data",
-            "gs://zorroa-dev-data",
-            fileTypes = listOf("jpg")
-        )
-
-        val ds = dataSourceService.create(spec)
-        assertEquals(spec.name, ds.name)
-        assertEquals(spec.fileTypes, ds.fileTypes)
-    }
-
-    @Test
     fun testUpdate() {
-        val pipe = pipelineService.create(PipelineSpec("foo"))
-
         val ds = dataSourceService.create(spec)
         val update = DataSourceUpdate(
             "cats",
@@ -207,35 +190,5 @@ class DataSourceServiceTests : AbstractTest() {
         val ds1 = dataSourceService.create(spec)
         val ds2 = dataSourceService.get(ds1.id)
         assertEquals(ds1, ds2)
-    }
-
-    @Test
-    fun testCreateAnalysisJobWithCredentials() {
-        credentialsService.create(
-            CredentialsSpec("test",
-                CredentialsType.AWS, TEST_AWS_CREDS)
-        )
-        val spec2 = DataSourceSpec(
-            "dev-data",
-            "gs://zorroa-dev-data",
-            fileTypes = listOf("jpg"),
-            credentials = setOf("test")
-        )
-        val ds = dataSourceService.create(spec2)
-        entityManager.flush()
-        entityManager.clear()
-        val ds2 = dataSourceService.get(ds.id)
-        val job = dataSourceService.createAnalysisJob(ds2)
-
-        assertEquals(1, jdbc.queryForObject(
-            "SELECT COUNT(1) FROM x_credentials_job WHERE pk_job=?",
-            Int::class.java, job.jobId))
-    }
-
-    @Test
-    fun createAnalysisJob() {
-        val ds = dataSourceService.create(spec)
-        val job = dataSourceService.createAnalysisJob(ds)
-        assertEquals(ds.id, job.dataSourceId)
     }
 }

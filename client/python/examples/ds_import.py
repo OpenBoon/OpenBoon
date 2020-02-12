@@ -18,7 +18,7 @@ def main():
     ds = app.datasource.create_datasource(args.create[0],
                                           args.create[1],
                                           args.module)
-    app.datasource.process_files(ds)
+    app.datasource.import_files(ds)
 
 
 if __name__ == '__main__':

@@ -16,7 +16,7 @@ def main():
     modules = args.module or None
 
     app = app_from_env()
-    json.dumps(app.assets.batch_upload_files(assets, modules=modules), indent=4)
+    print(json.dumps(app.assets.batch_upload_files(assets, modules=modules), indent=4))
 
 
 if __name__ == '__main__':
