@@ -38,7 +38,6 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getImportFilesMock()));
 
-
         AssetCreateBuilder assetCreateBuilder = new AssetCreateBuilder()
                 .addAsset(new AssetSpec("gs://zorroa-dev-data/image/pluto.png"))
                 .addAsset("gs://zorroa-dev-data/image/earth.png")
@@ -68,6 +67,29 @@ public class AssetAppTests extends AbstractAppTests {
 
         List<AssetSpec> assetSpecList = Arrays.asList(new AssetSpec("src/test/resources/toucan.jpg"));
         BatchCreateAssetResponse response = assetApp.uploadFiles(assetSpecList);
+
+        assertEquals("abc123", response.getStatus().get(0).getAssetId());
+    }
+
+    @Test
+    public void testUploadAssetsAsArray() {
+
+        webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
+
+        BatchCreateAssetResponse response = assetApp.uploadFiles(new AssetSpec("src/test/resources/toucan.jpg"));
+
+        assertEquals("abc123", response.getStatus().get(0).getAssetId());
+    }
+
+    @Test
+    public void testUploadAssetsAsAssetBatch() {
+
+        webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
+
+        BatchAssetSpec batchAssetSpec = new BatchAssetSpec()
+                .addAsset(new AssetSpec("src/test/resources/toucan.jpg"));
+
+        BatchCreateAssetResponse response = assetApp.uploadFiles(batchAssetSpec);
 
         assertEquals("abc123", response.getStatus().get(0).getAssetId());
     }
