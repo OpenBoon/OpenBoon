@@ -37,7 +37,7 @@ Array [
 }
 
 .emotion-0 {
-  border: 0 #b8d652 solid;
+  border: 0 #73b61c solid;
   border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -61,7 +61,7 @@ Array [
 }
 
 .emotion-2 {
-  border: 0 #b8d652 solid;
+  border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -101,7 +101,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Users
+          View All
         </a>
       </li>
       <li
@@ -113,7 +113,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Create User
+          Invite User(s)
         </a>
       </li>
     </ul>
@@ -135,7 +135,7 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-0:nth-of-type(3) {
+.emotion-0:nth-of-type(2) {
   width: 100%;
 }
 
@@ -143,18 +143,18 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-15 {
+.emotion-14 {
   height: auto;
 }
 
-.emotion-7 {
+.emotion-6 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -162,35 +162,35 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-7 tr {
+.emotion-6 tr {
   background-color: #252525;
 }
 
-.emotion-7 tr:nth-of-type(2n) {
+.emotion-6 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-7 tr:hover {
+.emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-7 tr:hover td {
+.emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-7 tr:hover td:first-of-type {
+.emotion-6 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-7 tr:hover td:last-of-type {
+.emotion-6 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-7 td {
-  max-width: calc(100vw / 3);
+.emotion-6 td {
+  max-width: calc(100vw / 2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -201,16 +201,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-7 td:first-of-type {
+.emotion-6 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-7 td:last-of-type {
+.emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-5 {
+.emotion-4 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -219,9 +219,10 @@ Array [
   padding-bottom: 4px;
   margin-right: 8px;
   border-radius: 14px;
+  font-family: Roboto Condensed;
 }
 
-.emotion-14 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -232,7 +233,7 @@ Array [
   justify-content: flex-end;
 }
 
-.emotion-9 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -250,20 +251,20 @@ Array [
   border-bottom-right-radius: 0;
 }
 
-.emotion-9:hover {
+.emotion-8:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-8 {
+.emotion-7 {
   color: #191919;
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-10 {
+.emotion-9 {
   padding: 8px 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -277,7 +278,7 @@ Array [
   background-color: #000000;
 }
 
-.emotion-11 {
+.emotion-10 {
   padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -290,7 +291,7 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-13 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -308,13 +309,13 @@ Array [
   border-bottom-right-radius: 2px;
 }
 
-.emotion-13:hover {
+.emotion-12:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-12 {
+.emotion-11 {
   color: #191919;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -322,18 +323,13 @@ Array [
 }
 
 <div
-    className="emotion-15"
+    className="emotion-14"
   >
     <table
-      className="emotion-7"
+      className="emotion-6"
     >
       <thead>
         <tr>
-          <th
-            className="emotion-0"
-          >
-            User Name
-          </th>
           <th
             className="emotion-0"
           >
@@ -348,7 +344,7 @@ Array [
             className="emotion-0"
           >
             <div
-              className="emotion-3"
+              className="emotion-2"
             >
               <svg
                 data-file-name="gear.svg"
@@ -361,19 +357,16 @@ Array [
       <tbody>
         <tr>
           <td>
-            Jane Doe
-          </td>
-          <td>
             jane@zorroa.com
           </td>
           <td>
             <span
-              className="emotion-5"
+              className="emotion-4"
             >
                Api Key Manage
             </span>
             <span
-              className="emotion-5"
+              className="emotion-4"
             >
                Project Manage
             </span>
@@ -386,37 +379,37 @@ Array [
        
     </div>
     <div
-      className="emotion-14"
+      className="emotion-13"
     >
       <button
-        className="emotion-9"
+        className="emotion-8"
         disabled={true}
         type="button"
       >
         <svg
-          className="emotion-8"
+          className="emotion-7"
           data-file-name="chevron.svg"
           width={16}
         />
       </button>
       <div
-        className="emotion-10"
+        className="emotion-9"
       >
         1
       </div>
       <div
-        className="emotion-11"
+        className="emotion-10"
       >
         of 
         1
       </div>
       <button
-        className="emotion-13"
+        className="emotion-12"
         disabled={true}
         type="button"
       >
         <svg
-          className="emotion-12"
+          className="emotion-11"
           data-file-name="chevron.svg"
           width={16}
         />
@@ -1232,6 +1225,7 @@ Array [
   padding-bottom: 4px;
   margin-right: 8px;
   border-radius: 14px;
+  font-family: Roboto Condensed;
 }
 
 .emotion-7 {

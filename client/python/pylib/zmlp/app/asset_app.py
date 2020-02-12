@@ -1,8 +1,10 @@
 import io
+from collections import namedtuple
 
 from ..asset import Asset
 from ..search import AssetSearchResult, AssetSearchScroller
 from ..util import as_collection
+from ..job import Job
 
 
 class AssetApp(object):
@@ -326,6 +328,48 @@ class AssetApp(object):
         """
         return AssetSearchScroller(self.app, search, timeout)
 
+    def reprocess_search(self, search, modules):
+        """
+        Reprocess the given search with the supplied modules.
+
+        Args:
+            search (dict): An ElasticSearch search.
+            modules (list): A list of module names to apply.
+
+        Returns:
+            dict: Contains a Job and the number of assets to be processed.
+        """
+        body = {
+            "search": search,
+            "modules": modules
+        }
+        rsp = self.app.client.post("/api/v3/assets/_search/reprocess", body)
+        return ReprocessSearchResponse(rsp["assetCount"], Job(rsp["job"]))
+
+    def reprocess_assets(self, assets, modules):
+        """
+        Reprocess the given array of assets with the given modules.
+
+        Args:
+            assets (list): A list of Assets or asset unique Ids.
+            modules (list): A list of Pipeline module names or ides.
+
+        Returns:
+            Job: The job responsible for processing the assets.
+        """
+        asset_ids = [getattr(asset, "id") or asset for asset in as_collection(assets)]
+        body = {
+            "search": {
+                "query": {
+                    "terms": {
+                        "_id": asset_ids
+                    }
+                }
+            },
+            "modules": modules
+        }
+        return self.app.client.get("/api/v3/assets/_search/reprocess", body)
+
     def get_asset(self, id):
         """
         Return the asset with the given unique Id.
@@ -361,3 +405,9 @@ class AssetApp(object):
 
         rsp = self.app.client.get("/api/v3/assets/{}/_files/{}".format(id, cat_name), is_json=False)
         return io.BytesIO(rsp.content)
+
+
+"""
+A named tuple to define a ReprocessSearchResponse
+"""
+ReprocessSearchResponse = namedtuple('ReprocessSearchResponse', ["asset_count", "job"])

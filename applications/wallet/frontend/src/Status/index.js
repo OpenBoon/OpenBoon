@@ -23,6 +23,7 @@ const Status = ({ jobStatus }) => {
         borderRadius: constants.borderRadius.small,
         color: STATUS_COLORS[jobStatus],
         backgroundColor: colors.structure.coal,
+        fontFamily: 'Roboto Condensed',
       }}>
       {jobStatus.replace(/([A-Z])/g, match => ` ${match}`).trim()}
     </div>

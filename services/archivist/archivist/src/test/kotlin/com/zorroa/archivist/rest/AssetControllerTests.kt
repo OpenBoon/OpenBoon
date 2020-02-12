@@ -8,6 +8,7 @@ import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.AssetSearchService
+import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
@@ -27,6 +28,9 @@ class AssetControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var assetSearchService: AssetSearchService
+
+    @Autowired
+    lateinit var pipelineModService: PipelineModService
 
     @Test
     fun testBatchCreate() {
@@ -486,6 +490,33 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.succeeded", CoreMatchers.equalTo(true)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.num_freed", CoreMatchers.anything()))
+            .andReturn()
+    }
+
+    @Test
+    fun testReprocessSearch() {
+        // Create the standard mods which doesn't happen automatically in tests.
+        pipelineModService.updateStandardMods()
+
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                listOf(
+                    AssetSpec("https://i.imgur.com/SSN26nN.jpg"),
+                    AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
+                )
+            )
+        )
+
+        val search = """{ "modules": ["zmlp-labels"], "search": { "query": { "match_all": { } } } }"""
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/assets/_search/reprocess")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(search)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.job.id", CoreMatchers.anything()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.assetCount", CoreMatchers.equalTo(2)))
             .andReturn()
     }
 }

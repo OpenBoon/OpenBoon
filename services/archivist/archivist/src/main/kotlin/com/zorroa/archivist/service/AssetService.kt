@@ -4,6 +4,7 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.AssetIdBuilder
+import com.zorroa.archivist.domain.AssetMetrics
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
@@ -14,20 +15,20 @@ import com.zorroa.archivist.domain.Element
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.JobSpec
-import com.zorroa.zmlp.service.logging.LogAction
-import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
-import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.search.SearchSourceMapper
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.ElasticSearchErrorTranslator
 import com.zorroa.archivist.util.FileUtils
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
+import com.zorroa.zmlp.service.logging.event
+import com.zorroa.zmlp.service.logging.warnEvent
 import com.zorroa.zmlp.util.Json
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
@@ -35,10 +36,7 @@ import org.elasticsearch.action.bulk.BulkResponse
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
-import com.zorroa.zmlp.service.logging.event
-import com.zorroa.zmlp.service.logging.warnEvent
 import org.elasticsearch.client.Response
-import org.elasticsearch.common.Strings
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.reindex.BulkByScrollResponse
 import org.elasticsearch.index.reindex.DeleteByQueryRequest
@@ -65,12 +63,12 @@ interface AssetService {
     /**
      * Get all assets by their unique ID.
      */
-    fun getAll(ids: List<String>): List<Asset>
+    fun getAll(ids: Collection<String>): List<Asset>
 
     /**
      * Take a list of asset ids and return a set of valid ones.
      */
-    fun getValidAssetIds(ids: List<String>): Set<String>
+    fun getValidAssetIds(ids: Collection<String>): Set<String>
 
     /**
      * Batch create a list of assets.  Creating adds a base asset with
@@ -149,6 +147,11 @@ interface AssetService {
      * @param spec [AssetSpec] provided by the caller.
      */
     fun deriveClip(newAsset: Asset, spec: AssetSpec): Clip
+
+    /**
+     * Return true of the given asset would need reprocessing with the given Pipeline.
+     */
+    fun assetNeedsReprocessing(asset: Asset, pipeline: List<ProcessorRef>): Boolean
 }
 
 @Service
@@ -169,6 +172,9 @@ class AssetServiceImpl : AssetService {
     @Autowired
     lateinit var pipelineResolverService: PipelineResolverService
 
+    @Autowired
+    lateinit var jobLaunchService: JobLaunchService
+
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
         val rsp = rest.client.get(rest.newGetRequest(id), RequestOptions.DEFAULT)
@@ -178,7 +184,7 @@ class AssetServiceImpl : AssetService {
         return Asset(rsp.id, rsp.sourceAsMap)
     }
 
-    override fun getValidAssetIds(ids: List<String>): Set<String> {
+    override fun getValidAssetIds(ids: Collection<String>): Set<String> {
         val rest = indexRoutingService.getProjectRestClient()
         val req = rest.newSearchBuilder()
         val query = QueryBuilders.boolQuery()
@@ -195,7 +201,7 @@ class AssetServiceImpl : AssetService {
         return result
     }
 
-    override fun getAll(ids: List<String>): List<Asset> {
+    override fun getAll(ids: Collection<String>): List<Asset> {
         val rest = indexRoutingService.getProjectRestClient()
         val req = rest.newSearchBuilder()
         val query = QueryBuilders.boolQuery()
@@ -212,16 +218,12 @@ class AssetServiceImpl : AssetService {
     override fun batchUpload(req: BatchUploadAssetsRequest): BatchCreateAssetsResponse {
 
         val pipeline = if (req.analyze) {
-            pipelineResolverService.resolve(req.pipeline, req.modules)
+            pipelineResolverService.resolveModular(req.modules)
         } else {
             null
         }
 
-        val rest = indexRoutingService.getProjectRestClient()
-        val bulkRequest = BulkRequest()
-        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
-
-        var assets = mutableListOf<Asset>()
+        val assets = mutableListOf<Asset>()
 
         for ((idx, mpfile) in req.files.withIndex()) {
             val spec = req.assets[idx]
@@ -240,15 +242,11 @@ class AssetServiceImpl : AssetService {
                 ProjectStorageSpec(locator, mapOf(), mpfile.bytes)
             )
             asset.setAttr("files", listOf(file))
-
-            val ireq = rest.newIndexRequest(asset.id)
-            ireq.opType(DocWriteRequest.OpType.CREATE)
-            ireq.source(asset.document)
-            bulkRequest.add(ireq)
             assets.add(asset)
         }
 
-        return processBulkRequest(bulkRequest, assets, pipeline, req.credentials)
+        val existingAssetIds = getValidAssetIds(assets.map { it.id })
+        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, req.credentials)
     }
 
     override fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
@@ -257,29 +255,21 @@ class AssetServiceImpl : AssetService {
         }
 
         val pipeline = if (request.analyze && request.task == null) {
-            pipelineResolverService.resolve(request.pipeline, request.modules)
+            pipelineResolverService.resolveModular(request.modules)
         } else {
             null
         }
 
-        val rest = indexRoutingService.getProjectRestClient()
-        val bulkRequest = BulkRequest()
-        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
-
         // Make a list of Assets from the spec
+        val assetIds = mutableSetOf<String>()
         val assets = request.assets.map { spec ->
             val id = AssetIdBuilder(spec).build()
+            assetIds.add(id)
             assetSpecToAsset(id, spec, request.task)
         }
 
-        assets.forEach {
-            val ireq = rest.newIndexRequest(it.id)
-            ireq.opType(DocWriteRequest.OpType.CREATE)
-            ireq.source(it.document)
-            bulkRequest.add(ireq)
-        }
-
-        return processBulkRequest(bulkRequest, assets, pipeline, request.credentials)
+        val existingAssetIds = getValidAssetIds(assetIds)
+        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, request.credentials)
     }
 
     override fun update(assetId: String, req: UpdateAssetRequest): Response {
@@ -366,15 +356,35 @@ class AssetServiceImpl : AssetService {
 
         return rest.client.deleteByQuery(
             DeleteByQueryRequest(rest.route.indexName)
-                .setQuery(SearchSourceMapper.convert(req).query()), RequestOptions.DEFAULT)
+                .setQuery(SearchSourceMapper.convert(req).query()), RequestOptions.DEFAULT
+        )
     }
 
-    fun createAnalysisJob(assetIds: List<String>, processors: List<ProcessorRef>, creds: Set<String>?): Job {
-        val name = "Analyze ${assetIds.size} created assets"
-        val script = ZpsScript(name, null, getAll(assetIds), processors)
-        val spec = JobSpec(name, script, credentials = creds)
+    /**
+     * Create new analysis job with the given assets, created and existing.  If no additional
+     * processing is required for these assets, then no job is launched and null is returned.
+     */
+    private fun createAnalysisJob(
+        createdAssetIds: Collection<String>,
+        existingAssetIds: Collection<String>,
+        processors: List<ProcessorRef>,
+        creds: Set<String>?
+    ): Job? {
 
-        return jobService.create(spec)
+        // Validate the assets need reprocessing
+        val assets = getAll(existingAssetIds).filter {
+            assetNeedsReprocessing(it, processors)
+        }
+
+        val reprocessAssetCount = assets.size
+        val finalAssetList = assets.plus(getAll(createdAssetIds))
+
+        return if (finalAssetList.isEmpty()) {
+            null
+        } else {
+            val name = "Analyze ${createdAssetIds.size} created assets, $reprocessAssetCount existing files."
+            jobLaunchService.launchJob(name, finalAssetList, processors, creds = creds)
+        }
     }
 
     override fun deriveClip(newAsset: Asset, spec: AssetSpec): Clip {
@@ -411,50 +421,79 @@ class AssetServiceImpl : AssetService {
         return clip
     }
 
-    private fun processBulkRequest(
-        bulkRequest: BulkRequest,
-        assets: List<Asset>,
-        procs: List<ProcessorRef>?,
+    /**
+     * Indexes newly created assets and passes the results on
+     * to [createAnalysisJob].  If there are no new assets and all existing assets
+     * are already processed, then this is basically a no-op and no processing jobs
+     * is launched.
+     *
+     * @param newAssets The newly created assets.
+     * @param existingAssetIds The asset Ids that already existed.
+     * @param pipeline The pipeline to execute as a in List<ProcessorRef>.
+     * @param creds Any credentials that should be associated with the running job.
+     * @return BatchCreateAssetsResponse
+     */
+    private fun bulkIndexAndAnalyzePendingAssets(
+        newAssets: List<Asset>,
+        existingAssetIds: Collection<String>,
+        pipeline: List<ProcessorRef>?,
         creds: Set<String>?
-    ):
-        BatchCreateAssetsResponse {
+    ): BatchCreateAssetsResponse {
+
         val rest = indexRoutingService.getProjectRestClient()
-        val bulk = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
+        val bulkRequest = BulkRequest()
+        bulkRequest.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+
+        // Add new assets to the bulk request.
+        var validBulkRequest = false
+        newAssets.forEach {
+            if (it.id !in existingAssetIds) {
+                val ireq = rest.newIndexRequest(it.id)
+                ireq.opType(DocWriteRequest.OpType.CREATE)
+                ireq.source(it.document)
+                bulkRequest.add(ireq)
+                validBulkRequest = true
+            }
+        }
 
         val created = mutableListOf<String>()
         val failures = mutableListOf<Map<String, String?>>()
 
-        bulk.items.forEachIndexed { idx, it ->
+        // If there is a valid bulk request, commit assets to ES.
+        if (validBulkRequest) {
+            val bulk = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
+            bulk.items.forEachIndexed { idx, it ->
 
-            if (it.isFailed) {
-                val path = assets[idx].getAttr<String?>("source.path")
-                val msg = ElasticSearchErrorTranslator.translate(it.failureMessage)
-                logger.warnEvent(
-                    LogObject.ASSET, LogAction.CREATE, "failed to create asset $path, $msg"
-                )
-                failures.add(
-                    mapOf(
-                        "path" to path,
-                        "failureMessage" to msg)
-                )
-            } else {
-                created.add(it.id)
-                logger.event(
-                    LogObject.ASSET, LogAction.CREATE,
-                    mapOf("uploaded" to true, "createdAssetId" to it.id)
-                )
+                if (it.isFailed) {
+                    val path = newAssets[idx].getAttr<String?>("source.path")
+                    val msg = ElasticSearchErrorTranslator.translate(it.failureMessage)
+                    logger.warnEvent(
+                        LogObject.ASSET, LogAction.CREATE, "failed to create asset $path, $msg"
+                    )
+                    failures.add(
+                        mapOf(
+                            "path" to path,
+                            "failureMessage" to msg
+                        )
+                    )
+                } else {
+                    created.add(it.id)
+                    logger.event(
+                        LogObject.ASSET, LogAction.CREATE,
+                        mapOf("uploaded" to true, "createdAssetId" to it.id)
+                    )
+                }
             }
         }
 
         // Launch analysis job.
-        val jobId = if (procs != null && created.size > 0) {
-            createAnalysisJob(created, procs, creds).id
+        val jobId = if (pipeline != null) {
+            createAnalysisJob(created, existingAssetIds, pipeline, creds)?.id
         } else {
             null
         }
 
-        val response = Json.Mapper.readValue(Strings.toString(bulk), Json.MUTABLE_MAP)
-        return BatchCreateAssetsResponse(response, failures, created, jobId)
+        return BatchCreateAssetsResponse(failures, created, existingAssetIds, jobId)
     }
 
     fun assetSpecToAsset(id: String, spec: AssetSpec, task: InternalTask? = null): Asset {
@@ -529,9 +568,9 @@ class AssetServiceImpl : AssetService {
         // Uniquify the elements
         if (asset.attrExists("elements")) {
             val elements = asset.getAttr("elements", Element.JSON_SET_OF)
-            if (elements != null && elements.size > AssetServiceImpl.maxElementCount) {
+            if (elements != null && elements.size > maxElementCount) {
                 throw IllegalStateException(
-                    "Asset ${asset.id} has to many elements, > ${AssetServiceImpl.maxElementCount}"
+                    "Asset ${asset.id} has to many elements, > $maxElementCount"
                 )
             }
             asset.setAttr("elements", elements)
@@ -541,6 +580,42 @@ class AssetServiceImpl : AssetService {
         asset.setAttr("system.projectId", getProjectId().toString())
         asset.setAttr("system.timeModified", time)
         asset.setAttr("system.state", AssetState.Analyzed.toString())
+    }
+
+    override fun assetNeedsReprocessing(asset: Asset, pipeline: List<ProcessorRef>): Boolean {
+        // If the asset has no metrics, we need reprocessing
+        if (!asset.attrExists("metrics")) {
+            return true
+        }
+
+        val metrics = asset.getAttr("metrics", AssetMetrics::class.java)
+        val oldPipeline = metrics?.pipeline
+
+        // If the old pipeline is somehow null or empty, needs preprocessing.
+        if (oldPipeline.isNullOrEmpty()) {
+            return true
+        } else {
+
+            // If there was an error, we'll reprocess.
+            if (oldPipeline.any { e -> e.error != null }) {
+                logger.info("Reprocessing asset ${asset.id}, errors detected.")
+                return true
+            }
+
+            // Now comes the slow check.  Compare the new processing to the metrics
+            // and determine if new processing needs to be done
+            val existing = oldPipeline.map { m -> "${m.processor}${m.checksum}" }.toSet()
+            val future = pipeline.map { m -> "${m.className}${m.getChecksum()}" }.toSet()
+
+            val newProcessing = future.subtract(existing)
+            return if (newProcessing.isNotEmpty()) {
+                logger.info("Reprocessing asset ${asset.id}, requires: $newProcessing")
+                true
+            } else {
+                logger.info("Not reprocessing Asset ${asset.id}, all requested metadata exists.")
+                false
+            }
+        }
     }
 
     companion object {
@@ -557,7 +632,8 @@ class AssetServiceImpl : AssetService {
          * tmp is allowed on create only, but the data is not indexed,
          * just stored on the document.
          */
-        val removeFieldsOnCreate = setOf("system", "source", "files")
+        val removeFieldsOnCreate =
+            setOf("system", "source", "files", "elements", "metrics", "datasets", "analysis")
 
         /**
          * Maximum number of elements you can have in an asset.

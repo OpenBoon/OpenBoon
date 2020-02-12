@@ -9,6 +9,7 @@ import com.zorroa.archivist.repository.DataSourceJdbcDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.CredentialsService
 import com.zorroa.archivist.service.DataSourceService
+import com.zorroa.archivist.service.JobLaunchService
 import com.zorroa.archivist.util.HttpUtils
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.ApiOperation
@@ -29,7 +30,8 @@ import java.util.UUID
 class DataSourceController(
     val dataSourceService: DataSourceService,
     val dataSourceJdbcDao: DataSourceJdbcDao,
-    val credentialsService: CredentialsService
+    val credentialsService: CredentialsService,
+    val jobLaunchService: JobLaunchService
 ) {
 
     @ApiOperation("Create a DataSource")
@@ -74,7 +76,6 @@ class DataSourceController(
     @ApiOperation("Import assets from a DataSource.")
     @PostMapping("/api/v1/data-sources/{id}/_import")
     fun importAssets(@ApiParam("The DataSource unique Id.") @PathVariable id: UUID): Job {
-        val ds = dataSourceService.get(id)
-        return dataSourceService.createAnalysisJob(ds)
+        return jobLaunchService.launchJob(dataSourceService.get(id))
     }
 }
