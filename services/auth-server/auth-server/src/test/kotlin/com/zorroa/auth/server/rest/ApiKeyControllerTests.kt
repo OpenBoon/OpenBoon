@@ -73,6 +73,7 @@ class ApiKeyControllerTests : MockMvcTest() {
                 .content(json.writeValueAsBytes(spec))
         )
             .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+            .andExpect(jsonPath("$.error", CoreMatchers.equalTo("DataIntegrityViolation")))
             .andReturn()
     }
 
