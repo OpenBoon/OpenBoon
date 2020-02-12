@@ -88,10 +88,12 @@ const Checkbox = ({
         </span>
         {!!legend && (
           <span
-            css={{
-              color: colors.structure.steel,
-              paddingLeft: STYLES[variant].legend.paddingLeft,
-            }}>
+            css={[
+              {
+                color: colors.structure.steel,
+              },
+              STYLES[variant].legend,
+            ]}>
             {legend}
           </span>
         )}
