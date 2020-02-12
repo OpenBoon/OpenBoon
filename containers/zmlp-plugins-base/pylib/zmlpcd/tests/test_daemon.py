@@ -47,9 +47,8 @@ class ZmlpContainerDaemonTests(unittest.TestCase):
                 "ref": {
                     "className": "zmlpsdk.testing.TestProcessor",
                     "image": "zmlp/plugins-base",
-                    "args": {
-
-                    }
+                    "args": {},
+                    "checksum": -1
                 },
                 "asset": {
                     "id": "1234",

@@ -32,6 +32,7 @@
     <modules>
         <module>es-similarity</module>
         <module>es-kwconf</module>
+        <module>es-similarity-query</module>
     </modules>
 
     <dependencyManagement>
