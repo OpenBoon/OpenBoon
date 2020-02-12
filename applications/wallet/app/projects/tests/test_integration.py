@@ -35,7 +35,7 @@ def test_project_view_user_does_not_belong_to_project(user, project):
 def test_zmlp_only_flag(user, project):
 
     class FakeViewSet(BaseProjectViewSet):
-        ZMLP_ONLY = True
+        zmlp_only = True
 
         def get(self, request, project):
             return JsonResponse({'success': True})

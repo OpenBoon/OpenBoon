@@ -28,8 +28,8 @@ class BaseProjectViewSet(ViewSet):
     GenericAPIView.
 
     """
-    base_url = ''
-    ZMLP_ONLY = False
+    zmlp_root_api_path = ''
+    zmlp_only = False
 
     def dispatch(self, request, *args, **kwargs):
         """Overrides the dispatch method to include an instance of an archivist client
@@ -37,7 +37,7 @@ class BaseProjectViewSet(ViewSet):
 
         """
         project = kwargs["project_pk"]
-        if self.ZMLP_ONLY and settings.PLATFORM != 'zmlp':
+        if self.zmlp_only and settings.PLATFORM != 'zmlp':
             # This is needed to keep from returning terrible stacktraces on endpoints
             # not meant for dual platform usage
             raise Http404()
@@ -47,19 +47,15 @@ class BaseProjectViewSet(ViewSet):
         except ObjectDoesNotExist:
             return HttpResponseForbidden(f'{request.user.username} is not a member of '
                                          f'the project {project}')
+
+        # Attach some useful objects for interacting with ZMLP/ZVI to the request.
         if settings.PLATFORM == 'zmlp':
             request.app = zmlp.ZmlpApp(apikey, settings.ZMLP_API_URL)
-        try:
-            if settings.PLATFORM == 'zvi':
-                request.client = ZviClient(apikey=apikey, server=settings.ZMLP_API_URL)
-            else:
-                request.client = ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL,
-                                            project_id=project)
-        except TypeError:
-            # This catches when the user is not authed and the token validation fails.
-            # This allows the raised error to return properly, although may not be the
-            # best place to handles this
-            pass
+            request.client = ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL,
+                                        project_id=project)
+        else:
+            request.client = ZviClient(apikey=apikey, server=settings.ZMLP_API_URL)
+
         return super().dispatch(request, *args, **kwargs)
 
     def get_serializer(self, *args, **kwargs):
@@ -126,51 +122,86 @@ class BaseProjectViewSet(ViewSet):
         assert self.paginator is not None
         return self.paginator.get_paginated_response(data)
 
-    def _list_from_zmlp_search_endpoint(self, request, item_modifier=None):
-        """The result of this method can be returned for the list method of a concrete api
-        if it just needs to proxy the results of a ZMLP search endpoint.
+    def _zmlp_list_from_search(self, request, item_modifier=None):
+        """The result of this method can be returned for the list method of a concrete
+        viewset if it just needs to proxy the results of a ZMLP search endpoint.
 
         Args:
             request (Request): Request the view method was given.
-            path (str): URL path of the search endpoint to use.
             item_modifier (function): Each item dictionary returned by the API will be
-              passed to this function. The function is expected to modify the item in place.
+              passed to this function along with the request. The function is expected to
+              modify the item in place. The arguments are passed as (request, item).
+
+        Returns:
+            Response: DRF Response that can be used directly by viewset action method.
 
         """
         payload = {'page': {'from': request.GET.get('from', 0),
                             'size': request.GET.get('size',
                                                     self.pagination_class.default_limit)}}
-        path = os.path.join(self.base_url, '_search')
+        path = os.path.join(self.zmlp_root_api_path, '_search')
         response = request.client.post(path, payload)
         content = self._get_content(response)
         current_url = request.build_absolute_uri(request.path)
         for item in content['list']:
             item['url'] = f'{current_url}{item["id"]}/'
             if item_modifier:
-                item_modifier(item)
+                item_modifier(request, item)
         paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(content, request)
         return paginator.get_paginated_response(content['list'])
 
-    def _retrieve(self, request, pk):
-        """The result of this method can be returned for the retrieve method of a concrete api
-        if it just needs to proxy the results of a standard ZMLP endpoint for a single object.
+    def _zmlp_list_from_root(self, request):
+        """The result of this method can be returned for the list method of a concrete
+        viewset if it just needs to proxy the results of doing a get on the zmlp base url.
+
+        Args:
+            request (Request): Request the view method was given.
+
+        Returns:
+            Response: DRF Response that can be returned directly by the viewset list method.
+
+        """
+        response = request.client.get(self.zmlp_root_api_path)
+        serializer = self.get_serializer(data=response, many=True)
+        serializer.is_valid()
+        return Response({'results': serializer.data})
+
+    def _zmlp_retrieve(self, request, pk):
+        """The result of this method can be returned for the retrieve method of a concrete
+        viewset. if it just needs to proxy the results of a standard ZMLP endpoint for a single
+        object.
 
         Args:
             request (Request): Request the view method was given.
             pk (str): Primary key of the object to return in the response.
 
+        Returns:
+            Response: DRF Response that can be used directly by viewset action method.
+
         """
-        response = request.client.get(os.path.join(self.base_url, pk))
+        response = request.client.get(os.path.join(self.zmlp_root_api_path, pk))
         content = self._get_content(response)
         return Response(content)
 
-    def _destroy(self, request, pk):
-        response = request.client.delete(os.path.join(self.base_url, pk))
+    def _zmlp_destroy(self, request, pk):
+        """The result of this method can be returned for the destroy method of a concrete
+        viewset. if it just needs to proxy the results of a standard ZMLP endpoint for a single
+        object.
+
+        Args:
+            request (Request): Request the view method was given.
+            pk (str): Primary key of the object to return in the response.
+
+        Returns:
+            Response: DRF Response that can be used directly by viewset action method.
+
+        """
+        response = request.client.delete(os.path.join(self.zmlp_root_api_path, pk))
         return Response(response)
 
     def _get_content(self, response):
-        """Returns the content of Response from the ZVI or ZMLP and returns it as a dict."""
+        """Returns the content of Response from the ZVI or ZMLP and as a dict."""
         if isinstance(response, dict):
             return response
         return response.json()

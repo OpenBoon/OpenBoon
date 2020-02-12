@@ -9,20 +9,13 @@ from wallet.paginators import ZMLPFromSizePagination
 class JobsViewSet(BaseProjectViewSet):
     """CRUD operations for ZMLP or ZVI processing jobs."""
     pagination_class = ZMLPFromSizePagination
+    zmlp_root_api_path = '/api/v1/jobs/'
 
     def list(self, request, project_pk):
-        payload = {'page': {'from': request.GET.get('from', 0),
-                            'size': request.GET.get('size',
-                                                    self.pagination_class.default_limit)}}
-        response = request.client.post('/api/v1/jobs/_search', payload)
-        content = self._get_content(response)
-        current_url = request.build_absolute_uri(request.path)
-        for item in content['list']:
-            item['url'] = f'{current_url}{item["id"]}/'
-            item['actions'] = self._get_action_links(request, item['url'], detail=True)
-        paginator = self.pagination_class()
-        paginator.prep_pagination_for_api_response(content, request)
-        return paginator.get_paginated_response(content['list'])
+        def item_modifier(request, job):
+            job['actions'] = self._get_action_links(request, job['url'], detail=True)
+
+        return self._zmlp_list_from_search(request, item_modifier=item_modifier)
 
     def retrieve(self, request, project_pk, pk):
         response = request.client.get(f'/api/v1/jobs/{pk}')

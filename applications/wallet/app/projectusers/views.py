@@ -32,7 +32,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
     """
 
-    ZMLP_ONLY = True
+    zmlp_only = True
     pagination_class = FromSizePagination
     serializer_class = ProjectUserSerializer
 

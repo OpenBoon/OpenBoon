@@ -8,23 +8,16 @@ from wallet.paginators import ZMLPFromSizePagination
 
 
 class ApikeyViewSet(BaseProjectViewSet):
-    base_url = '/auth/v1/apikey/'
     serializer_class = ApikeySerializer
     pagination_class = ZMLPFromSizePagination
-
-    ZMLP_ONLY = True
+    zmlp_root_api_path = '/auth/v1/apikey/'
+    zmlp_only = True
 
     def list(self, request, project_pk):
-        # Need to be able to paginate and filter by project key
-        # currently the api is automatically filtering by the project the users
-        # apikey is created against
-        response = request.client.get('/auth/v1/apikey')
-        serializer = self.get_serializer(data=response, many=True)
-        serializer.is_valid()
-        return Response({'results': serializer.data})
+        return self._zmlp_list_from_root(request)
 
     def retrieve(self, request, project_pk, pk):
-        return self._retrieve(request, pk)
+        return self._zmlp_retrieve(request, pk)
 
     def create(self, request, project_pk):
         serializer = self.get_serializer(data=request.data)
@@ -33,10 +26,10 @@ class ApikeyViewSet(BaseProjectViewSet):
         body = {'name': serializer.validated_data['name'],
                 'permissions': serializer.validated_data['permissions']}
         try:
-            response = request.client.post('/auth/v1/apikey', body)
+            response = request.client.post(self.zmlp_root_api_path, body)
         except ZmlpInvalidRequestException:
             return Response("Bad Request", status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_201_CREATED, data=response)
 
     def destroy(self, request, project, pk):
-        return self._destroy(request, pk)
+        return self._zmlp_destroy(request, pk)

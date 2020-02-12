@@ -12,8 +12,8 @@ class DataSourceViewSet(BaseProjectViewSet):
     """CRUD operations for ZMLP Data Sources."""
     serializer_class = DataSourceSerializer
     pagination_class = ZMLPFromSizePagination
-    ZMLP_ONLY = True
-    base_url = '/api/v1/data-sources/'
+    zmlp_only = True
+    zmlp_root_api_path = '/api/v1/data-sources/'
 
     def create(self, request, project_pk):
         serializer = self.get_serializer(data=request.data)
@@ -28,18 +28,18 @@ class DataSourceViewSet(BaseProjectViewSet):
         return Response(self.get_serializer(datasource).data)
 
     def list(self, request, project_pk):
-        def item_modifier(datasource):
+        def item_modifier(request, datasource):
             modules = datasource.get('modules')
             if modules:
                 datasource['modules'] = [self._get_module_name(m, request.client) for m in modules]
 
-        return self._list_from_zmlp_search_endpoint(request, item_modifier=item_modifier)
+        return self._zmlp_list_from_search(request, item_modifier=item_modifier)
 
     def retrieve(self, request, project_pk, pk):
-        return self._retrieve(request, pk)
+        return self._zmlp_retrieve(request, pk)
 
     def destroy(self, request, project, pk):
-        return self._destroy(request, pk)
+        return self._zmlp_destroy(request, pk)
 
     @lru_cache(maxsize=128)
     def _get_module_name(self, module_id, client):
