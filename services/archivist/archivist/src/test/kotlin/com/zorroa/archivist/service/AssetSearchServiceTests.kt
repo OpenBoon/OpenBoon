@@ -18,12 +18,16 @@ class AssetSearchServiceTests : AbstractTest() {
     @Before
     fun setUp() {
         val spec = AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
-        spec.attrs = mapOf("analysis.zmlp.similarity.vector" to "AABBCC00")
-
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(spec)
         )
-        assetService.batchCreate(batchCreate)
+        val rsp = assetService.batchCreate(batchCreate)
+        val id = rsp.created[0]
+        val asset = assetService.getAsset(id)
+        asset.setAttr("analysis.zmlp.similarity.vector", "AABBCC00")
+        assetService.index(id, asset.document)
+
+        indexRoutingService.getProjectRestClient().refresh()
     }
 
     @Test
