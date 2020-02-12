@@ -18,7 +18,6 @@ const STYLES = {
   },
   SECONDARY: {
     width: '100vw',
-    paddingRight: spacing.moderate,
   },
 }
 
