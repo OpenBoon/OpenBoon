@@ -4,6 +4,8 @@ import com.zorroa.zmlp.client.ZmlpApp;
 import com.zorroa.zmlp.client.domain.PagedList;
 import com.zorroa.zmlp.client.domain.asset.Asset;
 import com.zorroa.zmlp.client.domain.asset.AssetSearchResult;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +23,12 @@ public class SearchElement {
         query.put("query", "persian | angora");
         simpleElementQueryString.put("simple_query_string", query);
 
+        // Or use SearchSourceBuilder
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder().query(QueryBuilders.queryStringQuery("persian | angora"));
+
         //Search Asset
-        AssetSearchResult assetSearchResult = zmlpApp.assets.search(simpleElementQueryString);
+        //AssetSearchResult assetSearchResult = zmlpApp.assets.search(simpleElementQueryString);
+        AssetSearchResult assetSearchResult = zmlpApp.assets.search(searchSourceBuilder);
         PagedList<Asset> searchResult = assetSearchResult.assets();
 
         for (Asset asset : searchResult)
