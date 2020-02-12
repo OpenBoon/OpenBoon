@@ -164,6 +164,23 @@ class AssetAppTests(unittest.TestCase):
             count += 1
         assert count == 2
 
+    @patch.object(ZmlpClient, 'post')
+    def test_reprocess_search(self, post_patch):
+        post_patch.return_value = {
+            "assetCount": 101,
+            "job": {
+                "id": "abc",
+                "name": "reprocess"
+            }
+        }
+        search = {
+            "query": {"match_all": {}}
+        }
+        rsp = self.app.assets.reprocess_search(search, ["zmlp-labels"])
+        assert 101 == rsp.asset_count
+        assert "abc" == rsp.job.id
+        assert "reprocess" == rsp.job.name
+
     @patch.object(ZmlpClient, 'put')
     def test_index(self, put_patch):
         asset = Asset({'id': '123'})
