@@ -55,6 +55,11 @@ interface ProjectService {
     fun get(name: String): Project
 
     /**
+     * Return true if the project Id exists, false if not.
+     */
+    fun exists(id: UUID): Boolean
+
+    /**
      * Return a [KPagedList] of all [Project]
      */
     fun getAll(filter: ProjectFilter): KPagedList<Project>
@@ -166,11 +171,22 @@ class ProjectServiceImpl constructor(
 
     @Transactional(readOnly = true)
     override fun get(id: UUID): Project {
-        return projectDao.getOne(id)
+        return throwWhenNotFound("Project not found: $id") {
+            return projectDao.getOne(id)
+        }
     }
 
     @Transactional(readOnly = true)
-    override fun get(name: String): Project = projectDao.getByName(name)
+    override fun get(name: String): Project {
+        return throwWhenNotFound("Project not found: $name") {
+            projectDao.getByName(name)
+        }
+    }
+
+    @Transactional(readOnly = true)
+    override fun exists(id: UUID): Boolean {
+        return projectDao.existsById(id)
+    }
 
     @Transactional(readOnly = true)
     override fun getAll(filter: ProjectFilter): KPagedList<Project> = projectCustomDao.getAll(filter)

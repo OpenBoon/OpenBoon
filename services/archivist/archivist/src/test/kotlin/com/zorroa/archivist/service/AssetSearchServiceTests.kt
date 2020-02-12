@@ -20,7 +20,7 @@ class AssetSearchServiceTests : AbstractTest() {
         val spec = AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
         spec.attrs = mapOf("analysis.zmlp.similarity.vector" to "AABBCC00")
         val spec2 = AssetSpec("https://i.imgur.com/abc123442.jpg")
-        
+
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(spec, spec2)
         )
