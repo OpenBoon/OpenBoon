@@ -86,7 +86,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         }
         frame = Frame(TestAsset())
         wrapper = self.pe.get_processor_wrapper(ref)
-        wrapper.apply_metrics(frame.asset, 10, None)
+        wrapper.apply_metrics(frame.asset, True, 10, None)
 
         metrics = frame.asset["metrics"]["pipeline"][0]
         assert "zmlpsdk.testing.TestProcessor" == metrics['processor']
@@ -147,7 +147,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         wrapper = self.pe.get_processor_wrapper(ref)
 
         assert not wrapper.is_already_processed(frame.asset)
-        wrapper.apply_metrics(frame.asset, 10, None)
+        wrapper.apply_metrics(frame.asset, True, 10, None)
         assert wrapper.is_already_processed(frame.asset)
 
         # Now override with _force=true
@@ -165,7 +165,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         wrapper = self.pe.get_processor_wrapper(ref)
 
         assert not wrapper.is_already_processed(frame.asset)
-        wrapper.apply_metrics(frame.asset, 10, None)
+        wrapper.apply_metrics(frame.asset, True, 10, None)
         assert wrapper.is_already_processed(frame.asset)
 
         frame.asset["metrics"]["pipeline"][0]["checksum"] = 500
@@ -182,7 +182,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         wrapper = self.pe.get_processor_wrapper(ref)
 
         assert not wrapper.is_already_processed(frame.asset)
-        wrapper.apply_metrics(frame.asset, 10, "warning")
+        wrapper.apply_metrics(frame.asset, True, 10, "warning")
         # errors are always not processed.
         assert not wrapper.is_already_processed(frame.asset)
 
