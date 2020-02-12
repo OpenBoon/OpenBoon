@@ -305,7 +305,7 @@ Array [
 }
 
 .emotion-25 {
-  padding-left: 12px;
+  padding-left: 24px;
 }
 
 .emotion-28 {
@@ -318,7 +318,6 @@ Array [
 }
 
 .emotion-26 {
-  color: #b3b3b3;
   font-size: 15px;
   line-height: 18px;
   font-weight: 700;

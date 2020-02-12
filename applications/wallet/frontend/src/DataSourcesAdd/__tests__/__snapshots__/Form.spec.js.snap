@@ -188,7 +188,7 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
 }
 
 .emotion-25 {
-  padding-left: 12px;
+  padding-left: 24px;
 }
 
 .emotion-28 {
@@ -201,7 +201,6 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
 }
 
 .emotion-26 {
-  color: #b3b3b3;
   font-size: 15px;
   line-height: 18px;
   font-weight: 700;
@@ -967,7 +966,7 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
 }
 
 .emotion-25 {
-  padding-left: 12px;
+  padding-left: 24px;
 }
 
 .emotion-28 {
@@ -980,7 +979,6 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
 }
 
 .emotion-26 {
-  color: #b3b3b3;
   font-size: 15px;
   line-height: 18px;
   font-weight: 700;
