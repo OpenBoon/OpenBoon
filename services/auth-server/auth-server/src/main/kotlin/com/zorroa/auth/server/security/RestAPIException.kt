@@ -1,5 +1,7 @@
 package com.zorroa.auth.server.security
 
+import com.zorroa.zmlp.service.security.getZmlpActorOrNull
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.servlet.error.ErrorAttributes
@@ -33,6 +35,8 @@ class RestAPIException {
          */
         val errorId = UUID.randomUUID().toString()
 
+        logger.error("endpoint='{}' project='{}', errorId='{}',", req.servletPath, getZmlpActorOrNull()?.projectId, errorId)
+
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)
         errAttrs["errorId"] = errorId
         errAttrs["status"] = status.value()
@@ -41,5 +45,9 @@ class RestAPIException {
         return ResponseEntity.status(status)
             .contentType(MediaType.APPLICATION_JSON)
             .body(errAttrs)
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(RestAPIException::class.java)
     }
 }
