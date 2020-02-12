@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ApiKeys /> should render properly while loading 1`] = `
+exports[`<DataSources /> should render properly while loading 1`] = `
 Array [
   .emotion-0 {
   font-size: 18px;
@@ -13,7 +13,7 @@ Array [
 <h2
     className="emotion-0"
   >
-    Project API Keys
+    Data Sources
   </h2>,
   .emotion-5 {
   padding: 16px;
@@ -97,7 +97,7 @@ Array [
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -109,11 +109,11 @@ Array [
       >
         <a
           className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys/add"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Create API key
+          Add Data Source
         </a>
       </li>
     </ul>
@@ -121,11 +121,11 @@ Array [
   <div>
      
   </div>,
-  .emotion-7 {
+  .emotion-11 {
   height: 100%;
 }
 
-.emotion-6 {
+.emotion-10 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -133,35 +133,35 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-6 tr {
+.emotion-10 tr {
   background-color: #252525;
 }
 
-.emotion-6 tr:nth-of-type(2n) {
+.emotion-10 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-6 tr:hover {
+.emotion-10 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-6 tr:hover td {
+.emotion-10 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-6 tr:hover td:first-of-type {
+.emotion-10 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-6 tr:hover td:last-of-type {
+.emotion-10 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-6 td {
-  max-width: calc(100vw / 2);
+.emotion-10 td {
+  max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -172,11 +172,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-6 td:first-of-type {
+.emotion-10 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-6 td:last-of-type {
+.emotion-10 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -192,7 +192,7 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-0:nth-of-type(2) {
+.emotion-0:nth-of-type(3) {
   width: 100%;
 }
 
@@ -200,19 +200,19 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-2 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5 {
+.emotion-9 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-4 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -235,28 +235,48 @@ Array [
 }
 
 <div
-    className="emotion-7"
+    className="emotion-11"
   >
     <table
-      className="emotion-6"
+      className="emotion-10"
     >
       <thead>
         <tr>
           <th
             className="emotion-0"
           >
-            API Key Name
+            Name
           </th>
           <th
             className="emotion-0"
           >
-            Permissions
+            Source Type
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Path
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Date Created
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Date Modified
+          </th>
+          <th
+            className="emotion-0"
+          >
+            File Types
           </th>
           <th
             className="emotion-0"
           >
             <div
-              className="emotion-2"
+              className="emotion-6"
             >
               <svg
                 data-file-name="gear.svg"
@@ -268,13 +288,13 @@ Array [
       </thead>
       <tbody>
         <tr
-          className="emotion-5"
+          className="emotion-9"
         >
           <td
-            colSpan={3}
+            colSpan={7}
           >
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
               Loading...
             </div>
@@ -292,7 +312,7 @@ Array [
 ]
 `;
 
-exports[`<ApiKeys /> should render properly with api keys 1`] = `
+exports[`<DataSources /> should render properly with data sources 1`] = `
 Array [
   .emotion-0 {
   font-size: 18px;
@@ -305,7 +325,7 @@ Array [
 <h2
     className="emotion-0"
   >
-    Project API Keys
+    Data Sources
   </h2>,
   .emotion-5 {
   padding: 16px;
@@ -389,7 +409,7 @@ Array [
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -401,11 +421,11 @@ Array [
       >
         <a
           className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys/add"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Create API key
+          Add Data Source
         </a>
       </li>
     </ul>
@@ -424,7 +444,7 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-0:nth-of-type(2) {
+.emotion-0:nth-of-type(3) {
   width: 100%;
 }
 
@@ -432,18 +452,18 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-2 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-23 {
+.emotion-34 {
   height: auto;
 }
 
-.emotion-15 {
+.emotion-26 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -451,35 +471,35 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-15 tr {
+.emotion-26 tr {
   background-color: #252525;
 }
 
-.emotion-15 tr:nth-of-type(2n) {
+.emotion-26 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-15 tr:hover {
+.emotion-26 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-15 tr:hover td {
+.emotion-26 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-15 tr:hover td:first-of-type {
+.emotion-26 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-15 tr:hover td:last-of-type {
+.emotion-26 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-15 td {
-  max-width: calc(100vw / 2);
+.emotion-26 td {
+  max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -490,16 +510,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-15 td:first-of-type {
+.emotion-26 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-15 td:last-of-type {
+.emotion-26 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-4 {
+.emotion-8 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -565,7 +585,7 @@ Array [
   background-color: #808080;
 }
 
-.emotion-22 {
+.emotion-33 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -576,7 +596,7 @@ Array [
   justify-content: flex-end;
 }
 
-.emotion-17 {
+.emotion-28 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -594,20 +614,20 @@ Array [
   border-bottom-right-radius: 0;
 }
 
-.emotion-17:hover {
+.emotion-28:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-16 {
+.emotion-27 {
   color: #191919;
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
-.emotion-18 {
+.emotion-29 {
   padding: 8px 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -621,7 +641,7 @@ Array [
   background-color: #000000;
 }
 
-.emotion-19 {
+.emotion-30 {
   padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -634,7 +654,7 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-21 {
+.emotion-32 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -652,13 +672,13 @@ Array [
   border-bottom-right-radius: 2px;
 }
 
-.emotion-21:hover {
+.emotion-32:hover {
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-20 {
+.emotion-31 {
   color: #191919;
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -666,28 +686,48 @@ Array [
 }
 
 <div
-    className="emotion-23"
+    className="emotion-34"
   >
     <table
-      className="emotion-15"
+      className="emotion-26"
     >
       <thead>
         <tr>
           <th
             className="emotion-0"
           >
-            API Key Name
+            Name
           </th>
           <th
             className="emotion-0"
           >
-            Permissions
+            Source Type
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Path
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Date Created
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Date Modified
+          </th>
+          <th
+            className="emotion-0"
+          >
+            File Types
           </th>
           <th
             className="emotion-0"
           >
             <div
-              className="emotion-2"
+              className="emotion-6"
             >
               <svg
                 data-file-name="gear.svg"
@@ -700,33 +740,25 @@ Array [
       <tbody>
         <tr>
           <td>
-            job-runner
+            test
+          </td>
+          <td>
+            Google Cloud Storage
+          </td>
+          <td>
+            gs://zorroa-dev-data/images
+          </td>
+          <td>
+            2020-02-10 01:37:47
+          </td>
+          <td>
+            2020-02-10 01:37:47
           </td>
           <td>
             <span
-              className="emotion-4"
+              className="emotion-8"
             >
-               Assets Read
-            </span>
-            <span
-              className="emotion-4"
-            >
-               Assets Import
-            </span>
-            <span
-              className="emotion-4"
-            >
-               Project Files Read
-            </span>
-            <span
-              className="emotion-4"
-            >
-               System Project Decrypt
-            </span>
-            <span
-              className="emotion-4"
-            >
-               Project Files Write
+              jpg
             </span>
           </td>
           <td>
@@ -750,18 +782,166 @@ Array [
         </tr>
         <tr>
           <td>
-            My ApiKey
+            test2
+          </td>
+          <td>
+            Google Cloud Storage
+          </td>
+          <td>
+            gs://zorroa-dev-data/image
+          </td>
+          <td>
+            2020-02-10 01:40:26
+          </td>
+          <td>
+            2020-02-10 01:40:26
           </td>
           <td>
             <span
-              className="emotion-4"
+              className="emotion-8"
             >
-               Api Key Manage
+              jpg
+            </span>
+          </td>
+          <td>
+            <div
+              className="emotion-10"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-9"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            test3
+          </td>
+          <td>
+            Google Cloud Storage
+          </td>
+          <td>
+            gs://zorroa-dev-data
+          </td>
+          <td>
+            2020-02-10 01:42:23
+          </td>
+          <td>
+            2020-02-10 01:42:23
+          </td>
+          <td>
+            <span
+              className="emotion-8"
+            >
+              jpg
             </span>
             <span
-              className="emotion-4"
+              className="emotion-8"
             >
-               Project Manage
+              jpeg
+            </span>
+          </td>
+          <td>
+            <div
+              className="emotion-10"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-9"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            test4
+          </td>
+          <td>
+            Google Cloud Storage
+          </td>
+          <td>
+            gs://zorroa-dev-data
+          </td>
+          <td>
+            2020-02-10 16:21:18
+          </td>
+          <td>
+            2020-02-10 16:21:18
+          </td>
+          <td>
+            <span
+              className="emotion-8"
+            >
+              jpg
+            </span>
+            <span
+              className="emotion-8"
+            >
+              jpeg
+            </span>
+          </td>
+          <td>
+            <div
+              className="emotion-10"
+            >
+              <button
+                aria-label="Toggle Actions Menu"
+                className="emotion-9"
+                onBlur={[Function]}
+                onClick={[Function]}
+                type="button"
+              >
+                <svg
+                  data-file-name="gear.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            test5
+          </td>
+          <td>
+            Google Cloud Storage
+          </td>
+          <td>
+            gs://zorroa-dev-data
+          </td>
+          <td>
+            2020-02-10 16:47:39
+          </td>
+          <td>
+            2020-02-10 16:47:39
+          </td>
+          <td>
+            <span
+              className="emotion-8"
+            >
+              jpg
+            </span>
+            <span
+              className="emotion-8"
+            >
+              jpeg
             </span>
           </td>
           <td>
@@ -789,37 +969,37 @@ Array [
        
     </div>
     <div
-      className="emotion-22"
+      className="emotion-33"
     >
       <button
-        className="emotion-17"
+        className="emotion-28"
         disabled={true}
         type="button"
       >
         <svg
-          className="emotion-16"
+          className="emotion-27"
           data-file-name="chevron.svg"
           width={16}
         />
       </button>
       <div
-        className="emotion-18"
+        className="emotion-29"
       >
         1
       </div>
       <div
-        className="emotion-19"
+        className="emotion-30"
       >
         of 
         1
       </div>
       <button
-        className="emotion-21"
+        className="emotion-32"
         disabled={true}
         type="button"
       >
         <svg
-          className="emotion-20"
+          className="emotion-31"
           data-file-name="chevron.svg"
           width={16}
         />
@@ -832,7 +1012,7 @@ Array [
 ]
 `;
 
-exports[`<ApiKeys /> should render properly with no api keys 1`] = `
+exports[`<DataSources /> should render properly with no data sources 1`] = `
 Array [
   .emotion-0 {
   font-size: 18px;
@@ -845,7 +1025,7 @@ Array [
 <h2
     className="emotion-0"
   >
-    Project API Keys
+    Data Sources
   </h2>,
   .emotion-5 {
   padding: 16px;
@@ -929,7 +1109,7 @@ Array [
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -941,11 +1121,11 @@ Array [
       >
         <a
           className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys/add"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Create API key
+          Add Data Source
         </a>
       </li>
     </ul>
@@ -953,11 +1133,11 @@ Array [
   <div>
      
   </div>,
-  .emotion-7 {
+  .emotion-11 {
   height: 100%;
 }
 
-.emotion-6 {
+.emotion-10 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -965,35 +1145,35 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-6 tr {
+.emotion-10 tr {
   background-color: #252525;
 }
 
-.emotion-6 tr:nth-of-type(2n) {
+.emotion-10 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-6 tr:hover {
+.emotion-10 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-6 tr:hover td {
+.emotion-10 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-6 tr:hover td:first-of-type {
+.emotion-10 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-6 tr:hover td:last-of-type {
+.emotion-10 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-6 td {
-  max-width: calc(100vw / 2);
+.emotion-10 td {
+  max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1004,11 +1184,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-6 td:first-of-type {
+.emotion-10 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-6 td:last-of-type {
+.emotion-10 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -1024,7 +1204,7 @@ Array [
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-0:nth-of-type(2) {
+.emotion-0:nth-of-type(3) {
   width: 100%;
 }
 
@@ -1032,19 +1212,19 @@ Array [
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-2 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5 {
+.emotion-9 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-4 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1067,28 +1247,48 @@ Array [
 }
 
 <div
-    className="emotion-7"
+    className="emotion-11"
   >
     <table
-      className="emotion-6"
+      className="emotion-10"
     >
       <thead>
         <tr>
           <th
             className="emotion-0"
           >
-            API Key Name
+            Name
           </th>
           <th
             className="emotion-0"
           >
-            Permissions
+            Source Type
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Path
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Date Created
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Date Modified
+          </th>
+          <th
+            className="emotion-0"
+          >
+            File Types
           </th>
           <th
             className="emotion-0"
           >
             <div
-              className="emotion-2"
+              className="emotion-6"
             >
               <svg
                 data-file-name="gear.svg"
@@ -1100,15 +1300,15 @@ Array [
       </thead>
       <tbody>
         <tr
-          className="emotion-5"
+          className="emotion-9"
         >
           <td
-            colSpan={3}
+            colSpan={7}
           >
             <div
-              className="emotion-4"
+              className="emotion-8"
             >
-              No api keys
+              No data sources
             </div>
           </td>
         </tr>
