@@ -144,7 +144,7 @@ class DataSourceServiceImpl(
         logger.event(LogObject.DATASOURCE, LogAction.DELETE, mapOf("dataSourceId" to id))
         val ds = get(id)
 
-        // Grab all the jobs before the DS is delted.
+        // Grab all the jobs before the DS is deleted.
         val jobs = jobService.getAll(
             JobFilter(
                 states = listOf(JobState.InProgress, JobState.Failure),
@@ -154,7 +154,7 @@ class DataSourceServiceImpl(
         logger.info("Canceling ${jobs.size()} DataSource ${ds.id} jobs")
 
         // If this thing commits we async cancel all the jobs for the
-        // DS which involves killins all the running tasks.
+        // DS which involves killing all the running tasks.
         txEvent.afterCommit(sync = false) {
             jobs.forEach { jobService.cancelJob(it) }
         }
