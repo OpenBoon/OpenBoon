@@ -52,17 +52,22 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
             padding: 0,
             margin: 0,
           }}>
-          <SidebarLink href="/jobs">
+          <SidebarLink href="/[projectId]/jobs">
             <QueueSvg width={ICON_WIDTH} aria-hidden />
             Job Queue
           </SidebarLink>
 
-          <SidebarLink href="/api-keys">
+          <SidebarLink href="/[projectId]/data-sources">
+            <KeySvg width={ICON_WIDTH} aria-hidden />
+            Data Sources
+          </SidebarLink>
+
+          <SidebarLink href="/[projectId]/api-keys">
             <KeySvg width={ICON_WIDTH} aria-hidden />
             API Keys
           </SidebarLink>
 
-          <SidebarLink href="/users">
+          <SidebarLink href="/[projectId]/users">
             <UsersSvg width={ICON_WIDTH} aria-hidden />
             User Admin
           </SidebarLink>

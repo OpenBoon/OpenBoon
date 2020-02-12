@@ -27,7 +27,7 @@ class ZmlpDataSourceAppTests(unittest.TestCase):
             'name': 'test',
             'uri': 'gs://test/test',
             'file_types': ['jpg'],
-            'analysis': ['google-ocr']
+            'modules': ['google-ocr']
         }
         post_patch.return_value = value
         ds = self.app.datasource.create_datasource('test', 'gs://test/test')
@@ -35,7 +35,7 @@ class ZmlpDataSourceAppTests(unittest.TestCase):
         assert value['name'] == ds.name
         assert value['uri'] == ds.uri
         assert ds.file_types == ['jpg']
-        assert ds.analysis == ['google-ocr']
+        assert ds.modules == ['google-ocr']
 
     @patch.object(ZmlpClient, 'post')
     def test_get_datasource(self, post_patch):
@@ -51,23 +51,12 @@ class ZmlpDataSourceAppTests(unittest.TestCase):
         assert value['uri'] == ds.uri
 
     @patch.object(ZmlpClient, 'post')
-    def test_import_files(self, post_patch):
+    def test_process_files(self, post_patch):
         value = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'Import DataSource'
         }
         post_patch.return_value = value
-        job = self.app.datasource.import_files(DataSource({'id': '123'}))
+        job = self.app.datasource.process_files(DataSource({'id': '123'}))
         assert value['id'] == job["id"]
         assert value['name'] == job["name"]
-
-    @patch.object(ZmlpClient, 'put')
-    def test_update_credentials(self, put_patch):
-        value = {
-            'type': 'DATASOURCE',
-            'id': 'ABC'
-        }
-        put_patch.return_value = value
-        status = self.app.datasource.update_credentials(DataSource({'id': '123'}), 'ABC123')
-        assert status['type'] == 'DATASOURCE'
-        assert status['id'] == 'ABC'

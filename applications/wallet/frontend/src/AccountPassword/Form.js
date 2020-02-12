@@ -1,11 +1,9 @@
-import { useRouter } from 'next/router'
 import { useReducer } from 'react'
-
-import { spacing } from '../Styles'
 
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import ButtonGroup from '../Button/Group'
 
 import { onSubmit } from './helpers'
 
@@ -15,6 +13,7 @@ const INITIAL_STATE = {
   currentPassword: '',
   newPassword: '',
   confirmPassword: '',
+  showForm: false,
   success: false,
   errors: {},
 }
@@ -22,10 +21,6 @@ const INITIAL_STATE = {
 const reducer = (state, action) => ({ ...state, ...action })
 
 const AccountPasswordForm = () => {
-  const {
-    query: { projectId },
-  } = useRouter()
-
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   if (state.success) {
@@ -74,15 +69,17 @@ const AccountPasswordForm = () => {
         errorMessage={state.errors.newPassword2}
       />
 
-      <div
-        css={{
-          paddingTop: spacing.moderate,
-          paddingBottom: spacing.moderate,
-        }}>
+      <ButtonGroup>
+        <Button
+          variant={BUTTON_VARIANTS.SECONDARY}
+          onClick={() => dispatch(INITIAL_STATE)}>
+          Cancel
+        </Button>
+
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() => onSubmit({ dispatch, projectId, state })}
+          onClick={() => onSubmit({ dispatch, state })}
           isDisabled={
             !state.currentPassword ||
             !state.newPassword ||
@@ -90,7 +87,7 @@ const AccountPasswordForm = () => {
           }>
           Save
         </Button>
-      </div>
+      </ButtonGroup>
     </Form>
   )
 }

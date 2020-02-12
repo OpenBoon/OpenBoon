@@ -61,8 +61,8 @@ object Json {
     }
 
     fun hash(value: Any): Int {
-        val value = Mapper.writeValueAsString(value)
-        return value.hashCode()
+        val newValue = Mapper.writeValueAsString(value)
+        return newValue.hashCode()
     }
 
     fun serializeToString(value: Any): String {

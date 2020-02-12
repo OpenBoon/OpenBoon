@@ -6,6 +6,8 @@ import { spacing, colors, constants, typography } from '../Styles'
 
 import FormSuccess from '../FormSuccess'
 import Button, { VARIANTS } from '../Button'
+import ButtonGroup from '../Button/Group'
+import SectionTitle from '../SectionTitle'
 
 import { onCopy } from './helpers'
 
@@ -25,24 +27,9 @@ const ApiKeysAddFormSuccess = ({
   return (
     <div>
       <FormSuccess>Key Generated &amp; Copied to Clipboard</FormSuccess>
-      <div
-        css={{
-          fontSize: typography.size.medium,
-          lineHeight: typography.height.medium,
-          fontWeight: typography.weight.medium,
-          paddingTop: spacing.normal,
-        }}>
-        Project {projectId}
-      </div>
-      <h2
-        css={{
-          fontSize: typography.size.medium,
-          lineHeight: typography.height.medium,
-          fontWeight: typography.weight.medium,
-          paddingTop: spacing.normal,
-        }}>
-        Scope
-      </h2>
+
+      <SectionTitle>Scope</SectionTitle>
+
       <ul css={{ color: colors.structure.zinc }}>
         {permissions.map(permission => (
           <li key={permission}>
@@ -50,15 +37,9 @@ const ApiKeysAddFormSuccess = ({
           </li>
         ))}
       </ul>
-      <h3
-        css={{
-          color: colors.structure.steel,
-          fontSize: typography.size.regular,
-          lineHeight: typography.height.regular,
-          fontWeight: typography.weight.regular,
-        }}>
-        API Key
-      </h3>
+
+      <SectionTitle>API Key</SectionTitle>
+
       <div
         css={{
           display: 'flex',
@@ -111,13 +92,9 @@ const ApiKeysAddFormSuccess = ({
           </Button>
         </div>
       </div>
-      <div css={{ display: 'flex' }}>
-        <Button
-          variant={VARIANTS.SECONDARY}
-          onClick={onReset}
-          css={{
-            marginRight: spacing.normal,
-          }}>
+
+      <ButtonGroup>
+        <Button variant={VARIANTS.SECONDARY} onClick={onReset}>
           Create Another Key
         </Button>
         <Link
@@ -126,7 +103,7 @@ const ApiKeysAddFormSuccess = ({
           passHref>
           <Button variant={VARIANTS.PRIMARY}>View All</Button>
         </Link>
-      </div>
+      </ButtonGroup>
     </div>
   )
 }

@@ -5,16 +5,19 @@ import { useRouter } from 'next/router'
 import { colors, constants, spacing, typography } from '../Styles'
 
 const SidebarLink = ({ href, children }) => {
-  const {
-    pathname,
-    query: { projectId },
-  } = useRouter()
+  const { pathname, query } = useRouter()
 
-  const isCurrentPage = pathname === `/[projectId]${href}`
+  const isCurrentPage = pathname === href
 
   return (
     <li css={{ borderBottom: constants.borders.transparent }}>
-      <Link href={`/[projectId]${href}`} as={`/${projectId}${href}`} passHref>
+      <Link
+        href={href}
+        as={href
+          .split('/')
+          .map(s => s.replace(/\[(.*)\]/gi, (_, group) => query[group]))
+          .join('/')}
+        passHref>
         <a
           css={{
             display: 'flex',
@@ -22,15 +25,15 @@ const SidebarLink = ({ href, children }) => {
             padding: spacing.moderate,
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
-            backgroundColor: isCurrentPage ? colors.structure.smoke : 'none',
-            color: isCurrentPage ? colors.key.one : colors.structure.steel,
+            backgroundColor: isCurrentPage ? colors.structure.mattGrey : 'none',
+            color: isCurrentPage ? colors.key.white : colors.structure.zinc,
             svg: {
               marginRight: spacing.moderate,
             },
             ':hover': {
               textDecoration: 'none',
-              color: isCurrentPage ? colors.key.one : colors.structure.pebble,
-              backgroundColor: colors.structure.smoke,
+              color: isCurrentPage ? colors.structure.white : colors.key.one,
+              backgroundColor: colors.structure.mattGrey,
             },
           }}>
           {children}

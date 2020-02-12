@@ -4,7 +4,7 @@ import os
 
 from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from zmlpsdk import Frame
-from ..processors import AutoMLNLPModelProcessor
+from ..automl import AutoMLNLPModelProcessor
 
 
 class AutoMLNLPUnitTests(PluginUnitTestCase):

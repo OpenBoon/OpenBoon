@@ -11,10 +11,10 @@ const BUTTON_HEIGHT = 40
 const MODAL_HEIGHT = 200
 const MODAL_WIDTH = 480
 
-const Modal = ({ onCancel, onConfirm }) => {
+const Modal = ({ title, message, action, onCancel, onConfirm }) => {
   return (
     <AriaModal
-      titleId="Delete API Key"
+      titleId={title}
       getApplicationNode={() => document.getElementById('__next')}
       underlayColor="rgba(0, 0, 0, 0.75)"
       onExit={onCancel}
@@ -35,7 +35,7 @@ const Modal = ({ onCancel, onConfirm }) => {
             padding: spacing.normal,
             textTransform: 'uppercase',
           }}>
-          <div css={{ color: colors.structure.zinc }}>Delete</div>
+          <div css={{ color: colors.structure.zinc }}>{title}</div>
           <div
             role="button"
             aria-label="Close Modal"
@@ -58,7 +58,7 @@ const Modal = ({ onCancel, onConfirm }) => {
               alignItems: 'center',
               color: colors.marble,
             }}>
-            Deleting this key cannot be undone.
+            {message}
           </div>
           <div
             css={{
@@ -73,7 +73,6 @@ const Modal = ({ onCancel, onConfirm }) => {
               },
             }}>
             <Button
-              type="button"
               variant={VARIANTS.SECONDARY}
               css={{
                 marginRight: spacing.normal,
@@ -81,11 +80,8 @@ const Modal = ({ onCancel, onConfirm }) => {
               onClick={onCancel}>
               Cancel
             </Button>
-            <Button
-              type="button"
-              variant={VARIANTS.WARNING}
-              onClick={onConfirm}>
-              Delete Permanently
+            <Button variant={VARIANTS.WARNING} onClick={onConfirm}>
+              {action}
             </Button>
           </div>
         </div>
@@ -95,6 +91,9 @@ const Modal = ({ onCancel, onConfirm }) => {
 }
 
 Modal.propTypes = {
+  title: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+  action: PropTypes.string.isRequired,
   onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
+import Link from 'next/link'
 
 import { colors, constants, typography, spacing } from '../Styles'
 
@@ -127,6 +128,24 @@ const Login = ({
             isDisabled={!username || !password}>
             Login
           </Button>
+        </div>
+
+        <div
+          css={{
+            paddingTop: spacing.spacious,
+            textAlign: 'center',
+            a: {
+              color: colors.structure.steel,
+            },
+          }}>
+          <Link href="/create-account">
+            <a>Create an account</a>
+          </Link>
+          <br />
+          <br />
+          <Link href="/reset-password">
+            <a>Reset your password</a>
+          </Link>
         </div>
       </form>
     </div>

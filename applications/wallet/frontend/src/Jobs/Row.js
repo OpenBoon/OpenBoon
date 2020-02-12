@@ -6,7 +6,7 @@ import { colors, spacing, typography } from '../Styles'
 import { formatFullDate } from '../Date/helpers'
 
 import Status from '../Status'
-import ProgressBar from '../ProgressBar'
+import ProgressBar, { CONTAINER_WIDTH } from '../ProgressBar'
 
 import JobsMenu from './Menu'
 
@@ -70,7 +70,11 @@ const JobsRow = ({
           </Link>
         )}
       </td>
-      <td>
+      <td
+        css={{
+          minWidth: CONTAINER_WIDTH + spacing.normal * 2,
+          overflow: 'visible',
+        }}>
         <ProgressBar taskCounts={taskCounts} />
       </td>
       <td>

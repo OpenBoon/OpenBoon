@@ -72,7 +72,6 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
             <div
               css={{
                 padding: spacing.normal,
-                paddingBottom: spacing.comfy,
                 borderBottom: constants.borders.separator,
               }}>
               <div css={{ fontWeight: typography.weight.bold }}>

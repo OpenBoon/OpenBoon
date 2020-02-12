@@ -148,7 +148,7 @@ class PipelineModServiceTests : AbstractTest() {
     @Test
     fun testGetByNames() {
         pipelineModService.updateStandardMods()
-        val names = listOf("zmlp-labels", "zmlp-object-detection")
+        val names = listOf("zmlp-labels", "zmlp-objects")
         val mods = pipelineModService.getByNames(names)
         assertEquals(names.size, mods.size)
     }

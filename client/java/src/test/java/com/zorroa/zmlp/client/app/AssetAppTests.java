@@ -6,6 +6,7 @@ import com.zorroa.zmlp.client.ApiKey;
 import com.zorroa.zmlp.client.Json;
 import com.zorroa.zmlp.client.ZmlpClient;
 import com.zorroa.zmlp.client.domain.asset.*;
+import com.zorroa.zmlp.client.domain.similarity.SimilaritySearch;
 import okhttp3.mockwebserver.MockResponse;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -114,6 +115,103 @@ public class AssetAppTests extends AbstractAppTests {
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.termQuery("source.filename", "dog.jpg"));
+
+        AssetSearchResult search = assetApp.search(searchSourceBuilder);
+
+        assertEquals(2, search.assets().size());
+        assertEquals(2, search.size());
+        assertEquals(100, search.totalSize());
+        assertEquals(getMockSearchResult(), Json.asPrettyJson(search.rawResponse()));
+    }
+
+    @Test
+    public void testSimilarityElasticSearch() {
+        webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(
+                new SimilaritySearch("field")
+                        .add("HASH-HASH-HASH-HASH-HASH-HASH-HASH"));
+
+        /*
+        {
+           "query":{
+              "similarity":{
+                 "field":"[{weight=1.0, hash=HASH-HASH-HASH-HASH-HASH-HASH-HASH}]",
+                 "boost":1.0
+              }
+           }
+        }
+         */
+        AssetSearchResult search = assetApp.search(searchSourceBuilder);
+
+        assertEquals(2, search.assets().size());
+        assertEquals(2, search.size());
+        assertEquals(100, search.totalSize());
+        assertEquals(getMockSearchResult(), Json.asPrettyJson(search.rawResponse()));
+    }
+
+    @Test
+    public void testSimilarityMultipleFilters() {
+        webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(
+                new SimilaritySearch("batchField")
+                        .add("HASH11111111111111111")
+                        .add("HASH22222222222222222222", 2.0)
+        );
+
+        /*
+        {
+           "query":{
+              "similarity":{
+                 "batchField":"[{weight=1.0, hash=HASH11111111111111111}, {weight=1.0, hash=HASH22222222222222222222}]",
+              }
+           }
+        }
+         */
+
+        AssetSearchResult search = assetApp.search(searchSourceBuilder);
+
+        assertEquals(2, search.assets().size());
+        assertEquals(2, search.size());
+        assertEquals(100, search.totalSize());
+        assertEquals(getMockSearchResult(), Json.asPrettyJson(search.rawResponse()));
+    }
+
+
+    @Test
+    public void testSimilarityAddAll() {
+        webServer.enqueue(new MockResponse().setBody(getMockSearchResult()));
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        List<Map<String,Object>> filters = new ArrayList();
+        Map hash1 = new HashMap();
+        hash1.put("hash", "HASH-NUMBER-ONE");
+        hash1.put( "weight", 3.8);
+        filters.add(hash1);
+
+        Map hash2 = new HashMap();
+        hash2.put("hash", "HASH-NUMBER-TWO");
+        hash2.put( "weight", 1);
+        filters.add(hash2);
+
+        searchSourceBuilder.query(
+                new SimilaritySearch("batchField")
+                        .addAll(filters));
+
+        /*
+        {
+           "query":{
+              "similarity":{
+                 "batchField":"[{weight=3.8, hash=HASH-NUMBER-ONE}, {weight=1, hash=HASH-NUMBER-TWO}]",
+                 "boost":1.0
+              }
+           }
+        }
+         */
 
         AssetSearchResult search = assetApp.search(searchSourceBuilder);
 

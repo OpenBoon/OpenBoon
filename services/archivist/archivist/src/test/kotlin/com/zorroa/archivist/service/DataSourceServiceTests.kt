@@ -5,13 +5,17 @@ import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
+import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.PipelineSpec
+import com.zorroa.archivist.domain.emptyZpsScript
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class DataSourceServiceTests : AbstractTest() {
@@ -24,6 +28,9 @@ class DataSourceServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var piplineModService: PipelineModService
+
+    @Autowired
+    lateinit var jobService: JobService
 
     @PersistenceContext
     lateinit var entityManager: EntityManager
@@ -49,7 +56,7 @@ class DataSourceServiceTests : AbstractTest() {
             "dev-data",
             "gs://zorroa-dev-data",
             fileTypes = listOf("jpg"),
-            modules = setOf("zmlp-object-detection")
+            modules = setOf("zmlp-objects")
         )
 
         val ds = dataSourceService.create(spec2)
@@ -124,7 +131,7 @@ class DataSourceServiceTests : AbstractTest() {
             "gs://foo/bar",
             listOf("jpg"),
             setOf(),
-            setOf("zmlp-object-detection")
+            setOf("zmlp-objects")
         )
         dataSourceService.update(ds.id, update)
 
@@ -172,6 +179,27 @@ class DataSourceServiceTests : AbstractTest() {
         val count = jdbc.queryForObject(
             "SELECT COUNT(1) FROM datasource WHERE pk_datasource=?", Int::class.java, ds.id)
         assertEquals(0, count)
+    }
+
+    @Test
+    fun testDeleteWithJob() {
+        val ds = dataSourceService.create(spec)
+        val jspec = JobSpec("test_job",
+            emptyZpsScript("foo"),
+            dataSourceId = ds.id,
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar"))
+
+        val job = jobService.create(jspec)
+        dataSourceService.delete(ds.id)
+        entityManager.flush()
+        val count = jdbc.queryForObject(
+            "SELECT COUNT(1) FROM datasource WHERE pk_datasource=?", Int::class.java, ds.id)
+        assertEquals(0, count)
+
+        val dsJob = jobService.get(job.id)
+        assertNull(dsJob.dataSourceId)
+        assertEquals(JobState.Cancelled, dsJob.state)
     }
 
     @Test

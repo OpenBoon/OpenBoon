@@ -20,7 +20,7 @@ const TabsLink = ({ title, href }) => {
         passHref>
         <a
           css={{
-            border: `0 ${colors.key.two} solid`,
+            border: `0 ${colors.key.one} solid`,
             borderBottomWidth: isCurrentPage ? 2 : 0,
             color: isCurrentPage ? colors.white : colors.structure.zinc,
             display: 'flex',

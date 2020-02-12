@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Login /> should render properly 1`] = `
-.emotion-25 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -17,7 +17,7 @@ exports[`<Login /> should render properly 1`] = `
   height: 100vh;
 }
 
-.emotion-24 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -178,6 +178,7 @@ exports[`<Login /> should render properly 1`] = `
 .emotion-10 {
   display: block;
   padding-bottom: 8px;
+  color: #b3b3b3;
 }
 
 .emotion-12 {
@@ -186,7 +187,7 @@ exports[`<Login /> should render properly 1`] = `
 
 .emotion-11 {
   outline-offset: 0;
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
@@ -324,18 +325,27 @@ exports[`<Login /> should render properly 1`] = `
 }
 
 .emotion-22:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-22[aria-disabled=true] {
   background-color: #808080;
 }
 
+.emotion-24 {
+  padding-top: 32px;
+  text-align: center;
+}
+
+.emotion-24 a {
+  color: #808080;
+}
+
 <div
-  className="emotion-25"
+  className="emotion-26"
 >
   <form
-    className="emotion-24"
+    className="emotion-25"
     method="post"
     onSubmit={[Function]}
   >
@@ -469,6 +479,26 @@ exports[`<Login /> should render properly 1`] = `
       >
         Login
       </button>
+    </div>
+    <div
+      className="emotion-24"
+    >
+      <a
+        href="/create-account"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Create an account
+      </a>
+      <br />
+      <br />
+      <a
+        href="/reset-password"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Reset your password
+      </a>
     </div>
   </form>
 </div>

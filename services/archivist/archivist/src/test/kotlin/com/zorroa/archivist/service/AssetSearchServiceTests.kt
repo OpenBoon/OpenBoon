@@ -19,9 +19,10 @@ class AssetSearchServiceTests : AbstractTest() {
     fun setUp() {
         val spec = AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
         spec.attrs = mapOf("analysis.zmlp.similarity.vector" to "AABBCC00")
+        val spec2 = AssetSpec("https://i.imgur.com/abc123442.jpg")
 
         val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(spec)
+            assets = listOf(spec, spec2)
         )
         assetService.batchCreate(batchCreate)
     }
@@ -76,11 +77,12 @@ class AssetSearchServiceTests : AbstractTest() {
 
     @Test
     fun testSimilaritySearch() {
+        val hash = "AABBDD11"
         val search =
             mapOf(
                 "query" to mapOf(
                     "similarity" to mapOf(
-                        "analysis.zmlp.similarity.vector" to listOf(mapOf("hash" to "AABBDD11"))
+                        "analysis.zmlp.similarity.vector" to listOf(mapOf("hash" to hash))
                     )
                 )
             )

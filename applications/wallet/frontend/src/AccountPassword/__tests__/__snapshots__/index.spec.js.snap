@@ -37,7 +37,7 @@ Array [
 }
 
 .emotion-0 {
-  border: 0 #b8d652 solid;
+  border: 0 #73b61c solid;
   border-bottom-width: 0;
   color: #b3b3b3;
   display: -webkit-box;
@@ -62,30 +62,6 @@ Array [
   color: #73b61c;
 }
 
-.emotion-2 {
-  border: 0 #b8d652 solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
 <nav
     className="emotion-5"
   >
@@ -97,7 +73,7 @@ Array [
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/account"
+          href="/account"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -108,8 +84,8 @@ Array [
         className="emotion-1"
       >
         <a
-          className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/account/password"
+          className="emotion-0"
+          href="/account/password"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -118,7 +94,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-17 {
+  .emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -140,6 +116,7 @@ Array [
 .emotion-0 {
   display: block;
   padding-bottom: 8px;
+  color: #b3b3b3;
 }
 
 .emotion-2 {
@@ -148,7 +125,7 @@ Array [
 
 .emotion-1 {
   outline-offset: 0;
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
@@ -169,12 +146,76 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-16 {
-  padding-top: 12px;
-  padding-bottom: 12px;
+.emotion-17 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-17 button,
+.emotion-17 a {
+  margin-right: 16px;
 }
 
 .emotion-15 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
+  background-color: #808080;
+}
+
+.emotion-15:hover {
+  opacity: 0.5;
+}
+
+.emotion-15[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -206,32 +247,32 @@ Array [
   background-color: transparent;
 }
 
-.emotion-15:hover {
+.emotion-16:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-15,
-.emotion-15:hover,
-.emotion-15:visited {
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited {
   background-color: #73b61c;
 }
 
-.emotion-15:hover {
-  background-color: #b8d652;
+.emotion-16:hover {
+  background-color: #96c955;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-17"
+    className="emotion-18"
     method="post"
     onSubmit={[Function]}
   >
@@ -318,11 +359,18 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-16"
+      className="emotion-17"
     >
       <button
-        aria-disabled={true}
         className="emotion-15"
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+      <button
+        aria-disabled={true}
+        className="emotion-16"
         onClick={[Function]}
         type="submit"
       >

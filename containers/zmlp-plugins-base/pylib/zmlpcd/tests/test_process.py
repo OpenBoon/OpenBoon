@@ -5,6 +5,7 @@ from unittest.mock import patch
 from zmlpcd.process import ProcessorExecutor, AssetConsumer, is_file_type_allowed
 from zmlpcd.reactor import Reactor
 from zmlpsdk.testing import TestEventEmitter, TestAsset
+from zmlpsdk import Frame
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -39,10 +40,14 @@ class ProcessorExecutorTests(unittest.TestCase):
                 "id": "1234"
             }
         }
-        self.pe.execute_processor(req)
+        frame = self.pe.execute_processor(req)
         assert self.emitter.event_count("asset") == 1
         assert self.emitter.event_count("error") == 0
         assert self.emitter.event_total() == 1
+
+        # Make sure we got metrics
+        assert frame.asset["metrics"]["pipeline"]
+        assert "zmlpsdk.testing.TestProcessor" == frame.asset["metrics"]["pipeline"][0]["processor"]
 
     def test_execute_processor_and_raise_fatal(self):
         req = {
@@ -60,7 +65,7 @@ class ProcessorExecutorTests(unittest.TestCase):
                 }
             }
         }
-        self.pe.execute_processor(req)
+        frame = self.pe.execute_processor(req)
         assert self.emitter.event_count("asset") == 1
         assert self.emitter.event_count("error") == 1
         assert self.emitter.event_total() == 2
@@ -70,6 +75,27 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert error["payload"]["fatal"] is True
         assert error["payload"]["phase"] == "execute"
         assert error["payload"]["path"] == "/foo/bing.jpg"
+
+        assert frame.asset["metrics"]["pipeline"][0]["error"] == "fatal"
+
+    def test_apply_metrics(self):
+        ref = {
+            "className": "zmlpsdk.testing.TestProcessor",
+            "args": {},
+            "image": "plugins-py3-base:latest"
+        }
+        frame = Frame(TestAsset())
+        wrapper = self.pe.get_processor_wrapper(ref)
+        wrapper.apply_metrics(frame.asset, 10, None)
+
+        metrics = frame.asset["metrics"]["pipeline"][0]
+        assert "zmlpsdk.testing.TestProcessor" == metrics['processor']
+        assert None is metrics["module"]
+        assert 2 == metrics["version"]
+        assert 1 == metrics["executionCount"]
+        assert 10 == metrics["executionTimeTotal"]
+        assert None is not metrics["executionDateLast"]
+        assert "test" == metrics["namespace"]
 
     @patch.object(Reactor, 'check_expand')
     def test_teardown_processor(self, react_patch):

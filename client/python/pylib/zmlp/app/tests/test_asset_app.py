@@ -1,6 +1,7 @@
 import copy
 import os
 import unittest
+import unittest.mock as mock
 from unittest.mock import patch
 
 import pytest
@@ -86,7 +87,7 @@ class AssetAppTests(unittest.TestCase):
         assert rsp["created"][0] == "dd0KZtqyec48n1q1fniqVMV5yllhRRGx"
 
     @patch.object(ZmlpClient, 'get')
-    def test_get_by_id(self, get_patch):
+    def test_get_asset(self, get_patch):
         get_patch.return_value = {
             "id": "abc13",
             "document": {
@@ -95,7 +96,7 @@ class AssetAppTests(unittest.TestCase):
                 }
             }
         }
-        asset = self.app.assets.get_by_id("abc123")
+        asset = self.app.assets.get_asset("abc123")
         assert type(asset) == Asset
         assert asset.uri is not None
         assert asset.id is not None
@@ -229,3 +230,13 @@ class AssetAppTests(unittest.TestCase):
         args = del_patch.call_args_list
         assert '/api/v3/assets/_delete_by_query' == args[0][0][0]
         assert q == args[0][0][1]
+
+    @patch.object(ZmlpClient, 'get')
+    def test_download_file(self, get_patch):
+        data = b'some_data'
+        mockresponse = mock.Mock()
+        mockresponse.content = data
+        get_patch.return_value = mockresponse
+
+        b = self.app.assets.download_file('123', 'proxy/proxy123.jpg')
+        assert "some_data" == b.read().decode()

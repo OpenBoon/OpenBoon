@@ -29,6 +29,11 @@ class DataSource(object):
         return self._data.get('file_types', [])
 
     @property
-    def analysis(self):
-        """The type of analysis done to the DataSource"""
-        return self._data.get('analysis', [])
+    def modules(self):
+        """The type of modules done to the DataSource"""
+        return self._data.get('modules', [])
+
+    @property
+    def credentials(self):
+        """The type of credentials attached to DataSource"""
+        return self._data.get('credentials', [])
