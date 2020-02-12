@@ -4,7 +4,9 @@ import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobFilter
 import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.StandardContainers
 import com.zorroa.archivist.domain.ZpsScript
@@ -61,7 +63,8 @@ interface DataSourceService {
 class DataSourceServiceImpl(
     val dataSourceDao: DataSourceDao,
     val dataSourceJdbcDao: DataSourceJdbcDao,
-    val credentialsService: CredentialsService
+    val credentialsService: CredentialsService,
+    val txEvent: TransactionEventManager
 ) : DataSourceService {
 
     @Autowired
@@ -139,7 +142,23 @@ class DataSourceServiceImpl(
 
     override fun delete(id: UUID) {
         logger.event(LogObject.DATASOURCE, LogAction.DELETE, mapOf("dataSourceId" to id))
-        dataSourceDao.delete(get(id))
+        val ds = get(id)
+
+        // Grab all the jobs before the DS is delted.
+        val jobs = jobService.getAll(
+            JobFilter(
+                states = listOf(JobState.InProgress, JobState.Failure),
+                datasourceIds = listOf(ds.id)).apply { page.disabled = true }
+        )
+
+        logger.info("Canceling ${jobs.size()} DataSource ${ds.id} jobs")
+
+        // If this thing commits we async cancel all the jobs for the
+        // DS which involves killins all the running tasks.
+        txEvent.afterCommit(sync = false) {
+            jobs.forEach { jobService.cancelJob(it) }
+        }
+        dataSourceDao.delete(ds)
     }
 
     override fun createAnalysisJob(dataSource: DataSource): Job {
