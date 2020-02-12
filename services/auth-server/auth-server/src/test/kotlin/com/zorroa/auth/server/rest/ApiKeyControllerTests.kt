@@ -43,6 +43,40 @@ class ApiKeyControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testCreateFail() {
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead)
+        )
+        val pid = UUID.randomUUID()
+        mvc.perform(
+            MockMvcRequestBuilders.post("/auth/v1/apikey")
+                .headers(superAdmin(pid))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json.writeValueAsBytes(spec))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.projectId", CoreMatchers.equalTo(pid.toString())))
+            .andExpect(jsonPath("$.name", CoreMatchers.equalTo("test")))
+            .andExpect(
+                jsonPath(
+                    "$.permissions[0]",
+                    CoreMatchers.containsString("AssetsRead")
+                )
+            )
+            .andReturn()
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/auth/v1/apikey")
+                .headers(superAdmin(pid))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json.writeValueAsBytes(spec))
+        )
+            .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+            .andReturn()
+    }
+
+    @Test
     fun testCreate_rsp_403() {
         val spec = ApiKeySpec(
             "test",
