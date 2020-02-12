@@ -25,17 +25,17 @@ const INITIAL_STATE = {
 const FILE_TYPES = [
   {
     name: 'Image Files',
-    description: 'GIF, PNG, JPG, JPEG, TIF, TIFF, PSD',
+    legend: 'GIF, PNG, JPG, JPEG, TIF, TIFF, PSD',
     icon: '/icons/images.png',
   },
   {
     name: 'Documents (PDF & MS Office)',
-    description: 'PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX',
+    legend: 'PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX',
     icon: '/icons/documents.png',
   },
   {
     name: 'Video Files',
-    description: 'MP4, M4V, MOV, MPG, MEPG, OGG',
+    legend: 'MP4, M4V, MOV, MPG, MEPG, OGG',
     icon: '/icons/videos.png',
   },
 ]
@@ -97,11 +97,11 @@ const DataSourcesAddForm = () => {
         onClick={fileType =>
           dispatch({ fileTypes: { ...state.fileTypes, ...fileType } })
         }
-        options={FILE_TYPES.map(({ name, description, icon }) => ({
+        options={FILE_TYPES.map(({ name, legend, icon }) => ({
           key: name,
           label: name,
           icon: <img src={icon} alt={name} width="40px" />,
-          legend: description,
+          legend,
           initialValue: false,
         }))}
         variant={CHECKBOX_VARIANTS.SECONDARY}

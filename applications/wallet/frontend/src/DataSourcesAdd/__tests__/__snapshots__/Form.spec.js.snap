@@ -193,7 +193,11 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
 
 .emotion-28 {
   padding-left: 12px;
-  width: 100vw;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding-left: 16px;
+  color: #ffffff;
 }
 
 .emotion-26 {
@@ -968,7 +972,11 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
 
 .emotion-28 {
   padding-left: 12px;
-  width: 100vw;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding-left: 16px;
+  color: #ffffff;
 }
 
 .emotion-26 {

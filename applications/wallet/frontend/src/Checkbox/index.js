@@ -7,17 +7,32 @@ import { colors, spacing, typography } from '../Styles'
 
 import CheckboxIcon from './Icon'
 
-const BASE = {
-  paddingLeft: spacing.moderate,
-}
-
 const STYLES = {
   PRIMARY: {
-    display: 'flex',
-    flexDirection: 'column',
+    main: {
+      display: 'flex',
+      flexDirection: 'column',
+      color: colors.structure.zinc,
+    },
+    label: {
+      alignItems: 'flex-start',
+    },
+    legend: {
+      paddingLeft: 0,
+    },
   },
   SECONDARY: {
-    width: '100vw',
+    main: {
+      width: 'max-content',
+      paddingLeft: spacing.normal,
+      color: colors.structure.white,
+    },
+    label: {
+      alignItems: 'center',
+    },
+    legend: {
+      paddingLeft: spacing.moderate,
+    },
   },
 }
 
@@ -41,7 +56,7 @@ const Checkbox = ({
     <label
       css={{
         display: 'flex',
-        alignItems: legend && variant === 'PRIMARY' ? 'flex-start' : 'center',
+        alignItems: legend ? STYLES[variant].label.alignItems : 'center',
         color: colors.white,
         cursor: 'pointer',
         paddingBottom: spacing.normal,
@@ -57,15 +72,14 @@ const Checkbox = ({
       {!!icon && (
         <div
           css={{
-            paddingLeft: spacing.moderate,
+            paddingLeft: spacing.comfy,
           }}>
           {icon}
         </div>
       )}
-      <div css={[BASE, STYLES[variant]]}>
+      <div css={[{ paddingLeft: spacing.moderate }, STYLES[variant].main]}>
         <span
           css={{
-            color: colors.structure.zinc,
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
             fontWeight: typography.weight.bold,
@@ -76,7 +90,7 @@ const Checkbox = ({
           <span
             css={{
               color: colors.structure.steel,
-              paddingLeft: variant === 'SECONDARY' ? spacing.moderate : 0,
+              paddingLeft: STYLES[variant].legend.paddingLeft,
             }}>
             {legend}
           </span>
