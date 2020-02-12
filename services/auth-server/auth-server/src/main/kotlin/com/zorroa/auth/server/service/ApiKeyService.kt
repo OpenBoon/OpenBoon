@@ -15,13 +15,11 @@ import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.service.security.EncryptionService
 import org.slf4j.LoggerFactory
-import java.util.UUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalArgumentException
+import java.util.UUID
 
 interface ApiKeyService {
 
@@ -81,10 +79,9 @@ class ApiKeyServiceImpl constructor(
 
         try {
             return apiKeyRepository.saveAndFlush(key)
-        }catch(ex: DataIntegrityViolationException){
+        } catch (ex: DataIntegrityViolationException) {
             throw(DataIntegrityViolationException("Data Integrity Violation: Verify your Api Key"))
         }
-
     }
 
     @Transactional(readOnly = true)
