@@ -2,9 +2,9 @@ import PropTypes from 'prop-types'
 
 import { spacing, typography } from '../Styles'
 
-import Checkbox from '.'
+import Checkbox, { VARIANTS } from '.'
 
-const CheckboxGroup = ({ legend, options, onClick }) => {
+const CheckboxGroup = ({ variant, legend, options, onClick }) => {
   return (
     <fieldset
       css={{
@@ -34,6 +34,7 @@ const CheckboxGroup = ({ legend, options, onClick }) => {
           legend={option.legend}
           initialValue={option.initialValue}
           onClick={value => onClick({ [option.key]: value })}
+          variant={variant}
         />
       ))}
     </fieldset>
@@ -41,6 +42,7 @@ const CheckboxGroup = ({ legend, options, onClick }) => {
 }
 
 CheckboxGroup.propTypes = {
+  variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   legend: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({

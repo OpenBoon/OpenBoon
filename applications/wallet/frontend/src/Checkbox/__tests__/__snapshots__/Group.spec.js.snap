@@ -100,6 +100,7 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
 
 .emotion-7 {
   color: #808080;
+  padding-left: 0;
 }
 
 <fieldset
@@ -236,6 +237,7 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
 
 .emotion-7 {
   color: #808080;
+  padding-left: 0;
 }
 
 .emotion-2 {

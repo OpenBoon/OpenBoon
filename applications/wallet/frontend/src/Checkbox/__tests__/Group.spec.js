@@ -1,5 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import { VARIANTS as CHECKBOX_VARIANTS } from '..'
 import CheckboxGroup from '../Group'
 
 describe('<CheckboxGroup />', () => {
@@ -19,6 +20,7 @@ describe('<CheckboxGroup />', () => {
             initialValue: true,
           },
         ]}
+        variant={CHECKBOX_VARIANTS.PRIMARY}
       />,
     )
 

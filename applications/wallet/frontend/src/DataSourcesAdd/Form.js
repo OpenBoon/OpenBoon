@@ -8,6 +8,7 @@ import SectionSubTitle from '../SectionSubTitle'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Textarea, { VARIANTS as TEXTAREA_VARIANTS } from '../Textarea'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 
@@ -103,6 +104,7 @@ const DataSourcesAddForm = () => {
           legend: description,
           initialValue: false,
         }))}
+        variant={CHECKBOX_VARIANTS.SECONDARY}
       />
 
       <SectionTitle>Select Analysis</SectionTitle>

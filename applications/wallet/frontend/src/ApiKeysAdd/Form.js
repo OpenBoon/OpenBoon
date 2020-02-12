@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import Loading from '../Loading'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
+import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
@@ -73,6 +74,7 @@ const ApiKeysAddForm = () => {
           legend: description,
           initialValue: false,
         }))}
+        variant={CHECKBOX_VARIANTS.PRIMARY}
       />
 
       <ButtonGroup>

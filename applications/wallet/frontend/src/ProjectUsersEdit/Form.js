@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import FormAlert from '../FormAlert'
+import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
@@ -43,6 +44,7 @@ const ProjectUsersEditForm = ({ projectId, user, permissions }) => {
           legend: description,
           initialValue: !!user.permissions.includes(name),
         }))}
+        variant={CHECKBOX_VARIANTS.PRIMARY}
       />
 
       <ButtonGroup>

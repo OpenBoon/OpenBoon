@@ -7,14 +7,42 @@ import { colors, spacing, typography } from '../Styles'
 
 import CheckboxIcon from './Icon'
 
-const Checkbox = ({ value, label, icon, legend, initialValue, onClick }) => {
+const BASE = {
+  paddingLeft: spacing.moderate,
+}
+
+const STYLES = {
+  PRIMARY: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  SECONDARY: {
+    width: '100vw',
+    paddingRight: spacing.moderate,
+  },
+}
+
+export const VARIANTS = Object.keys(STYLES).reduce(
+  (accumulator, style) => ({ ...accumulator, [style]: style }),
+  {},
+)
+
+const Checkbox = ({
+  variant,
+  value,
+  label,
+  icon,
+  legend,
+  initialValue,
+  onClick,
+}) => {
   const [isChecked, setIsChecked] = useState(initialValue)
 
   return (
     <label
       css={{
         display: 'flex',
-        alignItems: legend ? 'flex-start' : 'center',
+        alignItems: legend && variant === 'PRIMARY' ? 'flex-start' : 'center',
         color: colors.white,
         cursor: 'pointer',
         paddingBottom: spacing.normal,
@@ -35,12 +63,7 @@ const Checkbox = ({ value, label, icon, legend, initialValue, onClick }) => {
           {icon}
         </div>
       )}
-      <div
-        css={{
-          paddingLeft: spacing.moderate,
-          display: 'flex',
-          flexDirection: 'column',
-        }}>
+      <div css={[BASE, STYLES[variant]]}>
         <span
           css={{
             color: colors.structure.zinc,
@@ -51,7 +74,13 @@ const Checkbox = ({ value, label, icon, legend, initialValue, onClick }) => {
           {label}
         </span>
         {!!legend && (
-          <span css={{ color: colors.structure.steel }}>{legend}</span>
+          <span
+            css={{
+              color: colors.structure.steel,
+              paddingLeft: variant === 'SECONDARY' ? spacing.moderate : 0,
+            }}>
+            {legend}
+          </span>
         )}
       </div>
     </label>
@@ -59,6 +88,7 @@ const Checkbox = ({ value, label, icon, legend, initialValue, onClick }) => {
 }
 
 Checkbox.propTypes = {
+  variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   value: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   icon: PropTypes.node.isRequired,

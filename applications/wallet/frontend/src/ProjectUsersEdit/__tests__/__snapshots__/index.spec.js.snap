@@ -405,6 +405,7 @@ Array [
 
 .emotion-11 {
   color: #808080;
+  padding-left: 0;
 }
 
 .emotion-38 {

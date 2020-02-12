@@ -152,6 +152,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 
 .emotion-12 {
   color: #808080;
+  padding-left: 0;
 }
 
 .emotion-105 {
@@ -1335,6 +1336,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 
 .emotion-12 {
   color: #808080;
+  padding-left: 0;
 }
 
 .emotion-105 {

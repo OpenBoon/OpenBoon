@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import Checkbox from '..'
+import Checkbox, { VARIANTS } from '..'
 
 describe('<Checkbox />', () => {
   it('should render properly', () => {
@@ -14,6 +14,7 @@ describe('<Checkbox />', () => {
         legend=""
         onClick={mockFn}
         initialValue={false}
+        variant={VARIANTS.PRIMARY}
       />,
     )
 

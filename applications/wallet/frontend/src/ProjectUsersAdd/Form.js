@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
+import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
@@ -59,6 +60,7 @@ const ProjectUsersAddForm = () => {
           legend: description,
           initialValue: false,
         }))}
+        variant={CHECKBOX_VARIANTS.PRIMARY}
       />
 
       <ButtonGroup>
