@@ -284,10 +284,9 @@ class ProcessorWrapper(object):
             self.increment_stat("error_count")
             self.reactor.error(frame, self.ref, e, False, "execute", sys.exc_info()[2])
         finally:
-            # If the asset was processed or was attempted to be processed
-            # and failed, we apply metrics.
-            if processed or error:
-                self.apply_metrics(frame.asset, total_time, error)
+            # Always show metrics even if it was skipped because otherwise
+            # the pipeline checksums don't work.
+            self.apply_metrics(frame.asset, processed, total_time, error)
             self.reactor.emitter.write({
                 "type": "asset",
                 "payload": {
@@ -327,12 +326,13 @@ class ProcessorWrapper(object):
         self.stats[key] = val
         return val
 
-    def apply_metrics(self, asset, exec_time, error):
+    def apply_metrics(self, asset, processed, exec_time, error):
         """
         Apply execution metrics to the given asset.
 
         Args:
             asset (Asset): The asset
+            processed (bool): True if the asset was actually handled by the processor.
             exec_time (float): The time the processor executed.
             error (str): A type of error, fatal or warning.
 
@@ -364,9 +364,14 @@ class ProcessorWrapper(object):
         else:
             metric = metrics[metric_idx]
 
+        # The checksum needs to be there even if its not processed
+        # or else a zero checksums would signal reprocessing.
         metric["checksum"] = self.ref.get("checksum", 0)
-        metric["executionTime"] = exec_time
-        metric["executionDate"] = datetime.datetime.now().isoformat()
+
+        # Only processed processors get a date and execution time.
+        if processed:
+            metric["executionTime"] = exec_time
+            metric["executionDate"] = datetime.datetime.utcnow().isoformat()
 
         if error:
             metric["error"] = error
