@@ -47,7 +47,7 @@ object ElasticSearchErrorTranslator {
         val errorId = randomString(24)
         logger.warn("ElasticSearch Error '$errorId' $message")
 
-        if ("document already exists" in message) {
+        if (ALREADY_EXISTS_MESSAGE in message) {
             return "asset already exists"
         } else {
             for (pattern in RECOVERABLE_BULK_ERRORS) {
@@ -69,4 +69,9 @@ object ElasticSearchErrorTranslator {
         Pattern.compile("mapper \\[(.*?)\\] of different type"),
         Pattern.compile("dynamic introduction of \\[(.*?)\\] within")
     )
+
+    /**
+     * The Exception message when a document already exists.
+     */
+    const val ALREADY_EXISTS_MESSAGE = "document already exists"
 }

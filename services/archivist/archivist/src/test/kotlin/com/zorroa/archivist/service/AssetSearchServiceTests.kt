@@ -24,7 +24,13 @@ class AssetSearchServiceTests : AbstractTest() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(spec, spec2)
         )
-        assetService.batchCreate(batchCreate)
+        val rsp = assetService.batchCreate(batchCreate)
+        val id = rsp.created[0]
+        val asset = assetService.getAsset(id)
+        asset.setAttr("analysis.zmlp.similarity.vector", "AABBCC00")
+        assetService.index(id, asset.document)
+
+        indexRoutingService.getProjectRestClient().refresh()
     }
 
     @Test
@@ -35,6 +41,16 @@ class AssetSearchServiceTests : AbstractTest() {
 
         val rsp = assetSearchService.search(search)
         assertEquals(1, rsp.hits.hits.size)
+    }
+
+    @Test
+    fun testCount() {
+        val search = mapOf(
+            "query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg"))
+        )
+
+        val count = assetSearchService.count(search)
+        assertEquals(1, count)
     }
 
     @Test

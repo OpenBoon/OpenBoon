@@ -46,24 +46,6 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         assert len(self.frame.asset.get_attr('analysis.zmlp.tinyProxy')) == 9
         assert len(self.frame.asset.get_attr('files')) == 2
 
-    @patch.object(ZmlpClient, 'upload_file')
-    def test_skip_existing(self, post_patch):
-        post_patch.return_value = self.storage_patch
-        frame = Frame(TestAsset(self.source_path))
-        frame.asset.set_attr('media.width', 1024)
-        frame.asset.set_attr('media.height', 768)
-        frame.asset.set_attr('tmp.proxy_source_image', TOUCAN)
-
-        processor = self.init_processor(ImageProxyProcessor(), {"sizes": [384]})
-        processor.process(frame)
-        assert len(frame.asset.get_attr("files")) == 1
-
-        processor = self.init_processor(ImageProxyProcessor(), {"sizes": [512, 384]})
-        processor.process(frame)
-        assert len(frame.asset.get_attr("files")) == 2
-
-        assert processor.created_proxy_count == 1
-
     @patch.object(ImageProxyProcessor, '_create_proxy_images')
     def test_no_process(self, proxy_patch):
         self.frame.asset.set_attr('proxies', True)
