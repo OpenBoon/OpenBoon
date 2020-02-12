@@ -90,7 +90,6 @@ class ApiKeyServiceImpl constructor(
 
         val time = System.currentTimeMillis()
         val actor = getZmlpActor()
-
         val apiKey: ApiKey = get(id)
 
         val key = ApiKey(
@@ -113,7 +112,7 @@ class ApiKeyServiceImpl constructor(
             )
         )
 
-        return apiKeyRepository.saveAndFlush(key)
+        return apiKeyRepository.save(key)
     }
 
     @Transactional(readOnly = true)
