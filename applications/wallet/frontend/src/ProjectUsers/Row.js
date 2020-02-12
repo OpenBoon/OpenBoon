@@ -1,42 +1,31 @@
 import PropTypes from 'prop-types'
 
-import { colors, spacing, constants } from '../Styles'
+import Pills from '../Pills'
 
 import ProjectUsersMenu from './Menu'
 
+import { getUser } from '../Authentication/helpers'
+
 const ProjectUsersRow = ({
   projectId,
-  user: { id: userId, name, email, permissions },
+  user: { id: userId, email, permissions },
   revalidate,
 }) => {
+  const { email: currentUserEmail } = getUser()
   return (
     <tr>
-      <td>{name}</td>
       <td>{email}</td>
       <td>
-        {permissions.map(permission => (
-          <span
-            key={permission}
-            css={{
-              display: 'inline-block',
-              color: colors.structure.coal,
-              backgroundColor: colors.structure.zinc,
-              padding: spacing.moderate,
-              paddingTop: spacing.small,
-              paddingBottom: spacing.small,
-              marginRight: spacing.base,
-              borderRadius: constants.borderRadius.large,
-            }}>
-            {permission.replace(/([A-Z])/g, match => ` ${match}`)}
-          </span>
-        ))}
+        <Pills>{permissions}</Pills>
       </td>
       <td>
-        <ProjectUsersMenu
-          projectId={projectId}
-          userId={userId}
-          revalidate={revalidate}
-        />
+        {email !== currentUserEmail && (
+          <ProjectUsersMenu
+            projectId={projectId}
+            userId={userId}
+            revalidate={revalidate}
+          />
+        )}
       </td>
     </tr>
   )

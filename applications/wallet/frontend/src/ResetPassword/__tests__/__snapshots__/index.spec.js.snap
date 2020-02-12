@@ -71,7 +71,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
 .emotion-6 {
   display: block;
   padding-bottom: 8px;
-  color: #808080;
+  color: #b3b3b3;
 }
 
 .emotion-8 {
@@ -80,7 +80,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
 
 .emotion-7 {
   outline-offset: 0;
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
@@ -159,7 +159,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
 }
 
 .emotion-12:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-12[aria-disabled=true] {
@@ -340,7 +340,7 @@ exports[`<ResetPassword /> should render properly with <FormSuccess/> 1`] = `
 .emotion-10 {
   display: block;
   padding-bottom: 8px;
-  color: #808080;
+  color: #b3b3b3;
 }
 
 .emotion-12 {
@@ -349,7 +349,7 @@ exports[`<ResetPassword /> should render properly with <FormSuccess/> 1`] = `
 
 .emotion-11 {
   outline-offset: 0;
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
@@ -428,7 +428,7 @@ exports[`<ResetPassword /> should render properly with <FormSuccess/> 1`] = `
 }
 
 .emotion-16:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-16[aria-disabled=true] {

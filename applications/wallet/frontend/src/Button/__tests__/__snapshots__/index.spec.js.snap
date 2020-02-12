@@ -49,7 +49,7 @@ exports[`<Button /> should have a type "button" and be aria-disabled, and not cl
 }
 
 .emotion-0:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-0[aria-disabled=true] {
@@ -115,7 +115,7 @@ exports[`<Button /> should have a type "button", pass additional props, and be c
 }
 
 .emotion-0:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-0[aria-disabled=true] {
@@ -180,7 +180,7 @@ exports[`<Button /> should render a link as an anchor tag with no onClick 1`] = 
 }
 
 .emotion-0:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-0[aria-disabled=true] {
@@ -728,7 +728,7 @@ exports[`<Button /> should render properly for PRIMARY Button 1`] = `
 }
 
 .emotion-0:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-0[aria-disabled=true] {
@@ -793,7 +793,7 @@ exports[`<Button /> should render properly for PRIMARY Link 1`] = `
 }
 
 .emotion-0:hover {
-  background-color: #b8d652;
+  background-color: #96c955;
 }
 
 .emotion-0[aria-disabled=true] {

@@ -35,7 +35,7 @@ const AccountProfileForm = () => {
         <FormSuccess>New Name Saved!</FormSuccess>
       )}
 
-      <SectionTitle>{`User ID: ${email}`}</SectionTitle>
+      <SectionTitle>{`Email: ${email}`}</SectionTitle>
 
       {!state.showForm && (
         <>
@@ -46,7 +46,7 @@ const AccountProfileForm = () => {
               lineHeight: typography.height.medium,
               fontWeight: typography.weight.medium,
             }}>
-            Username
+            Name
           </div>
 
           <div
@@ -63,7 +63,7 @@ const AccountProfileForm = () => {
           <Button
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() => dispatch({ showForm: true, success: false })}>
-            Edit Username
+            Edit
           </Button>
         </>
       )}
