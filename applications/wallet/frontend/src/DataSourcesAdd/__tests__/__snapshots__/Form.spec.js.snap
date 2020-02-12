@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<DataSourcesAddForm /> should render properly after permissions are loaded 1`] = `
-.emotion-23 {
+.emotion-32 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -13,6 +13,11 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  width: auto;
+}
+
+.emotion-12 {
+  width: 470px;
 }
 
 .emotion-0 {
@@ -60,22 +65,27 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   padding-top: 8px;
 }
 
-.emotion-16 {
+.emotion-18 {
+  min-width: 470px;
+  max-width: 50%;
+}
+
+.emotion-17 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-12 {
+.emotion-13 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-14 {
+.emotion-15 {
   position: relative;
 }
 
-.emotion-13 {
+.emotion-14 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -87,24 +97,102 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   border-width: 2px;
 }
 
-.emotion-13:focus {
+.emotion-14:focus {
   border: 2px solid #73b61c;
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
 }
 
-.emotion-15 {
+.emotion-16 {
   padding-top: 8px;
 }
 
-.emotion-19 {
+.emotion-21 {
   margin: 0;
   padding-top: 8px;
+  padding-bottom: 16px;
   color: #b3b3b3;
 }
 
+.emotion-28 {
+  background-color: #3b3b3b;
+}
+
+.emotion-24 {
+  border-bottom: 1px solid #4a4a4a;
+  padding: 16px;
+}
+
+.emotion-23 {
+  font-size: 17px;
+  line-height: 20px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
 .emotion-22 {
+  color: #73b61c;
+  margin-right: 16px;
+}
+
+.emotion-27 {
+  padding: 16px;
+  padding-left: 60px;
+  padding-bottom: 32px;
+}
+
+.emotion-25 {
+  color: #b3b3b3;
+  margin: 0;
+  padding-top: 8px;
+  padding-bottom: 16px;
+}
+
+.emotion-26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: #b3b3b3;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  padding-top: 8px;
+}
+
+.emotion-26 li {
+  width: 33%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-right: 40px;
+}
+
+.emotion-26 svg {
+  color: #73b61c;
+  margin-right: 16px;
+  min-width: 20px;
+  max-width: 20px;
+}
+
+.emotion-26 span {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -113,12 +201,12 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   padding-bottom: 16px;
 }
 
-.emotion-22 button,
-.emotion-22 a {
+.emotion-31 button,
+.emotion-31 a {
   margin-right: 16px;
 }
 
-.emotion-20 {
+.emotion-29 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -150,30 +238,30 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   background-color: transparent;
 }
 
-.emotion-20:hover {
+.emotion-29:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-20[aria-disabled=true] {
+.emotion-29[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-20,
-.emotion-20:hover,
-.emotion-20:visited {
+.emotion-29,
+.emotion-29:hover,
+.emotion-29:visited {
   background-color: #808080;
 }
 
-.emotion-20:hover {
+.emotion-29:hover {
   opacity: 0.5;
 }
 
-.emotion-20[aria-disabled=true] {
+.emotion-29[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-21 {
+.emotion-30 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -205,125 +293,133 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   background-color: transparent;
 }
 
-.emotion-21:hover {
+.emotion-30:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-30[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-21,
-.emotion-21:hover,
-.emotion-21:visited {
+.emotion-30,
+.emotion-30:hover,
+.emotion-30:visited {
   background-color: #73b61c;
 }
 
-.emotion-21:hover {
+.emotion-30:hover {
   background-color: #96c955;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-30[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-23"
+  className="emotion-32"
   method="post"
   onSubmit={[Function]}
 >
-  <h3
-    className="emotion-0"
-  >
-    Data Source Name
-  </h3>
   <div
-    className="emotion-5"
+    className="emotion-12"
   >
-    <label
-      className="emotion-1"
-      htmlFor="name"
+    <h3
+      className="emotion-0"
     >
-      Name
-    </label>
+      Data Source Name
+    </h3>
     <div
-      className="emotion-3"
+      className="emotion-5"
     >
-      <input
-        autoFocus={true}
-        className="emotion-2"
-        id="name"
-        name="name"
-        onChange={[Function]}
-        type="text"
-        value=""
-      />
+      <label
+        className="emotion-1"
+        htmlFor="name"
+      >
+        Name
+      </label>
+      <div
+        className="emotion-3"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-2"
+          id="name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-4"
+      >
+         
+      </div>
     </div>
-    <div
-      className="emotion-4"
+    <h3
+      className="emotion-0"
     >
-       
+      Connect to Source: Google Cloud Storage
+    </h3>
+    <div
+      className="emotion-5"
+    >
+      <label
+        className="emotion-1"
+        htmlFor="url"
+      >
+        Bucket Address
+      </label>
+      <div
+        className="emotion-3"
+      >
+        <input
+          className="emotion-2"
+          id="url"
+          name="url"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-4"
+      >
+         
+      </div>
     </div>
   </div>
-  <h3
-    className="emotion-0"
-  >
-    Connect to Source: Google Cloud Storage
-  </h3>
   <div
-    className="emotion-5"
+    className="emotion-18"
   >
-    <label
-      className="emotion-1"
-      htmlFor="url"
-    >
-      Bucket Address
-    </label>
     <div
-      className="emotion-3"
+      className="emotion-17"
     >
-      <input
-        className="emotion-2"
-        id="url"
-        name="url"
-        onChange={[Function]}
-        type="text"
-        value=""
-      />
-    </div>
-    <div
-      className="emotion-4"
-    >
-       
-    </div>
-  </div>
-  <div
-    className="emotion-16"
-  >
-    <label
-      className="emotion-12"
-      htmlFor="key"
-    >
-      If this bucket is private, please paste the JSON service account key:
-    </label>
-    <div
-      className="emotion-14"
-    >
-      <textarea
+      <label
         className="emotion-13"
-        id="key"
-        name="key"
-        onChange={[Function]}
-        rows="5"
-        value=""
-      />
-    </div>
-    <div
-      className="emotion-15"
-    >
-       
+        htmlFor="key"
+      >
+        If this bucket is private, please paste the JSON service account key:
+      </label>
+      <div
+        className="emotion-15"
+      >
+        <textarea
+          className="emotion-14"
+          id="key"
+          name="key"
+          onChange={[Function]}
+          rows="5"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-16"
+      >
+         
+      </div>
     </div>
   </div>
   <h3
@@ -337,15 +433,82 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
     Select Analysis
   </h3>
   <p
-    className="emotion-19"
+    className="emotion-21"
   >
     Choose the type of analysis you would like performed on your data set:
   </p>
   <div
-    className="emotion-22"
+    className="emotion-28"
+  >
+    <div
+      className="emotion-24"
+    >
+      <h4
+        className="emotion-23"
+      >
+        <svg
+          className="emotion-22"
+          data-file-name="checkmark.svg"
+          width={28}
+        />
+        Zorroa Automatic Analysis
+      </h4>
+    </div>
+    <div
+      className="emotion-27"
+    >
+      <p
+        className="emotion-25"
+      >
+        The following basic analysis is applied to all data sets.
+      </p>
+      <ul
+        className="emotion-26"
+      >
+        <li>
+          <svg
+            data-file-name="checkmark.svg"
+          />
+          <div>
+            <span>
+              File Introspection
+            </span>
+            <br />
+            Extracts native metadata from file.
+          </div>
+        </li>
+        <li>
+          <svg
+            data-file-name="checkmark.svg"
+          />
+          <div>
+            <span>
+              Similarity Hash
+            </span>
+            <br />
+            Adds a hash to all images used to quantify the similarity between images.
+          </div>
+        </li>
+        <li>
+          <svg
+            data-file-name="checkmark.svg"
+          />
+          <div>
+            <span>
+              Proxy Creation
+            </span>
+            <br />
+            Creates proxy files suitable for web streaming for all media.
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div
+    className="emotion-31"
   >
     <a
-      className="emotion-20"
+      className="emotion-29"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -354,7 +517,7 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
     </a>
     <button
       aria-disabled={true}
-      className="emotion-21"
+      className="emotion-30"
       onClick={[Function]}
       type="submit"
     >
@@ -365,7 +528,7 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
 `;
 
 exports[`<DataSourcesAddForm /> should render properly after permissions are loaded 2`] = `
-.emotion-23 {
+.emotion-32 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -377,6 +540,11 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   padding: 16px;
   padding-left: 0;
   padding-right: 0;
+  width: auto;
+}
+
+.emotion-12 {
+  width: 470px;
 }
 
 .emotion-0 {
@@ -424,22 +592,27 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   padding-top: 8px;
 }
 
-.emotion-16 {
+.emotion-18 {
+  min-width: 470px;
+  max-width: 50%;
+}
+
+.emotion-17 {
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-12 {
+.emotion-13 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-14 {
+.emotion-15 {
   position: relative;
 }
 
-.emotion-13 {
+.emotion-14 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -451,24 +624,102 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   border-width: 2px;
 }
 
-.emotion-13:focus {
+.emotion-14:focus {
   border: 2px solid #73b61c;
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
 }
 
-.emotion-15 {
+.emotion-16 {
   padding-top: 8px;
 }
 
-.emotion-19 {
+.emotion-21 {
   margin: 0;
   padding-top: 8px;
+  padding-bottom: 16px;
   color: #b3b3b3;
 }
 
+.emotion-28 {
+  background-color: #3b3b3b;
+}
+
+.emotion-24 {
+  border-bottom: 1px solid #4a4a4a;
+  padding: 16px;
+}
+
+.emotion-23 {
+  font-size: 17px;
+  line-height: 20px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
 .emotion-22 {
+  color: #73b61c;
+  margin-right: 16px;
+}
+
+.emotion-27 {
+  padding: 16px;
+  padding-left: 60px;
+  padding-bottom: 32px;
+}
+
+.emotion-25 {
+  color: #b3b3b3;
+  margin: 0;
+  padding-top: 8px;
+  padding-bottom: 16px;
+}
+
+.emotion-26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: #b3b3b3;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  padding-top: 8px;
+}
+
+.emotion-26 li {
+  width: 33%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-right: 40px;
+}
+
+.emotion-26 svg {
+  color: #73b61c;
+  margin-right: 16px;
+  min-width: 20px;
+  max-width: 20px;
+}
+
+.emotion-26 span {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -477,12 +728,12 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   padding-bottom: 16px;
 }
 
-.emotion-22 button,
-.emotion-22 a {
+.emotion-31 button,
+.emotion-31 a {
   margin-right: 16px;
 }
 
-.emotion-20 {
+.emotion-29 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -514,30 +765,30 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   background-color: transparent;
 }
 
-.emotion-20:hover {
+.emotion-29:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-20[aria-disabled=true] {
+.emotion-29[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-20,
-.emotion-20:hover,
-.emotion-20:visited {
+.emotion-29,
+.emotion-29:hover,
+.emotion-29:visited {
   background-color: #808080;
 }
 
-.emotion-20:hover {
+.emotion-29:hover {
   opacity: 0.5;
 }
 
-.emotion-20[aria-disabled=true] {
+.emotion-29[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-21 {
+.emotion-30 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -569,125 +820,133 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   background-color: transparent;
 }
 
-.emotion-21:hover {
+.emotion-30:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-30[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-21,
-.emotion-21:hover,
-.emotion-21:visited {
+.emotion-30,
+.emotion-30:hover,
+.emotion-30:visited {
   background-color: #73b61c;
 }
 
-.emotion-21:hover {
+.emotion-30:hover {
   background-color: #96c955;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-30[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-23"
+  className="emotion-32"
   method="post"
   onSubmit={[Function]}
 >
-  <h3
-    className="emotion-0"
-  >
-    Data Source Name
-  </h3>
   <div
-    className="emotion-5"
+    className="emotion-12"
   >
-    <label
-      className="emotion-1"
-      htmlFor="name"
+    <h3
+      className="emotion-0"
     >
-      Name
-    </label>
+      Data Source Name
+    </h3>
     <div
-      className="emotion-3"
+      className="emotion-5"
     >
-      <input
-        autoFocus={true}
-        className="emotion-2"
-        id="name"
-        name="name"
-        onChange={[Function]}
-        type="text"
-        value="My Data Source"
-      />
+      <label
+        className="emotion-1"
+        htmlFor="name"
+      >
+        Name
+      </label>
+      <div
+        className="emotion-3"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-2"
+          id="name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value="My Data Source"
+        />
+      </div>
+      <div
+        className="emotion-4"
+      >
+         
+      </div>
     </div>
-    <div
-      className="emotion-4"
+    <h3
+      className="emotion-0"
     >
-       
+      Connect to Source: Google Cloud Storage
+    </h3>
+    <div
+      className="emotion-5"
+    >
+      <label
+        className="emotion-1"
+        htmlFor="url"
+      >
+        Bucket Address
+      </label>
+      <div
+        className="emotion-3"
+      >
+        <input
+          className="emotion-2"
+          id="url"
+          name="url"
+          onChange={[Function]}
+          type="text"
+          value="gs://zorroa-dev-data"
+        />
+      </div>
+      <div
+        className="emotion-4"
+      >
+         
+      </div>
     </div>
   </div>
-  <h3
-    className="emotion-0"
-  >
-    Connect to Source: Google Cloud Storage
-  </h3>
   <div
-    className="emotion-5"
+    className="emotion-18"
   >
-    <label
-      className="emotion-1"
-      htmlFor="url"
-    >
-      Bucket Address
-    </label>
     <div
-      className="emotion-3"
+      className="emotion-17"
     >
-      <input
-        className="emotion-2"
-        id="url"
-        name="url"
-        onChange={[Function]}
-        type="text"
-        value="gs://zorroa-dev-data"
-      />
-    </div>
-    <div
-      className="emotion-4"
-    >
-       
-    </div>
-  </div>
-  <div
-    className="emotion-16"
-  >
-    <label
-      className="emotion-12"
-      htmlFor="key"
-    >
-      If this bucket is private, please paste the JSON service account key:
-    </label>
-    <div
-      className="emotion-14"
-    >
-      <textarea
+      <label
         className="emotion-13"
-        id="key"
-        name="key"
-        onChange={[Function]}
-        rows="5"
-        value="jkdT9Uherdozguie89FHIJS"
-      />
-    </div>
-    <div
-      className="emotion-15"
-    >
-       
+        htmlFor="key"
+      >
+        If this bucket is private, please paste the JSON service account key:
+      </label>
+      <div
+        className="emotion-15"
+      >
+        <textarea
+          className="emotion-14"
+          id="key"
+          name="key"
+          onChange={[Function]}
+          rows="5"
+          value="jkdT9Uherdozguie89FHIJS"
+        />
+      </div>
+      <div
+        className="emotion-16"
+      >
+         
+      </div>
     </div>
   </div>
   <h3
@@ -701,15 +960,82 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
     Select Analysis
   </h3>
   <p
-    className="emotion-19"
+    className="emotion-21"
   >
     Choose the type of analysis you would like performed on your data set:
   </p>
   <div
-    className="emotion-22"
+    className="emotion-28"
+  >
+    <div
+      className="emotion-24"
+    >
+      <h4
+        className="emotion-23"
+      >
+        <svg
+          className="emotion-22"
+          data-file-name="checkmark.svg"
+          width={28}
+        />
+        Zorroa Automatic Analysis
+      </h4>
+    </div>
+    <div
+      className="emotion-27"
+    >
+      <p
+        className="emotion-25"
+      >
+        The following basic analysis is applied to all data sets.
+      </p>
+      <ul
+        className="emotion-26"
+      >
+        <li>
+          <svg
+            data-file-name="checkmark.svg"
+          />
+          <div>
+            <span>
+              File Introspection
+            </span>
+            <br />
+            Extracts native metadata from file.
+          </div>
+        </li>
+        <li>
+          <svg
+            data-file-name="checkmark.svg"
+          />
+          <div>
+            <span>
+              Similarity Hash
+            </span>
+            <br />
+            Adds a hash to all images used to quantify the similarity between images.
+          </div>
+        </li>
+        <li>
+          <svg
+            data-file-name="checkmark.svg"
+          />
+          <div>
+            <span>
+              Proxy Creation
+            </span>
+            <br />
+            Creates proxy files suitable for web streaming for all media.
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div
+    className="emotion-31"
   >
     <a
-      className="emotion-20"
+      className="emotion-29"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -717,7 +1043,7 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
       Cancel
     </a>
     <button
-      className="emotion-21"
+      className="emotion-30"
       onClick={[Function]}
       type="submit"
     >
