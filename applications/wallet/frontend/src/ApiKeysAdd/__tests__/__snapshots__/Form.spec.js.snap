@@ -1135,7 +1135,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   >
     <textarea
       className="emotion-7"
-      defaultValue="FooBarSecretKey"
+      defaultValue="{\\"permissions\\":[\\"ApiKeyManage\\"],\\"secretKey\\":\\"FooBarSecretKey\\"}"
       rows="5"
     />
     <div
@@ -1155,8 +1155,8 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
       </span>
       <a
         className="emotion-10"
-        download="api-key.txt"
-        href="data:application/octet-stream;charset=utf-8;base64,Rm9vQmFyU2VjcmV0S2V5"
+        download="api-key.json"
+        href="data:application/octet-stream;charset=utf-8;base64,eyJwZXJtaXNzaW9ucyI6WyJBcGlLZXlNYW5hZ2UiXSwic2VjcmV0S2V5IjoiRm9vQmFyU2VjcmV0S2V5In0="
       >
         Download
       </a>
