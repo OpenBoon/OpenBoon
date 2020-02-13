@@ -97,18 +97,8 @@ class AssetSearchServiceTests : AbstractTest() {
         val query = """{
             "query": {
                 "function_score" : {
-                    "query" : {
-                      "match_all" : {
-                        "boost" : 1.0
-                      }
-                    },
                     "functions" : [
                       {
-                        "filter" : {
-                          "match_all" : {
-                            "boost" : 1.0
-                          }
-                        },
                         "script_score" : {
                           "script" : {
                             "source" : "similarity",
@@ -116,8 +106,7 @@ class AssetSearchServiceTests : AbstractTest() {
                             "params" : {
                               "minScore" : 0.50,
                               "field" : "analysis.zmlp.similarity.vector",
-                              "hashes" : ["AABBDD00"],
-                              "weights" : [1.0]
+                              "hashes" : ["AABBDD00"]
                             }
                           }
                         }
@@ -134,5 +123,39 @@ class AssetSearchServiceTests : AbstractTest() {
         """.trimIndent()
         val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
         assertEquals(1, rsp.hits.hits.size)
+        assertTrue(rsp.hits.hits[0].score > 0.98)
+    }
+
+    @Test
+    fun testSimilaritySearch_noHits() {
+        val query = """{
+            "query": {
+                "function_score" : {
+                    "functions" : [
+                      {
+                        "script_score" : {
+                          "script" : {
+                            "source" : "similarity",
+                            "lang" : "zorroa-similarity",
+                            "params" : {
+                              "minScore" : 0.50,
+                              "field" : "analysis.zmlp.similarity.vector",
+                              "hashes" : ["PPPPPPPP"]
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "score_mode" : "multiply",
+                    "boost_mode" : "replace",
+                    "max_boost" : 3.4028235E38,
+                    "min_score" : 0.50,
+                    "boost" : 1.0
+                  }
+                }
+            }
+        """.trimIndent()
+        val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
+        assertEquals(0, rsp.hits.hits.size)
     }
 }
