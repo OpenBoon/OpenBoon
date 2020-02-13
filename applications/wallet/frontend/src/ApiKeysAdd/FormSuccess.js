@@ -11,8 +11,6 @@ import SectionTitle from '../SectionTitle'
 
 import { onCopy } from './helpers'
 
-const MAX_WIDTH = 470
-
 const ApiKeysAddFormSuccess = ({
   projectId,
   apikey: { permissions },
@@ -53,7 +51,7 @@ const ApiKeysAddFormSuccess = ({
           defaultValue={JSON.stringify(apikey)}
           rows="5"
           css={{
-            width: MAX_WIDTH,
+            width: constants.form.maxWidth,
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
             color: colors.structure.white,
