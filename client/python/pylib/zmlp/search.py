@@ -111,8 +111,44 @@ class AssetSearchResult(object):
             return []
         return [Asset({'id': hit['_id'], 'document': hit['_source']}) for hit in hits['hits']]
 
-    def agg(self, name):
-        raise NotImplementedError("TODO")
+    def aggregation(self, name):
+        """
+        Return an aggregation dict with the given name.
+
+        Args:
+            name (str): The agg name
+
+        Returns:
+            dict: the agg dict or None if no agg exists.
+        """
+        aggs = self.result.get("aggregations")
+        if not aggs:
+            return None
+
+        if "#" in name:
+            key = [name]
+        else:
+            key = [k for k in
+                   self.result.get("aggregations", {}) if k.endswith("#{}".format(name))]
+
+        if len(key) > 1:
+            raise ValueError(
+                "Aggs with the same name must be qualified by type (pick 1):  {}".format(key))
+        elif not key:
+            return None
+        try:
+            return aggs[key[0]]
+        except KeyError:
+            return None
+
+    def aggregations(self):
+        """
+        Return a dictionary of all aggregations.
+
+        Returns:
+            dict: A dict of aggregations keyed on name.
+        """
+        return self.result.get("aggregations", {})
 
     @property
     def size(self):
@@ -163,3 +199,77 @@ class AssetSearchResult(object):
 
     def __getitem__(self, item):
         return self.assets[item]
+
+
+class SimilarityQuery:
+    """
+    A helper class for building a similarity search.  You can embed this class anywhere
+    in a ES query dict, for example:
+
+    Examples:
+        {
+            "query": {
+                "bool": {
+                    "must": [
+                        SimilarityQuery("analysis.zmlp.similarity.vector", 0.85, hash_string)
+                    ]
+                }
+            }
+        }
+    """
+    def __init__(self, field, min_score=0.75, *hashes):
+        self.field = field
+        self.min_score = min_score
+        self.hashes = list(hashes)
+
+    def add_hash(self, simhash):
+        """
+        Add a new hash to the search.
+
+        Args:
+            simhash (str): A similarity hash.
+
+        Returns:
+            SimilarityQuery: this instance of SimilarityQuery
+        """
+        self.hashes.append(simhash)
+        return self
+
+    def add_asset(self, asset):
+        """
+        Adds the similarity hash for the given asset to this search.
+
+        Args:
+            asset (Asset): The asset
+
+        Returns:
+            SimilarityQuery: this instance of SimilarityQuery
+        """
+        self.hashes.append(asset.get_attr(self.field))
+        return self
+
+    def for_json(self):
+        return {
+            "function_score": {
+                "functions": [
+                    {
+                        "script_score": {
+                            "script": {
+                                "source": "similarity",
+                                "lang": "zorroa-similarity",
+                                "params": {
+                                    "minScore": self.min_score,
+                                    "field": self.field,
+                                    "hashes":  self.hashes
+                                }
+                            }
+                        }
+                    }
+                ],
+                "score_mode": "multiply",
+                "boost_mode": "replace",
+                "max_boost": 1000,
+                "min_score": self.min_score,
+                "boost": 1.0
+            }
+        }
