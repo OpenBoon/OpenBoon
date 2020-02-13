@@ -1,4 +1,5 @@
 import time
+import logging
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
@@ -13,6 +14,7 @@ from wallet.paginators import FromSizePagination
 from apikeys.utils import decode_apikey, encode_apikey
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 
 class ProjectUserViewSet(BaseProjectViewSet):
@@ -176,7 +178,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
             key_data = decode_apikey(apikey)
             apikey_id = key_data['id']
         except (ValueError, KeyError):
-            print(f'Unable to decode apikey during delete for user {membership.user.id}.')
+            logger.warning(f'Unable to decode apikey during delete for user {membership.user.id}.')
             apikey_readable = False
 
         if apikey_readable:
