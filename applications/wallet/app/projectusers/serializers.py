@@ -1,7 +1,10 @@
+import logging
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from apikeys.utils import decode_apikey
+
+logger = logging.getLogger(__name__)
 
 
 class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
@@ -35,6 +38,6 @@ class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
             key_data = decode_apikey(apikey)
         except ValueError:
             # Something wrong with the json string
-            print('Error: Unable to decode apikey.')
+            logger.warning('Unable to decode apikey.')
             return []
         return key_data['permissions']
