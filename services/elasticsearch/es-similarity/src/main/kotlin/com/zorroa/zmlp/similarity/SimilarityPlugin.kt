@@ -149,8 +149,7 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
                         val elementScore = normalize(hammingDistance(bytes, hash))
                         if (elementScore < minScore) {
                             return noScore
-                        }
-                        else {
+                        } else {
                             totalScore += elementScore
                         }
                     }
