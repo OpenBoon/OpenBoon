@@ -26,7 +26,7 @@ def test_datasource_viewset_create(api_client, monkeypatch, project, zmlp_projec
         return None
 
     monkeypatch.setattr(DataSourceApp, 'create_datasource', mock_create_datasource)
-    monkeypatch.setattr(DataSourceApp, 'process_files', mock_import_files)
+    monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
     assert response.status_code == 200

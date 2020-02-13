@@ -24,7 +24,7 @@ class DataSourceViewSet(BaseProjectViewSet):
         datasource = app.datasource.create_datasource(name=data['name'], uri=data['uri'],
                                                       modules=data['modules'],
                                                       file_types=data['file_types'])
-        app.datasource.process_files(datasource)
+        app.datasource.import_files(datasource)
         return Response(self.get_serializer(datasource).data)
 
     def list(self, request, project_pk):
