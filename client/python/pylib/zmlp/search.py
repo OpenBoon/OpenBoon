@@ -111,8 +111,44 @@ class AssetSearchResult(object):
             return []
         return [Asset({'id': hit['_id'], 'document': hit['_source']}) for hit in hits['hits']]
 
-    def agg(self, name):
-        raise NotImplementedError("TODO")
+    def aggregation(self, name):
+        """
+        Return an aggregation dict with the given name.
+
+        Args:
+            name (str): The agg name
+
+        Returns:
+            dict: the agg dict or None if no agg exists.
+        """
+        aggs = self.result.get("aggregations")
+        if not aggs:
+            return None
+
+        if "#" in name:
+            key = [name]
+        else:
+            key = [k for k in
+                   self.result.get("aggregations", {}) if k.endswith("#{}".format(name))]
+
+        if len(key) > 1:
+            raise ValueError(
+                "Aggs with the same name must be qualified by type (pick 1):  {}".format(key))
+        elif not key:
+            return None
+        try:
+            return aggs[key[0]]
+        except KeyError:
+            return None
+
+    def aggregations(self):
+        """
+        Return a dictionary of all aggregations.
+
+        Returns:
+            dict: A dict of aggregations keyed on name.
+        """
+        return self.result.get("aggregations", {})
 
     @property
     def size(self):
