@@ -2,12 +2,15 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.AssetMetrics
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.Element
 import com.zorroa.archivist.domain.InternalTask
+import com.zorroa.archivist.domain.ProcessorMetric
+import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import org.elasticsearch.client.ResponseException
@@ -40,12 +43,11 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchCreateAssetsWithPipelineAndModule() {
+    fun testBatchCreateAssetsWithModule() {
         pipelineModuleService.updateStandardMods()
 
         val req = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
-            pipeline = "default",
             modules = listOf("zmlp-labels")
         )
 
@@ -69,18 +71,6 @@ class AssetServiceTests : AbstractTest() {
         val req = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
             modules = listOf("zmlp-arg!")
-        )
-
-        assetService.batchCreate(req)
-    }
-
-    @Test(expected = DataRetrievalFailureException::class)
-    fun testBatchCreateAssets_pipelineNotFound() {
-        pipelineModuleService.updateStandardMods()
-
-        val req = BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
-            pipeline = "cats"
         )
 
         assetService.batchCreate(req)
@@ -182,15 +172,16 @@ class AssetServiceTests : AbstractTest() {
      * Recreating an asset that already exists should fail.
      */
     @Test
-    fun testBatchCreateAssets_failOnAlreadyExists() {
+    fun testBatchCreateAssets_alreadyExists() {
         val req = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
 
         assetService.batchCreate(req)
         val rsp = assetService.batchCreate(req)
-        assertEquals(1, rsp.failed.size)
-        assertEquals("asset already exists", rsp.failed[0]["failureMessage"])
+        assertEquals(1, rsp.exists.size)
+        assertEquals(0, rsp.created.size)
+        assertEquals(0, rsp.failed.size)
     }
 
     @Test
@@ -476,5 +467,33 @@ class AssetServiceTests : AbstractTest() {
         assertEquals("GV0zsbUZLZo_gWuTUHGOLNqQ7io", clip.pile)
         assertEquals("6UBTOcb7UygVSWstPqYtcgVor_n4HBEY", clip.sourceAssetId)
         assertEquals(sourceAsset.id, clip.sourceAssetId)
+    }
+
+    @Test
+    fun needsAssetReprocessing() {
+        val asset = Asset()
+        // no metadata would signal yes, reprocess
+        assertTrue(assetService.assetNeedsReprocessing(asset, listOf()))
+
+        // Empty pipeline, no need to reprocess
+        var metrics = AssetMetrics(listOf(ProcessorMetric("foo.Bar", "bing", 1, null)))
+        asset.setAttr("metrics", metrics)
+        assertFalse(assetService.assetNeedsReprocessing(asset, listOf()))
+
+        // Processor has an error
+        metrics = AssetMetrics(listOf(ProcessorMetric("foo.Bar", "bing", 1, "fatal")))
+        asset.setAttr("metrics", metrics)
+        assertTrue(assetService.assetNeedsReprocessing(asset, listOf()))
+
+        // No processing, checksum match
+        metrics = AssetMetrics(listOf(ProcessorMetric("foo.Bar", "bing", 281740160, null)))
+        asset.setAttr("metrics", metrics)
+        val ref = ProcessorRef("foo.Bar", "core")
+        assertFalse(assetService.assetNeedsReprocessing(asset, listOf(ref)))
+
+        // processing, checksum does not match
+        metrics = AssetMetrics(listOf(ProcessorMetric("foo.Bar", "bing", 1, null)))
+        asset.setAttr("metrics", metrics)
+        assertTrue(assetService.assetNeedsReprocessing(asset, listOf(ref)))
     }
 }

@@ -346,34 +346,16 @@
                   }
                 }
               },
-              "namespace": {
-                "type": "keyword",
-                "fields": {
-                  "fulltext": {
-                    "type": "text",
-                    "analyzer": "default"
-                  }
-                }
+              "checksum": {
+                "type": "long"
               },
-              "version": {
-                "type": "integer"
-              },
-              "executionCount": {
-                "type": "integer"
-              },
-              "executionTimeTotal": {
+              "executionTime": {
                 "type": "double"
               },
-              "executionTimeLast": {
-                "type": "double"
-              },
-              "executionDateLast": {
+              "executionDate": {
                 "type": "date"
               },
               "error": {
-                "type": "keyword"
-              },
-              "errorMessage": {
                 "type": "keyword"
               }
             }

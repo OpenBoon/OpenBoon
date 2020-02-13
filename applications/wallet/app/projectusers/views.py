@@ -1,4 +1,5 @@
 import time
+import logging
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
@@ -13,6 +14,7 @@ from wallet.paginators import FromSizePagination
 from apikeys.utils import decode_apikey, encode_apikey
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 
 class ProjectUserViewSet(BaseProjectViewSet):
@@ -171,24 +173,23 @@ class ProjectUserViewSet(BaseProjectViewSet):
                             status=status.HTTP_403_FORBIDDEN)
 
         # Delete Users Apikey
+        apikey_readable = True
         try:
             key_data = decode_apikey(apikey)
-        except ValueError:
-            return Response(data={'detail': 'Unable to parse apikey.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        try:
             apikey_id = key_data['id']
-        except KeyError:
-            return Response(data={'detail': 'Apikey is incomplete.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        try:
-            response = request.client.delete(f'/auth/v1/apikey/{apikey_id}')
-        except ZmlpInvalidRequestException:
-            return Response(data={'detail': "Unable to delete apikey."},
-                            status=status.HTTP_400_BAD_REQUEST)
-        if not response.status_code == 200:
-            return Response(data={'detail': 'Error deleting apikey.'},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except (ValueError, KeyError):
+            logger.warning(f'Unable to decode apikey during delete for user {membership.user.id}.')
+            apikey_readable = False
+
+        if apikey_readable:
+            try:
+                response = request.client.delete(f'/auth/v1/apikey/{apikey_id}')
+            except ZmlpInvalidRequestException:
+                return Response(data={'detail': "Unable to delete apikey."},
+                                status=status.HTTP_400_BAD_REQUEST)
+            if not response.status_code == 200:
+                return Response(data={'detail': 'Error deleting apikey.'},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         membership.delete()
         return Response(status=status.HTTP_200_OK)

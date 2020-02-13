@@ -1,8 +1,11 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.zorroa.zmlp.util.Json
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import java.util.zip.Adler32
+import java.util.zip.Checksum
 
 fun zpsTaskName(zps: ZpsScript): String {
     if (zps.name == null) {
@@ -136,6 +139,16 @@ class ProcessorRef(
     var module: String? = "standard"
 
 ) {
+    /**
+     * Return a arg checksum for the configuration of the processor.
+     */
+    fun getChecksum(): Long {
+        val checksum: Checksum = Adler32()
+        checksum.update(className.toByteArray())
+        checksum.update(Json.serialize(args ?: mapOf<String, Any>()))
+        return checksum.value
+    }
+
     override fun toString(): String {
         return "ProcessorRef(className='$className', image='$image')"
     }

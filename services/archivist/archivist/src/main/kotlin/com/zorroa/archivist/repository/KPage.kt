@@ -13,6 +13,9 @@ class KPage constructor(from: Int?, size: Int? = pageSizeDefault) {
     @ApiModelProperty("Number of results per page.")
     var size: Int
 
+    @ApiModelProperty("Disable paging", hidden = true)
+    var disabled = false
+
     init {
         this.size = size ?: pageSizeDefault
     }

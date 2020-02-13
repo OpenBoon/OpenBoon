@@ -3,12 +3,14 @@ package com.zorroa.archivist.clients
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.EsClientCacheKey
 import com.zorroa.zmlp.util.Json
+import org.elasticsearch.action.admin.indices.refresh.RefreshRequest
 import org.elasticsearch.action.delete.DeleteRequest
 import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.client.Request
+import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.reindex.UpdateByQueryRequest
 import org.elasticsearch.search.builder.SearchSourceBuilder
@@ -140,6 +142,13 @@ class EsRestClient(val route: EsClientCacheKey, val client: RestHighLevelClient)
 
         val rsp = client.lowLevelClient.performRequest(req)
         return rsp.statusLine.statusCode == 200
+    }
+
+    /**
+     * Refresh the index so new data is available.
+     */
+    fun refresh() {
+        client.indices().refresh(RefreshRequest(route.indexName), RequestOptions.DEFAULT)
     }
 
     companion object {

@@ -2,6 +2,7 @@ import os
 
 from ..datasource import DataSource
 from ..util import is_valid_uuid, as_collection
+from ..job import Job
 
 
 class DataSourceApp(object):
@@ -9,7 +10,7 @@ class DataSourceApp(object):
     def __init__(self, app):
         self.app = app
 
-    def create_datasource(self, name, uri, modules=None, credentials=None, file_types=None):
+    def create_datasource(self, name, uri, modules=None, file_types=None, credentials=None):
         """
         Create a new DataSource.
 
@@ -58,21 +59,19 @@ class DataSourceApp(object):
 
         return DataSource(self.app.client.post(url, body=body))
 
-    def process_files(self, ds):
+    def import_files(self, ds):
         """
-        Import or re-import all assets found at the given DataSource.  If the
-        DataSource has already been imported then calling this will
-        completely overwrite the existing Assets with fresh copies.
-
-        If the DataSource URI contains less Assets, no assets will be
-        removed from ZMLP.
+        Import all assets found at the given DataSource.  If the
+        DataSource has already been imported then only new files will be
+        imported. New modules assigned to the datasource will
+        also be applied to existing assets as well as new assets.
 
         Args:
             ds (DataSource): A DataSource object or the name of a data source.
 
         Returns:
-            dict: An import DataSource result dictionary.
+            Job: Return the Job responsible for processing the files.
 
         """
         url = '/api/v1/data-sources/{}/_import'.format(ds.id)
-        return self.app.client.post(url)
+        return Job(self.app.client.post(url))

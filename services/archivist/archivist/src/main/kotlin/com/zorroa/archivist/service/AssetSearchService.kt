@@ -17,6 +17,7 @@ interface AssetSearchService {
     fun search(search: Map<String, Any>): SearchResponse
     fun scroll(scroll: Map<String, String>): SearchResponse
     fun clearScroll(scroll: Map<String, String>): ClearScrollResponse
+    fun count(search: Map<String, Any>): Long
 }
 
 @Service
@@ -41,6 +42,12 @@ class AssetSearchServiceImpl : AssetSearchService {
 
     override fun search(search: Map<String, Any>): SearchResponse {
         return search(search, mapOf())
+    }
+
+    override fun count(search: Map<String, Any>): Long {
+        val copy = search.toMutableMap()
+        copy["size"] = 0
+        return search(copy).hits.totalHits.value
     }
 
     override fun scroll(scroll: Map<String, String>): SearchResponse {
