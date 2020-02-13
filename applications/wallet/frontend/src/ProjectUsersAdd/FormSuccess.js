@@ -11,23 +11,28 @@ import SectionTitle from '../SectionTitle'
 
 const ProjectUsersAddFormSuccess = ({
   projectId,
-  usersAdded,
-  usersNeedAccount,
-  permissions,
+  succeeded,
+  failed,
   onReset,
 }) => {
+  const { permissions } = succeeded[0]
+
   return (
     <div>
-      <FormError>Users Not Added!</FormError>
-
-      <SectionTitle>Users that Need an Account</SectionTitle>
-      <div
-        css={{
-          paddingTop: spacing.moderate,
-          color: colors.structure.steel,
-        }}>
-        {usersNeedAccount.join(', ')}
-      </div>
+      {failed.length > 0 && (
+        <div>
+          <FormError>Users Not Added!</FormError>
+          <SectionTitle>Users that Need an Account</SectionTitle>
+          <div
+            css={{
+              paddingTop: spacing.moderate,
+              paddingBottom: spacing.moderate,
+              color: colors.structure.steel,
+            }}>
+            {failed.map(user => user.email).join(', ')}
+          </div>
+        </div>
+      )}
 
       <FormSuccess>Users Added!</FormSuccess>
 
@@ -37,7 +42,7 @@ const ProjectUsersAddFormSuccess = ({
           paddingTop: spacing.moderate,
           color: colors.structure.steel,
         }}>
-        {usersAdded.join(', ')}
+        {succeeded.map(user => user.email).join(', ')}
       </div>
 
       <SectionTitle>Permissions</SectionTitle>
@@ -66,9 +71,18 @@ const ProjectUsersAddFormSuccess = ({
 
 ProjectUsersAddFormSuccess.propTypes = {
   projectId: PropTypes.string.isRequired,
-  usersAdded: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  usersNeedAccount: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  permissions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  succeeded: PropTypes.arrayOf(
+    PropTypes.shape({
+      email: PropTypes.string.isRequired,
+      permissions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    }).isRequired,
+  ).isRequired,
+  failed: PropTypes.arrayOf(
+    PropTypes.shape({
+      email: PropTypes.string.isRequired,
+      permissions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    }).isRequired,
+  ).isRequired,
   onReset: PropTypes.func.isRequired,
 }
 

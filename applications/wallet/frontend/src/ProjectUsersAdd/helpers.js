@@ -1,5 +1,17 @@
 import { fetcher } from '../Fetch/helpers'
 
+const userMapper = ({ users }) => {
+  const mappedUsers = users.reduce((acc, user) => {
+    const { email, permissions } = user
+
+    acc.push({ email, permissions })
+
+    return acc
+  }, [])
+
+  return mappedUsers
+}
+
 export const onSubmit = async ({
   projectId,
   dispatch,
@@ -8,24 +20,21 @@ export const onSubmit = async ({
   try {
     const emails = e.split(',').map(str => str.trim(''))
     const permissions = Object.keys(p).filter(name => p[name])
-    let body
+    const body = JSON.stringify({
+      batch: emails.map(email => ({ email, permissions })),
+    })
 
-    if (emails.length > 1) {
-      body = JSON.stringify({
-        batch: emails.map(email => ({ email, permissions })),
-      })
-    }
-
-    if (emails.length === 1) {
-      body = JSON.stringify({ email: emails, permissions })
-    }
-
-    await fetcher(`api/v1/projects/${projectId}/users/`, {
+    const {
+      results: { succeeded, failed },
+    } = await fetcher(`/api/v1/projects/${projectId}/users/`, {
       method: 'POST',
       body,
     })
 
-    dispatch({ success: true })
+    dispatch({
+      succeeded: userMapper({ users: succeeded }),
+      failed: userMapper({ users: failed }),
+    })
   } catch (response) {
     const errors = await response.json()
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
@@ -34,6 +43,6 @@ export const onSubmit = async ({
       return acc
     }, {})
 
-    dispatch({ success: false, errors: parsedErrors })
+    dispatch({ errors: parsedErrors })
   }
 }

@@ -17,9 +17,8 @@ import ProjectUsersAddFormSuccess from './FormSuccess'
 const INITIAL_STATE = {
   emails: '',
   permissions: {},
-  success: false,
-  usersAdded: [],
-  usersNeedAccount: [],
+  succeeded: [],
+  failed: [],
   errors: {},
 }
 
@@ -38,13 +37,12 @@ const ProjectUsersAddForm = () => {
 
   if (!Array.isArray(permissions)) return <Loading />
 
-  if (state.success) {
+  if (state.succeeded.length > 0) {
     return (
       <ProjectUsersAddFormSuccess
         projectId={projectId}
-        usersAdded={state.usersAdded}
-        usersNeedAccount={state.usersNeedAccount}
-        permissions={state.permissions}
+        succeeded={state.succeeded}
+        failed={state.failed}
         onReset={() => dispatch(INITIAL_STATE)}
       />
     )
