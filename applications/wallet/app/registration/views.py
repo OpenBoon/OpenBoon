@@ -6,10 +6,10 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.mail import send_mail
 from django.db import transaction
-from django.http import HttpResponseBadRequest, Http404, HttpResponseForbidden, \
-    HttpResponse
+from django.http import Http404
 from django.template.loader import render_to_string
 from django.utils.timezone import now
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -49,12 +49,13 @@ Response Codes:
             last = request.data['last_name']
             password = request.data['password']
         except KeyError:
-            return HttpResponseBadRequest('Request must contain email, firstName, '
-                                          'lastName, and password')
+            msg = 'Request must contain email, firstName, lastName, and password'
+            return Response(data={'detail': msg}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
             validate_password(password)
         except ValidationError as e:
-            return Response({'message': 'Password not strong enough',
+            return Response({'detail': 'Password not strong enough',
                              'errors': e.messages}, status=422)
 
         with transaction.atomic():
@@ -70,7 +71,8 @@ Response Codes:
             # If the user exists and there is no registration token then the user was already
             # activated. Exit with generic success message to prevent phishing.
             elif User.objects.filter(username=email).exists():
-                return HttpResponse('A user with this email address already exists.', status=409)
+                msg = 'A user with this email address already exists.'
+                return Response(data={'detail': msg}, status=status.HTTP_409_CONFLICT)
 
             # If the user does not exist yet then create it.
             else:
@@ -93,7 +95,7 @@ Response Codes:
         send_mail(subject=subject, message=body, html_message=html, fail_silently=False,
                   from_email='do_not_reply@zorroa.com', recipient_list=[user.username])
 
-        return Response(data={'message': 'Success, confirmation email has been sent.'})
+        return Response(data={'detail': 'Success, confirmation email has been sent.'})
 
 
 class UserConfirmationView(APIView):
@@ -122,17 +124,18 @@ Response Codes:
             token = request.data['token']
             user_id = request.data['user_id']
         except KeyError:
-            return HttpResponseBadRequest('Confirming an email address requires sending '
-                                          'the "token" and "userId" params.')
+            msg = 'Confirming an email address requires sending the "token" and "userId" params.'
+            return Response(data={'detail': msg}, status=status.HTTP_400_BAD_REQUEST)
         try:
             token = UserRegistrationToken.objects.get(token=token, user=user_id)
         except ObjectDoesNotExist:
             raise Http404('User ID and/or token does not exist.')
         if now() - token.created_at > timedelta(days=settings.REGISTRATION_TIMEOUT_DAYS):
-            return HttpResponseForbidden('The activation link has expired. Please sign up again.')
+            msg = 'The activation link has expired. Please sign up again.'
+            return Response(data={'detail': msg}, status=status.HTTP_403_FORBIDDEN)
         user = token.user
         user.is_active = True
         with transaction.atomic():
             user.save()
             token.delete()
-        return Response(data={'message': 'Success. User has been activated.'})
+        return Response(data={'detail': 'Success. User has been activated.'})

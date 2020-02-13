@@ -28,7 +28,8 @@ class ApikeyViewSet(BaseProjectViewSet):
         try:
             response = request.client.post(self.zmlp_root_api_path, body)
         except ZmlpInvalidRequestException:
-            return Response("Bad Request", status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'detail': 'Bad Request'},
+                            status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_201_CREATED, data=response)
 
     def destroy(self, request, project, pk):

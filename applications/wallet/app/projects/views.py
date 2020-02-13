@@ -278,8 +278,8 @@ class ProjectViewSet(ListModelMixin,
         except ZmlpDuplicateException:
             # We only need to error if it already existed in Wallet as well
             if exists_in_wallet:
-                return Response({'id': ["A project with this id already "
-                                        "exists in Wallet and ZMLP."]},
+                return Response(data={'detail': ["A project with this id already "
+                                                 "exists in Wallet and ZMLP."]},
                                 status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
