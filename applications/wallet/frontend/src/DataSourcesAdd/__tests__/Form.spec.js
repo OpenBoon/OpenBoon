@@ -51,6 +51,13 @@ describe('<DataSourcesAddForm />', () => {
         .props.onClick()
     })
 
+    // Select module
+    act(() => {
+      component.root
+        .findByProps({ type: 'checkbox', value: 'label-detection' })
+        .props.onClick({ preventDefault: noop })
+    })
+
     act(() => {
       component.root
         .findByProps({ children: 'Create Data Source' })

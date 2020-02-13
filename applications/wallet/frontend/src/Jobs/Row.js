@@ -71,7 +71,7 @@ const JobsRow = ({
         )}
       </td>
       <td
-        css={{
+        style={{
           minWidth: CONTAINER_WIDTH + spacing.normal * 2,
           overflow: 'visible',
         }}>

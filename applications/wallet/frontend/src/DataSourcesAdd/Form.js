@@ -2,7 +2,9 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import Form, { MAX_WIDTH } from '../Form'
+import { constants } from '../Styles'
+
+import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import SectionSubTitle from '../SectionSubTitle'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
@@ -13,6 +15,7 @@ import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
+import DataSourcesAddZorroaModules from './ZorroaModules'
 
 const INITIAL_STATE = {
   name: '',
@@ -20,6 +23,7 @@ const INITIAL_STATE = {
   key: '',
   errors: {},
   fileTypes: {},
+  modules: {},
 }
 
 const FILE_TYPES = [
@@ -51,7 +55,7 @@ const DataSourcesAddForm = () => {
 
   return (
     <Form style={{ width: 'auto' }}>
-      <div css={{ width: MAX_WIDTH }}>
+      <div css={{ width: constants.form.maxWidth }}>
         <SectionTitle>Data Source Name</SectionTitle>
 
         <Input
@@ -80,7 +84,7 @@ const DataSourcesAddForm = () => {
         />
       </div>
 
-      <div css={{ minWidth: MAX_WIDTH, maxWidth: '50%' }}>
+      <div css={{ minWidth: constants.form.maxWidth, maxWidth: '50%' }}>
         <Textarea
           id="key"
           variant={TEXTAREA_VARIANTS.SECONDARY}
@@ -114,6 +118,14 @@ const DataSourcesAddForm = () => {
       </SectionSubTitle>
 
       <DataSourcesAddAutomaticAnalysis />
+
+      <div>&nbsp;</div>
+
+      <DataSourcesAddZorroaModules
+        onClick={modules =>
+          dispatch({ modules: { ...state.modules, ...modules } })
+        }
+      />
 
       <ButtonGroup>
         <Link
