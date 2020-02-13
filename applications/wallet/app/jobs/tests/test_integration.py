@@ -33,7 +33,6 @@ class TestJobViewSet:
         assert len(content['results']) == 1
         assert len(content['results'][0]) > 0
 
-    @override_settings(PLATFORM='zmlp')
     def test_get_list_zmlp(self, zmlp_project_user, project, api_client, monkeypatch):
 
         def mock_api_response(*args, **kwargs):
@@ -49,7 +48,6 @@ class TestJobViewSet:
         assert len(content['results']) == 1
         assert len(content['results'][0]) > 0
 
-    @override_settings(PLATFORM='zmlp')
     def test_get_detail_zmlp(self, zmlp_project_user, project, api_client, monkeypatch, job_pk):
 
         def mock_api_response(*args, **kwargs):

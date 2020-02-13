@@ -108,12 +108,12 @@ resource "kubernetes_deployment" "wallet" {
           }
           resources {
             limits {
-              memory = "512Mi"
-              cpu = 1.0
+              memory = "2Gi"
+              cpu = 2.0
             }
             requests {
               memory = "256Mi"
-              cpu = 0.2
+              cpu = 1.0
             }
           }
           env = [
