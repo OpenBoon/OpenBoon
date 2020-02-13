@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import patch
 
 from zmlp import ZmlpClient, app_from_env
-from zmlp.search import AssetSearchScroller, AssetSearchResult
+from zmlp.search import AssetSearchScroller, AssetSearchResult, SimilarityQuery
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -66,6 +66,17 @@ class AssetSearchResultTests(unittest.TestCase):
         results = AssetSearchResult(self.app, {"query": {"term": {"source.filename": "dog.jpg"}}})
         next_page = results.next_page()
         assert next_page.raw_response == {"hits": {"hits": []}}
+
+
+class TestImageSimilarityQuery(unittest.TestCase):
+    def test_for_json(self):
+        s = SimilarityQuery("foo.vector", 0.50, "ABC123")
+        qjson = s.for_json()
+
+        params = qjson["function_score"]["functions"][0]["script_score"]["script"]["params"]
+        assert 0.50 == params["minScore"]
+        assert "foo.vector" == params["field"]
+        assert ["ABC123"] == params["hashes"]
 
 
 mock_search_result = {

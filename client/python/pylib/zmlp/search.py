@@ -163,3 +163,64 @@ class AssetSearchResult(object):
 
     def __getitem__(self, item):
         return self.assets[item]
+
+
+class SimilarityQuery:
+    """
+    A helper class for building a similarity search.  You can embed this class anywhere
+    in a ES query dict, for example:
+
+    Examples:
+        {
+            "query": {
+                "bool": {
+                    "must": [
+                        SimilarityQuery("analysis.zmlp.similarity.vector", 0.85, hash_string)
+                    ]
+                }
+            }
+        }
+    """
+    def __init__(self, field, min_score=0.75, *hashes):
+        self.field = field
+        self.min_score = min_score
+        self.hashes = hashes
+
+    def add_hash(self, simhash):
+        """
+        Add a new hash to the search.
+
+        Args:
+            simhash (str): A similarity hash.
+
+        Returns:
+            SimilarityQuery: return this instance of SimilarityQuery
+        """
+        self.hashes.append(simhash)
+        return self
+
+    def for_json(self):
+        return {
+            "function_score": {
+                "functions": [
+                    {
+                        "script_score": {
+                            "script": {
+                                "source": "similarity",
+                                "lang": "zorroa-similarity",
+                                "params": {
+                                    "minScore": self.min_score,
+                                    "field": self.field,
+                                    "hashes":  self.hashes
+                                }
+                            }
+                        }
+                    }
+                ],
+                "score_mode": "multiply",
+                "boost_mode": "replace",
+                "max_boost": 1000,
+                "min_score": self.min_score,
+                "boost": 1.0
+            }
+        }
