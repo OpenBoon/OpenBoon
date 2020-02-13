@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp import ZmlpClient, app_from_env
+from zmlp import ZmlpClient, app_from_env, Asset
 from zmlp.search import AssetSearchScroller, AssetSearchResult, SimilarityQuery
 
 logging.basicConfig(level=logging.DEBUG)
@@ -120,6 +120,21 @@ class TestImageSimilarityQuery(unittest.TestCase):
         assert "foo.vector" == params["field"]
         assert "ABC123" in params["hashes"]
 
+    def test_add_asset(self):
+        asset = Asset({"id": "123"})
+        asset.set_attr("foo.vector", "OVER9000")
+
+        s = SimilarityQuery("foo.vector", 0.50)
+        s.add_asset(asset)
+        assert ['OVER9000'] == s.hashes
+
+    def test_add_hash(self):
+        s = SimilarityQuery("foo.vector", 0.50)
+        s.add_hash("OVER9000")
+        assert ['OVER9000'] == s.hashes
+        assert "foo.vector" == s.field
+        assert 0.50 == s.min_score
+
 
 mock_search_result = {
     "took": 4,
@@ -146,6 +161,13 @@ mock_search_result = {
                 "_source": {
                     "source": {
                         "path": "https://i.imgur.com/SSN26nN.jpg"
+                    },
+                    "analysis": {
+                        "zmlp": {
+                            "similarity": {
+                                "vector": "OVER9000"
+                            }
+                        }
                     }
                 }
             },

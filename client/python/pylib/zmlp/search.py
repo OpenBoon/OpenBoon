@@ -220,7 +220,7 @@ class SimilarityQuery:
     def __init__(self, field, min_score=0.75, *hashes):
         self.field = field
         self.min_score = min_score
-        self.hashes = hashes
+        self.hashes = list(hashes)
 
     def add_hash(self, simhash):
         """
@@ -230,9 +230,22 @@ class SimilarityQuery:
             simhash (str): A similarity hash.
 
         Returns:
-            SimilarityQuery: return this instance of SimilarityQuery
+            SimilarityQuery: this instance of SimilarityQuery
         """
         self.hashes.append(simhash)
+        return self
+
+    def add_asset(self, asset):
+        """
+        Adds the similarity hash for the given asset to this search.
+
+        Args:
+            asset (Asset): The asset
+
+        Returns:
+            SimilarityQuery: this instance of SimilarityQuery
+        """
+        self.hashes.append(asset.get_attr(self.field))
         return self
 
     def for_json(self):
