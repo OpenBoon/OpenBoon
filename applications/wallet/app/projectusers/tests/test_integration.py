@@ -171,9 +171,7 @@ class TestProjectUserDelete:
         response = api_client.delete(reverse('projectuser-detail',
                                              kwargs={'project_pk': project.id,
                                                      'pk': user.id}))
-        assert response.status_code == status.HTTP_400_BAD_REQUEST
-        content = response.json()
-        assert content['detail'] == 'Unable to parse apikey.'
+        assert response.status_code == status.HTTP_200_OK
 
     @override_settings(PLATFORM='zmlp')
     def test_incomplete_apikey(self, project, zmlp_project_user, zmlp_project_membership,
@@ -185,9 +183,7 @@ class TestProjectUserDelete:
         response = api_client.delete(reverse('projectuser-detail',
                                              kwargs={'project_pk': project.id,
                                                      'pk': user.id}))
-        assert response.status_code == status.HTTP_400_BAD_REQUEST
-        content = response.json()
-        assert content['detail'] == 'Apikey is incomplete.'
+        assert response.status_code == status.HTTP_200_OK
 
     @override_settings(PLATFORM='zmlp')
     def test_failed_zmlp_delete(self, project, zmlp_project_user, django_user_model,
