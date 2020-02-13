@@ -394,10 +394,10 @@ Array [
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  color: #b3b3b3;
 }
 
 .emotion-10 {
-  color: #b3b3b3;
   font-size: 15px;
   line-height: 18px;
   font-weight: 700;
@@ -405,6 +405,7 @@ Array [
 
 .emotion-11 {
   color: #808080;
+  padding-left: 0;
 }
 
 .emotion-38 {

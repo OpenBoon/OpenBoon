@@ -22,3 +22,5 @@ DATABASES = {
         'NAME': 'db.sqlite3',
     }
 }
+
+ZMLP_API_URL = 'http://localhost:8080'

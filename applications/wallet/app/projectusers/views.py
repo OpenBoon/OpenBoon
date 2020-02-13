@@ -1,4 +1,5 @@
 import time
+import logging
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
@@ -13,6 +14,7 @@ from wallet.paginators import FromSizePagination
 from apikeys.utils import decode_apikey, encode_apikey
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 
 class ProjectUserViewSet(BaseProjectViewSet):
@@ -34,7 +36,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
     """
 
-    ZMLP_ONLY = True
+    zmlp_only = True
     pagination_class = FromSizePagination
     serializer_class = ProjectUserSerializer
 
@@ -50,7 +52,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
         except Project.DoesNotExist:
             raise Http404
 
-    def list(self, request, project_pk, client):
+    def list(self, request, project_pk):
         # Need to handle pagination
         # If the project doesn't exist or user is not a member a 403 is returned
         project = self.get_project_object(project_pk)
@@ -62,13 +64,13 @@ class ProjectUserViewSet(BaseProjectViewSet):
         serializer = self.get_serializer(users, many=True)
         return Response(data={'results': serializer.data}, status=status.HTTP_200_OK)
 
-    def retrieve(self, request, project_pk, client, pk):
+    def retrieve(self, request, project_pk, pk):
         # List details about the current project User
         user = self.get_object(pk, project_pk).user
         serializer = self.get_serializer(user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-    def create(self, request, project_pk, client):
+    def create(self, request, project_pk):
         batch = request.data.get('batch')
         if batch and request.data.get('email'):
             return Response(data={'detail': 'Batch argument provided with single creation arguments.'},  # noqa
@@ -76,7 +78,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
         elif batch:
             response_body = {'results': {'succeeded': [], 'failed': []}}
             for entry in batch:
-                response = self._create_project_user(request, project_pk, client, entry)
+                response = self._create_project_user(request, project_pk, entry)
                 content = {'email': entry.get('email'),
                            'permissions': entry.get('permissions'),
                            'status_code': response.status_code,
@@ -87,9 +89,9 @@ class ProjectUserViewSet(BaseProjectViewSet):
                     response_body['results']['failed'].append(content)
             return Response(data=response_body, status=status.HTTP_207_MULTI_STATUS)
         else:
-            return self._create_project_user(request, project_pk, client, request.data)
+            return self._create_project_user(request, project_pk, request.data)
 
-    def _create_project_user(self, request, project_pk, client, data):
+    def _create_project_user(self, request, project_pk, data):
         # Get the User and add the appropriate Membership & ApiKey
         try:
             email = data['email']
@@ -109,7 +111,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
         # Create an apikey with the given permissions
         body = {'name': email, 'permissions': permissions}
         try:
-            apikey = client.post('/auth/v1/apikey', body)
+            apikey = request.client.post('/auth/v1/apikey', body)
         except ZmlpInvalidRequestException:
             return Response(data={'detail': "Unable to create apikey."},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -122,7 +124,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
         serializer = self.get_serializer(user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
-    def update(self, request, project_pk, client, pk):
+    def update(self, request, project_pk, pk):
         # Modify the permissions of the given user
         try:
             new_permissions = request.data['permissions']
@@ -139,14 +141,14 @@ class ProjectUserViewSet(BaseProjectViewSet):
         body = {'name': f'{email}_{int(time.time()  * 1000)}',
                 'permissions': new_permissions}
         try:
-            new_apikey = client.post('/auth/v1/apikey', body)
+            new_apikey = request.client.post('/auth/v1/apikey', body)
         except ZmlpInvalidRequestException:
             return Response(data={'detail': "Unable to create apikey."},
                             status=status.HTTP_400_BAD_REQUEST)
 
         # Delete old key on success
         try:
-            response = client.delete(f'/auth/v1/apikey/{apikey_id}')
+            response = request.client.delete(f'/auth/v1/apikey/{apikey_id}')
         except ZmlpInvalidRequestException:
             return Response(data={'detail': "Unable to delete apikey."},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -160,7 +162,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     @transaction.atomic
-    def destroy(self, request, project_pk, client, pk):
+    def destroy(self, request, project_pk, pk):
         # Remove the User's Membership and delete the associated apikey
         membership = self.get_object(pk, project_pk)
         apikey = membership.apikey
@@ -171,24 +173,23 @@ class ProjectUserViewSet(BaseProjectViewSet):
                             status=status.HTTP_403_FORBIDDEN)
 
         # Delete Users Apikey
+        apikey_readable = True
         try:
             key_data = decode_apikey(apikey)
-        except ValueError:
-            return Response(data={'detail': 'Unable to parse apikey.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        try:
             apikey_id = key_data['id']
-        except KeyError:
-            return Response(data={'detail': 'Apikey is incomplete.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        try:
-            response = client.delete(f'/auth/v1/apikey/{apikey_id}')
-        except ZmlpInvalidRequestException:
-            return Response(data={'detail': "Unable to delete apikey."},
-                            status=status.HTTP_400_BAD_REQUEST)
-        if not response.status_code == 200:
-            return Response(data={'detail': 'Error deleting apikey.'},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except (ValueError, KeyError):
+            logger.warning(f'Unable to decode apikey during delete for user {membership.user.id}.')
+            apikey_readable = False
+
+        if apikey_readable:
+            try:
+                response = request.client.delete(f'/auth/v1/apikey/{apikey_id}')
+            except ZmlpInvalidRequestException:
+                return Response(data={'detail': "Unable to delete apikey."},
+                                status=status.HTTP_400_BAD_REQUEST)
+            if not response.status_code == 200:
+                return Response(data={'detail': 'Error deleting apikey.'},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         membership.delete()
         return Response(status=status.HTTP_200_OK)

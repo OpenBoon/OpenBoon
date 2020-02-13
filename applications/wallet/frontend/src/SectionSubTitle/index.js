@@ -8,6 +8,7 @@ const SectionSubTitle = ({ children }) => {
       css={{
         margin: 0,
         paddingTop: spacing.base,
+        paddingBottom: spacing.normal,
         color: colors.structure.zinc,
       }}>
       {children}

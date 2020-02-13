@@ -21,6 +21,7 @@ const app = nextjs({ dev: true })
 const server = express()
 const handle = app.getRequestHandler()
 const mock = response => (_, res) => res.send(JSON.stringify(response))
+const success = () => (_, res) => res.send('{"detail":"Success"}')
 const proxy = p({ target: 'http://localhost', changeOrigin: true })
 
 app.prepare().then(() => {
@@ -54,6 +55,7 @@ app.prepare().then(() => {
 
     server.get(`${PID_API_BASE}/users/`, mock(projectUsers))
     server.get(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
+    server.delete(`${PID_API_BASE}/users/:userId/`, success())
     server.patch(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
   }
 

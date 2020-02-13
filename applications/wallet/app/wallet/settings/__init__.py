@@ -197,3 +197,20 @@ OLD_PASSWORD_FIELD_ENABLED = True
 
 # Django Registration Settings
 REGISTRATION_TIMEOUT_DAYS = 3  # Numbers of days the confirmation link is valid.
+
+# Logging Settings
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+}
