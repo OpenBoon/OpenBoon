@@ -18,7 +18,7 @@ class JobsViewSet(BaseProjectViewSet):
         return self._zmlp_list_from_search(request, item_modifier=item_modifier)
 
     def retrieve(self, request, project_pk, pk):
-        response = request.client.get(f'/api/v1/jobs/{pk}')
+        response = request.client.get(f'{self.zmlp_root_api_path}{pk}')
         content = self._get_content(response)
         content['actions'] = self._get_action_links(request)
         return Response(content)
@@ -77,7 +77,7 @@ class JobsViewSet(BaseProjectViewSet):
         """
         new_values = {'paused': True}
         request_body = self._get_updated_info(request.client, pk, new_values)
-        response = request.client.put(f'/api/v1/jobs/{pk}', request_body)
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}', request_body)
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'])
@@ -90,7 +90,7 @@ class JobsViewSet(BaseProjectViewSet):
         """
         new_values = {'paused': False}
         request_body = self._get_updated_info(request.client, pk, new_values)
-        response = request.client.put(f'/api/v1/jobs/{pk}', request_body)
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}', request_body)
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'])
@@ -101,7 +101,7 @@ class JobsViewSet(BaseProjectViewSet):
         The endpoint expects a `PUT` request with an empty body.
 
         """
-        response = request.client.put(f'/api/v1/jobs/{pk}/_cancel', {})
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}/_cancel', {})
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'])
@@ -112,7 +112,7 @@ class JobsViewSet(BaseProjectViewSet):
         The endpoint expects a `PUT` request with an empty body.
 
         """
-        response = request.client.put(f'/api/v1/jobs/{pk}/_restart', {})
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}/_restart', {})
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'])
@@ -139,7 +139,7 @@ class JobsViewSet(BaseProjectViewSet):
             return Response({'msg': msg}, status.HTTP_400_BAD_REQUEST)
         new_values = {'priority': priority}
         request_body = self._get_updated_info(request.client, pk, new_values)
-        response = request.client.put(f'/api/v1/jobs/{pk}', request_body)
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}', request_body)
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'], name='Max Running Tasks')
@@ -165,7 +165,7 @@ class JobsViewSet(BaseProjectViewSet):
             return Response({'msg': msg}, status.HTTP_400_BAD_REQUEST)
         new_values = {'maxRunningTasks': max_running_tasks}
         request_body = self._get_updated_info(request.client, pk, new_values)
-        response = request.client.put(f'/api/v1/jobs/{pk}', request_body)
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}', request_body)
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'], name='Retry All Failures')
@@ -176,7 +176,7 @@ class JobsViewSet(BaseProjectViewSet):
         The endpoint expects a `PUT` request with an empty body.
 
         """
-        response = request.client.put(f'/api/v1/jobs/{pk}/_retryAllFailures', {})
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}/_retryAllFailures', {})
         return Response(self._get_content(response))
 
     def _get_updated_info(self, client, pk, new_values):
@@ -192,7 +192,7 @@ class JobsViewSet(BaseProjectViewSet):
         Returns:
             (dict): Full job spec with updated values
         """
-        response = client.get(f'/api/v1/jobs/{pk}')
+        response = client.get(f'{self.zmlp_root_api_path}{pk}')
         body = self._get_content(response)
         job_spec = {
             'name': body['name'],
