@@ -38,7 +38,12 @@ export const initializeFetcher = ({ setUser }) => {
 
     if (response.status >= 400) throw response
 
-    return response.json()
+    try {
+      const json = await response.json()
+      return json
+    } catch (error) {
+      return response
+    }
   }
 
   return enhancedFetch
