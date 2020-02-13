@@ -100,7 +100,7 @@ class TestProjectUserGet:
                                                   'pk': zmlp_project_user.id}))
         assert response.status_code == status.HTTP_200_OK
         content = response.json()
-        assert content['permissions'] == 'Could not parse apikey, please check.'
+        assert content['permissions'] == []
 
     @override_settings(PLATFORM='zmlp')
     def test_retrieve_bad_user_pk(self, project, zmlp_project_user, zmlp_project_membership,
