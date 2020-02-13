@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.servlet.error.ErrorAttributes
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -15,17 +16,30 @@ import java.util.UUID
 import javax.servlet.http.HttpServletRequest
 
 @ControllerAdvice
-class RestAPIException {
+class RestAPIExceptionHandler {
 
     @Autowired
     lateinit var errorAttributes: ErrorAttributes
 
     var debug: Boolean = false
 
-    @ExceptionHandler(DataIntegrityViolationException::class)
+    @ExceptionHandler(Exception::class)
     fun defaultErrorHandler(wb: WebRequest, req: HttpServletRequest, e: Exception): ResponseEntity<Any> {
 
-        val status = HttpStatus.UNAUTHORIZED
+        var errorMessage = "UNAUTHORIZED"
+
+        val status =
+            when (e) {
+                is DataIntegrityViolationException -> {
+                    errorMessage = "DataIntegrityViolation"
+                    HttpStatus.CONFLICT
+                }
+                is EmptyResultDataAccessException -> {
+                    errorMessage = "EmptyResult"
+                    HttpStatus.NOT_FOUND
+                }
+                else -> HttpStatus.UNAUTHORIZED
+            }
 
         /**
          * Each error gets its own random UUID for each searching in logs.
@@ -42,7 +56,7 @@ class RestAPIException {
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)
         errAttrs["errorId"] = errorId
         errAttrs["status"] = status.value()
-        errAttrs["error"] = "DataIntegrityViolation"
+        errAttrs["error"] = errorMessage
 
         return ResponseEntity.status(status)
             .contentType(MediaType.APPLICATION_JSON)
@@ -50,6 +64,6 @@ class RestAPIException {
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(RestAPIException::class.java)
+        private val logger = LoggerFactory.getLogger(RestAPIExceptionHandler::class.java)
     }
 }

@@ -17,6 +17,7 @@ import com.zorroa.zmlp.service.security.EncryptionService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -86,7 +87,7 @@ class ApiKeyServiceImpl constructor(
 
     @Transactional(readOnly = true)
     override fun get(id: UUID): ApiKey {
-        return apiKeyRepository.findByProjectIdAndId(getProjectId(), id)
+            return apiKeyRepository.findByProjectIdAndId(getProjectId(), id)
     }
 
     @Transactional(readOnly = true)

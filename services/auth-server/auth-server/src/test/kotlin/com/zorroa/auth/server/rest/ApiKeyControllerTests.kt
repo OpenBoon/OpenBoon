@@ -72,7 +72,7 @@ class ApiKeyControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json.writeValueAsBytes(spec))
         )
-            .andExpect(MockMvcResultMatchers.status().isUnauthorized)
+            .andExpect(MockMvcResultMatchers.status().isConflict)
             .andExpect(jsonPath("$.error", CoreMatchers.equalTo("DataIntegrityViolation")))
             .andReturn()
     }
@@ -109,6 +109,17 @@ class ApiKeyControllerTests : MockMvcTest() {
                     CoreMatchers.containsString("AssetsRead")
                 )
             )
+            .andReturn()
+    }
+
+    @Test
+    fun testGetNotFound() {
+        mvc.perform(
+            MockMvcRequestBuilders.get("/auth/v1/apikey/${UUID.randomUUID()}")
+                .headers(superAdmin(mockKey.projectId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isNotFound)
             .andReturn()
     }
 
@@ -156,7 +167,7 @@ class ApiKeyControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testFindOne_rsp_401() {
+    fun testFindOne_rsp_404() {
         val filter = ApiKeyFilter(names = listOf("mrcatlady"))
 
         mvc.perform(
@@ -165,7 +176,7 @@ class ApiKeyControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json.writeValueAsBytes(filter))
         )
-            .andExpect(MockMvcResultMatchers.status().`is`(401))
+            .andExpect(MockMvcResultMatchers.status().`is`(404))
             .andReturn()
     }
 
