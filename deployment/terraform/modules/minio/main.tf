@@ -1,12 +1,12 @@
 resource "kubernetes_persistent_volume_claim" "minio" {
   metadata {
-    name = "minio-pv-claim"
-    namespace = "${var.namespace}"
+    name      = "minio-pv-claim"
+    namespace = var.namespace
   }
   spec {
     access_modes = ["ReadWriteOnce"]
     resources {
-      requests {
+      requests = {
         storage = "100Gi"
       }
     }
@@ -14,23 +14,23 @@ resource "kubernetes_persistent_volume_claim" "minio" {
 }
 
 resource "random_string" "access_key" {
-  length = 16
+  length  = 16
   special = false
 }
 
 resource "random_string" "secret_key" {
-  length = 16
+  length  = 16
   special = false
 }
 
 resource "kubernetes_deployment" "minio" {
   metadata {
-    name = "minio"
-    namespace = "${var.namespace}"
+    name      = "minio"
+    namespace = var.namespace
   }
   spec {
     selector {
-      match_labels {
+      match_labels = {
         app = "minio"
       }
     }
@@ -39,7 +39,7 @@ resource "kubernetes_deployment" "minio" {
     }
     template {
       metadata {
-        labels {
+        labels = {
           app = "minio"
         }
       }
@@ -54,17 +54,17 @@ resource "kubernetes_deployment" "minio" {
           name = "minio"
           volume_mount {
             mount_path = "/data"
-            name = "data"
+            name       = "data"
           }
           image = "minio/minio:RELEASE.2019-10-12T01-39-57Z"
-          args = ["server", "/data"]
+          args  = ["server", "/data"]
           env {
-            name = "MINIO_ACCESS_KEY"
-            value = "${random_string.access_key.result}"
+            name  = "MINIO_ACCESS_KEY"
+            value = random_string.access_key.result
           }
           env {
-            name = "MINIO_SECRET_KEY"
-            value = "${random_string.secret_key.result}"
+            name  = "MINIO_SECRET_KEY"
+            value = random_string.secret_key.result
           }
           port {
             container_port = 9000
@@ -75,8 +75,8 @@ resource "kubernetes_deployment" "minio" {
               port = 9000
             }
             initial_delay_seconds = 30
-            failure_threshold = 4
-            period_seconds = 20
+            failure_threshold     = 4
+            period_seconds        = 20
           }
           liveness_probe {
             http_get {
@@ -84,7 +84,7 @@ resource "kubernetes_deployment" "minio" {
               port = 9000
             }
             initial_delay_seconds = 120
-            period_seconds = 20
+            period_seconds        = 20
           }
         }
       }
@@ -94,22 +94,23 @@ resource "kubernetes_deployment" "minio" {
 
 resource "kubernetes_service" "minio" {
   metadata {
-    name = "minio"
-    namespace = "${var.namespace}"
-    labels {
+    name      = "minio"
+    namespace = var.namespace
+    labels = {
       app = "minio"
     }
   }
   spec {
-    cluster_ip = "${var.ip-address}"
+    cluster_ip = var.ip-address
     port {
-      name = "9000-to-9000-tcp"
+      name     = "9000-to-9000-tcp"
       protocol = "TCP"
-      port = 9000
+      port     = 9000
     }
-    selector {
+    selector = {
       app = "minio"
     }
     type = "ClusterIP"
   }
 }
+
