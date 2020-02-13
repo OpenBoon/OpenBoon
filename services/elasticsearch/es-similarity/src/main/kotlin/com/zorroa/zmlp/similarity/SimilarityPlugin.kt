@@ -53,12 +53,10 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
 
         private val field: String = params.getValue("field") as String
         private val charHashes: List<String>
-        private val weights: List<Double>
         private val length: Int
         private val minScore: Double = params.getOrDefault("minScore", 0.75) as Double
         private val resolution: Int = 16
         private val numHashes: Int
-        private var possibleScore: Double = 0.0
         private val singleScore: Double
 
         init {
@@ -86,30 +84,26 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
              * weights fields with valid values.
              */
             charHashes = mutableListOf()
-            weights = mutableListOf()
             for (i in hashesParam.indices) {
                 val hash = hashesParam[i]
                 if (hash == null || hash.isEmpty()) {
                     continue
                 }
                 charHashes.add(hash)
-                weights.add(weightsParam[i])
             }
 
             /**
              * If there are no valid hashes left, initialize to defaults
              */
             if (charHashes.isEmpty()) {
-                singleScore = possibleScore
+                singleScore = 0.0
                 numHashes = 0
                 length = 0
             } else {
                 val hash = charHashes[0]
                 length = hash.length
                 numHashes = charHashes.size
-
                 singleScore = (resolution * length).toDouble()
-                possibleScore = singleScore * numHashes
             }
         }
 
@@ -136,8 +130,9 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
                 }
 
                 fun charHashesComparison(fieldValue: String?): Double {
-                    var score = 0.0
-                    if (possibleScore == 0.0) {
+                    var totalScore = 0.0
+
+                    if (numHashes == 0) {
                         return noScore
                     }
 
@@ -151,15 +146,20 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
                         if (bytes.size != hash.length) {
                             continue
                         }
-                        score += weights[i] * hammingDistance(bytes, hash)
+                        val elementScore = normalize(hammingDistance(bytes, hash))
+                        if (elementScore < minScore) {
+                            return noScore
+                        } else {
+                            totalScore += elementScore
+                        }
                     }
-                    score = normalize(score)
-                    return score
+
+                    return totalScore
                 }
 
                 fun normalize(score: Double): Double {
                     var score = score
-                    score /= possibleScore
+                    score /= singleScore
                     return score
                 }
 

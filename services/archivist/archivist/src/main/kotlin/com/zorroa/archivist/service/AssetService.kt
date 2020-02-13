@@ -20,7 +20,6 @@ import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
-import com.zorroa.archivist.search.SearchSourceMapper
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.ElasticSearchErrorTranslator
@@ -174,6 +173,9 @@ class AssetServiceImpl : AssetService {
 
     @Autowired
     lateinit var jobLaunchService: JobLaunchService
+
+    @Autowired
+    lateinit var assetSearchService: AssetSearchService
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -356,7 +358,8 @@ class AssetServiceImpl : AssetService {
 
         return rest.client.deleteByQuery(
             DeleteByQueryRequest(rest.route.indexName)
-                .setQuery(SearchSourceMapper.convert(req).query()), RequestOptions.DEFAULT
+                .setQuery(assetSearchService.mapToSearchSourceBuilder(
+                    req).query()), RequestOptions.DEFAULT
         )
     }
 

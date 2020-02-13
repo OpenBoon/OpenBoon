@@ -8,7 +8,9 @@ import SectionSubTitle from '../SectionSubTitle'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Textarea, { VARIANTS as TEXTAREA_VARIANTS } from '../Textarea'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
+import CheckboxGroup from '../Checkbox/Group'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
 
@@ -17,7 +19,26 @@ const INITIAL_STATE = {
   url: '',
   key: '',
   errors: {},
+  fileTypes: {},
 }
+
+const FILE_TYPES = [
+  {
+    name: 'Image Files',
+    legend: 'GIF, PNG, JPG, JPEG, TIF, TIFF, PSD',
+    icon: '/icons/images.png',
+  },
+  {
+    name: 'Documents (PDF & MS Office)',
+    legend: 'PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX',
+    icon: '/icons/documents.png',
+  },
+  {
+    name: 'Video Files',
+    legend: 'MP4, M4V, MOV, MPG, MEPG, OGG',
+    icon: '/icons/videos.png',
+  },
+]
 
 const reducer = (state, action) => ({ ...state, ...action })
 
@@ -71,7 +92,20 @@ const DataSourcesAddForm = () => {
         />
       </div>
 
-      <SectionTitle>Select File Types to Import</SectionTitle>
+      <CheckboxGroup
+        legend="Select File Types to Import"
+        onClick={fileType =>
+          dispatch({ fileTypes: { ...state.fileTypes, ...fileType } })
+        }
+        options={FILE_TYPES.map(({ name, legend, icon }) => ({
+          key: name,
+          label: name,
+          icon: <img src={icon} alt={name} width="40px" />,
+          legend,
+          initialValue: false,
+        }))}
+        variant={CHECKBOX_VARIANTS.SECONDARY}
+      />
 
       <SectionTitle>Select Analysis</SectionTitle>
 

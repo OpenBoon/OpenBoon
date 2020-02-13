@@ -1,12 +1,21 @@
 package com.zorroa.archivist.service
 
-import com.zorroa.archivist.search.SearchSourceMapper
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.zmlp.util.Json
 import org.elasticsearch.action.search.ClearScrollRequest
 import org.elasticsearch.action.search.ClearScrollResponse
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.client.RequestOptions
+import org.elasticsearch.common.Strings
+import org.elasticsearch.common.settings.Settings
+import org.elasticsearch.common.xcontent.DeprecationHandler
+import org.elasticsearch.common.xcontent.NamedXContentRegistry
+import org.elasticsearch.common.xcontent.XContentFactory
+import org.elasticsearch.common.xcontent.XContentType
+import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.search.SearchModule
+import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,6 +27,7 @@ interface AssetSearchService {
     fun scroll(scroll: Map<String, String>): SearchResponse
     fun clearScroll(scroll: Map<String, String>): ClearScrollResponse
     fun count(search: Map<String, Any>): Long
+    fun mapToSearchSourceBuilder(search: Map<String, Any>): SearchSourceBuilder
 }
 
 @Service
@@ -34,7 +44,7 @@ class AssetSearchServiceImpl : AssetSearchService {
             req.scroll(params.getValue("scroll")[0])
         }
 
-        req.source(SearchSourceMapper.convert(search))
+        req.source(mapToSearchSourceBuilder(search))
         req.preference(getProjectId().toString())
 
         return rest.client.search(req, RequestOptions.DEFAULT)
@@ -64,7 +74,40 @@ class AssetSearchServiceImpl : AssetSearchService {
         return rest.client.clearScroll(req, RequestOptions.DEFAULT)
     }
 
+    override fun mapToSearchSourceBuilder(search: Map<String, Any>): SearchSourceBuilder {
+
+        // Filters out search options that are not supported.
+        val searchSource = search.filterKeys { it in allowedSearchProperties }
+        val parser = XContentFactory.xContent(XContentType.JSON).createParser(
+            xContentRegistry, DeprecationHandler.THROW_UNSUPPORTED_OPERATION,
+            Json.serializeToString(searchSource)
+        )
+
+        val ssb = SearchSourceBuilder.fromXContent(parser)
+        if (ssb.query() == null) {
+            ssb.query(QueryBuilders.matchAllQuery())
+        }
+
+        if (logger.isDebugEnabled) {
+            logger.debug("SEARCH : {}", Strings.toString(ssb, true, true))
+        }
+
+        return ssb
+    }
+
     companion object {
+
         val logger: Logger = LoggerFactory.getLogger(AssetSearchServiceImpl::class.java)
+
+        private val searchModule = SearchModule(Settings.EMPTY, false, emptyList())
+
+        private val xContentRegistry = NamedXContentRegistry(searchModule.namedXContents)
+
+        private val allowedSearchProperties = setOf(
+            "query", "from", "size", "timeout",
+            "post_filter", "minscore", "suggest",
+            "highlight", "collapse",
+            "slice", "aggs", "aggregations", "sort"
+        )
     }
 }
