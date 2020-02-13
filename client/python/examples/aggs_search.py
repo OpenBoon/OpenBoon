@@ -14,4 +14,3 @@ q = {
 app = app_from_env()
 search = app.assets.search(q)
 print(search.aggregation("file_types"))
-
