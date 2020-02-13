@@ -8,6 +8,7 @@ import SidebarLink from './Link'
 import SidebarOverlay from './Overlay'
 
 import QueueSvg from '../Icons/queue.svg'
+import DataSourcesSvg from '../Icons/datasources.svg'
 import KeySvg from '../Icons/key.svg'
 import UsersSvg from '../Icons/users.svg'
 import GearSvg from '../Icons/gear.svg'
@@ -58,7 +59,7 @@ const Sidebar = forwardRef(({ isSidebarOpen, setSidebarOpen }, ref) => {
           </SidebarLink>
 
           <SidebarLink href="/[projectId]/data-sources">
-            <KeySvg width={ICON_WIDTH} aria-hidden />
+            <DataSourcesSvg width={ICON_WIDTH} aria-hidden />
             Data Sources
           </SidebarLink>
 
