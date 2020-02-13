@@ -2,10 +2,9 @@ from django.conf import settings
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.models import Group, User
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse
 from google.auth.transport import requests
 from google.oauth2 import id_token
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.routers import APIRootView
 from rest_framework.views import APIView
@@ -57,7 +56,8 @@ class LoginView(APIView):
                                                last_name=idinfo.get('family_name'))
                 login(request, user)
             except ValueError:
-                return HttpResponse('Unauthorized: Bearer token invalid.', status=401)
+                return Response(data={'detail': 'Unauthorized: Bearer token invalid.'},
+                                status=status.HTTP_401_UNAUTHORIZED)
 
         # Attempt to authenticate using username and password.
         else:
@@ -66,7 +66,8 @@ class LoginView(APIView):
             if user:
                 login(request, user)
             else:
-                return HttpResponse('Unauthorized: Username & password invalid.', status=401)
+                return Response(data={'detail': 'Unauthorized: Username & password invalid.'},
+                                status=status.HTTP_401_UNAUTHORIZED)
         return Response(UserSerializer(user, context={'request': request}).data)
 
 

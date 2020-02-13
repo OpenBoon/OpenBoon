@@ -197,8 +197,8 @@ class TestProjectViewSet:
 
         response = api_client.post(reverse('project-list'), body)
         assert response.status_code == 400
-        assert response.json()['id'][0] == ('A project with this id already '
-                                            'exists in Wallet and ZMLP.')
+        assert response.json()['detail'][0] == ('A project with this id already '
+                                                'exists in Wallet and ZMLP.')
 
     def test_post_bad_id(self, project_zero, project_zero_user, api_client, monkeypatch):
 
