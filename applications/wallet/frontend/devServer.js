@@ -14,6 +14,7 @@ import apiKeys from './src/ApiKeys/__mocks__/apiKeys'
 import apiKey from './src/ApiKey/__mocks__/apiKey'
 import projectUsers from './src/ProjectUsers/__mocks__/projectUsers'
 import projectUser from './src/ProjectUser/__mocks__/projectUser'
+import projectUsersAdd from './src/ProjectUsersAdd/__mocks__/projectUsersAdd'
 
 const { MOCKED, SLOW } = process.env
 
@@ -58,6 +59,7 @@ app.prepare().then(() => {
     server.get(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
     server.delete(`${PID_API_BASE}/users/:userId/`, success())
     server.patch(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
+    server.post(`${PID_API_BASE}/users/`, mock(projectUsersAdd))
   }
 
   // Proxy API calls
