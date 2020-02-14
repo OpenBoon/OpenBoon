@@ -15,11 +15,15 @@ import com.zorroa.archivist.domain.Element
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageSpec
+import com.zorroa.archivist.domain.Task
+import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
+import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.ElasticSearchErrorTranslator
@@ -151,6 +155,14 @@ interface AssetService {
      * Return true of the given asset would need reprocessing with the given Pipeline.
      */
     fun assetNeedsReprocessing(asset: Asset, pipeline: List<ProcessorRef>): Boolean
+
+    /**
+     * Create new child task to the given task.
+     */
+    fun createAnalysisTask(parentTask: InternalTask,
+        createdAssetIds: Collection<String>,
+        existingAssetIds: Collection<String>
+    ): Task?
 }
 
 @Service
@@ -390,6 +402,48 @@ class AssetServiceImpl : AssetService {
         }
     }
 
+    override fun createAnalysisTask(
+        parentTask: InternalTask,
+        createdAssetIds: Collection<String>,
+        existingAssetIds: Collection<String>
+    ): Task? {
+
+        val parentScript = jobService.getZpsScript(parentTask.taskId)
+        val procCount = parentScript?.execute?.size ?: 0
+
+        // Check what assets need reprocessing at all.
+        val assets = getAll(existingAssetIds).filter {
+            assetNeedsReprocessing(it, parentScript.execute ?: listOf())
+        }
+
+        val finalAssetList = assets.plus(getAll(createdAssetIds))
+
+        return if (finalAssetList.isEmpty()) {
+            null
+        } else {
+
+            val name = "Expand with ${finalAssetList.size} assets, $procCount processors."
+            val parentScript = jobService.getZpsScript(parentTask.taskId)
+            val newScript = ZpsScript(name, null, finalAssetList, parentScript.execute)
+
+            newScript.globalArgs = parentScript.globalArgs
+            newScript.type = parentScript.type
+            newScript.settings = parentScript.settings
+
+            val newTask = jobService.createTask(parentTask, TaskSpec(name, newScript))
+            logger.event(
+                LogObject.JOB, LogAction.EXPAND,
+                mapOf(
+                    "assetCount" to finalAssetList.size,
+                    "parentTaskId" to parentTask.taskId,
+                    "taskId" to newTask.id,
+                    "jobId" to newTask.jobId
+                )
+            )
+            return newTask
+        }
+    }
+
     override fun deriveClip(newAsset: Asset, spec: AssetSpec): Clip {
 
         val clip = spec.clip ?: throw java.lang.IllegalArgumentException("Cannot derive a clip with a null clip")
@@ -513,29 +567,32 @@ class AssetServiceImpl : AssetService {
             }
         }
 
-        if (spec.clip != null) {
-            deriveClip(asset, spec)
+        val time = java.time.Clock.systemUTC().instant().toString()
+        if (asset.isAnalyzed()) {
+            asset.setAttr("system.timeModified", time)
+            asset.setAttr("system.state", AssetState.Analyzed.toString())
         }
+        else {
+            if (spec.clip != null) {
+                deriveClip(asset, spec)
+            }
 
-        asset.setAttr("source.path", spec.uri)
-        asset.setAttr("source.filename", FileUtils.filename(spec.uri))
-        asset.setAttr("source.extension", FileUtils.extension(spec.uri))
+            asset.setAttr("source.path", spec.uri)
+            asset.setAttr("source.filename", FileUtils.filename(spec.uri))
+            asset.setAttr("source.extension", FileUtils.extension(spec.uri))
 
-        val mediaType = FileUtils.getMediaType(spec.uri)
-        asset.setAttr("source.mimetype", mediaType)
+            val mediaType = FileUtils.getMediaType(spec.uri)
+            asset.setAttr("source.mimetype", mediaType)
 
-        asset.setAttr("system.projectId", getProjectId().toString())
-        task?.let {
-            asset.setAttr("system.dataSourceId", it.dataSourceId)
-            asset.setAttr("system.jobId", it.jobId)
-            asset.setAttr("system.taskId", it.taskId)
+            asset.setAttr("system.projectId", getProjectId().toString())
+            task?.let {
+                asset.setAttr("system.dataSourceId", it.dataSourceId)
+                asset.setAttr("system.jobId", it.jobId)
+                asset.setAttr("system.taskId", it.taskId)
+            }
+            asset.setAttr("system.timeCreated", time)
+            asset.setAttr("system.state", AssetState.Pending.toString())
         }
-        asset.setAttr(
-            "system.timeCreated",
-            java.time.Clock.systemUTC().instant().toString()
-        )
-        asset.setAttr("system.state", AssetState.Pending.toString())
-
         if (!asset.attrExists("source.path") || asset.getAttr<String?>("source.path") == null) {
             throw java.lang.IllegalStateException("The source.path attribute cannot be null")
         }
