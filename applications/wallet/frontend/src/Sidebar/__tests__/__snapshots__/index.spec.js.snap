@@ -128,7 +128,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
         >
           <svg
             aria-hidden={true}
-            data-file-name="key.svg"
+            data-file-name="datasources.svg"
             width={20}
           />
           Data Sources
@@ -326,7 +326,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
         >
           <svg
             aria-hidden={true}
-            data-file-name="key.svg"
+            data-file-name="datasources.svg"
             width={20}
           />
           Data Sources

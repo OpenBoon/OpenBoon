@@ -2,8 +2,10 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from zmlp import ZmlpClient, app_from_env
-from zmlp.search import AssetSearchScroller, AssetSearchResult
+import pytest
+
+from zmlp import ZmlpClient, app_from_env, Asset
+from zmlp.search import AssetSearchScroller, AssetSearchResult, SimilarityQuery
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -67,11 +69,86 @@ class AssetSearchResultTests(unittest.TestCase):
         next_page = results.next_page()
         assert next_page.raw_response == {"hits": {"hits": []}}
 
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(ZmlpClient, 'post')
+    def test_aggegation(self, post_patch, del_patch):
+        post_patch.side_effect = [self.mock_search_result]
+        del_patch.return_value = {}
+
+        results = AssetSearchResult(self.app, {})
+        agg = results.aggregation("file_types")
+        print(agg)
+        assert 1 == agg["buckets"][0]["doc_count"]
+        assert "jpg" == agg["buckets"][0]["key"]
+
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(ZmlpClient, 'post')
+    def test_aggegation_error_not_exist(self, post_patch, del_patch):
+        post_patch.side_effect = [self.mock_search_result]
+        del_patch.return_value = {}
+
+        results = AssetSearchResult(self.app, {})
+        assert results.aggregation("bob") is None
+
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(ZmlpClient, 'post')
+    def test_aggegation_error_multiple(self, post_patch, del_patch):
+        post_patch.side_effect = [self.mock_search_result]
+        del_patch.return_value = {}
+
+        results = AssetSearchResult(self.app, {})
+        with pytest.raises(ValueError):
+            results.aggregation("dogs")
+
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(ZmlpClient, 'post')
+    def test_aggegation_fully_qualified(self, post_patch, del_patch):
+        post_patch.side_effect = [self.mock_search_result]
+        del_patch.return_value = {}
+
+        results = AssetSearchResult(self.app, {})
+        assert results.aggregation("sterm#dogs") is not None
+
+
+class TestImageSimilarityQuery(unittest.TestCase):
+    def test_for_json(self):
+        s = SimilarityQuery("foo.vector", 0.50, "ABC123")
+        qjson = s.for_json()
+
+        params = qjson["function_score"]["functions"][0]["script_score"]["script"]["params"]
+        assert 0.50 == params["minScore"]
+        assert "foo.vector" == params["field"]
+        assert "ABC123" in params["hashes"]
+
+    def test_add_asset(self):
+        asset = Asset({"id": "123"})
+        asset.set_attr("foo.vector", "OVER9000")
+
+        s = SimilarityQuery("foo.vector", 0.50)
+        s.add_asset(asset)
+        assert ['OVER9000'] == s.hashes
+
+    def test_add_hash(self):
+        s = SimilarityQuery("foo.vector", 0.50)
+        s.add_hash("OVER9000")
+        assert ['OVER9000'] == s.hashes
+        assert "foo.vector" == s.field
+        assert 0.50 == s.min_score
+
 
 mock_search_result = {
     "took": 4,
     "timed_out": False,
     "_scroll_id": "bob",
+    "aggregations": {
+        "sterm#file_types": {
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0,
+            "buckets": [{"key": "jpg", "doc_count": 1}]
+        },
+        "sterm#dogs": {},
+        "metrics#dogs": {}
+    },
     "hits": {
         "total": {"value": 100},
         "max_score": 0.2876821,
@@ -84,6 +161,13 @@ mock_search_result = {
                 "_source": {
                     "source": {
                         "path": "https://i.imgur.com/SSN26nN.jpg"
+                    },
+                    "analysis": {
+                        "zmlp": {
+                            "similarity": {
+                                "vector": "OVER9000"
+                            }
+                        }
                     }
                 }
             },

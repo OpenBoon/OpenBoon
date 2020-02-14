@@ -11,11 +11,10 @@ import SectionTitle from '../SectionTitle'
 
 import { onCopy } from './helpers'
 
-const MAX_WIDTH = 470
-
 const ApiKeysAddFormSuccess = ({
   projectId,
-  apikey: { permissions, secretKey },
+  apikey: { permissions },
+  apikey,
   onReset,
 }) => {
   const textareaRef = useRef()
@@ -49,10 +48,10 @@ const ApiKeysAddFormSuccess = ({
         }}>
         <textarea
           ref={textareaRef}
-          defaultValue={secretKey}
+          defaultValue={JSON.stringify(apikey)}
           rows="5"
           css={{
-            width: MAX_WIDTH,
+            width: constants.form.maxWidth,
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
             color: colors.structure.white,
@@ -84,9 +83,9 @@ const ApiKeysAddFormSuccess = ({
           <span css={{ padding: spacing.small }}>|</span>
           <Button
             variant={VARIANTS.LINK}
-            download="api-key.txt"
+            download="api-key.json"
             href={`data:application/octet-stream;charset=utf-8;base64,${window.btoa(
-              secretKey,
+              JSON.stringify(apikey),
             )}`}>
             Download
           </Button>

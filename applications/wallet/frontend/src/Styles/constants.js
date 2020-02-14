@@ -48,6 +48,12 @@ const constants = {
   tableHeader: {
     height: 45,
   },
+  form: {
+    maxWidth: 470,
+  },
+  paragraph: {
+    maxWidth: 600,
+  },
 }
 
 export default constants

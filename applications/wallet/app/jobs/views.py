@@ -7,24 +7,18 @@ from wallet.paginators import ZMLPFromSizePagination
 
 
 class JobsViewSet(BaseProjectViewSet):
+    """CRUD operations for ZMLP or ZVI processing jobs."""
     pagination_class = ZMLPFromSizePagination
+    zmlp_root_api_path = '/api/v1/jobs/'
 
-    def list(self, request, project_pk, client):
-        payload = {'page': {'from': request.GET.get('from', 0),
-                            'size': request.GET.get('size',
-                                                    self.pagination_class.default_limit)}}
-        response = client.post('/api/v1/jobs/_search', payload)
-        content = self._get_content(response)
-        current_url = request.build_absolute_uri(request.path)
-        for item in content['list']:
-            item['url'] = f'{current_url}{item["id"]}/'
-            item['actions'] = self._get_action_links(request, item['url'], detail=True)
-        paginator = self.pagination_class()
-        paginator.prep_pagination_for_api_response(content, request)
-        return paginator.get_paginated_response(content['list'])
+    def list(self, request, project_pk):
+        def item_modifier(request, job):
+            job['actions'] = self._get_action_links(request, job['url'], detail=True)
 
-    def retrieve(self, request, project_pk, client, pk):
-        response = client.get(f'/api/v1/jobs/{pk}')
+        return self._zmlp_list_from_search(request, item_modifier=item_modifier)
+
+    def retrieve(self, request, project_pk, pk):
+        response = request.client.get(f'{self.zmlp_root_api_path}{pk}')
         content = self._get_content(response)
         content['actions'] = self._get_action_links(request)
         return Response(content)
@@ -58,7 +52,7 @@ class JobsViewSet(BaseProjectViewSet):
         return action_map
 
     @action(detail=True, methods=['get'])
-    def errors(self, request, project_pk, client, pk):
+    def errors(self, request, project_pk, pk):
         """
         Retrieves all the errors that the tasks of the given job may have triggered.
 
@@ -67,14 +61,14 @@ class JobsViewSet(BaseProjectViewSet):
                    'page': {'from': request.GET.get('from', 0),
                             'size': request.GET.get('size',
                                                     self.pagination_class.default_limit)}}
-        response = client.post(f'/api/v1/taskerrors/_search', payload)
+        response = request.client.post(f'/api/v1/taskerrors/_search', payload)
         content = self._get_content(response)
         paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(content, request)
         return paginator.get_paginated_response(content['list'])
 
     @action(detail=True, methods=['put'])
-    def pause(self, request, project_pk, client, pk):
+    def pause(self, request, project_pk, pk):
         """
         Pauses the running job.
 
@@ -82,12 +76,12 @@ class JobsViewSet(BaseProjectViewSet):
 
         """
         new_values = {'paused': True}
-        request_body = self._get_updated_info(client, pk, new_values)
-        response = client.put(f'/api/v1/jobs/{pk}', request_body)
+        request_body = self._get_updated_info(request.client, pk, new_values)
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}', request_body)
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'])
-    def resume(self, request, project_pk, client, pk):
+    def resume(self, request, project_pk, pk):
         """
         Resumes the paused job.
 
@@ -95,34 +89,34 @@ class JobsViewSet(BaseProjectViewSet):
 
         """
         new_values = {'paused': False}
-        request_body = self._get_updated_info(client, pk, new_values)
-        response = client.put(f'/api/v1/jobs/{pk}', request_body)
+        request_body = self._get_updated_info(request.client, pk, new_values)
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}', request_body)
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'])
-    def cancel(self, request, project_pk, client, pk):
+    def cancel(self, request, project_pk, pk):
         """
         Cancels the given job.
 
         The endpoint expects a `PUT` request with an empty body.
 
         """
-        response = client.put(f'/api/v1/jobs/{pk}/_cancel', {})
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}/_cancel', {})
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'])
-    def restart(self, request, project_pk, client, pk):
+    def restart(self, request, project_pk, pk):
         """
         Restarts the cancelled job.
 
         The endpoint expects a `PUT` request with an empty body.
 
         """
-        response = client.put(f'/api/v1/jobs/{pk}/_restart', {})
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}/_restart', {})
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'])
-    def priority(self, request, project_pk, client, pk):
+    def priority(self, request, project_pk, pk):
         """
         Sets the priority order of the given job in order to control which jobs
         run first.
@@ -144,12 +138,12 @@ class JobsViewSet(BaseProjectViewSet):
             msg = 'Invalid `priority` value provided. Expected an integer.'
             return Response({'msg': msg}, status.HTTP_400_BAD_REQUEST)
         new_values = {'priority': priority}
-        request_body = self._get_updated_info(client, pk, new_values)
-        response = client.put(f'/api/v1/jobs/{pk}', request_body)
+        request_body = self._get_updated_info(request.client, pk, new_values)
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}', request_body)
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'], name='Max Running Tasks')
-    def max_running_tasks(self, request, project_pk, client, pk):
+    def max_running_tasks(self, request, project_pk, pk):
         """
         Sets the maximum number of running tasks for the given job.
 
@@ -170,19 +164,19 @@ class JobsViewSet(BaseProjectViewSet):
             msg = 'Invalid `max_running_tasks` value provided. Expected an integer.'
             return Response({'msg': msg}, status.HTTP_400_BAD_REQUEST)
         new_values = {'maxRunningTasks': max_running_tasks}
-        request_body = self._get_updated_info(client, pk, new_values)
-        response = client.put(f'/api/v1/jobs/{pk}', request_body)
+        request_body = self._get_updated_info(request.client, pk, new_values)
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}', request_body)
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'], name='Retry All Failures')
-    def retry_all_failures(self, request, project_pk, client, pk):
+    def retry_all_failures(self, request, project_pk, pk):
         """
         Finds every failed task in the given job and retries them.
 
         The endpoint expects a `PUT` request with an empty body.
 
         """
-        response = client.put(f'/api/v1/jobs/{pk}/_retryAllFailures', {})
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}/_retryAllFailures', {})
         return Response(self._get_content(response))
 
     def _get_updated_info(self, client, pk, new_values):
@@ -198,7 +192,7 @@ class JobsViewSet(BaseProjectViewSet):
         Returns:
             (dict): Full job spec with updated values
         """
-        response = client.get(f'/api/v1/jobs/{pk}')
+        response = client.get(f'{self.zmlp_root_api_path}{pk}')
         body = self._get_content(response)
         job_spec = {
             'name': body['name'],
@@ -208,10 +202,3 @@ class JobsViewSet(BaseProjectViewSet):
         }
         job_spec.update(new_values)
         return job_spec
-
-    def _get_content(self, response):
-        """Returns the content of Response from the ZVI or ZMLP and returns it as a dict."""
-
-        if isinstance(response, dict):
-            return response
-        return response.json()

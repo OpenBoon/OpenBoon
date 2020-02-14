@@ -1,39 +1,18 @@
 import json
-import pytest
 from base64 import b64encode
+
+import pytest
 from django.http import JsonResponse, HttpResponseForbidden, Http404
 from django.test import RequestFactory, override_settings
 from django.urls import reverse
-
 from zmlp import ZmlpClient
 from zmlp.client import ZmlpDuplicateException
 
-from projects.clients import ZviClient
-from projects.views import BaseProjectViewSet
-from projects.serializers import ProjectSerializer
 from projects.models import Project, Membership
-
+from projects.serializers import ProjectSerializer
+from projects.views import BaseProjectViewSet
 
 pytestmark = pytest.mark.django_db
-
-
-def test_get_zmlp_client(zmlp_project_user, project, settings):
-    settings.PLATFORM = 'zmlp'
-    request = RequestFactory().get('/bunk/')
-    request.user = zmlp_project_user
-    view = BaseProjectViewSet()
-    client = view._get_archivist_client(request, project)
-    assert type(client) == ZmlpClient
-    assert client.project_id == project
-
-
-def test_get_zvi_client(zvi_project_user, project, settings):
-    settings.PLATFORM = 'zvi'
-    request = RequestFactory().get('/bunk/')
-    request.user = zvi_project_user
-    view = BaseProjectViewSet()
-    client = view._get_archivist_client(request, project)
-    assert type(client) == ZviClient
 
 
 def test_project_view_user_does_not_belong_to_project(user, project):
@@ -56,7 +35,7 @@ def test_project_view_user_does_not_belong_to_project(user, project):
 def test_zmlp_only_flag(user, project):
 
     class FakeViewSet(BaseProjectViewSet):
-        ZMLP_ONLY = True
+        zmlp_only = True
 
         def get(self, request, project):
             return JsonResponse({'success': True})
@@ -87,7 +66,8 @@ def test_projects_view_with_projects(project, zmlp_project_user, api_client):
 def test_project_serializer_detail(project):
     serializer = ProjectSerializer(project, context={'request': None})
     data = serializer.data
-    expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'users', 'permissions']
+    expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'users', 'permissions',
+                       'datasources']
     assert expected_fields == list(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
@@ -197,8 +177,8 @@ class TestProjectViewSet:
 
         response = api_client.post(reverse('project-list'), body)
         assert response.status_code == 400
-        assert response.json()['id'][0] == ('A project with this id already '
-                                            'exists in Wallet and ZMLP.')
+        assert response.json()['detail'][0] == ('A project with this id already '
+                                                'exists in Wallet and ZMLP.')
 
     def test_post_bad_id(self, project_zero, project_zero_user, api_client, monkeypatch):
 
