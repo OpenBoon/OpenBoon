@@ -75,3 +75,17 @@ def test_datasource_viewset_retrieve(api_client, monkeypatch, zmlp_project_user,
                                               'pk': '48b45e81-4c31-11ea-a1f6-eeae6cabf22b'}))
     assert response.status_code == 200
     assert response.json()['name'] == 'Dev Data Jpgs'
+
+
+def test_datasource_viewset_delete(api_client, monkeypatch, zmlp_project_user, project):
+
+    def mock_delete_response(*args, **kwargs):
+        return {'detail': 'success'}  # noqa
+
+    monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
+    api_client.force_login(zmlp_project_user)
+    api_client.force_authenticate(zmlp_project_user)
+    response = api_client.delete(reverse('datasource-detail',
+                                         kwargs={'project_pk': project.id,
+                                                 'pk': '48b45e81-4c31-11ea-a1f6-eeae6cabf22b'}))
+    assert response.status_code == 200
