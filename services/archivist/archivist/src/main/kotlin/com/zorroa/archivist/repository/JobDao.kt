@@ -32,6 +32,7 @@ interface JobDao {
     fun setState(job: JobId, newState: JobState, oldState: JobState?): Boolean
     fun getAll(filt: JobFilter?): KPagedList<Job>
     fun incrementAssetCounters(job: JobId, counts: AssetCounters): Boolean
+    fun setErrorCount(job: JobId, value: Int): Boolean
     fun setTimeStarted(job: JobId): Boolean
     fun getExpired(duration: Long, unit: TimeUnit, limit: Int): List<Job>
     fun delete(job: JobId): Boolean
@@ -207,6 +208,11 @@ class JobDaoImpl : AbstractDao(), JobDao {
             counts.replaced,
             job.jobId
         ) == 1
+    }
+
+    override fun setErrorCount(job: JobId, value: Int): Boolean {
+        return jdbc.update("UPDATE job_stat SET int_asset_error_count=? WHERE pk_job=?",
+            value, job.jobId) == 1
     }
 
     override fun setCredentials(job: JobId, creds: List<Credentials>) {

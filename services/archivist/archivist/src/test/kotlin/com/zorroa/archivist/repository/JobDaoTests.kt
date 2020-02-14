@@ -138,6 +138,18 @@ class JobDaoTests : AbstractTest() {
     }
 
     @Test
+    fun testSetErrorCount() {
+        val spec = JobSpec("test_job",
+            emptyZpsScript("test_script"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar"))
+        val job1 = jobDao.create(spec, JobType.Import)
+        jobDao.setErrorCount(job1, 100)
+        val map = jdbc.queryForMap("SELECT * FROM job_stat WHERE pk_job=?", job1.id)
+        assertEquals(100, map["int_asset_error_count"])
+    }
+
+    @Test
     fun testIncrementAssetStats() {
         val spec = JobSpec("test_job",
                 emptyZpsScript("test_script"),
