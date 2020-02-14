@@ -15,7 +15,6 @@ import com.zorroa.archivist.domain.Element
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageSpec
@@ -159,7 +158,8 @@ interface AssetService {
     /**
      * Create new child task to the given task.
      */
-    fun createAnalysisTask(parentTask: InternalTask,
+    fun createAnalysisTask(
+        parentTask: InternalTask,
         createdAssetIds: Collection<String>,
         existingAssetIds: Collection<String>
     ): Task?
@@ -571,8 +571,7 @@ class AssetServiceImpl : AssetService {
         if (asset.isAnalyzed()) {
             asset.setAttr("system.timeModified", time)
             asset.setAttr("system.state", AssetState.Analyzed.toString())
-        }
-        else {
+        } else {
             if (spec.clip != null) {
                 deriveClip(asset, spec)
             }
