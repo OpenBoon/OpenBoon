@@ -121,3 +121,13 @@ export const MODULES = [
     ],
   },
 ]
+
+export const modulesByProvider = MODULES.reduce((accumulator, current) => {
+  const modules = current.categories.flatMap(category =>
+    category.modules.flatMap(module => module.key),
+  )
+
+  accumulator[current.provider] = modules
+
+  return accumulator
+}, {})

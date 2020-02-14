@@ -885,7 +885,7 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
         >
           <svg
             className="emotion-59"
-            data-file-name="checkmark.svg"
+            data-file-name="cross.svg"
             width={28}
           />
           Zorroa
@@ -1282,7 +1282,7 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
         >
           <svg
             className="emotion-59"
-            data-file-name="checkmark.svg"
+            data-file-name="cross.svg"
             width={28}
           />
           Google Cloud
@@ -2042,7 +2042,7 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   color: #ffffff;
 }
 
-.emotion-59 {
+.emotion-110 {
   color: #73b61c;
   margin-right: 16px;
 }
@@ -2291,6 +2291,11 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
+}
+
+.emotion-59 {
+  color: #73b61c;
+  margin-right: 16px;
 }
 
 <form
@@ -2647,7 +2652,7 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
         >
           <svg
             className="emotion-59"
-            data-file-name="checkmark.svg"
+            data-file-name="cross.svg"
             width={28}
           />
           Zorroa
@@ -3043,8 +3048,8 @@ exports[`<DataSourcesAddForm /> should render properly after permissions are loa
           className="emotion-52"
         >
           <svg
-            className="emotion-59"
-            data-file-name="checkmark.svg"
+            className="emotion-110"
+            data-file-name="cross.svg"
             width={28}
           />
           Google Cloud

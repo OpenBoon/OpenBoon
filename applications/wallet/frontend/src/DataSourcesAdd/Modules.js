@@ -3,23 +3,51 @@ import PropTypes from 'prop-types'
 import { colors, spacing, constants } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
+import CheckboxPartialSvg from '../Icons/checkboxpartial.svg'
+import CrossSvg from '../Icons/cross.svg'
 
 import Accordion, { CHECKMARK_WIDTH } from '../Accordion'
+import CheckboxIcon, { VARIANTS } from '../Checkbox/Icon'
 import CheckboxTable from '../Checkbox/Table'
 
 const DataSourcesAddModules = ({
   module: { provider, description, categories },
+  selectedModules,
+  providerModules,
   onClick,
 }) => {
+  const providerSelectionCount = providerModules.filter(module =>
+    selectedModules.includes(module),
+  ).length
+
+  const isAllSelected = providerSelectionCount === providerModules.length
+  const isPartialSelected = !isAllSelected && providerSelectionCount > 0
+
   return (
     <Accordion
       title={
         <>
-          <CheckmarkSvg
-            width={CHECKMARK_WIDTH}
-            css={{ color: colors.key.one, marginRight: spacing.normal }}
-          />
-          {provider}
+          <label
+            css={{
+              display: 'flex',
+              alignItems: 'center',
+              color: colors.white,
+              cursor: 'pointer',
+              marginRight: spacing.normal,
+            }}>
+            <div css={{ marginRight: spacing.normal }}>
+              <CheckboxIcon
+                variant={VARIANTS.SECONDARY}
+                value=""
+                isChecked={isAllSelected}
+                isPartial={isPartialSelected}
+                onClick={() => {
+                  console.log('clicked')
+                }}
+              />
+            </div>
+            {provider}
+          </label>
         </>
       }>
       <>
@@ -36,6 +64,7 @@ const DataSourcesAddModules = ({
         {categories.map(category => (
           <CheckboxTable
             key={category.name}
+            variant={VARIANTS.PRIMARY}
             category={category}
             onClick={onClick}
           />
@@ -62,6 +91,8 @@ DataSourcesAddModules.propTypes = {
       }).isRequired,
     ).isRequired,
   }).isRequired,
+  selectedModules: PropTypes.arrayOf(PropTypes.string).isRequired,
+  providerModules: PropTypes.arrayOf(PropTypes.string).isRequired,
   onClick: PropTypes.func.isRequired,
 }
 

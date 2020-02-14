@@ -2,6 +2,7 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import { VARIANTS as CHECKBOX_VARIANTS } from '..'
 import CheckboxGroup from '../Group'
+import { VARIANTS as CHECKBOX_ICON_VARIANTS } from '../Icon'
 
 describe('<CheckboxGroup />', () => {
   it('should render properly', () => {
@@ -21,6 +22,7 @@ describe('<CheckboxGroup />', () => {
           },
         ]}
         variant={CHECKBOX_VARIANTS.PRIMARY}
+        iconVariant={CHECKBOX_ICON_VARIANTS.PRIMARY}
       />,
     )
 

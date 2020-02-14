@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import { spacing, colors, constants, typography } from '../Styles'
 
 import CheckboxTableRow from './TableRow'
+import { VARIANTS } from './Icon'
 
-const CheckboxTable = ({ category: { name, modules }, onClick }) => {
+const CheckboxTable = ({ variant, category: { name, modules }, onClick }) => {
   return (
     <fieldset
       css={{
@@ -86,6 +87,7 @@ const CheckboxTable = ({ category: { name, modules }, onClick }) => {
         <tbody>
           {modules.map(option => (
             <CheckboxTableRow
+              variant={variant}
               key={option.key}
               value={option.key}
               label={option.label}
@@ -101,6 +103,7 @@ const CheckboxTable = ({ category: { name, modules }, onClick }) => {
 }
 
 CheckboxTable.propTypes = {
+  variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   category: PropTypes.shape({
     name: PropTypes.string.isRequired,
     modules: PropTypes.arrayOf(
