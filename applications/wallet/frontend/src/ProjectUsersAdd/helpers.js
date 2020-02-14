@@ -1,17 +1,5 @@
 import { fetcher } from '../Fetch/helpers'
 
-const userMapper = ({ users }) => {
-  const mappedUsers = users.reduce((acc, user) => {
-    const { email, permissions } = user
-
-    acc.push({ email, permissions })
-
-    return acc
-  }, [])
-
-  return mappedUsers
-}
-
 export const onSubmit = async ({
   projectId,
   dispatch,
@@ -32,8 +20,14 @@ export const onSubmit = async ({
     })
 
     dispatch({
-      succeeded: userMapper({ users: succeeded }),
-      failed: userMapper({ users: failed }),
+      succeeded: succeeded.map(user => ({
+        email: user.email,
+        permissions: user.permissions,
+      })),
+      failed: failed.map(user => ({
+        email: user.email,
+        permissions: user.permissions,
+      })),
     })
   } catch (response) {
     const errors = await response.json()

@@ -67,63 +67,13 @@ describe('<ProjectUsersAdd /> helpers', () => {
       })
 
       expect(mockFn).toHaveBeenCalledWith({
+        succeeded: [
+          {
+            email: 'jane@zorroa.com',
+            permissions: ['SuperAdmin', 'AssetsRead'],
+          },
+        ],
         failed: [
-          {
-            email: 'joe@zorroa.com',
-            permissions: ['SuperAdmin', 'AssetsRead'],
-          },
-        ],
-        succeeded: [
-          {
-            email: 'jane@zorroa.com',
-            permissions: ['SuperAdmin', 'AssetsRead'],
-          },
-        ],
-      })
-    })
-
-    it('should call the API with failed', async () => {
-      const mockFn = jest.fn()
-
-      fetch.mockResponseOnce(
-        JSON.stringify({
-          results: {
-            succeeded: [
-              {
-                email: 'jane@zorroa.com',
-                permissions: ['SuperAdmin', 'AssetsRead'],
-              },
-              {
-                email: 'joe@zorroa.com',
-                permissions: ['SuperAdmin', 'AssetsRead'],
-              },
-            ],
-            failed: [],
-          },
-        }),
-      )
-
-      await onSubmit({
-        dispatch: mockFn,
-        projectId: PROJECT_ID,
-        state: {
-          emails: 'jane@zorroa.com, joe@zorroa.com',
-          permissions: {
-            SuperAdmin: true,
-            ProjectAdmin: false,
-            AssetsRead: true,
-            AssetsImport: false,
-          },
-        },
-      })
-
-      expect(mockFn).toHaveBeenCalledWith({
-        failed: [],
-        succeeded: [
-          {
-            email: 'jane@zorroa.com',
-            permissions: ['SuperAdmin', 'AssetsRead'],
-          },
           {
             email: 'joe@zorroa.com',
             permissions: ['SuperAdmin', 'AssetsRead'],

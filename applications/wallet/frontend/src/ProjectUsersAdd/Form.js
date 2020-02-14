@@ -13,7 +13,7 @@ import Loading from '../Loading'
 
 import { onSubmit } from './helpers'
 
-import ProjectUsersAddFormSuccess from './FormSuccess'
+import ProjectUsersAddFormResponse from './FormResponse'
 
 const INITIAL_STATE = {
   emails: '',
@@ -38,12 +38,15 @@ const ProjectUsersAddForm = () => {
 
   if (!Array.isArray(permissions)) return <Loading />
 
-  if (state.succeeded.length > 0) {
+  if (state.succeeded.length > 0 || state.failed.length > 0) {
     return (
-      <ProjectUsersAddFormSuccess
+      <ProjectUsersAddFormResponse
         projectId={projectId}
         succeeded={state.succeeded}
         failed={state.failed}
+        permissions={Object.keys(state.permissions).filter(
+          name => state.permissions[name],
+        )}
         onReset={() => dispatch(INITIAL_STATE)}
       />
     )
