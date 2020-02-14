@@ -62,7 +62,6 @@ class ApiKeyControllerTests : MockMvcTest() {
             .andExpect(jsonPath("$.projectId", CoreMatchers.equalTo(pid.toString())))
             .andExpect(jsonPath("$.name", CoreMatchers.equalTo("test")))
 
-
         mvc.perform(
             MockMvcRequestBuilders.post("/auth/v1/apikey")
                 .headers(superAdmin(pid))
@@ -105,7 +104,6 @@ class ApiKeyControllerTests : MockMvcTest() {
             )
             .andReturn()
     }
-
 
     @Test
     fun testCreate_rsp_403() {
