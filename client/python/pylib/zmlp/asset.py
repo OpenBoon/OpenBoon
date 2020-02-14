@@ -334,6 +334,7 @@ class Asset(DocumentMixin):
         """
         return {
             "id": self.id,
+            "uri": self.get_attr("source.path"),
             "document": self.document
         }
 

@@ -4,6 +4,8 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.zmlp.util.Json
+import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,6 +37,17 @@ class AssetSearchServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testSearchSourceBuilderToMap() {
+        val ssb = SearchSourceBuilder()
+        ssb.query(QueryBuilders.termsQuery("bob", listOf("abc")))
+
+        val map = assetSearchService.searchSourceBuilderToMap(ssb)
+        val json = Json.Mapper.writeValueAsString(map)
+        val expected = """{"query":{"terms":{"bob":["abc"],"boost":1.0}}}"""
+        assertEquals(expected, json)
+    }
+
+    @Test
     fun testSearch() {
         val search = mapOf(
             "query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg"))
@@ -45,6 +58,15 @@ class AssetSearchServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testSearchWithSearchSourceBuilder() {
+        val ssb = SearchSourceBuilder()
+        ssb.query(QueryBuilders.matchAllQuery())
+
+        val rsp = assetSearchService.search(ssb, mapOf())
+        assertEquals(2, rsp.hits.hits.size)
+    }
+
+    @Test
     fun testCount() {
         val search = mapOf(
             "query" to mapOf("term" to mapOf("source.filename" to "LRoLTlK.jpg"))
@@ -52,6 +74,15 @@ class AssetSearchServiceTests : AbstractTest() {
 
         val count = assetSearchService.count(search)
         assertEquals(1, count)
+    }
+
+    @Test
+    fun testCountWithSearchSourceBuilder() {
+        val ssb = SearchSourceBuilder()
+        ssb.query(QueryBuilders.matchAllQuery())
+
+        val count = assetSearchService.count(ssb)
+        assertEquals(2, count)
     }
 
     @Test

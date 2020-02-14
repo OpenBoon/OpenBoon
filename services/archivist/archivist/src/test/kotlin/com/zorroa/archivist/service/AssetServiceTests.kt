@@ -9,10 +9,13 @@ import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.Element
 import com.zorroa.archivist.domain.InternalTask
+import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.ProcessorMetric
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.UpdateAssetRequest
+import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.archivist.security.getProjectId
 import org.elasticsearch.client.ResponseException
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,6 +36,9 @@ class AssetServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var jobService: JobService
+
+    @Autowired
+    lateinit var dispatcherService: DispatcherService
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -495,5 +501,31 @@ class AssetServiceTests : AbstractTest() {
         metrics = AssetMetrics(listOf(ProcessorMetric("foo.Bar", "bing", 1, null)))
         asset.setAttr("metrics", metrics)
         assertTrue(assetService.assetNeedsReprocessing(asset, listOf(ref)))
+    }
+
+    @Test
+    fun testCreateAnalysisTask() {
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
+
+        // setup a job
+        jobService.create(spec)
+        val zps = emptyZpsScript("bar")
+        zps.execute = mutableListOf(ProcessorRef("foo", "bar"))
+
+        // Add an asset to make a test for
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
+        )
+        val rsp = assetService.batchCreate(req)
+
+        // Create an expand
+        val task1 = dispatcherService.getWaitingTasks(getProjectId(), 1)
+        val newTask = assetService.createAnalysisTask(task1[0], rsp.created, listOf("abc123"))
+        assertEquals("Expand with 1 assets, 0 processors.", newTask?.name)
     }
 }
