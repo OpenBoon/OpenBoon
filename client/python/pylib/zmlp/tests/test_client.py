@@ -10,7 +10,7 @@ class TestClientFunctions(unittest.TestCase):
     def test_to_json(self):
         asset = Asset({"id": "abc123", "document": {"foo": "bar"}})
         value = to_json(asset)
-        assert "{\"id\": \"abc123\", \"document\": {\"foo\": \"bar\"}}" == value
+        assert "{\"id\": \"abc123\", \"uri\": null, \"document\": {\"foo\": \"bar\"}}" == value
 
 
 class SearchResultTests(unittest.TestCase):
