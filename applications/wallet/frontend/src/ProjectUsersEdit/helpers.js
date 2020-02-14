@@ -12,7 +12,7 @@ export const onSubmit = async ({
     const permissions = Object.keys(p).filter(key => p[key])
 
     await fetcher(`/api/v1/projects/${projectId}/users/${userId}/`, {
-      method: 'PATCH',
+      method: 'PUT',
       body: JSON.stringify({ permissions }),
     })
 

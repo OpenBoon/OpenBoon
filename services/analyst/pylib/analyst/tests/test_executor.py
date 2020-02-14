@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import tempfile
@@ -150,6 +151,24 @@ class TestDockerContainerWrapper(unittest.TestCase):
 
         image = self.container._pull_image()
         assert "zmlp/plugins-base:development" == image
+
+    def test_docker_login(self):
+        # Fake creds result in failure to logs
+        test_creds = {"auths": {"https://index.docker.io/v1/": {
+            "auth": "em9ycm9hYWRtaW46SFBYN2djUlo0Vm04VDRU",
+            "email": "software@zorroa.com", "password": "12345",
+            "username": "zorroaadmin"}}
+        }
+
+        tfp, tpath = tempfile.mkstemp(".json")
+        with open(tpath, "w") as fp:
+            json.dump(test_creds, fp)
+
+        os.environ["ANALYST_DOCKER_CREDS_FILE"] = tpath
+        try:
+            self.container._docker_login()
+        finally:
+            del os.environ["ANALYST_DOCKER_CREDS_FILE"]
 
     def test_docker_pull_no_repo(self):
         image = self.container._pull_image()

@@ -24,11 +24,9 @@ import com.zorroa.archivist.domain.TaskEventType
 import com.zorroa.archivist.domain.TaskExpandEvent
 import com.zorroa.archivist.domain.TaskId
 import com.zorroa.archivist.domain.TaskMessageEvent
-import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStatsEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
-import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.DispatchTaskDao
 import com.zorroa.archivist.repository.JobDao
@@ -83,7 +81,7 @@ interface DispatcherService {
     fun stopTask(task: InternalTask, event: TaskStoppedEvent): Boolean
     fun handleEvent(event: TaskEvent)
     fun handleTaskError(task: InternalTask, error: TaskErrorEvent)
-    fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task
+    fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task?
     fun retryTask(task: InternalTask, reason: String): Boolean
     fun skipTask(task: InternalTask): Boolean
     fun queueTask(task: DispatchTask, endpoint: String): Boolean
@@ -370,31 +368,12 @@ class DispatcherServiceImpl @Autowired constructor(
         return stopped
     }
 
-    override fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task {
+    override fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task? {
 
         val result = assetService.batchCreate(
             BatchCreateAssetsRequest(event.assets, analyze = false, task = parentTask)
         )
-
-        val name = "Expand ${result.created.size} assets"
-        val parentScript = taskDao.getScript(parentTask.taskId)
-        val newScript = ZpsScript(name, null, assetService.getAll(result.created), parentScript.execute)
-
-        newScript.globalArgs = parentScript.globalArgs
-        newScript.type = parentScript.type
-        newScript.settings = parentScript.settings
-
-        val newTask = taskDao.create(parentTask, TaskSpec(name, newScript))
-        logger.event(
-            LogObject.JOB, LogAction.EXPAND,
-            mapOf(
-                "assetCount" to event.assets.size,
-                "parentTaskId" to parentTask.taskId,
-                "taskId" to newTask.id,
-                "jobId" to newTask.jobId
-            )
-        )
-        return newTask
+        return assetService.createAnalysisTask(parentTask, result.created, result.exists)
     }
 
     override fun handleTaskError(task: InternalTask, error: TaskErrorEvent) {

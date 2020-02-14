@@ -409,11 +409,13 @@ class DispatcherServiceTests : AbstractTest() {
             task1[0],
             TaskExpandEvent(listOf(AssetSpec("http://foo/123.jpg")))
         )
-        val zps2 = taskDao.getScript(task2.id)
-
-        assertNotNull(zps2.execute)
-        // Validate task2 inherited from task
-        assertEquals(1, zps.execute!!.size)
+        assertNotNull(task2)
+        task2?.id.let {
+            val zps2 = taskDao.getScript(it)
+            assertNotNull(zps2.execute)
+            // Validate task2 inherited from task
+            assertEquals(1, zps.execute!!.size)
+        }
     }
 
     fun launchJob(priority: Int): Job {

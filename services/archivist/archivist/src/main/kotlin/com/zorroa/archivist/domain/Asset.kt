@@ -40,7 +40,10 @@ class AssetSpec(
     var clip: Clip? = null,
 
     @ApiModelProperty("An optional unique ID for the asset to override the auto-generated ID.")
-    val id: String? = null
+    val id: String? = null,
+
+    @ApiModelProperty("A hidden option for sending the entire composed document.  ", hidden = true)
+    val document: MutableMap<String, Any>? = null
 )
 
 @ApiModel("Asset Counters", description = "Stores the types of asset counters we keep track off.")
@@ -169,6 +172,13 @@ open class Asset(
         } catch (ex: ClassCastException) {
             throw IllegalArgumentException("Invalid attribute: $attr", ex)
         }
+    }
+
+    /**
+     * Return true if the asset has been analayzed before.
+     */
+    fun isAnalyzed(): Boolean {
+        return attrExists("system.timeCreated") && attrExists("system.state")
     }
 
     private fun getContainer(attr: String, forceExpand: Boolean): Any? {

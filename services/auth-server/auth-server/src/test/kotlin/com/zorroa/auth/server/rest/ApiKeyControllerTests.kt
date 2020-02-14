@@ -44,11 +44,14 @@ class ApiKeyControllerTests : MockMvcTest() {
 
     @Test
     fun testCreateFail() {
+
         val spec = ApiKeySpec(
             "test",
             setOf(Permission.AssetsRead)
         )
+
         val pid = UUID.randomUUID()
+
         mvc.perform(
             MockMvcRequestBuilders.post("/auth/v1/apikey")
                 .headers(superAdmin(pid))
@@ -58,13 +61,7 @@ class ApiKeyControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(jsonPath("$.projectId", CoreMatchers.equalTo(pid.toString())))
             .andExpect(jsonPath("$.name", CoreMatchers.equalTo("test")))
-            .andExpect(
-                jsonPath(
-                    "$.permissions[0]",
-                    CoreMatchers.containsString("AssetsRead")
-                )
-            )
-            .andReturn()
+
 
         mvc.perform(
             MockMvcRequestBuilders.post("/auth/v1/apikey")
@@ -76,6 +73,39 @@ class ApiKeyControllerTests : MockMvcTest() {
             .andExpect(jsonPath("$.error", CoreMatchers.equalTo("DataIntegrityViolation")))
             .andReturn()
     }
+
+    @Test
+    fun testUpdate() {
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead)
+        )
+
+        val create = apiKeyService.create(spec)
+
+        val specUpdated = ApiKeySpec(
+            "testUpdated",
+            setOf(Permission.AssetsRead)
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/auth/v1/apikey/${create.id}")
+                .headers(superAdmin(create.projectId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json.writeValueAsBytes(specUpdated))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.projectId", CoreMatchers.equalTo(create.projectId.toString())))
+            .andExpect(jsonPath("$.name", CoreMatchers.equalTo("testUpdated")))
+            .andExpect(
+                jsonPath(
+                    "$.permissions[0]",
+                    CoreMatchers.containsString("AssetsRead")
+                )
+            )
+            .andReturn()
+    }
+
 
     @Test
     fun testCreate_rsp_403() {

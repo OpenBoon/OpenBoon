@@ -1,37 +1,22 @@
-import { typography, colors, spacing, constants } from '../Styles'
+import { typography, colors, spacing } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 
-const CHECKMARK_WIDTH = 28
+import Accordion, { CHECKMARK_WIDTH } from '../Accordion'
 
 const DataSourcesAddAutomaticAnalysis = () => {
   return (
-    <div css={{ backgroundColor: colors.structure.smoke }}>
-      <div
-        css={{
-          borderBottom: constants.borders.tabs,
-          padding: spacing.normal,
-        }}>
-        <h4
-          css={{
-            fontSize: typography.size.medium,
-            lineHeight: typography.height.medium,
-            display: 'flex',
-            alignItems: 'center',
-          }}>
+    <Accordion
+      title={
+        <>
           <CheckmarkSvg
             width={CHECKMARK_WIDTH}
             css={{ color: colors.key.one, marginRight: spacing.normal }}
           />
           Zorroa Automatic Analysis
-        </h4>
-      </div>
-      <div
-        css={{
-          padding: spacing.normal,
-          paddingLeft: spacing.normal + CHECKMARK_WIDTH + spacing.normal,
-          paddingBottom: spacing.spacious,
-        }}>
+        </>
+      }>
+      <>
         <p
           css={{
             color: colors.structure.zinc,
@@ -92,8 +77,8 @@ const DataSourcesAddAutomaticAnalysis = () => {
             </div>
           </li>
         </ul>
-      </div>
-    </div>
+      </>
+    </Accordion>
   )
 }
 
