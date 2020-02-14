@@ -6,6 +6,7 @@ import CheckmarkSvg from '../Icons/checkmark.svg'
 
 import Accordion, { CHECKMARK_WIDTH } from '../Accordion'
 import CheckboxTable from '../Checkbox/Table'
+import CheckboxTriState from '../Checkbox/TriState'
 
 const DataSourcesAddModules = ({
   module: { provider, description, categories },
@@ -20,6 +21,7 @@ const DataSourcesAddModules = ({
             css={{ color: colors.key.one, marginRight: spacing.normal }}
           />
           {provider}
+          <CheckboxTriState isPartial={false} isChecked={false} />
         </>
       }>
       <>
