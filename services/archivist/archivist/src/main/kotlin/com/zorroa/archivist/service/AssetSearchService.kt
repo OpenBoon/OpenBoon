@@ -23,11 +23,14 @@ import org.springframework.stereotype.Service
 
 interface AssetSearchService {
     fun search(search: Map<String, Any>, params: Map<String, Array<String>>): SearchResponse
+    fun search(ssb: SearchSourceBuilder, params: Map<String, Array<String>>): SearchResponse
     fun search(search: Map<String, Any>): SearchResponse
     fun scroll(scroll: Map<String, String>): SearchResponse
     fun clearScroll(scroll: Map<String, String>): ClearScrollResponse
     fun count(search: Map<String, Any>): Long
+    fun count(ssb: SearchSourceBuilder): Long
     fun mapToSearchSourceBuilder(search: Map<String, Any>): SearchSourceBuilder
+    fun searchSourceBuilderToMap(ssb: SearchSourceBuilder): Map<String, Any>
 }
 
 @Service
@@ -50,6 +53,17 @@ class AssetSearchServiceImpl : AssetSearchService {
         return rest.client.search(req, RequestOptions.DEFAULT)
     }
 
+    override fun search(ssb: SearchSourceBuilder, params: Map<String, Array<String>>): SearchResponse {
+        val rest = indexRoutingService.getProjectRestClient()
+        val req = rest.newSearchRequest()
+        req.source(ssb)
+        if (params.containsKey("scroll")) {
+            req.scroll(params.getValue("scroll")[0])
+        }
+        req.preference(getProjectId().toString())
+        return rest.client.search(req, RequestOptions.DEFAULT)
+    }
+
     override fun search(search: Map<String, Any>): SearchResponse {
         return search(search, mapOf())
     }
@@ -58,6 +72,10 @@ class AssetSearchServiceImpl : AssetSearchService {
         val copy = search.toMutableMap()
         copy["size"] = 0
         return search(copy).hits.totalHits.value
+    }
+
+    override fun count(ssb: SearchSourceBuilder): Long {
+        return search(ssb, mapOf()).hits.totalHits.value
     }
 
     override fun scroll(scroll: Map<String, String>): SearchResponse {
@@ -72,6 +90,10 @@ class AssetSearchServiceImpl : AssetSearchService {
         val req = ClearScrollRequest()
         req.addScrollId(scroll.getValue("scroll_id"))
         return rest.client.clearScroll(req, RequestOptions.DEFAULT)
+    }
+
+    override fun searchSourceBuilderToMap(ssb: SearchSourceBuilder): Map<String, Any> {
+        return Json.Mapper.readValue(Strings.toString(ssb, true, true), Json.GENERIC_MAP)
     }
 
     override fun mapToSearchSourceBuilder(search: Map<String, Any>): SearchSourceBuilder {

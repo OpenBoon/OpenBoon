@@ -37,7 +37,7 @@ class AssetSearchGenerator(Generator):
     def scroll_assets(self, consumer):
         max_assets = self.arg_value('max_assets')
         search = self.arg_value('search')
-        timeout = self.arg_value('timeout')
+        timeout = self.arg_value('scroll')
         for asset in self.app.assets.scroll_search(search, timeout):
             consumer.accept(asset)
             self.total_consumed += 1
