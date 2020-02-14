@@ -11,7 +11,6 @@ import analyst.service as service
 
 app = Flask(__name__)
 
-
 def main():
     parser = argparse.ArgumentParser(prog='analyst')
     parser.add_argument("-a", "--archivist", help="The URL of the Archivist server.",
@@ -34,7 +33,8 @@ def main():
         logging.basicConfig(level=logging.INFO)
 
     flask_log = logging.getLogger('werkzeug')
-    flask_log.setLevel(logging.ERROR)
+    flask_log.disabled = True
+    app.logger.disabled = True
 
     api = service.ServiceComponents(args)
     setup_routes(api)
