@@ -15,11 +15,11 @@ import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.service.security.EncryptionService
 import org.slf4j.LoggerFactory
-import java.util.UUID
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalArgumentException
+import java.util.UUID
 
 interface ApiKeyService {
 
@@ -27,6 +27,8 @@ interface ApiKeyService {
      * Create a new API key.
      */
     fun create(spec: ApiKeySpec): ApiKey
+
+    fun update(id: UUID, spec: ApiKeySpec): ApiKey
 
     fun get(id: UUID): ApiKey
 
@@ -77,12 +79,49 @@ class ApiKeyServiceImpl constructor(
             )
         )
 
-        return apiKeyRepository.saveAndFlush(key)
+        try {
+            return apiKeyRepository.saveAndFlush(key)
+        } catch (ex: DataIntegrityViolationException) {
+            throw(DataIntegrityViolationException("Data Integrity Violation: Verify your Api Key"))
+        }
+    }
+
+    override fun update(id: UUID, spec: ApiKeySpec): ApiKey {
+
+        if (!getZmlpActor().hasAnyPermission(Permission.SystemServiceKey)) {
+            validatePermissionsCanBeAssigned(spec.permissions)
+        }
+
+        val time = System.currentTimeMillis()
+        val actor = getZmlpActor()
+        val apiKey: ApiKey = get(id)
+
+        val key = ApiKey(
+            apiKey.id,
+            apiKey.projectId,
+            apiKey.accessKey,
+            apiKey.secretKey,
+            spec.name,
+            spec.permissions.map { it.name }.toSet(),
+            apiKey.timeCreated, time,
+            apiKey.actorCreated,
+            actor.toString()
+        )
+
+        logger.event(
+            LogObject.API_KEY, LogAction.UPDATE,
+            mapOf(
+                "apiKeyId" to key.id,
+                "apiKeyName" to key.name
+            )
+        )
+
+        return apiKeyRepository.save(key)
     }
 
     @Transactional(readOnly = true)
     override fun get(id: UUID): ApiKey {
-        return apiKeyRepository.findByProjectIdAndId(getProjectId(), id)
+            return apiKeyRepository.findByProjectIdAndId(getProjectId(), id)
     }
 
     @Transactional(readOnly = true)

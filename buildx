@@ -24,11 +24,20 @@ def main():
         containers = set()
 
     if args.core:
-        containers.update(['zmlp-py3-sdk', 'zmlp-plugins-base', 'zmlp-plugins-core'])
+        containers.update(['zmlp-py3-client',
+                           'zmlp-py3-sdk',
+                           'zmlp-plugins-base',
+                           'zmlp-plugins-core'])
     if args.jvm:
-        containers.update(['es1', 'zmlp-jvm-common', 'archivist', 'auth-server'])
+        containers.update(['es1',
+                           'zmlp-jvm-common',
+                           'archivist',
+                           'auth-server'])
     if args.analysis:
-        containers.update(['zmlp-py3-sdk', 'zmlp-plugins-base', 'zmlp-plugins-analysis'])
+        containers.update(['zmlp-py3-client',
+                           'zmlp-py3-sdk',
+                           'zmlp-plugins-base',
+                           'zmlp-plugins-analysis'])
 
     build_dependency_tree(containers)
 

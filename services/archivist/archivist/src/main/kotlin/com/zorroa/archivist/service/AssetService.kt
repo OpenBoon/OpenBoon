@@ -18,8 +18,11 @@ import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageSpec
+import com.zorroa.archivist.domain.Task
+import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
+import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.ElasticSearchErrorTranslator
@@ -151,6 +154,15 @@ interface AssetService {
      * Return true of the given asset would need reprocessing with the given Pipeline.
      */
     fun assetNeedsReprocessing(asset: Asset, pipeline: List<ProcessorRef>): Boolean
+
+    /**
+     * Create new child task to the given task.
+     */
+    fun createAnalysisTask(
+        parentTask: InternalTask,
+        createdAssetIds: Collection<String>,
+        existingAssetIds: Collection<String>
+    ): Task?
 }
 
 @Service
@@ -328,8 +340,11 @@ class AssetServiceImpl : AssetService {
 
         docs.forEach { (id, doc) ->
             prepAssetForUpdate(id, doc)
+            // Will always create for some reason
+            // TODO: probably have to check for existing IDs.
             bulk.add(
                 rest.newIndexRequest(id)
+                    .create(false)
                     .source(doc)
                     .opType(DocWriteRequest.OpType.INDEX)
             )
@@ -387,6 +402,50 @@ class AssetServiceImpl : AssetService {
         } else {
             val name = "Analyze ${createdAssetIds.size} created assets, $reprocessAssetCount existing files."
             jobLaunchService.launchJob(name, finalAssetList, processors, creds = creds)
+        }
+    }
+
+    override fun createAnalysisTask(
+        parentTask: InternalTask,
+        createdAssetIds: Collection<String>,
+        existingAssetIds: Collection<String>
+    ): Task? {
+
+        val parentScript = jobService.getZpsScript(parentTask.taskId)
+        val procCount = parentScript?.execute?.size ?: 0
+
+        // Check what assets need reprocessing at all.
+        val assets = getAll(existingAssetIds).filter {
+            assetNeedsReprocessing(it, parentScript.execute ?: listOf())
+        }
+
+        // Build the final asset list which are the assets that
+        // need additional processing.
+        val finalAssetList = assets.plus(getAll(createdAssetIds))
+
+        return if (finalAssetList.isEmpty()) {
+            null
+        } else {
+
+            val name = "Expand with ${finalAssetList.size} assets, $procCount processors."
+            val parentScript = jobService.getZpsScript(parentTask.taskId)
+            val newScript = ZpsScript(name, null, finalAssetList, parentScript.execute)
+
+            newScript.globalArgs = parentScript.globalArgs
+            newScript.type = parentScript.type
+            newScript.settings = parentScript.settings
+
+            val newTask = jobService.createTask(parentTask, TaskSpec(name, newScript))
+            logger.event(
+                LogObject.JOB, LogAction.EXPAND,
+                mapOf(
+                    "assetCount" to finalAssetList.size,
+                    "parentTaskId" to parentTask.taskId,
+                    "taskId" to newTask.id,
+                    "jobId" to newTask.jobId
+                )
+            )
+            return newTask
         }
     }
 
@@ -475,6 +534,7 @@ class AssetServiceImpl : AssetService {
                     )
                     failures.add(
                         mapOf(
+                            "assetId" to it.id,
                             "path" to path,
                             "failureMessage" to msg
                         )
@@ -513,29 +573,31 @@ class AssetServiceImpl : AssetService {
             }
         }
 
-        if (spec.clip != null) {
-            deriveClip(asset, spec)
+        val time = java.time.Clock.systemUTC().instant().toString()
+        if (asset.isAnalyzed()) {
+            asset.setAttr("system.timeModified", time)
+            asset.setAttr("system.state", AssetState.Analyzed.toString())
+        } else {
+            if (spec.clip != null) {
+                deriveClip(asset, spec)
+            }
+
+            asset.setAttr("source.path", spec.uri)
+            asset.setAttr("source.filename", FileUtils.filename(spec.uri))
+            asset.setAttr("source.extension", FileUtils.extension(spec.uri))
+
+            val mediaType = FileUtils.getMediaType(spec.uri)
+            asset.setAttr("source.mimetype", mediaType)
+
+            asset.setAttr("system.projectId", getProjectId().toString())
+            task?.let {
+                asset.setAttr("system.dataSourceId", it.dataSourceId)
+                asset.setAttr("system.jobId", it.jobId)
+                asset.setAttr("system.taskId", it.taskId)
+            }
+            asset.setAttr("system.timeCreated", time)
+            asset.setAttr("system.state", AssetState.Pending.toString())
         }
-
-        asset.setAttr("source.path", spec.uri)
-        asset.setAttr("source.filename", FileUtils.filename(spec.uri))
-        asset.setAttr("source.extension", FileUtils.extension(spec.uri))
-
-        val mediaType = FileUtils.getMediaType(spec.uri)
-        asset.setAttr("source.mimetype", mediaType)
-
-        asset.setAttr("system.projectId", getProjectId().toString())
-        task?.let {
-            asset.setAttr("system.dataSourceId", it.dataSourceId)
-            asset.setAttr("system.jobId", it.jobId)
-            asset.setAttr("system.taskId", it.taskId)
-        }
-        asset.setAttr(
-            "system.timeCreated",
-            java.time.Clock.systemUTC().instant().toString()
-        )
-        asset.setAttr("system.state", AssetState.Pending.toString())
-
         if (!asset.attrExists("source.path") || asset.getAttr<String?>("source.path") == null) {
             throw java.lang.IllegalStateException("The source.path attribute cannot be null")
         }

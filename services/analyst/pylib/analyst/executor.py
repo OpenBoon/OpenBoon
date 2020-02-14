@@ -272,6 +272,25 @@ class DockerContainerWrapper(object):
         ctx = zmq.Context()
         self.socket = ctx.socket(zmq.PAIR)
 
+    def _docker_login(self):
+        creds_file = os.environ.get("ANALYST_DOCKER_CREDS_FILE",
+                                    "/etc/docker/.dockerconfigjson")
+        try:
+            with open(creds_file, "r") as fp:
+                creds = json.load(fp)
+
+            reg = "https://index.docker.io/v1/"
+            dh_creds = creds["auths"][reg]
+            self.docker_client.login(dh_creds["username"],
+                                     dh_creds["password"],
+                                     dh_creds["email"],
+                                     reg)
+
+        except FileNotFoundError:
+            logger.warning("No docker creds file found.")
+        except docker.errors.APIError as e:
+            logger.error("Unable to log into docker-hub: {}".format(e))
+
     def _pull_image(self):
         """
         Attempt to pull the docker image if the version does not exist locally.  Return
@@ -283,6 +302,8 @@ class DockerContainerWrapper(object):
         """
         if os.environ.get("ANALYST_DOCKER_PULL", "true") == "false":
             return self.image
+
+        self._docker_login()
 
         if ":" in self.image:
             full_name = self.image

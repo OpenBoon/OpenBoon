@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { spacing } from '../Styles'
-
-export const MAX_WIDTH = 470
+import { spacing, constants } from '../Styles'
 
 const Form = ({ children, style }) => {
   return (
@@ -14,7 +12,7 @@ const Form = ({ children, style }) => {
         {
           display: 'flex',
           flexDirection: 'column',
-          width: MAX_WIDTH,
+          width: constants.form.maxWidth,
           padding: spacing.normal,
           paddingLeft: 0,
           paddingRight: 0,

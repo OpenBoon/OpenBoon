@@ -6,6 +6,8 @@ import com.google.common.base.Suppliers
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.domain.Asset
+import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchIndexAssetsEvent
 import com.zorroa.archivist.domain.DispatchPriority
@@ -15,8 +17,6 @@ import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobStateChangeEvent
-import com.zorroa.zmlp.service.logging.LogAction
-import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskEvent
@@ -24,11 +24,9 @@ import com.zorroa.archivist.domain.TaskEventType
 import com.zorroa.archivist.domain.TaskExpandEvent
 import com.zorroa.archivist.domain.TaskId
 import com.zorroa.archivist.domain.TaskMessageEvent
-import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStatsEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
-import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.DispatchTaskDao
 import com.zorroa.archivist.repository.JobDao
@@ -49,6 +47,7 @@ import com.zorroa.zmlp.util.Json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.elasticsearch.action.bulk.BulkResponse
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
@@ -83,7 +82,14 @@ interface DispatcherService {
     fun stopTask(task: InternalTask, event: TaskStoppedEvent): Boolean
     fun handleEvent(event: TaskEvent)
     fun handleTaskError(task: InternalTask, error: TaskErrorEvent)
-    fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task
+
+    /**
+     * Handle [BatchIndexAssetsEvent] from Analyst.  Updates the assets
+     * and adds any ES errors to the error log.
+     */
+    fun handleIndexEvent(task: InternalTask, event: BatchIndexAssetsEvent): BulkResponse?
+
+    fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task?
     fun retryTask(task: InternalTask, reason: String): Boolean
     fun skipTask(task: InternalTask): Boolean
     fun queueTask(task: DispatchTask, endpoint: String): Boolean
@@ -350,9 +356,7 @@ class DispatcherServiceImpl @Autowired constructor(
                 val script = taskDao.getScript(task.taskId)
                 val assetCount = script.assets?.size ?: 0
 
-                // TODO: part of job and asset stats
-                // jobService.incrementAssetCounters(task, AssetCounters(errors = assetCount))
-
+                jobDao.setErrorCount(task, assetCount)
                 taskErrorDao.batchCreate(task, script.assets?.map {
                     TaskErrorEvent(
                         it.id,
@@ -370,45 +374,43 @@ class DispatcherServiceImpl @Autowired constructor(
         return stopped
     }
 
-    override fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task {
+    override fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task? {
 
         val result = assetService.batchCreate(
             BatchCreateAssetsRequest(event.assets, analyze = false, task = parentTask)
         )
 
-        val name = "Expand ${result.created.size} assets"
-        val parentScript = taskDao.getScript(parentTask.taskId)
-        val newScript = ZpsScript(name, null, assetService.getAll(result.created), parentScript.execute)
+        /**
+         * For the assets that failed to go into ES, add the ES error message
+         */
+        jobService.incrementAssetCounters(
+            parentTask, AssetCounters(
+                errors = result.failed.size,
+                created = result.created.size))
 
-        newScript.globalArgs = parentScript.globalArgs
-        newScript.type = parentScript.type
-        newScript.settings = parentScript.settings
-
-        val newTask = taskDao.create(parentTask, TaskSpec(name, newScript))
-        logger.event(
-            LogObject.JOB, LogAction.EXPAND,
-            mapOf(
-                "assetCount" to event.assets.size,
-                "parentTaskId" to parentTask.taskId,
-                "taskId" to newTask.id,
-                "jobId" to newTask.jobId
+        taskErrorDao.batchCreate(parentTask, result.failed.map {
+            TaskErrorEvent(
+                it["assetId"],
+                it["path"],
+                "${it["failureMessage"] ?: "Unknown ES failure"}",
+                "unknown",
+                true,
+                "index"
             )
-        )
-        return newTask
+        })
+
+        return assetService.createAnalysisTask(parentTask, result.created, result.exists)
     }
 
     override fun handleTaskError(task: InternalTask, error: TaskErrorEvent) {
+        taskErrorDao.create(task, error)
 
-        val taskError = taskErrorDao.create(task, error)
-
-        logger.event(
-            LogObject.TASK_ERROR, LogAction.CREATE,
-            mapOf(
-                "taskErrorId" to taskError.id
-            ))
-
-        // TODO: part of job stats update
-        // jobService.incrementAssetCounters(task, AssetCounters(errors = 1))
+        val inc = if (error.fatal) {
+            AssetCounters(errors = 1)
+        } else {
+            AssetCounters(warnings = 1)
+        }
+        jobService.incrementAssetCounters(task, inc)
     }
 
     override fun handleStatsEvent(stats: List<TaskStatsEvent>) {
@@ -421,6 +423,42 @@ class DispatcherServiceImpl @Autowired constructor(
             meterRegistry.timer("zorroa.processor.process_avg_time", "processor", proc)
                 .record(stat.avg.times(1000).toLong(), TimeUnit.MILLISECONDS)
         }
+    }
+
+    override fun handleIndexEvent(task: InternalTask, event: BatchIndexAssetsEvent): BulkResponse? {
+
+        val errors = mutableListOf<TaskErrorEvent>()
+        var result: BulkResponse? = null
+
+        withAuth(InternalThreadAuthentication(task.projectId,
+            setOf(Permission.AssetsImport))) {
+            result = assetService.batchIndex(event.assets)
+            result?.items?.forEach {
+                if (it.isFailed) {
+                    val asset = Asset(it.id, event.assets[it.id] ?: mutableMapOf())
+                    val error = TaskErrorEvent(
+                        it.id,
+                        asset.getAttr("source.path"),
+                        it.failureMessage,
+                        "unknown",
+                        true,
+                        "index"
+                    )
+                    errors.add(error)
+                }
+            }
+        }
+
+        jobService.incrementAssetCounters(task, AssetCounters(
+            errors = errors.size,
+            replaced = event.assets.size - errors.size)
+        )
+
+        if (errors.isNotEmpty()) {
+            taskErrorDao.batchCreate(task, errors)
+        }
+
+        return result
     }
 
     override fun handleEvent(event: TaskEvent) {
@@ -452,10 +490,7 @@ class DispatcherServiceImpl @Autowired constructor(
             }
             TaskEventType.INDEX -> {
                 val index = Json.Mapper.convertValue<BatchIndexAssetsEvent>(event.payload)
-                withAuth(InternalThreadAuthentication(task.projectId,
-                    setOf(Permission.AssetsImport))) {
-                    assetService.batchIndex(index.assets)
-                }
+                handleIndexEvent(task, index)
             }
         }
     }

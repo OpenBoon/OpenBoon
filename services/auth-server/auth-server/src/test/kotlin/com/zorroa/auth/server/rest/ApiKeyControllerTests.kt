@@ -5,13 +5,13 @@ import com.zorroa.auth.server.MockMvcTest
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
 import com.zorroa.zmlp.apikey.Permission
-import java.util.UUID
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import java.util.UUID
 
 class ApiKeyControllerTests : MockMvcTest() {
 
@@ -33,6 +33,69 @@ class ApiKeyControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(jsonPath("$.projectId", CoreMatchers.equalTo(pid.toString())))
             .andExpect(jsonPath("$.name", CoreMatchers.equalTo("test")))
+            .andExpect(
+                jsonPath(
+                    "$.permissions[0]",
+                    CoreMatchers.containsString("AssetsRead")
+                )
+            )
+            .andReturn()
+    }
+
+    @Test
+    fun testCreateFail() {
+
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead)
+        )
+
+        val pid = UUID.randomUUID()
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/auth/v1/apikey")
+                .headers(superAdmin(pid))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json.writeValueAsBytes(spec))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.projectId", CoreMatchers.equalTo(pid.toString())))
+            .andExpect(jsonPath("$.name", CoreMatchers.equalTo("test")))
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/auth/v1/apikey")
+                .headers(superAdmin(pid))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json.writeValueAsBytes(spec))
+        )
+            .andExpect(MockMvcResultMatchers.status().isConflict)
+            .andExpect(jsonPath("$.error", CoreMatchers.equalTo("DataIntegrityViolation")))
+            .andReturn()
+    }
+
+    @Test
+    fun testUpdate() {
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead)
+        )
+
+        val create = apiKeyService.create(spec)
+
+        val specUpdated = ApiKeySpec(
+            "testUpdated",
+            setOf(Permission.AssetsRead)
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/auth/v1/apikey/${create.id}")
+                .headers(superAdmin(create.projectId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json.writeValueAsBytes(specUpdated))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.projectId", CoreMatchers.equalTo(create.projectId.toString())))
+            .andExpect(jsonPath("$.name", CoreMatchers.equalTo("testUpdated")))
             .andExpect(
                 jsonPath(
                     "$.permissions[0]",
@@ -74,6 +137,17 @@ class ApiKeyControllerTests : MockMvcTest() {
                     CoreMatchers.containsString("AssetsRead")
                 )
             )
+            .andReturn()
+    }
+
+    @Test
+    fun testGetNotFound() {
+        mvc.perform(
+            MockMvcRequestBuilders.get("/auth/v1/apikey/${UUID.randomUUID()}")
+                .headers(superAdmin(mockKey.projectId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isNotFound)
             .andReturn()
     }
 
@@ -121,7 +195,7 @@ class ApiKeyControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testFindOne_rsp_401() {
+    fun testFindOne_rsp_404() {
         val filter = ApiKeyFilter(names = listOf("mrcatlady"))
 
         mvc.perform(
@@ -130,7 +204,7 @@ class ApiKeyControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json.writeValueAsBytes(filter))
         )
-            .andExpect(MockMvcResultMatchers.status().`is`(401))
+            .andExpect(MockMvcResultMatchers.status().`is`(404))
             .andReturn()
     }
 
