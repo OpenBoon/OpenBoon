@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import PageTitle from '../PageTitle'
+import FormSuccess from '../FormSuccess'
 import Tabs from '../Tabs'
 import Table from '../Table'
 
@@ -9,7 +10,7 @@ import DataSourcesRow from './Row'
 
 const DataSources = () => {
   const {
-    query: { projectId },
+    query: { projectId, action },
   } = useRouter()
 
   return (
@@ -26,6 +27,10 @@ const DataSources = () => {
           { title: 'Add Data Source', href: '/[projectId]/data-sources/add' },
         ]}
       />
+
+      {action === 'add-datasource-success' && (
+        <FormSuccess>Data source created</FormSuccess>
+      )}
 
       <div>&nbsp;</div>
 

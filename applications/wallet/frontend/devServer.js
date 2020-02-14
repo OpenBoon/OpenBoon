@@ -49,6 +49,7 @@ app.prepare().then(() => {
     server.get(`${PID_API_BASE}/jobs/:jobId/errors`, mock(jobErrors))
 
     server.get(`${PID_API_BASE}/datasources/`, mock(dataSources))
+    server.post(`${PID_API_BASE}/datasources/`, success())
 
     server.get(`${PID_API_BASE}/apikeys/`, mock(apiKeys))
     server.post(`${PID_API_BASE}/apikeys/`, mock(apiKey))
