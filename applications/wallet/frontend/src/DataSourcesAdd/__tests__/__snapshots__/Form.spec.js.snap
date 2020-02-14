@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DataSourcesAddForm /> should render properly after permissions are loaded 1`] = `
+exports[`<DataSourcesAddForm /> should render properly 1`] = `
 .emotion-171 {
   display: -webkit-box;
   display: -webkit-flex;

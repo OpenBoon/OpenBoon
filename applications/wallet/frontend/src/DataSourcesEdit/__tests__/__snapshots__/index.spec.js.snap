@@ -1,0 +1,1832 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DataSourcesEdit /> should render properly while loading 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Data Sources
+  </h2>,
+  .emotion-7 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-6 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+}
+
+.emotion-0 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+.emotion-2 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-7"
+  >
+    <ul
+      className="emotion-6"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Add Data Source
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Edit
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+}
+
+<div
+    className="emotion-0"
+  >
+    Loading...
+  </div>,
+]
+`;
+
+exports[`<DataSourcesEdit /> should render properly with a data source 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Data Sources
+  </h2>,
+  .emotion-7 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-6 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-1 {
+  padding-right: 16px;
+}
+
+.emotion-0 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #73b61c;
+}
+
+.emotion-4 {
+  border: 0 #73b61c solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-7"
+  >
+    <ul
+      className="emotion-6"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Add Data Source
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-4"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/2f0de857-95fd-120e-85f3-0242ac120002/edit"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Edit
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-152 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  width: auto;
+}
+
+.emotion-29 {
+  border: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+}
+
+.emotion-0 {
+  float: left;
+  padding: 0;
+  padding-bottom: 12px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.emotion-1 {
+  clear: both;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  padding-bottom: 16px;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-2 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-6 {
+  padding-left: 24px;
+}
+
+.emotion-9 {
+  padding-left: 12px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding-left: 16px;
+  color: #ffffff;
+}
+
+.emotion-7 {
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 700;
+}
+
+.emotion-8 {
+  color: #808080;
+  padding-left: 12px;
+}
+
+.emotion-30 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-31 {
+  margin: 0;
+  padding-top: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-39 {
+  padding-top: 16px;
+}
+
+.emotion-38 {
+  background-color: #3b3b3b;
+}
+
+.emotion-34 {
+  border-bottom: 1px solid #4a4a4a;
+  padding: 16px;
+}
+
+.emotion-33 {
+  font-size: 17px;
+  line-height: 20px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-32 {
+  color: #73b61c;
+  margin-right: 16px;
+}
+
+.emotion-37 {
+  padding: 16px;
+  padding-left: 60px;
+  padding-bottom: 32px;
+}
+
+.emotion-35 {
+  color: #b3b3b3;
+  margin: 0;
+  padding-top: 8px;
+  padding-bottom: 16px;
+}
+
+.emotion-36 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: #b3b3b3;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  padding-top: 8px;
+}
+
+.emotion-36 li {
+  width: 33%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-right: 40px;
+}
+
+.emotion-36 svg {
+  color: #73b61c;
+  margin-right: 16px;
+  min-width: 20px;
+  max-width: 20px;
+}
+
+.emotion-36 span {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.emotion-40 {
+  color: #73b61c;
+  margin-right: 16px;
+}
+
+.emotion-43 {
+  color: #b3b3b3;
+  margin: 0;
+  padding-top: 8px;
+  padding-bottom: 16px;
+  max-width: 600px;
+}
+
+.emotion-77 {
+  border: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+  padding-bottom: 32px;
+}
+
+.emotion-44 {
+  float: left;
+  padding: 0;
+  padding-bottom: 12px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.emotion-45 {
+  clear: both;
+}
+
+.emotion-76 {
+  width: 100%;
+  color: #ffffff;
+  text-align: left;
+}
+
+.emotion-76 th,
+.emotion-76 td {
+  padding: 16px;
+  padding-left: 0;
+}
+
+.emotion-76 th:first-of-type,
+.emotion-76 td:first-of-type {
+  padding-left: 16px;
+}
+
+.emotion-76 th:nth-of-type(2),
+.emotion-76 td:nth-of-type(2) {
+  min-width: 300px;
+  font-family: Roboto Mono;
+}
+
+.emotion-76 th:nth-of-type(3),
+.emotion-76 td:nth-of-type(3) {
+  width: 100%;
+}
+
+.emotion-76 th {
+  color: #b3b3b3;
+  font-weight: 500;
+}
+
+.emotion-76 td {
+  border-top: 1px solid #4a4a4a;
+  vertical-align: top;
+}
+
+.emotion-76 td:first-of-type {
+  border: none;
+}
+
+.emotion-76 tr:hover td {
+  background-color: #4a4a4a;
+}
+
+.emotion-76 tr:hover + tr td {
+  border-top-color: transparent;
+}
+
+.emotion-76 tr:last-of-type td {
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-76 tr:last-of-type td:first-of-type {
+  border: none;
+}
+
+.emotion-51 {
+  cursor: pointer;
+}
+
+.emotion-50 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+.emotion-94 {
+  color: #73b61c;
+}
+
+.emotion-151 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-151 button,
+.emotion-151 a {
+  margin-right: 16px;
+}
+
+.emotion-149 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-149:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-149[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-149,
+.emotion-149:hover,
+.emotion-149:visited {
+  background-color: #808080;
+}
+
+.emotion-149:hover {
+  opacity: 0.5;
+}
+
+.emotion-149[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-150 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-150:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-150[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-150,
+.emotion-150:hover,
+.emotion-150:visited {
+  background-color: #73b61c;
+}
+
+.emotion-150:hover {
+  background-color: #96c955;
+}
+
+.emotion-150[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-152"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <fieldset
+      className="emotion-29"
+    >
+      <legend
+        className="emotion-0"
+      >
+        Select File Types to Import
+      </legend>
+      <div
+        className="emotion-1"
+      />
+      <label
+        className="emotion-10"
+      >
+        <div
+          className="emotion-5"
+        >
+          <input
+            className="emotion-2"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="images"
+          />
+          <div
+            className="emotion-4"
+          >
+            <svg
+              className="emotion-3"
+              data-file-name="checkmark.svg"
+              width={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-6"
+        >
+          <img
+            alt="Image Files"
+            src="/icons/images.png"
+            width="40px"
+          />
+        </div>
+        <div
+          className="emotion-9"
+        >
+          <span
+            className="emotion-7"
+          >
+            Image Files
+          </span>
+          <span
+            className="emotion-8"
+          >
+            GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-10"
+      >
+        <div
+          className="emotion-5"
+        >
+          <input
+            className="emotion-2"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="documents"
+          />
+          <div
+            className="emotion-4"
+          >
+            <svg
+              className="emotion-3"
+              data-file-name="checkmark.svg"
+              width={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-6"
+        >
+          <img
+            alt="Documents (PDF & MS Office)"
+            src="/icons/documents.png"
+            width="40px"
+          />
+        </div>
+        <div
+          className="emotion-9"
+        >
+          <span
+            className="emotion-7"
+          >
+            Documents (PDF & MS Office)
+          </span>
+          <span
+            className="emotion-8"
+          >
+            PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-10"
+      >
+        <div
+          className="emotion-5"
+        >
+          <input
+            className="emotion-2"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="video"
+          />
+          <div
+            className="emotion-4"
+          >
+            <svg
+              className="emotion-3"
+              data-file-name="checkmark.svg"
+              width={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-6"
+        >
+          <img
+            alt="Video Files"
+            src="/icons/videos.png"
+            width="40px"
+          />
+        </div>
+        <div
+          className="emotion-9"
+        >
+          <span
+            className="emotion-7"
+          >
+            Video Files
+          </span>
+          <span
+            className="emotion-8"
+          >
+            MP4, M4V, MOV, MPG, MPEG, OGG
+          </span>
+        </div>
+      </label>
+    </fieldset>
+    <h3
+      className="emotion-30"
+    >
+      Select Analysis
+    </h3>
+    <p
+      className="emotion-31"
+    >
+      Choose the type of analysis you would like performed on your data set:
+    </p>
+    <div
+      className="emotion-39"
+    >
+      <div
+        className="emotion-38"
+      >
+        <div
+          className="emotion-34"
+        >
+          <h4
+            className="emotion-33"
+          >
+            <svg
+              className="emotion-32"
+              data-file-name="checkmark.svg"
+              width={28}
+            />
+            Zorroa Automatic Analysis
+          </h4>
+        </div>
+        <div
+          className="emotion-37"
+        >
+          <p
+            className="emotion-35"
+          >
+            The following basic analysis is applied to all data sets.
+          </p>
+          <ul
+            className="emotion-36"
+          >
+            <li>
+              <svg
+                data-file-name="checkmark.svg"
+              />
+              <div>
+                <span>
+                  File Introspection
+                </span>
+                <br />
+                Extracts native metadata from file.
+              </div>
+            </li>
+            <li>
+              <svg
+                data-file-name="checkmark.svg"
+              />
+              <div>
+                <span>
+                  Similarity Hash
+                </span>
+                <br />
+                Adds a hash to all images used to quantify the similarity between images.
+              </div>
+            </li>
+            <li>
+              <svg
+                data-file-name="checkmark.svg"
+              />
+              <div>
+                <span>
+                  Proxy Creation
+                </span>
+                <br />
+                Creates proxy files suitable for web streaming for all media.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-39"
+    >
+      <div
+        className="emotion-38"
+      >
+        <div
+          className="emotion-34"
+        >
+          <h4
+            className="emotion-33"
+          >
+            <svg
+              className="emotion-40"
+              data-file-name="checkmark.svg"
+              width={28}
+            />
+            Zorroa
+          </h4>
+        </div>
+        <div
+          className="emotion-37"
+        >
+          <p
+            className="emotion-43"
+          >
+            <span>
+              These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
+            </span>
+          </p>
+          <fieldset
+            className="emotion-77"
+          >
+            <legend
+              className="emotion-44"
+            >
+              Images & Documents
+            </legend>
+            <div
+              className="emotion-45"
+            />
+            <table
+              cellSpacing="0"
+              className="emotion-76"
+            >
+              <thead>
+                <tr>
+                  <th>
+                     
+                  </th>
+                  <th>
+                    Module Name
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  className="emotion-51"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-50"
+                    >
+                      <div
+                        className="emotion-5"
+                      >
+                        <input
+                          className="emotion-2"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zmlp-classification"
+                        />
+                        <div
+                          className="emotion-4"
+                        >
+                          <svg
+                            className="emotion-3"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zmlp-classification
+                        , 
+                        Label Detection
+                        : 
+                        Adds a list of predicted label that apply to the media.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zmlp-classification
+                  </td>
+                  <td>
+                    <strong>
+                      Label Detection
+                      : 
+                    </strong>
+                    Adds a list of predicted label that apply to the media.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-51"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-50"
+                    >
+                      <div
+                        className="emotion-5"
+                      >
+                        <input
+                          className="emotion-2"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zmlp-objects"
+                        />
+                        <div
+                          className="emotion-4"
+                        >
+                          <svg
+                            className="emotion-3"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zmlp-objects
+                        , 
+                        Object Detection
+                        : 
+                        Detects up to 80 everyday objects.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zmlp-objects
+                  </td>
+                  <td>
+                    <strong>
+                      Object Detection
+                      : 
+                    </strong>
+                    Detects up to 80 everyday objects.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-51"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-50"
+                    >
+                      <div
+                        className="emotion-5"
+                      >
+                        <input
+                          className="emotion-2"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zmlp-face-recognition"
+                        />
+                        <div
+                          className="emotion-4"
+                        >
+                          <svg
+                            className="emotion-3"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zmlp-face-recognition
+                        , 
+                        Facial Recognition
+                        : 
+                        Recognizes faces within an image.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zmlp-face-recognition
+                  </td>
+                  <td>
+                    <strong>
+                      Facial Recognition
+                      : 
+                    </strong>
+                    Recognizes faces within an image.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-51"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-50"
+                    >
+                      <div
+                        className="emotion-5"
+                      >
+                        <input
+                          className="emotion-2"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zmlp-ocr"
+                        />
+                        <div
+                          className="emotion-4"
+                        >
+                          <svg
+                            className="emotion-3"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zmlp-ocr
+                        , 
+                        OCR (Optical Character Recognition)
+                        : 
+                        Transcribes text found in images.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zmlp-ocr
+                  </td>
+                  <td>
+                    <strong>
+                      OCR (Optical Character Recognition)
+                      : 
+                    </strong>
+                    Transcribes text found in images.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-51"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-50"
+                    >
+                      <div
+                        className="emotion-5"
+                      >
+                        <input
+                          className="emotion-2"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zml-deep-document"
+                        />
+                        <div
+                          className="emotion-4"
+                        >
+                          <svg
+                            className="emotion-3"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zml-deep-document
+                        , 
+                        Page Analysis
+                        : 
+                        Breaks multipage document into individual pages and imports them as individual entities.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zml-deep-document
+                  </td>
+                  <td>
+                    <strong>
+                      Page Analysis
+                      : 
+                    </strong>
+                    Breaks multipage document into individual pages and imports them as individual entities.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+          <fieldset
+            className="emotion-77"
+          >
+            <legend
+              className="emotion-44"
+            >
+              Video
+            </legend>
+            <div
+              className="emotion-45"
+            />
+            <table
+              cellSpacing="0"
+              className="emotion-76"
+            >
+              <thead>
+                <tr>
+                  <th>
+                     
+                  </th>
+                  <th>
+                    Module Name
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  className="emotion-51"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-50"
+                    >
+                      <div
+                        className="emotion-5"
+                      >
+                        <input
+                          className="emotion-2"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="shot-detection"
+                        />
+                        <div
+                          className="emotion-4"
+                        >
+                          <svg
+                            className="emotion-3"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        shot-detection
+                        , 
+                        Shot Detection
+                        : 
+                        Intelligently breaks a video into separate shots and imports each as its own entity.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    shot-detection
+                  </td>
+                  <td>
+                    <strong>
+                      Shot Detection
+                      : 
+                    </strong>
+                    Intelligently breaks a video into separate shots and imports each as its own entity.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-39"
+    >
+      <div
+        className="emotion-38"
+      >
+        <div
+          className="emotion-34"
+        >
+          <h4
+            className="emotion-33"
+          >
+            <svg
+              className="emotion-40"
+              data-file-name="checkmark.svg"
+              width={28}
+            />
+            Google Cloud
+          </h4>
+        </div>
+        <div
+          className="emotion-37"
+        >
+          <p
+            className="emotion-43"
+          >
+            <span>
+              <span
+                className="emotion-94"
+              >
+                Contact your Account Manager to activate.
+              </span>
+              <br />
+              These analysis modules call directly into the Google Cloud Vision API and can be activated individually.
+            </span>
+          </p>
+          <fieldset
+            className="emotion-77"
+          >
+            <legend
+              className="emotion-44"
+            >
+              Google Vision (Images & Documents)
+            </legend>
+            <div
+              className="emotion-45"
+            />
+            <table
+              cellSpacing="0"
+              className="emotion-76"
+            >
+              <thead>
+                <tr>
+                  <th>
+                     
+                  </th>
+                  <th>
+                    Module Name
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  className="emotion-51"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-50"
+                    >
+                      <div
+                        className="emotion-5"
+                      >
+                        <input
+                          className="emotion-2"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-vision-crop-hints"
+                        />
+                        <div
+                          className="emotion-4"
+                        >
+                          <svg
+                            className="emotion-3"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-vision-crop-hints
+                        , 
+                        Crop Hints (Vision)
+                        : 
+                        Determine suggested vertices for a crop region on an image.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-vision-crop-hints
+                  </td>
+                  <td>
+                    <strong>
+                      Crop Hints (Vision)
+                      : 
+                    </strong>
+                    Determine suggested vertices for a crop region on an image.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-51"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-50"
+                    >
+                      <div
+                        className="emotion-5"
+                      >
+                        <input
+                          className="emotion-2"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-document-text-detection"
+                        />
+                        <div
+                          className="emotion-4"
+                        >
+                          <svg
+                            className="emotion-3"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-document-text-detection
+                        , 
+                        OCR Documents (Vision)
+                        : 
+                        Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-document-text-detection
+                  </td>
+                  <td>
+                    <strong>
+                      OCR Documents (Vision)
+                      : 
+                    </strong>
+                    Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-51"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-50"
+                    >
+                      <div
+                        className="emotion-5"
+                      >
+                        <input
+                          className="emotion-2"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-vision-text-detection"
+                        />
+                        <div
+                          className="emotion-4"
+                        >
+                          <svg
+                            className="emotion-3"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-vision-text-detection
+                        , 
+                        OCR Images (Vision)
+                        : 
+                        Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-vision-text-detection
+                  </td>
+                  <td>
+                    <strong>
+                      OCR Images (Vision)
+                      : 
+                    </strong>
+                    Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-51"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-50"
+                    >
+                      <div
+                        className="emotion-5"
+                      >
+                        <input
+                          className="emotion-2"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-label-detection"
+                        />
+                        <div
+                          className="emotion-4"
+                        >
+                          <svg
+                            className="emotion-3"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-label-detection
+                        , 
+                        Label Detection (Vision)
+                        : 
+                        Add labels based on image content.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-label-detection
+                  </td>
+                  <td>
+                    <strong>
+                      Label Detection (Vision)
+                      : 
+                    </strong>
+                    Add labels based on image content.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+          <fieldset
+            className="emotion-77"
+          >
+            <legend
+              className="emotion-44"
+            >
+              Google Video
+            </legend>
+            <div
+              className="emotion-45"
+            />
+            <table
+              cellSpacing="0"
+              className="emotion-76"
+            >
+              <thead>
+                <tr>
+                  <th>
+                     
+                  </th>
+                  <th>
+                    Module Name
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  className="emotion-51"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-50"
+                    >
+                      <div
+                        className="emotion-5"
+                      >
+                        <input
+                          className="emotion-2"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-label-detection"
+                        />
+                        <div
+                          className="emotion-4"
+                        >
+                          <svg
+                            className="emotion-3"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-label-detection
+                        , 
+                        Label Detection (Video)
+                        : 
+                        Identifies objects, locations, activities, animal species, products, and more.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-label-detection
+                  </td>
+                  <td>
+                    <strong>
+                      Label Detection (Video)
+                      : 
+                    </strong>
+                    Identifies objects, locations, activities, animal species, products, and more.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-51"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-50"
+                    >
+                      <div
+                        className="emotion-5"
+                      >
+                        <input
+                          className="emotion-2"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-shot-detection"
+                        />
+                        <div
+                          className="emotion-4"
+                        >
+                          <svg
+                            className="emotion-3"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-shot-detection
+                        , 
+                        Shot Change (Video)
+                        : 
+                        Shot change analysis detects shot changes in a video
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-shot-detection
+                  </td>
+                  <td>
+                    <strong>
+                      Shot Change (Video)
+                      : 
+                    </strong>
+                    Shot change analysis detects shot changes in a video
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-51"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-50"
+                    >
+                      <div
+                        className="emotion-5"
+                      >
+                        <input
+                          className="emotion-2"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-explicit-content-detection"
+                        />
+                        <div
+                          className="emotion-4"
+                        >
+                          <svg
+                            className="emotion-3"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-explicit-content-detection
+                        , 
+                        Explicit Content Detection (Video)
+                        : 
+                        Explicit Content Detection detects adult content in videos. Adult content is content generally inappropriate for those under under 18 years of age and includes, but is not limited to, nudity, sexual activities, and pornography. Such content detected in cartoons or anime is also identified.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-explicit-content-detection
+                  </td>
+                  <td>
+                    <strong>
+                      Explicit Content Detection (Video)
+                      : 
+                    </strong>
+                    Explicit Content Detection detects adult content in videos. Adult content is content generally inappropriate for those under under 18 years of age and includes, but is not limited to, nudity, sexual activities, and pornography. Such content detected in cartoons or anime is also identified.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-151"
+    >
+      <a
+        className="emotion-149"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Cancel
+      </a>
+      <button
+        className="emotion-150"
+        onClick={[Function]}
+        type="submit"
+      >
+        Save
+      </button>
+    </div>
+  </form>,
+]
+`;
