@@ -38,7 +38,7 @@ class DataSourceViewSet(BaseProjectViewSet):
     def retrieve(self, request, project_pk, pk):
         return self._zmlp_retrieve(request, pk)
 
-    def destroy(self, request, project, pk):
+    def destroy(self, request, project_pk, pk):
         return self._zmlp_destroy(request, pk)
 
     @lru_cache(maxsize=128)
