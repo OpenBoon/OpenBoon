@@ -1,3 +1,7 @@
-variable "zone" {}
+variable "zone" {
+}
 
-variable "initial-node-count" {default = 1}
+variable "initial-node-count" {
+  default = 1
+}
+

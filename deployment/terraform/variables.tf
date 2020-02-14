@@ -5,17 +5,17 @@ variable "project" {
 
 variable "country" {
   description = "GCP country abbreviation (i.e. us, eu)."
-  default = "us"
+  default     = "us"
 }
 
 variable "region" {
   description = "GCP region (i.e. central1, east1)."
-  default = "central1"
+  default     = "central1"
 }
 
 variable "zone" {
   description = "GCP zone letter (i.e. a, b)."
-  default = "a"
+  default     = "a"
 }
 
 variable "terraform-credentials" {
@@ -42,12 +42,9 @@ variable "google-oauth-client-id" {
   description = "Client ID to enable Google OAuth based login."
 }
 
-variable "frontend-sentry-dsn" {
-  description = "Identifier for sending error messages to Sentry for collection."
-}
-
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"
-  zone = "${var.country}-${var.region}-${var.zone}"
+  zone   = "${var.country}-${var.region}-${var.zone}"
 }
+
