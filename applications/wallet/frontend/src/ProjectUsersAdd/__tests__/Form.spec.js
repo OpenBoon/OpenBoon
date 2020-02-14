@@ -6,6 +6,10 @@ import ProjectUsersAddForm from '../Form'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
+jest.mock('../helpers')
+
+const noop = () => () => {}
+
 describe('<ProjectUsersAddForm />', () => {
   it('should render properly after permissions are loaded', () => {
     require('next/router').__setUseRouter({
@@ -24,7 +28,7 @@ describe('<ProjectUsersAddForm />', () => {
     // Input email
     act(() => {
       component.root
-        .findByProps({ id: 'email' })
+        .findByProps({ name: 'emails' })
         .props.onChange({ target: { value: 'jane@email.com' } })
     })
 
@@ -32,6 +36,24 @@ describe('<ProjectUsersAddForm />', () => {
     act(() => {
       component.root
         .findByProps({ type: 'checkbox', value: 'SystemProjectOverride' })
+        .props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Submit the form
+    act(() => {
+      component.root
+        .findByProps({ children: 'Send Invite' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Reset form
+    act(() => {
+      component.root
+        .findByProps({ children: 'Add Another User' })
         .props.onClick()
     })
 
