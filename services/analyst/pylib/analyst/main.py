@@ -33,6 +33,9 @@ def main():
     else:
         logging.basicConfig(level=logging.INFO)
 
+    flask_log = logging.getLogger('werkzeug')
+    flask_log.setLevel(logging.ERROR)
+
     api = service.ServiceComponents(args)
     setup_routes(api)
 

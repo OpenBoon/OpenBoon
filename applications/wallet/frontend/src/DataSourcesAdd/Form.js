@@ -2,22 +2,49 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import Form, { MAX_WIDTH } from '../Form'
+import { constants } from '../Styles'
+
+import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import SectionSubTitle from '../SectionSubTitle'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Textarea, { VARIANTS as TEXTAREA_VARIANTS } from '../Textarea'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
+import CheckboxGroup from '../Checkbox/Group'
+
+import { MODULES } from './helpers'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
+import DataSourcesAddModules from './Modules'
 
 const INITIAL_STATE = {
   name: '',
   url: '',
   key: '',
   errors: {},
+  fileTypes: {},
+  modules: {},
 }
+
+const FILE_TYPES = [
+  {
+    name: 'Image Files',
+    legend: 'GIF, PNG, JPG, JPEG, TIF, TIFF, PSD',
+    icon: '/icons/images.png',
+  },
+  {
+    name: 'Documents (PDF & MS Office)',
+    legend: 'PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX',
+    icon: '/icons/documents.png',
+  },
+  {
+    name: 'Video Files',
+    legend: 'MP4, M4V, MOV, MPG, MEPG, OGG',
+    icon: '/icons/videos.png',
+  },
+]
 
 const reducer = (state, action) => ({ ...state, ...action })
 
@@ -30,7 +57,7 @@ const DataSourcesAddForm = () => {
 
   return (
     <Form style={{ width: 'auto' }}>
-      <div css={{ width: MAX_WIDTH }}>
+      <div css={{ width: constants.form.maxWidth }}>
         <SectionTitle>Data Source Name</SectionTitle>
 
         <Input
@@ -59,7 +86,7 @@ const DataSourcesAddForm = () => {
         />
       </div>
 
-      <div css={{ minWidth: MAX_WIDTH, maxWidth: '50%' }}>
+      <div css={{ minWidth: constants.form.maxWidth, maxWidth: '50%' }}>
         <Textarea
           id="key"
           variant={TEXTAREA_VARIANTS.SECONDARY}
@@ -71,7 +98,20 @@ const DataSourcesAddForm = () => {
         />
       </div>
 
-      <SectionTitle>Select File Types to Import</SectionTitle>
+      <CheckboxGroup
+        legend="Select File Types to Import"
+        onClick={fileType =>
+          dispatch({ fileTypes: { ...state.fileTypes, ...fileType } })
+        }
+        options={FILE_TYPES.map(({ name, legend, icon }) => ({
+          key: name,
+          label: name,
+          icon: <img src={icon} alt={name} width="40px" />,
+          legend,
+          initialValue: false,
+        }))}
+        variant={CHECKBOX_VARIANTS.SECONDARY}
+      />
 
       <SectionTitle>Select Analysis</SectionTitle>
 
@@ -80,6 +120,16 @@ const DataSourcesAddForm = () => {
       </SectionSubTitle>
 
       <DataSourcesAddAutomaticAnalysis />
+
+      {MODULES.map(module => (
+        <DataSourcesAddModules
+          key={module.provider}
+          module={module}
+          onClick={modules =>
+            dispatch({ modules: { ...state.modules, ...modules } })
+          }
+        />
+      ))}
 
       <ButtonGroup>
         <Link

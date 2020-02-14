@@ -32,6 +32,22 @@ describe('<Fetch /> helpers', () => {
       }
     })
 
+    it('should return the raw response if its not a json', async () => {
+      initializeFetcher({ setUser: noop })
+
+      fetch.mockResponseOnce(null, { status: 200 })
+
+      try {
+        await fetcher('/url')
+      } catch (response) {
+        expect(response.status).toBe(200)
+
+        expect(response.statusText).toBe('Ok')
+
+        expect(response).toMatchSnapshot()
+      }
+    })
+
     it('should logout the user', async () => {
       const mockSetUser = jest.fn()
       const mockRemoveItem = jest.fn()

@@ -148,10 +148,10 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  color: #b3b3b3;
 }
 
 .emotion-12 {
-  color: #b3b3b3;
   font-size: 15px;
   line-height: 18px;
   font-weight: 700;
@@ -159,6 +159,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 
 .emotion-13 {
   color: #808080;
+  padding-left: 0;
 }
 
 .emotion-106 {
@@ -900,10 +901,10 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  color: #b3b3b3;
 }
 
 .emotion-12 {
-  color: #b3b3b3;
   font-size: 15px;
   line-height: 18px;
   font-weight: 700;
@@ -911,6 +912,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 
 .emotion-13 {
   color: #808080;
+  padding-left: 0;
 }
 
 .emotion-106 {
