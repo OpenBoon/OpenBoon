@@ -6,29 +6,31 @@ export const CHECKMARK_WIDTH = 28
 
 const Accordion = ({ title, children }) => {
   return (
-    <div css={{ backgroundColor: colors.structure.smoke }}>
-      <div
-        css={{
-          borderBottom: constants.borders.tabs,
-          padding: spacing.normal,
-        }}>
-        <h4
+    <div css={{ paddingTop: spacing.normal }}>
+      <div css={{ backgroundColor: colors.structure.smoke }}>
+        <div
           css={{
-            fontSize: typography.size.medium,
-            lineHeight: typography.height.medium,
-            display: 'flex',
-            alignItems: 'center',
+            borderBottom: constants.borders.tabs,
+            padding: spacing.normal,
           }}>
-          {title}
-        </h4>
-      </div>
-      <div
-        css={{
-          padding: spacing.normal,
-          paddingLeft: spacing.normal + CHECKMARK_WIDTH + spacing.normal,
-          paddingBottom: spacing.spacious,
-        }}>
-        {children}
+          <h4
+            css={{
+              fontSize: typography.size.medium,
+              lineHeight: typography.height.medium,
+              display: 'flex',
+              alignItems: 'center',
+            }}>
+            {title}
+          </h4>
+        </div>
+        <div
+          css={{
+            padding: spacing.normal,
+            paddingLeft: spacing.normal + CHECKMARK_WIDTH + spacing.normal,
+            paddingBottom: spacing.spacious,
+          }}>
+          {children}
+        </div>
       </div>
     </div>
   )
