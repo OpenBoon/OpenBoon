@@ -14,8 +14,10 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 
+import { MODULES } from './helpers'
+
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
-import DataSourcesAddZorroaModules from './ZorroaModules'
+import DataSourcesAddModules from './Modules'
 
 const INITIAL_STATE = {
   name: '',
@@ -119,13 +121,15 @@ const DataSourcesAddForm = () => {
 
       <DataSourcesAddAutomaticAnalysis />
 
-      <div>&nbsp;</div>
-
-      <DataSourcesAddZorroaModules
-        onClick={modules =>
-          dispatch({ modules: { ...state.modules, ...modules } })
-        }
-      />
+      {MODULES.map(module => (
+        <DataSourcesAddModules
+          key={module.provider}
+          module={module}
+          onClick={modules =>
+            dispatch({ modules: { ...state.modules, ...modules } })
+          }
+        />
+      ))}
 
       <ButtonGroup>
         <Link

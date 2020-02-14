@@ -29,12 +29,15 @@ const CheckboxTableRow = ({ value, label, legend, initialValue, onClick }) => {
             onClick={toggleValue}
           />
           <div className="hidden">
-            {label} {legend}
+            {value}, {label}: {legend}
           </div>
         </label>
       </td>
-      <td>{label}</td>
-      <td>{legend}</td>
+      <td>{value}</td>
+      <td>
+        <strong>{label}:&nbsp;</strong>
+        {legend}
+      </td>
     </tr>
   )
 }
