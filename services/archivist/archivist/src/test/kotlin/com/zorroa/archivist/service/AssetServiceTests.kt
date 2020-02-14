@@ -12,8 +12,6 @@ import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.ProcessorMetric
 import com.zorroa.archivist.domain.ProcessorRef
-import com.zorroa.archivist.domain.Task
-import com.zorroa.archivist.domain.TaskExpandEvent
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.emptyZpsScript

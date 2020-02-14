@@ -89,8 +89,7 @@ class BatchCreateAssetsResponse(
 
     @ApiModelProperty("The ID of the analysis job, if analysis was selected")
     var jobId: UUID? = null
-)
-{
+) {
 
     @ApiModelProperty("The total number of assets to be updated.")
     val totalUpdated = created.size + exists.size

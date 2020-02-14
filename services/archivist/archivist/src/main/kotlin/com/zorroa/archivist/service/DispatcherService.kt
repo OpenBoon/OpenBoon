@@ -24,11 +24,9 @@ import com.zorroa.archivist.domain.TaskEventType
 import com.zorroa.archivist.domain.TaskExpandEvent
 import com.zorroa.archivist.domain.TaskId
 import com.zorroa.archivist.domain.TaskMessageEvent
-import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStatsEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
-import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.DispatchTaskDao
 import com.zorroa.archivist.repository.JobDao
