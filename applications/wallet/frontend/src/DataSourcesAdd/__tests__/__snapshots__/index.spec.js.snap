@@ -118,7 +118,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-104 {
+  .emotion-171 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -331,8 +331,11 @@ Array [
 .emotion-50 {
   margin: 0;
   padding-top: 8px;
-  padding-bottom: 16px;
   color: #b3b3b3;
+}
+
+.emotion-58 {
+  padding-top: 16px;
 }
 
 .emotion-57 {
@@ -412,12 +415,12 @@ Array [
   color: #ffffff;
 }
 
-.emotion-58 {
+.emotion-59 {
   color: #73b61c;
   margin-right: 16px;
 }
 
-.emotion-61 {
+.emotion-62 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
@@ -425,52 +428,90 @@ Array [
   max-width: 600px;
 }
 
-.emotion-98 {
+.emotion-96 {
+  border: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+  padding-bottom: 32px;
+}
+
+.emotion-63 {
+  float: left;
+  padding: 0;
+  padding-bottom: 12px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.emotion-64 {
+  clear: both;
+}
+
+.emotion-95 {
   width: 100%;
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-98 th,
-.emotion-98 td {
+.emotion-95 th,
+.emotion-95 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-98 th:first-of-type,
-.emotion-98 td:first-of-type {
+.emotion-95 th:first-of-type,
+.emotion-95 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-98 td {
-  border-top: 1px solid #4a4a4a;
+.emotion-95 th:nth-of-type(2),
+.emotion-95 td:nth-of-type(2) {
+  min-width: 300px;
+  font-family: Roboto Mono;
 }
 
-.emotion-98 td:first-of-type {
+.emotion-95 th:nth-of-type(3),
+.emotion-95 td:nth-of-type(3) {
+  width: 100%;
+}
+
+.emotion-95 th {
+  color: #b3b3b3;
+  font-weight: 500;
+}
+
+.emotion-95 td {
+  border-top: 1px solid #4a4a4a;
+  vertical-align: top;
+}
+
+.emotion-95 td:first-of-type {
   border: none;
 }
 
-.emotion-98 tr:hover td {
+.emotion-95 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-98 tr:hover + tr td {
+.emotion-95 tr:hover + tr td {
   border-top-color: transparent;
 }
 
-.emotion-98 tr:last-of-type td {
+.emotion-95 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-98 tr:last-of-type td:first-of-type {
+.emotion-95 tr:last-of-type td:first-of-type {
   border: none;
 }
 
-.emotion-67 {
+.emotion-70 {
   cursor: pointer;
 }
 
-.emotion-66 {
+.emotion-69 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -479,7 +520,11 @@ Array [
   -moz-user-select: none;
 }
 
-.emotion-103 {
+.emotion-113 {
+  color: #73b61c;
+}
+
+.emotion-170 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -488,12 +533,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-103 button,
-.emotion-103 a {
+.emotion-170 button,
+.emotion-170 a {
   margin-right: 16px;
 }
 
-.emotion-101 {
+.emotion-168 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -525,30 +570,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-101:hover {
+.emotion-168:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-101[aria-disabled=true] {
+.emotion-168[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-101,
-.emotion-101:hover,
-.emotion-101:visited {
+.emotion-168,
+.emotion-168:hover,
+.emotion-168:visited {
   background-color: #808080;
 }
 
-.emotion-101:hover {
+.emotion-168:hover {
   opacity: 0.5;
 }
 
-.emotion-101[aria-disabled=true] {
+.emotion-168[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-102 {
+.emotion-169 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -580,32 +625,32 @@ Array [
   background-color: transparent;
 }
 
-.emotion-102:hover {
+.emotion-169:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-102[aria-disabled=true] {
+.emotion-169[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-102,
-.emotion-102:hover,
-.emotion-102:visited {
+.emotion-169,
+.emotion-169:hover,
+.emotion-169:visited {
   background-color: #73b61c;
 }
 
-.emotion-102:hover {
+.emotion-169:hover {
   background-color: #96c955;
 }
 
-.emotion-102[aria-disabled=true] {
+.emotion-169[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-104"
+    className="emotion-171"
     method="post"
     onSubmit={[Function]}
   >
@@ -873,391 +918,931 @@ Array [
       Choose the type of analysis you would like performed on your data set:
     </p>
     <div
-      className="emotion-57"
+      className="emotion-58"
     >
       <div
-        className="emotion-53"
+        className="emotion-57"
       >
-        <h4
-          className="emotion-52"
+        <div
+          className="emotion-53"
         >
-          <svg
-            className="emotion-51"
-            data-file-name="checkmark.svg"
-            width={28}
-          />
-          Zorroa Automatic Analysis
-        </h4>
+          <h4
+            className="emotion-52"
+          >
+            <svg
+              className="emotion-51"
+              data-file-name="checkmark.svg"
+              width={28}
+            />
+            Zorroa Automatic Analysis
+          </h4>
+        </div>
+        <div
+          className="emotion-56"
+        >
+          <p
+            className="emotion-54"
+          >
+            The following basic analysis is applied to all data sets.
+          </p>
+          <ul
+            className="emotion-55"
+          >
+            <li>
+              <svg
+                data-file-name="checkmark.svg"
+              />
+              <div>
+                <span>
+                  File Introspection
+                </span>
+                <br />
+                Extracts native metadata from file.
+              </div>
+            </li>
+            <li>
+              <svg
+                data-file-name="checkmark.svg"
+              />
+              <div>
+                <span>
+                  Similarity Hash
+                </span>
+                <br />
+                Adds a hash to all images used to quantify the similarity between images.
+              </div>
+            </li>
+            <li>
+              <svg
+                data-file-name="checkmark.svg"
+              />
+              <div>
+                <span>
+                  Proxy Creation
+                </span>
+                <br />
+                Creates proxy files suitable for web streaming for all media.
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div
-        className="emotion-56"
-      >
-        <p
-          className="emotion-54"
-        >
-          The following basic analysis is applied to all data sets.
-        </p>
-        <ul
-          className="emotion-55"
-        >
-          <li>
-            <svg
-              data-file-name="checkmark.svg"
-            />
-            <div>
-              <span>
-                File Introspection
-              </span>
-              <br />
-              Extracts native metadata from file.
-            </div>
-          </li>
-          <li>
-            <svg
-              data-file-name="checkmark.svg"
-            />
-            <div>
-              <span>
-                Similarity Hash
-              </span>
-              <br />
-              Adds a hash to all images used to quantify the similarity between images.
-            </div>
-          </li>
-          <li>
-            <svg
-              data-file-name="checkmark.svg"
-            />
-            <div>
-              <span>
-                Proxy Creation
-              </span>
-              <br />
-              Creates proxy files suitable for web streaming for all media.
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div>
-       
     </div>
     <div
-      className="emotion-57"
+      className="emotion-58"
     >
       <div
-        className="emotion-53"
+        className="emotion-57"
       >
-        <h4
-          className="emotion-52"
+        <div
+          className="emotion-53"
         >
-          <svg
-            className="emotion-58"
-            data-file-name="checkmark.svg"
-            width={28}
-          />
-          Zorroa
-        </h4>
-      </div>
-      <div
-        className="emotion-56"
-      >
-        <p
-          className="emotion-61"
+          <h4
+            className="emotion-52"
+          >
+            <svg
+              className="emotion-59"
+              data-file-name="checkmark.svg"
+              width={28}
+            />
+            Zorroa
+          </h4>
+        </div>
+        <div
+          className="emotion-56"
         >
-          These analysis modules are included in your base package. You can run as many as you’d like,  but running more than you need will increase processing time.
-        </p>
-        <table
-          cellSpacing="0"
-          className="emotion-98"
-        >
-          <thead>
-            <tr>
-              <th>
-                 
-              </th>
-              <th>
-                Name
-              </th>
-              <th>
-                Description
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              className="emotion-67"
-              onClick={[Function]}
+          <p
+            className="emotion-62"
+          >
+            <span>
+              These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
+            </span>
+          </p>
+          <fieldset
+            className="emotion-96"
+          >
+            <legend
+              className="emotion-63"
             >
-              <td>
-                <label
-                  className="emotion-66"
+              Images & Documents
+            </legend>
+            <div
+              className="emotion-64"
+            />
+            <table
+              cellSpacing="0"
+              className="emotion-95"
+            >
+              <thead>
+                <tr>
+                  <th>
+                     
+                  </th>
+                  <th>
+                    Module Name
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  className="emotion-70"
+                  onClick={[Function]}
                 >
-                  <div
-                    className="emotion-24"
-                  >
-                    <input
-                      className="emotion-21"
-                      defaultChecked={false}
-                      onClick={[Function]}
-                      type="checkbox"
-                      value="label-detection"
-                    />
-                    <div
-                      className="emotion-23"
+                  <td>
+                    <label
+                      className="emotion-69"
                     >
-                      <svg
-                        className="emotion-22"
-                        data-file-name="checkmark.svg"
-                        width={20}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className="hidden"
-                  >
-                    Label Detection
-                     
+                      <div
+                        className="emotion-24"
+                      >
+                        <input
+                          className="emotion-21"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zmlp-classification"
+                        />
+                        <div
+                          className="emotion-23"
+                        >
+                          <svg
+                            className="emotion-22"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zmlp-classification
+                        , 
+                        Label Detection
+                        : 
+                        Adds a list of predicted label that apply to the media.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zmlp-classification
+                  </td>
+                  <td>
+                    <strong>
+                      Label Detection
+                      : 
+                    </strong>
                     Adds a list of predicted label that apply to the media.
-                  </div>
-                </label>
-              </td>
-              <td>
-                Label Detection
-              </td>
-              <td>
-                Adds a list of predicted label that apply to the media.
-              </td>
-            </tr>
-            <tr
-              className="emotion-67"
-              onClick={[Function]}
-            >
-              <td>
-                <label
-                  className="emotion-66"
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-70"
+                  onClick={[Function]}
                 >
-                  <div
-                    className="emotion-24"
-                  >
-                    <input
-                      className="emotion-21"
-                      defaultChecked={false}
-                      onClick={[Function]}
-                      type="checkbox"
-                      value="object-detection"
-                    />
-                    <div
-                      className="emotion-23"
+                  <td>
+                    <label
+                      className="emotion-69"
                     >
-                      <svg
-                        className="emotion-22"
-                        data-file-name="checkmark.svg"
-                        width={20}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className="hidden"
-                  >
-                    Object Detection
-                     
+                      <div
+                        className="emotion-24"
+                      >
+                        <input
+                          className="emotion-21"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zmlp-objects"
+                        />
+                        <div
+                          className="emotion-23"
+                        >
+                          <svg
+                            className="emotion-22"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zmlp-objects
+                        , 
+                        Object Detection
+                        : 
+                        Detects up to 80 everyday objects.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zmlp-objects
+                  </td>
+                  <td>
+                    <strong>
+                      Object Detection
+                      : 
+                    </strong>
                     Detects up to 80 everyday objects.
-                  </div>
-                </label>
-              </td>
-              <td>
-                Object Detection
-              </td>
-              <td>
-                Detects up to 80 everyday objects.
-              </td>
-            </tr>
-            <tr
-              className="emotion-67"
-              onClick={[Function]}
-            >
-              <td>
-                <label
-                  className="emotion-66"
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-70"
+                  onClick={[Function]}
                 >
-                  <div
-                    className="emotion-24"
-                  >
-                    <input
-                      className="emotion-21"
-                      defaultChecked={false}
-                      onClick={[Function]}
-                      type="checkbox"
-                      value="facial-recognition"
-                    />
-                    <div
-                      className="emotion-23"
+                  <td>
+                    <label
+                      className="emotion-69"
                     >
-                      <svg
-                        className="emotion-22"
-                        data-file-name="checkmark.svg"
-                        width={20}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className="hidden"
-                  >
-                    Facial Recognition
-                     
+                      <div
+                        className="emotion-24"
+                      >
+                        <input
+                          className="emotion-21"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zmlp-face-recognition"
+                        />
+                        <div
+                          className="emotion-23"
+                        >
+                          <svg
+                            className="emotion-22"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zmlp-face-recognition
+                        , 
+                        Facial Recognition
+                        : 
+                        Recognizes faces within an image.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zmlp-face-recognition
+                  </td>
+                  <td>
+                    <strong>
+                      Facial Recognition
+                      : 
+                    </strong>
                     Recognizes faces within an image.
-                  </div>
-                </label>
-              </td>
-              <td>
-                Facial Recognition
-              </td>
-              <td>
-                Recognizes faces within an image.
-              </td>
-            </tr>
-            <tr
-              className="emotion-67"
-              onClick={[Function]}
-            >
-              <td>
-                <label
-                  className="emotion-66"
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-70"
+                  onClick={[Function]}
                 >
-                  <div
-                    className="emotion-24"
-                  >
-                    <input
-                      className="emotion-21"
-                      defaultChecked={false}
-                      onClick={[Function]}
-                      type="checkbox"
-                      value="ocr"
-                    />
-                    <div
-                      className="emotion-23"
+                  <td>
+                    <label
+                      className="emotion-69"
                     >
-                      <svg
-                        className="emotion-22"
-                        data-file-name="checkmark.svg"
-                        width={20}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className="hidden"
-                  >
-                    OCR (Optical Character Recognition)
-                     
+                      <div
+                        className="emotion-24"
+                      >
+                        <input
+                          className="emotion-21"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zmlp-ocr"
+                        />
+                        <div
+                          className="emotion-23"
+                        >
+                          <svg
+                            className="emotion-22"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zmlp-ocr
+                        , 
+                        OCR (Optical Character Recognition)
+                        : 
+                        Transcribes text found in images.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zmlp-ocr
+                  </td>
+                  <td>
+                    <strong>
+                      OCR (Optical Character Recognition)
+                      : 
+                    </strong>
                     Transcribes text found in images.
-                  </div>
-                </label>
-              </td>
-              <td>
-                OCR (Optical Character Recognition)
-              </td>
-              <td>
-                Transcribes text found in images.
-              </td>
-            </tr>
-            <tr
-              className="emotion-67"
-              onClick={[Function]}
-            >
-              <td>
-                <label
-                  className="emotion-66"
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-70"
+                  onClick={[Function]}
                 >
-                  <div
-                    className="emotion-24"
-                  >
-                    <input
-                      className="emotion-21"
-                      defaultChecked={false}
-                      onClick={[Function]}
-                      type="checkbox"
-                      value="shot-detection"
-                    />
-                    <div
-                      className="emotion-23"
+                  <td>
+                    <label
+                      className="emotion-69"
                     >
-                      <svg
-                        className="emotion-22"
-                        data-file-name="checkmark.svg"
-                        width={20}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className="hidden"
-                  >
-                    Shot Detection
-                     
-                    Intelligently breaks a video into separate shots and imports each as its own entity.
-                  </div>
-                </label>
-              </td>
-              <td>
-                Shot Detection
-              </td>
-              <td>
-                Intelligently breaks a video into separate shots and imports each as its own entity.
-              </td>
-            </tr>
-            <tr
-              className="emotion-67"
-              onClick={[Function]}
-            >
-              <td>
-                <label
-                  className="emotion-66"
-                >
-                  <div
-                    className="emotion-24"
-                  >
-                    <input
-                      className="emotion-21"
-                      defaultChecked={false}
-                      onClick={[Function]}
-                      type="checkbox"
-                      value="page-analysis"
-                    />
-                    <div
-                      className="emotion-23"
-                    >
-                      <svg
-                        className="emotion-22"
-                        data-file-name="checkmark.svg"
-                        width={20}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className="hidden"
-                  >
-                    Page Analysis
-                     
+                      <div
+                        className="emotion-24"
+                      >
+                        <input
+                          className="emotion-21"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="zml-deep-document"
+                        />
+                        <div
+                          className="emotion-23"
+                        >
+                          <svg
+                            className="emotion-22"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        zml-deep-document
+                        , 
+                        Page Analysis
+                        : 
+                        Breaks multipage document into individual pages and imports them as individual entities.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    zml-deep-document
+                  </td>
+                  <td>
+                    <strong>
+                      Page Analysis
+                      : 
+                    </strong>
                     Breaks multipage document into individual pages and imports them as individual entities.
-                  </div>
-                </label>
-              </td>
-              <td>
-                Page Analysis
-              </td>
-              <td>
-                Breaks multipage document into individual pages and imports them as individual entities.
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+          <fieldset
+            className="emotion-96"
+          >
+            <legend
+              className="emotion-63"
+            >
+              Video
+            </legend>
+            <div
+              className="emotion-64"
+            />
+            <table
+              cellSpacing="0"
+              className="emotion-95"
+            >
+              <thead>
+                <tr>
+                  <th>
+                     
+                  </th>
+                  <th>
+                    Module Name
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  className="emotion-70"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-69"
+                    >
+                      <div
+                        className="emotion-24"
+                      >
+                        <input
+                          className="emotion-21"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="shot-detection"
+                        />
+                        <div
+                          className="emotion-23"
+                        >
+                          <svg
+                            className="emotion-22"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        shot-detection
+                        , 
+                        Shot Detection
+                        : 
+                        Intelligently breaks a video into separate shots and imports each as its own entity.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    shot-detection
+                  </td>
+                  <td>
+                    <strong>
+                      Shot Detection
+                      : 
+                    </strong>
+                    Intelligently breaks a video into separate shots and imports each as its own entity.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+        </div>
       </div>
     </div>
     <div
-      className="emotion-103"
+      className="emotion-58"
+    >
+      <div
+        className="emotion-57"
+      >
+        <div
+          className="emotion-53"
+        >
+          <h4
+            className="emotion-52"
+          >
+            <svg
+              className="emotion-59"
+              data-file-name="checkmark.svg"
+              width={28}
+            />
+            Google Cloud
+          </h4>
+        </div>
+        <div
+          className="emotion-56"
+        >
+          <p
+            className="emotion-62"
+          >
+            <span>
+              <span
+                className="emotion-113"
+              >
+                Contact your Account Manager to activate.
+              </span>
+              <br />
+              These analysis modules call directly into the Google Cloud Vision API and can be activated individually.
+            </span>
+          </p>
+          <fieldset
+            className="emotion-96"
+          >
+            <legend
+              className="emotion-63"
+            >
+              Google Vision (Images & Documents)
+            </legend>
+            <div
+              className="emotion-64"
+            />
+            <table
+              cellSpacing="0"
+              className="emotion-95"
+            >
+              <thead>
+                <tr>
+                  <th>
+                     
+                  </th>
+                  <th>
+                    Module Name
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  className="emotion-70"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-69"
+                    >
+                      <div
+                        className="emotion-24"
+                      >
+                        <input
+                          className="emotion-21"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-vision-crop-hints"
+                        />
+                        <div
+                          className="emotion-23"
+                        >
+                          <svg
+                            className="emotion-22"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-vision-crop-hints
+                        , 
+                        Crop Hints (Vision)
+                        : 
+                        Determine suggested vertices for a crop region on an image.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-vision-crop-hints
+                  </td>
+                  <td>
+                    <strong>
+                      Crop Hints (Vision)
+                      : 
+                    </strong>
+                    Determine suggested vertices for a crop region on an image.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-70"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-69"
+                    >
+                      <div
+                        className="emotion-24"
+                      >
+                        <input
+                          className="emotion-21"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-document-text-detection"
+                        />
+                        <div
+                          className="emotion-23"
+                        >
+                          <svg
+                            className="emotion-22"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-document-text-detection
+                        , 
+                        OCR Documents (Vision)
+                        : 
+                        Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-document-text-detection
+                  </td>
+                  <td>
+                    <strong>
+                      OCR Documents (Vision)
+                      : 
+                    </strong>
+                    Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-70"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-69"
+                    >
+                      <div
+                        className="emotion-24"
+                      >
+                        <input
+                          className="emotion-21"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-vision-text-detection"
+                        />
+                        <div
+                          className="emotion-23"
+                        >
+                          <svg
+                            className="emotion-22"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-vision-text-detection
+                        , 
+                        OCR Images (Vision)
+                        : 
+                        Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-vision-text-detection
+                  </td>
+                  <td>
+                    <strong>
+                      OCR Images (Vision)
+                      : 
+                    </strong>
+                    Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-70"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-69"
+                    >
+                      <div
+                        className="emotion-24"
+                      >
+                        <input
+                          className="emotion-21"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-label-detection"
+                        />
+                        <div
+                          className="emotion-23"
+                        >
+                          <svg
+                            className="emotion-22"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-label-detection
+                        , 
+                        Label Detection (Vision)
+                        : 
+                        Add labels based on image content.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-label-detection
+                  </td>
+                  <td>
+                    <strong>
+                      Label Detection (Vision)
+                      : 
+                    </strong>
+                    Add labels based on image content.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+          <fieldset
+            className="emotion-96"
+          >
+            <legend
+              className="emotion-63"
+            >
+              Google Video
+            </legend>
+            <div
+              className="emotion-64"
+            />
+            <table
+              cellSpacing="0"
+              className="emotion-95"
+            >
+              <thead>
+                <tr>
+                  <th>
+                     
+                  </th>
+                  <th>
+                    Module Name
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  className="emotion-70"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-69"
+                    >
+                      <div
+                        className="emotion-24"
+                      >
+                        <input
+                          className="emotion-21"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-label-detection"
+                        />
+                        <div
+                          className="emotion-23"
+                        >
+                          <svg
+                            className="emotion-22"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-label-detection
+                        , 
+                        Label Detection (Video)
+                        : 
+                        Identifies objects, locations, activities, animal species, products, and more.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-label-detection
+                  </td>
+                  <td>
+                    <strong>
+                      Label Detection (Video)
+                      : 
+                    </strong>
+                    Identifies objects, locations, activities, animal species, products, and more.
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-70"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-69"
+                    >
+                      <div
+                        className="emotion-24"
+                      >
+                        <input
+                          className="emotion-21"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-shot-detection"
+                        />
+                        <div
+                          className="emotion-23"
+                        >
+                          <svg
+                            className="emotion-22"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-shot-detection
+                        , 
+                        Shot Change (Video)
+                        : 
+                        Shot change analysis detects shot changes in a video
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-shot-detection
+                  </td>
+                  <td>
+                    <strong>
+                      Shot Change (Video)
+                      : 
+                    </strong>
+                    Shot change analysis detects shot changes in a video
+                  </td>
+                </tr>
+                <tr
+                  className="emotion-70"
+                  onClick={[Function]}
+                >
+                  <td>
+                    <label
+                      className="emotion-69"
+                    >
+                      <div
+                        className="emotion-24"
+                      >
+                        <input
+                          className="emotion-21"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="gcp-explicit-content-detection"
+                        />
+                        <div
+                          className="emotion-23"
+                        >
+                          <svg
+                            className="emotion-22"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="hidden"
+                      >
+                        gcp-explicit-content-detection
+                        , 
+                        Explicit Content Detection (Video)
+                        : 
+                        Explicit Content Detection detects adult content in videos. Adult content is content generally inappropriate for those under under 18 years of age and includes, but is not limited to, nudity, sexual activities, and pornography. Such content detected in cartoons or anime is also identified.
+                      </div>
+                    </label>
+                  </td>
+                  <td>
+                    gcp-explicit-content-detection
+                  </td>
+                  <td>
+                    <strong>
+                      Explicit Content Detection (Video)
+                      : 
+                    </strong>
+                    Explicit Content Detection detects adult content in videos. Adult content is content generally inappropriate for those under under 18 years of age and includes, but is not limited to, nudity, sexual activities, and pornography. Such content detected in cartoons or anime is also identified.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-170"
     >
       <a
-        className="emotion-101"
+        className="emotion-168"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -1266,7 +1851,7 @@ Array [
       </a>
       <button
         aria-disabled={true}
-        className="emotion-102"
+        className="emotion-169"
         onClick={[Function]}
         type="submit"
       >

@@ -54,7 +54,7 @@ describe('<DataSourcesAddForm />', () => {
     // Select module
     act(() => {
       component.root
-        .findByProps({ type: 'checkbox', value: 'label-detection' })
+        .findByProps({ type: 'checkbox', value: 'zmlp-classification' })
         .props.onClick({ preventDefault: noop })
     })
 
