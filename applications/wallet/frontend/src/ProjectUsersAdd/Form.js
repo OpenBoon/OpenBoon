@@ -6,6 +6,7 @@ import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
+import { VARIANTS as CHECKBOX_ICON_VARIANTS } from '../Checkbox/Icon'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
@@ -61,6 +62,7 @@ const ProjectUsersAddForm = () => {
           initialValue: false,
         }))}
         variant={CHECKBOX_VARIANTS.PRIMARY}
+        iconVariant={CHECKBOX_ICON_VARIANTS.PRIMARY}
       />
 
       <ButtonGroup>

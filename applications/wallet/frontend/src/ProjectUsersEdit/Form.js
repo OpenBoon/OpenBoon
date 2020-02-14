@@ -6,6 +6,7 @@ import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import FormAlert from '../FormAlert'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
+import { VARIANTS as CHECKBOX_ICON_VARIANTS } from '../Checkbox/Icon'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
@@ -45,6 +46,7 @@ const ProjectUsersEditForm = ({ projectId, user, permissions }) => {
           initialValue: !!user.permissions.includes(name),
         }))}
         variant={CHECKBOX_VARIANTS.PRIMARY}
+        iconVariant={CHECKBOX_ICON_VARIANTS.PRIMARY}
       />
 
       <ButtonGroup>

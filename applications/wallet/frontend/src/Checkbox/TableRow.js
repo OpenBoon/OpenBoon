@@ -2,9 +2,16 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import CheckboxIcon from './Icon'
+import CheckboxIcon, { VARIANTS } from './Icon'
 
-const CheckboxTableRow = ({ value, label, legend, initialValue, onClick }) => {
+const CheckboxTableRow = ({
+  variant,
+  value,
+  label,
+  legend,
+  initialValue,
+  onClick,
+}) => {
   const [isChecked, setIsChecked] = useState(initialValue)
 
   const toggleValue = event => {
@@ -24,6 +31,7 @@ const CheckboxTableRow = ({ value, label, legend, initialValue, onClick }) => {
             MozUserSelect: 'none', // Firefox
           }}>
           <CheckboxIcon
+            variant={variant}
             value={value}
             isChecked={isChecked}
             onClick={toggleValue}
@@ -43,6 +51,7 @@ const CheckboxTableRow = ({ value, label, legend, initialValue, onClick }) => {
 }
 
 CheckboxTableRow.propTypes = {
+  variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   value: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   legend: PropTypes.string.isRequired,

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, typography } from '../Styles'
 
-import CheckboxIcon from './Icon'
+import CheckboxIcon, { VARIANTS as CHECKBOX_ICON_VARIANTS } from './Icon'
 
 const STYLES = {
   PRIMARY: {
@@ -42,6 +42,7 @@ export const VARIANTS = Object.keys(STYLES).reduce(
 
 const Checkbox = ({
   variant,
+  iconVariant,
   value,
   label,
   icon,
@@ -61,6 +62,7 @@ const Checkbox = ({
         paddingBottom: spacing.normal,
       }}>
       <CheckboxIcon
+        variant={iconVariant}
         value={value}
         isChecked={isChecked}
         onClick={() => {
@@ -103,6 +105,7 @@ const Checkbox = ({
 
 Checkbox.propTypes = {
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
+  iconVariant: PropTypes.oneOf(Object.keys(CHECKBOX_ICON_VARIANTS)).isRequired,
   value: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   icon: PropTypes.node.isRequired,

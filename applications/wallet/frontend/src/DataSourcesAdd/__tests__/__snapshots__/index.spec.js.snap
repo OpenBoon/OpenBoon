@@ -1002,7 +1002,7 @@ Array [
           >
             <svg
               className="emotion-59"
-              data-file-name="checkmark.svg"
+              data-file-name="cross.svg"
               width={28}
             />
             Zorroa
@@ -1399,7 +1399,7 @@ Array [
           >
             <svg
               className="emotion-59"
-              data-file-name="checkmark.svg"
+              data-file-name="cross.svg"
               width={28}
             />
             Google Cloud

@@ -11,10 +11,11 @@ import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Textarea, { VARIANTS as TEXTAREA_VARIANTS } from '../Textarea'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
+import { VARIANTS as CHECKBOX_ICON_VARIANTS } from '../Checkbox/Icon'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 
-import { MODULES } from './helpers'
+import { MODULES, modulesByProvider } from './helpers'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
 import DataSourcesAddModules from './Modules'
@@ -111,6 +112,7 @@ const DataSourcesAddForm = () => {
           initialValue: false,
         }))}
         variant={CHECKBOX_VARIANTS.SECONDARY}
+        iconVariant={CHECKBOX_ICON_VARIANTS.PRIMARY}
       />
 
       <SectionTitle>Select Analysis</SectionTitle>
@@ -121,15 +123,29 @@ const DataSourcesAddForm = () => {
 
       <DataSourcesAddAutomaticAnalysis />
 
-      {MODULES.map(module => (
-        <DataSourcesAddModules
-          key={module.provider}
-          module={module}
-          onClick={modules =>
-            dispatch({ modules: { ...state.modules, ...modules } })
-          }
-        />
-      ))}
+      {MODULES.map(module => {
+        const selectedKeys = Object.keys(state.modules)
+
+        const selectedModules = selectedKeys.length
+          ? selectedKeys.filter(selectedKey => {
+              return state.modules[selectedKey] === true
+            })
+          : []
+
+        return (
+          <DataSourcesAddModules
+            key={module.provider}
+            module={module}
+            selectedModules={selectedModules}
+            providerModules={modulesByProvider[module.provider]}
+            onClick={modules => {
+              return dispatch({
+                modules: { ...state.modules, ...modules },
+              })
+            }}
+          />
+        )
+      })}
 
       <ButtonGroup>
         <Link

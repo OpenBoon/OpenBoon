@@ -1,6 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import Checkbox, { VARIANTS } from '..'
+import { VARIANTS as CHECKBOX_ICON_VARIANTS } from '../Icon'
 
 describe('<Checkbox />', () => {
   it('should render properly', () => {
@@ -15,6 +16,7 @@ describe('<Checkbox />', () => {
         onClick={mockFn}
         initialValue={false}
         variant={VARIANTS.PRIMARY}
+        iconVariant={CHECKBOX_ICON_VARIANTS.PRIMARY}
       />,
     )
 
