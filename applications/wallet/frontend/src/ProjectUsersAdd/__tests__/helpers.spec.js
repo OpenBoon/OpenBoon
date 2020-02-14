@@ -1,3 +1,5 @@
+import projectUsersAdd from '../__mocks__/projectUsersAdd'
+
 import { onSubmit } from '../helpers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
@@ -7,24 +9,7 @@ describe('<ProjectUsersAdd /> helpers', () => {
     it('should call the API', async () => {
       const mockFn = jest.fn()
 
-      fetch.mockResponseOnce(
-        JSON.stringify({
-          results: {
-            succeeded: [
-              {
-                email: 'jane@zorroa.com',
-                permissions: ['SuperAdmin', 'AssetsRead'],
-              },
-            ],
-            failed: [
-              {
-                email: 'joe@zorroa.com',
-                permissions: ['SuperAdmin', 'AssetsRead'],
-              },
-            ],
-          },
-        }),
-      )
+      fetch.mockResponseOnce(JSON.stringify(projectUsersAdd))
 
       await onSubmit({
         dispatch: mockFn,
@@ -66,20 +51,7 @@ describe('<ProjectUsersAdd /> helpers', () => {
         }),
       })
 
-      expect(mockFn).toHaveBeenCalledWith({
-        succeeded: [
-          {
-            email: 'jane@zorroa.com',
-            permissions: ['SuperAdmin', 'AssetsRead'],
-          },
-        ],
-        failed: [
-          {
-            email: 'joe@zorroa.com',
-            permissions: ['SuperAdmin', 'AssetsRead'],
-          },
-        ],
-      })
+      expect(mockFn).toHaveBeenCalledWith(projectUsersAdd.results)
     })
 
     it('should error', async () => {
