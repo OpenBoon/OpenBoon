@@ -14,37 +14,19 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 
-import { MODULES } from './helpers'
+import { FILE_TYPES, MODULES, onSubmit } from './helpers'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
 import DataSourcesAddModules from './Modules'
 
 const INITIAL_STATE = {
   name: '',
-  url: '',
-  key: '',
-  errors: {},
+  uri: '',
+  credential: '',
   fileTypes: {},
   modules: {},
+  errors: {},
 }
-
-const FILE_TYPES = [
-  {
-    name: 'Image Files',
-    legend: 'GIF, PNG, JPG, JPEG, TIF, TIFF, PSD',
-    icon: '/icons/images.png',
-  },
-  {
-    name: 'Documents (PDF & MS Office)',
-    legend: 'PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX',
-    icon: '/icons/documents.png',
-  },
-  {
-    name: 'Video Files',
-    legend: 'MP4, M4V, MOV, MPG, MEPG, OGG',
-    icon: '/icons/videos.png',
-  },
-]
 
 const reducer = (state, action) => ({ ...state, ...action })
 
@@ -75,26 +57,26 @@ const DataSourcesAddForm = () => {
         <SectionTitle>Connect to Source: Google Cloud Storage</SectionTitle>
 
         <Input
-          id="url"
+          id="uri"
           variant={INPUT_VARIANTS.SECONDARY}
           label="Bucket Address"
           type="text"
-          value={state.url}
-          onChange={({ target: { value } }) => dispatch({ url: value })}
+          value={state.uri}
+          onChange={({ target: { value } }) => dispatch({ uri: value })}
           hasError={state.errors.name !== undefined}
-          errorMessage={state.errors.url}
+          errorMessage={state.errors.uri}
         />
       </div>
 
       <div css={{ minWidth: constants.form.maxWidth, maxWidth: '50%' }}>
         <Textarea
-          id="key"
+          id="credential"
           variant={TEXTAREA_VARIANTS.SECONDARY}
-          label="If this bucket is private, please paste the JSON service account key:"
-          value={state.key}
-          onChange={({ target: { value } }) => dispatch({ key: value })}
+          label="If this bucket is private, please paste the JSON service account credential:"
+          value={state.credential}
+          onChange={({ target: { value } }) => dispatch({ credential: value })}
           hasError={state.errors.name !== undefined}
-          errorMessage={state.errors.key}
+          errorMessage={state.errors.credential}
         />
       </div>
 
@@ -103,10 +85,10 @@ const DataSourcesAddForm = () => {
         onClick={fileType =>
           dispatch({ fileTypes: { ...state.fileTypes, ...fileType } })
         }
-        options={FILE_TYPES.map(({ name, legend, icon }) => ({
-          key: name,
-          label: name,
-          icon: <img src={icon} alt={name} width="40px" />,
+        options={FILE_TYPES.map(({ key, label, legend, icon }) => ({
+          key,
+          label,
+          icon: <img src={icon} alt={label} width="40px" />,
           legend,
           initialValue: false,
         }))}
@@ -141,8 +123,8 @@ const DataSourcesAddForm = () => {
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() => console.warn({ dispatch, state })}
-          isDisabled={!state.name || !state.url}>
+          onClick={() => onSubmit({ dispatch, projectId, state })}
+          isDisabled={!state.name || !state.uri}>
           Create Data Source
         </Button>
       </ButtonGroup>
