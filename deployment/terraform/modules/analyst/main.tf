@@ -70,10 +70,31 @@ resource "kubernetes_deployment" "analyst" {
           value    = "false"
           effect   = "NoSchedule"
         }
+        volume {
+          name = "dockersock"
+          host_path {
+            path = "/var/run/docker.sock"
+          }
+        }
+        volume {
+          name = "dockerhubcreds"
+          secret {
+            secret_name = "dockerhubcreds"
+          }
+        }
         container {
           name              = "analyst"
           image             = "zmlp/analyst:${var.container-tag}"
           image_pull_policy = "Always"
+          volume_mount {
+            mount_path = "/var/run/docker.sock"
+            name = "dockersock"
+          }
+          volume_mount {
+            name       = "dockerhubcreds"
+            mount_path = "/etc/docker"
+            read_only  = true
+          }
           env {
             name  = "ZMLP_SERVER"
             value = var.archivist-url

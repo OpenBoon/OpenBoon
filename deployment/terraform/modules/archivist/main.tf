@@ -34,7 +34,7 @@ resource "google_sql_database" "archivist" {
 resource "google_sql_user" "zorroa" {
   name     = var.database-user
   instance = var.sql-instance-name
-  password = "random_string.sql-password.result"
+  password = random_string.sql-password.result
 }
 
 ## K8S Deployment
