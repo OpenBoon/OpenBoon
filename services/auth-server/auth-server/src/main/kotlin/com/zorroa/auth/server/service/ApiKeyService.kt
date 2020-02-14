@@ -28,6 +28,8 @@ interface ApiKeyService {
      */
     fun create(spec: ApiKeySpec): ApiKey
 
+    fun update(id: UUID, spec: ApiKeySpec): ApiKey
+
     fun get(id: UUID): ApiKey
 
     fun findAll(): List<ApiKey>
@@ -78,6 +80,39 @@ class ApiKeyServiceImpl constructor(
         )
 
         return apiKeyRepository.saveAndFlush(key)
+    }
+
+    override fun update(id: UUID, spec: ApiKeySpec): ApiKey {
+
+        if (!getZmlpActor().hasAnyPermission(Permission.SystemServiceKey)) {
+            validatePermissionsCanBeAssigned(spec.permissions)
+        }
+
+        val time = System.currentTimeMillis()
+        val actor = getZmlpActor()
+        val apiKey: ApiKey = get(id)
+
+        val key = ApiKey(
+            apiKey.id,
+            apiKey.projectId,
+            apiKey.accessKey,
+            apiKey.secretKey,
+            spec.name,
+            spec.permissions.map { it.name }.toSet(),
+            apiKey.timeCreated, time,
+            apiKey.actorCreated,
+            actor.toString()
+        )
+
+        logger.event(
+            LogObject.API_KEY, LogAction.UPDATE,
+            mapOf(
+                "apiKeyId" to key.id,
+                "apiKeyName" to key.name
+            )
+        )
+
+        return apiKeyRepository.save(key)
     }
 
     @Transactional(readOnly = true)
