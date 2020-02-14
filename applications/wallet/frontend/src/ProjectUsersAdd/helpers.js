@@ -19,16 +19,7 @@ export const onSubmit = async ({
       body,
     })
 
-    dispatch({
-      succeeded: succeeded.map(user => ({
-        email: user.email,
-        permissions: user.permissions,
-      })),
-      failed: failed.map(user => ({
-        email: user.email,
-        permissions: user.permissions,
-      })),
-    })
+    dispatch({ succeeded, failed })
   } catch (response) {
     const errors = await response.json()
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {

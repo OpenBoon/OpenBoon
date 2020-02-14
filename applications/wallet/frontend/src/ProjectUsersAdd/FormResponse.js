@@ -13,9 +13,11 @@ const ProjectUsersAddFormResponse = ({
   projectId,
   succeeded,
   failed,
-  permissions,
+  permissions: p,
   onReset,
 }) => {
+  const permissions = Object.keys(p).filter(name => p[name])
+
   return (
     <div>
       {failed.length > 0 && (
@@ -83,7 +85,7 @@ ProjectUsersAddFormResponse.propTypes = {
       permissions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     }).isRequired,
   ).isRequired,
-  permissions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  permissions: PropTypes.objectOf(PropTypes.bool.isRequired).isRequired,
   onReset: PropTypes.func.isRequired,
 }
 

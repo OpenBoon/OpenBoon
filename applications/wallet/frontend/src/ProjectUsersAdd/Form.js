@@ -44,9 +44,7 @@ const ProjectUsersAddForm = () => {
         projectId={projectId}
         succeeded={state.succeeded}
         failed={state.failed}
-        permissions={Object.keys(state.permissions).filter(
-          name => state.permissions[name],
-        )}
+        permissions={state.permissions}
         onReset={() => dispatch(INITIAL_STATE)}
       />
     )
