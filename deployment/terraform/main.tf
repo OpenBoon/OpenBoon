@@ -77,7 +77,7 @@ locals {
     "accessKey": "${random_string.access-key.result}",
     "secretKey": "${random_string.secret-key.result}",
     "permissions": [
-        "SuperAdmin", "ProjectAdmin", "AssetsRead", "AssetsImport", "ApiKeyManage", "ProjectManage"
+        "ProjectFilesWrite", "SystemProjectDecrypt", "SystemManage", "SystemProjectOverride", "AssetsImport", "SystemMonitor", "ProjectManage", "ProjectFilesRead", "AssetsRead", "AssetsDelete"
     ]
 }
 EOF
