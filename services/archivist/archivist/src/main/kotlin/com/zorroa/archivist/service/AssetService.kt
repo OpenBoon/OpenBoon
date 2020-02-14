@@ -340,8 +340,11 @@ class AssetServiceImpl : AssetService {
 
         docs.forEach { (id, doc) ->
             prepAssetForUpdate(id, doc)
+            // Will always create for some reason
+            // TODO: probably have to check for existing IDs.
             bulk.add(
                 rest.newIndexRequest(id)
+                    .create(false)
                     .source(doc)
                     .opType(DocWriteRequest.OpType.INDEX)
             )
@@ -416,6 +419,8 @@ class AssetServiceImpl : AssetService {
             assetNeedsReprocessing(it, parentScript.execute ?: listOf())
         }
 
+        // Build the final asset list which are the assets that
+        // need additional processing.
         val finalAssetList = assets.plus(getAll(createdAssetIds))
 
         return if (finalAssetList.isEmpty()) {
@@ -529,6 +534,7 @@ class AssetServiceImpl : AssetService {
                     )
                     failures.add(
                         mapOf(
+                            "assetId" to it.id,
                             "path" to path,
                             "failureMessage" to msg
                         )

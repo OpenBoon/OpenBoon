@@ -4,6 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AnalystSpec
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetSpec
+import com.zorroa.archivist.domain.BatchIndexAssetsEvent
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobSpec
@@ -24,6 +25,7 @@ import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
@@ -77,6 +79,50 @@ class DispatcherServiceTests : AbstractTest() {
                 "processor", "zplugins.core.TestProcessor"
             ).totalTime(TimeUnit.SECONDS)
         )
+    }
+
+    @Test
+    fun testHandleIndexEventInvalidData() {
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
+
+        jobService.create(spec)
+        val task = dispatcherService.getWaitingTasks(getProjectId(), 1)[0]
+
+        authenticateAsAnalyst()
+        val rsp = dispatcherService.handleIndexEvent(task, BatchIndexAssetsEvent(
+            mapOf("1234" to mutableMapOf<String, Any>("foo" to "bar")), null))
+        assertTrue(rsp?.hasFailures() ?: false)
+
+        authenticate()
+        val error = taskErrorDao.getLast()
+        assertTrue("introduction of [foo] within [_doc] is not allowed" in error.message)
+    }
+
+    @Test(expected = EmptyResultDataAccessException::class)
+    fun testHandleIndexEvent() {
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScript("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
+
+        jobService.create(spec)
+        val task = dispatcherService.getWaitingTasks(getProjectId(), 1)[0]
+
+        authenticateAsAnalyst()
+        val rsp = dispatcherService.handleIndexEvent(task, BatchIndexAssetsEvent(
+            mapOf("1234" to
+                mutableMapOf<String, Any>("source" to mutableMapOf("path" to "/cat.jpg"))), null))
+
+        authenticate()
+        // should be no errors
+        taskErrorDao.getLast()
     }
 
     @Test
@@ -400,7 +446,7 @@ class DispatcherServiceTests : AbstractTest() {
             env = mutableMapOf("foo" to "bar")
         )
 
-        val job = jobService.create(spec)
+        jobService.create(spec)
         val zps = emptyZpsScript("bar")
         zps.execute = mutableListOf(ProcessorRef("foo", "bar"))
 
