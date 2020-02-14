@@ -1,50 +1,50 @@
 ## SQl Instance
 resource "random_string" "sql-password" {
-  length = 16
+  length  = 16
   special = false
 }
 
 resource "google_sql_user" "auth-server" {
   name     = "zorroa-auth-server"
-  instance = "${var.sql-instance-name}"
-  password = "${random_string.sql-password.result}"
+  instance = var.sql-instance-name
+  password = random_string.sql-password.result
 }
 
 resource "google_sql_database" "auth" {
-  name      = "zorroa-auth"
-  instance  = "${var.sql-instance-name}"
+  name     = "zorroa-auth"
+  instance = var.sql-instance-name
 }
 
 ## K8S Deployment
 resource "kubernetes_deployment" "auth-server" {
-  provider = "kubernetes"
-  depends_on = ["google_sql_user.auth-server"]
+  provider   = kubernetes
+  depends_on = [google_sql_user.auth-server]
   metadata {
-    name = "auth-server"
-    namespace = "${var.namespace}"
-    labels {
+    name      = "auth-server"
+    namespace = var.namespace
+    labels = {
       app = "auth-server"
     }
   }
   spec {
-//    replicas = 2
+    //    replicas = 2
     selector {
-      match_labels {
+      match_labels = {
         app = "auth-server"
       }
     }
     template {
       metadata {
-        labels {
+        labels = {
           app = "auth-server"
         }
       }
       spec {
-        node_selector {
+        node_selector = {
           type = "default"
         }
         image_pull_secrets {
-          name = "${var.image-pull-secret}"
+          name = var.image-pull-secret
         }
         volume {
           name = "cloudsql-instance-credentials"
@@ -53,87 +53,86 @@ resource "kubernetes_deployment" "auth-server" {
           }
         }
         container {
-          name = "cloudsql-proxy"
-          image = "gcr.io/cloudsql-docker/gce-proxy:1.11"
+          name    = "cloudsql-proxy"
+          image   = "gcr.io/cloudsql-docker/gce-proxy:1.11"
           command = ["/cloud_sql_proxy", "-instances=${var.sql-connection-name}=tcp:5432", "-credential_file=/secrets/cloudsql/credentials.json"]
           security_context {
-            run_as_user = 2
-            privileged = false
+            run_as_user                = 2
+            privileged                 = false
             allow_privilege_escalation = false
           }
           volume_mount {
-            name = "cloudsql-instance-credentials"
+            name       = "cloudsql-instance-credentials"
             mount_path = "/secrets/cloudsql"
-            read_only = true
+            read_only  = true
           }
           resources {
             limits {
               memory = "512Mi"
-              cpu = 0.5
+              cpu    = 0.5
             }
             requests {
               memory = "256Mi"
-              cpu = 0.2
+              cpu    = 0.2
             }
           }
         }
         container {
-          name = "auth-server"
-          image = "zmlp/authserver:${var.container-tag}"
+          name              = "auth-server"
+          image             = "zmlp/authserver:${var.container-tag}"
           image_pull_policy = "Always"
-//          liveness_probe = {
-//            initial_delay_seconds = 30
-//            period_seconds = 5
-//            http_get {
-//              scheme = "HTTP"
-//              path = "/monitor/health"
-//              port = "80"
-//            }
-//          }
-//          readiness_probe = {
-//            initial_delay_seconds = 30
-//            period_seconds = 30
-//            http_get {
-//              scheme = "HTTP"
-//              path = "/monitor/health"
-//              port = "80"
-//            }
-//          }
+          liveness_probe {
+            initial_delay_seconds = 120
+            period_seconds = 30
+            http_get {
+              scheme = "HTTP"
+              path = "/monitor/health"
+              port = "9090"
+            }
+          }
+          readiness_probe {
+            failure_threshold = 6
+            initial_delay_seconds = 90
+            period_seconds = 30
+            http_get {
+              scheme = "HTTP"
+              path = "/monitor/health"
+              port = "9090"
+            }
+          }
           port {
-            container_port = "80"
+            container_port = "9090"
           }
           resources {
             limits {
               memory = "1Gi"
-              cpu = 0.5
+              cpu    = 0.5
             }
             requests {
               memory = "512Mi"
-              cpu = 0.2
+              cpu    = 0.2
             }
           }
-          env = [
-            {
-              name = "SPRING_DATASOURCE_URL"
-              value = "jdbc:postgresql://localhost/${google_sql_database.auth.name}?currentSchema=auth&useSSL=false&cloudSqlInstance=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${google_sql_user.auth-server.name}&password=${random_string.sql-password.result}"
-            },
-            {
-              name = "ZMLP_SECURITY_INCEPTIONKEY"
-              value = "${var.inception-key-b64}"
-            },
-            {
-              name = "SWAGGER_ISPUBLIC"
-              value = "false"
-            },
-            {
-              name = "SPRING_PROFILES_ACTIVE"
-              value = "gcs"
-            },
-            {
-              name = "ZMLP_STORAGE_SYSTEM_BUCKET"
-              value = "${var.system-bucket}"
-            }
-          ]
+          env {
+            name  = "SPRING_DATASOURCE_URL"
+            value = "jdbc:postgresql://localhost/${google_sql_database.auth.name}?currentSchema=auth&useSSL=false&cloudSqlInstance=${var.sql-connection-name}&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=${google_sql_user.auth-server.name}&password=${random_string.sql-password.result}"
+          }
+          env {
+            name  = "ZMLP_SECURITY_INCEPTIONKEY"
+            value = var.inception-key-b64
+          }
+          env {
+            name  = "SWAGGER_ISPUBLIC"
+            value = "false"
+          }
+          env {
+            name  = "SPRING_PROFILES_ACTIVE"
+            value = "gcs"
+          }
+          env {
+            name  = "ZMLP_STORAGE_SYSTEM_BUCKET"
+            value = var.system-bucket
+          }
         }
       }
     }
@@ -141,35 +140,34 @@ resource "kubernetes_deployment" "auth-server" {
 }
 
 resource "kubernetes_service" "auth-server" {
-  "metadata" {
-    name = "auth-server-service"
-    namespace = "${var.namespace}"
-    labels {
+  metadata {
+    name      = "auth-server-service"
+    namespace = var.namespace
+    labels = {
       app = "auth-server"
     }
   }
-  "spec" {
-    cluster_ip = "${var.ip-address}"
+  spec {
+    cluster_ip = var.ip-address
     port {
-      name = "http"
-      protocol = "TCP"
-      port = 80
+      name        = "http"
+      protocol    = "TCP"
+      port        = 80
       target_port = 9090
     }
-    selector {
+    selector = {
       app = "auth-server"
     }
     type = "ClusterIP"
   }
 }
 
-
 resource "kubernetes_horizontal_pod_autoscaler" "auth-server" {
-  provider = "kubernetes"
+  provider = kubernetes
   metadata {
-    name = "auth-server-hpa"
-    namespace = "${var.namespace}"
-    labels {
+    name      = "auth-server-hpa"
+    namespace = var.namespace
+    labels = {
       app = "auth-server"
     }
   }
@@ -178,9 +176,10 @@ resource "kubernetes_horizontal_pod_autoscaler" "auth-server" {
     min_replicas = 2
     scale_target_ref {
       api_version = "apps/v1"
-      kind = "Deployment"
-      name = "auth-server"
+      kind        = "Deployment"
+      name        = "auth-server"
     }
     target_cpu_utilization_percentage = 80
   }
 }
+

@@ -1,58 +1,58 @@
 resource "google_compute_address" "api-gateway-external" {
-  name = "${var.external-ip-name}"
+  name         = var.external-ip-name
   address_type = "EXTERNAL"
 }
 
 resource "kubernetes_deployment" "api-gateway" {
-  provider = "kubernetes"
+  provider = kubernetes
   metadata {
-    name = "api-gateway"
-    namespace = "${var.namespace}"
-    labels {
+    name      = "api-gateway"
+    namespace = var.namespace
+    labels = {
       app = "api-gateway"
     }
   }
   spec {
     replicas = 2
     selector {
-      match_labels {
+      match_labels = {
         app = "api-gateway"
       }
     }
     template {
       metadata {
-        labels {
+        labels = {
           app = "api-gateway"
         }
       }
       spec {
-        node_selector {
+        node_selector = {
           type = "default"
         }
         image_pull_secrets {
-          name = "${var.image-pull-secret}"
+          name = var.image-pull-secret
         }
         container {
-          name = "api-gateway"
-          image = "zmlp/apigateway:${var.container-tag}"
+          name              = "api-gateway"
+          image             = "zmlp/apigateway:${var.container-tag}"
           image_pull_policy = "Always"
-          liveness_probe = {
+          liveness_probe {
             initial_delay_seconds = 120
-            period_seconds = 5
+            period_seconds        = 5
             http_get {
               scheme = "HTTP"
-              path = "/monitor/health"
-              port = "80"
+              path   = "/monitor/health"
+              port   = "80"
             }
           }
-          readiness_probe = {
-            failure_threshold = 6
+          readiness_probe {
+            failure_threshold     = 6
             initial_delay_seconds = 30
-            period_seconds = 30
+            period_seconds        = 30
             http_get {
               scheme = "HTTP"
-              path = "/monitor/health"
-              port = "80"
+              path   = "/monitor/health"
+              port   = "80"
             }
           }
           port {
@@ -61,20 +61,20 @@ resource "kubernetes_deployment" "api-gateway" {
           resources {
             limits {
               memory = "2Gi"
-              cpu = 0.5
+              cpu    = 0.5
             }
             requests {
               memory = "512Mi"
-              cpu = 0.2
+              cpu    = 0.2
             }
           }
           env {
-            name = "ARCHIVIST_HOST"
-            value = "${var.archivist_host}"
+            name  = "ARCHIVIST_HOST"
+            value = var.archivist_host
           }
           env {
-            name = "AUTH_SERVER_HOST"
-            value = "${var.auth_server_host}"
+            name  = "AUTH_SERVER_HOST"
+            value = var.auth_server_host
           }
         }
       }
@@ -84,19 +84,19 @@ resource "kubernetes_deployment" "api-gateway" {
 
 resource "kubernetes_service" "api-gateway" {
   metadata {
-    name = "api-gateway-service"
-    namespace = "${var.namespace}"
-    labels {
+    name      = "api-gateway-service"
+    namespace = var.namespace
+    labels = {
       app = "api-gateway"
     }
   }
   spec {
     port {
-      name = "http"
+      name     = "http"
       protocol = "TCP"
-      port = 80
+      port     = 80
     }
-    selector {
+    selector = {
       app = "api-gateway"
     }
     type = "NodePort"
@@ -104,8 +104,8 @@ resource "kubernetes_service" "api-gateway" {
 }
 
 resource "google_compute_managed_ssl_certificate" "default" {
-  provider = "google-beta"
-  name = "api-gateway-cert"
+  provider = google-beta
+  name     = "api-gateway-cert"
   managed {
     domains = ["api.zmlp.zorroa.com"]
   }
@@ -113,12 +113,12 @@ resource "google_compute_managed_ssl_certificate" "default" {
 
 resource "kubernetes_ingress" "api-gateway" {
   metadata {
-    name = "api-gateway-ingress"
-    namespace = "${var.namespace}"
-    annotations {
-      "kubernetes.io/ingress.allow-http" = "false"
-      "ingress.gcp.kubernetes.io/pre-shared-cert" = "${google_compute_managed_ssl_certificate.default.name}"
-      "kubernetes.io/ingress.global-static-ip-name" = "${google_compute_address.api-gateway-external.name}"
+    name      = "api-gateway-ingress"
+    namespace = var.namespace
+    annotations = {
+      "kubernetes.io/ingress.allow-http"            = "false"
+      "ingress.gcp.kubernetes.io/pre-shared-cert"   = google_compute_managed_ssl_certificate.default.name
+      "kubernetes.io/ingress.global-static-ip-name" = google_compute_address.api-gateway-external.name
     }
   }
   spec {
@@ -130,11 +130,11 @@ resource "kubernetes_ingress" "api-gateway" {
 }
 
 resource "kubernetes_horizontal_pod_autoscaler" "api-gateway" {
-  provider = "kubernetes"
+  provider = kubernetes
   metadata {
-    name = "api-gateway-hpa"
-    namespace = "${var.namespace}"
-    labels {
+    name      = "api-gateway-hpa"
+    namespace = var.namespace
+    labels = {
       app = "api-gateway"
     }
   }
@@ -143,9 +143,10 @@ resource "kubernetes_horizontal_pod_autoscaler" "api-gateway" {
     min_replicas = 2
     scale_target_ref {
       api_version = "apps/v1"
-      kind = "Deployment"
-      name = "api-gateway"
+      kind        = "Deployment"
+      name        = "api-gateway"
     }
     target_cpu_utilization_percentage = 80
   }
 }
+
