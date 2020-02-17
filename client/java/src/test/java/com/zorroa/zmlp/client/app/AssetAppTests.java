@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -92,6 +93,14 @@ public class AssetAppTests extends AbstractAppTests {
         BatchCreateAssetResponse response = assetApp.uploadFiles(batchAssetSpec);
 
         assertEquals("abc123", response.getStatus().get(0).getAssetId());
+    }
+
+    @Test
+    public void testBatchUploadFileCrawler() throws IOException {
+        BatchUploadFileCrawler batchUploadFileCrawler = new BatchUploadFileCrawler("/Users/ironaraujo/Downloads/", 1)
+                .addFileType("jpg");
+        List<Path> filter = batchUploadFileCrawler.filter();
+        int a = 0;
     }
 
     @Test
