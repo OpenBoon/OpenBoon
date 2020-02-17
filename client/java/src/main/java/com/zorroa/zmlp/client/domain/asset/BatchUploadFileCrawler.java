@@ -19,11 +19,9 @@ public class BatchUploadFileCrawler {
 
     private Integer maxDepth;
 
-    private Long maximumFileSize = Optional.ofNullable(Long.parseLong(System.getenv("ZMLP_MAXIMUM_FILE_SIZE")))
-                                            .orElse(100 * 1024 * 1024L); //100 Megabytes
+    private Long maximumFileSize;
 
-    private Long maximumBatchSize = Optional.ofNullable(Long.parseLong(System.getenv("ZMLP_MAXIMUM_BATCH_SIZE")))
-                                            .orElse(250 * 1024 * 1024L); //250 Megabytes
+    private Long maximumBatchSize;
 
     private List<String> fileTypes = new ArrayList();
 
@@ -38,12 +36,24 @@ public class BatchUploadFileCrawler {
     private Predicate<Path> fileMimeTypePredicate = path -> mimeTypes.contains(getMimeTypeFromFile(path));
 
     public BatchUploadFileCrawler(String filePath) {
-        this.filePath = Optional.ofNullable(filePath).orElse("");
+        loadInstanceVars(filePath);
     }
 
     public BatchUploadFileCrawler(String filePath, Integer maxDepth) {
-        this.filePath = Optional.ofNullable(filePath).orElse("");
         this.maxDepth = maxDepth;
+        loadInstanceVars(filePath);
+    }
+
+    private void loadInstanceVars(String path) {
+        this.filePath = Optional.ofNullable(path).orElse("");
+
+        this.maximumFileSize = 100 * 1024 * 1024L;
+        this.maximumBatchSize = 250 * 1024 * 1024L;
+
+        Optional.ofNullable(System.getenv("ZMLP_MAXIMUM_FILE_SIZE"))
+                .ifPresent(value -> this.maximumFileSize = Long.parseLong(value));
+        Optional.ofNullable(System.getenv("ZMLP_MAXIMUM_BATCH_SIZE"))
+                .ifPresent(value -> this.maximumBatchSize = Long.parseLong(value));
     }
 
     public BatchUploadFileCrawler addFileType(String fileType) {

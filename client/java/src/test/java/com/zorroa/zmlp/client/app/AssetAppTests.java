@@ -97,10 +97,14 @@ public class AssetAppTests extends AbstractAppTests {
 
     @Test
     public void testBatchUploadFileCrawler() throws IOException {
-        BatchUploadFileCrawler batchUploadFileCrawler = new BatchUploadFileCrawler("/Users/ironaraujo/Downloads/", 1)
-                .addFileType("jpg");
+        BatchUploadFileCrawler batchUploadFileCrawler = new BatchUploadFileCrawler("../../../zorroa-test-data")
+                .addFileType("jpg")
+                .addFileType("mov")
+                .addFileType("json");
         List<Path> filter = batchUploadFileCrawler.filter();
-        int a = 0;
+
+        assertEquals(31,filter.size());
+
     }
 
     @Test
