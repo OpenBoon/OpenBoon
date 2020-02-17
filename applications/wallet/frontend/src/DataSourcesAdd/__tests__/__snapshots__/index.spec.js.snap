@@ -415,12 +415,11 @@ Array [
   color: #ffffff;
 }
 
-.emotion-59 {
-  color: #73b61c;
+.emotion-61 {
   margin-right: 16px;
 }
 
-.emotion-61 {
+.emotion-60 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -431,9 +430,10 @@ Array [
   border: 2px solid #808080;
   border-radius: 2px;
   cursor: pointer;
+  padding: 0;
 }
 
-.emotion-60 path {
+.emotion-59 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
@@ -1019,25 +1019,23 @@ Array [
           <h4
             className="emotion-52"
           >
-            <svg
-              className="emotion-59"
-              data-file-name="checkmark.svg"
-              width={28}
-            />
-            Zorroa
             <div
               className="emotion-61"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="button"
-              tabIndex="0"
             >
-              <svg
+              <button
                 className="emotion-60"
-                data-file-name="checkmark.svg"
-                width={28}
-              />
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                type="button"
+              >
+                <svg
+                  className="emotion-59"
+                  data-file-name="checkmark.svg"
+                  width={28}
+                />
+              </button>
             </div>
+            Zorroa
           </h4>
         </div>
         <div
@@ -1429,25 +1427,23 @@ Array [
           <h4
             className="emotion-52"
           >
-            <svg
-              className="emotion-59"
-              data-file-name="checkmark.svg"
-              width={28}
-            />
-            Google Cloud
             <div
               className="emotion-61"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              role="button"
-              tabIndex="0"
             >
-              <svg
+              <button
                 className="emotion-60"
-                data-file-name="checkmark.svg"
-                width={28}
-              />
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                type="button"
+              >
+                <svg
+                  className="emotion-59"
+                  data-file-name="checkmark.svg"
+                  width={28}
+                />
+              </button>
             </div>
+            Google Cloud
           </h4>
         </div>
         <div

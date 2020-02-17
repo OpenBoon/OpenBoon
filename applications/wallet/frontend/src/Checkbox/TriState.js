@@ -1,108 +1,45 @@
 import PropTypes from 'prop-types'
-import { useReducer } from 'react'
 
 import { colors, constants } from '../Styles'
-import CheckmarkSvg from '../Icons/checkmark.svg'
-import CheckboxPartialSvg from '../Icons/checkboxpartial.svg'
 
-const SIZE = 28
+import TriStateIcon, {
+  CHECKED,
+  UNCHECKED,
+  PARTIALLY_CHECKED,
+  SIZE,
+} from './TriStateIcon'
 
-const reducer = (state, action) => ({ ...state, ...action })
-
-const CheckBoxTriState = ({ isPartial, isChecked }) => {
-  const [state, dispatch] = useReducer(reducer, { isPartial, isChecked })
-
-  const changeState = () => {
-    if (state.isChecked) {
-      return dispatch({ isPartial: false, isChecked: false })
-    }
-
-    if (state.isPartial) {
-      return dispatch({ isPartial: false, isChecked: true })
-    }
-
-    if (!state.isPartial && !state.isChecked) {
-      return dispatch({ isPartial: false, isChecked: true })
-    }
-  }
-
-  const isPartialIcon = (
-    <CheckboxPartialSvg
-      width={SIZE}
-      css={{
-        path: {
-          transition: 'all .3s ease',
-          opacity: 100,
-        },
-        color: colors.key.one,
-      }}
-    />
-  )
-
-  const isSelectedIcon = (
-    <CheckmarkSvg
-      width={SIZE}
-      css={{
-        path: {
-          transition: 'all .3s ease',
-          opacity: 100,
-          fill: colors.white,
-        },
-      }}
-    />
-  )
-
-  const isUnselectedIcon = (
-    <CheckmarkSvg
-      width={SIZE}
-      css={{
-        path: {
-          transition: 'all .3s ease',
-          opacity: 0,
-          fill: colors.white,
-        },
-      }}
-    />
-  )
-
-  let displayIcon
-  if (!state.isPartial && !state.isChecked) {
-    displayIcon = isUnselectedIcon
-  } else if (state.isPartial) {
-    displayIcon = isPartialIcon
-  } else {
-    displayIcon = isSelectedIcon
-  }
-
+const CheckBoxTriState = ({ status }) => {
   return (
-    <div
-      role="button"
-      tabIndex="0"
+    <button
+      type="button"
       css={{
         display: 'flex',
         width: SIZE,
         height: SIZE,
         backgroundColor:
-          state.isPartial || state.isChecked
-            ? colors.key.one
-            : colors.transparent,
+          status === 'UNCHECKED' ? colors.transparent : colors.key.one,
         border:
-          state.isPartial || state.isChecked
-            ? `2px solid ${colors.key.one}`
-            : `2px solid ${colors.structure.steel}`,
+          status === 'UNCHECKED'
+            ? `2px solid ${colors.structure.steel}`
+            : `2px solid ${colors.key.one}`,
         borderRadius: constants.borderRadius.small,
         cursor: 'pointer',
+        padding: 0,
       }}
-      onClick={changeState}
-      onKeyDown={changeState}>
-      {displayIcon}
-    </div>
+      onClick={() => {
+        console.warn(status)
+      }}
+      onKeyDown={() => {
+        console.warn(status)
+      }}>
+      <TriStateIcon status={status} />
+    </button>
   )
 }
 
 CheckBoxTriState.propTypes = {
-  isPartial: PropTypes.bool.isRequired,
-  isChecked: PropTypes.bool.isRequired,
+  status: PropTypes.oneOf([CHECKED, UNCHECKED, PARTIALLY_CHECKED]).isRequired,
 }
 
 export default CheckBoxTriState

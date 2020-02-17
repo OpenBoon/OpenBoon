@@ -2,26 +2,25 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, constants } from '../Styles'
 
-import CheckmarkSvg from '../Icons/checkmark.svg'
-
-import Accordion, { CHECKMARK_WIDTH } from '../Accordion'
+import Accordion from '../Accordion'
 import CheckboxTable from '../Checkbox/Table'
 import CheckboxTriState from '../Checkbox/TriState'
+import { UNCHECKED } from '../Checkbox/TriStateIcon'
 
 const DataSourcesAddModules = ({
   module: { provider, description, categories },
   onClick,
 }) => {
+  const status = UNCHECKED
+
   return (
     <Accordion
       title={
         <>
-          <CheckmarkSvg
-            width={CHECKMARK_WIDTH}
-            css={{ color: colors.key.one, marginRight: spacing.normal }}
-          />
+          <div css={{ marginRight: spacing.normal }}>
+            <CheckboxTriState status={status} />
+          </div>
           {provider}
-          <CheckboxTriState isPartial={false} isChecked={false} />
         </>
       }>
       <>
