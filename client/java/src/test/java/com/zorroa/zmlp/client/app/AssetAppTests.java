@@ -96,15 +96,21 @@ public class AssetAppTests extends AbstractAppTests {
     }
 
     @Test
-    public void testBatchUploadFileCrawler() throws IOException {
-        BatchUploadFileCrawler batchUploadFileCrawler = new BatchUploadFileCrawler("../../../zorroa-test-data")
-                .addFileType("jpg")
-                .addFileType("mov")
-                .addFileType("json");
+    public void testFileCrawlerByType() throws IOException {
+        BatchUploadFileCrawler batchUploadFileCrawler = new BatchUploadFileCrawler("./src/test/resources/")
+                .addFileType("jpg");
         List<Path> filter = batchUploadFileCrawler.filter();
 
-        assertEquals(31,filter.size());
+        assertEquals(1,filter.size());
+    }
 
+    @Test
+    public void testFileCrawlerByMimetype() throws IOException {
+        BatchUploadFileCrawler batchUploadFileCrawler = new BatchUploadFileCrawler("./src/test/resources/")
+                .addMimeType("image/jpeg");
+        List<Path> filter = batchUploadFileCrawler.filter();
+
+        assertEquals(1,filter.size());
     }
 
     @Test

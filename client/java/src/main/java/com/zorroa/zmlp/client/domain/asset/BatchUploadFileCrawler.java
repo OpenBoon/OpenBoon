@@ -35,6 +35,7 @@ public class BatchUploadFileCrawler {
 
     private Predicate<Path> fileMimeTypePredicate = path -> mimeTypes.contains(getMimeTypeFromFile(path));
 
+
     public BatchUploadFileCrawler(String filePath) {
         loadInstanceVars(filePath);
     }
