@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { colors } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
-import CheckboxDashSvg from '../Icons/checkboxdash.svg'
+import DashSvg from '../Icons/dash.svg'
 
 export const SIZE = 28
 export const VARIANTS = {
@@ -28,14 +28,14 @@ const CheckboxTriStateIcon = ({ status }) => {
   }
   if (status === VARIANTS.PARTIALLY_CHECKED) {
     return (
-      <CheckboxDashSvg
+      <DashSvg
         width={SIZE}
         css={{
           path: {
             transition: 'all .3s ease',
             opacity: 100,
           },
-          color: colors.key.one,
+          color: colors.structure.white,
         }}
       />
     )

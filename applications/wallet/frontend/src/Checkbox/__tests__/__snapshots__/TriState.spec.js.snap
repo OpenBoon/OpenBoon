@@ -54,7 +54,7 @@ exports[`<TriState /> should render properly when partially checked 1`] = `
 }
 
 .emotion-0 {
-  color: #73b61c;
+  color: #ffffff;
 }
 
 .emotion-0 path {
@@ -70,7 +70,7 @@ exports[`<TriState /> should render properly when partially checked 1`] = `
 >
   <svg
     className="emotion-0"
-    data-file-name="checkboxdash.svg"
+    data-file-name="dash.svg"
     width={28}
   />
 </button>
