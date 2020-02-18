@@ -9,6 +9,8 @@ import Button, { VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import SectionTitle from '../SectionTitle'
 
+import ProjectUsersAddCopyLink from './CopyLink'
+
 const ProjectUsersAddFormResponse = ({
   projectId,
   succeeded,
@@ -32,11 +34,13 @@ const ProjectUsersAddFormResponse = ({
             }}>
             {failed.map(user => user.email).join(', ')}
           </div>
+
+          <ProjectUsersAddCopyLink />
         </>
       )}
 
       {succeeded.length > 0 && (
-        <>
+        <div css={{ paddingTop: spacing.comfy }}>
           <FormSuccess>Users Added!</FormSuccess>
 
           <SectionTitle>Users Added</SectionTitle>
@@ -65,7 +69,7 @@ const ProjectUsersAddFormResponse = ({
               <Button variant={VARIANTS.PRIMARY}>View All</Button>
             </Link>
           </ButtonGroup>
-        </>
+        </div>
       )}
     </div>
   )

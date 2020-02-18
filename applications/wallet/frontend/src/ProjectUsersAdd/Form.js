@@ -14,6 +14,7 @@ import Loading from '../Loading'
 import { onSubmit } from './helpers'
 
 import ProjectUsersAddFormResponse from './FormResponse'
+import ProjectUsersAddCopyLink from './CopyLink'
 
 const INITIAL_STATE = {
   emails: '',
@@ -51,46 +52,48 @@ const ProjectUsersAddForm = () => {
   }
 
   return (
-    <Form>
-      <SectionTitle>Invite User to view projects</SectionTitle>
+    <div>
+      <SectionTitle>Add User to Projects</SectionTitle>
+      <ProjectUsersAddCopyLink />
+      <Form>
+        <Input
+          autoFocus
+          id="emails"
+          variant={INPUT_VARIANTS.SECONDARY}
+          label="Email(s)"
+          type="text"
+          value={state.emails}
+          onChange={({ target: { value } }) => dispatch({ emails: value })}
+          hasError={state.errors.name !== undefined}
+          errorMessage={state.errors.name}
+        />
 
-      <Input
-        autoFocus
-        id="emails"
-        variant={INPUT_VARIANTS.SECONDARY}
-        label="Email(s)"
-        type="text"
-        value={state.emails}
-        onChange={({ target: { value } }) => dispatch({ emails: value })}
-        hasError={state.errors.name !== undefined}
-        errorMessage={state.errors.name}
-      />
+        <CheckboxGroup
+          legend="Add Permissions"
+          onClick={permission =>
+            dispatch({ permissions: { ...state.permissions, ...permission } })
+          }
+          options={permissions.map(({ name, description }) => ({
+            key: name,
+            label: name.replace(/([A-Z])/g, match => ` ${match}`),
+            icon: '',
+            legend: description,
+            initialValue: false,
+          }))}
+          variant={CHECKBOX_VARIANTS.PRIMARY}
+        />
 
-      <CheckboxGroup
-        legend="Add Permissions"
-        onClick={permission =>
-          dispatch({ permissions: { ...state.permissions, ...permission } })
-        }
-        options={permissions.map(({ name, description }) => ({
-          key: name,
-          label: name.replace(/([A-Z])/g, match => ` ${match}`),
-          icon: '',
-          legend: description,
-          initialValue: false,
-        }))}
-        variant={CHECKBOX_VARIANTS.PRIMARY}
-      />
-
-      <ButtonGroup>
-        <Button
-          type="submit"
-          variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() => onSubmit({ projectId, dispatch, state })}
-          isDisabled={!state.emails}>
-          Send Invite
-        </Button>
-      </ButtonGroup>
-    </Form>
+        <ButtonGroup>
+          <Button
+            type="submit"
+            variant={BUTTON_VARIANTS.PRIMARY}
+            onClick={() => onSubmit({ projectId, dispatch, state })}
+            isDisabled={!state.emails}>
+            Send Invite
+          </Button>
+        </ButtonGroup>
+      </Form>
+    </div>
   )
 }
 
