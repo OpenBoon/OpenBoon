@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { colors } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
-import CheckboxPartialSvg from '../Icons/checkboxpartial.svg'
+import CheckboxDashSvg from '../Icons/checkboxdash.svg'
 
 export const SIZE = 28
 export const CHECKED = 'CHECKED'
@@ -26,7 +26,7 @@ const CheckboxTriStateIcon = ({ status }) => {
   }
   if (status === PARTIALLY_CHECKED) {
     return (
-      <CheckboxPartialSvg
+      <CheckboxDashSvg
         width={SIZE}
         css={{
           path: {

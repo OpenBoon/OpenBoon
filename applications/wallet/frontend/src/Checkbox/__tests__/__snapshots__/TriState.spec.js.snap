@@ -70,7 +70,7 @@ exports[`<TriState /> should render properly when partially checked 1`] = `
 >
   <svg
     className="emotion-0"
-    data-file-name="checkboxpartial.svg"
+    data-file-name="checkboxdash.svg"
     width={28}
   />
 </button>
