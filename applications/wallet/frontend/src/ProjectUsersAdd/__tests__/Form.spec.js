@@ -21,6 +21,10 @@ describe('<ProjectUsersAddForm />', () => {
       data: permissions,
     })
 
+    const mockOnCopy = jest.fn()
+
+    require('../helpers').__setMockOnCopy(mockOnCopy)
+
     const component = TestRenderer.create(<ProjectUsersAddForm />)
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -49,6 +53,15 @@ describe('<ProjectUsersAddForm />', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    // Copy Key to clipboard
+    act(() => {
+      component.root
+        .findByProps({ children: 'Copy Link' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(mockOnCopy).toHaveBeenCalledWith({ inputRef: { current: null } })
 
     // Reset form
     act(() => {
