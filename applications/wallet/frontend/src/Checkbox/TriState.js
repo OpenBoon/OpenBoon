@@ -29,9 +29,6 @@ const CheckboxTriState = ({ status }) => {
       }}
       onClick={() => {
         console.warn(status)
-      }}
-      onKeyDown={() => {
-        console.warn(status)
       }}>
       <TriStateIcon status={status} />
     </button>

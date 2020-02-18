@@ -908,7 +908,6 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
             <button
               className="emotion-60"
               onClick={[Function]}
-              onKeyDown={[Function]}
               type="button"
             >
               <svg
@@ -1316,7 +1315,6 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
             <button
               className="emotion-60"
               onClick={[Function]}
-              onKeyDown={[Function]}
               type="button"
             >
               <svg

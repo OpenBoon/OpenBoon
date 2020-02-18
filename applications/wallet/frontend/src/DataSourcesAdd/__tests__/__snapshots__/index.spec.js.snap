@@ -1025,7 +1025,6 @@ Array [
               <button
                 className="emotion-60"
                 onClick={[Function]}
-                onKeyDown={[Function]}
                 type="button"
               >
                 <svg
@@ -1433,7 +1432,6 @@ Array [
               <button
                 className="emotion-60"
                 onClick={[Function]}
-                onKeyDown={[Function]}
                 type="button"
               >
                 <svg

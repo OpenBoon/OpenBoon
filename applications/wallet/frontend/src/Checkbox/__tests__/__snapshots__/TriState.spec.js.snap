@@ -28,7 +28,6 @@ exports[`<TriState /> should render properly when checked 1`] = `
 <button
   className="emotion-1"
   onClick={[Function]}
-  onKeyDown={[Function]}
   type="button"
 >
   <svg
@@ -67,7 +66,6 @@ exports[`<TriState /> should render properly when partially checked 1`] = `
 <button
   className="emotion-1"
   onClick={[Function]}
-  onKeyDown={[Function]}
   type="button"
 >
   <svg
@@ -102,7 +100,6 @@ exports[`<TriState /> should render properly when unchecked 1`] = `
 <button
   className="emotion-1"
   onClick={[Function]}
-  onKeyDown={[Function]}
   type="button"
 >
   <svg

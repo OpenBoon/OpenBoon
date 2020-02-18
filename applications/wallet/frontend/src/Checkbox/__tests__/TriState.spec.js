@@ -15,12 +15,6 @@ describe('<TriState />', () => {
         .findByProps({ type: 'button' })
         .props.onClick({ preventDefault: noop })
     })
-
-    act(() => {
-      component.root
-        .findByProps({ type: 'button' })
-        .props.onKeyDown({ preventDefault: noop })
-    })
   })
 
   it('should render properly when unchecked', () => {
