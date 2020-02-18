@@ -1,6 +1,6 @@
 import projectUsersAdd from '../__mocks__/projectUsersAdd'
 
-import { onSubmit } from '../helpers'
+import { onSubmit, onCopy } from '../helpers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
@@ -86,6 +86,22 @@ describe('<ProjectUsersAdd /> helpers', () => {
           name: "This email doesn't work.",
         },
       })
+    })
+  })
+
+  describe('onCopy()', () => {
+    it('should copy text to clipboard', () => {
+      const mockRef = { current: { select: jest.fn(), blur: jest.fn() } }
+
+      const mockFn = jest.fn()
+
+      Object.defineProperty(document, 'execCommand', { value: mockFn })
+
+      onCopy({ inputRef: mockRef })
+
+      expect(mockRef.current.select).toHaveBeenCalled()
+      expect(mockFn).toHaveBeenCalledWith('copy')
+      expect(mockRef.current.blur).toHaveBeenCalled()
     })
   })
 })
