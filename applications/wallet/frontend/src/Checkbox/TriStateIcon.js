@@ -5,12 +5,14 @@ import CheckmarkSvg from '../Icons/checkmark.svg'
 import CheckboxDashSvg from '../Icons/checkboxdash.svg'
 
 export const SIZE = 28
-export const CHECKED = 'CHECKED'
-export const UNCHECKED = 'UNCHECKED'
-export const PARTIALLY_CHECKED = 'PARTIALLY_CHECKED'
+export const VARIANTS = {
+  CHECKED: 'CHECKED',
+  UNCHECKED: 'UNCHECKED',
+  PARTIALLY_CHECKED: 'PARTIALLY_CHECKED',
+}
 
 const CheckboxTriStateIcon = ({ status }) => {
-  if (status === CHECKED) {
+  if (status === VARIANTS.CHECKED) {
     return (
       <CheckmarkSvg
         width={SIZE}
@@ -24,7 +26,7 @@ const CheckboxTriStateIcon = ({ status }) => {
       />
     )
   }
-  if (status === PARTIALLY_CHECKED) {
+  if (status === VARIANTS.PARTIALLY_CHECKED) {
     return (
       <CheckboxDashSvg
         width={SIZE}
@@ -53,7 +55,7 @@ const CheckboxTriStateIcon = ({ status }) => {
 }
 
 CheckboxTriStateIcon.propTypes = {
-  status: PropTypes.oneOf([CHECKED, UNCHECKED, PARTIALLY_CHECKED]).isRequired,
+  status: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
 }
 
 export default CheckboxTriStateIcon

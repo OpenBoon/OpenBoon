@@ -1,13 +1,15 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import CheckboxTriState from '../TriState'
-import { CHECKED, UNCHECKED, PARTIALLY_CHECKED } from '../TriStateIcon'
+import { VARIANTS } from '../TriStateIcon'
 
 const noop = () => () => {}
 
 describe('<TriState />', () => {
   it('should render properly when checked', () => {
-    const component = TestRenderer.create(<CheckboxTriState status={CHECKED} />)
+    const component = TestRenderer.create(
+      <CheckboxTriState status={VARIANTS.CHECKED} />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
     act(() => {
@@ -19,7 +21,7 @@ describe('<TriState />', () => {
 
   it('should render properly when unchecked', () => {
     const component = TestRenderer.create(
-      <CheckboxTriState status={UNCHECKED} />,
+      <CheckboxTriState status={VARIANTS.UNCHECKED} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -27,7 +29,7 @@ describe('<TriState />', () => {
 
   it('should render properly when partially checked', () => {
     const component = TestRenderer.create(
-      <CheckboxTriState status={PARTIALLY_CHECKED} />,
+      <CheckboxTriState status={VARIANTS.PARTIALLY_CHECKED} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

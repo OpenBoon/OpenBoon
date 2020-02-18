@@ -2,12 +2,7 @@ import PropTypes from 'prop-types'
 
 import { colors, constants } from '../Styles'
 
-import CheckboxTriStateIcon, {
-  CHECKED,
-  UNCHECKED,
-  PARTIALLY_CHECKED,
-  SIZE,
-} from './TriStateIcon'
+import CheckboxTriStateIcon, { VARIANTS, SIZE } from './TriStateIcon'
 
 const CheckboxTriState = ({ status }) => {
   return (
@@ -36,7 +31,7 @@ const CheckboxTriState = ({ status }) => {
 }
 
 CheckboxTriState.propTypes = {
-  status: PropTypes.oneOf([CHECKED, UNCHECKED, PARTIALLY_CHECKED]).isRequired,
+  status: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
 }
 
 export default CheckboxTriState

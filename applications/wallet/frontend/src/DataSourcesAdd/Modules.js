@@ -5,13 +5,13 @@ import { colors, spacing, constants } from '../Styles'
 import Accordion from '../Accordion'
 import CheckboxTable from '../Checkbox/Table'
 import CheckboxTriState from '../Checkbox/TriState'
-import { UNCHECKED } from '../Checkbox/TriStateIcon'
+import { VARIANTS } from '../Checkbox/TriStateIcon'
 
 const DataSourcesAddModules = ({
   module: { provider, description, categories },
   onClick,
 }) => {
-  const status = UNCHECKED
+  const status = VARIANTS.UNCHECKED
 
   return (
     <Accordion
