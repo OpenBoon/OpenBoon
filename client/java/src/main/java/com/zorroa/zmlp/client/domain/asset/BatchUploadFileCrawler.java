@@ -8,7 +8,10 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,6 +29,8 @@ public class BatchUploadFileCrawler {
     private List<String> fileTypes = new ArrayList();
 
     private List<String> mimeTypes = new ArrayList();
+
+    private Runnable callback;
 
     private Predicate<Path> fileTypePredicate = path -> {
         String[] split = path.toString().split("\\.");
@@ -101,7 +106,6 @@ public class BatchUploadFileCrawler {
         return collect;
     }
 
-
     public List<AssetSpec> asAssetSpecList() throws IOException {
         return this.filter()
                 .stream()
@@ -128,10 +132,19 @@ public class BatchUploadFileCrawler {
             return Files.walk(Paths.get(this.filePath));
     }
 
-
     private String getMimeTypeFromFile(Path file) {
         FileNameMap fileNameMap = URLConnection.getFileNameMap();
         return fileNameMap.getContentTypeFor(file.getFileName().toString());
     }
 
+    public Runnable getCallback() {
+        return callback;
+    }
+
+    public BatchUploadFileCrawler setCallback(Runnable callback) {
+        this.callback = callback;
+        return this;
+    }
 }
+
+

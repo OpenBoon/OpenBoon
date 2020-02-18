@@ -42,21 +42,32 @@ public class AssetApp {
      * @param assetSpecList List of files to upload
      * @return Response State after provisioning assets.
      */
-    public BatchCreateAssetResponse uploadFiles(List<AssetSpec> assetSpecList) {
+    public BatchCreateAssetResponse uploadFiles(List<AssetSpec> assetSpecList, Runnable callback) {
 
         List<String> uris = assetSpecList.stream().map(assetSpec -> assetSpec.getUri()).collect(Collectors.toList());
         Map body = new HashMap();
         body.put("assets", assetSpecList);
 
-        return client.uploadFiles("/api/v3/assets/_batchUpload", uris, body, BatchCreateAssetResponse.class);
+        BatchCreateAssetResponse batchCreateAssetResponse = client.uploadFiles("/api/v3/assets/_batchUpload", uris, body, BatchCreateAssetResponse.class);
+        Optional.ofNullable(callback).ifPresent(runnable -> runnable.run());
+
+        return batchCreateAssetResponse;
+    }
+
+    /**
+     * @param assetSpecList Array of files to upload
+     * @return Response State after provisioning assets.
+     */
+    public BatchCreateAssetResponse uploadFiles(AssetSpec ...assetSpecList){
+        return uploadFiles(Arrays.asList(assetSpecList), null);
     }
 
     /**
      * @param assetSpecList List of files to upload
      * @return Response State after provisioning assets.
      */
-    public BatchCreateAssetResponse uploadFiles(AssetSpec ...assetSpecList){
-        return uploadFiles(Arrays.asList(assetSpecList));
+    public BatchCreateAssetResponse uploadFiles(List<AssetSpec> assetSpecList){
+        return uploadFiles(assetSpecList, null);
     }
 
     /**
@@ -64,7 +75,7 @@ public class AssetApp {
      * @return Response State after provisioning assets.
      */
     public BatchCreateAssetResponse uploadFiles(BatchAssetSpec batchAssetSpec){
-        return uploadFiles(batchAssetSpec.getBatch());
+        return uploadFiles(batchAssetSpec.getBatch(), null);
     }
 
     /**
@@ -72,7 +83,7 @@ public class AssetApp {
      * @return Response State after provisioning assets.
      */
     public BatchCreateAssetResponse uploadFiles(BatchUploadFileCrawler batchUploadFileCrawler) throws IOException {
-        return uploadFiles(batchUploadFileCrawler.asAssetSpecList());
+        return uploadFiles(batchUploadFileCrawler.asAssetSpecList(), batchUploadFileCrawler.getCallback());
     }
 
     /**

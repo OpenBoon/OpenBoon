@@ -15,7 +15,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -105,8 +104,25 @@ public class AssetAppTests extends AbstractAppTests {
 
         BatchCreateAssetResponse batchCreateAssetResponse = assetApp.uploadFiles(batchUploadFileCrawler);
 
-        assertEquals(1,batchUploadFileCrawler.filter().size());
+        assertEquals(1, batchUploadFileCrawler.filter().size());
         assertEquals("abc123", batchCreateAssetResponse.getStatus().get(0).getAssetId());
+    }
+
+    @Test
+    public void testFileUploadWithRunnable() throws IOException {
+
+        webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
+        StringBuilder completed = new StringBuilder();
+
+        BatchUploadFileCrawler batchUploadFileCrawler = new BatchUploadFileCrawler("./src/test/resources/")
+                .addFileType("jpg")
+                .setCallback(() -> completed.append("Success"));
+
+        BatchCreateAssetResponse batchCreateAssetResponse = assetApp.uploadFiles(batchUploadFileCrawler);
+
+        assertEquals(1, batchUploadFileCrawler.filter().size());
+        assertEquals("abc123", batchCreateAssetResponse.getStatus().get(0).getAssetId());
+        assertEquals("Success", completed.toString());
     }
 
     @Test
@@ -119,7 +135,7 @@ public class AssetAppTests extends AbstractAppTests {
 
         BatchCreateAssetResponse batchCreateAssetResponse = assetApp.uploadFiles(batchUploadFileCrawler);
 
-        assertEquals(1,batchUploadFileCrawler.filter().size());
+        assertEquals(1, batchUploadFileCrawler.filter().size());
         assertEquals("abc123", batchCreateAssetResponse.getStatus().get(0).getAssetId());
     }
 
@@ -216,15 +232,15 @@ public class AssetAppTests extends AbstractAppTests {
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
-        List<Map<String,Object>> filters = new ArrayList();
+        List<Map<String, Object>> filters = new ArrayList();
         Map hash1 = new HashMap();
         hash1.put("hash", "HASH-NUMBER-ONE");
-        hash1.put( "weight", 3.8);
+        hash1.put("weight", 3.8);
         filters.add(hash1);
 
         Map hash2 = new HashMap();
         hash2.put("hash", "HASH-NUMBER-TWO");
-        hash2.put( "weight", 1);
+        hash2.put("weight", 1);
         filters.add(hash2);
 
         searchSourceBuilder.query(
