@@ -9,7 +9,7 @@ export const CHECKED = 'CHECKED'
 export const UNCHECKED = 'UNCHECKED'
 export const PARTIALLY_CHECKED = 'PARTIALLY_CHECKED'
 
-const TriStateIcon = ({ status }) => {
+const CheckboxTriStateIcon = ({ status }) => {
   if (status === CHECKED) {
     return (
       <CheckmarkSvg
@@ -52,8 +52,8 @@ const TriStateIcon = ({ status }) => {
   )
 }
 
-TriStateIcon.propTypes = {
+CheckboxTriStateIcon.propTypes = {
   status: PropTypes.oneOf([CHECKED, UNCHECKED, PARTIALLY_CHECKED]).isRequired,
 }
 
-export default TriStateIcon
+export default CheckboxTriStateIcon

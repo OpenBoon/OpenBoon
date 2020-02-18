@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { colors, constants } from '../Styles'
 
-import TriStateIcon, {
+import CheckboxTriStateIcon, {
   CHECKED,
   UNCHECKED,
   PARTIALLY_CHECKED,
@@ -30,7 +30,7 @@ const CheckboxTriState = ({ status }) => {
       onClick={() => {
         console.warn(status)
       }}>
-      <TriStateIcon status={status} />
+      <CheckboxTriStateIcon status={status} />
     </button>
   )
 }
