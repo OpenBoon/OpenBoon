@@ -90,9 +90,9 @@ describe('<ApiKeysAdd /> helpers', () => {
 
       onCopy({ textareaRef: mockRef })
 
-      expect(mockRef.current.select).toHaveBeenCalledWith()
+      expect(mockRef.current.select).toHaveBeenCalled()
       expect(mockFn).toHaveBeenCalledWith('copy')
-      expect(mockRef.current.blur).toHaveBeenCalledWith()
+      expect(mockRef.current.blur).toHaveBeenCalled()
     })
   })
 })
