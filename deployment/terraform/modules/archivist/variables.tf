@@ -1,23 +1,78 @@
-variable "project" {}
-variable "region" {}
-variable "image-pull-secret" {}
-variable "sql-instance-name" {}
-variable "sql-connection-name" {}
-variable "sql-service-account-key" {}
-variable "inception-key-b64" {}
-variable "minio-access-key" {}
-variable "minio-secret-key" {}
-variable "system-bucket" {}
+variable "project" {
+}
 
-variable "data-bucket-name" {default = "archivist-data"}
-variable "container-tag" {default = "development"}
-variable "minimum-replicas" {default = 2}
-variable "maximum-replicas" {default = 2}
-variable "rollout-strategy" {default = "RollingUpdate"}
-variable "ip-address" {default = "10.3.240.100"}
-variable "database-name" {default = "zorroa"}
-variable "database-user" {default = "zorroa"}
-variable "namespace" {default = "default"}
-variable "minio-url" {default = "http://10.3.240.102:9000"}
-variable "auth-server-url" {default = "http://10.3.240.101"}
-variable "elasticsearch-url" {default = "http://10.3.240.106"}
+variable "region" {
+}
+
+variable "image-pull-secret" {
+}
+
+variable "sql-instance-name" {
+}
+
+variable "sql-connection-name" {
+}
+
+variable "sql-service-account-key" {
+}
+
+variable "inception-key-b64" {
+}
+
+variable "minio-access-key" {
+}
+
+variable "minio-secret-key" {
+}
+
+variable "system-bucket" {
+}
+
+variable "data-bucket-name" {
+  default = "archivist-data"
+}
+
+variable "container-tag" {
+  default = "development"
+}
+
+variable "minimum-replicas" {
+  default = 2
+}
+
+variable "maximum-replicas" {
+  default = 2
+}
+
+variable "rollout-strategy" {
+  default = "RollingUpdate"
+}
+
+variable "ip-address" {
+  default = "10.3.240.100"
+}
+
+variable "database-name" {
+  default = "zorroa"
+}
+
+variable "database-user" {
+  default = "zorroa"
+}
+
+variable "namespace" {
+  default = "default"
+}
+
+variable "minio-url" {
+  default = "http://10.3.240.102:9000"
+}
+
+variable "auth-server-url" {
+  default = "http://10.3.240.101"
+}
+
+variable "elasticsearch-url" {
+  default = "http://10.3.240.106"
+}
+

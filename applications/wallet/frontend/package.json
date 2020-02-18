@@ -116,7 +116,7 @@
     "react": "16.12.0",
     "react-aria-modal": "4.0.0",
     "react-dom": "16.12.0",
-    "swr": "0.1.16"
+    "swr": "0.1.17"
   },
   "devDependencies": {
     "babel-eslint": "10.0.3",
@@ -133,7 +133,7 @@
     "esm": "3.2.25",
     "express": "4.17.1",
     "http-proxy-middleware": "0.20.0",
-    "husky": "4.2.1",
+    "husky": "4.2.3",
     "jest": "25.1.0",
     "jest-emotion": "10.0.27",
     "jest-fetch-mock": "3.0.1",

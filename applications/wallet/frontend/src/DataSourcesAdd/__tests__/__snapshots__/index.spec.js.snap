@@ -700,7 +700,7 @@ Array [
       >
         <label
           className="emotion-1"
-          htmlFor="url"
+          htmlFor="uri"
         >
           Bucket Address
         </label>
@@ -709,8 +709,8 @@ Array [
         >
           <input
             className="emotion-2"
-            id="url"
-            name="url"
+            id="uri"
+            name="uri"
             onChange={[Function]}
             type="text"
             value=""
@@ -731,17 +731,17 @@ Array [
       >
         <label
           className="emotion-13"
-          htmlFor="key"
+          htmlFor="credential"
         >
-          If this bucket is private, please paste the JSON service account key:
+          If this bucket is private, please paste the JSON service account credential:
         </label>
         <div
           className="emotion-15"
         >
           <textarea
             className="emotion-14"
-            id="key"
-            name="key"
+            id="credential"
+            name="credential"
             onChange={[Function]}
             rows="5"
             value=""
@@ -776,7 +776,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="Image Files"
+            value="images"
           />
           <div
             className="emotion-23"
@@ -823,7 +823,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="Documents (PDF & MS Office)"
+            value="documents"
           />
           <div
             className="emotion-23"
@@ -870,7 +870,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="Video Files"
+            value="video"
           />
           <div
             className="emotion-23"
@@ -902,7 +902,7 @@ Array [
           <span
             className="emotion-27"
           >
-            MP4, M4V, MOV, MPG, MEPG, OGG
+            MP4, M4V, MOV, MPG, MPEG, OGG
           </span>
         </div>
       </label>

@@ -9,11 +9,13 @@ import jobs from './src/Jobs/__mocks__/jobs'
 import job from './src/Job/__mocks__/job'
 import jobErrors from './src/JobErrors/__mocks__/jobErrors'
 import permissions from './src/Permissions/__mocks__/permissions'
+import dataSource from './src/DataSource/__mocks__/dataSource'
 import dataSources from './src/DataSources/__mocks__/dataSources'
 import apiKeys from './src/ApiKeys/__mocks__/apiKeys'
 import apiKey from './src/ApiKey/__mocks__/apiKey'
 import projectUsers from './src/ProjectUsers/__mocks__/projectUsers'
 import projectUser from './src/ProjectUser/__mocks__/projectUser'
+import projectUsersAdd from './src/ProjectUsersAdd/__mocks__/projectUsersAdd'
 
 const { MOCKED, SLOW } = process.env
 
@@ -48,7 +50,9 @@ app.prepare().then(() => {
     server.get(`${PID_API_BASE}/jobs/:jobId/`, mock(job))
     server.get(`${PID_API_BASE}/jobs/:jobId/errors`, mock(jobErrors))
 
+    server.get(`${PID_API_BASE}/datasources/:dataSourceId/`, mock(dataSource))
     server.get(`${PID_API_BASE}/datasources/`, mock(dataSources))
+    server.post(`${PID_API_BASE}/datasources/`, success())
 
     server.get(`${PID_API_BASE}/apikeys/`, mock(apiKeys))
     server.post(`${PID_API_BASE}/apikeys/`, mock(apiKey))
@@ -57,6 +61,7 @@ app.prepare().then(() => {
     server.get(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
     server.delete(`${PID_API_BASE}/users/:userId/`, success())
     server.patch(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
+    server.post(`${PID_API_BASE}/users/`, mock(projectUsersAdd))
   }
 
   // Proxy API calls

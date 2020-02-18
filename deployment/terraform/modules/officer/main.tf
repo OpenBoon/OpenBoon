@@ -1,116 +1,116 @@
 resource "google_container_node_pool" "officer" {
-  name = "${var.node-pool-name}"
-  cluster = "${var.container-cluster-name}"
+  name               = var.node-pool-name
+  cluster            = var.container-cluster-name
   initial_node_count = 1
   autoscaling {
-    max_node_count = "${var.maximum-nodes}"
-    min_node_count = "${var.minimum-nodes}"
+    max_node_count = var.maximum-nodes
+    min_node_count = var.minimum-nodes
   }
   management {
-    auto_repair = true
+    auto_repair  = true
     auto_upgrade = true
   }
   node_config {
-    machine_type = "${var.machine-type}"
+    machine_type = var.machine-type
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
       "https://www.googleapis.com/auth/cloud-platform",
-      "https://www.googleapis.com/auth/devstorage.read_only"
+      "https://www.googleapis.com/auth/devstorage.read_only",
     ]
     taint {
       effect = "NO_SCHEDULE"
-      key = "officer"
-      value = "false"
+      key    = "officer"
+      value  = "false"
     }
-    labels {
-      type = "officer"
-      namespace = "${var.namespace}"
+    labels = {
+      type      = "officer"
+      namespace = var.namespace
     }
   }
 }
 
 resource "kubernetes_deployment" "officer" {
-  provider = "kubernetes"
+  provider = kubernetes
   metadata {
-    name = "officer"
-    namespace = "${var.namespace}"
-    labels {
+    name      = "officer"
+    namespace = var.namespace
+    labels = {
       app = "officer"
     }
   }
   spec {
     selector {
-      match_labels {
+      match_labels = {
         app = "officer"
       }
     }
     strategy {
-      type = "${var.rollout-strategy}"
+      type = var.rollout-strategy
     }
     template {
       metadata {
-        labels {
+        labels = {
           app = "officer"
         }
       }
       spec {
-        node_selector {
-          type = "officer"
-          namespace = "${var.namespace}"
+        node_selector = {
+          type      = "officer"
+          namespace = var.namespace
         }
         image_pull_secrets {
-          name = "${var.image-pull-secret}"
+          name = var.image-pull-secret
         }
         toleration {
-          key = "officer"
+          key      = "officer"
           operator = "Equal"
-          value = "false"
-          effect = "NoSchedule"
+          value    = "false"
+          effect   = "NoSchedule"
         }
         container {
-          name = "officer"
-          image = "zmlp/officer:${var.container-tag}"
+          name              = "officer"
+          image             = "zmlp/officer:${var.container-tag}"
           image_pull_policy = "Always"
           env {
-            name = "ZMLP_STORAGE_PIPELINE_URL"
-            value = "${var.minio-url}"
+            name  = "ZMLP_STORAGE_PIPELINE_URL"
+            value = var.minio-url
           }
           env {
-            name = "ZMLP_STORAGE_PIPELINE_ACCESSKEY"
-            value = "${var.minio-access-key}"
+            name  = "ZMLP_STORAGE_PIPELINE_ACCESSKEY"
+            value = var.minio-access-key
           }
           env {
-            name = "ZMLP_STORAGE_PIPELINE_SECRETKEY"
-            value = "${var.minio-secret-key}"
+            name  = "ZMLP_STORAGE_PIPELINE_SECRETKEY"
+            value = var.minio-secret-key
           }
-          liveness_probe = {
+          liveness_probe {
             initial_delay_seconds = 120
-            period_seconds = 5
+            period_seconds        = 5
             http_get {
               scheme = "HTTP"
-              path = "/monitor/health"
-              port = "7078"
+              path   = "/monitor/health"
+              port   = "7078"
             }
           }
-          readiness_probe = {
-            failure_threshold = 5
+          readiness_probe {
+            failure_threshold     = 5
             initial_delay_seconds = 1
-            period_seconds = 30
+            period_seconds        = 30
             http_get {
               scheme = "HTTP"
-              path = "/monitor/health"
-              port = "7078"
+              path   = "/monitor/health"
+              port   = "7078"
             }
           }
           resources {
             requests {
-              memory = "${var.memory-request}"
-              cpu = "${var.cpu-request}"
+              memory = var.memory-request
+              cpu    = var.cpu-request
             }
             limits {
-              memory = "${var.memory-limit}"
-              cpu = "${var.cpu-limit}"
+              memory = var.memory-limit
+              cpu    = var.cpu-limit
             }
           }
         }
@@ -119,47 +119,46 @@ resource "kubernetes_deployment" "officer" {
   }
 }
 
-
 resource "kubernetes_horizontal_pod_autoscaler" "officer" {
-  provider = "kubernetes"
+  provider = kubernetes
   metadata {
-    name = "officer-hpa"
-    namespace = "${var.namespace}"
-    labels {
+    name      = "officer-hpa"
+    namespace = var.namespace
+    labels = {
       app = "officer"
     }
   }
   spec {
-    max_replicas = "${var.maximum-replicas}"
-    min_replicas = "${var.minimum-replicas}"
+    max_replicas = var.maximum-replicas
+    min_replicas = var.minimum-replicas
     scale_target_ref {
       api_version = "apps/v1"
-      kind = "Deployment"
-      name = "officer"
+      kind        = "Deployment"
+      name        = "officer"
     }
     target_cpu_utilization_percentage = 75
   }
 }
 
-
 resource "kubernetes_service" "officer" {
   metadata {
-    name = "officer-service"
-    namespace = "${var.namespace}"
-    labels {
+    name      = "officer-service"
+    namespace = var.namespace
+    labels = {
       app = "officer"
     }
   }
   spec {
-    cluster_ip = "${var.ip-address}"
+    cluster_ip = var.ip-address
     port {
-      name = "7078-to-7078-tcp"
+      name     = "7078-to-7078-tcp"
       protocol = "TCP"
-      port = 7078
+      port     = 7078
     }
-    selector {
+    selector = {
       app = "officer"
     }
     type = "ClusterIP"
   }
 }
+
