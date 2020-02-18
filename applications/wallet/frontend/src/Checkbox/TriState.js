@@ -9,7 +9,7 @@ import TriStateIcon, {
   SIZE,
 } from './TriStateIcon'
 
-const CheckBoxTriState = ({ status }) => {
+const CheckboxTriState = ({ status }) => {
   return (
     <button
       type="button"
@@ -38,8 +38,8 @@ const CheckBoxTriState = ({ status }) => {
   )
 }
 
-CheckBoxTriState.propTypes = {
+CheckboxTriState.propTypes = {
   status: PropTypes.oneOf([CHECKED, UNCHECKED, PARTIALLY_CHECKED]).isRequired,
 }
 
-export default CheckBoxTriState
+export default CheckboxTriState
