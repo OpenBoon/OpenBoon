@@ -19,9 +19,9 @@ public class BatchUploadFileCrawler {
 
     private Integer maxDepth;
 
-    private Long maximumFileSize;
+    private Long maximumFileSize = 104857600L; //100 MB
 
-    private Long maximumBatchSize;
+    private Long maximumBatchSize = 262144000L; //250 MB
 
     private List<String> fileTypes = new ArrayList();
 
@@ -47,9 +47,6 @@ public class BatchUploadFileCrawler {
 
     private void loadInstanceVars(String path) {
         this.filePath = Optional.ofNullable(path).orElse("");
-
-        this.maximumFileSize = 100 * 1024 * 1024L;
-        this.maximumBatchSize = 250 * 1024 * 1024L;
 
         Optional.ofNullable(System.getenv("ZMLP_MAXIMUM_FILE_SIZE"))
                 .ifPresent(value -> this.maximumFileSize = Long.parseLong(value));
@@ -102,6 +99,13 @@ public class BatchUploadFileCrawler {
         checkFiles(collect);
 
         return collect;
+    }
+
+
+    public List<AssetSpec> asAssetSpecList() throws IOException {
+        return this.filter()
+                .stream()
+                .map(path -> new AssetSpec(path.toString())).collect(Collectors.toList());
     }
 
     private void checkFiles(List<Path> collect) throws ZmlpClientException {

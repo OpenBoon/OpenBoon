@@ -7,6 +7,7 @@ import com.zorroa.zmlp.client.domain.ZmlpClientException;
 import com.zorroa.zmlp.client.domain.asset.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -64,6 +65,14 @@ public class AssetApp {
      */
     public BatchCreateAssetResponse uploadFiles(BatchAssetSpec batchAssetSpec){
         return uploadFiles(batchAssetSpec.getBatch());
+    }
+
+    /**
+     * @param batchUploadFileCrawler Batch of crawled Files
+     * @return Response State after provisioning assets.
+     */
+    public BatchCreateAssetResponse uploadFiles(BatchUploadFileCrawler batchUploadFileCrawler) throws IOException {
+        return uploadFiles(batchUploadFileCrawler.asAssetSpecList());
     }
 
     /**

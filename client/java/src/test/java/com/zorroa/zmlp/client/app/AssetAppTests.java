@@ -97,20 +97,30 @@ public class AssetAppTests extends AbstractAppTests {
 
     @Test
     public void testFileCrawlerByType() throws IOException {
+
+        webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
+
         BatchUploadFileCrawler batchUploadFileCrawler = new BatchUploadFileCrawler("./src/test/resources/")
                 .addFileType("jpg");
-        List<Path> filter = batchUploadFileCrawler.filter();
 
-        assertEquals(1,filter.size());
+        BatchCreateAssetResponse batchCreateAssetResponse = assetApp.uploadFiles(batchUploadFileCrawler);
+
+        assertEquals(1,batchUploadFileCrawler.filter().size());
+        assertEquals("abc123", batchCreateAssetResponse.getStatus().get(0).getAssetId());
     }
 
     @Test
     public void testFileCrawlerByMimetype() throws IOException {
+
+        webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
+
         BatchUploadFileCrawler batchUploadFileCrawler = new BatchUploadFileCrawler("./src/test/resources/")
                 .addMimeType("image/jpeg");
-        List<Path> filter = batchUploadFileCrawler.filter();
 
-        assertEquals(1,filter.size());
+        BatchCreateAssetResponse batchCreateAssetResponse = assetApp.uploadFiles(batchUploadFileCrawler);
+
+        assertEquals(1,batchUploadFileCrawler.filter().size());
+        assertEquals("abc123", batchCreateAssetResponse.getStatus().get(0).getAssetId());
     }
 
     @Test
