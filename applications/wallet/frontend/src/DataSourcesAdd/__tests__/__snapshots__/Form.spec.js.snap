@@ -299,7 +299,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
 }
 
 .emotion-61 {
-  margin-right: 16px;
+  padding-right: 16px;
 }
 
 .emotion-60 {

@@ -17,7 +17,7 @@ const DataSourcesAddModules = ({
     <Accordion
       title={
         <>
-          <div css={{ marginRight: spacing.normal }}>
+          <div css={{ paddingRight: spacing.normal }}>
             <CheckboxTriState status={status} />
           </div>
           {provider}
