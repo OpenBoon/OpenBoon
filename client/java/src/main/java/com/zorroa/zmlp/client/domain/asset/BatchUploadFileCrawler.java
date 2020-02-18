@@ -16,29 +16,57 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Batch of File Path and specification to be uploaded
+ */
 public class BatchUploadFileCrawler {
 
+    /**
+     * File Path
+     */
     private String filePath = "";
 
+    /**
+     * Maximum depth to search files
+     */
     private Integer maxDepth;
 
-    private Long maximumFileSize = 104857600L; //100 MB
+    /**
+     * Maximum allowed File Size. 100MB is the default value
+     */
+    private Long maximumFileSize = 104857600L;
 
+    /**
+     * Maximum allowed Batch Size. 250MB is the default value
+     */
     private Long maximumBatchSize = 262144000L; //250 MB
 
+    /**
+     * Files Types to be searched. e.g.: png, jpg, mov, json...
+     */
     private List<String> fileTypes = new ArrayList();
 
+    /**
+     * Files Mime Types to be searched. e.g:
+     */
     private List<String> mimeTypes = new ArrayList();
 
+    /**
+     * Callback function to be executed after file upload
+     */
     private Runnable callback;
 
     private Predicate<Path> fileTypePredicate = path -> {
         String[] split = path.toString().split("\\.");
         String fileType = Stream.of(split).reduce((first, last) -> last).get();
-        return fileTypes.contains(fileType);
+        boolean contains = fileTypes.contains(fileType);
+        return contains;
     };
 
-    private Predicate<Path> fileMimeTypePredicate = path -> mimeTypes.contains(getMimeTypeFromFile(path));
+    private Predicate<Path> fileMimeTypePredicate = path -> {
+        boolean contains = mimeTypes.contains(getMimeTypeFromFile(path));
+        return contains;
+    };
 
 
     public BatchUploadFileCrawler(String filePath) {
@@ -97,7 +125,7 @@ public class BatchUploadFileCrawler {
         if (!fileTypes.isEmpty()) filters.add(fileTypePredicate);
         if (!mimeTypes.isEmpty()) filters.add(fileMimeTypePredicate);
 
-        Predicate<Path> joinedFilter = filters.stream().reduce(w -> true, Predicate::and);
+        Predicate<Path> joinedFilter = filters.stream().reduce(w -> false, Predicate::or);
 
         List<Path> collect = walk.filter(joinedFilter).collect(Collectors.toList());
 

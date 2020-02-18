@@ -130,12 +130,14 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
 
+        // Json OR Image/Jpeg
         BatchUploadFileCrawler batchUploadFileCrawler = new BatchUploadFileCrawler("./src/test/resources/")
+                .addFileType("json")
                 .addMimeType("image/jpeg");
 
         BatchCreateAssetResponse batchCreateAssetResponse = assetApp.uploadFiles(batchUploadFileCrawler);
 
-        assertEquals(1, batchUploadFileCrawler.filter().size());
+        assertEquals(true, batchUploadFileCrawler.filter().size() > 10);
         assertEquals("abc123", batchCreateAssetResponse.getStatus().get(0).getAssetId());
     }
 
