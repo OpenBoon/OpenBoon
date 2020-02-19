@@ -35,10 +35,6 @@ const Login = ({
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
-  const {
-    query: { action },
-  } = useRouter()
-
   return (
     <div
       css={{
