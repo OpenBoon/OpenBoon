@@ -144,6 +144,10 @@ resource "kubernetes_deployment" "wallet" {
             name  = "ENABLE_SENTRY"
             value = "true"
           }
+          env {
+            name  = "INCEPTION_KEY_B64"
+            value = var.inception-key-b64
+          }
         }
       }
     }
