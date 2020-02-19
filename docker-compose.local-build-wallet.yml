@@ -1,0 +1,8 @@
+version: "3.6"
+services:
+  wallet:
+    build:
+      context: .
+      dockerfile: applications/wallet/Dockerfile
+      args:
+        CI_COMMIT_SHA: $CI_COMMIT_SHA
