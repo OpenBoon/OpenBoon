@@ -47,8 +47,33 @@ describe('<EnterNewPassword />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Mock Failure
-    fetch.mockResponseOnce('Something went wrong', { status: 400 })
+    // Mock Generic Failure
+    fetch.mockRejectOnce({
+      status: 400,
+      json: () => Promise.resolve({}),
+    })
+
+    // Click Submit
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Save' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Dismiss Error Message
+    await act(async () => {
+      component.root
+        .findByProps({ 'aria-label': 'Close alert' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // Mock Specific Failure
+    // fetch.mockResponseOnce('Something went wrong', { status: 400 })
+    fetch.mockRejectOnce({
+      json: () => Promise.resolve({ newPassword2: ['Error message'] }),
+    })
 
     // Click Submit
     await act(async () => {

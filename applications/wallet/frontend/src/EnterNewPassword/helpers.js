@@ -1,6 +1,6 @@
 import Router from 'next/router'
 
-import { getCsrfToken } from '../Fetch/helpers'
+import { getCsrfToken, fetcher } from '../Fetch/helpers'
 
 export const onSubmit = async ({
   newPassword,
@@ -12,7 +12,7 @@ export const onSubmit = async ({
   const csrftoken = getCsrfToken()
 
   try {
-    const response = await fetch(`/api/v1/password/reset/confirm/`, {
+    await fetcher(`/api/v1/password/reset/confirm/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
@@ -26,10 +26,16 @@ export const onSubmit = async ({
       }),
     })
 
-    if (response.status >= 400) throw response
-
     Router.push('/reset-password/?action=enter-new-password-success')
   } catch (response) {
-    setSubmitError('Something went wrong. Please try again.')
+    const error = await response.json()
+
+    const { newPassword2 = [] } = error
+
+    setSubmitError(
+      newPassword2.length
+        ? newPassword2[0]
+        : 'Something went wrong. Please try again.',
+    )
   }
 }
