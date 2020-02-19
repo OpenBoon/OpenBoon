@@ -15,7 +15,8 @@ can access wallet at http://localhost.
 
 ### Steps
 
-1. Run `docker-compose up`
+1. Run `docker-compose pull` - This will pull the latest images so you aren't working against old code.
+1. Run `docker-compose up` - This will start up all of the services.
 
 ## Building & Running your local code.
 Once you have made changes to the Wallet code you can build and run those changes in the local 
