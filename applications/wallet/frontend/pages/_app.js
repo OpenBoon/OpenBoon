@@ -20,6 +20,7 @@ const AUTHENTICATION_LESS_ROUTES = [
   '/_error',
   '/create-account',
   '/reset-password',
+  '/accounts-confirm',
 ]
 
 class MyApp extends App {

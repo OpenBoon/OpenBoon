@@ -1,6 +1,7 @@
 import { useReducer } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import Router, { useRouter } from 'next/router'
 
 import { constants, spacing } from '../Styles'
 
@@ -13,7 +14,7 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import SectionTitle from '../SectionTitle'
 
-import { onSubmit } from './helpers'
+import { onSubmit, onConfirm } from './helpers'
 
 const INITIAL_STATE = {
   firstName: '',
@@ -30,6 +31,13 @@ const reducer = (state, action) => ({ ...state, ...action })
 
 const CreateAccount = () => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+  const {
+    query: { token, userId, action },
+  } = useRouter()
+
+  if (token) {
+    onConfirm({ token, userId })
+  }
 
   return (
     <div css={{ height: '100%' }}>
@@ -58,6 +66,13 @@ const CreateAccount = () => {
             errorMessage={state.error}
             setErrorMessage={() => dispatch({ error: '' })}
           />
+
+          {action && action === 'account-activate-expired' && (
+            <FormAlert
+              errorMessage="Activation token expired. Please recreate account."
+              setErrorMessage={() => Router.push('/create-account')}
+            />
+          )}
 
           <SectionTitle>Name</SectionTitle>
 

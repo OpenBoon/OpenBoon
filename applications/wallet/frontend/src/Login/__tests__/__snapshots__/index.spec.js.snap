@@ -488,6 +488,7 @@ exports[`<Login /> should render password changed 1`] = `
         />
       </div>
     </div>
+    
     <div
       className="emotion-18"
     >

@@ -35,6 +35,10 @@ const Login = ({
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
+  const {
+    query: { action },
+  } = useRouter()
+
   return (
     <div
       css={{
@@ -95,6 +99,10 @@ const Login = ({
           errorMessage={errorMessage}
           setErrorMessage={setErrorMessage}
         />
+
+        {action && action === 'account-activate-success' && (
+          <FormSuccess>Account activated.</FormSuccess>
+        )}
 
         <Input
           autoFocus

@@ -307,6 +307,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
           />
         </div>
       </div>
+      
       <h3
         className="emotion-7"
       >
