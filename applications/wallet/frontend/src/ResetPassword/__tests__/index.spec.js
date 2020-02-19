@@ -2,6 +2,8 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import ResetPassword from '..'
 
+jest.mock('../../EnterNewPassword', () => 'EnterNewPassword')
+
 const noop = () => () => {}
 
 describe('<ResetPassword />', () => {
@@ -73,5 +75,27 @@ describe('<ResetPassword />', () => {
 
     expect(mockOnSubmit).not.toHaveBeenCalled()
     expect(mockFn).toHaveBeenCalled()
+  })
+
+  it('should render <EnterNewPassword />', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/reset-password',
+      query: { action: 'enter-new-password' },
+    })
+
+    const component = TestRenderer.create(<ResetPassword />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render <FormSuccess /> on password update', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/reset-password',
+      query: { action: 'enter-new-password-success' },
+    })
+
+    const component = TestRenderer.create(<ResetPassword />)
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

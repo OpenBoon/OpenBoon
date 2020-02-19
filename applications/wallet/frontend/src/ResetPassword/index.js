@@ -9,6 +9,7 @@ import LogoSvg from '../Icons/logo.svg'
 import FormAlert from '../FormAlert'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import EnterNewPassword from '../EnterNewPassword'
 
 import { onSubmit } from './helpers'
 
@@ -23,6 +24,10 @@ const reducer = (state, action) => ({ ...state, ...action })
 
 const ResetPassword = () => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+
+  if (action === 'enter-new-password') {
+    return <EnterNewPassword />
+  }
 
   return (
     <div
