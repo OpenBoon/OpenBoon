@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<DataSourcesAddForm /> should render properly 1`] = `
-.emotion-175 {
+.emotion-168 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -217,20 +217,20 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-58 {
+.emotion-57 {
   padding-top: 16px;
 }
 
-.emotion-57 {
+.emotion-56 {
   background-color: #3b3b3b;
 }
 
-.emotion-53 {
+.emotion-52 {
   border-bottom: 1px solid #4a4a4a;
   padding: 16px;
 }
 
-.emotion-52 {
+.emotion-51 {
   font-size: 17px;
   line-height: 20px;
   display: -webkit-box;
@@ -243,25 +243,20 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-51 {
-  color: #73b61c;
-  margin-right: 16px;
-}
-
-.emotion-56 {
+.emotion-55 {
   padding: 16px;
   padding-left: 60px;
   padding-bottom: 32px;
 }
 
-.emotion-54 {
+.emotion-53 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
   padding-bottom: 16px;
 }
 
-.emotion-55 {
+.emotion-54 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -273,7 +268,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   padding-top: 8px;
 }
 
-.emotion-55 li {
+.emotion-54 li {
   width: 33%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -286,43 +281,19 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   padding-right: 40px;
 }
 
-.emotion-55 svg {
+.emotion-54 svg {
   color: #73b61c;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
 }
 
-.emotion-55 span {
+.emotion-54 span {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-61 {
-  padding-right: 16px;
-}
-
 .emotion-60 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 28px;
-  height: 28px;
-  background-color: transparent;
-  border: 2px solid #808080;
-  border-radius: 2px;
-  cursor: pointer;
-  padding: 0;
-}
-
-.emotion-59 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 0;
-}
-
-.emotion-64 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
@@ -330,7 +301,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   max-width: 600px;
 }
 
-.emotion-98 {
+.emotion-94 {
   border: none;
   padding: 0;
   margin: 0;
@@ -338,7 +309,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   padding-bottom: 32px;
 }
 
-.emotion-65 {
+.emotion-61 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -347,73 +318,73 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   font-weight: 500;
 }
 
-.emotion-66 {
+.emotion-62 {
   clear: both;
 }
 
-.emotion-97 {
+.emotion-93 {
   width: 100%;
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-97 th,
-.emotion-97 td {
+.emotion-93 th,
+.emotion-93 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-97 th:first-of-type,
-.emotion-97 td:first-of-type {
+.emotion-93 th:first-of-type,
+.emotion-93 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-97 th:nth-of-type(2),
-.emotion-97 td:nth-of-type(2) {
+.emotion-93 th:nth-of-type(2),
+.emotion-93 td:nth-of-type(2) {
   min-width: 300px;
   font-family: Roboto Mono;
 }
 
-.emotion-97 th:nth-of-type(3),
-.emotion-97 td:nth-of-type(3) {
+.emotion-93 th:nth-of-type(3),
+.emotion-93 td:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-97 th {
+.emotion-93 th {
   color: #b3b3b3;
   font-weight: 500;
 }
 
-.emotion-97 td {
+.emotion-93 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
 }
 
-.emotion-97 td:first-of-type {
+.emotion-93 td:first-of-type {
   border: none;
 }
 
-.emotion-97 tr:hover td {
+.emotion-93 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-97 tr:hover + tr td {
+.emotion-93 tr:hover + tr td {
   border-top-color: transparent;
 }
 
-.emotion-97 tr:last-of-type td {
+.emotion-93 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-97 tr:last-of-type td:first-of-type {
+.emotion-93 tr:last-of-type td:first-of-type {
   border: none;
 }
 
-.emotion-72 {
+.emotion-68 {
   cursor: pointer;
 }
 
-.emotion-71 {
+.emotion-67 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -422,11 +393,11 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   -moz-user-select: none;
 }
 
-.emotion-117 {
+.emotion-110 {
   color: #73b61c;
 }
 
-.emotion-174 {
+.emotion-167 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -435,12 +406,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-174 button,
-.emotion-174 a {
+.emotion-167 button,
+.emotion-167 a {
   margin-right: 16px;
 }
 
-.emotion-172 {
+.emotion-165 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -472,30 +443,30 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-172:hover {
+.emotion-165:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-172[aria-disabled=true] {
+.emotion-165[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-172,
-.emotion-172:hover,
-.emotion-172:visited {
+.emotion-165,
+.emotion-165:hover,
+.emotion-165:visited {
   background-color: #808080;
 }
 
-.emotion-172:hover {
+.emotion-165:hover {
   opacity: 0.5;
 }
 
-.emotion-172[aria-disabled=true] {
+.emotion-165[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-173 {
+.emotion-166 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -527,32 +498,32 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-173:hover {
+.emotion-166:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-173[aria-disabled=true] {
+.emotion-166[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-173,
-.emotion-173:hover,
-.emotion-173:visited {
+.emotion-166,
+.emotion-166:hover,
+.emotion-166:visited {
   background-color: #73b61c;
 }
 
-.emotion-173:hover {
+.emotion-166:hover {
   background-color: #96c955;
 }
 
-.emotion-173[aria-disabled=true] {
+.emotion-166[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-175"
+  className="emotion-168"
   method="post"
   onSubmit={[Function]}
 >
@@ -820,35 +791,30 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
     Choose the type of analysis you would like performed on your data set:
   </p>
   <div
-    className="emotion-58"
+    className="emotion-57"
   >
     <div
-      className="emotion-57"
+      className="emotion-56"
     >
       <div
-        className="emotion-53"
+        className="emotion-52"
       >
         <h4
-          className="emotion-52"
+          className="emotion-51"
         >
-          <svg
-            className="emotion-51"
-            data-file-name="checkmark.svg"
-            width={28}
-          />
           Zorroa Automatic Analysis
         </h4>
       </div>
       <div
-        className="emotion-56"
+        className="emotion-55"
       >
         <p
-          className="emotion-54"
+          className="emotion-53"
         >
           The following basic analysis is applied to all data sets.
         </p>
         <ul
-          className="emotion-55"
+          className="emotion-54"
         >
           <li>
             <svg
@@ -891,59 +857,47 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="emotion-58"
+    className="emotion-57"
   >
     <div
-      className="emotion-57"
+      className="emotion-56"
     >
       <div
-        className="emotion-53"
+        className="emotion-52"
       >
         <h4
-          className="emotion-52"
+          className="emotion-51"
         >
-          <div
-            className="emotion-61"
-          >
-            <button
-              className="emotion-60"
-              onClick={[Function]}
-              type="button"
-            >
-              <svg
-                className="emotion-59"
-                data-file-name="checkmark.svg"
-                width={28}
-              />
-            </button>
-          </div>
-          Zorroa
+          <svg
+            data-file-name="logo.svg"
+            height={32}
+          />
         </h4>
       </div>
       <div
-        className="emotion-56"
+        className="emotion-55"
       >
         <p
-          className="emotion-64"
+          className="emotion-60"
         >
           <span>
             These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
           </span>
         </p>
         <fieldset
-          className="emotion-98"
+          className="emotion-94"
         >
           <legend
-            className="emotion-65"
+            className="emotion-61"
           >
             Images & Documents
           </legend>
           <div
-            className="emotion-66"
+            className="emotion-62"
           />
           <table
             cellSpacing="0"
-            className="emotion-97"
+            className="emotion-93"
           >
             <thead>
               <tr>
@@ -960,12 +914,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
             </thead>
             <tbody>
               <tr
-                className="emotion-72"
+                className="emotion-68"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-71"
+                    className="emotion-67"
                   >
                     <div
                       className="emotion-24"
@@ -1010,12 +964,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-72"
+                className="emotion-68"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-71"
+                    className="emotion-67"
                   >
                     <div
                       className="emotion-24"
@@ -1060,12 +1014,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-72"
+                className="emotion-68"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-71"
+                    className="emotion-67"
                   >
                     <div
                       className="emotion-24"
@@ -1110,12 +1064,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-72"
+                className="emotion-68"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-71"
+                    className="emotion-67"
                   >
                     <div
                       className="emotion-24"
@@ -1160,12 +1114,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-72"
+                className="emotion-68"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-71"
+                    className="emotion-67"
                   >
                     <div
                       className="emotion-24"
@@ -1213,19 +1167,19 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
           </table>
         </fieldset>
         <fieldset
-          className="emotion-98"
+          className="emotion-94"
         >
           <legend
-            className="emotion-65"
+            className="emotion-61"
           >
             Video
           </legend>
           <div
-            className="emotion-66"
+            className="emotion-62"
           />
           <table
             cellSpacing="0"
-            className="emotion-97"
+            className="emotion-93"
           >
             <thead>
               <tr>
@@ -1242,12 +1196,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
             </thead>
             <tbody>
               <tr
-                className="emotion-72"
+                className="emotion-68"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-71"
+                    className="emotion-67"
                   >
                     <div
                       className="emotion-24"
@@ -1298,44 +1252,32 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="emotion-58"
+    className="emotion-57"
   >
     <div
-      className="emotion-57"
+      className="emotion-56"
     >
       <div
-        className="emotion-53"
+        className="emotion-52"
       >
         <h4
-          className="emotion-52"
+          className="emotion-51"
         >
-          <div
-            className="emotion-61"
-          >
-            <button
-              className="emotion-60"
-              onClick={[Function]}
-              type="button"
-            >
-              <svg
-                className="emotion-59"
-                data-file-name="checkmark.svg"
-                width={28}
-              />
-            </button>
-          </div>
-          Google Cloud
+          <svg
+            data-file-name="googleCloud.svg"
+            height={32}
+          />
         </h4>
       </div>
       <div
-        className="emotion-56"
+        className="emotion-55"
       >
         <p
-          className="emotion-64"
+          className="emotion-60"
         >
           <span>
             <span
-              className="emotion-117"
+              className="emotion-110"
             >
               Contact your Account Manager to activate.
             </span>
@@ -1344,19 +1286,19 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
           </span>
         </p>
         <fieldset
-          className="emotion-98"
+          className="emotion-94"
         >
           <legend
-            className="emotion-65"
+            className="emotion-61"
           >
             Google Vision (Images & Documents)
           </legend>
           <div
-            className="emotion-66"
+            className="emotion-62"
           />
           <table
             cellSpacing="0"
-            className="emotion-97"
+            className="emotion-93"
           >
             <thead>
               <tr>
@@ -1373,12 +1315,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
             </thead>
             <tbody>
               <tr
-                className="emotion-72"
+                className="emotion-68"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-71"
+                    className="emotion-67"
                   >
                     <div
                       className="emotion-24"
@@ -1423,12 +1365,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-72"
+                className="emotion-68"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-71"
+                    className="emotion-67"
                   >
                     <div
                       className="emotion-24"
@@ -1473,12 +1415,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-72"
+                className="emotion-68"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-71"
+                    className="emotion-67"
                   >
                     <div
                       className="emotion-24"
@@ -1523,12 +1465,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-72"
+                className="emotion-68"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-71"
+                    className="emotion-67"
                   >
                     <div
                       className="emotion-24"
@@ -1576,19 +1518,19 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
           </table>
         </fieldset>
         <fieldset
-          className="emotion-98"
+          className="emotion-94"
         >
           <legend
-            className="emotion-65"
+            className="emotion-61"
           >
             Google Video
           </legend>
           <div
-            className="emotion-66"
+            className="emotion-62"
           />
           <table
             cellSpacing="0"
-            className="emotion-97"
+            className="emotion-93"
           >
             <thead>
               <tr>
@@ -1605,12 +1547,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
             </thead>
             <tbody>
               <tr
-                className="emotion-72"
+                className="emotion-68"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-71"
+                    className="emotion-67"
                   >
                     <div
                       className="emotion-24"
@@ -1655,12 +1597,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-72"
+                className="emotion-68"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-71"
+                    className="emotion-67"
                   >
                     <div
                       className="emotion-24"
@@ -1705,12 +1647,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                 </td>
               </tr>
               <tr
-                className="emotion-72"
+                className="emotion-68"
                 onClick={[Function]}
               >
                 <td>
                   <label
-                    className="emotion-71"
+                    className="emotion-67"
                   >
                     <div
                       className="emotion-24"
@@ -1761,10 +1703,10 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="emotion-174"
+    className="emotion-167"
   >
     <a
-      className="emotion-172"
+      className="emotion-165"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -1773,7 +1715,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
     </a>
     <button
       aria-disabled={true}
-      className="emotion-173"
+      className="emotion-166"
       onClick={[Function]}
       type="submit"
     >
