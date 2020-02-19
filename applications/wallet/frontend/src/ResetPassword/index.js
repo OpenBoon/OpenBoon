@@ -1,13 +1,11 @@
 import { useReducer } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 
 import { colors, constants, typography, spacing } from '../Styles'
 
 import LogoSvg from '../Icons/logo.svg'
 
-import FormSuccess from '../FormSuccess'
 import FormAlert from '../FormAlert'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
@@ -24,10 +22,6 @@ const INITIAL_STATE = {
 const reducer = (state, action) => ({ ...state, ...action })
 
 const ResetPassword = () => {
-  const {
-    query: { action },
-  } = useRouter()
-
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   return (
@@ -41,6 +35,7 @@ const ResetPassword = () => {
       <Head>
         <title>Reset Password</title>
       </Head>
+
       <form
         method="post"
         onSubmit={event => event.preventDefault()}
@@ -64,8 +59,9 @@ const ResetPassword = () => {
             paddingTop: spacing.spacious,
             paddingBottom: spacing.spacious,
           }}>
-          Forget your password?
+          Did you forget your password?
         </h3>
+
         <div css={{ color: colors.structure.steel }}>
           Enter your email below and we&apos;ll send you a link to create a new
           one.
@@ -75,10 +71,6 @@ const ResetPassword = () => {
           errorMessage={state.error}
           setErrorMessage={() => dispatch({ error: '' })}
         />
-
-        {action === 'password-reset-request-success' && (
-          <FormSuccess>Password reset email sent.</FormSuccess>
-        )}
 
         <Input
           autoFocus
@@ -115,7 +107,7 @@ const ResetPassword = () => {
             },
           }}>
           <Link href="/">
-            <a>Go back to Sign-in</a>
+            <a>Go back to Login</a>
           </Link>
         </div>
       </form>

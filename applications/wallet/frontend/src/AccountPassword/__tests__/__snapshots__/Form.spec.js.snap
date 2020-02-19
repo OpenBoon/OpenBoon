@@ -433,7 +433,7 @@ exports[`<AccountPasswordForm /> should render properly 2`] = `
       <div
         className="emotion-1"
       >
-        New Password Saved!
+        New Password Saved
       </div>
     </div>
   </div>

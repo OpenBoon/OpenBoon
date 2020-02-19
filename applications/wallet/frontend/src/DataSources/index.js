@@ -29,7 +29,7 @@ const DataSources = () => {
       />
 
       {action === 'add-datasource-success' && (
-        <FormSuccess>Data source created</FormSuccess>
+        <FormSuccess>Data Source Created</FormSuccess>
       )}
 
       <div>&nbsp;</div>

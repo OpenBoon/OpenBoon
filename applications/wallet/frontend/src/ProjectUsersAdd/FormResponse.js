@@ -41,7 +41,7 @@ const ProjectUsersAddFormResponse = ({
 
       {succeeded.length > 0 && (
         <div css={{ paddingTop: spacing.comfy }}>
-          <FormSuccess>Users Added!</FormSuccess>
+          <FormSuccess>Users Added</FormSuccess>
 
           <SectionTitle>Users Added</SectionTitle>
           <div
