@@ -132,7 +132,8 @@ services:
     depends_on:
       - postgres
 
-  # These services are only here because their images need to be built.
+  # These services are only here because their images need to exist for processing. Having them just
+  # run an echo command will cause the images to be pulled from docker hub.
   zmlp-py3-base:
     image: zmlp/py3-base:development
     command: echo
