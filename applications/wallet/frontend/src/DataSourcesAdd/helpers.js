@@ -2,7 +2,7 @@ import Router from 'next/router'
 
 import { fetcher } from '../Fetch/helpers'
 
-import { colors, spacing } from '../Styles'
+import { colors } from '../Styles'
 
 import ZorroaLogoSvg from '../Icons/logo.svg'
 import GoogleCloudSvg from '../Icons/googleCloud.svg'
@@ -31,7 +31,7 @@ export const FILE_TYPES = [
 export const MODULES = [
   {
     provider: 'Zorroa',
-    logoSvg: <ZorroaLogoSvg height={spacing.spacious} />,
+    logo: <ZorroaLogoSvg height={32} />,
     description: (
       <span>
         These analysis modules are included in your base package. You can run as
@@ -86,7 +86,7 @@ export const MODULES = [
   },
   {
     provider: 'Google Cloud',
-    logoSvg: <GoogleCloudSvg height={spacing.spacious} />,
+    logo: <GoogleCloudSvg height={32} />,
     description: (
       <span>
         <span css={{ color: colors.key.one }}>
