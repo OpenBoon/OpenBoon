@@ -29,7 +29,7 @@ const ProjectUsers = () => {
       />
 
       {action === 'edit-user-success' && (
-        <FormSuccess>User permissions saved</FormSuccess>
+        <FormSuccess>User Permissions Saved</FormSuccess>
       )}
 
       <div>&nbsp;</div>

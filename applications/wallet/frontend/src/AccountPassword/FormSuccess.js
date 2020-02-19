@@ -7,7 +7,7 @@ import ButtonGroup from '../Button/Group'
 const AccountPasswordFormSuccess = ({ onReset }) => {
   return (
     <div>
-      <FormSuccess>New Password Saved!</FormSuccess>
+      <FormSuccess>New Password Saved</FormSuccess>
       <ButtonGroup>
         <Button variant={VARIANTS.PRIMARY} onClick={onReset}>
           Edit Password Again
