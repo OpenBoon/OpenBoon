@@ -202,7 +202,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
 
 .emotion-26 {
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 700;
 }
 
@@ -435,7 +435,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -490,7 +490,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;

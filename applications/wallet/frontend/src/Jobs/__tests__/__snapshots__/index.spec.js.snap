@@ -78,7 +78,7 @@ Array [
 .emotion-0 {
   text-align: left;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
@@ -125,7 +125,7 @@ Array [
   text-align: center;
   color: #808080;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
 }
 
 <div
@@ -229,7 +229,7 @@ Array [
   .emotion-0 {
   text-align: left;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
@@ -354,7 +354,7 @@ Array [
   padding: 8px;
   font-weight: 700;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   border-radius: 32px;
   color: #c92300;
   background-color: #191919;
@@ -484,7 +484,7 @@ Array [
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -1626,7 +1626,7 @@ Array [
 .emotion-0 {
   text-align: left;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
@@ -1673,7 +1673,7 @@ Array [
   text-align: center;
   color: #808080;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
 }
 
 .emotion-9 {

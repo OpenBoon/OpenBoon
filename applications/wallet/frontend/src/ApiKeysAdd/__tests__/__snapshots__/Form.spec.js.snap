@@ -146,7 +146,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 
 .emotion-11 {
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 700;
 }
 
@@ -193,7 +193,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;
@@ -780,7 +780,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -896,7 +896,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 .emotion-7 {
   width: 470px;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   color: #ffffff;
   background-color: #2e2e2e;
   border-radius: 2px;
@@ -942,7 +942,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -1006,7 +1006,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -1060,7 +1060,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -1330,7 +1330,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 
 .emotion-11 {
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 700;
 }
 
@@ -1377,7 +1377,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;

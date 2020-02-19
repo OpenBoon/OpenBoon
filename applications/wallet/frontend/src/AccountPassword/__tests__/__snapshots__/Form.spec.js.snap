@@ -91,7 +91,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -146,7 +146,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;
@@ -326,7 +326,7 @@ exports[`<AccountPasswordForm /> should render properly 2`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -542,7 +542,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -597,7 +597,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;
@@ -829,7 +829,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -884,7 +884,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;
