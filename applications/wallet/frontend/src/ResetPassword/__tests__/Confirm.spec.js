@@ -2,13 +2,13 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import mockUser from '../../User/__mocks__/user'
 
-import EnterNewPassword, { noop } from '..'
+import ResetPasswordConfirm, { noop } from '../../ResetPassword/Confirm'
 
 jest.mock('../../Authentication/helpers', () => ({
   getUser: () => mockUser,
 }))
 
-describe('<EnterNewPassword />', () => {
+describe('<ResetPasswordConfirm />', () => {
   it('should render properly', async () => {
     const mockFn = jest.fn()
 
@@ -18,7 +18,9 @@ describe('<EnterNewPassword />', () => {
       query: { action: 'enter-new-password' },
     })
 
-    const component = TestRenderer.create(<EnterNewPassword />)
+    const component = TestRenderer.create(
+      <ResetPasswordConfirm uid="GG" token="123" />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -101,9 +103,7 @@ describe('<EnterNewPassword />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockFn).toHaveBeenCalledWith(
-      '/reset-password/?action=enter-new-password-success',
-    )
+    expect(mockFn).toHaveBeenCalledWith('/?action=enter-new-password-success')
   })
 
   it('noop should do nothing', () => {
