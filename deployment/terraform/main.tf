@@ -175,5 +175,6 @@ module "wallet" {
   smtp-password           = var.smtp-password
   google-oauth-client-id  = var.google-oauth-client-id
   environment             = "staging"
+  inception-key-b64       = base64encode(local.inception-key)
 }
 
