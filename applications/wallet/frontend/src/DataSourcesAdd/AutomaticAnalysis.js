@@ -2,20 +2,11 @@ import { typography, colors, spacing } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 
-import Accordion, { CHECKMARK_WIDTH } from '../Accordion'
+import Accordion from '../Accordion'
 
 const DataSourcesAddAutomaticAnalysis = () => {
   return (
-    <Accordion
-      title={
-        <>
-          <CheckmarkSvg
-            width={CHECKMARK_WIDTH}
-            css={{ color: colors.key.one, marginRight: spacing.normal }}
-          />
-          Zorroa Automatic Analysis
-        </>
-      }>
+    <Accordion title="Zorroa Automatic Analysis">
       <>
         <p
           css={{
