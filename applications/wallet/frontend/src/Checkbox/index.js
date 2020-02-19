@@ -11,7 +11,6 @@ const STYLES = {
     main: {
       display: 'flex',
       flexDirection: 'column',
-      color: colors.structure.zinc,
     },
     label: {
       alignItems: 'flex-start',
@@ -24,7 +23,6 @@ const STYLES = {
     main: {
       width: 'max-content',
       paddingLeft: spacing.normal,
-      color: colors.structure.white,
     },
     label: {
       alignItems: 'center',
@@ -72,6 +70,8 @@ const Checkbox = ({
         <div
           css={{
             paddingLeft: spacing.comfy,
+            display: 'flex',
+            alignItems: 'center',
           }}>
           {icon}
         </div>
@@ -79,6 +79,7 @@ const Checkbox = ({
       <div css={[{ paddingLeft: spacing.moderate }, STYLES[variant].main]}>
         <span
           css={{
+            color: colors.structure.white,
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
             fontWeight: typography.weight.bold,
@@ -89,7 +90,7 @@ const Checkbox = ({
           <span
             css={[
               {
-                color: colors.structure.steel,
+                color: colors.structure.zinc,
               },
               STYLES[variant].legend,
             ]}>

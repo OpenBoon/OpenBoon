@@ -254,17 +254,17 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  color: #b3b3b3;
 }
 
 .emotion-18 {
+  color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
 .emotion-19 {
-  color: #808080;
+  color: #b3b3b3;
   padding-left: 0;
 }
 
@@ -1146,17 +1146,17 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  color: #b3b3b3;
 }
 
 .emotion-18 {
+  color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
 .emotion-19 {
-  color: #808080;
+  color: #b3b3b3;
   padding-left: 0;
 }
 
@@ -2566,17 +2566,17 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  color: #b3b3b3;
 }
 
 .emotion-18 {
+  color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
 .emotion-19 {
-  color: #808080;
+  color: #b3b3b3;
   padding-left: 0;
 }
 
