@@ -53,7 +53,7 @@ const ProjectUsersAddForm = () => {
 
   return (
     <div>
-      <SectionTitle>Add User to Projects</SectionTitle>
+      <SectionTitle>Add User(s) to Project</SectionTitle>
       <ProjectUsersAddCopyLink />
       <Form>
         <Input
@@ -89,7 +89,7 @@ const ProjectUsersAddForm = () => {
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() => onSubmit({ projectId, dispatch, state })}
             isDisabled={!state.emails}>
-            Send Invite
+            Add
           </Button>
         </ButtonGroup>
       </Form>

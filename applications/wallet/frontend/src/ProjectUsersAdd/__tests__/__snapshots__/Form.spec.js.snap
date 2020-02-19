@@ -130,7 +130,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 
 .emotion-11 {
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .emotion-7 {
@@ -341,7 +341,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   <h3
     className="emotion-0"
   >
-    Add User to Projects
+    Add User(s) to Project
   </h3>
   <div
     className="emotion-6"
@@ -357,9 +357,9 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
     >
       <input
         className="emotion-2"
-        defaultValue="localhost/create-account"
         id="copyLink"
         type="text"
+        value="localhost/create-account"
       />
       <div
         className="emotion-4"
@@ -885,7 +885,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         onClick={[Function]}
         type="submit"
       >
-        Send Invite
+        Add
       </button>
     </div>
   </form>
@@ -1022,7 +1022,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 
 .emotion-11 {
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .emotion-7 {
@@ -1251,7 +1251,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   <h3
     className="emotion-0"
   >
-    Add User to Projects
+    Add User(s) to Project
   </h3>
   <div
     className="emotion-6"
@@ -1267,9 +1267,9 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
     >
       <input
         className="emotion-2"
-        defaultValue="localhost/create-account"
         id="copyLink"
         type="text"
+        value="localhost/create-account"
       />
       <div
         className="emotion-4"
@@ -1794,7 +1794,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         onClick={[Function]}
         type="submit"
       >
-        Send Invite
+        Add
       </button>
     </div>
   </form>
@@ -2224,9 +2224,9 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
     >
       <input
         className="emotion-7"
-        defaultValue="localhost/create-account"
         id="copyLink"
         type="text"
+        value="localhost/create-account"
       />
       <div
         className="emotion-9"
@@ -2442,7 +2442,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 
 .emotion-11 {
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .emotion-7 {
@@ -2653,7 +2653,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   <h3
     className="emotion-0"
   >
-    Add User to Projects
+    Add User(s) to Project
   </h3>
   <div
     className="emotion-6"
@@ -2669,9 +2669,9 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
     >
       <input
         className="emotion-2"
-        defaultValue="localhost/create-account"
         id="copyLink"
         type="text"
+        value="localhost/create-account"
       />
       <div
         className="emotion-4"
@@ -3197,7 +3197,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
         onClick={[Function]}
         type="submit"
       >
-        Send Invite
+        Add
       </button>
     </div>
   </form>

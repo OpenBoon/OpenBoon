@@ -237,7 +237,7 @@ exports[`<Login /> should render properly 1`] = `
 
 .emotion-19 {
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .emotion-15 {

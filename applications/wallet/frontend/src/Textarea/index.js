@@ -50,7 +50,7 @@ const Textarea = ({
   errorMessage,
   ...props
 }) => (
-  <div css={{ paddingTop: PADDING, paddingBottom: PADDING }}>
+  <div css={{ paddingTop: PADDING, paddingBottom: 0 }}>
     <label
       htmlFor={id}
       css={{

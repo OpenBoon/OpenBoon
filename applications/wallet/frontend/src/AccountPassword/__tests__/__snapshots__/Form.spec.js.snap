@@ -17,7 +17,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 
 .emotion-4 {
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .emotion-0 {
@@ -468,7 +468,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 
 .emotion-4 {
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .emotion-0 {
@@ -755,7 +755,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 
 .emotion-4 {
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .emotion-0 {

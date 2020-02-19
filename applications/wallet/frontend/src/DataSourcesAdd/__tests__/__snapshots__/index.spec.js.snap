@@ -34,6 +34,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -146,7 +147,7 @@ Array [
 
 .emotion-5 {
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .emotion-1 {
@@ -189,7 +190,7 @@ Array [
 
 .emotion-17 {
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .emotion-13 {

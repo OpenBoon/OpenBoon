@@ -3,7 +3,7 @@
 exports[`<Input /> should render properly with an error 1`] = `
 .emotion-5 {
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .emotion-0 {

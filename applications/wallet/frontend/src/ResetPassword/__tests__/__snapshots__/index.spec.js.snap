@@ -65,7 +65,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
 
 .emotion-11 {
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .emotion-6 {

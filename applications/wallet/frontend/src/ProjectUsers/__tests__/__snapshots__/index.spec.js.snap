@@ -34,6 +34,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -113,7 +114,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Invite User(s)
+          Add User(s)
         </a>
       </li>
     </ul>
@@ -456,6 +457,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -535,7 +537,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Invite User(s)
+          Add User(s)
         </a>
       </li>
     </ul>
@@ -748,6 +750,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -827,7 +830,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Invite User(s)
+          Add User(s)
         </a>
       </li>
     </ul>
@@ -1040,6 +1043,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -1119,7 +1123,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Invite User(s)
+          Add User(s)
         </a>
       </li>
     </ul>

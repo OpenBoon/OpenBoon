@@ -34,6 +34,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -177,6 +178,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {

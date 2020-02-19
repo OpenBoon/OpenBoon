@@ -29,7 +29,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
 
 .emotion-5 {
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .emotion-1 {
@@ -72,7 +72,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
 
 .emotion-17 {
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
 }
 
 .emotion-13 {

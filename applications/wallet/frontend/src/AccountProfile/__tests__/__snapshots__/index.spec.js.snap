@@ -28,6 +28,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
 
 .emotion-2 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-1 {

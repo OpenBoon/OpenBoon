@@ -29,7 +29,7 @@ const ProjectUsersAddCopyLink = () => {
           ref={inputRef}
           id="copyLink"
           type="text"
-          defaultValue={`${window.location.hostname}/create-account`}
+          value={`${window.location.hostname}/create-account`}
           css={{
             width: constants.form.maxWidth,
             fontSize: typography.size.regular,

@@ -195,6 +195,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
 
 .emotion-19 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-18 {
