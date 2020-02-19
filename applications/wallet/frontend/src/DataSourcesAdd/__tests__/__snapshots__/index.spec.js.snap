@@ -460,7 +460,6 @@ Array [
 .emotion-93 th:nth-of-type(2),
 .emotion-93 td:nth-of-type(2) {
   min-width: 300px;
-  font-family: Roboto Mono;
 }
 
 .emotion-93 th:nth-of-type(3),
@@ -480,6 +479,10 @@ Array [
 
 .emotion-93 td:first-of-type {
   border: none;
+}
+
+.emotion-93 td:nth-of-type(2) {
+  font-family: Roboto Mono;
 }
 
 .emotion-93 tr:hover td {
