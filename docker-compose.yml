@@ -29,11 +29,7 @@ services:
 
   # Elastic Search instance used for local development servers.
   es1:
-    image: zmlp/elasticsearch
-    build:
-      context: services/elasticsearch
-      args:
-        node_type: single
+    image: zmlp/elasticsearch:development
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -46,9 +42,7 @@ services:
 
   # API Gateway
   api-gateway:
-    image: zmlp/apigateway
-    build:
-      context: services/api-gateway
+    image: zmlp/apigateway:development
     depends_on:
       - auth-server
       - archivist
@@ -60,15 +54,12 @@ services:
 
   # Auth server
   auth-server:
-    image: zmlp/authserver
+    image: zmlp/authserver:development
     depends_on:
       - postgres
       - minio
-      - zmlp-jvm-common
     ports:
       - "9090:9090"
-    build:
-      context: services/auth-server
     environment:
       ZMLP_SECURITY_INCEPTIONKEY: ewogICAgIm5hbWUiOiAiYWRtaW4ta2V5IiwKICAgICJwcm9qZWN0SWQiOiAiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwKICAgICJpZCI6ICI0MzM4YTgzZi1hOTIwLTQwYWItYTI1MS1hMTIzYjE3ZGYxYmEiLAogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiLAogICAgInBlcm1pc3Npb25zIjogW10KfQoK
       ZMLP_STORAGE_SYSTEM_ACCESSKEY: qwerty123
@@ -76,12 +67,11 @@ services:
 
   # Local Archivist server.
   archivist:
-    image: zmlp/archivist
+    image: zmlp/archivist:development
     depends_on:
       - es1
       - postgres
       - minio
-      - zmlp-jvm-common
     environment:
       SENTRY_ENVIRONMENT: localdev
       ZMLP_STORAGE_PROJECT_ACCESSKEY: qwerty123
@@ -95,19 +85,14 @@ services:
       ZMLP_STORAGE_PIPELINE_URL: http://minio:9000
       ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
       ZMLP_SECURITY_AUTHSERVER_SERVICEKEY: ewogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiCn0KCg==
-    build:
-      context: services/archivist
     volumes:
       - "./dev/config/monitoring:/monitoring"
       - "./dev/config/archivist/application.properties:/service/config/application.properties"
 
   officer:
-    image: zmlp/officer
+    image: zmlp/officer:development
     depends_on:
-      - zmlp-jvm-common
       - minio
-    build:
-      context: services/officer
     ports:
       - 7078:7078
     environment:
@@ -116,12 +101,10 @@ services:
       ZMLP_STORAGE_PIPELINE_SECRETKEY: 123qwerty
 
   analyst:
-    image: zmlp/analyst
+    image: zmlp/analyst:development
     depends_on:
       - archivist
       - zmlp-py3-sdk
-    build:
-      context: services/analyst
     ports:
       - 5000:5000
     volumes:
@@ -133,14 +116,9 @@ services:
 
   # Console web application.
   wallet:
-    image: zmlp/wallet
+    image: zmlp/wallet:development
     ports:
       - 80:80
-    build:
-      context: .
-      dockerfile: applications/wallet/Dockerfile
-      args:
-        CI_COMMIT_SHA: $CI_COMMIT_SHA
     environment:
       DJANGO_SETTINGS_MODULE: wallet.settings
       PG_HOST: postgres
@@ -155,54 +133,26 @@ services:
       - postgres
 
   # These services are only here because their images need to be built.
-  zmlp-jvm-common:
-    image: zmlp/jvm-common:latest
-    build:
-      context: lib/jvm-common
-    command: echo
-
   zmlp-py3-base:
-    image: zmlp/py3-base:latest
-    build:
-      context: containers/zmlp-py3-base
+    image: zmlp/py3-base:development
     command: echo
 
   zmlp-py3-client:
-    image: zmlp/py3-client:latest
-    depends_on:
-      - zmlp-py3-base
-    build:
-      context: client/python
+    image: zmlp/py3-client:development
     command: echo
 
   zmlp-py3-sdk:
-    image: zmlp/py3-sdk:latest
-    depends_on:
-      - zmlp-py3-client
-    build:
-      context: sdk
+    image: zmlp/py3-sdk:development
     command: echo
 
   zmlp-plugins-base:
-    image: zmlp/plugins-base:latest
-    depends_on:
-      - zmlp-py3-sdk
-    build:
-      context: containers/zmlp-plugins-base
+    image: zmlp/plugins-base:development
     command: echo
 
   zmlp-plugins-core:
-    image: zmlp/plugins-core:latest
-    depends_on:
-      - zmlp-plugins-base
-    build:
-      context: containers/zmlp-plugins-core
+    image: zmlp/plugins-core:development
     command: echo
 
   zmlp-plugins-analysis:
-    image: zmlp/plugins-analysis:latest
-    depends_on:
-      - zmlp-plugins-base
-    build:
-      context: containers/zmlp-plugins-analysis
+    image: zmlp/plugins-analysis:development
     command: echo
