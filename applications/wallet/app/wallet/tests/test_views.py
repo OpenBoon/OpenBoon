@@ -161,8 +161,12 @@ def test_reset_password(api_client, user, mailoutbox):
     message = mailoutbox[0]
     assert message.subject == 'Wallet Password Reset'
     lines = message.body.split('\n')
-    token = lines[1]
-    uid = lines[2]
+    for line in lines:
+        if 'password-reset?token' in line:
+            split = line.split('"')[-2].split('?')[-1].split('&')
+            token = split[0].replace('token=', '')
+            uid = split[1].replace('uid=', '')
+            break
     response = api_client.post(reverse('api-password-reset-confirm'),
                                {'new_password1': '7BMQv5Pb(KpdS+!z',
                                 'new_password2': '7BMQv5Pb(KpdS+!z',

@@ -177,6 +177,10 @@ REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
+REST_AUTH_SERIALIZERS = {
+    'PASSWORD_RESET_SERIALIZER': 'registration.serializers.PasswordResetSerializer'
+}
+
 # General Application Configuration
 ZMLP_API_URL = os.environ.get('ZMLP_API_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
@@ -188,6 +192,7 @@ GOOGLE_OAUTH_CLIENT_ID = os.environ.get(
 ) + '.apps.googleusercontent.com'
 
 # Mail Server
+DEFAULT_FROM_EMAIL = 'do_not_reply@zorroa.com'
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_HOST_USER = 'postmaster@mg.zorroa.com'
 EMAIL_HOST_PASSWORD = os.environ.get('SMTP_PASSWORD')

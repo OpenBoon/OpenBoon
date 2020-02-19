@@ -2,6 +2,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { colors, constants, typography, spacing } from '../Styles'
 
@@ -9,6 +10,7 @@ import LogoSvg from '../Icons/logo.svg'
 import HiddenSvg from '../Icons/hidden.svg'
 import VisibleSvg from '../Icons/visible.svg'
 
+import FormSuccess from '../FormSuccess'
 import FormAlert from '../FormAlert'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
@@ -25,6 +27,10 @@ const Login = ({
   setErrorMessage,
   onSubmit,
 }) => {
+  const {
+    query: { action },
+  } = useRouter()
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -33,6 +39,7 @@ const Login = ({
     <div
       css={{
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
@@ -40,6 +47,13 @@ const Login = ({
       <Head>
         <title>Login</title>
       </Head>
+
+      {action === 'password-reset-request-success' && (
+        <div css={{ paddingBottom: spacing.normal }}>
+          <FormSuccess>Password Reset Email Sent</FormSuccess>
+        </div>
+      )}
+
       <form
         method="post"
         onSubmit={event => event.preventDefault()}

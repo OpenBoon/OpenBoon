@@ -53,21 +53,12 @@ describe('<ResetPassword />', () => {
     })
 
     expect(fetch.mock.calls.length).toEqual(2)
+
     expect(fetch.mock.calls[0][0]).toEqual(`/api/v1/password/reset/`)
+
     expect(mockFn).toHaveBeenCalledWith(
-      '/reset-password/?action=password-reset-request-success',
+      '/?action=password-reset-request-success',
     )
-  })
-
-  it('should render properly with <FormSuccess/>', () => {
-    require('next/router').__setUseRouter({
-      pathname: '/reset-password',
-      query: { action: 'password-reset-request-success' },
-    })
-
-    const component = TestRenderer.create(<ResetPassword />)
-
-    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should not POST the form', () => {
