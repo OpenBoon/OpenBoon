@@ -19,7 +19,7 @@ export const onSubmit = async ({ dispatch, state: { email } }) => {
 
     if (response.status >= 400) throw response
 
-    Router.push('/reset-password/?action=password-reset-request-success')
+    Router.push('/reset-password?action=password-reset-request-success')
   } catch (response) {
     dispatch({ error: 'Something went wrong. Please try again.' })
   }

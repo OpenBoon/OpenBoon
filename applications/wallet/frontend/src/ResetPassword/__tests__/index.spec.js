@@ -55,7 +55,7 @@ describe('<ResetPassword />', () => {
     expect(fetch.mock.calls.length).toEqual(2)
     expect(fetch.mock.calls[0][0]).toEqual(`/api/v1/password/reset/`)
     expect(mockFn).toHaveBeenCalledWith(
-      '/reset-password/?action=password-reset-request-success',
+      '/reset-password?action=password-reset-request-success',
     )
   })
 
