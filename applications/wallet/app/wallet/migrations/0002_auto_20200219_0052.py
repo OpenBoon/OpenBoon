@@ -7,6 +7,7 @@ import logging
 import base64
 import backoff
 import requests
+from urllib3.exceptions import Connection
 from django.db import migrations
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -26,6 +27,9 @@ def sync_project_zero(project, membership):
         client.post('/api/v1/projects', body)
     except ZmlpDuplicateException:
         logger.info('Project Zero already exists in ZMLP')
+    except:
+        # Having a hard time catching all possible exceptions, reraise one we know.
+        raise requests.exceptions.ConnectionError()
 
 
 def create_project_zero(apps, schema_editor):
@@ -71,7 +75,10 @@ def create_project_zero(apps, schema_editor):
         logger.info('Project Zero membership already exists, not modifying.')
 
     # Sync Project Zero to Zmlp
-    sync_project_zero(project_zero, membership)
+    try:
+        sync_project_zero(project_zero, membership)
+    except requests.exceptions.ConnectionError:
+        logger.error('Unable to sync Project Zero to ZMLP, please check.')
 
 
 class Migration(migrations.Migration):
