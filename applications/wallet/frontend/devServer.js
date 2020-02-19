@@ -38,6 +38,7 @@ app.prepare().then(() => {
   if (MOCKED) {
     server.post('/api/v1/login/', mock(user))
     server.get('/api/v1/projects/', mock(projects))
+    server.post('/api/v1/password/reset/', success())
 
     const userpatch = { ...user, firstName: 'David', lastName: 'Smith' }
     server.patch(`/api/v1/users/:userId/`, mock(userpatch))

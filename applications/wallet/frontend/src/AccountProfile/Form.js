@@ -32,7 +32,7 @@ const AccountProfileForm = () => {
   return (
     <>
       {state.success && !state.showForm && (
-        <FormSuccess>New Name Saved!</FormSuccess>
+        <FormSuccess>New Name Saved</FormSuccess>
       )}
 
       <SectionTitle>{`Email: ${email}`}</SectionTitle>

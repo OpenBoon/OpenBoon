@@ -6,6 +6,11 @@ const noop = () => () => {}
 
 describe('<Login />', () => {
   it('should render properly', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/',
+      query: { action: 'password-reset-request-success' },
+    })
+
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
