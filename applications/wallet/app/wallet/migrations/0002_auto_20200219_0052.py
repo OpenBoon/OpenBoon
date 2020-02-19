@@ -7,7 +7,6 @@ import logging
 import base64
 import backoff
 import requests
-from urllib3.exceptions import Connection
 from django.db import migrations
 from django.conf import settings
 from django.contrib.auth import get_user_model
