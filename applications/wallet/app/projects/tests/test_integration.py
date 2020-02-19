@@ -83,16 +83,17 @@ def test_project_serializer_list(project, project2):
     serializer = ProjectSerializer(queryset, many=True, context={'request': None})
     data = serializer.data
     assert isinstance(data, list)
-    assert len(data) == 2
-    assert [entry['id'] for entry in data] == [project.id, project2.id]
+    assert len(data) == 3
+    assert [entry['id'] for entry in data] == ['00000000-0000-0000-0000-000000000000',
+                                               project.id, project2.id]
 
 
 class TestProjectViewSet:
 
     @pytest.fixture
     def project_zero(self):
-        return Project.objects.create(id='00000000-0000-0000-0000-000000000000',
-                                      name='Project Zero')
+        return Project.objects.get_or_create(id='00000000-0000-0000-0000-000000000000',
+                                             name='Project Zero')[0]
 
     @pytest.fixture
     def project_zero_membership(self, user, project_zero):

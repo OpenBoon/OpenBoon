@@ -51,3 +51,6 @@ variable "database-user" {
   default = "wallet"
 }
 
+variable "inception-key-b64" {
+}
+
