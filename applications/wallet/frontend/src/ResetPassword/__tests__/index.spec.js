@@ -80,7 +80,7 @@ describe('<ResetPassword />', () => {
   it('should render <ResetPasswordConfirm />', () => {
     require('next/router').__setUseRouter({
       pathname: '/reset-password',
-      query: { action: 'enter-new-password' },
+      query: { uid: 'GG', token: '123' },
     })
 
     const component = TestRenderer.create(<ResetPassword />)

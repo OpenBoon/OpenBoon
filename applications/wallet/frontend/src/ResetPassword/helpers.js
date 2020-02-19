@@ -26,7 +26,7 @@ export const onRequest = async ({ dispatch, state: { email } }) => {
 }
 
 export const onConfirm = async ({
-  state: { newPassword, confirmPassword },
+  state: { newPassword, newPassword2 },
   dispatch,
   uid,
   token,
@@ -42,7 +42,7 @@ export const onConfirm = async ({
       },
       body: JSON.stringify({
         new_password1: newPassword,
-        new_password2: confirmPassword,
+        new_password2: newPassword2,
         uid,
         token,
       }),
@@ -52,16 +52,16 @@ export const onConfirm = async ({
 
     Router.push('/?action=enter-new-password-success')
   } catch (response) {
-    const error = await response.json()
+    const errors = await response.json()
 
-    const { newPassword2 = [] } = error
+    const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
+      acc[errorKey] = errors[errorKey].join(' ')
+
+      return acc
+    }, {})
 
     dispatch({
-      errors: {
-        submit: newPassword2.length
-          ? newPassword2[0]
-          : 'Something went wrong. Please try again.',
-      },
+      errors: parsedErrors,
     })
   }
 }

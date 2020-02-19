@@ -1,0 +1,329 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ResetPassword /> should render <ResetPasswordConfirm /> 1`] = `
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 64px;
+  width: 446px;
+  background-color: #2e2e2e;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-0 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+<div
+  className="emotion-2"
+>
+  <form
+    className="emotion-1"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <svg
+      className="emotion-0"
+      data-file-name="logo.svg"
+      width={143}
+    />
+    <ResetPasswordConfirm
+      token="123"
+      uid="GG"
+    />
+  </form>
+</div>
+`;
+
+exports[`<ResetPassword /> should render properly 1`] = `
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.emotion-15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 64px;
+  width: 446px;
+  background-color: #2e2e2e;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-0 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.emotion-1 {
+  text-align: center;
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+.emotion-2 {
+  color: #808080;
+}
+
+.emotion-5 {
+  padding: 8px;
+}
+
+.emotion-4 {
+  padding: 12px;
+}
+
+.emotion-3 {
+  height: 20px;
+}
+
+.emotion-11 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-6 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-8 {
+  position: relative;
+}
+
+.emotion-7 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #000000;
+  background-color: #ffffff;
+  border: 2px solid #c92300;
+  border-width: 2px;
+}
+
+.emotion-10 {
+  padding-top: 8px;
+}
+
+.emotion-9 {
+  color: #c92300;
+  font-style: italic;
+}
+
+.emotion-13 {
+  padding-top: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-12 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-12:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-12[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited {
+  background-color: #73b61c;
+}
+
+.emotion-12:hover {
+  background-color: #96c955;
+}
+
+.emotion-12[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-14 {
+  padding-top: 32px;
+  text-align: center;
+}
+
+.emotion-14 a {
+  color: #808080;
+}
+
+<div
+  className="emotion-16"
+>
+  <form
+    className="emotion-15"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <svg
+      className="emotion-0"
+      data-file-name="logo.svg"
+      width={143}
+    />
+    <h3
+      className="emotion-1"
+    >
+      Did you forget your password?
+    </h3>
+    <div
+      className="emotion-2"
+    >
+      Enter your email below and we'll send you a link to create a new one.
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-3"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-11"
+    >
+      <label
+        className="emotion-6"
+        htmlFor="username"
+      >
+        Email
+      </label>
+      <div
+        className="emotion-8"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-7"
+          id="username"
+          name="username"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-10"
+      >
+        <span
+          className="emotion-9"
+        >
+          
+        </span>
+         
+      </div>
+    </div>
+    <div
+      className="emotion-13"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-12"
+        onClick={[Function]}
+        type="submit"
+      >
+        Request Reset Email
+      </button>
+    </div>
+    <div
+      className="emotion-14"
+    >
+      <a
+        href="/"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Go back to Login
+      </a>
+    </div>
+  </form>
+</div>
+`;

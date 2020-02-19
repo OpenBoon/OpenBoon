@@ -95,4 +95,23 @@ describe('<Login />', () => {
       'text',
     )
   })
+
+  it('should render password changed', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/',
+      query: { action: 'enter-new-password-success' },
+    })
+
+    const component = TestRenderer.create(
+      <Login
+        googleAuth={{ signIn: noop }}
+        hasGoogleLoaded
+        errorMessage=""
+        setErrorMessage={noop}
+        onSubmit={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

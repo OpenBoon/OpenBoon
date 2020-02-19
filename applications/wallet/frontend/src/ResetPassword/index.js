@@ -5,15 +5,15 @@ import { colors, constants, spacing } from '../Styles'
 
 import LogoSvg from '../Icons/logo.svg'
 
-import ResetPasswordConfirm from './Confirm'
 import ResetPasswordRequest from './Request'
+import ResetPasswordConfirm from './Confirm'
 
 const WIDTH = 446
 const LOGO_WIDTH = 143
 
 const ResetPassword = () => {
   const {
-    query: { action, uid, token },
+    query: { uid, token },
   } = useRouter()
 
   return (
@@ -45,7 +45,7 @@ const ResetPassword = () => {
         {uid && token ? (
           <ResetPasswordConfirm uid={uid} token={token} />
         ) : (
-          <ResetPasswordRequest action={action} />
+          <ResetPasswordRequest />
         )}
       </form>
     </div>

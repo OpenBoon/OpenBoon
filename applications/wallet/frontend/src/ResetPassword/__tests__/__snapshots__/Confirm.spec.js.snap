@@ -2,29 +2,6 @@
 
 exports[`<ResetPasswordConfirm /> should render properly 1`] = `
 Array [
-  .emotion-2 {
-  padding: 8px;
-}
-
-.emotion-1 {
-  padding: 12px;
-}
-
-.emotion-0 {
-  height: 20px;
-}
-
-<div
-    className="emotion-2"
-  >
-    <div
-      className="emotion-1"
-    >
-      <div
-        className="emotion-0"
-      />
-    </div>
-  </div>,
   .emotion-0 {
   text-align: center;
   font-size: 18px;
@@ -83,6 +60,7 @@ Array [
       className="emotion-2"
     >
       <input
+        autoFocus={true}
         className="emotion-1"
         id="newPassword"
         name="newPassword"
@@ -133,7 +111,7 @@ Array [
   >
     <label
       className="emotion-0"
-      htmlFor="confirmPassword"
+      htmlFor="newPassword2"
     >
       Confirm Password
     </label>
@@ -142,9 +120,8 @@ Array [
     >
       <input
         className="emotion-1"
-        id="confirmPassword"
-        name="confirmPassword"
-        onBlur={[Function]}
+        id="newPassword2"
+        name="newPassword2"
         onChange={[Function]}
         type="password"
         value=""
@@ -228,6 +205,658 @@ Array [
   >
     <button
       aria-disabled={true}
+      className="emotion-0"
+      onClick={[Function]}
+      type="submit"
+    >
+      Save
+    </button>
+  </div>,
+]
+`;
+
+exports[`<ResetPasswordConfirm /> should render properly 2`] = `
+Array [
+  .emotion-0 {
+  text-align: center;
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    Enter New Password
+  </h3>,
+  .emotion-4 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  position: relative;
+}
+
+.emotion-1 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #000000;
+  background-color: #ffffff;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-3 {
+  padding-top: 8px;
+}
+
+<div
+    className="emotion-4"
+  >
+    <label
+      className="emotion-0"
+      htmlFor="newPassword"
+    >
+      Password
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        autoFocus={true}
+        className="emotion-1"
+        id="newPassword"
+        name="newPassword"
+        onChange={[Function]}
+        type="password"
+        value="foo"
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
+    </div>
+  </div>,
+  .emotion-4 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  position: relative;
+}
+
+.emotion-1 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #000000;
+  background-color: #ffffff;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-3 {
+  padding-top: 8px;
+}
+
+<div
+    className="emotion-4"
+  >
+    <label
+      className="emotion-0"
+      htmlFor="newPassword2"
+    >
+      Confirm Password
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        className="emotion-1"
+        id="newPassword2"
+        name="newPassword2"
+        onChange={[Function]}
+        type="password"
+        value="bar"
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
+    </div>
+  </div>,
+  .emotion-1 {
+  padding-top: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #73b61c;
+}
+
+.emotion-0:hover {
+  background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+    className="emotion-1"
+  >
+    <button
+      className="emotion-0"
+      onClick={[Function]}
+      type="submit"
+    >
+      Save
+    </button>
+  </div>,
+]
+`;
+
+exports[`<ResetPasswordConfirm /> should render properly 3`] = `
+Array [
+  .emotion-0 {
+  text-align: center;
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    Enter New Password
+  </h3>,
+  .emotion-4 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  position: relative;
+}
+
+.emotion-1 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #000000;
+  background-color: #ffffff;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-3 {
+  padding-top: 8px;
+}
+
+<div
+    className="emotion-4"
+  >
+    <label
+      className="emotion-0"
+      htmlFor="newPassword"
+    >
+      Password
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        autoFocus={true}
+        className="emotion-1"
+        id="newPassword"
+        name="newPassword"
+        onChange={[Function]}
+        type="password"
+        value="foo"
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
+    </div>
+  </div>,
+  .emotion-4 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  position: relative;
+}
+
+.emotion-1 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #000000;
+  background-color: #ffffff;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-3 {
+  padding-top: 8px;
+}
+
+<div
+    className="emotion-4"
+  >
+    <label
+      className="emotion-0"
+      htmlFor="newPassword2"
+    >
+      Confirm Password
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        className="emotion-1"
+        id="newPassword2"
+        name="newPassword2"
+        onChange={[Function]}
+        type="password"
+        value="foo"
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
+    </div>
+  </div>,
+  .emotion-1 {
+  padding-top: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #73b61c;
+}
+
+.emotion-0:hover {
+  background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+    className="emotion-1"
+  >
+    <button
+      className="emotion-0"
+      onClick={[Function]}
+      type="submit"
+    >
+      Save
+    </button>
+  </div>,
+]
+`;
+
+exports[`<ResetPasswordConfirm /> should render properly 4`] = `
+Array [
+  .emotion-0 {
+  text-align: center;
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    Enter New Password
+  </h3>,
+  .emotion-4 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  position: relative;
+}
+
+.emotion-1 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #000000;
+  background-color: #ffffff;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-3 {
+  padding-top: 8px;
+}
+
+<div
+    className="emotion-4"
+  >
+    <label
+      className="emotion-0"
+      htmlFor="newPassword"
+    >
+      Password
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        autoFocus={true}
+        className="emotion-1"
+        id="newPassword"
+        name="newPassword"
+        onChange={[Function]}
+        type="password"
+        value="foo"
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+       
+    </div>
+  </div>,
+  .emotion-5 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-0 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  position: relative;
+}
+
+.emotion-4 {
+  padding-top: 8px;
+}
+
+.emotion-1 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #000000;
+  background-color: #ffffff;
+  border: 2px solid #c92300;
+  border-width: 2px;
+}
+
+.emotion-3 {
+  color: #c92300;
+  font-style: italic;
+}
+
+<div
+    className="emotion-5"
+  >
+    <label
+      className="emotion-0"
+      htmlFor="newPassword2"
+    >
+      Confirm Password
+    </label>
+    <div
+      className="emotion-2"
+    >
+      <input
+        className="emotion-1"
+        id="newPassword2"
+        name="newPassword2"
+        onChange={[Function]}
+        type="password"
+        value="foo"
+      />
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <span
+        className="emotion-3"
+      >
+        Error
+      </span>
+       
+    </div>
+  </div>,
+  .emotion-1 {
+  padding-top: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #73b61c;
+}
+
+.emotion-0:hover {
+  background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+    className="emotion-1"
+  >
+    <button
       className="emotion-0"
       onClick={[Function]}
       type="submit"

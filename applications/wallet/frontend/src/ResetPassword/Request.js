@@ -1,10 +1,8 @@
 import { useReducer } from 'react'
-import PropTypes from 'prop-types'
 import Link from 'next/link'
 
 import { colors, typography, spacing } from '../Styles'
 
-import FormSuccess from '../FormSuccess'
 import FormAlert from '../FormAlert'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
@@ -17,7 +15,7 @@ const INITIAL_STATE = {
 }
 const reducer = (state, action) => ({ ...state, ...action })
 
-const ResetPasswordRequest = ({ action }) => {
+const ResetPasswordRequest = () => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   return (
@@ -64,7 +62,7 @@ const ResetPasswordRequest = ({ action }) => {
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() => onSubmit({ dispatch, state })}
+          onClick={() => onRequest({ dispatch, state })}
           isDisabled={!state.email}>
           Request Reset Email
         </Button>
@@ -84,10 +82,6 @@ const ResetPasswordRequest = ({ action }) => {
       </div>
     </>
   )
-}
-
-ResetPasswordRequest.propTypes = {
-  action: PropTypes.string.isRequired,
 }
 
 export default ResetPasswordRequest
