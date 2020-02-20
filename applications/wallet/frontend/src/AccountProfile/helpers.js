@@ -1,6 +1,6 @@
 import { fetcher } from '../Fetch/helpers'
 
-import { userstorer } from '../Authentication/helpers'
+import { userstorer } from '../User/helpers'
 
 export const onSubmit = async ({
   dispatch,

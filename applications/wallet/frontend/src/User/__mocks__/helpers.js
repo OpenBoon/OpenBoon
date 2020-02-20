@@ -60,8 +60,3 @@ export const authenticateUser = () => (...args) => {
  * logout()
  */
 export const logout = () => {}
-
-/**
- * fetcher()
- */
-export const fetcher = () => () => {}

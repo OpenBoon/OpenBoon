@@ -1,4 +1,4 @@
-import { getUser, initializeUserstorer } from '../../Authentication/helpers'
+import { getUser, initializeUserstorer } from '../../User/helpers'
 
 import { onSubmit } from '../helpers'
 

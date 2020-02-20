@@ -8,7 +8,7 @@ import projectUsers from '../__mocks__/projectUsers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
-jest.mock('../../Authentication/helpers')
+jest.mock('../../User/helpers')
 
 describe('<ProjectUsers />', () => {
   it('should render properly while loading', () => {

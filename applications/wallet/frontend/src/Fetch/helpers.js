@@ -1,4 +1,4 @@
-import { clearUser } from '../Authentication/helpers'
+import { clearUser } from '../User/helpers'
 
 let enhancedFetch
 

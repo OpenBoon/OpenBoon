@@ -6,11 +6,11 @@ import User from '../../User'
 
 import Authentication, { noop } from '..'
 
+jest.mock('../../User/helpers')
+
 jest.mock('../../Login', () => 'Login')
 jest.mock('../../Projects', () => 'Projects')
 jest.mock('../../Layout', () => 'Layout')
-
-jest.mock('../helpers')
 
 describe('<Authentication />', () => {
   Object.defineProperty(window, 'onload', {
@@ -29,7 +29,7 @@ describe('<Authentication />', () => {
 
   it('should render properly when user is logged out', async () => {
     const mockFn = jest.fn()
-    require('../helpers').__setMockAuthenticateUser(mockFn)
+    require('../../User/helpers').__setMockAuthenticateUser(mockFn)
 
     const component = TestRenderer.create(
       <User initialUser={{}}>
@@ -73,7 +73,7 @@ describe('<Authentication />', () => {
   })
 
   it('should render properly when user is logged in', async () => {
-    require('../helpers').__setMockUser(mockUser)
+    require('../../User/helpers').__setMockUser(mockUser)
 
     const component = TestRenderer.create(
       <User initialUser={{}}>
@@ -91,7 +91,7 @@ describe('<Authentication />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     // reset localStorage
-    require('../helpers').__setMockUser({})
+    require('../../User/helpers').__setMockUser({})
   })
 
   it('noop should do nothing', () => {

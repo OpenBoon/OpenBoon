@@ -1,4 +1,4 @@
-import { USER } from '../../Authentication/helpers'
+import { USER } from '../../User/helpers'
 
 import { initializeFetcher, fetcher } from '../helpers'
 
