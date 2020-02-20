@@ -1,5 +1,64 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<ResetPassword /> should render <ResetPasswordConfirm /> 1`] = `
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 64px;
+  width: 446px;
+  background-color: #2e2e2e;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-0 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+<div
+  className="emotion-2"
+>
+  <form
+    className="emotion-1"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <svg
+      className="emotion-0"
+      data-file-name="logo.svg"
+      width={143}
+    />
+    <ResetPasswordConfirm
+      token="123"
+      uid="GG"
+    />
+  </form>
+</div>
+`;
+
 exports[`<ResetPassword /> should render properly 1`] = `
 .emotion-16 {
   display: -webkit-box;
