@@ -29,7 +29,7 @@ services:
 
   # Elastic Search instance used for local development servers.
   es1:
-    image: zmlp/elasticsearch:development
+    image: zmlp/elasticsearch:latest
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -42,7 +42,7 @@ services:
 
   # API Gateway
   api-gateway:
-    image: zmlp/apigateway:development
+    image: zmlp/apigateway:latest
     depends_on:
       - auth-server
       - archivist
@@ -54,7 +54,7 @@ services:
 
   # Auth server
   auth-server:
-    image: zmlp/authserver:development
+    image: zmlp/authserver:latest
     depends_on:
       - postgres
       - minio
@@ -67,7 +67,7 @@ services:
 
   # Local Archivist server.
   archivist:
-    image: zmlp/archivist:development
+    image: zmlp/archivist:latest
     depends_on:
       - es1
       - postgres
@@ -90,7 +90,7 @@ services:
       - "./dev/config/archivist/application.properties:/service/config/application.properties"
 
   officer:
-    image: zmlp/officer:development
+    image: zmlp/officer:latest
     depends_on:
       - minio
     ports:
@@ -101,7 +101,7 @@ services:
       ZMLP_STORAGE_PIPELINE_SECRETKEY: 123qwerty
 
   analyst:
-    image: zmlp/analyst:development
+    image: zmlp/analyst:latest
     depends_on:
       - archivist
       - zmlp-py3-sdk
@@ -116,7 +116,7 @@ services:
 
   # Console web application.
   wallet:
-    image: zmlp/wallet:development
+    image: zmlp/wallet:latest
     ports:
       - 80:80
     environment:
@@ -136,25 +136,25 @@ services:
   # These services are only here because their images need to exist for processing. Having them just
   # run an echo command will cause the images to be pulled from docker hub.
   zmlp-py3-base:
-    image: zmlp/py3-base:development
+    image: zmlp/py3-base:latest
     command: echo
 
   zmlp-py3-client:
-    image: zmlp/py3-client:development
+    image: zmlp/py3-client:latest
     command: echo
 
   zmlp-py3-sdk:
-    image: zmlp/py3-sdk:development
+    image: zmlp/py3-sdk:latest
     command: echo
 
   zmlp-plugins-base:
-    image: zmlp/plugins-base:development
+    image: zmlp/plugins-base:latest
     command: echo
 
   zmlp-plugins-core:
-    image: zmlp/plugins-core:development
+    image: zmlp/plugins-core:latest
     command: echo
 
   zmlp-plugins-analysis:
-    image: zmlp/plugins-analysis:development
+    image: zmlp/plugins-analysis:latest
     command: echo

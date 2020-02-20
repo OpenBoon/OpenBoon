@@ -216,21 +216,21 @@ docker_hub_build_push:
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
     - ./buildx
-    - docker tag zmlp/archivist:latest zmlp/archivist:development; docker push zmlp/archivist:development
-    - docker tag zmlp/officer:latest zmlp/officer:development; docker push zmlp/officer:development
-    - docker tag zmlp/wallet:latest zmlp/wallet:development; docker push zmlp/wallet:development
-    - docker tag zmlp/elasticsearch:latest zmlp/elasticsearch:development; docker push zmlp/elasticsearch:development
-    - docker tag zmlp/authserver:latest zmlp/authserver:development; docker push zmlp/authserver:development
-    - docker tag zmlp/apigateway:latest zmlp/apigateway:development; docker push zmlp/apigateway:development
-    - docker tag zmlp/py3-base:latest zmlp/py3-base:development; docker push zmlp/py3-base:development
-    - docker tag zmlp/py3-client:latest zmlp/py3-client:development; docker push zmlp/py3-client:development
-    - docker tag zmlp/py3-sdk:latest zmlp/py3-sdk:development; docker push zmlp/py3-sdk:development
-    - docker tag zmlp/plugins-base:latest zmlp/plugins-base:development; docker push zmlp/plugins-base:development
-    - docker tag zmlp/plugins-core:latest zmlp/plugins-core:development; docker push zmlp/plugins-core:development
-    - docker tag zmlp/plugins-analysis:latest zmlp/plugins-analysis:development; docker push zmlp/plugins-analysis:development
-    - docker tag zmlp/analyst:latest zmlp/analyst:development; docker push zmlp/analyst:development
-  only:
-    - development
+    - docker push zmlp/archivist:latest
+    - docker push zmlp/officer:latest
+    - docker push zmlp/wallet:latest
+    - docker push zmlp/elasticsearch:latest
+    - docker push zmlp/authserver:latest
+    - docker push zmlp/apigateway:latest
+    - docker push zmlp/py3-base:latest
+    - docker push zmlp/py3-client:latest
+    - docker push zmlp/py3-sdk:latest
+    - docker push zmlp/plugins-base:latest
+    - docker push zmlp/plugins-core:latest
+    - docker push zmlp/plugins-analysis:latest
+    - docker push zmlp/analyst:latest
+#  only:
+#    - development
 
 deploy_development:
   image: google/cloud-sdk
