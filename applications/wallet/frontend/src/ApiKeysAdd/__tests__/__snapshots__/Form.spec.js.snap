@@ -980,6 +980,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 
 .emotion-9 {
   padding: 4px;
+  color: #808080;
 }
 
 .emotion-10 {

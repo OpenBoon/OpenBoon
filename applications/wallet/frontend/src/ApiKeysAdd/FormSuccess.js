@@ -80,7 +80,9 @@ const ApiKeysAddFormSuccess = ({
             onClick={() => onCopy({ textareaRef })}>
             Copy Key
           </Button>
-          <span css={{ padding: spacing.small }}>|</span>
+          <span css={{ padding: spacing.small, color: colors.structure.steel }}>
+            |
+          </span>
           <Button
             variant={VARIANTS.LINK}
             download="api-key.json"

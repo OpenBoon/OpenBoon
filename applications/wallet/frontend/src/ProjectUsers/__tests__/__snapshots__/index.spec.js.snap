@@ -15,6 +15,9 @@ Array [
   >
     Project User Admin
   </h2>,
+  <FormSuccess>
+    User Permissions Saved
+  </FormSuccess>,
   .emotion-5 {
   padding: 16px;
   padding-left: 0;
@@ -119,12 +122,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  <FormSuccess>
-    User Permissions Saved
-  </FormSuccess>,
-  <div>
-     
-  </div>,
   .emotion-0 {
   text-align: left;
   font-size: 15px;
@@ -542,9 +539,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  <div>
-     
-  </div>,
   .emotion-7 {
   height: 100%;
 }
@@ -835,9 +829,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  <div>
-     
-  </div>,
   .emotion-7 {
   height: 100%;
 }
@@ -1024,6 +1015,9 @@ Array [
   >
     Project User Admin
   </h2>,
+  <FormSuccess>
+    User Permissions Saved
+  </FormSuccess>,
   .emotion-5 {
   padding: 16px;
   padding-left: 0;
@@ -1128,12 +1122,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  <FormSuccess>
-    User Permissions Saved
-  </FormSuccess>,
-  <div>
-     
-  </div>,
   .emotion-0 {
   text-align: left;
   font-size: 15px;
