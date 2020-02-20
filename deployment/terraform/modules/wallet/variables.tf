@@ -32,7 +32,7 @@ variable "environment" {
 }
 
 variable "container-tag" {
-  default = "development"
+  default = "latest"
 }
 
 variable "namespace" {

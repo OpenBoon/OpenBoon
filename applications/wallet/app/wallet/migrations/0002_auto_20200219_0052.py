@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 @backoff.on_exception(backoff.expo, requests.exceptions.ConnectionError, max_time=120)
 def sync_project_zero(project, membership):
     client = ZmlpClient(apikey=membership.apikey, server=settings.ZMLP_API_URL)
-    body = {'name': project.name, 'id': str(project.id)}
+    body = {'name': project.name, 'projectId': str(project.id)}
     try:
         client.post('/api/v1/projects', body)
     except ZmlpDuplicateException:
