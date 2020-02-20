@@ -46,7 +46,7 @@ class MyApp extends App {
     }
 
     return (
-      <User>
+      <User initialUser={{}}>
         <Authentication>
           <Component {...pageProps} />
         </Authentication>

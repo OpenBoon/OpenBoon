@@ -32,7 +32,7 @@ describe('<Authentication />', () => {
     require('../helpers').__setMockAuthenticateUser(mockFn)
 
     const component = TestRenderer.create(
-      <User>
+      <User initialUser={{}}>
         <Authentication>Hello World!</Authentication>
       </User>,
     )
@@ -61,7 +61,7 @@ describe('<Authentication />', () => {
 
   it('should load the Google SDK', async () => {
     const component = TestRenderer.create(
-      <User>
+      <User initialUser={{}}>
         <Authentication>Hello World!</Authentication>
       </User>,
     )
@@ -76,7 +76,7 @@ describe('<Authentication />', () => {
     require('../helpers').__setMockUser(mockUser)
 
     const component = TestRenderer.create(
-      <User>
+      <User initialUser={{}}>
         <Authentication>Hello World!</Authentication>
       </User>,
     )

@@ -10,8 +10,8 @@ export const UserContext = createContext({
   setGoogleAuth: noop,
 })
 
-const User = ({ children }) => {
-  const [user, setUser] = useState({})
+const User = ({ initialUser, children }) => {
+  const [user, setUser] = useState(initialUser)
   const [googleAuth, setGoogleAuth] = useState({ signIn: noop, signOut: noop })
 
   return (
@@ -22,6 +22,7 @@ const User = ({ children }) => {
 }
 
 User.propTypes = {
+  initialUser: PropTypes.shape({}).isRequired,
   children: PropTypes.node.isRequired,
 }
 
