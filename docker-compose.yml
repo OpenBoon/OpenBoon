@@ -188,16 +188,22 @@ services:
     image: zmlp/plugins-base:latest
     depends_on:
       - zmlp-py3-sdk
+    build:
+      context: containers/zmlp-plugins-base
     command: echo
 
   zmlp-plugins-core:
     image: zmlp/plugins-core:latest
     depends_on:
       - zmlp-plugins-base
+    build:
+      context: containers/zmlp-plugins-core
     command: echo
 
   zmlp-plugins-analysis:
     image: zmlp/plugins-analysis:latest
     depends_on:
       - zmlp-plugins-base
+    build:
+      context: containers/zmlp-plugins-analysis
     command: echo
