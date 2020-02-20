@@ -99,7 +99,7 @@ describe('<Login />', () => {
   it('should render password changed', () => {
     require('next/router').__setUseRouter({
       pathname: '/',
-      query: { action: 'enter-new-password-success' },
+      query: { action: 'password-reset-update-success' },
     })
 
     const component = TestRenderer.create(

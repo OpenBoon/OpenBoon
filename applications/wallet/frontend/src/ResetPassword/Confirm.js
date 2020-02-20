@@ -8,8 +8,6 @@ import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 
 import { onConfirm } from './helpers'
 
-export const noop = () => () => {}
-
 const INITIAL_STATE = {
   newPassword: '',
   newPassword2: '',

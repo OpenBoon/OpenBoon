@@ -50,7 +50,7 @@ export const onConfirm = async ({
 
     if (response.status >= 400) throw response
 
-    Router.push('/?action=enter-new-password-success')
+    Router.push('/?action=password-reset-update-success')
   } catch (response) {
     const errors = await response.json()
 

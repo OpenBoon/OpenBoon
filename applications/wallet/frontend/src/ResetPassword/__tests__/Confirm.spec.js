@@ -1,22 +1,14 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import mockUser from '../../User/__mocks__/user'
+import ResetPasswordConfirm from '../Confirm'
 
-import ResetPasswordConfirm, { noop } from '../Confirm'
-
-jest.mock('../../Authentication/helpers', () => ({
-  getUser: () => mockUser,
-}))
+const noop = () => () => {}
 
 describe('<ResetPasswordConfirm />', () => {
   it('should render properly', async () => {
     const mockFn = jest.fn()
 
     require('next/router').__setMockPushFunction(mockFn)
-    require('next/router').__setUseRouter({
-      pathname: '/reset-password',
-      query: { action: 'enter-new-password' },
-    })
 
     const component = TestRenderer.create(
       <ResetPasswordConfirm uid="GG" token="123" />,
@@ -74,10 +66,8 @@ describe('<ResetPasswordConfirm />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockFn).toHaveBeenCalledWith('/?action=enter-new-password-success')
-  })
-
-  it('noop should do nothing', () => {
-    expect(noop()()).toBe(undefined)
+    expect(mockFn).toHaveBeenCalledWith(
+      '/?action=password-reset-update-success',
+    )
   })
 })

@@ -54,9 +54,9 @@ const Login = ({
         </div>
       )}
 
-      {action === 'enter-new-password-success' && (
+      {action === 'password-reset-update-success' && (
         <div css={{ paddingBottom: spacing.normal }}>
-          <FormSuccess>Password has been updated.</FormSuccess>
+          <FormSuccess>Password has been updated</FormSuccess>
         </div>
       )}
 

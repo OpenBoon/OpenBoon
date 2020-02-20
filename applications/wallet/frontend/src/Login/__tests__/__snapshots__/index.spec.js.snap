@@ -429,7 +429,7 @@ exports[`<Login /> should render password changed 1`] = `
         <div
           className="emotion-1"
         >
-          Password has been updated.
+          Password has been updated
         </div>
       </div>
     </div>
