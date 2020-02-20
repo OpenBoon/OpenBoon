@@ -50,21 +50,31 @@ services:
       context: containers/zmlp-py3-base
 
   zmlp-py3-client:
+    depends_on:
+      - zmlp-py3-base
     build:
       context: client/python
 
   zmlp-py3-sdk:
+    depends_on:
+      - zmlp-py3-client
     build:
       context: sdk
 
   zmlp-plugins-base:
+    depends_on:
+      - zmlp-py3-sdk
     build:
       context: containers/zmlp-plugins-base
 
   zmlp-plugins-core:
+    depends_on:
+      - zmlp-plugins-base
     build:
       context: containers/zmlp-plugins-core
 
   zmlp-plugins-analysis:
+    depends_on:
+      - zmlp-plugins-base
     build:
       context: containers/zmlp-plugins-analysis
