@@ -32,5 +32,5 @@ class ApikeyViewSet(BaseProjectViewSet):
                             status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_201_CREATED, data=response)
 
-    def destroy(self, request, project, pk):
+    def destroy(self, request, project_pk, pk):
         return self._zmlp_destroy(request, pk)
