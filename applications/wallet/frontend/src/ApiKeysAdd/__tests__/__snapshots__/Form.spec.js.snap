@@ -15,9 +15,8 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding-right: 0;
 }
 
-.emotion-4 {
+.emotion-3 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -47,10 +46,6 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-3 {
-  padding-top: 8px;
 }
 
 .emotion-103 {
@@ -141,17 +136,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  color: #b3b3b3;
 }
 
 .emotion-11 {
+  color: #ffffff;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 700;
 }
 
 .emotion-12 {
-  color: #808080;
+  color: #b3b3b3;
   padding-left: 0;
 }
 
@@ -193,7 +188,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;
@@ -231,7 +226,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   onSubmit={[Function]}
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -780,7 +775,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -896,7 +891,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 .emotion-7 {
   width: 470px;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   color: #ffffff;
   background-color: #2e2e2e;
   border-radius: 2px;
@@ -942,7 +937,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -980,6 +975,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 
 .emotion-9 {
   padding: 4px;
+  color: #808080;
 }
 
 .emotion-10 {
@@ -1006,7 +1002,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -1060,7 +1056,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -1199,9 +1195,8 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding-right: 0;
 }
 
-.emotion-4 {
+.emotion-3 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -1231,10 +1226,6 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-3 {
-  padding-top: 8px;
 }
 
 .emotion-103 {
@@ -1325,17 +1316,17 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  color: #b3b3b3;
 }
 
 .emotion-11 {
+  color: #ffffff;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 700;
 }
 
 .emotion-12 {
-  color: #808080;
+  color: #b3b3b3;
   padding-left: 0;
 }
 
@@ -1377,7 +1368,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;
@@ -1415,7 +1406,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   onSubmit={[Function]}
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"

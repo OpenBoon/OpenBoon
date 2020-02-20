@@ -64,7 +64,7 @@ exports[`<Table /> should render properly with an error 1`] = `
 .emotion-0 {
   text-align: left;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
@@ -104,7 +104,7 @@ exports[`<Table /> should render properly with an error 1`] = `
   text-align: center;
   color: #808080;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
 }
 
 <div
@@ -217,7 +217,7 @@ exports[`<Table /> should render properly without data 1`] = `
 .emotion-0 {
   text-align: left;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
@@ -257,7 +257,7 @@ exports[`<Table /> should render properly without data 1`] = `
   text-align: center;
   color: #808080;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
 }
 
 <div

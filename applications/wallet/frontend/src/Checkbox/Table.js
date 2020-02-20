@@ -40,7 +40,6 @@ const CheckboxTable = ({ category: { name, modules }, onClick }) => {
             },
             ':nth-of-type(2)': {
               minWidth: 300,
-              fontFamily: 'Roboto Mono',
             },
             ':nth-of-type(3)': { width: '100%' },
           },
@@ -53,6 +52,9 @@ const CheckboxTable = ({ category: { name, modules }, onClick }) => {
             verticalAlign: 'top',
             ':first-of-type': {
               border: 'none',
+            },
+            ':nth-of-type(2)': {
+              fontFamily: 'Roboto Mono',
             },
           },
           tr: {

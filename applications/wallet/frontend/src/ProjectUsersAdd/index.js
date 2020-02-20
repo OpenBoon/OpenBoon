@@ -17,7 +17,7 @@ const ProjectUsersAdd = () => {
       <Tabs
         tabs={[
           { title: 'View All', href: '/[projectId]/users' },
-          { title: 'Invite User(s)', href: '/[projectId]/users/add' },
+          { title: 'Add User(s)', href: '/[projectId]/users/add' },
         ]}
       />
 

@@ -21,18 +21,16 @@ const DataSources = () => {
 
       <PageTitle>Data Sources</PageTitle>
 
+      {action === 'add-datasource-success' && (
+        <FormSuccess>Data Source Created</FormSuccess>
+      )}
+
       <Tabs
         tabs={[
           { title: 'View all', href: '/[projectId]/data-sources' },
           { title: 'Add Data Source', href: '/[projectId]/data-sources/add' },
         ]}
       />
-
-      {action === 'add-datasource-success' && (
-        <FormSuccess>Data Source Created</FormSuccess>
-      )}
-
-      <div>&nbsp;</div>
 
       <Table
         url={`/api/v1/projects/${projectId}/datasources/`}
