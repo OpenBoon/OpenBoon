@@ -32,7 +32,37 @@ def test_datasource_viewset_create(api_client, monkeypatch, project, zmlp_projec
     assert response.status_code == 200
     response_data = copy(data)
     response_data['fileTypes'] = response_data['file_types']
+    response_data['credential'] = None
     del response_data['file_types']
+    assert response.json() == response_data
+
+
+def test_datasource_viewset_create_null_credentials(api_client, monkeypatch, project,
+                                                    zmlp_project_user):
+    api_client.force_login(zmlp_project_user)
+
+    data = {'name': 'test',
+            'uri': 'gs://test-bucket',
+            'credential': '',
+            'file_types': ['jpg', 'png'],
+            'modules': ['zmlp-labels'],
+            'id': str(uuid4())}
+
+    def mock_create_datasource(*args, **kwargs):
+        return DataSource(data)
+
+    def mock_import_files(*args, **kwargs):
+        return None
+
+    monkeypatch.setattr(DataSourceApp, 'create_datasource', mock_create_datasource)
+    monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
+    response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
+                               data)
+    assert response.status_code == 200
+    response_data = copy(data)
+    response_data['fileTypes'] = response_data['file_types']
+    del response_data['file_types']
+    response_data['credential'] = None
     assert response.json() == response_data
 
 

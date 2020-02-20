@@ -21,8 +21,10 @@ class DataSourceViewSet(BaseProjectViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
         app = request.app
         data = serializer.validated_data
+        creds = data.get('credentials') or None
         datasource = app.datasource.create_datasource(name=data['name'], uri=data['uri'],
                                                       modules=data['modules'],
+                                                      credentials=creds,
                                                       file_types=data['file_types'])
         app.datasource.import_files(datasource)
         return Response(self.get_serializer(datasource).data)
