@@ -16,9 +16,8 @@ Array [
   >
     Enter New Password
   </h3>,
-  .emotion-4 {
+  .emotion-3 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -43,12 +42,8 @@ Array [
   border-width: 2px;
 }
 
-.emotion-3 {
-  padding-top: 8px;
-}
-
 <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -75,9 +70,8 @@ Array [
        
     </div>
   </div>,
-  .emotion-4 {
+  .emotion-3 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -102,12 +96,8 @@ Array [
   border-width: 2px;
 }
 
-.emotion-3 {
-  padding-top: 8px;
-}
-
 <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -169,7 +159,7 @@ Array [
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;
@@ -231,9 +221,8 @@ Array [
   >
     Enter New Password
   </h3>,
-  .emotion-4 {
+  .emotion-3 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -258,12 +247,8 @@ Array [
   border-width: 2px;
 }
 
-.emotion-3 {
-  padding-top: 8px;
-}
-
 <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -290,9 +275,8 @@ Array [
        
     </div>
   </div>,
-  .emotion-4 {
+  .emotion-3 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -317,12 +301,8 @@ Array [
   border-width: 2px;
 }
 
-.emotion-3 {
-  padding-top: 8px;
-}
-
 <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -384,7 +364,7 @@ Array [
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -445,9 +425,8 @@ Array [
   >
     Enter New Password
   </h3>,
-  .emotion-4 {
+  .emotion-3 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -472,12 +451,8 @@ Array [
   border-width: 2px;
 }
 
-.emotion-3 {
-  padding-top: 8px;
-}
-
 <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -504,9 +479,8 @@ Array [
        
     </div>
   </div>,
-  .emotion-4 {
+  .emotion-3 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -531,12 +505,8 @@ Array [
   border-width: 2px;
 }
 
-.emotion-3 {
-  padding-top: 8px;
-}
-
 <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -598,7 +568,7 @@ Array [
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -659,9 +629,8 @@ Array [
   >
     Enter New Password
   </h3>,
-  .emotion-4 {
+  .emotion-3 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -686,12 +655,8 @@ Array [
   border-width: 2px;
 }
 
-.emotion-3 {
-  padding-top: 8px;
-}
-
 <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -718,9 +683,8 @@ Array [
        
     </div>
   </div>,
-  .emotion-5 {
+  .emotion-4 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -731,10 +695,6 @@ Array [
 
 .emotion-2 {
   position: relative;
-}
-
-.emotion-4 {
-  padding-top: 8px;
 }
 
 .emotion-1 {
@@ -755,7 +715,7 @@ Array [
 }
 
 <div
-    className="emotion-5"
+    className="emotion-4"
   >
     <label
       className="emotion-0"
@@ -822,7 +782,7 @@ Array [
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
