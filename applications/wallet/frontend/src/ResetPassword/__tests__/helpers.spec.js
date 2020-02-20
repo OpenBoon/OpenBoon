@@ -1,13 +1,13 @@
-import { onSubmit } from '../helpers'
+import { onRequest } from '../helpers'
 
 describe('<ResetPassword /> helpers', () => {
-  describe('onSubmit()', () => {
+  describe('onRequest()', () => {
     it('should display an error message', async () => {
       const mockDispatch = jest.fn()
 
       fetch.mockResponseOnce(null, { status: 400 })
 
-      await onSubmit({
+      await onRequest({
         dispatch: mockDispatch,
         state: { email: 'username' },
       })
