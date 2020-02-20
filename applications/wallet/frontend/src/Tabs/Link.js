@@ -4,13 +4,20 @@ import { useRouter } from 'next/router'
 
 import { colors, spacing, typography } from '../Styles'
 
+const TABS_UNDERLINE_WIDTH = 1
+const TAB_BOTTOM_WIDTH = 2
+
 const TabsLink = ({ title, href }) => {
   const { pathname, query } = useRouter()
 
   const isCurrentPage = pathname === href
 
   return (
-    <li css={{ paddingRight: spacing.normal }}>
+    <li
+      css={{
+        paddingRight: spacing.normal,
+        marginBottom: -TABS_UNDERLINE_WIDTH,
+      }}>
       <Link
         href={href}
         as={href
@@ -21,7 +28,7 @@ const TabsLink = ({ title, href }) => {
         <a
           css={{
             border: `0 ${colors.key.one} solid`,
-            borderBottomWidth: isCurrentPage ? 2 : 0,
+            borderBottomWidth: isCurrentPage ? TAB_BOTTOM_WIDTH : 0,
             color: isCurrentPage ? colors.white : colors.structure.zinc,
             display: 'flex',
             alignItems: 'center',

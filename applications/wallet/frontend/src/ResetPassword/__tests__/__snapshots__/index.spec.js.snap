@@ -122,9 +122,8 @@ exports[`<ResetPassword /> should render properly 1`] = `
   height: 20px;
 }
 
-.emotion-11 {
+.emotion-10 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-6 {
@@ -147,10 +146,6 @@ exports[`<ResetPassword /> should render properly 1`] = `
   background-color: #ffffff;
   border: 2px solid #c92300;
   border-width: 2px;
-}
-
-.emotion-10 {
-  padding-top: 8px;
 }
 
 .emotion-9 {
@@ -194,7 +189,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;
@@ -269,7 +264,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-11"
+      className="emotion-10"
     >
       <label
         className="emotion-6"

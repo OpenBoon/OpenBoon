@@ -52,7 +52,7 @@ const Input = ({
   after,
   ...props
 }) => (
-  <div css={{ paddingTop: PADDING, paddingBottom: PADDING }}>
+  <div css={{ paddingTop: PADDING }}>
     <label
       htmlFor={id}
       css={{

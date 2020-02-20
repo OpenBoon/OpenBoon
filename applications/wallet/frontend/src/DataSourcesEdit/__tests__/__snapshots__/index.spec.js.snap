@@ -34,6 +34,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -177,6 +178,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -369,6 +371,14 @@ Array [
 
 .emotion-6 {
   padding-left: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-9 {
@@ -377,17 +387,17 @@ Array [
   width: -moz-max-content;
   width: max-content;
   padding-left: 16px;
-  color: #ffffff;
 }
 
 .emotion-7 {
+  color: #ffffff;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 700;
 }
 
 .emotion-8 {
-  color: #808080;
+  color: #b3b3b3;
   padding-left: 12px;
 }
 
@@ -534,7 +544,6 @@ Array [
 .emotion-75 th:nth-of-type(2),
 .emotion-75 td:nth-of-type(2) {
   min-width: 300px;
-  font-family: Roboto Mono;
 }
 
 .emotion-75 th:nth-of-type(3),
@@ -554,6 +563,10 @@ Array [
 
 .emotion-75 td:first-of-type {
   border: none;
+}
+
+.emotion-75 td:nth-of-type(2) {
+  font-family: Roboto Mono;
 }
 
 .emotion-75 tr:hover td {
@@ -627,7 +640,7 @@ Array [
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -682,7 +695,7 @@ Array [
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;

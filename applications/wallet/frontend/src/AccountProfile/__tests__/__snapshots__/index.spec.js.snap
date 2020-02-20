@@ -28,6 +28,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
 
 .emotion-2 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-1 {
@@ -73,7 +74,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
 .emotion-9 {
   color: #808080;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 400;
   padding-bottom: 24px;
 }
@@ -102,7 +103,7 @@ exports[`<AccountProfile /> should render properly 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
