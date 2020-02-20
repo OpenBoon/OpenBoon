@@ -69,12 +69,12 @@ exports[`<Checkbox /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  color: #b3b3b3;
 }
 
 .emotion-4 {
+  color: #ffffff;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 700;
 }
 
@@ -164,12 +164,12 @@ exports[`<Checkbox /> should render properly 2`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  color: #b3b3b3;
 }
 
 .emotion-4 {
+  color: #ffffff;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 700;
 }
 

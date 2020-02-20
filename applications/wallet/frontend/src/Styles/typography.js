@@ -5,7 +5,7 @@ const typography = {
     large: 18,
   },
   height: {
-    regular: '18px',
+    regular: '19px',
     medium: '20px',
     large: '21px',
   },

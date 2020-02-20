@@ -38,7 +38,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   align-items: center;
   padding: 12px;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   background-color: #2e2e2e;
 }
 
@@ -64,7 +64,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   align-items: center;
   padding: 12px;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   background-color: none;
   color: #b3b3b3;
 }
@@ -220,7 +220,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   align-items: center;
   padding: 12px;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   background-color: #2e2e2e;
 }
 
@@ -246,7 +246,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   align-items: center;
   padding: 12px;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   background-color: none;
   color: #b3b3b3;
 }

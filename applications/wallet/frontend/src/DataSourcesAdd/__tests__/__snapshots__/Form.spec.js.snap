@@ -27,9 +27,8 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   padding-top: 16px;
 }
 
-.emotion-5 {
+.emotion-4 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-1 {
@@ -61,18 +60,13 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   color: #000000;
 }
 
-.emotion-4 {
-  padding-top: 8px;
-}
-
 .emotion-18 {
   min-width: 470px;
   max-width: 50%;
 }
 
-.emotion-17 {
+.emotion-16 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-13 {
@@ -102,10 +96,6 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-16 {
-  padding-top: 8px;
 }
 
 .emotion-48 {
@@ -189,6 +179,14 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
 
 .emotion-25 {
   padding-left: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-28 {
@@ -197,17 +195,17 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   width: -moz-max-content;
   width: max-content;
   padding-left: 16px;
-  color: #ffffff;
 }
 
 .emotion-26 {
+  color: #ffffff;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 700;
 }
 
 .emotion-27 {
-  color: #808080;
+  color: #b3b3b3;
   padding-left: 12px;
 }
 
@@ -342,7 +340,6 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
 .emotion-93 th:nth-of-type(2),
 .emotion-93 td:nth-of-type(2) {
   min-width: 300px;
-  font-family: Roboto Mono;
 }
 
 .emotion-93 th:nth-of-type(3),
@@ -362,6 +359,10 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
 
 .emotion-93 td:first-of-type {
   border: none;
+}
+
+.emotion-93 td:nth-of-type(2) {
+  font-family: Roboto Mono;
 }
 
 .emotion-93 tr:hover td {
@@ -435,7 +436,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -490,7 +491,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;
@@ -536,7 +537,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
       Data Source Name
     </h3>
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       <label
         className="emotion-1"
@@ -569,7 +570,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
       Connect to Source: Google Cloud Storage
     </h3>
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       <label
         className="emotion-1"
@@ -600,7 +601,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
     className="emotion-18"
   >
     <div
-      className="emotion-17"
+      className="emotion-16"
     >
       <label
         className="emotion-13"

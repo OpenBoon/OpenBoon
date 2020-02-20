@@ -48,7 +48,7 @@ describe('<ProjectUsersAddForm />', () => {
     // Submit the form
     act(() => {
       component.root
-        .findByProps({ children: 'Send Invite' })
+        .findByProps({ children: 'Add' })
         .props.onClick({ preventDefault: noop })
     })
 

@@ -21,18 +21,16 @@ const ProjectUsers = () => {
 
       <PageTitle>Project User Admin</PageTitle>
 
-      <Tabs
-        tabs={[
-          { title: 'View All', href: '/[projectId]/users' },
-          { title: 'Invite User(s)', href: '/[projectId]/users/add' },
-        ]}
-      />
-
       {action === 'edit-user-success' && (
         <FormSuccess>User Permissions Saved</FormSuccess>
       )}
 
-      <div>&nbsp;</div>
+      <Tabs
+        tabs={[
+          { title: 'View All', href: '/[projectId]/users' },
+          { title: 'Add User(s)', href: '/[projectId]/users/add' },
+        ]}
+      />
 
       <Table
         url={`/api/v1/projects/${projectId}/users/`}

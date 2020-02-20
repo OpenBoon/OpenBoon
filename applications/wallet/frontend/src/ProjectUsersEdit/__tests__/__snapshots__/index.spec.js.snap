@@ -34,6 +34,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -113,7 +114,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Invite User(s)
+          Add User(s)
         </a>
       </li>
       <li
@@ -177,6 +178,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -256,7 +258,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Invite User(s)
+          Add User(s)
         </a>
       </li>
       <li
@@ -394,17 +396,17 @@ Array [
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  color: #b3b3b3;
 }
 
 .emotion-10 {
+  color: #ffffff;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 700;
 }
 
 .emotion-11 {
-  color: #808080;
+  color: #b3b3b3;
   padding-left: 0;
 }
 
@@ -464,7 +466,7 @@ Array [
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -519,7 +521,7 @@ Array [
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;

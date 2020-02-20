@@ -1,9 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Input /> should render properly with an error 1`] = `
-.emotion-5 {
+.emotion-4 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -28,17 +27,13 @@ exports[`<Input /> should render properly with an error 1`] = `
   border-width: 2px;
 }
 
-.emotion-4 {
-  padding-top: 8px;
-}
-
 .emotion-3 {
   color: #c92300;
   font-style: italic;
 }
 
 <div
-  className="emotion-5"
+  className="emotion-4"
 >
   <label
     className="emotion-0"
