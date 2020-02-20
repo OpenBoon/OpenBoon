@@ -56,12 +56,9 @@ export const onConfirm = async ({
 
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
       acc[errorKey] = errors[errorKey].join(' ')
-
       return acc
     }, {})
 
-    dispatch({
-      errors: parsedErrors,
-    })
+    dispatch({ errors: parsedErrors })
   }
 }

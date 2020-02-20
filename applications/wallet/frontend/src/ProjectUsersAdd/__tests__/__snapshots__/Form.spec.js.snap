@@ -156,9 +156,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 
 .emotion-8:focus {
   border: 2px solid #73b61c;
-  background-color: #ffffff;
   outline: #73b61c;
+}
+
+.emotion-8:focus {
   color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-110 {
@@ -1044,9 +1047,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 
 .emotion-8:focus {
   border: 2px solid #73b61c;
-  background-color: #ffffff;
   outline: #73b61c;
+}
+
+.emotion-8:focus {
   color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-110 {
@@ -2461,9 +2467,12 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 
 .emotion-8:focus {
   border: 2px solid #73b61c;
-  background-color: #ffffff;
   outline: #73b61c;
+}
+
+.emotion-8:focus {
   color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-110 {

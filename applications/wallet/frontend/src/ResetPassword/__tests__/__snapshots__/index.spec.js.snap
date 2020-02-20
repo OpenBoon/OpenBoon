@@ -60,7 +60,7 @@ exports[`<ResetPassword /> should render <ResetPasswordConfirm /> 1`] = `
 `;
 
 exports[`<ResetPassword /> should render properly 1`] = `
-.emotion-16 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -76,7 +76,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
   height: 100vh;
 }
 
-.emotion-15 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -122,7 +122,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
   height: 20px;
 }
 
-.emotion-10 {
+.emotion-9 {
   padding-top: 8px;
 }
 
@@ -144,16 +144,16 @@ exports[`<ResetPassword /> should render properly 1`] = `
   width: 100%;
   color: #000000;
   background-color: #ffffff;
-  border: 2px solid #c92300;
+  border: 1px solid transparent;
   border-width: 2px;
 }
 
-.emotion-9 {
-  color: #c92300;
-  font-style: italic;
+.emotion-7:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
 }
 
-.emotion-13 {
+.emotion-12 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -165,7 +165,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-12 {
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -197,43 +197,43 @@ exports[`<ResetPassword /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-12:hover {
+.emotion-11:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-12,
-.emotion-12:hover,
-.emotion-12:visited {
+.emotion-11,
+.emotion-11:hover,
+.emotion-11:visited {
   background-color: #73b61c;
 }
 
-.emotion-12:hover {
+.emotion-11:hover {
   background-color: #96c955;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-11[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-14 {
+.emotion-13 {
   padding-top: 32px;
   text-align: center;
 }
 
-.emotion-14 a {
+.emotion-13 a {
   color: #808080;
 }
 
 <div
-  className="emotion-16"
+  className="emotion-15"
 >
   <form
-    className="emotion-15"
+    className="emotion-14"
     method="post"
     onSubmit={[Function]}
   >
@@ -264,11 +264,11 @@ exports[`<ResetPassword /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-9"
     >
       <label
         className="emotion-6"
-        htmlFor="username"
+        htmlFor="email"
       >
         Email
       </label>
@@ -278,30 +278,25 @@ exports[`<ResetPassword /> should render properly 1`] = `
         <input
           autoFocus={true}
           className="emotion-7"
-          id="username"
-          name="username"
+          id="email"
+          name="email"
           onChange={[Function]}
           type="text"
           value=""
         />
       </div>
       <div
-        className="emotion-10"
+        className="emotion-9"
       >
-        <span
-          className="emotion-9"
-        >
-          
-        </span>
          
       </div>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-12"
     >
       <button
         aria-disabled={true}
-        className="emotion-12"
+        className="emotion-11"
         onClick={[Function]}
         type="submit"
       >
@@ -309,7 +304,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
       </button>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-13"
     >
       <a
         href="/"

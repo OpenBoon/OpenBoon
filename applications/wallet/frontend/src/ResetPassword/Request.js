@@ -44,13 +44,13 @@ const ResetPasswordRequest = () => {
 
       <Input
         autoFocus
-        id="username"
+        id="email"
         variant={INPUT_VARIANTS.PRIMARY}
         label="Email"
         type="text"
         value={state.email}
         onChange={({ target: { value } }) => dispatch({ email: value })}
-        hasError={!state.email}
+        hasError={false}
       />
 
       <div

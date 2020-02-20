@@ -43,9 +43,12 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 
 .emotion-1:focus {
   border: 2px solid #73b61c;
-  background-color: #ffffff;
   outline: #73b61c;
+}
+
+.emotion-1:focus {
   color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-103 {
@@ -1223,9 +1226,12 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 
 .emotion-1:focus {
   border: 2px solid #73b61c;
-  background-color: #ffffff;
   outline: #73b61c;
+}
+
+.emotion-1:focus {
   color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-103 {
