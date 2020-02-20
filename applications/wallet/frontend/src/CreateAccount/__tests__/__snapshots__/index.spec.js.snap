@@ -102,9 +102,8 @@ exports[`<CreateAccount /> should render properly 1`] = `
   padding-top: 16px;
 }
 
-.emotion-12 {
+.emotion-11 {
   padding-top: 8px;
-  padding-bottom: 0;
 }
 
 .emotion-8 {
@@ -134,10 +133,6 @@ exports[`<CreateAccount /> should render properly 1`] = `
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-11 {
-  padding-top: 8px;
 }
 
 .emotion-36 {
@@ -315,7 +310,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
         Name
       </h3>
       <div
-        className="emotion-12"
+        className="emotion-11"
       >
         <label
           className="emotion-8"
@@ -343,7 +338,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
         </div>
       </div>
       <div
-        className="emotion-12"
+        className="emotion-11"
       >
         <label
           className="emotion-8"
@@ -370,7 +365,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
         </div>
       </div>
       <div
-        className="emotion-12"
+        className="emotion-11"
       >
         <label
           className="emotion-8"
@@ -402,7 +397,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
         Password
       </h3>
       <div
-        className="emotion-12"
+        className="emotion-11"
       >
         <label
           className="emotion-8"
@@ -429,7 +424,7 @@ exports[`<CreateAccount /> should render properly 1`] = `
         </div>
       </div>
       <div
-        className="emotion-12"
+        className="emotion-11"
       >
         <label
           className="emotion-8"

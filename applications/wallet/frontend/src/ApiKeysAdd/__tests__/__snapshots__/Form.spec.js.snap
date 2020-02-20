@@ -15,9 +15,8 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding-right: 0;
 }
 
-.emotion-4 {
+.emotion-3 {
   padding-top: 8px;
-  padding-bottom: 0;
 }
 
 .emotion-0 {
@@ -47,10 +46,6 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-3 {
-  padding-top: 8px;
 }
 
 .emotion-103 {
@@ -231,7 +226,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   onSubmit={[Function]}
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -1200,9 +1195,8 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   padding-right: 0;
 }
 
-.emotion-4 {
+.emotion-3 {
   padding-top: 8px;
-  padding-bottom: 0;
 }
 
 .emotion-0 {
@@ -1232,10 +1226,6 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-3 {
-  padding-top: 8px;
 }
 
 .emotion-103 {
@@ -1416,7 +1406,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   onSubmit={[Function]}
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"

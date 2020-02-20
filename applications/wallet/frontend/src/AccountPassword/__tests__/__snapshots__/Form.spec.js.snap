@@ -15,9 +15,8 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   padding-right: 0;
 }
 
-.emotion-4 {
+.emotion-3 {
   padding-top: 8px;
-  padding-bottom: 0;
 }
 
 .emotion-0 {
@@ -47,10 +46,6 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-3 {
-  padding-top: 8px;
 }
 
 .emotion-17 {
@@ -184,7 +179,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
   onSubmit={[Function]}
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -212,7 +207,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -239,7 +234,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -466,9 +461,8 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   padding-right: 0;
 }
 
-.emotion-4 {
+.emotion-3 {
   padding-top: 8px;
-  padding-bottom: 0;
 }
 
 .emotion-0 {
@@ -498,10 +492,6 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-3 {
-  padding-top: 8px;
 }
 
 .emotion-17 {
@@ -635,7 +625,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
   onSubmit={[Function]}
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -663,7 +653,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
     </div>
   </div>
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -690,7 +680,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
     </div>
   </div>
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -753,9 +743,8 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   padding-right: 0;
 }
 
-.emotion-4 {
+.emotion-3 {
   padding-top: 8px;
-  padding-bottom: 0;
 }
 
 .emotion-0 {
@@ -785,10 +774,6 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-3 {
-  padding-top: 8px;
 }
 
 .emotion-17 {
@@ -922,7 +907,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
   onSubmit={[Function]}
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -950,7 +935,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
     </div>
   </div>
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"
@@ -977,7 +962,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
     </div>
   </div>
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <label
       className="emotion-0"

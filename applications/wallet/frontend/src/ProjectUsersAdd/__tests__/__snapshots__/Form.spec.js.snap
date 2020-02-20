@@ -128,9 +128,8 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   padding-right: 0;
 }
 
-.emotion-11 {
+.emotion-10 {
   padding-top: 8px;
-  padding-bottom: 0;
 }
 
 .emotion-7 {
@@ -160,10 +159,6 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-10 {
-  padding-top: 8px;
 }
 
 .emotion-110 {
@@ -382,7 +377,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
     onSubmit={[Function]}
   >
     <div
-      className="emotion-11"
+      className="emotion-10"
     >
       <label
         className="emotion-7"
@@ -1021,9 +1016,8 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   padding-right: 0;
 }
 
-.emotion-11 {
+.emotion-10 {
   padding-top: 8px;
-  padding-bottom: 0;
 }
 
 .emotion-7 {
@@ -1053,10 +1047,6 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-10 {
-  padding-top: 8px;
 }
 
 .emotion-110 {
@@ -1293,7 +1283,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
     onSubmit={[Function]}
   >
     <div
-      className="emotion-11"
+      className="emotion-10"
     >
       <label
         className="emotion-7"
@@ -2443,9 +2433,8 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   padding-right: 0;
 }
 
-.emotion-11 {
+.emotion-10 {
   padding-top: 8px;
-  padding-bottom: 0;
 }
 
 .emotion-7 {
@@ -2475,10 +2464,6 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-10 {
-  padding-top: 8px;
 }
 
 .emotion-110 {
@@ -2697,7 +2682,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
     onSubmit={[Function]}
   >
     <div
-      className="emotion-11"
+      className="emotion-10"
     >
       <label
         className="emotion-7"

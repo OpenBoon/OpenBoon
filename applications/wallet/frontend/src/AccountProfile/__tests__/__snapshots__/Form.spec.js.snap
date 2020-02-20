@@ -236,9 +236,8 @@ Array [
   padding-right: 0;
 }
 
-.emotion-4 {
+.emotion-3 {
   padding-top: 8px;
-  padding-bottom: 0;
 }
 
 .emotion-0 {
@@ -268,10 +267,6 @@ Array [
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-3 {
-  padding-top: 8px;
 }
 
 .emotion-12 {
@@ -405,7 +400,7 @@ Array [
     onSubmit={[Function]}
   >
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <label
         className="emotion-0"
@@ -433,7 +428,7 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <label
         className="emotion-0"

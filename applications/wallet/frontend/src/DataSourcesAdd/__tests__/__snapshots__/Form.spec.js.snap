@@ -27,9 +27,8 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   padding-top: 16px;
 }
 
-.emotion-5 {
+.emotion-4 {
   padding-top: 8px;
-  padding-bottom: 0;
 }
 
 .emotion-1 {
@@ -61,18 +60,13 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   color: #000000;
 }
 
-.emotion-4 {
-  padding-top: 8px;
-}
-
 .emotion-18 {
   min-width: 470px;
   max-width: 50%;
 }
 
-.emotion-17 {
+.emotion-16 {
   padding-top: 8px;
-  padding-bottom: 0;
 }
 
 .emotion-13 {
@@ -102,10 +96,6 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   background-color: #ffffff;
   outline: #73b61c;
   color: #000000;
-}
-
-.emotion-16 {
-  padding-top: 8px;
 }
 
 .emotion-48 {
@@ -547,7 +537,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
       Data Source Name
     </h3>
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       <label
         className="emotion-1"
@@ -580,7 +570,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
       Connect to Source: Google Cloud Storage
     </h3>
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       <label
         className="emotion-1"
@@ -611,7 +601,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
     className="emotion-18"
   >
     <div
-      className="emotion-17"
+      className="emotion-16"
     >
       <label
         className="emotion-13"
