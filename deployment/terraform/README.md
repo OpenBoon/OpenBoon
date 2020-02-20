@@ -21,7 +21,7 @@ to adjust the deployment. The syntax is `variable-name = "value"`, one per line.
 bucket so that other team members are able to manage the state of the deployment.
  
 ## Re-Pulling images for services.
-You will likely want your services to repull an image tag such as `development` or `qa`.
+You will likely want your services to repull an image tag such as `latest` or `qa`.
 Kubernetes does not offer a standard way of doing this but you can trigger a repull of the
 code by changing something else about the deployment. Below are instructions for the 
 workaround.

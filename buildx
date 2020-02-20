@@ -45,7 +45,7 @@ def main():
 def build_dependency_tree(to_build):
     env = os.environ
     env['DOCKER_CLI_EXPERIMENTAL'] = 'enabled'
-    with open('docker-compose.local-build-all.yml') as fp:
+    with open('docker-compose.yml') as fp:
         compose = yaml.load(fp, yaml.Loader)
 
     built = set()
@@ -79,7 +79,7 @@ def build_dependency_tree(to_build):
         if not phase:
             continue
         # Adding --no-cache won't use the stupid maven cache.
-        cmd = ['docker', 'buildx', 'bake', '-f', 'docker-compose.yml', '-f', 'docker-compose.local-build-all.yml']
+        cmd = ['docker', 'buildx', 'bake', '-f', 'docker-compose.yml']
         cmd.extend(phase)
         print('Building {}'.format(phase))
         subprocess.check_call(cmd, shell=False, env=env)
