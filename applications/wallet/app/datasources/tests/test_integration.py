@@ -37,7 +37,8 @@ def test_datasource_viewset_create(api_client, monkeypatch, project, zmlp_projec
     assert response.json() == response_data
 
 
-def test_datasource_viewset_create_null_credentials(api_client, monkeypatch, project, zmlp_project_user):
+def test_datasource_viewset_create_null_credentials(api_client, monkeypatch, project,
+                                                    zmlp_project_user):
     api_client.force_login(zmlp_project_user)
 
     data = {'name': 'test',
