@@ -122,6 +122,88 @@ Array [
       </li>
     </ul>
   </nav>,
+  .emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  justify-self: flex-start;
+  color: #000000;
+  font-weight: 500;
+  background-color: #ffffff;
+  border: 1px solid #4ac565;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-0 {
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  background-color: #4ac565;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+<div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-0"
+      >
+        <svg
+          data-file-name="checkmark.svg"
+          width={20}
+        />
+      </div>
+      <div
+        className="emotion-1"
+      >
+        User Permissions Saved
+      </div>
+    </div>
+  </div>,
+  <div>
+     
+  </div>,
   .emotion-0 {
   text-align: left;
   font-size: 15px;
@@ -1122,6 +1204,88 @@ Array [
       </li>
     </ul>
   </nav>,
+  .emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  justify-self: flex-start;
+  color: #000000;
+  font-weight: 500;
+  background-color: #ffffff;
+  border: 1px solid #4ac565;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-0 {
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  background-color: #4ac565;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+<div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-0"
+      >
+        <svg
+          data-file-name="checkmark.svg"
+          width={20}
+        />
+      </div>
+      <div
+        className="emotion-1"
+      >
+        User Permissions Saved
+      </div>
+    </div>
+  </div>,
+  <div>
+     
+  </div>,
   .emotion-0 {
   text-align: left;
   font-size: 15px;

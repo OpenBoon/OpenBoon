@@ -1,13 +1,14 @@
 import { useReducer } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 
-import { constants, spacing } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import Navbar from '../Navbar'
 import PageTitle from '../PageTitle'
 import FormAlert from '../FormAlert'
+import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
@@ -68,10 +69,19 @@ const CreateAccount = () => {
           />
 
           {action && action === 'account-activation-expired' && (
-            <FormAlert
-              errorMessage="Activation token expired. Please recreate account."
-              setErrorMessage={() => Router.push('/create-account')}
-            />
+            <>
+              <FlashMessage variant={VARIANTS.ERROR}>
+                Confirmation Link Expired
+              </FlashMessage>
+              <div
+                css={{
+                  width: 'max-content',
+                  color: colors.signal.warn.base,
+                }}>
+                Confirmation links expire after three days. Please create a new
+                account.
+              </div>
+            </>
           )}
 
           <SectionTitle>Name</SectionTitle>

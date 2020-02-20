@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import PageTitle from '../PageTitle'
-import FormSuccess from '../FormSuccess'
+import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table from '../Table'
 
@@ -31,6 +31,14 @@ const DataSources = () => {
           { title: 'Add Data Source', href: '/[projectId]/data-sources/add' },
         ]}
       />
+
+      {action === 'add-datasource-success' && (
+        <FlashMessage variant={VARIANTS.SUCCESS}>
+          Data Source Created
+        </FlashMessage>
+      )}
+
+      <div>&nbsp;</div>
 
       <Table
         url={`/api/v1/projects/${projectId}/datasources/`}

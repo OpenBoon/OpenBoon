@@ -33,12 +33,12 @@ export const onRegister = async ({
   }
 }
 
-export const onConfirm = async ({ userId, token }) => {
+export const onConfirm = async ({ uid, token }) => {
   try {
     const response = await fetch(`/api/v1/accounts/confirm`, {
       ...BASE_HEADER,
       body: JSON.stringify({
-        userId,
+        uid,
         token,
       }),
     })

@@ -2,11 +2,20 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import CreateAccount, { noop } from '..'
 
+jest.mock('../../FlashMessage', () => 'FlashMessage')
+
 describe('<CreateAccount />', () => {
   it('should render properly', async () => {
     const mockFn = jest.fn()
 
     require('next/router').__setMockPushFunction(mockFn)
+    require('next/router').__setUseRouter({
+      pathname: '/',
+      query: {
+        token: 'f1c5b71f-bc9d-4b54-aa69-cbec03f94f5e',
+        uid: 2,
+      },
+    })
 
     const component = TestRenderer.create(<CreateAccount />)
 
@@ -70,6 +79,21 @@ describe('<CreateAccount />', () => {
     })
 
     expect(mockFn).toHaveBeenCalledWith('/?action=create-account-success')
+  })
+
+  it('should render properly when activation link is expired', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/',
+      query: {
+        token: 'f1c5b71f-bc9d-4b54-aa69-cbec03f94f5e',
+        uid: 2,
+        action: 'account-activation-expired',
+      },
+    })
+
+    const component = TestRenderer.create(<CreateAccount />)
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('noop should do nothing', () => {

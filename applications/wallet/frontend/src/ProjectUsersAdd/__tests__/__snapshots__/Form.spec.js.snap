@@ -2052,15 +2052,6 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   padding-top: 24px;
 }
 
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
 .emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2091,23 +2082,6 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-}
-
-.emotion-13 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  padding-left: 16px;
-  padding-right: 16px;
 }
 
 .emotion-17 {
@@ -2246,7 +2220,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
     className="emotion-24"
   >
     <div
-      className="emotion-15"
+      className="emotion-3"
     >
       <div
         className="emotion-14"
@@ -2260,7 +2234,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
           />
         </div>
         <div
-          className="emotion-13"
+          className="emotion-1"
         >
           Users Added
         </div>
