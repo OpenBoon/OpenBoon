@@ -22,7 +22,9 @@ const ProjectUsers = () => {
       <PageTitle>Project User Admin</PageTitle>
 
       {action === 'edit-user-success' && (
-        <FormSuccess>User Permissions Saved</FormSuccess>
+        <FlashMessage variant={VARIANTS.SUCCESS}>
+          User Permissions Saved
+        </FlashMessage>
       )}
 
       <Tabs
@@ -31,12 +33,6 @@ const ProjectUsers = () => {
           { title: 'Add User(s)', href: '/[projectId]/users/add' },
         ]}
       />
-
-      {action === 'edit-user-success' && (
-        <FlashMessage variant={VARIANTS.SUCCESS}>
-          User Permissions Saved
-        </FlashMessage>
-      )}
 
       <div>&nbsp;</div>
 

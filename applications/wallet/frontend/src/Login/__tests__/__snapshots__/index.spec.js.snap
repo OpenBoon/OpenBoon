@@ -1335,7 +1335,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -1423,9 +1423,8 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   height: 20px;
 }
 
-.emotion-19 {
+.emotion-18 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-15 {
@@ -1448,10 +1447,6 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   background-color: #ffffff;
   border: 1px solid transparent;
   border-width: 2px;
-}
-
-.emotion-18 {
-  padding-top: 8px;
 }
 
 .emotion-23 {
@@ -1493,7 +1488,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -1554,7 +1549,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;
@@ -1677,7 +1672,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
       </div>
     </div>
     <div
-      className="emotion-19"
+      className="emotion-18"
     >
       <label
         className="emotion-15"
@@ -1705,7 +1700,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
       </div>
     </div>
     <div
-      className="emotion-19"
+      className="emotion-18"
     >
       <label
         className="emotion-15"

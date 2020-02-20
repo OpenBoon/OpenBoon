@@ -22,7 +22,9 @@ const DataSources = () => {
       <PageTitle>Data Sources</PageTitle>
 
       {action === 'add-datasource-success' && (
-        <FormSuccess>Data Source Created</FormSuccess>
+        <FlashMessage variant={VARIANTS.SUCCESS}>
+          Data Source Created
+        </FlashMessage>
       )}
 
       <Tabs
@@ -31,12 +33,6 @@ const DataSources = () => {
           { title: 'Add Data Source', href: '/[projectId]/data-sources/add' },
         ]}
       />
-
-      {action === 'add-datasource-success' && (
-        <FlashMessage variant={VARIANTS.SUCCESS}>
-          Data Source Created
-        </FlashMessage>
-      )}
 
       <div>&nbsp;</div>
 
