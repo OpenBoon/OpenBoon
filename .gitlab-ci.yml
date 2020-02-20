@@ -230,8 +230,8 @@ docker_hub_build_push:
     - docker push zmlp/plugins-analysis:latest
     - docker push zmlp/analyst:latest
     - docker push zmlp/jvm-common:latest
-#  only:
-#    - development
+  only:
+    - development
 
 deploy_development:
   image: google/cloud-sdk
