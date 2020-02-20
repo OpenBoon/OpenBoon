@@ -5,7 +5,9 @@ import * as Sentry from '@sentry/browser'
 import 'focus-visible'
 
 import User from '../src/User'
+import Router from 'next/router'
 import Authentication from '../src/Authentication'
+import { getUser } from '../src/Authentication/helpers'
 
 const { publicRuntimeConfig: { ENVIRONMENT, ENABLE_SENTRY } = {} } = getConfig()
 
@@ -42,7 +44,11 @@ class MyApp extends App {
     const { Component, pageProps, router, err = '' } = this.props
 
     if (AUTHENTICATION_LESS_ROUTES.includes(router.route)) {
-      return <Component {...pageProps} err={err} />
+      if (!Object.keys(getUser()).length) {
+        return <Component {...pageProps} err={err} />
+      }
+
+      Router.push('/')
     }
 
     return (
