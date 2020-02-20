@@ -4,12 +4,14 @@ import { onSubmit } from '../helpers'
 
 const USER_ID = 'fe39c66b-68f8-4d59-adfd-395f6baaf72c'
 
+const noop = () => () => {}
+
 describe('<AccountProfile /> helpers', () => {
   describe('onSubmit()', () => {
     it('should update the first and last name ', async () => {
       const mockDispatch = jest.fn()
 
-      initializeUserstorer({ setUser: jest.fn() })
+      initializeUserstorer({ setUser: noop })
 
       fetch.mockResponseOnce(
         JSON.stringify({
