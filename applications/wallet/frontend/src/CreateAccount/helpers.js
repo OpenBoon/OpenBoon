@@ -10,7 +10,7 @@ const BASE_HEADER = {
   },
 }
 
-export const onSubmit = async ({
+export const onRegister = async ({
   dispatch,
   state: { firstName, lastName, email, password },
 }) => {
@@ -45,8 +45,8 @@ export const onConfirm = async ({ userId, token }) => {
 
     if (response.status >= 400) throw response
 
-    Router.push('/?action=account-activate-success')
+    Router.push('/?action=account-activation-success')
   } catch (response) {
-    Router.push('/create-account?action=account-activate-expired')
+    Router.push('/create-account?action=account-activation-expired')
   }
 }

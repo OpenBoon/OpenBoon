@@ -60,6 +60,10 @@ const Login = ({
         </div>
       )}
 
+      {action && action === 'account-activation-success' && (
+        <FormSuccess>Account activated.</FormSuccess>
+      )}
+
       <form
         method="post"
         onSubmit={event => event.preventDefault()}
@@ -95,10 +99,6 @@ const Login = ({
           errorMessage={errorMessage}
           setErrorMessage={setErrorMessage}
         />
-
-        {action && action === 'account-activate-success' && (
-          <FormSuccess>Account activated.</FormSuccess>
-        )}
 
         <Input
           autoFocus

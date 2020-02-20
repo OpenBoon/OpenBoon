@@ -14,7 +14,7 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import SectionTitle from '../SectionTitle'
 
-import { onSubmit, onConfirm } from './helpers'
+import { onRegister, onConfirm } from './helpers'
 
 const INITIAL_STATE = {
   firstName: '',
@@ -67,7 +67,7 @@ const CreateAccount = () => {
             setErrorMessage={() => dispatch({ error: '' })}
           />
 
-          {action && action === 'account-activate-expired' && (
+          {action && action === 'account-activation-expired' && (
             <FormAlert
               errorMessage="Activation token expired. Please recreate account."
               setErrorMessage={() => Router.push('/create-account')}
@@ -143,7 +143,7 @@ const CreateAccount = () => {
             <Button
               type="submit"
               variant={BUTTON_VARIANTS.PRIMARY}
-              onClick={() => onSubmit({ dispatch, state })}
+              onClick={() => onRegister({ dispatch, state })}
               isDisabled={
                 !state.firstName ||
                 !state.lastName ||
