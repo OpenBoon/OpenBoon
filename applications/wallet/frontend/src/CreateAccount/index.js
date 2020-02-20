@@ -76,7 +76,7 @@ const CreateAccount = () => {
               <div
                 css={{
                   width: 'max-content',
-                  color: colors.signal.warn.base,
+                  color: colors.signal.warning.base,
                 }}>
                 Confirmation links expire after three days. Please create a new
                 account.

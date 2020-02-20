@@ -2,7 +2,10 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import CreateAccount, { noop } from '..'
 
-jest.mock('../../FlashMessage', () => 'FlashMessage')
+// jest.mock('../../FlashMessage', () => ({
+//   default: () => 'FlashMessage',
+//   VARIANTS: { ERROR: 'ERROR' },
+// }))
 
 describe('<CreateAccount />', () => {
   it('should render properly', async () => {

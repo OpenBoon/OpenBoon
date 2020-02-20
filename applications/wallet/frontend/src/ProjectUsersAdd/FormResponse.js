@@ -3,7 +3,6 @@ import Link from 'next/link'
 
 import { colors, spacing, typography } from '../Styles'
 
-import FormError from '../FormError'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
