@@ -32,11 +32,11 @@ const reducer = (state, action) => ({ ...state, ...action })
 const CreateAccount = () => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
   const {
-    query: { token, userId, action },
+    query: { token, uid, action },
   } = useRouter()
 
   if (token) {
-    onConfirm({ token, userId })
+    onConfirm({ token, uid })
   }
 
   return (

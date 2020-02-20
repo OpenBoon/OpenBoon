@@ -61,7 +61,7 @@ const Login = ({
       )}
 
       {action && action === 'account-activation-success' && (
-        <FormSuccess>Account activated.</FormSuccess>
+        <FormSuccess>Account activated</FormSuccess>
       )}
 
       <form
