@@ -6,6 +6,7 @@ import User from '../../User'
 
 import Authentication, { noop } from '..'
 
+jest.mock('../helpers')
 jest.mock('../../User/helpers')
 
 jest.mock('../../Login', () => 'Login')
@@ -29,7 +30,8 @@ describe('<Authentication />', () => {
 
   it('should render properly when user is logged out', async () => {
     const mockFn = jest.fn()
-    require('../../User/helpers').__setMockAuthenticateUser(mockFn)
+
+    require('../helpers').__setMockAuthenticateUser(mockFn)
 
     const component = TestRenderer.create(
       <User initialUser={{}}>

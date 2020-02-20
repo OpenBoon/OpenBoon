@@ -13,50 +13,15 @@ export const getUser = () => {
 }
 
 /**
- * initializeUserstorer()
+ * setUser()
  */
 
-export const initializeUserstorer = () => {}
+let setUserFunction = () => () => {}
 
-/**
- * isUserAuthenticated()
- */
-
-export const isUserAuthenticated = ({ refreshToken }) => {
-  return refreshToken
+export const __setSetUserFunction = fn => {
+  setUserFunction = fn
 }
 
-/**
- * clearUser()
- */
-export const clearUser = () => {}
-
-/**
- * storeTokens()
- */
-export const storeTokens = () => {}
-
-/**
- * getTokenTimeout()
- */
-export const getTokenTimeout = () => {
-  return 10000
+export const setUser = (...args) => {
+  return setUserFunction(...args)
 }
-
-/**
- * authenticateUser()
- */
-let mockAuthenticateUser = () => {}
-
-export const __setMockAuthenticateUser = fn => {
-  mockAuthenticateUser = fn
-}
-
-export const authenticateUser = () => (...args) => {
-  mockAuthenticateUser(...args)
-}
-
-/**
- * logout()
- */
-export const logout = () => {}

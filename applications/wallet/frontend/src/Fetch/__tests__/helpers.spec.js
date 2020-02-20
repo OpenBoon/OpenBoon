@@ -1,5 +1,3 @@
-import { USER } from '../../User/helpers'
-
 import { initializeFetcher, fetcher } from '../helpers'
 
 const noop = () => () => {}
@@ -50,26 +48,16 @@ describe('<Fetch /> helpers', () => {
 
     it('should logout the user', async () => {
       const mockSetUser = jest.fn()
-      const mockRemoveItem = jest.fn()
 
       initializeFetcher({ setUser: mockSetUser })
 
       fetch.mockResponseOnce(null, { status: 401 })
 
-      Object.defineProperty(window, 'localStorage', {
-        writable: true,
-        value: {
-          removeItem: mockRemoveItem,
-        },
-      })
-
       const data = await fetcher('/url')
 
       expect(data).toEqual({})
 
-      expect(mockSetUser).toHaveBeenCalledWith({})
-
-      expect(mockRemoveItem).toHaveBeenCalledWith(USER)
+      expect(mockSetUser).toHaveBeenCalledWith({ user: null })
     })
   })
 })

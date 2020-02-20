@@ -28,6 +28,7 @@ const reducer = (state, action) => ({ ...state, ...action })
 const AccountProfileForm = () => {
   const {
     user: { id, email, firstName = '', lastName = '' },
+    setUser,
   } = useContext(UserContext)
 
   const [state, dispatch] = useReducer(
@@ -113,7 +114,7 @@ const AccountProfileForm = () => {
             <Button
               type="submit"
               variant={BUTTON_VARIANTS.PRIMARY}
-              onClick={() => onSubmit({ dispatch, state })}
+              onClick={() => onSubmit({ dispatch, state, setUser })}
               isDisabled={!state.firstName || !state.lastName}>
               Save
             </Button>

@@ -5,13 +5,13 @@ import { SWRConfig } from 'swr'
 
 import { initializeFetcher } from '../Fetch/helpers'
 
-import { authenticateUser, initializeUserstorer, logout } from '../User/helpers'
-
 import { UserContext } from '../User'
 
 import Login from '../Login'
 import Projects from '../Projects'
 import Layout from '../Layout'
+
+import { authenticateUser, logout } from './helpers'
 
 const {
   publicRuntimeConfig: { GOOGLE_OAUTH_CLIENT_ID },
@@ -26,8 +26,6 @@ const Authentication = ({ children }) => {
   const [errorMessage, setErrorMessage] = useState('')
 
   const fetcher = initializeFetcher({ setUser })
-
-  initializeUserstorer({ setUser })
 
   useEffect(() => {
     window.onload = () => {
@@ -49,7 +47,7 @@ const Authentication = ({ children }) => {
         hasGoogleLoaded={hasGoogleLoaded}
         errorMessage={errorMessage}
         setErrorMessage={setErrorMessage}
-        onSubmit={authenticateUser({ setErrorMessage })}
+        onSubmit={authenticateUser({ setUser, setErrorMessage })}
       />
     )
   }

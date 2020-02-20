@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
-import { getUser } from './helpers'
+import { getUser, setUser } from './helpers'
 
 export const noop = () => {}
 
@@ -13,7 +13,7 @@ export const UserContext = createContext({
 })
 
 const User = ({ initialUser, children }) => {
-  const [user, setUser] = useState(initialUser)
+  const [user, setStateUser] = useState(initialUser)
   const [hasLocalStorageLoaded, setHasLocalStorageLoaded] = useState(false)
   const [googleAuth, setGoogleAuth] = useState({ signIn: noop, signOut: noop })
 
@@ -22,15 +22,22 @@ const User = ({ initialUser, children }) => {
 
     const storedUser = getUser()
 
-    setUser(storedUser)
+    setStateUser(storedUser)
 
     setHasLocalStorageLoaded(true)
-  }, [initialUser, hasLocalStorageLoaded, user, setUser])
+  }, [initialUser, hasLocalStorageLoaded, user, setStateUser])
 
   if (!initialUser.email && !hasLocalStorageLoaded) return null
 
   return (
-    <UserContext.Provider value={{ user, setUser, googleAuth, setGoogleAuth }}>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser: ({ user: updates }) =>
+          setUser({ setStateUser })({ user, updates }),
+        googleAuth,
+        setGoogleAuth,
+      }}>
       {children}
     </UserContext.Provider>
   )

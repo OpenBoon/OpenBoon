@@ -1,5 +1,3 @@
-import { clearUser } from '../User/helpers'
-
 let enhancedFetch
 
 export const getCsrfToken = () => {
@@ -29,9 +27,7 @@ export const initializeFetcher = ({ setUser }) => {
     })
 
     if ([401, 403].includes(response.status)) {
-      clearUser()
-
-      setUser({})
+      setUser({ user: null })
 
       return {}
     }
