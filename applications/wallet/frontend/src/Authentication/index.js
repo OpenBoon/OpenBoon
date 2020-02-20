@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import getConfig from 'next/config'
 import { SWRConfig } from 'swr'
+
+import { UserContext } from '../User'
 
 import Login from '../Login'
 import Projects from '../Projects'
@@ -22,13 +24,12 @@ const {
 
 export const noop = () => () => {}
 
-let googleAuth = { signIn: noop, signOut: noop }
-
 const Authentication = ({ children }) => {
+  const { user, setUser, googleAuth, setGoogleAuth } = useContext(UserContext)
+
   const [hasLocalStorageLoaded, setHasLocalStorageLoaded] = useState(false)
   const [hasGoogleLoaded, setHasGoogleLoaded] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-  const [user, setUser] = useState({})
 
   const fetcher = initializeFetcher({ setUser })
 
@@ -37,13 +38,15 @@ const Authentication = ({ children }) => {
   useEffect(() => {
     window.onload = () => {
       window.gapi.load('auth2', async () => {
-        googleAuth = window.gapi.auth2.init({
-          client_id: `${GOOGLE_OAUTH_CLIENT_ID}`,
-        })
+        setGoogleAuth(
+          window.gapi.auth2.init({
+            client_id: `${GOOGLE_OAUTH_CLIENT_ID}`,
+          }),
+        )
         setHasGoogleLoaded(true)
       })
     }
-  }, [])
+  }, [setGoogleAuth])
 
   useEffect(() => {
     if (hasLocalStorageLoaded) return
@@ -53,7 +56,7 @@ const Authentication = ({ children }) => {
     setUser(storedUser)
 
     setHasLocalStorageLoaded(true)
-  }, [hasLocalStorageLoaded, user])
+  }, [hasLocalStorageLoaded, user, setUser])
 
   if (!hasLocalStorageLoaded) return null
 
