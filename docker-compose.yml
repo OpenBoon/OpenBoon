@@ -30,6 +30,10 @@ services:
   # Elastic Search instance used for local development servers.
   es1:
     image: zmlp/elasticsearch:latest
+    build:
+      context: services/elasticsearch
+      args:
+        node_type: single
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -43,6 +47,8 @@ services:
   # API Gateway
   api-gateway:
     image: zmlp/apigateway:latest
+    build:
+      context: services/api-gateway
     depends_on:
       - auth-server
       - archivist
@@ -58,10 +64,13 @@ services:
     depends_on:
       - postgres
       - minio
+      - zmlp-jvm-common
     ports:
       - "9090:9090"
+    build:
+      context: services/auth-server
     environment:
-      ZMLP_SECURITY_INCEPTIONKEY: eyJuYW1lIjogImFkbWluLWtleSIsICJwcm9qZWN0SWQiOiAiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwgImlkIjogIjQzMzhhODNmLWE5MjAtNDBhYi1hMjUxLWExMjNiMTdkZjFiYSIsICJhY2Nlc3NLZXkiOiAiUkRjMk5rRXlRVVl0UWpCR1F5MDBRVVZFTFRrMU1UWXRPVFUwTjBOQ016TkNOa00yQ2ciLCAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiLCAicGVybWlzc2lvbnMiOiBbXX0=
+      ZMLP_SECURITY_INCEPTIONKEY: ewogICAgIm5hbWUiOiAiYWRtaW4ta2V5IiwKICAgICJwcm9qZWN0SWQiOiAiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwKICAgICJpZCI6ICI0MzM4YTgzZi1hOTIwLTQwYWItYTI1MS1hMTIzYjE3ZGYxYmEiLAogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiLAogICAgInBlcm1pc3Npb25zIjogW10KfQoK
       ZMLP_STORAGE_SYSTEM_ACCESSKEY: qwerty123
       ZMLP_STORAGE_SYSTEM_SECRETKEY: 123qwerty
 
@@ -72,6 +81,7 @@ services:
       - es1
       - postgres
       - minio
+      - zmlp-jvm-common
     environment:
       SENTRY_ENVIRONMENT: localdev
       ZMLP_STORAGE_PROJECT_ACCESSKEY: qwerty123
@@ -84,7 +94,9 @@ services:
       ZMLP_STORAGE_PIPELINE_SECRETKEY: 123qwerty
       ZMLP_STORAGE_PIPELINE_URL: http://minio:9000
       ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
-      ZMLP_SECURITY_AUTHSERVER_SERVICEKEY: eyJuYW1lIjogImFkbWluLWtleSIsICJwcm9qZWN0SWQiOiAiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwgImlkIjogIjQzMzhhODNmLWE5MjAtNDBhYi1hMjUxLWExMjNiMTdkZjFiYSIsICJhY2Nlc3NLZXkiOiAiUkRjMk5rRXlRVVl0UWpCR1F5MDBRVVZFTFRrMU1UWXRPVFUwTjBOQ016TkNOa00yQ2ciLCAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiLCAicGVybWlzc2lvbnMiOiBbXX0=
+      ZMLP_SECURITY_AUTHSERVER_SERVICEKEY: ewogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiCn0KCg==
+    build:
+      context: services/archivist
     volumes:
       - "./dev/config/monitoring:/monitoring"
       - "./dev/config/archivist/application.properties:/service/config/application.properties"
@@ -92,7 +104,10 @@ services:
   officer:
     image: zmlp/officer:latest
     depends_on:
+      - zmlp-jvm-common
       - minio
+    build:
+      context: services/officer
     ports:
       - 7078:7078
     environment:
@@ -105,6 +120,8 @@ services:
     depends_on:
       - archivist
       - zmlp-py3-sdk
+    build:
+      context: services/analyst
     ports:
       - 5000:5000
     volumes:
@@ -119,11 +136,15 @@ services:
     image: zmlp/wallet:latest
     ports:
       - 80:80
+    build:
+      context: .
+      dockerfile: applications/wallet/Dockerfile
+      args:
+        CI_COMMIT_SHA: $CI_COMMIT_SHA
     environment:
       DJANGO_SETTINGS_MODULE: wallet.settings
       PG_HOST: postgres
       ZMLP_API_URL: http://api-gateway:80
-      INCEPTION_KEY_B64: eyJuYW1lIjogImFkbWluLWtleSIsICJwcm9qZWN0SWQiOiAiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwgImlkIjogIjQzMzhhODNmLWE5MjAtNDBhYi1hMjUxLWExMjNiMTdkZjFiYSIsICJhY2Nlc3NLZXkiOiAiUkRjMk5rRXlRVVl0UWpCR1F5MDBRVVZFTFRrMU1UWXRPVFUwTjBOQ016TkNOa00yQ2ciLCAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiLCAicGVybWlzc2lvbnMiOiBbXX0=
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/api/v1/health"]
       interval: 30s
@@ -133,28 +154,55 @@ services:
     depends_on:
       - postgres
 
-  # These services are only here because their images need to exist for processing. Having them just
-  # run an echo command will cause the images to be pulled from docker hub.
+  # These services are only here because their images need to be built.
+  zmlp-jvm-common:
+    image: zmlp/jvm-common:latest
+    build:
+      context: lib/jvm-common
+    command: echo
+
   zmlp-py3-base:
     image: zmlp/py3-base:latest
+    build:
+      context: containers/zmlp-py3-base
     command: echo
 
   zmlp-py3-client:
     image: zmlp/py3-client:latest
+    depends_on:
+      - zmlp-py3-base
+    build:
+      context: client/python
     command: echo
 
   zmlp-py3-sdk:
     image: zmlp/py3-sdk:latest
+    depends_on:
+      - zmlp-py3-client
+    build:
+      context: sdk
     command: echo
 
   zmlp-plugins-base:
     image: zmlp/plugins-base:latest
+    depends_on:
+      - zmlp-py3-sdk
+    build:
+      context: containers/zmlp-plugins-base
     command: echo
 
   zmlp-plugins-core:
     image: zmlp/plugins-core:latest
+    depends_on:
+      - zmlp-plugins-base
+    build:
+      context: containers/zmlp-plugins-core
     command: echo
 
   zmlp-plugins-analysis:
     image: zmlp/plugins-analysis:latest
+    depends_on:
+      - zmlp-plugins-base
+    build:
+      context: containers/zmlp-plugins-analysis
     command: echo

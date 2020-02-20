@@ -11,20 +11,14 @@ services:
       context: services/api-gateway
 
   auth-server:
-    depends_on:
-      - zmlp-jvm-common
     build:
       context: services/auth-server
 
   archivist:
-    depends_on:
-      - zmlp-jvm-common
     build:
       context: services/archivist
 
   officer:
-    depends_on:
-      - zmlp-jvm-common
     build:
       context: services/officer
 
@@ -40,8 +34,6 @@ services:
         CI_COMMIT_SHA: $CI_COMMIT_SHA
 
   zmlp-jvm-common:
-    image: zmlp/jvm-common:development
-    command: echo
     build:
       context: lib/jvm-common
 
@@ -50,31 +42,21 @@ services:
       context: containers/zmlp-py3-base
 
   zmlp-py3-client:
-    depends_on:
-      - zmlp-py3-base
     build:
       context: client/python
 
   zmlp-py3-sdk:
-    depends_on:
-      - zmlp-py3-client
     build:
       context: sdk
 
   zmlp-plugins-base:
-    depends_on:
-      - zmlp-py3-sdk
     build:
       context: containers/zmlp-plugins-base
 
   zmlp-plugins-core:
-    depends_on:
-      - zmlp-plugins-base
     build:
       context: containers/zmlp-plugins-core
 
   zmlp-plugins-analysis:
-    depends_on:
-      - zmlp-plugins-base
     build:
       context: containers/zmlp-plugins-analysis
