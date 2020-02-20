@@ -358,8 +358,9 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
       <input
         className="emotion-2"
         id="copyLink"
+        readOnly={true}
         type="text"
-        value="localhost/create-account"
+        value="http://localhost/create-account"
       />
       <div
         className="emotion-4"
@@ -1268,8 +1269,9 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
       <input
         className="emotion-2"
         id="copyLink"
+        readOnly={true}
         type="text"
-        value="localhost/create-account"
+        value="http://localhost/create-account"
       />
       <div
         className="emotion-4"
@@ -2225,8 +2227,9 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
       <input
         className="emotion-7"
         id="copyLink"
+        readOnly={true}
         type="text"
-        value="localhost/create-account"
+        value="http://localhost/create-account"
       />
       <div
         className="emotion-9"
@@ -2670,8 +2673,9 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
       <input
         className="emotion-2"
         id="copyLink"
+        readOnly={true}
         type="text"
-        value="localhost/create-account"
+        value="http://localhost/create-account"
       />
       <div
         className="emotion-4"
