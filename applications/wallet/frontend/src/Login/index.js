@@ -54,6 +54,12 @@ const Login = ({
         </div>
       )}
 
+      {action === 'password-reset-update-success' && (
+        <div css={{ paddingBottom: spacing.normal }}>
+          <FormSuccess>Password has been updated</FormSuccess>
+        </div>
+      )}
+
       <form
         method="post"
         onSubmit={event => event.preventDefault()}
