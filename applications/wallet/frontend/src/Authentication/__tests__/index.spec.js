@@ -2,13 +2,15 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import mockUser from '../../User/__mocks__/user'
 
+import User from '../../User'
+
 import Authentication, { noop } from '..'
+
+jest.mock('../helpers')
 
 jest.mock('../../Login', () => 'Login')
 jest.mock('../../Projects', () => 'Projects')
 jest.mock('../../Layout', () => 'Layout')
-
-jest.mock('../helpers')
 
 describe('<Authentication />', () => {
   Object.defineProperty(window, 'onload', {
@@ -27,10 +29,13 @@ describe('<Authentication />', () => {
 
   it('should render properly when user is logged out', async () => {
     const mockFn = jest.fn()
+
     require('../helpers').__setMockAuthenticateUser(mockFn)
 
     const component = TestRenderer.create(
-      <Authentication>Hello World!</Authentication>,
+      <User initialUser={{}}>
+        <Authentication>Hello World!</Authentication>
+      </User>,
     )
 
     // user is loading
@@ -57,7 +62,9 @@ describe('<Authentication />', () => {
 
   it('should load the Google SDK', async () => {
     const component = TestRenderer.create(
-      <Authentication>Hello World!</Authentication>,
+      <User initialUser={{}}>
+        <Authentication>Hello World!</Authentication>
+      </User>,
     )
 
     // useEffect loads Google SDK
@@ -67,23 +74,14 @@ describe('<Authentication />', () => {
   })
 
   it('should render properly when user is logged in', async () => {
-    require('../helpers').__setMockUser(mockUser)
-
     const component = TestRenderer.create(
-      <Authentication>Hello World!</Authentication>,
+      <User initialUser={mockUser}>
+        <Authentication>Hello World!</Authentication>
+      </User>,
     )
-
-    // user is loading
-    expect(component.toJSON()).toMatchSnapshot()
-
-    // useEffect reads from localStorage
-    await act(async () => {})
 
     // display `Hello World!`
     expect(component.toJSON()).toMatchSnapshot()
-
-    // reset localStorage
-    require('../helpers').__setMockUser({})
   })
 
   it('noop should do nothing', () => {

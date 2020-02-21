@@ -1,34 +1,6 @@
 import Router from 'next/router'
 
-let storeUser
-
-export const USER = 'user'
-
-export const getUser = () => {
-  try {
-    return JSON.parse(localStorage.getItem(USER)) || {}
-  } catch (error) {
-    return {}
-  }
-}
-
-export const clearUser = () => {
-  localStorage.removeItem(USER)
-}
-
-export const initializeUserstorer = ({ setUser }) => {
-  storeUser = ({ user }) => {
-    localStorage.setItem(USER, JSON.stringify(user))
-
-    setUser(user)
-  }
-}
-
-export const userstorer = ({ user }) => {
-  return storeUser({ user })
-}
-
-export const authenticateUser = ({ setErrorMessage }) => async ({
+export const authenticateUser = ({ setUser, setErrorMessage }) => async ({
   username,
   password,
   idToken,
@@ -54,7 +26,7 @@ export const authenticateUser = ({ setErrorMessage }) => async ({
 
   const user = await response.json()
 
-  return userstorer({ user })
+  return setUser({ user })
 }
 
 export const logout = ({ googleAuth, setUser }) => async () => {
@@ -75,9 +47,7 @@ export const logout = ({ googleAuth, setUser }) => async () => {
     },
   })
 
-  clearUser()
-
-  setUser({})
+  setUser({ user: null })
 
   Router.push('/')
 }

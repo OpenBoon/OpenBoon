@@ -1,20 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import getConfig from 'next/config'
 import { SWRConfig } from 'swr'
+
+import { initializeFetcher } from '../Fetch/helpers'
+
+import { UserContext } from '../User'
 
 import Login from '../Login'
 import Projects from '../Projects'
 import Layout from '../Layout'
 
-import { initializeFetcher } from '../Fetch/helpers'
-
-import {
-  getUser,
-  authenticateUser,
-  initializeUserstorer,
-  logout,
-} from './helpers'
+import { authenticateUser, logout } from './helpers'
 
 const {
   publicRuntimeConfig: { GOOGLE_OAUTH_CLIENT_ID },
@@ -22,40 +19,26 @@ const {
 
 export const noop = () => () => {}
 
-let googleAuth = { signIn: noop, signOut: noop }
-
 const Authentication = ({ children }) => {
-  const [hasLocalStorageLoaded, setHasLocalStorageLoaded] = useState(false)
+  const { user, setUser, googleAuth, setGoogleAuth } = useContext(UserContext)
+
   const [hasGoogleLoaded, setHasGoogleLoaded] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-  const [user, setUser] = useState({})
 
   const fetcher = initializeFetcher({ setUser })
-
-  initializeUserstorer({ setUser })
 
   useEffect(() => {
     window.onload = () => {
       window.gapi.load('auth2', async () => {
-        googleAuth = window.gapi.auth2.init({
-          client_id: `${GOOGLE_OAUTH_CLIENT_ID}`,
-        })
+        setGoogleAuth(
+          window.gapi.auth2.init({
+            client_id: `${GOOGLE_OAUTH_CLIENT_ID}`,
+          }),
+        )
         setHasGoogleLoaded(true)
       })
     }
-  }, [])
-
-  useEffect(() => {
-    if (hasLocalStorageLoaded) return
-
-    const storedUser = getUser()
-
-    setUser(storedUser)
-
-    setHasLocalStorageLoaded(true)
-  }, [hasLocalStorageLoaded, user])
-
-  if (!hasLocalStorageLoaded) return null
+  }, [setGoogleAuth])
 
   if (!user.id) {
     return (
@@ -64,7 +47,7 @@ const Authentication = ({ children }) => {
         hasGoogleLoaded={hasGoogleLoaded}
         errorMessage={errorMessage}
         setErrorMessage={setErrorMessage}
-        onSubmit={authenticateUser({ setErrorMessage })}
+        onSubmit={authenticateUser({ setUser, setErrorMessage })}
       />
     )
   }
