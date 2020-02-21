@@ -339,6 +339,7 @@ Array [
   align-items: flex-start;
   cursor: pointer;
   padding-bottom: 16px;
+  padding-left: 0;
 }
 
 .emotion-9 {

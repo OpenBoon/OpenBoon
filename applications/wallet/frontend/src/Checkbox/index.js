@@ -14,6 +14,7 @@ const STYLES = {
     },
     label: {
       alignItems: 'flex-start',
+      paddingLeft: 0,
     },
     legend: {
       paddingLeft: 0,
@@ -25,6 +26,7 @@ const STYLES = {
       paddingLeft: spacing.normal,
     },
     label: {
+      paddingLeft: spacing.normal,
       alignItems: 'center',
     },
     legend: {
@@ -57,6 +59,7 @@ const Checkbox = ({
         color: colors.white,
         cursor: 'pointer',
         paddingBottom: spacing.normal,
+        paddingLeft: STYLES[variant].label.paddingLeft,
       }}>
       <CheckboxIcon
         value={value}

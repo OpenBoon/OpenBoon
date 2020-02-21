@@ -82,6 +82,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   align-items: flex-start;
   cursor: pointer;
   padding-bottom: 16px;
+  padding-left: 0;
 }
 
 .emotion-10 {
@@ -1265,6 +1266,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   align-items: flex-start;
   cursor: pointer;
   padding-bottom: 16px;
+  padding-left: 0;
 }
 
 .emotion-10 {
