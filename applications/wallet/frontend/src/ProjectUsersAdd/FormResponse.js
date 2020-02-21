@@ -3,9 +3,8 @@ import Link from 'next/link'
 
 import { colors, spacing, typography } from '../Styles'
 
-import FormError from '../FormError'
-import FormSuccess from '../FormSuccess'
-import Button, { VARIANTS } from '../Button'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import SectionTitle from '../SectionTitle'
 
@@ -24,7 +23,9 @@ const ProjectUsersAddFormResponse = ({
     <div>
       {failed.length > 0 && (
         <>
-          <FormError>Users Not Added!</FormError>
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+            Users Not Added
+          </FlashMessage>
           <SectionTitle>Users that Need an Account</SectionTitle>
           <div
             css={{
@@ -41,7 +42,9 @@ const ProjectUsersAddFormResponse = ({
 
       {succeeded.length > 0 && (
         <div css={{ paddingTop: spacing.comfy }}>
-          <FormSuccess>Users Added</FormSuccess>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Users Added
+          </FlashMessage>
 
           <SectionTitle>Users Added</SectionTitle>
           <div
@@ -62,11 +65,11 @@ const ProjectUsersAddFormResponse = ({
           </ul>
 
           <ButtonGroup>
-            <Button variant={VARIANTS.SECONDARY} onClick={onReset}>
+            <Button variant={BUTTON_VARIANTS.SECONDARY} onClick={onReset}>
               Add Another User
             </Button>
             <Link href="/[projectId]/users" as={`/${projectId}/users`} passHref>
-              <Button variant={VARIANTS.PRIMARY}>View All</Button>
+              <Button variant={BUTTON_VARIANTS.PRIMARY}>View All</Button>
             </Link>
           </ButtonGroup>
         </div>

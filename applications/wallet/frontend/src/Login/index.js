@@ -10,7 +10,7 @@ import LogoSvg from '../Icons/logo.svg'
 import HiddenSvg from '../Icons/hidden.svg'
 import VisibleSvg from '../Icons/visible.svg'
 
-import FormSuccess from '../FormSuccess'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import FormAlert from '../FormAlert'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
@@ -50,13 +50,25 @@ const Login = ({
 
       {action === 'password-reset-request-success' && (
         <div css={{ paddingBottom: spacing.normal }}>
-          <FormSuccess>Password Reset Email Sent</FormSuccess>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Password Reset Email Sent
+          </FlashMessage>
         </div>
       )}
 
       {action === 'password-reset-update-success' && (
         <div css={{ paddingBottom: spacing.normal }}>
-          <FormSuccess>Password has been updated</FormSuccess>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Password has been updated
+          </FlashMessage>
+        </div>
+      )}
+
+      {action === 'account-activation-success' && (
+        <div css={{ paddingBottom: spacing.normal }}>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Account activated
+          </FlashMessage>
         </div>
       )}
 
