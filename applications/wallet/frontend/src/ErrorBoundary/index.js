@@ -2,6 +2,8 @@ import { Component } from 'react'
 import * as Sentry from '@sentry/browser'
 import PropTypes from 'prop-types'
 
+import { colors, typography } from '../Styles'
+
 import ErrorSvg from './error.svg'
 
 class ErrorBoundary extends Component {
@@ -24,7 +26,18 @@ class ErrorBoundary extends Component {
 
     if (hasError) {
       return (
-        <div>
+        <div
+          css={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            color: colors.structure.steel,
+            fontSize: typography.size.regular,
+            lineHeight: typography.height.regular,
+          }}>
           <ErrorSvg />
           <br /> Hmmm, something went wrong.
           <br /> Please try refreshing.
