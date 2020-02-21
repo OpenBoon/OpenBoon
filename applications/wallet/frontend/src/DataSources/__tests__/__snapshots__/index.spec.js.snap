@@ -119,9 +119,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  <div>
-     
-  </div>,
   .emotion-11 {
   height: 100%;
 }
@@ -303,12 +300,6 @@ Array [
         </tr>
       </tbody>
     </table>
-    <div>
-       
-    </div>
-    <div>
-       
-    </div>
   </div>,
 ]
 `;
@@ -511,9 +502,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  <div>
-     
-  </div>,
   .emotion-0 {
   text-align: left;
   font-size: 15px;
@@ -1046,9 +1034,6 @@ Array [
         </tr>
       </tbody>
     </table>
-    <div>
-       
-    </div>
     <div
       className="emotion-33"
     >
@@ -1085,9 +1070,6 @@ Array [
           width={16}
         />
       </button>
-    </div>
-    <div>
-       
     </div>
   </div>,
 ]
@@ -1212,9 +1194,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  <div>
-     
-  </div>,
   .emotion-11 {
   height: 100%;
 }
@@ -1396,12 +1375,6 @@ Array [
         </tr>
       </tbody>
     </table>
-    <div>
-       
-    </div>
-    <div>
-       
-    </div>
   </div>,
 ]
 `;

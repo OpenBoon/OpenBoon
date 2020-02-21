@@ -1,11 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<CreateAccount /> should render properly when there is a token 1`] = `null`;
-
-exports[`<CreateAccount /> should render properly when there is a token and the activation link is expired 1`] = `null`;
-
-exports[`<CreateAccount /> should render properly when there is no token 1`] = `
-.emotion-39 {
+exports[`<CreateAccount /> should render properly when the activation link is expired 1`] = `
+.emotion-44 {
   height: 100%;
 }
 
@@ -50,7 +46,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   padding-right: 8px;
 }
 
-.emotion-38 {
+.emotion-43 {
   margin-top: 44px;
   padding-left: 32px;
   padding-right: 32px;
@@ -73,7 +69,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-37 {
+.emotion-42 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -99,28 +95,93 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   height: 20px;
 }
 
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  justify-self: flex-start;
+  color: #000000;
+  font-weight: 500;
+  background-color: #ffffff;
+  border: 2px solid #c92300;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
 .emotion-7 {
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  background-color: #c92300;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-11 {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  color: #c92300;
+}
+
+.emotion-12 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-top: 16px;
 }
 
-.emotion-11 {
+.emotion-16 {
   padding-top: 8px;
 }
 
-.emotion-8 {
+.emotion-13 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-10 {
+.emotion-15 {
   position: relative;
 }
 
-.emotion-9 {
+.emotion-14 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -132,17 +193,17 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   border-width: 2px;
 }
 
-.emotion-9:focus {
+.emotion-14:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-9:focus {
+.emotion-14:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-36 {
+.emotion-41 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -151,12 +212,12 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-36 button,
-.emotion-36 a {
+.emotion-41 button,
+.emotion-41 a {
   margin-right: 16px;
 }
 
-.emotion-34 {
+.emotion-39 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -188,30 +249,30 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   background-color: transparent;
 }
 
-.emotion-34:hover {
+.emotion-39:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-34[aria-disabled=true] {
+.emotion-39[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-34,
-.emotion-34:hover,
-.emotion-34:visited {
+.emotion-39,
+.emotion-39:hover,
+.emotion-39:visited {
   background-color: #808080;
 }
 
-.emotion-34:hover {
+.emotion-39:hover {
   opacity: 0.5;
 }
 
-.emotion-34[aria-disabled=true] {
+.emotion-39[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-35 {
+.emotion-40 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -243,31 +304,31 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   background-color: transparent;
 }
 
-.emotion-35:hover {
+.emotion-40:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-35[aria-disabled=true] {
+.emotion-40[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-35,
-.emotion-35:hover,
-.emotion-35:visited {
+.emotion-40,
+.emotion-40:hover,
+.emotion-40:visited {
   background-color: #73b61c;
 }
 
-.emotion-35:hover {
+.emotion-40:hover {
   background-color: #96c955;
 }
 
-.emotion-35[aria-disabled=true] {
+.emotion-40[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-  className="emotion-39"
+  className="emotion-44"
 >
   <div
     className="emotion-2"
@@ -287,7 +348,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
     <div />
   </div>
   <div
-    className="emotion-38"
+    className="emotion-43"
   >
     <h2
       className="emotion-3"
@@ -296,7 +357,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
     </h2>
     <form
       action=""
-      className="emotion-37"
+      className="emotion-42"
       method="post"
       onSubmit={[Function]}
     >
@@ -311,26 +372,52 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
           />
         </div>
       </div>
+      <div
+        className="emotion-10"
+      >
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-7"
+          >
+            <svg
+              data-file-name="warning.svg"
+              width={20}
+            />
+          </div>
+          <div
+            className="emotion-8"
+          >
+            Confirmation Link Expired
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-11"
+      >
+        Confirmation links expire after three days. Please create a new account.
+      </div>
       <h3
-        className="emotion-7"
+        className="emotion-12"
       >
         Name
       </h3>
       <div
-        className="emotion-11"
+        className="emotion-16"
       >
         <label
-          className="emotion-8"
+          className="emotion-13"
           htmlFor="firstName"
         >
           First Name
         </label>
         <div
-          className="emotion-10"
+          className="emotion-15"
         >
           <input
             autoFocus={true}
-            className="emotion-9"
+            className="emotion-14"
             id="firstName"
             name="firstName"
             onChange={[Function]}
@@ -339,25 +426,25 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
           />
         </div>
         <div
-          className="emotion-11"
+          className="emotion-16"
         >
            
         </div>
       </div>
       <div
-        className="emotion-11"
+        className="emotion-16"
       >
         <label
-          className="emotion-8"
+          className="emotion-13"
           htmlFor="lastName"
         >
           Last Name
         </label>
         <div
-          className="emotion-10"
+          className="emotion-15"
         >
           <input
-            className="emotion-9"
+            className="emotion-14"
             id="lastName"
             name="lastName"
             onChange={[Function]}
@@ -366,25 +453,25 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
           />
         </div>
         <div
-          className="emotion-11"
+          className="emotion-16"
         >
            
         </div>
       </div>
       <div
-        className="emotion-11"
+        className="emotion-16"
       >
         <label
-          className="emotion-8"
+          className="emotion-13"
           htmlFor="email"
         >
           Email
         </label>
         <div
-          className="emotion-10"
+          className="emotion-15"
         >
           <input
-            className="emotion-9"
+            className="emotion-14"
             id="email"
             name="email"
             onChange={[Function]}
@@ -393,30 +480,30 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
           />
         </div>
         <div
-          className="emotion-11"
+          className="emotion-16"
         >
            
         </div>
       </div>
       <h3
-        className="emotion-7"
+        className="emotion-12"
       >
         Password
       </h3>
       <div
-        className="emotion-11"
+        className="emotion-16"
       >
         <label
-          className="emotion-8"
+          className="emotion-13"
           htmlFor="password"
         >
           Password
         </label>
         <div
-          className="emotion-10"
+          className="emotion-15"
         >
           <input
-            className="emotion-9"
+            className="emotion-14"
             id="password"
             name="password"
             onChange={[Function]}
@@ -425,25 +512,25 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
           />
         </div>
         <div
-          className="emotion-11"
+          className="emotion-16"
         >
            
         </div>
       </div>
       <div
-        className="emotion-11"
+        className="emotion-16"
       >
         <label
-          className="emotion-8"
+          className="emotion-13"
           htmlFor="confirmPassword"
         >
           Confirm Password
         </label>
         <div
-          className="emotion-10"
+          className="emotion-15"
         >
           <input
-            className="emotion-9"
+            className="emotion-14"
             id="confirmPassword"
             name="confirmPassword"
             onChange={[Function]}
@@ -452,16 +539,16 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
           />
         </div>
         <div
-          className="emotion-11"
+          className="emotion-16"
         >
            
         </div>
       </div>
       <div
-        className="emotion-36"
+        className="emotion-41"
       >
         <a
-          className="emotion-34"
+          className="emotion-39"
           href="/"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -470,7 +557,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
         </a>
         <button
           aria-disabled={true}
-          className="emotion-35"
+          className="emotion-40"
           onClick={[Function]}
           type="submit"
         >
@@ -482,7 +569,9 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 </div>
 `;
 
-exports[`<CreateAccount /> should render properly when there is no token and the action is invalid 1`] = `
+exports[`<CreateAccount /> should render properly when there is a token 1`] = `null`;
+
+exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 .emotion-39 {
   height: 100%;
 }
@@ -1055,6 +1144,71 @@ exports[`<CreateAccount /> should render properly when there is no token and the
   height: 20px;
 }
 
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  justify-self: flex-start;
+  color: #000000;
+  font-weight: 500;
+  background-color: #ffffff;
+  border: 2px solid #c92300;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-7 {
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  background-color: #c92300;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-11 {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  color: #c92300;
+}
+
 .emotion-12 {
   font-size: 17px;
   line-height: 20px;
@@ -1220,71 +1374,6 @@ exports[`<CreateAccount /> should render properly when there is no token and the
 
 .emotion-40[aria-disabled=true] {
   background-color: #808080;
-}
-
-.emotion-10 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  justify-self: flex-start;
-  color: #000000;
-  font-weight: 500;
-  background-color: #ffffff;
-  border: 2px solid #c92300;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-}
-
-.emotion-7 {
-  width: 40px;
-  height: 40px;
-  color: #ffffff;
-  background-color: #c92300;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.emotion-11 {
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
-  color: #c92300;
 }
 
 <div

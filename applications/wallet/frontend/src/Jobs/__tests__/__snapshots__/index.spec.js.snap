@@ -201,12 +201,6 @@ Array [
         </tr>
       </tbody>
     </table>
-    <div>
-       
-    </div>
-    <div>
-       
-    </div>
   </div>,
 ]
 `;
@@ -1534,16 +1528,10 @@ Array [
         </tr>
       </tbody>
     </table>
-    <div>
-       
-    </div>
     <Pagination
       currentPage={1}
       totalPages={1}
     />
-    <div>
-       
-    </div>
   </div>,
 ]
 `;
@@ -1778,12 +1766,6 @@ Array [
         </tr>
       </tbody>
     </table>
-    <div>
-       
-    </div>
-    <div>
-       
-    </div>
   </div>,
 ]
 `;

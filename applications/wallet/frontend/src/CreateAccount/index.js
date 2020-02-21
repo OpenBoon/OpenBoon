@@ -36,7 +36,7 @@ const CreateAccount = () => {
     query: { token, uid, action },
   } = useRouter()
 
-  if (token) {
+  if (token && uid) {
     onConfirm({ token, uid })
     return null
   }
@@ -69,7 +69,7 @@ const CreateAccount = () => {
             setErrorMessage={() => dispatch({ error: '' })}
           />
 
-          {action && action === 'account-activation-expired' && (
+          {action === 'account-activation-expired' && (
             <>
               <FlashMessage variant={VARIANTS.ERROR}>
                 Confirmation Link Expired

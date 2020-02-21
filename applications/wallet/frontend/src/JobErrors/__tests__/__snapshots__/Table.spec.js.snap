@@ -182,12 +182,6 @@ exports[`<JobErrorsTable /> should render properly while loading 1`] = `
       </tr>
     </tbody>
   </table>
-  <div>
-     
-  </div>
-  <div>
-     
-  </div>
 </div>
 `;
 
@@ -770,16 +764,10 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
       </tr>
     </tbody>
   </table>
-  <div>
-     
-  </div>
   <Pagination
     currentPage={1}
     totalPages={1}
   />
-  <div>
-     
-  </div>
 </div>
 `;
 
@@ -994,11 +982,5 @@ exports[`<JobErrorsTable /> should render properly with no job errors 1`] = `
       </tr>
     </tbody>
   </table>
-  <div>
-     
-  </div>
-  <div>
-     
-  </div>
 </div>
 `;

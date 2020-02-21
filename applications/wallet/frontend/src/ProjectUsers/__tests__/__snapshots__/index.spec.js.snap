@@ -449,9 +449,6 @@ Array [
         </tr>
       </tbody>
     </table>
-    <div>
-       
-    </div>
     <div
       className="emotion-13"
     >
@@ -488,9 +485,6 @@ Array [
           width={16}
         />
       </button>
-    </div>
-    <div>
-       
     </div>
   </div>,
 ]
@@ -776,12 +770,6 @@ Array [
         </tr>
       </tbody>
     </table>
-    <div>
-       
-    </div>
-    <div>
-       
-    </div>
   </div>,
 ]
 `;
@@ -1066,12 +1054,6 @@ Array [
         </tr>
       </tbody>
     </table>
-    <div>
-       
-    </div>
-    <div>
-       
-    </div>
   </div>,
 ]
 `;
@@ -1596,9 +1578,6 @@ Array [
         </tr>
       </tbody>
     </table>
-    <div>
-       
-    </div>
     <div
       className="emotion-15"
     >
@@ -1635,9 +1614,6 @@ Array [
           width={16}
         />
       </button>
-    </div>
-    <div>
-       
     </div>
   </div>,
 ]
