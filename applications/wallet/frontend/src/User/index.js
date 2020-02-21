@@ -33,8 +33,7 @@ const User = ({ initialUser, children }) => {
     <UserContext.Provider
       value={{
         user,
-        setUser: ({ user: updates }) =>
-          setUser({ setStateUser })({ user, updates }),
+        setUser: setUser({ setStateUser, user }),
         googleAuth,
         setGoogleAuth,
       }}>

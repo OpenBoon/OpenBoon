@@ -8,7 +8,7 @@ export const getUser = () => {
   }
 }
 
-export const setUser = ({ setStateUser }) => ({ user, updates }) => {
+export const setUser = ({ setStateUser, user }) => ({ user: updates }) => {
   if (updates === null) {
     localStorage.removeItem(USER)
 
