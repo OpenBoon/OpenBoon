@@ -1617,7 +1617,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
         <div
           className="emotion-1"
         >
-          Account activated
+          Account activated, please login now
         </div>
       </div>
     </div>
