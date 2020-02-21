@@ -32,7 +32,7 @@ const ResetPasswordRequest = () => {
         Did you forget your password?
       </h3>
 
-      <div css={{ color: colors.structure.steel }}>
+      <div css={{ color: colors.structure.zinc }}>
         Enter your email below and we&apos;ll send you a link to create a new
         one.
       </div>
@@ -44,13 +44,13 @@ const ResetPasswordRequest = () => {
 
       <Input
         autoFocus
-        id="username"
+        id="email"
         variant={INPUT_VARIANTS.PRIMARY}
         label="Email"
         type="text"
         value={state.email}
         onChange={({ target: { value } }) => dispatch({ email: value })}
-        hasError={!state.email}
+        hasError={false}
       />
 
       <div
