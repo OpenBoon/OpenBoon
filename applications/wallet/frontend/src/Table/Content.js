@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import TableException from './Exception'
 
-import ErrorSvg from './error.svg'
+import ErrorSvg from '../Icons/error.svg'
 
 const TableContent = ({
   numColumns,
