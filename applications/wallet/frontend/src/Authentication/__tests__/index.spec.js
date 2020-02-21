@@ -7,7 +7,6 @@ import User from '../../User'
 import Authentication, { noop } from '..'
 
 jest.mock('../helpers')
-jest.mock('../../User/helpers')
 
 jest.mock('../../Login', () => 'Login')
 jest.mock('../../Projects', () => 'Projects')
@@ -75,25 +74,14 @@ describe('<Authentication />', () => {
   })
 
   it('should render properly when user is logged in', async () => {
-    require('../../User/helpers').__setMockUser(mockUser)
-
     const component = TestRenderer.create(
-      <User initialUser={{}}>
+      <User initialUser={mockUser}>
         <Authentication>Hello World!</Authentication>
       </User>,
     )
 
-    // user is loading
-    expect(component.toJSON()).toMatchSnapshot()
-
-    // useEffect reads from localStorage
-    await act(async () => {})
-
     // display `Hello World!`
     expect(component.toJSON()).toMatchSnapshot()
-
-    // reset localStorage
-    require('../../User/helpers').__setMockUser({})
   })
 
   it('noop should do nothing', () => {
