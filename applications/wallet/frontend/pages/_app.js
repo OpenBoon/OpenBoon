@@ -5,9 +5,7 @@ import * as Sentry from '@sentry/browser'
 import 'focus-visible'
 
 import User from '../src/User'
-import Router from 'next/router'
 import Authentication from '../src/Authentication'
-import { getUser } from '../src/Authentication/helpers'
 
 const { publicRuntimeConfig: { ENVIRONMENT, ENABLE_SENTRY } = {} } = getConfig()
 
@@ -18,12 +16,6 @@ if (ENABLE_SENTRY === 'true') {
     environment: ENVIRONMENT,
   })
 }
-
-const AUTHENTICATION_LESS_ROUTES = [
-  '/_error',
-  '/create-account',
-  '/reset-password',
-]
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -41,22 +33,20 @@ class MyApp extends App {
   }
 
   render() {
-    const { Component, pageProps, router, err = '' } = this.props
+    const {
+      Component,
+      pageProps,
+      router: { route },
+      err = '',
+    } = this.props
 
-    if (AUTHENTICATION_LESS_ROUTES.includes(router.route)) {
-      const { userId } = getUser()
-
-      if (userId) {
-        Router.push('/')
-        return null
-      }
-
+    if (route === '/_error') {
       return <Component {...pageProps} err={err} />
     }
 
     return (
       <User initialUser={{}}>
-        <Authentication>
+        <Authentication route={route}>
           <Component {...pageProps} />
         </Authentication>
       </User>

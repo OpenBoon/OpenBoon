@@ -34,7 +34,7 @@ describe('<Authentication />', () => {
 
     const component = TestRenderer.create(
       <User initialUser={{}}>
-        <Authentication>Hello World!</Authentication>
+        <Authentication route="/">Hello World!</Authentication>
       </User>,
     )
 
@@ -60,10 +60,24 @@ describe('<Authentication />', () => {
     })
   })
 
+  it('should render properly if user is logged out on AUTHENTICATION_LESS_ROUTES', async () => {
+    const component = TestRenderer.create(
+      <User initialUser={{}}>
+        <Authentication route="/create-account">Hello World!</Authentication>
+      </User>,
+    )
+
+    // useEffect reads from localStorage
+    await act(async () => {})
+
+    // Expect Hello World!
+    expect(component.toJSON()).toEqual('Hello World!')
+  })
+
   it('should load the Google SDK', async () => {
     const component = TestRenderer.create(
       <User initialUser={{}}>
-        <Authentication>Hello World!</Authentication>
+        <Authentication route="/">Hello World!</Authentication>
       </User>,
     )
 
@@ -76,12 +90,27 @@ describe('<Authentication />', () => {
   it('should render properly when user is logged in', async () => {
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
-        <Authentication>Hello World!</Authentication>
+        <Authentication route="/">Hello World!</Authentication>
       </User>,
     )
 
     // display `Hello World!`
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when user is logged in on AUTHENTICATION_LESS_ROUTES', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Authentication route="/create-account">Hello World!</Authentication>
+      </User>,
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith('/')
+    expect(component.toJSON()).toEqual(null)
   })
 
   it('noop should do nothing', () => {
