@@ -38,7 +38,7 @@ export const onConfirm = async ({ uid, token }) => {
     const response = await fetch(`/api/v1/accounts/confirm`, {
       ...BASE_HEADER,
       body: JSON.stringify({
-        uid,
+        userId: uid,
         token,
       }),
     })
