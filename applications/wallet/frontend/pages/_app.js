@@ -48,6 +48,7 @@ class MyApp extends App {
 
       if (userId) {
         Router.push('/')
+        return null
       }
 
       return <Component {...pageProps} err={err} />
