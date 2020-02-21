@@ -10,6 +10,7 @@ import { UserContext } from '../User'
 import Login from '../Login'
 import Projects from '../Projects'
 import Layout from '../Layout'
+import ErrorBoundary from '../ErrorBoundary'
 
 import { authenticateUser, logout } from './helpers'
 
@@ -56,7 +57,7 @@ const Authentication = ({ children }) => {
     <SWRConfig value={{ fetcher }}>
       <Projects>
         <Layout user={user} logout={logout({ googleAuth, setUser })}>
-          {children}
+          <ErrorBoundary>{children}</ErrorBoundary>
         </Layout>
       </Projects>
     </SWRConfig>
