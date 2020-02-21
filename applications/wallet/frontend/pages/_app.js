@@ -44,11 +44,13 @@ class MyApp extends App {
     const { Component, pageProps, router, err = '' } = this.props
 
     if (AUTHENTICATION_LESS_ROUTES.includes(router.route)) {
-      if (!Object.keys(getUser()).length) {
-        return <Component {...pageProps} err={err} />
+      const { userId } = getUser()
+
+      if (userId) {
+        Router.push('/')
       }
 
-      Router.push('/')
+      return <Component {...pageProps} err={err} />
     }
 
     return (
