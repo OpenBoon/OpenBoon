@@ -4,6 +4,7 @@ import getConfig from 'next/config'
 import * as Sentry from '@sentry/browser'
 import 'focus-visible'
 
+import User from '../src/User'
 import Authentication from '../src/Authentication'
 
 const { publicRuntimeConfig: { ENVIRONMENT, ENABLE_SENTRY } = {} } = getConfig()
@@ -45,9 +46,11 @@ class MyApp extends App {
     }
 
     return (
-      <Authentication>
-        <Component {...pageProps} />
-      </Authentication>
+      <User initialUser={{}}>
+        <Authentication>
+          <Component {...pageProps} />
+        </Authentication>
+      </User>
     )
   }
 }

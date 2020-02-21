@@ -1,17 +1,21 @@
+import { useContext } from 'react'
 import PropTypes from 'prop-types'
+
+import { UserContext } from '../User'
 
 import Pills from '../Pills'
 
 import ProjectUsersMenu from './Menu'
-
-import { getUser } from '../Authentication/helpers'
 
 const ProjectUsersRow = ({
   projectId,
   user: { id: userId, email, permissions },
   revalidate,
 }) => {
-  const { email: currentUserEmail } = getUser()
+  const {
+    user: { email: currentUserEmail },
+  } = useContext(UserContext)
+
   return (
     <tr>
       <td>{email}</td>

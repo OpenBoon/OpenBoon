@@ -1,10 +1,9 @@
 import { fetcher } from '../Fetch/helpers'
 
-import { userstorer } from '../Authentication/helpers'
-
 export const onSubmit = async ({
   dispatch,
   state: { id, firstName, lastName },
+  setUser,
 }) => {
   try {
     const user = await fetcher(`/api/v1/users/${id}/`, {
@@ -20,7 +19,7 @@ export const onSubmit = async ({
       errors: {},
     })
 
-    userstorer({ user })
+    setUser({ user })
   } catch (response) {
     const errors = await response.json()
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
