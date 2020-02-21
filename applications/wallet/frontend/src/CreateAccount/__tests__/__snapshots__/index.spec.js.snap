@@ -130,9 +130,12 @@ exports[`<CreateAccount /> should render properly 1`] = `
 
 .emotion-9:focus {
   border: 2px solid #73b61c;
-  background-color: #ffffff;
   outline: #73b61c;
+}
+
+.emotion-9:focus {
   color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-36 {

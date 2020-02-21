@@ -12,6 +12,7 @@ exports[`<Checkbox /> should render properly 1`] = `
   align-items: center;
   cursor: pointer;
   padding-bottom: 16px;
+  padding-left: 0;
 }
 
 .emotion-3 {
@@ -125,6 +126,7 @@ exports[`<Checkbox /> should render properly 2`] = `
   align-items: center;
   cursor: pointer;
   padding-bottom: 16px;
+  padding-left: 0;
 }
 
 .emotion-3 {

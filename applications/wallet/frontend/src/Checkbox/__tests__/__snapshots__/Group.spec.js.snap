@@ -32,6 +32,7 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   align-items: flex-start;
   cursor: pointer;
   padding-bottom: 16px;
+  padding-left: 0;
 }
 
 .emotion-5 {
@@ -187,6 +188,7 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   align-items: flex-start;
   cursor: pointer;
   padding-bottom: 16px;
+  padding-left: 0;
 }
 
 .emotion-5 {

@@ -21,7 +21,7 @@ export const onRequest = async ({ dispatch, state: { email } }) => {
 
     Router.push('/?action=password-reset-request-success')
   } catch (response) {
-    dispatch({ error: 'Something went wrong. Please try again.' })
+    dispatch({ error: 'Error. Please try again.' })
   }
 }
 
@@ -56,12 +56,9 @@ export const onConfirm = async ({
 
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
       acc[errorKey] = errors[errorKey].join(' ')
-
       return acc
     }, {})
 
-    dispatch({
-      errors: parsedErrors,
-    })
+    dispatch({ errors: parsedErrors })
   }
 }
