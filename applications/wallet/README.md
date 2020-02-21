@@ -25,7 +25,8 @@ run it. Once it's up and running you can test that were changes are working as e
 
 ### Steps
 
-`docker-compose -f docker-compose.yml -f docker-compose.local-build-wallet.yml up --build`
+1. Run `docker-compose build wallet`
+1. Run `docker-compose up`
 
 # Advanced Development Options
 There are multiple ways to run this application which may be better suited to the type of development
