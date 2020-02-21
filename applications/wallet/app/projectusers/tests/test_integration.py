@@ -26,6 +26,18 @@ def data(project):
     }
 
 
+@pytest.fixture
+def inception_key(project):
+    return {
+        'id': 'b3a09695-b9fb-40bd-8ea8-bbe0c2cba333',
+        'name': 'admin-key',
+        'projectId': '00000000-0000-0000-0000-000000000000',
+        'accessKey': 'P1klR1U1RgT3YfdLYN4-AHPlnOhXZHeD',
+        'secretKey': '6Ti7kZZ7IcmWnR1bfdvCMUataoMh9Mbq9Kqvs3xctOM7y1OwbefdFiLewuEDAGBof_lV5y_JKuFtY11bmRjFEg',  # noqa
+        'permissions': ['AssetsRead']
+    }
+
+
 def make_users_for_project(project, count, user_model, apikey):
     users = []
     for index in range(0, count):
@@ -466,3 +478,21 @@ class TestProjectUserPut:
         assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
         content = response.json()
         assert content['detail'] == 'Error deleting apikey.'
+
+    @override_settings(PLATFORM='zmlp')
+    def test_inception_key(self, project, zmlp_project_user, monkeypatch, inception_key,
+                           zmlp_project_membership, api_client, django_user_model):
+
+        new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com',
+                                                         'letmein')  # noqa
+        apikey = encode_apikey(inception_key).decode('utf-8')
+        Membership.objects.create(user=new_user, project=project, apikey=apikey)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        body = {'email': new_user.email, 'permissions': ['AssetsRead']}
+        response = api_client.put(reverse('projectuser-detail',
+                                          kwargs={'project_pk': project.id,
+                                                  'pk': new_user.id}), body)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        content = response.json()
+        assert content['detail'] == 'Unable to modify the admin key.'
