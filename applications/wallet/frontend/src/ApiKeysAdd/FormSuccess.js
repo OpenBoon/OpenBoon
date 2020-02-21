@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { spacing, colors, constants, typography } from '../Styles'
 
-import FormSuccess from '../FormSuccess'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Button, { VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import SectionTitle from '../SectionTitle'
@@ -25,7 +25,9 @@ const ApiKeysAddFormSuccess = ({
 
   return (
     <div>
-      <FormSuccess>Key Generated &amp; Copied to Clipboard</FormSuccess>
+      <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+        Key Generated &amp; Copied to Clipboard
+      </FlashMessage>
 
       <SectionTitle>Scope</SectionTitle>
 
