@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ErrorBoundary /> should render children 1`] = `<div />`;
+
+exports[`<ErrorBoundary /> should render generic when caught 1`] = `
+<div>
+  <svg
+    data-file-name="error.svg"
+  />
+  <br />
+   Hmmm, something went wrong.
+  <br />
+   Please try refreshing.
+</div>
+`;
