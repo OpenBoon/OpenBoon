@@ -1,6 +1,963 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<CreateAccount /> should render properly when activation link is expired 1`] = `
+exports[`<CreateAccount /> should render properly when there is a token 1`] = `null`;
+
+exports[`<CreateAccount /> should render properly when there is a token and the activation link is expired 1`] = `null`;
+
+exports[`<CreateAccount /> should render properly when there is no token 1`] = `
+.emotion-39 {
+  height: 100%;
+}
+
+.emotion-2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #2e2e2e;
+  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+  z-index: 100;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+.emotion-0 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-38 {
+  margin-top: 44px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 32px;
+  height: calc(100vh - 44px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-3 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+.emotion-37 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-6 {
+  padding: 8px;
+}
+
+.emotion-5 {
+  padding: 12px;
+}
+
+.emotion-4 {
+  height: 20px;
+}
+
+.emotion-7 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-11 {
+  padding-top: 8px;
+}
+
+.emotion-8 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-10 {
+  position: relative;
+}
+
+.emotion-9 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #2e2e2e;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-9:focus {
+  border: 2px solid #73b61c;
+  background-color: #ffffff;
+  outline: #73b61c;
+  color: #000000;
+}
+
+.emotion-36 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-36 button,
+.emotion-36 a {
+  margin-right: 16px;
+}
+
+.emotion-34 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-34:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-34[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-34,
+.emotion-34:hover,
+.emotion-34:visited {
+  background-color: #808080;
+}
+
+.emotion-34:hover {
+  opacity: 0.5;
+}
+
+.emotion-34[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-35 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-35:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-35[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-35,
+.emotion-35:hover,
+.emotion-35:visited {
+  background-color: #73b61c;
+}
+
+.emotion-35:hover {
+  background-color: #96c955;
+}
+
+.emotion-35[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+  className="emotion-39"
+>
+  <div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-0"
+      >
+        <svg
+          data-file-name="logo.svg"
+          width={110}
+        />
+      </div>
+    </div>
+    <div />
+  </div>
+  <div
+    className="emotion-38"
+  >
+    <h2
+      className="emotion-3"
+    >
+      Create an Account
+    </h2>
+    <form
+      action=""
+      className="emotion-37"
+      method="post"
+      onSubmit={[Function]}
+    >
+      <div
+        className="emotion-6"
+      >
+        <div
+          className="emotion-5"
+        >
+          <div
+            className="emotion-4"
+          />
+        </div>
+      </div>
+      <h3
+        className="emotion-7"
+      >
+        Name
+      </h3>
+      <div
+        className="emotion-11"
+      >
+        <label
+          className="emotion-8"
+          htmlFor="firstName"
+        >
+          First Name
+        </label>
+        <div
+          className="emotion-10"
+        >
+          <input
+            autoFocus={true}
+            className="emotion-9"
+            id="firstName"
+            name="firstName"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-11"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-11"
+      >
+        <label
+          className="emotion-8"
+          htmlFor="lastName"
+        >
+          Last Name
+        </label>
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-9"
+            id="lastName"
+            name="lastName"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-11"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-11"
+      >
+        <label
+          className="emotion-8"
+          htmlFor="email"
+        >
+          Email
+        </label>
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-9"
+            id="email"
+            name="email"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-11"
+        >
+           
+        </div>
+      </div>
+      <h3
+        className="emotion-7"
+      >
+        Password
+      </h3>
+      <div
+        className="emotion-11"
+      >
+        <label
+          className="emotion-8"
+          htmlFor="password"
+        >
+          Password
+        </label>
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-9"
+            id="password"
+            name="password"
+            onChange={[Function]}
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-11"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-11"
+      >
+        <label
+          className="emotion-8"
+          htmlFor="confirmPassword"
+        >
+          Confirm Password
+        </label>
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-9"
+            id="confirmPassword"
+            name="confirmPassword"
+            onChange={[Function]}
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-11"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-36"
+      >
+        <a
+          className="emotion-34"
+          href="/"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Cancel
+        </a>
+        <button
+          aria-disabled={true}
+          className="emotion-35"
+          onClick={[Function]}
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`<CreateAccount /> should render properly when there is no token and the action is invalid 1`] = `
+.emotion-39 {
+  height: 100%;
+}
+
+.emotion-2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #2e2e2e;
+  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+  z-index: 100;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+.emotion-0 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-38 {
+  margin-top: 44px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 32px;
+  height: calc(100vh - 44px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-3 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+.emotion-37 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-6 {
+  padding: 8px;
+}
+
+.emotion-5 {
+  padding: 12px;
+}
+
+.emotion-4 {
+  height: 20px;
+}
+
+.emotion-7 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-11 {
+  padding-top: 8px;
+}
+
+.emotion-8 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-10 {
+  position: relative;
+}
+
+.emotion-9 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #2e2e2e;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-9:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
+.emotion-9:focus {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-36 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-36 button,
+.emotion-36 a {
+  margin-right: 16px;
+}
+
+.emotion-34 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-34:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-34[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-34,
+.emotion-34:hover,
+.emotion-34:visited {
+  background-color: #808080;
+}
+
+.emotion-34:hover {
+  opacity: 0.5;
+}
+
+.emotion-34[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-35 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-35:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-35[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-35,
+.emotion-35:hover,
+.emotion-35:visited {
+  background-color: #73b61c;
+}
+
+.emotion-35:hover {
+  background-color: #96c955;
+}
+
+.emotion-35[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+  className="emotion-39"
+>
+  <div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-0"
+      >
+        <svg
+          data-file-name="logo.svg"
+          width={110}
+        />
+      </div>
+    </div>
+    <div />
+  </div>
+  <div
+    className="emotion-38"
+  >
+    <h2
+      className="emotion-3"
+    >
+      Create an Account
+    </h2>
+    <form
+      action=""
+      className="emotion-37"
+      method="post"
+      onSubmit={[Function]}
+    >
+      <div
+        className="emotion-6"
+      >
+        <div
+          className="emotion-5"
+        >
+          <div
+            className="emotion-4"
+          />
+        </div>
+      </div>
+      <h3
+        className="emotion-7"
+      >
+        Name
+      </h3>
+      <div
+        className="emotion-11"
+      >
+        <label
+          className="emotion-8"
+          htmlFor="firstName"
+        >
+          First Name
+        </label>
+        <div
+          className="emotion-10"
+        >
+          <input
+            autoFocus={true}
+            className="emotion-9"
+            id="firstName"
+            name="firstName"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-11"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-11"
+      >
+        <label
+          className="emotion-8"
+          htmlFor="lastName"
+        >
+          Last Name
+        </label>
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-9"
+            id="lastName"
+            name="lastName"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-11"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-11"
+      >
+        <label
+          className="emotion-8"
+          htmlFor="email"
+        >
+          Email
+        </label>
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-9"
+            id="email"
+            name="email"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-11"
+        >
+           
+        </div>
+      </div>
+      <h3
+        className="emotion-7"
+      >
+        Password
+      </h3>
+      <div
+        className="emotion-11"
+      >
+        <label
+          className="emotion-8"
+          htmlFor="password"
+        >
+          Password
+        </label>
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-9"
+            id="password"
+            name="password"
+            onChange={[Function]}
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-11"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-11"
+      >
+        <label
+          className="emotion-8"
+          htmlFor="confirmPassword"
+        >
+          Confirm Password
+        </label>
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-9"
+            id="confirmPassword"
+            name="confirmPassword"
+            onChange={[Function]}
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-11"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-36"
+      >
+        <a
+          className="emotion-34"
+          href="/"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Cancel
+        </a>
+        <button
+          aria-disabled={true}
+          className="emotion-35"
+          onClick={[Function]}
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`<CreateAccount /> should render properly when there is no token and the action is valid 1`] = `
 .emotion-44 {
   height: 100%;
 }
@@ -555,959 +1512,6 @@ exports[`<CreateAccount /> should render properly when activation link is expire
         <button
           aria-disabled={true}
           className="emotion-40"
-          onClick={[Function]}
-          type="submit"
-        >
-          Save
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
-`;
-
-exports[`<CreateAccount /> should render properly when there is a token 1`] = `
-.emotion-39 {
-  height: 100%;
-}
-
-.emotion-2 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 44px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
-  z-index: 100;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
-}
-
-.emotion-0 {
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.emotion-38 {
-  margin-top: 44px;
-  padding-left: 32px;
-  padding-right: 32px;
-  padding-bottom: 32px;
-  height: calc(100vh - 44px);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-3 {
-  font-size: 18px;
-  line-height: 21px;
-  font-weight: 400;
-  padding-top: 24px;
-  padding-bottom: 16px;
-}
-
-.emotion-37 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.emotion-6 {
-  padding: 8px;
-}
-
-.emotion-5 {
-  padding: 12px;
-}
-
-.emotion-4 {
-  height: 20px;
-}
-
-.emotion-7 {
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 500;
-  padding-top: 16px;
-}
-
-.emotion-11 {
-  padding-top: 8px;
-}
-
-.emotion-8 {
-  display: block;
-  padding-bottom: 8px;
-  color: #b3b3b3;
-}
-
-.emotion-10 {
-  position: relative;
-}
-
-.emotion-9 {
-  outline-offset: 0;
-  padding: 10px 12px;
-  border-radius: 2px;
-  box-shadow: inset 0 1px 3px 0 transparent;
-  width: 100%;
-  color: #ffffff;
-  background-color: #2e2e2e;
-  border: 1px solid transparent;
-  border-width: 2px;
-}
-
-.emotion-9:focus {
-  border: 2px solid #73b61c;
-  outline: #73b61c;
-}
-
-.emotion-9:focus {
-  color: #000000;
-  background-color: #ffffff;
-}
-
-.emotion-36 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.emotion-36 button,
-.emotion-36 a {
-  margin-right: 16px;
-}
-
-.emotion-34 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-34:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-34[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-34,
-.emotion-34:hover,
-.emotion-34:visited {
-  background-color: #808080;
-}
-
-.emotion-34:hover {
-  opacity: 0.5;
-}
-
-.emotion-34[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-35 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-35:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-35[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-35,
-.emotion-35:hover,
-.emotion-35:visited {
-  background-color: #73b61c;
-}
-
-.emotion-35:hover {
-  background-color: #96c955;
-}
-
-.emotion-35[aria-disabled=true] {
-  background-color: #808080;
-}
-
-<div
-  className="emotion-39"
->
-  <div
-    className="emotion-2"
-  >
-    <div
-      className="emotion-1"
-    >
-      <div
-        className="emotion-0"
-      >
-        <svg
-          data-file-name="logo.svg"
-          width={110}
-        />
-      </div>
-    </div>
-    <div />
-  </div>
-  <div
-    className="emotion-38"
-  >
-    <h2
-      className="emotion-3"
-    >
-      Create an Account
-    </h2>
-    <form
-      action=""
-      className="emotion-37"
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-6"
-      >
-        <div
-          className="emotion-5"
-        >
-          <div
-            className="emotion-4"
-          />
-        </div>
-      </div>
-      <h3
-        className="emotion-7"
-      >
-        Name
-      </h3>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="firstName"
-        >
-          First Name
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            autoFocus={true}
-            className="emotion-9"
-            id="firstName"
-            name="firstName"
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="lastName"
-        >
-          Last Name
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-9"
-            id="lastName"
-            name="lastName"
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="email"
-        >
-          Email
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-9"
-            id="email"
-            name="email"
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <h3
-        className="emotion-7"
-      >
-        Password
-      </h3>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="password"
-        >
-          Password
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-9"
-            id="password"
-            name="password"
-            onChange={[Function]}
-            type="password"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="confirmPassword"
-        >
-          Confirm Password
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-9"
-            id="confirmPassword"
-            name="confirmPassword"
-            onChange={[Function]}
-            type="password"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="emotion-36"
-      >
-        <a
-          className="emotion-34"
-          href="/"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Cancel
-        </a>
-        <button
-          aria-disabled={true}
-          className="emotion-35"
-          onClick={[Function]}
-          type="submit"
-        >
-          Save
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
-`;
-
-exports[`<CreateAccount /> should render properly when there is no token 1`] = `
-.emotion-39 {
-  height: 100%;
-}
-
-.emotion-2 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 44px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
-  z-index: 100;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
-}
-
-.emotion-0 {
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.emotion-38 {
-  margin-top: 44px;
-  padding-left: 32px;
-  padding-right: 32px;
-  padding-bottom: 32px;
-  height: calc(100vh - 44px);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-3 {
-  font-size: 18px;
-  line-height: 21px;
-  font-weight: 400;
-  padding-top: 24px;
-  padding-bottom: 16px;
-}
-
-.emotion-37 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 470px;
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.emotion-6 {
-  padding: 8px;
-}
-
-.emotion-5 {
-  padding: 12px;
-}
-
-.emotion-4 {
-  height: 20px;
-}
-
-.emotion-7 {
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 500;
-  padding-top: 16px;
-}
-
-.emotion-11 {
-  padding-top: 8px;
-}
-
-.emotion-8 {
-  display: block;
-  padding-bottom: 8px;
-  color: #b3b3b3;
-}
-
-.emotion-10 {
-  position: relative;
-}
-
-.emotion-9 {
-  outline-offset: 0;
-  padding: 10px 12px;
-  border-radius: 2px;
-  box-shadow: inset 0 1px 3px 0 transparent;
-  width: 100%;
-  color: #ffffff;
-  background-color: #2e2e2e;
-  border: 1px solid transparent;
-  border-width: 2px;
-}
-
-.emotion-9:focus {
-  border: 2px solid #73b61c;
-  background-color: #ffffff;
-  outline: #73b61c;
-  color: #000000;
-}
-
-.emotion-36 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.emotion-36 button,
-.emotion-36 a {
-  margin-right: 16px;
-}
-
-.emotion-34 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-34:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-34[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-34,
-.emotion-34:hover,
-.emotion-34:visited {
-  background-color: #808080;
-}
-
-.emotion-34:hover {
-  opacity: 0.5;
-}
-
-.emotion-34[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-35 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-35:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-35[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-35,
-.emotion-35:hover,
-.emotion-35:visited {
-  background-color: #73b61c;
-}
-
-.emotion-35:hover {
-  background-color: #96c955;
-}
-
-.emotion-35[aria-disabled=true] {
-  background-color: #808080;
-}
-
-<div
-  className="emotion-39"
->
-  <div
-    className="emotion-2"
-  >
-    <div
-      className="emotion-1"
-    >
-      <div
-        className="emotion-0"
-      >
-        <svg
-          data-file-name="logo.svg"
-          width={110}
-        />
-      </div>
-    </div>
-    <div />
-  </div>
-  <div
-    className="emotion-38"
-  >
-    <h2
-      className="emotion-3"
-    >
-      Create an Account
-    </h2>
-    <form
-      action=""
-      className="emotion-37"
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-6"
-      >
-        <div
-          className="emotion-5"
-        >
-          <div
-            className="emotion-4"
-          />
-        </div>
-      </div>
-      <h3
-        className="emotion-7"
-      >
-        Name
-      </h3>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="firstName"
-        >
-          First Name
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            autoFocus={true}
-            className="emotion-9"
-            id="firstName"
-            name="firstName"
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="lastName"
-        >
-          Last Name
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-9"
-            id="lastName"
-            name="lastName"
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="email"
-        >
-          Email
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-9"
-            id="email"
-            name="email"
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <h3
-        className="emotion-7"
-      >
-        Password
-      </h3>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="password"
-        >
-          Password
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-9"
-            id="password"
-            name="password"
-            onChange={[Function]}
-            type="password"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="emotion-11"
-      >
-        <label
-          className="emotion-8"
-          htmlFor="confirmPassword"
-        >
-          Confirm Password
-        </label>
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-9"
-            id="confirmPassword"
-            name="confirmPassword"
-            onChange={[Function]}
-            type="password"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-11"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="emotion-36"
-      >
-        <a
-          className="emotion-34"
-          href="/"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Cancel
-        </a>
-        <button
-          aria-disabled={true}
-          className="emotion-35"
           onClick={[Function]}
           type="submit"
         >

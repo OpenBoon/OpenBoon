@@ -38,6 +38,7 @@ const CreateAccount = () => {
 
   if (token) {
     onConfirm({ token, uid })
+    return null
   }
 
   return (

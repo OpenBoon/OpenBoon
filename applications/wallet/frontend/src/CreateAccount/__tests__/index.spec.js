@@ -4,15 +4,41 @@ import CreateAccount, { noop } from '..'
 
 describe('<CreateAccount />', () => {
   it('should render properly when there is a token', async () => {
-    const mockFn = jest.fn()
-
-    require('next/router').__setMockPushFunction(mockFn)
     require('next/router').__setUseRouter({
-      pathname: '/',
+      pathname: '/create-account',
       query: {
         token: 'f1c5b71f-bc9d-4b54-aa69-cbec03f94f5e',
         uid: 2,
       },
+    })
+
+    const component = TestRenderer.create(<CreateAccount />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when there is a token and the activation link is expired', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/create-account',
+      query: {
+        token: 'f1c5b71f-bc9d-4b54-aa69-cbec03f94f5e',
+        uid: 2,
+        action: 'account-activation-expired',
+      },
+    })
+
+    const component = TestRenderer.create(<CreateAccount />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when there is no token', async () => {
+    const mockFn = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockFn)
+    require('next/router').__setUseRouter({
+      pathname: '/create-account',
+      query: {},
     })
 
     const component = TestRenderer.create(<CreateAccount />)
@@ -79,12 +105,10 @@ describe('<CreateAccount />', () => {
     expect(mockFn).toHaveBeenCalledWith('/?action=create-account-success')
   })
 
-  it('should render properly when activation link is expired', () => {
+  it('should render properly when there is no token and the action is valid', async () => {
     require('next/router').__setUseRouter({
-      pathname: '/',
+      pathname: '/create-account',
       query: {
-        token: 'f1c5b71f-bc9d-4b54-aa69-cbec03f94f5e',
-        uid: 2,
         action: 'account-activation-expired',
       },
     })
@@ -94,10 +118,12 @@ describe('<CreateAccount />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly when there is no token', () => {
+  it('should render properly when there is no token and the action is invalid', async () => {
     require('next/router').__setUseRouter({
-      pathname: '/',
-      query: {},
+      pathname: '/create-account',
+      query: {
+        action: 'not-a-valid-action',
+      },
     })
 
     const component = TestRenderer.create(<CreateAccount />)

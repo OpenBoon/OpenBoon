@@ -24,7 +24,7 @@ const ProjectUsersAddFormResponse = ({
       {failed.length > 0 && (
         <>
           <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-            Users Not Added!
+            Users Not Added
           </FlashMessage>
           <SectionTitle>Users that Need an Account</SectionTitle>
           <div

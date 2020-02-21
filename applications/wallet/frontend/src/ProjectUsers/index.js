@@ -34,8 +34,6 @@ const ProjectUsers = () => {
         ]}
       />
 
-      <div>&nbsp;</div>
-
       <Table
         url={`/api/v1/projects/${projectId}/users/`}
         columns={['Email', 'Permissions', '#Actions#']}
