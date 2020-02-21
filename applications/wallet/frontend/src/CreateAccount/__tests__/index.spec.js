@@ -103,19 +103,6 @@ describe('<CreateAccount />', () => {
     expect(mockFn).toHaveBeenCalledWith('/?action=create-account-success')
   })
 
-  it('should render properly when there is no token and the action is valid', async () => {
-    require('next/router').__setUseRouter({
-      pathname: '/create-account',
-      query: {
-        action: 'account-activation-expired',
-      },
-    })
-
-    const component = TestRenderer.create(<CreateAccount />)
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
   it('noop should do nothing', () => {
     expect(noop()()).toBe(undefined)
   })

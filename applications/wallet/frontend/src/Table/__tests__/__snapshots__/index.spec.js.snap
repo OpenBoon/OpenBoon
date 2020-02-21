@@ -144,6 +144,12 @@ exports[`<Table /> should render properly with an error 1`] = `
       </tr>
     </tbody>
   </table>
+  <div>
+     
+  </div>
+  <div>
+     
+  </div>
 </div>
 `;
 
@@ -285,5 +291,11 @@ exports[`<Table /> should render properly without data 1`] = `
       </tr>
     </tbody>
   </table>
+  <div>
+     
+  </div>
+  <div>
+     
+  </div>
 </div>
 `;

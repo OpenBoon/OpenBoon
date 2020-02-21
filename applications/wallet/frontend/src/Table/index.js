@@ -119,12 +119,16 @@ const Table = ({ url, columns, expandColumn, renderEmpty, renderRow }) => {
         </tbody>
       </table>
 
+      <div>&nbsp;</div>
+
       {count > 0 && !error && (
         <Pagination
           currentPage={parsedPage}
           totalPages={Math.ceil(count / SIZE)}
         />
       )}
+
+      <div>&nbsp;</div>
     </div>
   )
 }
