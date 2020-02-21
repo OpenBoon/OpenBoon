@@ -173,9 +173,12 @@ Array [
 
 .emotion-2:focus {
   border: 2px solid #73b61c;
-  background-color: #ffffff;
   outline: #73b61c;
+}
+
+.emotion-2:focus {
   color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-18 {
@@ -247,6 +250,7 @@ Array [
   align-items: center;
   cursor: pointer;
   padding-bottom: 16px;
+  padding-left: 16px;
 }
 
 .emotion-24 {
@@ -360,9 +364,8 @@ Array [
 }
 
 .emotion-55 {
-  padding: 16px;
-  padding-left: 60px;
-  padding-bottom: 32px;
+  padding: 32px;
+  padding-top: 16px;
 }
 
 .emotion-53 {

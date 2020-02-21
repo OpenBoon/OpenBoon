@@ -42,6 +42,11 @@ Array [
   border-width: 2px;
 }
 
+.emotion-1:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
 <div
     className="emotion-3"
   >
@@ -94,6 +99,11 @@ Array [
   background-color: #ffffff;
   border: 1px solid transparent;
   border-width: 2px;
+}
+
+.emotion-1:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
 }
 
 <div
@@ -247,6 +257,11 @@ Array [
   border-width: 2px;
 }
 
+.emotion-1:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
 <div
     className="emotion-3"
   >
@@ -299,6 +314,11 @@ Array [
   background-color: #ffffff;
   border: 1px solid transparent;
   border-width: 2px;
+}
+
+.emotion-1:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
 }
 
 <div
@@ -451,6 +471,11 @@ Array [
   border-width: 2px;
 }
 
+.emotion-1:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
 <div
     className="emotion-3"
   >
@@ -503,6 +528,11 @@ Array [
   background-color: #ffffff;
   border: 1px solid transparent;
   border-width: 2px;
+}
+
+.emotion-1:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
 }
 
 <div
@@ -655,6 +685,11 @@ Array [
   border-width: 2px;
 }
 
+.emotion-1:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
 <div
     className="emotion-3"
   >
@@ -707,6 +742,11 @@ Array [
   background-color: #ffffff;
   border: 2px solid #c92300;
   border-width: 2px;
+}
+
+.emotion-1:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
 }
 
 .emotion-3 {

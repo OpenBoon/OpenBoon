@@ -20,11 +20,11 @@ describe('<ResetPassword />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    const usernameInput = component.root.findByProps({ id: 'username' })
+    const usernameInput = component.root.findByProps({ id: 'email' })
 
     // Enter email
     act(() => {
-      usernameInput.props.onChange({ target: { value: 'username' } })
+      usernameInput.props.onChange({ target: { value: 'jane@zorroa.com' } })
     })
 
     // Mock Failure
