@@ -1449,6 +1449,11 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   border-width: 2px;
 }
 
+.emotion-16:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
 .emotion-23 {
   position: absolute;
   right: 0;

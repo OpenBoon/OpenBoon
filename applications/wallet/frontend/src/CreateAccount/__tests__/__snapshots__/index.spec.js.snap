@@ -134,9 +134,12 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 
 .emotion-9:focus {
   border: 2px solid #73b61c;
-  background-color: #ffffff;
   outline: #73b61c;
+}
+
+.emotion-9:focus {
   color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-36 {
@@ -1087,9 +1090,12 @@ exports[`<CreateAccount /> should render properly when there is no token and the
 
 .emotion-14:focus {
   border: 2px solid #73b61c;
-  background-color: #ffffff;
   outline: #73b61c;
+}
+
+.emotion-14:focus {
   color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-41 {
