@@ -441,9 +441,8 @@ Array [
 }
 
 .emotion-36 {
-  padding: 16px;
-  padding-left: 60px;
-  padding-bottom: 32px;
+  padding: 32px;
+  padding-top: 16px;
 }
 
 .emotion-34 {
