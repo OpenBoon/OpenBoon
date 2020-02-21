@@ -1,56 +1,15 @@
-import {
-  USER,
-  getUser,
-  authenticateUser,
-  logout,
-  initializeUserstorer,
-} from '../helpers'
+import { authenticateUser, logout } from '../helpers'
 
 describe('<Authentication /> helpers', () => {
-  describe('getUser()', () => {
-    it('should return no user', () => {
-      expect(getUser()).toEqual({})
-    })
-
-    it('should return no user', () => {
-      Object.defineProperty(window, 'localStorage', {
-        writable: true,
-        value: {
-          getItem: () => 'not a json object',
-        },
-      })
-      expect(getUser()).toEqual({})
-    })
-
-    it('should return a user', () => {
-      Object.defineProperty(window, 'localStorage', {
-        writable: true,
-        value: {
-          getItem: () => JSON.stringify({ id: 12345 }),
-        },
-      })
-
-      expect(getUser()).toEqual({ id: 12345 })
-    })
-  })
-
   describe('authenticateUser()', () => {
     it('should authenticate the user with a username/password', async () => {
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
       const mockSetErrorMessage = jest.fn()
       const mockSetUser = jest.fn()
-      const mockSetItem = jest.fn()
-      initializeUserstorer({ setUser: mockSetUser })
-
-      Object.defineProperty(window, 'localStorage', {
-        writable: true,
-        value: {
-          setItem: mockSetItem,
-        },
-      })
 
       await authenticateUser({
+        setUser: mockSetUser,
         setErrorMessage: mockSetErrorMessage,
       })({
         username: 'username',
@@ -67,12 +26,7 @@ describe('<Authentication /> helpers', () => {
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
-      expect(mockSetUser).toHaveBeenCalledWith({ id: 12345 })
-
-      expect(mockSetItem).toHaveBeenCalledWith(
-        USER,
-        JSON.stringify({ id: 12345 }),
-      )
+      expect(mockSetUser).toHaveBeenCalledWith({ user: { id: 12345 } })
     })
 
     it('should authenticate the user with a Google JWT', async () => {
@@ -80,17 +34,9 @@ describe('<Authentication /> helpers', () => {
 
       const mockSetErrorMessage = jest.fn()
       const mockSetUser = jest.fn()
-      const mockSetItem = jest.fn()
-      initializeUserstorer({ setUser: mockSetUser })
-
-      Object.defineProperty(window, 'localStorage', {
-        writable: true,
-        value: {
-          setItem: mockSetItem,
-        },
-      })
 
       await authenticateUser({
+        setUser: mockSetUser,
         setErrorMessage: mockSetErrorMessage,
       })({
         idToken: 'ID_TOKEN',
@@ -108,12 +54,7 @@ describe('<Authentication /> helpers', () => {
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
-      expect(mockSetUser).toHaveBeenCalledWith({ id: 12345 })
-
-      expect(mockSetItem).toHaveBeenCalledWith(
-        USER,
-        JSON.stringify({ id: 12345 }),
-      )
+      expect(mockSetUser).toHaveBeenCalledWith({ user: { id: 12345 } })
     })
 
     it('should display an alert for incorrect username/password', async () => {
@@ -153,17 +94,9 @@ describe('<Authentication /> helpers', () => {
     it('should logout the user', async () => {
       const mockSignOut = jest.fn()
       const mockSetUser = jest.fn()
-      const mockRemoveItem = jest.fn()
       const mockRouterPush = jest.fn()
 
       require('next/router').__setMockPushFunction(mockRouterPush)
-
-      Object.defineProperty(window, 'localStorage', {
-        writable: true,
-        value: {
-          removeItem: mockRemoveItem,
-        },
-      })
 
       await logout({
         googleAuth: { signOut: mockSignOut },
@@ -172,9 +105,7 @@ describe('<Authentication /> helpers', () => {
 
       expect(mockSignOut).toHaveBeenCalledWith()
 
-      expect(mockSetUser).toHaveBeenCalledWith({})
-
-      expect(mockRemoveItem).toHaveBeenCalledWith(USER)
+      expect(mockSetUser).toHaveBeenCalledWith({ user: null })
 
       expect(fetch.mock.calls.length).toEqual(1)
       expect(fetch.mock.calls[0][0]).toEqual('/api/v1/logout/')
