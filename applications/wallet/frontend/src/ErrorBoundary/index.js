@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import { colors, typography } from '../Styles'
 
-import ErrorSvg from './error.svg'
+import ErrorSvg from '../Icons/error.svg'
 
 class ErrorBoundary extends Component {
   state = { hasError: false }
