@@ -7,7 +7,7 @@ import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 
-import FormSuccess from '../FormSuccess'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import SectionTitle from '../SectionTitle'
 
 import { getUser } from '../Authentication/helpers'
@@ -32,7 +32,9 @@ const AccountProfileForm = () => {
   return (
     <>
       {state.success && !state.showForm && (
-        <FormSuccess>New Name Saved</FormSuccess>
+        <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+          New Name Saved
+        </FlashMessage>
       )}
 
       <SectionTitle>{`Email: ${email}`}</SectionTitle>

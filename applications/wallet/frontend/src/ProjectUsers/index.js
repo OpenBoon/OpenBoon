@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import PageTitle from '../PageTitle'
-import FormSuccess from '../FormSuccess'
+import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table from '../Table'
 
@@ -22,7 +22,9 @@ const ProjectUsers = () => {
       <PageTitle>Project User Admin</PageTitle>
 
       {action === 'edit-user-success' && (
-        <FormSuccess>User Permissions Saved</FormSuccess>
+        <FlashMessage variant={VARIANTS.SUCCESS}>
+          User Permissions Saved
+        </FlashMessage>
       )}
 
       <Tabs

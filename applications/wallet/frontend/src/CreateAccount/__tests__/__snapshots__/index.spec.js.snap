@@ -1,6 +1,577 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<CreateAccount /> should render properly 1`] = `
+exports[`<CreateAccount /> should render properly when the activation link is expired 1`] = `
+.emotion-44 {
+  height: 100%;
+}
+
+.emotion-2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #2e2e2e;
+  box-shadow: 0 0 4px 0 rgba(0,0,0,0.5);
+  z-index: 100;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: stretch;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+.emotion-0 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-43 {
+  margin-top: 44px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 32px;
+  height: calc(100vh - 44px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-3 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+.emotion-42 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-6 {
+  padding: 8px;
+}
+
+.emotion-5 {
+  padding: 12px;
+}
+
+.emotion-4 {
+  height: 20px;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  justify-self: flex-start;
+  color: #000000;
+  font-weight: 500;
+  background-color: #ffffff;
+  border: 2px solid #c92300;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-7 {
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  background-color: #c92300;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-11 {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  color: #c92300;
+}
+
+.emotion-12 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-16 {
+  padding-top: 8px;
+}
+
+.emotion-13 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-15 {
+  position: relative;
+}
+
+.emotion-14 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #2e2e2e;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-14:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
+.emotion-14:focus {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-41 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-41 button,
+.emotion-41 a {
+  margin-right: 16px;
+}
+
+.emotion-39 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-39:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-39[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-39,
+.emotion-39:hover,
+.emotion-39:visited {
+  background-color: #808080;
+}
+
+.emotion-39:hover {
+  opacity: 0.5;
+}
+
+.emotion-39[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-40 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-40:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-40[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-40,
+.emotion-40:hover,
+.emotion-40:visited {
+  background-color: #73b61c;
+}
+
+.emotion-40:hover {
+  background-color: #96c955;
+}
+
+.emotion-40[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+  className="emotion-44"
+>
+  <div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-0"
+      >
+        <svg
+          data-file-name="logo.svg"
+          width={110}
+        />
+      </div>
+    </div>
+    <div />
+  </div>
+  <div
+    className="emotion-43"
+  >
+    <h2
+      className="emotion-3"
+    >
+      Create an Account
+    </h2>
+    <form
+      action=""
+      className="emotion-42"
+      method="post"
+      onSubmit={[Function]}
+    >
+      <div
+        className="emotion-6"
+      >
+        <div
+          className="emotion-5"
+        >
+          <div
+            className="emotion-4"
+          />
+        </div>
+      </div>
+      <div
+        className="emotion-10"
+      >
+        <div
+          className="emotion-9"
+        >
+          <div
+            className="emotion-7"
+          >
+            <svg
+              data-file-name="warning.svg"
+              width={20}
+            />
+          </div>
+          <div
+            className="emotion-8"
+          >
+            Confirmation Link Expired
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-11"
+      >
+        Confirmation links expire after three days. Please create a new account.
+      </div>
+      <h3
+        className="emotion-12"
+      >
+        Name
+      </h3>
+      <div
+        className="emotion-16"
+      >
+        <label
+          className="emotion-13"
+          htmlFor="firstName"
+        >
+          First Name
+        </label>
+        <div
+          className="emotion-15"
+        >
+          <input
+            autoFocus={true}
+            className="emotion-14"
+            id="firstName"
+            name="firstName"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-16"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-16"
+      >
+        <label
+          className="emotion-13"
+          htmlFor="lastName"
+        >
+          Last Name
+        </label>
+        <div
+          className="emotion-15"
+        >
+          <input
+            className="emotion-14"
+            id="lastName"
+            name="lastName"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-16"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-16"
+      >
+        <label
+          className="emotion-13"
+          htmlFor="email"
+        >
+          Email
+        </label>
+        <div
+          className="emotion-15"
+        >
+          <input
+            className="emotion-14"
+            id="email"
+            name="email"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-16"
+        >
+           
+        </div>
+      </div>
+      <h3
+        className="emotion-12"
+      >
+        Password
+      </h3>
+      <div
+        className="emotion-16"
+      >
+        <label
+          className="emotion-13"
+          htmlFor="password"
+        >
+          Password
+        </label>
+        <div
+          className="emotion-15"
+        >
+          <input
+            className="emotion-14"
+            id="password"
+            name="password"
+            onChange={[Function]}
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-16"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-16"
+      >
+        <label
+          className="emotion-13"
+          htmlFor="confirmPassword"
+        >
+          Confirm Password
+        </label>
+        <div
+          className="emotion-15"
+        >
+          <input
+            className="emotion-14"
+            id="confirmPassword"
+            name="confirmPassword"
+            onChange={[Function]}
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          className="emotion-16"
+        >
+           
+        </div>
+      </div>
+      <div
+        className="emotion-41"
+      >
+        <a
+          className="emotion-39"
+          href="/"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Cancel
+        </a>
+        <button
+          aria-disabled={true}
+          className="emotion-40"
+          onClick={[Function]}
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`<CreateAccount /> should render properly when there is a token 1`] = `null`;
+
+exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 .emotion-39 {
   height: 100%;
 }

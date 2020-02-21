@@ -48,6 +48,27 @@ describe('<Login />', () => {
     })
   })
 
+  it('should render properly on account activation success', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/',
+      query: { action: 'account-activation-success' },
+    })
+
+    const mockFn = jest.fn()
+
+    const component = TestRenderer.create(
+      <Login
+        googleAuth={{ signIn: noop }}
+        hasGoogleLoaded
+        errorMessage=""
+        setErrorMessage={noop}
+        onSubmit={mockFn}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should not POST the form', () => {
     const mockFn = jest.fn()
     const mockOnSubmit = jest.fn()

@@ -1,15 +1,17 @@
 import PropTypes from 'prop-types'
 
-import FormSuccess from '../FormSuccess'
-import Button, { VARIANTS } from '../Button'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 
 const AccountPasswordFormSuccess = ({ onReset }) => {
   return (
     <div>
-      <FormSuccess>New Password Saved</FormSuccess>
+      <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+        New Password Saved
+      </FlashMessage>
       <ButtonGroup>
-        <Button variant={VARIANTS.PRIMARY} onClick={onReset}>
+        <Button variant={BUTTON_VARIANTS.PRIMARY} onClick={onReset}>
           Edit Password Again
         </Button>
       </ButtonGroup>

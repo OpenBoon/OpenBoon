@@ -1,19 +1,21 @@
 import { useReducer } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
-import { constants, spacing } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import Navbar from '../Navbar'
 import PageTitle from '../PageTitle'
 import FormAlert from '../FormAlert'
+import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import SectionTitle from '../SectionTitle'
 
-import { onSubmit } from './helpers'
+import { onRegister, onConfirm } from './helpers'
 
 const INITIAL_STATE = {
   firstName: '',
@@ -30,6 +32,14 @@ const reducer = (state, action) => ({ ...state, ...action })
 
 const CreateAccount = () => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+  const {
+    query: { token, uid, action },
+  } = useRouter()
+
+  if (token && uid) {
+    onConfirm({ token, uid })
+    return null
+  }
 
   return (
     <div css={{ height: '100%' }}>
@@ -58,6 +68,22 @@ const CreateAccount = () => {
             errorMessage={state.error}
             setErrorMessage={() => dispatch({ error: '' })}
           />
+
+          {action === 'account-activation-expired' && (
+            <>
+              <FlashMessage variant={VARIANTS.ERROR}>
+                Confirmation Link Expired
+              </FlashMessage>
+              <div
+                css={{
+                  width: 'max-content',
+                  color: colors.signal.warning.base,
+                }}>
+                Confirmation links expire after three days. Please create a new
+                account.
+              </div>
+            </>
+          )}
 
           <SectionTitle>Name</SectionTitle>
 
@@ -128,7 +154,7 @@ const CreateAccount = () => {
             <Button
               type="submit"
               variant={BUTTON_VARIANTS.PRIMARY}
-              onClick={() => onSubmit({ dispatch, state })}
+              onClick={() => onRegister({ dispatch, state })}
               isDisabled={
                 !state.firstName ||
                 !state.lastName ||
