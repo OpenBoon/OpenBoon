@@ -5,30 +5,18 @@ import json
 import pathlib
 import logging
 import base64
+
 import backoff
 import requests
 from django.db import migrations
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from zmlp import ZmlpClient
-from zmlp.client import ZmlpDuplicateException
 
 from projects.models import Project, Membership
+from projects.util import sync_project_with_zmlp
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
-
-@backoff.on_exception(backoff.expo, requests.exceptions.ConnectionError, max_time=120)
-def sync_project_zero(project, membership):
-    client = ZmlpClient(apikey=membership.apikey, server=settings.ZMLP_API_URL)
-    body = {'name': project.name, 'projectId': str(project.id)}
-    try:
-        client.post('/api/v1/projects', body)
-    except ZmlpDuplicateException:
-        logger.info('Project Zero already exists in ZMLP')
-    except:
-        # Having a hard time catching all possible exceptions, reraise one we know.
-        raise requests.exceptions.ConnectionError()
 
 
 def create_project_zero(apps, schema_editor):
@@ -68,16 +56,21 @@ def create_project_zero(apps, schema_editor):
         pass
 
     if not membership:
-        membership = Membership.objects.create(user=user, project=project_zero,
-                                               apikey=inception_key)
+        Membership.objects.create(user=user, project=project_zero, apikey=inception_key)
     else:
         logger.info('Project Zero membership already exists, not modifying.')
 
     # Sync Project Zero to Zmlp
+    _zmlp_up_check()
     try:
-        sync_project_zero(project_zero, membership)
+        project_zero.sync_project_with_zmlp(user)
     except requests.exceptions.ConnectionError:
         logger.error('Unable to sync Project Zero to ZMLP, please check.')
+
+
+@backoff.on_exception(backoff.expo, requests.exceptions.ConnectionError, max_time=120)
+def _zmlp_up_check():
+    requests.get(os.path.join(settings.ZMLP_API_URL, 'monitor/health'))
 
 
 class Migration(migrations.Migration):
