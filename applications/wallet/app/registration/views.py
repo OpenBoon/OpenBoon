@@ -86,11 +86,11 @@ Response Codes:
         # Email the user a link to activate their account.
         subject = 'Welcome To ZVI - Please Activate Your Account.'
         html = render_to_string('registration/activation-email.html',
-                                context={'hostname': settings.HOSTNAME,
+                                context={'fqdn': settings.FQDN,
                                          'token': token.token,
                                          'user_id': user.id})
         body = (f'Click this link to confirm your email address and activate your account.\n'
-                f'https://{settings.HOSTNAME}/accounts/confirm?'
+                f'{settings.FQDN}/accounts/confirm?'
                 f'token={token.token}&userId={user.id}')
         send_mail(subject=subject, message=body, html_message=html, fail_silently=False,
                   from_email='do_not_reply@zorroa.com', recipient_list=[user.username])
