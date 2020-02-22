@@ -3,28 +3,28 @@ import Head from 'next/head'
 
 import Breadcrumbs from '../Breadcrumbs'
 
-const TaskErrors = () => {
+const JobError = () => {
   const {
-    query: { taskId },
+    query: { errorId },
   } = useRouter()
 
   return (
     <>
       <Head>
-        <title>Task Errors</title>
+        <title>Error Details</title>
       </Head>
 
       <Breadcrumbs
         crumbs={[
           { title: 'Job Queue', href: '/[projectId]/jobs' },
-          { title: 'Task Errors', href: '/[projectId]/jobs/[jobId]/errors' },
-          { title: 'ErrorDetails', href: false },
+          { title: 'Job Details', href: '/[projectId]/jobs/[jobId]/errors' },
+          { title: 'Error Details', href: false },
         ]}
       />
 
-      <div>Errors for task: {taskId}</div>
+      <div>Error ID: {errorId}</div>
     </>
   )
 }
 
-export default TaskErrors
+export default JobError

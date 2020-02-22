@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TaskError /> should render properly 1`] = `
+exports[`<JobError /> should render properly 1`] = `
 Array [
   .emotion-2 {
   display: -webkit-box;
@@ -72,7 +72,7 @@ Array [
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
-        Task Errors
+        Job Details
       </a>
       <span
         className="emotion-1"
@@ -83,12 +83,12 @@ Array [
     <h2
       className="emotion-6"
     >
-      ErrorDetails
+      Error Details
     </h2>
   </div>,
   <div>
-    Errors for task: 
-    b81f47e9-7382-1519-b88a-d2f0132bc0c8
+    Error ID: 
+    916c86bc-74b9-1519-b065-d2f0132bc0c8
   </div>,
 ]
 `;
