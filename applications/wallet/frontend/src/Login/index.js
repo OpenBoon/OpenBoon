@@ -64,10 +64,18 @@ const Login = ({
         </div>
       )}
 
+      {action === 'create-account-success' && (
+        <div css={{ paddingBottom: spacing.normal }}>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Account created, please click the activation link in your email
+          </FlashMessage>
+        </div>
+      )}
+
       {action === 'account-activation-success' && (
         <div css={{ paddingBottom: spacing.normal }}>
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Account activated
+            Account activated, please login now
           </FlashMessage>
         </div>
       )}
