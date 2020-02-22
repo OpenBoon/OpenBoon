@@ -13,7 +13,7 @@ class PasswordResetSerializer(PasswordResetSerializer):
             'from_email': getattr(settings, 'DEFAULT_FROM_EMAIL'),
             'request': request,
             'html_email_template_name': 'registration/password_reset_email.html',
-            'extra_email_context': {'hostname': settings.HOSTNAME}
+            'extra_email_context': {'fqdn': settings.FQDN}
         }
         opts.update(self.get_email_options())
         self.reset_form.save(**opts)

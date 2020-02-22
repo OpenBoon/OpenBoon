@@ -31,6 +31,8 @@ variable "google-oauth-client-id" {
 variable "environment" {
 }
 
+variable "fqdn" {}
+
 variable "container-tag" {
   default = "latest"
 }

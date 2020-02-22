@@ -176,5 +176,6 @@ module "wallet" {
   google-oauth-client-id  = var.google-oauth-client-id
   environment             = "staging"
   inception-key-b64       = base64encode(local.inception-key)
+  fqdn                    = "https://wallet.zmlp.zorroa.com"
 }
 
