@@ -10,8 +10,6 @@ admin.site.register(Membership)
 class ProjectAdmin(ModelAdmin):
 
     def save_model(self, request, obj, form, change):
-        """
-        Given a model instance save it to the database.
-        """
-        obj.sync_project_with_zmlp(obj, request.user)
+        """Creates a new project in the database as well as ZMLP."""
+        obj.sync_with_zmlp(request.user)
         obj.save()
