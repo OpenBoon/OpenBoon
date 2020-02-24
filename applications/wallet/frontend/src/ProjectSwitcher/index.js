@@ -33,7 +33,7 @@ const ProjectSwitcher = () => {
           variant={VARIANTS.MENU}
           onBlur={onBlur}
           onClick={onClick}
-          isDisabled={projects.length === 1}>
+          isDisabled={false}>
           <div
             css={{
               display: 'flex',
