@@ -9,7 +9,7 @@ const ERROR_ID = '916c86bc-74b9-1519-b065-d2f0132bc0c8'
 describe('<JobError />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/jobs/[jobId]/errors/[taskId]',
+      pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]',
       query: { projectId: PROJECT_ID, jobId: JOB_ID, errorId: ERROR_ID },
     })
 
