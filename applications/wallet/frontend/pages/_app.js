@@ -17,12 +17,6 @@ if (ENABLE_SENTRY === 'true') {
   })
 }
 
-const AUTHENTICATION_LESS_ROUTES = [
-  '/_error',
-  '/create-account',
-  '/reset-password',
-]
-
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     const versions = {
@@ -39,15 +33,20 @@ class MyApp extends App {
   }
 
   render() {
-    const { Component, pageProps, router, err = '' } = this.props
+    const {
+      Component,
+      pageProps,
+      router: { route },
+      err = '',
+    } = this.props
 
-    if (AUTHENTICATION_LESS_ROUTES.includes(router.route)) {
+    if (route === '/_error') {
       return <Component {...pageProps} err={err} />
     }
 
     return (
       <User initialUser={{}}>
-        <Authentication>
+        <Authentication route={route}>
           <Component {...pageProps} />
         </Authentication>
       </User>
