@@ -38,8 +38,8 @@ public class DataSourceApp {
      * @return An import DataSource result dictionary.
      */
     public DataSource importDataSource(String id) {
-        String url = String.format("%s/%s/_import", BASE_URI, id);
-        return client.post(url, null, DataSource.class);
+        String url = String.format("%s/_import", BASE_URI, id);
+        return client.post(url, new HashMap(), DataSource.class);
     }
 
     /**
@@ -50,7 +50,7 @@ public class DataSourceApp {
      */
 
     public Map updateCredentials(DataSourceCredentials dataSourceCredentials) {
-        String url = String.format("%s/%s/_credentials", BASE_URI, dataSourceCredentials.getDataSourceId());
+        String url = String.format("%s/_credentials", dataSourceCredentials.getDataSourceId());
         Map body = new HashMap();
         body.put("blob", dataSourceCredentials.getBlob());
         return client.put(url, body, Map.class);
