@@ -8,13 +8,13 @@ const JobErrors = () => {
   return (
     <>
       <Head>
-        <title>Task Errors</title>
+        <title>Job Details</title>
       </Head>
 
       <Breadcrumbs
         crumbs={[
           { title: 'Job Queue', href: '/[projectId]/jobs' },
-          { title: 'Task Errors', href: false },
+          { title: 'Job Details', href: false },
         ]}
       />
 

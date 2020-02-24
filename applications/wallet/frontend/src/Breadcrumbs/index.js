@@ -17,9 +17,7 @@ const BASE_STYLE = {
 }
 
 const Breadcrumbs = ({ crumbs }) => {
-  const {
-    query: { projectId },
-  } = useRouter()
+  const { query } = useRouter()
 
   return (
     <div css={{ display: 'flex' }}>
@@ -31,7 +29,10 @@ const Breadcrumbs = ({ crumbs }) => {
             <div key={title} css={{ display: 'flex' }}>
               <Link
                 href={href}
-                as={href.replace('[projectId]', projectId)}
+                as={href
+                  .split('/')
+                  .map(s => s.replace(/\[(.*)\]/gi, (_, group) => query[group]))
+                  .join('/')}
                 passHref>
                 <a
                   css={{
