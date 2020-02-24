@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
 
-import { spacing } from '../Styles'
+import { spacing, colors } from '../Styles'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
@@ -25,6 +25,21 @@ const ProjectSwitcher = () => {
 
   if (!selectedProject) return null
 
+  if (projects.length === 1) {
+    return (
+      <div
+        css={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: `${spacing.small}px ${spacing.base}px`,
+          color: colors.key.one,
+        }}>
+        {selectedProject.name}
+      </div>
+    )
+  }
+
   return (
     <Menu
       open="right"
@@ -41,40 +56,36 @@ const ProjectSwitcher = () => {
               alignItems: 'center',
             }}>
             {selectedProject.name}
-            {projects.length > 1 && (
-              <ChevronSvg
-                width={CHEVRON_WIDTH}
-                css={{
-                  marginLeft: spacing.base,
-                  transform: `${isMenuOpen ? 'rotate(-180deg)' : ''}`,
-                }}
-              />
-            )}
+            <ChevronSvg
+              width={CHEVRON_WIDTH}
+              css={{
+                marginLeft: spacing.base,
+                transform: `${isMenuOpen ? 'rotate(-180deg)' : ''}`,
+              }}
+            />
           </div>
         </Button>
       )}>
-      {({ onBlur, onClick }) =>
-        projects.length > 1 && (
-          <ul>
-            {projects.map(({ id, name }) => (
-              <li key={id}>
-                <Link
-                  href={pathname}
-                  as={pathname.replace('[projectId]', id)}
-                  passHref>
-                  <Button
-                    variant={VARIANTS.MENU_ITEM}
-                    onBlur={onBlur}
-                    onClick={onClick}
-                    isDisabled={false}>
-                    {name}
-                  </Button>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )
-      }
+      {({ onBlur, onClick }) => (
+        <ul>
+          {projects.map(({ id, name }) => (
+            <li key={id}>
+              <Link
+                href={pathname}
+                as={pathname.replace('[projectId]', id)}
+                passHref>
+                <Button
+                  variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
+                  onClick={onClick}
+                  isDisabled={false}>
+                  {name}
+                </Button>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </Menu>
   )
 }
