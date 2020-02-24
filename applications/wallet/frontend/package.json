@@ -5,6 +5,7 @@
     "build": "next build",
     "dev": "node -r esm devServer.js",
     "dev:mocked": "MOCKED=true node -r esm devServer.js",
+    "dev:staging": "STAGING=true node -r esm devServer.js",
     "lint": "eslint '{pages,src}/**/*.js'",
     "prod": "next build && next start",
     "size": "rimraf .next && next build && bundlesize",

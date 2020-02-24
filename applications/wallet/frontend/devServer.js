@@ -17,7 +17,7 @@ import projectUsers from './src/ProjectUsers/__mocks__/projectUsers'
 import projectUser from './src/ProjectUser/__mocks__/projectUser'
 import projectUsersAdd from './src/ProjectUsersAdd/__mocks__/projectUsersAdd'
 
-const { MOCKED, SLOW } = process.env
+const { STAGING, SLOW, MOCKED } = process.env
 
 const app = nextjs({ dev: true })
 const server = express()
@@ -25,7 +25,7 @@ const handle = app.getRequestHandler()
 const mock = response => (_, res) => res.send(JSON.stringify(response))
 const success = () => (_, res) => res.send('{"detail":"Success"}')
 const proxy = createProxyMiddleware({
-  target: 'http://localhost',
+  target: STAGING ? 'https://wallet.zmlp.zorroa.com' : 'http://localhost',
   changeOrigin: true,
 })
 
@@ -72,6 +72,7 @@ app.prepare().then(() => {
   server.use('/api', proxy)
   server.use('/auth', proxy)
   server.use('/admin', proxy)
+  server.use('/static', proxy)
 
   server.all('*', (req, res) => handle(req, res))
 
