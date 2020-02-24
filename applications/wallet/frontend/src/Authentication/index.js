@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import getConfig from 'next/config'
 import { SWRConfig } from 'swr'
+import Router from 'next/router'
 
 import { initializeFetcher } from '../Fetch/helpers'
 
@@ -14,13 +15,15 @@ import ErrorBoundary from '../ErrorBoundary'
 
 import { authenticateUser, logout } from './helpers'
 
+const AUTHENTICATION_LESS_ROUTES = ['/create-account', '/reset-password']
+
 const {
   publicRuntimeConfig: { GOOGLE_OAUTH_CLIENT_ID },
 } = getConfig()
 
 export const noop = () => () => {}
 
-const Authentication = ({ children }) => {
+const Authentication = ({ route, children }) => {
   const { user, setUser, googleAuth, setGoogleAuth } = useContext(UserContext)
 
   const [hasGoogleLoaded, setHasGoogleLoaded] = useState(false)
@@ -40,6 +43,15 @@ const Authentication = ({ children }) => {
       })
     }
   }, [setGoogleAuth])
+
+  if (AUTHENTICATION_LESS_ROUTES.includes(route)) {
+    if (user.id) {
+      Router.push('/')
+      return null
+    }
+
+    return children
+  }
 
   if (!user.id) {
     return (
@@ -66,6 +78,7 @@ const Authentication = ({ children }) => {
 
 Authentication.propTypes = {
   children: PropTypes.node.isRequired,
+  route: PropTypes.string.isRequired,
 }
 
 export default Authentication
