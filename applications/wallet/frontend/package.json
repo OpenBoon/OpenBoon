@@ -132,7 +132,7 @@
     "eslint-plugin-react-hooks": "2.4.0",
     "esm": "3.2.25",
     "express": "4.17.1",
-    "http-proxy-middleware": "0.20.0",
+    "http-proxy-middleware": "0.21.0",
     "husky": "4.2.3",
     "jest": "25.1.0",
     "jest-emotion": "10.0.27",
