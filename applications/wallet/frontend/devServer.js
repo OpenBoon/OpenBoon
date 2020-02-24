@@ -1,6 +1,6 @@
 import express from 'express'
 import nextjs from 'next'
-import p from 'http-proxy-middleware'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 import morgan from 'morgan'
 
 import user from './src/User/__mocks__/user'
@@ -24,7 +24,10 @@ const server = express()
 const handle = app.getRequestHandler()
 const mock = response => (_, res) => res.send(JSON.stringify(response))
 const success = () => (_, res) => res.send('{"detail":"Success"}')
-const proxy = p({ target: 'http://localhost', changeOrigin: true })
+const proxy = createProxyMiddleware({
+  target: 'http://localhost',
+  changeOrigin: true,
+})
 
 app.prepare().then(() => {
   server.use(morgan('combined'))
