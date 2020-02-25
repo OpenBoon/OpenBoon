@@ -334,7 +334,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          View All
+          Errors
         </a>
       </li>
     </ul>
