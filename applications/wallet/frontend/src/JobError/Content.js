@@ -6,6 +6,7 @@ import SectionTitle from '../SectionTitle'
 import Value, { VARIANTS } from '../Value'
 
 import JobErrorType from './Type'
+import JobErrorJobMenu from './JobMenu'
 
 const JobErrorContent = () => {
   const {

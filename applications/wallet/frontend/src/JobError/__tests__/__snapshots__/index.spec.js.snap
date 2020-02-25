@@ -262,6 +262,27 @@ Array [
     >
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
+    <div
+      className="emotion-8"
+    >
+      <div
+        className="emotion-7"
+      >
+        <button
+          aria-label="Toggle Error Actions Menu"
+          className="emotion-6"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
+        >
+          Modify Job
+          <svg
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+      </div>
+    </div>
   </div>,
 ]
 `;
@@ -428,6 +449,27 @@ Array [
       className="emotion-1"
     >
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
+    </div>
+    <div
+      className="emotion-8"
+    >
+      <div
+        className="emotion-7"
+      >
+        <button
+          aria-label="Toggle Error Actions Menu"
+          className="emotion-6"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
+        >
+          Modify Job
+          <svg
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+      </div>
     </div>
   </div>,
 ]
