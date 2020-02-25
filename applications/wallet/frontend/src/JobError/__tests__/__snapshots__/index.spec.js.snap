@@ -86,9 +86,15 @@ Array [
       Error Details
     </h2>
   </div>,
-  <div>
-    Error ID: 
-    916c86bc-74b9-1519-b065-d2f0132bc0c8
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+}
+
+<div
+    className="emotion-0"
+  >
+    Loading...
   </div>,
 ]
 `;
