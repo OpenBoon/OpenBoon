@@ -361,37 +361,6 @@ class ProjectUserViewSet(BaseProjectViewSet):
         else:
             return self._create_project_user(request, project_pk, request.data)
 
-    def _create_project_user(self, request, project_pk, data):
-        # Get the User and add the appropriate Membership & ApiKey
-        try:
-            email = data['email']
-            permissions = data['permissions']
-        except KeyError:
-            return Response(data={'detail': 'Email and Permissions are required.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        # Get the current project and User
-        project = self.get_project_object(project_pk)
-        try:
-            user = User.objects.get(username=email)
-        except User.DoesNotExist:
-            return Response(data={'detail': 'No user with the given email.'},
-                            status=status.HTTP_404_NOT_FOUND)
-
-        # Create an apikey with the given permissions
-        try:
-            encoded_apikey = create_zmlp_api_key(request.client, email, permissions)
-        except ZmlpInvalidRequestException:
-            return Response(data={'detail': "Unable to create apikey."},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        # Create a membership for given user
-        Membership.objects.create(user=user, project=project, apikey=encoded_apikey)
-
-        # Serialize the Resulting user like the Detail endpoint
-        serializer = self.get_serializer(user, context={'request': request})
-        return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-
     def update(self, request, project_pk, pk):
         # Modify the permissions of the given user
         try:
@@ -410,7 +379,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
         # TODO: Replace Delete/Create logic when Auth Server supports PUT
         # Create new Key first and append epoch time (milli) to get a readable unique name
-        body = {'name': f'{email}_{int(time.time()  * 1000)}',
+        body = {'name': self._get_api_key_name(email, project_pk),
                 'permissions': new_permissions}
         try:
             new_apikey = request.client.post('/auth/v1/apikey', body)
@@ -465,3 +434,43 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
         membership.delete()
         return Response(status=status.HTTP_200_OK)
+
+    def _create_project_user(self, request, project_pk, data):
+        """Creates project user by generating an api key in zmlp and creating a new
+        Membership.
+
+        """
+        # Get the User and add the appropriate Membership & ApiKey
+        try:
+            email = data['email']
+            permissions = data['permissions']
+        except KeyError:
+            return Response(data={'detail': 'Email and Permissions are required.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Get the current project and User
+        project = self.get_project_object(project_pk)
+        try:
+            user = User.objects.get(username=email)
+        except User.DoesNotExist:
+            return Response(data={'detail': 'No user with the given email.'},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        # Create an apikey with the given permissions
+        try:
+            name = self._get_api_key_name(email, project_pk)
+            encoded_apikey = create_zmlp_api_key(request.client, name, permissions)
+        except ZmlpInvalidRequestException:
+            return Response(data={'detail': "Unable to create apikey."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Create a membership for given user
+        Membership.objects.create(user=user, project=project, apikey=encoded_apikey)
+
+        # Serialize the Resulting user like the Detail endpoint
+        serializer = self.get_serializer(user, context={'request': request})
+        return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+
+    def _get_api_key_name(self, email, project_pk):
+        """Generate a unique name to user for the api key."""
+        return f'{email}_{project_pk}_{int(time.time() * 1000)}'
