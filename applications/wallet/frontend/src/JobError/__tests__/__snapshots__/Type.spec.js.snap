@@ -51,7 +51,7 @@ Array [
     >
       <a
         className="emotion-0"
-        href="/undefined/jobs"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -68,7 +68,7 @@ Array [
     >
       <a
         className="emotion-0"
-        href="/undefined/jobs/undefined/errors"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/errors"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -86,15 +86,92 @@ Array [
       Error Details
     </h2>
   </div>,
-  .emotion-0 {
-  padding: 16px;
-  padding-left: 0;
+  .emotion-1 {
+  padding-bottom: 32px;
 }
 
-<div
-    className="emotion-0"
-  >
-    Loading...
+.emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-bottom: 24px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 8px;
+}
+
+.emotion-2 {
+  padding-right: 8px;
+}
+
+.emotion-5 {
+  font-weight: 700;
+  padding-right: 8px;
+  white-space: noWrap;
+  padding-bottom: 4px;
+}
+
+.emotion-3 {
+  color: #c92300;
+  font-weight: 700;
+}
+
+<div>
+    <div
+      className="emotion-1"
+    >
+      <h3
+        className="emotion-0"
+      >
+        Job: 
+        image_similarity.json
+      </h3>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-2"
+        >
+          <svg
+            color="#c92300"
+            data-file-name="errorFatal.svg"
+            width={18}
+          />
+        </div>
+        <div
+          className="emotion-3"
+        >
+          Error Type: 
+          Fatal
+        </div>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        Error Message:
+      </div>
+      NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)
+    </div>
   </div>,
 ]
 `;
@@ -150,7 +227,7 @@ Array [
     >
       <a
         className="emotion-0"
-        href="/undefined/jobs"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -167,7 +244,7 @@ Array [
     >
       <a
         className="emotion-0"
-        href="/undefined/jobs/undefined/errors"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/errors"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -185,15 +262,92 @@ Array [
       Error Details
     </h2>
   </div>,
-  .emotion-0 {
-  padding: 16px;
-  padding-left: 0;
+  .emotion-1 {
+  padding-bottom: 32px;
 }
 
-<div
-    className="emotion-0"
-  >
-    Loading...
+.emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-bottom: 24px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 8px;
+}
+
+.emotion-2 {
+  padding-right: 8px;
+}
+
+.emotion-3 {
+  color: #d6680b;
+  font-weight: 700;
+}
+
+.emotion-5 {
+  font-weight: 700;
+  padding-right: 8px;
+  white-space: noWrap;
+  padding-bottom: 4px;
+}
+
+<div>
+    <div
+      className="emotion-1"
+    >
+      <h3
+        className="emotion-0"
+      >
+        Job: 
+        image_similarity.json
+      </h3>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-2"
+        >
+          <svg
+            color="#d6680b"
+            data-file-name="errorWarning.svg"
+            width={18}
+          />
+        </div>
+        <div
+          className="emotion-3"
+        >
+          Error Type: 
+          Warning
+        </div>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        Error Message:
+      </div>
+      AttributeError: 'NoneType' object has no attribute 'startswith'
+    </div>
   </div>,
 ]
 `;

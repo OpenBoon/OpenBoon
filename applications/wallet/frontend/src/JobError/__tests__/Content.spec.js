@@ -11,6 +11,21 @@ const ERROR_ID = '916c86bc-74b9-1519-b065-d2f0132bc0c8'
 const FATAL_ERROR_ID = '916c86bb-74b9-1519-b065-d2f0132bc0c8'
 
 describe('<JobErrorContent />', () => {
+  it('should render properly when fetching job', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]',
+      query: { projectId: PROJECT_ID, jobId: JOB_ID, errorId: ERROR_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: jobErrors,
+    })
+
+    const component = TestRenderer.create(<JobErrorContent />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly when fetching errors', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]',
@@ -18,7 +33,7 @@ describe('<JobErrorContent />', () => {
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: { ...job, results: [] },
+      data: job,
     })
 
     const component = TestRenderer.create(<JobErrorContent />)
