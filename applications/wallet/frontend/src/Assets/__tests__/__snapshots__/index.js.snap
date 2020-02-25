@@ -83,6 +83,7 @@ exports[`<Assets /> should render properly 1`] = `
 
 .emotion-5 {
   color: #73b61c;
+  font-style: italic;
 }
 
 <div
@@ -126,9 +127,7 @@ exports[`<Assets /> should render properly 1`] = `
       <div
         className="emotion-5"
       >
-        <i>
-          Select an asset to view its metadata
-        </i>
+        Select an asset to view its metadata
       </div>
     </div>
   </div>
