@@ -1,7 +1,6 @@
 # flake8: noqa
-# Settings file intended for use with local development. This
-# file overrides the settings to use services that will be available in the docker network
-# when using the compose file.
+# Settings file intended for use with local development. This file is used by pytest to run local
+# tests.
 from datetime import timedelta
 
 from wallet.settings import *
