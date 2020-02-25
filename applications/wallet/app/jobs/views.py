@@ -6,7 +6,7 @@ from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
 
-class JobsViewSet(BaseProjectViewSet):
+class JobViewSet(BaseProjectViewSet):
     """CRUD operations for ZMLP or ZVI processing jobs."""
     pagination_class = ZMLPFromSizePagination
     zmlp_root_api_path = '/api/v1/jobs/'
@@ -202,3 +202,25 @@ class JobsViewSet(BaseProjectViewSet):
         }
         job_spec.update(new_values)
         return job_spec
+
+
+class TaskViewSet(BaseProjectViewSet):
+    pagination_class = ZMLPFromSizePagination
+    zmlp_root_api_path = '/api/v1/tasks/'
+
+    def list(self, request, project_pk):
+        def item_modifier(request, task):
+            item_url = request.build_absolute_uri(request.path)
+            task['actions'] = {'retry': f'{item_url}{task["id"]}/retry/'}
+
+        return self._zmlp_list_from_search(request, item_modifier=item_modifier)
+
+    @action(detail=True, methods=['put'])
+    def retry(self, request, project_pk, pk):
+        """Retries a task that has failed. Expects a `PUT` with an empty body."""
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}/_retry', {})
+        if response.get('success'):
+            return Response({'detail': f'Task {pk} has been successfully retried.'})
+        else:
+            message = f'Task {pk} failed to be retried. Message from ZMLP: {response}'
+            return Response({'detail': message}, status=500)
