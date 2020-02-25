@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Assets /> should render properly 1`] = `
+.emotion-8 {
+  height: 100%;
+}
+
+.emotion-2 {
+  position: fixed;
+  top: 45px;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #2e2e2e;
+  box-shadow: 0px 3px 3px 0 rgb(0,0,0,0.3);
+  z-index: 100;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-0 {
+  color: #808080;
+}
+
+.emotion-1 {
+  color: #b3b3b3;
+}
+
+.emotion-7 {
+  position: fixed;
+  top: 90px;
+  right: 0;
+  bottom: 0;
+  background-color: #2e2e2e;
+  height: 100%;
+  width: 400px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  box-shadow: -3px 4px 3px 0px rgba(0,0,0,0.3);
+  z-index: 101;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 48px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-bottom: 1px solid #3b3b3b;
+  padding-left: 16px;
+}
+
+.emotion-3 {
+  padding-left: 16px;
+  color: #808080;
+  font-weight: 700;
+}
+
+.emotion-6 {
+  padding: 16px;
+}
+
+.emotion-5 {
+  color: #73b61c;
+}
+
+<div
+  className="emotion-8"
+>
+  <div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-0"
+    >
+      Sort: Import Date  |  
+    </div>
+    <div
+      className="emotion-1"
+    >
+      100
+       of 
+      2400
+       Results
+    </div>
+  </div>
+  <div
+    className="emotion-7"
+  >
+    <div
+      className="emotion-4"
+    >
+      <svg
+        data-file-name="information.svg"
+      />
+      <div
+        className="emotion-3"
+      >
+        ASSET METADATA
+      </div>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-5"
+      >
+        <i>
+          Select an asset to view its metadata
+        </i>
+      </div>
+    </div>
+  </div>
+</div>
+`;
