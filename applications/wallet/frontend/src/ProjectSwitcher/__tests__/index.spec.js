@@ -38,6 +38,21 @@ describe('<ProjectSwitcher />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render properly with one project', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: { projectId: projects.results[0].id },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: { ...projects, count: 1, results: [projects.results[0]] },
+    })
+
+    const component = TestRenderer.create(<ProjectSwitcher />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should not render if the projectId is not of an authorized project', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
