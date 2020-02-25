@@ -1,7 +1,14 @@
+import logging
 import uuid
+
 from django.conf import settings
 from django.db import models
 from django_cryptography.fields import encrypt
+from zmlp.client import ZmlpDuplicateException
+
+from wallet.utils import get_zmlp_superuser_client
+
+logger = logging.getLogger(__name__)
 
 
 class Project(models.Model):
@@ -13,6 +20,22 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+    def sync_with_zmlp(self, syncing_user):
+        """Tries to create a project in ZMLP with the same name and ID. This syncs the projects
+        between the Wallet DB and ZMLP and is a necessary step for any project to function
+        correctly.
+
+        Args:
+            syncing_user (User): User that is attempting to sync this project with ZMLP.
+
+        """
+        client = get_zmlp_superuser_client(syncing_user)
+        body = {'name': self.name, 'projectId': str(self.id)}
+        try:
+            client.post('/api/v1/projects', body)
+        except ZmlpDuplicateException:
+            logger.info('Project Zero already exists in ZMLP')
 
 
 class Membership(models.Model):

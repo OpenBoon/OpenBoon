@@ -2,6 +2,8 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import ResetPassword from '..'
 
+jest.mock('../Confirm', () => 'ResetPasswordConfirm')
+
 const noop = () => () => {}
 
 describe('<ResetPassword />', () => {
@@ -18,11 +20,11 @@ describe('<ResetPassword />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    const usernameInput = component.root.findByProps({ id: 'username' })
+    const usernameInput = component.root.findByProps({ id: 'email' })
 
     // Enter email
     act(() => {
-      usernameInput.props.onChange({ target: { value: 'username' } })
+      usernameInput.props.onChange({ target: { value: 'jane@zorroa.com' } })
     })
 
     // Mock Failure
@@ -53,21 +55,12 @@ describe('<ResetPassword />', () => {
     })
 
     expect(fetch.mock.calls.length).toEqual(2)
+
     expect(fetch.mock.calls[0][0]).toEqual(`/api/v1/password/reset/`)
+
     expect(mockFn).toHaveBeenCalledWith(
-      '/reset-password/?action=password-reset-request-success',
+      '/?action=password-reset-request-success',
     )
-  })
-
-  it('should render properly with <FormSuccess/>', () => {
-    require('next/router').__setUseRouter({
-      pathname: '/reset-password',
-      query: { action: 'password-reset-request-success' },
-    })
-
-    const component = TestRenderer.create(<ResetPassword />)
-
-    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should not POST the form', () => {
@@ -82,5 +75,16 @@ describe('<ResetPassword />', () => {
 
     expect(mockOnSubmit).not.toHaveBeenCalled()
     expect(mockFn).toHaveBeenCalled()
+  })
+
+  it('should render <ResetPasswordConfirm />', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/reset-password',
+      query: { uid: 'GG', token: '123' },
+    })
+
+    const component = TestRenderer.create(<ResetPassword />)
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

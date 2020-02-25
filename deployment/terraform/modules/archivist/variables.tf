@@ -33,7 +33,7 @@ variable "data-bucket-name" {
 }
 
 variable "container-tag" {
-  default = "development"
+  default = "latest"
 }
 
 variable "minimum-replicas" {

@@ -24,3 +24,4 @@ DATABASES = {
 }
 
 ZMLP_API_URL = 'http://localhost:8080'
+FQDN = os.environ.get('FQDN', 'http://127.0.0.1:8000')

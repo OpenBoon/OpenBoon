@@ -32,6 +32,7 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   align-items: flex-start;
   cursor: pointer;
   padding-bottom: 16px;
+  padding-left: 0;
 }
 
 .emotion-5 {
@@ -89,17 +90,17 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  color: #b3b3b3;
 }
 
 .emotion-6 {
+  color: #ffffff;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 700;
 }
 
 .emotion-7 {
-  color: #808080;
+  color: #b3b3b3;
   padding-left: 0;
 }
 
@@ -187,6 +188,7 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   align-items: flex-start;
   cursor: pointer;
   padding-bottom: 16px;
+  padding-left: 0;
 }
 
 .emotion-5 {
@@ -226,17 +228,17 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  color: #b3b3b3;
 }
 
 .emotion-6 {
+  color: #ffffff;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 700;
 }
 
 .emotion-7 {
-  color: #808080;
+  color: #b3b3b3;
   padding-left: 0;
 }
 

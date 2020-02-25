@@ -5,7 +5,7 @@ variable "image-pull-secret" {
 }
 
 variable "container-tag" {
-  default = "development"
+  default = "latest"
 }
 
 variable "es-cluster-size" {

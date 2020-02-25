@@ -1,3 +1,5 @@
+import re
+
 import pytest
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -160,9 +162,9 @@ def test_reset_password(api_client, user, mailoutbox):
     assert response.status_code == 200
     message = mailoutbox[0]
     assert message.subject == 'Wallet Password Reset'
-    lines = message.body.split('\n')
-    token = lines[1]
-    uid = lines[2]
+    search = re.search(r'token=(?P<token>.*)&uid=(?P<uid>.*)', message.body)
+    token = search.group('token')
+    uid = search.group('uid')
     response = api_client.post(reverse('api-password-reset-confirm'),
                                {'new_password1': '7BMQv5Pb(KpdS+!z',
                                 'new_password2': '7BMQv5Pb(KpdS+!z',

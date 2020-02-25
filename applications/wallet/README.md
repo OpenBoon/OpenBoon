@@ -1,39 +1,62 @@
 # Wallet
 
-## Developing
+# Development Quickstart
+_NOTE_: Zorroa issues Macbooks to developers so all instructions are for MacOS.
 
-Requirements:
+## Prerequisites
+- Latest Docker and docker-compose installed.
 
-- Python 3.8.0 or greater.
-- Node.js 12.14.0 or greater.
-- Latest docker & docker-compose installed.
-- Homebrew installed.
+## Start the local ZMLP Deployment
 
-## Development Options
+First off we will use docker-compose to start a local deployment of ZMLP. This will pull all of the 
+latest deployed container images and start them up locally. Once you have a complete ZMLP
+deployment running based off the main code branch, `development`. Once the deployment is up you 
+can access wallet at http://localhost.
 
-There are multiple ways to run this application and you should pick the best one
-for your needs.
+### Steps
+
+1. Run `docker-compose pull` - This will pull the latest images so you aren't working against old code.
+1. Run `docker-compose up` - This will start up all of the services.
+
+## Building & Running your local code.
+Once you have made changes to the Wallet code you can build and run those changes in the local 
+deployment. This will build all the local wallet code, package it in a docker container and then
+run it. Once it's up and running you can test that were changes are working as expected.
+
+### Steps
+
+1. Run `docker-compose build wallet`
+1. Run `docker-compose up`
+
+# Advanced Development Options
+There are multiple ways to run this application which may be better suited to the type of development
+you are doing. 
 
 1. _Frontend Development_ - Use the Frontend development server. For the
    Backend, you can either use the runserver or the Docker container.
 1. _Backend Development_ - Use the Backend Development server.
-1. _Production-Like Testing_ - Use the Docker Compose setup. This will build the
-   Frontend and setup the Backend to use a real Postgres DB, and setup an Nginx
-   container to serve the static files.
 
 ---
 
-### React Frontend Setup
+## Frontend Development
+The frontend for wallet is written using React and can be found in `wallet/frontend`
 
-The entire React project is in the `wallet/frontend` subdirectory.
+### Prerequisites
+- Node.js 12.14.0 or greater installed.
 
 See the [frontend README](frontend/README.md) for more info.
 
 ---
 
-### Python Backend Setup
+## Backend Development
 
-#### Install [Pipenv](https://github.com/pypa/pipenv)
+### Prerequisites
+- [Python](https://www.python.org/downloads/) 3.8.0 or greater installed.
+- Latest [Pipenv](https://github.com/pypa/pipenv) installed.
+- [Homebrew](https://docs.brew.sh/Installation) installed.
+
+
+#### Install 
 
 Pipenv is used to manage package dependencies and the python version. Install it
 with homebrew.
@@ -93,6 +116,8 @@ Postgres, you'll need to create the wallet DB and User/Role.
    `# GRANT ALL PRIVILEGES ON DATABASE wallet TO wallet;`
 5. Give last permission to user in the console: `# ALTER USER wallet CREATEDB;`
 
+---
+
 #### Browsable API
 
 One of the benefits of using the Backend runserver is that it will setup a
@@ -106,21 +131,6 @@ arguments for them. To access this:
 
 From here, you should be able to follow the links on the available resources to
 see what is available.
-
----
-
-### Docker Compose Environment
-
-Use this to emulate a Production-like deployment. The Docker compose file will
-spin up a complete deployment locally. The containers will be built from your
-local development code. Instructions can be found in the [gitbook](https://app.gitbook.com/@zorroa/s/developers/guidelines/local-development)
-
-Additionally the standard django runserver can be used for rapid development
-that doesn't require a full deployment. More information is
-[here](https://docs.djangoproject.com/en/2.2/intro/tutorial01/#the-development-server).
-If you would like to use the runserver with a sqlite db so that you do not
-depend on postgres running you use the `wallet.settings.local` settings file.
-The full command for this is `./manage.py runserver --settings=`
 
 ---
 

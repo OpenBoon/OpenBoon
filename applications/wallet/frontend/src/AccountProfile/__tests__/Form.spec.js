@@ -1,14 +1,8 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import AccountProfileForm from '../Form'
+import User from '../../User'
 
-jest.mock('../../Authentication/helpers', () => ({
-  getUser: () => ({
-    id: 1,
-    username: 'jane.doe',
-    email: 'jane.doe@zorroa.com',
-  }),
-}))
+import AccountProfileForm from '../Form'
 
 jest.mock('../helpers')
 
@@ -16,7 +10,16 @@ const noop = () => () => {}
 
 describe('<AccountProfileForm />', () => {
   it('should render properly when a user edits their name', () => {
-    const component = TestRenderer.create(<AccountProfileForm />)
+    const component = TestRenderer.create(
+      <User
+        initialUser={{
+          id: 1,
+          username: 'jane.doe',
+          email: 'jane.doe@zorroa.com',
+        }}>
+        <AccountProfileForm />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -52,7 +55,16 @@ describe('<AccountProfileForm />', () => {
   })
 
   it('should render properly when a user cancels', () => {
-    const component = TestRenderer.create(<AccountProfileForm />)
+    const component = TestRenderer.create(
+      <User
+        initialUser={{
+          id: 1,
+          username: 'jane.doe',
+          email: 'jane.doe@zorroa.com',
+        }}>
+        <AccountProfileForm />
+      </User>,
+    )
 
     // Click edit
     act(() => {

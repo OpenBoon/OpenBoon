@@ -1,13 +1,14 @@
 import TestRenderer from 'react-test-renderer'
 
+import User from '../../User'
+
 import ProjectUsers from '..'
 
 import projectUsers from '../__mocks__/projectUsers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
-jest.mock('../../FormSuccess', () => 'FormSuccess')
-jest.mock('../../Authentication/helpers')
+jest.mock('../../User/helpers')
 
 describe('<ProjectUsers />', () => {
   it('should render properly while loading', () => {
@@ -61,14 +62,11 @@ describe('<ProjectUsers />', () => {
   })
 
   it('should hide the menu gear for the active user', () => {
-    require('../../Authentication/helpers').__setMockUser({
-      id: 1,
-      username: 'jane.doe',
-      email: 'jane@zorroa.com',
-      firstName: 'Jane',
-      lastName: 'Doe',
-    })
-    const component = TestRenderer.create(<ProjectUsers />)
+    const component = TestRenderer.create(
+      <User initialUser={{ email: 'jane@zorroa.com' }}>
+        <ProjectUsers />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })

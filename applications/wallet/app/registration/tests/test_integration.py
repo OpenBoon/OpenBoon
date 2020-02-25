@@ -100,3 +100,33 @@ def test_confirm_missing_params(api_client):
     api_client.logout()
     response = api_client.post(reverse('api-user-confirm'), {'token': uuid.uuid4()})
     assert response.status_code == 400
+
+
+def test_password_change(api_client, user):
+    api_client.force_login(user)
+    response = api_client.post(reverse('api-password-change'),
+                               {'old_password': 'letmein',
+                                'new_password1': '7BMQv5Pb(KpdS+!z',
+                                'new_password2': '7BMQv5Pb(KpdS+!z'})
+    assert response.status_code == 200
+    user = User.objects.get(username=user.username)
+    assert user.check_password('7BMQv5Pb(KpdS+!z')
+
+
+def test_reset_password(api_client, user, mailoutbox):
+    api_client.logout()
+    assert not user.check_password('7BMQv5Pb(KpdS+!z')
+    response = api_client.post(reverse('api-password-reset'), {'email': user.email})
+    assert response.status_code == 200
+    message = mailoutbox[0]
+    assert message.subject == 'Wallet Password Reset'
+    search = re.search(r'token=(?P<token>.*)&uid=(?P<id>.*)', message.body)
+    token = search.group('token')
+    uid = search.group('id')
+    response = api_client.post(reverse('api-password-reset-confirm'),
+                               {'new_password1': '7BMQv5Pb(KpdS+!z',
+                                'new_password2': '7BMQv5Pb(KpdS+!z',
+                                'uid': uid, 'token': token})
+    assert response.status_code == 200
+    user = User.objects.get(username=user.username)
+    assert user.check_password('7BMQv5Pb(KpdS+!z')

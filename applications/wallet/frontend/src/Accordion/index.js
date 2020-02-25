@@ -25,9 +25,8 @@ const Accordion = ({ title, children }) => {
         </div>
         <div
           css={{
-            padding: spacing.normal,
-            paddingLeft: spacing.normal + CHECKMARK_WIDTH + spacing.normal,
-            paddingBottom: spacing.spacious,
+            padding: spacing.spacious,
+            paddingTop: spacing.normal,
           }}>
           {children}
         </div>

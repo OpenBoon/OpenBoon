@@ -11,10 +11,10 @@ const STYLES = {
     main: {
       display: 'flex',
       flexDirection: 'column',
-      color: colors.structure.zinc,
     },
     label: {
       alignItems: 'flex-start',
+      paddingLeft: 0,
     },
     legend: {
       paddingLeft: 0,
@@ -24,9 +24,9 @@ const STYLES = {
     main: {
       width: 'max-content',
       paddingLeft: spacing.normal,
-      color: colors.structure.white,
     },
     label: {
+      paddingLeft: spacing.normal,
       alignItems: 'center',
     },
     legend: {
@@ -59,6 +59,7 @@ const Checkbox = ({
         color: colors.white,
         cursor: 'pointer',
         paddingBottom: spacing.normal,
+        paddingLeft: STYLES[variant].label.paddingLeft,
       }}>
       <CheckboxIcon
         value={value}
@@ -72,6 +73,8 @@ const Checkbox = ({
         <div
           css={{
             paddingLeft: spacing.comfy,
+            display: 'flex',
+            alignItems: 'center',
           }}>
           {icon}
         </div>
@@ -79,6 +82,7 @@ const Checkbox = ({
       <div css={[{ paddingLeft: spacing.moderate }, STYLES[variant].main]}>
         <span
           css={{
+            color: colors.structure.white,
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
             fontWeight: typography.weight.bold,
@@ -89,7 +93,7 @@ const Checkbox = ({
           <span
             css={[
               {
-                color: colors.structure.steel,
+                color: colors.structure.zinc,
               },
               STYLES[variant].legend,
             ]}>

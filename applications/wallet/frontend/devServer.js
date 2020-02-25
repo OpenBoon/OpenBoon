@@ -1,6 +1,6 @@
 import express from 'express'
 import nextjs from 'next'
-import p from 'http-proxy-middleware'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 import morgan from 'morgan'
 
 import user from './src/User/__mocks__/user'
@@ -17,14 +17,17 @@ import projectUsers from './src/ProjectUsers/__mocks__/projectUsers'
 import projectUser from './src/ProjectUser/__mocks__/projectUser'
 import projectUsersAdd from './src/ProjectUsersAdd/__mocks__/projectUsersAdd'
 
-const { MOCKED, SLOW } = process.env
+const { STAGING, SLOW, MOCKED } = process.env
 
 const app = nextjs({ dev: true })
 const server = express()
 const handle = app.getRequestHandler()
 const mock = response => (_, res) => res.send(JSON.stringify(response))
 const success = () => (_, res) => res.send('{"detail":"Success"}')
-const proxy = p({ target: 'http://localhost', changeOrigin: true })
+const proxy = createProxyMiddleware({
+  target: STAGING ? 'https://wallet.zmlp.zorroa.com' : 'http://localhost',
+  changeOrigin: true,
+})
 
 app.prepare().then(() => {
   server.use(morgan('combined'))
@@ -38,6 +41,7 @@ app.prepare().then(() => {
   if (MOCKED) {
     server.post('/api/v1/login/', mock(user))
     server.get('/api/v1/projects/', mock(projects))
+    server.post('/api/v1/password/reset/', success())
 
     const userpatch = { ...user, firstName: 'David', lastName: 'Smith' }
     server.patch(`/api/v1/users/:userId/`, mock(userpatch))
@@ -68,6 +72,7 @@ app.prepare().then(() => {
   server.use('/api', proxy)
   server.use('/auth', proxy)
   server.use('/admin', proxy)
+  server.use('/static', proxy)
 
   server.all('*', (req, res) => handle(req, res))
 

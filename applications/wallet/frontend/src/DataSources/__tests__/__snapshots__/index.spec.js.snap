@@ -34,6 +34,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -118,9 +119,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  <div>
-     
-  </div>,
   .emotion-11 {
   height: 100%;
 }
@@ -184,7 +182,7 @@ Array [
 .emotion-0 {
   text-align: left;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
@@ -231,7 +229,7 @@ Array [
   text-align: center;
   color: #808080;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
 }
 
 <div
@@ -327,6 +325,85 @@ Array [
   >
     Data Sources
   </h2>,
+  .emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  justify-self: flex-start;
+  color: #000000;
+  font-weight: 500;
+  background-color: #ffffff;
+  border: 1px solid #4ac565;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-0 {
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  background-color: #4ac565;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+<div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-0"
+      >
+        <svg
+          data-file-name="checkmark.svg"
+          width={20}
+        />
+      </div>
+      <div
+        className="emotion-1"
+      >
+        Data Source Created
+      </div>
+    </div>
+  </div>,
   .emotion-5 {
   padding: 16px;
   padding-left: 0;
@@ -346,6 +423,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -430,92 +508,10 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  justify-self: flex-start;
-  color: #000000;
-  font-weight: 500;
-  background-color: #ffffff;
-  border: 1px solid #4ac565;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-}
-
-.emotion-0 {
-  width: 40px;
-  height: 40px;
-  color: #ffffff;
-  background-color: #4ac565;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-<div
-    className="emotion-3"
-  >
-    <div
-      className="emotion-2"
-    >
-      <div
-        className="emotion-0"
-      >
-        <svg
-          data-file-name="checkmark.svg"
-          width={20}
-        />
-      </div>
-      <div
-        className="emotion-1"
-      >
-        Data source created
-      </div>
-    </div>
-  </div>,
-  <div>
-     
-  </div>,
   .emotion-0 {
   text-align: left;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
@@ -638,7 +634,7 @@ Array [
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -1125,6 +1121,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -1209,9 +1206,6 @@ Array [
       </li>
     </ul>
   </nav>,
-  <div>
-     
-  </div>,
   .emotion-11 {
   height: 100%;
 }
@@ -1275,7 +1269,7 @@ Array [
 .emotion-0 {
   text-align: left;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   color: #e0e0e0;
   background-color: #4a4a4a;
@@ -1322,7 +1316,7 @@ Array [
   text-align: center;
   color: #808080;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
 }
 
 <div

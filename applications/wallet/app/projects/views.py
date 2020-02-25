@@ -6,12 +6,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.http import HttpResponseForbidden, Http404
 from rest_framework import status
-from rest_framework.exceptions import PermissionDenied
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet, GenericViewSet
 from zmlp import ZmlpClient
-from zmlp.client import ZmlpDuplicateException
 
 from projects.clients import ZviClient
 from projects.models import Membership, Project
@@ -252,7 +250,7 @@ class ProjectViewSet(ListModelMixin,
         exists_in_wallet = False
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            project = serializer.save()
         else:
             try:
                 if serializer.errors['id'][0].code == 'unique':
@@ -270,45 +268,11 @@ class ProjectViewSet(ListModelMixin,
                 serializer.is_valid(raise_exception=True)
 
         # Create it in ZMLP now
-        client = self._get_zmlp_superuser_client(request)
-        body = {'name': serializer.data['name'],
-                'projectId': serializer.data['id']}
-        try:
-            client.post('/api/v1/projects', body)
-        except ZmlpDuplicateException:
-            # We only need to error if it already existed in Wallet as well
-            if exists_in_wallet:
-                return Response(data={'detail': ["A project with this id already "
-                                                 "exists in Wallet and ZMLP."]},
-                                status=status.HTTP_400_BAD_REQUEST)
+        project.sync_with_zmlp(request.user)
+
+        if exists_in_wallet:
+            return Response(data={'detail': ["A project with this id already "
+                                             "exists in Wallet and ZMLP."]},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def _get_zmlp_superuser_client(self, request):
-        """
-        Helper method to return the ZMLP client specifically for the SuperUser, who is
-        the only person who can create projects through this view.
-
-        Args:
-            request: Original Django request
-
-        Returns:
-            Initialized ZMLP client
-        """
-        # This project zero check should eventually go away as Zmlp changes.
-        try:
-            project = self.request.user.projects.filter(
-                id='00000000-0000-0000-0000-000000000000'
-            )[0]
-        except IndexError:
-            raise PermissionDenied(detail=(f'{request.user.username} is either not a member of '
-                                           f'Project Zero or the Project has not been '
-                                           f'created yet.'))
-        try:
-            apikey = Membership.objects.get(user=request.user, project=project).apikey
-        except Membership.DoesNotExist:
-            # Can't think of how this would happen, but seems safe to check
-            raise PermissionDenied(detail=(f'{request.user.username} does not have a membership '
-                                           f'to {project.name} setup yet. Please create in the '
-                                           f'Admin console to continue.'))
-        return ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL)

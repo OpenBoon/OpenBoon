@@ -135,6 +135,10 @@ class ProjectUserViewSet(BaseProjectViewSet):
         email = membership.user.username
         apikey = decode_apikey(membership.apikey)
         apikey_id = apikey['id']
+        apikey_name = apikey.get('name')
+        if apikey_name == 'admin-key':
+            return Response(data={'detail': 'Unable to modify the admin key.'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         # TODO: Replace Delete/Create logic when Auth Server supports PUT
         # Create new Key first and append epoch time (milli) to get a readable unique name

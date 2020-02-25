@@ -69,7 +69,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -195,6 +195,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
 
 .emotion-19 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-18 {
@@ -333,7 +334,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          View All
+          Errors
         </a>
       </li>
     </ul>

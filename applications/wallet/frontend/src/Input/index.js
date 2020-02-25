@@ -11,6 +11,10 @@ const BASE = {
   borderRadius: constants.borderRadius.small,
   boxShadow: constants.boxShadows.input,
   width: '100%',
+  '&:focus': {
+    border: constants.borders.input,
+    outline: colors.key.one,
+  },
 }
 
 const STYLES = {
@@ -22,10 +26,8 @@ const STYLES = {
     color: colors.structure.white,
     backgroundColor: colors.structure.mattGrey,
     '&:focus': {
-      border: constants.borders.input,
-      backgroundColor: colors.structure.white,
-      outline: colors.key.one,
       color: colors.structure.black,
+      backgroundColor: colors.structure.white,
     },
   },
 }
@@ -52,7 +54,7 @@ const Input = ({
   after,
   ...props
 }) => (
-  <div css={{ paddingTop: PADDING, paddingBottom: PADDING }}>
+  <div css={{ paddingTop: PADDING }}>
     <label
       htmlFor={id}
       css={{

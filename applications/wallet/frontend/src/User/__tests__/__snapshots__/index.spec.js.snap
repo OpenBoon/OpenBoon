@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<User /> should update localStorage and the user state 1`] = `
+<div>
+  <span>
+    jane.doe@zorroa.com
+  </span>
+  <button
+    onClick={[Function]}
+    type="button"
+  >
+    Logout
+  </button>
+</div>
+`;
+
+exports[`<User /> should update localStorage and the user state 2`] = `
+<div>
+  <span />
+  <button
+    onClick={[Function]}
+    type="button"
+  >
+    Login
+  </button>
+</div>
+`;
+
+exports[`<User /> should update localStorage and the user state 3`] = `
+<div>
+  <span>
+    jane.doe@zorroa.com
+  </span>
+  <button
+    onClick={[Function]}
+    type="button"
+  >
+    Logout
+  </button>
+</div>
+`;

@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<JobError /> should render properly 1`] = `
+Array [
+  .emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-1 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-6 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Job Queue
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/errors"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Job Details
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
+    <h2
+      className="emotion-6"
+    >
+      Error Details
+    </h2>
+  </div>,
+  <div>
+    Error ID: 
+    916c86bc-74b9-1519-b065-d2f0132bc0c8
+  </div>,
+]
+`;

@@ -34,6 +34,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -108,9 +109,8 @@ Array [
   padding-right: 0;
 }
 
-.emotion-4 {
+.emotion-3 {
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -137,13 +137,12 @@ Array [
 
 .emotion-1:focus {
   border: 2px solid #73b61c;
-  background-color: #ffffff;
   outline: #73b61c;
-  color: #000000;
 }
 
-.emotion-3 {
-  padding-top: 8px;
+.emotion-1:focus {
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .emotion-17 {
@@ -184,7 +183,7 @@ Array [
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -239,7 +238,7 @@ Array [
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: not-allowed;
@@ -277,7 +276,7 @@ Array [
     onSubmit={[Function]}
   >
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <label
         className="emotion-0"
@@ -305,7 +304,7 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <label
         className="emotion-0"
@@ -332,7 +331,7 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-3"
     >
       <label
         className="emotion-0"

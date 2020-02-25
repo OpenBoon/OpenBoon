@@ -1,38 +1,47 @@
-import { useReducer } from 'react'
+import { useContext, useReducer } from 'react'
 
 import { typography, spacing, colors } from '../Styles'
+
+import { UserContext } from '../User'
 
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 
-import FormSuccess from '../FormSuccess'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import SectionTitle from '../SectionTitle'
 
-import { getUser } from '../Authentication/helpers'
 import { onSubmit } from './helpers'
 
-const { id, email, firstName = '', lastName = '' } = getUser()
-
-const INITIAL_STATE = {
+const INITIAL_STATE = ({ id, firstName, lastName }) => ({
   id,
   firstName,
   lastName,
   showForm: false,
   success: false,
   errors: {},
-}
+})
 
 const reducer = (state, action) => ({ ...state, ...action })
 
 const AccountProfileForm = () => {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+  const {
+    user: { id, email, firstName = '', lastName = '' },
+    setUser,
+  } = useContext(UserContext)
+
+  const [state, dispatch] = useReducer(
+    reducer,
+    INITIAL_STATE({ id, firstName, lastName }),
+  )
 
   return (
     <>
       {state.success && !state.showForm && (
-        <FormSuccess>New Name Saved!</FormSuccess>
+        <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+          New Name Saved
+        </FlashMessage>
       )}
 
       <SectionTitle>{`Email: ${email}`}</SectionTitle>
@@ -96,14 +105,16 @@ const AccountProfileForm = () => {
           <ButtonGroup>
             <Button
               variant={BUTTON_VARIANTS.SECONDARY}
-              onClick={() => dispatch(INITIAL_STATE)}>
+              onClick={() =>
+                dispatch(INITIAL_STATE({ id, firstName, lastName }))
+              }>
               Cancel
             </Button>
 
             <Button
               type="submit"
               variant={BUTTON_VARIANTS.PRIMARY}
-              onClick={() => onSubmit({ dispatch, state })}
+              onClick={() => onSubmit({ dispatch, state, setUser })}
               isDisabled={!state.firstName || !state.lastName}>
               Save
             </Button>

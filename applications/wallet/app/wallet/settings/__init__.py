@@ -11,17 +11,13 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import socket
 
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 VERSION = '0.1.0'
 ENVIRONMENT = os.environ.get('ENVIRONMENT', 'localdev')
-try:
-    HOSTNAME = socket.gethostname()
-except Exception:
-    HOSTNAME = 'localhost'
+FQDN = os.environ.get('FQDN', 'http://localhost')
 
 if os.environ.get('ENABLE_SENTRY', 'false').lower() == 'true':
     # Sentry Configuration
@@ -177,6 +173,10 @@ REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
+REST_AUTH_SERIALIZERS = {
+    'PASSWORD_RESET_SERIALIZER': 'registration.serializers.PasswordResetSerializer'
+}
+
 # General Application Configuration
 ZMLP_API_URL = os.environ.get('ZMLP_API_URL', 'archivist')
 PLATFORM = os.environ.get('PLATFORM', 'zmlp')
@@ -188,6 +188,7 @@ GOOGLE_OAUTH_CLIENT_ID = os.environ.get(
 ) + '.apps.googleusercontent.com'
 
 # Mail Server
+DEFAULT_FROM_EMAIL = 'do_not_reply@zorroa.com'
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_HOST_USER = 'postmaster@mg.zorroa.com'
 EMAIL_HOST_PASSWORD = os.environ.get('SMTP_PASSWORD')

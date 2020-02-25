@@ -1,5 +1,6 @@
 import json
 from base64 import b64encode
+from uuid import uuid4
 
 import pytest
 from django.http import JsonResponse, HttpResponseForbidden, Http404
@@ -87,12 +88,39 @@ def test_project_serializer_list(project, project2):
     assert [entry['id'] for entry in data] == [project.id, project2.id]
 
 
+def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
+    def mock_post_true(*args, **kwargs):
+        return True
+
+    def mock_post_duplicate(*args, **kwargs):
+        raise ZmlpDuplicateException({})
+
+    def mock_post_exception(*args, **kwargs):
+        raise KeyError('')
+
+    # Test a successful sync.
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_true)
+    project = Project.objects.create(name='test', id=uuid4())
+    project.sync_with_zmlp(project_zero_user)
+
+    # Test a sync when the project already exists in zmlp.
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_duplicate)
+    project = Project.objects.create(name='test', id=uuid4())
+    project.sync_with_zmlp(project_zero_user)
+
+    # Test a failure.
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_exception)
+    project = Project.objects.create(name='test', id=uuid4())
+    with pytest.raises(KeyError):
+        project.sync_with_zmlp(project_zero_user)
+
+
 class TestProjectViewSet:
 
     @pytest.fixture
     def project_zero(self):
-        return Project.objects.create(id='00000000-0000-0000-0000-000000000000',
-                                      name='Project Zero')
+        return Project.objects.get_or_create(id='00000000-0000-0000-0000-000000000000',
+                                             name='Project Zero')[0]
 
     @pytest.fixture
     def project_zero_membership(self, user, project_zero):

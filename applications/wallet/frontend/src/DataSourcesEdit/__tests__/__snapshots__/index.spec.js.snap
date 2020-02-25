@@ -34,6 +34,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -177,6 +178,7 @@ Array [
 
 .emotion-1 {
   padding-right: 16px;
+  margin-bottom: -1px;
 }
 
 .emotion-0 {
@@ -273,7 +275,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-152 {
+  .emotion-151 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -319,6 +321,7 @@ Array [
   align-items: center;
   cursor: pointer;
   padding-bottom: 16px;
+  padding-left: 16px;
 }
 
 .emotion-5 {
@@ -369,6 +372,14 @@ Array [
 
 .emotion-6 {
   padding-left: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-9 {
@@ -377,17 +388,17 @@ Array [
   width: -moz-max-content;
   width: max-content;
   padding-left: 16px;
-  color: #ffffff;
 }
 
 .emotion-7 {
+  color: #ffffff;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 700;
 }
 
 .emotion-8 {
-  color: #808080;
+  color: #b3b3b3;
   padding-left: 12px;
 }
 
@@ -404,20 +415,20 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-39 {
+.emotion-38 {
   padding-top: 16px;
 }
 
-.emotion-38 {
+.emotion-37 {
   background-color: #3b3b3b;
 }
 
-.emotion-34 {
+.emotion-33 {
   border-bottom: 1px solid #4a4a4a;
   padding: 16px;
 }
 
-.emotion-33 {
+.emotion-32 {
   font-size: 17px;
   line-height: 20px;
   display: -webkit-box;
@@ -430,25 +441,19 @@ Array [
   align-items: center;
 }
 
-.emotion-32 {
-  color: #73b61c;
-  margin-right: 16px;
+.emotion-36 {
+  padding: 32px;
+  padding-top: 16px;
 }
 
-.emotion-37 {
-  padding: 16px;
-  padding-left: 60px;
-  padding-bottom: 32px;
-}
-
-.emotion-35 {
+.emotion-34 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
   padding-bottom: 16px;
 }
 
-.emotion-36 {
+.emotion-35 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -460,7 +465,7 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-36 li {
+.emotion-35 li {
   width: 33%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -473,24 +478,24 @@ Array [
   padding-right: 40px;
 }
 
-.emotion-36 svg {
+.emotion-35 svg {
   color: #73b61c;
   margin-right: 16px;
   min-width: 20px;
   max-width: 20px;
 }
 
-.emotion-36 span {
+.emotion-35 span {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-40 {
+.emotion-39 {
   color: #73b61c;
   margin-right: 16px;
 }
 
-.emotion-43 {
+.emotion-42 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
@@ -498,7 +503,7 @@ Array [
   max-width: 600px;
 }
 
-.emotion-77 {
+.emotion-76 {
   border: none;
   padding: 0;
   margin: 0;
@@ -506,7 +511,7 @@ Array [
   padding-bottom: 32px;
 }
 
-.emotion-44 {
+.emotion-43 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -515,73 +520,76 @@ Array [
   font-weight: 500;
 }
 
-.emotion-45 {
+.emotion-44 {
   clear: both;
 }
 
-.emotion-76 {
+.emotion-75 {
   width: 100%;
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-76 th,
-.emotion-76 td {
+.emotion-75 th,
+.emotion-75 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-76 th:first-of-type,
-.emotion-76 td:first-of-type {
+.emotion-75 th:first-of-type,
+.emotion-75 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-76 th:nth-of-type(2),
-.emotion-76 td:nth-of-type(2) {
+.emotion-75 th:nth-of-type(2),
+.emotion-75 td:nth-of-type(2) {
   min-width: 300px;
-  font-family: Roboto Mono;
 }
 
-.emotion-76 th:nth-of-type(3),
-.emotion-76 td:nth-of-type(3) {
+.emotion-75 th:nth-of-type(3),
+.emotion-75 td:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-76 th {
+.emotion-75 th {
   color: #b3b3b3;
   font-weight: 500;
 }
 
-.emotion-76 td {
+.emotion-75 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
 }
 
-.emotion-76 td:first-of-type {
+.emotion-75 td:first-of-type {
   border: none;
 }
 
-.emotion-76 tr:hover td {
+.emotion-75 td:nth-of-type(2) {
+  font-family: Roboto Mono;
+}
+
+.emotion-75 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-76 tr:hover + tr td {
+.emotion-75 tr:hover + tr td {
   border-top-color: transparent;
 }
 
-.emotion-76 tr:last-of-type td {
+.emotion-75 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-76 tr:last-of-type td:first-of-type {
+.emotion-75 tr:last-of-type td:first-of-type {
   border: none;
 }
 
-.emotion-51 {
+.emotion-50 {
   cursor: pointer;
 }
 
-.emotion-50 {
+.emotion-49 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -590,11 +598,11 @@ Array [
   -moz-user-select: none;
 }
 
-.emotion-94 {
+.emotion-93 {
   color: #73b61c;
 }
 
-.emotion-151 {
+.emotion-150 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -603,9 +611,64 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-151 button,
-.emotion-151 a {
+.emotion-150 button,
+.emotion-150 a {
   margin-right: 16px;
+}
+
+.emotion-148 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-148:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-148[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-148,
+.emotion-148:hover,
+.emotion-148:visited {
+  background-color: #808080;
+}
+
+.emotion-148:hover {
+  opacity: 0.5;
+}
+
+.emotion-148[aria-disabled=true] {
+  background-color: #808080;
 }
 
 .emotion-149 {
@@ -632,7 +695,7 @@ Array [
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -652,75 +715,20 @@ Array [
 .emotion-149,
 .emotion-149:hover,
 .emotion-149:visited {
-  background-color: #808080;
+  background-color: #73b61c;
 }
 
 .emotion-149:hover {
-  opacity: 0.5;
+  background-color: #96c955;
 }
 
 .emotion-149[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-150 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-150:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-150[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-150,
-.emotion-150:hover,
-.emotion-150:visited {
-  background-color: #73b61c;
-}
-
-.emotion-150:hover {
-  background-color: #96c955;
-}
-
-.emotion-150[aria-disabled=true] {
-  background-color: #808080;
-}
-
 <form
     action=""
-    className="emotion-152"
+    className="emotion-151"
     method="post"
     onSubmit={[Function]}
   >
@@ -888,35 +896,30 @@ Array [
       Choose the type of analysis you would like performed on your data set:
     </p>
     <div
-      className="emotion-39"
+      className="emotion-38"
     >
       <div
-        className="emotion-38"
+        className="emotion-37"
       >
         <div
-          className="emotion-34"
+          className="emotion-33"
         >
           <h4
-            className="emotion-33"
+            className="emotion-32"
           >
-            <svg
-              className="emotion-32"
-              data-file-name="checkmark.svg"
-              width={28}
-            />
             Zorroa Automatic Analysis
           </h4>
         </div>
         <div
-          className="emotion-37"
+          className="emotion-36"
         >
           <p
-            className="emotion-35"
+            className="emotion-34"
           >
             The following basic analysis is applied to all data sets.
           </p>
           <ul
-            className="emotion-36"
+            className="emotion-35"
           >
             <li>
               <svg
@@ -959,19 +962,19 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-39"
+      className="emotion-38"
     >
       <div
-        className="emotion-38"
+        className="emotion-37"
       >
         <div
-          className="emotion-34"
+          className="emotion-33"
         >
           <h4
-            className="emotion-33"
+            className="emotion-32"
           >
             <svg
-              className="emotion-40"
+              className="emotion-39"
               data-file-name="checkmark.svg"
               width={28}
             />
@@ -979,29 +982,29 @@ Array [
           </h4>
         </div>
         <div
-          className="emotion-37"
+          className="emotion-36"
         >
           <p
-            className="emotion-43"
+            className="emotion-42"
           >
             <span>
               These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
             </span>
           </p>
           <fieldset
-            className="emotion-77"
+            className="emotion-76"
           >
             <legend
-              className="emotion-44"
+              className="emotion-43"
             >
               Images & Documents
             </legend>
             <div
-              className="emotion-45"
+              className="emotion-44"
             />
             <table
               cellSpacing="0"
-              className="emotion-76"
+              className="emotion-75"
             >
               <thead>
                 <tr>
@@ -1018,12 +1021,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-51"
+                  className="emotion-50"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-50"
+                      className="emotion-49"
                     >
                       <div
                         className="emotion-5"
@@ -1068,12 +1071,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-51"
+                  className="emotion-50"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-50"
+                      className="emotion-49"
                     >
                       <div
                         className="emotion-5"
@@ -1118,12 +1121,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-51"
+                  className="emotion-50"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-50"
+                      className="emotion-49"
                     >
                       <div
                         className="emotion-5"
@@ -1168,12 +1171,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-51"
+                  className="emotion-50"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-50"
+                      className="emotion-49"
                     >
                       <div
                         className="emotion-5"
@@ -1218,12 +1221,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-51"
+                  className="emotion-50"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-50"
+                      className="emotion-49"
                     >
                       <div
                         className="emotion-5"
@@ -1271,19 +1274,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-77"
+            className="emotion-76"
           >
             <legend
-              className="emotion-44"
+              className="emotion-43"
             >
               Video
             </legend>
             <div
-              className="emotion-45"
+              className="emotion-44"
             />
             <table
               cellSpacing="0"
-              className="emotion-76"
+              className="emotion-75"
             >
               <thead>
                 <tr>
@@ -1300,12 +1303,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-51"
+                  className="emotion-50"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-50"
+                      className="emotion-49"
                     >
                       <div
                         className="emotion-5"
@@ -1356,19 +1359,19 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-39"
+      className="emotion-38"
     >
       <div
-        className="emotion-38"
+        className="emotion-37"
       >
         <div
-          className="emotion-34"
+          className="emotion-33"
         >
           <h4
-            className="emotion-33"
+            className="emotion-32"
           >
             <svg
-              className="emotion-40"
+              className="emotion-39"
               data-file-name="checkmark.svg"
               width={28}
             />
@@ -1376,14 +1379,14 @@ Array [
           </h4>
         </div>
         <div
-          className="emotion-37"
+          className="emotion-36"
         >
           <p
-            className="emotion-43"
+            className="emotion-42"
           >
             <span>
               <span
-                className="emotion-94"
+                className="emotion-93"
               >
                 Contact your Account Manager to activate.
               </span>
@@ -1392,19 +1395,19 @@ Array [
             </span>
           </p>
           <fieldset
-            className="emotion-77"
+            className="emotion-76"
           >
             <legend
-              className="emotion-44"
+              className="emotion-43"
             >
               Google Vision (Images & Documents)
             </legend>
             <div
-              className="emotion-45"
+              className="emotion-44"
             />
             <table
               cellSpacing="0"
-              className="emotion-76"
+              className="emotion-75"
             >
               <thead>
                 <tr>
@@ -1421,12 +1424,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-51"
+                  className="emotion-50"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-50"
+                      className="emotion-49"
                     >
                       <div
                         className="emotion-5"
@@ -1471,12 +1474,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-51"
+                  className="emotion-50"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-50"
+                      className="emotion-49"
                     >
                       <div
                         className="emotion-5"
@@ -1521,12 +1524,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-51"
+                  className="emotion-50"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-50"
+                      className="emotion-49"
                     >
                       <div
                         className="emotion-5"
@@ -1571,12 +1574,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-51"
+                  className="emotion-50"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-50"
+                      className="emotion-49"
                     >
                       <div
                         className="emotion-5"
@@ -1624,19 +1627,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-77"
+            className="emotion-76"
           >
             <legend
-              className="emotion-44"
+              className="emotion-43"
             >
               Google Video
             </legend>
             <div
-              className="emotion-45"
+              className="emotion-44"
             />
             <table
               cellSpacing="0"
-              className="emotion-76"
+              className="emotion-75"
             >
               <thead>
                 <tr>
@@ -1653,12 +1656,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-51"
+                  className="emotion-50"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-50"
+                      className="emotion-49"
                     >
                       <div
                         className="emotion-5"
@@ -1703,12 +1706,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-51"
+                  className="emotion-50"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-50"
+                      className="emotion-49"
                     >
                       <div
                         className="emotion-5"
@@ -1753,12 +1756,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-51"
+                  className="emotion-50"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-50"
+                      className="emotion-49"
                     >
                       <div
                         className="emotion-5"
@@ -1809,10 +1812,10 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-151"
+      className="emotion-150"
     >
       <a
-        className="emotion-149"
+        className="emotion-148"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -1820,7 +1823,7 @@ Array [
         Cancel
       </a>
       <button
-        className="emotion-150"
+        className="emotion-149"
         onClick={[Function]}
         type="submit"
       >

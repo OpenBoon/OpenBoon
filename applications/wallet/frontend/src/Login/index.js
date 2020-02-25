@@ -2,6 +2,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { colors, constants, typography, spacing } from '../Styles'
 
@@ -9,6 +10,7 @@ import LogoSvg from '../Icons/logo.svg'
 import HiddenSvg from '../Icons/hidden.svg'
 import VisibleSvg from '../Icons/visible.svg'
 
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import FormAlert from '../FormAlert'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
@@ -25,6 +27,10 @@ const Login = ({
   setErrorMessage,
   onSubmit,
 }) => {
+  const {
+    query: { action },
+  } = useRouter()
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -33,6 +39,7 @@ const Login = ({
     <div
       css={{
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
@@ -40,6 +47,39 @@ const Login = ({
       <Head>
         <title>Login</title>
       </Head>
+
+      {action === 'password-reset-request-success' && (
+        <div css={{ paddingBottom: spacing.normal }}>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Password Reset Email Sent
+          </FlashMessage>
+        </div>
+      )}
+
+      {action === 'password-reset-update-success' && (
+        <div css={{ paddingBottom: spacing.normal }}>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Password has been updated
+          </FlashMessage>
+        </div>
+      )}
+
+      {action === 'create-account-success' && (
+        <div css={{ paddingBottom: spacing.normal }}>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Account created, please click the activation link in your email
+          </FlashMessage>
+        </div>
+      )}
+
+      {action === 'account-activation-success' && (
+        <div css={{ paddingBottom: spacing.normal }}>
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Account activated, please login now
+          </FlashMessage>
+        </div>
+      )}
+
       <form
         method="post"
         onSubmit={event => event.preventDefault()}

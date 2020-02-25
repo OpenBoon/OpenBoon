@@ -6,6 +6,11 @@ const noop = () => () => {}
 
 describe('<Login />', () => {
   it('should render properly', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/',
+      query: { action: 'password-reset-request-success' },
+    })
+
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
@@ -41,6 +46,48 @@ describe('<Login />', () => {
       username: 'username',
       password: 'password',
     })
+  })
+
+  it('should render properly on account creation success', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/',
+      query: { action: 'create-account-success' },
+    })
+
+    const mockFn = jest.fn()
+
+    const component = TestRenderer.create(
+      <Login
+        googleAuth={{ signIn: noop }}
+        hasGoogleLoaded
+        errorMessage=""
+        setErrorMessage={noop}
+        onSubmit={mockFn}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly on account activation success', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/',
+      query: { action: 'account-activation-success' },
+    })
+
+    const mockFn = jest.fn()
+
+    const component = TestRenderer.create(
+      <Login
+        googleAuth={{ signIn: noop }}
+        hasGoogleLoaded
+        errorMessage=""
+        setErrorMessage={noop}
+        onSubmit={mockFn}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should not POST the form', () => {
@@ -89,5 +136,24 @@ describe('<Login />', () => {
     expect(component.root.findByProps({ id: 'password' }).props.type).toBe(
       'text',
     )
+  })
+
+  it('should render password changed', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/',
+      query: { action: 'password-reset-update-success' },
+    })
+
+    const component = TestRenderer.create(
+      <Login
+        googleAuth={{ signIn: noop }}
+        hasGoogleLoaded
+        errorMessage=""
+        setErrorMessage={noop}
+        onSubmit={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

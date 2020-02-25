@@ -31,3 +31,9 @@ export const onSubmit = async ({
     dispatch({ errors: parsedErrors })
   }
 }
+
+export const onCopy = ({ inputRef }) => {
+  inputRef.current.select()
+  document.execCommand('copy')
+  inputRef.current.blur()
+}

@@ -31,8 +31,10 @@ variable "google-oauth-client-id" {
 variable "environment" {
 }
 
+variable "fqdn" {}
+
 variable "container-tag" {
-  default = "development"
+  default = "latest"
 }
 
 variable "namespace" {
@@ -49,5 +51,8 @@ variable "database-name" {
 
 variable "database-user" {
   default = "wallet"
+}
+
+variable "inception-key-b64" {
 }
 

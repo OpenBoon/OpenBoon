@@ -29,7 +29,7 @@ exports[`<JobsMenu /> should render properly 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -105,7 +105,7 @@ exports[`<JobsMenu /> should render properly 1`] = `
   padding: 12px 32px;
   white-space: nowrap;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 19px;
   font-weight: 500;
   border: none;
   cursor: pointer;

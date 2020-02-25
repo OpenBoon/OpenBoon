@@ -65,6 +65,23 @@ def zmlp_project_user(user, zmlp_project_membership):
 
 
 @pytest.fixture
+def project_zero():
+    return Project.objects.create(id='00000000-0000-0000-0000-000000000000',
+                                  name='Project Zero')
+
+
+@pytest.fixture
+def project_zero_membership(project_zero, superuser, zmlp_apikey):
+    apikey = b64encode(zmlp_apikey).decode('utf-8')
+    return Membership.objects.create(user=superuser, project=project_zero, apikey=apikey)
+
+
+@pytest.fixture
+def project_zero_user(superuser, project_zero_membership):
+    return superuser
+
+
+@pytest.fixture
 def zvi_project_membership(project, user):
     apikey = b"""{"userId": "00000000-7b0b-480e-8c36-f06f04aed2f1",
     "user": "admin",
