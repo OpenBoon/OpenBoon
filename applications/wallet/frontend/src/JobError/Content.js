@@ -15,7 +15,7 @@ const JobErrorContent = () => {
   const { data: job } = useSWR(`/api/v1/projects/${projectId}/jobs/${jobId}`)
 
   const { data: { results: errors = [] } = {} } = useSWR(
-    `/api/v1/projects/${projectId}/jobs/${jobId}/errors/`,
+    () => `/api/v1/projects/${projectId}/jobs/${job.id}/errors/`,
   )
   const currentError = errors.find(err => err.id === errorId)
 

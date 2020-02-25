@@ -13,6 +13,10 @@ describe('<JobError />', () => {
       query: { projectId: PROJECT_ID, jobId: JOB_ID, errorId: ERROR_ID },
     })
 
+    require('swr').__setMockUseSWRResponse({
+      data: { results: [{ id: JOB_ID }] },
+    })
+
     const component = TestRenderer.create(<JobError />)
 
     expect(component.toJSON()).toMatchSnapshot()
