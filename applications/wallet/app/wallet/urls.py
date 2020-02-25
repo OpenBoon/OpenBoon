@@ -29,7 +29,7 @@ from registration.views import UserRegistrationView, UserConfirmationView
 from wallet import views as wallet_views
 from wallet.views import WalletAPIRootView, LoginView, LogoutView
 from apikeys.views import ApikeyViewSet
-from jobs.views import JobViewSet
+from jobs.views import JobViewSet, TaskViewSet
 from projects.views import ProjectViewSet, ProjectUserViewSet
 from permissions.views import PermissionViewSet
 
