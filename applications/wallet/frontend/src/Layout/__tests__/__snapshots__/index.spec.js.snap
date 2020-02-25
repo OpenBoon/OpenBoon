@@ -215,7 +215,9 @@ exports[`<Layout /> should render properly 1`] = `
           width={110}
         />
       </a>
-      <ProjectSwitcher />
+      <ProjectSwitcher
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+      />
     </div>
     <div
       className="emotion-8"
@@ -251,6 +253,7 @@ exports[`<Layout /> should render properly 1`] = `
   </div>
   <Sidebar
     isSidebarOpen={false}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
     setSidebarOpen={[Function]}
   />
   <div
@@ -476,7 +479,9 @@ exports[`<Layout /> should render properly 2`] = `
           width={110}
         />
       </a>
-      <ProjectSwitcher />
+      <ProjectSwitcher
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+      />
     </div>
     <div
       className="emotion-8"
@@ -512,6 +517,7 @@ exports[`<Layout /> should render properly 2`] = `
   </div>
   <Sidebar
     isSidebarOpen={true}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
     setSidebarOpen={[Function]}
   />
   <div

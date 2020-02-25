@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import projects from '../__mocks__/projects'
 
@@ -6,9 +6,15 @@ import Projects from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
+const noop = () => () => {}
+
 describe('<Projects />', () => {
   it('should render properly while loading', () => {
-    const component = TestRenderer.create(<Projects>Hello World</Projects>)
+    const component = TestRenderer.create(
+      <Projects userProjectId="" setUser={noop}>
+        Hello World
+      </Projects>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -19,7 +25,9 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects>You have 0 projects</Projects>,
+      <Projects userProjectId="" setUser={noop}>
+        You have 0 projects
+      </Projects>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -35,9 +43,37 @@ describe('<Projects />', () => {
       data: projects,
     })
 
-    const component = TestRenderer.create(<Projects>Hello World</Projects>)
+    const component = TestRenderer.create(
+      <Projects userProjectId={PROJECT_ID} setUser={noop}>
+        Hello World
+      </Projects>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should update the userProjectId if it is different from the router projectId', async () => {
+    const mockFn = jest.fn()
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: { projectId: PROJECT_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: projects,
+    })
+
+    TestRenderer.create(
+      <Projects userProjectId="not-the-same-project-id" setUser={mockFn}>
+        Hello World
+      </Projects>,
+    )
+
+    // useEffect
+    await act(async () => {})
+
+    expect(mockFn).toHaveBeenCalledWith({ user: { projectId: PROJECT_ID } })
   })
 
   it('should redirect if there is no project id and the route requires a project id', () => {
@@ -54,7 +90,11 @@ describe('<Projects />', () => {
       data: projects,
     })
 
-    const component = TestRenderer.create(<Projects>Hello World</Projects>)
+    const component = TestRenderer.create(
+      <Projects userProjectId="" setUser={noop}>
+        Hello World
+      </Projects>,
+    )
 
     expect(mockFn).toHaveBeenCalledWith(
       '/[projectId]/jobs',
@@ -74,7 +114,11 @@ describe('<Projects />', () => {
       data: projects,
     })
 
-    const component = TestRenderer.create(<Projects>Hello World</Projects>)
+    const component = TestRenderer.create(
+      <Projects userProjectId="" setUser={noop}>
+        Hello World
+      </Projects>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -93,7 +137,11 @@ describe('<Projects />', () => {
       data: projects,
     })
 
-    const component = TestRenderer.create(<Projects>Hello World</Projects>)
+    const component = TestRenderer.create(
+      <Projects userProjectId="" setUser={noop}>
+        Hello World
+      </Projects>,
+    )
 
     expect(mockFn).toHaveBeenCalledWith(
       '/[projectId]/jobs',
@@ -117,7 +165,11 @@ describe('<Projects />', () => {
       data: { results: [] },
     })
 
-    const component = TestRenderer.create(<Projects>Hello World</Projects>)
+    const component = TestRenderer.create(
+      <Projects userProjectId="" setUser={noop}>
+        Hello World
+      </Projects>,
+    )
 
     expect(mockFn).toHaveBeenCalledWith('/')
 

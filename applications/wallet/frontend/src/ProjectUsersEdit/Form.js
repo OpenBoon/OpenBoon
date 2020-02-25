@@ -70,7 +70,7 @@ const ProjectUsersEditForm = ({ projectId, user, permissions }) => {
 ProjectUsersEditForm.propTypes = {
   projectId: PropTypes.string.isRequired,
   user: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     email: PropTypes.string.isRequired,
     permissions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   }).isRequired,

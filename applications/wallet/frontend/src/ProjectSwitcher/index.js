@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
@@ -11,11 +12,8 @@ import Button, { VARIANTS } from '../Button'
 
 const CHEVRON_WIDTH = 20
 
-const ProjectSwitcher = () => {
-  const {
-    pathname,
-    query: { projectId },
-  } = useRouter()
+const ProjectSwitcher = ({ projectId }) => {
+  const { pathname } = useRouter()
 
   const { data: { results: projects = [] } = {} } = useSWR('/api/v1/projects/')
 
@@ -88,6 +86,10 @@ const ProjectSwitcher = () => {
       )}
     </Menu>
   )
+}
+
+ProjectSwitcher.propTypes = {
+  projectId: PropTypes.string.isRequired,
 }
 
 export default ProjectSwitcher

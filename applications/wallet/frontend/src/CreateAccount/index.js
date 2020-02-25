@@ -47,7 +47,7 @@ const CreateAccount = () => {
         <title>Create an Account</title>
       </Head>
 
-      <Navbar isSidebarOpen={false} setSidebarOpen={noop}>
+      <Navbar projectId="" isSidebarOpen={false} setSidebarOpen={noop}>
         <div />
       </Navbar>
 

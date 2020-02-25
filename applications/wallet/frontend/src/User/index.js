@@ -18,7 +18,7 @@ const User = ({ initialUser, children }) => {
   const [googleAuth, setGoogleAuth] = useState({ signIn: noop, signOut: noop })
 
   useEffect(() => {
-    if (initialUser.email || hasLocalStorageLoaded) return
+    if (initialUser.id || hasLocalStorageLoaded) return
 
     const storedUser = getUser()
 
@@ -27,7 +27,7 @@ const User = ({ initialUser, children }) => {
     setHasLocalStorageLoaded(true)
   }, [initialUser, hasLocalStorageLoaded, user, setStateUser])
 
-  if (!initialUser.email && !hasLocalStorageLoaded) return null
+  if (!initialUser.id && !hasLocalStorageLoaded) return null
 
   return (
     <UserContext.Provider
