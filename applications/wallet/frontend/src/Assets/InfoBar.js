@@ -15,6 +15,7 @@ const AssetInfoBar = () => {
         top: constants.navbar.height + 1,
         justifyContent: 'flex-end',
         boxShadow: BOX_SHADOW,
+        fontFamily: 'Roboto Condensed',
       }}>
       <div css={{ color: colors.structure.steel }}>
         Sort: Import Date &nbsp;| &nbsp;

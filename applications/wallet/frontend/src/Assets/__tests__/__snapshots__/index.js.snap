@@ -28,6 +28,7 @@ exports[`<Assets /> should render properly 1`] = `
   z-index: 100;
   padding-left: 16px;
   padding-right: 16px;
+  font-family: Roboto Condensed;
 }
 
 .emotion-0 {
