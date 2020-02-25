@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 import { colors, spacing, constants, zIndex } from '../Styles'
 
@@ -54,9 +55,13 @@ const Navbar = ({ isSidebarOpen, setSidebarOpen, children }) => {
           </button>
         )}
 
-        <div css={{ paddingLeft: spacing.base, paddingRight: spacing.base }}>
-          <LogoSvg width={LOGO_WIDTH} />
-        </div>
+        <Link href="/" passHref>
+          <a
+            css={{ paddingLeft: spacing.base, paddingRight: spacing.base }}
+            aria-label="Home">
+            <LogoSvg width={LOGO_WIDTH} />
+          </a>
+        </Link>
 
         <ProjectSwitcher />
       </div>
