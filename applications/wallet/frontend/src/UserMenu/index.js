@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import Link from 'next/link'
 
 import userShape from '../User/shape'
 
@@ -67,7 +68,7 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
             </div>
           </Button>
         )}>
-        {({ onBlur }) => (
+        {({ onBlur, onClick }) => (
           <div>
             <div
               css={{
@@ -80,6 +81,17 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
               <div>{email}</div>
             </div>
             <ul>
+              <li>
+                <Link href="/account" passHref>
+                  <Button
+                    variant={VARIANTS.MENU_ITEM}
+                    onBlur={onBlur}
+                    onClick={onClick}
+                    isDisabled={false}>
+                    Manage Account
+                  </Button>
+                </Link>
+              </li>
               <li>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
