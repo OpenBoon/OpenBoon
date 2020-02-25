@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { spacing, typography } from '../Styles'
+import { spacing } from '../Styles'
 
 import Loading from '../Loading'
+import SectionTitle from '../SectionTitle'
 
 import JobErrorType from './Type'
 
@@ -25,16 +26,9 @@ const JobErrorContent = () => {
 
   return (
     <div>
-      <h3
-        css={{
-          fontSize: typography.size.medium,
-          lineHeight: typography.height.medium,
-          fontWeight: typography.weight.medium,
-          paddingTop: spacing.normal,
-          paddingBottom: spacing.spacious,
-        }}>
-        Job: {name}
-      </h3>
+      <div css={{ paddingBottom: spacing.spacious }}>
+        <SectionTitle>Job: {name}</SectionTitle>
+      </div>
 
       <JobErrorType error={currentError} />
     </div>

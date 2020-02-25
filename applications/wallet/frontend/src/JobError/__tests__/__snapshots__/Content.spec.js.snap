@@ -186,83 +186,14 @@ Array [
     </h2>
   </div>,
   .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 500;
-  padding-top: 16px;
-  padding-bottom: 32px;
+  padding: 16px;
+  padding-left: 0;
 }
 
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-bottom: 24px;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-bottom: 8px;
-}
-
-.emotion-1 {
-  padding-right: 8px;
-}
-
-.emotion-4 {
-  font-weight: 700;
-  padding-right: 8px;
-  white-space: noWrap;
-  padding-bottom: 4px;
-}
-
-.emotion-2 {
-  color: #c92300;
-  font-weight: 700;
-}
-
-<div>
-    <h3
-      className="emotion-0"
-    >
-      Job: 
-    </h3>
-    <div
-      className="emotion-5"
-    >
-      <div
-        className="emotion-3"
-      >
-        <div
-          className="emotion-1"
-        >
-          <svg
-            color="#c92300"
-            data-file-name="errorFatal.svg"
-            width={18}
-          />
-        </div>
-        <div
-          className="emotion-2"
-        >
-          Error Type: 
-          Fatal
-        </div>
-      </div>
-      <div
-        className="emotion-4"
-      >
-        Error Message:
-      </div>
-      fatal
-    </div>
+<div
+    className="emotion-0"
+  >
+    Loading...
   </div>,
 ]
 `;
@@ -353,15 +284,18 @@ Array [
       Error Details
     </h2>
   </div>,
-  .emotion-0 {
+  .emotion-1 {
+  padding-bottom: 32px;
+}
+
+.emotion-0 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-top: 16px;
-  padding-bottom: 32px;
 }
 
-.emotion-5 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -372,7 +306,7 @@ Array [
   padding-bottom: 24px;
 }
 
-.emotion-3 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -380,16 +314,16 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-1 {
+.emotion-2 {
   padding-right: 8px;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #d6680b;
   font-weight: 700;
 }
 
-.emotion-4 {
+.emotion-5 {
   font-weight: 700;
   padding-right: 8px;
   white-space: noWrap;
@@ -397,19 +331,24 @@ Array [
 }
 
 <div>
-    <h3
-      className="emotion-0"
-    >
-      Job: 
-    </h3>
     <div
-      className="emotion-5"
+      className="emotion-1"
+    >
+      <h3
+        className="emotion-0"
+      >
+        Job: 
+        image_similarity.json
+      </h3>
+    </div>
+    <div
+      className="emotion-6"
     >
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
         <div
-          className="emotion-1"
+          className="emotion-2"
         >
           <svg
             color="#d6680b"
@@ -418,18 +357,18 @@ Array [
           />
         </div>
         <div
-          className="emotion-2"
+          className="emotion-3"
         >
           Error Type: 
           Warning
         </div>
       </div>
       <div
-        className="emotion-4"
+        className="emotion-5"
       >
         Error Message:
       </div>
-      not fatal
+      AttributeError: 'NoneType' object has no attribute 'startswith'
     </div>
   </div>,
 ]

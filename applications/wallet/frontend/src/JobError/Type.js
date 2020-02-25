@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+import MessageDisplay from '../MessageDisplay'
+
 import ErrorFatalSvg from '../Icons/errorFatal.svg'
 import ErrorWarningSvg from '../Icons/errorWarning.svg'
 
@@ -35,16 +37,7 @@ const JobErrorType = ({ error: { message, fatal } }) => {
           Error Type: {fatal ? 'Fatal' : 'Warning'}
         </div>
       </div>
-      <div
-        css={{
-          fontWeight: 700,
-          paddingRight: spacing.base,
-          whiteSpace: 'noWrap',
-          paddingBottom: spacing.small,
-        }}>
-        Error Message:
-      </div>
-      {message}
+      <MessageDisplay title="Error Message" content={message} />
     </div>
   )
 }
