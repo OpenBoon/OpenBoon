@@ -30,8 +30,7 @@ from wallet import views as wallet_views
 from wallet.views import WalletAPIRootView, LoginView, LogoutView
 from apikeys.views import ApikeyViewSet
 from jobs.views import JobsViewSet
-from projects.views import ProjectViewSet
-from projectusers.views import ProjectUserViewSet
+from projects.views import ProjectViewSet, ProjectUserViewSet
 from permissions.views import PermissionViewSet
 
 router = routers.DefaultRouter()
