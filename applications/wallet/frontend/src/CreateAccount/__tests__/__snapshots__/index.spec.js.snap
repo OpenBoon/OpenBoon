@@ -336,14 +336,18 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
     <div
       className="emotion-1"
     >
-      <div
+      <a
+        aria-label="Home"
         className="emotion-0"
+        href="/"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
       >
         <svg
           data-file-name="logo.svg"
           width={110}
         />
-      </div>
+      </a>
     </div>
     <div />
   </div>
@@ -842,14 +846,18 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
     <div
       className="emotion-1"
     >
-      <div
+      <a
+        aria-label="Home"
         className="emotion-0"
+        href="/"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
       >
         <svg
           data-file-name="logo.svg"
           width={110}
         />
-      </div>
+      </a>
     </div>
     <div />
   </div>

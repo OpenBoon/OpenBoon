@@ -203,14 +203,18 @@ exports[`<Layout /> should render properly 1`] = `
           width={20}
         />
       </button>
-      <div
+      <a
+        aria-label="Home"
         className="emotion-1"
+        href="/"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
       >
         <svg
           data-file-name="logo.svg"
           width={110}
         />
-      </div>
+      </a>
       <ProjectSwitcher />
     </div>
     <div
@@ -460,14 +464,18 @@ exports[`<Layout /> should render properly 2`] = `
           width={20}
         />
       </button>
-      <div
+      <a
+        aria-label="Home"
         className="emotion-1"
+        href="/"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
       >
         <svg
           data-file-name="logo.svg"
           width={110}
         />
-      </div>
+      </a>
       <ProjectSwitcher />
     </div>
     <div
