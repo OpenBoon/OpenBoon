@@ -11,7 +11,7 @@ const noop = () => () => {}
 describe('<Projects />', () => {
   it('should render properly while loading', () => {
     const component = TestRenderer.create(
-      <Projects userProjectId="" setUser={noop}>
+      <Projects projectId="" setUser={noop}>
         Hello World
       </Projects>,
     )
@@ -25,7 +25,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects userProjectId="" setUser={noop}>
+      <Projects projectId="" setUser={noop}>
         You have 0 projects
       </Projects>,
     )
@@ -44,7 +44,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects userProjectId={PROJECT_ID} setUser={noop}>
+      <Projects projectId={PROJECT_ID} setUser={noop}>
         Hello World
       </Projects>,
     )
@@ -52,7 +52,7 @@ describe('<Projects />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should update the userProjectId if it is different from the router projectId', async () => {
+  it('should update the projectId if it is different from the router projectId', async () => {
     const mockFn = jest.fn()
 
     require('next/router').__setUseRouter({
@@ -65,7 +65,7 @@ describe('<Projects />', () => {
     })
 
     TestRenderer.create(
-      <Projects userProjectId="not-the-same-project-id" setUser={mockFn}>
+      <Projects projectId="not-the-same-project-id" setUser={mockFn}>
         Hello World
       </Projects>,
     )
@@ -91,7 +91,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects userProjectId="" setUser={noop}>
+      <Projects projectId="" setUser={noop}>
         Hello World
       </Projects>,
     )
@@ -115,7 +115,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects userProjectId="" setUser={noop}>
+      <Projects projectId="" setUser={noop}>
         Hello World
       </Projects>,
     )
@@ -138,7 +138,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects userProjectId="" setUser={noop}>
+      <Projects projectId="" setUser={noop}>
         Hello World
       </Projects>,
     )
@@ -166,7 +166,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects userProjectId="" setUser={noop}>
+      <Projects projectId="" setUser={noop}>
         Hello World
       </Projects>,
     )

@@ -7,26 +7,26 @@ import Loading from '../Loading'
 
 const NO_PROJECT_ID_ROUTES = ['/account', '/account/password']
 
-const Projects = ({ userProjectId, setUser, children }) => {
+const Projects = ({ projectId, setUser, children }) => {
   const {
-    query: { projectId },
+    query: { projectId: routerProjectId },
     pathname,
   } = useRouter()
 
   const { data: { results: projects } = {} } = useSWR('/api/v1/projects/')
 
   useEffect(() => {
-    if (!projectId) return
+    if (!routerProjectId) return
 
-    if (projectId === userProjectId) return
+    if (projectId === routerProjectId) return
 
-    setUser({ user: { projectId } })
-  }, [projectId, userProjectId, setUser])
+    setUser({ user: { projectId: routerProjectId } })
+  }, [projectId, routerProjectId, setUser])
 
   if (!Array.isArray(projects)) return <Loading />
 
   if (projects.length === 0) {
-    if (projectId) {
+    if (routerProjectId) {
       Router.push('/')
 
       return null
@@ -37,7 +37,7 @@ const Projects = ({ userProjectId, setUser, children }) => {
 
   if (NO_PROJECT_ID_ROUTES.includes(pathname)) return children
 
-  if (!projectId || !projects.find(({ id }) => projectId === id)) {
+  if (!routerProjectId || !projects.find(({ id }) => routerProjectId === id)) {
     Router.push('/[projectId]/jobs', `/${projects[0].id}/jobs`)
 
     return null
@@ -47,7 +47,7 @@ const Projects = ({ userProjectId, setUser, children }) => {
 }
 
 Projects.propTypes = {
-  userProjectId: PropTypes.string.isRequired,
+  projectId: PropTypes.string.isRequired,
   setUser: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 }
