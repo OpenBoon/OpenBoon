@@ -47,7 +47,7 @@ class Membership(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='memberships',
                              on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    apikey = encrypt(models.TextField())
+    apikey = encrypt(models.TextField(blank=True))
 
     class Meta:
         unique_together = (
