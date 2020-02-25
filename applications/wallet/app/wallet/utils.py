@@ -3,7 +3,7 @@ from rest_framework.exceptions import PermissionDenied
 from zmlp import ZmlpClient
 
 
-def get_zmlp_superuser_client(user):
+def get_zmlp_superuser_client(user, project_id=None):
     """
     Helper method to return the ZMLP client specifically for the SuperUser, who is
     the only person who can create projects.
@@ -32,4 +32,7 @@ def get_zmlp_superuser_client(user):
         raise PermissionDenied(detail=(f'{user.username} does not have a membership '
                                        f'to {project.name} setup yet. Please create in the '
                                        f'Admin console to continue.'))
-    return ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL)
+    if project_id:
+        return ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL, project_id=project_id)
+    else:
+        return ZmlpClient(apikey=apikey, server=settings.ZMLP_API_URL)
