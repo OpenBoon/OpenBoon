@@ -38,7 +38,7 @@ const Projects = ({ projectId, setUser, children }) => {
   if (NO_PROJECT_ID_ROUTES.includes(pathname)) return children
 
   if (!routerProjectId || !projects.find(({ id }) => routerProjectId === id)) {
-    Router.push('/[projectId]/jobs', `/${projects[0].id}/jobs`)
+    Router.push('/[projectId]/jobs', `/${projectId || projects[0].id}/jobs`)
 
     return null
   }
