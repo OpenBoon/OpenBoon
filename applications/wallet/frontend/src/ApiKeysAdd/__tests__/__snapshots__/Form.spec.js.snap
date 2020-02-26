@@ -123,6 +123,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
 }
 
 .emotion-8 path {
@@ -1307,6 +1308,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
 }
 
 .emotion-8 path {

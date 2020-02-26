@@ -16,7 +16,7 @@ import DataSourcesAddAutomaticAnalysis from '../DataSourcesAdd/AutomaticAnalysis
 
 import { onSubmit } from './helpers'
 
-import DataSourcesAddModules from './Modules'
+import DataSourcesEditModules from './Modules'
 
 const INITIAL_STATE = {
   fileTypes: {},
@@ -39,12 +39,13 @@ const DataSourcesEditForm = ({
         onClick={fileType =>
           dispatch({ fileTypes: { ...state.fileTypes, ...fileType } })
         }
-        options={FILE_TYPES.map(({ key, label, legend, icon }) => ({
-          key,
+        options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
+          value,
           label,
           icon: <img src={icon} alt={label} width="40px" />,
           legend,
           initialValue: false,
+          isDisabled: false,
         }))}
         variant={CHECKBOX_VARIANTS.SECONDARY}
       />
@@ -58,7 +59,7 @@ const DataSourcesEditForm = ({
       <DataSourcesAddAutomaticAnalysis />
 
       {MODULES.map(module => (
-        <DataSourcesAddModules
+        <DataSourcesEditModules
           key={module.provider}
           module={module}
           onClick={modules =>
