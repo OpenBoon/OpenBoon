@@ -169,7 +169,8 @@ class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
         large_proxy_path = get_proxy_level_path(asset, 3)
         large_proxy = get_proxy_level(asset, 3)
 
-        response = self.image_annotator.face_detection(image=self.get_vision_image(large_proxy_path))
+        response = self.image_annotator.face_detection(
+            image=self.get_vision_image(large_proxy_path))
         faces = response.face_annotations
 
         if not faces:

@@ -18,10 +18,11 @@ class ZmlpObjectDetectionProcessor(AssetProcessor):
         bbox, labels, conf = cv.detect_common_objects(im)
         if bbox:
             for elem in zip(bbox, labels, conf):
+                rect = Element.calculate_normalized_rect(im.shape[1], im.shape[0], elem[0])
                 element = Element("object",
                                   self.namespace,
                                   labels=elem[1],
-                                  rect=Element.calculate_normalized_rect(im.shape[1], im.shape[0], elem[0]),
+                                  rect=rect,
                                   score=elem[2])
                 asset.add_element(element)
 
