@@ -8,13 +8,16 @@ describe('<Checkbox />', () => {
 
     const component = TestRenderer.create(
       <Checkbox
-        value="checkbox"
-        label="Checkbox"
-        icon=""
-        legend=""
-        onClick={mockFn}
-        initialValue={false}
         variant={VARIANTS.PRIMARY}
+        option={{
+          value: 'checkbox',
+          label: 'Checkbox',
+          icon: '',
+          legend: '',
+          initialValue: false,
+          isDisabled: false,
+        }}
+        onClick={mockFn}
       />,
     )
 

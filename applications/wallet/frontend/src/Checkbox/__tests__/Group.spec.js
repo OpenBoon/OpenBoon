@@ -9,18 +9,19 @@ describe('<CheckboxGroup />', () => {
 
     const component = TestRenderer.create(
       <CheckboxGroup
+        variant={CHECKBOX_VARIANTS.PRIMARY}
         legend="Permissions"
         onClick={mockFn}
         options={[
           {
-            key: 'api',
+            value: 'api',
             label: 'API',
             icon: '',
             legend: "Dude You're Getting A Telescope",
             initialValue: true,
+            isDisabled: false,
           },
         ]}
-        variant={CHECKBOX_VARIANTS.PRIMARY}
       />,
     )
 

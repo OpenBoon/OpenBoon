@@ -53,6 +53,7 @@ exports[`<Checkbox /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
 }
 
 .emotion-1 path {
@@ -155,6 +156,7 @@ exports[`<Checkbox /> should render properly 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
 }
 
 .emotion-5 {

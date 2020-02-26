@@ -68,11 +68,12 @@ const ApiKeysAddForm = () => {
           dispatch({ permissions: { ...state.permissions, ...permission } })
         }
         options={permissions.map(({ name, description }) => ({
-          key: name,
+          value: name,
           label: name.replace(/([A-Z])/g, match => ` ${match}`),
           icon: '',
           legend: description,
           initialValue: false,
+          isDisabled: false,
         }))}
         variant={CHECKBOX_VARIANTS.PRIMARY}
       />

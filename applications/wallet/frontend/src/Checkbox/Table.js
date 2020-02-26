@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types'
 
+import checkboxOptionShape from './optionShape'
+
 import { spacing, colors, constants, typography } from '../Styles'
 
 import CheckboxTableRow from './TableRow'
 
-const CheckboxTable = ({ category: { name, modules }, onClick }) => {
+const CheckboxTable = ({ category: { name, options }, onClick }) => {
   return (
     <fieldset
       css={{
@@ -86,14 +88,11 @@ const CheckboxTable = ({ category: { name, modules }, onClick }) => {
           </tr>
         </thead>
         <tbody>
-          {modules.map(option => (
+          {options.map(option => (
             <CheckboxTableRow
-              key={option.key}
-              value={option.key}
-              label={option.label}
-              legend={option.legend}
-              initialValue={false}
-              onClick={value => onClick({ [option.key]: value })}
+              key={option.value}
+              option={option}
+              onClick={value => onClick({ [option.value]: value })}
             />
           ))}
         </tbody>
@@ -105,13 +104,7 @@ const CheckboxTable = ({ category: { name, modules }, onClick }) => {
 CheckboxTable.propTypes = {
   category: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    modules: PropTypes.arrayOf(
-      PropTypes.shape({
-        key: PropTypes.string.isRequired,
-        label: PropTypes.string.isRequired,
-        legend: PropTypes.string.isRequired,
-      }).isRequired,
-    ).isRequired,
+    options: PropTypes.arrayOf(PropTypes.shape(checkboxOptionShape)).isRequired,
   }).isRequired,
   onClick: PropTypes.func.isRequired,
 }

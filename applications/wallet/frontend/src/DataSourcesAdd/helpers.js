@@ -9,19 +9,19 @@ import GoogleCloudSvg from '../Icons/googleCloud.svg'
 
 export const FILE_TYPES = [
   {
-    key: 'images',
+    value: 'images',
     label: 'Image Files',
     legend: 'GIF, PNG, JPG, JPEG, TIF, TIFF, PSD',
     icon: '/icons/images.png',
   },
   {
-    key: 'documents',
+    value: 'documents',
     label: 'Documents (PDF & MS Office)',
     legend: 'PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX',
     icon: '/icons/documents.png',
   },
   {
-    key: 'video',
+    value: 'video',
     label: 'Video Files',
     legend: 'MP4, M4V, MOV, MPG, MPEG, OGG',
     icon: '/icons/videos.png',
@@ -42,43 +42,55 @@ export const MODULES = [
     categories: [
       {
         name: 'Images & Documents',
-        modules: [
+        options: [
           {
-            key: 'zmlp-classification',
+            value: 'zmlp-classification',
             label: 'Label Detection',
             legend: 'Adds a list of predicted label that apply to the media.',
+            initialValue: false,
+            isDisabled: false,
           },
           {
-            key: 'zmlp-objects',
+            value: 'zmlp-objects',
             label: 'Object Detection',
             legend: 'Detects up to 80 everyday objects.',
+            initialValue: false,
+            isDisabled: false,
           },
           {
-            key: 'zmlp-face-recognition',
+            value: 'zmlp-face-recognition',
             label: 'Facial Recognition',
             legend: 'Recognizes faces within an image.',
+            initialValue: false,
+            isDisabled: false,
           },
           {
-            key: 'zmlp-ocr',
+            value: 'zmlp-ocr',
             label: 'OCR (Optical Character Recognition)',
             legend: 'Transcribes text found in images.',
+            initialValue: false,
+            isDisabled: false,
           },
           {
-            key: 'zml-deep-document',
+            value: 'zml-deep-document',
             label: 'Page Analysis',
             legend:
               'Breaks multipage document into individual pages and imports them as individual entities.',
+            initialValue: false,
+            isDisabled: false,
           },
         ],
       },
       {
         name: 'Video',
-        modules: [
+        options: [
           {
-            key: 'shot-detection',
+            value: 'shot-detection',
             label: 'Shot Detection',
             legend:
               'Intelligently breaks a video into separate shots and imports each as its own entity.',
+            initialValue: false,
+            isDisabled: false,
           },
         ],
       },
@@ -100,51 +112,65 @@ export const MODULES = [
     categories: [
       {
         name: 'Google Vision (Images & Documents)',
-        modules: [
+        options: [
           {
-            key: 'gcp-vision-crop-hints',
+            value: 'gcp-vision-crop-hints',
             label: 'Crop Hints (Vision)',
             legend:
               'Determine suggested vertices for a crop region on an image.',
+            initialValue: false,
+            isDisabled: true,
           },
           {
-            key: 'gcp-document-text-detection',
+            value: 'gcp-document-text-detection',
             label: 'OCR Documents (Vision)',
             legend:
               'Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image.',
+            initialValue: false,
+            isDisabled: true,
           },
           {
-            key: 'gcp-vision-text-detection',
+            value: 'gcp-vision-text-detection',
             label: 'OCR Images (Vision)',
             legend:
               'Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image',
+            initialValue: false,
+            isDisabled: true,
           },
           {
-            key: 'gcp-label-detection',
+            value: 'gcp-label-detection',
             label: 'Label Detection (Vision)',
             legend: 'Add labels based on image content.',
+            initialValue: false,
+            isDisabled: true,
           },
         ],
       },
       {
         name: 'Google Video',
-        modules: [
+        options: [
           {
-            key: 'gcp-label-detection',
+            value: 'gcp-label-detection',
             label: 'Label Detection (Video)',
             legend:
               'Identifies objects, locations, activities, animal species, products, and more.',
+            initialValue: false,
+            isDisabled: true,
           },
           {
-            key: 'gcp-shot-detection',
+            value: 'gcp-shot-detection',
             label: 'Shot Change (Video)',
             legend: 'Shot change analysis detects shot changes in a video',
+            initialValue: false,
+            isDisabled: true,
           },
           {
-            key: 'gcp-explicit-content-detection',
+            value: 'gcp-explicit-content-detection',
             label: 'Explicit Content Detection (Video)',
             legend:
               'Explicit Content Detection detects adult content in videos. Adult content is content generally inappropriate for those under under 18 years of age and includes, but is not limited to, nudity, sexual activities, and pornography. Such content detected in cartoons or anime is also identified.',
+            initialValue: false,
+            isDisabled: true,
           },
         ],
       },
@@ -168,7 +194,7 @@ export const onSubmit = async ({
           .filter(f => fileTypes[f])
           .flatMap(f => {
             const { legend: extensions } = FILE_TYPES.find(
-              ({ key }) => key === f,
+              ({ value }) => value === f,
             )
             return extensions.toLowerCase().split(',')
           }),

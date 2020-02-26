@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+import checkboxOptionShape from '../Checkbox/optionShape'
+
 import { colors, spacing, constants } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
@@ -48,17 +50,13 @@ const DataSourcesEditModules = ({
 DataSourcesEditModules.propTypes = {
   module: PropTypes.shape({
     provider: PropTypes.string.isRequired,
+    logo: PropTypes.node.isRequired,
     description: PropTypes.node.isRequired,
     categories: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
-        modules: PropTypes.arrayOf(
-          PropTypes.shape({
-            key: PropTypes.string.isRequired,
-            label: PropTypes.string.isRequired,
-            legend: PropTypes.string.isRequired,
-          }).isRequired,
-        ).isRequired,
+        options: PropTypes.arrayOf(PropTypes.shape(checkboxOptionShape))
+          .isRequired,
       }).isRequired,
     ).isRequired,
   }).isRequired,
