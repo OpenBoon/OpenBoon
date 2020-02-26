@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 import { colors, spacing, constants, zIndex } from '../Styles'
 
@@ -11,10 +11,7 @@ import HamburgerSvg from './hamburger.svg'
 
 const LOGO_WIDTH = 110
 
-const Navbar = ({ isSidebarOpen, setSidebarOpen, children }) => {
-  const {
-    query: { projectId },
-  } = useRouter()
+const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
   return (
     <div
       css={{
@@ -54,11 +51,15 @@ const Navbar = ({ isSidebarOpen, setSidebarOpen, children }) => {
           </button>
         )}
 
-        <div css={{ paddingLeft: spacing.base, paddingRight: spacing.base }}>
-          <LogoSvg width={LOGO_WIDTH} />
-        </div>
+        <Link href="/" passHref>
+          <a
+            css={{ paddingLeft: spacing.base, paddingRight: spacing.base }}
+            aria-label="Home">
+            <LogoSvg width={LOGO_WIDTH} />
+          </a>
+        </Link>
 
-        <ProjectSwitcher />
+        <ProjectSwitcher projectId={projectId} />
       </div>
 
       {children}
@@ -67,6 +68,7 @@ const Navbar = ({ isSidebarOpen, setSidebarOpen, children }) => {
 }
 
 Navbar.propTypes = {
+  projectId: PropTypes.string.isRequired,
   isSidebarOpen: PropTypes.bool.isRequired,
   setSidebarOpen: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,

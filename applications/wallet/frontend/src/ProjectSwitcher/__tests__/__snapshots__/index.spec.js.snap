@@ -310,4 +310,29 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
 </div>
 `;
 
+exports[`<ProjectSwitcher /> should render properly with one project 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px 8px;
+  color: #73b61c;
+}
+
+<div
+  className="emotion-0"
+>
+  qwerty
+</div>
+`;
+
 exports[`<ProjectSwitcher /> should render properly without data 1`] = `null`;
