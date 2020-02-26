@@ -17,12 +17,12 @@ class ZmlpObjectDetectionProcessorTests(PluginUnitTestCase):
     @patch.object(ZmlpClient, 'upload_file')
     def test_process(self, upload_patch):
         upload_patch.return_value = {
-            "name": "proxy_200x200.jpg",
-            "category": "proxy",
-            "mimetype": "image/jpeg",
-            "attrs": {
-                "width": 576,
-                "height": 1024
+            'name': 'proxy_200x200.jpg',
+            'category': 'proxy',
+            'mimetype': 'image/jpeg',
+            'attrs': {
+                'width': 576,
+                'height': 1024
             }
         }
 
@@ -32,8 +32,10 @@ class ZmlpObjectDetectionProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(ZmlpObjectDetectionProcessor(), {})
         processor.process(self.frame)
 
-        elements = self.frame.asset.document["elements"]
-        grouped = dict([(e["labels"][0], e) for e in elements])
-        assert grouped["dog"]["regions"] == ["SW", "SE"]
-        assert grouped["toilet"]["regions"] == ["SW"]
-        assert grouped["bicycle"]["regions"] == ["NW", "NE", "SW", "SE", "CENTER"]
+        elements = self.frame.asset.document['elements']
+        grouped = dict([(e['labels'][0], e) for e in elements])
+
+        assert 'dog' in grouped
+        assert 'toilet' in grouped
+        assert 'bicycle' in grouped
+        assert 'zvi.object-detection' == elements[0]['analysis']

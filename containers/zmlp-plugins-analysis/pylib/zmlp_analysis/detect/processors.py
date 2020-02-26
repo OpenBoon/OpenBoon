@@ -1,30 +1,28 @@
 import cv2
 import cvlib as cv
-from cvlib.object_detection import draw_bbox
 
-from zmlpsdk import AssetProcessor
-from zmlpsdk.proxy import get_proxy_level, store_element_proxy
 from zmlp.asset import Element
-
-NAMESPACE = "zmlpObjectDetection"
+from zmlpsdk import AssetProcessor
+from zmlpsdk.proxy import get_proxy_level_path
 
 
 class ZmlpObjectDetectionProcessor(AssetProcessor):
 
+    namespace = "zvi.object-detection"
+
     def process(self, frame):
         asset = frame.asset
-        p_path = get_proxy_level(asset, 3)
+        p_path = get_proxy_level_path(asset, 3)
 
         im = cv2.imread(p_path)
         bbox, labels, conf = cv.detect_common_objects(im)
         if bbox:
-            output = store_element_proxy(asset, draw_bbox(im, bbox, labels, conf), NAMESPACE)
-
             for elem in zip(bbox, labels, conf):
                 element = Element("object",
-                                  NAMESPACE,
+                                  self.namespace,
                                   labels=elem[1],
-                                  rect=elem[0],
-                                  score=elem[2],
-                                  proxy=output)
+                                  rect=Element.calculate_normalized_rect(im.shape[1], im.shape[0], elem[0]),
+                                  score=elem[2])
                 asset.add_element(element)
+
+            asset.add_analysis(self.namespace, {"detected": len(bbox)})

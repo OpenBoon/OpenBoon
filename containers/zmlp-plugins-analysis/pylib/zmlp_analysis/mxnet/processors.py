@@ -7,12 +7,12 @@ import numpy as np
 from pathlib2 import Path
 
 from zmlpsdk import AssetProcessor, Argument
-from zmlpsdk.proxy import get_proxy_level
+from zmlpsdk.proxy import get_proxy_level_path
 
 package_directory = os.path.dirname(os.path.abspath(__file__))
 
 
-class ResNetClassifyProcessor(AssetProcessor):
+class ZviLabelDetectionResNet152(AssetProcessor):
     """
     Classify with ResNet
     """
@@ -20,8 +20,10 @@ class ResNetClassifyProcessor(AssetProcessor):
         'debug': 'Run in debug mode. This creates a few extra fields, including confidence values.'
     }
 
+    namespace = 'zvi.label-detection'
+
     def __init__(self):
-        super(ResNetClassifyProcessor, self).__init__()
+        super(ZviLabelDetectionResNet152, self).__init__()
         self.add_arg(Argument("debug", "boolean", default=False, toolTip=self.toolTips['debug']))
         self.labels = []
         self.mod = None
@@ -39,9 +41,9 @@ class ResNetClassifyProcessor(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
 
-        p_path = get_proxy_level(asset, 0)
+        p_path = get_proxy_level_path(asset, 0)
         if not p_path:
-            self.logger.warning("No proxy available for ResNetClassifyProcessor")
+            self.logger.warning("No proxy available for ZmlpLabelDetectionResNet152")
         img = cv2.imread(p_path)
         img = cv2.resize(img, (224, 224))
         img = np.swapaxes(img, 0, 2)
@@ -62,7 +64,7 @@ class ResNetClassifyProcessor(AssetProcessor):
             kw.extend([k.strip() for k in self.labels[i].split(',') if k])
 
         struct = {
-            'keywords': list(set(kw)),
+            'labels': list(set(kw)),
             'score': float(prob[psort[0]])
         }
 
@@ -77,16 +79,18 @@ class ResNetClassifyProcessor(AssetProcessor):
                     self.labels[i].replace(',', '').split(' ')[1:])
                 struct['debug']['prob' + str(j)] = prob[i]
 
-        asset.add_analysis('zmlp.labels', struct)
+        asset.add_analysis(self.namespace, struct)
 
 
-class ResNetSimilarityProcessor(AssetProcessor):
+class ZviSimilarityProcessor(AssetProcessor):
     """
     make a hash with ResNet
     """
+
+    namespace = "zvi.similarity"
+
     def __init__(self):
-        super(ResNetSimilarityProcessor, self).__init__()
-        self.add_arg(Argument("debug", "boolean", default=False))
+        super(ZviSimilarityProcessor, self).__init__()
         self.labels = []
         self.mod = None
         self.sym = None
@@ -106,9 +110,9 @@ class ResNetSimilarityProcessor(AssetProcessor):
 
     def process(self, frame):
         asset = frame.asset
-        p_path = get_proxy_level(asset, 0)
+        p_path = get_proxy_level_path(asset, 0)
         if not p_path:
-            self.logger.warning("No proxy available for ResNetSimilarityProcessor")
+            self.logger.warning("No proxy available for ZmlpSimilarityResNet152")
             return
         img = cv2.imread(p_path)
         img = cv2.resize(img, (224, 224))
@@ -135,14 +139,7 @@ class ResNetSimilarityProcessor(AssetProcessor):
 
         mxhash = mxhash
         struct = {
-            'vector': mxhash
+            'shash': mxhash
         }
 
-        if self.arg_value("debug"):
-            # Debug goes into a "debug" struct which doesn't create ES fields
-            struct['debug'] = {
-                'type': 'mxnet',
-                'model': os.path.basename(self.model_path)
-            }
-
-        asset.add_analysis('zmlp.similarity', struct)
+        asset.add_analysis(self.namespace, struct)

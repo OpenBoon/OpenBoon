@@ -1,7 +1,6 @@
 import io
 
 import backoff
-import cv2
 from google.api_core.exceptions import ResourceExhausted
 from google.cloud import vision
 from google.cloud.vision import types
@@ -9,7 +8,7 @@ from pathlib2 import Path
 
 from zmlp import Element
 from zmlpsdk import Argument, AssetProcessor, ZmlpProcessorException
-from zmlpsdk.proxy import get_proxy_level, store_element_proxy
+from zmlpsdk.proxy import get_proxy_level_path, get_proxy_level
 from .gcp_client import initialize_gcp_client
 
 __all__ = [
@@ -44,7 +43,7 @@ class AbstractCloudVisionProcessor(AssetProcessor):
 
     def process(self, frame):
         asset = frame.asset
-        path = get_proxy_level(asset, 1)
+        path = get_proxy_level_path(asset, 1)
         if not path:
             return
         self.detect(asset, self.get_vision_image(path))
@@ -148,7 +147,7 @@ class CloudVisionDetectExplicit(AbstractCloudVisionProcessor):
 
 
 class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
-    namespace = "google.faceDetection"
+    namespace = "gcp.face-detection"
 
     label_keys = [
         'joy',
@@ -167,8 +166,10 @@ class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
     def detect(self, asset, image):
         """Executes face detection using the Cloud Vision API."""
         # Use large proxy for face
+        large_proxy_path = get_proxy_level_path(asset, 3)
         large_proxy = get_proxy_level(asset, 3)
-        response = self.image_annotator.face_detection(image=self.get_vision_image(large_proxy))
+
+        response = self.image_annotator.face_detection(image=self.get_vision_image(large_proxy_path))
         faces = response.face_annotations
 
         if not faces:
@@ -181,24 +182,18 @@ class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
                           rect.vertices[2].x,
                           rect.vertices[2].y])
 
-        # Once we have he rects we can make a proxy with boxes.
-        face_proxy = store_element_proxy(asset,
-                                         cv2.imread(large_proxy),
-                                         self.namespace,
-                                         rects=rects)
-
         # Once we have a proxy with boxes we can make elements
+        pwidth = large_proxy["attrs"]["width"]
+        pheight = large_proxy["attrs"]["height"]
         for rect, face in zip(rects, faces):
-            element = Element('face',
-                              analysis=self.namespace,
-                              rect=rect,
+            element = Element('face', self.namespace,
+                              rect=Element.calculate_normalized_rect(pwidth, pheight, rect),
                               labels=self.get_face_labels(face),
-                              score=face.detection_confidence,
-                              proxy=face_proxy)
+                              score=face.detection_confidence)
             asset.add_element(element)
 
         struct = {
-            'faceCount': len(faces)
+            'detected': len(faces)
         }
 
         asset.add_analysis(self.namespace, struct)

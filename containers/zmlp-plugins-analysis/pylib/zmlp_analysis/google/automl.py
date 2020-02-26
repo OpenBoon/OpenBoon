@@ -5,7 +5,7 @@ from google.api_core.exceptions import ResourceExhausted
 from google.cloud import automl_v1beta1 as automl
 
 from zmlpsdk import Argument, AssetProcessor
-from zmlpsdk.proxy import get_proxy_level
+from zmlpsdk.proxy import get_proxy_level_path
 
 
 class AutoMLModelProcessor(AssetProcessor):
@@ -215,7 +215,7 @@ class AutoMLVisionModelProcessor(AutoMLModelProcessor):
         return 'automl_vision'
 
     def _create_payload(self, asset):
-        file_path = get_proxy_level(asset, 1)
+        file_path = get_proxy_level_path(asset, 1)
         with open(file_path, 'rb') as fh:
             content = fh.read()
 
