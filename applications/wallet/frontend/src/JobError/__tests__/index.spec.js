@@ -9,7 +9,7 @@ const FATAL_ERROR_ID = jobErrorFatal.id
 const NON_FATAL_ERROR_ID = jobErrorNonFatal.id
 
 describe('<JobError />', () => {
-  it('should render properly', () => {
+  it('should render properly when loading', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]',
       query: { projectId: PROJECT_ID, jobId: JOB_ID, errorId: FATAL_ERROR_ID },
@@ -22,7 +22,7 @@ describe('<JobError />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly', () => {
+  it('should render properly with a fatal error', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]',
       query: { projectId: PROJECT_ID, jobId: JOB_ID, errorId: FATAL_ERROR_ID },
@@ -37,7 +37,7 @@ describe('<JobError />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly', () => {
+  it('should render properly with a non-fatal error', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]',
       query: {

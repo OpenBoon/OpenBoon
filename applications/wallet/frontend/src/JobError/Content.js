@@ -7,8 +7,6 @@ import Value, { VARIANTS } from '../Value'
 
 import JobErrorType from './Type'
 
-import { colors } from '../Styles'
-
 const JobErrorContent = () => {
   const {
     query: { projectId, errorId },
@@ -27,7 +25,7 @@ const JobErrorContent = () => {
       <JobErrorType fatal={jobError.fatal} />
 
       <Value legend="Error Message" variant={VARIANTS.SECONDARY}>
-        <div css={{ color: colors.structure.white }}>{jobError.message}</div>
+        {jobError.message}
       </Value>
     </>
   )

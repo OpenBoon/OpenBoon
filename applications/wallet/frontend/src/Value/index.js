@@ -13,6 +13,9 @@ const STYLES = {
     legend: {
       color: colors.structure.iron,
     },
+    content: {
+      color: colors.structure.steel,
+    },
   },
   SECONDARY: {
     container: {
@@ -22,6 +25,7 @@ const STYLES = {
       color: colors.structure.white,
       fontWeight: typography.weight.bold,
     },
+    content: { color: colors.structure.white },
   },
 }
 
@@ -35,7 +39,7 @@ const Value = ({ variant, legend, children }) => (
     <div css={{ ...STYLES[variant].legend, paddingBottom: spacing.small }}>
       {legend}:
     </div>
-    <div css={{ color: colors.structure.steel }}>{children}</div>
+    <div css={STYLES[variant].content}>{children}</div>
   </div>
 )
 
