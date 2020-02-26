@@ -16,6 +16,7 @@ const borders = {
   success: `1px solid ${colors.signal.grass.base}`,
   tableRow: `1px solid ${colors.structure.steel}`,
   input: `2px solid ${colors.key.one}`,
+  divider: `1px solid ${colors.structure.smoke}`,
 }
 
 const opacity = {

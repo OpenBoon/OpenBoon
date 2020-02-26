@@ -1,29 +1,50 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Assets /> should render properly 1`] = `
-.emotion-8 {
+.emotion-9 {
   height: 100%;
   width: 100%;
   margin-top: 46px;
 }
 
-.emotion-0 {
+.emotion-1 {
   float: left;
+  background-color: white;
+  margin: -32px;
   padding-top: 32px;
-  height: 100%;
-  width: calc(100% - 400px);
-  margin: 0;
+  height: calc(100% + 64px);
+  width: calc(100% - 400px + 64px);
 }
 
-.emotion-1 {
-  color: #808080;
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 42px;
+  width: 90px;
+  border-radius: 2px;
+  background-color: #252525;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
 
 .emotion-2 {
+  color: #808080;
+}
+
+.emotion-3 {
   color: #b3b3b3;
 }
 
-.emotion-7 {
+.emotion-8 {
   position: relative;
   float: right;
   margin-right: -32px;
@@ -42,7 +63,7 @@ exports[`<Assets /> should render properly 1`] = `
   z-index: 100;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -56,27 +77,42 @@ exports[`<Assets /> should render properly 1`] = `
   padding-left: 16px;
 }
 
-.emotion-3 {
+.emotion-4 {
   padding-left: 16px;
   color: #808080;
   font-weight: 700;
 }
 
-.emotion-6 {
+.emotion-7 {
   padding: 16px;
 }
 
-.emotion-5 {
+.emotion-6 {
   color: #73b61c;
   font-style: italic;
 }
 
 <div
-  className="emotion-8"
+  className="emotion-9"
 >
   <div
-    className="emotion-0"
-  />
+    className="emotion-1"
+  >
+    <div
+      className="emotion-0"
+    >
+      <svg
+        color="#3b3b3b"
+        data-file-name="circleMinus.svg"
+        width={30}
+      />
+      <svg
+        color="#73b61c"
+        data-file-name="circlePlus.svg"
+        width={20}
+      />
+    </div>
+  </div>
   <div
     style={
       Object {
@@ -98,12 +134,12 @@ exports[`<Assets /> should render properly 1`] = `
     }
   >
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       Sort: Import Date  |  
     </div>
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       100
        of 
@@ -112,26 +148,26 @@ exports[`<Assets /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="emotion-7"
+    className="emotion-8"
   >
     <div
-      className="emotion-4"
+      className="emotion-5"
     >
       <svg
         data-file-name="information.svg"
         width={20}
       />
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
         ASSET METADATA
       </div>
     </div>
     <div
-      className="emotion-6"
+      className="emotion-7"
     >
       <div
-        className="emotion-5"
+        className="emotion-6"
       >
         Select an asset to view its metadata
       </div>

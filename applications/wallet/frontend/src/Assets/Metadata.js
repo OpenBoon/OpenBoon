@@ -1,4 +1,4 @@
-import { colors, spacing, typography, zIndex } from '../Styles'
+import { colors, constants, spacing, typography, zIndex } from '../Styles'
 
 import InformationSvg from './information.svg'
 
@@ -26,7 +26,7 @@ const AssetsMetadata = () => (
         display: 'flex',
         height: HEADER_HEIGHT,
         alignItems: 'center',
-        borderBottom: `1px solid ${colors.structure.smoke}`,
+        borderBottom: constants.borders.divider,
         paddingLeft: spacing.normal,
       }}>
       <InformationSvg width={20} />
