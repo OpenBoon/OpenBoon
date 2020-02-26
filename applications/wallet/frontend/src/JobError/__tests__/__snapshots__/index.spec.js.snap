@@ -87,6 +87,105 @@ Array [
     </h2>
   </div>,
   .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+}
+
+<div
+    className="emotion-0"
+  >
+    Loading...
+  </div>,
+]
+`;
+
+exports[`<JobError /> should render properly 2`] = `
+Array [
+  .emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-1 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-6 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Job Queue
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Job Details
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
+    <h2
+      className="emotion-6"
+    >
+      Error Details
+    </h2>
+  </div>,
+  .emotion-0 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
@@ -99,17 +198,7 @@ Array [
     Job: 
     Applying modules:  to gs://zorroa-dev-data
   </h3>,
-  .emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-2 {
+  .emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -127,29 +216,25 @@ Array [
 }
 
 <div
-    className="emotion-3"
+    className="emotion-2"
   >
     <div
-      className="emotion-2"
+      className="emotion-0"
     >
-      <div
-        className="emotion-0"
-      >
-        <svg
-          color="#c92300"
-          data-file-name="errorFatal.svg"
-          width={18}
-        />
-      </div>
-      <div
-        className="emotion-1"
-      >
-        Error Type: 
-        Fatal
-      </div>
+      <svg
+        color="#c92300"
+        data-file-name="errorFatal.svg"
+        width={18}
+      />
+    </div>
+    <div
+      className="emotion-1"
+    >
+      Error Type: 
+      Fatal
     </div>
   </div>,
-  .emotion-4 {
+  .emotion-3 {
   padding-top: 16px;
 }
 
@@ -168,25 +253,196 @@ Array [
 }
 
 <div
-    className="emotion-4"
+    className="emotion-3"
   >
     <div
-      className="emotion-3"
+      className="emotion-0"
+    >
+      Error Message
+      :
+    </div>
+    <div
+      className="emotion-2"
     >
       <div
-        className="emotion-0"
+        className="emotion-1"
       >
-        Error Message
-        :
+        ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
       </div>
-      <div
-        className="emotion-2"
+    </div>
+  </div>,
+]
+`;
+
+exports[`<JobError /> should render properly 3`] = `
+Array [
+  .emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-1 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-6 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
       >
-        <div
-          className="emotion-1"
-        >
-          ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
-        </div>
+        Job Queue
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Job Details
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
+    <h2
+      className="emotion-6"
+    >
+      Error Details
+    </h2>
+  </div>,
+  .emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    Job: 
+    Applying modules:  to gs://zorroa-dev-data
+  </h3>,
+  .emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 32px;
+}
+
+.emotion-0 {
+  padding-right: 8px;
+}
+
+.emotion-1 {
+  color: #d6680b;
+  font-weight: 700;
+}
+
+<div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-0"
+    >
+      <svg
+        color="#d6680b"
+        data-file-name="errorWarning.svg"
+        width={18}
+      />
+    </div>
+    <div
+      className="emotion-1"
+    >
+      Error Type: 
+      Warning
+    </div>
+  </div>,
+  .emotion-3 {
+  padding-top: 16px;
+}
+
+.emotion-0 {
+  color: #ffffff;
+  font-weight: 700;
+  padding-bottom: 4px;
+}
+
+.emotion-2 {
+  color: #808080;
+}
+
+.emotion-1 {
+  color: #ffffff;
+}
+
+<div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-0"
+    >
+      Error Message
+      :
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-1"
+      >
+        ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
       </div>
     </div>
   </div>,

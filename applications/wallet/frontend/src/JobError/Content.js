@@ -7,7 +7,7 @@ import Value, { VARIANTS } from '../Value'
 
 import JobErrorType from './Type'
 
-import { colors, spacing } from '../Styles'
+import { colors } from '../Styles'
 
 const JobErrorContent = () => {
   const {
@@ -26,11 +26,9 @@ const JobErrorContent = () => {
 
       <JobErrorType fatal={jobError.fatal} />
 
-      <div css={{ paddingTop: spacing.normal }}>
-        <Value legend="Error Message" variant={VARIANTS.SECONDARY}>
-          <div css={{ color: colors.structure.white }}>{jobError.message}</div>
-        </Value>
-      </div>
+      <Value legend="Error Message" variant={VARIANTS.SECONDARY}>
+        <div css={{ color: colors.structure.white }}>{jobError.message}</div>
+      </Value>
     </>
   )
 }

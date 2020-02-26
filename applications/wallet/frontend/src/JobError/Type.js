@@ -3,36 +3,30 @@ import PropTypes from 'prop-types'
 import ErrorFatalSvg from '../Icons/errorFatal.svg'
 import ErrorWarningSvg from '../Icons/errorWarning.svg'
 
-import { colors, spacing } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 
 const JobErrorType = ({ fatal }) => {
   return (
     <div
       css={{
         display: 'flex',
-        flexDirection: 'column',
+        paddingTop: spacing.spacious,
       }}>
+      <div css={{ paddingRight: spacing.base }}>
+        {fatal ? (
+          <ErrorFatalSvg width={18} color={colors.signal.warning.base} />
+        ) : (
+          <ErrorWarningSvg width={18} color={colors.signal.canary.strong} />
+        )}
+      </div>
       <div
         css={{
-          display: 'flex',
-          paddingTop: spacing.spacious,
+          color: fatal
+            ? colors.signal.warning.base
+            : colors.signal.canary.strong,
+          fontWeight: typography.weight.bold,
         }}>
-        <div css={{ paddingRight: spacing.base }}>
-          {fatal ? (
-            <ErrorFatalSvg width={18} color={colors.signal.warning.base} />
-          ) : (
-            <ErrorWarningSvg width={18} color={colors.signal.canary.strong} />
-          )}
-        </div>
-        <div
-          css={{
-            color: fatal
-              ? colors.signal.warning.base
-              : colors.signal.canary.strong,
-            fontWeight: 700,
-          }}>
-          Error Type: {fatal ? 'Fatal' : 'Warning'}
-        </div>
+        Error Type: {fatal ? 'Fatal' : 'Warning'}
       </div>
     </div>
   )

@@ -15,6 +15,9 @@ const STYLES = {
     },
   },
   SECONDARY: {
+    container: {
+      paddingTop: spacing.normal,
+    },
     legend: {
       color: colors.structure.white,
       fontWeight: typography.weight.bold,
