@@ -29,7 +29,7 @@ from registration.views import UserRegistrationView, UserConfirmationView
 from wallet import views as wallet_views
 from wallet.views import WalletAPIRootView, LoginView, LogoutView
 from apikeys.views import ApikeyViewSet
-from jobs.views import JobViewSet, TaskViewSet
+from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet
 from projects.views import ProjectViewSet, ProjectUserViewSet
 from permissions.views import PermissionViewSet
 
@@ -42,6 +42,7 @@ router.register('projects', ProjectViewSet, basename='project')
 projects_router = NestedSimpleRouter(router, 'projects', lookup='project')
 projects_router.register('jobs', JobViewSet, basename='job')
 projects_router.register('tasks', TaskViewSet, basename='task')
+projects_router.register('taskerrors', TaskErrorViewSet, basename='taskerror')
 projects_router.register('users', ProjectUserViewSet, basename='projectuser')
 projects_router.register('apikeys', ApikeyViewSet, basename='apikey')
 projects_router.register('permissions', PermissionViewSet, basename='permission')
