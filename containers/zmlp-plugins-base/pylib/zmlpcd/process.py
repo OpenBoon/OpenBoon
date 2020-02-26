@@ -1,10 +1,10 @@
+import datetime
 import hashlib
 import json
 import logging
+import os
 import sys
 import time
-import os
-import datetime
 
 from zmlp.asset import Asset
 from zmlpsdk import Frame, Context, ZmlpFatalProcessorException
@@ -146,10 +146,7 @@ class ProcessorExecutor(object):
         except Exception as e:
             logger.warning("Failed to create new instance of {}, {}".format(ref["className"], e))
             self.reactor.error(None, ref.get("className"), e, True, "initialize", sys.exc_info()[2])
-            self.reactor.emitter.write({
-                "type": "hardfailure",
-                "payload": {}
-            })
+            self.reactor.write_event("hardfailure", {})
             # Return an empty wrapper here so we can centralize the point
             # where the 'final' event is emitted.
             return None
@@ -163,10 +160,7 @@ class ProcessorExecutor(object):
 
         """
         logger.warning(msg)
-        self.reactor.emitter.write({
-            "type": "warning",
-            "payload": {"message": msg}
-        })
+        self.reactor.write_event("warning", {"message": msg})
 
 
 class ProcessorWrapper(object):
@@ -226,10 +220,7 @@ class ProcessorWrapper(object):
             self.reactor.error(None, self.instance, e, False, "execute", sys.exc_info()[2])
         finally:
             consumer.check_expand(True)
-            self.reactor.emitter.write({
-                "type": "finished",
-                "payload": {}
-            })
+            self.reactor.write_event("finished", {})
 
     def process(self, frame):
         """
@@ -287,12 +278,9 @@ class ProcessorWrapper(object):
             # Always show metrics even if it was skipped because otherwise
             # the pipeline checksums don't work.
             self.apply_metrics(frame.asset, processed, total_time, error)
-            self.reactor.emitter.write({
-                "type": "asset",
-                "payload": {
-                    "asset": frame.asset.for_json(),
-                    "skip": frame.skip
-                }
+            self.reactor.write_event("asset", {
+                "asset": frame.asset.for_json(),
+                "skip": frame.skip
             })
 
     def teardown(self):
@@ -307,7 +295,7 @@ class ProcessorWrapper(object):
             self.instance.teardown()
             # When the processor tears down then force an expand check.
             self.reactor.check_expand(force=True)
-            self.reactor.emitter.write({"type": "stats", "payload": [self.stats]})
+            self.reactor.write_event({"stats", [self.stats]})
         except Exception as e:
             self.reactor.error(None, self.instance, e, False, "teardown", sys.exc_info()[2])
 

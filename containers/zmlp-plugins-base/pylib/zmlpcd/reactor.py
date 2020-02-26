@@ -2,6 +2,7 @@ import itertools
 import logging
 import os
 import traceback
+import threading
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +33,7 @@ class Reactor(object):
         self.emitter = emitter
         self.batch_size = batch_size or max(self.default_batch_size, 1)
         self.expand_frames = []
+        self.lock = threading.RLock()
 
     def add_expand_frame(self, parent_frame, expand_frame, batch_size=None, force=False):
         """Add an expand frame to the Reactor. If the expand frame buffer is
@@ -130,7 +132,7 @@ class Reactor(object):
             assets (list of dict): A list of assets to process.
 
         """
-        self.emitter.write({"type": "expand", "payload": {"assets": assets}})
+        self.write_event("expand", {"assets": assets})
 
     def error(self, frame, processor, exp, fatal, phase, exec_traceback=None):
         """Emit an Error
@@ -187,7 +189,7 @@ class Reactor(object):
                 })
             payload["stackTrace"] = stack_trace_for_payload
 
-        self.emitter.write({"type": "error", "payload": payload})
+        self.write_event("error", payload)
 
     def performance_report(self, report):
         """
@@ -196,4 +198,8 @@ class Reactor(object):
         Args:
             report: A JSON string containing processing time statistics
         """
-        self.emitter.write({"type": "stats", "payload": report})
+        self.write_event("stats", report)
+
+    def write_event(self, type, payload):
+        with self.lock:
+            self.emitter.write({"type": type, "payload": payload})
