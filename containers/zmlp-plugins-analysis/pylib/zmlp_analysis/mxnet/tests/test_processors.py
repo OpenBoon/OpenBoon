@@ -32,7 +32,7 @@ class MxUnitTests(PluginUnitTestCase):
         processor = self.init_processor(ZviSimilarityProcessor(), {'debug': True})
         processor.process(self.frame)
 
-        self.assertEquals(2048, len(self.frame.asset['analysis.zvi.similarity.shash']))
+        self.assertEquals(2048, len(self.frame.asset['analysis.zvi.similarity.simhash']))
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_MxNetClassify_defaults(self, upload_patch):

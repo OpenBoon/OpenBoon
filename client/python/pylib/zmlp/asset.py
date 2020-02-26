@@ -439,9 +439,9 @@ class Element(object):
 
     # The attributes that get serialized for json.  If you change this, you'll likely
     # have to change the ES mapping.
-    attrs = ['type', 'labels', 'rect', 'score', 'analysis']
+    attrs = ['type', 'labels', 'rect', 'score', 'analysis', 'simhash']
 
-    def __init__(self, type, analysis=None, labels=None, score=None, rect=None):
+    def __init__(self, type, analysis=None, labels=None, score=None, rect=None, simhash=None):
         """
         Create a new Element instance.
 
@@ -453,12 +453,14 @@ class Element(object):
             score (float): If a prediction is made, a score describes the confidence level.
             rect (list[int]): A list of 4 integers describe the rectangle containing the element.
                 The ints represent the upper left point and lower left point of the rectangle.
+            simhash (str): A similarity hash if any.
         """
         self.type = type
         self.analysis = analysis
         self.labels = as_collection(labels)
         self.score = round(float(score), 6) if score else None
         self.rect = rect
+        self.simhash = simhash
 
     def for_json(self):
         """

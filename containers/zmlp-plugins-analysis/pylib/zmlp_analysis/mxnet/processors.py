@@ -139,7 +139,7 @@ class ZviSimilarityProcessor(AssetProcessor):
 
         mxhash = mxhash
         struct = {
-            'shash': mxhash
+            'simhash': mxhash
         }
 
         asset.add_analysis(self.namespace, struct)
