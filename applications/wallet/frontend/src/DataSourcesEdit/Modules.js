@@ -4,26 +4,15 @@ import checkboxOptionShape from '../Checkbox/optionShape'
 
 import { colors, spacing, constants } from '../Styles'
 
-import CheckmarkSvg from '../Icons/checkmark.svg'
-
-import Accordion, { CHECKMARK_WIDTH } from '../Accordion'
+import Accordion from '../Accordion'
 import CheckboxTable from '../Checkbox/Table'
 
 const DataSourcesEditModules = ({
-  module: { provider, description, categories },
+  module: { logo, description, categories },
   onClick,
 }) => {
   return (
-    <Accordion
-      title={
-        <>
-          <CheckmarkSvg
-            width={CHECKMARK_WIDTH}
-            css={{ color: colors.key.one, marginRight: spacing.normal }}
-          />
-          {provider}
-        </>
-      }>
+    <Accordion title={logo}>
       <>
         <p
           css={{
