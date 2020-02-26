@@ -1,22 +1,83 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Assets /> should render properly 1`] = `
-.emotion-9 {
-  height: 100%;
-  width: 100%;
-  margin-top: 46px;
+.emotion-16 {
+  height: calc(100% - 46px);
+  width: calc(100% + 64px);
+  margin: -32px;
+  margin-top: 1px;
 }
 
-.emotion-1 {
-  float: left;
-  background-color: white;
-  margin: -32px;
-  padding-top: 32px;
-  height: calc(100% + 64px);
-  width: calc(100% - 400px + 64px);
+.emotion-3 {
+  width: 100%;
+}
+
+.emotion-2 {
+  height: 44px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #2e2e2e;
+  box-shadow: 0px 3px 3px 0 rgb(0,0,0,0.3);
+  padding-left: 16px;
+  padding-right: 16px;
+  font-family: Roboto Condensed;
 }
 
 .emotion-0 {
+  color: #808080;
+}
+
+.emotion-1 {
+  color: #b3b3b3;
+}
+
+.emotion-15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.emotion-8 {
+  padding: 32px;
+  overflow: auto;
+  height: calc(100% + 32px);
+  width: calc(100% - 400px);
+}
+
+.emotion-7 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  padding: 16px;
+}
+
+.emotion-6 {
+  position: fixed;
+  bottom: 16px;
+  right: 416px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -34,19 +95,70 @@ exports[`<Assets /> should render properly 1`] = `
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  z-index: 80;
+  opacity: 0.8;
 }
 
-.emotion-2 {
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  color: #ffffff;
+  opacity: 1;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-4[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-4:hover {
+  color: #73b61c;
+}
+
+.emotion-4[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-3 {
-  color: #b3b3b3;
+.emotion-14 {
+  padding-top: 1px;
 }
 
-.emotion-8 {
-  position: relative;
-  float: right;
+.emotion-13 {
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
   margin-right: -32px;
   margin-bottom: -32px;
   background-color: #2e2e2e;
@@ -63,7 +175,7 @@ exports[`<Assets /> should render properly 1`] = `
   z-index: 100;
 }
 
-.emotion-5 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -77,99 +189,109 @@ exports[`<Assets /> should render properly 1`] = `
   padding-left: 16px;
 }
 
-.emotion-4 {
+.emotion-9 {
   padding-left: 16px;
   color: #808080;
   font-weight: 700;
 }
 
-.emotion-7 {
+.emotion-12 {
   padding: 16px;
 }
 
-.emotion-6 {
+.emotion-11 {
   color: #73b61c;
   font-style: italic;
 }
 
 <div
-  className="emotion-9"
+  className="emotion-16"
 >
   <div
-    className="emotion-1"
-  >
-    <div
-      className="emotion-0"
-    >
-      <svg
-        color="#3b3b3b"
-        data-file-name="circleMinus.svg"
-        width={30}
-      />
-      <svg
-        color="#73b61c"
-        data-file-name="circlePlus.svg"
-        width={20}
-      />
-    </div>
-  </div>
-  <div
-    style={
-      Object {
-        "alignItems": "center",
-        "backgroundColor": "#2e2e2e",
-        "boxShadow": "0px 3px 3px 0 rgb(0, 0, 0, 0.3)",
-        "display": "flex",
-        "fontFamily": "Roboto Condensed",
-        "height": 44,
-        "justifyContent": "flex-end",
-        "left": 0,
-        "paddingLeft": 16,
-        "paddingRight": 16,
-        "position": "fixed",
-        "right": 0,
-        "top": 45,
-        "zIndex": 100,
-      }
-    }
+    className="emotion-3"
   >
     <div
       className="emotion-2"
     >
-      Sort: Import Date  |  
-    </div>
-    <div
-      className="emotion-3"
-    >
-      100
-       of 
-      2400
-       Results
+      <div
+        className="emotion-0"
+      >
+        Sort: Import Date  |  
+      </div>
+      <div
+        className="emotion-1"
+      >
+        100
+         of 
+        2400
+         Results
+      </div>
     </div>
   </div>
   <div
-    className="emotion-8"
+    className="emotion-15"
   >
     <div
-      className="emotion-5"
+      className="emotion-8"
     >
-      <svg
-        data-file-name="information.svg"
-        width={20}
-      />
       <div
-        className="emotion-4"
+        className="emotion-7"
       >
-        ASSET METADATA
+        <div
+          className="emotion-6"
+        >
+          <button
+            className="emotion-4"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="circleMinus.svg"
+              width={20}
+            />
+          </button>
+          <button
+            className="emotion-4"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="circlePlus.svg"
+              width={20}
+            />
+          </button>
+        </div>
       </div>
     </div>
     <div
-      className="emotion-7"
+      className="emotion-14"
     >
       <div
-        className="emotion-6"
+        className="emotion-13"
       >
-        Select an asset to view its metadata
+        <div
+          className="emotion-10"
+        >
+          <svg
+            color="#808080"
+            data-file-name="information.svg"
+            width={20}
+          />
+          <div
+            className="emotion-9"
+          >
+            ASSET METADATA
+          </div>
+        </div>
+        <div
+          className="emotion-12"
+        >
+          <div
+            className="emotion-11"
+          >
+            Select an asset to view its metadata
+          </div>
+        </div>
       </div>
     </div>
   </div>

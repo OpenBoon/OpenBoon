@@ -1,4 +1,6 @@
-import { spacing, colors, constants } from '../Styles'
+import { spacing, colors, constants, zIndex } from '../Styles'
+
+import Button, { VARIANTS } from '../Button'
 
 import CirclePlusSvg from './circlePlus.svg'
 import CircleMinusSvg from './circleMinus.svg'
@@ -12,27 +14,47 @@ const AssetsVisualizer = () => {
   return (
     <div
       css={{
-        float: 'left',
-        backgroundColor: 'white',
-        margin: -spacing.spacious,
-        paddingTop: spacing.spacious,
-        height: `calc(100% + ${spacing.spacious * 2}px)`,
-        width: `calc(100% - ${METADATA_WIDTH}px + ${spacing.spacious * 2}px)`,
+        padding: spacing.spacious,
+        overflow: 'auto',
+        height: `calc(100% + ${spacing.spacious}px)`,
+        width: `calc(100% - ${METADATA_WIDTH}px)`,
       }}>
       <div
         css={{
+          height: '100%',
           display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: SIZE_CONTROL_HEIGHT,
-          width: SIZE_CONTROL_WIDTH,
-          border: constants.borders.tab,
-          borderRadius: constants.borderRadius.small,
-          backgroundColor: colors.structure.lead,
-          boxShadow: '0 2px 4px 0 rgba(0,0,0,0.5)',
+          alignItems: 'flex-end',
+          justifyContent: 'flex-end',
+          padding: spacing.normal,
         }}>
-        <CircleMinusSvg width={30} color={colors.structure.smoke} />
-        <CirclePlusSvg width={20} color={colors.key.one} />
+        <div
+          css={{
+            position: 'fixed',
+            bottom: spacing.normal,
+            right: 400 + spacing.normal,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: SIZE_CONTROL_HEIGHT,
+            width: SIZE_CONTROL_WIDTH,
+            border: constants.borders.tab,
+            borderRadius: constants.borderRadius.small,
+            backgroundColor: colors.structure.lead,
+            boxShadow: constants.boxShadows.default,
+            zIndex: zIndex.layout.overlay,
+            opacity: 0.8,
+          }}>
+          <Button
+            variant={VARIANTS.ICON}
+            css={{ opacity: constants.opacity.full }}>
+            <CircleMinusSvg width={20} />
+          </Button>
+          <Button
+            variant={VARIANTS.ICON}
+            css={{ opacity: constants.opacity.full }}>
+            <CirclePlusSvg width={20} />
+          </Button>
+        </div>
       </div>
     </div>
   )

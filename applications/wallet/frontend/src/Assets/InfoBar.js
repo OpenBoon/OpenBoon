@@ -1,6 +1,4 @@
-import { constants, colors, spacing, zIndex } from '../Styles'
-
-const BOX_SHADOW = '0px 3px 3px 0 rgb(0, 0, 0, 0.3)'
+import { constants, colors, spacing } from '../Styles'
 
 const AssetsInfoBar = () => {
   // Temporary values
@@ -8,28 +6,25 @@ const AssetsInfoBar = () => {
   const totalCount = 2400
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: constants.navbar.height + 1,
-        left: 0,
-        right: 0,
-        height: constants.navbar.height,
-        display: 'flex',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        backgroundColor: colors.structure.mattGrey,
-        boxShadow: BOX_SHADOW,
-        zIndex: zIndex.layout.navbar,
-        paddingLeft: spacing.normal,
-        paddingRight: spacing.normal,
-        fontFamily: 'Roboto Condensed',
-      }}>
-      <div css={{ color: colors.structure.steel }}>
-        Sort: Import Date &nbsp;| &nbsp;
-      </div>
-      <div css={{ color: colors.structure.zinc }}>
-        {displayCount} of {totalCount} Results
+    <div css={{ width: '100%' }}>
+      <div
+        css={{
+          height: constants.navbar.height,
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          backgroundColor: colors.structure.mattGrey,
+          boxShadow: constants.boxShadows.infoBar,
+          paddingLeft: spacing.normal,
+          paddingRight: spacing.normal,
+          fontFamily: 'Roboto Condensed',
+        }}>
+        <div css={{ color: colors.structure.steel }}>
+          Sort: Import Date &nbsp;| &nbsp;
+        </div>
+        <div css={{ color: colors.structure.zinc }}>
+          {displayCount} of {totalCount} Results
+        </div>
       </div>
     </div>
   )

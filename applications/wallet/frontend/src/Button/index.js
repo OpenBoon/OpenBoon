@@ -96,6 +96,16 @@ const STYLES = {
       backgroundColor: colors.structure.iron,
     },
   },
+  ICON: {
+    padding: spacing.base,
+    color: colors.structure.white,
+    ':hover': {
+      color: colors.key.one,
+    },
+    '&[aria-disabled=true]': {
+      color: colors.structure.steel,
+    },
+  },
 }
 
 export const VARIANTS = Object.keys(STYLES).reduce(
