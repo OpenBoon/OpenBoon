@@ -1,5 +1,7 @@
 package com.zorroa.zmlp.client.domain.asset;
 
+import com.zorroa.zmlp.client.ZmlpClient;
+import com.zorroa.zmlp.client.app.AssetApp;
 import com.zorroa.zmlp.client.domain.ZmlpClientException;
 
 import java.io.IOException;
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -50,11 +54,6 @@ public class BatchUploadFileCrawler {
      * Files Mime Types to be searched. e.g:
      */
     private List<String> mimeTypes = new ArrayList();
-
-    /**
-     * Callback function to be executed after file upload
-     */
-    private Runnable callback;
 
     private Predicate<Path> fileTypePredicate = path -> {
         String[] split = path.toString().split("\\.");
@@ -117,7 +116,7 @@ public class BatchUploadFileCrawler {
         return this;
     }
 
-    public List<Path> filter() throws IOException, ZmlpClientException {
+    public List<Path> filter() throws ZmlpClientException {
         Stream<Path> walk = getWalk();
 
         List<Predicate> filters = new ArrayList();
@@ -134,7 +133,7 @@ public class BatchUploadFileCrawler {
         return collect;
     }
 
-    public List<AssetSpec> asAssetSpecList() throws IOException {
+    public List<AssetSpec> asAssetSpecList() throws ZmlpClientException {
         return this.filter()
                 .stream()
                 .map(path -> new AssetSpec(path.toString())).collect(Collectors.toList());
@@ -153,11 +152,45 @@ public class BatchUploadFileCrawler {
 
     }
 
-    private Stream<Path> getWalk() throws IOException {
-        if (maxDepth != null)
-            return Files.walk(Paths.get(this.filePath), this.maxDepth);
-        else
-            return Files.walk(Paths.get(this.filePath));
+    public List<BatchCreateAssetsResponse> upload(AssetApp app, AssetUploadCallback callback) {
+
+        List<Path> filter = this.filter();
+        List<BatchCreateAssetsResponse> result = new ArrayList();
+
+        filter.stream().forEach(
+                batch -> {
+                    String uri = batch.toString();
+                    BatchCreateAssetsResponse batchCreateAssetResponse = app.uploadFiles(new AssetSpec(uri));
+                    result.add(batchCreateAssetResponse);
+
+                    Optional.ofNullable(callback)
+                            .ifPresent(c ->
+                            c.run(
+                                    new AssetUploadStatus()
+                                            .setStatus(result)
+                                            .setBatchNumber(result.size())
+                                            .setFileCount(filter.size()))
+                    );
+                }
+        );
+
+        return result;
+    }
+
+    public List<BatchCreateAssetsResponse> upload(AssetApp app) {
+        return this.upload(app, null);
+    }
+
+
+        private Stream<Path> getWalk() throws ZmlpClientException {
+        try {
+            if (maxDepth != null)
+                return Files.walk(Paths.get(this.filePath), this.maxDepth);
+            else
+                return Files.walk(Paths.get(this.filePath));
+        } catch (IOException ex) {
+            throw new ZmlpClientException("Error on file crawling", ex);
+        }
     }
 
     private String getMimeTypeFromFile(Path file) {
@@ -165,14 +198,6 @@ public class BatchUploadFileCrawler {
         return fileNameMap.getContentTypeFor(file.getFileName().toString());
     }
 
-    public Runnable getCallback() {
-        return callback;
-    }
-
-    public BatchUploadFileCrawler setCallback(Runnable callback) {
-        this.callback = callback;
-        return this;
-    }
 }
 
 
