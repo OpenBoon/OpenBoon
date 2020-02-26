@@ -8,7 +8,7 @@ from google.api_core.exceptions import ResourceExhausted
 from google.cloud import speech_v1p1beta1 as speech
 
 from zmlpsdk import Argument, AssetProcessor
-from zmlpsdk.proxy import get_proxy_level
+from zmlpsdk.proxy import get_proxy_level_path
 
 from .gcp_client import initialize_gcp_client
 
@@ -102,7 +102,7 @@ class CloudSpeechToTextProcessor(AssetProcessor):
 
         # Construct ffmpeg command line
         cmd_line = ['ffmpeg',
-                    '-i', get_proxy_level(asset, 3, mimetype="video/"),
+                    '-i', get_proxy_level_path(asset, 3, mimetype="video/"),
                     '-vn',
                     '-acodec', 'flac',
                     '-ar', str(self.audio_sample_rate),

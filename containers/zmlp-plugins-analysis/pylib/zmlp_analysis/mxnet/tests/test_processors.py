@@ -4,7 +4,7 @@ from zmlp import ZmlpClient
 from zmlpsdk import Frame
 from zmlpsdk.proxy import store_asset_proxy
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
-from ..processors import ResNetSimilarityProcessor, ResNetClassifyProcessor
+from ..processors import ZviLabelDetectionResNet152, ZviSimilarityProcessor
 
 
 class MxUnitTests(PluginUnitTestCase):
@@ -29,10 +29,10 @@ class MxUnitTests(PluginUnitTestCase):
             }
         }
         store_asset_proxy(self.frame.asset, self.toucan_path, (512, 512))
-        processor = self.init_processor(ResNetSimilarityProcessor(), {'debug': True})
+        processor = self.init_processor(ZviSimilarityProcessor(), {'debug': True})
         processor.process(self.frame)
 
-        self.assertEquals(2048, len(self.frame.asset['analysis.zmlp.similarity.vector']))
+        self.assertEquals(2048, len(self.frame.asset['analysis.zvi.similarity.simhash']))
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_MxNetClassify_defaults(self, upload_patch):
@@ -47,8 +47,8 @@ class MxUnitTests(PluginUnitTestCase):
             }
         }
         store_asset_proxy(self.frame.asset, self.toucan_path, (512, 512))
-        processor = self.init_processor(ResNetClassifyProcessor(), {'debug': True})
+        processor = self.init_processor(ZviLabelDetectionResNet152(), {'debug': True})
         processor.process(self.frame)
 
-        self.assertTrue('albatross' in self.frame.asset['analysis.zmlp.labels.keywords'])
-        self.assertTrue(type(self.frame.asset['analysis.zmlp.labels.score']) == float)
+        self.assertTrue('albatross' in self.frame.asset['analysis.zvi.label-detection.labels'])
+        self.assertTrue(type(self.frame.asset['analysis.zvi.label-detection.score']) == float)

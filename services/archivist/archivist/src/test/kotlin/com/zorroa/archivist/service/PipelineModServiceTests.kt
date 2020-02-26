@@ -148,7 +148,7 @@ class PipelineModServiceTests : AbstractTest() {
     @Test
     fun testGetByNames() {
         pipelineModService.updateStandardMods()
-        val names = listOf("zmlp-labels", "zmlp-objects")
+        val names = listOf("zvi-label-detection", "zvi-object-detection")
         val mods = pipelineModService.getByNames(names)
         assertEquals(names.size, mods.size)
     }
@@ -156,14 +156,14 @@ class PipelineModServiceTests : AbstractTest() {
     @Test(expected = DataRetrievalFailureException::class)
     fun testGetByNames_notFound() {
         pipelineModService.updateStandardMods()
-        val names = listOf("zmlp-labels", "boom!")
+        val names = listOf("zvi-label-detection", "boom!")
         pipelineModService.getByNames(names)
     }
 
     @Test
     fun testGetByIds() {
         pipelineModService.updateStandardMods()
-        val mod = pipelineModService.get("zmlp-labels")
+        val mod = pipelineModService.get("zvi-label-detection")
         pipelineModService.getByIds(listOf(mod.id))
     }
 

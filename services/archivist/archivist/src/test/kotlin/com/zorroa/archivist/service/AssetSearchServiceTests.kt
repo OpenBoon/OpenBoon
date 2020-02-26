@@ -21,7 +21,7 @@ class AssetSearchServiceTests : AbstractTest() {
     @Before
     fun setUp() {
         val spec = AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
-        spec.attrs = mapOf("analysis.zmlp.similarity.vector" to "AABBCC00")
+        spec.attrs = mapOf("analysis.zvi.similarity.simhash" to "AABBCC00")
         val spec2 = AssetSpec("https://i.imgur.com/abc123442.jpg")
 
         val batchCreate = BatchCreateAssetsRequest(
@@ -30,7 +30,7 @@ class AssetSearchServiceTests : AbstractTest() {
         val rsp = assetService.batchCreate(batchCreate)
         val id = rsp.created[0]
         val asset = assetService.getAsset(id)
-        asset.setAttr("analysis.zmlp.similarity.vector", "AABBCC00")
+        asset.setAttr("analysis.zvi.similarity.simhash", "AABBCC00")
         assetService.index(id, asset.document)
 
         indexRoutingService.getProjectRestClient().refresh()
@@ -136,7 +136,7 @@ class AssetSearchServiceTests : AbstractTest() {
                             "lang" : "zorroa-similarity",
                             "params" : {
                               "minScore" : 0.50,
-                              "field" : "analysis.zmlp.similarity.vector",
+                              "field" : "analysis.zvi.similarity.simhash",
                               "hashes" : ["AABBDD00"]
                             }
                           }
@@ -170,7 +170,7 @@ class AssetSearchServiceTests : AbstractTest() {
                             "lang" : "zorroa-similarity",
                             "params" : {
                               "minScore" : 0.50,
-                              "field" : "analysis.zmlp.similarity.vector",
+                              "field" : "analysis.zvi.similarity.simhash",
                               "hashes" : ["PPPPPPPP"]
                             }
                           }

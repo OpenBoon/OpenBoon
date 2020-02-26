@@ -1,4 +1,5 @@
 import os
+import pytest
 from unittest.mock import patch
 
 from zmlp_analysis.google import CloudVideoIntelligenceProcessor
@@ -8,6 +9,7 @@ from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset
 
 # NOTE: These test require you have a service account key located at
 # ~/zorroa/keys/gcloud-integration-test.json.
+@pytest.mark.skip(reason='dont run automaticallly')
 class CloudVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
 
     def setUp(self):
@@ -16,7 +18,7 @@ class CloudVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
     def tearDown(self):
         del os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
-    @patch('zmlp_analysis.google.cloud_video.get_proxy_level')
+    @patch('zmlp_analysis.google.cloud_video.get_proxy_level_path')
     def test_video_labels(self, proxy_patch):
         processor = self.init_processor(
             CloudVideoIntelligenceProcessor())
@@ -35,7 +37,7 @@ class CloudVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         assert 'winter' in clip.get_attr('analysis.google.videoLabel.shot.keywords')
         assert 'winter' in clip.get_attr('analysis.google.videoLabel.segment.keywords')
 
-    @patch('zmlp_analysis.google.cloud_video.get_proxy_level')
+    @patch('zmlp_analysis.google.cloud_video.get_proxy_level_path')
     def test_video_text(self, proxy_patch):
         processor = self.init_processor(
             CloudVideoIntelligenceProcessor())
