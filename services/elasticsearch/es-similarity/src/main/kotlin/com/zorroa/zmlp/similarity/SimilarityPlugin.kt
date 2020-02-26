@@ -9,7 +9,6 @@ import org.elasticsearch.script.ScoreScript
 import org.elasticsearch.script.ScriptContext
 import org.elasticsearch.script.ScriptEngine
 import org.elasticsearch.search.lookup.SearchLookup
-import java.util.Collections
 import java.util.logging.Logger
 import kotlin.math.abs
 

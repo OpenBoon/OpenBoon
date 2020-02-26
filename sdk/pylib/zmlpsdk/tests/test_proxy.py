@@ -1,12 +1,10 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-import cv2
-
 import zmlpsdk.proxy
+from zmlp.client import ZmlpClient
 from zmlpsdk.storage import file_storage
 from zmlpsdk.testing import zorroa_test_data, TestAsset
-from zmlp.client import ZmlpClient
 
 IMAGE_JPG = zorroa_test_data('images/set01/faces.jpg')
 VIDEO_WEBM = zorroa_test_data('video/dc.webm')
@@ -64,7 +62,6 @@ class ProxyFunctionTests(TestCase):
         prx1 = zmlpsdk.proxy.get_proxy_level(asset, 9)
         assert 'image_400x400.jpg' == prx1['name']
 
-
     @patch.object(ZmlpClient, 'stream')
     def test_get_proxy_level_path(self, stream_patch):
         asset = TestAsset(IMAGE_JPG, id='123456')
@@ -121,4 +118,3 @@ class ProxyFunctionTests(TestCase):
         assert kwargs['attrs']['width'] == 200
         assert kwargs['attrs']['height'] == 200
         assert kwargs['attrs']['foo'] == 'bar'
-
