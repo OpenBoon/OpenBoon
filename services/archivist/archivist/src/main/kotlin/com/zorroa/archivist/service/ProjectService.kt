@@ -109,7 +109,7 @@ class ProjectServiceImpl constructor(
         val actor = getZmlpActor()
         val project = projectDao.saveAndFlush(
             Project(
-                spec.projectId ?: UUIDGen.uuid1.generate(),
+                spec.id ?: UUIDGen.uuid1.generate(),
                 spec.name,
                 time,
                 time,
