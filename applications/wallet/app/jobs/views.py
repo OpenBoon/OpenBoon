@@ -1,3 +1,5 @@
+import os
+
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -215,6 +217,9 @@ class TaskViewSet(BaseProjectViewSet):
 
         return self._zmlp_list_from_search(request, item_modifier=item_modifier)
 
+    def retrieve(self, request, project_pk, pk):
+        return self._zmlp_retrieve(request, pk)
+
     @action(detail=True, methods=['put'])
     def retry(self, request, project_pk, pk):
         """Retries a task that has failed. Expects a `PUT` with an empty body."""
@@ -224,3 +229,22 @@ class TaskViewSet(BaseProjectViewSet):
         else:
             message = f'Task {pk} failed to be retried. Message from ZMLP: {response}'
             return Response({'detail': message}, status=500)
+
+
+class TaskErrorViewSet(BaseProjectViewSet):
+    pagination_class = ZMLPFromSizePagination
+    zmlp_root_api_path = '/api/v1/taskerrors/'
+
+    def list(self, request, project_pk):
+        def item_modifier(request, error):
+            self._add_job_name(request.client, error)
+        return self._zmlp_list_from_search(request, item_modifier=item_modifier)
+
+    def retrieve(self, request, project_pk, pk):
+        url = os.path.join(self.zmlp_root_api_path, '_findOne')
+        error = request.client.post(url, {'ids': [pk]})
+        self._add_job_name(request.client, error)
+        return Response(error)
+
+    def _add_job_name(self, client, error):
+        error['jobName'] = client.get(f'/api/v1/jobs/{error["jobId"]}')['name']
