@@ -4,7 +4,7 @@ import { colors, spacing, typography } from '../Styles'
 
 const STYLES = {
   PRIMARY: {
-    parent: {
+    container: {
       display: 'flex',
       flexDirection: 'column',
       paddingLeft: spacing.comfy,
@@ -28,7 +28,7 @@ export const VARIANTS = Object.keys(STYLES).reduce(
 )
 
 const Value = ({ variant, legend, children }) => (
-  <div css={STYLES[variant].parent}>
+  <div css={STYLES[variant].container}>
     <div css={{ ...STYLES[variant].legend, paddingBottom: spacing.small }}>
       {legend}:
     </div>
