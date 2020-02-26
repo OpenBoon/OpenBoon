@@ -140,7 +140,7 @@ Array [
         className="emotion-0"
       >
         Job: 
-        image_similarity.json
+        Applying modules:  to gs://zorroa-dev-data
       </h3>
     </div>
     <div
@@ -170,7 +170,7 @@ Array [
       >
         Error Message:
       </div>
-      NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)
+      ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
   </div>,
 ]
@@ -316,7 +316,7 @@ Array [
         className="emotion-0"
       >
         Job: 
-        image_similarity.json
+        Applying modules:  to gs://zorroa-dev-data
       </h3>
     </div>
     <div
@@ -346,7 +346,7 @@ Array [
       >
         Error Message:
       </div>
-      AttributeError: 'NoneType' object has no attribute 'startswith'
+      ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
   </div>,
 ]

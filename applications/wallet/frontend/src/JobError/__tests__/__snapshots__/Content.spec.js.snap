@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<JobErrorContent /> should render properly when fetching errors 1`] = `
+exports[`<JobErrorContent /> should render properly when fetching error 1`] = `
 Array [
   .emotion-2 {
   display: -webkit-box;
@@ -68,106 +68,7 @@ Array [
     >
       <a
         className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/errors"
-        onClick={[Function]}
-        onMouseEnter={[Function]}
-      >
-        Job Details
-      </a>
-      <span
-        className="emotion-1"
-      >
-        /
-      </span>
-    </div>
-    <h2
-      className="emotion-6"
-    >
-      Error Details
-    </h2>
-  </div>,
-  .emotion-0 {
-  padding: 16px;
-  padding-left: 0;
-}
-
-<div
-    className="emotion-0"
-  >
-    Loading...
-  </div>,
-]
-`;
-
-exports[`<JobErrorContent /> should render properly when fetching job 1`] = `
-Array [
-  .emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-0 {
-  font-size: 18px;
-  line-height: 21px;
-  font-weight: 400;
-  padding-top: 24px;
-  padding-bottom: 16px;
-  padding-right: 4px;
-  color: #808080;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #ffffff;
-}
-
-.emotion-1 {
-  font-size: 18px;
-  line-height: 21px;
-  font-weight: 400;
-  padding-top: 24px;
-  padding-bottom: 16px;
-  padding-right: 4px;
-  color: #808080;
-}
-
-.emotion-6 {
-  font-size: 18px;
-  line-height: 21px;
-  font-weight: 400;
-  padding-top: 24px;
-  padding-bottom: 16px;
-}
-
-<div
-    className="emotion-2"
-  >
-    <div
-      className="emotion-2"
-    >
-      <a
-        className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
-        onClick={[Function]}
-        onMouseEnter={[Function]}
-      >
-        Job Queue
-      </a>
-      <span
-        className="emotion-1"
-      >
-        /
-      </span>
-    </div>
-    <div
-      className="emotion-2"
-    >
-      <a
-        className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/errors"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/undefined/errors"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -266,7 +167,7 @@ Array [
     >
       <a
         className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/errors"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/undefined/errors"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -284,15 +185,92 @@ Array [
       Error Details
     </h2>
   </div>,
-  .emotion-0 {
-  padding: 16px;
-  padding-left: 0;
+  .emotion-1 {
+  padding-bottom: 32px;
 }
 
-<div
-    className="emotion-0"
-  >
-    Loading...
+.emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-bottom: 24px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 8px;
+}
+
+.emotion-2 {
+  padding-right: 8px;
+}
+
+.emotion-5 {
+  font-weight: 700;
+  padding-right: 8px;
+  white-space: noWrap;
+  padding-bottom: 4px;
+}
+
+.emotion-3 {
+  color: #c92300;
+  font-weight: 700;
+}
+
+<div>
+    <div
+      className="emotion-1"
+    >
+      <h3
+        className="emotion-0"
+      >
+        Job: 
+        Applying modules:  to gs://zorroa-dev-data
+      </h3>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-2"
+        >
+          <svg
+            color="#c92300"
+            data-file-name="errorFatal.svg"
+            width={18}
+          />
+        </div>
+        <div
+          className="emotion-3"
+        >
+          Error Type: 
+          Fatal
+        </div>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        Error Message:
+      </div>
+      ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
+    </div>
   </div>,
 ]
 `;
@@ -365,7 +343,7 @@ Array [
     >
       <a
         className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/errors"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/undefined/errors"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -437,7 +415,7 @@ Array [
         className="emotion-0"
       >
         Job: 
-        image_similarity.json
+        Applying modules:  to gs://zorroa-dev-data
       </h3>
     </div>
     <div
@@ -467,7 +445,7 @@ Array [
       >
         Error Message:
       </div>
-      AttributeError: 'NoneType' object has no attribute 'startswith'
+      ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
   </div>,
 ]

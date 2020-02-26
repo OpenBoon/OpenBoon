@@ -10,28 +10,22 @@ import JobErrorType from './Type'
 
 const JobErrorContent = () => {
   const {
-    query: { projectId, jobId, errorId },
+    query: { projectId, errorId },
   } = useRouter()
 
-  const { data: job } = useSWR(`/api/v1/projects/${projectId}/jobs/${jobId}`)
-
-  const { data: { results: errors = [] } = {} } = useSWR(
-    `/api/v1/projects/${projectId}/jobs/${jobId}/errors/`,
+  const { data: taskError } = useSWR(
+    `/api/v1/projects/${projectId}/taskerrors/${errorId}`,
   )
-  const currentError = errors.find(err => err.id === errorId)
 
-  if (typeof currentError === 'undefined' || job.id !== jobId)
-    return <Loading />
-
-  const { name } = job
+  if (typeof taskError === 'undefined') return <Loading />
 
   return (
     <div>
       <div css={{ paddingBottom: spacing.spacious }}>
-        <SectionTitle>Job: {name}</SectionTitle>
+        <SectionTitle>Job: {taskError.jobName}</SectionTitle>
       </div>
 
-      <JobErrorType error={currentError} />
+      <JobErrorType error={taskError} />
     </div>
   )
 }
