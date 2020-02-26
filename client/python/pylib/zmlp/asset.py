@@ -1,4 +1,3 @@
-import collections
 import json
 import logging
 import os
@@ -440,103 +439,26 @@ class Element(object):
 
     # The attributes that get serialized for json.  If you change this, you'll likely
     # have to change the ES mapping.
-    attrs = ['type', 'labels', 'rect', 'score', 'proxy', 'regions', 'analysis', 'vector']
+    attrs = ['type', 'labels', 'rect', 'score', 'analysis']
 
-    def __init__(self, type,
-                 analysis=None, labels=None, score=None, rect=None, proxy=None, vector=None):
+    def __init__(self, type, analysis=None, labels=None, score=None, rect=None):
         """
         Create a new Element instance.
-
-        If a rect and stored_file arg with width/height attributes is provided, the
-        element regions will be calculated automatically.
 
         Args:
             type (str): The type of element, typically 'object' or 'face' but
                 it can be an arbitrary value.
-            analysis: (str): The type of analysis that created this element.
+            analysis: (str): The analysis namespace associated with this element.
             labels (list[str]): A list of predicted labels.
             score (float): If a prediction is made, a score describes the confidence level.
             rect (list[int]): A list of 4 integers describe the rectangle containing the element.
                 The ints represent the upper left point and lower left point of the rectangle.
-            proxy (dict): The asset file record which contains a proxy image for the Element.
-            vector (str): The similarity vector.
         """
         self.type = type
-        self.labels = as_collection(labels)
-        self.score = float(score) if score else None
-        self.rect = rect
-        self.vector = vector
         self.analysis = analysis
-
-        self.proxy = None
-        self.regions = None
-
-        if proxy:
-            self.set_proxy(proxy)
-
-    def set_proxy(self, proxy):
-        """
-
-        Args:
-            proxy (dict): The file spec for the proxy image
-
-        Returns:
-        """
-        self.proxy = '{}/{}'.format(proxy['category'], proxy['name'])
-        if self.rect:
-            self.set_regions(proxy)
-
-    def set_regions(self, proxy):
-        self.regions = self.calculate_regions(proxy)
-
-    def calculate_regions(self, proxy):
-        """
-        Calculate the regions where the element exists.  Possible
-        value are:
-            - NW
-            - NE
-            - SW
-            - SE
-            - CENTER
-
-        Args:
-            stored_file (dict): A stored file dict.
-
-        Returns:
-            list[str]: An array of regions or None if no regions can be calculated.
-
-        """
-        if not self.rect or not self.proxy:
-            return
-
-        Point = collections.namedtuple("Point", "x y")
-
-        l1 = Point(self.rect[0], self.rect[1])
-        r1 = Point(self.rect[2], self.rect[3])
-
-        # Use rect to determine region
-        keys = proxy.get('attrs', {}).keys()
-        if 'width' in keys and 'height' in keys:
-            width = proxy['attrs']['width']
-            height = proxy['attrs']['height']
-            regions = {
-                'NW': (Point(0, 0), Point(width / 2, height / 2)),
-                'NE': (Point(width / 2, 0), Point(width, height / 2)),
-                'SW': (Point(0, height / 2), Point(width / 2, height)),
-                'SE': (Point(width / 2, height / 2), Point(width, height))
-            }
-            result = []
-            for reg, points in regions.items():
-                if l1.x > points[1].x or points[0].x > r1.x:
-                    continue
-                if l1.y > points[1].y or points[0].y > r1.y:
-                    continue
-                result.append(reg)
-            # Add Center if we're in all 4
-            if len(result) == 4:
-                result.append("CENTER")
-            return result or None
-        return None
+        self.labels = as_collection(labels)
+        self.score = round(float(score), 6) if score else None
+        self.rect = rect
 
     def for_json(self):
         """
@@ -549,3 +471,23 @@ class Element(object):
             if getattr(self, attr, None) is not None:
                 serializable_dict[attr] = getattr(self, attr)
         return serializable_dict
+
+    @staticmethod
+    def calculate_normalized_rect(img_width, img_height, rect):
+        """
+        Calculate points for normalized rectangle based on the given
+        image width and height.
+        Args:
+            img_width (int): The width of the image the rect was calculated in.
+            img_height (int): The height of the image the rect was calculated in.
+            rect: (list): An array of 4 points that make up the rectangle.
+
+        Returns:
+            list<float> An array of points for a normalized rectangle.
+        """
+        return [
+            round(rect[0] / float(img_width), 3),
+            round(rect[1] / float(img_height), 3),
+            round(rect[2] / float(img_width), 3),
+            round(rect[3] / float(img_height), 3)
+        ]
