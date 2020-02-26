@@ -540,11 +540,11 @@ class CloudVisionDetectFacesTests(PluginUnitTestCase):
         # run the processor with declared frame and assert asset attributes
         processor.process(frame)
         assert 1 == len(asset.get_attr("elements"))
-        assert 1 == asset.get_attr("analysis.google.faceDetection.faceCount")
+        assert 1 == asset.get_attr("analysis.gcp.face-detection.detected")
 
         element = asset.get_attr("elements")[0]
         assert 'face' == element["type"]
-        assert 'google.faceDetection' == element["analysis"]
+        assert 'gcp.face-detection' == element["analysis"]
         assert ['sorrow', 'surprise'] == element["labels"]
 
 

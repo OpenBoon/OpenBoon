@@ -1,4 +1,5 @@
 import os
+import pytest
 
 from zmlp_analysis.google.cloud_lang import CloudNaturalLanguageProcessor
 
@@ -8,6 +9,7 @@ from zmlpsdk.base import Frame
 
 # NOTE: These test require you have a service account key located at
 # ~/zorroa/keys/gcloud-integration-test.json.
+@pytest.mark.skip(reason='dont run automaticallly')
 class CloudNaturalLanguageProcessorTestCase(PluginUnitTestCase):
     def setUp(self):
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.dirname(__file__) + '/gcp-creds.json'

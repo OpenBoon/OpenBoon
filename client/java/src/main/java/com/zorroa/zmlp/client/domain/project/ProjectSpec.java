@@ -16,7 +16,7 @@ public class ProjectSpec {
      * An optional unique ID for the project.
      */
 
-    UUID projectId;
+    UUID id;
 
     public ProjectSpec() {
     }
@@ -34,12 +34,12 @@ public class ProjectSpec {
         return this;
     }
 
-    public UUID getProjectId() {
-        return projectId;
+    public UUID getId() {
+        return id;
     }
 
-    public ProjectSpec setProjectId(UUID projectId) {
-        this.projectId = projectId;
+    public ProjectSpec setId(UUID id) {
+        this.id = id;
         return this;
     }
 }

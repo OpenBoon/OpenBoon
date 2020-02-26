@@ -1,8 +1,14 @@
 const projectUser = {
-  id: 'fe39c66b-68f8-4d59-adfd-395f6baaf72c',
-  name: 'Jane Doe',
-  projectId: '00000000-0000-0000-0000-000000000000',
+  id: 42,
+  username: 'jane@zorroa.com',
+  firstName: 'Jane',
+  lastName: 'Doe',
   email: 'jane@zorroa.com',
+  isActive: true,
+  isStaff: false,
+  isSuperuser: false,
+  lastLogin: '2020-02-25T19:39:31.342853Z',
+  dateJoined: '2020-01-30T02:03:19Z',
   permissions: ['ApiKeyManage', 'ProjectManage'],
 }
 

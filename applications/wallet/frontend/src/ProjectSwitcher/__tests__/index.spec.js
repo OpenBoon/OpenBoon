@@ -4,13 +4,15 @@ import ProjectSwitcher from '..'
 
 import projects from '../../Projects/__mocks__/projects'
 
+const PROJECT_ID = projects.results[0].id
+
 const noop = () => () => {}
 
 describe('<ProjectSwitcher />', () => {
   it('should render properly without data', () => {
     require('swr').__setMockUseSWRResponse({ data: {} })
 
-    const component = TestRenderer.create(<ProjectSwitcher />)
+    const component = TestRenderer.create(<ProjectSwitcher projectId="" />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -18,14 +20,15 @@ describe('<ProjectSwitcher />', () => {
   it('should render properly with data', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
-      query: { projectId: projects.results[0].id },
     })
 
     require('swr').__setMockUseSWRResponse({
       data: projects,
     })
 
-    const component = TestRenderer.create(<ProjectSwitcher />)
+    const component = TestRenderer.create(
+      <ProjectSwitcher projectId={PROJECT_ID} />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -41,14 +44,15 @@ describe('<ProjectSwitcher />', () => {
   it('should render properly with one project', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
-      query: { projectId: projects.results[0].id },
     })
 
     require('swr').__setMockUseSWRResponse({
       data: { ...projects, count: 1, results: [projects.results[0]] },
     })
 
-    const component = TestRenderer.create(<ProjectSwitcher />)
+    const component = TestRenderer.create(
+      <ProjectSwitcher projectId={PROJECT_ID} />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -56,14 +60,15 @@ describe('<ProjectSwitcher />', () => {
   it('should not render if the projectId is not of an authorized project', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
-      query: { projectId: 'not-a-valid-project-id' },
     })
 
     require('swr').__setMockUseSWRResponse({
       data: projects,
     })
 
-    const component = TestRenderer.create(<ProjectSwitcher />)
+    const component = TestRenderer.create(
+      <ProjectSwitcher projectId="not-a-valid-project-id" />,
+    )
 
     expect(component.toJSON()).toBeNull()
   })
@@ -71,12 +76,13 @@ describe('<ProjectSwitcher />', () => {
   it('should not render while projects are loading', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
-      query: { projectId: 'not-a-valid-project-id' },
     })
 
     require('swr').__setMockUseSWRResponse({})
 
-    const component = TestRenderer.create(<ProjectSwitcher />)
+    const component = TestRenderer.create(
+      <ProjectSwitcher projectId="not-a-valid-project-id" />,
+    )
 
     expect(component.toJSON()).toBeNull()
   })

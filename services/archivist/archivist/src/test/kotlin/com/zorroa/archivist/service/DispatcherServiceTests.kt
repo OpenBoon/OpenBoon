@@ -163,7 +163,7 @@ class DispatcherServiceTests : AbstractTest() {
             job.id
         )
 
-        val pspec = ProjectSpec("foojam", projectId = UUID.randomUUID())
+        val pspec = ProjectSpec("foojam", id = UUID.randomUUID())
         val project = projectService.create(pspec)
         authenticate(project.id)
 

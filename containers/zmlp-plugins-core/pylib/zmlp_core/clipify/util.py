@@ -1,4 +1,4 @@
-from zmlpsdk.proxy import get_proxy_level
+from zmlpsdk.proxy import get_proxy_level_path
 from zmlpsdk.base import ExpandFrame
 from zmlp.asset import Clip, FileImport
 
@@ -22,7 +22,7 @@ def check_video_clip_preconditions(asset):
     if asset.get_attr('clip.timeline') != 'full':
         return False
 
-    if not get_proxy_level(asset, 3, "video/"):
+    if not get_proxy_level_path(asset, 3, "video/"):
         return False
 
     return True

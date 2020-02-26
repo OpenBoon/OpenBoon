@@ -2,12 +2,12 @@ package com.zorroa
 
 import io.minio.MinioClient
 import io.minio.errors.ErrorResponseException
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 object StorageManager {
 
@@ -98,7 +98,7 @@ class IOHandler(val options: RenderRequest) {
             StorageManager.minioClient.statObject(Config.bucket.name, path)
             true
         } catch (e: ErrorResponseException) {
-            logger.warn("Object does not exist: {}", path, e)
+            logger.warn("Object does not exist: {}", path)
             false
         }
     }

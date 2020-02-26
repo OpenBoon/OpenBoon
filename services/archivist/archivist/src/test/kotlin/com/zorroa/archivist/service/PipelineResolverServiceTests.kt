@@ -36,7 +36,7 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineName() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("zmlp-video-shot-detection"))
+        val pspec = PipelineSpec("test", modules = listOf("zvi-video-shot-extraction"))
         val pipeline = pipelineService.create(pspec)
 
         val resolved = pipelineResolverService.resolve(pipeline.name, null)
@@ -49,12 +49,12 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineNameAndPlusModules() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("+zmlp-video-shot-detection"))
+        val pspec = PipelineSpec("test", modules = listOf("+zvi-video-shot-extraction"))
         val pipeline = pipelineService.create(pspec)
 
-        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("zmlp-labels"))
+        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("zvi-label-detection"))
         val last = resolved.last()
-        assertEquals(last.className, "zmlp_analysis.mxnet.processors.ResNetClassifyProcessor")
+        assertEquals(last.className, "zmlp_analysis.mxnet.ZviLabelDetectionResNet152")
         assertEquals(last.image, "zmlp/plugins-analysis")
 
         val beforeLast = resolved[resolved.size - 2]
@@ -66,13 +66,13 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineNameAndMinusModules() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("zmlp-video-shot-detection"))
+        val pspec = PipelineSpec("test", modules = listOf("zvi-video-shot-extraction"))
         val pipeline = pipelineService.create(pspec)
 
-        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("-zmlp-video-shot-detection"))
+        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("-zvi-video-shot-extraction"))
         val last = resolved.last()
 
-        assertEquals(last.className, "zmlp_analysis.mxnet.processors.ResNetSimilarityProcessor")
+        assertEquals(last.className, "zmlp_analysis.mxnet.ZviSimilarityProcessor")
         assertEquals(last.image, "zmlp/plugins-analysis")
     }
 
