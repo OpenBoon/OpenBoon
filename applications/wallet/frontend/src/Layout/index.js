@@ -27,11 +27,15 @@ const Layout = ({ user, logout, children }) => {
 
   return (
     <div css={{ height: '100%' }}>
-      <Navbar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen}>
+      <Navbar
+        projectId={user.projectId}
+        isSidebarOpen={isSidebarOpen}
+        setSidebarOpen={setSidebarOpen}>
         <UserMenu user={user} logout={logout} />
       </Navbar>
 
       <Sidebar
+        projectId={user.projectId}
         isSidebarOpen={isSidebarOpen}
         setSidebarOpen={setSidebarOpen}
         ref={sidebarRef}

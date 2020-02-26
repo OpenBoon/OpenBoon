@@ -10,11 +10,14 @@ describe('<Sidebar />', () => {
   it('should render properly closed', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
-      query: { projectId: PROJECT_ID },
     })
 
     const component = TestRenderer.create(
-      <Sidebar isSidebarOpen={false} setSidebarOpen={noop} />,
+      <Sidebar
+        projectId={PROJECT_ID}
+        isSidebarOpen={false}
+        setSidebarOpen={noop}
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -23,11 +26,10 @@ describe('<Sidebar />', () => {
   it('should render properly opened', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
-      query: { projectId: PROJECT_ID },
     })
 
     const component = TestRenderer.create(
-      <Sidebar isSidebarOpen setSidebarOpen={noop} />,
+      <Sidebar projectId={PROJECT_ID} isSidebarOpen setSidebarOpen={noop} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -37,7 +39,7 @@ describe('<Sidebar />', () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
-      <Sidebar isSidebarOpen setSidebarOpen={mockFn} />,
+      <Sidebar projectId={PROJECT_ID} isSidebarOpen setSidebarOpen={mockFn} />,
     )
 
     act(() => {
@@ -53,7 +55,7 @@ describe('<Sidebar />', () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
-      <Sidebar isSidebarOpen setSidebarOpen={mockFn} />,
+      <Sidebar projectId={PROJECT_ID} isSidebarOpen setSidebarOpen={mockFn} />,
     )
 
     act(() => {
@@ -77,7 +79,11 @@ describe('<Sidebar />', () => {
     require('next/router').__setMockOffFunction(mockOffFunction)
 
     const component = TestRenderer.create(
-      <Sidebar isSidebarOpen setSidebarOpen={mockSetSidebarOpen} />,
+      <Sidebar
+        projectId={PROJECT_ID}
+        isSidebarOpen
+        setSidebarOpen={mockSetSidebarOpen}
+      />,
     )
 
     // useEffect

@@ -3,7 +3,7 @@ import TestRenderer, { act } from 'react-test-renderer'
 import ProjectUsersMenu from '../Menu'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const USER_ID = 'fe39c66b-68f8-4d59-adfd-395f6baaf72c'
+const USER_ID = 42
 
 describe('<ProjectUsersMenu />', () => {
   it('should render properly', async () => {

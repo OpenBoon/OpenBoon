@@ -70,7 +70,7 @@ const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
 
 ProjectUsersMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
-  userId: PropTypes.string.isRequired,
+  userId: PropTypes.number.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 
