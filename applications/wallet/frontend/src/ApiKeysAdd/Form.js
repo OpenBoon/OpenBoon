@@ -64,17 +64,18 @@ const ApiKeysAddForm = () => {
 
       <CheckboxGroup
         legend="Add Scope"
-        onClick={permission =>
-          dispatch({ permissions: { ...state.permissions, ...permission } })
-        }
+        variant={CHECKBOX_VARIANTS.PRIMARY}
         options={permissions.map(({ name, description }) => ({
-          key: name,
+          value: name,
           label: name.replace(/([A-Z])/g, match => ` ${match}`),
           icon: '',
           legend: description,
           initialValue: false,
+          isDisabled: false,
         }))}
-        variant={CHECKBOX_VARIANTS.PRIMARY}
+        onClick={permission =>
+          dispatch({ permissions: { ...state.permissions, ...permission } })
+        }
       />
 
       <ButtonGroup>

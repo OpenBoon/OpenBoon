@@ -49,6 +49,13 @@ describe('<DataSourcesAddForm />', () => {
         .props.onClick()
     })
 
+    // Select disabled module
+    act(() => {
+      component.root
+        .findByProps({ type: 'checkbox', value: 'gcp-shot-detection' })
+        .props.onClick({ preventDefault: noop })
+    })
+
     // Select module
     act(() => {
       component.root

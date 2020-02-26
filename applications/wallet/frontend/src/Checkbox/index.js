@@ -2,6 +2,8 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
+import checkboxOptionShape from './optionShape'
+
 import { colors, spacing, typography } from '../Styles'
 
 import CheckboxIcon from './Icon'
@@ -42,11 +44,7 @@ export const VARIANTS = Object.keys(STYLES).reduce(
 
 const Checkbox = ({
   variant,
-  value,
-  label,
-  icon,
-  legend,
-  initialValue,
+  option: { value, label, icon, legend, initialValue, isDisabled },
   onClick,
 }) => {
   const [isChecked, setIsChecked] = useState(initialValue)
@@ -57,14 +55,16 @@ const Checkbox = ({
         display: 'flex',
         alignItems: legend ? STYLES[variant].label.alignItems : 'center',
         color: colors.white,
-        cursor: 'pointer',
+        cursor: isDisabled ? 'not-allowed' : 'pointer',
         paddingBottom: spacing.normal,
         paddingLeft: STYLES[variant].label.paddingLeft,
       }}>
       <CheckboxIcon
         value={value}
         isChecked={isChecked}
+        isDisabled={isDisabled}
         onClick={() => {
+          if (isDisabled) return
           setIsChecked(!isChecked)
           onClick(!isChecked)
         }}
@@ -107,12 +107,8 @@ const Checkbox = ({
 
 Checkbox.propTypes = {
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
-  value: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  icon: PropTypes.node.isRequired,
-  legend: PropTypes.string.isRequired,
+  option: PropTypes.shape(checkboxOptionShape).isRequired,
   onClick: PropTypes.func.isRequired,
-  initialValue: PropTypes.bool.isRequired,
 }
 
 export default Checkbox
