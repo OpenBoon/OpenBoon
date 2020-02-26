@@ -6,7 +6,7 @@ import { spacing, typography } from '../Styles'
 
 import Checkbox, { VARIANTS } from '.'
 
-const CheckboxGroup = ({ variant, legend, options, onClick }) => {
+const CheckboxGroup = ({ legend, variant, options, onClick }) => {
   return (
     <fieldset
       css={{
@@ -40,8 +40,8 @@ const CheckboxGroup = ({ variant, legend, options, onClick }) => {
 }
 
 CheckboxGroup.propTypes = {
-  variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   legend: PropTypes.string.isRequired,
+  variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape(checkboxOptionShape)).isRequired,
   onClick: PropTypes.func.isRequired,
 }

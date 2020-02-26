@@ -11,7 +11,6 @@ describe('<CheckboxGroup />', () => {
       <CheckboxGroup
         variant={CHECKBOX_VARIANTS.PRIMARY}
         legend="Permissions"
-        onClick={mockFn}
         options={[
           {
             value: 'api',
@@ -22,6 +21,7 @@ describe('<CheckboxGroup />', () => {
             isDisabled: false,
           },
         ]}
+        onClick={mockFn}
       />,
     )
 
