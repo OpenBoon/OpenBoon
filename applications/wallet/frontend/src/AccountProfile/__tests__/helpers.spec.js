@@ -1,6 +1,6 @@
 import { onSubmit } from '../helpers'
 
-const USER_ID = 'fe39c66b-68f8-4d59-adfd-395f6baaf72c'
+const USER_ID = 42
 
 describe('<AccountProfile /> helpers', () => {
   describe('onSubmit()', () => {

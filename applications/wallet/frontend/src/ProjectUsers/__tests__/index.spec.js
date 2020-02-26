@@ -63,7 +63,7 @@ describe('<ProjectUsers />', () => {
 
   it('should hide the menu gear for the active user', () => {
     const component = TestRenderer.create(
-      <User initialUser={{ email: 'jane@zorroa.com' }}>
+      <User initialUser={{ id: 42, email: 'jane@zorroa.com' }}>
         <ProjectUsers />
       </User>,
     )

@@ -37,7 +37,7 @@ exports[`<NoProject /> should render properly 1`] = `
   <h3
     className="emotion-0"
   >
-    You currently have no projects.
+    You currently have no projects
   </h3>
 </div>
 `;

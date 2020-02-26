@@ -26,7 +26,9 @@ describe('<Authentication /> helpers', () => {
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
-      expect(mockSetUser).toHaveBeenCalledWith({ user: { id: 12345 } })
+      expect(mockSetUser).toHaveBeenCalledWith({
+        user: { id: 12345, projectId: '' },
+      })
     })
 
     it('should authenticate the user with a Google JWT', async () => {
@@ -54,7 +56,9 @@ describe('<Authentication /> helpers', () => {
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
-      expect(mockSetUser).toHaveBeenCalledWith({ user: { id: 12345 } })
+      expect(mockSetUser).toHaveBeenCalledWith({
+        user: { id: 12345, projectId: '' },
+      })
     })
 
     it('should display an alert for incorrect username/password', async () => {
