@@ -25,7 +25,7 @@ class ProjectSpec(
      * for REST clients.
      */
     @ApiModelProperty("An optional unique ID for the project.")
-    val projectId: UUID? = null
+    val id: UUID? = null
 )
 
 /**
