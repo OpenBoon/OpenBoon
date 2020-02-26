@@ -23,7 +23,7 @@ public class DataSource {
     /**
      * An optional credentials blob for the DataSource, this will be encrypted.
      */
-    private List<UUID> credentials;
+    private String credentials;
     /**
      * A list of file type filters.
      */
@@ -63,11 +63,11 @@ public class DataSource {
         return this;
     }
 
-    public List<UUID> getCredentials() {
+    public String getCredentials() {
         return credentials;
     }
 
-    public DataSource setCredentials(List<UUID> credentials) {
+    public DataSource setCredentials(String credentials) {
         this.credentials = credentials;
         return this;
     }
