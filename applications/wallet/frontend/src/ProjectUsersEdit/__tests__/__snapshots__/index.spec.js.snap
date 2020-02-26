@@ -380,6 +380,7 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
 }
 
 .emotion-7 path {

@@ -236,6 +236,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
 }
 
 .emotion-15 path {
@@ -1128,6 +1129,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
 }
 
 .emotion-15 path {
@@ -2523,6 +2525,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
 }
 
 .emotion-15 path {

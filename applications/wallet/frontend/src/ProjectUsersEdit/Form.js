@@ -38,11 +38,12 @@ const ProjectUsersEditForm = ({ projectId, user, permissions }) => {
           dispatch({ permissions: { ...state.permissions, ...permission } })
         }
         options={permissions.map(({ name, description }) => ({
-          key: name,
+          value: name,
           label: name.replace(/([A-Z])/g, match => ` ${match}`),
           icon: '',
           legend: description,
           initialValue: !!user.permissions.includes(name),
+          isDisabled: false,
         }))}
         variant={CHECKBOX_VARIANTS.PRIMARY}
       />

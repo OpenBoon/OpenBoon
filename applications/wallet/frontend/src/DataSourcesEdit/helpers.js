@@ -23,7 +23,7 @@ export const onSubmit = async ({
             .filter(f => fileTypes[f])
             .flatMap(f => {
               const { legend: extensions } = FILE_TYPES.find(
-                ({ key }) => key === f,
+                ({ value }) => value === f,
               )
               return extensions.toLowerCase().split(',')
             }),

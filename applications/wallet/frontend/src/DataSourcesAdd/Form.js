@@ -85,12 +85,13 @@ const DataSourcesAddForm = () => {
         onClick={fileType =>
           dispatch({ fileTypes: { ...state.fileTypes, ...fileType } })
         }
-        options={FILE_TYPES.map(({ key, label, legend, icon }) => ({
-          key,
+        options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
+          value,
           label,
           icon: <img src={icon} alt={label} width="40px" />,
           legend,
           initialValue: false,
+          isDisabled: false,
         }))}
         variant={CHECKBOX_VARIANTS.SECONDARY}
       />
