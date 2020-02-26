@@ -280,7 +280,7 @@ class PipelineResolverServiceImpl(
             ),
             ProcessorRef("zmlp_core.proxy.ImageProxyProcessor", "zmlp/plugins-core"),
             ProcessorRef("zmlp_core.proxy.VideoProxyProcessor", "zmlp/plugins-core"),
-            ProcessorRef("zmlp_analysis.mxnet.processors.ResNetSimilarityProcessor", "zmlp/plugins-analysis"),
+            ProcessorRef("zmlp_analysis.mxnet.ZviSimilarityProcessor", "zmlp/plugins-analysis"),
             ProcessorRef("PrependMarker", "none")
         ).dropLastWhile { trimPrependMarker }
     }

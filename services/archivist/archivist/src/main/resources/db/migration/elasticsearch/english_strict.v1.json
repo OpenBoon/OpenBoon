@@ -99,62 +99,41 @@
       "analysis": {
         "dynamic": "strict",
         "properties": {
-          "google": {
+          "gcp": {
             "dynamic": "strict",
             "properties": {
-              "faceDetection": {
+              "face-detection": {
                 "dynamic": "strict",
                 "properties": {
-                  "faceCount": {
+                  "detected": {
                     "type": "integer"
                   }
                 }
               }
             }
           },
-          "zmlp": {
+          "zvi": {
             "dynamic": "strict",
             "properties": {
               "tinyProxy": {
-                "type": "object",
-                "enabled": false
-              },
-              "faceDetection": {
-                "dynamic": "strict",
-                "properties": {
-                  "faceCount": {
-                    "type": "integer"
-                  }
-                }
-              },
-              "faceRecognition": {
-                "dynamic": "strict",
-                "properties": {
-                  "faceCount": {
-                    "type": "integer"
-                  }
-                }
+                "type": "keyword"
               },
               "similarity": {
                 "dynamic": "strict",
                 "properties": {
-                  "vector": {
+                  "simhash": {
                     "type": "keyword",
                     "index": false
-                  },
-                  "debug": {
-                    "type": "object",
-                    "enabled": false
                   }
                 }
               },
-              "labels": {
+              "label-detection": {
                 "dynamic": "strict",
                 "properties": {
                   "score": {
                     "type": "float"
                   },
-                  "keywords": {
+                  "labels": {
                     "type": "keyword",
                     "fields": {
                       "fulltext": {
@@ -166,6 +145,14 @@
                   "debug": {
                     "type": "object",
                     "enabled": false
+                  }
+                }
+              },
+              "object-detection": {
+                "dynamic": "strict",
+                "properties": {
+                  "detected": {
+                    "type": "integer"
                   }
                 }
               }
@@ -293,9 +280,6 @@
           "type": {
             "type": "keyword"
           },
-          "proxy": {
-            "type": "keyword"
-          },
           "labels": {
             "type": "keyword",
             "fields": {
@@ -306,17 +290,14 @@
             }
           },
           "rect": {
-            "type": "integer"
+            "type": "float"
           },
           "score": {
             "type": "double"
           },
-          "vector": {
+          "simhash": {
             "type": "keyword",
             "index": false
-          },
-          "regions": {
-            "type": "keyword"
           }
         }
       },
