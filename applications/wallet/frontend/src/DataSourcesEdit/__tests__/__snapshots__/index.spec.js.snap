@@ -1627,7 +1627,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="gcp-label-detection"
+                          value="gcp-vision-label-detection"
                         />
                         <div
                           className="emotion-99"
@@ -1642,7 +1642,7 @@ Array [
                       <div
                         className="hidden"
                       >
-                        gcp-label-detection
+                        gcp-vision-label-detection
                         , 
                         Label Detection (Vision)
                         : 
@@ -1651,7 +1651,7 @@ Array [
                     </label>
                   </td>
                   <td>
-                    gcp-label-detection
+                    gcp-vision-label-detection
                   </td>
                   <td>
                     <strong>
@@ -1709,7 +1709,7 @@ Array [
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="gcp-label-detection"
+                          value="gcp-video-label-detection"
                         />
                         <div
                           className="emotion-99"
@@ -1724,7 +1724,7 @@ Array [
                       <div
                         className="hidden"
                       >
-                        gcp-label-detection
+                        gcp-video-label-detection
                         , 
                         Label Detection (Video)
                         : 
@@ -1733,7 +1733,7 @@ Array [
                     </label>
                   </td>
                   <td>
-                    gcp-label-detection
+                    gcp-video-label-detection
                   </td>
                   <td>
                     <strong>

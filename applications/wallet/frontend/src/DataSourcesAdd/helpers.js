@@ -138,7 +138,7 @@ export const MODULES = [
             isDisabled: true,
           },
           {
-            value: 'gcp-label-detection',
+            value: 'gcp-vision-label-detection',
             label: 'Label Detection (Vision)',
             legend: 'Add labels based on image content.',
             initialValue: false,
@@ -150,7 +150,7 @@ export const MODULES = [
         name: 'Google Video',
         options: [
           {
-            value: 'gcp-label-detection',
+            value: 'gcp-video-label-detection',
             label: 'Label Detection (Video)',
             legend:
               'Identifies objects, locations, activities, animal species, products, and more.',

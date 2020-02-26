@@ -1522,7 +1522,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="gcp-label-detection"
+                        value="gcp-vision-label-detection"
                       />
                       <div
                         className="emotion-116"
@@ -1537,7 +1537,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      gcp-label-detection
+                      gcp-vision-label-detection
                       , 
                       Label Detection (Vision)
                       : 
@@ -1546,7 +1546,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                   </label>
                 </td>
                 <td>
-                  gcp-label-detection
+                  gcp-vision-label-detection
                 </td>
                 <td>
                   <strong>
@@ -1604,7 +1604,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="gcp-label-detection"
+                        value="gcp-video-label-detection"
                       />
                       <div
                         className="emotion-116"
@@ -1619,7 +1619,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      gcp-label-detection
+                      gcp-video-label-detection
                       , 
                       Label Detection (Video)
                       : 
@@ -1628,7 +1628,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                   </label>
                 </td>
                 <td>
-                  gcp-label-detection
+                  gcp-video-label-detection
                 </td>
                 <td>
                   <strong>
