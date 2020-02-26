@@ -2,25 +2,24 @@ import { colors, spacing, typography, zIndex } from '../Styles'
 
 import InformationSvg from './information.svg'
 
-const WIDTH = 400
+export const WIDTH = 400
 const HEADER_HEIGHT = 48
-const FROM_TOP = 90
 const BOX_SHADOW = '-3px 4px 3px 0px rgba(0,0,0,0.3)'
 
-const AssetMetadata = () => (
+const AssetsMetadata = () => (
   <div
     css={{
-      position: 'fixed',
-      top: FROM_TOP,
-      right: 0,
-      bottom: 0,
+      position: 'relative',
+      float: 'right',
+      marginRight: -spacing.spacious,
+      marginBottom: -spacing.spacious,
       backgroundColor: colors.structure.mattGrey,
-      height: '100%',
+      height: `calc(100% + ${spacing.spacious}px)`,
       width: WIDTH,
       display: 'flex',
       flexDirection: 'column',
       boxShadow: BOX_SHADOW,
-      zIndex: zIndex.layout.navbar + 1,
+      zIndex: zIndex.layout.navbar,
     }}>
     <div
       css={{
@@ -30,7 +29,7 @@ const AssetMetadata = () => (
         borderBottom: `1px solid ${colors.structure.smoke}`,
         paddingLeft: spacing.normal,
       }}>
-      <InformationSvg />
+      <InformationSvg width={20} />
       <div
         css={{
           paddingLeft: spacing.normal,
@@ -48,4 +47,4 @@ const AssetMetadata = () => (
   </div>
 )
 
-export default AssetMetadata
+export default AssetsMetadata

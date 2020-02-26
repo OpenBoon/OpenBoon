@@ -3,49 +3,33 @@
 exports[`<Assets /> should render properly 1`] = `
 .emotion-8 {
   height: 100%;
-}
-
-.emotion-2 {
-  position: fixed;
-  top: 45px;
-  left: 0;
-  right: 0;
-  height: 44px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #2e2e2e;
-  box-shadow: 0px 3px 3px 0 rgb(0,0,0,0.3);
-  z-index: 100;
-  padding-left: 16px;
-  padding-right: 16px;
-  font-family: Roboto Condensed;
+  width: 100%;
+  margin-top: 46px;
 }
 
 .emotion-0 {
-  color: #808080;
+  float: left;
+  padding-top: 32px;
+  height: 100%;
+  width: calc(100% - 400px);
+  margin: 0;
 }
 
 .emotion-1 {
+  color: #808080;
+}
+
+.emotion-2 {
   color: #b3b3b3;
 }
 
 .emotion-7 {
-  position: fixed;
-  top: 90px;
-  right: 0;
-  bottom: 0;
+  position: relative;
+  float: right;
+  margin-right: -32px;
+  margin-bottom: -32px;
   background-color: #2e2e2e;
-  height: 100%;
+  height: calc(100% + 32px);
   width: 400px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -55,7 +39,7 @@ exports[`<Assets /> should render properly 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   box-shadow: -3px 4px 3px 0px rgba(0,0,0,0.3);
-  z-index: 101;
+  z-index: 100;
 }
 
 .emotion-4 {
@@ -91,15 +75,35 @@ exports[`<Assets /> should render properly 1`] = `
   className="emotion-8"
 >
   <div
-    className="emotion-2"
+    className="emotion-0"
+  />
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#2e2e2e",
+        "boxShadow": "0px 3px 3px 0 rgb(0, 0, 0, 0.3)",
+        "display": "flex",
+        "fontFamily": "Roboto Condensed",
+        "height": 44,
+        "justifyContent": "flex-end",
+        "left": 0,
+        "paddingLeft": 16,
+        "paddingRight": 16,
+        "position": "fixed",
+        "right": 0,
+        "top": 45,
+        "zIndex": 100,
+      }
+    }
   >
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
       Sort: Import Date  |  
     </div>
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       100
        of 
@@ -115,6 +119,7 @@ exports[`<Assets /> should render properly 1`] = `
     >
       <svg
         data-file-name="information.svg"
+        width={20}
       />
       <div
         className="emotion-3"

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
-import { colors, spacing } from '../Styles'
+import { constants, colors, spacing, zIndex } from '../Styles'
 
 import LogoSvg from '../Icons/logo.svg'
 
@@ -9,13 +9,26 @@ import ProjectSwitcher from '../ProjectSwitcher'
 
 import HamburgerSvg from './hamburger.svg'
 
-import NavbarWrapper from './Wrapper'
-
 const LOGO_WIDTH = 110
 
 const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
   return (
-    <NavbarWrapper>
+    <div
+      css={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: constants.navbar.height,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: colors.structure.mattGrey,
+        boxShadow: constants.boxShadows.navBar,
+        zIndex: zIndex.layout.navbar,
+        paddingLeft: spacing.normal,
+        paddingRight: spacing.normal,
+      }}>
       <div css={{ display: 'flex', alignItems: 'stretch' }}>
         {!!projectId && (
           <button
@@ -50,7 +63,7 @@ const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
       </div>
 
       {children}
-    </NavbarWrapper>
+    </div>
   )
 }
 
