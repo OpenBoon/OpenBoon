@@ -1,12 +1,10 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-import cv2
-
 import zmlpsdk.proxy
+from zmlp.client import ZmlpClient
 from zmlpsdk.storage import file_storage
 from zmlpsdk.testing import zorroa_test_data, TestAsset
-from zmlp.client import ZmlpClient
 
 IMAGE_JPG = zorroa_test_data('images/set01/faces.jpg')
 VIDEO_WEBM = zorroa_test_data('video/dc.webm')
@@ -58,10 +56,21 @@ class ProxyFunctionTests(TestCase):
         asset = TestAsset(IMAGE_JPG, id='123456')
         asset.set_attr('files', self.file_list)
 
-        path = zmlpsdk.proxy.get_proxy_level(asset, 0)
+        prx1 = zmlpsdk.proxy.get_proxy_level(asset, 0)
+        assert 'image_200x200.jpg' == prx1['name']
+
+        prx1 = zmlpsdk.proxy.get_proxy_level(asset, 9)
+        assert 'image_400x400.jpg' == prx1['name']
+
+    @patch.object(ZmlpClient, 'stream')
+    def test_get_proxy_level_path(self, stream_patch):
+        asset = TestAsset(IMAGE_JPG, id='123456')
+        asset.set_attr('files', self.file_list)
+
+        path = zmlpsdk.proxy.get_proxy_level_path(asset, 0)
         assert '4b6f2919eb95dca550bd50deb5e84b25aec42ccc' in path
 
-        path = zmlpsdk.proxy.get_proxy_level(asset, 9)
+        path = zmlpsdk.proxy.get_proxy_level_path(asset, 9)
         assert '760e2adca79e16645154b8a3ece4c6fc35b46663' in path
 
     @patch.object(ZmlpClient, 'upload_file')
@@ -109,17 +118,3 @@ class ProxyFunctionTests(TestCase):
         assert kwargs['attrs']['width'] == 200
         assert kwargs['attrs']['height'] == 200
         assert kwargs['attrs']['foo'] == 'bar'
-
-    @patch.object(file_storage.assets, 'store_file')
-    @patch.object(ZmlpClient, 'upload_file')
-    def test_store_element_proxy(self, upload_patch, store_file_patch):
-        upload_patch.return_value = {}
-
-        asset = TestAsset(IMAGE_JPG)
-        image = cv2.imread(zorroa_test_data('images/set01/faces.jpg', False))
-        zmlpsdk.proxy.store_element_proxy(asset, image, "face_master_2000")
-
-        args, kwargs = store_file_patch.call_args_list[0]
-        assert kwargs['rename'] == 'face_master_2000_512x339.jpg'
-        assert kwargs['attrs']['width'] == 512
-        assert kwargs['attrs']['height'] == 339

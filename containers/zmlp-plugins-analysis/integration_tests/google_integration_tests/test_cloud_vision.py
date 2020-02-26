@@ -1,5 +1,6 @@
 # flake8: noqa
 import os
+import pytest
 from unittest.mock import patch
 
 from zmlp import ZmlpClient
@@ -9,6 +10,7 @@ from zmlpsdk.proxy import store_asset_proxy
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset
 
 
+@pytest.mark.skip(reason='dont run automaticallly')
 class CloudVisionProcessorTestCase(PluginUnitTestCase):
 
     def setUp(self):
@@ -17,7 +19,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
     def tearDown(self):
         del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level_path')
     def test_image_text_processor(self, proxy_patch):
         path = zorroa_test_path('images/set01/visa.jpg')
         proxy_patch.return_value = path
@@ -27,7 +29,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         assert ('Giants Franchise History' in
                 frame.asset.get_attr('analysis.google.imageTextDetection.content'))
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level_path')
     def test_document_text_processor(self, proxy_patch):
         path = zorroa_test_path('images/set08/meme.jpg')
         proxy_patch.return_value = path
@@ -37,7 +39,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         print(frame.asset.get_attr('analysis.google'))
         assert 'HEY GIRL' in frame.asset.get_attr('analysis.google.documentTextDetection.content')
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level_path')
     def test_landmark_detection(self, proxy_patch):
         path = zorroa_test_path('images/set08/eiffel_tower.jpg')
         proxy_patch.return_value = path
@@ -46,7 +48,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         processor.process(frame)
         assert 'Eiffel Tower' in frame.asset.get_attr('analysis.google.landmarkDetection.keywords')
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level_path')
     def test_explicit_detection(self, proxy_patch):
         path = zorroa_test_path('images/set08/meme.jpg')
         proxy_patch.return_value = path
@@ -56,7 +58,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         assert frame.asset.get_attr('analysis.google.explicit.spoof') == 1.0
 
     @patch.object(ZmlpClient, 'upload_file')
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level_path')
     def test_face_detection(self, proxy_patch, upload_patch):
         upload_patch.return_value = {
             "name": "googleFaceDetection_200x200.jpg",
@@ -74,10 +76,10 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         store_asset_proxy(frame.asset, path, (512, 339))
         processor = self.init_processor(CloudVisionDetectFaces())
         processor.process(frame)
-        assert 1 == asset.get_attr("analysis.google.faceDetection.faceCount")
+        assert 1 == asset.get_attr("analysis.gcp.face-detection.detected")
         assert 1 == len(asset.get_attr("elements"))
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level_path')
     def test_label_detection(self, proxy_patch):
         path = zorroa_test_path('images/set08/meme.jpg')
         proxy_patch.return_value = path
@@ -86,7 +88,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         processor.process(frame)
         assert 'Hair' in frame.asset.get_attr('analysis.google.labelDetection.labels')
 
-    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
+    @patch('zmlp_analysis.google.cloud_vision.get_proxy_level_path')
     def test_object_detection(self, proxy_patch):
         path = zorroa_test_path('images/detect/dogbike.jpg')
         proxy_patch.return_value = path

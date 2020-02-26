@@ -9,7 +9,6 @@ import org.elasticsearch.script.ScoreScript
 import org.elasticsearch.script.ScriptContext
 import org.elasticsearch.script.ScriptEngine
 import org.elasticsearch.search.lookup.SearchLookup
-import java.util.Collections
 import java.util.logging.Logger
 import kotlin.math.abs
 
@@ -65,32 +64,9 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
                 throw IllegalArgumentException("Hashes cannot be null")
             }
 
-            val hashesParam = params["hashes"] as List<String>
-            val weightsParam = if (params["weights"] != null) {
-                params["weights"] as List<Double>
-            } else {
-                Collections.nCopies(hashesParam.size, 1.0)
-            }
-
-            if (hashesParam.size != weightsParam!!.size) {
-                throw IllegalArgumentException(
-                    "HammingDistanceScript weights must align with hashes"
-                )
-            }
-
-            /**
-             * Go through all the values and remove the null
-             * values and populate the charHashes and
-             * weights fields with valid values.
-             */
-            charHashes = mutableListOf()
-            for (i in hashesParam.indices) {
-                val hash = hashesParam[i]
-                if (hash == null || hash.isEmpty()) {
-                    continue
-                }
-                charHashes.add(hash)
-            }
+            charHashes = (params["hashes"] as List<String>)
+                .mapNotNull { it }
+                .filter { it.isNotEmpty() }
 
             /**
              * If there are no valid hashes left, initialize to defaults

@@ -1,7 +1,7 @@
 import subprocess
 
 from zmlpsdk import AssetProcessor, Argument
-from zmlpsdk.proxy import get_proxy_level
+from zmlpsdk.proxy import get_proxy_level_path
 from .util import check_video_clip_preconditions, make_video_clip_file_import
 
 
@@ -17,7 +17,7 @@ class ShotDetectionVideoClipifier(AssetProcessor):
         if not check_video_clip_preconditions(asset):
             return -1
 
-        self._generate_clips(frame, get_proxy_level(asset, 3, "video/"))
+        self._generate_clips(frame, get_proxy_level_path(asset, 3, "video/"))
 
     def _generate_clips(self, frame, movie_file):
         min_clip_length = float(self.arg_value('min_clip_length'))

@@ -507,7 +507,7 @@ class AssetControllerTests : MockMvcTest() {
             )
         )
 
-        val search = """{ "modules": ["zmlp-labels"], "search": { "query": { "match_all": { } } } }"""
+        val search = """{ "modules": ["zvi-label-detection"], "search": { "query": { "match_all": { } } } }"""
         mvc.perform(
             MockMvcRequestBuilders.post("/api/v3/assets/_search/reprocess")
                 .headers(admin())

@@ -91,10 +91,10 @@ class JobLauncherServiceTests : AbstractTest() {
 
         val req = ReprocessAssetSearchRequest(
             mapOf(),
-            listOf("zmlp-labels")
+            listOf("zvi-label-detection")
         )
         val rsp = jobLaunchService.launchJob(req)
-        assertEquals("Applying modules: zmlp-labels to 1 assets", rsp.job.name)
+        assertEquals("Applying modules: zvi-label-detection to 1 assets", rsp.job.name)
         assertEquals(1, rsp.assetCount)
     }
 

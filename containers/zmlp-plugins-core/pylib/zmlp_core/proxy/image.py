@@ -9,7 +9,7 @@ from pathlib2 import Path
 
 from zmlpsdk import AssetProcessor, Argument
 from zmlpsdk.storage import file_storage
-from zmlpsdk.proxy import store_asset_proxy, get_proxy_level
+from zmlpsdk.proxy import store_asset_proxy, get_proxy_level_path
 from zmlp_core.util.media import get_output_dimension, media_size
 
 
@@ -224,10 +224,10 @@ def set_tiny_proxy_colors(asset):
 
     """
     if not asset.get_attr('tmp.proxies.tinyProxyGenerated'):
-        smallest_proxy = get_proxy_level(asset, 0)
+        smallest_proxy = get_proxy_level_path(asset, 0)
         if smallest_proxy:
             logger.info('Creating tiny proxy colors for %s.' % smallest_proxy)
-            asset.set_attr('analysis.zmlp.tinyProxy',
+            asset.set_attr('analysis.zvi.tinyProxy',
                            get_tiny_proxy_colors(smallest_proxy) or None)
 
             # Mark that the tiny proxy was generated so we don't do this multiple times

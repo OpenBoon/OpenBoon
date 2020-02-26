@@ -1,4 +1,5 @@
 import os
+import pytest
 
 from unittest.mock import patch
 
@@ -7,6 +8,7 @@ from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 from zmlpsdk import Frame
 
 
+@pytest.mark.skip(reason='dont run automaticallly')
 class CloudSpeechToTextProcessorTestCase(PluginUnitTestCase):
 
     def setUp(self):
@@ -19,7 +21,7 @@ class CloudSpeechToTextProcessorTestCase(PluginUnitTestCase):
     def tearDown(self):
         del os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
 
-    @patch('zmlp_analysis.google.cloud_speech.get_proxy_level')
+    @patch('zmlp_analysis.google.cloud_speech.get_proxy_level_path')
     def test_speech_detection(self, proxy_patch):
         path = zorroa_test_data("video/ted_talk.mov")
         proxy_patch.return_value = path
@@ -37,7 +39,7 @@ class CloudSpeechToTextProcessorTestCase(PluginUnitTestCase):
         assert clip.get_attr('analysis.google.speechRecognition.language') == 'en-us'
         assert clip.get_attr('analysis.google.speechRecognition.confidence') > .9
 
-    @patch('zmlp_analysis.google.cloud_speech.get_proxy_level')
+    @patch('zmlp_analysis.google.cloud_speech.get_proxy_level_path')
     def test_no_sound_video(self, proxy_patch):
         path = zorroa_test_data('video/FatManOnABike1914.mp4', False)
         proxy_patch.return_value = path
