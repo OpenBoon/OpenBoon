@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
-import { constants, colors, spacing, zIndex } from '../Styles'
+import { colors, spacing, constants, zIndex } from '../Styles'
 
 import LogoSvg from '../Icons/logo.svg'
 
