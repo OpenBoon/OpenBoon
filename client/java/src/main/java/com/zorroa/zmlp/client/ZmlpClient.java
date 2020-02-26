@@ -5,13 +5,14 @@ import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.zmlp.client.domain.ZmlpClientException;
+import com.zorroa.zmlp.client.domain.asset.BatchUploadAssetsRequest;
 import okhttp3.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -92,7 +93,7 @@ public class ZmlpClient {
             Request.Builder builder = new Request.Builder()
                     .url(getUrl(path));
             if (body == null) {
-                builder.method(method, null);
+                builder.method(method.toUpperCase(), null);
             } else {
                 builder.method(method.toUpperCase(),
                         RequestBody.create(JSON, Json.mapper.writeValueAsString(body)));
@@ -130,34 +131,38 @@ public class ZmlpClient {
     private void signRequest(Request.Builder builder) {
         JWTCreator.Builder claimBuilder = JWT.create();
         claimBuilder.withClaim("aud", server);
-        claimBuilder.withClaim("exp", Instant.now().plus(60, ChronoUnit.SECONDS).toEpochMilli());
+        claimBuilder.withClaim("exp", Instant.now().plus(60, ChronoUnit.SECONDS).getEpochSecond());
         claimBuilder.withClaim("accessKey", apiKey.getAccessKey());
         Algorithm secretKey = Algorithm.HMAC512(apiKey.getSecretKey());
         builder.header("Authorization", "Bearer " + claimBuilder.sign(secretKey));
     }
 
-    public <T> T uploadFiles(String path, List<String> uris, Map body, Class<T> type) {
-        return marshallResponse(multiPartFileUpload(path, uris, body), type);
+    public <T> T uploadFiles(String path, BatchUploadAssetsRequest batchUploadAssetsRequest, Class<T> type) {
+        return marshallResponse(multiPartFileUpload(path, batchUploadAssetsRequest), type);
     }
 
-    private byte[] multiPartFileUpload(String path, List<String> uris, Map body) {
+
+    private byte[] multiPartFileUpload(String path, BatchUploadAssetsRequest batchUploadAssetsRequest) {
 
         try {
             path = getUrl(path);
             MultipartBody.Builder multiPartBuilder = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("body", Json.mapper.writeValueAsString(body));
+                    .setType(MultipartBody.FORM);
 
             // Adding Files to Request
-            uris.forEach(value -> {
-                File file = new File(value);
-                MediaType mimeType = MediaType.parse("application/octet-stream");
-                RequestBody fileRequestBody = RequestBody.create(
-                        mimeType, file);
+            batchUploadAssetsRequest.getAssets().forEach(value -> {
+                File file = new File(value.getUri());
 
+                RequestBody fileRequestBody = RequestBody.create(MediaType.get("application/octet-stream"), file);
                 multiPartBuilder.addFormDataPart("files", file.getName(), fileRequestBody);
-
             });
+
+
+            Map<String, Object> body = new HashMap();
+            body.put("assets", batchUploadAssetsRequest.getAssets());
+            body.put("modules", batchUploadAssetsRequest.getModules());
+            multiPartBuilder.addFormDataPart("body", "", RequestBody.create(MediaType.get("application/json"), Json.asJson(batchUploadAssetsRequest)));
+
 
             Request.Builder requestBuilder = new Request.Builder()
                     .url(path)
