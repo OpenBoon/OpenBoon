@@ -185,18 +185,20 @@ Array [
       Error Details
     </h2>
   </div>,
-  .emotion-1 {
-  padding-bottom: 32px;
-}
-
-.emotion-0 {
+  .emotion-0 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-top: 16px;
 }
 
-.emotion-6 {
+<h3
+    className="emotion-0"
+  >
+    Job: 
+    Applying modules:  to gs://zorroa-dev-data
+  </h3>,
+  .emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -207,69 +209,78 @@ Array [
   padding-bottom: 24px;
 }
 
-.emotion-4 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding-top: 32px;
   padding-bottom: 8px;
 }
 
-.emotion-2 {
+.emotion-0 {
   padding-right: 8px;
-}
-
-.emotion-5 {
-  font-weight: 700;
-  padding-right: 8px;
-  white-space: noWrap;
-  padding-bottom: 4px;
 }
 
 .emotion-3 {
+  color: #ffffff;
+  font-weight: 700;
+  padding-bottom: 4px;
+}
+
+.emotion-5 {
+  color: #808080;
+}
+
+.emotion-4 {
+  color: #ffffff;
+}
+
+.emotion-1 {
   color: #c92300;
   font-weight: 700;
 }
 
-<div>
+<div
+    className="emotion-7"
+  >
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
-      <h3
+      <div
         className="emotion-0"
       >
-        Job: 
-        Applying modules:  to gs://zorroa-dev-data
-      </h3>
+        <svg
+          color="#c92300"
+          data-file-name="errorFatal.svg"
+          width={18}
+        />
+      </div>
+      <div
+        className="emotion-1"
+      >
+        Error Type: 
+        Fatal
+      </div>
     </div>
     <div
       className="emotion-6"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
-        <div
-          className="emotion-2"
-        >
-          <svg
-            color="#c92300"
-            data-file-name="errorFatal.svg"
-            width={18}
-          />
-        </div>
-        <div
-          className="emotion-3"
-        >
-          Error Type: 
-          Fatal
-        </div>
+        Error Message
+        :
       </div>
       <div
         className="emotion-5"
       >
-        Error Message:
+        <div
+          className="emotion-4"
+        >
+          ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
+        </div>
       </div>
-      ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
   </div>,
 ]
@@ -361,18 +372,20 @@ Array [
       Error Details
     </h2>
   </div>,
-  .emotion-1 {
-  padding-bottom: 32px;
-}
-
-.emotion-0 {
+  .emotion-0 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-top: 16px;
 }
 
-.emotion-6 {
+<h3
+    className="emotion-0"
+  >
+    Job: 
+    Applying modules:  to gs://zorroa-dev-data
+  </h3>,
+  .emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -383,69 +396,78 @@ Array [
   padding-bottom: 24px;
 }
 
-.emotion-4 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding-top: 32px;
   padding-bottom: 8px;
 }
 
-.emotion-2 {
+.emotion-0 {
   padding-right: 8px;
 }
 
-.emotion-3 {
+.emotion-1 {
   color: #d6680b;
   font-weight: 700;
 }
 
-.emotion-5 {
+.emotion-3 {
+  color: #ffffff;
   font-weight: 700;
-  padding-right: 8px;
-  white-space: noWrap;
   padding-bottom: 4px;
 }
 
-<div>
+.emotion-5 {
+  color: #808080;
+}
+
+.emotion-4 {
+  color: #ffffff;
+}
+
+<div
+    className="emotion-7"
+  >
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
-      <h3
+      <div
         className="emotion-0"
       >
-        Job: 
-        Applying modules:  to gs://zorroa-dev-data
-      </h3>
+        <svg
+          color="#d6680b"
+          data-file-name="errorWarning.svg"
+          width={18}
+        />
+      </div>
+      <div
+        className="emotion-1"
+      >
+        Error Type: 
+        Warning
+      </div>
     </div>
     <div
       className="emotion-6"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
-        <div
-          className="emotion-2"
-        >
-          <svg
-            color="#d6680b"
-            data-file-name="errorWarning.svg"
-            width={18}
-          />
-        </div>
-        <div
-          className="emotion-3"
-        >
-          Error Type: 
-          Warning
-        </div>
+        Error Message
+        :
       </div>
       <div
         className="emotion-5"
       >
-        Error Message:
+        <div
+          className="emotion-4"
+        >
+          ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
+        </div>
       </div>
-      ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
   </div>,
 ]

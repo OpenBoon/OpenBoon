@@ -1,8 +1,6 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { spacing } from '../Styles'
-
 import Loading from '../Loading'
 import SectionTitle from '../SectionTitle'
 
@@ -13,20 +11,18 @@ const JobErrorContent = () => {
     query: { projectId, errorId },
   } = useRouter()
 
-  const { data: taskError } = useSWR(
+  const { data: jobError } = useSWR(
     `/api/v1/projects/${projectId}/taskerrors/${errorId}`,
   )
 
-  if (typeof taskError === 'undefined') return <Loading />
+  if (typeof jobError === 'undefined') return <Loading />
 
   return (
-    <div>
-      <div css={{ paddingBottom: spacing.spacious }}>
-        <SectionTitle>Job: {taskError.jobName}</SectionTitle>
-      </div>
+    <>
+      <SectionTitle>Job: {jobError.jobName}</SectionTitle>
 
-      <JobErrorType error={taskError} />
-    </div>
+      <JobErrorType error={jobError} />
+    </>
   )
 }
 
