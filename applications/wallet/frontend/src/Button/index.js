@@ -46,7 +46,7 @@ const STYLES = {
       backgroundColor: colors.structure.steel,
     },
     '&:hover': {
-      opacity: constants.opacity.half,
+      backgroundColor: colors.structure.zinc,
     },
     '&[aria-disabled=true]': {
       backgroundColor: colors.structure.steel,
@@ -83,7 +83,7 @@ const STYLES = {
     fontWeight: typography.weight.regular,
     height: '100%',
     ':hover': {
-      backgroundColor: colors.structure.smoke,
+      backgroundColor: colors.structure.zinc,
     },
   },
   MENU_ITEM: {

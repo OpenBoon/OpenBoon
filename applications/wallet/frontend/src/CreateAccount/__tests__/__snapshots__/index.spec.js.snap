@@ -265,7 +265,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-39:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-39[aria-disabled=true] {
@@ -775,7 +775,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 }
 
 .emotion-34:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-34[aria-disabled=true] {

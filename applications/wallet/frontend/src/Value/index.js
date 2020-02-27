@@ -10,22 +10,11 @@ const STYLES = {
       paddingLeft: spacing.comfy,
       paddingRight: spacing.comfy,
     },
-    legend: {
-      color: colors.structure.iron,
-    },
-    content: {
-      color: colors.structure.steel,
-    },
   },
   SECONDARY: {
     container: {
       paddingTop: spacing.normal,
     },
-    legend: {
-      color: colors.structure.white,
-      fontWeight: typography.weight.bold,
-    },
-    content: { color: colors.structure.white },
   },
 }
 
@@ -36,10 +25,15 @@ export const VARIANTS = Object.keys(STYLES).reduce(
 
 const Value = ({ variant, legend, children }) => (
   <div css={STYLES[variant].container}>
-    <div css={{ ...STYLES[variant].legend, paddingBottom: spacing.small }}>
+    <div
+      css={{
+        fontWeight: typography.weight.bold,
+        color: colors.structure.white,
+        paddingBottom: spacing.small,
+      }}>
       {legend}:
     </div>
-    <div css={STYLES[variant].content}>{children}</div>
+    <div css={{ color: colors.structure.zinc }}>{children}</div>
   </div>
 )
 

@@ -492,7 +492,7 @@ Array [
 }
 
 .emotion-103:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-103[aria-disabled=true] {

@@ -374,7 +374,7 @@ exports[`<Button /> should render properly for MENU Button 1`] = `
 }
 
 .emotion-0:hover {
-  background-color: #3b3b3b;
+  background-color: #b3b3b3;
 }
 
 <button
@@ -436,7 +436,7 @@ exports[`<Button /> should render properly for MENU Link 1`] = `
 }
 
 .emotion-0:hover {
-  background-color: #3b3b3b;
+  background-color: #b3b3b3;
 }
 
 <a
@@ -857,7 +857,7 @@ exports[`<Button /> should render properly for SECONDARY Button 1`] = `
 }
 
 .emotion-0:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-0[aria-disabled=true] {
@@ -922,7 +922,7 @@ exports[`<Button /> should render properly for SECONDARY Link 1`] = `
 }
 
 .emotion-0:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-0[aria-disabled=true] {

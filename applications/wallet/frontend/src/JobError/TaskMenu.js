@@ -9,43 +9,42 @@ import Button, { VARIANTS } from '../Button'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
-const ACTION = {
-  name: 'Retry All Failures',
-  action: 'retry_all_failures',
-}
-
-const JobErrorJobMenu = ({ projectId, jobId, revalidate }) => {
-  const { name, action } = ACTION
+const JobErrorTaskMenu = ({ projectId, taskId, revalidate }) => {
   return (
-    <div css={{ display: 'flex', marginBottom: -spacing.small }}>
+    <div
+      css={{
+        display: 'flex',
+        marginBottom: -spacing.small,
+        paddingTop: spacing.comfy,
+      }}>
       <Menu
         open="left"
         button={({ onBlur, onClick }) => (
           <Button
-            aria-label="Toggle Error Actions Menu"
+            aria-label="Toggle Task Actions Menu"
             variant={VARIANTS.SECONDARY}
             css={{
               width: WIDTH,
               paddingTop: spacing.base,
               paddingBottom: spacing.base,
               paddingLeft: spacing.normal,
-              paddingRight: spacing.normal,
+              paddingRight: spacing.moderate,
               flexDirection: 'row',
               justifyContent: 'space-between',
               marginBottom: spacing.small,
-              color: colors.structure.black,
+              color: colors.structure.white,
             }}
             onBlur={onBlur}
             onClick={onClick}
             isDisabled={false}>
-            Modify Job
+            Modify Task
             <ChevronSvg width={20} />
           </Button>
         )}>
         {({ onBlur, onClick }) => (
           <div>
             <ul>
-              <li key={action}>
+              <li>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
                   onBlur={onBlur}
@@ -53,14 +52,14 @@ const JobErrorJobMenu = ({ projectId, jobId, revalidate }) => {
                     onClick()
 
                     await fetcher(
-                      `/api/v1/projects/${projectId}/jobs/${jobId}/${action}/`,
+                      `/api/v1/projects/${projectId}/tasks/${taskId}/retry/`,
                       { method: 'PUT' },
                     )
 
                     revalidate()
                   }}
                   isDisabled={false}>
-                  {name}
+                  Retry
                 </Button>
               </li>
             </ul>
@@ -71,10 +70,10 @@ const JobErrorJobMenu = ({ projectId, jobId, revalidate }) => {
   )
 }
 
-JobErrorJobMenu.propTypes = {
+JobErrorTaskMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
-  jobId: PropTypes.string.isRequired,
+  taskId: PropTypes.string.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 
-export default JobErrorJobMenu
+export default JobErrorTaskMenu

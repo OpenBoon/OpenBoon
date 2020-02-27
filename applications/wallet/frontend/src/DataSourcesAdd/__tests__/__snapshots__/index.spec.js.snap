@@ -619,7 +619,7 @@ Array [
 }
 
 .emotion-165:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-165[aria-disabled=true] {

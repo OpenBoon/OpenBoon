@@ -46,11 +46,11 @@ const JobErrorsJobMenu = ({ projectId, jobId, revalidate }) => {
               paddingTop: spacing.base,
               paddingBottom: spacing.base,
               paddingLeft: spacing.normal,
-              paddingRight: spacing.normal,
+              paddingRight: spacing.moderate,
               flexDirection: 'row',
               justifyContent: 'space-between',
               marginBottom: spacing.small,
-              color: colors.structure.black,
+              color: colors.structure.white,
             }}
             onBlur={onBlur}
             onClick={onClick}

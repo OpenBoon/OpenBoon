@@ -125,7 +125,7 @@ exports[`<Layout /> should render properly 1`] = `
 }
 
 .emotion-6:hover {
-  background-color: #3b3b3b;
+  background-color: #b3b3b3;
 }
 
 .emotion-6:hover {
@@ -389,7 +389,7 @@ exports[`<Layout /> should render properly 2`] = `
 }
 
 .emotion-6:hover {
-  background-color: #3b3b3b;
+  background-color: #b3b3b3;
 }
 
 .emotion-6:hover {
