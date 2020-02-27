@@ -75,7 +75,7 @@ def test_project_serializer_detail(project):
     assert data['url'] == f'/api/v1/projects/{project.id}/'
     assert data['jobs'] == f'/api/v1/projects/{project.id}/jobs/'
     assert data['users'] == f'/api/v1/projects/{project.id}/users/'
-    assert data['assets']  == f'/api/v1/projects/{project.id}/assets/'
+    assert data['assets'] == f'/api/v1/projects/{project.id}/assets/'
     assert data['apikeys'] == f'/api/v1/projects/{project.id}/apikeys/'
     assert data['permissions'] == f'/api/v1/projects/{project.id}/permissions/'
 

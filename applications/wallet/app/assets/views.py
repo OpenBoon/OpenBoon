@@ -1,7 +1,6 @@
 import os
 import requests
 import mimetypes
-from rest_framework import status
 from rest_framework.response import Response
 from django.http import StreamingHttpResponse
 
@@ -35,7 +34,7 @@ def asset_modifier(request, item, many=True):
         entry['url'] = f'{current_url}files/category/{entry["category"]}/name/{entry["name"]}'
 
     # Add url for the source file
-    item['metadata']['source']['url'] = f'{current_url}files/source/{item["metadata"]["source"]["filename"]}'
+    item['metadata']['source']['url'] = f'{current_url}files/source/{item["metadata"]["source"]["filename"]}'  # noqa
 
 
 def stream(request, path):
@@ -88,5 +87,3 @@ class FileNameViewSet(BaseProjectViewSet):
         path = f'{self.zmlp_root_api_path}/{asset_pk}/_files/{category_pk}/{pk}'
         content_type, encoding = mimetypes.guess_type(pk)
         return StreamingHttpResponse(stream(request, path), content_type=content_type)
-
-
