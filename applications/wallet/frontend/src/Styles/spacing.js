@@ -1,4 +1,5 @@
 const spacing = {
+  hairline: 1,
   mini: 2,
   small: 4,
   base: 8,
