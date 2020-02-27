@@ -29,7 +29,7 @@ from registration.views import UserRegistrationView, UserConfirmationView
 from wallet import views as wallet_views
 from wallet.views import WalletAPIRootView, LoginView, LogoutView
 from apikeys.views import ApikeyViewSet
-from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet
+from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet, JobTaskViewSet
 from projects.views import ProjectViewSet, ProjectUserViewSet
 from permissions.views import PermissionViewSet
 
@@ -47,6 +47,9 @@ projects_router.register('users', ProjectUserViewSet, basename='projectuser')
 projects_router.register('apikeys', ApikeyViewSet, basename='apikey')
 projects_router.register('permissions', PermissionViewSet, basename='permission')
 projects_router.register('datasources', DataSourceViewSet, basename='datasource')
+
+jobs_router = NestedSimpleRouter(projects_router, 'jobs', lookup='job')
+jobs_router.register('tasks', JobTaskViewSet, basename='job-detail-task')
 
 
 # Use this variable to add standalone views to the urlspatterns and have them accessible
@@ -74,6 +77,7 @@ urlpatterns = [
     path('api/v1/login/', LoginView.as_view(), name='api-login'),
     path('api/v1/', include(router.urls)),
     path('api/v1/', include(projects_router.urls)),
+    path('api/v1/', include(jobs_router.urls)),
     path('api/v1/health/', include('health_check.urls'))
 ]
 urlpatterns += [i[1] for i in BROWSABLE_API_URLS]
