@@ -14,14 +14,21 @@ describe('<ErrorBoundary />', () => {
   })
 
   it('should render generic when caught', () => {
-    const MockFailedComponent = jest.fn(() => Promise.reject(new Error()))
+    const spy = jest.spyOn(console, 'error')
+    spy.mockImplementation(() => {})
+
+    const Throw = () => {
+      throw new Error('Error')
+    }
 
     const component = TestRenderer.create(
       <ErrorBoundary>
-        <MockFailedComponent />
+        <Throw />
       </ErrorBoundary>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    spy.mockRestore()
   })
 })
