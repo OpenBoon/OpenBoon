@@ -98,7 +98,6 @@ const STYLES = {
   },
   ICON: {
     padding: spacing.base,
-    color: colors.structure.white,
     ':hover': {
       color: colors.key.one,
     },

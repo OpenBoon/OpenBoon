@@ -229,7 +229,6 @@ exports[`<Button /> should render properly for ICON Button 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 8px;
-  color: #ffffff;
 }
 
 .emotion-0:hover {
@@ -290,7 +289,6 @@ exports[`<Button /> should render properly for ICON Link 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 8px;
-  color: #ffffff;
 }
 
 .emotion-0:hover {

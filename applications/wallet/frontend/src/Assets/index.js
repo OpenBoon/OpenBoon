@@ -1,6 +1,6 @@
 import { spacing } from '../Styles'
 
-import AssetsInfoBar from './InfoBar'
+import AssetsInfobar from './Infobar'
 import AssetsMetadata from './Metadata'
 import AssetsVisualizer from './Visualizer'
 
@@ -12,12 +12,12 @@ const Assets = () => {
         marginLeft: -spacing.spacious,
         marginRight: -spacing.spacious,
         marginBottom: -spacing.spacious,
-        marginTop: 1,
+        marginTop: spacing.hairline,
         display: 'flex',
         flex: 1,
         flexDirection: 'column',
       }}>
-      <AssetsInfoBar />
+      <AssetsInfobar />
       <div
         css={{
           display: 'flex',
