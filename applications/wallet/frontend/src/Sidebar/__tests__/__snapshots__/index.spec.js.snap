@@ -1,26 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Sidebar /> should render properly closed 1`] = `
-.emotion-15 {
+.emotion-18 {
   width: 240px;
   position: fixed;
   height: calc(100% - 44px);
   overflow-y: auto;
   z-index: 90;
   background-color: #4a4a4a;
-  padding-bottom: 32px;
   -webkit-transition: left ease-in-out .3s,visibility ease-in-out .3s;
   transition: left ease-in-out .3s,visibility ease-in-out .3s;
   overscroll-behavior: contain;
   left: -240px;
   top: 44px;
-  padding-top: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 
-.emotion-14 {
+.emotion-12 {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 .emotion-1 {
@@ -80,7 +91,16 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-16 {
+.emotion-17 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #3b3b3b;
+}
+
+.emotion-19 {
   position: fixed;
   top: 0;
   left: 0;
@@ -95,10 +115,10 @@ exports[`<Sidebar /> should render properly closed 1`] = `
 
 <div>
   <nav
-    className="emotion-15"
+    className="emotion-18"
   >
     <ul
-      className="emotion-14"
+      className="emotion-12"
     >
       <li
         className="emotion-1"
@@ -202,6 +222,27 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           User Admin
         </a>
       </li>
+    </ul>
+    <ul
+      className="emotion-17"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="accountDashboard.svg"
+            width={20}
+          />
+          Account Dashboard
+        </a>
+      </li>
       <li
         className="emotion-1"
       >
@@ -223,7 +264,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   </nav>
   <div
     aria-label="Close Sidebar Menu"
-    className="emotion-16"
+    className="emotion-19"
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"
@@ -233,10 +274,12 @@ exports[`<Sidebar /> should render properly closed 1`] = `
 `;
 
 exports[`<Sidebar /> should render properly opened 1`] = `
-.emotion-14 {
+.emotion-12 {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 .emotion-1 {
@@ -296,23 +339,41 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-15 {
+.emotion-17 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #3b3b3b;
+}
+
+.emotion-18 {
   width: 240px;
   position: fixed;
   height: calc(100% - 44px);
   overflow-y: auto;
   z-index: 90;
   background-color: #4a4a4a;
-  padding-bottom: 32px;
   -webkit-transition: left ease-in-out .3s,visibility ease-in-out .3s;
   transition: left ease-in-out .3s,visibility ease-in-out .3s;
   overscroll-behavior: contain;
   left: 0;
   top: 44px;
-  padding-top: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 
-.emotion-16 {
+.emotion-19 {
   position: fixed;
   top: 0;
   left: 0;
@@ -327,10 +388,10 @@ exports[`<Sidebar /> should render properly opened 1`] = `
 
 <div>
   <nav
-    className="emotion-15"
+    className="emotion-18"
   >
     <ul
-      className="emotion-14"
+      className="emotion-12"
     >
       <li
         className="emotion-1"
@@ -434,6 +495,27 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           User Admin
         </a>
       </li>
+    </ul>
+    <ul
+      className="emotion-17"
+    >
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="accountDashboard.svg"
+            width={20}
+          />
+          Account Dashboard
+        </a>
+      </li>
       <li
         className="emotion-1"
       >
@@ -455,7 +537,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   </nav>
   <div
     aria-label="Close Sidebar Menu"
-    className="emotion-16"
+    className="emotion-19"
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"
