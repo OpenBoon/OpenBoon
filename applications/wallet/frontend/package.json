@@ -74,7 +74,7 @@
     {
       "//": "dependencies",
       "path": ".next/static/chunks/commons**.js",
-      "maxSize": "20 kB"
+      "maxSize": "15 kB"
     },
     {
       "//": "app.js",
@@ -89,7 +89,7 @@
     {
       "//": "error page",
       "path": ".next/static/**/pages/_error.js",
-      "maxSize": "2 kB"
+      "maxSize": "4 kB"
     },
     {
       "//": "polyfill & webpack runtime",
