@@ -5,7 +5,7 @@ import { spacing, typography, colors } from '../Styles'
 
 import Loading from '../Loading'
 import Tabs from '../Tabs'
-import Value from '../Value'
+import Value, { VARIANTS } from '../Value'
 import ProgressBar from '../ProgressBar'
 
 import JobErrorsJobMenu from './JobMenu'
@@ -46,7 +46,7 @@ const JobErrorsContent = () => {
           revalidate={revalidate}
         />
 
-        <Value legend="Job Status">
+        <Value legend="Job Status" variant={VARIANTS.PRIMARY}>
           <div
             css={{
               color: colors.structure.white,
@@ -56,11 +56,13 @@ const JobErrorsContent = () => {
           </div>
         </Value>
 
-        <Value legend="Job Status">
+        <Value legend="Job Status" variant={VARIANTS.PRIMARY}>
           <ProgressBar taskCounts={taskCounts} />
         </Value>
 
-        <Value legend="Priority">{priority}</Value>
+        <Value legend="Priority" variant={VARIANTS.PRIMARY}>
+          {priority}
+        </Value>
       </div>
 
       <Tabs
