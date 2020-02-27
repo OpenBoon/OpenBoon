@@ -129,7 +129,7 @@ class BaseProjectViewSet(ViewSet):
         assert self.paginator is not None
         return self.paginator.get_paginated_response(data)
 
-    def _zmlp_list_from_search(self, request, item_modifier=None):
+    def _zmlp_list_from_search(self, request, item_modifier=None, filter=None):
         """The result of this method can be returned for the list method of a concrete
         viewset if it just needs to proxy the results of a ZMLP search endpoint.
 
@@ -138,6 +138,7 @@ class BaseProjectViewSet(ViewSet):
             item_modifier (function): Each item dictionary returned by the API will be
               passed to this function along with the request. The function is expected to
               modify the item in place. The arguments are passed as (request, item).
+            filter (dict): Optional filter to pass to the zmlp search endpoint.
 
         Returns:
             Response: DRF Response that can be used directly by viewset action method.
@@ -146,11 +147,14 @@ class BaseProjectViewSet(ViewSet):
         payload = {'page': {'from': request.GET.get('from', 0),
                             'size': request.GET.get('size',
                                                     self.pagination_class.default_limit)}}
+        if filter:
+            payload.update(filter)
         path = os.path.join(self.zmlp_root_api_path, '_search')
         response = request.client.post(path, payload)
         content = self._get_content(response)
         current_url = request.build_absolute_uri(request.path)
-        for item in content['list']:
+        items = content['list']
+        for item in items:
             item['url'] = f'{current_url}{item["id"]}/'
             if item_modifier:
                 item_modifier(request, item)
