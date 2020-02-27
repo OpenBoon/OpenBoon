@@ -8,7 +8,7 @@ import CircleMinusSvg from './circleMinus.svg'
 const SIZE_CONTROL_HEIGHT = 42
 const SIZE_CONTROL_WIDTH = 90
 
-const AssetsSize = () => (
+const AssetsResize = () => (
   <div
     css={{
       height: SIZE_CONTROL_HEIGHT,
@@ -35,4 +35,4 @@ const AssetsSize = () => (
   </div>
 )
 
-export default AssetsSize
+export default AssetsResize

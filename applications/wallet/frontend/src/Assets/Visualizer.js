@@ -1,6 +1,6 @@
 import { spacing } from '../Styles'
 
-import AssetsSize from './Size'
+import AssetsResize from './Resize'
 
 const AssetsVisualizer = () => {
   return (
@@ -10,7 +10,7 @@ const AssetsVisualizer = () => {
         flex: 1,
         position: 'relative',
       }}>
-      <AssetsSize />
+      <AssetsResize />
     </div>
   )
 }
