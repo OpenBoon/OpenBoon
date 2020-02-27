@@ -49,7 +49,7 @@ projects_router.register('permissions', PermissionViewSet, basename='permission'
 projects_router.register('datasources', DataSourceViewSet, basename='datasource')
 
 jobs_router = NestedSimpleRouter(projects_router, 'jobs', lookup='job')
-jobs_router.register('tasks', JobTaskViewSet, basename='task')
+jobs_router.register('tasks', JobTaskViewSet, basename='job-detail-task')
 
 
 # Use this variable to add standalone views to the urlspatterns and have them accessible
