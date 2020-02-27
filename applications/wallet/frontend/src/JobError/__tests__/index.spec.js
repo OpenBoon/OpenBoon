@@ -57,7 +57,7 @@ describe('<JobError />', () => {
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Toggle Task Actions Menu' })
+        .findByProps({ 'aria-label': 'Toggle Dropdown Menu' })
         .props.onClick()
     })
 

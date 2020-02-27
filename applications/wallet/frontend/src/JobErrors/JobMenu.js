@@ -5,9 +5,8 @@ import { spacing } from '../Styles'
 import { fetcher } from '../Fetch/helpers'
 
 import Menu from '../Menu'
+import MenuButton from '../Menu/Button'
 import Button, { VARIANTS } from '../Button'
-
-import ChevronSvg from '../Icons/chevron.svg'
 
 const ACTIONS = [
   {
@@ -38,15 +37,7 @@ const JobErrorsJobMenu = ({ projectId, jobId, revalidate }) => {
       <Menu
         open="left"
         button={({ onBlur, onClick }) => (
-          <Button
-            aria-label="Toggle Job Actions Menu"
-            variant={VARIANTS.DROPDOWN}
-            onBlur={onBlur}
-            onClick={onClick}
-            isDisabled={false}>
-            Modify Job
-            <ChevronSvg width={20} />
-          </Button>
+          <MenuButton onBlur={onBlur} onClick={onClick} legend="Modify Job" />
         )}>
         {({ onBlur, onClick }) => (
           <div>

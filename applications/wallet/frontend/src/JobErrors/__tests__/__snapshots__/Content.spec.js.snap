@@ -75,6 +75,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 0;
   width: 200px;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -235,7 +236,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
         className="emotion-2"
       >
         <button
-          aria-label="Toggle Job Actions Menu"
+          aria-label="Toggle Dropdown Menu"
           className="emotion-1"
           onBlur={[Function]}
           onClick={[Function]}

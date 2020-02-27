@@ -306,6 +306,7 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 0;
   width: 200px;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -352,7 +353,7 @@ Array [
       className="emotion-1"
     >
       <button
-        aria-label="Toggle Task Actions Menu"
+        aria-label="Toggle Dropdown Menu"
         className="emotion-0"
         onBlur={[Function]}
         onClick={[Function]}
@@ -576,6 +577,7 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 0;
   width: 200px;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -622,7 +624,7 @@ Array [
       className="emotion-1"
     >
       <button
-        aria-label="Toggle Task Actions Menu"
+        aria-label="Toggle Dropdown Menu"
         className="emotion-0"
         onBlur={[Function]}
         onClick={[Function]}
@@ -846,6 +848,7 @@ Array [
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 0;
   width: 200px;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -973,7 +976,7 @@ Array [
       className="emotion-3"
     >
       <button
-        aria-label="Toggle Task Actions Menu"
+        aria-label="Toggle Dropdown Menu"
         className="emotion-0"
         onBlur={[Function]}
         onClick={[Function]}

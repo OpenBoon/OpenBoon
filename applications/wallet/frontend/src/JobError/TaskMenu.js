@@ -5,9 +5,8 @@ import { spacing } from '../Styles'
 import { fetcher } from '../Fetch/helpers'
 
 import Menu from '../Menu'
+import MenuButton from '../Menu/Button'
 import Button, { VARIANTS } from '../Button'
-
-import ChevronSvg from '../Icons/chevron.svg'
 
 const JobErrorTaskMenu = ({ projectId, taskId, revalidate }) => {
   return (
@@ -20,16 +19,9 @@ const JobErrorTaskMenu = ({ projectId, taskId, revalidate }) => {
       <Menu
         open="left"
         button={({ onBlur, onClick }) => (
-          <Button
-            aria-label="Toggle Task Actions Menu"
-            variant={VARIANTS.DROPDOWN}
-            onBlur={onBlur}
-            onClick={onClick}
-            isDisabled={false}>
-            Modify Task
-            <ChevronSvg width={20} />
-          </Button>
-        )}>
+          <MenuButton onBlur={onBlur} onClick={onClick} legend="Modify Task" />
+        )}
+        placeHolder="hey">
         {({ onBlur, onClick }) => (
           <div>
             <ul>

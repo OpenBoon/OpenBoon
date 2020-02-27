@@ -3,7 +3,6 @@ import { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 
 import { typography, spacing, colors, constants } from '../Styles'
-import { WIDTH } from '../Menu'
 
 const BASE = ({ isDisabled }) => ({
   flex: 0,
@@ -96,26 +95,6 @@ const STYLES = {
     ':hover': {
       backgroundColor: colors.structure.iron,
     },
-  },
-  DROPDOWN: {
-    '&,&:hover,&:visited': {
-      backgroundColor: colors.structure.steel,
-    },
-    '&:hover': {
-      backgroundColor: colors.structure.zinc,
-    },
-    '&[aria-disabled=true]': {
-      backgroundColor: colors.structure.steel,
-    },
-    width: WIDTH,
-    paddingTop: spacing.base,
-    paddingBottom: spacing.base,
-    paddingLeft: spacing.normal,
-    paddingRight: spacing.moderate,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: spacing.small,
-    color: colors.structure.white,
   },
 }
 
