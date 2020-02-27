@@ -7,8 +7,10 @@ import { colors, spacing, zIndex, constants } from '../Styles'
 import SidebarLink from './Link'
 import SidebarOverlay from './Overlay'
 
-import QueueSvg from '../Icons/queue.svg'
+import ProjectDashboardSvg from '../Icons/projectDashboard.svg'
 import DataSourcesSvg from '../Icons/datasources.svg'
+import JobQueueSvg from '../Icons/jobQueue.svg'
+import VisualizerSvg from '../Icons/visualizer.svg'
 import KeySvg from '../Icons/key.svg'
 import UsersSvg from '../Icons/users.svg'
 import GearSvg from '../Icons/gear.svg'
@@ -54,14 +56,24 @@ const Sidebar = forwardRef(
               padding: 0,
               margin: 0,
             }}>
-            <SidebarLink projectId={projectId} href="/[projectId]/jobs">
-              <QueueSvg width={ICON_WIDTH} aria-hidden />
-              Job Queue
+            <SidebarLink projectId={projectId} href="/[projectId]">
+              <ProjectDashboardSvg width={ICON_WIDTH} aria-hidden />
+              Project Dashboard
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/data-sources">
               <DataSourcesSvg width={ICON_WIDTH} aria-hidden />
               Data Sources
+            </SidebarLink>
+
+            <SidebarLink projectId={projectId} href="/[projectId]/jobs">
+              <JobQueueSvg width={ICON_WIDTH} aria-hidden />
+              Job Queue
+            </SidebarLink>
+
+            <SidebarLink projectId={projectId} href="/[projectId]/visualizer">
+              <VisualizerSvg width={ICON_WIDTH} aria-hidden />
+              Visualizer
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/api-keys">
