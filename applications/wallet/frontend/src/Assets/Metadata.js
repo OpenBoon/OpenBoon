@@ -3,7 +3,6 @@ import { colors, constants, spacing, typography } from '../Styles'
 import InformationSvg from './information.svg'
 
 export const WIDTH = 400
-const HEADER_HEIGHT = 48
 
 const AssetsMetadata = () => (
   <div
@@ -19,7 +18,7 @@ const AssetsMetadata = () => (
     <div
       css={{
         display: 'flex',
-        height: HEADER_HEIGHT,
+        height: constants.navbar.height,
         alignItems: 'center',
         borderBottom: constants.borders.divider,
         padding: spacing.normal,
