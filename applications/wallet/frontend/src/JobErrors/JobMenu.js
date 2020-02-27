@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 
-import { spacing, colors } from '../Styles'
+import { spacing } from '../Styles'
 
 import { fetcher } from '../Fetch/helpers'
 
-import Menu, { WIDTH } from '../Menu'
+import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
 
 import ChevronSvg from '../Icons/chevron.svg'
@@ -40,18 +40,7 @@ const JobErrorsJobMenu = ({ projectId, jobId, revalidate }) => {
         button={({ onBlur, onClick }) => (
           <Button
             aria-label="Toggle Job Actions Menu"
-            variant={VARIANTS.SECONDARY}
-            css={{
-              width: WIDTH,
-              paddingTop: spacing.base,
-              paddingBottom: spacing.base,
-              paddingLeft: spacing.normal,
-              paddingRight: spacing.moderate,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginBottom: spacing.small,
-              color: colors.structure.white,
-            }}
+            variant={VARIANTS.DROPDOWN}
             onBlur={onBlur}
             onClick={onClick}
             isDisabled={false}>
