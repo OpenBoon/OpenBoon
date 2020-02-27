@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Project
-        fields = ('id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 
+        fields = ('id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users',
                   'permissions', 'tasks', 'taskerrors', 'datasources')
 
     jobs = HyperlinkedIdentityField(
