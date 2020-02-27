@@ -20,8 +20,7 @@ const JobErrorTaskMenu = ({ projectId, taskId, revalidate }) => {
         open="left"
         button={({ onBlur, onClick }) => (
           <MenuButton onBlur={onBlur} onClick={onClick} legend="Modify Task" />
-        )}
-        placeHolder="hey">
+        )}>
         {({ onBlur, onClick }) => (
           <div>
             <ul>
