@@ -58,7 +58,7 @@ exports[`<UserMenu /> should render properly 1`] = `
 }
 
 .emotion-3:hover {
-  background-color: #b3b3b3;
+  background-color: #3b3b3b;
 }
 
 .emotion-3:hover {
@@ -199,7 +199,7 @@ exports[`<UserMenu /> should render properly 2`] = `
 }
 
 .emotion-3:hover {
-  background-color: #b3b3b3;
+  background-color: #3b3b3b;
 }
 
 .emotion-3:hover {
@@ -459,7 +459,7 @@ exports[`<UserMenu /> should render properly without firstName/lastName 1`] = `
 }
 
 .emotion-3:hover {
-  background-color: #b3b3b3;
+  background-color: #3b3b3b;
 }
 
 .emotion-3:hover {

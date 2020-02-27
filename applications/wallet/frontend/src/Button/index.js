@@ -83,7 +83,7 @@ const STYLES = {
     fontWeight: typography.weight.regular,
     height: '100%',
     ':hover': {
-      backgroundColor: colors.structure.zinc,
+      backgroundColor: colors.structure.smoke,
     },
   },
   MENU_ITEM: {

@@ -374,7 +374,7 @@ exports[`<Button /> should render properly for MENU Button 1`] = `
 }
 
 .emotion-0:hover {
-  background-color: #b3b3b3;
+  background-color: #3b3b3b;
 }
 
 <button
@@ -436,7 +436,7 @@ exports[`<Button /> should render properly for MENU Link 1`] = `
 }
 
 .emotion-0:hover {
-  background-color: #b3b3b3;
+  background-color: #3b3b3b;
 }
 
 <a

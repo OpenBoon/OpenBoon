@@ -54,7 +54,7 @@ exports[`<ProjectSwitcher /> should render properly with data 1`] = `
 }
 
 .emotion-2:hover {
-  background-color: #b3b3b3;
+  background-color: #3b3b3b;
 }
 
 .emotion-1 {
@@ -153,7 +153,7 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
 }
 
 .emotion-2:hover {
-  background-color: #b3b3b3;
+  background-color: #3b3b3b;
 }
 
 .emotion-1 {
