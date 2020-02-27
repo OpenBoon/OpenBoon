@@ -1,8 +1,8 @@
 import { spacing } from '../Styles'
 
-import AssetsResize from './Resize'
+import VisualizerResize from './Resize'
 
-const AssetsVisualizer = () => {
+const VisualizerAssets = () => {
   return (
     <div
       css={{
@@ -10,9 +10,9 @@ const AssetsVisualizer = () => {
         flex: 1,
         position: 'relative',
       }}>
-      <AssetsResize />
+      <VisualizerResize />
     </div>
   )
 }
 
-export default AssetsVisualizer
+export default VisualizerAssets

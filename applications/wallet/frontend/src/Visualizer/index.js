@@ -1,10 +1,10 @@
 import { spacing } from '../Styles'
 
-import AssetsInfobar from './Infobar'
-import AssetsMetadata from './Metadata'
-import AssetsVisualizer from './Visualizer'
+import VisualizerInfobar from './Infobar'
+import VisualizerMetadata from './Metadata'
+import VisualizerAssets from './Assets'
 
-const Assets = () => {
+const Visualizer = () => {
   return (
     <div
       css={{
@@ -17,17 +17,17 @@ const Assets = () => {
         flex: 1,
         flexDirection: 'column',
       }}>
-      <AssetsInfobar />
+      <VisualizerInfobar />
       <div
         css={{
           display: 'flex',
           height: '100%',
         }}>
-        <AssetsVisualizer />
-        <AssetsMetadata />
+        <VisualizerAssets />
+        <VisualizerMetadata />
       </div>
     </div>
   )
 }
 
-export default Assets
+export default Visualizer

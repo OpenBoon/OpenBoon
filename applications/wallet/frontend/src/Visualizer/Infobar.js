@@ -1,6 +1,6 @@
 import { constants, colors, spacing } from '../Styles'
 
-const AssetsInfoBar = () => {
+const VisualizerInfobar = () => {
   // Temporary values
   const displayCount = 100
   const totalCount = 2400
@@ -32,4 +32,4 @@ const AssetsInfoBar = () => {
   )
 }
 
-export default AssetsInfoBar
+export default VisualizerInfobar

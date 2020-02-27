@@ -5,7 +5,7 @@ import Button, { VARIANTS } from '../Button'
 import CirclePlusSvg from './circlePlus.svg'
 import CircleMinusSvg from './circleMinus.svg'
 
-const AssetsResize = () => (
+const VisualizerResize = () => (
   <div
     css={{
       position: 'absolute',
@@ -38,4 +38,4 @@ const AssetsResize = () => (
   </div>
 )
 
-export default AssetsResize
+export default VisualizerResize

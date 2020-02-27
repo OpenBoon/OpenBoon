@@ -4,7 +4,7 @@ import InformationSvg from './information.svg'
 
 export const WIDTH = 400
 
-const AssetsMetadata = () => (
+const VisualizerMetadata = () => (
   <div
     css={{
       backgroundColor: colors.structure.mattGrey,
@@ -41,4 +41,4 @@ const AssetsMetadata = () => (
   </div>
 )
 
-export default AssetsMetadata
+export default VisualizerMetadata
