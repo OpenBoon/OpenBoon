@@ -134,11 +134,11 @@ exports[`<UserMenu /> should render properly 1`] = `
 `;
 
 exports[`<UserMenu /> should render properly 2`] = `
-.emotion-9 {
+.emotion-10 {
   margin-right: -12px;
 }
 
-.emotion-8 {
+.emotion-9 {
   position: relative;
 }
 
@@ -237,7 +237,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   transform: rotate(-180deg);
 }
 
-.emotion-7 {
+.emotion-8 {
   position: absolute;
   z-index: 1;
   top: 100%;
@@ -248,7 +248,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   width: 200px;
 }
 
-.emotion-7 ul {
+.emotion-8 ul {
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
@@ -256,7 +256,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   margin: 0;
 }
 
-.emotion-7 li {
+.emotion-8 li {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -328,10 +328,10 @@ exports[`<UserMenu /> should render properly 2`] = `
 }
 
 <div
-  className="emotion-9"
+  className="emotion-10"
 >
   <div
-    className="emotion-8"
+    className="emotion-9"
   >
     <button
       aria-label="Open user menu"
@@ -357,7 +357,7 @@ exports[`<UserMenu /> should render properly 2`] = `
       </div>
     </button>
     <div
-      className="emotion-7"
+      className="emotion-8"
     >
       <div>
         <div
@@ -373,6 +373,17 @@ exports[`<UserMenu /> should render properly 2`] = `
           </div>
         </div>
         <ul>
+          <li>
+            <a
+              className="emotion-6"
+              href="/account"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+            >
+              Manage Account
+            </a>
+          </li>
           <li>
             <button
               className="emotion-6"

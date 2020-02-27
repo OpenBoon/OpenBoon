@@ -1,13 +1,10 @@
 import os
-import tempfile
-
-import cv2
 
 from zmlpsdk.storage import file_storage
 
 __all__ = [
     'store_asset_proxy',
-    'store_element_proxy',
+    'get_proxy_level_path',
     'get_proxy_level'
 ]
 
@@ -38,7 +35,7 @@ def store_asset_proxy(asset, path, size, type="image", attrs=None):
     return file_storage.assets.store_file(asset, path, 'proxy', rename=name, attrs=proxy_attrs)
 
 
-def get_proxy_level(asset, level, mimetype="image/"):
+def get_proxy_level_path(asset, level, mimetype="image/"):
     """
     Localize and return the given proxy level.  The smallest proxy is
     level 0, the largest proxy is 0 or greater.  Out of bounds level
@@ -66,47 +63,25 @@ def get_proxy_level(asset, level, mimetype="image/"):
         return None
 
 
-def store_element_proxy(asset, img, name, rects=None, labels=None, color=None):
+def get_proxy_level(asset, level, mimetype="image/"):
     """
-    Store an element proxy to the Archivist.
-
-    Note that, if you pass labels, you need to pass one label for evert rect.
+    Return the given proxy level record. The smallest proxy is level 0,
+    the largest proxy is 0 or greater. Calling this method does not localize
+    the proxy.
 
     Args:
-        asset (Asset): The asset
-        img (cvImage): An openCV image
-        name (str): An identifying name for the image.
-        rects (list[list]): A list of rects to draw.
-        labels: (list): A list of labels to draw.
-        color (tuple): A BGR tuple for box or label colors. Color only matters if you have rects.
+        asset: (Asset): The Asset.
+        level (int): The proxy level identifier, 0 for smallest, 1 for middle, etc.
+        mimetype: (str): A mimetype filter, defaults to image/
 
     Returns:
-        dict: a file storage dictionary which can be provided to an Element instance.
-
+        dict: A proxy file record.
     """
-    if rects and labels:
-        if len(rects) != len(labels):
-            raise ValueError(
-                "The number of rects and labels must be equal. {}!={}".format(
-                    len(rects), len(labels)))
-
-    if rects:
-        if not color:
-            color = (255, 0, 0)
-        for i, rect in enumerate(rects):
-            cv2.rectangle(img, (rect[0], rect[1]), (rect[2], rect[3]),
-                          color, 2, cv2.LINE_AA)
-            if labels:
-                cv2.putText(img, ",".join(labels[i]), (rect[2], max(0, rect[3] - 10)),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.50, color, 1, cv2.LINE_AA)
-
-    with tempfile.NamedTemporaryFile(suffix=".jpg") as tf:
-        cv2.imwrite(tf.name, img)
-        attrs = {"width": img.shape[1], "height": img.shape[0]}
-        rename_to = "{}_{}x{}.jpg".format(name, attrs['width'], attrs['height'])
-
-        return file_storage.assets.store_file(asset,
-                                              tf.name,
-                                              'element',
-                                              rename=rename_to,
-                                              attrs=attrs)
+    files = asset.get_files(mimetype=mimetype, category='proxy', attr_keys=['width'],
+                            sort_func=lambda f: f['attrs']['width'])
+    if level >= len(files):
+        level = -1
+    try:
+        return files[level]
+    except IndexError:
+        return None

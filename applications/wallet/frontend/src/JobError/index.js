@@ -1,13 +1,9 @@
-import { useRouter } from 'next/router'
 import Head from 'next/head'
 
 import Breadcrumbs from '../Breadcrumbs'
+import JobErrorContent from './Content'
 
 const JobError = () => {
-  const {
-    query: { errorId },
-  } = useRouter()
-
   return (
     <>
       <Head>
@@ -22,7 +18,7 @@ const JobError = () => {
         ]}
       />
 
-      <div>Error ID: {errorId}</div>
+      <JobErrorContent />
     </>
   )
 }

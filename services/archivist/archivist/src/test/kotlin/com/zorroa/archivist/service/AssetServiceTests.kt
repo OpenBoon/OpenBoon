@@ -54,7 +54,7 @@ class AssetServiceTests : AbstractTest() {
 
         val req = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg")),
-            modules = listOf("zmlp-labels")
+            modules = listOf("zvi-label-detection")
         )
 
         val rsp = assetService.batchCreate(req)
@@ -65,7 +65,7 @@ class AssetServiceTests : AbstractTest() {
 
         // Check the module was applied.
         assertEquals(
-            "zmlp_analysis.mxnet.processors.ResNetClassifyProcessor",
+            "zmlp_analysis.mxnet.ZviLabelDetectionResNet152",
             script.execute!!.last().className
         )
     }
@@ -366,8 +366,8 @@ class AssetServiceTests : AbstractTest() {
         var asset = assetService.getAsset(createRsp.created[0])
 
         // These are considered duplicate elements
-        val element1 = Element("object", "catDetector", listOf(0, 0, 100, 100), listOf("cat"))
-        val element2 = Element("object", "catDetector", listOf(0, 0, 100, 100), listOf("cat"))
+        val element1 = Element("object", "catDetector", listOf(0.0, 0.0, 100.0, 100.0), listOf("cat"))
+        val element2 = Element("object", "catDetector", listOf(0.0, 0.0, 100.0, 100.0), listOf("cat"))
         asset.setAttr("elements", listOf(element1, element2))
 
         val batchIndex = mapOf(asset.id to asset.document)
@@ -388,7 +388,8 @@ class AssetServiceTests : AbstractTest() {
 
         val elements = mutableSetOf<Element>()
         for (i in 0..AssetServiceImpl.maxElementCount + 1) {
-            elements.add(Element("object", "catDetector", listOf(i, i, 100, 100), listOf("cat$i")))
+            elements.add(Element("object", "catDetector",
+                listOf(i.toDouble(), i.toDouble(), 100.0, 100.0), listOf("cat$i")))
         }
         asset.setAttr("elements", elements)
 

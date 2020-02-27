@@ -26,7 +26,7 @@ export const authenticateUser = ({ setUser, setErrorMessage }) => async ({
 
   const user = await response.json()
 
-  return setUser({ user })
+  return setUser({ user: { ...user, projectId: '' } })
 }
 
 export const logout = ({ googleAuth, setUser }) => async () => {

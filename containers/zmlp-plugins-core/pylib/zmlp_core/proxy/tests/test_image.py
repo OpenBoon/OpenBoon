@@ -43,7 +43,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
     def test_process(self, post_patch):
         post_patch.return_value = self.storage_patch
         self.processor.process(self.frame)
-        assert len(self.frame.asset.get_attr('analysis.zmlp.tinyProxy')) == 9
+        assert len(self.frame.asset.get_attr('analysis.zvi.tinyProxy')) == 9
         assert len(self.frame.asset.get_attr('files')) == 2
 
     @patch.object(ImageProxyProcessor, '_create_proxy_images')
@@ -88,7 +88,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         self.frame.asset.set_attr('media', {})
         self.processor.process(self.frame)
 
-        assert len(self.frame.asset.get_attr('analysis.zmlp.tinyProxy')) == 9
+        assert len(self.frame.asset.get_attr('analysis.zvi.tinyProxy')) == 9
         assert len(self.frame.asset.get_attr('files')) == 2
 
     def test_get_tiny_proxy_colors(self):

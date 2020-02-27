@@ -8,7 +8,10 @@ exports[`<Authentication /> should render properly when user is logged in 1`] = 
     }
   }
 >
-  <Projects>
+  <Projects
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    setUser={[Function]}
+  >
     <Layout
       user={
         Object {
@@ -16,6 +19,7 @@ exports[`<Authentication /> should render properly when user is logged in 1`] = 
           "firstName": "Jane",
           "id": 1,
           "lastName": "Doe",
+          "projectId": "76917058-b147-4556-987a-0a0f11e46d9b",
           "username": "jane.doe",
         }
       }

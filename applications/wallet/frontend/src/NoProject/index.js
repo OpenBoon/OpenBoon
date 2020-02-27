@@ -26,7 +26,7 @@ const NoProject = () => {
             color: colors.structure.steel,
             fontWeight: typography.weight.regular,
           }}>
-          You currently have no projects.
+          You currently have no projects
         </h3>
       </div>
     </>

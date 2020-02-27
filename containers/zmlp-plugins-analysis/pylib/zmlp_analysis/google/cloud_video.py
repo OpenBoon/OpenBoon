@@ -7,7 +7,7 @@ from google.cloud import videointelligence_v1p2beta1 as videointelligence
 from pathlib2 import Path
 
 from zmlpsdk import Argument, AssetProcessor
-from zmlpsdk.proxy import get_proxy_level
+from zmlpsdk.proxy import get_proxy_level_path
 
 from .gcp_client import initialize_gcp_client
 
@@ -76,7 +76,7 @@ class CloudVideoIntelligenceProcessor(AssetProcessor):
         # Construct ffmpeg command line
         # check for proxy
         command = ['ffmpeg',
-                   '-i', get_proxy_level(asset, 3, mimetype="video/"),
+                   '-i', get_proxy_level_path(asset, 3, mimetype="video/"),
                    '-ss', str(seek),
                    '-t', str(duration),
                    '-s', '512x288',

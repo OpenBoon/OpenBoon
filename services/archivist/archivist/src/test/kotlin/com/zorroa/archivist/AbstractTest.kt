@@ -138,7 +138,7 @@ abstract class AbstractTest {
         project = projectService.create(
             ProjectSpec(
                 "unittest",
-                projectId = UUID.fromString("00000000-0000-0000-0000-000000000000")
+                id = UUID.fromString("00000000-0000-0000-0000-000000000000")
             )
         )
 

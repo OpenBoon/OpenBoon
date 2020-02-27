@@ -1,7 +1,10 @@
+import logging
 import os
+import time
 
 import zmlp
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.http import HttpResponseForbidden, Http404
@@ -10,10 +13,16 @@ from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet, GenericViewSet
 from zmlp import ZmlpClient
+from zmlp.client import ZmlpInvalidRequestException
 
+from apikeys.utils import create_zmlp_api_key, decode_apikey, encode_apikey
 from projects.clients import ZviClient
 from projects.models import Membership, Project
-from projects.serializers import ProjectSerializer
+from projects.serializers import ProjectSerializer, ProjectUserSerializer
+from wallet.paginators import FromSizePagination
+
+logger = logging.getLogger(__name__)
+User = get_user_model()
 
 
 class BaseProjectViewSet(ViewSet):
@@ -120,7 +129,7 @@ class BaseProjectViewSet(ViewSet):
         assert self.paginator is not None
         return self.paginator.get_paginated_response(data)
 
-    def _zmlp_list_from_search(self, request, item_modifier=None):
+    def _zmlp_list_from_search(self, request, item_modifier=None, filter=None):
         """The result of this method can be returned for the list method of a concrete
         viewset if it just needs to proxy the results of a ZMLP search endpoint.
 
@@ -129,6 +138,7 @@ class BaseProjectViewSet(ViewSet):
             item_modifier (function): Each item dictionary returned by the API will be
               passed to this function along with the request. The function is expected to
               modify the item in place. The arguments are passed as (request, item).
+            filter (dict): Optional filter to pass to the zmlp search endpoint.
 
         Returns:
             Response: DRF Response that can be used directly by viewset action method.
@@ -137,11 +147,14 @@ class BaseProjectViewSet(ViewSet):
         payload = {'page': {'from': request.GET.get('from', 0),
                             'size': request.GET.get('size',
                                                     self.pagination_class.default_limit)}}
+        if filter:
+            payload.update(filter)
         path = os.path.join(self.zmlp_root_api_path, '_search')
         response = request.client.post(path, payload)
         content = self._get_content(response)
         current_url = request.build_absolute_uri(request.path)
-        for item in content['list']:
+        items = content['list']
+        for item in items:
             item['url'] = f'{current_url}{item["id"]}/'
             if item_modifier:
                 item_modifier(request, item)
@@ -293,3 +306,192 @@ class ProjectViewSet(ListModelMixin,
                             status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class ProjectUserViewSet(BaseProjectViewSet):
+    """Users who are Members of this Project.
+
+    Available HTTP methods, endpoints, and what they do:
+
+    * **GET** _api/v1/projects/$Project_Id/users/_ - List the Users who are members of $Project_Id
+    * **GET** _api/v1/projects/$Project_Id/users/$User_Id/_ - Detail info on $User_Id
+    * **POST** _api/v1/projects/$Project_Id/users/_ - Create membership/s to $Project_Id
+        - To create one: `{"email": "user@email.com", "permissions": ["AssetsRead"]}`
+        - To create multiple: `{"batch": [
+                                    {"email": "user@email.com", "permissions": ["AssetsRead"]},
+                                    {"email": "user2@email.com", "permissions": ["AssetsRead"]}
+                                ]}`
+    * **PUT** _api/v1/projects/$Project_Id/users/$User_Id/_ - Replace a Users permissions
+        - To modify: `{"permissions": ["$NewPermissionList"]}`
+    * **DELETE** _api/v1/projects/$Project_Id/users/$User_Id/_ - Remove $User_Id from $Project_Id
+
+    """
+
+    zmlp_only = True
+    pagination_class = FromSizePagination
+    serializer_class = ProjectUserSerializer
+
+    def get_object(self, pk, project_pk):
+        try:
+            return Membership.objects.get(user=pk, project=project_pk)
+        except Membership.DoesNotExist:
+            raise Http404
+
+    def get_project_object(self, pk):
+        try:
+            return Project.objects.get(id=pk)
+        except Project.DoesNotExist:
+            raise Http404
+
+    def list(self, request, project_pk):
+        # Need to handle pagination
+        # If the project doesn't exist or user is not a member a 403 is returned
+        project = self.get_project_object(project_pk)
+        users = project.users.all()
+        paginated_users = self.paginate_queryset(users)
+        if paginated_users is not None:
+            serializer = self.get_serializer(paginated_users, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(users, many=True)
+        return Response(data={'results': serializer.data}, status=status.HTTP_200_OK)
+
+    def retrieve(self, request, project_pk, pk):
+        # List details about the current project User
+        user = self.get_object(pk, project_pk).user
+        serializer = self.get_serializer(user, context={'request': request})
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def create(self, request, project_pk):
+        batch = request.data.get('batch')
+        if batch and request.data.get('email'):
+            return Response(data={'detail': 'Batch argument provided with single creation arguments.'},  # noqa
+                            status=status.HTTP_400_BAD_REQUEST)
+        elif batch:
+            response_body = {'results': {'succeeded': [], 'failed': []}}
+            for entry in batch:
+                response = self._create_project_user(request, project_pk, entry)
+                content = {'email': entry.get('email'),
+                           'permissions': entry.get('permissions'),
+                           'status_code': response.status_code,
+                           'body': response.data}
+                if response.status_code == status.HTTP_201_CREATED:
+                    response_body['results']['succeeded'].append(content)
+                else:
+                    response_body['results']['failed'].append(content)
+            return Response(data=response_body, status=status.HTTP_207_MULTI_STATUS)
+        else:
+            return self._create_project_user(request, project_pk, request.data)
+
+    def update(self, request, project_pk, pk):
+        # Modify the permissions of the given user
+        try:
+            new_permissions = request.data['permissions']
+        except KeyError:
+            return Response(data={'detail': 'Permissions must be supplied.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        membership = self.get_object(pk, project_pk)
+        email = membership.user.username
+        apikey = decode_apikey(membership.apikey)
+        apikey_id = apikey['id']
+        apikey_name = apikey.get('name')
+        if apikey_name == 'admin-key':
+            return Response(data={'detail': 'Unable to modify the admin key.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # TODO: Replace Delete/Create logic when Auth Server supports PUT
+        # Create new Key first and append epoch time (milli) to get a readable unique name
+        body = {'name': self._get_api_key_name(email, project_pk),
+                'permissions': new_permissions}
+        try:
+            new_apikey = request.client.post('/auth/v1/apikey', body)
+        except ZmlpInvalidRequestException:
+            return Response(data={'detail': "Unable to create apikey."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Delete old key on success
+        try:
+            response = request.client.delete(f'/auth/v1/apikey/{apikey_id}')
+        except ZmlpInvalidRequestException:
+            return Response(data={'detail': "Unable to delete apikey."},
+                            status=status.HTTP_400_BAD_REQUEST)
+        if not response.status_code == 200:
+            return Response(data={'detail': 'Error deleting apikey.'},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        membership.apikey = encode_apikey(new_apikey).decode('utf-8')
+        membership.save()
+        serializer = self.get_serializer(membership.user, context={'request': request})
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    @transaction.atomic
+    def destroy(self, request, project_pk, pk):
+        # Remove the User's Membership and delete the associated apikey
+        membership = self.get_object(pk, project_pk)
+        apikey = membership.apikey
+
+        # Don't allow a User to remove themselves
+        if request.user == membership.user:
+            return Response(data={'detail': 'Cannot remove yourself from a project.'},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        # Delete Users Apikey
+        apikey_readable = True
+        try:
+            key_data = decode_apikey(apikey)
+            apikey_id = key_data['id']
+        except (ValueError, KeyError):
+            logger.warning(f'Unable to decode apikey during delete for user {membership.user.id}.')
+            apikey_readable = False
+
+        if apikey_readable:
+            try:
+                response = request.client.delete(f'/auth/v1/apikey/{apikey_id}')
+            except ZmlpInvalidRequestException:
+                return Response(data={'detail': "Unable to delete apikey."},
+                                status=status.HTTP_400_BAD_REQUEST)
+            if not response.status_code == 200:
+                return Response(data={'detail': 'Error deleting apikey.'},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        membership.delete()
+        return Response(status=status.HTTP_200_OK)
+
+    def _create_project_user(self, request, project_pk, data):
+        """Creates project user by generating an api key in zmlp and creating a new
+        Membership.
+
+        """
+        # Get the User and add the appropriate Membership & ApiKey
+        try:
+            email = data['email']
+            permissions = data['permissions']
+        except KeyError:
+            return Response(data={'detail': 'Email and Permissions are required.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Get the current project and User
+        project = self.get_project_object(project_pk)
+        try:
+            user = User.objects.get(username=email)
+        except User.DoesNotExist:
+            return Response(data={'detail': 'No user with the given email.'},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        # Create an apikey with the given permissions
+        try:
+            name = self._get_api_key_name(email, project_pk)
+            encoded_apikey = create_zmlp_api_key(request.client, name, permissions)
+        except ZmlpInvalidRequestException:
+            return Response(data={'detail': "Unable to create apikey."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Create a membership for given user
+        Membership.objects.create(user=user, project=project, apikey=encoded_apikey)
+
+        # Serialize the Resulting user like the Detail endpoint
+        serializer = self.get_serializer(user, context={'request': request})
+        return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+
+    def _get_api_key_name(self, email, project_pk):
+        """Generate a unique name to user for the api key."""
+        return f'{email}_{project_pk}_{int(time.time() * 1000)}'

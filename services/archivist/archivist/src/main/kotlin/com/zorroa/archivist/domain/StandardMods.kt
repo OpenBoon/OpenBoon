@@ -14,7 +14,7 @@ object StandardContainers {
 fun getStandardModules(): List<PipelineModSpec> {
     return listOf(
         PipelineModSpec(
-            "zmlp-doc-page-extraction",
+            "zvi-doc-page-extraction",
             "Extract all pages in MS Office/PDF documents into separate assets.",
             listOf(
                 ModOp(
@@ -25,8 +25,8 @@ fun getStandardModules(): List<PipelineModSpec> {
             )
         ),
         PipelineModSpec(
-            "zmlp-image-page-extraction",
-            "Extract all pages or layers in multi page image formats such as tiff and psd as as " +
+            "zvi-image-layer-extraction",
+            "Extract all layers in multi page image formats such as tiff and psd as as " +
                 "separate assets",
             listOf(
                 ModOp(
@@ -37,7 +37,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             )
         ),
         PipelineModSpec(
-            "zmlp-video-shot-detection",
+            "zvi-video-shot-extraction",
             "Break video files into individual assets based on a shot detection algorithm.",
             listOf(
                 ModOp(
@@ -50,7 +50,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             )
         ),
         PipelineModSpec(
-            "zmlp-objects",
+            "zvi-object-detection",
             "Detect everyday objects in images, video, and documents.",
             listOf(
                 ModOp(
@@ -63,26 +63,13 @@ fun getStandardModules(): List<PipelineModSpec> {
             )
         ),
         PipelineModSpec(
-            "zmlp-labels",
+            "zvi-label-detection",
             "Generate keyword labels for image, video, and documents.",
             listOf(
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.mxnet.processors.ResNetClassifyProcessor",
-                            StandardContainers.ANALYSIS)
-                    )
-                )
-            )
-        ),
-        PipelineModSpec(
-            "zmlp-faces",
-            "Detect face bounding boxes",
-            listOf(
-                ModOp(
-                    ModOpType.APPEND,
-                    listOf(
-                        ProcessorRef("zmlp_analysis.face.ZmlpFaceDetectionProcessor",
+                        ProcessorRef("zmlp_analysis.mxnet.ZviLabelDetectionResNet152",
                             StandardContainers.ANALYSIS)
                     )
                 )

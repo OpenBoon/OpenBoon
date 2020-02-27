@@ -291,6 +291,7 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
 }
 
 .emotion-22 path {
@@ -517,6 +518,43 @@ Array [
 
 .emotion-110 {
   color: #73b61c;
+}
+
+.emotion-119 {
+  cursor: not-allowed;
+}
+
+.emotion-114 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #2e2e2e;
+  border-radius: 2px;
+  cursor: not-allowed;
+}
+
+.emotion-116 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: not-allowed;
 }
 
 .emotion-167 {
@@ -1437,7 +1475,7 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-68"
+                  className="emotion-119"
                   onClick={[Function]}
                 >
                   <td>
@@ -1448,14 +1486,14 @@ Array [
                         className="emotion-24"
                       >
                         <input
-                          className="emotion-21"
+                          className="emotion-114"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-vision-crop-hints"
                         />
                         <div
-                          className="emotion-23"
+                          className="emotion-116"
                         >
                           <svg
                             className="emotion-22"
@@ -1487,7 +1525,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-68"
+                  className="emotion-119"
                   onClick={[Function]}
                 >
                   <td>
@@ -1498,14 +1536,14 @@ Array [
                         className="emotion-24"
                       >
                         <input
-                          className="emotion-21"
+                          className="emotion-114"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-document-text-detection"
                         />
                         <div
-                          className="emotion-23"
+                          className="emotion-116"
                         >
                           <svg
                             className="emotion-22"
@@ -1537,7 +1575,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-68"
+                  className="emotion-119"
                   onClick={[Function]}
                 >
                   <td>
@@ -1548,14 +1586,14 @@ Array [
                         className="emotion-24"
                       >
                         <input
-                          className="emotion-21"
+                          className="emotion-114"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-vision-text-detection"
                         />
                         <div
-                          className="emotion-23"
+                          className="emotion-116"
                         >
                           <svg
                             className="emotion-22"
@@ -1587,7 +1625,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-68"
+                  className="emotion-119"
                   onClick={[Function]}
                 >
                   <td>
@@ -1598,14 +1636,14 @@ Array [
                         className="emotion-24"
                       >
                         <input
-                          className="emotion-21"
+                          className="emotion-114"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="gcp-label-detection"
+                          value="gcp-vision-label-detection"
                         />
                         <div
-                          className="emotion-23"
+                          className="emotion-116"
                         >
                           <svg
                             className="emotion-22"
@@ -1617,7 +1655,7 @@ Array [
                       <div
                         className="hidden"
                       >
-                        gcp-label-detection
+                        gcp-vision-label-detection
                         , 
                         Label Detection (Vision)
                         : 
@@ -1626,7 +1664,7 @@ Array [
                     </label>
                   </td>
                   <td>
-                    gcp-label-detection
+                    gcp-vision-label-detection
                   </td>
                   <td>
                     <strong>
@@ -1669,7 +1707,7 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-68"
+                  className="emotion-119"
                   onClick={[Function]}
                 >
                   <td>
@@ -1680,14 +1718,14 @@ Array [
                         className="emotion-24"
                       >
                         <input
-                          className="emotion-21"
+                          className="emotion-114"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="gcp-label-detection"
+                          value="gcp-video-label-detection"
                         />
                         <div
-                          className="emotion-23"
+                          className="emotion-116"
                         >
                           <svg
                             className="emotion-22"
@@ -1699,7 +1737,7 @@ Array [
                       <div
                         className="hidden"
                       >
-                        gcp-label-detection
+                        gcp-video-label-detection
                         , 
                         Label Detection (Video)
                         : 
@@ -1708,7 +1746,7 @@ Array [
                     </label>
                   </td>
                   <td>
-                    gcp-label-detection
+                    gcp-video-label-detection
                   </td>
                   <td>
                     <strong>
@@ -1719,7 +1757,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-68"
+                  className="emotion-119"
                   onClick={[Function]}
                 >
                   <td>
@@ -1730,14 +1768,14 @@ Array [
                         className="emotion-24"
                       >
                         <input
-                          className="emotion-21"
+                          className="emotion-114"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-shot-detection"
                         />
                         <div
-                          className="emotion-23"
+                          className="emotion-116"
                         >
                           <svg
                             className="emotion-22"
@@ -1769,7 +1807,7 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-68"
+                  className="emotion-119"
                   onClick={[Function]}
                 >
                   <td>
@@ -1780,14 +1818,14 @@ Array [
                         className="emotion-24"
                       >
                         <input
-                          className="emotion-21"
+                          className="emotion-114"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-explicit-content-detection"
                         />
                         <div
-                          className="emotion-23"
+                          className="emotion-116"
                         >
                           <svg
                             className="emotion-22"

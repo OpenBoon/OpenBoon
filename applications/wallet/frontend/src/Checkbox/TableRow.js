@@ -2,19 +2,27 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
+import checkboxOptionShape from './optionShape'
+
 import CheckboxIcon from './Icon'
 
-const CheckboxTableRow = ({ value, label, legend, initialValue, onClick }) => {
+const CheckboxTableRow = ({
+  option: { value, label, legend, initialValue, isDisabled },
+  onClick,
+}) => {
   const [isChecked, setIsChecked] = useState(initialValue)
 
   const toggleValue = event => {
     event.preventDefault()
+    if (isDisabled) return
     setIsChecked(!isChecked)
     onClick(!isChecked)
   }
 
   return (
-    <tr css={{ cursor: 'pointer' }} onClick={toggleValue}>
+    <tr
+      css={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
+      onClick={toggleValue}>
       <td>
         <label
           css={{
@@ -26,6 +34,7 @@ const CheckboxTableRow = ({ value, label, legend, initialValue, onClick }) => {
           <CheckboxIcon
             value={value}
             isChecked={isChecked}
+            isDisabled={isDisabled}
             onClick={toggleValue}
           />
           <div className="hidden">
@@ -43,11 +52,8 @@ const CheckboxTableRow = ({ value, label, legend, initialValue, onClick }) => {
 }
 
 CheckboxTableRow.propTypes = {
-  value: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  legend: PropTypes.string.isRequired,
+  option: PropTypes.shape(checkboxOptionShape).isRequired,
   onClick: PropTypes.func.isRequired,
-  initialValue: PropTypes.bool.isRequired,
 }
 
 export default CheckboxTableRow
