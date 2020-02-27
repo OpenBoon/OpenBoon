@@ -162,6 +162,23 @@ class BaseProjectViewSet(ViewSet):
         paginator.prep_pagination_for_api_response(content, request)
         return paginator.get_paginated_response(content['list'])
 
+    def _zmlp_list_from_es(self, request, item_modifier=None):
+        payload = {'from': request.GET.get('from', 0),
+                   'size': request.GET.get('size', self.pagination_class.default_limit)}
+        path = os.path.join(self.zmlp_root_api_path, '_search')
+        response = request.client.post(path, payload)
+        content = self._get_content(response)
+        results = {'list': content['hits']['hits'],
+                   'page': {'from': payload['from'],
+                            'size': payload['size'],
+                            'totalCount': content['hits']['total']['value']}}
+        for item in results['list']:
+            if item_modifier:
+                item_modifier(request, item)
+        paginator = self.pagination_class()
+        paginator.prep_pagination_for_api_response(results, request)
+        return paginator.get_paginated_response(results['list'])
+
     def _zmlp_list_from_root(self, request):
         """The result of this method can be returned for the list method of a concrete
         viewset if it just needs to proxy the results of doing a get on the zmlp base url.

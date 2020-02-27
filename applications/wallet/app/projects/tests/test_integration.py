@@ -72,14 +72,15 @@ def test_projects_view_with_projects(project, zmlp_project_user, api_client):
 def test_project_serializer_detail(project):
     serializer = ProjectSerializer(project, context={'request': None})
     data = serializer.data
-    expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'users', 'permissions',
-                       'tasks', 'datasources', 'taskerrors']
+    expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users',
+                       'permissions', 'tasks', 'datasources', 'taskerrors']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
     assert data['url'] == f'/api/v1/projects/{project.id}/'
     assert data['jobs'] == f'/api/v1/projects/{project.id}/jobs/'
     assert data['users'] == f'/api/v1/projects/{project.id}/users/'
+    assert data['assets'] == f'/api/v1/projects/{project.id}/assets/'
     assert data['apikeys'] == f'/api/v1/projects/{project.id}/apikeys/'
     assert data['permissions'] == f'/api/v1/projects/{project.id}/permissions/'
     assert data['tasks'] == f'/api/v1/projects/{project.id}/tasks/'
