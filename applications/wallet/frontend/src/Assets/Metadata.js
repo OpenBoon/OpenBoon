@@ -1,4 +1,4 @@
-import { colors, constants, spacing, typography, zIndex } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import InformationSvg from './information.svg'
 
@@ -6,19 +6,15 @@ export const WIDTH = 400
 const HEADER_HEIGHT = 48
 
 const AssetsMetadata = () => (
-  <div css={{ paddingTop: 1 }}>
+  <div css={{ paddingTop: 1, height: '100%' }}>
     <div
       css={{
-        alignSelf: 'flex-end',
-        marginRight: -spacing.spacious,
-        marginBottom: -spacing.spacious,
         backgroundColor: colors.structure.mattGrey,
-        height: `calc(100% + ${spacing.spacious}px)`,
+        height: '100%',
         width: WIDTH,
         display: 'flex',
         flexDirection: 'column',
         boxShadow: constants.boxShadows.metadata,
-        zIndex: zIndex.layout.navbar,
       }}>
       <div
         css={{
@@ -26,12 +22,12 @@ const AssetsMetadata = () => (
           height: HEADER_HEIGHT,
           alignItems: 'center',
           borderBottom: constants.borders.divider,
-          paddingLeft: spacing.normal,
+          padding: spacing.normal,
         }}>
         <InformationSvg width={20} color={colors.structure.steel} />
         <div
           css={{
-            paddingLeft: spacing.normal,
+            padding: spacing.normal,
             color: colors.structure.steel,
             fontWeight: typography.weight.bold,
           }}>

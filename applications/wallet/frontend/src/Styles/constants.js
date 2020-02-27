@@ -22,6 +22,7 @@ const borders = {
 const opacity = {
   third: 0.3,
   half: 0.5,
+  eighth: 0.8,
   full: 1,
 }
 

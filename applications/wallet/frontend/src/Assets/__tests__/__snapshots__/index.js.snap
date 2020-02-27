@@ -2,43 +2,57 @@
 
 exports[`<Assets /> should render properly 1`] = `
 .emotion-16 {
-  height: calc(100% - 46px);
-  width: calc(100% + 64px);
-  margin: -32px;
+  height: 100%;
+  margin-left: -32px;
+  margin-right: -32px;
+  margin-bottom: -32px;
   margin-top: 1px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
-.emotion-3 {
-  width: 100%;
-}
-
-.emotion-2 {
+.emotion-4 {
   height: 44px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
   box-shadow: 0px 3px 3px 0 rgb(0,0,0,0.3);
-  padding-left: 16px;
-  padding-right: 16px;
   font-family: Roboto Condensed;
 }
 
 .emotion-0 {
-  color: #808080;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-1 {
+  color: #808080;
+  padding: 8px;
+}
+
+.emotion-2 {
+  color: #808080;
+}
+
+.emotion-3 {
   color: #b3b3b3;
+  padding: 8px;
+  padding-right: 16px;
 }
 
 .emotion-15 {
@@ -47,37 +61,22 @@ exports[`<Assets /> should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   height: 100%;
-  width: 100%;
 }
 
 .emotion-8 {
   padding: 32px;
-  overflow: auto;
-  height: calc(100% + 32px);
-  width: calc(100% - 400px);
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
 }
 
 .emotion-7 {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-end;
-  -webkit-box-align: flex-end;
-  -ms-flex-align: flex-end;
-  align-items: flex-end;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  padding: 16px;
-}
-
-.emotion-6 {
-  position: fixed;
+  height: 42px;
+  width: 90px;
+  position: absolute;
   bottom: 16px;
-  right: 416px;
+  right: 16px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -90,8 +89,6 @@ exports[`<Assets /> should render properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  height: 42px;
-  width: 90px;
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
@@ -99,7 +96,7 @@ exports[`<Assets /> should render properly 1`] = `
   opacity: 0.8;
 }
 
-.emotion-4 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -134,35 +131,31 @@ exports[`<Assets /> should render properly 1`] = `
   opacity: 1;
 }
 
-.emotion-4:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-4:hover {
+.emotion-5:hover {
   color: #73b61c;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #808080;
 }
 
 .emotion-14 {
   padding-top: 1px;
+  height: 100%;
 }
 
 .emotion-13 {
-  -webkit-align-self: flex-end;
-  -ms-flex-item-align: end;
-  align-self: flex-end;
-  margin-right: -32px;
-  margin-bottom: -32px;
   background-color: #2e2e2e;
-  height: calc(100% + 32px);
+  height: 100%;
   width: 400px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -172,7 +165,6 @@ exports[`<Assets /> should render properly 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   box-shadow: -3px 4px 3px 0px rgba(0,0,0,0.3);
-  z-index: 100;
 }
 
 .emotion-10 {
@@ -186,11 +178,11 @@ exports[`<Assets /> should render properly 1`] = `
   -ms-flex-align: center;
   align-items: center;
   border-bottom: 1px solid #3b3b3b;
-  padding-left: 16px;
+  padding: 16px;
 }
 
 .emotion-9 {
-  padding-left: 16px;
+  padding: 16px;
   color: #808080;
   font-weight: 700;
 }
@@ -208,24 +200,28 @@ exports[`<Assets /> should render properly 1`] = `
   className="emotion-16"
 >
   <div
-    className="emotion-3"
+    className="emotion-4"
   >
+    <div
+      className="emotion-0"
+    />
+    <div
+      className="emotion-1"
+    >
+      Sort: Import Date
+    </div>
     <div
       className="emotion-2"
     >
-      <div
-        className="emotion-0"
-      >
-        Sort: Import Date  |  
-      </div>
-      <div
-        className="emotion-1"
-      >
-        100
-         of 
-        2400
-         Results
-      </div>
+      |
+    </div>
+    <div
+      className="emotion-3"
+    >
+      100
+       of 
+      2400
+       Results
     </div>
   </div>
   <div
@@ -237,30 +233,26 @@ exports[`<Assets /> should render properly 1`] = `
       <div
         className="emotion-7"
       >
-        <div
-          className="emotion-6"
+        <button
+          className="emotion-5"
+          onClick={[Function]}
+          type="button"
         >
-          <button
-            className="emotion-4"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              data-file-name="circleMinus.svg"
-              width={20}
-            />
-          </button>
-          <button
-            className="emotion-4"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              data-file-name="circlePlus.svg"
-              width={20}
-            />
-          </button>
-        </div>
+          <svg
+            data-file-name="circleMinus.svg"
+            width={20}
+          />
+        </button>
+        <button
+          className="emotion-5"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            data-file-name="circlePlus.svg"
+            width={20}
+          />
+        </button>
       </div>
     </div>
     <div
