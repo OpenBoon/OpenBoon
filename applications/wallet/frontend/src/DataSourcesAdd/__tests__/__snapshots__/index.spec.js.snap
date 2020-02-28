@@ -166,7 +166,7 @@ Array [
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
   color: #ffffff;
-  background-color: #2e2e2e;
+  background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
@@ -206,8 +206,10 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  font-size: 15px;
+  line-height: 19px;
   color: #ffffff;
-  background-color: #2e2e2e;
+  background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }

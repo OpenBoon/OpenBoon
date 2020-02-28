@@ -42,6 +42,7 @@ const StylesReset = () => (
           border: 0,
           padding: spacing.normal,
           fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
         },
         '.js-focus-visible :focus:not(.focus-visible)': {
           outline: 'none',
