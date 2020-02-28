@@ -18,9 +18,8 @@ const JobErrorDetails = ({
     <div
       css={{
         display: 'flex',
-        maxWidth: '1440px',
-        paddingTop: spacing.normal,
         flexWrap: 'wrap',
+        paddingTop: spacing.normal,
       }}>
       <div css={{ paddingRight: spacing.colossal }}>
         <Value legend="Task ID" variant={VARIANTS.SECONDARY}>
