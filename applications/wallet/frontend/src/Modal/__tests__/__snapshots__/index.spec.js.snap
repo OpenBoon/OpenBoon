@@ -120,7 +120,7 @@ exports[`<Modal /> should render properly 1`] = `
 }
 
 .emotion-3:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-3[aria-disabled=true] {

@@ -976,7 +976,7 @@ exports[`<Button /> should render properly for SECONDARY Button 1`] = `
 }
 
 .emotion-0:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-0[aria-disabled=true] {
@@ -1041,7 +1041,7 @@ exports[`<Button /> should render properly for SECONDARY Link 1`] = `
 }
 
 .emotion-0:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-0[aria-disabled=true] {

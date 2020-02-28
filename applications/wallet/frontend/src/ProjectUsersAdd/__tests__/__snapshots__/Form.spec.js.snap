@@ -2147,7 +2147,7 @@ exports[`<ProjectUsersAddForm /> should render properly after permissions are lo
 }
 
 .emotion-21:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-21[aria-disabled=true] {

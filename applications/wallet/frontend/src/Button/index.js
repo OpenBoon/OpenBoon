@@ -46,7 +46,7 @@ const STYLES = {
       backgroundColor: colors.structure.steel,
     },
     '&:hover': {
-      opacity: constants.opacity.half,
+      backgroundColor: colors.structure.zinc,
     },
     '&[aria-disabled=true]': {
       backgroundColor: colors.structure.steel,

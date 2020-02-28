@@ -1085,7 +1085,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
 }
 
 .emotion-13:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-13[aria-disabled=true] {
