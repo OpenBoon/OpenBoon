@@ -8,6 +8,10 @@ import Value, { VARIANTS } from '../Value'
 import JobErrorType from './Type'
 import JobErrorTaskMenu from './TaskMenu'
 
+import { formatFullDate } from '../Date/helpers'
+
+import { spacing } from '../Styles'
+
 const JobErrorContent = () => {
   const {
     query: { projectId, errorId },
@@ -19,7 +23,16 @@ const JobErrorContent = () => {
 
   if (typeof jobError === 'undefined') return <Loading />
 
-  const { jobName, fatal, message, taskId } = jobError
+  const {
+    jobName,
+    fatal,
+    message,
+    taskId,
+    analyst,
+    path,
+    processor,
+    timeCreated,
+  } = jobError
 
   return (
     <>
@@ -36,6 +49,38 @@ const JobErrorContent = () => {
         taskId={taskId}
         revalidate={revalidate}
       />
+
+      <div
+        css={{
+          display: 'flex',
+          justifyContent: 'flex-start',
+          maxWidth: '1440px',
+          paddingTop: spacing.normal,
+          flexWrap: 'wrap',
+        }}>
+        <div css={{ paddingRight: spacing.colossal }}>
+          <Value legend="Task ID" variant={VARIANTS.SECONDARY}>
+            {taskId}
+          </Value>
+          <Value legend="Error ID" variant={VARIANTS.SECONDARY}>
+            {errorId}
+          </Value>
+          <Value legend="Host ID" variant={VARIANTS.SECONDARY}>
+            {analyst}
+          </Value>
+        </div>
+        <div>
+          <Value legend="File Path" variant={VARIANTS.SECONDARY}>
+            {path}
+          </Value>
+          <Value legend="Processor" variant={VARIANTS.SECONDARY}>
+            {processor}
+          </Value>
+          <Value legend="Time of Error" variant={VARIANTS.SECONDARY}>
+            {formatFullDate({ timestamp: timeCreated })}
+          </Value>
+        </div>
+      </div>
     </>
   )
 }
