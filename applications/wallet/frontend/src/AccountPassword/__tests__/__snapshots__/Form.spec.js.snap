@@ -113,7 +113,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 }
 
 .emotion-15:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-15[aria-disabled=true] {
@@ -562,7 +562,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 }
 
 .emotion-15:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-15[aria-disabled=true] {
@@ -847,7 +847,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 }
 
 .emotion-15:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-15[aria-disabled=true] {

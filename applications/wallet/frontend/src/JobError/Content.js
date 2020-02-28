@@ -6,27 +6,36 @@ import SectionTitle from '../SectionTitle'
 import Value, { VARIANTS } from '../Value'
 
 import JobErrorType from './Type'
+import JobErrorTaskMenu from './TaskMenu'
 
 const JobErrorContent = () => {
   const {
     query: { projectId, errorId },
   } = useRouter()
 
-  const { data: jobError } = useSWR(
+  const { data: jobError, revalidate } = useSWR(
     `/api/v1/projects/${projectId}/taskerrors/${errorId}`,
   )
 
   if (typeof jobError === 'undefined') return <Loading />
 
+  const { jobName, fatal, message, taskId } = jobError
+
   return (
     <>
-      <SectionTitle>Job: {jobError.jobName}</SectionTitle>
+      <SectionTitle>Job: {jobName}</SectionTitle>
 
-      <JobErrorType fatal={jobError.fatal} />
+      <JobErrorType fatal={fatal} />
 
       <Value legend="Error Message" variant={VARIANTS.SECONDARY}>
-        {jobError.message}
+        {message}
       </Value>
+
+      <JobErrorTaskMenu
+        projectId={projectId}
+        taskId={taskId}
+        revalidate={revalidate}
+      />
     </>
   )
 }

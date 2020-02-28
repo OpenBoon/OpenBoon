@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { spacing, typography, colors } from '../Styles'
+import { spacing, typography } from '../Styles'
 
 import Loading from '../Loading'
 import Tabs from '../Tabs'
@@ -47,21 +47,15 @@ const JobErrorsContent = () => {
         />
 
         <Value legend="Job Status" variant={VARIANTS.PRIMARY}>
-          <div
-            css={{
-              color: colors.structure.white,
-              fontWeight: typography.weight.medium,
-            }}>
-            {state}
-          </div>
-        </Value>
-
-        <Value legend="Job Status" variant={VARIANTS.PRIMARY}>
-          <ProgressBar taskCounts={taskCounts} />
+          {state}
         </Value>
 
         <Value legend="Priority" variant={VARIANTS.PRIMARY}>
           {priority}
+        </Value>
+
+        <Value legend="Job Progress" variant={VARIANTS.PRIMARY}>
+          <ProgressBar taskCounts={taskCounts} />
         </Value>
       </div>
 

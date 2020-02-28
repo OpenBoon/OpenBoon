@@ -697,7 +697,7 @@ Array [
 }
 
 .emotion-146:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-146[aria-disabled=true] {
