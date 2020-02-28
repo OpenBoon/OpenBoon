@@ -33,7 +33,7 @@ const Table = ({ url, columns, expandColumn, renderEmpty, renderRow }) => {
           width: '100%',
           height: hasException ? '100%' : 'auto',
           borderSpacing: 0,
-          boxShadow: constants.boxShadows.table,
+          boxShadow: constants.boxShadows.default,
           whiteSpace: 'nowrap',
           tr: {
             backgroundColor: colors.structure.lead,

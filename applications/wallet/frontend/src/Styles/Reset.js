@@ -25,7 +25,7 @@ const StylesReset = () => (
           lineHeight: typography.height.regular,
           fontWeight: typography.weight.regular,
           color: colors.structure.white,
-          backgroundColor: colors.structure.coal,
+          backgroundColor: colors.structure.soot,
         },
         'input, textarea, select, button': {
           fontFamily: 'inherit',

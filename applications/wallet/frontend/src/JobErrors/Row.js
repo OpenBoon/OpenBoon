@@ -22,6 +22,9 @@ const JobErrorsRow = ({
             display: 'flex',
             aligntItems: 'center',
             justifyContent: 'flex-start',
+            paddingTop: spacing.base,
+            paddingBottom: spacing.base,
+            paddingRight: spacing.base,
             span: {
               paddingLeft: spacing.moderate,
               fontWeight: typography.weight.medium,
