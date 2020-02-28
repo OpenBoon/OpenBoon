@@ -348,8 +348,8 @@ Array [
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  color: #b3b3b3;
-  background-color: #000000;
+  color: #ffffff;
+  background-color: #2e2e2e;
 }
 
 .emotion-10 {
@@ -1478,8 +1478,8 @@ Array [
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  color: #b3b3b3;
-  background-color: #000000;
+  color: #ffffff;
+  background-color: #2e2e2e;
 }
 
 .emotion-12 {
