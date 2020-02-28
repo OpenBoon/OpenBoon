@@ -7,6 +7,7 @@ import Value, { VARIANTS } from '../Value'
 
 import JobErrorType from './Type'
 import JobErrorTaskMenu from './TaskMenu'
+import JobErrorDetails from './Details'
 
 const JobErrorContent = () => {
   const {
@@ -36,6 +37,8 @@ const JobErrorContent = () => {
         taskId={taskId}
         revalidate={revalidate}
       />
+
+      <JobErrorDetails jobError={jobError} />
     </>
   )
 }
