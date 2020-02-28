@@ -188,7 +188,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
   color: #ffffff;
-  background-color: #2e2e2e;
+  background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
@@ -698,7 +698,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
   color: #ffffff;
-  background-color: #2e2e2e;
+  background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }

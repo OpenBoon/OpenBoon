@@ -7,7 +7,12 @@ export const CHECKMARK_WIDTH = 28
 const Accordion = ({ title, children }) => {
   return (
     <div css={{ paddingTop: spacing.normal }}>
-      <div css={{ backgroundColor: colors.structure.smoke }}>
+      <div
+        css={{
+          backgroundColor: colors.structure.smoke,
+          borderRadius: constants.borderRadius.small,
+          boxShadow: constants.boxShadows.default,
+        }}>
         <div
           css={{
             borderBottom: constants.borders.tabs,
