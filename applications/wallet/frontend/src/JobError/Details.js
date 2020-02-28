@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
 
 import { formatFullDate } from '../Date/helpers'
@@ -7,13 +8,12 @@ import Value, { VARIANTS } from '../Value'
 import { spacing } from '../Styles'
 
 const JobErrorDetails = ({
-  taskId,
-  errorId,
-  analyst,
-  path,
-  processor,
-  timeCreated,
+  jobError: { taskId, analyst, path, processor, timeCreated },
 }) => {
+  const {
+    query: { errorId },
+  } = useRouter()
+
   return (
     <div
       css={{
@@ -48,12 +48,13 @@ const JobErrorDetails = ({
 }
 
 JobErrorDetails.propTypes = {
-  taskId: PropTypes.string.isRequired,
-  errorId: PropTypes.string.isRequired,
-  analyst: PropTypes.string.isRequired,
-  path: PropTypes.string.isRequired,
-  processor: PropTypes.string.isRequired,
-  timeCreated: PropTypes.number.isRequired,
+  jobError: PropTypes.shape({
+    taskId: PropTypes.string.isRequired,
+    analyst: PropTypes.string.isRequired,
+    path: PropTypes.string.isRequired,
+    processor: PropTypes.string.isRequired,
+    timeCreated: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 export default JobErrorDetails

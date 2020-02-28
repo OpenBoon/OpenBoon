@@ -20,16 +20,7 @@ const JobErrorContent = () => {
 
   if (typeof jobError === 'undefined') return <Loading />
 
-  const {
-    jobName,
-    fatal,
-    message,
-    taskId,
-    analyst,
-    path,
-    processor,
-    timeCreated,
-  } = jobError
+  const { jobName, fatal, message, taskId } = jobError
 
   return (
     <>
@@ -47,14 +38,7 @@ const JobErrorContent = () => {
         revalidate={revalidate}
       />
 
-      <JobErrorDetails
-        taskId={taskId}
-        errorId={errorId}
-        analyst={analyst}
-        path={path}
-        processor={processor}
-        timeCreated={timeCreated}
-      />
+      <JobErrorDetails jobError={jobError} />
     </>
   )
 }
