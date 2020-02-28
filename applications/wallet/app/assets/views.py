@@ -30,6 +30,8 @@ def asset_modifier(request, item, many=True):
     item['url'] = current_url
 
     # Add urls to the proxy files
+    if not 'files' in item['metadata']:
+        item['metadata']['files'] = []
     for entry in item['metadata']['files']:
         entry['url'] = f'{current_url}files/category/{entry["category"]}/name/{entry["name"]}'
 
