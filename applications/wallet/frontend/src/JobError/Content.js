@@ -7,10 +7,7 @@ import Value, { VARIANTS } from '../Value'
 
 import JobErrorType from './Type'
 import JobErrorTaskMenu from './TaskMenu'
-
-import { formatFullDate } from '../Date/helpers'
-
-import { spacing } from '../Styles'
+import JobErrorDetails from './Details'
 
 const JobErrorContent = () => {
   const {
@@ -50,37 +47,14 @@ const JobErrorContent = () => {
         revalidate={revalidate}
       />
 
-      <div
-        css={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          maxWidth: '1440px',
-          paddingTop: spacing.normal,
-          flexWrap: 'wrap',
-        }}>
-        <div css={{ paddingRight: spacing.colossal }}>
-          <Value legend="Task ID" variant={VARIANTS.SECONDARY}>
-            {taskId}
-          </Value>
-          <Value legend="Error ID" variant={VARIANTS.SECONDARY}>
-            {errorId}
-          </Value>
-          <Value legend="Host ID" variant={VARIANTS.SECONDARY}>
-            {analyst}
-          </Value>
-        </div>
-        <div>
-          <Value legend="File Path" variant={VARIANTS.SECONDARY}>
-            {path}
-          </Value>
-          <Value legend="Processor" variant={VARIANTS.SECONDARY}>
-            {processor}
-          </Value>
-          <Value legend="Time of Error" variant={VARIANTS.SECONDARY}>
-            {formatFullDate({ timestamp: timeCreated })}
-          </Value>
-        </div>
-      </div>
+      <JobErrorDetails
+        taskId={taskId}
+        errorId={errorId}
+        analyst={analyst}
+        path={path}
+        processor={processor}
+        timeCreated={timeCreated}
+      />
     </>
   )
 }

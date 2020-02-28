@@ -386,10 +386,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
   max-width: 1440px;
   padding-top: 16px;
   -webkit-flex-wrap: wrap;
@@ -791,10 +787,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
   max-width: 1440px;
   padding-top: 16px;
   -webkit-flex-wrap: wrap;
@@ -1295,10 +1287,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
   max-width: 1440px;
   padding-top: 16px;
   -webkit-flex-wrap: wrap;
