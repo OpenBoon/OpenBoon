@@ -10,6 +10,11 @@ const noop = () => () => {}
 
 describe('<Projects />', () => {
   it('should render properly while loading', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: { projectId: PROJECT_ID },
+    })
+
     const component = TestRenderer.create(
       <Projects projectId="" setUser={noop}>
         Hello World
@@ -20,6 +25,10 @@ describe('<Projects />', () => {
   })
 
   it('should render properly with no projects', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/',
+    })
+
     require('swr').__setMockUseSWRResponse({
       data: { results: [] },
     })
