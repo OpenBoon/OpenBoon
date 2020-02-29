@@ -27,6 +27,7 @@ describe('<Projects />', () => {
   it('should render properly with no projects', () => {
     require('next/router').__setUseRouter({
       pathname: '/',
+      query: {},
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -132,7 +133,7 @@ describe('<Projects />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should redirect if the projectId is not of an authorized project', () => {
+  it('should redirect if the url projectId is not of an authorized project', () => {
     const mockFn = jest.fn()
 
     require('next/router').__setMockPushFunction(mockFn)
@@ -181,6 +182,34 @@ describe('<Projects />', () => {
     )
 
     expect(mockFn).toHaveBeenCalledWith('/')
+
+    expect(component.toJSON()).toBeNull()
+  })
+
+  it('should reset an invalid user projectId', async () => {
+    const mockSetUser = jest.fn()
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: { projectId: 'not-a-valid-project-id' },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: projects,
+    })
+
+    const component = TestRenderer.create(
+      <Projects projectId="not-a-valid-project-id" setUser={mockSetUser}>
+        Hello World
+      </Projects>,
+    )
+
+    expect(mockSetUser).toHaveBeenCalledWith({ user: { projectId: '' } })
+
+    expect(mockRouterPush).not.toHaveBeenCalled()
 
     expect(component.toJSON()).toBeNull()
   })
