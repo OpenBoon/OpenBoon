@@ -27,7 +27,6 @@ describe('<Projects />', () => {
   it('should render properly with no projects', () => {
     require('next/router').__setUseRouter({
       pathname: '/',
-      query: {},
     })
 
     require('swr').__setMockUseSWRResponse({
