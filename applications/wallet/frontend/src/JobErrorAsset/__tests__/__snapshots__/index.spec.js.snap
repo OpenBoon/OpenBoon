@@ -1,5 +1,104 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<JobError /> should render properly when loading 1`] = `
+Array [
+  .emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-1 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-6 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Job Queue
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Job Details
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
+    <h2
+      className="emotion-6"
+    >
+      Error Details
+    </h2>
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+}
+
+<div
+    className="emotion-0"
+  >
+    Loading...
+  </div>,
+]
+`;
+
 exports[`<JobError /> should render properly with a fatal error 1`] = `
 Array [
   .emotion-2 {
@@ -421,7 +520,8 @@ Array [
 
 .emotion-0 {
   border: 0 #73b61c solid;
-  border-bottom-width: 2px;
+  border-bottom-width: 0;
+  color: #b3b3b3;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -441,12 +541,12 @@ Array [
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+  color: #73b61c;
 }
 
 .emotion-2 {
   border: 0 #73b61c solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
+  border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -466,7 +566,6 @@ Array [
 .emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
 }
 
 <nav
@@ -501,30 +600,8 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-1 {
-  background-color: #000000;
-  font-family: Roboto Mono;
-  font-size: 13px;
-  line-height: 18px;
-  padding: 16px;
-}
-
-.emotion-0 {
-  padding-top: 16px;
-  color: #b3b3b3;
-  white-space: nowrap;
-  over-flow: auto;
-}
-
-<div
-    className="emotion-1"
-  >
-    <div>
-      "message" : ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
-    </div>
-    <div
-      className="emotion-0"
-    />
+  <div>
+    Asset
   </div>,
 ]
 `;
@@ -950,7 +1027,8 @@ Array [
 
 .emotion-0 {
   border: 0 #73b61c solid;
-  border-bottom-width: 2px;
+  border-bottom-width: 0;
+  color: #b3b3b3;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -970,12 +1048,12 @@ Array [
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+  color: #73b61c;
 }
 
 .emotion-2 {
   border: 0 #73b61c solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
+  border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -995,7 +1073,6 @@ Array [
 .emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
 }
 
 <nav
@@ -1030,70 +1107,8 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-6 {
-  background-color: #000000;
-  font-family: Roboto Mono;
-  font-size: 13px;
-  line-height: 18px;
-  padding: 16px;
-}
-
-.emotion-0 {
-  padding-top: 16px;
-  color: #b3b3b3;
-  white-space: nowrap;
-  over-flow: auto;
-}
-
-.emotion-5 {
-  padding-left: 40px;
-}
-
-.emotion-1 {
-  padding-top: 8px;
-}
-
-<div
-    className="emotion-6"
-  >
-    <div>
-      "message" : ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
-    </div>
-    <div
-      className="emotion-0"
-    />
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "file": "/usr/local/lib/python3.7/dist-packages/zmlpcd/process.py"
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "lineNumber": 143
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "className": "new_processor_instance"
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "methodName": "instance = getattr(module, cls_name)()"
-        </div>
-      </div>
-      <div>
-        }
-      </div>
-    </div>
+  <div>
+    Asset
   </div>,
 ]
 `;
@@ -1457,7 +1472,7 @@ Array [
                 onClick={[Function]}
                 type="button"
               >
-                Retry Task
+                Retry
               </button>
             </li>
           </ul>
@@ -1618,7 +1633,8 @@ Array [
 
 .emotion-0 {
   border: 0 #73b61c solid;
-  border-bottom-width: 2px;
+  border-bottom-width: 0;
+  color: #b3b3b3;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1638,12 +1654,12 @@ Array [
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+  color: #73b61c;
 }
 
 .emotion-2 {
   border: 0 #73b61c solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
+  border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1663,7 +1679,6 @@ Array [
 .emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
 }
 
 <nav
@@ -1698,70 +1713,8 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-6 {
-  background-color: #000000;
-  font-family: Roboto Mono;
-  font-size: 13px;
-  line-height: 18px;
-  padding: 16px;
-}
-
-.emotion-0 {
-  padding-top: 16px;
-  color: #b3b3b3;
-  white-space: nowrap;
-  over-flow: auto;
-}
-
-.emotion-5 {
-  padding-left: 40px;
-}
-
-.emotion-1 {
-  padding-top: 8px;
-}
-
-<div
-    className="emotion-6"
-  >
-    <div>
-      "message" : ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
-    </div>
-    <div
-      className="emotion-0"
-    />
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "file": "/usr/local/lib/python3.7/dist-packages/zmlpcd/process.py"
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "lineNumber": 143
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "className": "new_processor_instance"
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "methodName": "instance = getattr(module, cls_name)()"
-        </div>
-      </div>
-      <div>
-        }
-      </div>
-    </div>
+  <div>
+    Asset
   </div>,
 ]
 `;

@@ -12,6 +12,14 @@ export const jobErrorNonFatal = {
   phase: 'index',
   timeCreated: 1582306669906,
   jobName: 'Applying modules:  to gs://zorroa-dev-data',
+  stackTrace: [
+    {
+      file: '/usr/local/lib/python3.7/dist-packages/zmlpcd/process.py',
+      lineNumber: 143,
+      className: 'new_processor_instance',
+      methodName: 'instance = getattr(module, cls_name)()',
+    },
+  ],
 }
 
 export const jobErrorFatal = {
@@ -28,4 +36,5 @@ export const jobErrorFatal = {
   phase: 'index',
   timeCreated: 1582306669906,
   jobName: 'Applying modules:  to gs://zorroa-dev-data',
+  stackTrace: [],
 }

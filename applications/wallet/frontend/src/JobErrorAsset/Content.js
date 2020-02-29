@@ -1,16 +1,16 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
+import Loading from '../Loading'
 import SectionTitle from '../SectionTitle'
 import Value, { VARIANTS } from '../Value'
 import Tabs from '../Tabs'
 
-import JobErrorType from './Type'
-import JobErrorTaskMenu from './TaskMenu'
-import JobErrorDetails from './Details'
-import JobErrorStackTrace from './StackTrace'
+import JobErrorType from '../JobError/Type'
+import JobErrorTaskMenu from '../JobError/TaskMenu'
+import JobErrorDetails from '../JobError/Details'
 
-const JobErrorContent = () => {
+const JobErrorAssetContent = () => {
   const {
     query: { projectId, errorId },
   } = useRouter()
@@ -19,21 +19,28 @@ const JobErrorContent = () => {
     `/api/v1/projects/${projectId}/taskerrors/${errorId}`,
   )
 
+  if (typeof jobError === 'undefined') return <Loading />
+
   const { jobName, fatal, message, taskId } = jobError
 
   return (
     <>
       <SectionTitle>Job: {jobName}</SectionTitle>
+
       <JobErrorType fatal={fatal} />
+
       <Value legend="Error Message" variant={VARIANTS.SECONDARY}>
         {message}
       </Value>
+
       <JobErrorTaskMenu
         projectId={projectId}
         taskId={taskId}
         revalidate={revalidate}
       />
+
       <JobErrorDetails jobError={jobError} />
+
       <Tabs
         tabs={[
           {
@@ -46,9 +53,10 @@ const JobErrorContent = () => {
           },
         ]}
       />
-      <JobErrorStackTrace jobError={jobError} />
+
+      <div>Asset</div>
     </>
   )
 }
 
-export default JobErrorContent
+export default JobErrorAssetContent
