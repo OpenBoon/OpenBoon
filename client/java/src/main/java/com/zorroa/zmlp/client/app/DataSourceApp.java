@@ -4,6 +4,7 @@ import com.zorroa.zmlp.client.ZmlpClient;
 import com.zorroa.zmlp.client.domain.datasource.DataSource;
 import com.zorroa.zmlp.client.domain.datasource.DataSourceCredentials;
 import com.zorroa.zmlp.client.domain.datasource.DataSourceSpec;
+import com.zorroa.zmlp.client.domain.exception.ZmlpRequestException;
 
 import java.util.*;
 
@@ -21,7 +22,7 @@ public class DataSourceApp {
      * @param spec
      * @return
      */
-    public DataSource createDataSource(DataSourceSpec spec) {
+    public DataSource createDataSource(DataSourceSpec spec)  throws ZmlpRequestException {
         return client.post("/api/v1/data-sources", spec, DataSource.class);
     }
 
@@ -35,7 +36,7 @@ public class DataSourceApp {
      * @param id A DataSource id or the name of a data source.
      * @return An import DataSource result dictionary.
      */
-    public DataSource importDataSource(String id) {
+    public DataSource importDataSource(String id)  throws ZmlpRequestException{
         String url = String.format("/api/v1/data-sources/%s/_import", id);
         return client.post(url, new HashMap(), DataSource.class);
     }
@@ -46,7 +47,7 @@ public class DataSourceApp {
      * @param name The unique name or unique ID.
      * @return The DataSource
      */
-    public DataSource getDataSource(String name) {
+    public DataSource getDataSource(String name)  throws ZmlpRequestException{
 
         String url = String.format("/api/v1/jobs/_findOne");
         Map body = new HashMap();

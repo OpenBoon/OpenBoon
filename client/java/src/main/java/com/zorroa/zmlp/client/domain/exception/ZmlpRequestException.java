@@ -1,13 +1,15 @@
 package com.zorroa.zmlp.client.domain.exception;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.zorroa.zmlp.client.Json;
+import org.apache.http.client.HttpResponseException;
+
 import java.util.Map;
 import java.util.Optional;
 
-public class ZmlpRequestException extends ZmlpAppException{
+public class ZmlpRequestException extends ZmlpAppException {
 
     private String exception;
-
-    private String cause;
 
     private String path;
 
@@ -17,11 +19,19 @@ public class ZmlpRequestException extends ZmlpAppException{
         super(message, cause);
     }
 
-    public ZmlpRequestException(Map<String,String> data, String message, Throwable cause) {
-        super(message, cause);
+    public ZmlpRequestException(String stringData, String path, Exception cause) {
+        super(cause.getMessage(), cause);
 
-        Optional.ofNullable(data.get("exception")).ifPresent(value->exception = value);
+        Map data = null;
+        try {
+            data = Json.mapper.readValue(stringData, Map.class);
+        } catch (JsonProcessingException e) {
+            throw new ZmlpClientException("Failed on Json Parsing", e);
+        }
 
+        Optional.ofNullable(data.get("exception")).ifPresent(value -> exception = value.toString());
+        Optional.ofNullable(data.get("status")).ifPresent(value -> status = value.toString());
+        this.path = path;
     }
 
     public String getException() {
@@ -30,11 +40,6 @@ public class ZmlpRequestException extends ZmlpAppException{
 
     public ZmlpRequestException setException(String exception) {
         this.exception = exception;
-        return this;
-    }
-
-    public ZmlpRequestException setCause(String cause) {
-        this.cause = cause;
         return this;
     }
 

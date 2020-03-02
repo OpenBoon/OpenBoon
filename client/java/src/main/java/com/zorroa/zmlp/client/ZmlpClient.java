@@ -6,7 +6,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.zmlp.client.domain.exception.ZmlpClientException;
 import com.zorroa.zmlp.client.domain.asset.BatchUploadAssetsRequest;
+import com.zorroa.zmlp.client.domain.exception.ZmlpRequestException;
 import okhttp3.*;
+import org.apache.http.client.HttpResponseException;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,35 +50,35 @@ public class ZmlpClient {
         this.server = Optional.ofNullable(server).orElse(DEFAULT_SERVER_URL);
     }
 
-    public <T> T get(String path, Object body, TypeReference<T> type) {
+    public <T> T get(String path, Object body, TypeReference<T> type) throws ZmlpRequestException {
         return marshallResponse(makeRequest(path, "get", body), type);
     }
 
-    public <T> T get(String path, Object body, Class<T> type) {
+    public <T> T get(String path, Object body, Class<T> type) throws ZmlpRequestException {
         return marshallResponse(makeRequest(path, "get", body), type);
     }
 
-    public <T> T delete(String path, Object body, TypeReference<T> type) {
+    public <T> T delete(String path, Object body, TypeReference<T> type) throws ZmlpRequestException {
         return marshallResponse(makeRequest(path, "delete", body), type);
     }
 
-    public <T> T delete(String path, Object body, Class<T> type) {
+    public <T> T delete(String path, Object body, Class<T> type) throws ZmlpRequestException {
         return marshallResponse(makeRequest(path, "delete", body), type);
     }
 
-    public <T> T put(String path, Object body, TypeReference<T> type) {
+    public <T> T put(String path, Object body, TypeReference<T> type) throws ZmlpRequestException {
         return marshallResponse(makeRequest(path, "put", body), type);
     }
 
-    public <T> T put(String path, Object body, Class<T> type) {
+    public <T> T put(String path, Object body, Class<T> type) throws ZmlpRequestException {
         return marshallResponse(makeRequest(path, "put", body), type);
     }
 
-    public <T> T post(String path, Object body, TypeReference<T> type) {
+    public <T> T post(String path, Object body, TypeReference<T> type) throws ZmlpRequestException {
         return marshallResponse(makeRequest(path, "post", body), type);
     }
 
-    public <T> T post(String path, Object body, Class<T> type) {
+    public <T> T post(String path, Object body, Class<T> type) throws ZmlpRequestException {
         return marshallResponse(makeRequest(path, "post", body), type);
     }
 
@@ -88,7 +90,7 @@ public class ZmlpClient {
         }
     }
 
-    public byte[] makeRequest(String path, String method, Object body) {
+    public byte[] makeRequest(String path, String method, Object body) throws ZmlpRequestException {
         try {
             Request.Builder builder = new Request.Builder()
                     .url(getUrl(path));
@@ -100,6 +102,11 @@ public class ZmlpClient {
             }
             applyHeaders(builder);
             try (Response response = http.newCall(builder.build()).execute()) {
+                if (response.code() != 200)
+                    throw new ZmlpRequestException(response.body().string(),
+                            path,
+                            new HttpResponseException(response.code(), response.message()));
+
                 return response.body().bytes();
             }
         } catch (IOException e) {
