@@ -150,7 +150,7 @@ class TestDockerContainerWrapper(unittest.TestCase):
             pass
 
         image = self.container._pull_image()
-        assert "zmlp/plugins-base:development" == image
+        assert "zmlp/plugins-base:latest" == image
 
     def test_docker_login(self):
         # Fake creds result in failure to logs
