@@ -448,6 +448,22 @@ class TestTaskErrorViewSet:
         assert response.status_code == 200
         assert response.json()['jobName'] == 'Applying modules:  to gs://zmlp-public-test-data'
 
+    def test_retrieve_no_stack_trace(self, monkeypatch, api_client, zmlp_project_user, project):
+        def mock_post_response(*args, **kwargs):
+            return {"id": "d5ffb9ba-5822-11ea-b3c8-0242ac120004", "taskId": "d4fffcf9-5822-11ea-b3c8-0242ac120004", "jobId": "ce4df7e7-5822-11ea-b3c8-0242ac120004", "dataSourceId": "ce46f306-5822-11ea-b3c8-0242ac120004", "assetId": "oh4g6WGPFqlQOShzVdmpr2hugGu1WuEh", "path": "gs://zmlp-public-test-data/corrupt.jpg", "message": "ZmlpFatalProcessorException: ('Failed to pre-cache source file', ValueError('Anonymous credentials cannot be refreshed.'))", "processor": "zmlp_core.core.processors.PreCacheSourceFileProcessor", "fatal": True, "analyst": "not-implemented", "phase": "execute", "timeCreated": 1582671723066}  # noqa
+
+        def mock_get_response(*args, **kwargs):
+            return {"id": "ce4df7e7-5822-11ea-b3c8-0242ac120004", "projectId": "00000000-0000-0000-0000-000000000000", "dataSourceId": "ce46f306-5822-11ea-b3c8-0242ac120004", "name": "Applying modules:  to gs://zmlp-public-test-data", "type": "Import", "state": "Success", "assetCounts": {"assetCreatedCount": 1, "assetReplacedCount": 0, "assetWarningCount": 0, "assetErrorCount": 1}, "priority": 100, "paused": False, "timePauseExpired": -1, "maxRunningTasks": 1024, "jobId": "ce4df7e7-5822-11ea-b3c8-0242ac120004"}  # noqa
+
+        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        response = api_client.get(reverse('taskerror-detail', kwargs={'project_pk': project.id, 'pk': 'd5ffb9ba-5822-11ea-b3c8-0242ac120004'}))  # noqa
+        assert response.status_code == 200
+        assert response.json()['jobName'] == 'Applying modules:  to gs://zmlp-public-test-data'
+        assert response.json()['stackTrace'] == []
+
 
 class TestJobTaskViewset:
     def test_list(self, monkeypatch, api_client, zmlp_project_user, project):
