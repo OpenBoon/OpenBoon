@@ -114,9 +114,9 @@
     "jwt-decode": "2.2.0",
     "next": "9.2.2",
     "prop-types": "15.7.2",
-    "react": "16.12.0",
+    "react": "16.13.0",
     "react-aria-modal": "4.0.0",
-    "react-dom": "16.12.0",
+    "react-dom": "16.13.0",
     "swr": "0.1.18"
   },
   "devDependencies": {
@@ -130,7 +130,7 @@
     "eslint-plugin-import": "2.20.1",
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.18.3",
-    "eslint-plugin-react-hooks": "2.4.0",
+    "eslint-plugin-react-hooks": "2.5.0",
     "esm": "3.2.25",
     "express": "4.17.1",
     "http-proxy-middleware": "1.0.1",
@@ -141,7 +141,7 @@
     "lint-staged": "10.0.8",
     "morgan": "1.9.1",
     "prettier": "1.19.1",
-    "react-test-renderer": "16.12.0",
+    "react-test-renderer": "16.13.0",
     "webpack-bundle-analyzer": "3.6.0"
   }
 }
