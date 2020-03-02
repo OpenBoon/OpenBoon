@@ -74,3 +74,5 @@ export const jobErrorFatal = {
   jobName: 'Applying modules:  to gs://zorroa-dev-data',
   stackTrace: [],
 }
+
+export default jobErrorNonFatal

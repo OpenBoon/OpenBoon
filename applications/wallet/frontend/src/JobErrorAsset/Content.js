@@ -16,7 +16,7 @@ const JobErrorAssetContent = () => {
   } = useRouter()
 
   const { data: jobError, revalidate } = useSWR(
-    `/api/v1/projects/${projectId}/taskerrors/${errorId}`,
+    `/api/v1/projects/${projectId}/taskerrors/${errorId}/`,
   )
 
   if (typeof jobError === 'undefined') return <Loading />
