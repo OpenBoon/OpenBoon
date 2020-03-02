@@ -19,8 +19,8 @@ const Pagination = ({ currentPage, totalPages }) => {
           padding: `${spacing.base}px ${spacing.normal}px`,
           display: 'flex',
           alignItems: 'center',
-          color: colors.structure.zinc,
-          backgroundColor: colors.structure.black,
+          color: colors.structure.white,
+          backgroundColor: colors.structure.mattGrey,
         }}>
         {currentPage}
       </div>

@@ -11,6 +11,8 @@ const BASE = {
   borderRadius: constants.borderRadius.small,
   boxShadow: constants.boxShadows.input,
   width: '100%',
+  fontSize: typography.size.regular,
+  lineHeight: typography.height.regular,
 }
 
 const STYLES = {
@@ -20,7 +22,7 @@ const STYLES = {
   },
   SECONDARY: {
     color: colors.structure.white,
-    backgroundColor: colors.structure.mattGrey,
+    backgroundColor: colors.structure.smoke,
     '&:focus': {
       border: constants.borders.input,
       backgroundColor: colors.structure.white,

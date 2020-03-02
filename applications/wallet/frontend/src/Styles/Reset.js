@@ -25,7 +25,7 @@ const StylesReset = () => (
           lineHeight: typography.height.regular,
           fontWeight: typography.weight.regular,
           color: colors.structure.white,
-          backgroundColor: colors.structure.coal,
+          backgroundColor: colors.structure.soot,
         },
         'input, textarea, select, button': {
           fontFamily: 'inherit',
@@ -42,6 +42,7 @@ const StylesReset = () => (
           border: 0,
           padding: spacing.normal,
           fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
         },
         '.js-focus-visible :focus:not(.focus-visible)': {
           outline: 'none',
