@@ -252,6 +252,7 @@ class TaskErrorViewSet(BaseProjectViewSet):
     def list(self, request, project_pk):
         def item_modifier(request, error):
             self._add_job_name(request.client, error)
+            error.setdefault('stackTrace', [])
         return self._zmlp_list_from_search(request, item_modifier=item_modifier)
 
     def retrieve(self, request, project_pk, pk):
