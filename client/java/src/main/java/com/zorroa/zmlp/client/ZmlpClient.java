@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.zorroa.zmlp.client.domain.ZmlpClientException;
+import com.zorroa.zmlp.client.domain.exception.ZmlpClientException;
 import com.zorroa.zmlp.client.domain.asset.BatchUploadAssetsRequest;
 import okhttp3.*;
 

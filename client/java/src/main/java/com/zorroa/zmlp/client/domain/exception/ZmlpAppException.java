@@ -1,4 +1,4 @@
-package com.zorroa.zmlp.client.domain;
+package com.zorroa.zmlp.client.domain.exception;
 
 public class ZmlpAppException extends RuntimeException {
 

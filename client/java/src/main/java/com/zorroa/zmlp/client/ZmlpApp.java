@@ -3,7 +3,7 @@ package com.zorroa.zmlp.client;
 import com.zorroa.zmlp.client.app.AssetApp;
 import com.zorroa.zmlp.client.app.DataSourceApp;
 import com.zorroa.zmlp.client.app.ProjectApp;
-import com.zorroa.zmlp.client.domain.ZmlpAppException;
+import com.zorroa.zmlp.client.domain.exception.ZmlpAppException;
 
 import java.io.File;
 import java.io.IOException;

@@ -3,11 +3,10 @@ package com.zorroa.zmlp.client.app;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zorroa.zmlp.client.Json;
 import com.zorroa.zmlp.client.ZmlpClient;
-import com.zorroa.zmlp.client.domain.ZmlpClientException;
+import com.zorroa.zmlp.client.domain.exception.ZmlpClientException;
 import com.zorroa.zmlp.client.domain.asset.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
