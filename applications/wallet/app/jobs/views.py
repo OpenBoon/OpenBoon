@@ -258,6 +258,7 @@ class TaskErrorViewSet(BaseProjectViewSet):
         url = os.path.join(self.zmlp_root_api_path, '_findOne')
         error = request.client.post(url, {'ids': [pk]})
         self._add_job_name(request.client, error)
+        error.setdefault('stackTrace', [])
         return Response(error)
 
     def _add_job_name(self, client, error):
