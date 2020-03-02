@@ -501,7 +501,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-1 {
+  .emotion-0 {
   background-color: #000000;
   font-family: Roboto Mono;
   font-size: 13px;
@@ -509,22 +509,12 @@ Array [
   padding: 16px;
 }
 
-.emotion-0 {
-  padding-top: 16px;
-  color: #b3b3b3;
-  white-space: nowrap;
-  over-flow: auto;
-}
-
 <div
-    className="emotion-1"
+    className="emotion-0"
   >
     <div>
       "message" : ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
-    <div
-      className="emotion-0"
-    />
   </div>,
 ]
 `;
@@ -1030,7 +1020,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-6 {
+  .emotion-31 {
   background-color: #000000;
   font-family: Roboto Mono;
   font-size: 13px;
@@ -1054,7 +1044,7 @@ Array [
 }
 
 <div
-    className="emotion-6"
+    className="emotion-31"
   >
     <div>
       "message" : ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
@@ -1072,22 +1062,182 @@ Array [
         <div
           className="emotion-1"
         >
-          "file": "/usr/local/lib/python3.7/dist-packages/zmlpcd/process.py"
+          "file": "/opt/app-root/src/analyst/pylib/zplugins/image/importers.py"
         </div>
         <div
           className="emotion-1"
         >
-          "lineNumber": 143
+          "lineNumber": 43
         </div>
         <div
           className="emotion-1"
         >
-          "className": "new_processor_instance"
+          "className": "_process"
         </div>
         <div
           className="emotion-1"
         >
-          "methodName": "instance = getattr(module, cls_name)()"
+          "methodName": "path = Path(asset.get_local_source_path())"
+        </div>
+      </div>
+      <div>
+        },
+      </div>
+    </div>
+    <div>
+      <div>
+        {
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-1"
+        >
+          "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "lineNumber": 220
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "className": "get_local_source_path"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "methodName": "local_cache_location = self.__source_handler.store_local_cache()"
+        </div>
+      </div>
+      <div>
+        },
+      </div>
+    </div>
+    <div>
+      <div>
+        {
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-1"
+        >
+          "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "lineNumber": 139
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "className": "store_local_cache"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "methodName": "self.blob.download_to_filename(local_path)"
+        </div>
+      </div>
+      <div>
+        },
+      </div>
+    </div>
+    <div>
+      <div>
+        {
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-1"
+        >
+          "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "lineNumber": 759
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "className": "download_to_filename"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "methodName": "raw_download=raw_download,"
+        </div>
+      </div>
+      <div>
+        },
+      </div>
+    </div>
+    <div>
+      <div>
+        {
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-1"
+        >
+          "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "lineNumber": 722
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "className": "download_to_file"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "methodName": "_raise_from_invalid_response(exc)"
+        </div>
+      </div>
+      <div>
+        },
+      </div>
+    </div>
+    <div>
+      <div>
+        {
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-1"
+        >
+          "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "lineNumber": 2156
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "className": "_raise_from_invalid_response"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "methodName": "raise exceptions.from_http_status(response.status_code, message, response=response)"
         </div>
       </div>
       <div>
@@ -1698,7 +1848,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-6 {
+  .emotion-31 {
   background-color: #000000;
   font-family: Roboto Mono;
   font-size: 13px;
@@ -1722,7 +1872,7 @@ Array [
 }
 
 <div
-    className="emotion-6"
+    className="emotion-31"
   >
     <div>
       "message" : ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
@@ -1740,22 +1890,182 @@ Array [
         <div
           className="emotion-1"
         >
-          "file": "/usr/local/lib/python3.7/dist-packages/zmlpcd/process.py"
+          "file": "/opt/app-root/src/analyst/pylib/zplugins/image/importers.py"
         </div>
         <div
           className="emotion-1"
         >
-          "lineNumber": 143
+          "lineNumber": 43
         </div>
         <div
           className="emotion-1"
         >
-          "className": "new_processor_instance"
+          "className": "_process"
         </div>
         <div
           className="emotion-1"
         >
-          "methodName": "instance = getattr(module, cls_name)()"
+          "methodName": "path = Path(asset.get_local_source_path())"
+        </div>
+      </div>
+      <div>
+        },
+      </div>
+    </div>
+    <div>
+      <div>
+        {
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-1"
+        >
+          "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "lineNumber": 220
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "className": "get_local_source_path"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "methodName": "local_cache_location = self.__source_handler.store_local_cache()"
+        </div>
+      </div>
+      <div>
+        },
+      </div>
+    </div>
+    <div>
+      <div>
+        {
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-1"
+        >
+          "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "lineNumber": 139
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "className": "store_local_cache"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "methodName": "self.blob.download_to_filename(local_path)"
+        </div>
+      </div>
+      <div>
+        },
+      </div>
+    </div>
+    <div>
+      <div>
+        {
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-1"
+        >
+          "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "lineNumber": 759
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "className": "download_to_filename"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "methodName": "raw_download=raw_download,"
+        </div>
+      </div>
+      <div>
+        },
+      </div>
+    </div>
+    <div>
+      <div>
+        {
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-1"
+        >
+          "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "lineNumber": 722
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "className": "download_to_file"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "methodName": "_raise_from_invalid_response(exc)"
+        </div>
+      </div>
+      <div>
+        },
+      </div>
+    </div>
+    <div>
+      <div>
+        {
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-1"
+        >
+          "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "lineNumber": 2156
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "className": "_raise_from_invalid_response"
+        </div>
+        <div
+          className="emotion-1"
+        >
+          "methodName": "raise exceptions.from_http_status(response.status_code, message, response=response)"
         </div>
       </div>
       <div>
