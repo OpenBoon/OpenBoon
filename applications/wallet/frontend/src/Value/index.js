@@ -1,23 +1,44 @@
 import PropTypes from 'prop-types'
 
-import { colors, spacing } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 
-const Value = ({ legend, children }) => (
-  <div
-    css={{
+const STYLES = {
+  PRIMARY: {
+    container: {
       display: 'flex',
       flexDirection: 'column',
       paddingLeft: spacing.comfy,
       paddingRight: spacing.comfy,
-    }}>
-    <div css={{ color: colors.structure.iron, paddingBottom: spacing.small }}>
+    },
+  },
+  SECONDARY: {
+    container: {
+      paddingTop: spacing.normal,
+    },
+  },
+}
+
+export const VARIANTS = Object.keys(STYLES).reduce(
+  (accumulator, style) => ({ ...accumulator, [style]: style }),
+  {},
+)
+
+const Value = ({ variant, legend, children }) => (
+  <div css={STYLES[variant].container}>
+    <div
+      css={{
+        fontWeight: typography.weight.bold,
+        color: colors.structure.white,
+        paddingBottom: spacing.small,
+      }}>
       {legend}:
     </div>
-    <div css={{ color: colors.structure.steel }}>{children}</div>
+    <div css={{ color: colors.structure.zinc }}>{children}</div>
   </div>
 )
 
 Value.propTypes = {
+  variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   legend: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 }

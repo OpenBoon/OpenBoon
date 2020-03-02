@@ -23,7 +23,7 @@ Array [
   width: 100%;
   height: 100%;
   border-spacing: 0;
-  box-shadow: 0 0 5px 0 #000000;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
 
@@ -260,7 +260,7 @@ Array [
   width: 100%;
   height: auto;
   border-spacing: 0;
-  box-shadow: 0 0 5px 0 #000000;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
 
@@ -1571,7 +1571,7 @@ Array [
   width: 100%;
   height: 100%;
   border-spacing: 0;
-  box-shadow: 0 0 5px 0 #000000;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
 

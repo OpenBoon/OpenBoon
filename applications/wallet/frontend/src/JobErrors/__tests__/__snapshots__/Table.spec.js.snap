@@ -9,7 +9,7 @@ exports[`<JobErrorsTable /> should render properly while loading 1`] = `
   width: 100%;
   height: 100%;
   border-spacing: 0;
-  box-shadow: 0 0 5px 0 #000000;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
 
@@ -226,7 +226,7 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
   width: 100%;
   height: auto;
   border-spacing: 0;
-  box-shadow: 0 0 5px 0 #000000;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
 
@@ -288,6 +288,9 @@ exports[`<JobErrorsTable /> should render properly with job errors 1`] = `
   -webkit-justify-content: flex-start;
   -ms-flex-pack: start;
   justify-content: flex-start;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 8px;
 }
 
 .emotion-8 span {
@@ -792,7 +795,7 @@ exports[`<JobErrorsTable /> should render properly with no job errors 1`] = `
   width: 100%;
   height: 100%;
   border-spacing: 0;
-  box-shadow: 0 0 5px 0 #000000;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
   white-space: nowrap;
 }
 

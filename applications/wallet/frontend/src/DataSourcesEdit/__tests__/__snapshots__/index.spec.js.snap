@@ -275,7 +275,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-151 {
+  .emotion-149 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -362,6 +362,7 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
 }
 
 .emotion-3 path {
@@ -421,6 +422,8 @@ Array [
 
 .emotion-37 {
   background-color: #3b3b3b;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
 
 .emotion-33 {
@@ -490,12 +493,7 @@ Array [
   color: #ffffff;
 }
 
-.emotion-39 {
-  color: #73b61c;
-  margin-right: 16px;
-}
-
-.emotion-42 {
+.emotion-41 {
   color: #b3b3b3;
   margin: 0;
   padding-top: 8px;
@@ -503,7 +501,7 @@ Array [
   max-width: 600px;
 }
 
-.emotion-76 {
+.emotion-75 {
   border: none;
   padding: 0;
   margin: 0;
@@ -511,7 +509,7 @@ Array [
   padding-bottom: 32px;
 }
 
-.emotion-43 {
+.emotion-42 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -520,76 +518,76 @@ Array [
   font-weight: 500;
 }
 
-.emotion-44 {
+.emotion-43 {
   clear: both;
 }
 
-.emotion-75 {
+.emotion-74 {
   width: 100%;
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-75 th,
-.emotion-75 td {
+.emotion-74 th,
+.emotion-74 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-75 th:first-of-type,
-.emotion-75 td:first-of-type {
+.emotion-74 th:first-of-type,
+.emotion-74 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-75 th:nth-of-type(2),
-.emotion-75 td:nth-of-type(2) {
+.emotion-74 th:nth-of-type(2),
+.emotion-74 td:nth-of-type(2) {
   min-width: 300px;
 }
 
-.emotion-75 th:nth-of-type(3),
-.emotion-75 td:nth-of-type(3) {
+.emotion-74 th:nth-of-type(3),
+.emotion-74 td:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-75 th {
+.emotion-74 th {
   color: #b3b3b3;
   font-weight: 500;
 }
 
-.emotion-75 td {
+.emotion-74 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
 }
 
-.emotion-75 td:first-of-type {
+.emotion-74 td:first-of-type {
   border: none;
 }
 
-.emotion-75 td:nth-of-type(2) {
+.emotion-74 td:nth-of-type(2) {
   font-family: Roboto Mono;
 }
 
-.emotion-75 tr:hover td {
+.emotion-74 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-75 tr:hover + tr td {
+.emotion-74 tr:hover + tr td {
   border-top-color: transparent;
 }
 
-.emotion-75 tr:last-of-type td {
+.emotion-74 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-75 tr:last-of-type td:first-of-type {
+.emotion-74 tr:last-of-type td:first-of-type {
   border: none;
 }
 
-.emotion-50 {
+.emotion-49 {
   cursor: pointer;
 }
 
-.emotion-49 {
+.emotion-48 {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -598,11 +596,48 @@ Array [
   -moz-user-select: none;
 }
 
-.emotion-93 {
+.emotion-91 {
   color: #73b61c;
 }
 
-.emotion-150 {
+.emotion-100 {
+  cursor: not-allowed;
+}
+
+.emotion-95 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #2e2e2e;
+  border-radius: 2px;
+  cursor: not-allowed;
+}
+
+.emotion-97 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: not-allowed;
+}
+
+.emotion-148 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -611,12 +646,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-150 button,
-.emotion-150 a {
+.emotion-148 button,
+.emotion-148 a {
   margin-right: 16px;
 }
 
-.emotion-148 {
+.emotion-146 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -648,30 +683,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-148:hover {
+.emotion-146:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-148[aria-disabled=true] {
+.emotion-146[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-148,
-.emotion-148:hover,
-.emotion-148:visited {
+.emotion-146,
+.emotion-146:hover,
+.emotion-146:visited {
   background-color: #808080;
 }
 
-.emotion-148:hover {
-  opacity: 0.5;
+.emotion-146:hover {
+  background-color: #b3b3b3;
 }
 
-.emotion-148[aria-disabled=true] {
+.emotion-146[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-149 {
+.emotion-147 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -703,32 +738,32 @@ Array [
   background-color: transparent;
 }
 
-.emotion-149:hover {
+.emotion-147:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-149[aria-disabled=true] {
+.emotion-147[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-149,
-.emotion-149:hover,
-.emotion-149:visited {
+.emotion-147,
+.emotion-147:hover,
+.emotion-147:visited {
   background-color: #73b61c;
 }
 
-.emotion-149:hover {
+.emotion-147:hover {
   background-color: #96c955;
 }
 
-.emotion-149[aria-disabled=true] {
+.emotion-147[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-151"
+    className="emotion-149"
     method="post"
     onSubmit={[Function]}
   >
@@ -974,37 +1009,35 @@ Array [
             className="emotion-32"
           >
             <svg
-              className="emotion-39"
-              data-file-name="checkmark.svg"
-              width={28}
+              data-file-name="logo.svg"
+              height={32}
             />
-            Zorroa
           </h4>
         </div>
         <div
           className="emotion-36"
         >
           <p
-            className="emotion-42"
+            className="emotion-41"
           >
             <span>
               These analysis modules are included in your base package. You can run as many as you’d like, but running more than you need will increase processing time.
             </span>
           </p>
           <fieldset
-            className="emotion-76"
+            className="emotion-75"
           >
             <legend
-              className="emotion-43"
+              className="emotion-42"
             >
               Images & Documents
             </legend>
             <div
-              className="emotion-44"
+              className="emotion-43"
             />
             <table
               cellSpacing="0"
-              className="emotion-75"
+              className="emotion-74"
             >
               <thead>
                 <tr>
@@ -1021,12 +1054,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-50"
+                  className="emotion-49"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-49"
+                      className="emotion-48"
                     >
                       <div
                         className="emotion-5"
@@ -1071,12 +1104,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-50"
+                  className="emotion-49"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-49"
+                      className="emotion-48"
                     >
                       <div
                         className="emotion-5"
@@ -1121,12 +1154,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-50"
+                  className="emotion-49"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-49"
+                      className="emotion-48"
                     >
                       <div
                         className="emotion-5"
@@ -1171,12 +1204,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-50"
+                  className="emotion-49"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-49"
+                      className="emotion-48"
                     >
                       <div
                         className="emotion-5"
@@ -1221,12 +1254,12 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-50"
+                  className="emotion-49"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-49"
+                      className="emotion-48"
                     >
                       <div
                         className="emotion-5"
@@ -1274,19 +1307,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-76"
+            className="emotion-75"
           >
             <legend
-              className="emotion-43"
+              className="emotion-42"
             >
               Video
             </legend>
             <div
-              className="emotion-44"
+              className="emotion-43"
             />
             <table
               cellSpacing="0"
-              className="emotion-75"
+              className="emotion-74"
             >
               <thead>
                 <tr>
@@ -1303,12 +1336,12 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-50"
+                  className="emotion-49"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-49"
+                      className="emotion-48"
                     >
                       <div
                         className="emotion-5"
@@ -1371,22 +1404,20 @@ Array [
             className="emotion-32"
           >
             <svg
-              className="emotion-39"
-              data-file-name="checkmark.svg"
-              width={28}
+              data-file-name="googleCloud.svg"
+              height={32}
             />
-            Google Cloud
           </h4>
         </div>
         <div
           className="emotion-36"
         >
           <p
-            className="emotion-42"
+            className="emotion-41"
           >
             <span>
               <span
-                className="emotion-93"
+                className="emotion-91"
               >
                 Contact your Account Manager to activate.
               </span>
@@ -1395,19 +1426,19 @@ Array [
             </span>
           </p>
           <fieldset
-            className="emotion-76"
+            className="emotion-75"
           >
             <legend
-              className="emotion-43"
+              className="emotion-42"
             >
               Google Vision (Images & Documents)
             </legend>
             <div
-              className="emotion-44"
+              className="emotion-43"
             />
             <table
               cellSpacing="0"
-              className="emotion-75"
+              className="emotion-74"
             >
               <thead>
                 <tr>
@@ -1424,25 +1455,25 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-50"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-49"
+                      className="emotion-48"
                     >
                       <div
                         className="emotion-5"
                       >
                         <input
-                          className="emotion-2"
+                          className="emotion-95"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-vision-crop-hints"
                         />
                         <div
-                          className="emotion-4"
+                          className="emotion-97"
                         >
                           <svg
                             className="emotion-3"
@@ -1474,25 +1505,25 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-50"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-49"
+                      className="emotion-48"
                     >
                       <div
                         className="emotion-5"
                       >
                         <input
-                          className="emotion-2"
+                          className="emotion-95"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-document-text-detection"
                         />
                         <div
-                          className="emotion-4"
+                          className="emotion-97"
                         >
                           <svg
                             className="emotion-3"
@@ -1524,25 +1555,25 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-50"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-49"
+                      className="emotion-48"
                     >
                       <div
                         className="emotion-5"
                       >
                         <input
-                          className="emotion-2"
+                          className="emotion-95"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-vision-text-detection"
                         />
                         <div
-                          className="emotion-4"
+                          className="emotion-97"
                         >
                           <svg
                             className="emotion-3"
@@ -1574,25 +1605,25 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-50"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-49"
+                      className="emotion-48"
                     >
                       <div
                         className="emotion-5"
                       >
                         <input
-                          className="emotion-2"
+                          className="emotion-95"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="gcp-label-detection"
+                          value="gcp-vision-label-detection"
                         />
                         <div
-                          className="emotion-4"
+                          className="emotion-97"
                         >
                           <svg
                             className="emotion-3"
@@ -1604,7 +1635,7 @@ Array [
                       <div
                         className="hidden"
                       >
-                        gcp-label-detection
+                        gcp-vision-label-detection
                         , 
                         Label Detection (Vision)
                         : 
@@ -1613,7 +1644,7 @@ Array [
                     </label>
                   </td>
                   <td>
-                    gcp-label-detection
+                    gcp-vision-label-detection
                   </td>
                   <td>
                     <strong>
@@ -1627,19 +1658,19 @@ Array [
             </table>
           </fieldset>
           <fieldset
-            className="emotion-76"
+            className="emotion-75"
           >
             <legend
-              className="emotion-43"
+              className="emotion-42"
             >
               Google Video
             </legend>
             <div
-              className="emotion-44"
+              className="emotion-43"
             />
             <table
               cellSpacing="0"
-              className="emotion-75"
+              className="emotion-74"
             >
               <thead>
                 <tr>
@@ -1656,25 +1687,25 @@ Array [
               </thead>
               <tbody>
                 <tr
-                  className="emotion-50"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-49"
+                      className="emotion-48"
                     >
                       <div
                         className="emotion-5"
                       >
                         <input
-                          className="emotion-2"
+                          className="emotion-95"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="gcp-label-detection"
+                          value="gcp-video-label-detection"
                         />
                         <div
-                          className="emotion-4"
+                          className="emotion-97"
                         >
                           <svg
                             className="emotion-3"
@@ -1686,7 +1717,7 @@ Array [
                       <div
                         className="hidden"
                       >
-                        gcp-label-detection
+                        gcp-video-label-detection
                         , 
                         Label Detection (Video)
                         : 
@@ -1695,7 +1726,7 @@ Array [
                     </label>
                   </td>
                   <td>
-                    gcp-label-detection
+                    gcp-video-label-detection
                   </td>
                   <td>
                     <strong>
@@ -1706,25 +1737,25 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-50"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-49"
+                      className="emotion-48"
                     >
                       <div
                         className="emotion-5"
                       >
                         <input
-                          className="emotion-2"
+                          className="emotion-95"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-shot-detection"
                         />
                         <div
-                          className="emotion-4"
+                          className="emotion-97"
                         >
                           <svg
                             className="emotion-3"
@@ -1756,25 +1787,25 @@ Array [
                   </td>
                 </tr>
                 <tr
-                  className="emotion-50"
+                  className="emotion-100"
                   onClick={[Function]}
                 >
                   <td>
                     <label
-                      className="emotion-49"
+                      className="emotion-48"
                     >
                       <div
                         className="emotion-5"
                       >
                         <input
-                          className="emotion-2"
+                          className="emotion-95"
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-explicit-content-detection"
                         />
                         <div
-                          className="emotion-4"
+                          className="emotion-97"
                         >
                           <svg
                             className="emotion-3"
@@ -1812,10 +1843,10 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-150"
+      className="emotion-148"
     >
       <a
-        className="emotion-148"
+        className="emotion-146"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -1823,7 +1854,7 @@ Array [
         Cancel
       </a>
       <button
-        className="emotion-149"
+        className="emotion-147"
         onClick={[Function]}
         type="submit"
       >

@@ -74,12 +74,12 @@
     {
       "//": "dependencies",
       "path": ".next/static/chunks/commons**.js",
-      "maxSize": "20 kB"
+      "maxSize": "15 kB"
     },
     {
       "//": "app.js",
       "path": ".next/static/**/pages/_app.js",
-      "maxSize": "26 kB"
+      "maxSize": "28 kB"
     },
     {
       "//": "main runtime",
@@ -89,7 +89,7 @@
     {
       "//": "error page",
       "path": ".next/static/**/pages/_error.js",
-      "maxSize": "2 kB"
+      "maxSize": "4 kB"
     },
     {
       "//": "polyfill & webpack runtime",
@@ -104,9 +104,9 @@
   ],
   "dependencies": {
     "@emotion/babel-preset-css-prop": "10.0.27",
-    "@emotion/core": "10.0.27",
-    "@sentry/browser": "5.12.4",
-    "@svgr/webpack": "5.1.0",
+    "@emotion/core": "10.0.28",
+    "@sentry/browser": "5.13.0",
+    "@svgr/webpack": "5.2.0",
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "body-scroll-lock": "2.6.4",
     "dotenv": "8.2.0",

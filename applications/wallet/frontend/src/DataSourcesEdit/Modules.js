@@ -1,27 +1,18 @@
 import PropTypes from 'prop-types'
 
+import checkboxOptionShape from '../Checkbox/optionShape'
+
 import { colors, spacing, constants } from '../Styles'
 
-import CheckmarkSvg from '../Icons/checkmark.svg'
-
-import Accordion, { CHECKMARK_WIDTH } from '../Accordion'
+import Accordion from '../Accordion'
 import CheckboxTable from '../Checkbox/Table'
 
 const DataSourcesEditModules = ({
-  module: { provider, description, categories },
+  module: { logo, description, categories },
   onClick,
 }) => {
   return (
-    <Accordion
-      title={
-        <>
-          <CheckmarkSvg
-            width={CHECKMARK_WIDTH}
-            css={{ color: colors.key.one, marginRight: spacing.normal }}
-          />
-          {provider}
-        </>
-      }>
+    <Accordion title={logo}>
       <>
         <p
           css={{
@@ -48,17 +39,13 @@ const DataSourcesEditModules = ({
 DataSourcesEditModules.propTypes = {
   module: PropTypes.shape({
     provider: PropTypes.string.isRequired,
+    logo: PropTypes.node.isRequired,
     description: PropTypes.node.isRequired,
     categories: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
-        modules: PropTypes.arrayOf(
-          PropTypes.shape({
-            key: PropTypes.string.isRequired,
-            label: PropTypes.string.isRequired,
-            legend: PropTypes.string.isRequired,
-          }).isRequired,
-        ).isRequired,
+        options: PropTypes.arrayOf(PropTypes.shape(checkboxOptionShape))
+          .isRequired,
       }).isRequired,
     ).isRequired,
   }).isRequired,
