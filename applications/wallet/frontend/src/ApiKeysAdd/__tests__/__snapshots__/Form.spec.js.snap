@@ -36,7 +36,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
   color: #ffffff;
-  background-color: #2e2e2e;
+  background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }
@@ -1221,7 +1221,7 @@ exports[`<ApiKeysAddForm /> should render properly after permissions are loaded 
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
   color: #ffffff;
-  background-color: #2e2e2e;
+  background-color: #3b3b3b;
   border: 1px solid transparent;
   border-width: 2px;
 }

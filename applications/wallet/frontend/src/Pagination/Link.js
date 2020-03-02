@@ -62,7 +62,7 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
         <ChevronSvg
           width={16}
           css={{
-            color: colors.structure.coal,
+            color: colors.structure.white,
             transform: `rotate(${isPrev ? '' : '-'}90deg)`,
           }}
         />
