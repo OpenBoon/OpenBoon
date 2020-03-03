@@ -2,7 +2,7 @@ import { Component } from 'react'
 import * as Sentry from '@sentry/browser'
 import PropTypes from 'prop-types'
 
-import { colors, typography } from '../Styles'
+import { colors, typography, constants } from '../Styles'
 
 import ErrorSvg from '../Icons/error.svg'
 
@@ -35,8 +35,10 @@ class ErrorBoundary extends Component {
             justifyContent: 'center',
             textAlign: 'center',
             color: colors.structure.steel,
+            backgroundColor: colors.structure.lead,
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
+            boxShadow: constants.boxShadows.default,
           }}>
           <ErrorSvg />
           <br /> Hmmm, something went wrong.

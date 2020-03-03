@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 
 import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
+import SuspenseBoundary from '../SuspenseBoundary'
 
 import ProjectUsersEditForm from './Form'
 
@@ -27,10 +28,12 @@ const ProjectUsersEdit = () => {
         ]}
       />
 
-      <ProjectUsersEditForm
-        projectId={projectId}
-        userId={parseInt(userId, 10)}
-      />
+      <SuspenseBoundary>
+        <ProjectUsersEditForm
+          projectId={projectId}
+          userId={parseInt(userId, 10)}
+        />
+      </SuspenseBoundary>
     </>
   )
 }

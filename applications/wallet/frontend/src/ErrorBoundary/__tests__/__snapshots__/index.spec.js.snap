@@ -22,8 +22,10 @@ exports[`<ErrorBoundary /> should render generic when caught 1`] = `
   justify-content: center;
   text-align: center;
   color: #808080;
+  background-color: #252525;
   font-size: 15px;
   line-height: 19px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
 
 <div
