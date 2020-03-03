@@ -2,9 +2,24 @@ import { Component } from 'react'
 import * as Sentry from '@sentry/browser'
 import PropTypes from 'prop-types'
 
-import { colors, typography, constants } from '../Styles'
+import { colors, typography, constants, spacing } from '../Styles'
 
 import ErrorSvg from '../Icons/error.svg'
+
+const STYLES = {
+  GLOBAL: {
+    height: '100vh',
+    padding: spacing.spacious,
+  },
+  LOCAL: {
+    height: '100%',
+  },
+}
+
+export const VARIANTS = Object.keys(STYLES).reduce(
+  (accumulator, style) => ({ ...accumulator, [style]: style }),
+  {},
+)
 
 class ErrorBoundary extends Component {
   state = { hasError: false }
@@ -22,27 +37,29 @@ class ErrorBoundary extends Component {
 
   render() {
     const { hasError } = this.state
-    const { children } = this.props
+    const { variant, children } = this.props
 
     if (hasError) {
       return (
-        <div
-          css={{
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
-            color: colors.structure.steel,
-            backgroundColor: colors.structure.lead,
-            fontSize: typography.size.regular,
-            lineHeight: typography.height.regular,
-            boxShadow: constants.boxShadows.default,
-          }}>
-          <ErrorSvg />
-          <br /> Hmmm, something went wrong.
-          <br /> Please try refreshing.
+        <div css={STYLES[variant]}>
+          <div
+            css={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textAlign: 'center',
+              color: colors.structure.steel,
+              backgroundColor: colors.structure.lead,
+              fontSize: typography.size.regular,
+              lineHeight: typography.height.regular,
+              boxShadow: constants.boxShadows.default,
+            }}>
+            <ErrorSvg />
+            <br /> Hmmm, something went wrong.
+            <br /> Please try refreshing.
+          </div>
         </div>
       )
     }
@@ -52,6 +69,7 @@ class ErrorBoundary extends Component {
 }
 
 ErrorBoundary.propTypes = {
+  variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   children: PropTypes.node.isRequired,
 }
 

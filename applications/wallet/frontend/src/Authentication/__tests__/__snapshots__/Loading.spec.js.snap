@@ -15,18 +15,8 @@ exports[`<AuthenticationLoading /> should render properly 1`] = `
   }
 }
 
-.emotion-3 {
-  height: 100vh;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
 .emotion-2 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
+  height: 100vh;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -65,21 +55,17 @@ exports[`<AuthenticationLoading /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-3"
+  className="emotion-2"
 >
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
-    <div
-      className="emotion-1"
-    >
-      <svg
-        className="emotion-0"
-        data-file-name="generating.svg"
-        height={20}
-      />
-      Loading...
-    </div>
+    <svg
+      className="emotion-0"
+      data-file-name="generating.svg"
+      height={20}
+    />
+    Loading...
   </div>
 </div>
 `;

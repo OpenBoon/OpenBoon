@@ -2,14 +2,12 @@ import { spacing } from '../Styles'
 
 import Loading from '../Loading'
 
-const AuthenticationLoader = () => {
+const AuthenticationLoading = () => {
   return (
-    <div css={{ height: '100vh', display: 'flex' }}>
-      <div css={{ flex: 1, display: 'flex', padding: spacing.spacious }}>
-        <Loading />
-      </div>
+    <div css={{ height: '100vh', display: 'flex', padding: spacing.spacious }}>
+      <Loading />
     </div>
   )
 }
 
-export default AuthenticationLoader
+export default AuthenticationLoading

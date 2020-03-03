@@ -1,12 +1,12 @@
 import { Suspense } from 'react'
 import PropTypes from 'prop-types'
 
-import ErrorBoundary from '../ErrorBoundary'
+import ErrorBoundary, { VARIANTS } from '../ErrorBoundary'
 import Loading from '../Loading'
 
 const SuspenseBoundary = ({ children }) => {
   return (
-    <ErrorBoundary>
+    <ErrorBoundary variant={VARIANTS.LOCAL}>
       <Suspense fallback={<Loading />}>{children}</Suspense>
     </ErrorBoundary>
   )

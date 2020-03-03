@@ -11,7 +11,7 @@ import { UserContext } from '../User'
 import Login from '../Login'
 import Projects from '../Projects'
 import Layout from '../Layout'
-import ErrorBoundary from '../ErrorBoundary'
+import ErrorBoundary, { VARIANTS } from '../ErrorBoundary'
 
 import { authenticateUser, logout } from './helpers'
 
@@ -69,13 +69,15 @@ const Authentication = ({ route, children }) => {
 
   return (
     <SWRConfig value={{ fetcher, suspense: true }}>
-      <Suspense fallback={<AuthenticationLoading />}>
-        <Projects projectId={user.projectId} setUser={setUser}>
-          <Layout user={user} logout={logout({ googleAuth, setUser })}>
-            <ErrorBoundary>{children}</ErrorBoundary>
-          </Layout>
-        </Projects>
-      </Suspense>
+      <ErrorBoundary variant={VARIANTS.GLOBAL}>
+        <Suspense fallback={<AuthenticationLoading />}>
+          <Projects projectId={user.projectId} setUser={setUser}>
+            <Layout user={user} logout={logout({ googleAuth, setUser })}>
+              <ErrorBoundary variant={VARIANTS.LOCAL}>{children}</ErrorBoundary>
+            </Layout>
+          </Projects>
+        </Suspense>
+      </ErrorBoundary>
     </SWRConfig>
   )
 }
