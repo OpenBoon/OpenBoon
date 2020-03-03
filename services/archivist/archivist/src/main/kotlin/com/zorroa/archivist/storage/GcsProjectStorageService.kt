@@ -46,7 +46,7 @@ class GcsProjectStorageService constructor(
 
         info.setMetadata(mapOf("attrs" to Json.serializeToString(spec.attrs)))
         info.setContentType(spec.mimetype)
-        gcs.writer(info.build()).write(ByteBuffer.wrap(spec.data))
+        gcs.create(info.build(), spec.data)
 
         logStoreEvent(spec)
 
