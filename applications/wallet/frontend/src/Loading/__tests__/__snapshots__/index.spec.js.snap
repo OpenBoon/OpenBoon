@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Loading /> should render properly 1`] = `
+.emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+}
+
+<div
+  className="emotion-0"
+>
+  Loading...
+</div>
+`;
