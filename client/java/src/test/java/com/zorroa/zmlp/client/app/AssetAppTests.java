@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static com.zorroa.zmlp.client.UtilsTests.getMockData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -487,13 +488,5 @@ public class AssetAppTests extends AbstractAppTests {
 
     private String getRequestMockDeleteByQuery() {
         return getMockData("mock-delete-by-query-request");
-    }
-
-    private String getMockData(String name) {
-        try {
-            return new String(Files.readAllBytes(Paths.get("src/test/resources/" + name + ".json")));
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to find mock data: " + name, e);
-        }
     }
 }
