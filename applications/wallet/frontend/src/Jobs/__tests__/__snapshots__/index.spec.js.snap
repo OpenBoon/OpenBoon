@@ -15,7 +15,33 @@ Array [
   >
     Job Queue
   </h2>,
-  .emotion-114 {
+  .emotion-0 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-0:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-0:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-114 {
   height: auto;
 }
 
@@ -73,32 +99,6 @@ Array [
 .emotion-113 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
-}
-
-.emotion-0 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-}
-
-.emotion-0:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-0:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
 }
 
 .emotion-9 {
@@ -1352,7 +1352,120 @@ Array [
   >
     Job Queue
   </h2>,
-  .emotion-0 {
+  .emotion-13 {
+  height: 100%;
+}
+
+.emotion-12 {
+  width: 100%;
+  height: 100%;
+  border-spacing: 0;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+.emotion-12 tr {
+  background-color: #252525;
+}
+
+.emotion-12 tr:nth-of-type(2n) {
+  background-color: #2e2e2e;
+}
+
+.emotion-12 tr:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-12 tr:hover td {
+  border: 1px solid #808080;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-12 tr:hover td:first-of-type {
+  border-left: 1px solid #808080;
+}
+
+.emotion-12 tr:hover td:last-of-type {
+  border-right: 1px solid #808080;
+}
+
+.emotion-12 td {
+  max-width: calc(100vw / 7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e0e0e0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-left: 0;
+  border-right: 0;
+}
+
+.emotion-12 td:first-of-type {
+  border-left: 1px solid transparent;
+}
+
+.emotion-12 td:last-of-type {
+  border-right: 1px solid transparent;
+  overflow: visible;
+}
+
+.emotion-0 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-0:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-0:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-11 {
+  height: 100%;
+  pointer-events: none;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1369,17 +1482,96 @@ Array [
 }
 
 <div
-    className="emotion-0"
+    className="emotion-13"
   >
-    <svg
-      data-file-name="noJobs.svg"
-      width={200}
-    />
+    <table
+      className="emotion-12"
+    >
+      <thead>
+        <tr>
+          <th
+            className="emotion-0"
+          >
+            Status
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Job Name
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Priority
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Created
+          </th>
+          <th
+            className="emotion-0"
+          >
+            # Assets
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Errors
+          </th>
+          <th
+            className="emotion-0"
+          >
+            Task Progress
+          </th>
+          <th
+            className="emotion-0"
+          >
+            <div
+              className="emotion-7"
+            >
+              <svg
+                data-file-name="gear.svg"
+                width={20}
+              />
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="emotion-11"
+        >
+          <td
+            colSpan={8}
+          >
+            <div
+              className="emotion-10"
+            >
+              <div
+                className="emotion-9"
+              >
+                <svg
+                  data-file-name="noJobs.svg"
+                  width={200}
+                />
+                <div>
+                  There are currently no jobs in the queue.
+                </div>
+                <div>
+                  Any new job will appear here.
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <div>
-      There are currently no jobs in the queue.
+       
     </div>
     <div>
-      Any new job will appear here.
+       
     </div>
   </div>,
 ]

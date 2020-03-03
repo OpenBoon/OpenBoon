@@ -7,6 +7,7 @@ import { colors, constants, spacing, typography } from '../Styles'
 import Pagination from '../Pagination'
 
 import GearSvg from '../Icons/gear.svg'
+import TableException from './Exception'
 
 const SIZE = 20
 
@@ -24,20 +25,17 @@ const TableContent = ({
   const parsedPage = parseInt(page, 10)
   const from = parsedPage * SIZE - SIZE
 
-  const { data: { count = 0, results } = {}, error, revalidate } = useSWR(
-    `${url}?from=${from}&size=${SIZE}`,
-  )
-
-  const hasException = !results || results.length === 0 || error
-
-  if (hasException) return renderEmpty
+  const {
+    data: { count = 0, results },
+    revalidate,
+  } = useSWR(`${url}?from=${from}&size=${SIZE}`)
 
   return (
-    <div css={{ height: hasException ? '100%' : 'auto' }}>
+    <div css={{ height: count === 0 ? '100%' : 'auto' }}>
       <table
         css={{
           width: '100%',
-          height: hasException ? '100%' : 'auto',
+          height: count === 0 ? '100%' : 'auto',
           borderSpacing: 0,
           boxShadow: constants.boxShadows.default,
           whiteSpace: 'nowrap',
@@ -113,13 +111,19 @@ const TableContent = ({
           </tr>
         </thead>
         <tbody>
-          {results.map(result => renderRow({ result, revalidate }))}
+          {count === 0 ? (
+            <TableException numColumns={columns.length}>
+              {renderEmpty}
+            </TableException>
+          ) : (
+            results.map(result => renderRow({ result, revalidate }))
+          )}
         </tbody>
       </table>
 
       <div>&nbsp;</div>
 
-      {count > 0 && !error && (
+      {count > 0 && (
         <Pagination
           currentPage={parsedPage}
           totalPages={Math.ceil(count / SIZE)}
