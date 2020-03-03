@@ -198,33 +198,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-0 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-}
-
-.emotion-0:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-0:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-14 {
+  .emotion-14 {
   height: auto;
 }
 
@@ -282,6 +256,32 @@ Array [
 .emotion-6 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
+}
+
+.emotion-0 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-0:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-0:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-4 {
@@ -496,296 +496,6 @@ Array [
 ]
 `;
 
-exports[`<ProjectUsers /> should render properly while loading 1`] = `
-Array [
-  .emotion-0 {
-  font-size: 18px;
-  line-height: 21px;
-  font-weight: 400;
-  padding-top: 24px;
-  padding-bottom: 16px;
-}
-
-<h2
-    className="emotion-0"
-  >
-    Project User Admin
-  </h2>,
-  .emotion-5 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.emotion-4 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-1 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
-.emotion-0 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #73b61c;
-}
-
-<nav
-    className="emotion-5"
-  >
-    <ul
-      className="emotion-4"
-    >
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          View All
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/users/add"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Add User(s)
-        </a>
-      </li>
-    </ul>
-  </nav>,
-  .emotion-7 {
-  height: 100%;
-}
-
-.emotion-6 {
-  width: 100%;
-  height: 100%;
-  border-spacing: 0;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  white-space: nowrap;
-}
-
-.emotion-6 tr {
-  background-color: #252525;
-}
-
-.emotion-6 tr:nth-of-type(2n) {
-  background-color: #2e2e2e;
-}
-
-.emotion-6 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
-}
-
-.emotion-6 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-6 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
-.emotion-6 td {
-  max-width: calc(100vw / 2);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #e0e0e0;
-  padding: 8px 16px;
-  border: 1px solid transparent;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 td:first-of-type {
-  border-left: 1px solid transparent;
-}
-
-.emotion-6 td:last-of-type {
-  border-right: 1px solid transparent;
-  overflow: visible;
-}
-
-.emotion-0 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-}
-
-.emotion-0:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-0:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-5 {
-  height: 100%;
-  pointer-events: none;
-}
-
-.emotion-4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-  color: #808080;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-<div
-    className="emotion-7"
-  >
-    <table
-      className="emotion-6"
-    >
-      <thead>
-        <tr>
-          <th
-            className="emotion-0"
-          >
-            Email
-          </th>
-          <th
-            className="emotion-0"
-          >
-            Permissions
-          </th>
-          <th
-            className="emotion-0"
-          >
-            <div
-              className="emotion-2"
-            >
-              <svg
-                data-file-name="gear.svg"
-                width={20}
-              />
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          className="emotion-5"
-        >
-          <td
-            colSpan={3}
-          >
-            <div
-              className="emotion-4"
-            >
-              Loading...
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div>
-       
-    </div>
-    <div>
-       
-    </div>
-  </div>,
-]
-`;
-
 exports[`<ProjectUsers /> should render properly with no project users 1`] = `
 Array [
   .emotion-0 {
@@ -905,174 +615,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-7 {
-  height: 100%;
-}
-
-.emotion-6 {
-  width: 100%;
-  height: 100%;
-  border-spacing: 0;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  white-space: nowrap;
-}
-
-.emotion-6 tr {
-  background-color: #252525;
-}
-
-.emotion-6 tr:nth-of-type(2n) {
-  background-color: #2e2e2e;
-}
-
-.emotion-6 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
-}
-
-.emotion-6 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-6 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
-.emotion-6 td {
-  max-width: calc(100vw / 2);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #e0e0e0;
-  padding: 8px 16px;
-  border: 1px solid transparent;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 td:first-of-type {
-  border-left: 1px solid transparent;
-}
-
-.emotion-6 td:last-of-type {
-  border-right: 1px solid transparent;
-  overflow: visible;
-}
-
-.emotion-0 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-}
-
-.emotion-0:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-0:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-5 {
-  height: 100%;
-  pointer-events: none;
-}
-
-.emotion-4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-  color: #808080;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-<div
-    className="emotion-7"
-  >
-    <table
-      className="emotion-6"
-    >
-      <thead>
-        <tr>
-          <th
-            className="emotion-0"
-          >
-            Email
-          </th>
-          <th
-            className="emotion-0"
-          >
-            Permissions
-          </th>
-          <th
-            className="emotion-0"
-          >
-            <div
-              className="emotion-2"
-            >
-              <svg
-                data-file-name="gear.svg"
-                width={20}
-              />
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          className="emotion-5"
-        >
-          <td
-            colSpan={3}
-          >
-            <div
-              className="emotion-4"
-            >
-              No users
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div>
-       
-    </div>
-    <div>
-       
-    </div>
-  </div>,
+  "No users",
 ]
 `;
 
@@ -1274,33 +817,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-0 {
-  text-align: left;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  color: #e0e0e0;
-  background-color: #4a4a4a;
-  padding: 12px 16px;
-  border-bottom: 1px solid #2e2e2e;
-}
-
-.emotion-0:nth-of-type(2) {
-  width: 100%;
-}
-
-.emotion-0:not(:last-child) {
-  border-right: 1px solid #2e2e2e;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-16 {
+  .emotion-16 {
   height: auto;
 }
 
@@ -1358,6 +875,32 @@ Array [
 .emotion-8 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
+}
+
+.emotion-0 {
+  text-align: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  color: #e0e0e0;
+  background-color: #4a4a4a;
+  padding: 12px 16px;
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.emotion-0:nth-of-type(2) {
+  width: 100%;
+}
+
+.emotion-0:not(:last-child) {
+  border-right: 1px solid #2e2e2e;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-4 {

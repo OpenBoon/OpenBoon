@@ -34,7 +34,7 @@ app.prepare().then(() => {
 
   // Add 1s delay to every response
   if (SLOW) {
-    server.use((req, res, next) => setTimeout(next, 1000))
+    server.use((req, res, next) => setTimeout(next, 3000))
   }
 
   // Mock API calls

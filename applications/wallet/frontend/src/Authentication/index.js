@@ -9,6 +9,7 @@ import { initializeFetcher } from '../Fetch/helpers'
 import { UserContext } from '../User'
 
 import Login from '../Login'
+import SuspenseBoundary from '../SuspenseBoundary'
 import Projects from '../Projects'
 import Layout from '../Layout'
 import ErrorBoundary from '../ErrorBoundary'
@@ -66,12 +67,14 @@ const Authentication = ({ route, children }) => {
   }
 
   return (
-    <SWRConfig value={{ fetcher }}>
-      <Projects projectId={user.projectId} setUser={setUser}>
-        <Layout user={user} logout={logout({ googleAuth, setUser })}>
-          <ErrorBoundary>{children}</ErrorBoundary>
-        </Layout>
-      </Projects>
+    <SWRConfig value={{ fetcher, suspense: true }}>
+      <SuspenseBoundary>
+        <Projects projectId={user.projectId} setUser={setUser}>
+          <Layout user={user} logout={logout({ googleAuth, setUser })}>
+            <ErrorBoundary>{children}</ErrorBoundary>
+          </Layout>
+        </Projects>
+      </SuspenseBoundary>
     </SWRConfig>
   )
 }
