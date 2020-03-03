@@ -252,12 +252,14 @@ class TaskErrorViewSet(BaseProjectViewSet):
     def list(self, request, project_pk):
         def item_modifier(request, error):
             self._add_job_name(request.client, error)
+            error.setdefault('stackTrace', [])
         return self._zmlp_list_from_search(request, item_modifier=item_modifier)
 
     def retrieve(self, request, project_pk, pk):
         url = os.path.join(self.zmlp_root_api_path, '_findOne')
         error = request.client.post(url, {'ids': [pk]})
         self._add_job_name(request.client, error)
+        error.setdefault('stackTrace', [])
         return Response(error)
 
     def _add_job_name(self, client, error):
