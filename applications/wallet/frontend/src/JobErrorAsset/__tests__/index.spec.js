@@ -12,19 +12,6 @@ const FATAL_ERROR_ID = jobErrorFatal.id
 const NON_FATAL_ERROR_ID = jobErrorNonFatal.id
 
 describe('<JobError />', () => {
-  it('should render properly when loading', () => {
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]/asset',
-      query: { projectId: PROJECT_ID, jobId: JOB_ID, errorId: FATAL_ERROR_ID },
-    })
-
-    require('swr').__setMockUseSWRResponse({})
-
-    const component = TestRenderer.create(<JobError />)
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
   it('should render properly with a fatal error', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]/asset',

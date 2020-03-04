@@ -23,22 +23,23 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
           />
           {stackTrace.map((frame, index) => {
             return (
-              <div key={JSON.stringify(frame)}>
+              /*  eslint-disable react/no-array-index-key */
+              <div key={index}>
                 <div>{`{`}</div>
                 <div
                   css={{
                     paddingLeft: spacing.large,
                     overflow: 'auto',
                   }}>
-                  {Object.keys(frame).map(line => {
+                  {Object.entries(frame).map(([key, value]) => {
                     return (
                       <div
-                        key={line}
+                        key={key}
                         css={{
                           paddingTop: spacing.base,
                           whiteSpace: 'nowrap',
                         }}>
-                        &quot;{line}&quot;: {frame[line]}
+                        &quot;{key}&quot;: {value}
                       </div>
                     )
                   })}

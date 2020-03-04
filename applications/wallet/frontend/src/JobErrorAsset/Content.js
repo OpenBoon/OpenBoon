@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import Loading from '../Loading'
 import SectionTitle from '../SectionTitle'
 import Value, { VARIANTS } from '../Value'
 import Tabs from '../Tabs'
@@ -18,8 +17,6 @@ const JobErrorAssetContent = () => {
   const { data: jobError, revalidate } = useSWR(
     `/api/v1/projects/${projectId}/taskerrors/${errorId}/`,
   )
-
-  if (typeof jobError === 'undefined') return <Loading />
 
   const { jobName, fatal, message, taskId } = jobError
 
