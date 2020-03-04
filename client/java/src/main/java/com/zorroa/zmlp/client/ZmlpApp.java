@@ -52,7 +52,7 @@ public class ZmlpApp {
      * - ZMLP_SERVER : The URL to the ZMLP API server.
      */
 
-    private static ApiKey loadApiKey(File fileKey) {
+    private static ApiKey loadApiKey(File fileKey) throws ZmlpAppException {
         try {
             return Json.mapper.readValue(fileKey, ApiKey.class);
         } catch (IOException e) {
@@ -69,7 +69,7 @@ public class ZmlpApp {
         }
     }
 
-    public static ZmlpApp fromEnv() {
+    public static ZmlpApp fromEnv() throws ZmlpAppException {
 
         Optional<String> envApiKey = Optional.ofNullable(System.getenv("ZMLP_APIKEY"));//base64
         Optional<String> envApiKeyFilePath = Optional.ofNullable(System.getenv("ZMLP_APIKEY_FILE"));//file path

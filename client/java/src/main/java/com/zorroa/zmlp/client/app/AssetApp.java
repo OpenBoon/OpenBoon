@@ -94,7 +94,7 @@ public class AssetApp {
      * @param searchSourceBuilder
      * @return
      */
-    public AssetSearchResult search(SearchSourceBuilder searchSourceBuilder) throws ZmlpRequestException {
+    public AssetSearchResult search(SearchSourceBuilder searchSourceBuilder) throws ZmlpRequestException, ZmlpClientException {
         Map assetSearch;
         try {
             assetSearch = Json.mapper.readValue(searchSourceBuilder.toString(), Map.class);
@@ -141,7 +141,7 @@ public class AssetApp {
      * @param timeout The scroll timeout.
      * @return An AssetSearchScroller instance
      */
-    public AssetSearchScroller scrollSearch(SearchSourceBuilder search, String timeout) throws ZmlpRequestException {
+    public AssetSearchScroller scrollSearch(SearchSourceBuilder search, String timeout) throws ZmlpRequestException, ZmlpClientException {
         Map assetSearch;
         try {
             assetSearch = Json.mapper.readValue(search.toString(), Map.class);
@@ -243,12 +243,12 @@ public class AssetApp {
      * @return An ES delete by query response.
      * @throws JsonProcessingException
      */
-    public Map deleteByQuery(String queryString) throws ZmlpRequestException {
+    public Map deleteByQuery(String queryString) throws ZmlpRequestException, ZmlpClientException {
         Map queryMap = null;
         try {
             queryMap = Json.mapper.readValue(queryString, Map.class);
         } catch (JsonProcessingException e) {
-            throw new ZmlpRequestException(e.getMessage(), e);
+            throw new ZmlpClientException(e.getMessage(), e);
         }
         return deleteByQuery(queryMap);
     }

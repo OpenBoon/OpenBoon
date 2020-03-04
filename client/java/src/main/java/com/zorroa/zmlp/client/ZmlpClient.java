@@ -115,7 +115,7 @@ public class ZmlpClient {
         }
     }
 
-    private <T> T marshallResponse(byte[] response, TypeReference<T> type) {
+    private <T> T marshallResponse(byte[] response, TypeReference<T> type) throws ZmlpClientException {
         try {
             return Json.mapper.readValue(response, type);
         } catch (IOException e) {
@@ -123,7 +123,7 @@ public class ZmlpClient {
         }
     }
 
-    private <T> T marshallResponse(byte[] response, Class<T> type) {
+    private <T> T marshallResponse(byte[] response, Class<T> type) throws ZmlpClientException {
         try {
             return Json.mapper.readValue(response, type);
         } catch (IOException e) {
@@ -144,12 +144,12 @@ public class ZmlpClient {
         builder.header("Authorization", "Bearer " + claimBuilder.sign(secretKey));
     }
 
-    public <T> T uploadFiles(String path, BatchUploadAssetsRequest batchUploadAssetsRequest, Class<T> type) {
+    public <T> T uploadFiles(String path, BatchUploadAssetsRequest batchUploadAssetsRequest, Class<T> type) throws ZmlpClientException {
         return marshallResponse(multiPartFileUpload(path, batchUploadAssetsRequest), type);
     }
 
 
-    private byte[] multiPartFileUpload(String path, BatchUploadAssetsRequest batchUploadAssetsRequest) {
+    private byte[] multiPartFileUpload(String path, BatchUploadAssetsRequest batchUploadAssetsRequest) throws ZmlpClientException {
 
         try {
             path = getUrl(path);
