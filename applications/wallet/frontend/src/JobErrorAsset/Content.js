@@ -14,11 +14,11 @@ const JobErrorAssetContent = () => {
     query: { projectId, errorId },
   } = useRouter()
 
-  const { data: jobError, revalidate } = useSWR(
-    `/api/v1/projects/${projectId}/taskerrors/${errorId}/`,
-  )
-
-  const { jobName, fatal, message, taskId } = jobError
+  const {
+    data: jobError,
+    data: { jobName, fatal, message, taskId },
+    revalidate,
+  } = useSWR(`/api/v1/projects/${projectId}/taskerrors/${errorId}/`)
 
   return (
     <>
