@@ -1,10 +1,9 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
 
 import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
-import Loading from '../Loading'
+import SuspenseBoundary from '../SuspenseBoundary'
 
 import ProjectUsersEditForm from './Form'
 
@@ -12,13 +11,6 @@ const ProjectUsersEdit = () => {
   const {
     query: { projectId, userId },
   } = useRouter()
-
-  const { data: user = {} } = useSWR(
-    `/api/v1/projects/${projectId}/users/${userId}`,
-  )
-  const { data: { results: permissions } = {} } = useSWR(
-    `/api/v1/projects/${projectId}/permissions/`,
-  )
 
   return (
     <>
@@ -36,15 +28,12 @@ const ProjectUsersEdit = () => {
         ]}
       />
 
-      {!user.id || !Array.isArray(permissions) ? (
-        <Loading />
-      ) : (
+      <SuspenseBoundary>
         <ProjectUsersEditForm
           projectId={projectId}
-          user={user}
-          permissions={permissions}
+          userId={parseInt(userId, 10)}
         />
-      )}
+      </SuspenseBoundary>
     </>
   )
 }

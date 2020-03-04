@@ -1,11 +1,11 @@
 import TestRenderer from 'react-test-renderer'
 
-import ErrorBoundary from '..'
+import ErrorBoundary, { VARIANTS } from '..'
 
 describe('<ErrorBoundary />', () => {
   it('should render children', () => {
     const component = TestRenderer.create(
-      <ErrorBoundary>
+      <ErrorBoundary variant={VARIANTS.LOCAL}>
         <div />
       </ErrorBoundary>,
     )
@@ -22,7 +22,7 @@ describe('<ErrorBoundary />', () => {
     }
 
     const component = TestRenderer.create(
-      <ErrorBoundary>
+      <ErrorBoundary variant={VARIANTS.LOCAL}>
         <Throw />
       </ErrorBoundary>,
     )

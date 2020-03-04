@@ -9,7 +9,6 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
-import Loading from '../Loading'
 
 import { onSubmit } from './helpers'
 
@@ -31,13 +30,11 @@ const ProjectUsersAddForm = () => {
     query: { projectId },
   } = useRouter()
 
-  const { data: { results: permissions } = {} } = useSWR(
-    `/api/v1/projects/${projectId}/permissions/`,
-  )
+  const {
+    data: { results: permissions },
+  } = useSWR(`/api/v1/projects/${projectId}/permissions/`)
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
-
-  if (!Array.isArray(permissions)) return <Loading />
 
   if (state.succeeded.length > 0 || state.failed.length > 0) {
     return (
