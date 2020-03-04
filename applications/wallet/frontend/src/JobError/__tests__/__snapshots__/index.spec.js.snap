@@ -1035,10 +1035,12 @@ Array [
 
 .emotion-5 {
   padding-left: 40px;
+  overflow: auto;
 }
 
 .emotion-1 {
   padding-top: 8px;
+  white-space: nowrap;
 }
 
 <div
@@ -1934,10 +1936,12 @@ Array [
 
 .emotion-5 {
   padding-left: 40px;
+  overflow: auto;
 }
 
 .emotion-1 {
   padding-top: 8px;
+  white-space: nowrap;
 }
 
 <div

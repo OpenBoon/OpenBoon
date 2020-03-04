@@ -25,13 +25,18 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
             return (
               <div key={JSON.stringify(frame)}>
                 <div>{`{`}</div>
-                <div css={{ paddingLeft: spacing.large }}>
+                <div
+                  css={{
+                    paddingLeft: spacing.large,
+                    overflow: 'auto',
+                  }}>
                   {Object.keys(frame).map(line => {
                     return (
                       <div
                         key={line}
                         css={{
                           paddingTop: spacing.base,
+                          whiteSpace: 'nowrap',
                         }}>
                         &quot;{line}&quot;: {frame[line]}
                       </div>
