@@ -68,6 +68,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # We should ask a security consultant/auditor if this is going to expose us to
+    # potential BREACH attacks - (http://breachattack.com/)
+    'django.middleware.gzip.GZipMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -215,3 +218,15 @@ LOGGING = {
         },
     },
 }
+
+# Add Cross Origin support for Frontend developers running against staging
+if ENVIRONMENT == 'staging':
+    # CORS Middleware for handling frontend server requests
+    # for more customization: https://github.com/adamchainz/django-cors-headers
+    # Inserted after the GZIP middleware
+    MIDDLEWARE.insert(1, 'corsheaders.middleware.CorsMiddleware')
+    # Allow requests from the frontend development server
+    CORS_ORIGIN_WHITELIST = [
+        'http://localhost:3000',
+    ]
+    CORS_ALLOW_CREDENTIALS = True
