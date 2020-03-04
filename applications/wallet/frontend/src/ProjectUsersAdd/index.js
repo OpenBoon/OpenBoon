@@ -2,6 +2,7 @@ import Head from 'next/head'
 
 import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
+import SuspenseBoundary from '../SuspenseBoundary'
 
 import ProjectUsersAddForm from './Form'
 
@@ -21,7 +22,9 @@ const ProjectUsersAdd = () => {
         ]}
       />
 
-      <ProjectUsersAddForm />
+      <SuspenseBoundary>
+        <ProjectUsersAddForm />
+      </SuspenseBoundary>
     </>
   )
 }

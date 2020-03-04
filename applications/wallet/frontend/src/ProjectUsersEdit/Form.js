@@ -1,6 +1,7 @@
 import { useReducer } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
+import useSWR from 'swr'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
@@ -14,7 +15,13 @@ import { onSubmit } from './helpers'
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-const ProjectUsersEditForm = ({ projectId, user, permissions }) => {
+const ProjectUsersEditForm = ({ projectId, userId }) => {
+  const { data: user } = useSWR(`/api/v1/projects/${projectId}/users/${userId}`)
+
+  const {
+    data: { results: permissions },
+  } = useSWR(`/api/v1/projects/${projectId}/permissions/`)
+
   const [state, dispatch] = useReducer(reducer, {
     permissions: user.permissions.reduce((accumulator, permission) => {
       accumulator[permission] = true
@@ -70,17 +77,7 @@ const ProjectUsersEditForm = ({ projectId, user, permissions }) => {
 
 ProjectUsersEditForm.propTypes = {
   projectId: PropTypes.string.isRequired,
-  user: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    email: PropTypes.string.isRequired,
-    permissions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  }).isRequired,
-  permissions: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-    }).isRequired,
-  ).isRequired,
+  userId: PropTypes.number.isRequired,
 }
 
 export default ProjectUsersEditForm

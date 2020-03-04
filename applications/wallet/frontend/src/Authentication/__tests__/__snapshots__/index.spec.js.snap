@@ -5,6 +5,7 @@ exports[`<Authentication /> should render properly when user is logged in 1`] = 
   value={
     Object {
       "fetcher": [Function],
+      "suspense": true,
     }
   }
 >
