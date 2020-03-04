@@ -1,6 +1,8 @@
 import Head from 'next/head'
 
 import Breadcrumbs from '../Breadcrumbs'
+import SuspenseBoundary from '../SuspenseBoundary'
+
 import JobErrorContent from './Content'
 
 const JobError = () => {
@@ -18,7 +20,9 @@ const JobError = () => {
         ]}
       />
 
-      <JobErrorContent />
+      <SuspenseBoundary>
+        <JobErrorContent />
+      </SuspenseBoundary>
     </>
   )
 }

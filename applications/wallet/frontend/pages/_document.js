@@ -2,6 +2,7 @@ import React from 'react'
 import Document, { Head, Main, NextScript } from 'next/document'
 
 import StylesReset from '../src/Styles/Reset'
+import Zendesk from '../src/Zendesk'
 
 class MyDocument extends Document {
   render() {
@@ -12,6 +13,7 @@ class MyDocument extends Document {
           <meta charSet="utf-8" />
           <script src="https://apis.google.com/js/platform.js" async defer />
         </Head>
+        <Zendesk />
         <StylesReset />
         <body>
           <Main />

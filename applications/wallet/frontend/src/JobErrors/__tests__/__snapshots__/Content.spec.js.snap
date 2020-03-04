@@ -1,18 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<JobErrorsContent /> should render properly while loading 1`] = `
-.emotion-0 {
-  padding: 16px;
-  padding-left: 0;
-}
-
-<div
-  className="emotion-0"
->
-  Loading...
-</div>
-`;
-
 exports[`<JobErrorsContent /> should render properly with a job 1`] = `
 .emotion-0 {
   font-size: 17px;
@@ -173,52 +160,6 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
   border-bottom-right-radius: 4px;
 }
 
-.emotion-20 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.emotion-19 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-18 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
-.emotion-17 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-17:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
 <div>
   <h3
     className="emotion-0"
@@ -312,39 +253,5 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
       </div>
     </div>
   </div>
-  <nav
-    className="emotion-20"
-  >
-    <ul
-      className="emotion-19"
-    >
-      <li
-        className="emotion-18"
-      >
-        <a
-          className="emotion-17"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Errors
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <JobErrorsTable />
-</div>
-`;
-
-exports[`<JobErrorsContent /> should render properly with no job 1`] = `
-.emotion-0 {
-  padding: 16px;
-  padding-left: 0;
-}
-
-<div
-  className="emotion-0"
->
-  Loading...
 </div>
 `;

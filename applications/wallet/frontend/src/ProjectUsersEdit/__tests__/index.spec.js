@@ -11,17 +11,6 @@ const USER_ID = projectUser.id
 const noop = () => () => {}
 
 describe('<ProjectUsersEdit />', () => {
-  it('should render properly loading', () => {
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/users/[userId]/edit',
-      query: { projectId: PROJECT_ID, userId: USER_ID },
-    })
-
-    const component = TestRenderer.create(<ProjectUsersEdit />)
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
   it('should render properly with a user and permissions', async () => {
     const mockFn = jest.fn()
 

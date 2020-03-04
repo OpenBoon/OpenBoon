@@ -18,7 +18,6 @@ import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import java.nio.ByteBuffer
 import java.nio.channels.Channels
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
@@ -46,7 +45,7 @@ class GcsProjectStorageService constructor(
 
         info.setMetadata(mapOf("attrs" to Json.serializeToString(spec.attrs)))
         info.setContentType(spec.mimetype)
-        gcs.writer(info.build()).write(ByteBuffer.wrap(spec.data))
+        gcs.create(info.build(), spec.data)
 
         logStoreEvent(spec)
 
