@@ -134,11 +134,11 @@ exports[`<UserMenu /> should render properly 1`] = `
 `;
 
 exports[`<UserMenu /> should render properly 2`] = `
-.emotion-10 {
+.emotion-12 {
   margin-right: -12px;
 }
 
-.emotion-9 {
+.emotion-11 {
   position: relative;
 }
 
@@ -237,7 +237,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   transform: rotate(-180deg);
 }
 
-.emotion-8 {
+.emotion-10 {
   position: absolute;
   z-index: 1;
   top: 100%;
@@ -248,7 +248,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   width: 200px;
 }
 
-.emotion-8 ul {
+.emotion-10 ul {
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
@@ -256,7 +256,7 @@ exports[`<UserMenu /> should render properly 2`] = `
   margin: 0;
 }
 
-.emotion-8 li {
+.emotion-10 li {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -270,6 +270,10 @@ exports[`<UserMenu /> should render properly 2`] = `
 
 .emotion-4 {
   font-weight: 700;
+}
+
+.emotion-8 {
+  border-bottom: 1px solid #b3b3b3;
 }
 
 .emotion-6 {
@@ -328,10 +332,10 @@ exports[`<UserMenu /> should render properly 2`] = `
 }
 
 <div
-  className="emotion-10"
+  className="emotion-12"
 >
   <div
-    className="emotion-9"
+    className="emotion-11"
   >
     <button
       aria-label="Open user menu"
@@ -357,7 +361,7 @@ exports[`<UserMenu /> should render properly 2`] = `
       </div>
     </button>
     <div
-      className="emotion-8"
+      className="emotion-10"
     >
       <div>
         <div
@@ -372,7 +376,9 @@ exports[`<UserMenu /> should render properly 2`] = `
             jane.doe@zorroa.com
           </div>
         </div>
-        <ul>
+        <ul
+          className="emotion-8"
+        >
           <li>
             <a
               className="emotion-6"
@@ -384,6 +390,18 @@ exports[`<UserMenu /> should render properly 2`] = `
               Manage Account
             </a>
           </li>
+          <li>
+            <button
+              className="emotion-6"
+              onBlur={[Function]}
+              onClick={[Function]}
+              type="button"
+            >
+              Contact Support
+            </button>
+          </li>
+        </ul>
+        <ul>
           <li>
             <button
               className="emotion-6"
