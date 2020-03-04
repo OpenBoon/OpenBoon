@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import Router, { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import Loading from '../Loading'
-
 const NO_PROJECT_ID_ROUTES = ['/account', '/account/password']
 
 const Projects = ({ projectId, setUser, children }) => {
   const { query: { projectId: routerProjectId } = {}, pathname } = useRouter()
 
-  const { data: { results: projects } = {} } = useSWR('/api/v1/projects/')
+  const {
+    data: { results: projects },
+  } = useSWR('/api/v1/projects/')
 
   useEffect(() => {
     if (!routerProjectId) return
@@ -19,8 +19,6 @@ const Projects = ({ projectId, setUser, children }) => {
 
     setUser({ user: { projectId: routerProjectId } })
   }, [projectId, routerProjectId, setUser])
-
-  if (!Array.isArray(projects)) return <Loading />
 
   // Reset user projectId if not part of current projects
   if (projectId && !projects.find(({ id }) => projectId === id)) {

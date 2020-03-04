@@ -3,13 +3,10 @@ import useSWR from 'swr'
 
 import { spacing, typography } from '../Styles'
 
-import Loading from '../Loading'
-import Tabs from '../Tabs'
 import Value, { VARIANTS } from '../Value'
 import ProgressBar from '../ProgressBar'
 
 import JobErrorsJobMenu from './JobMenu'
-import JobErrorsTable from './Table'
 
 const JobErrorsContent = () => {
   const {
@@ -19,8 +16,6 @@ const JobErrorsContent = () => {
   const { data: job, revalidate } = useSWR(
     `/api/v1/projects/${projectId}/jobs/${jobId}`,
   )
-
-  if (typeof job !== 'object') return <Loading />
 
   const { name, state, priority, taskCounts: tC } = job
 
@@ -58,12 +53,6 @@ const JobErrorsContent = () => {
           <ProgressBar taskCounts={taskCounts} />
         </Value>
       </div>
-
-      <Tabs
-        tabs={[{ title: 'Errors', href: '/[projectId]/jobs/[jobId]/errors' }]}
-      />
-
-      <JobErrorsTable />
     </div>
   )
 }
