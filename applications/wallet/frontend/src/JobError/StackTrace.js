@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { colors, spacing, typography } from '../Styles'
+import { colors, spacing } from '../Styles'
 
 const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
   return (
@@ -8,12 +8,10 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
       css={{
         backgroundColor: colors.structure.black,
         fontFamily: 'Roboto Mono',
-        fontSize: typography.size.small,
-        lineHeight: typography.height.small,
         padding: spacing.normal,
       }}>
       <div>{`"message" : ${message}`}</div>
-      {stackTrace.length ? (
+      {stackTrace.length && (
         <>
           <div
             css={{
@@ -28,33 +26,24 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
               <div key={JSON.stringify(frame)}>
                 <div>{`{`}</div>
                 <div css={{ paddingLeft: spacing.large }}>
-                  <div
-                    css={{
-                      paddingTop: spacing.base,
-                    }}>{`"file": ${JSON.stringify(frame.file)}`}</div>
-                  <div
-                    css={{
-                      paddingTop: spacing.base,
-                    }}>{`"lineNumber": ${JSON.stringify(
-                    frame.lineNumber,
-                  )}`}</div>
-                  <div
-                    css={{
-                      paddingTop: spacing.base,
-                    }}>{`"className": ${JSON.stringify(frame.className)}`}</div>
-                  <div
-                    css={{
-                      paddingTop: spacing.base,
-                    }}>{`"methodName": ${JSON.stringify(
-                    frame.methodName,
-                  )}`}</div>
+                  {Object.keys(frame).map(line => {
+                    return (
+                      <div
+                        key={line}
+                        css={{
+                          paddingTop: spacing.base,
+                        }}>
+                        &quot;{line}&quot;: {frame[line]}
+                      </div>
+                    )
+                  })}
                 </div>
                 <div>{index === stackTrace.length - 1 ? `}` : `},`}</div>
               </div>
             )
           })}
         </>
-      ) : null}
+      )}
     </div>
   )
 }
@@ -62,7 +51,14 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
 JobErrorStackTrace.propTypes = {
   jobError: PropTypes.shape({
     message: PropTypes.string.isRequired,
-    stackTrace: PropTypes.arrayOf(PropTypes.object).isRequired,
+    stackTrace: PropTypes.arrayOf(
+      PropTypes.shape({
+        file: PropTypes.string.isRequired,
+        lineNumber: PropTypes.number.isRequired,
+        className: PropTypes.string.isRequired,
+        methodName: PropTypes.string.isRequired,
+      }),
+    ).isRequired,
   }).isRequired,
 }
 

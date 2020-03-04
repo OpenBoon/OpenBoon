@@ -24,16 +24,21 @@ const JobErrorContent = () => {
   return (
     <>
       <SectionTitle>Job: {jobName}</SectionTitle>
+
       <JobErrorType fatal={fatal} />
+
       <Value legend="Error Message" variant={VARIANTS.SECONDARY}>
         {message}
       </Value>
+
       <JobErrorTaskMenu
         projectId={projectId}
         taskId={taskId}
         revalidate={revalidate}
       />
+
       <JobErrorDetails jobError={jobError} />
+
       <Tabs
         tabs={[
           {
