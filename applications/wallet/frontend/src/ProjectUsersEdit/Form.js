@@ -65,9 +65,7 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
           onClick={() =>
             onSubmit({ dispatch, projectId, userId: user.id, state })
           }
-          isDisabled={
-            !Object.values(state.permissions).filter(Boolean).length > 0
-          }>
+          isDisabled={false}>
           Save
         </Button>
       </ButtonGroup>
