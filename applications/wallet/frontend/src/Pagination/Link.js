@@ -17,9 +17,7 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
 
   const isPrev = direction === 'prev'
 
-  const isDisabled = isPrev
-    ? currentPage - 1 <= 0
-    : currentPage + 1 > totalPages
+  const isDisabled = isPrev ? currentPage - 1 <= 0 : currentPage === totalPages
 
   const styles = {
     display: 'flex',
@@ -34,6 +32,7 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
     '&:hover': {
       opacity: isDisabled ? 1 : constants.opacity.half,
       textDecoration: 'none',
+      cursor: isDisabled ? 'not-allowed' : 'pointer',
     },
   }
 

@@ -329,6 +329,7 @@ Array [
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: not-allowed;
 }
 
 .emotion-27 {
@@ -387,6 +388,7 @@ Array [
   opacity: 1;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: not-allowed;
 }
 
 .emotion-31 {
