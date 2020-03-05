@@ -13,9 +13,14 @@ import Button, { VARIANTS } from '../Button'
 const CHEVRON_WIDTH = 20
 
 const ProjectSwitcher = ({ projectId }) => {
-  const { pathname } = useRouter()
+  const {
+    pathname,
+    query: { projectId: routerProjectId },
+  } = useRouter()
 
   const { data: { results: projects = [] } = {} } = useSWR('/api/v1/projects/')
+
+  if (!routerProjectId) return null
 
   if (!projectId || !projects.length === 0) return null
 

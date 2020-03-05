@@ -8,7 +8,7 @@ import ButtonGear from '../Button/Gear'
 
 const ACTIONS = [
   {
-    name: 'Retry',
+    name: 'Retry Task',
     action: 'retry',
   },
 ]
