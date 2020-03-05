@@ -224,7 +224,7 @@ Array [
   display: flex;
 }
 
-.emotion-14 {
+.emotion-7 {
   height: auto;
 }
 
@@ -296,110 +296,8 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-13 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-}
-
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
-  border: none;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.emotion-8:hover {
-  opacity: 1;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  cursor: not-allowed;
-}
-
-.emotion-7 {
-  color: #191919;
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-}
-
-.emotion-9 {
-  padding: 8px 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #ffffff;
-  background-color: #2e2e2e;
-}
-
-.emotion-10 {
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #b3b3b3;
-}
-
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
-  border: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-12:hover {
-  opacity: 1;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  cursor: not-allowed;
-}
-
-.emotion-11 {
-  color: #191919;
-  -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  transform: rotate(-90deg);
-}
-
 <div
-    className="emotion-14"
+    className="emotion-7"
   >
     <table
       className="emotion-6"
@@ -453,43 +351,6 @@ Array [
     </table>
     <div>
        
-    </div>
-    <div
-      className="emotion-13"
-    >
-      <button
-        className="emotion-8"
-        disabled={true}
-        type="button"
-      >
-        <svg
-          className="emotion-7"
-          data-file-name="chevron.svg"
-          width={16}
-        />
-      </button>
-      <div
-        className="emotion-9"
-      >
-        1
-      </div>
-      <div
-        className="emotion-10"
-      >
-        of 
-        1
-      </div>
-      <button
-        className="emotion-12"
-        disabled={true}
-        type="button"
-      >
-        <svg
-          className="emotion-11"
-          data-file-name="chevron.svg"
-          width={16}
-        />
-      </button>
     </div>
     <div>
        
@@ -1012,7 +873,7 @@ Array [
   display: flex;
 }
 
-.emotion-16 {
+.emotion-9 {
   height: auto;
 }
 
@@ -1138,110 +999,8 @@ Array [
   background-color: #808080;
 }
 
-.emotion-15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-}
-
-.emotion-10 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
-  border: none;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.emotion-10:hover {
-  opacity: 1;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  cursor: not-allowed;
-}
-
-.emotion-9 {
-  color: #191919;
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-}
-
-.emotion-11 {
-  padding: 8px 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #ffffff;
-  background-color: #2e2e2e;
-}
-
-.emotion-12 {
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #b3b3b3;
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
-  border: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-14:hover {
-  opacity: 1;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  cursor: not-allowed;
-}
-
-.emotion-13 {
-  color: #191919;
-  -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  transform: rotate(-90deg);
-}
-
 <div
-    className="emotion-16"
+    className="emotion-9"
   >
     <table
       className="emotion-8"
@@ -1312,43 +1071,6 @@ Array [
     </table>
     <div>
        
-    </div>
-    <div
-      className="emotion-15"
-    >
-      <button
-        className="emotion-10"
-        disabled={true}
-        type="button"
-      >
-        <svg
-          className="emotion-9"
-          data-file-name="chevron.svg"
-          width={16}
-        />
-      </button>
-      <div
-        className="emotion-11"
-      >
-        1
-      </div>
-      <div
-        className="emotion-12"
-      >
-        of 
-        1
-      </div>
-      <button
-        className="emotion-14"
-        disabled={true}
-        type="button"
-      >
-        <svg
-          className="emotion-13"
-          data-file-name="chevron.svg"
-          width={16}
-        />
-      </button>
     </div>
     <div>
        

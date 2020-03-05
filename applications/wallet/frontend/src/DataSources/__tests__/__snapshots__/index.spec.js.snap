@@ -224,7 +224,7 @@ Array [
   display: flex;
 }
 
-.emotion-34 {
+.emotion-27 {
   height: auto;
 }
 
@@ -350,110 +350,8 @@ Array [
   background-color: #808080;
 }
 
-.emotion-33 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-}
-
-.emotion-28 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
-  border: none;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.emotion-28:hover {
-  opacity: 1;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  cursor: not-allowed;
-}
-
-.emotion-27 {
-  color: #191919;
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-}
-
-.emotion-29 {
-  padding: 8px 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #ffffff;
-  background-color: #2e2e2e;
-}
-
-.emotion-30 {
-  padding: 8px 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #b3b3b3;
-}
-
-.emotion-32 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
-  border: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-
-.emotion-32:hover {
-  opacity: 1;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  cursor: not-allowed;
-}
-
-.emotion-31 {
-  color: #191919;
-  -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  transform: rotate(-90deg);
-}
-
 <div
-    className="emotion-34"
+    className="emotion-27"
   >
     <table
       className="emotion-26"
@@ -734,43 +632,6 @@ Array [
     </table>
     <div>
        
-    </div>
-    <div
-      className="emotion-33"
-    >
-      <button
-        className="emotion-28"
-        disabled={true}
-        type="button"
-      >
-        <svg
-          className="emotion-27"
-          data-file-name="chevron.svg"
-          width={16}
-        />
-      </button>
-      <div
-        className="emotion-29"
-      >
-        1
-      </div>
-      <div
-        className="emotion-30"
-      >
-        of 
-        1
-      </div>
-      <button
-        className="emotion-32"
-        disabled={true}
-        type="button"
-      >
-        <svg
-          className="emotion-31"
-          data-file-name="chevron.svg"
-          width={16}
-        />
-      </button>
     </div>
     <div>
        
