@@ -12,7 +12,7 @@ describe('<ProjectSwitcher />', () => {
   it('should render properly without data', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
-      query: { projectId: 'projectId' },
+      query: { projectId: PROJECT_ID },
     })
 
     require('swr').__setMockUseSWRResponse({ data: {} })
@@ -25,7 +25,7 @@ describe('<ProjectSwitcher />', () => {
   it('should render properly with data', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
-      query: { projectId: 'projectId' },
+      query: { projectId: PROJECT_ID },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -50,7 +50,7 @@ describe('<ProjectSwitcher />', () => {
   it('should render properly with one project', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
-      query: { projectId: 'projectId' },
+      query: { projectId: PROJECT_ID },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -67,7 +67,7 @@ describe('<ProjectSwitcher />', () => {
   it('should not render if the projectId is not of an authorized project', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
-      query: { projectId: 'projectId' },
+      query: { projectId: PROJECT_ID },
     })
 
     require('swr').__setMockUseSWRResponse({
