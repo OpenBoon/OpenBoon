@@ -10,6 +10,11 @@ const noop = () => () => {}
 
 describe('<ProjectSwitcher />', () => {
   it('should render properly without data', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: { projectId: PROJECT_ID },
+    })
+
     require('swr').__setMockUseSWRResponse({ data: {} })
 
     const component = TestRenderer.create(<ProjectSwitcher projectId="" />)
@@ -20,6 +25,7 @@ describe('<ProjectSwitcher />', () => {
   it('should render properly with data', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
+      query: { projectId: PROJECT_ID },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -44,6 +50,7 @@ describe('<ProjectSwitcher />', () => {
   it('should render properly with one project', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
+      query: { projectId: PROJECT_ID },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -60,6 +67,7 @@ describe('<ProjectSwitcher />', () => {
   it('should not render if the projectId is not of an authorized project', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
+      query: { projectId: PROJECT_ID },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -68,6 +76,23 @@ describe('<ProjectSwitcher />', () => {
 
     const component = TestRenderer.create(
       <ProjectSwitcher projectId="not-a-valid-project-id" />,
+    )
+
+    expect(component.toJSON()).toBeNull()
+  })
+
+  it('should not render if projectId is not in route', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: {},
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: projects,
+    })
+
+    const component = TestRenderer.create(
+      <ProjectSwitcher projectId={PROJECT_ID} />,
     )
 
     expect(component.toJSON()).toBeNull()
