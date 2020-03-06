@@ -78,7 +78,8 @@ const STYLES = {
   },
   MENU: {
     flex: 1,
-    padding: `${spacing.small}px ${spacing.base}px`,
+    padding: spacing.base,
+    paddingLeft: spacing.normal,
     color: colors.key.one,
     fontWeight: typography.weight.regular,
     height: '100%',
