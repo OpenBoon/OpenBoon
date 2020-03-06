@@ -86,10 +86,15 @@ class TestApikey:
     @override_settings(PLATFORM='zmlp')
     def test_post_create(self, zmlp_project_user, project, api_client, monkeypatch, detail_data):
 
-        def mock_api_response(*args, **kwargs):
+        def mock_post_response(*args, **kwargs):
             return detail_data
 
-        monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
+        def mock_get_response(*args, **kwargs):
+            return {'accessKey': 'access',
+                    'secretKey': 'secret'}
+
+        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         body = {'name': 'job-runner',
@@ -98,6 +103,8 @@ class TestApikey:
         assert response.status_code == 201
         content = response.json()
         assert content['id'] == 'b3a09695-b9fb-40bd-8ea8-bbe0c2cba33f'
+        assert content['secretKey'] == 'secret'
+        assert content['accessKey'] == 'access'
 
     @override_settings(PLATFORM='zmlp')
     def test_post_create_bad_body(self, zmlp_project_user, project, api_client,
