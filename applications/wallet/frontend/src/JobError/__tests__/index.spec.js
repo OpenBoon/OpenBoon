@@ -51,7 +51,7 @@ describe('<JobError />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     await act(async () => {
-      component.root.findByProps({ children: 'Retry' }).props.onClick()
+      component.root.findByProps({ children: 'Retry Task' }).props.onClick()
     })
 
     expect(fetch.mock.calls.length).toEqual(1)
