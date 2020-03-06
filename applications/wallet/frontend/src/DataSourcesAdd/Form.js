@@ -125,7 +125,11 @@ const DataSourcesAddForm = () => {
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
           onClick={() => onSubmit({ dispatch, projectId, state })}
-          isDisabled={!state.name || !state.uri}>
+          isDisabled={
+            !state.name ||
+            !state.uri ||
+            !Object.values(state.fileTypes).filter(Boolean).length > 0
+          }>
           Create Data Source
         </Button>
       </ButtonGroup>
