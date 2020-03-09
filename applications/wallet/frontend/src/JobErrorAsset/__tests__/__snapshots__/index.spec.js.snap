@@ -1373,7 +1373,7 @@ Array [
                 onClick={[Function]}
                 type="button"
               >
-                Retry
+                Retry Task
               </button>
             </li>
           </ul>
