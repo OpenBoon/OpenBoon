@@ -308,7 +308,7 @@ class DockerContainerWrapper(object):
         if ":" in self.image:
             full_name = self.image
         else:
-            full_name = "{}:{}".format(self.image, os.environ.get("CLUSTER_TAG", "development"))
+            full_name = "{}:{}".format(self.image, os.environ.get("CLUSTER_TAG", "latest"))
 
         logger.info('Checking for new image: {}'.format(full_name))
         try:

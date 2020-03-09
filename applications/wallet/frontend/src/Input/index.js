@@ -24,7 +24,7 @@ const STYLES = {
   },
   SECONDARY: {
     color: colors.structure.white,
-    backgroundColor: colors.structure.mattGrey,
+    backgroundColor: colors.structure.smoke,
     '&:focus': {
       color: colors.structure.black,
       backgroundColor: colors.structure.white,

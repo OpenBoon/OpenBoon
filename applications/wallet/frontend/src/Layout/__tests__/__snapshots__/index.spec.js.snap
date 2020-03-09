@@ -109,7 +109,8 @@ exports[`<Layout /> should render properly 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  padding: 4px 8px;
+  padding: 8px;
+  padding-left: 16px;
   color: #73b61c;
   font-weight: 400;
   height: 100%;
@@ -373,7 +374,8 @@ exports[`<Layout /> should render properly 2`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  padding: 4px 8px;
+  padding: 8px;
+  padding-left: 16px;
   color: #73b61c;
   font-weight: 400;
   height: 100%;

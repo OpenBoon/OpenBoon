@@ -1,26 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Sidebar /> should render properly closed 1`] = `
-.emotion-11 {
+.emotion-18 {
   width: 240px;
   position: fixed;
   height: calc(100% - 44px);
   overflow-y: auto;
   z-index: 90;
   background-color: #4a4a4a;
-  padding-bottom: 32px;
   -webkit-transition: left ease-in-out .3s,visibility ease-in-out .3s;
   transition: left ease-in-out .3s,visibility ease-in-out .3s;
   overscroll-behavior: contain;
   left: -240px;
   top: 44px;
-  padding-top: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 
-.emotion-10 {
+.emotion-12 {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 .emotion-1 {
@@ -39,7 +50,8 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   padding: 12px;
   font-size: 15px;
   line-height: 19px;
-  background-color: #2e2e2e;
+  background-color: none;
+  color: #b3b3b3;
 }
 
 .emotion-0 svg {
@@ -49,11 +61,11 @@ exports[`<Sidebar /> should render properly closed 1`] = `
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #ffffff;
+  color: #73b61c;
   background-color: #2e2e2e;
 }
 
-.emotion-2 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -65,22 +77,30 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   padding: 12px;
   font-size: 15px;
   line-height: 19px;
-  background-color: none;
-  color: #b3b3b3;
-}
-
-.emotion-2 svg {
-  margin-right: 12px;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #73b61c;
   background-color: #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-4 svg {
+  margin-right: 12px;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #2e2e2e;
+}
+
+.emotion-17 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #3b3b3b;
+}
+
+.emotion-19 {
   position: fixed;
   top: 0;
   left: 0;
@@ -95,33 +115,33 @@ exports[`<Sidebar /> should render properly closed 1`] = `
 
 <div>
   <nav
-    className="emotion-11"
+    className="emotion-18"
   >
     <ul
-      className="emotion-10"
+      className="emotion-12"
     >
       <li
         className="emotion-1"
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
           <svg
             aria-hidden={true}
-            data-file-name="queue.svg"
+            data-file-name="projectDashboard.svg"
             width={20}
           />
-          Job Queue
+          Project Dashboard
         </a>
       </li>
       <li
         className="emotion-1"
       >
         <a
-          className="emotion-2"
+          className="emotion-0"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -138,7 +158,41 @@ exports[`<Sidebar /> should render properly closed 1`] = `
         className="emotion-1"
       >
         <a
-          className="emotion-2"
+          className="emotion-4"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="jobQueue.svg"
+            width={20}
+          />
+          Job Queue
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="visualizer.svg"
+            width={20}
+          />
+          Visualizer
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -155,7 +209,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
         className="emotion-1"
       >
         <a
-          className="emotion-2"
+          className="emotion-0"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -168,11 +222,32 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           User Admin
         </a>
       </li>
+    </ul>
+    <ul
+      className="emotion-17"
+    >
       <li
         className="emotion-1"
       >
         <a
-          className="emotion-2"
+          className="emotion-0"
+          href="/"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="accountDashboard.svg"
+            width={20}
+          />
+          Account Dashboard
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
           href="/account"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -189,7 +264,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   </nav>
   <div
     aria-label="Close Sidebar Menu"
-    className="emotion-12"
+    className="emotion-19"
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"
@@ -199,10 +274,12 @@ exports[`<Sidebar /> should render properly closed 1`] = `
 `;
 
 exports[`<Sidebar /> should render properly opened 1`] = `
-.emotion-10 {
+.emotion-12 {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 .emotion-1 {
@@ -221,7 +298,8 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   padding: 12px;
   font-size: 15px;
   line-height: 19px;
-  background-color: #2e2e2e;
+  background-color: none;
+  color: #b3b3b3;
 }
 
 .emotion-0 svg {
@@ -231,11 +309,11 @@ exports[`<Sidebar /> should render properly opened 1`] = `
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #ffffff;
+  color: #73b61c;
   background-color: #2e2e2e;
 }
 
-.emotion-2 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -247,38 +325,55 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   padding: 12px;
   font-size: 15px;
   line-height: 19px;
-  background-color: none;
-  color: #b3b3b3;
-}
-
-.emotion-2 svg {
-  margin-right: 12px;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #73b61c;
   background-color: #2e2e2e;
 }
 
-.emotion-11 {
+.emotion-4 svg {
+  margin-right: 12px;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #2e2e2e;
+}
+
+.emotion-17 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #3b3b3b;
+}
+
+.emotion-18 {
   width: 240px;
   position: fixed;
   height: calc(100% - 44px);
   overflow-y: auto;
   z-index: 90;
   background-color: #4a4a4a;
-  padding-bottom: 32px;
   -webkit-transition: left ease-in-out .3s,visibility ease-in-out .3s;
   transition: left ease-in-out .3s,visibility ease-in-out .3s;
   overscroll-behavior: contain;
   left: 0;
   top: 44px;
-  padding-top: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 
-.emotion-12 {
+.emotion-19 {
   position: fixed;
   top: 0;
   left: 0;
@@ -293,33 +388,33 @@ exports[`<Sidebar /> should render properly opened 1`] = `
 
 <div>
   <nav
-    className="emotion-11"
+    className="emotion-18"
   >
     <ul
-      className="emotion-10"
+      className="emotion-12"
     >
       <li
         className="emotion-1"
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
           <svg
             aria-hidden={true}
-            data-file-name="queue.svg"
+            data-file-name="projectDashboard.svg"
             width={20}
           />
-          Job Queue
+          Project Dashboard
         </a>
       </li>
       <li
         className="emotion-1"
       >
         <a
-          className="emotion-2"
+          className="emotion-0"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -336,7 +431,41 @@ exports[`<Sidebar /> should render properly opened 1`] = `
         className="emotion-1"
       >
         <a
-          className="emotion-2"
+          className="emotion-4"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="jobQueue.svg"
+            width={20}
+          />
+          Job Queue
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="visualizer.svg"
+            width={20}
+          />
+          Visualizer
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/api-keys"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -353,7 +482,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
         className="emotion-1"
       >
         <a
-          className="emotion-2"
+          className="emotion-0"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -366,11 +495,32 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           User Admin
         </a>
       </li>
+    </ul>
+    <ul
+      className="emotion-17"
+    >
       <li
         className="emotion-1"
       >
         <a
-          className="emotion-2"
+          className="emotion-0"
+          href="/"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="accountDashboard.svg"
+            width={20}
+          />
+          Account Dashboard
+        </a>
+      </li>
+      <li
+        className="emotion-1"
+      >
+        <a
+          className="emotion-0"
           href="/account"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -387,7 +537,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   </nav>
   <div
     aria-label="Close Sidebar Menu"
-    className="emotion-12"
+    className="emotion-19"
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"

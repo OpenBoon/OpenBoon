@@ -1,15 +1,12 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { spacing, typography, colors } from '../Styles'
+import { spacing, typography } from '../Styles'
 
-import Loading from '../Loading'
-import Tabs from '../Tabs'
-import Value from '../Value'
+import Value, { VARIANTS } from '../Value'
 import ProgressBar from '../ProgressBar'
 
 import JobErrorsJobMenu from './JobMenu'
-import JobErrorsTable from './Table'
 
 const JobErrorsContent = () => {
   const {
@@ -19,8 +16,6 @@ const JobErrorsContent = () => {
   const { data: job, revalidate } = useSWR(
     `/api/v1/projects/${projectId}/jobs/${jobId}`,
   )
-
-  if (typeof job !== 'object') return <Loading />
 
   const { name, state, priority, taskCounts: tC } = job
 
@@ -46,28 +41,18 @@ const JobErrorsContent = () => {
           revalidate={revalidate}
         />
 
-        <Value legend="Job Status">
-          <div
-            css={{
-              color: colors.structure.white,
-              fontWeight: typography.weight.medium,
-            }}>
-            {state}
-          </div>
+        <Value legend="Job Status" variant={VARIANTS.PRIMARY}>
+          {state}
         </Value>
 
-        <Value legend="Job Status">
+        <Value legend="Priority" variant={VARIANTS.PRIMARY}>
+          {priority}
+        </Value>
+
+        <Value legend="Job Progress" variant={VARIANTS.PRIMARY}>
           <ProgressBar taskCounts={taskCounts} />
         </Value>
-
-        <Value legend="Priority">{priority}</Value>
       </div>
-
-      <Tabs
-        tabs={[{ title: 'Errors', href: '/[projectId]/jobs/[jobId]/errors' }]}
-      />
-
-      <JobErrorsTable />
     </div>
   )
 }

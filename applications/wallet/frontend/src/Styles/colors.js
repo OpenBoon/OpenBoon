@@ -2,6 +2,7 @@ const colors = {
   structure: {
     black: '#000000',
     coal: '#191919',
+    soot: '#212121',
     lead: '#252525',
     mattGrey: '#2e2e2e',
     smoke: '#3b3b3b',

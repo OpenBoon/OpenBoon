@@ -22,7 +22,10 @@ const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
                 href="/[projectId]/users/[userId]/edit"
                 as={`/${projectId}/users/${userId}/edit`}
                 passHref>
-                <Button variant={VARIANTS.MENU_ITEM} isDisabled={false}>
+                <Button
+                  variant={VARIANTS.MENU_ITEM}
+                  onClick={onClick}
+                  isDisabled={false}>
                   Edit
                 </Button>
               </Link>

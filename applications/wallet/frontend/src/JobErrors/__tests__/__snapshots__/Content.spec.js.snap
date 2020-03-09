@@ -1,18 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<JobErrorsContent /> should render properly while loading 1`] = `
-.emotion-0 {
-  padding: 16px;
-  padding-left: 0;
-}
-
-<div
-  className="emotion-0"
->
-  Loading...
-</div>
-`;
-
 exports[`<JobErrorsContent /> should render properly with a job 1`] = `
 .emotion-0 {
   font-size: 17px;
@@ -22,7 +9,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-17 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -75,11 +62,12 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 0;
   width: 200px;
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 16px;
-  padding-right: 16px;
+  padding-right: 12px;
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
@@ -88,7 +76,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
   -ms-flex-pack: justify;
   justify-content: space-between;
   margin-bottom: 4px;
-  color: #000000;
+  color: #ffffff;
 }
 
 .emotion-1:hover {
@@ -107,14 +95,14 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
 }
 
 .emotion-1:hover {
-  opacity: 0.5;
+  background-color: #b3b3b3;
 }
 
 .emotion-1[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-7 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -127,20 +115,16 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
 }
 
 .emotion-4 {
-  color: #4a4a4a;
+  font-weight: 700;
+  color: #ffffff;
   padding-bottom: 4px;
 }
 
-.emotion-6 {
-  color: #808080;
-}
-
 .emotion-5 {
-  color: #ffffff;
-  font-weight: 500;
+  color: #b3b3b3;
 }
 
-.emotion-11 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -150,7 +134,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
   position: relative;
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -158,7 +142,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
   width: 100%;
 }
 
-.emotion-9 {
+.emotion-11 {
   height: 100%;
   -webkit-flex: 3 0 auto;
   -ms-flex: 3 0 auto;
@@ -166,60 +150,14 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
   background-color: #4ac565;
 }
 
-.emotion-9:first-of-type {
+.emotion-11:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-9:last-of-type {
+.emotion-11:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
-}
-
-.emotion-21 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.emotion-20 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-19 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
-.emotion-18 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-18:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
 }
 
 <div>
@@ -230,7 +168,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
     image_similarity.json
   </h3>
   <div
-    className="emotion-17"
+    className="emotion-16"
   >
     <div
       className="emotion-3"
@@ -239,7 +177,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
         className="emotion-2"
       >
         <button
-          aria-label="Toggle Job Actions Menu"
+          aria-label="Toggle Dropdown Menu"
           className="emotion-1"
           onBlur={[Function]}
           onClick={[Function]}
@@ -254,7 +192,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
       </div>
     </div>
     <div
-      className="emotion-7"
+      className="emotion-6"
     >
       <div
         className="emotion-4"
@@ -263,48 +201,13 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
         :
       </div>
       <div
-        className="emotion-6"
+        className="emotion-5"
       >
-        <div
-          className="emotion-5"
-        >
-          Finished
-        </div>
+        Finished
       </div>
     </div>
     <div
-      className="emotion-7"
-    >
-      <div
-        className="emotion-4"
-      >
-        Job Status
-        :
-      </div>
-      <div
-        className="emotion-6"
-      >
-        <div
-          aria-label="Progress Bar"
-          className="emotion-11"
-          onKeyPress={[Function]}
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
-          role="button"
-          tabIndex="0"
-        >
-          <div
-            className="emotion-10"
-          >
-            <div
-              className="emotion-9"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-7"
+      className="emotion-6"
     >
       <div
         className="emotion-4"
@@ -313,45 +216,42 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
         :
       </div>
       <div
-        className="emotion-6"
+        className="emotion-5"
       >
         100
       </div>
     </div>
-  </div>
-  <nav
-    className="emotion-21"
-  >
-    <ul
-      className="emotion-20"
+    <div
+      className="emotion-6"
     >
-      <li
-        className="emotion-19"
+      <div
+        className="emotion-4"
       >
-        <a
-          className="emotion-18"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors"
-          onClick={[Function]}
+        Job Progress
+        :
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          aria-label="Progress Bar"
+          className="emotion-13"
+          onKeyPress={[Function]}
           onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          role="button"
+          tabIndex="0"
         >
-          Errors
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <JobErrorsTable />
-</div>
-`;
-
-exports[`<JobErrorsContent /> should render properly with no job 1`] = `
-.emotion-0 {
-  padding: 16px;
-  padding-left: 0;
-}
-
-<div
-  className="emotion-0"
->
-  Loading...
+          <div
+            className="emotion-12"
+          >
+            <div
+              className="emotion-11"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

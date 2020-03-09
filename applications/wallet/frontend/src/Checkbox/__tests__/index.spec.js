@@ -8,13 +8,16 @@ describe('<Checkbox />', () => {
 
     const component = TestRenderer.create(
       <Checkbox
-        value="checkbox"
-        label="Checkbox"
-        icon=""
-        legend=""
-        onClick={mockFn}
-        initialValue={false}
         variant={VARIANTS.PRIMARY}
+        option={{
+          value: 'checkbox',
+          label: 'Checkbox',
+          icon: '',
+          legend: '',
+          initialValue: false,
+          isDisabled: false,
+        }}
+        onClick={mockFn}
       />,
     )
 
@@ -27,5 +30,32 @@ describe('<Checkbox />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     expect(mockFn).toHaveBeenCalledWith(true)
+  })
+
+  it('should render properly disabled', () => {
+    const mockFn = jest.fn()
+
+    const component = TestRenderer.create(
+      <Checkbox
+        variant={VARIANTS.PRIMARY}
+        option={{
+          value: 'checkbox',
+          label: 'Checkbox',
+          icon: '',
+          legend: '',
+          initialValue: false,
+          isDisabled: true,
+        }}
+        onClick={mockFn}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root.findByProps({ type: 'checkbox' }).props.onClick()
+    })
+
+    expect(mockFn).not.toHaveBeenCalled()
   })
 })

@@ -53,13 +53,14 @@ def encode_apikey(apikey):
     return encoded_key
 
 
-def create_zmlp_api_key(client, name, permissions):
+def create_zmlp_api_key(client, name, permissions, encode_b64=True):
     """Creates an API key for ZMLP and returns it as a base64 encoded string.
 
     Args:
         client(ZmlpClient): ZmlpClient used to communicate with ZMLP.
         name(str): Name of the API key to create.
         permissions(list<str>): List of permissions to add to the API key.
+        encode_b64(bool): If True the key is returned as a base64 encoded string.
 
     Returns:
         str: Base64 encoded API key that was created.
@@ -68,4 +69,6 @@ def create_zmlp_api_key(client, name, permissions):
     body = {'name': name, 'permissions': permissions}
     apikey = client.post('/auth/v1/apikey', body)
     apikey.update(client.get(f'/auth/v1/apikey/{apikey["id"]}/_download'))
-    return encode_apikey(apikey).decode('utf-8')
+    if encode_b64:
+        apikey = encode_apikey(apikey).decode('utf-8')
+    return apikey

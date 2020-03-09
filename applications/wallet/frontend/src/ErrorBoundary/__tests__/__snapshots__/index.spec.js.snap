@@ -3,6 +3,10 @@
 exports[`<ErrorBoundary /> should render children 1`] = `<div />`;
 
 exports[`<ErrorBoundary /> should render generic when caught 1`] = `
+.emotion-1 {
+  height: 100%;
+}
+
 .emotion-0 {
   height: 100%;
   display: -webkit-box;
@@ -22,19 +26,25 @@ exports[`<ErrorBoundary /> should render generic when caught 1`] = `
   justify-content: center;
   text-align: center;
   color: #808080;
+  background-color: #252525;
   font-size: 15px;
   line-height: 19px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
 
 <div
-  className="emotion-0"
+  className="emotion-1"
 >
-  <svg
-    data-file-name="error.svg"
-  />
-  <br />
-   Hmmm, something went wrong.
-  <br />
-   Please try refreshing.
+  <div
+    className="emotion-0"
+  >
+    <svg
+      data-file-name="error.svg"
+    />
+    <br />
+     Hmmm, something went wrong.
+    <br />
+     Please try refreshing.
+  </div>
 </div>
 `;

@@ -46,7 +46,7 @@ const STYLES = {
       backgroundColor: colors.structure.steel,
     },
     '&:hover': {
-      opacity: constants.opacity.half,
+      backgroundColor: colors.structure.zinc,
     },
     '&[aria-disabled=true]': {
       backgroundColor: colors.structure.steel,
@@ -78,7 +78,8 @@ const STYLES = {
   },
   MENU: {
     flex: 1,
-    padding: `${spacing.small}px ${spacing.base}px`,
+    padding: spacing.base,
+    paddingLeft: spacing.normal,
     color: colors.key.one,
     fontWeight: typography.weight.regular,
     height: '100%',
@@ -94,6 +95,15 @@ const STYLES = {
     borderRadius: 0,
     ':hover': {
       backgroundColor: colors.structure.iron,
+    },
+  },
+  ICON: {
+    padding: spacing.base,
+    ':hover': {
+      color: colors.key.one,
+    },
+    '&[aria-disabled=true]': {
+      color: colors.structure.steel,
     },
   },
 }

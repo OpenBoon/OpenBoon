@@ -6,6 +6,8 @@ import { spacing, colors } from '../Styles'
 import PaginationLink from './Link'
 
 const Pagination = ({ currentPage, totalPages }) => {
+  if (totalPages === 1) return null
+
   return (
     <div css={{ display: 'flex', justifyContent: 'flex-end' }}>
       <PaginationLink
@@ -19,8 +21,8 @@ const Pagination = ({ currentPage, totalPages }) => {
           padding: `${spacing.base}px ${spacing.normal}px`,
           display: 'flex',
           alignItems: 'center',
-          color: colors.structure.zinc,
-          backgroundColor: colors.structure.black,
+          color: colors.structure.white,
+          backgroundColor: colors.structure.mattGrey,
         }}>
         {currentPage}
       </div>

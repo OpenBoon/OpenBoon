@@ -3,6 +3,7 @@ import os
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
@@ -16,6 +17,7 @@ class JobViewSet(BaseProjectViewSet):
     def list(self, request, project_pk):
         def item_modifier(request, job):
             job['actions'] = self._get_action_links(request, job['url'], detail=True)
+            job['tasks'] = f'{job["url"]}tasks/'
 
         return self._zmlp_list_from_search(request, item_modifier=item_modifier)
 
@@ -206,6 +208,18 @@ class JobViewSet(BaseProjectViewSet):
         return job_spec
 
 
+class JobTaskViewSet(BaseProjectViewSet):
+    pagination_class = ZMLPFromSizePagination
+    zmlp_root_api_path = '/api/v1/tasks/'
+
+    def list(self, request, project_pk, job_pk):
+        def item_modifier(request, task):
+            path = reverse('task-detail', kwargs={'project_pk': project_pk, 'pk': task['id']})
+            task['url'] = request.build_absolute_uri(path)
+        return self._zmlp_list_from_search(request, item_modifier=item_modifier,
+                                           filter={'jobIds': [job_pk]})
+
+
 class TaskViewSet(BaseProjectViewSet):
     pagination_class = ZMLPFromSizePagination
     zmlp_root_api_path = '/api/v1/tasks/'
@@ -238,12 +252,14 @@ class TaskErrorViewSet(BaseProjectViewSet):
     def list(self, request, project_pk):
         def item_modifier(request, error):
             self._add_job_name(request.client, error)
+            error.setdefault('stackTrace', [])
         return self._zmlp_list_from_search(request, item_modifier=item_modifier)
 
     def retrieve(self, request, project_pk, pk):
         url = os.path.join(self.zmlp_root_api_path, '_findOne')
         error = request.client.post(url, {'ids': [pk]})
         self._add_job_name(request.client, error)
+        error.setdefault('stackTrace', [])
         return Response(error)
 
     def _add_job_name(self, client, error):

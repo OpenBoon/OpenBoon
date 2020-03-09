@@ -7,7 +7,15 @@ import CheckmarkSvg from '../Icons/checkmark.svg'
 
 const SIZE = 20
 
-const CheckboxIcon = ({ value, isChecked, onClick }) => (
+const getBorder = ({ isChecked, isDisabled }) => {
+  if (isChecked) return `2px solid ${colors.key.one}`
+
+  if (isDisabled) return `2px solid ${colors.structure.mattGrey}`
+
+  return `2px solid ${colors.structure.steel}`
+}
+
+const CheckboxIcon = ({ value, isChecked, isDisabled, onClick }) => (
   <div css={{ display: 'flex', position: 'relative' }}>
     <input
       type="checkbox"
@@ -21,11 +29,9 @@ const CheckboxIcon = ({ value, isChecked, onClick }) => (
         height: SIZE,
         WebkitAppearance: 'none',
         backgroundColor: isChecked ? colors.key.one : colors.transparent,
-        border: isChecked
-          ? `2px solid ${colors.key.one}`
-          : `2px solid ${colors.structure.steel}`,
+        border: getBorder({ isChecked, isDisabled }),
         borderRadius: constants.borderRadius.small,
-        cursor: 'pointer',
+        cursor: isDisabled ? 'not-allowed' : 'pointer',
       }}
     />
     <div
@@ -38,6 +44,7 @@ const CheckboxIcon = ({ value, isChecked, onClick }) => (
         alignItems: 'center',
         justifyContent: 'center',
         display: 'flex',
+        cursor: isDisabled ? 'not-allowed' : 'pointer',
       }}>
       <CheckmarkSvg
         width={20}
@@ -55,8 +62,9 @@ const CheckboxIcon = ({ value, isChecked, onClick }) => (
 
 CheckboxIcon.propTypes = {
   value: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
   isChecked: PropTypes.bool.isRequired,
+  isDisabled: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 export default CheckboxIcon

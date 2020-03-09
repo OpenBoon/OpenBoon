@@ -2,7 +2,6 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import Loading from '../Loading'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
@@ -28,13 +27,11 @@ const ApiKeysAddForm = () => {
     query: { projectId },
   } = useRouter()
 
-  const { data: { results: permissions } = {} } = useSWR(
-    `/api/v1/projects/${projectId}/permissions/`,
-  )
+  const {
+    data: { results: permissions },
+  } = useSWR(`/api/v1/projects/${projectId}/permissions/`)
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
-
-  if (!Array.isArray(permissions)) return <Loading />
 
   const { apikey } = state
 
@@ -64,17 +61,18 @@ const ApiKeysAddForm = () => {
 
       <CheckboxGroup
         legend="Add Scope"
-        onClick={permission =>
-          dispatch({ permissions: { ...state.permissions, ...permission } })
-        }
+        variant={CHECKBOX_VARIANTS.PRIMARY}
         options={permissions.map(({ name, description }) => ({
-          key: name,
+          value: name,
           label: name.replace(/([A-Z])/g, match => ` ${match}`),
           icon: '',
           legend: description,
           initialValue: false,
+          isDisabled: false,
         }))}
-        variant={CHECKBOX_VARIANTS.PRIMARY}
+        onClick={permission =>
+          dispatch({ permissions: { ...state.permissions, ...permission } })
+        }
       />
 
       <ButtonGroup>

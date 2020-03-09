@@ -70,7 +70,7 @@ exports[`<JobErrorsMenu /> should render properly 1`] = `
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
-  padding-bottom: 8px;
+  padding-bottom: 4px;
   margin: 0;
 }
 
@@ -163,7 +163,7 @@ exports[`<JobErrorsMenu /> should render properly 1`] = `
             onClick={[Function]}
             type="button"
           >
-            Retry
+            Retry Task
           </button>
         </li>
       </ul>
