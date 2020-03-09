@@ -421,7 +421,8 @@ Array [
 
 .emotion-0 {
   border: 0 #73b61c solid;
-  border-bottom-width: 2px;
+  border-bottom-width: 0;
+  color: #b3b3b3;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -441,12 +442,12 @@ Array [
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+  color: #73b61c;
 }
 
 .emotion-2 {
   border: 0 #73b61c solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
+  border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -466,7 +467,6 @@ Array [
 .emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
 }
 
 <nav
@@ -501,20 +501,8 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-0 {
-  background-color: #000000;
-  font-family: Roboto Mono;
-  padding: 16px;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div>
-      "message": 
-      ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
-    </div>
-    0
+  <div>
+    Asset
   </div>,
 ]
 `;
@@ -940,7 +928,8 @@ Array [
 
 .emotion-0 {
   border: 0 #73b61c solid;
-  border-bottom-width: 2px;
+  border-bottom-width: 0;
+  color: #b3b3b3;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -960,12 +949,12 @@ Array [
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+  color: #73b61c;
 }
 
 .emotion-2 {
   border: 0 #73b61c solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
+  border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -985,7 +974,6 @@ Array [
 .emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
 }
 
 <nav
@@ -1020,303 +1008,8 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-31 {
-  background-color: #000000;
-  font-family: Roboto Mono;
-  padding: 16px;
-}
-
-.emotion-0 {
-  padding-top: 16px;
-  color: #b3b3b3;
-  white-space: nowrap;
-  over-flow: auto;
-}
-
-.emotion-5 {
-  padding-left: 40px;
-  overflow: auto;
-}
-
-.emotion-1 {
-  padding-top: 8px;
-  white-space: nowrap;
-}
-
-<div
-    className="emotion-31"
-  >
-    <div>
-      "message": 
-      ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
-    </div>
-    <div
-      className="emotion-0"
-    />
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/src/analyst/pylib/zplugins/image/importers.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          43
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          _process
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          path = Path(asset.get_local_source_path())
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          220
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          get_local_source_path
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          local_cache_location = self.__source_handler.store_local_cache()
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          139
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          store_local_cache
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          self.blob.download_to_filename(local_path)
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          759
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          download_to_filename
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          raw_download=raw_download,
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          722
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          download_to_file
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          _raise_from_invalid_response(exc)
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          2156
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          _raise_from_invalid_response
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          raise exceptions.from_http_status(response.status_code, message, response=response)
-        </div>
-      </div>
-      <div>
-        }
-      </div>
-    </div>
+  <div>
+    Asset
   </div>,
 ]
 `;
@@ -1841,7 +1534,8 @@ Array [
 
 .emotion-0 {
   border: 0 #73b61c solid;
-  border-bottom-width: 2px;
+  border-bottom-width: 0;
+  color: #b3b3b3;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1861,12 +1555,12 @@ Array [
 .emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
+  color: #73b61c;
 }
 
 .emotion-2 {
   border: 0 #73b61c solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
+  border-bottom-width: 2px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1886,7 +1580,6 @@ Array [
 .emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
-  color: #73b61c;
 }
 
 <nav
@@ -1921,303 +1614,8 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-31 {
-  background-color: #000000;
-  font-family: Roboto Mono;
-  padding: 16px;
-}
-
-.emotion-0 {
-  padding-top: 16px;
-  color: #b3b3b3;
-  white-space: nowrap;
-  over-flow: auto;
-}
-
-.emotion-5 {
-  padding-left: 40px;
-  overflow: auto;
-}
-
-.emotion-1 {
-  padding-top: 8px;
-  white-space: nowrap;
-}
-
-<div
-    className="emotion-31"
-  >
-    <div>
-      "message": 
-      ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
-    </div>
-    <div
-      className="emotion-0"
-    />
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/src/analyst/pylib/zplugins/image/importers.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          43
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          _process
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          path = Path(asset.get_local_source_path())
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          220
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          get_local_source_path
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          local_cache_location = self.__source_handler.store_local_cache()
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          139
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          store_local_cache
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          self.blob.download_to_filename(local_path)
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          759
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          download_to_filename
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          raw_download=raw_download,
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          722
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          download_to_file
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          _raise_from_invalid_response(exc)
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          2156
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          _raise_from_invalid_response
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          raise exceptions.from_http_status(response.status_code, message, response=response)
-        </div>
-      </div>
-      <div>
-        }
-      </div>
-    </div>
+  <div>
+    Asset
   </div>,
 ]
 `;

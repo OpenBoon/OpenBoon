@@ -163,7 +163,7 @@ exports[`<JobErrorsMenu /> should render properly 1`] = `
             onClick={[Function]}
             type="button"
           >
-            Retry
+            Retry Task
           </button>
         </li>
       </ul>

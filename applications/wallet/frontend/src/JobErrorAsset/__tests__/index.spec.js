@@ -1,7 +1,10 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import JobError from '..'
-import { jobErrorFatal, jobErrorNonFatal } from '../__mocks__/jobError'
+import {
+  jobErrorFatal,
+  jobErrorNonFatal,
+} from '../../JobError/__mocks__/jobError'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const JOB_ID = jobErrorFatal.jobId
@@ -11,7 +14,7 @@ const NON_FATAL_ERROR_ID = jobErrorNonFatal.id
 describe('<JobError />', () => {
   it('should render properly with a fatal error', () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]',
+      pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]/asset',
       query: { projectId: PROJECT_ID, jobId: JOB_ID, errorId: FATAL_ERROR_ID },
     })
 
@@ -26,7 +29,7 @@ describe('<JobError />', () => {
 
   it('should render properly with a non-fatal error', async () => {
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]',
+      pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]/asset',
       query: {
         projectId: PROJECT_ID,
         jobId: JOB_ID,
