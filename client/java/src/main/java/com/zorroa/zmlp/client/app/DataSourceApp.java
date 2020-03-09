@@ -9,8 +9,6 @@ import java.util.*;
 
 public class DataSourceApp {
 
-    private static final String BASE_URI = "/api/v1/data-sources";
-
     public final ZmlpClient client;
 
     public DataSourceApp(ZmlpClient client) {
@@ -24,7 +22,7 @@ public class DataSourceApp {
      * @return
      */
     public DataSource createDataSource(DataSourceSpec spec) {
-        return client.post(BASE_URI, spec, DataSource.class);
+        return client.post("/api/v1/data-sources", spec, DataSource.class);
     }
 
     /**
@@ -38,22 +36,8 @@ public class DataSourceApp {
      * @return An import DataSource result dictionary.
      */
     public DataSource importDataSource(String id) {
-        String url = String.format("%s/%s/_import", BASE_URI, id);
-        return client.post(url, null, DataSource.class);
-    }
-
-    /**
-     * Update the DataSource credentials.  Set the blob to None to delete the credentials.
-     *
-     * @param dataSourceCredentials   A DataSourceCredentials contains information about Datasource and its credentials.
-     * @return A status dict.
-     */
-
-    public Map updateCredentials(DataSourceCredentials dataSourceCredentials) {
-        String url = String.format("%s/%s/_credentials", BASE_URI, dataSourceCredentials.getDataSourceId());
-        Map body = new HashMap();
-        body.put("blob", dataSourceCredentials.getBlob());
-        return client.put(url, body, Map.class);
+        String url = String.format("/api/v1/data-sources/%s/_import", id);
+        return client.post(url, new HashMap(), DataSource.class);
     }
 
     /**
@@ -64,7 +48,7 @@ public class DataSourceApp {
      */
     public DataSource getDataSource(String name) {
 
-        String url = String.format("%s/_findOne", BASE_URI);
+        String url = String.format("/api/v1/jobs/_findOne");
         Map body = new HashMap();
 
         try {

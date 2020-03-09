@@ -75,26 +75,6 @@ public class DataSourceAppTests extends AbstractAppTests {
         assertEquals(body.get("analysis"), dataSource.getAnalysis());
     }
 
-    @Test
-    public void testUpdateCredentials() {
-
-        //Mock
-        UUID id = UUID.randomUUID();
-        Map<String, Object> body = new HashMap<>();
-        body.put("id", id);
-        body.put("type", "DATASOURCE");
-
-        webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
-
-        DataSourceCredentials dataSourceCredentials = new DataSourceCredentials(id)
-                .setBlob("UpdatedCredentials");
-
-        Map status = dataSourceApp.updateCredentials(dataSourceCredentials);
-
-        assertEquals("DATASOURCE", status.get("type"));
-        assertEquals(id.toString(), status.get("id"));
-    }
-
     public Map getDataSourceBody() {
         Map<String, Object> body = new HashMap();
         body.put("id", UUID.randomUUID().toString());

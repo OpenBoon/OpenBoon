@@ -7,6 +7,7 @@ import com.zorroa.zmlp.client.domain.ZmlpClientException;
 import com.zorroa.zmlp.client.domain.asset.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,8 +25,8 @@ public class AssetApp {
      * @param assetCreateBuilder The list of files to import as Assets.
      * @return A dictionary containing the provisioning status of each asset, a list of assets to be processed, and a analysis job id.
      */
-    public BatchCreateAssetResponse importFiles(AssetCreateBuilder assetCreateBuilder) {
-        return client.post("/api/v3/assets/_batchCreate", assetCreateBuilder, BatchCreateAssetResponse.class);
+    public BatchCreateAssetsResponse importFiles(AssetCreateBuilder assetCreateBuilder) {
+        return client.post("/api/v3/assets/_batch_create", assetCreateBuilder, BatchCreateAssetsResponse.class);
     }
 
     /**
@@ -41,20 +42,20 @@ public class AssetApp {
      * @param assetSpecList List of files to upload
      * @return Response State after provisioning assets.
      */
-    public BatchCreateAssetResponse uploadFiles(List<AssetSpec> assetSpecList) {
+    public BatchCreateAssetsResponse uploadFiles(List<AssetSpec> assetSpecList) {
 
-        List<String> uris = assetSpecList.stream().map(assetSpec -> assetSpec.getUri()).collect(Collectors.toList());
-        Map body = new HashMap();
-        body.put("assets", assetSpecList);
+        BatchUploadAssetsRequest batchUploadAssetsRequest = new BatchUploadAssetsRequest().setAssets(assetSpecList);
 
-        return client.uploadFiles("/api/v3/assets/_batchUpload", uris, body, BatchCreateAssetResponse.class);
+        BatchCreateAssetsResponse batchCreateAssetsResponse = client.uploadFiles("/api/v3/assets/_batch_upload", batchUploadAssetsRequest, BatchCreateAssetsResponse.class);
+
+        return batchCreateAssetsResponse;
     }
 
     /**
-     * @param assetSpecList List of files to upload
+     * @param assetSpecList Array of files to upload
      * @return Response State after provisioning assets.
      */
-    public BatchCreateAssetResponse uploadFiles(AssetSpec ...assetSpecList){
+    public BatchCreateAssetsResponse uploadFiles(AssetSpec ...assetSpecList){
         return uploadFiles(Arrays.asList(assetSpecList));
     }
 
@@ -62,8 +63,8 @@ public class AssetApp {
      * @param batchAssetSpec Batch of Asset Specification
      * @return Response State after provisioning assets.
      */
-    public BatchCreateAssetResponse uploadFiles(BatchAssetSpec batchAssetSpec){
-        return uploadFiles(batchAssetSpec.getBatch());
+    public BatchCreateAssetsResponse uploadFiles(BatchUploadAssetsRequest batchAssetSpec){
+        return client.uploadFiles("/api/v3/assets/_batch_upload", batchAssetSpec, BatchCreateAssetsResponse.class);
     }
 
     /**
