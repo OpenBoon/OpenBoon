@@ -11,7 +11,7 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
         padding: spacing.normal,
       }}>
       <div>&quot;message&quot;: {message}</div>
-      {stackTrace.length && (
+      {stackTrace.length ? (
         <>
           <div
             css={{
@@ -49,7 +49,7 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
             )
           })}
         </>
-      )}
+      ) : null}
     </div>
   )
 }

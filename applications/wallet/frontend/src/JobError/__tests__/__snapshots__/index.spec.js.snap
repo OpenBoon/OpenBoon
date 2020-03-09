@@ -514,7 +514,6 @@ Array [
       "message": 
       ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
     </div>
-    0
   </div>,
 ]
 `;
