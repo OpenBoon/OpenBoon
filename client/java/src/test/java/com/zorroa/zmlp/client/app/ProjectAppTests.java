@@ -5,6 +5,7 @@ import com.zorroa.zmlp.client.ApiKey;
 import com.zorroa.zmlp.client.Json;
 import com.zorroa.zmlp.client.ZmlpClient;
 import com.zorroa.zmlp.client.domain.*;
+import com.zorroa.zmlp.client.domain.exception.ZmlpRequestException;
 import com.zorroa.zmlp.client.domain.project.Project;
 import com.zorroa.zmlp.client.domain.project.ProjectFilter;
 import com.zorroa.zmlp.client.domain.project.ProjectSpec;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.zorroa.zmlp.client.UtilsTests.getMockData;
 import static org.junit.Assert.assertEquals;
 
 public class ProjectAppTests extends AbstractAppTests {
@@ -32,7 +34,7 @@ public class ProjectAppTests extends AbstractAppTests {
 
     @Test
     public void testGetProject() {
-        Map<String, Object> body = getProjectBody();
+        Map<String, Object> body = getProjectBodyMock();
         webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
         UUID id = UUID.randomUUID();
         Project proj = projectApp.getProject(id);
@@ -45,8 +47,26 @@ public class ProjectAppTests extends AbstractAppTests {
     }
 
     @Test
+    public void testCreateProject409Exception() {
+        webServer.enqueue(new MockResponse()
+                .setBody(getProjectExceptionMock())
+                .setResponseCode(409));
+
+        ProjectSpec unittest = new ProjectSpec().setName("unittest");
+
+
+        try {
+            Project proj = projectApp.createProject(unittest);
+        }catch(ZmlpRequestException ex){
+            assertEquals("/api/v1/projects", ex.getPath());
+            assertEquals("409", ex.getStatus());
+            assertEquals("status code: 409, reason phrase: Client Error", ex.getMessage());
+        }
+    }
+
+    @Test
     public void testCreateProject() {
-        Map<String, Object> body = getProjectBody();
+        Map<String, Object> body = getProjectBodyMock();
 
         webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
 
@@ -62,7 +82,7 @@ public class ProjectAppTests extends AbstractAppTests {
 
     @Test
     public void testFindProject() {
-        Map<String, Object> body = getProjectBody();
+        Map<String, Object> body = getProjectBodyMock();
 
         webServer.enqueue(new MockResponse().setBody(Json.asJson(body)));
 
@@ -79,7 +99,7 @@ public class ProjectAppTests extends AbstractAppTests {
 
     @Test
     public void testSearchProjects() {
-        Map<String, Object> responseProject = getProjectBody();
+        Map<String, Object> responseProject = getProjectBodyMock();
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("list", Lists.newArrayList(responseProject));
         responseBody.put("page", new Page().setSize(10));
@@ -99,7 +119,7 @@ public class ProjectAppTests extends AbstractAppTests {
         assertEquals(new Date((Long) responseProject.get("timeModified")), proj.getTimeModified());
     }
 
-    private Map<String, Object> getProjectBody() {
+    private Map<String, Object> getProjectBodyMock() {
         Map<String, Object> body = new HashMap<>();
         body.put("id", UUID.randomUUID().toString());
         body.put("actorCreated", "test@test");
@@ -108,4 +128,11 @@ public class ProjectAppTests extends AbstractAppTests {
         body.put("timeModified", System.currentTimeMillis());
         return body;
     }
+
+    private String getProjectExceptionMock() {
+        return getMockData("mock-create-project-error");
+    }
+
 }
+
+

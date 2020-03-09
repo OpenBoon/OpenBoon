@@ -3,11 +3,11 @@ package com.zorroa.zmlp.client.app;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zorroa.zmlp.client.Json;
 import com.zorroa.zmlp.client.ZmlpClient;
-import com.zorroa.zmlp.client.domain.ZmlpClientException;
+import com.zorroa.zmlp.client.domain.exception.ZmlpClientException;
 import com.zorroa.zmlp.client.domain.asset.*;
+import com.zorroa.zmlp.client.domain.exception.ZmlpRequestException;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,7 +25,7 @@ public class AssetApp {
      * @param assetCreateBuilder The list of files to import as Assets.
      * @return A dictionary containing the provisioning status of each asset, a list of assets to be processed, and a analysis job id.
      */
-    public BatchCreateAssetsResponse importFiles(AssetCreateBuilder assetCreateBuilder) {
+    public BatchCreateAssetsResponse importFiles(AssetCreateBuilder assetCreateBuilder) throws ZmlpRequestException {
         return client.post("/api/v3/assets/_batch_create", assetCreateBuilder, BatchCreateAssetsResponse.class);
     }
 
@@ -42,7 +42,7 @@ public class AssetApp {
      * @param assetSpecList List of files to upload
      * @return Response State after provisioning assets.
      */
-    public BatchCreateAssetsResponse uploadFiles(List<AssetSpec> assetSpecList) {
+    public BatchCreateAssetsResponse uploadFiles(List<AssetSpec> assetSpecList) throws ZmlpRequestException {
 
         BatchUploadAssetsRequest batchUploadAssetsRequest = new BatchUploadAssetsRequest().setAssets(assetSpecList);
 
@@ -55,7 +55,7 @@ public class AssetApp {
      * @param assetSpecList Array of files to upload
      * @return Response State after provisioning assets.
      */
-    public BatchCreateAssetsResponse uploadFiles(AssetSpec ...assetSpecList){
+    public BatchCreateAssetsResponse uploadFiles(AssetSpec... assetSpecList) throws ZmlpRequestException {
         return uploadFiles(Arrays.asList(assetSpecList));
     }
 
@@ -63,7 +63,7 @@ public class AssetApp {
      * @param batchAssetSpec Batch of Asset Specification
      * @return Response State after provisioning assets.
      */
-    public BatchCreateAssetsResponse uploadFiles(BatchUploadAssetsRequest batchAssetSpec){
+    public BatchCreateAssetsResponse uploadFiles(BatchUploadAssetsRequest batchAssetSpec) throws ZmlpRequestException {
         return client.uploadFiles("/api/v3/assets/_batch_upload", batchAssetSpec, BatchCreateAssetsResponse.class);
     }
 
@@ -79,22 +79,22 @@ public class AssetApp {
      * @return A AssetSearchResult containing assets ElasticSearch search.
      */
 
-    public AssetSearchResult search(Map assetSearch) {
+    public AssetSearchResult search(Map assetSearch) throws ZmlpRequestException {
         return new AssetSearchResult(this.client, assetSearch);
     }
 
     /**
-     *  Perform an asset search using the ElasticSearch query DSL.  Note that for
-     *  load and security purposes, not all ElasticSearch search options are accepted.
-     *  <p>
-     *  See Also:
-     *  For search/query format.
-     *  https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-body.html
+     * Perform an asset search using the ElasticSearch query DSL.  Note that for
+     * load and security purposes, not all ElasticSearch search options are accepted.
+     * <p>
+     * See Also:
+     * For search/query format.
+     * https://www.elastic.co/guide/en/elasticsearch/reference/6.4/search-request-body.html
      *
      * @param searchSourceBuilder
      * @return
      */
-    public AssetSearchResult search(SearchSourceBuilder searchSourceBuilder){
+    public AssetSearchResult search(SearchSourceBuilder searchSourceBuilder) throws ZmlpRequestException, ZmlpClientException {
         Map assetSearch;
         try {
             assetSearch = Json.mapper.readValue(searchSourceBuilder.toString(), Map.class);
@@ -116,18 +116,18 @@ public class AssetApp {
      * @return A SearchResult containing Raw mode an ElasticSearch search result dictionary.
      */
 
-    public Map rawSearch(Map assetSearch) {
+    public Map rawSearch(Map assetSearch) throws ZmlpRequestException {
         return new AssetSearchResult(this.client, assetSearch).rawResponse();
     }
 
     /**
      * Perform an asset scrolled search using the ElasticSearch query DSL.
      *
-     * @param search The ElasticSearch search, in Map format, to execute
+     * @param search  The ElasticSearch search, in Map format, to execute
      * @param timeout The scroll timeout.
      * @return An AssetSearchScroller instance
      */
-    public AssetSearchScroller scrollSearch(Map search, String timeout){
+    public AssetSearchScroller scrollSearch(Map search, String timeout) throws ZmlpRequestException {
         search = Optional.ofNullable(search).orElse(new HashMap());
         timeout = Optional.ofNullable(timeout).orElse("1m");
         return new AssetSearchScroller(this.client, search, timeout);
@@ -137,11 +137,11 @@ public class AssetApp {
     /**
      * Perform an asset scrolled search using the ElasticSearch query DSL.
      *
-     * @param search The ElasticSearch search to execute
+     * @param search  The ElasticSearch search to execute
      * @param timeout The scroll timeout.
      * @return An AssetSearchScroller instance
      */
-    public AssetSearchScroller scrollSearch(SearchSourceBuilder search, String timeout){
+    public AssetSearchScroller scrollSearch(SearchSourceBuilder search, String timeout) throws ZmlpRequestException, ZmlpClientException {
         Map assetSearch;
         try {
             assetSearch = Json.mapper.readValue(search.toString(), Map.class);
@@ -159,7 +159,7 @@ public class AssetApp {
      * @return EL Object
      */
 
-    public Map index(Asset asset) {
+    public Map index(Asset asset) throws ZmlpRequestException {
         return client.post(String.format("/api/v3/assets/%s/_index", asset.getId()), asset.getDocument(), Map.class);
     }
 
@@ -171,7 +171,7 @@ public class AssetApp {
      * @return
      */
 
-    public Map update(String assetId, Map<String, Object> document) {
+    public Map update(String assetId, Map<String, Object> document) throws ZmlpRequestException {
         String id = Optional.of(assetId).orElseThrow(() -> new ZmlpClientException("Asset Id is missing"));
         Map body = new HashMap();
         body.put("doc", document);
@@ -187,7 +187,7 @@ public class AssetApp {
      * @return An ES BulkResponse object.
      */
 
-    public Map batchIndex(List<Asset> assetList) {
+    public Map batchIndex(List<Asset> assetList) throws ZmlpRequestException {
         Map<String, Object> body =
                 assetList
                         .stream()
@@ -197,11 +197,10 @@ public class AssetApp {
     }
 
     /**
-     *
      * @param assetList List of assets to be updated
      * @return An ES BulkResponse object.
      */
-    public Map batchUpdate(List<Asset> assetList) {
+    public Map batchUpdate(List<Asset> assetList) throws ZmlpRequestException {
         Map<String, Object> body = new HashMap();
 
         assetList.forEach(asset -> {
@@ -221,7 +220,7 @@ public class AssetApp {
      * @return An ES Delete response.
      */
 
-    public Map delete(Asset asset){
+    public Map delete(Asset asset) throws ZmlpRequestException {
         String id = Optional.of(asset.getId()).orElseThrow(() -> new ZmlpClientException("Asset Id is missing"));
         return client.delete(String.format("/api/v3/assets/%s", id), null, Map.class);
 
@@ -229,10 +228,11 @@ public class AssetApp {
 
     /**
      * Delete assets by the given search in Map format.
+     *
      * @param query An ES search.
      * @return An ES delete by query response.
      */
-    public Map deleteByQuery(Map query){
+    public Map deleteByQuery(Map query) throws ZmlpRequestException {
         return client.delete("/api/v3/assets/_delete_by_query", query, Map.class);
     }
 
@@ -243,8 +243,13 @@ public class AssetApp {
      * @return An ES delete by query response.
      * @throws JsonProcessingException
      */
-    public Map deleteByQuery(String queryString) throws JsonProcessingException {
-        Map queryMap = Json.mapper.readValue(queryString, Map.class);
+    public Map deleteByQuery(String queryString) throws ZmlpRequestException, ZmlpClientException {
+        Map queryMap = null;
+        try {
+            queryMap = Json.mapper.readValue(queryString, Map.class);
+        } catch (JsonProcessingException e) {
+            throw new ZmlpClientException(e.getMessage(), e);
+        }
         return deleteByQuery(queryMap);
     }
 }
