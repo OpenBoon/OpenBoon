@@ -5,12 +5,11 @@ import SectionTitle from '../SectionTitle'
 import Value, { VARIANTS } from '../Value'
 import Tabs from '../Tabs'
 
-import JobErrorType from './Type'
-import JobErrorTaskMenu from './TaskMenu'
-import JobErrorDetails from './Details'
-import JobErrorStackTrace from './StackTrace'
+import JobErrorType from '../JobError/Type'
+import JobErrorTaskMenu from '../JobError/TaskMenu'
+import JobErrorDetails from '../JobError/Details'
 
-const JobErrorContent = () => {
+const JobErrorAssetContent = () => {
   const {
     query: { projectId, errorId },
   } = useRouter()
@@ -51,9 +50,10 @@ const JobErrorContent = () => {
           },
         ]}
       />
-      <JobErrorStackTrace jobError={jobError} />
+
+      <div>Asset</div>
     </>
   )
 }
 
-export default JobErrorContent
+export default JobErrorAssetContent
