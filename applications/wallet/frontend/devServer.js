@@ -8,6 +8,7 @@ import projects from './src/Projects/__mocks__/projects'
 import jobs from './src/Jobs/__mocks__/jobs'
 import job from './src/Job/__mocks__/job'
 import jobErrors from './src/JobErrors/__mocks__/jobErrors'
+import jobError from './src/JobError/__mocks__/jobError'
 import permissions from './src/Permissions/__mocks__/permissions'
 import dataSource from './src/DataSource/__mocks__/dataSource'
 import dataSources from './src/DataSources/__mocks__/dataSources'
@@ -53,6 +54,7 @@ app.prepare().then(() => {
     server.get(`${PID_API_BASE}/jobs/`, mock(jobs))
     server.get(`${PID_API_BASE}/jobs/:jobId/`, mock(job))
     server.get(`${PID_API_BASE}/jobs/:jobId/errors`, mock(jobErrors))
+    server.get(`${PID_API_BASE}/jobs/:jobId/errors/:errorId/`, mock(jobError))
 
     server.get(`${PID_API_BASE}/datasources/:dataSourceId/`, mock(dataSource))
     server.get(`${PID_API_BASE}/datasources/`, mock(dataSources))

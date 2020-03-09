@@ -12,6 +12,50 @@ export const jobErrorNonFatal = {
   phase: 'index',
   timeCreated: 1582306669906,
   jobName: 'Applying modules:  to gs://zorroa-dev-data',
+  stackTrace: [
+    {
+      file: '/opt/app-root/src/analyst/pylib/zplugins/image/importers.py',
+      lineNumber: 43,
+      className: '_process',
+      methodName: 'path = Path(asset.get_local_source_path())',
+    },
+    {
+      file: '/opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py',
+      lineNumber: 220,
+      className: 'get_local_source_path',
+      methodName:
+        'local_cache_location = self.__source_handler.store_local_cache()',
+    },
+    {
+      file:
+        '/opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py',
+      lineNumber: 139,
+      className: 'store_local_cache',
+      methodName: 'self.blob.download_to_filename(local_path)',
+    },
+    {
+      file:
+        '/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py',
+      lineNumber: 759,
+      className: 'download_to_filename',
+      methodName: 'raw_download=raw_download,',
+    },
+    {
+      file:
+        '/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py',
+      lineNumber: 722,
+      className: 'download_to_file',
+      methodName: '_raise_from_invalid_response(exc)',
+    },
+    {
+      file:
+        '/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py',
+      lineNumber: 2156,
+      className: '_raise_from_invalid_response',
+      methodName:
+        'raise exceptions.from_http_status(response.status_code, message, response=response)',
+    },
+  ],
 }
 
 export const jobErrorFatal = {
@@ -28,4 +72,7 @@ export const jobErrorFatal = {
   phase: 'index',
   timeCreated: 1582306669906,
   jobName: 'Applying modules:  to gs://zorroa-dev-data',
+  stackTrace: [],
 }
+
+export default jobErrorNonFatal
