@@ -29,7 +29,7 @@ export const authenticateUser = ({ setUser, setErrorMessage }) => async ({
   return setUser({ user: { ...user, projectId: '' } })
 }
 
-export const logout = ({ googleAuth, setUser }) => async () => {
+export const logout = ({ googleAuth, setUser }) => async ({ redirectUrl }) => {
   googleAuth.signOut()
 
   const { csrftoken } = Object.fromEntries(
@@ -49,5 +49,5 @@ export const logout = ({ googleAuth, setUser }) => async () => {
 
   setUser({ user: null })
 
-  Router.push('/')
+  Router.push(redirectUrl)
 }

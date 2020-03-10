@@ -113,7 +113,7 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                 <Button
                   variant={VARIANTS.MENU_ITEM}
                   onBlur={onBlur}
-                  onClick={logout}
+                  onClick={() => logout({ redirectUrl: '/' })}
                   isDisabled={false}>
                   Sign Out
                 </Button>

@@ -41,6 +41,18 @@ const STYLES = {
       backgroundColor: colors.structure.steel,
     },
   },
+  PRIMARY_SMALL: {
+    '&,&:hover,&:visited': {
+      backgroundColor: colors.key.one,
+    },
+    '&:hover': {
+      backgroundColor: colors.key.two,
+    },
+    '&[aria-disabled=true]': {
+      backgroundColor: colors.structure.steel,
+    },
+    padding: `${spacing.base}px ${spacing.normal}px`,
+  },
   SECONDARY: {
     '&,&:hover,&:visited': {
       backgroundColor: colors.structure.steel,
