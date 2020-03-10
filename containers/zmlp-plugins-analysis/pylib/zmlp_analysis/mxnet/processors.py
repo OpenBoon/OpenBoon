@@ -22,6 +22,9 @@ class ZviLabelDetectionResNet152(AssetProcessor):
 
     namespace = 'zvi.label-detection'
 
+    # MXNet is not thread safe.
+    use_threads = False
+
     def __init__(self):
         super(ZviLabelDetectionResNet152, self).__init__()
         self.add_arg(Argument("debug", "boolean", default=False, toolTip=self.toolTips['debug']))
@@ -59,25 +62,16 @@ class ZviLabelDetectionResNet152(AssetProcessor):
         # psort is a sorting of prob. We need to keep prob in order to assign
         # the floating point probabilities attrs
         psort = np.argsort(prob)[::-1]
-        kw = []
-        for j, i in enumerate(psort[0:5]):
-            kw.extend([k.strip() for k in self.labels[i].split(',') if k])
+        labels = [ ]
+        for j, i in enumerate(psort[0:20]):
+            if prob[i] < 0.15:
+                break
+            for label in self.labels[i].split(","):
+                labels.append({"label": label.strip(), "score": round(prob[i], 3)})
 
         struct = {
-            'labels': list(set(kw)),
-            'score': float(prob[psort[0]])
+            'labels': labels
         }
-
-        # Debug info, if enabled.
-        if self.arg_value('debug'):
-            struct['debug'] = {
-                'type': 'mxnet',
-                'model': os.path.basename(self.model_path),
-            }
-            for j, i in enumerate(psort[0:5]):
-                struct['debug']['pred' + str(j)] = ','.join(
-                    self.labels[i].replace(',', '').split(' ')[1:])
-                struct['debug']['prob' + str(j)] = prob[i]
 
         asset.add_analysis(self.namespace, struct)
 
@@ -88,6 +82,9 @@ class ZviSimilarityProcessor(AssetProcessor):
     """
 
     namespace = "zvi.similarity"
+
+    # MXNet is not thread safe.
+    use_threads = False
 
     def __init__(self):
         super(ZviSimilarityProcessor, self).__init__()
