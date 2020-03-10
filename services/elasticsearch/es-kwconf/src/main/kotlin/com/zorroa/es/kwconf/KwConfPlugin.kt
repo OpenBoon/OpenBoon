@@ -16,9 +16,9 @@ import org.elasticsearch.search.lookup.SearchLookup
  * must be described as :
  *
  * [
- *     { "keyword": "dog", "confidence": 0.87 },
- *     { "keyword": "ardvark", confidence: 0.62 },
- *     { "keyword": "badger", confidence: 0.38 }
+ *     { "label": "dog", "score": 0.87 },
+ *     { "label": "ardvark", score: 0.62 },
+ *     { "label": "badger", score: 0.38 }
  * ]
  *
  */
@@ -51,7 +51,7 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
     ) : ScoreScript.LeafFactory {
 
         private val field: String = params["field"] as String
-        private val keywords: Set<String> = (params["keywords"] as List<String>?).orEmpty().toSet()
+        private val keywords: Set<String> = (params["labels"] as List<String>?).orEmpty().toSet()
         private val range: List<Double> = (params["range"] as List<Double>?) ?: listOf(.75, 1.0)
 
         override fun newInstance(ctx: LeafReaderContext?): ScoreScript {
@@ -74,9 +74,9 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
                         val kwconf: List<Map<String, Any>> = kwconfStruct as List<Map<String, Any>>
 
                         for (map in kwconf) {
-                            val keyword = map.getValue("keyword").toString()
+                            val keyword = map.getValue("label").toString()
                             if (keyword in keywords) {
-                                val conf = map.getValue("confidence") as Double
+                                val conf = map.getValue("score") as Double
                                 if (isWithinRange(conf)) {
                                     score += conf
                                 }
