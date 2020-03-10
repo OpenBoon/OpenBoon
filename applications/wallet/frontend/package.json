@@ -122,6 +122,7 @@
   "devDependencies": {
     "babel-eslint": "10.1.0",
     "babel-jest": "25.1.0",
+    "babel-plugin-macros": "^2.8.0",
     "bundlesize": "0.18.0",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.0.1",
@@ -135,6 +136,7 @@
     "express": "4.17.1",
     "http-proxy-middleware": "1.0.1",
     "husky": "4.2.3",
+    "import-all.macro": "^2.0.3",
     "jest": "25.1.0",
     "jest-emotion": "10.0.27",
     "jest-fetch-mock": "3.0.2",
