@@ -7,6 +7,10 @@ import emptyFileAssets from '../__mocks__/emptyFileAssets'
 
 describe('<Assets />', () => {
   it('should render properly', () => {
+    require('next/router').__setUseRouter({
+      query: { projectId: '000000' },
+    })
+
     const component = TestRenderer.create(<Assets assets={assets.results} />)
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -49,6 +53,18 @@ describe('<Assets />', () => {
     expect(
       component.root.findByProps({ 'aria-label': 'Zoom Out' }).props.isDisabled,
     ).toBe(true)
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should handle page url', () => {
+    require('next/router').__setUseRouter({
+      query: { projectId: '000000', page: 2 },
+    })
+
+    const component = TestRenderer.create(
+      <Assets assets={emptyFileAssets.results} />,
+    )
+
     expect(component.toJSON()).toMatchSnapshot()
   })
 

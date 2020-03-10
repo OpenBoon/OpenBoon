@@ -10,12 +10,12 @@ import VisualizerMetadata from './Metadata'
 
 const VisualizerContent = () => {
   const {
-    query: { projectId },
+    query: { projectId, page },
   } = useRouter()
 
   const {
     data: { results: assets, count },
-  } = useSWR(`/api/v1/projects/${projectId}/assets/`)
+  } = useSWR(`/api/v1/projects/${projectId}/assets/?page=${page}`)
 
   return (
     <div
@@ -30,7 +30,7 @@ const VisualizerContent = () => {
         flex: 1,
         flexDirection: 'column',
       }}>
-      <VisualizerInfobar displayCount={assets.length} totalCount={count} />
+      <VisualizerInfobar currentPage={page || 1} totalCount={count} />
       <div
         css={{
           display: 'flex',
