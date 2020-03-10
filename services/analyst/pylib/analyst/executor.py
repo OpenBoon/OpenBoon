@@ -359,7 +359,8 @@ class DockerContainerWrapper(object):
                                                            ports=ports,
                                                            labels=["zmlpcd"])
 
-        logger.info("started container {} tags: {}".format(self.container.image.id, self.container.image.tags))
+        logger.info("started container {} tags: {}".format(
+            self.container.image.id, self.container.image.tags))
         # Sets up a thread which iterates the container logs.
         self.log_thread = threading.Thread(target=self.__tail_container_logs)
         self.log_thread.daemon = True

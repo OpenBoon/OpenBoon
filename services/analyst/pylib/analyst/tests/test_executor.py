@@ -13,6 +13,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 os.environ["ANALYST_DOCKER_PULL"] = "false"
 
+
 class MockClusterClient:
     """
     A pretend ClusterClient which simply counts events types.

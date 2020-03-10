@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 os.environ["ANALYST_DOCKER_PULL"] = "false"
 
+
 def test_task(event_type=None, attrs=None, sleep=1):
     task = {
         "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
