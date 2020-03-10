@@ -6,9 +6,9 @@ import { spacing, typography } from '../Styles'
 import Value, { VARIANTS } from '../Value'
 import ProgressBar from '../ProgressBar'
 
-import JobErrorsJobMenu from './JobMenu'
+import JobErrorsJobMenu from './Menu'
 
-const JobErrorsContent = () => {
+const JobDetails = () => {
   const {
     query: { projectId, jobId },
   } = useRouter()
@@ -57,4 +57,4 @@ const JobErrorsContent = () => {
   )
 }
 
-export default JobErrorsContent
+export default JobDetails
