@@ -20,7 +20,13 @@ const JobErrorAssetContent = ({
           padding: spacing.normal,
           overflow: 'auto',
         }}>
-        <div css={{ display: 'flex', alignItems: 'center' }}>
+        <div
+          css={{
+            display: 'flex',
+            alignItems: 'center',
+            background: colors.structure.mattGrey,
+            padding: spacing.normal,
+          }}>
           <img
             src={url.replace('https://wallet.zmlp.zorroa.com', '')}
             alt={filename}
