@@ -249,6 +249,10 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
+.emotion-6 tr:hover .gear {
+  color: #b3b3b3;
+}
+
 .emotion-6 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
@@ -501,6 +505,10 @@ Array [
 .emotion-6 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-6 tr:hover .gear {
+  color: #b3b3b3;
 }
 
 .emotion-6 tr:hover td {
@@ -898,6 +906,10 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
+.emotion-8 tr:hover .gear {
+  color: #b3b3b3;
+}
+
 .emotion-8 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
@@ -996,6 +1008,7 @@ Array [
 }
 
 .emotion-6:hover {
+  color: #ffffff !important;
   background-color: #808080;
 }
 
@@ -1054,7 +1067,7 @@ Array [
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-6"
+                className="gear emotion-6"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"

@@ -52,6 +52,7 @@ exports[`<ProjectUsersMenu /> should render properly 1`] = `
 }
 
 .emotion-0:hover {
+  color: #ffffff !important;
   background-color: #808080;
 }
 
@@ -141,7 +142,7 @@ exports[`<ProjectUsersMenu /> should render properly 1`] = `
 >
   <button
     aria-label="Toggle Actions Menu"
-    className="emotion-0"
+    className="gear emotion-0"
     onBlur={[Function]}
     onClick={[Function]}
     type="button"

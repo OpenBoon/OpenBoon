@@ -249,6 +249,10 @@ Array [
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
+.emotion-26 tr:hover .gear {
+  color: #b3b3b3;
+}
+
 .emotion-26 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
@@ -347,6 +351,7 @@ Array [
 }
 
 .emotion-9:hover {
+  color: #ffffff !important;
   background-color: #808080;
 }
 
@@ -432,7 +437,7 @@ Array [
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-9"
+                className="gear emotion-9"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -474,7 +479,7 @@ Array [
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-9"
+                className="gear emotion-9"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -521,7 +526,7 @@ Array [
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-9"
+                className="gear emotion-9"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -568,7 +573,7 @@ Array [
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-9"
+                className="gear emotion-9"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -615,7 +620,7 @@ Array [
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="emotion-9"
+                className="gear emotion-9"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -782,6 +787,10 @@ Array [
 .emotion-10 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-10 tr:hover .gear {
+  color: #b3b3b3;
 }
 
 .emotion-10 tr:hover td {
