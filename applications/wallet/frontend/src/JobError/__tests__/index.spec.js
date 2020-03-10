@@ -2,11 +2,13 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import JobError from '..'
 import { jobErrorFatal, jobErrorNonFatal } from '../__mocks__/jobError'
+import assets from '../../Assets/__mocks__/assets'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const JOB_ID = jobErrorFatal.jobId
 const FATAL_ERROR_ID = jobErrorFatal.id
 const NON_FATAL_ERROR_ID = jobErrorNonFatal.id
+const ASSET = assets.results[0]
 
 describe('<JobError />', () => {
   it('should render properly with a fatal error', () => {
@@ -78,9 +80,7 @@ describe('<JobError />', () => {
     require('swr').__setMockUseSWRResponse({
       data: {
         ...jobErrorFatal,
-        asset: {
-          metadata: { source: { url: 'some-url', filename: 'some-filename' } },
-        },
+        ...ASSET,
       },
     })
 

@@ -1,21 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<JobErrorAsset /> should render properly 1`] = `
-.emotion-0 {
+.emotion-3 {
   background-color: #000000;
   font-family: Roboto Mono;
   padding: 16px;
   overflow: auto;
 }
 
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  min-height: 100px;
+  padding: 4px;
+  border: 1px solid grey;
+}
+
+.emotion-1 {
+  padding-left: 24px;
+}
+
 <div
-  className="emotion-0"
+  className="emotion-3"
 >
-  <img
-    alt=""
-    src="some-url"
-  />
-  some-filename
+  <div
+    className="emotion-2"
+  >
+    <img
+      alt="some-filename"
+      className="emotion-0"
+      src="some-url"
+    />
+    <div
+      className="emotion-1"
+    >
+      some-filename
+    </div>
+  </div>
   <div
     dangerouslySetInnerHTML={
       Object {

@@ -3,7 +3,14 @@ import JSONPretty from 'react-json-pretty'
 
 import { spacing, colors } from '../Styles'
 
-const JobErrorAssetContent = ({ asset }) => {
+const JobErrorAssetContent = ({
+  asset,
+  asset: {
+    metadata: {
+      source: { filename, url },
+    },
+  },
+}) => {
   return (
     <>
       <div
@@ -13,15 +20,18 @@ const JobErrorAssetContent = ({ asset }) => {
           padding: spacing.normal,
           overflow: 'auto',
         }}>
-        <img
-          src={asset.metadata.source.url.replace(
-            'https://wallet.zmlp.zorroa.com',
-            '',
-          )}
-          alt=""
-        />
-        {asset.metadata.source.filename}
-
+        <div css={{ display: 'flex', alignItems: 'center' }}>
+          <img
+            src={url.replace('https://wallet.zmlp.zorroa.com', '')}
+            alt={filename}
+            css={{
+              minHeight: `100px`,
+              padding: spacing.small,
+              border: '1px solid grey',
+            }}
+          />
+          <div css={{ paddingLeft: spacing.comfy }}>{filename}</div>
+        </div>
         <JSONPretty
           id="json-pretty"
           data={asset}
