@@ -180,7 +180,7 @@ enum class ModOpType() {
 class ModOp(
     @ApiModelProperty("The opType")
     val type: ModOpType,
-    @ApiModelProperty("The data necesssary for OpType, which depends on the type")
+    @ApiModelProperty("The data necessary for OpType, which depends on the type")
     val apply: Any?,
     @ApiModelProperty("Matchers which determine if an Op is applied.")
     var filter: OpFilter? = null,
