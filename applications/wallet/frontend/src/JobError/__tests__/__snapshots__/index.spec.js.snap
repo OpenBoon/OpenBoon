@@ -1,5 +1,138 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<JobError /> should render asset view properly 1`] = `
+Array [
+  .emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-1 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-6 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Job Queue
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <a
+        className="emotion-0"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Job Details
+      </a>
+      <span
+        className="emotion-1"
+      >
+        /
+      </span>
+    </div>
+    <h2
+      className="emotion-6"
+    >
+      Error Details
+    </h2>
+  </div>,
+  .emotion-1 {
+  height: 100%;
+}
+
+.emotion-0 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  background-color: #252525;
+  font-size: 15px;
+  line-height: 19px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+<div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-0"
+    >
+      <svg
+        data-file-name="error.svg"
+      />
+      <br />
+       Hmmm, something went wrong.
+      <br />
+       Please try refreshing.
+    </div>
+  </div>,
+]
+`;
+
 exports[`<JobError /> should render properly with a fatal error 1`] = `
 Array [
   .emotion-2 {
@@ -505,6 +638,7 @@ Array [
   background-color: #000000;
   font-family: Roboto Mono;
   padding: 16px;
+  overflow: auto;
 }
 
 <div
@@ -1019,31 +1153,21 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-31 {
+  .emotion-1 {
   background-color: #000000;
   font-family: Roboto Mono;
   padding: 16px;
+  overflow: auto;
 }
 
 .emotion-0 {
   padding-top: 16px;
   color: #b3b3b3;
   white-space: nowrap;
-  over-flow: auto;
-}
-
-.emotion-5 {
-  padding-left: 40px;
-  overflow: auto;
-}
-
-.emotion-1 {
-  padding-top: 8px;
-  white-space: nowrap;
 }
 
 <div
-    className="emotion-31"
+    className="emotion-1"
   >
     <div>
       "message": 
@@ -1052,270 +1176,51 @@ Array [
     <div
       className="emotion-0"
     />
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/src/analyst/pylib/zplugins/image/importers.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          43
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          _process
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          path = Path(asset.get_local_source_path())
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          220
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          get_local_source_path
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          local_cache_location = self.__source_handler.store_local_cache()
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          139
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          store_local_cache
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          self.blob.download_to_filename(local_path)
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          759
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          download_to_filename
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          raw_download=raw_download,
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          722
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          download_to_file
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          _raise_from_invalid_response(exc)
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          2156
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          _raise_from_invalid_response
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          raise exceptions.from_http_status(response.status_code, message, response=response)
-        </div>
-      </div>
-      <div>
+    <div
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<pre class=\\"__json-pretty__\\" style=\\"line-height:1.3;overflow:auto;\\">[
+  {
+    \\"<span class=\\"__json-key__\\">file</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"/opt/app-root/src/analyst/pylib/zplugins/image/importers.py\\"</span>,
+    \\"<span class=\\"__json-key__\\">lineNumber</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">43</span>,
+    \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"_process\\"</span>,
+    \\"<span class=\\"__json-key__\\">methodName</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"path = Path(asset.get_local_source_path())\\"</span>
+  },
+  {
+    \\"<span class=\\"__json-key__\\">file</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"/opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py\\"</span>,
+    \\"<span class=\\"__json-key__\\">lineNumber</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">220</span>,
+    \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"get_local_source_path\\"</span>,
+    \\"<span class=\\"__json-key__\\">methodName</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"local_cache_location = self.__source_handler.store_local_cache()\\"</span>
+  },
+  {
+    \\"<span class=\\"__json-key__\\">file</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"/opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py\\"</span>,
+    \\"<span class=\\"__json-key__\\">lineNumber</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">139</span>,
+    \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"store_local_cache\\"</span>,
+    \\"<span class=\\"__json-key__\\">methodName</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"self.blob.download_to_filename(local_path)\\"</span>
+  },
+  {
+    \\"<span class=\\"__json-key__\\">file</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py\\"</span>,
+    \\"<span class=\\"__json-key__\\">lineNumber</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">759</span>,
+    \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"download_to_filename\\"</span>,
+    \\"<span class=\\"__json-key__\\">methodName</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"raw_download=raw_download,\\"</span>
+  },
+  {
+    \\"<span class=\\"__json-key__\\">file</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py\\"</span>,
+    \\"<span class=\\"__json-key__\\">lineNumber</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">722</span>,
+    \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"download_to_file\\"</span>,
+    \\"<span class=\\"__json-key__\\">methodName</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"_raise_from_invalid_response(exc)\\"</span>
+  },
+  {
+    \\"<span class=\\"__json-key__\\">file</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py\\"</span>,
+    \\"<span class=\\"__json-key__\\">lineNumber</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">2156</span>,
+    \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"_raise_from_invalid_response\\"</span>,
+    \\"<span class=\\"__json-key__\\">methodName</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"raise exceptions.from_http_status(response.status_code, message, response=response)\\"</span>
+  }
+]</pre>",
         }
-      </div>
-    </div>
+      }
+      id="json-pretty"
+    />
   </div>,
 ]
 `;
@@ -1920,31 +1825,21 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-31 {
+  .emotion-1 {
   background-color: #000000;
   font-family: Roboto Mono;
   padding: 16px;
+  overflow: auto;
 }
 
 .emotion-0 {
   padding-top: 16px;
   color: #b3b3b3;
   white-space: nowrap;
-  over-flow: auto;
-}
-
-.emotion-5 {
-  padding-left: 40px;
-  overflow: auto;
-}
-
-.emotion-1 {
-  padding-top: 8px;
-  white-space: nowrap;
 }
 
 <div
-    className="emotion-31"
+    className="emotion-1"
   >
     <div>
       "message": 
@@ -1953,270 +1848,51 @@ Array [
     <div
       className="emotion-0"
     />
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/src/analyst/pylib/zplugins/image/importers.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          43
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          _process
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          path = Path(asset.get_local_source_path())
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          220
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          get_local_source_path
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          local_cache_location = self.__source_handler.store_local_cache()
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          139
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          store_local_cache
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          self.blob.download_to_filename(local_path)
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          759
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          download_to_filename
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          raw_download=raw_download,
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          722
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          download_to_file
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          _raise_from_invalid_response(exc)
-        </div>
-      </div>
-      <div>
-        },
-      </div>
-    </div>
-    <div>
-      <div>
-        {
-      </div>
-      <div
-        className="emotion-5"
-      >
-        <div
-          className="emotion-1"
-        >
-          "
-          file
-          ": 
-          /opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          lineNumber
-          ": 
-          2156
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          className
-          ": 
-          _raise_from_invalid_response
-        </div>
-        <div
-          className="emotion-1"
-        >
-          "
-          methodName
-          ": 
-          raise exceptions.from_http_status(response.status_code, message, response=response)
-        </div>
-      </div>
-      <div>
+    <div
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<pre class=\\"__json-pretty__\\" style=\\"line-height:1.3;overflow:auto;\\">[
+  {
+    \\"<span class=\\"__json-key__\\">file</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"/opt/app-root/src/analyst/pylib/zplugins/image/importers.py\\"</span>,
+    \\"<span class=\\"__json-key__\\">lineNumber</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">43</span>,
+    \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"_process\\"</span>,
+    \\"<span class=\\"__json-key__\\">methodName</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"path = Path(asset.get_local_source_path())\\"</span>
+  },
+  {
+    \\"<span class=\\"__json-key__\\">file</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"/opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py\\"</span>,
+    \\"<span class=\\"__json-key__\\">lineNumber</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">220</span>,
+    \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"get_local_source_path\\"</span>,
+    \\"<span class=\\"__json-key__\\">methodName</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"local_cache_location = self.__source_handler.store_local_cache()\\"</span>
+  },
+  {
+    \\"<span class=\\"__json-key__\\">file</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"/opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py\\"</span>,
+    \\"<span class=\\"__json-key__\\">lineNumber</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">139</span>,
+    \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"store_local_cache\\"</span>,
+    \\"<span class=\\"__json-key__\\">methodName</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"self.blob.download_to_filename(local_path)\\"</span>
+  },
+  {
+    \\"<span class=\\"__json-key__\\">file</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py\\"</span>,
+    \\"<span class=\\"__json-key__\\">lineNumber</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">759</span>,
+    \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"download_to_filename\\"</span>,
+    \\"<span class=\\"__json-key__\\">methodName</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"raw_download=raw_download,\\"</span>
+  },
+  {
+    \\"<span class=\\"__json-key__\\">file</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py\\"</span>,
+    \\"<span class=\\"__json-key__\\">lineNumber</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">722</span>,
+    \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"download_to_file\\"</span>,
+    \\"<span class=\\"__json-key__\\">methodName</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"_raise_from_invalid_response(exc)\\"</span>
+  },
+  {
+    \\"<span class=\\"__json-key__\\">file</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py\\"</span>,
+    \\"<span class=\\"__json-key__\\">lineNumber</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">2156</span>,
+    \\"<span class=\\"__json-key__\\">className</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"_raise_from_invalid_response\\"</span>,
+    \\"<span class=\\"__json-key__\\">methodName</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"raise exceptions.from_http_status(response.status_code, message, response=response)\\"</span>
+  }
+]</pre>",
         }
-      </div>
-    </div>
+      }
+      id="json-pretty"
+    />
   </div>,
 ]
 `;

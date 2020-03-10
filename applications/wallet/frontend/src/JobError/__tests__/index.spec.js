@@ -68,4 +68,24 @@ describe('<JobError />', () => {
       method: 'PUT',
     })
   })
+
+  it('should render asset view properly', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]/asset',
+      query: { projectId: PROJECT_ID, jobId: JOB_ID, errorId: FATAL_ERROR_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...jobErrorFatal,
+        asset: {
+          metadata: { source: { url: 'some-url', filename: 'some-filename' } },
+        },
+      },
+    })
+
+    const component = TestRenderer.create(<JobError />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

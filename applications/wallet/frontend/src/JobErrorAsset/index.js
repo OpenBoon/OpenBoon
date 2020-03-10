@@ -1,26 +1,51 @@
-import Head from 'next/head'
+import PropTypes from 'prop-types'
+import JSONPretty from 'react-json-pretty'
 
-import Breadcrumbs from '../Breadcrumbs'
-import JobErrorAssetContent from './Content'
+import { spacing, colors } from '../Styles'
 
-const JobErrorAsset = () => {
+const JobErrorAssetContent = ({ asset }) => {
   return (
     <>
-      <Head>
-        <title>Error Details</title>
-      </Head>
+      <div
+        css={{
+          backgroundColor: colors.structure.black,
+          fontFamily: 'Roboto Mono',
+          padding: spacing.normal,
+          overflow: 'auto',
+        }}>
+        <img
+          src={asset.metadata.source.url.replace(
+            'https://wallet.zmlp.zorroa.com',
+            '',
+          )}
+          alt=""
+        />
+        {asset.metadata.source.filename}
 
-      <Breadcrumbs
-        crumbs={[
-          { title: 'Job Queue', href: '/[projectId]/jobs' },
-          { title: 'Job Details', href: '/[projectId]/jobs/[jobId]/errors' },
-          { title: 'Error Details', href: false },
-        ]}
-      />
-
-      <JobErrorAssetContent />
+        <JSONPretty
+          id="json-pretty"
+          data={asset}
+          theme={{
+            main: 'line-height:1.3;overflow:auto;',
+            string: `color:${colors.signal.grass.base};`,
+            value: `color:${colors.signal.sky.base};`,
+            boolean: `color:${colors.signal.canary.base};`,
+          }}
+        />
+      </div>
     </>
   )
 }
 
-export default JobErrorAsset
+JobErrorAssetContent.propTypes = {
+  asset: PropTypes.shape({
+    metadata: PropTypes.shape({
+      source: PropTypes.shape({
+        url: PropTypes.string.isRequired,
+        filename: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
+}
+
+export default JobErrorAssetContent

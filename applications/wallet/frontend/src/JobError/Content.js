@@ -8,18 +8,24 @@ import Tabs from '../Tabs'
 import JobErrorType from './Type'
 import JobErrorTaskMenu from './TaskMenu'
 import JobErrorDetails from './Details'
-import JobErrorStackTrace from './StackTrace'
+import JobErrorStackTrace from '../JobErrorStackTrace'
+import JobErrorAsset from '../JobErrorAsset'
 
 const JobErrorContent = () => {
   const {
+    pathname,
     query: { projectId, errorId },
   } = useRouter()
 
   const {
     data: jobError,
-    data: { jobName, fatal, message, taskId },
+    data: { jobName, fatal, message, taskId, assetId },
     revalidate,
   } = useSWR(`/api/v1/projects/${projectId}/taskerrors/${errorId}/`)
+
+  const { data: asset } = useSWR(
+    `/api/v1/projects/${projectId}/assets/${assetId}/`,
+  )
 
   return (
     <>
@@ -51,7 +57,11 @@ const JobErrorContent = () => {
           },
         ]}
       />
-      <JobErrorStackTrace jobError={jobError} />
+      {pathname.includes('/[errorId]/asset') ? (
+        <JobErrorAsset asset={asset} />
+      ) : (
+        <JobErrorStackTrace jobError={jobError} />
+      )}
     </>
   )
 }
