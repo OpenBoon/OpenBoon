@@ -2,8 +2,9 @@ import PropTypes from 'prop-types'
 
 import { formatFullDate, formatDuration } from '../Date/helpers'
 
-import JobTasksStateIcon from './StateIcon'
 import { spacing } from '../Styles'
+
+import JobTasksStateIcon from './StateIcon'
 
 const JobTasksRow = ({
   task: {
