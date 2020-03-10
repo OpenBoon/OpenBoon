@@ -14,6 +14,12 @@ if (ENABLE_SENTRY === 'true') {
     dsn: 'https://09e9c3fc777c469ab784ff4367ff54bb@sentry.io/1848515',
     release: process.env.CI_COMMIT_SHA,
     environment: ENVIRONMENT,
+    beforeSend(event) {
+      if (event.exception) {
+        Sentry.showReportDialog({ eventId: event.event_id })
+      }
+      return event
+    },
   })
 }
 
