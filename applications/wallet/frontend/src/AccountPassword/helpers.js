@@ -1,4 +1,5 @@
-import { fetcher } from '../Fetch/helpers'
+import { fetcher, getCsrfToken } from '../Fetch/helpers'
+import { logout } from '../Authentication/helpers'
 
 export const onSubmit = async ({
   dispatch,
@@ -30,5 +31,31 @@ export const onSubmit = async ({
     }, {})
 
     dispatch({ success: false, errors: parsedErrors })
+  }
+}
+
+export const onReset = async ({ setError, email, setUser, googleAuth }) => {
+  const csrftoken = getCsrfToken()
+
+  try {
+    const response = await fetch(`/api/v1/password/reset/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'X-CSRFToken': csrftoken,
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    })
+
+    if (response.status >= 400) throw response
+
+    logout({
+      googleAuth,
+      setUser,
+    })({ redirectUrl: '/?action=password-reset-request-success' })
+  } catch (response) {
+    setError('Error. Please try again.')
   }
 }

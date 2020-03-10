@@ -1,4 +1,6 @@
-import { onSubmit } from '../helpers'
+import { onSubmit, onReset } from '../helpers'
+
+const noop = () => () => {}
 
 describe('<AccountPassword /> helpers', () => {
   describe('onSubmit()', () => {
@@ -79,6 +81,72 @@ describe('<AccountPassword /> helpers', () => {
         },
         success: false,
       })
+    })
+  })
+
+  describe('onReset()', () => {
+    it('should send a reset password request', async () => {
+      const mockSetError = jest.fn()
+      const mockSetUser = jest.fn()
+      const mockSignOut = jest.fn()
+      const mockRouterPush = jest.fn()
+
+      require('next/router').__setMockPushFunction(mockRouterPush)
+
+      fetch.mockResponseOnce(JSON.stringify({ email: 'jane@zorroa.com' }))
+
+      await onReset({
+        setError: mockSetError,
+        email: 'jane@zorroa.com',
+        setUser: mockSetUser,
+        googleAuth: {
+          signOut: mockSignOut,
+        },
+      })
+
+      expect(fetch.mock.calls.length).toEqual(2)
+      expect(fetch.mock.calls[0][0]).toEqual('/api/v1/password/reset/')
+      expect(fetch.mock.calls[0][1]).toEqual({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'X-CSRFToken': 'CSRF_TOKEN',
+        },
+        body: '{"email":"jane@zorroa.com"}',
+      })
+
+      expect(mockSetError).not.toHaveBeenCalled()
+      expect(mockSetUser).toHaveBeenCalledWith({ user: null })
+      expect(mockSignOut).toHaveBeenCalled()
+      expect(mockRouterPush).toHaveBeenCalledWith(
+        '/?action=password-reset-request-success',
+      )
+    })
+
+    it('should dispatch an error', async () => {
+      const mockSetError = jest.fn()
+
+      fetch.mockResponseOnce(null, { status: 400 })
+
+      await onReset({
+        setError: mockSetError,
+        email: 'jane@zorroa.com',
+        setUser: noop,
+        googleAuth: noop,
+      })
+
+      expect(fetch.mock.calls.length).toEqual(1)
+      expect(fetch.mock.calls[0][0]).toEqual('/api/v1/password/reset/')
+      expect(fetch.mock.calls[0][1]).toEqual({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'X-CSRFToken': 'CSRF_TOKEN',
+        },
+        body: '{"email":"jane@zorroa.com"}',
+      })
+
+      expect(mockSetError).toHaveBeenCalledWith('Error. Please try again.')
     })
   })
 })

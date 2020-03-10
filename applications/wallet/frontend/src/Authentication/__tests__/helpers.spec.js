@@ -105,9 +105,9 @@ describe('<Authentication /> helpers', () => {
       await logout({
         googleAuth: { signOut: mockSignOut },
         setUser: mockSetUser,
-      })()
+      })({ redirectUrl: '/' })
 
-      expect(mockSignOut).toHaveBeenCalledWith()
+      expect(mockSignOut).toHaveBeenCalled()
 
       expect(mockSetUser).toHaveBeenCalledWith({ user: null })
 

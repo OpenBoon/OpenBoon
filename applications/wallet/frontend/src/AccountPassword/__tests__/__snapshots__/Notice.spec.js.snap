@@ -1,101 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AccountPassword /> should render properly 1`] = `
-Array [
-  .emotion-0 {
-  font-size: 18px;
-  line-height: 21px;
-  font-weight: 400;
-  padding-top: 24px;
-  padding-bottom: 16px;
-}
-
-<h2
-    className="emotion-0"
-  >
-    Account Profile
-  </h2>,
-  .emotion-5 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.emotion-4 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-1 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
-.emotion-0 {
-  border: 0 #73b61c solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #73b61c;
-}
-
-<nav
-    className="emotion-5"
-  >
-    <ul
-      className="emotion-4"
-    >
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-0"
-          href="/account"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Profile
-        </a>
-      </li>
-      <li
-        className="emotion-1"
-      >
-        <a
-          className="emotion-0"
-          href="/account/password"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Change Password
-        </a>
-      </li>
-    </ul>
-  </nav>,
-  .emotion-25 {
+exports[`<AccountPasswordNotice /> should render an error 1`] = `
+.emotion-29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -276,32 +182,32 @@ Array [
   background-color: #808080;
 }
 
-.emotion-24 {
+.emotion-28 {
   padding-top: 16px;
   padding-left: 48px;
 }
 
-.emotion-23 {
+.emotion-27 {
   width: 470px;
   border: 1px solid #3b3b3b;
   border-radius: 2px;
   padding: 32px;
 }
 
-.emotion-19 {
+.emotion-23 {
   color: #ffffff;
   font-weight: 500;
   padding-bottom: 4px;
 }
 
-.emotion-20 {
+.emotion-24 {
   color: #808080;
   font-size: 15px;
   line-height: 19px;
   font-weight: 400;
 }
 
-.emotion-21 {
+.emotion-25 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -334,170 +240,237 @@ Array [
   padding: 8px 16px;
 }
 
-.emotion-21:hover {
+.emotion-25:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-25[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-21,
-.emotion-21:hover,
-.emotion-21:visited {
+.emotion-25,
+.emotion-25:hover,
+.emotion-25:visited {
   background-color: #73b61c;
 }
 
-.emotion-21:hover {
+.emotion-25:hover {
   background-color: #96c955;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-25[aria-disabled=true] {
   background-color: #808080;
 }
 
+.emotion-22 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-19 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #000000;
+  font-weight: 500;
+}
+
+.emotion-20 {
+  border: 0;
+  padding: 0;
+  background: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 <div
-    className="emotion-25"
+  className="emotion-29"
+>
+  <form
+    action=""
+    className="emotion-18"
+    method="post"
+    onSubmit={[Function]}
   >
-    <form
-      action=""
-      className="emotion-18"
-      method="post"
-      onSubmit={[Function]}
+    <div
+      className="emotion-3"
+    >
+      <label
+        className="emotion-0"
+        htmlFor="currentPassword"
+      >
+        Current Password
+      </label>
+      <div
+        className="emotion-2"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-1"
+          id="currentPassword"
+          name="currentPassword"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-3"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <label
+        className="emotion-0"
+        htmlFor="newPassword"
+      >
+        New Password
+      </label>
+      <div
+        className="emotion-2"
+      >
+        <input
+          className="emotion-1"
+          id="newPassword"
+          name="newPassword"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-3"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <label
+        className="emotion-0"
+        htmlFor="confirmPassword"
+      >
+        Confirm Password
+      </label>
+      <div
+        className="emotion-2"
+      >
+        <input
+          className="emotion-1"
+          id="confirmPassword"
+          name="confirmPassword"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-3"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-17"
+    >
+      <button
+        className="emotion-15"
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+      <button
+        aria-disabled={true}
+        className="emotion-16"
+        onClick={[Function]}
+        type="submit"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+  <div
+    className="emotion-28"
+  >
+    <div
+      className="emotion-22"
     >
       <div
-        className="emotion-3"
+        className="emotion-21"
       >
-        <label
-          className="emotion-0"
-          htmlFor="currentPassword"
-        >
-          Current Password
-        </label>
+        <svg
+          color="#c92300"
+          data-file-name="warning.svg"
+          height={20}
+        />
         <div
-          className="emotion-2"
+          className="emotion-19"
+          role="alert"
         >
-          <input
-            autoFocus={true}
-            className="emotion-1"
-            id="currentPassword"
-            name="currentPassword"
-            onChange={[Function]}
-            type="password"
-            value=""
+          Error. Please try again.
+        </div>
+        <button
+          aria-label="Close alert"
+          className="emotion-20"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            color="#000000"
+            data-file-name="cross.svg"
+            height={20}
           />
-        </div>
-        <div
-          className="emotion-3"
-        >
-           
-        </div>
+        </button>
+      </div>
+    </div>
+    <div
+      className="emotion-27"
+    >
+      <div
+        className="emotion-23"
+      >
+        Did you sign in with Google or another service?
       </div>
       <div
-        className="emotion-3"
+        className="emotion-24"
       >
-        <label
-          className="emotion-0"
-          htmlFor="newPassword"
-        >
-          New Password
-        </label>
-        <div
-          className="emotion-2"
-        >
-          <input
-            className="emotion-1"
-            id="newPassword"
-            name="newPassword"
-            onChange={[Function]}
-            type="password"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-3"
-        >
-           
-        </div>
-      </div>
-      <div
-        className="emotion-3"
-      >
-        <label
-          className="emotion-0"
-          htmlFor="confirmPassword"
-        >
-          Confirm Password
-        </label>
-        <div
-          className="emotion-2"
-        >
-          <input
-            className="emotion-1"
-            id="confirmPassword"
-            name="confirmPassword"
-            onChange={[Function]}
-            type="password"
-            value=""
-          />
-        </div>
-        <div
-          className="emotion-3"
-        >
-           
-        </div>
+        If so, you may not have a Zorroa password. You can create one by resetting the password and checking your email for instructions.
       </div>
       <div
         className="emotion-17"
       >
         <button
-          className="emotion-15"
+          className="emotion-25"
           onClick={[Function]}
           type="button"
         >
-          Cancel
+          Reset Password
         </button>
-        <button
-          aria-disabled={true}
-          className="emotion-16"
-          onClick={[Function]}
-          type="submit"
-        >
-          Save
-        </button>
-      </div>
-    </form>
-    <div
-      className="emotion-24"
-    >
-      
-      <div
-        className="emotion-23"
-      >
-        <div
-          className="emotion-19"
-        >
-          Did you sign in with Google or another service?
-        </div>
-        <div
-          className="emotion-20"
-        >
-          If so, you may not have a Zorroa password. You can create one by resetting the password and checking your email for instructions.
-        </div>
-        <div
-          className="emotion-17"
-        >
-          <button
-            className="emotion-21"
-            onClick={[Function]}
-            type="button"
-          >
-            Reset Password
-          </button>
-        </div>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;

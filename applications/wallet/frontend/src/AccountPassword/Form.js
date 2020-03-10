@@ -8,6 +8,7 @@ import ButtonGroup from '../Button/Group'
 import { onSubmit } from './helpers'
 
 import AccountPasswordFormSuccess from './FormSuccess'
+import AccountPasswordNotice from './Notice'
 
 const INITIAL_STATE = {
   currentPassword: '',
@@ -30,65 +31,69 @@ const AccountPasswordForm = () => {
   }
 
   return (
-    <Form>
-      <Input
-        autoFocus
-        id="currentPassword"
-        variant={INPUT_VARIANTS.SECONDARY}
-        label="Current Password"
-        type="password"
-        value={state.currentPassword}
-        onChange={({ target: { value } }) =>
-          dispatch({ currentPassword: value })
-        }
-        hasError={state.errors.oldPassword !== undefined}
-        errorMessage={state.errors.oldPassword}
-      />
+    <div css={{ display: 'flex' }}>
+      <Form>
+        <Input
+          autoFocus
+          id="currentPassword"
+          variant={INPUT_VARIANTS.SECONDARY}
+          label="Current Password"
+          type="password"
+          value={state.currentPassword}
+          onChange={({ target: { value } }) =>
+            dispatch({ currentPassword: value })
+          }
+          hasError={state.errors.oldPassword !== undefined}
+          errorMessage={state.errors.oldPassword}
+        />
 
-      <Input
-        id="newPassword"
-        variant={INPUT_VARIANTS.SECONDARY}
-        label="New Password"
-        type="password"
-        value={state.newPassword}
-        onChange={({ target: { value } }) => dispatch({ newPassword: value })}
-        hasError={state.errors.newPassword1 !== undefined}
-        errorMessage={state.errors.newPassword1}
-      />
+        <Input
+          id="newPassword"
+          variant={INPUT_VARIANTS.SECONDARY}
+          label="New Password"
+          type="password"
+          value={state.newPassword}
+          onChange={({ target: { value } }) => dispatch({ newPassword: value })}
+          hasError={state.errors.newPassword1 !== undefined}
+          errorMessage={state.errors.newPassword1}
+        />
 
-      <Input
-        id="confirmPassword"
-        variant={INPUT_VARIANTS.SECONDARY}
-        label="Confirm Password"
-        type="password"
-        value={state.confirmPassword}
-        onChange={({ target: { value } }) =>
-          dispatch({ confirmPassword: value })
-        }
-        hasError={state.errors.newPassword2 !== undefined}
-        errorMessage={state.errors.newPassword2}
-      />
+        <Input
+          id="confirmPassword"
+          variant={INPUT_VARIANTS.SECONDARY}
+          label="Confirm Password"
+          type="password"
+          value={state.confirmPassword}
+          onChange={({ target: { value } }) =>
+            dispatch({ confirmPassword: value })
+          }
+          hasError={state.errors.newPassword2 !== undefined}
+          errorMessage={state.errors.newPassword2}
+        />
 
-      <ButtonGroup>
-        <Button
-          variant={BUTTON_VARIANTS.SECONDARY}
-          onClick={() => dispatch(INITIAL_STATE)}>
-          Cancel
-        </Button>
+        <ButtonGroup>
+          <Button
+            variant={BUTTON_VARIANTS.SECONDARY}
+            onClick={() => dispatch(INITIAL_STATE)}>
+            Cancel
+          </Button>
 
-        <Button
-          type="submit"
-          variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() => onSubmit({ dispatch, state })}
-          isDisabled={
-            !state.currentPassword ||
-            !state.newPassword ||
-            !state.confirmPassword
-          }>
-          Save
-        </Button>
-      </ButtonGroup>
-    </Form>
+          <Button
+            type="submit"
+            variant={BUTTON_VARIANTS.PRIMARY}
+            onClick={() => onSubmit({ dispatch, state })}
+            isDisabled={
+              !state.currentPassword ||
+              !state.newPassword ||
+              !state.confirmPassword
+            }>
+            Save
+          </Button>
+        </ButtonGroup>
+      </Form>
+
+      <AccountPasswordNotice />
+    </div>
   )
 }
 

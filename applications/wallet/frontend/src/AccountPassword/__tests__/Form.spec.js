@@ -41,7 +41,7 @@ describe('<AccountPasswordForm />', () => {
     // Click edit password again
     act(() => {
       component.root
-        .findByProps({ type: 'button' })
+        .findByProps({ children: 'Edit Password Again' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -54,7 +54,7 @@ describe('<AccountPasswordForm />', () => {
     // Click cancel
     act(() => {
       component.root
-        .findByProps({ type: 'button' })
+        .findByProps({ children: 'Cancel' })
         .props.onClick({ preventDefault: noop })
     })
 

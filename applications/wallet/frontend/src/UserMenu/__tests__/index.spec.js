@@ -42,6 +42,27 @@ describe('<UserMenu />', () => {
     ).toHaveBeenCalledWith({ user: mockUser })
   })
 
+  it('should logout user', () => {
+    const mockLogout = jest.fn()
+    const component = TestRenderer.create(
+      <UserMenu user={mockUser} logout={mockLogout} />,
+    )
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Open user menu' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    act(() => {
+      component.root
+        .findByProps({ children: 'Sign Out' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(mockLogout).toHaveBeenCalledWith({ redirectUrl: '/' })
+  })
+
   it('should render properly without firstName/lastName', () => {
     const component = TestRenderer.create(
       <UserMenu
