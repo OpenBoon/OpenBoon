@@ -9,6 +9,7 @@ from zmlpsdk.testing import TestEventEmitter
 
 logging.basicConfig(level=logging.DEBUG)
 
+TEST_IMAGE = "zmlp/plugins-base:latest"
 
 class ZmlpContainerDaemonTests(unittest.TestCase):
 
@@ -25,7 +26,7 @@ class ZmlpContainerDaemonTests(unittest.TestCase):
             "payload": {
                 "ref": {
                     "className": "zmlpsdk.testing.TestGenerator",
-                    "image": "zmlp/plugins-base",
+                    "image": TEST_IMAGE,
                     "args": {
                         "files": [
                             "/test-data/images/set01/toucan.jpg",
@@ -46,16 +47,18 @@ class ZmlpContainerDaemonTests(unittest.TestCase):
             "payload": {
                 "ref": {
                     "className": "zmlpsdk.testing.TestProcessor",
-                    "image": "zmlp/plugins-base",
+                    "image": TEST_IMAGE,
                     "args": {},
                     "checksum": -1
                 },
-                "asset": {
-                    "id": "1234",
-                    "document": {
-                        "kirk": "spock"
+                "assets": [
+                    {
+                        "id": "1234",
+                        "document": {
+                            "kirk": "spock"
+                        }
                     }
-                }
+                ]
             }
         }
         # Run twice
@@ -70,12 +73,14 @@ class ZmlpContainerDaemonTests(unittest.TestCase):
             "payload": {
                 "ref": {
                     "className": "foo.DoesNotExist",
-                    "image": "zmlp/plugins-base",
+                    "image": TEST_IMAGE,
                     "args": {}
                 },
-                "asset": {
-                    "id": "abc123"
-                }
+                "assets": [
+                    {
+                        "id": "abc123"
+                    }
+                ]
             }
         }
         self.zpsd.handle_event(event)
@@ -100,7 +105,7 @@ class ZmlpContainerDaemonTests(unittest.TestCase):
     def test_handle_teardown(self):
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
-            "image": "zmlp/plugins-base",
+            "image": TEST_IMAGE,
             "args": {}
         }
 
@@ -108,12 +113,12 @@ class ZmlpContainerDaemonTests(unittest.TestCase):
             "type": "execute",
             "payload": {
                 "ref": ref,
-                "asset": {
+                "assets": [{
                     "id": "1234",
                     "document": {
                         "kirk": "spock"
                     }
-                }
+                }]
             }
         }
         self.zpsd.handle_event(event)

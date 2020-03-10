@@ -4,10 +4,13 @@ import json
 import logging
 import os
 import sys
+import threading
 import time
+from queue import Queue
 
 from zmlp.asset import Asset
 from zmlpsdk import Frame, Context, ZmlpFatalProcessorException
+from .logs import AssetLogger
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +23,7 @@ class ProcessorExecutor(object):
     def __init__(self, reactor):
         self.reactor = reactor
         self.processors = {}
+        self.queue = WorkQueue(int(os.environ.get("ANALYST_THREADS", "4")))
 
     def execute_generator(self, request):
         if logger.isEnabledFor(logging.DEBUG):
@@ -51,14 +55,27 @@ class ProcessorExecutor(object):
             logger.debug('------------------------')
 
         ref = request["ref"]
-        obj = request.get("asset")
-        frame = Frame(Asset(obj))
+        assets = request.get("assets")
 
-        logger.info('Executing processor=\'{}\' on assetId=\'{}\''.format(
-            ref['className'], obj['id']))
         wrapper = self.get_processor_wrapper(ref)
-        wrapper.process(frame)
-        return frame
+
+        # Multi-thread
+        if wrapper.instance:
+            if wrapper.instance.use_threads:
+                for asset in assets:
+                    self.queue.add_asset(wrapper, asset)
+                # Wait on the thread pool to be empty.
+                self.queue.join()
+
+            # Single thread
+            else:
+                for asset in assets:
+                    self.queue.process_asset(wrapper, asset)
+        else:
+            logger.warning(
+                "The processor {} has no instance, the class was not found".format(wrapper.class_name))
+
+        return assets
 
     def teardown_processor(self, request):
         """
@@ -185,6 +202,15 @@ class ProcessorWrapper(object):
             "process_count": 0,
             "total_time": 0
         }
+        self.stat_lock = threading.RLock()
+
+    @property
+    def class_name(self):
+        return self.ref["className"]
+
+    @property
+    def image_name(self):
+        return self.ref["image"]
 
     def init(self):
         """
@@ -245,11 +271,13 @@ class ProcessorWrapper(object):
                 return
 
             if self.is_already_processed(frame.asset):
-                logger.info("The asset {} is already processed".format(frame.asset.id))
+                logger.debug("The asset {} is already processed".format(frame.asset.id))
                 return
 
             if not is_file_type_allowed(frame.asset, self.instance.file_types):
                 return
+
+            self.instance.logger.info("started processor")
 
             retval = self.instance.process(frame)
             # a -1 means the processor was skipped internally.
@@ -277,6 +305,7 @@ class ProcessorWrapper(object):
         finally:
             # Always show metrics even if it was skipped because otherwise
             # the pipeline checksums don't work.
+            self.instance.logger.info("completed processor in {0:.2f}".format(total_time))
             self.apply_metrics(frame.asset, processed, total_time, error)
             self.reactor.write_event("asset", {
                 "asset": frame.asset.for_json(),
@@ -295,7 +324,7 @@ class ProcessorWrapper(object):
             self.instance.teardown()
             # When the processor tears down then force an expand check.
             self.reactor.check_expand(force=True)
-            self.reactor.write_event({"stats", [self.stats]})
+            self.reactor.write_event("stats", [self.stats])
         except Exception as e:
             self.reactor.error(None, self.instance, e, False, "teardown", sys.exc_info()[2])
 
@@ -310,9 +339,10 @@ class ProcessorWrapper(object):
         Returns:
             (mixed): The new value
         """
-        val = self.stats.get(key, 0) + value
-        self.stats[key] = val
-        return val
+        with self.stat_lock:
+            val = self.stats.get(key, 0) + value
+            self.stats[key] = val
+            return val
 
     def apply_metrics(self, asset, processed, exec_time, error):
         """
@@ -472,3 +502,69 @@ def is_file_type_allowed(asset, file_types):
             return False
     else:
         return True
+
+
+class WorkQueue(Queue):
+    """
+    The WorkQueue is a basic thread pool that works on a queue
+    of assets.
+    """
+
+    def __init__(self, num_workers):
+        """
+        Create a new WorkQueue instance with the given number of threads.
+
+        Args:
+            num_workers (int): The number of worker threads to spawn.
+        """
+        Queue.__init__(self)
+        self.num_workers = num_workers
+        self.__start_workers()
+
+    def __start_workers(self):
+        """
+        Start the worker threads.
+        """
+        for i in range(self.num_workers):
+            t = threading.Thread(target=self.worker)
+            t.daemon = True
+            t.start()
+
+    def add_asset(self, wrapper, asset):
+        """
+        Add an asset to the processing queue.
+
+        Args:
+            wrapper (ProcessorWrapper): A ProceessorWrapper instance.
+            asset (dict): An asset dictionary.
+        """
+        self.put([wrapper, asset])
+
+    def worker(self):
+        """
+        The worker thread entry point function.
+        """
+        while True:
+            # All threads block on get() until something appears in the queue.
+            wrapper, asset = self.get()
+            try:
+                self.process_asset(wrapper, asset)
+            finally:
+                self.task_done()
+
+    def process_asset(self, wrapper, asset):
+        """
+        Processes a given asset using the given processor wrapper.
+
+        Args:
+            wrapper (ProcessorWrapper): The processor wrapper to execute.
+            asset (dict): The asset dictionary.
+        """
+        frame = Frame(Asset(asset))
+        # This has to be done in the thread for
+        # the logger to pick up the thread local value.
+        AssetLogger.set_asset_id(frame.asset.id)
+        try:
+            wrapper.process(frame)
+        finally:
+            AssetLogger.clear_asset_id()

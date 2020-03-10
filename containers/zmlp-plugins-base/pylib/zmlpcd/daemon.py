@@ -34,6 +34,7 @@ class ZmlpContainerDaemon(object):
     def start(self):
         logger.info("Analyst container server listening on port: %d" % self.port)
         while True:
+            logger.info("Waiting for Analyst...")
             event = self.socket.recv_json()
             try:
                 self.handle_event(event)

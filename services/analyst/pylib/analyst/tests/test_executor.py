@@ -11,6 +11,7 @@ from .test_service import test_task
 
 logging.basicConfig(level=logging.DEBUG)
 
+os.environ["ANALYST_DOCKER_PULL"] = "false"
 
 class MockClusterClient:
     """
@@ -38,6 +39,7 @@ class MockClusterClient:
 class TestZpsExecutor(unittest.TestCase):
 
     def setUp(self):
+        self.wrapper = None
         self.client = MockClusterClient()
         self.gen_task = {
             "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
@@ -60,44 +62,42 @@ class TestZpsExecutor(unittest.TestCase):
             }
         }
 
+    def tearDown(self):
+        if self.wrapper:
+            self.wrapper.stop_container("finished test")
+
     def test_kill(self):
         task = test_task(sleep=30)
 
-        wrapper = ZpsExecutor(task, self.client)
+        self.wrapper = ZpsExecutor(task, self.client)
 
         def threaded_function():
             time.sleep(8)
-            wrapper.kill(task["id"], "skipped", "manual kill")
+            self.wrapper.kill(task["id"], "skipped", "manual kill")
 
         thread = threading.Thread(target=threaded_function)
         thread.start()
-        wrapper.run()
+        self.wrapper.run()
         thread.join()
 
     def test_process(self):
         task = test_task()
-        wrapper = ZpsExecutor(task, self.client)
-        wrapper.run()
-
-        assert self.client.event_count("started") == 1
-        assert self.client.event_count("stopped") == 1
-        assert self.client.event_count("expand") == 0
-        assert self.client.event_count("index") == 1
-        assert self.client.event_count("stats") == 1
+        self.wrapper = ZpsExecutor(task, self.client)
+        self.wrapper.run()
 
     def test_process_invalid_processor(self):
         task = test_task()
         task["script"]["execute"][0]["className"] = "FOO.analysis.testing.FOOProcessor"
 
-        wrapper = ZpsExecutor(task, self.client)
-        result = wrapper.run()
+        self.wrapper = ZpsExecutor(task, self.client)
+        result = self.wrapper.run()
         assert result["hardfailure_events"] == 1
         assert result["error_events"] == 1
         assert result["exit_status"] == 2
 
     def test_generate(self):
-        wrapper = ZpsExecutor(self.gen_task, self.client)
-        wrapper.run()
+        self.wrapper = ZpsExecutor(self.gen_task, self.client)
+        self.wrapper.run()
 
         assert self.client.event_count("started") == 1
         assert self.client.event_count("stopped") == 1
@@ -107,8 +107,8 @@ class TestZpsExecutor(unittest.TestCase):
 
     def test_generate_invalid_processor(self):
         self.gen_task["script"]["generate"][0]["className"] = "foo.analysis.testing.FOO"
-        wrapper = ZpsExecutor(self.gen_task, self.client)
-        result = wrapper.run()
+        self.wrapper = ZpsExecutor(self.gen_task, self.client)
+        result = self.wrapper.run()
 
         assert result.get("hardfailure_events") == 1
         assert result.get("exit_status") == 1
@@ -117,18 +117,13 @@ class TestZpsExecutor(unittest.TestCase):
 class TestDockerContainerWrapper(unittest.TestCase):
 
     def setUp(self):
-        os.environ["ANALYST_DOCKER_PULL"] = "false"
         self.client = MockClusterClient()
         task = test_task()
         wrapper = ZpsExecutor(task, self.client)
-        self.container = DockerContainerWrapper(wrapper, task, "zmlp/plugins-base")
+        self.container = DockerContainerWrapper(wrapper, task, "zmlp/plugins-base:latest")
 
     def tearDown(self):
         self.container.stop()
-        try:
-            del os.environ["ANALYST_DOCKER_PULL"]
-        except KeyError:
-            pass
 
     def test_get_network_id(self):
         # Running locally this is false, running in CI/CD it's true
@@ -142,15 +137,6 @@ class TestDockerContainerWrapper(unittest.TestCase):
         event = {"type": "ok", "payload": {}}
         self.container.log_event(event)
         assert self.container.event_counts["ok_events"] == 1
-
-    def test_docker_pull(self):
-        try:
-            del os.environ["ANALYST_DOCKER_PULL"]
-        except KeyError:
-            pass
-
-        image = self.container._pull_image()
-        assert "zmlp/plugins-base:development" == image
 
     def test_docker_login(self):
         # Fake creds result in failure to logs
@@ -169,10 +155,6 @@ class TestDockerContainerWrapper(unittest.TestCase):
             self.container._docker_login()
         finally:
             del os.environ["ANALYST_DOCKER_CREDS_FILE"]
-
-    def test_docker_pull_no_repo(self):
-        image = self.container._pull_image()
-        assert "zmlp/plugins-base" == image
 
     def test_receive_event_with_timeout(self):
         event = self.container.receive_event(250)
