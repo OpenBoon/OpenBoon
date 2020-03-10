@@ -3,9 +3,9 @@ import { colors, spacing, constants } from '../Styles'
 
 const STATUS_COLORS = {
   InProgress: colors.signal.canary.base,
-  Cancelled: colors.structure.steel,
+  Cancelled: colors.structure.zinc,
   Success: colors.signal.grass.base,
-  Archived: colors.signal.grass.base,
+  Archived: colors.structure.iron,
   Failure: colors.signal.warning.base,
   Paused: colors.structure.coal,
 }

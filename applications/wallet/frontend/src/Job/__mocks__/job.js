@@ -3,7 +3,7 @@ const job = {
   organizationId: '00000000-9998-8888-7777-666666666666',
   name: 'image_similarity.json',
   type: 'Import',
-  state: 'Finished',
+  state: 'Success',
   assetCounts: {
     assetCreatedCount: 15,
     assetReplacedCount: 0,
