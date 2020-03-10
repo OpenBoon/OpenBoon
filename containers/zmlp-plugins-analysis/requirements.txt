@@ -22,5 +22,4 @@ backoff
 cmake
 cvlib
 matplotlib
-
-
+clarifai
