@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 import { colors, constants, spacing, zIndex } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
@@ -5,15 +7,15 @@ import Button, { VARIANTS } from '../Button'
 import CirclePlusSvg from './circlePlus.svg'
 import CircleMinusSvg from './circleMinus.svg'
 
-const VisualizerResize = () => (
+import { ACTIONS } from './reducer'
+
+const AssetsResize = ({ dispatch, isMin, isMax }) => (
   <div
     css={{
       position: 'absolute',
       bottom: 16,
       right: 16,
       display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
       border: constants.borders.tab,
       borderRadius: constants.borderRadius.small,
       backgroundColor: colors.structure.lead,
@@ -26,11 +28,21 @@ const VisualizerResize = () => (
       paddingRight: spacing.base,
     }}>
     <Button
+      aria-label="Zoom Out"
+      onClick={() => {
+        dispatch({ type: ACTIONS.DECREMENT })
+      }}
+      isDisabled={isMin}
       variant={VARIANTS.ICON}
       css={{ opacity: constants.opacity.full, padding: spacing.base }}>
       <CircleMinusSvg width={20} />
     </Button>
     <Button
+      aria-label="Zoom In"
+      onClick={() => {
+        dispatch({ type: ACTIONS.INCREMENT })
+      }}
+      isDisabled={isMax}
       variant={VARIANTS.ICON}
       css={{ opacity: constants.opacity.full, padding: spacing.base }}>
       <CirclePlusSvg width={20} />
@@ -38,4 +50,10 @@ const VisualizerResize = () => (
   </div>
 )
 
-export default VisualizerResize
+AssetsResize.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  isMin: PropTypes.bool.isRequired,
+  isMax: PropTypes.bool.isRequired,
+}
+
+export default AssetsResize
