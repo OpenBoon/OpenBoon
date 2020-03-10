@@ -1,7 +1,8 @@
-import PropTypes from 'prop-types'
 import JSONPretty from 'react-json-pretty'
 
 import { spacing, colors } from '../Styles'
+
+import assetShape from '../Asset/shape'
 
 const JobErrorAssetContent = ({
   asset,
@@ -54,14 +55,7 @@ const JobErrorAssetContent = ({
 }
 
 JobErrorAssetContent.propTypes = {
-  asset: PropTypes.shape({
-    metadata: PropTypes.shape({
-      source: PropTypes.shape({
-        url: PropTypes.string.isRequired,
-        filename: PropTypes.string.isRequired,
-      }).isRequired,
-    }).isRequired,
-  }).isRequired,
+  asset: assetShape.isRequired,
 }
 
 export default JobErrorAssetContent
