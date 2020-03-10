@@ -18,8 +18,7 @@ const JobErrorAssetContent = ({
         css={{
           backgroundColor: colors.structure.black,
           fontFamily: 'Roboto Mono',
-          padding: spacing.normal,
-          overflow: 'auto',
+          height: '100%',
         }}>
         <div
           css={{
@@ -32,23 +31,26 @@ const JobErrorAssetContent = ({
             src={url.replace('https://wallet.zmlp.zorroa.com', '')}
             alt={filename}
             css={{
-              minHeight: `100px`,
+              width: '48px',
+              height: '48px',
               padding: spacing.small,
               border: '1px solid grey',
             }}
           />
           <div css={{ paddingLeft: spacing.comfy }}>{filename}</div>
         </div>
-        <JSONPretty
-          id="json-pretty"
-          data={asset}
-          theme={{
-            main: 'line-height:1.3;overflow:auto;',
-            string: `color:${colors.signal.grass.base};`,
-            value: `color:${colors.signal.sky.base};`,
-            boolean: `color:${colors.signal.canary.base};`,
-          }}
-        />
+        <div css={{ padding: spacing.normal }}>
+          <JSONPretty
+            id="json-pretty"
+            data={asset}
+            theme={{
+              main: 'line-height:1.3;overflow:auto;',
+              string: `color:${colors.signal.grass.base};`,
+              value: `color:${colors.signal.sky.base};`,
+              boolean: `color:${colors.signal.canary.base};`,
+            }}
+          />
+        </div>
       </div>
     </>
   )
