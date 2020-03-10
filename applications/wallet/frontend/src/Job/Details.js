@@ -6,7 +6,7 @@ import { spacing, typography } from '../Styles'
 import Value, { VARIANTS } from '../Value'
 import ProgressBar from '../ProgressBar'
 
-import JobErrorsJobMenu from './Menu'
+import JobMenu from './Menu'
 
 const JobDetails = () => {
   const {
@@ -35,11 +35,7 @@ const JobDetails = () => {
       </h3>
 
       <div css={{ display: 'flex', alignItems: 'center' }}>
-        <JobErrorsJobMenu
-          projectId={projectId}
-          jobId={jobId}
-          revalidate={revalidate}
-        />
+        <JobMenu projectId={projectId} jobId={jobId} revalidate={revalidate} />
 
         <Value legend="Job Status" variant={VARIANTS.PRIMARY}>
           {state}
