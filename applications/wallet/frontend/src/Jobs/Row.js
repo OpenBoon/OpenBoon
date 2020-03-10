@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
+import Router from 'next/router'
 import Link from 'next/link'
 
-import { colors, spacing, typography } from '../Styles'
+import { colors, spacing, typography, constants } from '../Styles'
 
 import { formatFullDate } from '../Date/helpers'
 
@@ -28,11 +29,24 @@ const JobsRow = ({
   const taskCounts = { ...tC, tasksPending: tC.tasksWaiting + tC.tasksQueued }
 
   return (
-    <tr>
+    <tr
+      css={{ cursor: 'pointer' }}
+      onClick={event => {
+        const { target: { localName } = {} } = event || {}
+        if (['a', 'button', 'svg', 'path'].includes(localName)) return
+        Router.push('/[projectId]/jobs/[jobId]', `/${projectId}/jobs/${jobId}`)
+      }}>
       <td>
         <Status jobStatus={state} />
       </td>
-      <td>{name}</td>
+      <td>
+        <Link
+          href="/[projectId]/jobs/[jobId]"
+          as={`/${projectId}/jobs/${jobId}`}
+          passHref>
+          <a>{name}</a>
+        </Link>
+      </td>
       <td css={{ textAlign: 'center' }}>{priority}</td>
       <td>{formatFullDate({ timestamp: timeCreated })}</td>
       <td css={{ textAlign: 'center' }}>
@@ -61,6 +75,7 @@ const JobsRow = ({
                 color: colors.signal.warning.base,
                 backgroundColor: colors.structure.coal,
                 '&:hover': {
+                  border: constants.borders.pill,
                   textDecoration: 'none',
                   cursor: 'pointer',
                 },

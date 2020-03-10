@@ -47,6 +47,9 @@ const TableContent = ({
             ':hover': {
               backgroundColor: colors.structure.iron,
               boxShadow: constants.boxShadows.tableRow,
+              '.gear': {
+                color: colors.structure.zinc,
+              },
               td: {
                 border: constants.borders.tableRow,
                 borderLeft: '0',

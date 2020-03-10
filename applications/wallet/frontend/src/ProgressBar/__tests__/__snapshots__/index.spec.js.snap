@@ -164,6 +164,9 @@ exports[`setShowKeyInfo() when user is using keyboard should show Legend on keyP
   display: flex;
   background-color: #4a4a4a;
   border-radius: 2px;
+  font-family: Roboto Condensed;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 .emotion-5 {
@@ -500,6 +503,9 @@ exports[`setShowKeyInfo() when user is using mouse should show Legend on mouseen
   display: flex;
   background-color: #4a4a4a;
   border-radius: 2px;
+  font-family: Roboto Condensed;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 .emotion-5 {
