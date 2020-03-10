@@ -2,6 +2,9 @@ import PropTypes from 'prop-types'
 
 import { formatFullDate, formatDuration } from '../Date/helpers'
 
+import JobTasksStateIcon from './StateIcon'
+import { spacing } from '../Styles'
+
 const JobTasksRow = ({
   task: {
     id,
@@ -15,7 +18,10 @@ const JobTasksRow = ({
 }) => {
   return (
     <tr>
-      <td>{state}</td>
+      <td css={{ display: 'flex' }}>
+        <JobTasksStateIcon state={state} />
+        <span css={{ paddingLeft: spacing.normal }}>{state}</span>
+      </td>
       <td title={id}>{id}</td>
       <td title={name}>{name}</td>
       <td>{formatDuration({ seconds: timeStopped - timeStarted })}</td>

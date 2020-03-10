@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<JobTasks /> should render properly with job tasks 1`] = `
-.emotion-8 {
+.emotion-20 {
   height: auto;
 }
 
-.emotion-7 {
+.emotion-19 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -13,38 +13,38 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   white-space: nowrap;
 }
 
-.emotion-7 tr {
+.emotion-19 tr {
   background-color: #252525;
 }
 
-.emotion-7 tr:nth-of-type(2n) {
+.emotion-19 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-7 tr:hover {
+.emotion-19 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-7 tr:hover .gear {
+.emotion-19 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-7 tr:hover td {
+.emotion-19 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-7 tr:hover td:first-of-type {
+.emotion-19 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-7 tr:hover td:last-of-type {
+.emotion-19 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-7 td {
+.emotion-19 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -56,11 +56,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   border-right: 0;
 }
 
-.emotion-7 td:first-of-type {
+.emotion-19 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-7 td:last-of-type {
+.emotion-19 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -84,11 +84,22 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-7 {
+  padding-left: 16px;
+}
+
 <div
-  className="emotion-8"
+  className="emotion-20"
 >
   <table
-    className="emotion-7"
+    className="emotion-19"
   >
     <thead>
       <tr>
@@ -131,8 +142,19 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
     </thead>
     <tbody>
       <tr>
-        <td>
-          Success
+        <td
+          className="emotion-8"
+        >
+          <svg
+            color="#4a90e2"
+            data-file-name="pending.svg"
+            width={20}
+          />
+          <span
+            className="emotion-7"
+          >
+            Waiting
+          </span>
         </td>
         <td
           title="c812fa09-5f3a-11ea-bb46-6a6895b1a9f6"
@@ -158,8 +180,19 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
         </td>
       </tr>
       <tr>
-        <td>
-          Success
+        <td
+          className="emotion-8"
+        >
+          <svg
+            color="#ebb52e"
+            data-file-name="generating.svg"
+            width={20}
+          />
+          <span
+            className="emotion-7"
+          >
+            Running
+          </span>
         </td>
         <td
           title="ea7836f2-44a7-19e1-a67f-1e6fa1f82545"
@@ -185,13 +218,138 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
         </td>
       </tr>
       <tr>
-        <td>
-          Success
+        <td
+          className="emotion-8"
+        >
+          <svg
+            color="#4ac565"
+            data-file-name="checkmark.svg"
+            width={20}
+          />
+          <span
+            className="emotion-7"
+          >
+            Success
+          </span>
         </td>
         <td
           title="ea7836f3-44a7-19e1-a67f-1e6fa1f82545"
         >
           ea7836f3-44a7-19e1-a67f-1e6fa1f82545
+        </td>
+        <td
+          title="Expand with 15 assets, 8 processors."
+        >
+          Expand with 15 assets, 8 processors.
+        </td>
+        <td>
+          10h : 26m : 32s
+        </td>
+        <td>
+          15
+        </td>
+        <td>
+          2020-03-05 23:42:28
+        </td>
+        <td>
+          0
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="emotion-8"
+        >
+          <svg
+            color="#c92300"
+            data-file-name="cross.svg"
+            width={20}
+          />
+          <span
+            className="emotion-7"
+          >
+            Failure
+          </span>
+        </td>
+        <td
+          title="c812fa09-5f3a-11ea-bb46-6a6895b1a9f9"
+        >
+          c812fa09-5f3a-11ea-bb46-6a6895b1a9f9
+        </td>
+        <td
+          title="Expand with 20 assets, 8 processors."
+        >
+          Expand with 20 assets, 8 processors.
+        </td>
+        <td>
+          13h : 33m : 58s
+        </td>
+        <td>
+          20
+        </td>
+        <td>
+          2020-03-05 23:41:28
+        </td>
+        <td>
+          0
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="emotion-8"
+        >
+          <svg
+            color="#808080"
+            data-file-name="paused.svg"
+            width={20}
+          />
+          <span
+            className="emotion-7"
+          >
+            Skipped
+          </span>
+        </td>
+        <td
+          title="ea7836f2-44a7-19e1-a67f-1e6fa1f82549"
+        >
+          ea7836f2-44a7-19e1-a67f-1e6fa1f82549
+        </td>
+        <td
+          title="Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'"
+        >
+          Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'
+        </td>
+        <td>
+          01h : 07m : 38s
+        </td>
+        <td>
+          0
+        </td>
+        <td>
+          2020-03-05 23:40:52
+        </td>
+        <td>
+          0
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="emotion-8"
+        >
+          <svg
+            color="#4a90e2"
+            data-file-name="pending.svg"
+            width={20}
+          />
+          <span
+            className="emotion-7"
+          >
+            Queued
+          </span>
+        </td>
+        <td
+          title="ea7836f3-44a7-19e1-a67f-1e6fa1f82549"
+        >
+          ea7836f3-44a7-19e1-a67f-1e6fa1f82549
         </td>
         <td
           title="Expand with 15 assets, 8 processors."
