@@ -8,14 +8,19 @@ import Assets from '../Assets'
 import VisualizerInfobar from './Infobar'
 import VisualizerMetadata from './Metadata'
 
+const SIZE = 50
+
 const VisualizerContent = () => {
   const {
-    query: { projectId },
+    query: { projectId, page = 1 },
   } = useRouter()
+
+  const parsedPage = parseInt(page, 10)
+  const from = SIZE * (parsedPage - 1)
 
   const {
     data: { results: assets, count },
-  } = useSWR(`/api/v1/projects/${projectId}/assets/`)
+  } = useSWR(`/api/v1/projects/${projectId}/assets/?from=${from}&size=${SIZE}`)
 
   return (
     <div
@@ -30,7 +35,11 @@ const VisualizerContent = () => {
         flex: 1,
         flexDirection: 'column',
       }}>
-      <VisualizerInfobar displayCount={assets.length} totalCount={count} />
+      <VisualizerInfobar
+        currentPage={parsedPage}
+        totalPages={Math.ceil(count / SIZE)}
+        totalCount={count}
+      />
       <div
         css={{
           display: 'flex',
