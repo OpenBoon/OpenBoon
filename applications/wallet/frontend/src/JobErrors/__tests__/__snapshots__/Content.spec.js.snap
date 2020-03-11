@@ -203,7 +203,7 @@ exports[`<JobErrorsContent /> should render properly with a job 1`] = `
       <div
         className="emotion-5"
       >
-        Finished
+        Success
       </div>
     </div>
     <div

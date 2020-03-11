@@ -10,7 +10,7 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
       type: 'Import',
-      state: 'Cancelled',
+      state: 'InProgress',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
@@ -42,7 +42,7 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
       type: 'Import',
-      state: 'InProgress',
+      state: 'Cancelled',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
@@ -74,7 +74,7 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
       type: 'Import',
-      state: 'Archived',
+      state: 'Success',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
@@ -94,7 +94,7 @@ const jobs = {
       timeUpdated: 1573090589586,
       timeCreated: 1573090589586,
       priority: 100,
-      paused: true,
+      paused: false,
       timePauseExpired: -1,
       maxRunningTasks: 1024,
       jobId: '82d5308a-67c2-1433-8fef-0a580a000955',
@@ -106,7 +106,7 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test-whitespace.json',
       type: 'Import',
-      state: 'Cancelled',
+      state: 'Archived',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
@@ -138,7 +138,7 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test_officer',
       type: 'Import',
-      state: 'Finished',
+      state: 'Failure',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
@@ -170,7 +170,7 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'test_officer',
       type: 'Import',
-      state: 'Active',
+      state: 'InProgress',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
@@ -190,7 +190,7 @@ const jobs = {
       timeUpdated: 1570827807692,
       timeCreated: 1570827807692,
       priority: 100,
-      paused: false,
+      paused: true,
       timePauseExpired: -1,
       maxRunningTasks: 1024,
       jobId: 'c097596f-62ef-1f81-83f8-0a580a000954',
@@ -202,7 +202,7 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'flipbook_export_1',
       type: 'Export',
-      state: 'Active',
+      state: 'Success',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
@@ -234,7 +234,7 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'export_7_8_2019',
       type: 'Export',
-      state: 'Active',
+      state: 'Success',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
@@ -266,7 +266,7 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'export_7_8_2019___',
       type: 'Export',
-      state: 'Active',
+      state: 'Success',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
@@ -298,7 +298,7 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'sdlc-testdata-import.json',
       type: 'Import',
-      state: 'Active',
+      state: 'Success',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,
@@ -330,7 +330,7 @@ const jobs = {
       organizationId: '00000000-9998-8888-7777-666666666666',
       name: 'sdlc-testdata-import.json',
       type: 'Import',
-      state: 'Active',
+      state: 'Success',
       assetCounts: {
         assetCreatedCount: 0,
         assetReplacedCount: 0,

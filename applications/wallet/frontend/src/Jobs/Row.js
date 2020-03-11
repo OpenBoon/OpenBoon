@@ -6,7 +6,7 @@ import { colors, spacing, typography, constants } from '../Styles'
 
 import { formatFullDate } from '../Date/helpers'
 
-import Status from '../Status'
+import JobsStatus from './Status'
 import ProgressBar, { CONTAINER_WIDTH } from '../ProgressBar'
 
 import JobsMenu from './Menu'
@@ -18,6 +18,7 @@ const JobsRow = ({
   job: {
     id: jobId,
     state,
+    paused,
     name,
     assetCounts,
     priority,
@@ -28,6 +29,8 @@ const JobsRow = ({
 }) => {
   const taskCounts = { ...tC, tasksPending: tC.tasksWaiting + tC.tasksQueued }
 
+  const status = paused ? 'Paused' : state
+
   return (
     <tr
       css={{ cursor: 'pointer' }}
@@ -37,7 +40,7 @@ const JobsRow = ({
         Router.push('/[projectId]/jobs/[jobId]', `/${projectId}/jobs/${jobId}`)
       }}>
       <td>
-        <Status jobStatus={state} />
+        <JobsStatus status={status} />
       </td>
       <td>
         <Link
@@ -93,7 +96,12 @@ const JobsRow = ({
         <ProgressBar taskCounts={taskCounts} />
       </td>
       <td>
-        <JobsMenu projectId={projectId} jobId={jobId} revalidate={revalidate} />
+        <JobsMenu
+          projectId={projectId}
+          jobId={jobId}
+          status={status}
+          revalidate={revalidate}
+        />
       </td>
     </tr>
   )
@@ -104,6 +112,7 @@ JobsRow.propTypes = {
   job: PropTypes.shape({
     id: PropTypes.string.isRequired,
     state: PropTypes.string.isRequired,
+    paused: PropTypes.bool.isRequired,
     name: PropTypes.string.isRequired,
     assetCounts: PropTypes.shape({
       assetCreatedCount: PropTypes.number.isRequired,
