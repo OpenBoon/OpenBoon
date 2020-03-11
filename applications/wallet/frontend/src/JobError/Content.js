@@ -4,14 +4,13 @@ import useSWR from 'swr'
 import SectionTitle from '../SectionTitle'
 import Value, { VARIANTS } from '../Value'
 import Tabs from '../Tabs'
+import JobErrorStackTrace from '../JobErrorStackTrace'
+import JobErrorAsset from '../JobErrorAsset'
+import SuspenseBoundary from '../SuspenseBoundary'
 
 import JobErrorType from './Type'
 import JobErrorTaskMenu from './TaskMenu'
 import JobErrorDetails from './Details'
-import JobErrorStackTrace from '../JobErrorStackTrace'
-import JobErrorAsset from '../JobErrorAsset'
-
-import SuspenseBoundary from '../SuspenseBoundary'
 
 const JobErrorContent = () => {
   const {

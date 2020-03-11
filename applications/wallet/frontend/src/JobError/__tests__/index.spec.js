@@ -8,6 +8,8 @@ const JOB_ID = jobErrorFatal.jobId
 const FATAL_ERROR_ID = jobErrorFatal.id
 const NON_FATAL_ERROR_ID = jobErrorNonFatal.id
 
+jest.mock('../../JobErrorAsset', () => 'JobErrorAsset')
+
 describe('<JobError />', () => {
   it('should render properly with a fatal error', () => {
     require('next/router').__setUseRouter({
@@ -74,6 +76,7 @@ describe('<JobError />', () => {
       pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]/asset',
       query: {
         projectId: PROJECT_ID,
+        jobId: JOB_ID,
         errorId: FATAL_ERROR_ID,
       },
     })

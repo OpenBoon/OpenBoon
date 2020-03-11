@@ -68,7 +68,7 @@ Array [
     >
       <a
         className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/undefined/errors"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -480,7 +480,7 @@ Array [
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/undefined/errors/85f0d09c-0631-104b-a57e-ce490d54f27a"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors/85f0d09c-0631-104b-a57e-ce490d54f27a"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -492,7 +492,7 @@ Array [
       >
         <a
           className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/undefined/errors/85f0d09c-0631-104b-a57e-ce490d54f27a/asset"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors/85f0d09c-0631-104b-a57e-ce490d54f27a/asset"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -501,50 +501,9 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-1 {
-  height: 100%;
-}
-
-.emotion-0 {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-  color: #808080;
-  background-color: #252525;
-  font-size: 15px;
-  line-height: 19px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-}
-
-<div
-    className="emotion-1"
-  >
-    <div
-      className="emotion-0"
-    >
-      <svg
-        data-file-name="error.svg"
-      />
-      <br />
-       Hmmm, something went wrong.
-      <br />
-       Please try refreshing.
-    </div>
-  </div>,
+  <JobErrorAsset
+    assetId="HfQ4xpvClTgRHFidgyXRcK01e6u239Lv"
+  />,
 ]
 `;
 
