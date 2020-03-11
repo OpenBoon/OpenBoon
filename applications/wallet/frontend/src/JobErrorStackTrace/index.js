@@ -13,7 +13,7 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
         height: '100%',
       }}>
       <div>&quot;message&quot;: {message}</div>
-      {stackTrace.length ? (
+      {!!stackTrace.length && (
         <>
           <div
             css={{
@@ -33,7 +33,7 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
             }}
           />
         </>
-      ) : null}
+      )}
     </div>
   )
 }
