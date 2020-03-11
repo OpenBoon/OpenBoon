@@ -31,6 +31,7 @@ class ApikeyViewSet(BaseProjectViewSet):
         except ZmlpInvalidRequestException:
             return Response(data={'detail': 'Bad Request'},
                             status=status.HTTP_400_BAD_REQUEST)
+
         return Response(status=status.HTTP_201_CREATED, data=apikey)
 
     def destroy(self, request, project_pk, pk):

@@ -32,7 +32,7 @@ const job = {
       'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/cancel/',
     errors:
       'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/errors/',
-    'max-running-tasks':
+    'maxRunningTasks':
       'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/max_running_tasks/',
     pause:
       'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/pause/',
@@ -42,7 +42,7 @@ const job = {
       'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/restart/',
     resume:
       'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/resume/',
-    'retry-all-failures':
+    'retryAllFailures':
       'http://localhost/api/v1/projects/299a5a40-368c-4f7a-8664-36ded98346ef/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8/retry_all_failures/',
   },
 }
