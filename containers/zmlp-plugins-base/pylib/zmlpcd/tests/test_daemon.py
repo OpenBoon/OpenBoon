@@ -11,6 +11,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 TEST_IMAGE = "zmlp/plugins-base:latest"
 
+
 class ZmlpContainerDaemonTests(unittest.TestCase):
 
     def tearDown(self):

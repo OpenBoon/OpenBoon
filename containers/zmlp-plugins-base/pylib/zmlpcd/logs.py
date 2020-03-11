@@ -6,6 +6,7 @@ import threading
 # logging class is AssetLogger, otherwise you may see some formatting
 # exceptions in the log output.
 
+
 class AssetLogger(logging.Logger):
     """
     A logging.Logger subclass that uses the 'extra' feature to pass
@@ -49,5 +50,3 @@ def setup_logging():
         logging.basicConfig(level=logging.DEBUG, format=log_format)
     else:
         logging.basicConfig(level=logging.INFO, format=log_format)
-
-

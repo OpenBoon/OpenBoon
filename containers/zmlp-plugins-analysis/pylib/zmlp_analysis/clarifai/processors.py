@@ -7,7 +7,7 @@ from zmlpsdk.proxy import get_proxy_level_path
 
 
 class ClarifaiPredictProcessor(AssetProcessor):
-    namespace = "clarifai.predict"
+    namespace = 'clarifai.predict'
 
     def __init_(self):
         super(ClarifaiPredictProcessor, self).__init__()
@@ -22,19 +22,18 @@ class ClarifaiPredictProcessor(AssetProcessor):
 
         model = self.clarifai.public_models.general_model
         response = model.predict_by_filename(p_path)
-        labels = response["outputs"][0]["data"]["concepts"]
-        model = response["outputs"][0]["model"]["name"]
+        labels = response['outputs'][0]['data']['concepts']
+        model = response['outputs'][0]['model']['name']
 
-        result = [{"label": label['name'], "score": label["value"]} for label in labels]
-        asset.add_analysis(self.namespace, {"model": model, "labels": result})
+        result = [{'label': label['name'], 'score': label['value']} for label in labels]
+        asset.add_analysis(self.namespace, {'model': model, 'labels': result})
 
 
 def get_clarifai_app():
     app = zmlp.app_from_env()
     jobid = ZmlpEnv.get_job_id()
     try:
-        # creds = app.client.get('/api/v1/jobs/{}/_credentials/CLARIFAI'.format(jobid))
-        key = "17974843be1942c1a41657304eeeea07"
-        return ClarifaiApp(api_key=key)
+        creds = app.client.get('/api/v1/jobs/{}/_credentials/CLARIFAI'.format(jobid))
+        return ClarifaiApp(api_key=creds['apikey'])
     except ZmlpException as e:
         raise ZmlpFatalProcessorException("Job is missing Clarifai credentials", e)

@@ -62,7 +62,7 @@ class ZviLabelDetectionResNet152(AssetProcessor):
         # psort is a sorting of prob. We need to keep prob in order to assign
         # the floating point probabilities attrs
         psort = np.argsort(prob)[::-1]
-        labels = [ ]
+        labels = []
         for j, i in enumerate(psort[0:20]):
             if prob[i] < 0.15:
                 break

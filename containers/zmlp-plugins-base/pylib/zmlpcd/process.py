@@ -73,7 +73,8 @@ class ProcessorExecutor(object):
                     self.queue.process_asset(wrapper, asset)
         else:
             logger.warning(
-                "The processor {} has no instance, the class was not found".format(wrapper.class_name))
+                "The processor {} has no instance, the class was not found".format(
+                    wrapper.class_name))
 
         return assets
 

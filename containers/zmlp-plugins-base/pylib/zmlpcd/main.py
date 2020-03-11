@@ -16,5 +16,3 @@ def main():
 
     server = ZmlpContainerDaemon(port)
     server.start()
-
-

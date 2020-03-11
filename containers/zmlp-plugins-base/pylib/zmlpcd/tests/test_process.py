@@ -11,6 +11,7 @@ setup_logging()
 
 TEST_IMAGE = "zmlp/plugins-base:latest"
 
+
 class ProcessorExecutorTests(unittest.TestCase):
 
     def setUp(self):
@@ -42,14 +43,14 @@ class ProcessorExecutorTests(unittest.TestCase):
             ]
         }
         assets = self.pe.execute_processor(req)
-        print(self.emitter.events)
         assert self.emitter.event_count("asset") == 1
         assert self.emitter.event_count("error") == 0
         assert self.emitter.event_total() == 1
 
         # Make sure we got metrics
         assert assets[0]["document"]["metrics"]["pipeline"]
-        assert "zmlpsdk.testing.TestProcessor" == assets[0]["document"]["metrics"]["pipeline"][0]["processor"]
+        assert "zmlpsdk.testing.TestProcessor" \
+               == assets[0]["document"]["metrics"]["pipeline"][0]["processor"]
 
     def test_execute_processor_and_raise_fatal(self):
         req = {
@@ -71,8 +72,6 @@ class ProcessorExecutorTests(unittest.TestCase):
         }
 
         asset = self.pe.execute_processor(req)[0]
-
-        print(self.emitter.events)
         assert self.emitter.event_count("asset") == 1
         assert self.emitter.event_count("error") == 1
         assert self.emitter.event_total() == 2

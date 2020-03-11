@@ -26,6 +26,7 @@ class MockClarifaiApp(object):
 
         self.public_models = PublicModels()
 
+
 class ClarifaiPredictProcessorTests(PluginUnitTestCase):
 
     def setUp(self):
