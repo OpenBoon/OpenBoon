@@ -37,8 +37,8 @@ const VisualizerContent = () => {
       }}>
       <VisualizerInfobar
         currentPage={parsedPage}
+        totalPages={Math.ceil(count / SIZE)}
         totalCount={count}
-        size={SIZE}
       />
       <div
         css={{
