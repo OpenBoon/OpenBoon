@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Visualizer /> should render properly 1`] = `
-.emotion-31 {
+.emotion-30 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-11 {
+.emotion-10 {
   min-height: 44px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -33,11 +33,12 @@ exports[`<Visualizer /> should render properly 1`] = `
   background-color: #2e2e2e;
   box-shadow: 0px 3px 3px 0 rgba(0,0,0,0.3);
   font-family: Roboto Condensed;
+  padding: 0 16px;
 }
 
 .emotion-0 {
   color: #808080;
-  padding: 8px;
+  padding: 8 0;
 }
 
 .emotion-1 {
@@ -56,7 +57,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-10 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -67,53 +68,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   justify-content: flex-end;
 }
 
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
-  border: none;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.emotion-5:hover {
-  opacity: 1;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  cursor: not-allowed;
-}
-
 .emotion-4 {
-  color: #191919;
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-}
-
-.emotion-6 {
-  padding: 8px 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #ffffff;
-  background-color: #2e2e2e;
-}
-
-.emotion-7 {
   padding: 8px 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -126,7 +81,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-9 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -135,30 +90,56 @@ exports[`<Visualizer /> should render properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 8px 12px;
-  background-color: #808080;
+  padding: 8px;
   border: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-radius: 32px;
+  background-color: transparent;
+  color: #4a4a4a;
 }
 
-.emotion-9:hover {
-  opacity: 0.5;
+.emotion-6:hover {
+  background-color: transparent;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  cursor: not-allowed;
+}
+
+.emotion-5 {
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  border: none;
+  border-radius: 32px;
+  background-color: transparent;
+  color: #b3b3b3;
+}
+
+.emotion-8:hover {
+  background-color: #808080;
   -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
 
-.emotion-8 {
-  color: #ffffff;
+.emotion-7 {
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 
-.emotion-30 {
+.emotion-29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -167,14 +148,14 @@ exports[`<Visualizer /> should render properly 1`] = `
   overflow-y: hidden;
 }
 
-.emotion-24 {
+.emotion-23 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
 }
 
-.emotion-20 {
+.emotion-19 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -190,21 +171,21 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding: 4px;
 }
 
-.emotion-15 {
+.emotion-14 {
   width: 12.5%;
   height: 0;
   padding-bottom: 12.5%;
   position: relative;
 }
 
-.emotion-14 {
+.emotion-13 {
   width: 100%;
   height: 100%;
   position: absolute;
   padding: 4px;
 }
 
-.emotion-13 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -253,20 +234,20 @@ exports[`<Visualizer /> should render properly 1`] = `
   overflow: hidden;
 }
 
-.emotion-13:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-13[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-11 {
   width: 100%;
 }
 
-.emotion-23 {
+.emotion-22 {
   position: absolute;
   bottom: 16px;
   right: 16px;
@@ -285,7 +266,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding-right: 8px;
 }
 
-.emotion-21 {
+.emotion-20 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -320,24 +301,24 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding: 8px;
 }
 
-.emotion-21:hover {
+.emotion-20:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-20[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-21:hover {
+.emotion-20:hover {
   color: #73b61c;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-20[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-22 {
+.emotion-21 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -372,24 +353,24 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding: 8px;
 }
 
-.emotion-22:hover {
+.emotion-21:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-22[aria-disabled=true] {
+.emotion-21[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-22:hover {
+.emotion-21:hover {
   color: #73b61c;
 }
 
-.emotion-22[aria-disabled=true] {
+.emotion-21[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-29 {
+.emotion-28 {
   background-color: #2e2e2e;
   margin-top: 1px;
   height: 100%;
@@ -404,7 +385,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-26 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -418,26 +399,26 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding: 16px;
 }
 
-.emotion-25 {
+.emotion-24 {
   padding: 16px;
   color: #808080;
   font-weight: 700;
 }
 
-.emotion-28 {
+.emotion-27 {
   padding: 16px;
 }
 
-.emotion-27 {
+.emotion-26 {
   color: #73b61c;
   font-style: italic;
 }
 
 <div
-  className="emotion-31"
+  className="emotion-30"
 >
   <div
-    className="emotion-11"
+    className="emotion-10"
   >
     <div
       className="emotion-0"
@@ -459,69 +440,66 @@ exports[`<Visualizer /> should render properly 1`] = `
       |
     </div>
     <div
-      className="emotion-10"
+      className="emotion-9"
     >
+      <div
+        className="emotion-4"
+      >
+        Page 
+        1
+         of 
+        2
+      </div>
       <button
-        className="emotion-5"
+        className="emotion-6"
         disabled={true}
         type="button"
       >
         <svg
-          className="emotion-4"
+          className="emotion-5"
           data-file-name="chevron.svg"
-          width={16}
+          width={20}
         />
       </button>
-      <div
-        className="emotion-6"
-      >
-        1
-      </div>
-      <div
-        className="emotion-7"
-      >
-        of 
-        2
-      </div>
       <a
-        className="emotion-9"
+        className="emotion-8"
         href="undefined?page=2"
         onClick={[Function]}
         onMouseEnter={[Function]}
         rel="next"
       >
         <svg
-          className="emotion-8"
+          className="emotion-7"
           data-file-name="chevron.svg"
-          width={16}
+          width={20}
         />
       </a>
     </div>
   </div>
   <div
-    className="emotion-30"
+    className="emotion-29"
   >
     <div
-      className="emotion-24"
+      className="emotion-23"
     >
       <div
-        className="emotion-20"
+        className="emotion-19"
       >
         <div
-          className="emotion-15"
+          className="emotion-14"
         >
           <div
-            className="emotion-14"
+            className="emotion-13"
           >
             <a
-              className="emotion-13"
+              className="emotion-12"
               href="/00000000-0000-0000-0000-000000000000/visualizer?id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <img
                 alt="TIFF_1MB.tiff"
-                className="emotion-12"
+                className="emotion-11"
                 src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg"
                 srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg 650w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg 512w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg 320w"
               />
@@ -529,20 +507,20 @@ exports[`<Visualizer /> should render properly 1`] = `
           </div>
         </div>
         <div
-          className="emotion-15"
+          className="emotion-14"
         >
           <div
-            className="emotion-14"
+            className="emotion-13"
           >
             <a
-              className="emotion-13"
+              className="emotion-12"
               href="/00000000-0000-0000-0000-000000000000/visualizer?id=XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
               <img
                 alt="TIFF_1MB.tiff"
-                className="emotion-12"
+                className="emotion-11"
                 src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg"
                 srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg 800w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_512x384.jpg 512w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_320x240.jpg 320w"
               />
@@ -551,12 +529,12 @@ exports[`<Visualizer /> should render properly 1`] = `
         </div>
       </div>
       <div
-        className="emotion-23"
+        className="emotion-22"
       >
         <button
           aria-disabled={true}
           aria-label="Zoom Out"
-          className="emotion-21"
+          className="emotion-20"
           onClick={[Function]}
           type="button"
         >
@@ -567,7 +545,7 @@ exports[`<Visualizer /> should render properly 1`] = `
         </button>
         <button
           aria-label="Zoom In"
-          className="emotion-22"
+          className="emotion-21"
           onClick={[Function]}
           type="button"
         >
@@ -579,10 +557,10 @@ exports[`<Visualizer /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-29"
+      className="emotion-28"
     >
       <div
-        className="emotion-26"
+        className="emotion-25"
       >
         <svg
           color="#808080"
@@ -590,16 +568,16 @@ exports[`<Visualizer /> should render properly 1`] = `
           width={20}
         />
         <div
-          className="emotion-25"
+          className="emotion-24"
         >
           ASSET METADATA
         </div>
       </div>
       <div
-        className="emotion-28"
+        className="emotion-27"
       >
         <div
-          className="emotion-27"
+          className="emotion-26"
         >
           Select an asset to view its metadata
         </div>

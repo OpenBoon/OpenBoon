@@ -2,9 +2,11 @@ import PropTypes from 'prop-types'
 
 import { constants, colors, spacing } from '../Styles'
 
-import Pagination from '../Pagination'
+import VisualizerPagination from './Pagination'
 
 const VisualizerInfobar = ({ currentPage, totalCount }) => {
+  const TEMP_TOTAL_PAGES = 2
+
   return (
     <div
       css={{
@@ -14,8 +16,10 @@ const VisualizerInfobar = ({ currentPage, totalCount }) => {
         backgroundColor: colors.structure.mattGrey,
         boxShadow: constants.boxShadows.infoBar,
         fontFamily: 'Roboto Condensed',
+        padding: `0 ${spacing.normal}px`,
       }}>
-      <div css={{ color: colors.structure.steel, padding: spacing.base }}>
+      <div
+        css={{ color: colors.structure.steel, padding: `${spacing.base} 0` }}>
         Sort: Import Date
       </div>
 
@@ -30,7 +34,10 @@ const VisualizerInfobar = ({ currentPage, totalCount }) => {
         {totalCount} Results
       </div>
       <div css={{ color: colors.structure.steel }}>|</div>
-      <Pagination currentPage={currentPage} totalPages={2} />
+      <VisualizerPagination
+        currentPage={currentPage}
+        totalPages={TEMP_TOTAL_PAGES}
+      />
     </div>
   )
 }

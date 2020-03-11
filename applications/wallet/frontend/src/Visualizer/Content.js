@@ -10,7 +10,7 @@ import VisualizerMetadata from './Metadata'
 
 const VisualizerContent = () => {
   const {
-    query: { projectId, page },
+    query: { projectId, page = 1 },
   } = useRouter()
 
   const {
@@ -30,7 +30,7 @@ const VisualizerContent = () => {
         flex: 1,
         flexDirection: 'column',
       }}>
-      <VisualizerInfobar currentPage={page || 1} totalCount={count} />
+      <VisualizerInfobar currentPage={page} totalCount={count} />
       <div
         css={{
           display: 'flex',

@@ -32,6 +32,8 @@ const AssetsThumbnail = ({
 
   const largestDimension = width > height ? 'width' : 'height'
 
+  const pageQuery = page ? `page=${page}&` : ''
+
   return (
     <div
       css={{
@@ -48,10 +50,8 @@ const AssetsThumbnail = ({
           padding: spacing.small,
         }}>
         <Link
-          href={`/[projectId]/visualizer?${
-            page ? `page=${page}&` : ''
-          }id=${id}`}
-          as={`/${projectId}/visualizer?${page ? `page=${page}&` : ''}id=${id}`}
+          href={`/[projectId]/visualizer?${pageQuery}id=${id}`}
+          as={`/${projectId}/visualizer?${pageQuery}id=${id}`}
           passHref>
           <Button
             variant={VARIANTS.NEUTRAL}
