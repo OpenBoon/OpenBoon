@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import JobErrorsJobMenu from '../JobMenu'
+import JobMenu from '../Menu'
 
 const noop = () => () => {}
 
@@ -14,11 +14,7 @@ describe('<JobErrorsMenu />', () => {
     fetch.mockResponseOnce('{}')
 
     const component = TestRenderer.create(
-      <JobErrorsJobMenu
-        projectId={PROJECT_ID}
-        jobId={JOB_ID}
-        revalidate={mockFn}
-      />,
+      <JobMenu projectId={PROJECT_ID} jobId={JOB_ID} revalidate={mockFn} />,
     )
 
     act(() => {

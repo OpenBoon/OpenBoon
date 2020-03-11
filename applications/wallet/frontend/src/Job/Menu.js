@@ -31,7 +31,7 @@ const ACTIONS = [
   },
 ]
 
-const JobErrorsJobMenu = ({ projectId, jobId, revalidate }) => {
+const JobMenu = ({ projectId, jobId, revalidate }) => {
   return (
     <div css={{ display: 'flex', marginBottom: -spacing.small }}>
       <Menu
@@ -70,10 +70,10 @@ const JobErrorsJobMenu = ({ projectId, jobId, revalidate }) => {
   )
 }
 
-JobErrorsJobMenu.propTypes = {
+JobMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   jobId: PropTypes.string.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 
-export default JobErrorsJobMenu
+export default JobMenu
