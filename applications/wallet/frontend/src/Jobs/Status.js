@@ -10,7 +10,7 @@ const STATUS_COLORS = {
   Paused: colors.structure.coal,
 }
 
-const JobsStatus = ({ jobStatus }) => {
+const JobsStatus = ({ status }) => {
   return (
     <div
       css={{
@@ -18,20 +18,20 @@ const JobsStatus = ({ jobStatus }) => {
         alignItems: 'center',
         padding: spacing.base,
         borderRadius: constants.borderRadius.small,
-        color: STATUS_COLORS[jobStatus],
+        color: STATUS_COLORS[status],
         backgroundColor:
-          jobStatus === 'Paused'
+          status === 'Paused'
             ? colors.signal.canary.base
             : colors.structure.coal,
         fontFamily: 'Roboto Condensed',
       }}>
-      {jobStatus.replace(/([A-Z])/g, match => ` ${match}`).trim()}
+      {status.replace(/([A-Z])/g, match => ` ${match}`).trim()}
     </div>
   )
 }
 
 JobsStatus.propTypes = {
-  jobStatus: PropTypes.oneOf(Object.keys(STATUS_COLORS)).isRequired,
+  status: PropTypes.oneOf(Object.keys(STATUS_COLORS)).isRequired,
 }
 
 export default JobsStatus

@@ -29,7 +29,7 @@ const JobsRow = ({
 }) => {
   const taskCounts = { ...tC, tasksPending: tC.tasksWaiting + tC.tasksQueued }
 
-  const jobStatus = paused ? 'Paused' : state
+  const status = paused ? 'Paused' : state
 
   return (
     <tr
@@ -40,7 +40,7 @@ const JobsRow = ({
         Router.push('/[projectId]/jobs/[jobId]', `/${projectId}/jobs/${jobId}`)
       }}>
       <td>
-        <JobsStatus jobStatus={jobStatus} />
+        <JobsStatus status={status} />
       </td>
       <td>
         <Link
@@ -99,7 +99,7 @@ const JobsRow = ({
         <JobsMenu
           projectId={projectId}
           jobId={jobId}
-          jobStatus={jobStatus}
+          status={status}
           revalidate={revalidate}
         />
       </td>

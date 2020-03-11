@@ -16,7 +16,7 @@ describe('<JobsMenu />', () => {
         projectId={PROJECT_ID}
         jobId={JOB_ID}
         revalidate={mockFn}
-        jobStatus="InProgress"
+        status="InProgress"
       />,
     )
 

@@ -39,15 +39,15 @@ const ACTIONS = {
   ],
 }
 
-const JobsMenu = ({ projectId, jobId, jobStatus, revalidate }) => {
-  if (!ACTIONS[jobStatus].length) return null
+const JobsMenu = ({ projectId, jobId, status, revalidate }) => {
+  if (!ACTIONS[status].length) return null
 
   return (
     <Menu open="left" button={ButtonGear}>
       {({ onBlur, onClick }) => (
         <div>
           <ul>
-            {ACTIONS[jobStatus].map(({ name, action }) => (
+            {ACTIONS[status].map(({ name, action }) => (
               <li key={action}>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
@@ -77,7 +77,7 @@ const JobsMenu = ({ projectId, jobId, jobStatus, revalidate }) => {
 JobsMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   jobId: PropTypes.string.isRequired,
-  jobStatus: PropTypes.oneOf(Object.keys(ACTIONS)).isRequired,
+  status: PropTypes.oneOf(Object.keys(ACTIONS)).isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 
