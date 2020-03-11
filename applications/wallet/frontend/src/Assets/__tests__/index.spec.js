@@ -5,10 +5,12 @@ import Assets from '..'
 import assets from '../__mocks__/assets'
 import emptyFileAssets from '../__mocks__/emptyFileAssets'
 
+const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
+
 describe('<Assets />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({
-      query: { projectId: '000000' },
+      query: { projectId: PROJECT_ID },
     })
 
     const component = TestRenderer.create(<Assets assets={assets.results} />)
@@ -58,7 +60,7 @@ describe('<Assets />', () => {
 
   it('should handle page url', () => {
     require('next/router').__setUseRouter({
-      query: { projectId: '000000', page: 2 },
+      query: { projectId: PROJECT_ID, page: 2 },
     })
 
     const component = TestRenderer.create(

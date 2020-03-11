@@ -4,9 +4,7 @@ import { constants, colors, spacing } from '../Styles'
 
 import VisualizerPagination from './Pagination'
 
-const PER_PAGE_LIMIT = 50
-
-const VisualizerInfobar = ({ currentPage, totalCount }) => {
+const VisualizerInfobar = ({ currentPage, totalCount, size }) => {
   return (
     <div
       css={{
@@ -36,7 +34,7 @@ const VisualizerInfobar = ({ currentPage, totalCount }) => {
       <div css={{ color: colors.structure.steel }}>|</div>
       <VisualizerPagination
         currentPage={currentPage}
-        totalPages={Math.ceil(totalCount / PER_PAGE_LIMIT)}
+        totalPages={Math.ceil(totalCount / size)}
       />
     </div>
   )
@@ -45,6 +43,7 @@ const VisualizerInfobar = ({ currentPage, totalCount }) => {
 VisualizerInfobar.propTypes = {
   currentPage: PropTypes.number.isRequired,
   totalCount: PropTypes.number.isRequired,
+  size: PropTypes.number.isRequired,
 }
 
 export default VisualizerInfobar

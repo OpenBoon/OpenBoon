@@ -15,7 +15,7 @@ const VisualizerPaginationLink = ({ currentPage, totalPages, direction }) => {
 
   const isPrev = direction === 'prev'
 
-  const isDisabled = isPrev ? currentPage - 1 <= 0 : +currentPage === totalPages
+  const isDisabled = isPrev ? currentPage - 1 <= 0 : currentPage === totalPages
 
   const styles = {
     display: 'flex',

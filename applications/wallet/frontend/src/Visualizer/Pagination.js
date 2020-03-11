@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { spacing, colors } from '../Styles'
 
-import PaginationLink from './PaginationLink'
+import VisualizerPaginationLink from './PaginationLink'
 
 const VisualizerPagination = ({ currentPage, totalPages }) => {
   return (
@@ -17,12 +17,12 @@ const VisualizerPagination = ({ currentPage, totalPages }) => {
         }}>
         Page {currentPage} of {totalPages}
       </div>
-      <PaginationLink
+      <VisualizerPaginationLink
         currentPage={currentPage}
         totalPages={totalPages}
         direction="prev"
       />
-      <PaginationLink
+      <VisualizerPaginationLink
         currentPage={currentPage}
         totalPages={totalPages}
         direction="next"
