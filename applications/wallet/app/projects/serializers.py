@@ -83,4 +83,4 @@ class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
             # Something wrong with the json string
             logger.warning('Unable to decode apikey.')
             return []
-        return key_data['permissions']
+        return key_data.get('permissions', [])

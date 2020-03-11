@@ -25,9 +25,12 @@ class DataSourceViewSet(BaseProjectViewSet):
         datasource = app.datasource.create_datasource(name=data['name'], uri=data['uri'],
                                                       modules=data['modules'],
                                                       credentials=creds,
-                                                      file_types=data['file_types'])
+                                                      file_types=data['fileTypes'])
         app.datasource.import_files(datasource)
-        return Response(self.get_serializer(datasource).data)
+        serializer = self.get_serializer(data=datasource._data)
+        if not serializer.is_valid():
+            return Response({'detail': serializer.errors}, status=500)
+        return Response(serializer.validated_data)
 
     def list(self, request, project_pk):
         def item_modifier(request, datasource):
