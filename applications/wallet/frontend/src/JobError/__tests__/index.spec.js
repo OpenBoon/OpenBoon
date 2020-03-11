@@ -71,7 +71,7 @@ describe('<JobError />', () => {
     })
   })
 
-  it('should render asset view properly', () => {
+  it('should render properly with an asset', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs/[jobId]/errors/[errorId]/asset',
       query: {
