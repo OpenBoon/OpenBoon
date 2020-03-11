@@ -24,7 +24,7 @@ MODULES = (('zmlp-classification', 'Label Detection'),
 class Subscription(models.Model):
     """Represents the purchased plan for a given Project"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.OneToOneField(Project, on_delete=models.CASCADE)
     video_hours_limit = models.IntegerField(default=0)
     image_count_limit = models.IntegerField(default=0)
     modules = MultiSelectField(choices=MODULES, blank=True)
