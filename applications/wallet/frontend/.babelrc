@@ -1,5 +1,6 @@
 {
   "presets": ["next/babel", "@emotion/babel-preset-css-prop"],
+  "plugins": ["macros"],
   "env": {
     "test": {
       "plugins": ["babel-plugin-dynamic-import-node"]
