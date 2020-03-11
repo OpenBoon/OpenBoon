@@ -10,7 +10,7 @@ import jobs from './src/Jobs/__mocks__/jobs'
 import job from './src/Job/__mocks__/job'
 import jobTasks from './src/JobTasks/__mocks__/jobTasks'
 import jobErrors from './src/JobErrors/__mocks__/jobErrors'
-import jobError from './src/JobError/__mocks__/jobError'
+import { jobErrorNonFatal } from './src/JobError/__mocks__/jobError'
 import permissions from './src/Permissions/__mocks__/permissions'
 import dataSource from './src/DataSource/__mocks__/dataSource'
 import dataSources from './src/DataSources/__mocks__/dataSources'
@@ -47,6 +47,14 @@ app.prepare().then(() => {
     server.get('/api/v1/projects/', mock(projects))
     server.post('/api/v1/password/reset/', success())
     server.get('/api/v1/projects/:projectId', mock(project))
+    server.get(
+      '/api/v1/projects/:projectId/taskerrors/:errorId/',
+      mock(jobErrorNonFatal),
+    )
+    server.get(
+      '/api/v1/projects/:projectId/assets/:assetId/',
+      mock(assets.results[0]),
+    )
 
     const userpatch = { ...user, firstName: 'David', lastName: 'Smith' }
     server.patch(`/api/v1/users/:userId/`, mock(userpatch))
@@ -59,7 +67,10 @@ app.prepare().then(() => {
     server.get(`${PID_API_BASE}/jobs/:jobId/`, mock(job))
     server.get(`${PID_API_BASE}/jobs/:jobId/tasks/`, mock(jobTasks))
     server.get(`${PID_API_BASE}/jobs/:jobId/errors/`, mock(jobErrors))
-    server.get(`${PID_API_BASE}/jobs/:jobId/errors/:errorId/`, mock(jobError))
+    server.get(
+      `${PID_API_BASE}/jobs/:jobId/errors/:errorId/`,
+      mock(jobErrorNonFatal),
+    )
 
     server.get(`${PID_API_BASE}/datasources/:dataSourceId/`, mock(dataSource))
     server.get(`${PID_API_BASE}/datasources/`, mock(dataSources))
