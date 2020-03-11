@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import JSONPretty from 'react-json-pretty'
 
 import { colors, spacing } from '../Styles'
 
@@ -9,45 +10,28 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
         backgroundColor: colors.structure.black,
         fontFamily: 'Roboto Mono',
         padding: spacing.normal,
+        height: 'auto',
       }}>
       <div>&quot;message&quot;: {message}</div>
-      {stackTrace.length && (
+      {!!stackTrace.length && (
         <>
           <div
             css={{
               paddingTop: spacing.normal,
               color: colors.structure.zinc,
               whiteSpace: 'nowrap',
-              overFlow: 'auto',
             }}
           />
-          {stackTrace.map((frame, index) => {
-            return (
-              /*  eslint-disable react/no-array-index-key */
-              <div key={index}>
-                <div>{`{`}</div>
-                <div
-                  css={{
-                    paddingLeft: spacing.large,
-                    overflow: 'auto',
-                  }}>
-                  {Object.entries(frame).map(([key, value]) => {
-                    return (
-                      <div
-                        key={key}
-                        css={{
-                          paddingTop: spacing.base,
-                          whiteSpace: 'nowrap',
-                        }}>
-                        &quot;{key}&quot;: {value}
-                      </div>
-                    )
-                  })}
-                </div>
-                <div>{index === stackTrace.length - 1 ? `}` : `},`}</div>
-              </div>
-            )
-          })}
+          <JSONPretty
+            id="json-pretty"
+            data={stackTrace}
+            theme={{
+              main: 'line-height:1.3;overflow:auto;',
+              string: `color:${colors.signal.grass.base};`,
+              value: `color:${colors.signal.sky.base};`,
+              boolean: `color:${colors.signal.canary.base};`,
+            }}
+          />
         </>
       )}
     </div>

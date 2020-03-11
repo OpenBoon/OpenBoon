@@ -4,20 +4,23 @@ import useSWR from 'swr'
 import SectionTitle from '../SectionTitle'
 import Value, { VARIANTS } from '../Value'
 import Tabs from '../Tabs'
+import JobErrorStackTrace from '../JobErrorStackTrace'
+import JobErrorAsset from '../JobErrorAsset'
+import SuspenseBoundary from '../SuspenseBoundary'
 
 import JobErrorType from './Type'
 import JobErrorTaskMenu from './TaskMenu'
 import JobErrorDetails from './Details'
-import JobErrorStackTrace from './StackTrace'
 
 const JobErrorContent = () => {
   const {
+    pathname,
     query: { projectId, errorId },
   } = useRouter()
 
   const {
     data: jobError,
-    data: { jobName, fatal, message, taskId },
+    data: { jobName, fatal, message, taskId, assetId },
     revalidate,
   } = useSWR(`/api/v1/projects/${projectId}/taskerrors/${errorId}/`)
 
@@ -51,7 +54,15 @@ const JobErrorContent = () => {
           },
         ]}
       />
-      <JobErrorStackTrace jobError={jobError} />
+      {pathname === '/[projectId]/jobs/[jobId]/errors/[errorId]' && (
+        <JobErrorStackTrace jobError={jobError} />
+      )}
+
+      {pathname === '/[projectId]/jobs/[jobId]/errors/[errorId]/asset' && (
+        <SuspenseBoundary>
+          <JobErrorAsset assetId={assetId} />
+        </SuspenseBoundary>
+      )}
     </>
   )
 }
