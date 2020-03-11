@@ -4,7 +4,9 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import JSONPretty from 'react-json-pretty'
 
-import { spacing, colors } from '../Styles'
+import { spacing, colors, constants } from '../Styles'
+
+const ASSET_THUMBNAIL_SIZE = 48
 
 const JobErrorAsset = ({ assetId }) => {
   const {
@@ -25,7 +27,7 @@ const JobErrorAsset = ({ assetId }) => {
       css={{
         backgroundColor: colors.structure.black,
         fontFamily: 'Roboto Mono',
-        height: '100%',
+        height: 'auto',
       }}>
       <div
         css={{
@@ -38,10 +40,10 @@ const JobErrorAsset = ({ assetId }) => {
           src={url.replace('https://wallet.zmlp.zorroa.com', '')}
           alt={filename}
           css={{
-            width: '48px',
-            height: '48px',
+            width: ASSET_THUMBNAIL_SIZE,
+            height: ASSET_THUMBNAIL_SIZE,
             padding: spacing.small,
-            border: '1px solid grey',
+            border: constants.borders.separator,
           }}
         />
         <div css={{ paddingLeft: spacing.comfy }}>{filename}</div>

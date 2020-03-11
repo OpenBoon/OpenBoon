@@ -10,7 +10,7 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
         backgroundColor: colors.structure.black,
         fontFamily: 'Roboto Mono',
         padding: spacing.normal,
-        height: '100%',
+        height: 'auto',
       }}>
       <div>&quot;message&quot;: {message}</div>
       {!!stackTrace.length && (

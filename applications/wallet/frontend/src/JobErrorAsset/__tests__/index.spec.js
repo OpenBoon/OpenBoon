@@ -11,9 +11,9 @@ describe('<JobErrorAsset />', () => {
       data: ASSET,
     })
 
-    const assetId = ASSET.id
+    const ASSET_ID = ASSET.id
 
-    const component = TestRenderer.create(<JobErrorAsset assetId={assetId} />)
+    const component = TestRenderer.create(<JobErrorAsset assetId={ASSET_ID} />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })
