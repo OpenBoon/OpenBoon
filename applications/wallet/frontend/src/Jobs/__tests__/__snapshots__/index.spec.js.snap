@@ -41,11 +41,11 @@ Array [
   display: flex;
 }
 
-.emotion-125 {
+.emotion-111 {
   height: auto;
 }
 
-.emotion-124 {
+.emotion-110 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -53,38 +53,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-124 tr {
+.emotion-110 tr {
   background-color: #252525;
 }
 
-.emotion-124 tr:nth-of-type(2n) {
+.emotion-110 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-124 tr:hover {
+.emotion-110 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-124 tr:hover .gear {
+.emotion-110 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-124 tr:hover td {
+.emotion-110 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-124 tr:hover td:first-of-type {
+.emotion-110 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-124 tr:hover td:last-of-type {
+.emotion-110 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-124 td {
+.emotion-110 td {
   max-width: calc(100vw / 7);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -96,11 +96,11 @@ Array [
   border-right: 0;
 }
 
-.emotion-124 td:first-of-type {
+.emotion-110 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-124 td:last-of-type {
+.emotion-110 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -120,7 +120,7 @@ Array [
   align-items: center;
   padding: 8px;
   border-radius: 2px;
-  color: #c92300;
+  color: #ebb52e;
   background-color: #191919;
   font-family: Roboto Condensed;
 }
@@ -320,7 +320,7 @@ Array [
   align-items: center;
   padding: 8px;
   border-radius: 2px;
-  color: #ebb52e;
+  color: #b3b3b3;
   background-color: #191919;
   font-family: Roboto Condensed;
 }
@@ -395,7 +395,55 @@ Array [
   border-bottom-right-radius: 4px;
 }
 
-.emotion-80 {
+.emotion-45 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  border-radius: 2px;
+  color: #4a4a4a;
+  background-color: #191919;
+  font-family: Roboto Condensed;
+}
+
+.emotion-53 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  border-radius: 2px;
+  color: #c92300;
+  background-color: #191919;
+  font-family: Roboto Condensed;
+}
+
+.emotion-63 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  border-radius: 2px;
+  color: #191919;
+  background-color: #ebb52e;
+  font-family: Roboto Condensed;
+}
+
+.emotion-76 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -403,21 +451,21 @@ Array [
   background-color: #4ac565;
 }
 
-.emotion-80:first-of-type {
+.emotion-76:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-80:last-of-type {
+.emotion-76:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
 <div
-    className="emotion-125"
+    className="emotion-111"
   >
     <table
-      className="emotion-124"
+      className="emotion-110"
     >
       <thead>
         <tr>
@@ -479,7 +527,7 @@ Array [
             <div
               className="emotion-9"
             >
-              Cancelled
+              In Progress
             </div>
           </td>
           <td>
@@ -576,7 +624,7 @@ Array [
             <div
               className="emotion-22"
             >
-              In Progress
+              Cancelled
             </div>
           </td>
           <td>
@@ -673,7 +721,7 @@ Array [
             <div
               className="emotion-35"
             >
-              Archived
+              Success
             </div>
           </td>
           <td>
@@ -740,24 +788,7 @@ Array [
               </div>
             </div>
           </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
+          <td />
         </tr>
         <tr
           className="emotion-21"
@@ -765,9 +796,9 @@ Array [
         >
           <td>
             <div
-              className="emotion-9"
+              className="emotion-45"
             >
-              Cancelled
+              Archived
             </div>
           </td>
           <td>
@@ -828,24 +859,7 @@ Array [
               </div>
             </div>
           </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
+          <td />
         </tr>
         <tr
           className="emotion-21"
@@ -853,9 +867,9 @@ Array [
         >
           <td>
             <div
-              className="emotion-35"
+              className="emotion-53"
             >
-              Finished
+              Failure
             </div>
           </td>
           <td>
@@ -941,9 +955,9 @@ Array [
         >
           <td>
             <div
-              className="emotion-22"
+              className="emotion-63"
             >
-              Active
+              Paused
             </div>
           </td>
           <td>
@@ -1029,9 +1043,9 @@ Array [
         >
           <td>
             <div
-              className="emotion-22"
+              className="emotion-35"
             >
-              Active
+              Success
             </div>
           </td>
           <td>
@@ -1078,29 +1092,12 @@ Array [
                 className="emotion-17"
               >
                 <div
-                  className="emotion-80"
+                  className="emotion-76"
                 />
               </div>
             </div>
           </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
+          <td />
         </tr>
         <tr
           className="emotion-21"
@@ -1108,9 +1105,9 @@ Array [
         >
           <td>
             <div
-              className="emotion-22"
+              className="emotion-35"
             >
-              Active
+              Success
             </div>
           </td>
           <td>
@@ -1162,24 +1159,7 @@ Array [
               </div>
             </div>
           </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
+          <td />
         </tr>
         <tr
           className="emotion-21"
@@ -1187,9 +1167,9 @@ Array [
         >
           <td>
             <div
-              className="emotion-22"
+              className="emotion-35"
             >
-              Active
+              Success
             </div>
           </td>
           <td>
@@ -1241,24 +1221,7 @@ Array [
               </div>
             </div>
           </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
+          <td />
         </tr>
         <tr
           className="emotion-21"
@@ -1266,9 +1229,9 @@ Array [
         >
           <td>
             <div
-              className="emotion-22"
+              className="emotion-35"
             >
-              Active
+              Success
             </div>
           </td>
           <td>
@@ -1320,24 +1283,7 @@ Array [
               </div>
             </div>
           </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
+          <td />
         </tr>
         <tr
           className="emotion-21"
@@ -1345,9 +1291,9 @@ Array [
         >
           <td>
             <div
-              className="emotion-22"
+              className="emotion-35"
             >
-              Active
+              Success
             </div>
           </td>
           <td>
@@ -1406,29 +1352,12 @@ Array [
                   className="emotion-13"
                 />
                 <div
-                  className="emotion-80"
+                  className="emotion-76"
                 />
               </div>
             </div>
           </td>
-          <td>
-            <div
-              className="emotion-20"
-            >
-              <button
-                aria-label="Toggle Actions Menu"
-                className="gear emotion-19"
-                onBlur={[Function]}
-                onClick={[Function]}
-                type="button"
-              >
-                <svg
-                  data-file-name="gear.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </td>
+          <td />
         </tr>
       </tbody>
     </table>
