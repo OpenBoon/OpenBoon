@@ -40,6 +40,7 @@ exports[`<ErrorBoundary /> should render generic when caught 1`] = `
   >
     <svg
       data-file-name="error.svg"
+      width={604}
     />
     <br />
      Hmmm, something went wrong.

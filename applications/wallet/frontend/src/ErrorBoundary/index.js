@@ -56,7 +56,7 @@ class ErrorBoundary extends Component {
               lineHeight: typography.height.regular,
               boxShadow: constants.boxShadows.default,
             }}>
-            <ErrorSvg />
+            <ErrorSvg width={604} />
             <br /> Hmmm, something went wrong.
             <br /> Please try refreshing.
           </div>
