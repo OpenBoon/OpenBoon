@@ -10,7 +10,7 @@ const STATUS_COLORS = {
   Paused: colors.structure.coal,
 }
 
-const JobStatus = ({ jobStatus }) => {
+const JobsStatus = ({ jobStatus }) => {
   return (
     <div
       css={{
@@ -30,8 +30,8 @@ const JobStatus = ({ jobStatus }) => {
   )
 }
 
-JobStatus.propTypes = {
+JobsStatus.propTypes = {
   jobStatus: PropTypes.oneOf(Object.keys(STATUS_COLORS)).isRequired,
 }
 
-export default JobStatus
+export default JobsStatus

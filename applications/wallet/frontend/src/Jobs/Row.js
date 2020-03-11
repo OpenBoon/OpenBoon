@@ -6,7 +6,7 @@ import { colors, spacing, typography, constants } from '../Styles'
 
 import { formatFullDate } from '../Date/helpers'
 
-import JobStatus from './Status'
+import JobsStatus from './Status'
 import ProgressBar, { CONTAINER_WIDTH } from '../ProgressBar'
 
 import JobsMenu from './Menu'
@@ -40,7 +40,7 @@ const JobsRow = ({
         Router.push('/[projectId]/jobs/[jobId]', `/${projectId}/jobs/${jobId}`)
       }}>
       <td>
-        <JobStatus jobStatus={jobStatus} />
+        <JobsStatus jobStatus={jobStatus} />
       </td>
       <td>
         <Link
