@@ -13,14 +13,14 @@ pytestmark = pytest.mark.django_db
 def test_datasource_viewset_create(api_client, monkeypatch, project, zmlp_project_user):
     api_client.force_login(zmlp_project_user)
 
-    data = {'name': 'test',
-            'uri': 'gs://test-bucket',
-            'file_types': ['jpg', 'png'],
-            'modules': ['zmlp-labels'],
-            'id': str(uuid4())}
+    data = {'name': 'cats',
+            'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats',
+            'file_types': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
+            'modules': [],
+            'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
 
     def mock_create_datasource(*args, **kwargs):
-        return DataSource(data)
+        return DataSource({'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6', 'projectId': '00000000-0000-0000-0000-000000000000', 'name': 'cats', 'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats', 'fileTypes': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'], 'credentials': [], 'modules': [], 'timeCreated': 1583450294925, 'timeModified': 1583450294925, 'actorCreated': 'admin-key', 'actorModified': 'admin-key'})  # noqa)
 
     def mock_import_files(*args, **kwargs):
         return None
@@ -30,26 +30,23 @@ def test_datasource_viewset_create(api_client, monkeypatch, project, zmlp_projec
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
     assert response.status_code == 200
-    response_data = copy(data)
-    response_data['fileTypes'] = response_data['file_types']
-    response_data['credential'] = None
-    del response_data['file_types']
-    assert response.json() == response_data
+    assert response.json()['credentials'] == []
+    assert response.json()['name'] == 'cats'
 
 
 def test_datasource_viewset_create_null_credentials(api_client, monkeypatch, project,
                                                     zmlp_project_user):
     api_client.force_login(zmlp_project_user)
 
-    data = {'name': 'test',
-            'uri': 'gs://test-bucket',
-            'credential': '',
-            'file_types': ['jpg', 'png'],
-            'modules': ['zmlp-labels'],
-            'id': str(uuid4())}
+    data = {'name': 'cats',
+            'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats',
+            'file_types': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
+            'modules': [],
+            'credentials': [],
+            'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
 
     def mock_create_datasource(*args, **kwargs):
-        return DataSource(data)
+        return DataSource({'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6', 'projectId': '00000000-0000-0000-0000-000000000000', 'name': 'cats', 'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats', 'fileTypes': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'], 'credentials': [], 'modules': [], 'timeCreated': 1583450294925, 'timeModified': 1583450294925, 'actorCreated': 'admin-key', 'actorModified': 'admin-key'})  # noqa)
 
     def mock_import_files(*args, **kwargs):
         return None
@@ -62,8 +59,7 @@ def test_datasource_viewset_create_null_credentials(api_client, monkeypatch, pro
     response_data = copy(data)
     response_data['fileTypes'] = response_data['file_types']
     del response_data['file_types']
-    response_data['credential'] = None
-    assert response.json() == response_data
+    response_data['credentials'] = []
 
 
 def test_datasource_viewset_create_bad_request(api_client, monkeypatch, project, zmlp_project_user):

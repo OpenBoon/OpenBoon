@@ -1,29 +1,22 @@
-import os
-import requests
 import mimetypes
-from rest_framework.response import Response
+
+import requests
 from django.http import StreamingHttpResponse
 
+from assets.serializers import AssetSerializer
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
 
-def asset_modifier(request, item, many=True):
+def asset_modifier(request, item):
     current_url = request.build_absolute_uri(request.path)
-    if many:
+    if '_source' in item:
         item['id'] = item['_id']
         item['metadata'] = item['_source']
-        del (item['_id'])
-        del (item['_index'])
-        del (item['_score'])
-        del (item['_source'])
-        del (item['_type'])
     else:
         # Normalize the current URL
         current_url = current_url.replace(f'{item["id"]}/', '')
         item['metadata'] = item['document']
-        del (item['analyzed'])
-        del (item['document'])
 
     # Now add the asset id
     current_url = f'{current_url}{item["id"]}/'
@@ -47,23 +40,19 @@ def stream(request, path):
 
 
 class AssetViewSet(BaseProjectViewSet):
-
     zmlp_only = True
     zmlp_root_api_path = 'api/v3/assets/'
     pagination_class = ZMLPFromSizePagination
+    serializer_class = AssetSerializer
 
     def list(self, request, project_pk):
         return self._zmlp_list_from_es(request, item_modifier=asset_modifier)
 
     def retrieve(self, request, project_pk, pk):
-        response = request.client.get(os.path.join(self.zmlp_root_api_path, pk))
-        content = self._get_content(response)
-        asset_modifier(request, content, many=False)
-        return Response(content)
+        return self._zmlp_retrieve(request, pk, item_modifier=asset_modifier)
 
 
 class SourceFileViewSet(BaseProjectViewSet):
-
     zmlp_only = True
     zmlp_root_api_path = 'api/v3/assets'
     lookup_value_regex = '[^/]+'
@@ -75,12 +64,10 @@ class SourceFileViewSet(BaseProjectViewSet):
 
 
 class FileCategoryViewSet(BaseProjectViewSet):
-
     zmlp_only = True
 
 
 class FileNameViewSet(BaseProjectViewSet):
-
     zmlp_only = True
     zmlp_root_api_path = 'api/v3/assets'
     lookup_value_regex = '[^/]+'

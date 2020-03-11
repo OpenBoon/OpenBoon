@@ -129,7 +129,8 @@ class BaseProjectViewSet(ViewSet):
         assert self.paginator is not None
         return self.paginator.get_paginated_response(data)
 
-    def _zmlp_list_from_search(self, request, item_modifier=None, filter=None):
+    def _zmlp_list_from_search(self, request, item_modifier=None, filter=None,
+                               serializer_class=None):
         """The result of this method can be returned for the list method of a concrete
         viewset if it just needs to proxy the results of a ZMLP search endpoint.
 
@@ -139,6 +140,8 @@ class BaseProjectViewSet(ViewSet):
               passed to this function along with the request. The function is expected to
               modify the item in place. The arguments are passed as (request, item).
             filter (dict): Optional filter to pass to the zmlp search endpoint.
+            serializer_class (Serializer): Optional serializer to override the one set on
+              the ViewSet.
 
         Returns:
             Response: DRF Response that can be used directly by viewset action method.
@@ -158,23 +161,48 @@ class BaseProjectViewSet(ViewSet):
             item['url'] = f'{current_url}{item["id"]}/'
             if item_modifier:
                 item_modifier(request, item)
+        if serializer_class:
+            serializer = serializer_class(data=content['list'], many=True)
+        else:
+            serializer = self.get_serializer(data=content['list'], many=True)
+        if not serializer.is_valid():
+            return Response({'detail': serializer.errors}, status=500)
+        content['list'] = serializer.validated_data
         paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(content, request)
         return paginator.get_paginated_response(content['list'])
 
     def _zmlp_list_from_es(self, request, item_modifier=None):
+        """The result of this method can be returned for the list method of a concrete
+        viewset if it just needs to proxy the results of a ZMLP search endpoints that
+        return raw elasticsearch data.
+
+        Args:
+            request (Request): Request the view method was given.
+            item_modifier (function): Each item dictionary returned by the API will be
+              passed to this function along with the request. The function is expected to
+              modify the item in place. The arguments are passed as (request, item).
+
+        Returns:
+            Response: DRF Response that can be used directly by viewset action method.
+
+        """
         payload = {'from': request.GET.get('from', 0),
                    'size': request.GET.get('size', self.pagination_class.default_limit)}
         path = os.path.join(self.zmlp_root_api_path, '_search')
         response = request.client.post(path, payload)
         content = self._get_content(response)
-        results = {'list': content['hits']['hits'],
+        items = content['hits']['hits']
+        for item in items:
+            if item_modifier:
+                item_modifier(request, item)
+        serializer = self.get_serializer(data=items, many=True)
+        if not serializer.is_valid():
+            return Response({'detail': serializer.errors}, status=500)
+        results = {'list': serializer.validated_data,
                    'page': {'from': payload['from'],
                             'size': payload['size'],
                             'totalCount': content['hits']['total']['value']}}
-        for item in results['list']:
-            if item_modifier:
-                item_modifier(request, item)
         paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(results, request)
         return paginator.get_paginated_response(results['list'])
@@ -192,10 +220,11 @@ class BaseProjectViewSet(ViewSet):
         """
         response = request.client.get(self.zmlp_root_api_path)
         serializer = self.get_serializer(data=response, many=True)
-        serializer.is_valid()
+        if not serializer.is_valid():
+            return Response({'detail': serializer.errors}, status=500)
         return Response({'results': serializer.data})
 
-    def _zmlp_retrieve(self, request, pk):
+    def _zmlp_retrieve(self, request, pk, item_modifier=None):
         """The result of this method can be returned for the retrieve method of a concrete
         viewset. if it just needs to proxy the results of a standard ZMLP endpoint for a single
         object.
@@ -210,7 +239,12 @@ class BaseProjectViewSet(ViewSet):
         """
         response = request.client.get(os.path.join(self.zmlp_root_api_path, pk))
         content = self._get_content(response)
-        return Response(content)
+        if item_modifier:
+            item_modifier(request, content)
+        serializer = self.get_serializer(data=content)
+        if not serializer.is_valid():
+            return Response({'detail': serializer.errors}, status=500)
+        return Response(serializer.validated_data)
 
     def _zmlp_destroy(self, request, pk):
         """The result of this method can be returned for the destroy method of a concrete
