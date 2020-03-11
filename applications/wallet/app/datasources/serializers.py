@@ -11,6 +11,6 @@ class DataSourceSerializer(serializers.Serializer):
     actorCreated = serializers.CharField(default="")
     actorModified = serializers.CharField(default="")
     projectId = serializers.UUIDField(default="")
-    timeCreated = serializers.IntegerField(default=-1)
-    timeModified = serializers.IntegerField(default=-1)
+    timeCreated = serializers.IntegerField(default=0)
+    timeModified = serializers.IntegerField(default=0)
     url = serializers.CharField(required=False)

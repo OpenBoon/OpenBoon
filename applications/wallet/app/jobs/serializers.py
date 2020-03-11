@@ -41,7 +41,7 @@ class JobSerializer(serializers.Serializer):
     timeStarted = serializers.IntegerField(required=True)
     timeUpdated = serializers.IntegerField(required=True)
     timeCreated = serializers.IntegerField(required=True)
-    timeStopped = serializers.IntegerField(default=-1)
+    timeStopped = serializers.IntegerField(default=0)
     priority = serializers.IntegerField(required=True)
     paused = serializers.BooleanField(required=True)
     timePauseExpired = serializers.IntegerField(required=True)
