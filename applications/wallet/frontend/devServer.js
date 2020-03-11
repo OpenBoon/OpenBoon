@@ -4,6 +4,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware'
 import morgan from 'morgan'
 
 import user from './src/User/__mocks__/user'
+import project from './src/Project/__mocks__/project'
 import projects from './src/Projects/__mocks__/projects'
 import jobs from './src/Jobs/__mocks__/jobs'
 import job from './src/Job/__mocks__/job'
@@ -44,6 +45,7 @@ app.prepare().then(() => {
     server.post('/api/v1/login/', mock(user))
     server.get('/api/v1/projects/', mock(projects))
     server.post('/api/v1/password/reset/', success())
+    server.get('/api/v1/projects/:projectId', mock(project))
 
     const userpatch = { ...user, firstName: 'David', lastName: 'Smith' }
     server.patch(`/api/v1/users/:userId/`, mock(userpatch))

@@ -1,0 +1,211 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Project /> should render properly 1`] = `
+.emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+.emotion-18 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.emotion-5 {
+  padding-right: 32px;
+  padding-bottom: 32px;
+  width: 470px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #3b3b3b;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-3 {
+  padding: 32px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited {
+  background-color: #73b61c;
+}
+
+.emotion-1:hover {
+  background-color: #96c955;
+}
+
+.emotion-1[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-6 {
+  padding: 16px;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+<div>
+  <h2
+    className="emotion-0"
+  >
+    Project Dashboard
+  </h2>
+  <div
+    className="emotion-18"
+  >
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-3"
+        >
+          <h3>
+            Project: 
+            Project Zero
+          </h3>
+           
+          <div>
+            Project ID: 
+            00000000-0000-0000-0000-000000000000
+          </div>
+           
+          <div
+            className="emotion-2"
+          >
+            <a
+              className="emotion-1"
+              href="/00000000-0000-0000-0000-000000000000/users/add"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+            >
+              + Add Users To Project
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-4"
+      >
+        <h3
+          className="emotion-6"
+        >
+          Getting Started
+        </h3>
+        <div
+          className="emotion-3"
+        >
+          Step 1: Create a Data Source
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-4"
+      >
+        <h3
+          className="emotion-6"
+        >
+          Project API Keys
+        </h3>
+        <div
+          className="emotion-3"
+        >
+          You must have an active project before you can create an API key. You will need an API key to XYZ.
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-4"
+      >
+        <h3
+          className="emotion-6"
+        >
+          Project Usage Plan
+        </h3>
+        <div
+          className="emotion-3"
+        >
+          Video
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
