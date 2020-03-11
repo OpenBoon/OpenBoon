@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Router, { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-const NO_PROJECT_ID_ROUTES = ['/account', '/account/password']
+const NO_PROJECT_ID_ROUTES = ['/icons', '/account', '/account/password']
 
 const Projects = ({ projectId, setUser, children }) => {
   const { query: { projectId: routerProjectId } = {}, pathname } = useRouter()

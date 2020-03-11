@@ -23,3 +23,11 @@ export const formatFullDate = ({ timestamp }) => {
 
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`
 }
+
+export const formatDuration = ({ seconds }) => {
+  const date = new Date(0)
+  date.setSeconds(seconds)
+  const isoString = date.toISOString().substr(11, 8)
+  const parts = isoString.split(':')
+  return `${parts[0]}h : ${parts[1]}m : ${parts[2]}s`
+}

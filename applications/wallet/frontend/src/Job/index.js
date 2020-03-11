@@ -2,11 +2,16 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import Breadcrumbs from '../Breadcrumbs'
+import SuspenseBoundary from '../SuspenseBoundary'
+import Tabs from '../Tabs'
+
+import JobTasks from '../JobTasks'
+import JobErrors from '../JobErrors'
+
+import JobDetails from './Details'
 
 const Job = () => {
-  const {
-    query: { jobId },
-  } = useRouter()
+  const { pathname } = useRouter()
 
   return (
     <>
@@ -20,7 +25,21 @@ const Job = () => {
           { title: 'Job Details', href: false },
         ]}
       />
-      <div>Job ID: {jobId}</div>
+
+      <SuspenseBoundary>
+        <JobDetails />
+
+        <Tabs
+          tabs={[
+            { title: 'All Tasks', href: '/[projectId]/jobs/[jobId]' },
+            { title: 'Errors', href: '/[projectId]/jobs/[jobId]/errors' },
+          ]}
+        />
+
+        {pathname === '/[projectId]/jobs/[jobId]' && <JobTasks />}
+
+        {pathname === '/[projectId]/jobs/[jobId]/errors' && <JobErrors />}
+      </SuspenseBoundary>
     </>
   )
 }
