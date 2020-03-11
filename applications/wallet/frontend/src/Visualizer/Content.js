@@ -8,14 +8,20 @@ import Assets from '../Assets'
 import VisualizerInfobar from './Infobar'
 import VisualizerMetadata from './Metadata'
 
+const PER_PAGE_LIMIT = 50
+
 const VisualizerContent = () => {
   const {
     query: { projectId, page = 1 },
   } = useRouter()
 
+  const FROM = PER_PAGE_LIMIT * (page - 1)
+
   const {
     data: { results: assets, count },
-  } = useSWR(`/api/v1/projects/${projectId}/assets/?page=${page}`)
+  } = useSWR(
+    `/api/v1/projects/${projectId}/assets/?from=${FROM}&size=${PER_PAGE_LIMIT}`,
+  )
 
   return (
     <div

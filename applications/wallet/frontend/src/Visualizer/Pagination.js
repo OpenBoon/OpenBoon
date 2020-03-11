@@ -6,8 +6,6 @@ import { spacing, colors } from '../Styles'
 import PaginationLink from './PaginationLink'
 
 const VisualizerPagination = ({ currentPage, totalPages }) => {
-  if (totalPages === 1) return null
-
   return (
     <div css={{ display: 'flex', justifyContent: 'flex-end' }}>
       <div

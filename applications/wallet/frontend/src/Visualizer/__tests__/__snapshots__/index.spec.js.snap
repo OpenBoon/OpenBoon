@@ -110,29 +110,6 @@ exports[`<Visualizer /> should render properly 1`] = `
   transform: rotate(90deg);
 }
 
-.emotion-8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 8px;
-  border: none;
-  border-radius: 32px;
-  background-color: transparent;
-  color: #b3b3b3;
-}
-
-.emotion-8:hover {
-  background-color: #808080;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  cursor: pointer;
-}
-
 .emotion-7 {
   -webkit-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -448,7 +425,7 @@ exports[`<Visualizer /> should render properly 1`] = `
         Page 
         1
          of 
-        2
+        1
       </div>
       <button
         className="emotion-6"
@@ -461,19 +438,17 @@ exports[`<Visualizer /> should render properly 1`] = `
           width={20}
         />
       </button>
-      <a
-        className="emotion-8"
-        href="undefined?page=2"
-        onClick={[Function]}
-        onMouseEnter={[Function]}
-        rel="next"
+      <button
+        className="emotion-6"
+        disabled={true}
+        type="button"
       >
         <svg
           className="emotion-7"
           data-file-name="chevron.svg"
           width={20}
         />
-      </a>
+      </button>
     </div>
   </div>
   <div
