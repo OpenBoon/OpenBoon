@@ -68,7 +68,7 @@ Array [
     >
       <a
         className="emotion-0"
-        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/undefined/errors"
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
@@ -480,7 +480,7 @@ Array [
       >
         <a
           className="emotion-0"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors/85f0d09c-0631-104b-a57e-ce490d54f27a"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/undefined/errors/85f0d09c-0631-104b-a57e-ce490d54f27a"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -492,7 +492,7 @@ Array [
       >
         <a
           className="emotion-2"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/85f0d094-0631-104b-a57e-ce490d54f27a/errors/85f0d09c-0631-104b-a57e-ce490d54f27a/asset"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/undefined/errors/85f0d09c-0631-104b-a57e-ce490d54f27a/asset"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -501,207 +501,48 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-4 {
-  background-color: #000000;
-  font-family: Roboto Mono;
+  .emotion-1 {
   height: 100%;
 }
 
-.emotion-2 {
+.emotion-0 {
+  height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: #2e2e2e;
-  padding: 16px;
-}
-
-.emotion-0 {
-  width: 48px;
-  height: 48px;
-  padding: 4px;
-  border: 1px solid grey;
-}
-
-.emotion-1 {
-  padding-left: 24px;
-}
-
-.emotion-3 {
-  padding: 16px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  background-color: #252525;
+  font-size: 15px;
+  line-height: 19px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
 
 <div
-    className="emotion-4"
+    className="emotion-1"
   >
     <div
-      className="emotion-2"
+      className="emotion-0"
     >
-      <img
-        alt="TIFF_1MB.tiff"
-        className="emotion-0"
-        src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff"
+      <svg
+        data-file-name="error.svg"
       />
-      <div
-        className="emotion-1"
-      >
-        TIFF_1MB.tiff
-      </div>
-    </div>
-    <div
-      className="emotion-3"
-    >
-      <div
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<pre class=\\"__json-pretty__\\" style=\\"line-height:1.3;overflow:auto;\\">{
-  \\"<span class=\\"__json-key__\\">id</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C\\"</span>,
-  \\"<span class=\\"__json-key__\\">taskId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"d2bb6ad3-54d0-11ea-9250-32240f207bfa\\"</span>,
-  \\"<span class=\\"__json-key__\\">jobId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"85f0d094-0631-104b-a57e-ce490d54f27a\\"</span>,
-  \\"<span class=\\"__json-key__\\">assetId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"HfQ4xpvClTgRHFidgyXRcK01e6u239Lv\\"</span>,
-  \\"<span class=\\"__json-key__\\">path</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"gs://zorroa-dev-data/image/frog.jpeg\\"</span>,
-  \\"<span class=\\"__json-key__\\">message</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]\\"</span>,
-  \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"unknown\\"</span>,
-  \\"<span class=\\"__json-key__\\">fatal</span>\\": <span class=\\"__json-boolean__\\" style=\\"color:#ebb52e;\\">true</span>,
-  \\"<span class=\\"__json-key__\\">analyst</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"not-implemented\\"</span>,
-  \\"<span class=\\"__json-key__\\">phase</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"index\\"</span>,
-  \\"<span class=\\"__json-key__\\">timeCreated</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1582306669906</span>,
-  \\"<span class=\\"__json-key__\\">jobName</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"Applying modules:  to gs://zorroa-dev-data\\"</span>,
-  \\"<span class=\\"__json-key__\\">stackTrace</span>\\": [],
-  \\"<span class=\\"__json-key__\\">metadata</span>\\": {
-    \\"<span class=\\"__json-key__\\">system</span>\\": {
-      \\"<span class=\\"__json-key__\\">jobId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"106d4be1-5d95-11ea-baea-364023b135f5\\"</span>,
-      \\"<span class=\\"__json-key__\\">dataSourceId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"10509c20-5d95-11ea-baea-364023b135f5\\"</span>,
-      \\"<span class=\\"__json-key__\\">timeCreated</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"2020-03-03T21:22:24.922700Z\\"</span>,
-      \\"<span class=\\"__json-key__\\">state</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"Analyzed\\"</span>,
-      \\"<span class=\\"__json-key__\\">projectId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"89382033-bcbb-4c8f-81a9-3d0883298a81\\"</span>,
-      \\"<span class=\\"__json-key__\\">taskId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"106e0f32-5d95-11ea-baea-364023b135f5\\"</span>,
-      \\"<span class=\\"__json-key__\\">timeModified</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"2020-03-03T21:22:47.575195Z\\"</span>
-    },
-    \\"<span class=\\"__json-key__\\">source</span>\\": {
-      \\"<span class=\\"__json-key__\\">path</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"gs://zorroa-dev-data/image/TIFF_1MB.tiff\\"</span>,
-      \\"<span class=\\"__json-key__\\">extension</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"tiff\\"</span>,
-      \\"<span class=\\"__json-key__\\">filename</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"TIFF_1MB.tiff\\"</span>,
-      \\"<span class=\\"__json-key__\\">mimetype</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image/tiff\\"</span>,
-      \\"<span class=\\"__json-key__\\">filesize</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1131930</span>,
-      \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1867533868</span>,
-      \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff\\"</span>
-    },
-    \\"<span class=\\"__json-key__\\">metrics</span>\\": {
-      \\"<span class=\\"__json-key__\\">pipeline</span>\\": [
-        {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.core.processors.PreCacheSourceFileProcessor\\"</span>,
-          \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-          \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1621235190</span>,
-          \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">0.11</span>,
-          \\"<span class=\\"__json-key__\\">executionDate</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"2020-03-03T21:22:27.694149\\"</span>
-        },
-        {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.image.importers.ImageImporter\\"</span>,
-          \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-          \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1426657387</span>,
-          \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">0.26</span>,
-          \\"<span class=\\"__json-key__\\">executionDate</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"2020-03-03T21:22:28.215069\\"</span>
-        },
-        {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.office.importers.OfficeImporter\\"</span>,
-          \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-          \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">2001473853</span>
-        },
-        {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.video.VideoImporter\\"</span>,
-          \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-          \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">3310423168</span>
-        },
-        {
-          \\"<span class=\\"__json-key__\\">processor</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"zmlp_core.core.processors.AssertAttributesProcessor\\"</span>,
-          \\"<span class=\\"__json-key__\\">module</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"standard\\"</span>,
-          \\"<span class=\\"__json-key__\\">checksum</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1841569083</span>,
-          \\"<span class=\\"__json-key__\\">executionTime</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">0</span>,
-          \\"<span class=\\"__json-key__\\">executionDate</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"2020-03-03T21:22:29.654215\\"</span>
-        }
-      ]
-    },
-    \\"<span class=\\"__json-key__\\">media</span>\\": {
-      \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">650</span>,
-      \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">434</span>,
-      \\"<span class=\\"__json-key__\\">aspect</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1.5</span>,
-      \\"<span class=\\"__json-key__\\">orientation</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"landscape\\"</span>,
-      \\"<span class=\\"__json-key__\\">type</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image\\"</span>,
-      \\"<span class=\\"__json-key__\\">length</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1</span>
-    },
-    \\"<span class=\\"__json-key__\\">clip</span>\\": {
-      \\"<span class=\\"__json-key__\\">type</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"page\\"</span>,
-      \\"<span class=\\"__json-key__\\">start</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1</span>,
-      \\"<span class=\\"__json-key__\\">stop</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1</span>,
-      \\"<span class=\\"__json-key__\\">length</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">1</span>,
-      \\"<span class=\\"__json-key__\\">pile</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"pUn6wBxUN7x9JxOxLkvruOyNdYA\\"</span>,
-      \\"<span class=\\"__json-key__\\">sourceAssetId</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C\\"</span>
-    },
-    \\"<span class=\\"__json-key__\\">files</span>\\": [
-      {
-        \\"<span class=\\"__json-key__\\">name</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image_650x434.jpg\\"</span>,
-        \\"<span class=\\"__json-key__\\">category</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"proxy\\"</span>,
-        \\"<span class=\\"__json-key__\\">mimetype</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image/jpeg\\"</span>,
-        \\"<span class=\\"__json-key__\\">size</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">89643</span>,
-        \\"<span class=\\"__json-key__\\">attrs</span>\\": {
-          \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">650</span>,
-          \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">434</span>
-        },
-        \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg\\"</span>
-      },
-      {
-        \\"<span class=\\"__json-key__\\">name</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image_512x341.jpg\\"</span>,
-        \\"<span class=\\"__json-key__\\">category</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"proxy\\"</span>,
-        \\"<span class=\\"__json-key__\\">mimetype</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image/jpeg\\"</span>,
-        \\"<span class=\\"__json-key__\\">size</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">60713</span>,
-        \\"<span class=\\"__json-key__\\">attrs</span>\\": {
-          \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">512</span>,
-          \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">341</span>
-        },
-        \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg\\"</span>
-      },
-      {
-        \\"<span class=\\"__json-key__\\">name</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image_320x213.jpg\\"</span>,
-        \\"<span class=\\"__json-key__\\">category</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"proxy\\"</span>,
-        \\"<span class=\\"__json-key__\\">mimetype</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"image/jpeg\\"</span>,
-        \\"<span class=\\"__json-key__\\">size</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">30882</span>,
-        \\"<span class=\\"__json-key__\\">attrs</span>\\": {
-          \\"<span class=\\"__json-key__\\">width</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">320</span>,
-          \\"<span class=\\"__json-key__\\">height</span>\\": <span class=\\"__json-value__\\" style=\\"color:#4a90e2;\\">213</span>
-        },
-        \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg\\"</span>
-      }
-    ],
-    \\"<span class=\\"__json-key__\\">analysis</span>\\": {
-      \\"<span class=\\"__json-key__\\">zvi</span>\\": {
-        \\"<span class=\\"__json-key__\\">tinyProxy</span>\\": [
-          <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#f3dfc3\\"</span>,
-          <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#f4efd8\\"</span>,
-          <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#c18f46\\"</span>,
-          <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#ebdfbd\\"</span>,
-          <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#ccd3c0\\"</span>,
-          <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#e7d4bb\\"</span>,
-          <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#beae8e\\"</span>,
-          <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#cabf9e\\"</span>,
-          <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"#d2c09c\\"</span>
-        ]
-      }
-    },
-    \\"<span class=\\"__json-key__\\">similarity</span>\\": {
-      \\"<span class=\\"__json-key__\\">simhash</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP\\"</span>
-    }
-  },
-  \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/\\"</span>
-}</pre>",
-          }
-        }
-        id="json-pretty"
-      />
+      <br />
+       Hmmm, something went wrong.
+      <br />
+       Please try refreshing.
     </div>
   </div>,
 ]

@@ -11,6 +11,8 @@ import JobErrorDetails from './Details'
 import JobErrorStackTrace from '../JobErrorStackTrace'
 import JobErrorAsset from '../JobErrorAsset'
 
+import SuspenseBoundary from '../SuspenseBoundary'
+
 const JobErrorContent = () => {
   const {
     pathname,
@@ -22,10 +24,6 @@ const JobErrorContent = () => {
     data: { jobName, fatal, message, taskId, assetId },
     revalidate,
   } = useSWR(`/api/v1/projects/${projectId}/taskerrors/${errorId}/`)
-
-  const { data: asset } = useSWR(
-    `/api/v1/projects/${projectId}/assets/${assetId}/`,
-  )
 
   return (
     <>
@@ -57,10 +55,14 @@ const JobErrorContent = () => {
           },
         ]}
       />
-      {pathname.includes('/[errorId]/asset') ? (
-        <JobErrorAsset asset={asset} />
-      ) : (
+      {pathname === '/[projectId]/jobs/[jobId]/errors/[errorId]' && (
         <JobErrorStackTrace jobError={jobError} />
+      )}
+
+      {pathname === '/[projectId]/jobs/[jobId]/errors/[errorId]/asset' && (
+        <SuspenseBoundary>
+          <JobErrorAsset assetId={assetId} />
+        </SuspenseBoundary>
       )}
     </>
   )

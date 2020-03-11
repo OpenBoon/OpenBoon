@@ -3,11 +3,17 @@ import TestRenderer from 'react-test-renderer'
 import JobErrorAsset from '../index'
 import assets from '../../Assets/__mocks__/assets'
 
+const ASSET = assets.results[0]
+
 describe('<JobErrorAsset />', () => {
   it('should render properly', () => {
-    const asset = assets.results[0]
+    require('swr').__setMockUseSWRResponse({
+      data: ASSET,
+    })
 
-    const component = TestRenderer.create(<JobErrorAsset asset={asset} />)
+    const assetId = ASSET.id
+
+    const component = TestRenderer.create(<JobErrorAsset assetId={assetId} />)
 
     expect(component.toJSON()).toMatchSnapshot()
   })
