@@ -47,7 +47,7 @@ const VisualizerContent = () => {
           overflowY: 'hidden',
         }}>
         <Assets assets={assets} />
-        <VisualizerMetadata />
+        <VisualizerMetadata assets={assets} />
       </div>
     </div>
   )

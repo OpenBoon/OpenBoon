@@ -20,4 +20,18 @@ describe('<Visualizer />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render selected asset', () => {
+    require('swr').__setMockUseSWRResponse({
+      data: assets,
+    })
+
+    require('next/router').__setUseRouter({
+      query: { id: 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C' },
+    })
+
+    const component = TestRenderer.create(<Visualizer />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

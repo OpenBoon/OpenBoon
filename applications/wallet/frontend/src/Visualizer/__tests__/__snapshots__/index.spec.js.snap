@@ -561,3 +561,472 @@ exports[`<Visualizer /> should render properly 1`] = `
   </div>
 </div>
 `;
+
+exports[`<Visualizer /> should render selected asset 1`] = `
+.emotion-24 {
+  height: 100%;
+  background-color: #191919;
+  margin-left: -32px;
+  margin-right: -32px;
+  margin-bottom: -32px;
+  margin-top: 1px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-4 {
+  min-height: 44px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #2e2e2e;
+  box-shadow: 0px 3px 3px 0 rgba(0,0,0,0.3);
+  font-family: Roboto Condensed;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-1 {
+  color: #808080;
+  padding: 8px;
+}
+
+.emotion-2 {
+  color: #808080;
+}
+
+.emotion-3 {
+  color: #b3b3b3;
+  padding: 8px;
+  padding-right: 16px;
+}
+
+.emotion-23 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.emotion-17 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-13 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.emotion-8 {
+  width: 12.5%;
+  height: 0;
+  padding-bottom: 12.5%;
+  position: relative;
+}
+
+.emotion-7 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  padding: 4px;
+}
+
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #2e2e2e;
+  overflow: hidden;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5 {
+  width: 100%;
+}
+
+.emotion-16 {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 2px;
+  background-color: #252525;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  z-index: 80;
+  opacity: 0.8;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-14 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  opacity: 1;
+  padding: 8px;
+}
+
+.emotion-14:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-14[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-14:hover {
+  color: #73b61c;
+}
+
+.emotion-14[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-15 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  opacity: 1;
+  padding: 8px;
+}
+
+.emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-15:hover {
+  color: #73b61c;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-22 {
+  background-color: #2e2e2e;
+  margin-top: 1px;
+  height: 100%;
+  width: 400px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
+.emotion-19 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 44px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-bottom: 1px solid #3b3b3b;
+  padding: 16px;
+}
+
+.emotion-18 {
+  padding: 16px;
+  color: #808080;
+  font-weight: 700;
+}
+
+.emotion-21 {
+  padding: 16px;
+}
+
+.emotion-20 {
+  color: #4a90e2;
+}
+
+<div
+  className="emotion-24"
+>
+  <div
+    className="emotion-4"
+  >
+    <div
+      className="emotion-0"
+    />
+    <div
+      className="emotion-1"
+    >
+      Sort: Import Date
+    </div>
+    <div
+      className="emotion-2"
+    >
+      |
+    </div>
+    <div
+      className="emotion-3"
+    >
+      2
+       of 
+      7
+       Results
+    </div>
+  </div>
+  <div
+    className="emotion-23"
+  >
+    <div
+      className="emotion-17"
+    >
+      <div
+        className="emotion-13"
+      >
+        <div
+          className="emotion-8"
+        >
+          <div
+            className="emotion-7"
+          >
+            <a
+              className="emotion-6"
+              href="/undefined/visualizer?id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+            >
+              <img
+                alt="TIFF_1MB.tiff"
+                className="emotion-5"
+                src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg"
+                srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg 650w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg 512w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg 320w"
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-8"
+        >
+          <div
+            className="emotion-7"
+          >
+            <a
+              className="emotion-6"
+              href="/undefined/visualizer?id=XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+            >
+              <img
+                alt="TIFF_1MB.tiff"
+                className="emotion-5"
+                src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg"
+                srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg 800w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_512x384.jpg 512w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_320x240.jpg 320w"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-16"
+      >
+        <button
+          aria-disabled={true}
+          aria-label="Zoom Out"
+          className="emotion-14"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            data-file-name="circleMinus.svg"
+            width={20}
+          />
+        </button>
+        <button
+          aria-label="Zoom In"
+          className="emotion-15"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            data-file-name="circlePlus.svg"
+            width={20}
+          />
+        </button>
+      </div>
+    </div>
+    <div
+      className="emotion-22"
+    >
+      <div
+        className="emotion-19"
+      >
+        <svg
+          color="#808080"
+          data-file-name="information.svg"
+          width={20}
+        />
+        <div
+          className="emotion-18"
+        >
+          ASSET METADATA
+        </div>
+      </div>
+      <div
+        className="emotion-21"
+      >
+        <div
+          className="emotion-20"
+        >
+          TIFF_1MB.tiff
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
