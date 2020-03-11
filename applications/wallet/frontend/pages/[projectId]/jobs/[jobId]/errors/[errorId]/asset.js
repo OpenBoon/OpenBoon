@@ -1,3 +1,3 @@
-import JobErrorAsset from '../../../../../../src/JobErrorAsset'
+import JobError from '../../../../../../src/JobError'
 
-export default JobErrorAsset
+export default JobError

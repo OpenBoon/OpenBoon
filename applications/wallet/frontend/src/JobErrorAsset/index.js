@@ -1,26 +1,71 @@
-import Head from 'next/head'
+import PropTypes from 'prop-types'
 
-import Breadcrumbs from '../Breadcrumbs'
-import JobErrorAssetContent from './Content'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
+import JSONPretty from 'react-json-pretty'
 
-const JobErrorAsset = () => {
+import { spacing, colors, constants } from '../Styles'
+
+const ASSET_THUMBNAIL_SIZE = 48
+
+const JobErrorAsset = ({ assetId }) => {
+  const {
+    query: { projectId },
+  } = useRouter()
+
+  const {
+    data: asset,
+    data: {
+      metadata: {
+        source: { filename, url },
+      },
+    },
+  } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
+
   return (
-    <>
-      <Head>
-        <title>Error Details</title>
-      </Head>
-
-      <Breadcrumbs
-        crumbs={[
-          { title: 'Job Queue', href: '/[projectId]/jobs' },
-          { title: 'Job Details', href: '/[projectId]/jobs/[jobId]/errors' },
-          { title: 'Error Details', href: false },
-        ]}
-      />
-
-      <JobErrorAssetContent />
-    </>
+    <div
+      css={{
+        backgroundColor: colors.structure.black,
+        fontFamily: 'Roboto Mono',
+        height: 'auto',
+      }}>
+      <div
+        css={{
+          display: 'flex',
+          alignItems: 'center',
+          background: colors.structure.mattGrey,
+          padding: spacing.normal,
+        }}>
+        <img
+          src={url.replace('https://wallet.zmlp.zorroa.com', '')}
+          alt={filename}
+          css={{
+            width: ASSET_THUMBNAIL_SIZE,
+            height: ASSET_THUMBNAIL_SIZE,
+            padding: spacing.small,
+            border: constants.borders.separator,
+          }}
+        />
+        <div css={{ paddingLeft: spacing.comfy }}>{filename}</div>
+      </div>
+      <div css={{ padding: spacing.normal }}>
+        <JSONPretty
+          id="json-pretty"
+          data={asset}
+          theme={{
+            main: 'line-height:1.3;overflow:auto;',
+            string: `color:${colors.signal.grass.base};`,
+            value: `color:${colors.signal.sky.base};`,
+            boolean: `color:${colors.signal.canary.base};`,
+          }}
+        />
+      </div>
+    </div>
   )
+}
+
+JobErrorAsset.propTypes = {
+  assetId: PropTypes.string.isRequired,
 }
 
 export default JobErrorAsset
