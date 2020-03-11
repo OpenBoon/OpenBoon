@@ -9,14 +9,21 @@ exports[`<Project /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-18 {
+.emotion-42 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
+  max-height: 100vh;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
 }
 
 .emotion-5 {
@@ -109,6 +116,132 @@ exports[`<Project /> should render properly 1`] = `
   border-bottom: 1px solid #4a4a4a;
 }
 
+.emotion-18 {
+  padding-bottom: 24px;
+}
+
+.emotion-17 {
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-12 {
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 20px;
+  color: #73b61c;
+}
+
+.emotion-11 {
+  font-weight: 700;
+}
+
+.emotion-13 {
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 700;
+  margin: 0;
+  padding-top: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-13 svg {
+  margin-right: 8px;
+}
+
+.emotion-14 {
+  margin: 0;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  color: #b3b3b3;
+}
+
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 24px;
+}
+
+.emotion-15 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
+  background-color: #808080;
+}
+
+.emotion-15:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-15[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-34 {
+  padding-bottom: 0;
+}
+
+.emotion-33 {
+  border-bottom: 0;
+}
+
+.emotion-32 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 0;
+}
+
 <div>
   <h2
     className="emotion-0"
@@ -116,7 +249,7 @@ exports[`<Project /> should render properly 1`] = `
     Project Dashboard
   </h2>
   <div
-    className="emotion-18"
+    className="emotion-42"
   >
     <div
       className="emotion-5"
@@ -161,12 +294,170 @@ exports[`<Project /> should render properly 1`] = `
         <h3
           className="emotion-6"
         >
+          Project Usage Plan
+        </h3>
+        <div
+          className="emotion-3"
+        >
+          Video
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-4"
+      >
+        <h3
+          className="emotion-6"
+        >
           Getting Started
         </h3>
         <div
           className="emotion-3"
         >
-          Step 1: Create a Data Source
+          <div
+            className="emotion-18"
+          >
+            <div
+              className="emotion-17"
+            >
+              <h4
+                className="emotion-12"
+              >
+                <span
+                  className="emotion-11"
+                >
+                  Step 
+                  1
+                  : 
+                </span>
+                Create a Data Source
+              </h4>
+              <h5
+                className="emotion-13"
+              >
+                <svg
+                  aria-hidden={true}
+                  data-file-name="datasources.svg"
+                  width={20}
+                />
+                Data Sources
+              </h5>
+              <p
+                className="emotion-14"
+              >
+                To create a Data Source, connected to a bucket, choose which types of assets you’d like to process, and select which machine learning modules you’d like to apply to them.
+              </p>
+              <div
+                className="emotion-16"
+              >
+                <a
+                  className="emotion-15"
+                  href="/00000000-0000-0000-0000-000000000000/data-sources/add"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  + Create a Data Source
+                </a>
+              </div>
+            </div>
+          </div>
+          <div
+            className="emotion-18"
+          >
+            <div
+              className="emotion-17"
+            >
+              <h4
+                className="emotion-12"
+              >
+                <span
+                  className="emotion-11"
+                >
+                  Step 
+                  2
+                  : 
+                </span>
+                Review Job Progress
+              </h4>
+              <h5
+                className="emotion-13"
+              >
+                <svg
+                  aria-hidden={true}
+                  data-file-name="jobQueue.svg"
+                  width={20}
+                />
+                Job Queue
+              </h5>
+              <p
+                className="emotion-14"
+              >
+                After a Data Source had been created a job kicks off and you can view its progress in the Job Queue. There you can and apply actions like “pause” “cancel” or “retry”. You can also inspect any errors that may have occurred.
+              </p>
+              <div
+                className="emotion-16"
+              >
+                <a
+                  className="emotion-15"
+                  href="/00000000-0000-0000-0000-000000000000/jobs"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  View Jobs Queue
+                </a>
+              </div>
+            </div>
+          </div>
+          <div
+            className="emotion-34"
+          >
+            <div
+              className="emotion-33"
+            >
+              <h4
+                className="emotion-12"
+              >
+                <span
+                  className="emotion-11"
+                >
+                  Step 
+                  3
+                  : 
+                </span>
+                Inspect your new dataset
+              </h4>
+              <h5
+                className="emotion-13"
+              >
+                <svg
+                  aria-hidden={true}
+                  data-file-name="visualizer.svg"
+                  width={20}
+                />
+                Visualizer
+              </h5>
+              <p
+                className="emotion-14"
+              >
+                Once a job has successfully completed then the assets will appear in the Visualizer.  There you can inspect your assets new data, view the dataset in a variety of meaningful ways, and XYZ
+              </p>
+              <div
+                className="emotion-32"
+              >
+                <a
+                  className="emotion-15"
+                  href="/00000000-0000-0000-0000-000000000000/visualizer"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  Inspect Assets
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -185,24 +476,6 @@ exports[`<Project /> should render properly 1`] = `
           className="emotion-3"
         >
           You must have an active project before you can create an API key. You will need an API key to XYZ.
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-5"
-    >
-      <div
-        className="emotion-4"
-      >
-        <h3
-          className="emotion-6"
-        >
-          Project Usage Plan
-        </h3>
-        <div
-          className="emotion-3"
-        >
-          Video
         </div>
       </div>
     </div>
