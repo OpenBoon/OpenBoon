@@ -19,7 +19,7 @@ const AssetsThumbnail = ({
   thumbnailCount,
 }) => {
   const {
-    query: { projectId },
+    query: { projectId, page },
   } = useRouter()
 
   const containerWidth = 100 / thumbnailCount
@@ -31,6 +31,8 @@ const AssetsThumbnail = ({
   const { attrs: { width, height } = {} } = files[0] || {}
 
   const largestDimension = width > height ? 'width' : 'height'
+
+  const pageQuery = page ? `page=${page}&` : ''
 
   return (
     <div
@@ -48,8 +50,8 @@ const AssetsThumbnail = ({
           padding: spacing.small,
         }}>
         <Link
-          href={`/[projectId]/visualizer?id=${id}`}
-          as={`/${projectId}/visualizer?id=${id}`}
+          href={`/[projectId]/visualizer?${pageQuery}id=${id}`}
+          as={`/${projectId}/visualizer?${pageQuery}id=${id}`}
           passHref>
           <Button
             variant={VARIANTS.NEUTRAL}
