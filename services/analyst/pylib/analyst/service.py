@@ -105,8 +105,8 @@ class ClusterClient(object):
         hang and continually retry the event until the Archivist comes back online.
 
         Args:
-            task (dict): A dict of Task properties.
-            event (dict): An event
+            etype (dict): A dict of Task properties.
+            payload (dict): An event
 
         """
         data = self.make_event(task, etype, payload)

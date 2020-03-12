@@ -320,7 +320,6 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     override fun stopTask(task: InternalTask, event: TaskStoppedEvent): Boolean {
-
         val newState = when {
             event.newState != null -> event.newState
             event.exitStatus != 0 -> {
@@ -352,7 +351,8 @@ class DispatcherServiceImpl @Autowired constructor(
                 logger.warn("Failed to clear taskId from Analyst")
             }
 
-            if (!event.manualKill && event.exitStatus != 0 && newState == TaskState.Failure) {
+            if (!event.manualKill && event.exitStatus == EXIT_STATUS_HARD_FAIL &&
+                newState == TaskState.Failure) {
                 val script = taskDao.getScript(task.taskId)
                 val assetCount = script.assets?.size ?: 0
 
@@ -552,6 +552,11 @@ class DispatcherServiceImpl @Autowired constructor(
     }
 
     companion object {
+
+        // If the task fails with a 9, its a hard failure and an error gets generated
+        // for all the assets.
+        const val EXIT_STATUS_HARD_FAIL = 9
+
         private val logger = LoggerFactory.getLogger(DispatcherServiceImpl::class.java)
     }
 }
