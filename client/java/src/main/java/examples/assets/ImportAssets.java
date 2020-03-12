@@ -3,7 +3,7 @@ package examples.assets;
 import com.zorroa.zmlp.client.ZmlpApp;
 import com.zorroa.zmlp.client.domain.asset.AssetCreateBuilder;
 import com.zorroa.zmlp.client.domain.asset.AssetSpec;
-import com.zorroa.zmlp.client.domain.asset.BatchCreateAssetResponse;
+import com.zorroa.zmlp.client.domain.asset.BatchCreateAssetsResponse;
 
 public class ImportAssets {
     public static void main(String[] args) {
@@ -18,7 +18,7 @@ public class ImportAssets {
                 .setAnalyze(false);
 
         // Import Assets
-        BatchCreateAssetResponse batchCreateAssetResponse = zmlpApp.assets.importFiles(assetCreateBuilder);
+        BatchCreateAssetsResponse batchCreateAssetResponse = zmlpApp.assets.importFiles(assetCreateBuilder);
 
     }
 }

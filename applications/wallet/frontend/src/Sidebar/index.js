@@ -7,10 +7,13 @@ import { colors, spacing, zIndex, constants } from '../Styles'
 import SidebarLink from './Link'
 import SidebarOverlay from './Overlay'
 
-import QueueSvg from '../Icons/queue.svg'
+import ProjectDashboardSvg from '../Icons/projectDashboard.svg'
 import DataSourcesSvg from '../Icons/datasources.svg'
+import JobQueueSvg from '../Icons/jobQueue.svg'
+import VisualizerSvg from '../Icons/visualizer.svg'
 import KeySvg from '../Icons/key.svg'
 import UsersSvg from '../Icons/users.svg'
+import AccountDashboardSvg from '../Icons/accountDashboard.svg'
 import GearSvg from '../Icons/gear.svg'
 
 const WIDTH = 240
@@ -41,27 +44,40 @@ const Sidebar = forwardRef(
             overflowY: 'auto',
             zIndex: zIndex.layout.drawer,
             backgroundColor: colors.structure.iron,
-            paddingBottom: spacing.spacious,
             transition: 'left ease-in-out .3s, visibility ease-in-out .3s',
             overscrollBehavior: 'contain',
             left: isSidebarOpen ? 0 : -WIDTH,
             top: constants.navbar.height,
-            paddingTop: spacing.moderate,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
           }}>
           <ul
             css={{
               listStyleType: 'none',
               padding: 0,
               margin: 0,
+              paddingTop: spacing.moderate,
+              paddingBottom: spacing.moderate,
             }}>
-            <SidebarLink projectId={projectId} href="/[projectId]/jobs">
-              <QueueSvg width={ICON_WIDTH} aria-hidden />
-              Job Queue
+            <SidebarLink projectId={projectId} href="/[projectId]">
+              <ProjectDashboardSvg width={ICON_WIDTH} aria-hidden />
+              Project Dashboard
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/data-sources">
               <DataSourcesSvg width={ICON_WIDTH} aria-hidden />
               Data Sources
+            </SidebarLink>
+
+            <SidebarLink projectId={projectId} href="/[projectId]/jobs">
+              <JobQueueSvg width={ICON_WIDTH} aria-hidden />
+              Job Queue
+            </SidebarLink>
+
+            <SidebarLink projectId={projectId} href="/[projectId]/visualizer">
+              <VisualizerSvg width={ICON_WIDTH} aria-hidden />
+              Visualizer
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/[projectId]/api-keys">
@@ -72,6 +88,20 @@ const Sidebar = forwardRef(
             <SidebarLink projectId={projectId} href="/[projectId]/users">
               <UsersSvg width={ICON_WIDTH} aria-hidden />
               User Admin
+            </SidebarLink>
+          </ul>
+          <ul
+            css={{
+              listStyleType: 'none',
+              padding: 0,
+              margin: 0,
+              paddingTop: spacing.moderate,
+              paddingBottom: spacing.moderate,
+              backgroundColor: colors.structure.smoke,
+            }}>
+            <SidebarLink projectId={projectId} href="/">
+              <AccountDashboardSvg width={ICON_WIDTH} aria-hidden />
+              Account Dashboard
             </SidebarLink>
 
             <SidebarLink projectId={projectId} href="/account">

@@ -4,12 +4,11 @@ import com.zorroa.zmlp.client.ZmlpClient;
 import com.zorroa.zmlp.client.domain.datasource.DataSource;
 import com.zorroa.zmlp.client.domain.datasource.DataSourceCredentials;
 import com.zorroa.zmlp.client.domain.datasource.DataSourceSpec;
+import com.zorroa.zmlp.client.domain.exception.ZmlpRequestException;
 
 import java.util.*;
 
 public class DataSourceApp {
-
-    private static final String BASE_URI = "/api/v1/data-sources";
 
     public final ZmlpClient client;
 
@@ -23,8 +22,8 @@ public class DataSourceApp {
      * @param spec
      * @return
      */
-    public DataSource createDataSource(DataSourceSpec spec) {
-        return client.post(BASE_URI, spec, DataSource.class);
+    public DataSource createDataSource(DataSourceSpec spec)  throws ZmlpRequestException {
+        return client.post("/api/v1/data-sources", spec, DataSource.class);
     }
 
     /**
@@ -37,23 +36,9 @@ public class DataSourceApp {
      * @param id A DataSource id or the name of a data source.
      * @return An import DataSource result dictionary.
      */
-    public DataSource importDataSource(String id) {
-        String url = String.format("%s/%s/_import", BASE_URI, id);
-        return client.post(url, null, DataSource.class);
-    }
-
-    /**
-     * Update the DataSource credentials.  Set the blob to None to delete the credentials.
-     *
-     * @param dataSourceCredentials   A DataSourceCredentials contains information about Datasource and its credentials.
-     * @return A status dict.
-     */
-
-    public Map updateCredentials(DataSourceCredentials dataSourceCredentials) {
-        String url = String.format("%s/%s/_credentials", BASE_URI, dataSourceCredentials.getDataSourceId());
-        Map body = new HashMap();
-        body.put("blob", dataSourceCredentials.getBlob());
-        return client.put(url, body, Map.class);
+    public DataSource importDataSource(String id)  throws ZmlpRequestException{
+        String url = String.format("/api/v1/data-sources/%s/_import", id);
+        return client.post(url, new HashMap(), DataSource.class);
     }
 
     /**
@@ -62,9 +47,9 @@ public class DataSourceApp {
      * @param name The unique name or unique ID.
      * @return The DataSource
      */
-    public DataSource getDataSource(String name) {
+    public DataSource getDataSource(String name)  throws ZmlpRequestException{
 
-        String url = String.format("%s/_findOne", BASE_URI);
+        String url = String.format("/api/v1/jobs/_findOne");
         Map body = new HashMap();
 
         try {

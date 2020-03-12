@@ -16,10 +16,14 @@ const borders = {
   success: `1px solid ${colors.signal.grass.base}`,
   tableRow: `1px solid ${colors.structure.steel}`,
   input: `2px solid ${colors.key.one}`,
+  divider: `1px solid ${colors.structure.smoke}`,
+  pill: `2px solid ${colors.structure.steel}`,
 }
 
 const opacity = {
+  third: 0.3,
   half: 0.5,
+  eighth: 0.8,
   full: 1,
 }
 
@@ -29,9 +33,9 @@ const boxShadows = {
   menu: `0 4px 7px 0 ${colors.structure.black}`,
   navBar: `0 0 4px 0 rgba(0, 0, 0, ${opacity.half})`,
   dropdown: `0 2px 6px 0 ${colors.structure.black}`,
-  modal: `0 0 8px 5px rgba(0, 0, 0, ${opacity.half})`,
-  table: `0 0 5px 0 ${colors.structure.black}`,
   tableRow: `0 0 5px 0 rgba(0, 0, 0, ${opacity.half})`,
+  metadata: `-3px 0 3px 0px rgba(0, 0, 0,${opacity.third})`,
+  infoBar: `0px 3px 3px 0 rgba(0, 0, 0, ${opacity.third})`,
 }
 
 const constants = {

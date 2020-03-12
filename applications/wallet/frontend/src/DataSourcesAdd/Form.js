@@ -85,12 +85,13 @@ const DataSourcesAddForm = () => {
         onClick={fileType =>
           dispatch({ fileTypes: { ...state.fileTypes, ...fileType } })
         }
-        options={FILE_TYPES.map(({ key, label, legend, icon }) => ({
-          key,
+        options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
+          value,
           label,
           icon: <img src={icon} alt={label} width="40px" />,
           legend,
           initialValue: false,
+          isDisabled: false,
         }))}
         variant={CHECKBOX_VARIANTS.SECONDARY}
       />
@@ -124,7 +125,11 @@ const DataSourcesAddForm = () => {
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
           onClick={() => onSubmit({ dispatch, projectId, state })}
-          isDisabled={!state.name || !state.uri}>
+          isDisabled={
+            !state.name ||
+            !state.uri ||
+            !Object.values(state.fileTypes).filter(Boolean).length > 0
+          }>
           Create Data Source
         </Button>
       </ButtonGroup>

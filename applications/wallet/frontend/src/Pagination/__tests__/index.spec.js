@@ -30,4 +30,17 @@ describe('<Pagination />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should return null if single page', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: { projectId: PROJECT_ID },
+    })
+
+    const component = TestRenderer.create(
+      <Pagination currentPage={1} totalPages={1} />,
+    )
+
+    expect(component.toJSON()).toEqual(null)
+  })
 })

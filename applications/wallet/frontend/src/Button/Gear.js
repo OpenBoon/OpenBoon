@@ -9,13 +9,17 @@ import GearSvg from '../Icons/gear.svg'
 const ButtonGear = ({ onBlur, onClick }) => (
   <Button
     aria-label="Toggle Actions Menu"
+    className="gear"
     variant={VARIANTS.NEUTRAL}
     style={{
       color: colors.structure.coal,
       padding: spacing.moderate / 2,
       margin: -spacing.moderate / 2,
       borderRadius: constants.borderRadius.round,
-      ':hover': { backgroundColor: colors.structure.steel },
+      ':hover': {
+        color: `${colors.structure.white} !important`,
+        backgroundColor: colors.structure.steel,
+      },
     }}
     onBlur={onBlur}
     onClick={onClick}

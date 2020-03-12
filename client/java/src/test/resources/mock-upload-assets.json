@@ -1,14 +1,13 @@
 {
-  "assets" : [ {
-    "document" : {
-      "source" : {
-        "path" : "zmlp:///abc123/source/toucan.jpg"
-      }
-    },
-    "id" : "abc123"
-  } ],
-  "status" : [ {
-    "assetId" : "abc123",
-    "failed" : false
-  } ]
+  "failed":[
+
+  ],
+  "created":[
+    "xGVHdpVZ6ECH5Vlecm6yPZfWCWbXavTm"
+  ],
+  "exists":[
+
+  ],
+  "jobId":"6257a510-f928-1fba-bc2f-e6c88639155e",
+  "totalUpdated":1
 }

@@ -74,12 +74,12 @@
     {
       "//": "dependencies",
       "path": ".next/static/chunks/commons**.js",
-      "maxSize": "20 kB"
+      "maxSize": "19 kB"
     },
     {
       "//": "app.js",
       "path": ".next/static/**/pages/_app.js",
-      "maxSize": "26 kB"
+      "maxSize": "27 kB"
     },
     {
       "//": "main runtime",
@@ -89,7 +89,7 @@
     {
       "//": "error page",
       "path": ".next/static/**/pages/_error.js",
-      "maxSize": "2 kB"
+      "maxSize": "4 kB"
     },
     {
       "//": "polyfill & webpack runtime",
@@ -104,9 +104,9 @@
   ],
   "dependencies": {
     "@emotion/babel-preset-css-prop": "10.0.27",
-    "@emotion/core": "10.0.27",
-    "@sentry/browser": "5.12.4",
-    "@svgr/webpack": "5.1.0",
+    "@emotion/core": "10.0.28",
+    "@sentry/browser": "5.13.2",
+    "@svgr/webpack": "5.2.0",
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "body-scroll-lock": "2.6.4",
     "dotenv": "8.2.0",
@@ -114,14 +114,16 @@
     "jwt-decode": "2.2.0",
     "next": "9.2.2",
     "prop-types": "15.7.2",
-    "react": "16.12.0",
+    "react": "16.13.0",
     "react-aria-modal": "4.0.0",
-    "react-dom": "16.12.0",
-    "swr": "0.1.17"
+    "react-dom": "16.13.0",
+    "react-json-pretty": "2.2.0",
+    "swr": "0.1.18"
   },
   "devDependencies": {
-    "babel-eslint": "10.0.3",
+    "babel-eslint": "10.1.0",
     "babel-jest": "25.1.0",
+    "babel-plugin-macros": "2.8.0",
     "bundlesize": "0.18.0",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.0.1",
@@ -129,19 +131,20 @@
     "eslint-plugin-emotion": "10.0.27",
     "eslint-plugin-import": "2.20.1",
     "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.18.3",
-    "eslint-plugin-react-hooks": "2.4.0",
+    "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-react-hooks": "2.5.0",
     "esm": "3.2.25",
     "express": "4.17.1",
-    "http-proxy-middleware": "1.0.0",
+    "http-proxy-middleware": "1.0.1",
     "husky": "4.2.3",
+    "import-all.macro": "2.0.3",
     "jest": "25.1.0",
     "jest-emotion": "10.0.27",
-    "jest-fetch-mock": "3.0.1",
-    "lint-staged": "10.0.7",
+    "jest-fetch-mock": "3.0.2",
+    "lint-staged": "10.0.8",
     "morgan": "1.9.1",
     "prettier": "1.19.1",
-    "react-test-renderer": "16.12.0",
+    "react-test-renderer": "16.13.0",
     "webpack-bundle-analyzer": "3.6.0"
   }
 }

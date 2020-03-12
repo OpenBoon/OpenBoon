@@ -1,11 +1,11 @@
 import TestRenderer from 'react-test-renderer'
 
-import ErrorBoundary from '..'
+import ErrorBoundary, { VARIANTS } from '..'
 
 describe('<ErrorBoundary />', () => {
   it('should render children', () => {
     const component = TestRenderer.create(
-      <ErrorBoundary>
+      <ErrorBoundary variant={VARIANTS.LOCAL}>
         <div />
       </ErrorBoundary>,
     )
@@ -14,14 +14,21 @@ describe('<ErrorBoundary />', () => {
   })
 
   it('should render generic when caught', () => {
-    const MockFailedComponent = jest.fn(() => Promise.reject(new Error()))
+    const spy = jest.spyOn(console, 'error')
+    spy.mockImplementation(() => {})
+
+    const Throw = () => {
+      throw new Error('Error')
+    }
 
     const component = TestRenderer.create(
-      <ErrorBoundary>
-        <MockFailedComponent />
+      <ErrorBoundary variant={VARIANTS.LOCAL}>
+        <Throw />
       </ErrorBoundary>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    spy.mockRestore()
   })
 })

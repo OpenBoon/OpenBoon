@@ -3,6 +3,7 @@ package com.zorroa.zmlp.client.app;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.zorroa.zmlp.client.ZmlpClient;
 import com.zorroa.zmlp.client.domain.PagedList;
+import com.zorroa.zmlp.client.domain.exception.ZmlpRequestException;
 import com.zorroa.zmlp.client.domain.project.Project;
 import com.zorroa.zmlp.client.domain.project.ProjectFilter;
 import com.zorroa.zmlp.client.domain.project.ProjectSpec;
@@ -23,7 +24,7 @@ public class ProjectApp {
      * @param spec A ProjectSpec instance.
      * @return The created Project
      */
-    public Project createProject(ProjectSpec spec) {
+    public Project createProject(ProjectSpec spec) throws ZmlpRequestException {
         return client.post("/api/v1/projects", spec, Project.class);
     }
 
@@ -33,7 +34,7 @@ public class ProjectApp {
      * @param id
      * @return The found Project
      */
-    public Project getProject(UUID id) {
+    public Project getProject(UUID id) throws ZmlpRequestException {
         return client.get("/api/v1/projects/" + id.toString(), null, Project.class);
     }
 
@@ -43,7 +44,7 @@ public class ProjectApp {
      * @param filter
      * @return The found Project
      */
-    public Project findProject(ProjectFilter filter) {
+    public Project findProject(ProjectFilter filter) throws ZmlpRequestException {
         return client.post("/api/v1/projects/_findOne", filter, Project.class);
     }
 
@@ -51,7 +52,7 @@ public class ProjectApp {
      * @param filter
      * @return
      */
-    public PagedList<Project> searchProjects(ProjectFilter filter) {
+    public PagedList<Project> searchProjects(ProjectFilter filter) throws ZmlpRequestException {
         return client.post("/api/v1/projects/_search", filter, new TypeReference<PagedList<Project>>() {
         });
     }

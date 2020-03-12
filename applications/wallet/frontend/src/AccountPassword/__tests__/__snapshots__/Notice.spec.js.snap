@@ -1,0 +1,476 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AccountPasswordNotice /> should render an error 1`] = `
+.emotion-29 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-18 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-3 {
+  padding-top: 8px;
+}
+
+.emotion-0 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  position: relative;
+}
+
+.emotion-1 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-1:focus {
+  border: 2px solid #73b61c;
+  outline: #73b61c;
+}
+
+.emotion-1:focus {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-17 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-17 button,
+.emotion-17 a {
+  margin-right: 16px;
+}
+
+.emotion-15 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-15:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-15[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
+  background-color: #808080;
+}
+
+.emotion-15:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-15[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-16 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-16:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-16[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited {
+  background-color: #73b61c;
+}
+
+.emotion-16:hover {
+  background-color: #96c955;
+}
+
+.emotion-16[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-28 {
+  padding-top: 16px;
+  padding-left: 48px;
+}
+
+.emotion-27 {
+  width: 470px;
+  border: 1px solid #3b3b3b;
+  border-radius: 2px;
+  padding: 32px;
+}
+
+.emotion-23 {
+  color: #ffffff;
+  font-weight: 500;
+  padding-bottom: 4px;
+}
+
+.emotion-24 {
+  color: #808080;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-25 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-25:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-25[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-25,
+.emotion-25:hover,
+.emotion-25:visited {
+  background-color: #73b61c;
+}
+
+.emotion-25:hover {
+  background-color: #96c955;
+}
+
+.emotion-25[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-22 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-19 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #000000;
+  font-weight: 500;
+}
+
+.emotion-20 {
+  border: 0;
+  padding: 0;
+  background: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+<div
+  className="emotion-29"
+>
+  <form
+    action=""
+    className="emotion-18"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-3"
+    >
+      <label
+        className="emotion-0"
+        htmlFor="currentPassword"
+      >
+        Current Password
+      </label>
+      <div
+        className="emotion-2"
+      >
+        <input
+          autoFocus={true}
+          className="emotion-1"
+          id="currentPassword"
+          name="currentPassword"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-3"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <label
+        className="emotion-0"
+        htmlFor="newPassword"
+      >
+        New Password
+      </label>
+      <div
+        className="emotion-2"
+      >
+        <input
+          className="emotion-1"
+          id="newPassword"
+          name="newPassword"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-3"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <label
+        className="emotion-0"
+        htmlFor="confirmPassword"
+      >
+        Confirm Password
+      </label>
+      <div
+        className="emotion-2"
+      >
+        <input
+          className="emotion-1"
+          id="confirmPassword"
+          name="confirmPassword"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-3"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-17"
+    >
+      <button
+        className="emotion-15"
+        onClick={[Function]}
+        type="button"
+      >
+        Cancel
+      </button>
+      <button
+        aria-disabled={true}
+        className="emotion-16"
+        onClick={[Function]}
+        type="submit"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+  <div
+    className="emotion-28"
+  >
+    <div
+      className="emotion-22"
+    >
+      <div
+        className="emotion-21"
+      >
+        <svg
+          color="#c92300"
+          data-file-name="warning.svg"
+          height={20}
+        />
+        <div
+          className="emotion-19"
+          role="alert"
+        >
+          Error. Please try again.
+        </div>
+        <button
+          aria-label="Close alert"
+          className="emotion-20"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            color="#000000"
+            data-file-name="cross.svg"
+            height={20}
+          />
+        </button>
+      </div>
+    </div>
+    <div
+      className="emotion-27"
+    >
+      <div
+        className="emotion-23"
+      >
+        Did you sign in with Google or another service?
+      </div>
+      <div
+        className="emotion-24"
+      >
+        If so, you may not have a Zorroa password. You can create one by resetting the password and checking your email for instructions.
+      </div>
+      <div
+        className="emotion-17"
+      >
+        <button
+          className="emotion-25"
+          onClick={[Function]}
+          type="button"
+        >
+          Reset Password
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

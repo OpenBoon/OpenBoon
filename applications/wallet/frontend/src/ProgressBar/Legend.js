@@ -11,6 +11,9 @@ const ProgressBarLegend = ({ taskCounts }) => {
         display: 'flex',
         backgroundColor: colors.structure.iron,
         borderRadius: constants.borderRadius.small,
+        fontFamily: 'Roboto Condensed',
+        paddingLeft: spacing.small,
+        paddingRight: spacing.small,
       }}>
       {Object.keys(TASK_STATUS_COLORS).map(statusName => {
         return (

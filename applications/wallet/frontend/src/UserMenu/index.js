@@ -10,10 +10,12 @@ import ChevronSvg from '../Icons/chevron.svg'
 import Menu from '../Menu'
 import Button, { VARIANTS } from '../Button'
 
+import { openContactForm } from '../Zendesk/helpers'
+
 const SIZE = 28
 const CHEVRON_WIDTH = 20
 
-const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
+const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
   return (
     <div css={{ marginRight: -spacing.moderate }}>
       <Menu
@@ -80,7 +82,7 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
               </div>
               <div>{email}</div>
             </div>
-            <ul>
+            <ul css={{ borderBottom: constants.borders.separator }}>
               <li>
                 <Link href="/account" passHref>
                   <Button
@@ -96,7 +98,22 @@ const UserMenu = ({ user: { firstName, lastName, email }, logout }) => {
                 <Button
                   variant={VARIANTS.MENU_ITEM}
                   onBlur={onBlur}
-                  onClick={logout}
+                  onClick={event => {
+                    onClick(event)
+
+                    openContactForm({ user })
+                  }}
+                  isDisabled={false}>
+                  Contact Support
+                </Button>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <Button
+                  variant={VARIANTS.MENU_ITEM}
+                  onBlur={onBlur}
+                  onClick={() => logout({ redirectUrl: '/' })}
                   isDisabled={false}>
                   Sign Out
                 </Button>

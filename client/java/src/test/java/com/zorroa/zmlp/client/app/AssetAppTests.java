@@ -15,9 +15,11 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static com.zorroa.zmlp.client.UtilsTests.getMockData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -43,10 +45,10 @@ public class AssetAppTests extends AbstractAppTests {
                 .addAsset("gs://zorroa-dev-data/image/earth.png")
                 .setAnalyze(false);
 
-        BatchCreateAssetResponse batchCreateAssetResponse = assetApp.importFiles(assetCreateBuilder);
+        BatchCreateAssetsResponse batchCreateAssetResponse = assetApp.importFiles(assetCreateBuilder);
 
-        assertEquals("abc123", batchCreateAssetResponse.getStatus().get(0).getAssetId());
-        assertEquals(false, batchCreateAssetResponse.getStatus().get(0).getFailed());
+        assertEquals(1, batchCreateAssetResponse.getExists().size());
+        assertEquals("CL8h_o9JKG-pdf1wj25A4-_ftbLNyY0U", batchCreateAssetResponse.getExists().get(0));
     }
 
     @Test
@@ -66,9 +68,10 @@ public class AssetAppTests extends AbstractAppTests {
         webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
 
         List<AssetSpec> assetSpecList = Arrays.asList(new AssetSpec("src/test/resources/toucan.jpg"));
-        BatchCreateAssetResponse response = assetApp.uploadFiles(assetSpecList);
+        BatchCreateAssetsResponse response = assetApp.uploadFiles(assetSpecList);
 
-        assertEquals("abc123", response.getStatus().get(0).getAssetId());
+        assertEquals(1, response.getCreated().size());
+        assertEquals("xGVHdpVZ6ECH5Vlecm6yPZfWCWbXavTm", response.getCreated().get(0));
     }
 
     @Test
@@ -76,9 +79,10 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
 
-        BatchCreateAssetResponse response = assetApp.uploadFiles(new AssetSpec("src/test/resources/toucan.jpg"));
+        BatchCreateAssetsResponse response = assetApp.uploadFiles(new AssetSpec("src/test/resources/toucan.jpg"));
 
-        assertEquals("abc123", response.getStatus().get(0).getAssetId());
+        assertEquals(1, response.getCreated().size());
+        assertEquals("xGVHdpVZ6ECH5Vlecm6yPZfWCWbXavTm", response.getCreated().get(0));
     }
 
     @Test
@@ -86,12 +90,71 @@ public class AssetAppTests extends AbstractAppTests {
 
         webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
 
-        BatchAssetSpec batchAssetSpec = new BatchAssetSpec()
-                .addAsset(new AssetSpec("src/test/resources/toucan.jpg"));
+        BatchUploadAssetsRequest batchAssetSpec = new BatchUploadAssetsRequest()
+                .addAsset("src/test/resources/toucan.jpg");
 
-        BatchCreateAssetResponse response = assetApp.uploadFiles(batchAssetSpec);
+        BatchCreateAssetsResponse response = assetApp.uploadFiles(batchAssetSpec);
 
-        assertEquals("abc123", response.getStatus().get(0).getAssetId());
+        assertEquals(1, response.getCreated().size());
+        assertEquals("xGVHdpVZ6ECH5Vlecm6yPZfWCWbXavTm", response.getCreated().get(0));
+    }
+
+    @Test
+    public void testFileCrawlerByType() {
+
+        webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
+
+        BatchUploadFileCrawler batchUploadFileCrawler = new BatchUploadFileCrawler("./src/test/resources/")
+                .addFileType("jpg");
+
+        List<Path> filter = batchUploadFileCrawler.filter();
+
+        assertEquals(1, batchUploadFileCrawler.filter().size());
+        assertEquals(true, filter.get(0).toString().contains("toucan"));
+    }
+
+    @Test
+    public void testFileUploadWithCallback() throws IOException {
+
+        webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
+        StringBuilder completed = new StringBuilder();
+
+        BatchUploadFileCrawler batchUploadFileCrawler =
+                new BatchUploadFileCrawler("./src/test/resources/")
+                        .addFileType("jpg");
+
+        List<BatchCreateAssetsResponse> upload = batchUploadFileCrawler.upload(
+                assetApp,
+                (assetUploadStatus) -> {
+                    completed.append("Success");
+                    System.out.printf("%s %s",
+                            assetUploadStatus.getBatchNumber(),
+                            assetUploadStatus.getFileCount());
+                }
+        );
+
+
+        assertEquals(1, batchUploadFileCrawler.filter().size());
+        assertEquals("xGVHdpVZ6ECH5Vlecm6yPZfWCWbXavTm", upload.get(0).getCreated().get(0));
+        assertEquals("Success", completed.toString());
+    }
+
+    @Test
+    public void testFileCrawlerByMimetype() {
+
+        // Json OR Image/Jpeg
+        BatchUploadFileCrawler batchUploadFileCrawler = new BatchUploadFileCrawler("./src/test/resources/")
+                .addFileType("json")
+                .addMimeType("image/jpeg");
+
+        int size = batchUploadFileCrawler.filter().size();
+        for (int i = 0; i < size; i++)
+            webServer.enqueue(new MockResponse().setBody(getUploadAssetsMock()));
+
+        List<BatchCreateAssetsResponse> upload = batchUploadFileCrawler.upload(assetApp);
+
+        assertEquals(size, batchUploadFileCrawler.filter().size());
+        assertEquals("xGVHdpVZ6ECH5Vlecm6yPZfWCWbXavTm", upload.get(0).getCreated().get(0));
     }
 
     @Test
@@ -187,15 +250,15 @@ public class AssetAppTests extends AbstractAppTests {
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
-        List<Map<String,Object>> filters = new ArrayList();
+        List<Map<String, Object>> filters = new ArrayList();
         Map hash1 = new HashMap();
         hash1.put("hash", "HASH-NUMBER-ONE");
-        hash1.put( "weight", 3.8);
+        hash1.put("weight", 3.8);
         filters.add(hash1);
 
         Map hash2 = new HashMap();
         hash2.put("hash", "HASH-NUMBER-TWO");
-        hash2.put( "weight", 1);
+        hash2.put("weight", 1);
         filters.add(hash2);
 
         searchSourceBuilder.query(
@@ -425,13 +488,5 @@ public class AssetAppTests extends AbstractAppTests {
 
     private String getRequestMockDeleteByQuery() {
         return getMockData("mock-delete-by-query-request");
-    }
-
-    private String getMockData(String name) {
-        try {
-            return new String(Files.readAllBytes(Paths.get("src/test/resources/" + name + ".json")));
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to find mock data: " + name, e);
-        }
     }
 }

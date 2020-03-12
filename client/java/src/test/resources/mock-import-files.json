@@ -1,14 +1,13 @@
 {
-  "assets" : [ {
-    "document" : {
-      "source" : {
-        "path" : "gs://zorroa-dev-data/image/pluto.png"
-      }
-    },
-    "id" : "abc123"
-  } ],
-  "status" : [ {
-    "assetId" : "abc123",
-    "failed" : false
-  } ]
+  "failed":[
+
+  ],
+  "created":[
+
+  ],
+  "exists":[
+    "CL8h_o9JKG-pdf1wj25A4-_ftbLNyY0U"
+  ],
+  "jobId":"b2845e19-cbcb-10eb-8fc7-e6c88639155e",
+  "totalUpdated":1
 }

@@ -1,7 +1,7 @@
 package com.zorroa.zmlp.client.domain.asset;
 
 import com.zorroa.zmlp.client.ZmlpClient;
-import com.zorroa.zmlp.client.domain.ZmlpClientException;
+import com.zorroa.zmlp.client.domain.exception.ZmlpClientException;
 
 import java.util.*;
 import java.util.stream.Collectors;
