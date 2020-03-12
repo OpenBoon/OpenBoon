@@ -5,6 +5,8 @@ import Link from 'next/link'
 import Card from '../Card'
 import Button, { VARIANTS } from '../Button'
 
+import ProjectGettingStarted from './GettingStarted'
+
 const ProjectCards = () => {
   const {
     query: { projectId },
@@ -15,7 +17,14 @@ const ProjectCards = () => {
   } = useSWR(`/api/v1/projects/${projectId}/`)
 
   return (
-    <div css={{ display: 'flex', flexWrap: 'wrap' }}>
+    <div
+      css={{
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        maxHeight: '100vh',
+        alignContent: 'flex-start',
+      }}>
       <Card title="">
         <h3>Project: {name}</h3>
         &nbsp;
@@ -33,14 +42,14 @@ const ProjectCards = () => {
         </div>
       </Card>
 
-      <Card title="Getting Started">Step 1: Create a Data Source</Card>
+      <Card title="Project Usage Plan">Video</Card>
+
+      <ProjectGettingStarted projectId={projectId} />
 
       <Card title="Project API Keys">
         You must have an active project before you can create an API key. You
         will need an API key to XYZ.
       </Card>
-
-      <Card title="Project Usage Plan">Video</Card>
     </div>
   )
 }

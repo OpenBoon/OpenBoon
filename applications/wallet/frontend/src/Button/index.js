@@ -42,6 +42,7 @@ const STYLES = {
     },
   },
   PRIMARY_SMALL: {
+    padding: `${spacing.base}px ${spacing.normal}px`,
     '&,&:hover,&:visited': {
       backgroundColor: colors.key.one,
     },
@@ -51,9 +52,20 @@ const STYLES = {
     '&[aria-disabled=true]': {
       backgroundColor: colors.structure.steel,
     },
-    padding: `${spacing.base}px ${spacing.normal}px`,
   },
   SECONDARY: {
+    '&,&:hover,&:visited': {
+      backgroundColor: colors.structure.steel,
+    },
+    '&:hover': {
+      backgroundColor: colors.structure.zinc,
+    },
+    '&[aria-disabled=true]': {
+      backgroundColor: colors.structure.steel,
+    },
+  },
+  SECONDARY_SMALL: {
+    padding: `${spacing.base}px ${spacing.normal}px`,
     '&,&:hover,&:visited': {
       backgroundColor: colors.structure.steel,
     },
