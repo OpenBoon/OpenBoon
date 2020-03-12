@@ -9,7 +9,7 @@ exports[`<Project /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-42 {
+.emotion-45 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -114,6 +114,18 @@ exports[`<Project /> should render properly 1`] = `
 .emotion-6 {
   padding: 16px;
   border-bottom: 1px solid #4a4a4a;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-6 svg {
+  margin-right: 8px;
 }
 
 .emotion-18 {
@@ -242,6 +254,12 @@ exports[`<Project /> should render properly 1`] = `
   padding-bottom: 0;
 }
 
+.emotion-39 {
+  margin: 0;
+  padding-bottom: 32px;
+  color: #b3b3b3;
+}
+
 <div>
   <h2
     className="emotion-0"
@@ -249,7 +267,7 @@ exports[`<Project /> should render properly 1`] = `
     Project Dashboard
   </h2>
   <div
-    className="emotion-42"
+    className="emotion-45"
   >
     <div
       className="emotion-5"
@@ -470,12 +488,34 @@ exports[`<Project /> should render properly 1`] = `
         <h3
           className="emotion-6"
         >
+          <svg
+            aria-hidden={true}
+            color="#b3b3b3"
+            data-file-name="key.svg"
+            width={20}
+          />
           Project API Keys
         </h3>
         <div
           className="emotion-3"
         >
-          You must have an active project before you can create an API key. You will need an API key to XYZ.
+          <p
+            className="emotion-39"
+          >
+            Create a ZMLP API key for use with external applications and tools.
+          </p>
+          <div
+            className="emotion-2"
+          >
+            <a
+              className="emotion-15"
+              href="/00000000-0000-0000-0000-000000000000/api-keys/add"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+            >
+              + Create an API Key
+            </a>
+          </div>
         </div>
       </div>
     </div>
