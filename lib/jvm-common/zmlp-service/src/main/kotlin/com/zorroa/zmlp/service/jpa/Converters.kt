@@ -38,7 +38,7 @@ class StringListConverter : AttributeConverter<List<String>, String> {
 
     override fun convertToEntityAttribute(joined: String?): List<String>? {
         return if (joined == null) {
-            null
+            listOf()
         } else {
             return joined.split(",").map { it.trim() }.filter { it.isNotEmpty() }.toList()
         }

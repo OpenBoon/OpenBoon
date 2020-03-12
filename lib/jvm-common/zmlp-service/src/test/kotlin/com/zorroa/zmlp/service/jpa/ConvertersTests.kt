@@ -3,6 +3,7 @@ package com.zorroa.zmlp.service.jpa
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class ConvertersTests {
 
@@ -17,7 +18,7 @@ class ConvertersTests {
     @Test
     fun stringListConverterNullStringEntityAttr() {
         val result = stringListConverter.convertToEntityAttribute(null)
-        assertNull(result)
+        assertTrue(result?.isEmpty() ?: false)
     }
 
     @Test
