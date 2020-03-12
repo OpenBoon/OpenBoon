@@ -25,7 +25,8 @@ if os.environ.get('ENABLE_SENTRY', 'false').lower() == 'true':
         dsn="https://d772538aae2649d38a8931583ed7719b@sentry.io/1504338",
         integrations=[DjangoIntegration()],
         release=f'wallet-{VERSION}',
-        environment=ENVIRONMENT
+        environment=ENVIRONMENT,
+        send_default_pii=True
     )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
