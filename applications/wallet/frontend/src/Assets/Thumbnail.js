@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import assetShape from '../Asset/shape'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
@@ -32,9 +32,11 @@ const AssetsThumbnail = ({
 
   const largestDimension = width > height ? 'width' : 'height'
 
-  const pageQuery = page ? `page=${page}&` : ''
-
   const isSelected = id === selectedId
+  const queryParams = [
+    page ? `page=${page}` : '',
+    isSelected ? '' : `id=${id}`,
+  ].join('&')
 
   return (
     <div
@@ -46,29 +48,21 @@ const AssetsThumbnail = ({
       }}>
       <div
         css={{
-          border: isSelected ? constants.borders.assetSelected : '',
+          border: isSelected
+            ? constants.borders.assetSelected
+            : constants.borders.asset,
           width: '100%',
           height: '100%',
           position: 'absolute',
-          padding: isSelected ? 0 : spacing.small,
           ':hover': {
             border: isSelected
               ? constants.borders.assetSelected
               : constants.borders.assetHover,
-            padding: 0,
           },
         }}>
         <Link
-          href={
-            isSelected
-              ? `/[projectId]/visualizer?${pageQuery}`
-              : `/[projectId]/visualizer?${pageQuery}id=${id}`
-          }
-          as={
-            isSelected
-              ? `/${projectId}/visualizer?${pageQuery}`
-              : `/${projectId}/visualizer?${pageQuery}id=${id}`
-          }
+          href={`/[projectId]/visualizer?${queryParams}`}
+          as={`/${projectId}/visualizer?${queryParams}`}
           passHref>
           <Button
             variant={VARIANTS.NEUTRAL}

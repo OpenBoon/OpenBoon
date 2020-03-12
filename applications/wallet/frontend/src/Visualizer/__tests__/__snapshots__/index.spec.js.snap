@@ -157,15 +157,14 @@ exports[`<Visualizer /> should render properly 1`] = `
 }
 
 .emotion-13 {
+  border: 4px solid transparent;
   width: 100%;
   height: 100%;
   position: absolute;
-  padding: 4px;
 }
 
 .emotion-13:hover {
   border: 4px solid #ffffff;
-  padding: 0;
 }
 
 .emotion-12 {
@@ -481,7 +480,7 @@ exports[`<Visualizer /> should render properly 1`] = `
           >
             <a
               className="emotion-12"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?&id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
@@ -502,7 +501,7 @@ exports[`<Visualizer /> should render properly 1`] = `
           >
             <a
               className="emotion-12"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?&id=XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
@@ -744,15 +743,14 @@ exports[`<Visualizer /> should render selected asset 1`] = `
 }
 
 .emotion-17 {
+  border: 4px solid transparent;
   width: 100%;
   height: 100%;
   position: absolute;
-  padding: 4px;
 }
 
 .emotion-17:hover {
   border: 4px solid #ffffff;
-  padding: 0;
 }
 
 .emotion-12 {
@@ -978,12 +976,10 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   width: 100%;
   height: 100%;
   position: absolute;
-  padding: 0;
 }
 
 .emotion-13:hover {
   border: 4px solid #4a90e2;
-  padding: 0;
 }
 
 .emotion-24 {
@@ -1080,7 +1076,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           >
             <a
               className="emotion-12"
-              href="/undefined/visualizer?"
+              href="/undefined/visualizer?&"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
@@ -1101,7 +1097,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           >
             <a
               className="emotion-12"
-              href="/undefined/visualizer?id=XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE"
+              href="/undefined/visualizer?&id=XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE"
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
