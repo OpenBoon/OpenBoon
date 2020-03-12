@@ -1,6 +1,7 @@
 import itertools
 import logging
 import os
+import threading
 import traceback
 
 logger = logging.getLogger(__name__)
@@ -32,6 +33,8 @@ class Reactor(object):
         self.emitter = emitter
         self.batch_size = batch_size or max(self.default_batch_size, 1)
         self.expand_frames = []
+        self.emitter_lock = threading.Lock()
+        self.expand_lock = threading.RLock()
 
     def add_expand_frame(self, parent_frame, expand_frame, batch_size=None, force=False):
         """Add an expand frame to the Reactor. If the expand frame buffer is
@@ -51,8 +54,9 @@ class Reactor(object):
             int: The number of Expand events generated.
 
         """
-        self.expand_frames.append((parent_frame, expand_frame))
-        return self.check_expand(batch_size, force)
+        with self.expand_lock:
+            self.expand_frames.append((parent_frame, expand_frame))
+            return self.check_expand(batch_size, force)
 
     def clear_expand_frames(self, parent_id=None):
         """Clear out expand frames buffer. This can be done by parent asset ID in
@@ -64,13 +68,14 @@ class Reactor(object):
                 specific parent.
 
         """
-        # expand_frames is a list of tuple (parent frame, expand_frame)
-        if parent_id:
-            self.expand_frames = [expand for expand in self.expand_frames if
-                                  expand[0].asset.id != parent_id]
+        with self.expand_lock:
+            # expand_frames is a list of tuple (parent frame, expand_frame)
+            if parent_id:
+                self.expand_frames = [expand for expand in self.expand_frames if
+                                      expand[0].asset.id != parent_id]
 
-        else:
-            self.expand_frames[:] = []
+            else:
+                self.expand_frames[:] = []
 
     def check_expand(self, batch_size=None, force=False):
         """Check the expand buffer to see if it has met or exceeded the desired
@@ -85,42 +90,43 @@ class Reactor(object):
             int: The number of batches created.
 
         """
-        queue_size = len(self.expand_frames)
-        if not queue_size:
-            return 0
+        with self.expand_lock:
+            queue_size = len(self.expand_frames)
+            if not queue_size:
+                return 0
 
-        batch_size = batch_size or self.batch_size
+            batch_size = batch_size or self.batch_size
 
-        # If force is not set, check if the expand buffer has met the batch
-        # size
-        if not force and queue_size < batch_size:
-            return 0
+            # If force is not set, check if the expand buffer has met the batch
+            # size
+            if not force and queue_size < batch_size:
+                return 0
 
-        logger.info("Expanding, task queue at {}, batch_size={}".format(queue_size, batch_size))
+            logger.info("Expanding, task queue at {}, batch_size={}".format(queue_size, batch_size))
 
-        def grouper(n, iterable):
-            it = iter(iterable)
-            while True:
-                chunk = tuple(itertools.islice(it, n))
-                if not chunk:
-                    return
-                yield chunk
+            def grouper(n, iterable):
+                it = iter(iterable)
+                while True:
+                    chunk = tuple(itertools.islice(it, n))
+                    if not chunk:
+                        return
+                    yield chunk
 
-        batch_count = 0
-        for group in grouper(batch_size, self.expand_frames):
-            batch_count += 1
-            over = []
-            # Note that, at the time of the expand the clip source
-            # asset is likely not fully processed, so trying to do
-            # a bunch of attr copying here isn't going to do what you
-            # want.
-            for parent_frame, expand_frame in group:
-                over.append(expand_frame.asset.for_json())
+            batch_count = 0
+            for group in grouper(batch_size, self.expand_frames):
+                batch_count += 1
+                over = []
+                # Note that, at the time of the expand the clip source
+                # asset is likely not fully processed, so trying to do
+                # a bunch of attr copying here isn't going to do what you
+                # want.
+                for parent_frame, expand_frame in group:
+                    over.append(expand_frame.asset.for_json())
 
-            self.expand(over)
+                self.expand(over)
 
-        self.clear_expand_frames()
-        return batch_count
+            self.clear_expand_frames()
+            return batch_count
 
     def expand(self, assets):
         """Emit an Expand event.  An Expand event will create a new task for the
@@ -130,7 +136,7 @@ class Reactor(object):
             assets (list of dict): A list of assets to process.
 
         """
-        self.emitter.write({"type": "expand", "payload": {"assets": assets}})
+        self.write_event("expand", {"assets": assets})
 
     def error(self, frame, processor, exp, fatal, phase, exec_traceback=None):
         """Emit an Error
@@ -187,7 +193,7 @@ class Reactor(object):
                 })
             payload["stackTrace"] = stack_trace_for_payload
 
-        self.emitter.write({"type": "error", "payload": payload})
+        self.write_event("error", payload)
 
     def performance_report(self, report):
         """
@@ -196,4 +202,16 @@ class Reactor(object):
         Args:
             report: A JSON string containing processing time statistics
         """
-        self.emitter.write({"type": "stats", "payload": report})
+        self.write_event("stats", report)
+
+    def write_event(self, type, payload):
+        """
+        Write an event back to the analyst.
+
+        Args:
+            type (str): The type of event.
+            payload: (dict): The event payload, empty dict for no payload
+
+        """
+        with self.emitter_lock:
+            self.emitter.write({"type": type, "payload": payload})

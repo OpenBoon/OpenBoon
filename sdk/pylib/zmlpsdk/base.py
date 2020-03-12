@@ -170,6 +170,8 @@ class Processor(object):
             increment the version of your processor, it will not be skipped
             on a re-process operation.
         namespace (str): The attribute namespace the processor controls.
+        use_threads (bool): Set to true if the processor is thread safe.
+
     """
 
     file_types = None
@@ -177,6 +179,8 @@ class Processor(object):
     version = 1
 
     namespace = None
+
+    use_threads = True
 
     def __init__(self):
         self.execute = []

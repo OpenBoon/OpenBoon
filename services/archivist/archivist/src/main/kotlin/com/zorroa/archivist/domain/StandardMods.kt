@@ -74,6 +74,30 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             )
+        ),
+        PipelineModSpec(
+            "clarifai-predict",
+            "Clarifai prediction API, standard model.",
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef("zmlp_analysis.clarifai.ClarifaiPredictProcessor",
+                            StandardContainers.ANALYSIS)
+                    )
+                )
+            )
+        ),
+        PipelineModSpec(
+            "zvi-disable-analysis",
+            "Disable all non-core processors",
+            listOf(
+                ModOp(
+                    ModOpType.REMOVE,
+                    null,
+                    OpFilter(OpFilterType.NOT_REGEX, "zmlp_core.*")
+                )
+            )
         )
     )
 }
