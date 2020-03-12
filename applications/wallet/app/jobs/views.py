@@ -65,8 +65,10 @@ class JobViewSet(BaseProjectViewSet):
         Retrieves all the errors that the tasks of the given job may have triggered.
 
         """
+        base_url = '/api/v1/taskerrors/'
         return self._zmlp_list_from_search(request, filter={'jobIds': [pk]},
-                                           serializer_class=TaskErrorSerializer)
+                                           serializer_class=TaskErrorSerializer,
+                                           base_url=base_url)
 
     @action(detail=True, methods=['put'])
     def pause(self, request, project_pk, pk):
