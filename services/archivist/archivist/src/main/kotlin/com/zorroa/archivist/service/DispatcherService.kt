@@ -351,8 +351,8 @@ class DispatcherServiceImpl @Autowired constructor(
                 logger.warn("Failed to clear taskId from Analyst")
             }
 
-            if (!event.manualKill && event.exitStatus == EXIT_STATUS_HARD_FAIL
-                    && newState == TaskState.Failure) {
+            if (!event.manualKill && event.exitStatus == EXIT_STATUS_HARD_FAIL &&
+                newState == TaskState.Failure) {
                 val script = taskDao.getScript(task.taskId)
                 val assetCount = script.assets?.size ?: 0
 
