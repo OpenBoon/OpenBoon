@@ -2,8 +2,12 @@ import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
+import { colors, spacing } from '../Styles'
+
 import Card from '../Card'
 import Button, { VARIANTS } from '../Button'
+
+import KeySvg from '../Icons/key.svg'
 
 import ProjectGettingStarted from './GettingStarted'
 
@@ -46,9 +50,31 @@ const ProjectCards = () => {
 
       <ProjectGettingStarted projectId={projectId} />
 
-      <Card title="Project API Keys">
-        You must have an active project before you can create an API key. You
-        will need an API key to XYZ.
+      <Card
+        title={
+          <>
+            <KeySvg width={20} aria-hidden color={colors.structure.zinc} />
+            Project API Keys
+          </>
+        }>
+        <p
+          css={{
+            margin: 0,
+            paddingBottom: spacing.spacious,
+            color: colors.structure.zinc,
+          }}>
+          Create a ZMLP API key for use with external applications and tools.
+        </p>
+        <div css={{ display: 'flex' }}>
+          <Link
+            href="/[projectId]/api-keys/add"
+            as={`/${projectId}/api-keys/add`}
+            passHref>
+            <Button variant={VARIANTS.SECONDARY_SMALL}>
+              + Create an API Key
+            </Button>
+          </Link>
+        </div>
       </Card>
     </div>
   )
