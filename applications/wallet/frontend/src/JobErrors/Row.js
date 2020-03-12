@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types'
+import Router from 'next/router'
+import Link from 'next/link'
 
 import { formatFullDate } from '../Date/helpers'
 
@@ -11,11 +13,20 @@ import { colors, spacing, typography } from '../Styles'
 const JobErrorsRow = ({
   projectId,
   jobId,
-  error: { path, message, processor, fatal, phase, timeCreated },
+  error: { id: errorId, path, message, processor, fatal, phase, timeCreated },
   revalidate,
 }) => {
   return (
-    <tr>
+    <tr
+      css={{ cursor: 'pointer' }}
+      onClick={event => {
+        const { target: { localName } = {} } = event || {}
+        if (['a', 'button', 'svg', 'path'].includes(localName)) return
+        Router.push(
+          '/[projectId]/jobs/[jobId]/errors/[errorId]',
+          `/${projectId}/jobs/${jobId}/errors/${errorId}`,
+        )
+      }}>
       <td>
         <div
           css={{
@@ -44,8 +55,19 @@ const JobErrorsRow = ({
         </div>
       </td>
       <td>{phase}</td>
-      <td style={{ width: '55%' }}>{message}</td>
-      <td style={{ width: '50%' }}>{path}</td>
+      <td style={{ width: '55%' }}>
+        <Link
+          href="/[projectId]/jobs/[jobId]/errors/[errorId]"
+          as={`/${projectId}/jobs/${jobId}/errors/${errorId}`}
+          passHref>
+          <a css={{ ':hover': { textDecoration: 'none' } }} title={message}>
+            {message}
+          </a>
+        </Link>
+      </td>
+      <td style={{ width: '50%' }} title={path}>
+        {path}
+      </td>
       <td>{processor}</td>
       <td>{formatFullDate({ timestamp: timeCreated })}</td>
       <td>
