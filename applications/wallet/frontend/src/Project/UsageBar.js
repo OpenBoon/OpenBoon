@@ -24,6 +24,7 @@ const ProjectUsageBar = ({ limit, usage, legend }) => {
             </span>
           </div>
         )}
+        <div />
         {available > 0 && (
           <div
             css={{

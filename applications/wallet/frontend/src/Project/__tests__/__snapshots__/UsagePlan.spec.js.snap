@@ -200,6 +200,7 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
                 /hrs
               </span>
             </div>
+            <div />
             <div
               className="emotion-5"
             >
@@ -256,6 +257,7 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
                 
               </span>
             </div>
+            <div />
             <div
               className="emotion-5"
             >
