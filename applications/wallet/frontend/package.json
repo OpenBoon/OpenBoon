@@ -12,7 +12,7 @@
     "start": "next start",
     "test": "TZ=UTC jest --watch --notify --verbose",
     "test:cover": "TZ=UTC jest --coverage --verbose",
-    "test:hook": "TZ=UTC jest --bail --findRelatedTests"
+    "test:hook": "TZ=UTC jest --bail --findRelatedTests --no-cache"
   },
   "prettier": {
     "printWidth": 80,

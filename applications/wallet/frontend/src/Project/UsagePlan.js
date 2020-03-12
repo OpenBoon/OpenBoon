@@ -1,10 +1,28 @@
-import { colors, spacing, constants, typography } from '../Styles'
+import useSWR from 'swr'
+import { useRouter } from 'next/router'
+
+import { colors, spacing, constants } from '../Styles'
 
 import Card from '../Card'
 
-const BAR_HEIGHT = 16
+import ProjectUsageBar from './UsageBar'
 
-const ProjectCards = () => {
+const ProjectUsagePlan = () => {
+  const {
+    query: { projectId },
+  } = useRouter()
+
+  const {
+    data: { results: subscriptions },
+  } = useSWR(`/api/v1/projects/${projectId}/subscriptions/`)
+
+  if (subscriptions.length === 0) return null
+
+  const {
+    limits: { videoHours: videoLimit, imageCount: imageLimit },
+    usage: { videoHours: videoUsage, imageCount: imageUsage },
+  } = subscriptions[0]
+
   return (
     <Card title="Project Usage Plan">
       <div
@@ -20,27 +38,10 @@ const ProjectCards = () => {
               marginRight: spacing.moderate,
             },
           }}>
-          <img src="/icons/videos.png" alt="" width="32px" /> Video: 100 hours
+          <img src="/icons/videos.png" alt="" width="32px" /> Video:{' '}
+          {videoLimit.toLocaleString()} hours
         </h4>
-        <div>
-          <div
-            css={{
-              paddingTop: spacing.normal,
-              paddingBottom: spacing.base,
-              textAlign: 'right',
-              color: colors.key.one,
-            }}>
-            Available:{' '}
-            <span css={{ fontWeight: typography.weight.bold }}>100/hrs</span>
-          </div>
-          <div
-            css={{
-              height: BAR_HEIGHT,
-              backgroundColor: colors.key.one,
-              borderRadius: constants.borderRadius.small,
-            }}
-          />
-        </div>
+        <ProjectUsageBar limit={videoLimit} usage={videoUsage} legend="/hrs" />
       </div>
       <div
         css={{
@@ -56,28 +57,10 @@ const ProjectCards = () => {
               marginRight: spacing.moderate,
             },
           }}>
-          <img src="/icons/images.png" alt="" width="32px" /> Image / Documents:
-          100,000
+          <img src="/icons/images.png" alt="" width="32px" /> Image / Documents:{' '}
+          {imageLimit.toLocaleString()}
         </h4>
-        <div>
-          <div
-            css={{
-              paddingTop: spacing.normal,
-              paddingBottom: spacing.base,
-              textAlign: 'right',
-              color: colors.key.one,
-            }}>
-            Available:{' '}
-            <span css={{ fontWeight: typography.weight.bold }}>100,000</span>
-          </div>
-          <div
-            css={{
-              height: BAR_HEIGHT,
-              backgroundColor: colors.key.one,
-              borderRadius: constants.borderRadius.small,
-            }}
-          />
-        </div>
+        <ProjectUsageBar limit={imageLimit} usage={imageUsage} legend="" />
       </div>
       <div
         css={{
@@ -100,4 +83,4 @@ const ProjectCards = () => {
   )
 }
 
-export default ProjectCards
+export default ProjectUsagePlan
