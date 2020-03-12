@@ -14,7 +14,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Project
         fields = ('id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users',
-                  'permissions', 'tasks', 'taskerrors', 'datasources')
+                  'permissions', 'tasks', 'taskerrors', 'datasources', 'subscriptions')
 
     jobs = HyperlinkedIdentityField(
         view_name='job-list',
@@ -46,6 +46,10 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     )
     datasources = HyperlinkedIdentityField(
         view_name='datasource-list',
+        lookup_url_kwarg='project_pk',
+    )
+    subscriptions = HyperlinkedIdentityField(
+        view_name='subscription-list',
         lookup_url_kwarg='project_pk',
     )
 

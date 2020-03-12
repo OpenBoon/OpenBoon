@@ -28,6 +28,7 @@ djangorestframework-camel-case = "*"
 django-rest-auth = "*"
 zmlp = {path = "./../../client/python"}
 backoff = "*"
+django-multiselectfield = "*"
 
 [requires]
 python_version = "3.7"
