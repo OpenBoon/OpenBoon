@@ -38,11 +38,14 @@ const VisualizerMetadata = ({ assets }) => {
           borderBottom: constants.borders.divider,
           padding: spacing.normal,
         }}>
-        <InformationSvg width={20} color={colors.structure.steel} />
+        <InformationSvg
+          width={20}
+          color={id ? colors.structure.white : colors.structure.steel}
+        />
         <div
           css={{
             padding: spacing.normal,
-            color: colors.structure.steel,
+            color: id ? colors.structure.white : colors.structure.steel,
             fontWeight: typography.weight.bold,
           }}>
           ASSET METADATA
@@ -57,12 +60,18 @@ const VisualizerMetadata = ({ assets }) => {
           {filename || 'Select an asset to view its metadata'}
         </div>
       </div>
-      <div css={{ overflow: 'auto' }}>
+      <div
+        css={{
+          height: '100%',
+          overflow: 'auto',
+          background: colors.structure.coal,
+          padding: spacing.normal,
+        }}>
         <JSONPretty
           id="json-pretty"
           data={asset}
           theme={{
-            main: `background:${colors.structure.coal};height:100%;margin:0;line-height:1.3;overflow:auto;`,
+            main: `background:${colors.structure.coal};height:100%;margin:0;`,
             string: `color:${colors.signal.grass.base};`,
             value: `color:${colors.signal.sky.base};`,
             boolean: `color:${colors.signal.canary.base};`,

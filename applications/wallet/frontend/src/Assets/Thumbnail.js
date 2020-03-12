@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import assetShape from '../Asset/shape'
 
-import { colors, spacing } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
@@ -19,7 +19,7 @@ const AssetsThumbnail = ({
   thumbnailCount,
 }) => {
   const {
-    query: { projectId, page },
+    query: { projectId, page, id: selectedId },
   } = useRouter()
 
   const containerWidth = 100 / thumbnailCount
@@ -34,6 +34,8 @@ const AssetsThumbnail = ({
 
   const pageQuery = page ? `page=${page}&` : ''
 
+  const isSelected = id === selectedId
+
   return (
     <div
       css={{
@@ -44,14 +46,29 @@ const AssetsThumbnail = ({
       }}>
       <div
         css={{
+          border: isSelected ? constants.borders.assetSelected : '',
           width: '100%',
           height: '100%',
           position: 'absolute',
-          padding: spacing.small,
+          padding: isSelected ? 0 : spacing.small,
+          ':hover': {
+            border: isSelected
+              ? constants.borders.assetSelected
+              : constants.borders.assetHover,
+            padding: 0,
+          },
         }}>
         <Link
-          href={`/[projectId]/visualizer?${pageQuery}id=${id}`}
-          as={`/${projectId}/visualizer?${pageQuery}id=${id}`}
+          href={
+            isSelected
+              ? `/[projectId]/visualizer?${pageQuery}`
+              : `/[projectId]/visualizer?${pageQuery}id=${id}`
+          }
+          as={
+            isSelected
+              ? `/${projectId}/visualizer?${pageQuery}`
+              : `/${projectId}/visualizer?${pageQuery}id=${id}`
+          }
           passHref>
           <Button
             variant={VARIANTS.NEUTRAL}
