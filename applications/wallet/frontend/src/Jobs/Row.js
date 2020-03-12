@@ -47,7 +47,7 @@ const JobsRow = ({
           href="/[projectId]/jobs/[jobId]"
           as={`/${projectId}/jobs/${jobId}`}
           passHref>
-          <a>{name}</a>
+          <a css={{ ':hover': { textDecoration: 'none' } }}>{name}</a>
         </Link>
       </td>
       <td css={{ textAlign: 'center' }}>{priority}</td>
