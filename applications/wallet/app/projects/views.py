@@ -130,7 +130,7 @@ class BaseProjectViewSet(ViewSet):
         return self.paginator.get_paginated_response(data)
 
     def _zmlp_list_from_search(self, request, item_modifier=None, filter=None,
-                               serializer_class=None):
+                               serializer_class=None, base_url=None):
         """The result of this method can be returned for the list method of a concrete
         viewset if it just needs to proxy the results of a ZMLP search endpoint.
 
@@ -147,12 +147,13 @@ class BaseProjectViewSet(ViewSet):
             Response: DRF Response that can be used directly by viewset action method.
 
         """
+        base_url = base_url or self.zmlp_root_api_path
         payload = {'page': {'from': request.GET.get('from', 0),
                             'size': request.GET.get('size',
                                                     self.pagination_class.default_limit)}}
         if filter:
             payload.update(filter)
-        path = os.path.join(self.zmlp_root_api_path, '_search')
+        path = os.path.join(base_url, '_search')
         response = request.client.post(path, payload)
         content = self._get_content(response)
         current_url = request.build_absolute_uri(request.path)
