@@ -82,23 +82,23 @@ const JobErrorAssetAccordion = ({
       </div>
       <div
         css={{
-          padding: spacing.spacious,
-          paddingTop: spacing.normal,
-          backgroundColor: colors.structure.black,
+          paddingBottom: spacing.spacious,
           display: isCollapsible && !isErrorAssetOpen && 'none',
           height: 'auto',
         }}>
-        <div css={{ padding: spacing.normal }}>
-          <JSONPretty
-            id="json-pretty"
-            data={asset}
-            theme={{
-              main: 'line-height:1.3;overflow:auto;',
-              string: `color:${colors.signal.grass.base};`,
-              value: `color:${colors.signal.sky.base};`,
-              boolean: `color:${colors.signal.canary.base};`,
-            }}
-          />
+        <div css={{ backgroundColor: colors.structure.black }}>
+          <div css={{ padding: spacing.normal }}>
+            <JSONPretty
+              id="json-pretty"
+              data={asset}
+              theme={{
+                main: 'line-height:1.3;overflow:auto;',
+                string: `color:${colors.signal.grass.base};`,
+                value: `color:${colors.signal.sky.base};`,
+                boolean: `color:${colors.signal.canary.base};`,
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>
