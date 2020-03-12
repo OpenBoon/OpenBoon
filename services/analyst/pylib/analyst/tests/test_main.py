@@ -1,9 +1,11 @@
-import unittest
-import sys
 import os
-
+import sys
+import unittest
 from unittest.mock import patch
+
 from analyst import main
+
+os.environ["ANALYST_DOCKER_PULL"] = "false"
 
 
 class AnalystMainUnitTestCase(unittest.TestCase):

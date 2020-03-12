@@ -1,11 +1,8 @@
-import logging
 import os
 from zlib import adler32
 
 from zmlpsdk import AssetProcessor, Argument, ZmlpFatalProcessorException
 from zmlpsdk.storage import file_storage
-
-logger = logging.getLogger(__name__)
 
 
 class GroupProcessor(AssetProcessor):
@@ -26,7 +23,7 @@ class PreCacheSourceFileProcessor(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
         try:
-            logger.info('precaching Asset: {}'.format(asset))
+            self.logger.info('precaching source file')
             path = file_storage.localize_remote_file(asset)
             # Virtual clip assets don't get a file size or checksum.
             if not asset.attr_exists('source.filesize') and \
@@ -35,7 +32,7 @@ class PreCacheSourceFileProcessor(AssetProcessor):
                 asset.set_attr('source.checksum', self.calculate_checksum(path))
 
         except Exception as e:
-            logger.exception('Failed to pre-cache source file')
+            self.logger.exception('Failed to pre-cache source file')
             raise ZmlpFatalProcessorException('Failed to pre-cache source file', e)
 
     def calculate_checksum(self, path):
@@ -102,11 +99,11 @@ class SetAttributesProcessor(AssetProcessor):
     def process(self, frame):
 
         if self.arg_value('attrs'):
-            logger.debug('setting attrs: %s' % self.arg_value('attrs'))
+            self.logger.debug('setting attrs: %s' % self.arg_value('attrs'))
             for k, v in self.arg_value('attrs').items():
                 frame.asset.set_attr(k, v)
 
         if self.arg_value('remove_attrs'):
-            logger.debug('removing attrs: %s' % self.arg_value('remove_attrs'))
+            self.logger.debug('removing attrs: %s' % self.arg_value('remove_attrs'))
             for k in self.arg_value('remove_attrs'):
                 frame.asset.del_attr(k)

@@ -18,6 +18,8 @@ from analyst.service import ClusterClient, get_sdk_version, ServiceComponents
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+os.environ["ANALYST_DOCKER_PULL"] = "false"
+
 
 def test_task(event_type=None, attrs=None, sleep=1):
     task = {
@@ -113,6 +115,7 @@ class EndpointUnitTestCases(unittest.TestCase):
 
 class TestExecutor(unittest.TestCase):
     def setUp(self):
+        os.environ["ANALYST_DOCKER_PULL"] = "false"
         creds_file = os.path.join(os.path.dirname(__file__), "creds.txt")
         ArgTuple = collections.namedtuple('ArgTuple', 'credentials archivist ping poll port')
         args = ArgTuple(credentials=creds_file, archivist="https://localhost:8080",

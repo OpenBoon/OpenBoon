@@ -7,7 +7,7 @@ app = app_from_env()
 
 body = {
     'name': 'ProjectZERO',
-    'projectId': '00000000-0000-0000-0000-000000000000'
+    'id': '00000000-0000-0000-0000-000000000000'
 }
 
 pprint.pprint(app.client.post('/api/v1/projects', body))

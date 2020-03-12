@@ -191,12 +191,15 @@ class ZpsExecutor(object):
             self.container.wait_for_container()
 
         if assets:
-            for asset in assets:
-                result = self.container.execute_processor(ref, asset)
-                # Check to see if the object got skipped before adding
-                # it to the result.
-                if not result.get("skip"):
-                    results.append(result["asset"])
+            results = self.container.execute_processor_on_assets(ref, assets)
+            # Remove skipped is done earlier
+
+            # for result in results:
+            #    result = self.container.execute_processor(ref, asset)
+            #    # Check to see if the object got skipped before adding
+            #    # it to the result.
+            #    if not result.get("skip"):
+            #        results.append(result["asset"])
         return results
 
     def kill(self, task_id, new_state, reason="manually killed"):
@@ -253,11 +256,12 @@ class DockerContainerWrapper(object):
 
     def __init__(self, client, task, image):
         """
+        Create a new DockerContainerWrapper which manages the container process life cycle.
 
         Args:
-            executor:
-            task:
-            image:
+            client (ClusterClient): A client for talking back to Archivist.
+            task (dict): A task description.
+            image (str): The docker image to run.
         """
         self.task = task
         self.image = image
@@ -301,6 +305,7 @@ class DockerContainerWrapper(object):
             docker.Image
         """
         if os.environ.get("ANALYST_DOCKER_PULL", "true") == "false":
+            logger.info("Skipping docker pull, ANALYST_DOCKER_PULL==false")
             return self.image
 
         self._docker_login()
@@ -354,6 +359,8 @@ class DockerContainerWrapper(object):
                                                            ports=ports,
                                                            labels=["zmlpcd"])
 
+        logger.info("started container {} tags: {}".format(
+            self.container.image.id, self.container.image.tags))
         # Sets up a thread which iterates the container logs.
         self.log_thread = threading.Thread(target=self.__tail_container_logs)
         self.log_thread.daemon = True
@@ -370,11 +377,16 @@ class DockerContainerWrapper(object):
         logger.info("Waiting for container '{}' on '{}' to come to life....".format(
             self.image, uri))
 
-        self.socket.connect(uri)
+        retry = True
         while True:
+            self.socket.connect(uri)
             self.socket.send_json({"type": "ready", "payload": {}})
             event = self.receive_event(20000)
             if event["type"] == "timeout":
+                if retry:
+                    logger.info("Retrying ready event")
+                    retry = False
+                    continue
                 raise RuntimeError(
                     "Container {} in bad state, timed out".format(self.image))
             elif event["type"] == "ok":
@@ -494,6 +506,51 @@ class DockerContainerWrapper(object):
             else:
                 # Echo back to archivist.
                 self.client.emit_event(self.task, event_type, event["payload"])
+
+    def execute_processor_on_assets(self, ref, assets):
+        """
+        Execute a given Processor ref on an object.  In the case of
+        a Generator, obj may be None.
+
+        Once zpsd is contacted with the execute command, this
+        function blocks forever until the result is sent back
+        or a 'hardfailure' event is emitted by the container.
+
+        Args:
+            ref (dict): The Processor reference.
+            assets (list): The asset or possibly None.
+
+        """
+        request = {
+            "type": "execute",
+            "payload": {
+                "ref": ref,
+                "assets": assets
+            }
+        }
+
+        result = []
+        result_counter = 0
+
+        logger.info("processing {} assets".format(len(assets)))
+
+        self.check_killed()
+        self.socket.send_json(request)
+        while True:
+            event = self.receive_event()
+            event_type = event["type"]
+            if event_type == "asset":
+                result_counter += 1
+                if not event["payload"]["skip"]:
+                    result.append(event["payload"]["asset"])
+                if result_counter == len(assets):
+                    logger.info("All assets processed")
+                    break
+            else:
+                # Echo back to archivist.
+                self.client.emit_event(self.task, event_type, event["payload"])
+
+        return result
 
     def receive_event(self, timeout=None):
         """

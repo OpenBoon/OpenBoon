@@ -34,12 +34,13 @@ class ZmlpContainerDaemon(object):
     def start(self):
         logger.info("Analyst container server listening on port: %d" % self.port)
         while True:
+            logger.info("Waiting for Analyst...")
             event = self.socket.recv_json()
             try:
                 self.handle_event(event)
             except Exception as e:
                 logger.exception("Failed to handle event '{}'".format(event))
-                self.socket.send_json({"type": "hardfailure", "payload": {"message": str(e)}})
+                self.reactor.write_event("hardfailure", {"message": str(e)})
                 break
 
     def stop(self):
@@ -49,7 +50,7 @@ class ZmlpContainerDaemon(object):
         etype = event["type"]
         logger.info("handling event: {}".format(etype))
         if etype == "ready":
-            self.reactor.emitter.write({"type": "ok", "payload": {}})
+            self.reactor.write_event("ok", {})
         elif etype == "execute":
             self.executor.execute_processor(event["payload"])
         elif etype == "generate":

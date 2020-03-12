@@ -1,13 +1,15 @@
-import logging
 import unittest
 from unittest.mock import patch
 
+from zmlpcd.logs import setup_logging
 from zmlpcd.process import ProcessorExecutor, AssetConsumer, is_file_type_allowed
 from zmlpcd.reactor import Reactor
-from zmlpsdk.testing import TestEventEmitter, TestAsset
 from zmlpsdk import Frame
+from zmlpsdk.testing import TestEventEmitter, TestAsset
 
-logging.basicConfig(level=logging.DEBUG)
+setup_logging()
+
+TEST_IMAGE = "zmlp/plugins-base:latest"
 
 
 class ProcessorExecutorTests(unittest.TestCase):
@@ -34,38 +36,42 @@ class ProcessorExecutorTests(unittest.TestCase):
             "ref": {
                 "className": "zmlpsdk.testing.TestProcessor",
                 "args": {},
-                "image": "plugins-py3-base:latest"
+                "image": TEST_IMAGE
             },
-            "asset": {
-                "id": "1234"
-            }
+            "assets": [
+                {"id": "1234", "document": {}}
+            ]
         }
-        frame = self.pe.execute_processor(req)
+        assets = self.pe.execute_processor(req)
         assert self.emitter.event_count("asset") == 1
         assert self.emitter.event_count("error") == 0
         assert self.emitter.event_total() == 1
 
         # Make sure we got metrics
-        assert frame.asset["metrics"]["pipeline"]
-        assert "zmlpsdk.testing.TestProcessor" == frame.asset["metrics"]["pipeline"][0]["processor"]
+        assert assets[0]["document"]["metrics"]["pipeline"]
+        assert "zmlpsdk.testing.TestProcessor" \
+               == assets[0]["document"]["metrics"]["pipeline"][0]["processor"]
 
     def test_execute_processor_and_raise_fatal(self):
         req = {
             "ref": {
                 "className": "zmlpsdk.testing.TestProcessor",
                 "args": {"raise_fatal": True},
-                "image": "plugins-py3-base:latest"
+                "image": TEST_IMAGE
             },
-            "asset": {
-                "id": "1234",
-                "document": {
-                    "source": {
-                        "path": "/foo/bing.jpg"
+            "assets": [
+                {
+                    "id": "1234",
+                    "document": {
+                        "source": {
+                            "path": "/foo/bing.jpg"
+                        }
                     }
                 }
-            }
+            ]
         }
-        frame = self.pe.execute_processor(req)
+
+        asset = self.pe.execute_processor(req)[0]
         assert self.emitter.event_count("asset") == 1
         assert self.emitter.event_count("error") == 1
         assert self.emitter.event_total() == 2
@@ -76,13 +82,13 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert error["payload"]["phase"] == "execute"
         assert error["payload"]["path"] == "/foo/bing.jpg"
 
-        assert frame.asset["metrics"]["pipeline"][0]["error"] == "fatal"
+        assert asset["document"]["metrics"]["pipeline"][0]["error"] == "fatal"
 
     def test_apply_metrics(self):
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
             "args": {},
-            "image": "plugins-py3-base:latest"
+            "image": TEST_IMAGE
         }
         frame = Frame(TestAsset())
         wrapper = self.pe.get_processor_wrapper(ref)
@@ -100,11 +106,13 @@ class ProcessorExecutorTests(unittest.TestCase):
             "ref": {
                 "className": "zmlpsdk.testing.TestProcessor",
                 "args": {},
-                "image": "plugins-py3-base:latest"
+                "image": TEST_IMAGE
             },
-            "asset": {
-                "id": "1234"
-            }
+            "assets": [
+                {
+                    "id": "1234"
+                }
+            ]
         }
         self.pe.execute_processor(req)
         self.pe.teardown_processor(req)
@@ -117,7 +125,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
             "args": {},
-            "image": "plugins-py3-base:latest"
+            "image": TEST_IMAGE
         }
         wrapper = self.pe.get_processor_wrapper(ref)
         assert wrapper is not None
@@ -131,7 +139,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
             "args": {},
-            "image": "plugins-py3-base:latest"
+            "image": TEST_IMAGE,
         }
         instance = self.pe.new_processor_instance(ref)
         assert instance.__class__.__name__ == "TestProcessor"
@@ -140,7 +148,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
             "args": {},
-            "image": "plugins-py3-base:latest",
+            "image": TEST_IMAGE,
             "checksum": 122
         }
         frame = Frame(TestAsset())
@@ -158,7 +166,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
             "args": {},
-            "image": "plugins-py3-base:latest",
+            "image": TEST_IMAGE,
             "checksum": 122
         }
         frame = Frame(TestAsset())
@@ -175,7 +183,7 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref = {
             "className": "zmlpsdk.testing.TestProcessor",
             "args": {},
-            "image": "plugins-py3-base:latest",
+            "image": TEST_IMAGE,
             "checksum": 122
         }
         frame = Frame(TestAsset())

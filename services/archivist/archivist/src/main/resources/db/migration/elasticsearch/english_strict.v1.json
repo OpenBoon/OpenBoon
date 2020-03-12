@@ -112,6 +112,36 @@
               }
             }
           },
+          "clarifai": {
+            "dynamic": "strict",
+            "properties": {
+              "predict": {
+                "dynamic": "strict",
+                "properties": {
+                  "model": {
+                    "type": "keyword"
+                  },
+                  "labels": {
+                    "dynamic": "strict",
+                    "properties": {
+                      "label": {
+                        "type": "keyword",
+                        "fields": {
+                          "fulltext": {
+                            "type": "text",
+                            "analyzer": "default"
+                          }
+                        }
+                      },
+                      "score": {
+                        "type": "float"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "zvi": {
             "dynamic": "strict",
             "properties": {
@@ -130,21 +160,25 @@
               "label-detection": {
                 "dynamic": "strict",
                 "properties": {
-                  "score": {
-                    "type": "float"
+                  "model": {
+                    "type": "keyword"
                   },
                   "labels": {
-                    "type": "keyword",
-                    "fields": {
-                      "fulltext": {
-                        "type": "text",
-                        "analyzer": "default"
+                    "dynamic": "strict",
+                    "properties": {
+                      "label": {
+                        "type": "keyword",
+                        "fields": {
+                          "fulltext": {
+                            "type": "text",
+                            "analyzer": "default"
+                          }
+                        }
+                      },
+                      "score": {
+                        "type": "float"
                       }
                     }
-                  },
-                  "debug": {
-                    "type": "object",
-                    "enabled": false
                   }
                 }
               },

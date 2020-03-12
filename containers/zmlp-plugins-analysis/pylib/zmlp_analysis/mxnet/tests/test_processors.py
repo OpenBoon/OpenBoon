@@ -50,5 +50,6 @@ class MxUnitTests(PluginUnitTestCase):
         processor = self.init_processor(ZviLabelDetectionResNet152(), {'debug': True})
         processor.process(self.frame)
 
-        self.assertTrue('albatross' in self.frame.asset['analysis.zvi.label-detection.labels'])
-        self.assertTrue(type(self.frame.asset['analysis.zvi.label-detection.score']) == float)
+        labels = self.frame.asset['analysis.zvi.label-detection.labels']
+        assert labels[0]['label'] == 'toucan'
+        self.assertAlmostEqual(labels[0]['score'], labels[0]['score'])

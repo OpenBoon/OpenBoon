@@ -1,10 +1,9 @@
 import argparse
-import logging
-import os
 
+from .logs import setup_logging
 from .daemon import ZmlpContainerDaemon
 
-logger = logging.getLogger(__file__)
+setup_logging()
 
 
 def main():
@@ -14,11 +13,6 @@ def main():
 
     args = parser.parse_args()
     port = int(args.port)
-
-    if os.environ.get("ZMLP_DEBUG"):
-        logging.basicConfig(level=logging.DEBUG)
-    else:
-        logging.basicConfig(level=logging.INFO)
 
     server = ZmlpContainerDaemon(port)
     server.start()
