@@ -9,7 +9,7 @@ exports[`<Project /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-45 {
+.emotion-58 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -128,26 +128,79 @@ exports[`<Project /> should render properly 1`] = `
   margin-right: 8px;
 }
 
-.emotion-18 {
-  padding-bottom: 24px;
+.emotion-11 {
+  border-bottom: 1px solid #4a4a4a;
+  padding-bottom: 16px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-7 img {
+  margin-right: 12px;
+}
+
+.emotion-9 {
+  padding-top: 16px;
+  padding-bottom: 8px;
+  text-align: right;
+  color: #73b61c;
+}
+
+.emotion-8 {
+  font-weight: 700;
+}
+
+.emotion-10 {
+  height: 16px;
+  background-color: #73b61c;
+  border-radius: 2px;
+}
+
+.emotion-16 {
+  border-bottom: 1px solid #4a4a4a;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-17 {
+  color: #b3b3b3;
+  font-style: italic;
+}
+
+.emotion-19 {
+  padding-top: 16px;
+  color: #b3b3b3;
+}
+
+.emotion-31 {
+  padding-bottom: 24px;
+}
+
+.emotion-30 {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-12 {
+.emotion-25 {
   font-weight: 400;
   font-size: 17px;
   line-height: 20px;
   color: #73b61c;
 }
 
-.emotion-11 {
+.emotion-24 {
   font-weight: 700;
 }
 
-.emotion-13 {
+.emotion-26 {
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
@@ -163,18 +216,18 @@ exports[`<Project /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-13 svg {
+.emotion-26 svg {
   margin-right: 8px;
 }
 
-.emotion-14 {
+.emotion-27 {
   margin: 0;
   padding-top: 16px;
   padding-bottom: 16px;
   color: #b3b3b3;
 }
 
-.emotion-16 {
+.emotion-29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -182,7 +235,7 @@ exports[`<Project /> should render properly 1`] = `
   padding-bottom: 24px;
 }
 
-.emotion-15 {
+.emotion-28 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -215,38 +268,38 @@ exports[`<Project /> should render properly 1`] = `
   padding: 8px 16px;
 }
 
-.emotion-15:hover {
+.emotion-28:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-28[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-15,
-.emotion-15:hover,
-.emotion-15:visited {
+.emotion-28,
+.emotion-28:hover,
+.emotion-28:visited {
   background-color: #808080;
 }
 
-.emotion-15:hover {
+.emotion-28:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-28[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-34 {
+.emotion-47 {
   padding-bottom: 0;
 }
 
-.emotion-33 {
+.emotion-46 {
   border-bottom: 0;
 }
 
-.emotion-32 {
+.emotion-45 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -254,7 +307,7 @@ exports[`<Project /> should render properly 1`] = `
   padding-bottom: 0;
 }
 
-.emotion-39 {
+.emotion-52 {
   margin: 0;
   padding-bottom: 32px;
   color: #b3b3b3;
@@ -267,7 +320,7 @@ exports[`<Project /> should render properly 1`] = `
     Project Dashboard
   </h2>
   <div
-    className="emotion-45"
+    className="emotion-58"
   >
     <div
       className="emotion-5"
@@ -317,7 +370,85 @@ exports[`<Project /> should render properly 1`] = `
         <div
           className="emotion-3"
         >
-          Video
+          <div
+            className="emotion-11"
+          >
+            <h4
+              className="emotion-7"
+            >
+              <img
+                alt=""
+                src="/icons/videos.png"
+                width="32px"
+              />
+               Video: 100 hours
+            </h4>
+            <div>
+              <div
+                className="emotion-9"
+              >
+                Available:
+                 
+                <span
+                  className="emotion-8"
+                >
+                  100/hrs
+                </span>
+              </div>
+              <div
+                className="emotion-10"
+              />
+            </div>
+          </div>
+          <div
+            className="emotion-16"
+          >
+            <h4
+              className="emotion-7"
+            >
+              <img
+                alt=""
+                src="/icons/images.png"
+                width="32px"
+              />
+               Image / Documents: 100,000
+            </h4>
+            <div>
+              <div
+                className="emotion-9"
+              >
+                Available:
+                 
+                <span
+                  className="emotion-8"
+                >
+                  100,000
+                </span>
+              </div>
+              <div
+                className="emotion-10"
+              />
+            </div>
+          </div>
+          <div
+            className="emotion-16"
+          >
+            <h4>
+              Additional Modules:
+            </h4>
+            <span
+              className="emotion-17"
+            >
+              None
+            </span>
+          </div>
+          <div
+            className="emotion-19"
+          >
+            <span>
+              Contact your Account Manager to add additional modules and resources to your plan.
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -336,16 +467,16 @@ exports[`<Project /> should render properly 1`] = `
           className="emotion-3"
         >
           <div
-            className="emotion-18"
+            className="emotion-31"
           >
             <div
-              className="emotion-17"
+              className="emotion-30"
             >
               <h4
-                className="emotion-12"
+                className="emotion-25"
               >
                 <span
-                  className="emotion-11"
+                  className="emotion-24"
                 >
                   Step 
                   1
@@ -354,7 +485,7 @@ exports[`<Project /> should render properly 1`] = `
                 Create a Data Source
               </h4>
               <h5
-                className="emotion-13"
+                className="emotion-26"
               >
                 <svg
                   aria-hidden={true}
@@ -364,15 +495,15 @@ exports[`<Project /> should render properly 1`] = `
                 Data Sources
               </h5>
               <p
-                className="emotion-14"
+                className="emotion-27"
               >
                 To create a Data Source, connected to a bucket, choose which types of assets you’d like to process, and select which machine learning modules you’d like to apply to them.
               </p>
               <div
-                className="emotion-16"
+                className="emotion-29"
               >
                 <a
-                  className="emotion-15"
+                  className="emotion-28"
                   href="/00000000-0000-0000-0000-000000000000/data-sources/add"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -383,16 +514,16 @@ exports[`<Project /> should render properly 1`] = `
             </div>
           </div>
           <div
-            className="emotion-18"
+            className="emotion-31"
           >
             <div
-              className="emotion-17"
+              className="emotion-30"
             >
               <h4
-                className="emotion-12"
+                className="emotion-25"
               >
                 <span
-                  className="emotion-11"
+                  className="emotion-24"
                 >
                   Step 
                   2
@@ -401,7 +532,7 @@ exports[`<Project /> should render properly 1`] = `
                 Review Job Progress
               </h4>
               <h5
-                className="emotion-13"
+                className="emotion-26"
               >
                 <svg
                   aria-hidden={true}
@@ -411,15 +542,15 @@ exports[`<Project /> should render properly 1`] = `
                 Job Queue
               </h5>
               <p
-                className="emotion-14"
+                className="emotion-27"
               >
                 After a Data Source had been created a job kicks off and you can view its progress in the Job Queue. There you can and apply actions like “pause” “cancel” or “retry”. You can also inspect any errors that may have occurred.
               </p>
               <div
-                className="emotion-16"
+                className="emotion-29"
               >
                 <a
-                  className="emotion-15"
+                  className="emotion-28"
                   href="/00000000-0000-0000-0000-000000000000/jobs"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -430,16 +561,16 @@ exports[`<Project /> should render properly 1`] = `
             </div>
           </div>
           <div
-            className="emotion-34"
+            className="emotion-47"
           >
             <div
-              className="emotion-33"
+              className="emotion-46"
             >
               <h4
-                className="emotion-12"
+                className="emotion-25"
               >
                 <span
-                  className="emotion-11"
+                  className="emotion-24"
                 >
                   Step 
                   3
@@ -448,7 +579,7 @@ exports[`<Project /> should render properly 1`] = `
                 Inspect your new dataset
               </h4>
               <h5
-                className="emotion-13"
+                className="emotion-26"
               >
                 <svg
                   aria-hidden={true}
@@ -458,15 +589,15 @@ exports[`<Project /> should render properly 1`] = `
                 Visualizer
               </h5>
               <p
-                className="emotion-14"
+                className="emotion-27"
               >
                 Once a job has successfully completed then the assets will appear in the Visualizer.  There you can inspect your assets new data, view the dataset in a variety of meaningful ways, and XYZ
               </p>
               <div
-                className="emotion-32"
+                className="emotion-45"
               >
                 <a
-                  className="emotion-15"
+                  className="emotion-28"
                   href="/00000000-0000-0000-0000-000000000000/visualizer"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -500,7 +631,7 @@ exports[`<Project /> should render properly 1`] = `
           className="emotion-3"
         >
           <p
-            className="emotion-39"
+            className="emotion-52"
           >
             Create a ZMLP API key for use with external applications and tools.
           </p>
@@ -508,7 +639,7 @@ exports[`<Project /> should render properly 1`] = `
             className="emotion-2"
           >
             <a
-              className="emotion-15"
+              className="emotion-28"
               href="/00000000-0000-0000-0000-000000000000/api-keys/add"
               onClick={[Function]}
               onMouseEnter={[Function]}

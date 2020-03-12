@@ -9,6 +9,7 @@ import Button, { VARIANTS } from '../Button'
 
 import KeySvg from '../Icons/key.svg'
 
+import ProjectUsagePlan from './UsagePlan'
 import ProjectGettingStarted from './GettingStarted'
 
 const ProjectCards = () => {
@@ -46,7 +47,7 @@ const ProjectCards = () => {
         </div>
       </Card>
 
-      <Card title="Project Usage Plan">Video</Card>
+      <ProjectUsagePlan />
 
       <ProjectGettingStarted projectId={projectId} />
 
