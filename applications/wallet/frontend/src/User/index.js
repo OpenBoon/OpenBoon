@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import * as Sentry from '@sentry/browser'
 
 import { getUser, setUser } from './helpers'
 
@@ -25,6 +26,11 @@ const User = ({ initialUser, children }) => {
     setStateUser(storedUser)
 
     setHasLocalStorageLoaded(true)
+
+    /* istanbul ignore next */
+    Sentry.configureScope(scope => {
+      scope.setUser(storedUser)
+    })
   }, [initialUser, hasLocalStorageLoaded, user, setStateUser])
 
   if (!initialUser.id && !hasLocalStorageLoaded) return null
