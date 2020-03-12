@@ -74,10 +74,8 @@ const ProjectUsagePlan = () => {
         </span>
       </div>
       <div css={{ paddingTop: spacing.normal, color: colors.structure.zinc }}>
-        <span>
-          Contact your Account Manager to add additional modules and resources
-          to your plan.
-        </span>
+        Contact your Account Manager to add additional modules and resources to
+        your plan.
       </div>
     </Card>
   )

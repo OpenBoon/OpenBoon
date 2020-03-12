@@ -298,9 +298,7 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
       <div
         className="emotion-23"
       >
-        <span>
-          Contact your Account Manager to add additional modules and resources to your plan.
-        </span>
+        Contact your Account Manager to add additional modules and resources to your plan.
       </div>
     </div>
   </div>
