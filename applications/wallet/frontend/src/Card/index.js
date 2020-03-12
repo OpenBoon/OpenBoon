@@ -22,6 +22,11 @@ const Card = ({ title, children }) => {
             css={{
               padding: spacing.normal,
               borderBottom: constants.borders.tabs,
+              display: 'flex',
+              alignItems: 'center',
+              svg: {
+                marginRight: spacing.base,
+              },
             }}>
             {title}
           </h3>
@@ -33,7 +38,7 @@ const Card = ({ title, children }) => {
 }
 
 Card.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired,
 }
 
