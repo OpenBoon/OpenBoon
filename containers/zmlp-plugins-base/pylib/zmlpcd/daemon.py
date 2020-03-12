@@ -1,6 +1,7 @@
 import json
 import logging
 import sys
+import threading
 
 import zmq
 
@@ -75,6 +76,7 @@ class ZmqEventEmitter(object):
             socket (zmq.socket): A ZMQ socket.
         """
         self.socket = socket
+        self.emitter_lock = threading.Lock()
 
     def write(self, event):
         """
@@ -84,4 +86,5 @@ class ZmqEventEmitter(object):
             event (dict): the event dict
         """
         sanitized = json.dumps(event, cls=ZmlpJsonEncoder)
-        self.socket.send_string(sanitized)
+        with self.emitter_lock:
+            self.socket.send_string(sanitized)

@@ -33,7 +33,6 @@ class Reactor(object):
         self.emitter = emitter
         self.batch_size = batch_size or max(self.default_batch_size, 1)
         self.expand_frames = []
-        self.emitter_lock = threading.Lock()
         self.expand_lock = threading.RLock()
 
     def add_expand_frame(self, parent_frame, expand_frame, batch_size=None, force=False):
@@ -213,5 +212,4 @@ class Reactor(object):
             payload: (dict): The event payload, empty dict for no payload
 
         """
-        with self.emitter_lock:
-            self.emitter.write({"type": type, "payload": payload})
+        self.emitter.write({"type": type, "payload": payload})
