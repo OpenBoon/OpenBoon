@@ -3,6 +3,8 @@ import TestRenderer from 'react-test-renderer'
 import JobErrorAsset from '../index'
 import assets from '../../Assets/__mocks__/assets'
 
+jest.mock('../Accordion', () => 'JobErrorAssetAccordion')
+
 const ASSET = assets.results[0]
 
 describe('<JobErrorAsset />', () => {
