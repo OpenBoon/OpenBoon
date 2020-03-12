@@ -428,7 +428,7 @@ class DispatcherServiceTests : AbstractTest() {
             // Set run count above the retry limit.
             jdbc.update("UPDATE task SET int_run_count=4 WHERE pk_task=?", next.taskId)
             assertTrue(dispatcherService.startTask(it))
-            assertTrue(dispatcherService.stopTask(it, TaskStoppedEvent(1, manualKill = false)))
+            assertTrue(dispatcherService.stopTask(it, TaskStoppedEvent(9, manualKill = false)))
             authenticate()
             assertEquals(TaskState.Failure, taskDao.get(next.taskId).state)
             assertEquals(2, taskErrorDao.getAll(TaskErrorFilter(jobIds = listOf(next.jobId))).size())
