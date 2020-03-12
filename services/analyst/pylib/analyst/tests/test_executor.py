@@ -94,7 +94,7 @@ class TestZpsExecutor(unittest.TestCase):
         result = self.wrapper.run()
         assert result["hardfailure_events"] == 1
         assert result["error_events"] == 1
-        assert result["exit_status"] == 2
+        assert result["exit_status"] == 9
 
     def test_generate(self):
         self.wrapper = ZpsExecutor(self.gen_task, self.client)
@@ -112,7 +112,19 @@ class TestZpsExecutor(unittest.TestCase):
         result = self.wrapper.run()
 
         assert result.get("hardfailure_events") == 1
-        assert result.get("exit_status") == 1
+        assert result.get("exit_status") == 9
+
+    def test_get_exit_status(self):
+        zexec = ZpsExecutor(self.gen_task, self.client)
+        zexec.event_counts["hardfailure_events"] = 1
+        assert 9 == zexec.get_exit_status()
+
+        zexec = ZpsExecutor(self.gen_task, self.client)
+        zexec.event_counts["error_events"] = 1
+        assert 8 == zexec.get_exit_status()
+
+        zexec = ZpsExecutor(self.gen_task, self.client)
+        assert 0 == zexec.get_exit_status()
 
 
 class TestDockerContainerWrapper(unittest.TestCase):

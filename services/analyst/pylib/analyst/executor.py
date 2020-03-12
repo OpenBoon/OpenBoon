@@ -11,6 +11,12 @@ logger = logging.getLogger(__name__)
 # The default container port
 CONTAINER_PORT = 5001
 
+# The hard failure exit status.
+EXIT_STATUS_HARD_FAIL = 9
+
+# The task has asset errors which in turn cause the task to fail.
+EXIT_STATUS_HAS_ERRORS = 8
+
 
 class ZpsExecutor(object):
     """
@@ -43,6 +49,8 @@ class ZpsExecutor(object):
         self.exit_status = 0
         self.container = None
         self.script = self.task.get("script", {})
+        # A roll up of event counts from the various containers
+        # that are spawned during processing.
         self.event_counts = {}
 
     def run(self):
@@ -63,17 +71,18 @@ class ZpsExecutor(object):
                             "assets": payload, "settings": self.script.get("settings", {})})
         except Exception as e:
             logger.warning("Failed to execute ZPS script, {}".format(e))
-            self.exit_status = 1
+            self.exit_status = EXIT_STATUS_HARD_FAIL
         finally:
             # Emit a task stopped to the archivist.
+            exit_status = self.get_exit_status()
             self.client.emit_event(self.task, "stopped", {
-                "exitStatus": self.exit_status,
+                "exitStatus": exit_status,
                 "newState": self.new_state,
                 "manualKill": self.killed
             })
 
         result = self.event_counts.copy()
-        result["exit_status"] = self.exit_status
+        result["exit_status"] = self.get_exit_status()
         return result
 
     def generate(self):
@@ -112,7 +121,7 @@ class ZpsExecutor(object):
             msg = "Exception during generation, reason: {}".format(e)
             logger.exception(msg)
             self.stop_container(msg)
-            self.exit_status = 1
+            self.exit_status = EXIT_STATUS_HARD_FAIL
 
     def process(self):
         """
@@ -152,7 +161,7 @@ class ZpsExecutor(object):
             msg = "Exception during processing: {}".format(e)
             logger.exception(msg)
             self.stop_container(msg)
-            self.exit_status = 2
+            self.exit_status = EXIT_STATUS_HARD_FAIL
 
         return assets
 
@@ -192,14 +201,6 @@ class ZpsExecutor(object):
 
         if assets:
             results = self.container.execute_processor_on_assets(ref, assets)
-            # Remove skipped is done earlier
-
-            # for result in results:
-            #    result = self.container.execute_processor(ref, asset)
-            #    # Check to see if the object got skipped before adding
-            #    # it to the result.
-            #    if not result.get("skip"):
-            #        results.append(result["asset"])
         return results
 
     def kill(self, task_id, new_state, reason="manually killed"):
@@ -242,6 +243,24 @@ class ZpsExecutor(object):
         if killed:
             self.container = None
         return killed
+
+    def get_exit_status(self):
+        """
+        Return the final exit status of the task.
+
+        If there are hard failures like missing processors or containers, then then a hard
+        failure status is set and an error is generated for all assets in the batch.
+        If there are asset errors, then the task also fails.
+
+        Returns:
+            int: The exit status/
+        """
+        if self.event_counts.get("hardfailure_events", 0) > 0:
+            return EXIT_STATUS_HARD_FAIL
+        elif self.event_counts.get("error_events", 0) > 0:
+            return EXIT_STATUS_HAS_ERRORS
+        else:
+            return self.exit_status
 
 
 class DockerContainerWrapper(object):
@@ -605,7 +624,7 @@ class DockerContainerWrapper(object):
             logger.debug(json.dumps(event, indent=4))
             logger.debug('------------------------------------------------------')
 
-        # Update the event counts, mainly for testing.
+        # Update the event counts
         key = event["type"] + "_events"
         c = self.event_counts.get(key, 0)
         self.event_counts[key] = c + 1
