@@ -64,7 +64,9 @@ const VisualizerMetadata = ({ assets }) => {
         css={{
           height: '100%',
           overflow: 'auto',
-          background: colors.structure.coal,
+          backgroundColor: id
+            ? colors.structure.coal
+            : colors.structure.mattGrey,
           padding: spacing.normal,
         }}>
         <JSONPretty
