@@ -5,7 +5,7 @@ import useSWR from 'swr'
 
 import JsonDisplay from '../JsonDisplay'
 
-import { spacing, colors, constants } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 const ASSET_THUMBNAIL_SIZE = 48
 
@@ -26,15 +26,15 @@ const JobErrorAsset = ({ assetId }) => {
   return (
     <div
       css={{
-        backgroundColor: colors.structure.black,
         fontFamily: 'Roboto Mono',
+        paddingBottom: spacing.spacious,
         height: 'auto',
       }}>
       <div
         css={{
           display: 'flex',
           alignItems: 'center',
-          background: colors.structure.mattGrey,
+          backgroundColor: colors.structure.lead,
           padding: spacing.normal,
         }}>
         <img
@@ -49,7 +49,11 @@ const JobErrorAsset = ({ assetId }) => {
         />
         <div css={{ paddingLeft: spacing.comfy }}>{filename}</div>
       </div>
-      <div css={{ padding: spacing.normal }}>
+      <div
+        css={{
+          padding: spacing.normal,
+          backgroundColor: colors.structure.black,
+        }}>
         <JsonDisplay json={asset} />
       </div>
     </div>

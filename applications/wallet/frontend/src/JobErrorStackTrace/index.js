@@ -8,24 +8,29 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
   return (
     <div
       css={{
-        backgroundColor: colors.structure.black,
         fontFamily: 'Roboto Mono',
-        padding: spacing.normal,
+        paddingBottom: spacing.spacious,
         height: 'auto',
       }}>
-      <div>&quot;message&quot;: {message}</div>
-      {!!stackTrace.length && (
-        <>
-          <div
-            css={{
-              paddingTop: spacing.normal,
-              color: colors.structure.zinc,
-              whiteSpace: 'nowrap',
-            }}
-          />
-          <JsonDisplay json={stackTrace} />
-        </>
-      )}
+      <div
+        css={{
+          backgroundColor: colors.structure.black,
+          padding: spacing.normal,
+        }}>
+        <div>&quot;message&quot;: {message}</div>
+        {!!stackTrace.length && (
+          <>
+            <div
+              css={{
+                paddingTop: spacing.normal,
+                color: colors.structure.zinc,
+                whiteSpace: 'nowrap',
+              }}
+            />
+            <JsonDisplay json={stackTrace} />
+          </>
+        )}
+      </div>
     </div>
   )
 }
