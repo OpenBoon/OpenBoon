@@ -33,10 +33,10 @@ const AssetsThumbnail = ({
   const largestDimension = width > height ? 'width' : 'height'
 
   const isSelected = id === selectedId
-  const queryParams = [
-    page ? `page=${page}` : '',
-    isSelected ? '' : `id=${id}`,
-  ].join('&')
+  const queryString = [page ? `page=${page}` : '', isSelected ? '' : `id=${id}`]
+    .filter(Boolean)
+    .join('&')
+  const queryParams = queryString ? `?${queryString}` : ''
 
   return (
     <div
@@ -50,7 +50,7 @@ const AssetsThumbnail = ({
         css={{
           border: isSelected
             ? constants.borders.assetSelected
-            : constants.borders.asset,
+            : constants.borders.assetInactive,
           width: '100%',
           height: '100%',
           position: 'absolute',
@@ -61,8 +61,8 @@ const AssetsThumbnail = ({
           },
         }}>
         <Link
-          href={`/[projectId]/visualizer?${queryParams}`}
-          as={`/${projectId}/visualizer?${queryParams}`}
+          href={`/[projectId]/visualizer${queryParams}`}
+          as={`/${projectId}/visualizer${queryParams}`}
           passHref>
           <Button
             variant={VARIANTS.NEUTRAL}

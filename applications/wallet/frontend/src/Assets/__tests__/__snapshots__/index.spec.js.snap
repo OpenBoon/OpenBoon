@@ -525,7 +525,7 @@ exports[`<Assets /> should render properly 1`] = `
       >
         <a
           className="emotion-1"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?&id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -546,7 +546,7 @@ exports[`<Assets /> should render properly 1`] = `
       >
         <a
           className="emotion-1"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?&id=XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -831,7 +831,7 @@ exports[`<Assets /> should render properly 2`] = `
       >
         <a
           className="emotion-1"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?&id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -852,7 +852,7 @@ exports[`<Assets /> should render properly 2`] = `
       >
         <a
           className="emotion-1"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?&id=XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -1137,7 +1137,7 @@ exports[`<Assets /> should render properly 3`] = `
       >
         <a
           className="emotion-1"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?&id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
@@ -1158,7 +1158,7 @@ exports[`<Assets /> should render properly 3`] = `
       >
         <a
           className="emotion-1"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?&id=XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE"
           onClick={[Function]}
           onMouseEnter={[Function]}
         >

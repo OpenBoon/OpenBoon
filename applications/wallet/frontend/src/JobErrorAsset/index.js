@@ -2,7 +2,8 @@ import PropTypes from 'prop-types'
 
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-import JSONPretty from 'react-json-pretty'
+
+import JsonDisplay from '../JsonDisplay'
 
 import { spacing, colors, constants } from '../Styles'
 
@@ -49,16 +50,7 @@ const JobErrorAsset = ({ assetId }) => {
         <div css={{ paddingLeft: spacing.comfy }}>{filename}</div>
       </div>
       <div css={{ padding: spacing.normal }}>
-        <JSONPretty
-          id="json-pretty"
-          data={asset}
-          theme={{
-            main: 'line-height:1.3;overflow:auto;',
-            string: `color:${colors.signal.grass.base};`,
-            value: `color:${colors.signal.sky.base};`,
-            boolean: `color:${colors.signal.canary.base};`,
-          }}
-        />
+        <JsonDisplay json={asset} />
       </div>
     </div>
   )

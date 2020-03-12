@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
-import JSONPretty from 'react-json-pretty'
 
 import { colors, constants, spacing, typography } from '../Styles'
+
+import JsonDisplay from '../JsonDisplay'
 
 import InformationSvg from './information.svg'
 
@@ -68,17 +69,9 @@ const VisualizerMetadata = ({ assets }) => {
             ? colors.structure.coal
             : colors.structure.mattGrey,
           padding: spacing.normal,
+          paddingBottom: 0,
         }}>
-        <JSONPretty
-          id="json-pretty"
-          data={asset}
-          theme={{
-            main: `background:${colors.structure.coal};height:100%;margin:0;`,
-            string: `color:${colors.signal.grass.base};`,
-            value: `color:${colors.signal.sky.base};`,
-            boolean: `color:${colors.signal.canary.base};`,
-          }}
-        />
+        <JsonDisplay json={asset} />
       </div>
     </div>
   )
