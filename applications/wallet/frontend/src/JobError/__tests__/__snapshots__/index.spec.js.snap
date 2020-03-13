@@ -501,19 +501,27 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-0 {
-  background-color: #000000;
+  .emotion-1 {
   font-family: Roboto Mono;
-  padding: 16px;
+  padding-bottom: 32px;
   height: auto;
 }
 
+.emotion-0 {
+  background-color: #000000;
+  padding: 16px;
+}
+
 <div
-    className="emotion-0"
+    className="emotion-1"
   >
-    <div>
-      "message": 
-      ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
+    <div
+      className="emotion-0"
+    >
+      <div>
+        "message": 
+        ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
+      </div>
     </div>
   </div>,
 ]
@@ -1020,71 +1028,78 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-1 {
-  background-color: #000000;
+  .emotion-2 {
   font-family: Roboto Mono;
-  padding: 16px;
+  padding-bottom: 32px;
   height: auto;
+}
+
+.emotion-1 {
+  background-color: #000000;
+  padding: 16px;
 }
 
 .emotion-0 {
   padding-top: 16px;
   color: #b3b3b3;
-  white-space: nowrap;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-2"
   >
-    <div>
-      "message": 
-      ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
-    </div>
     <div
-      className="emotion-0"
-    />
-    <JsonDisplay
-      json={
-        Array [
-          Object {
-            "className": "_process",
-            "file": "/opt/app-root/src/analyst/pylib/zplugins/image/importers.py",
-            "lineNumber": 43,
-            "methodName": "path = Path(asset.get_local_source_path())",
-          },
-          Object {
-            "className": "get_local_source_path",
-            "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py",
-            "lineNumber": 220,
-            "methodName": "local_cache_location = self.__source_handler.store_local_cache()",
-          },
-          Object {
-            "className": "store_local_cache",
-            "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py",
-            "lineNumber": 139,
-            "methodName": "self.blob.download_to_filename(local_path)",
-          },
-          Object {
-            "className": "download_to_filename",
-            "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
-            "lineNumber": 759,
-            "methodName": "raw_download=raw_download,",
-          },
-          Object {
-            "className": "download_to_file",
-            "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
-            "lineNumber": 722,
-            "methodName": "_raise_from_invalid_response(exc)",
-          },
-          Object {
-            "className": "_raise_from_invalid_response",
-            "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
-            "lineNumber": 2156,
-            "methodName": "raise exceptions.from_http_status(response.status_code, message, response=response)",
-          },
-        ]
-      }
-    />
+      className="emotion-1"
+    >
+      <div>
+        "message": 
+        ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
+      </div>
+      <div
+        className="emotion-0"
+      />
+      <JsonDisplay
+        json={
+          Array [
+            Object {
+              "className": "_process",
+              "file": "/opt/app-root/src/analyst/pylib/zplugins/image/importers.py",
+              "lineNumber": 43,
+              "methodName": "path = Path(asset.get_local_source_path())",
+            },
+            Object {
+              "className": "get_local_source_path",
+              "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py",
+              "lineNumber": 220,
+              "methodName": "local_cache_location = self.__source_handler.store_local_cache()",
+            },
+            Object {
+              "className": "store_local_cache",
+              "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py",
+              "lineNumber": 139,
+              "methodName": "self.blob.download_to_filename(local_path)",
+            },
+            Object {
+              "className": "download_to_filename",
+              "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
+              "lineNumber": 759,
+              "methodName": "raw_download=raw_download,",
+            },
+            Object {
+              "className": "download_to_file",
+              "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
+              "lineNumber": 722,
+              "methodName": "_raise_from_invalid_response(exc)",
+            },
+            Object {
+              "className": "_raise_from_invalid_response",
+              "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
+              "lineNumber": 2156,
+              "methodName": "raise exceptions.from_http_status(response.status_code, message, response=response)",
+            },
+          ]
+        }
+      />
+    </div>
   </div>,
 ]
 `;
@@ -1689,71 +1704,78 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-1 {
-  background-color: #000000;
+  .emotion-2 {
   font-family: Roboto Mono;
-  padding: 16px;
+  padding-bottom: 32px;
   height: auto;
+}
+
+.emotion-1 {
+  background-color: #000000;
+  padding: 16px;
 }
 
 .emotion-0 {
   padding-top: 16px;
   color: #b3b3b3;
-  white-space: nowrap;
 }
 
 <div
-    className="emotion-1"
+    className="emotion-2"
   >
-    <div>
-      "message": 
-      ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
-    </div>
     <div
-      className="emotion-0"
-    />
-    <JsonDisplay
-      json={
-        Array [
-          Object {
-            "className": "_process",
-            "file": "/opt/app-root/src/analyst/pylib/zplugins/image/importers.py",
-            "lineNumber": 43,
-            "methodName": "path = Path(asset.get_local_source_path())",
-          },
-          Object {
-            "className": "get_local_source_path",
-            "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py",
-            "lineNumber": 220,
-            "methodName": "local_cache_location = self.__source_handler.store_local_cache()",
-          },
-          Object {
-            "className": "store_local_cache",
-            "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py",
-            "lineNumber": 139,
-            "methodName": "self.blob.download_to_filename(local_path)",
-          },
-          Object {
-            "className": "download_to_filename",
-            "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
-            "lineNumber": 759,
-            "methodName": "raw_download=raw_download,",
-          },
-          Object {
-            "className": "download_to_file",
-            "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
-            "lineNumber": 722,
-            "methodName": "_raise_from_invalid_response(exc)",
-          },
-          Object {
-            "className": "_raise_from_invalid_response",
-            "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
-            "lineNumber": 2156,
-            "methodName": "raise exceptions.from_http_status(response.status_code, message, response=response)",
-          },
-        ]
-      }
-    />
+      className="emotion-1"
+    >
+      <div>
+        "message": 
+        ElasticsearchException[Elasticsearch exception [type=strict_dynamic_mapping_exception, reason=mapping set to strict, dynamic introduction of [checksum] within [metrics.pipeline] is not allowed]]
+      </div>
+      <div
+        className="emotion-0"
+      />
+      <JsonDisplay
+        json={
+          Array [
+            Object {
+              "className": "_process",
+              "file": "/opt/app-root/src/analyst/pylib/zplugins/image/importers.py",
+              "lineNumber": 43,
+              "methodName": "path = Path(asset.get_local_source_path())",
+            },
+            Object {
+              "className": "get_local_source_path",
+              "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/asset.py",
+              "lineNumber": 220,
+              "methodName": "local_cache_location = self.__source_handler.store_local_cache()",
+            },
+            Object {
+              "className": "store_local_cache",
+              "file": "/opt/app-root/lib/python2.7/site-packages/zsdk/document/sourcehandler.py",
+              "lineNumber": 139,
+              "methodName": "self.blob.download_to_filename(local_path)",
+            },
+            Object {
+              "className": "download_to_filename",
+              "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
+              "lineNumber": 759,
+              "methodName": "raw_download=raw_download,",
+            },
+            Object {
+              "className": "download_to_file",
+              "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
+              "lineNumber": 722,
+              "methodName": "_raise_from_invalid_response(exc)",
+            },
+            Object {
+              "className": "_raise_from_invalid_response",
+              "file": "/opt/app-root/lib/python2.7/site-packages/google/cloud/storage/blob.py",
+              "lineNumber": 2156,
+              "methodName": "raise exceptions.from_http_status(response.status_code, message, response=response)",
+            },
+          ]
+        }
+      />
+    </div>
   </div>,
 ]
 `;
