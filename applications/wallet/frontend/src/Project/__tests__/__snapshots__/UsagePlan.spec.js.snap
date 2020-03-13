@@ -177,7 +177,7 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
           <img
             alt=""
             src="/icons/videos.png"
-            width="32px"
+            width={32}
           />
            Video:
            
@@ -235,10 +235,9 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
           <img
             alt=""
             src="/icons/images.png"
-            width="32px"
+            width={32}
           />
-           Image / Documents:
-           
+           Image / Documents: 
           30,000
         </h4>
         <div>

@@ -7,6 +7,8 @@ import Card from '../Card'
 
 import ProjectUsageBar from './UsageBar'
 
+const IMG_WIDTH = 32
+
 const ProjectUsagePlan = () => {
   const {
     query: { projectId },
@@ -38,7 +40,7 @@ const ProjectUsagePlan = () => {
               marginRight: spacing.moderate,
             },
           }}>
-          <img src="/icons/videos.png" alt="" width="32px" /> Video:{' '}
+          <img src="/icons/videos.png" alt="" width={IMG_WIDTH} /> Video:{' '}
           {videoLimit.toLocaleString()} hours
         </h4>
         <ProjectUsageBar limit={videoLimit} usage={videoUsage} legend="/hrs" />
@@ -57,8 +59,8 @@ const ProjectUsagePlan = () => {
               marginRight: spacing.moderate,
             },
           }}>
-          <img src="/icons/images.png" alt="" width="32px" /> Image / Documents:{' '}
-          {imageLimit.toLocaleString()}
+          <img src="/icons/images.png" alt="" width={IMG_WIDTH} /> Image /
+          Documents: {imageLimit.toLocaleString()}
         </h4>
         <ProjectUsageBar limit={imageLimit} usage={imageUsage} legend="" />
       </div>
