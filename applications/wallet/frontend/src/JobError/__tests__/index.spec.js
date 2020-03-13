@@ -9,6 +9,7 @@ const FATAL_ERROR_ID = jobErrorFatal.id
 const NON_FATAL_ERROR_ID = jobErrorNonFatal.id
 
 jest.mock('../../JobErrorAsset', () => 'JobErrorAsset')
+jest.mock('../../JsonDisplay', () => 'JsonDisplay')
 
 describe('<JobError />', () => {
   it('should render properly with a fatal error', () => {

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
-import JSONPretty from 'react-json-pretty'
+
+import JsonDisplay from '../JsonDisplay'
 
 import { colors, spacing } from '../Styles'
 
@@ -22,16 +23,7 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
               whiteSpace: 'nowrap',
             }}
           />
-          <JSONPretty
-            id="json-pretty"
-            data={stackTrace}
-            theme={{
-              main: 'line-height:1.3;overflow:auto;',
-              string: `color:${colors.signal.grass.base};`,
-              value: `color:${colors.signal.sky.base};`,
-              boolean: `color:${colors.signal.canary.base};`,
-            }}
-          />
+          <JsonDisplay json={stackTrace} />
         </>
       )}
     </div>

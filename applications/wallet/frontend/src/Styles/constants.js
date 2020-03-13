@@ -18,6 +18,9 @@ const borders = {
   input: `2px solid ${colors.key.one}`,
   divider: `1px solid ${colors.structure.smoke}`,
   pill: `2px solid ${colors.structure.steel}`,
+  assetInactive: `4px solid ${colors.transparent}`,
+  assetHover: `4px solid ${colors.structure.white}`,
+  assetSelected: `4px solid ${colors.signal.sky.base}`,
 }
 
 const opacity = {
