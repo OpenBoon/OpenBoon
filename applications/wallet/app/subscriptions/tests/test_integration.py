@@ -67,5 +67,5 @@ class TestSubscriptionViewSet():
         assert response.status_code == 200
         content = response.json()
         assert content['id'] == str(subscription.id)
-        assert content['videoHoursLimit'] == 200
-        assert content['imageCountLimit'] == 1000
+        assert content['limits']['videoHours'] == 200
+        assert content['limits']['imageCount'] == 1000
