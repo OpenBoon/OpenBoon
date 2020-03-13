@@ -3,13 +3,26 @@ from rest_framework import serializers
 from subscriptions.models import Subscription
 
 
+class SubscriptionLimitsUsageSerializer(serializers.Serializer):
+    video_hours = serializers.SerializerMethodField()
+    image_count = serializers.SerializerMethodField()
+
+    def get_video_hours(self, obj):
+        return obj['video_hours']
+
+    def get_image_count(self, obj):
+        return obj['image_count']
+
+
 class SubscriptionSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.SerializerMethodField()
+    limits = SubscriptionLimitsUsageSerializer()
+    usage = SubscriptionLimitsUsageSerializer()
 
     class Meta:
         model = Subscription
-        fields = ('id', 'project', 'video_hours_limit', 'image_count_limit',
-                  'modules', 'created_date', 'modified_date', 'url')
+        fields = ('id', 'project', 'limits', 'usage', 'modules', 'created_date',
+                  'modified_date', 'url')
 
     def get_url(self, obj):
         request = self.context['request']

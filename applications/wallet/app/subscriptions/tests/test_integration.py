@@ -43,8 +43,10 @@ class TestSubscriptionViewSet():
         content = response.json()
         result = content['results'][0]
         assert result['id'] == str(subscription.id)
-        assert result['videoHoursLimit'] == 200
-        assert result['imageCountLimit'] == 1000
+        assert result['limits']['videoHours'] == 200
+        assert result['limits']['imageCount'] == 1000
+        assert result['usage']['videoHours']  # These two values are currently random
+        assert result['usage']['imageCount']
 
     def test_get_bad_pk(self, zmlp_project_membership, api_client):
         api_client.force_authenticate(zmlp_project_membership.user)
