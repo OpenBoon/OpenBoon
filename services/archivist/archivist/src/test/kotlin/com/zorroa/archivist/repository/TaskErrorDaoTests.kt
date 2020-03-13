@@ -1,6 +1,7 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.StackTraceElement
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskErrorFilter
@@ -10,6 +11,7 @@ import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.service.JobService
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.Task
+import com.zorroa.archivist.domain.TaskId
 import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.util.LongRangeFilter
 import com.zorroa.archivist.util.randomString
@@ -171,8 +173,33 @@ class TaskErrorDaoTests : AbstractTest() {
         val task = createTaskErrors()
         var filter = TaskErrorFilter()
         assertEquals(1, taskErrorDao.count(filter))
-        assertEquals(1, taskErrorDao.deleteAll(task))
+        assertEquals(1, jdbc.queryForObject("SELECT int_asset_error_count FROM job_stat WHERE pk_job=?",
+            Int::class.java, task.jobId))
+        assertEquals(1, jdbc.queryForObject("SELECT int_asset_error_count FROM task_stat WHERE pk_task=?",
+            Int::class.java, task.id))
+        assertEquals(1, taskErrorDao.deleteAll(task as JobId))
         assertEquals(0, taskErrorDao.count(filter))
+        assertEquals(0, jdbc.queryForObject("SELECT int_asset_error_count FROM job_stat WHERE pk_job=?",
+            Int::class.java, task.jobId))
+        assertEquals(0, jdbc.queryForObject("SELECT int_asset_error_count FROM task_stat WHERE pk_task=?",
+            Int::class.java, task.id))
+    }
+
+    @Test
+    fun testDeleteByTask() {
+        val task = createTaskErrors()
+        var filter = TaskErrorFilter()
+        assertEquals(1, taskErrorDao.count(filter))
+        assertEquals(1, jdbc.queryForObject("SELECT int_asset_error_count FROM job_stat WHERE pk_job=?",
+            Int::class.java, task.jobId))
+        assertEquals(1, jdbc.queryForObject("SELECT int_asset_error_count FROM task_stat WHERE pk_task=?",
+            Int::class.java, task.id))
+        assertEquals(1, taskErrorDao.deleteAll(task as TaskId))
+        assertEquals(0, taskErrorDao.count(filter))
+        assertEquals(0, jdbc.queryForObject("SELECT int_asset_error_count FROM job_stat WHERE pk_job=?",
+            Int::class.java, task.jobId))
+        assertEquals(0, jdbc.queryForObject("SELECT int_asset_error_count FROM task_stat WHERE pk_task=?",
+            Int::class.java, task.id))
     }
 
     @Test

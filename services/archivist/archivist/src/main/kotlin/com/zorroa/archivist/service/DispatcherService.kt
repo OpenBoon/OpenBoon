@@ -312,7 +312,7 @@ class DispatcherServiceImpl @Autowired constructor(
     override fun startTask(task: InternalTask): Boolean {
         val result = taskDao.setState(task, TaskState.Running, TaskState.Queued)
         if (result) {
-            taskDao.resetAssetCounters(task)
+            taskErrorDao.deleteAll(task as TaskId)
             jobDao.setTimeStarted(task)
         }
         logger.info("Starting task: {}, {}", task.taskId, result)
@@ -323,7 +323,10 @@ class DispatcherServiceImpl @Autowired constructor(
         val newState = when {
             event.newState != null -> event.newState
             event.exitStatus != 0 -> {
-                if (!event.manualKill && taskDao.isAutoRetryable(task)) {
+                // Auto-retry only happens on hard failures.
+                if (!event.manualKill &&
+                    event.exitStatus == EXIT_STATUS_HARD_FAIL &&
+                    taskDao.isAutoRetryable(task)) {
                     TaskState.Waiting
                 } else {
                     TaskState.Failure
@@ -354,9 +357,6 @@ class DispatcherServiceImpl @Autowired constructor(
             if (!event.manualKill && event.exitStatus == EXIT_STATUS_HARD_FAIL &&
                 newState == TaskState.Failure) {
                 val script = taskDao.getScript(task.taskId)
-                val assetCount = script.assets?.size ?: 0
-
-                jobDao.setErrorCount(task, assetCount)
                 taskErrorDao.batchCreate(task, script.assets?.map {
                     TaskErrorEvent(
                         it.id,
@@ -380,14 +380,6 @@ class DispatcherServiceImpl @Autowired constructor(
             BatchCreateAssetsRequest(event.assets, analyze = false, task = parentTask)
         )
 
-        /**
-         * For the assets that failed to go into ES, add the ES error message
-         */
-        jobService.incrementAssetCounters(
-            parentTask, AssetCounters(
-                errors = result.failed.size,
-                created = result.created.size))
-
         taskErrorDao.batchCreate(parentTask, result.failed.map {
             TaskErrorEvent(
                 it["assetId"],
@@ -404,13 +396,6 @@ class DispatcherServiceImpl @Autowired constructor(
 
     override fun handleTaskError(task: InternalTask, error: TaskErrorEvent) {
         taskErrorDao.create(task, error)
-
-        val inc = if (error.fatal) {
-            AssetCounters(errors = 1)
-        } else {
-            AssetCounters(warnings = 1)
-        }
-        jobService.incrementAssetCounters(task, inc)
     }
 
     override fun handleStatsEvent(stats: List<TaskStatsEvent>) {
@@ -448,11 +433,6 @@ class DispatcherServiceImpl @Autowired constructor(
                 }
             }
         }
-
-        jobService.incrementAssetCounters(task, AssetCounters(
-            errors = errors.size,
-            replaced = event.assets.size - errors.size)
-        )
 
         if (errors.isNotEmpty()) {
             taskErrorDao.batchCreate(task, errors)
