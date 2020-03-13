@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<JobErrors /> should render properly with job errors 1`] = `
-.emotion-27 {
+.emotion-39 {
   height: auto;
 }
 
-.emotion-26 {
+.emotion-38 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -13,38 +13,38 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
   white-space: nowrap;
 }
 
-.emotion-26 tr {
+.emotion-38 tr {
   background-color: #252525;
 }
 
-.emotion-26 tr:nth-of-type(2n) {
+.emotion-38 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-26 tr:hover {
+.emotion-38 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-26 tr:hover .gear {
+.emotion-38 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-26 tr:hover td {
+.emotion-38 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-26 tr:hover td:first-of-type {
+.emotion-38 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-26 tr:hover td:last-of-type {
+.emotion-38 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-26 td {
+.emotion-38 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -56,11 +56,11 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
   border-right: 0;
 }
 
-.emotion-26 td:first-of-type {
+.emotion-38 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-26 td:last-of-type {
+.emotion-38 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -91,6 +91,10 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
   display: flex;
 }
 
+.emotion-12 {
+  cursor: pointer;
+}
+
 .emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -111,11 +115,16 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
   font-weight: 500;
 }
 
-.emotion-10 {
+.emotion-9:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-11 {
   position: relative;
 }
 
-.emotion-9 {
+.emotion-10 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -152,25 +161,25 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
   border-radius: 32px;
 }
 
-.emotion-9:hover {
+.emotion-10:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-9[aria-disabled=true] {
+.emotion-10[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-9:hover {
+.emotion-10:hover {
   color: #ffffff !important;
   background-color: #808080;
 }
 
 <div
-  className="emotion-27"
+  className="emotion-39"
 >
   <table
-    className="emotion-26"
+    className="emotion-38"
   >
     <thead>
       <tr>
@@ -219,7 +228,10 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr
+        className="emotion-12"
+        onClick={[Function]}
+      >
         <td>
           <div
             className="emotion-8"
@@ -244,7 +256,15 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
             }
           }
         >
-          AttributeError: 'NoneType' object has no attribute 'startswith'
+          <a
+            className="emotion-9"
+            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86bc-74b9-1519-b065-d2f0132bc0c8"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            title="AttributeError: 'NoneType' object has no attribute 'startswith'"
+          >
+            AttributeError: 'NoneType' object has no attribute 'startswith'
+          </a>
         </td>
         <td
           style={
@@ -252,6 +272,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
               "width": "50%",
             }
           }
+          title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
@@ -263,11 +284,11 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-10"
+            className="emotion-11"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="gear emotion-9"
+              className="gear emotion-10"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -280,7 +301,10 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
           </div>
         </td>
       </tr>
-      <tr>
+      <tr
+        className="emotion-12"
+        onClick={[Function]}
+      >
         <td>
           <div
             className="emotion-8"
@@ -305,7 +329,15 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
             }
           }
         >
-          NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)
+          <a
+            className="emotion-9"
+            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86bb-74b9-1519-b065-d2f0132bc0c8"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            title="NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)"
+          >
+            NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)
+          </a>
         </td>
         <td
           style={
@@ -313,6 +345,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
               "width": "50%",
             }
           }
+          title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
@@ -324,11 +357,11 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-10"
+            className="emotion-11"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="gear emotion-9"
+              className="gear emotion-10"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -341,7 +374,10 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
           </div>
         </td>
       </tr>
-      <tr>
+      <tr
+        className="emotion-12"
+        onClick={[Function]}
+      >
         <td>
           <div
             className="emotion-8"
@@ -366,7 +402,15 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
             }
           }
         >
-          AttributeError: 'NoneType' object has no attribute 'startswith'
+          <a
+            className="emotion-9"
+            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86ba-74b9-1519-b065-d2f0132bc0c8"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            title="AttributeError: 'NoneType' object has no attribute 'startswith'"
+          >
+            AttributeError: 'NoneType' object has no attribute 'startswith'
+          </a>
         </td>
         <td
           style={
@@ -374,6 +418,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
               "width": "50%",
             }
           }
+          title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
@@ -385,11 +430,11 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-10"
+            className="emotion-11"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="gear emotion-9"
+              className="gear emotion-10"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -402,7 +447,10 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
           </div>
         </td>
       </tr>
-      <tr>
+      <tr
+        className="emotion-12"
+        onClick={[Function]}
+      >
         <td>
           <div
             className="emotion-8"
@@ -427,7 +475,15 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
             }
           }
         >
-          AttributeError: 'NoneType' object has no attribute 'startswith'
+          <a
+            className="emotion-9"
+            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86b9-74b9-1519-b065-d2f0132bc0c8"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            title="AttributeError: 'NoneType' object has no attribute 'startswith'"
+          >
+            AttributeError: 'NoneType' object has no attribute 'startswith'
+          </a>
         </td>
         <td
           style={
@@ -435,6 +491,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
               "width": "50%",
             }
           }
+          title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
@@ -446,11 +503,11 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-10"
+            className="emotion-11"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="gear emotion-9"
+              className="gear emotion-10"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -463,7 +520,10 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
           </div>
         </td>
       </tr>
-      <tr>
+      <tr
+        className="emotion-12"
+        onClick={[Function]}
+      >
         <td>
           <div
             className="emotion-8"
@@ -488,7 +548,15 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
             }
           }
         >
-          AttributeError: 'NoneType' object has no attribute 'startswith'
+          <a
+            className="emotion-9"
+            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86b8-74b9-1519-b065-d2f0132bc0c8"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            title="AttributeError: 'NoneType' object has no attribute 'startswith'"
+          >
+            AttributeError: 'NoneType' object has no attribute 'startswith'
+          </a>
         </td>
         <td
           style={
@@ -496,6 +564,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
               "width": "50%",
             }
           }
+          title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
@@ -507,11 +576,11 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-10"
+            className="emotion-11"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="gear emotion-9"
+              className="gear emotion-10"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -524,7 +593,10 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
           </div>
         </td>
       </tr>
-      <tr>
+      <tr
+        className="emotion-12"
+        onClick={[Function]}
+      >
         <td>
           <div
             className="emotion-8"
@@ -549,7 +621,15 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
             }
           }
         >
-          NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)
+          <a
+            className="emotion-9"
+            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86b7-74b9-1519-b065-d2f0132bc0c8"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            title="NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)"
+          >
+            NotFound: 404 GET https://storage.googleapis.com/download/storage/v1/b/zorroa-deploy-testdata/o/zorroa-cypress-testdata%2Fmultipage?alt=media: (u'Request failed with status code', 404, u'Expected one of', 200, 206)
+          </a>
         </td>
         <td
           style={
@@ -557,6 +637,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
               "width": "50%",
             }
           }
+          title="gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/"
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
@@ -568,11 +649,11 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-10"
+            className="emotion-11"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="gear emotion-9"
+              className="gear emotion-10"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
