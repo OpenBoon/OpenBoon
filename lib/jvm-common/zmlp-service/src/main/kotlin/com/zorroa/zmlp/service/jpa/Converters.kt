@@ -26,7 +26,7 @@ class StringSetConverter : AttributeConverter<Set<String>, String> {
     }
 
     override fun convertToEntityAttribute(joined: String): Set<String> {
-        return joined.split(",").map { it.trim() }.toSet()
+        return joined.split(",").map { it.trim() }.filter { it.isNotEmpty() }.toSet()
     }
 }
 
@@ -37,6 +37,10 @@ class StringListConverter : AttributeConverter<List<String>, String> {
     }
 
     override fun convertToEntityAttribute(joined: String?): List<String>? {
-        return joined?.split(",")?.map { it.trim() } ?: null
+        return if (joined == null) {
+            listOf()
+        } else {
+            return joined.split(",").map { it.trim() }.filter { it.isNotEmpty() }.toList()
+        }
     }
 }

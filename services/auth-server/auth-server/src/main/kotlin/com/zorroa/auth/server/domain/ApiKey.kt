@@ -5,10 +5,10 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zorroa.auth.server.repository.AbstractJpaFilter
 import com.zorroa.auth.server.repository.EncryptedConverter
-import com.zorroa.auth.server.repository.StringSetConverter
 import com.zorroa.auth.server.security.getProjectId
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
+import com.zorroa.zmlp.service.jpa.StringSetConverter
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.Calendar
