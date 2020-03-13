@@ -3,7 +3,6 @@ package com.zorroa.es.kwconf
 import java.util.logging.Logger
 import org.apache.lucene.index.LeafReaderContext
 import org.elasticsearch.common.settings.Settings
-import org.elasticsearch.index.fielddata.ScriptDocValues
 import org.elasticsearch.plugins.Plugin
 import org.elasticsearch.plugins.ScriptPlugin
 import org.elasticsearch.script.ScoreScript

@@ -5,7 +5,8 @@ from unittest.mock import patch
 import pytest
 
 from zmlp import ZmlpClient, app_from_env, Asset
-from zmlp.search import AssetSearchScroller, AssetSearchResult, SimilarityQuery, LabelConfidenceQuery
+from zmlp.search import AssetSearchScroller, AssetSearchResult, \
+    SimilarityQuery, LabelConfidenceQuery
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
