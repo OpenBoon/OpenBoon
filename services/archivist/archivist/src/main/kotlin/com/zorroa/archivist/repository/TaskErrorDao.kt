@@ -7,6 +7,7 @@ import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.TaskError
 import com.zorroa.archivist.domain.TaskErrorEvent
 import com.zorroa.archivist.domain.TaskErrorFilter
+import com.zorroa.archivist.domain.TaskId
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder.getTags
 import com.zorroa.zmlp.service.logging.warnEvent
@@ -33,6 +34,7 @@ interface TaskErrorDao {
     fun findOneTaskError(filter: TaskErrorFilter): TaskError
     fun delete(id: UUID): Boolean
     fun deleteAll(job: JobId): Int
+    fun deleteAll(taskId: TaskId): Int
 }
 
 @Repository
@@ -154,6 +156,10 @@ class TaskErrorDaoImpl : AbstractDao(), TaskErrorDao {
 
     override fun deleteAll(job: JobId): Int {
         return jdbc.update("DELETE FROM task_error WHERE pk_job=?", job.jobId)
+    }
+
+    override fun deleteAll(task: TaskId): Int {
+        return jdbc.update("DELETE FROM task_error WHERE pk_task=?", task.taskId)
     }
 
     fun getKeywords(spec: TaskErrorEvent): String {

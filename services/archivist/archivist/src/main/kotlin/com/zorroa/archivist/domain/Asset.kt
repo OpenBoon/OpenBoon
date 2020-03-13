@@ -52,12 +52,6 @@ class AssetCounters(
     @ApiModelProperty("Total number of assets.")
     val total: Int = 0,
 
-    @ApiModelProperty("Total error count.")
-    val errors: Int = 0,
-
-    @ApiModelProperty("Total number of warnings")
-    val warnings: Int = 0,
-
     @ApiModelProperty("Total number of assets created.")
     val created: Int = 0,
 

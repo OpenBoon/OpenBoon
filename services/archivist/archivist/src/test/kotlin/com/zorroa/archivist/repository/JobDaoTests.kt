@@ -138,18 +138,6 @@ class JobDaoTests : AbstractTest() {
     }
 
     @Test
-    fun testSetErrorCount() {
-        val spec = JobSpec("test_job",
-            emptyZpsScript("test_script"),
-            args = mutableMapOf("foo" to 1),
-            env = mutableMapOf("foo" to "bar"))
-        val job1 = jobDao.create(spec, JobType.Import)
-        jobDao.setErrorCount(job1, 100)
-        val map = jdbc.queryForMap("SELECT * FROM job_stat WHERE pk_job=?", job1.id)
-        assertEquals(100, map["int_asset_error_count"])
-    }
-
-    @Test
     fun testIncrementAssetStats() {
         val spec = JobSpec("test_job",
                 emptyZpsScript("test_script"),
@@ -158,9 +146,7 @@ class JobDaoTests : AbstractTest() {
 
         val counters = AssetCounters(
                 total = 10,
-                errors = 6,
                 replaced = 4,
-                warnings = 2,
                 created = 6)
 
         val job1 = jobDao.create(spec, JobType.Import)
@@ -169,8 +155,6 @@ class JobDaoTests : AbstractTest() {
 
         assertEquals(counters.created, map["int_asset_create_count"])
         assertEquals(counters.replaced, map["int_asset_replace_count"])
-        assertEquals(counters.errors, map["int_asset_error_count"])
-        assertEquals(counters.warnings, map["int_asset_warning_count"])
         assertEquals(counters.total, map["int_asset_total_count"])
     }
 
