@@ -2,6 +2,8 @@ package com.zorroa.auth.server.repository
 
 import javax.persistence.AttributeConverter
 
+class JpaConverters
+
 class EncryptedConverter : AttributeConverter<String, String> {
 
     override fun convertToDatabaseColumn(value: String): String {
