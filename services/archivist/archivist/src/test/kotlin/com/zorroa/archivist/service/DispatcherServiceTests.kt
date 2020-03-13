@@ -383,7 +383,7 @@ class DispatcherServiceTests : AbstractTest() {
         assertNotNull(next)
         next?.let {
             assertTrue(dispatcherService.startTask(it))
-            assertTrue(dispatcherService.stopTask(it, TaskStoppedEvent(1, manualKill = false)))
+            assertTrue(dispatcherService.stopTask(it, TaskStoppedEvent(9, manualKill = false)))
             authenticate()
             assertEquals(TaskState.Waiting, taskDao.get(next.taskId).state)
         }

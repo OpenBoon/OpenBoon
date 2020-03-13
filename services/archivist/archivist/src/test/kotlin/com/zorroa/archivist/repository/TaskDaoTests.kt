@@ -129,9 +129,7 @@ class TaskDaoTests : AbstractTest() {
     @Test
     fun testIncrementAssetCounters() {
         val counters = AssetCounters(
-                errors = 6,
                 replaced = 4,
-                warnings = 2,
                 created = 6)
 
         assertTrue(taskDao.incrementAssetCounters(task, counters))
@@ -139,33 +137,6 @@ class TaskDaoTests : AbstractTest() {
         val map = jdbc.queryForMap("SELECT * FROM task_stat WHERE pk_task=?", task.id)
         assertEquals(counters.created, map["int_asset_create_count"])
         assertEquals(counters.replaced, map["int_asset_replace_count"])
-        assertEquals(counters.errors, map["int_asset_error_count"])
-        assertEquals(counters.warnings, map["int_asset_warning_count"])
-    }
-
-    @Test
-    fun testResetAssetCounters() {
-        val counters = AssetCounters(
-                errors = 6,
-                replaced = 4,
-                warnings = 2,
-                created = 6)
-
-        assertTrue(taskDao.incrementAssetCounters(task, counters))
-
-        var map = jdbc.queryForMap("SELECT * FROM task_stat WHERE pk_task=?", task.id)
-        assertEquals(counters.created, map["int_asset_create_count"])
-        assertEquals(counters.replaced, map["int_asset_replace_count"])
-        assertEquals(counters.errors, map["int_asset_error_count"])
-        assertEquals(counters.warnings, map["int_asset_warning_count"])
-
-        taskDao.resetAssetCounters(task)
-
-        map = jdbc.queryForMap("SELECT * FROM task_stat WHERE pk_task=?", task.id)
-        assertEquals(0, map["int_asset_create_count"])
-        assertEquals(0, map["int_asset_replace_count"])
-        assertEquals(0, map["int_asset_error_count"])
-        assertEquals(0, map["int_asset_warning_count"])
     }
 
     @Test

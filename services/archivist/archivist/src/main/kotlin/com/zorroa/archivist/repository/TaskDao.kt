@@ -56,11 +56,6 @@ interface TaskDao {
      */
     fun getOrphans(duration: Duration): List<InternalTask>
 
-    /**
-     * Reset the asset stat counters for the given task back to 0.
-     */
-    fun resetAssetCounters(task: TaskId): Boolean
-
     fun findOne(filter: TaskFilter): Task
 }
 
@@ -180,15 +175,9 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         return jdbc.update(
             ASSET_COUNTS_INC,
             counts.created,
-            counts.warnings,
-            counts.errors,
             counts.replaced,
             task.taskId
         ) == 1
-    }
-
-    override fun resetAssetCounters(task: TaskId): Boolean {
-        return jdbc.update(ASSET_COUNTS_RESET, task.taskId) == 1
     }
 
     override fun getAll(tf: TaskFilter?): KPagedList<Task> {
@@ -307,19 +296,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             "task_stat " +
             "SET " +
             "int_asset_create_count=int_asset_create_count+?," +
-            "int_asset_warning_count=int_asset_warning_count+?," +
-            "int_asset_error_count=int_asset_error_count+?," +
             "int_asset_replace_count=int_asset_replace_count+? " +
-            "WHERE " +
-            "pk_task=?"
-
-        private const val ASSET_COUNTS_RESET = "UPDATE " +
-            "task_stat " +
-            "SET " +
-            "int_asset_create_count=0," +
-            "int_asset_warning_count=0," +
-            "int_asset_error_count=0," +
-            "int_asset_replace_count=0 " +
             "WHERE " +
             "pk_task=?"
 
