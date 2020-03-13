@@ -4,6 +4,8 @@ import project from '../__mocks__/project'
 
 import Project from '..'
 
+jest.mock('../UsagePlan', () => 'ProjectUsagePlan')
+
 describe('<Project />', () => {
   it('should render properly', () => {
     require('next/router').__setUseRouter({

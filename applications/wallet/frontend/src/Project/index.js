@@ -7,7 +7,7 @@ import ProjectCards from './Cards'
 
 const Project = () => {
   return (
-    <div>
+    <>
       <Head>
         <title>Project Dashboard</title>
       </Head>
@@ -17,7 +17,7 @@ const Project = () => {
       <SuspenseBoundary>
         <ProjectCards />
       </SuspenseBoundary>
-    </div>
+    </>
   )
 }
 
