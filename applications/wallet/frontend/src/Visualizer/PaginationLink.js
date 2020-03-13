@@ -26,6 +26,7 @@ const VisualizerPaginationLink = ({ currentPage, totalPages, direction }) => {
     backgroundColor: colors.transparent,
     color: isDisabled ? colors.structure.iron : colors.structure.zinc,
     '&:hover': {
+      color: colors.structure.white,
       backgroundColor: isDisabled ? colors.transparent : colors.structure.steel,
       textDecoration: 'none',
       cursor: isDisabled ? 'not-allowed' : 'pointer',
