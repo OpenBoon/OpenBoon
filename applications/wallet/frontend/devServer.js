@@ -20,6 +20,7 @@ import projectUsers from './src/ProjectUsers/__mocks__/projectUsers'
 import projectUser from './src/ProjectUser/__mocks__/projectUser'
 import projectUsersAdd from './src/ProjectUsersAdd/__mocks__/projectUsersAdd'
 import assets from './src/Assets/__mocks__/assets'
+import subscriptions from './src/Subscriptions/__mocks__/subscriptions'
 
 const { STAGING, SLOW, MOCKED } = process.env
 
@@ -86,6 +87,7 @@ app.prepare().then(() => {
     server.post(`${PID_API_BASE}/users/`, mock(projectUsersAdd))
 
     server.get(`${PID_API_BASE}/assets/`, mock(assets))
+    server.get(`${PID_API_BASE}/subscriptions/`, mock(subscriptions))
   }
 
   // Proxy API calls
