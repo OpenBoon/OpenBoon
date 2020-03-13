@@ -1,10 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<JobErrorAsset /> should render properly 1`] = `
+<<<<<<< HEAD
 .emotion-4 {
   font-family: Roboto Mono;
   padding-bottom: 32px;
   height: auto;
+=======
+.emotion-3 {
+  background-color: #252525;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  padding: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+>>>>>>> consolidate asset code
 }
 
 .emotion-2 {
@@ -16,6 +31,7 @@ exports[`<JobErrorAsset /> should render properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+<<<<<<< HEAD
   background-color: #252525;
   padding: 16px;
 }
@@ -25,12 +41,22 @@ exports[`<JobErrorAsset /> should render properly 1`] = `
   height: 48px;
   padding: 4px;
   border: 1px solid #b3b3b3;
+=======
+  font-family: Roboto Mono;
+}
+
+.emotion-0 {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+>>>>>>> consolidate asset code
 }
 
 .emotion-1 {
   padding-left: 24px;
 }
 
+<<<<<<< HEAD
 .emotion-3 {
   padding: 16px;
   background-color: #000000;
@@ -60,6 +86,53 @@ exports[`<JobErrorAsset /> should render properly 1`] = `
       dangerouslySetInnerHTML={
         Object {
           "__html": "<pre class=\\"__json-pretty__\\" style=\\"margin:0;line-height:1.3;overflow:auto;\\">{
+=======
+.emotion-6 {
+  padding-bottom: 32px;
+  height: auto;
+}
+
+.emotion-5 {
+  background-color: #000000;
+}
+
+.emotion-4 {
+  padding: 16px;
+}
+
+<div>
+  <div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-2"
+    >
+      <img
+        alt="TIFF_1MB.tiff"
+        className="emotion-0"
+        src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff"
+      />
+      <div
+        className="emotion-1"
+      >
+        TIFF_1MB.tiff
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-6"
+  >
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-4"
+      >
+        <div
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<pre class=\\"__json-pretty__\\" style=\\"line-height:1.3;overflow:auto;\\">{
+>>>>>>> consolidate asset code
   \\"<span class=\\"__json-key__\\">id</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C\\"</span>,
   \\"<span class=\\"__json-key__\\">metadata</span>\\": {
     \\"<span class=\\"__json-key__\\">system</span>\\": {
@@ -187,10 +260,19 @@ exports[`<JobErrorAsset /> should render properly 1`] = `
   },
   \\"<span class=\\"__json-key__\\">url</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/\\"</span>
 }</pre>",
+<<<<<<< HEAD
         }
       }
       id="json-pretty"
     />
+=======
+            }
+          }
+          id="json-pretty"
+        />
+      </div>
+    </div>
+>>>>>>> consolidate asset code
   </div>
 </div>
 `;
