@@ -7,7 +7,6 @@ import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
-import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchIndexAssetsEvent
 import com.zorroa.archivist.domain.DispatchPriority
@@ -42,7 +41,6 @@ import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder.getTags
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
-import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.util.Json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -326,7 +324,8 @@ class DispatcherServiceImpl @Autowired constructor(
                 // Auto-retry only happens on hard failures.
                 if (!event.manualKill &&
                     event.exitStatus == EXIT_STATUS_HARD_FAIL &&
-                    taskDao.isAutoRetryable(task)) {
+                    taskDao.isAutoRetryable(task)
+                ) {
                     TaskState.Waiting
                 } else {
                     TaskState.Failure
@@ -355,7 +354,8 @@ class DispatcherServiceImpl @Autowired constructor(
             }
 
             if (!event.manualKill && event.exitStatus == EXIT_STATUS_HARD_FAIL &&
-                newState == TaskState.Failure) {
+                newState == TaskState.Failure
+            ) {
                 val script = taskDao.getScript(task.taskId)
                 taskErrorDao.batchCreate(task, script.assets?.map {
                     TaskErrorEvent(
@@ -415,8 +415,12 @@ class DispatcherServiceImpl @Autowired constructor(
         val errors = mutableListOf<TaskErrorEvent>()
         var result: BulkResponse? = null
 
-        withAuth(InternalThreadAuthentication(task.projectId,
-            setOf(Permission.AssetsImport))) {
+        withAuth(
+            InternalThreadAuthentication(
+                task.projectId,
+                setOf(Permission.AssetsImport)
+            )
+        ) {
             result = assetService.batchIndex(event.assets)
             result?.items?.forEach {
                 if (it.isFailed) {
@@ -454,8 +458,12 @@ class DispatcherServiceImpl @Autowired constructor(
                 handleTaskError(task, payload)
             }
             TaskEventType.EXPAND -> {
-                withAuth(InternalThreadAuthentication(task.projectId,
-                    setOf(Permission.AssetsImport))) {
+                withAuth(
+                    InternalThreadAuthentication(
+                        task.projectId,
+                        setOf(Permission.AssetsImport)
+                    )
+                ) {
                     val payload = Json.Mapper.convertValue<TaskExpandEvent>(event.payload)
                     expand(task, payload)
                 }
