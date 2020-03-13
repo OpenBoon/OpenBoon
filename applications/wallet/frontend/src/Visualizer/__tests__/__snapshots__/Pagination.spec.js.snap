@@ -42,6 +42,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 }
 
 .emotion-2:hover {
+  color: #ffffff;
   background-color: transparent;
   -webkit-text-decoration: none;
   text-decoration: none;
@@ -71,6 +72,7 @@ exports[`<Pagination /> should render properly on first page 1`] = `
 }
 
 .emotion-4:hover {
+  color: #ffffff;
   background-color: #808080;
   -webkit-text-decoration: none;
   text-decoration: none;
@@ -163,6 +165,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 }
 
 .emotion-4:hover {
+  color: #ffffff;
   background-color: transparent;
   -webkit-text-decoration: none;
   text-decoration: none;
@@ -192,6 +195,7 @@ exports[`<Pagination /> should render properly on last page 1`] = `
 }
 
 .emotion-2:hover {
+  color: #ffffff;
   background-color: #808080;
   -webkit-text-decoration: none;
   text-decoration: none;

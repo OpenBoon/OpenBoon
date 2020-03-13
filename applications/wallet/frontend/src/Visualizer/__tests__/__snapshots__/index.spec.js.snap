@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Visualizer /> should render properly 1`] = `
-.emotion-30 {
+.emotion-31 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -98,6 +98,7 @@ exports[`<Visualizer /> should render properly 1`] = `
 }
 
 .emotion-6:hover {
+  color: #ffffff;
   background-color: transparent;
   -webkit-text-decoration: none;
   text-decoration: none;
@@ -116,7 +117,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   transform: rotate(-90deg);
 }
 
-.emotion-29 {
+.emotion-30 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -156,10 +157,14 @@ exports[`<Visualizer /> should render properly 1`] = `
 }
 
 .emotion-13 {
+  border: 4px solid transparent;
   width: 100%;
   height: 100%;
   position: absolute;
-  padding: 4px;
+}
+
+.emotion-13:hover {
+  border: 4px solid #ffffff;
 }
 
 .emotion-12 {
@@ -347,7 +352,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-28 {
+.emotion-29 {
   background-color: #2e2e2e;
   margin-top: 1px;
   height: 100%;
@@ -391,8 +396,16 @@ exports[`<Visualizer /> should render properly 1`] = `
   font-style: italic;
 }
 
+.emotion-28 {
+  height: 100%;
+  overflow: auto;
+  background-color: #2e2e2e;
+  padding: 16px;
+  padding-bottom: 0;
+}
+
 <div
-  className="emotion-30"
+  className="emotion-31"
 >
   <div
     className="emotion-10"
@@ -452,7 +465,7 @@ exports[`<Visualizer /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="emotion-29"
+    className="emotion-30"
   >
     <div
       className="emotion-23"
@@ -532,7 +545,7 @@ exports[`<Visualizer /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-28"
+      className="emotion-29"
     >
       <div
         className="emotion-25"
@@ -556,6 +569,734 @@ exports[`<Visualizer /> should render properly 1`] = `
         >
           Select an asset to view its metadata
         </div>
+      </div>
+      <div
+        className="emotion-28"
+      >
+        <JsonDisplay
+          json={false}
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Visualizer /> should render selected asset 1`] = `
+.emotion-31 {
+  height: 100%;
+  background-color: #191919;
+  margin-left: -32px;
+  margin-right: -32px;
+  margin-bottom: -32px;
+  margin-top: 1px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-10 {
+  min-height: 44px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #2e2e2e;
+  box-shadow: 0px 3px 3px 0 rgba(0,0,0,0.3);
+  font-family: Roboto Condensed;
+  padding: 0 16px;
+}
+
+.emotion-0 {
+  color: #808080;
+  padding: 8 0;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-2 {
+  color: #b3b3b3;
+  padding: 8px;
+  padding-right: 16px;
+}
+
+.emotion-3 {
+  color: #808080;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.emotion-4 {
+  padding: 8px 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: #b3b3b3;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 8px;
+  border: none;
+  border-radius: 32px;
+  background-color: transparent;
+  color: #4a4a4a;
+}
+
+.emotion-6:hover {
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  cursor: not-allowed;
+}
+
+.emotion-5 {
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-7 {
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.emotion-30 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.emotion-23 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.emotion-19 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.emotion-14 {
+  width: 12.5%;
+  height: 0;
+  padding-bottom: 12.5%;
+  position: relative;
+}
+
+.emotion-17 {
+  border: 4px solid transparent;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.emotion-17:hover {
+  border: 4px solid #ffffff;
+}
+
+.emotion-12 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #2e2e2e;
+  overflow: hidden;
+}
+
+.emotion-12:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-12[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-11 {
+  width: 100%;
+}
+
+.emotion-22 {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 2px;
+  background-color: #252525;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  z-index: 80;
+  opacity: 0.8;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-20 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  opacity: 1;
+  padding: 8px;
+}
+
+.emotion-20:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-20[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-20:hover {
+  color: #73b61c;
+}
+
+.emotion-20[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-21 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  opacity: 1;
+  padding: 8px;
+}
+
+.emotion-21:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-21[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-21:hover {
+  color: #73b61c;
+}
+
+.emotion-21[aria-disabled=true] {
+  color: #808080;
+}
+
+.emotion-29 {
+  background-color: #2e2e2e;
+  margin-top: 1px;
+  height: 100%;
+  width: 400px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
+.emotion-25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 44px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-bottom: 1px solid #3b3b3b;
+  padding: 16px;
+}
+
+.emotion-27 {
+  padding: 16px;
+}
+
+.emotion-13 {
+  border: 4px solid #4a90e2;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.emotion-13:hover {
+  border: 4px solid #4a90e2;
+}
+
+.emotion-24 {
+  padding: 16px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.emotion-26 {
+  color: #4a90e2;
+}
+
+.emotion-28 {
+  height: 100%;
+  overflow: auto;
+  background-color: #191919;
+  padding: 16px;
+  padding-bottom: 0;
+}
+
+<div
+  className="emotion-31"
+>
+  <div
+    className="emotion-10"
+  >
+    <div
+      className="emotion-0"
+    >
+      Sort: Import Date
+    </div>
+    <div
+      className="emotion-1"
+    />
+    <div
+      className="emotion-2"
+    >
+      7
+       Results
+    </div>
+    <div
+      className="emotion-3"
+    >
+      |
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <div
+        className="emotion-4"
+      >
+        Page 
+        1
+         of 
+        1
+      </div>
+      <button
+        className="emotion-6"
+        disabled={true}
+        type="button"
+      >
+        <svg
+          className="emotion-5"
+          data-file-name="chevron.svg"
+          width={20}
+        />
+      </button>
+      <button
+        className="emotion-6"
+        disabled={true}
+        type="button"
+      >
+        <svg
+          className="emotion-7"
+          data-file-name="chevron.svg"
+          width={20}
+        />
+      </button>
+    </div>
+  </div>
+  <div
+    className="emotion-30"
+  >
+    <div
+      className="emotion-23"
+    >
+      <div
+        className="emotion-19"
+      >
+        <div
+          className="emotion-14"
+        >
+          <div
+            className="emotion-13"
+          >
+            <a
+              className="emotion-12"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+            >
+              <img
+                alt="TIFF_1MB.tiff"
+                className="emotion-11"
+                src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg"
+                srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg 650w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg 512w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg 320w"
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="emotion-14"
+        >
+          <div
+            className="emotion-17"
+          >
+            <a
+              className="emotion-12"
+              href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+            >
+              <img
+                alt="TIFF_1MB.tiff"
+                className="emotion-11"
+                src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg"
+                srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg 800w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_512x384.jpg 512w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_320x240.jpg 320w"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-22"
+      >
+        <button
+          aria-disabled={true}
+          aria-label="Zoom Out"
+          className="emotion-20"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            data-file-name="circleMinus.svg"
+            width={20}
+          />
+        </button>
+        <button
+          aria-label="Zoom In"
+          className="emotion-21"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            data-file-name="circlePlus.svg"
+            width={20}
+          />
+        </button>
+      </div>
+    </div>
+    <div
+      className="emotion-29"
+    >
+      <div
+        className="emotion-25"
+      >
+        <svg
+          color="#ffffff"
+          data-file-name="information.svg"
+          width={20}
+        />
+        <div
+          className="emotion-24"
+        >
+          ASSET METADATA
+        </div>
+      </div>
+      <div
+        className="emotion-27"
+      >
+        <div
+          className="emotion-26"
+        >
+          TIFF_1MB.tiff
+        </div>
+      </div>
+      <div
+        className="emotion-28"
+      >
+        <JsonDisplay
+          json={
+            Object {
+              "id": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+              "metadata": Object {
+                "analysis": Object {
+                  "zvi": Object {
+                    "tinyProxy": Array [
+                      "#f3dfc3",
+                      "#f4efd8",
+                      "#c18f46",
+                      "#ebdfbd",
+                      "#ccd3c0",
+                      "#e7d4bb",
+                      "#beae8e",
+                      "#cabf9e",
+                      "#d2c09c",
+                    ],
+                  },
+                },
+                "clip": Object {
+                  "length": 1,
+                  "pile": "pUn6wBxUN7x9JxOxLkvruOyNdYA",
+                  "sourceAssetId": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+                  "start": 1,
+                  "stop": 1,
+                  "type": "page",
+                },
+                "files": Array [
+                  Object {
+                    "attrs": Object {
+                      "height": 434,
+                      "width": 650,
+                    },
+                    "category": "proxy",
+                    "mimetype": "image/jpeg",
+                    "name": "image_650x434.jpg",
+                    "size": 89643,
+                    "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg",
+                  },
+                  Object {
+                    "attrs": Object {
+                      "height": 341,
+                      "width": 512,
+                    },
+                    "category": "proxy",
+                    "mimetype": "image/jpeg",
+                    "name": "image_512x341.jpg",
+                    "size": 60713,
+                    "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg",
+                  },
+                  Object {
+                    "attrs": Object {
+                      "height": 213,
+                      "width": 320,
+                    },
+                    "category": "proxy",
+                    "mimetype": "image/jpeg",
+                    "name": "image_320x213.jpg",
+                    "size": 30882,
+                    "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg",
+                  },
+                ],
+                "media": Object {
+                  "aspect": 1.5,
+                  "height": 434,
+                  "length": 1,
+                  "orientation": "landscape",
+                  "type": "image",
+                  "width": 650,
+                },
+                "metrics": Object {
+                  "pipeline": Array [
+                    Object {
+                      "checksum": 1621235190,
+                      "executionDate": "2020-03-03T21:22:27.694149",
+                      "executionTime": 0.11,
+                      "module": "standard",
+                      "processor": "zmlp_core.core.processors.PreCacheSourceFileProcessor",
+                    },
+                    Object {
+                      "checksum": 1426657387,
+                      "executionDate": "2020-03-03T21:22:28.215069",
+                      "executionTime": 0.26,
+                      "module": "standard",
+                      "processor": "zmlp_core.image.importers.ImageImporter",
+                    },
+                    Object {
+                      "checksum": 2001473853,
+                      "module": "standard",
+                      "processor": "zmlp_core.office.importers.OfficeImporter",
+                    },
+                    Object {
+                      "checksum": 3310423168,
+                      "module": "standard",
+                      "processor": "zmlp_core.video.VideoImporter",
+                    },
+                    Object {
+                      "checksum": 1841569083,
+                      "executionDate": "2020-03-03T21:22:29.654215",
+                      "executionTime": 0,
+                      "module": "standard",
+                      "processor": "zmlp_core.core.processors.AssertAttributesProcessor",
+                    },
+                  ],
+                },
+                "similarity": Object {
+                  "simhash": "NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP",
+                },
+                "source": Object {
+                  "checksum": 1867533868,
+                  "extension": "tiff",
+                  "filename": "TIFF_1MB.tiff",
+                  "filesize": 1131930,
+                  "mimetype": "image/tiff",
+                  "path": "gs://zorroa-dev-data/image/TIFF_1MB.tiff",
+                  "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff",
+                },
+                "system": Object {
+                  "dataSourceId": "10509c20-5d95-11ea-baea-364023b135f5",
+                  "jobId": "106d4be1-5d95-11ea-baea-364023b135f5",
+                  "projectId": "89382033-bcbb-4c8f-81a9-3d0883298a81",
+                  "state": "Analyzed",
+                  "taskId": "106e0f32-5d95-11ea-baea-364023b135f5",
+                  "timeCreated": "2020-03-03T21:22:24.922700Z",
+                  "timeModified": "2020-03-03T21:22:47.575195Z",
+                },
+              },
+              "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/",
+            }
+          }
+        />
       </div>
     </div>
   </div>

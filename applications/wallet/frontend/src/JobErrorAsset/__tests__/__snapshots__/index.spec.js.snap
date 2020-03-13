@@ -58,7 +58,7 @@ exports[`<JobErrorAsset /> should render properly 1`] = `
     <div
       dangerouslySetInnerHTML={
         Object {
-          "__html": "<pre class=\\"__json-pretty__\\" style=\\"line-height:1.3;overflow:auto;\\">{
+          "__html": "<pre class=\\"__json-pretty__\\" style=\\"margin:0;line-height:1.3;overflow:auto;\\">{
   \\"<span class=\\"__json-key__\\">id</span>\\": <span class=\\"__json-string__\\" style=\\"color:#4ac565;\\">\\"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C\\"</span>,
   \\"<span class=\\"__json-key__\\">metadata</span>\\": {
     \\"<span class=\\"__json-key__\\">system</span>\\": {
