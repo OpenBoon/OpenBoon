@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pytest
 
 from zmlp import ZmlpClient, app_from_env, Asset
-from zmlp.search import AssetSearchScroller, AssetSearchResult, SimilarityQuery
+from zmlp.search import AssetSearchScroller, AssetSearchResult, SimilarityQuery, LabelConfidenceQuery
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -108,6 +108,18 @@ class AssetSearchResultTests(unittest.TestCase):
 
         results = AssetSearchResult(self.app, {})
         assert results.aggregation("sterm#dogs") is not None
+
+
+class TestLabelConfidenceQuery(unittest.TestCase):
+    def test_for_json(self):
+        s = LabelConfidenceQuery("foo", "dog", 0.5)
+        qjson = s.for_json()
+
+        params = qjson["bool"]["must"][0][
+            "function_score"]["functions"][0]["script_score"]["script"]["params"]
+        assert "foo" == params["field"]
+        assert ["dog"] == params["labels"]
+        assert [0.5, 1.0] == params["range"]
 
 
 class TestImageSimilarityQuery(unittest.TestCase):

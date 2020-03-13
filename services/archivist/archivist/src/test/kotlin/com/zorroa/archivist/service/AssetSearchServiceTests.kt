@@ -20,8 +20,11 @@ class AssetSearchServiceTests : AbstractTest() {
 
     @Before
     fun setUp() {
+        val labels = listOf(
+            mapOf("label" to "toucan", "score" to 0.5)
+        )
+
         val spec = AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
-        spec.attrs = mapOf("analysis.zvi.similarity.simhash" to "AABBCC00")
         val spec2 = AssetSpec("https://i.imgur.com/abc123442.jpg")
 
         val batchCreate = BatchCreateAssetsRequest(
@@ -31,6 +34,7 @@ class AssetSearchServiceTests : AbstractTest() {
         val id = rsp.created[0]
         val asset = assetService.getAsset(id)
         asset.setAttr("analysis.zvi.similarity.simhash", "AABBCC00")
+        asset.setAttr("analysis.zvi.label-detection.labels", labels)
         assetService.index(id, asset.document)
 
         indexRoutingService.getProjectRestClient().refresh()
@@ -172,6 +176,72 @@ class AssetSearchServiceTests : AbstractTest() {
                               "minScore" : 0.50,
                               "field" : "analysis.zvi.similarity.simhash",
                               "hashes" : ["PPPPPPPP"]
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "score_mode" : "multiply",
+                    "boost_mode" : "replace",
+                    "max_boost" : 3.4028235E38,
+                    "min_score" : 0.50,
+                    "boost" : 1.0
+                  }
+                }
+            }
+        """.trimIndent()
+        val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
+        assertEquals(0, rsp.hits.hits.size)
+    }
+
+    @Test
+    fun testKwConfSearch() {
+        val query = """{
+            "query": {
+                "function_score" : {
+                    "functions" : [
+                      {
+                        "script_score" : {
+                          "script" : {
+                            "source" : "kwconf",
+                            "lang" : "zorroa-kwconf",
+                            "params" : {
+                              "range": [0.5, 1.0],
+                              "field" : "analysis.zvi.label-detection",
+                              "labels" : ["toucan"]
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "score_mode" : "multiply",
+                    "boost_mode" : "replace",
+                    "max_boost" : 3.4028235E38,
+                    "min_score" : 0.50,
+                    "boost" : 1.0
+                  }
+                }
+            }
+        """.trimIndent()
+        val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
+        assertEquals(1, rsp.hits.hits.size)
+    }
+
+    @Test
+    fun testKwConfSearch_noHits() {
+        val query = """{
+            "query": {
+                "function_score" : {
+                    "functions" : [
+                      {
+                        "script_score" : {
+                          "script" : {
+                            "source" : "kwconf",
+                            "lang" : "zorroa-kwconf",
+                            "params" : {
+                              "range": [0.1, 0.2],
+                              "field" : "analysis.zvi.label-detection",
+                              "labels" : ["toucan"]
                             }
                           }
                         }

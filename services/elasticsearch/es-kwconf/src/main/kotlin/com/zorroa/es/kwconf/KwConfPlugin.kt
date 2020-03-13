@@ -3,6 +3,7 @@ package com.zorroa.es.kwconf
 import java.util.logging.Logger
 import org.apache.lucene.index.LeafReaderContext
 import org.elasticsearch.common.settings.Settings
+import org.elasticsearch.index.fielddata.ScriptDocValues
 import org.elasticsearch.plugins.Plugin
 import org.elasticsearch.plugins.ScriptPlugin
 import org.elasticsearch.script.ScoreScript
@@ -62,7 +63,7 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
              */
             return object : ScoreScript(params, lookup, ctx) {
 
-                override fun execute(explanationHolder: ExplanationHolder): Double {
+                override fun execute(explanationHolder: ExplanationHolder?): Double {
                     var score = 0.0
 
                     try {
@@ -70,10 +71,9 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
                          * The value of our field must be a kwconf structure.  Just skip over assets
                          * where it does not exist or cannot be cast.
                          */
-                        val kwconfStruct = lookup.source().extractValue(field) ?: return score
-                        val kwconf: List<Map<String, Any>> = kwconfStruct as List<Map<String, Any>>
-
-                        for (map in kwconf) {
+                        val kwconf = lookup.source().extractValue("$field.labels") ?: return score
+                        val labels: List<Map<String, Any>> = kwconf as List<Map<String, Any>>
+                        for (map in labels) {
                             val keyword = map.getValue("label").toString()
                             if (keyword in keywords) {
                                 val conf = map.getValue("score") as Double
