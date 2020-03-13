@@ -24,7 +24,6 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
               css={{
                 paddingTop: spacing.normal,
                 color: colors.structure.zinc,
-                whiteSpace: 'nowrap',
               }}
             />
             <JsonDisplay json={stackTrace} />

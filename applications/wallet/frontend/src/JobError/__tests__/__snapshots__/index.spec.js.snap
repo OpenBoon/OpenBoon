@@ -1042,7 +1042,6 @@ Array [
 .emotion-0 {
   padding-top: 16px;
   color: #b3b3b3;
-  white-space: nowrap;
 }
 
 <div
@@ -1719,7 +1718,6 @@ Array [
 .emotion-0 {
   padding-top: 16px;
   color: #b3b3b3;
-  white-space: nowrap;
 }
 
 <div
