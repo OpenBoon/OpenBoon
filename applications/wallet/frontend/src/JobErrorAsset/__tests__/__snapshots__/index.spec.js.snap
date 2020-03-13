@@ -23,8 +23,7 @@ exports[`<JobErrorAsset /> should render properly 1`] = `
 .emotion-0 {
   width: 48px;
   height: 48px;
-  padding: 4px;
-  border: 1px solid #b3b3b3;
+  object-fit: cover;
 }
 
 .emotion-1 {

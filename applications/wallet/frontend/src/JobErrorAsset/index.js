@@ -5,7 +5,7 @@ import useSWR from 'swr'
 
 import JsonDisplay from '../JsonDisplay'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, spacing } from '../Styles'
 
 const ASSET_THUMBNAIL_SIZE = 48
 
@@ -43,8 +43,7 @@ const JobErrorAsset = ({ assetId }) => {
           css={{
             width: ASSET_THUMBNAIL_SIZE,
             height: ASSET_THUMBNAIL_SIZE,
-            padding: spacing.small,
-            border: constants.borders.separator,
+            objectFit: 'cover',
           }}
         />
         <div css={{ paddingLeft: spacing.comfy }}>{filename}</div>
