@@ -1,4 +1,5 @@
 import uuid
+import random
 
 from django.db import models
 from multiselectfield import MultiSelectField
@@ -33,3 +34,11 @@ class Subscription(models.Model):
 
     def __str__(self):
         return f'{self.project}'
+
+    def limits(self):
+        return {'video_hours': self.video_hours_limit,
+                'image_count': self.image_count_limit}
+
+    def usage(self):
+        return {'video_hours': random.randrange(1, self.video_hours_limit, 1),
+                'image_count': random.randrange(1, self.image_count_limit, 1)}
