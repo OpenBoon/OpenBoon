@@ -67,7 +67,7 @@ class ZviLabelDetectionResNet152(AssetProcessor):
             if prob[i] < 0.15:
                 break
             for label in self.labels[i].split(","):
-                labels.append({"label": label.strip(), "score": round(prob[i], 3)})
+                labels.append({"label": label.strip(), "score": round(float(prob[i]),3)})
 
         struct = {
             'labels': labels
