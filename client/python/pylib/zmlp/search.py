@@ -1,5 +1,6 @@
 import copy
 
+from .util import as_collection
 from .asset import Asset
 from .exception import ZmlpException
 
@@ -201,12 +202,77 @@ class AssetSearchResult(object):
         return self.assets[item]
 
 
+class LabelConfidenceQuery(object):
+    """
+    A helper class for building a label confidence score query.  This query must point
+    at label confidence structure:  For example: analysis.zvi.label-detection.
+
+    References:
+        "labels": [
+                {"label": "dog", "score": 0.97 },
+                {"label": "fox", "score": 0.63 }
+        ]
+    """
+
+    def __init__(self, field, labels, min_score, max_score=1.0):
+        """
+        Create a new LabelConfidenceScoreQuery.
+
+        Args:
+            field (str): The field with the labels array.
+            labels (list): A list of labels to filter.
+            min_score (float): The minimum label score.
+            max_score (float): The maximum score, defaults to 1.0 which is highest
+        """
+        self.field = field
+        self.labels = as_collection(labels)
+        self.score = [min_score, max_score]
+
+    def for_json(self):
+        return {
+            "bool": {
+                "must": [
+                    {
+                        "function_score": {
+                            "functions": [
+                                {
+                                    "script_score": {
+                                        "script": {
+                                            "source": "kwconf",
+                                            "lang": "zorroa-kwconf",
+                                            "params": {
+                                                "field": self.field,
+                                                "labels": self.labels,
+                                                "range": self.score
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "score_mode": "multiply",
+                            "max_boost": 1000,
+                            "min_score": 0.001,
+                            "boost": 1.0
+                        }
+                    }
+                ],
+                "filter": [
+                    {
+                        "terms": {
+                            self.field + ".labels.label": self.labels
+                        }
+                    }
+                ]
+            }
+        }
+
+
 class SimilarityQuery:
     """
     A helper class for building a similarity search.  You can embed this class anywhere
     in a ES query dict, for example:
 
-    Examples:
+    References:
         {
             "query": {
                 "bool": {
