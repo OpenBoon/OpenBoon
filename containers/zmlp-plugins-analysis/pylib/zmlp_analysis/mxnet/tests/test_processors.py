@@ -52,4 +52,4 @@ class MxUnitTests(PluginUnitTestCase):
 
         labels = self.frame.asset['analysis.zvi.label-detection.labels']
         assert labels[0]['label'] == 'toucan'
-        self.assertAlmostEqual(labels[0]['score'], labels[0]['score'])
+        self.assertAlmostEqual(labels[0]['score'], 0.605)

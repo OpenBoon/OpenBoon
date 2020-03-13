@@ -64,10 +64,10 @@ class ZviLabelDetectionResNet152(AssetProcessor):
         psort = np.argsort(prob)[::-1]
         labels = []
         for j, i in enumerate(psort[0:20]):
-            if prob[i] < 0.15:
+            if prob[i] < 0.10:
                 break
             for label in self.labels[i].split(","):
-                labels.append({"label": label.strip(), "score": round(prob[i], 3)})
+                labels.append({"label": label.strip(), "score": round(float(prob[i]), 3)})
 
         struct = {
             'labels': labels
