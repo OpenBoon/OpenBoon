@@ -9,8 +9,8 @@ const PADDING_OUTER = spacing.base
 const PADDING_INNER = spacing.moderate
 const ICON_HEIGHT = 20
 
-const FormAlert = ({ errorMessage, setErrorMessage }) => {
-  if (!errorMessage) {
+const FormAlert = ({ setErrorMessage, children }) => {
+  if (!children) {
     return (
       <div css={{ padding: PADDING_OUTER }}>
         <div css={{ padding: PADDING_INNER }}>
@@ -40,24 +40,27 @@ const FormAlert = ({ errorMessage, setErrorMessage }) => {
             color: colors.structure.black,
             fontWeight: typography.weight.medium,
           }}>
-          {errorMessage}
+          {children}
         </div>
 
-        <button
-          type="button"
-          aria-label="Close alert"
-          css={{ border: 0, padding: 0, background: 'none', display: 'flex' }}
-          onClick={() => setErrorMessage('')}>
-          <CrossSvg height={ICON_HEIGHT} color={colors.structure.black} />
-        </button>
+        {setErrorMessage && (
+          <button
+            type="button"
+            aria-label="Close alert"
+            css={{ border: 0, padding: 0, background: 'none', display: 'flex' }}
+            onClick={() => setErrorMessage('')}>
+            <CrossSvg height={ICON_HEIGHT} color={colors.structure.black} />
+          </button>
+        )}
       </div>
     </div>
   )
 }
 
 FormAlert.propTypes = {
-  errorMessage: PropTypes.string.isRequired,
-  setErrorMessage: PropTypes.func.isRequired,
+  setErrorMessage: PropTypes.oneOfType([PropTypes.bool, PropTypes.func])
+    .isRequired,
+  children: PropTypes.node.isRequired,
 }
 
 export default FormAlert

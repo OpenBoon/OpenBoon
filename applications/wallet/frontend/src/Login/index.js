@@ -111,10 +111,7 @@ const Login = ({
           onSubmit={onSubmit}
         />
 
-        <FormAlert
-          errorMessage={errorMessage}
-          setErrorMessage={setErrorMessage}
-        />
+        <FormAlert setErrorMessage={setErrorMessage}>{errorMessage}</FormAlert>
 
         <Input
           autoFocus
