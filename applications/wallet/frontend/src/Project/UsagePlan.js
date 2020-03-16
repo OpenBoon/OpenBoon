@@ -44,7 +44,7 @@ const ProjectUsagePlan = () => {
               {videoOverTime > 1 && imageOverTime > 1 && ' and '}
               {imageOverTime > 1 && (
                 <>
-                  <strong>{imageOverTime} hours over</strong> your image &amp;
+                  <strong>{imageOverTime} assets over</strong> your image &amp;
                   documents plan
                 </>
               )}
