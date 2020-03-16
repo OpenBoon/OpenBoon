@@ -25,7 +25,7 @@ const FormAlert = ({ setErrorMessage, children }) => {
       <div
         css={{
           display: 'flex',
-          alignItems: 'center',
+          alignItems: setErrorMessage ? 'center' : 'flex-start',
           backgroundColor: colors.signal.warning.background,
           borderRadius: constants.borderRadius.small,
           padding: PADDING_INNER,
