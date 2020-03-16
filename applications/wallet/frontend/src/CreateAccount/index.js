@@ -64,10 +64,9 @@ const CreateAccount = () => {
         <PageTitle>Create an Account</PageTitle>
 
         <Form>
-          <FormAlert
-            errorMessage={state.error}
-            setErrorMessage={() => dispatch({ error: '' })}
-          />
+          <FormAlert setErrorMessage={() => dispatch({ error: '' })}>
+            {state.error}
+          </FormAlert>
 
           {action === 'account-activation-expired' && (
             <>
