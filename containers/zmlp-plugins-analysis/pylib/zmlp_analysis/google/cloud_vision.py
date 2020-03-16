@@ -217,18 +217,12 @@ class CloudVisionDetectLabels(AbstractCloudVisionProcessor):
         """Executes label detection using the Cloud Vision API."""
         response = self.image_annotator.label_detection(image=image)
         labels = response.label_annotations
-        struct = {}
-        keywords = []
-        for i, label in enumerate(labels):
-            keywords.append(label.description)
-            if self.arg_value("debug"):
-                struct["pred" + str(i)] = label.description
-                struct["prob" + str(i)] = labels[i].score
-        struct["labels"] = list(set(keywords))
-        if self.arg_value("debug"):
-            struct["type"] = "GCLabelDetection"
-            struct["scores"] = labels[0].score
-        asset.add_analysis("google.labelDetection", struct)
+
+        result = []
+        for label in labels:
+            result.append({"label": label.description, "score": round(float(label.score), 3)})
+
+        asset.add_analysis("gcp.label-detection", {"labels": result})
 
 
 class CloudVisionDetectWebEntities(AbstractCloudVisionProcessor):

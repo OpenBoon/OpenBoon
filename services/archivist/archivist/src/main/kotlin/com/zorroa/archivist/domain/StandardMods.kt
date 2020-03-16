@@ -89,6 +89,20 @@ fun getStandardModules(): List<PipelineModSpec> {
             )
         ),
         PipelineModSpec(
+            "gcp-label-detection",
+            "Utilize Google Cloud Vision label detection to detect and extract information about " +
+                "entities in an image, across a broad group of categories.",
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef("zmlp_analysis.google.CloudVisionDetectLabels",
+                            StandardContainers.ANALYSIS)
+                    )
+                )
+            )
+        ),
+        PipelineModSpec(
             "zvi-disable-analysis",
             "Disable all non-core processors",
             listOf(
