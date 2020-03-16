@@ -140,7 +140,7 @@
     "import-all.macro": "2.0.3",
     "jest": "25.1.0",
     "jest-emotion": "10.0.32",
-    "jest-fetch-mock": "3.0.2",
+    "jest-fetch-mock": "3.0.3",
     "lint-staged": "10.0.8",
     "morgan": "1.9.1",
     "prettier": "1.19.1",
