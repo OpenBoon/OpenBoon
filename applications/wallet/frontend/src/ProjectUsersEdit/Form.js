@@ -34,10 +34,9 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
     <Form>
       <SectionTitle>Email: {user.email}</SectionTitle>
 
-      <FormAlert
-        errorMessage={state.error}
-        setErrorMessage={() => dispatch({ error: '' })}
-      />
+      <FormAlert setErrorMessage={() => dispatch({ error: '' })}>
+        {state.error}
+      </FormAlert>
 
       <CheckboxGroup
         legend="Edit Permissions"

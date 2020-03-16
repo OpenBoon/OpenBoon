@@ -7,7 +7,7 @@ describe('<FormAlert />', () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
-      <FormAlert errorMessage="Error Message" setErrorMessage={mockFn} />,
+      <FormAlert setErrorMessage={mockFn}>Error Message</FormAlert>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
