@@ -1,11 +1,12 @@
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
-import { colors, spacing, constants } from '../Styles'
+import { colors, spacing, constants, typography } from '../Styles'
 
 import Card from '../Card'
 
 import ProjectUsageBar from './UsageBar'
+import FormAlert from '../FormAlert'
 
 const IMG_WIDTH = 32
 
@@ -25,8 +26,33 @@ const ProjectUsagePlan = () => {
     usage: { videoHours: videoUsage, imageCount: imageUsage },
   } = subscriptions[0]
 
+  const videoOverTime = videoUsage - videoLimit
+  const imageOverTime = imageUsage - imageLimit
+
   return (
     <Card title="Project Usage Plan">
+      {(videoOverTime > 1 || imageOverTime > 1) && (
+        <div css={{ marginTop: -spacing.normal, marginBottom: spacing.normal }}>
+          <FormAlert setErrorMessage={false}>
+            <div css={{ fontWeight: typography.weight.regular }}>
+              You are{' '}
+              {videoOverTime > 1 && (
+                <>
+                  <strong>{videoOverTime} hours over</strong> your video plan
+                </>
+              )}
+              {videoOverTime > 1 && imageOverTime > 1 && ' and '}
+              {imageOverTime > 1 && (
+                <>
+                  <strong>{imageOverTime} assets over</strong> your image &amp;
+                  documents plan
+                </>
+              )}
+              . Contact your Account Manager to add more resources.
+            </div>
+          </FormAlert>
+        </div>
+      )}
       <div
         css={{
           borderBottom: constants.borders.tabs,

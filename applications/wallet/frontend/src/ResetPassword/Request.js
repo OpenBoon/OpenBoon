@@ -37,10 +37,9 @@ const ResetPasswordRequest = () => {
         one.
       </div>
 
-      <FormAlert
-        errorMessage={state.error}
-        setErrorMessage={() => dispatch({ error: '' })}
-      />
+      <FormAlert setErrorMessage={() => dispatch({ error: '' })}>
+        {state.error}
+      </FormAlert>
 
       <Input
         autoFocus

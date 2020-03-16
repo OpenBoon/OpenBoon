@@ -22,7 +22,7 @@ const AccountPasswordNotice = () => {
   return (
     <div css={{ paddingTop: spacing.normal, paddingLeft: spacing.giant }}>
       {error && (
-        <FormAlert errorMessage={error} setErrorMessage={() => setError('')} />
+        <FormAlert setErrorMessage={() => setError('')}>{error}</FormAlert>
       )}
       <div
         css={{
