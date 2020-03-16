@@ -372,103 +372,16 @@ class CloudVisionDetectLabelsTests(PluginUnitTestCase):
 
         # run processor with declared frame and assert asset attributes
         processor.process(frame)
-        keyword_pth = "analysis.google.labelDetection.labels"
+        namespace = "analysis.gcp.label-detection.labels"
 
-        self.assertIn(u'Close-up', asset.get_attr(keyword_pth))
-        self.assertIn(u'Eye', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Photography', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Macro photography', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Wildlife', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Toucan', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Piciformes', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Beak', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Organism', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Bird', frame.asset.get_attr(keyword_pth))
+        labels = frame.asset.get_attr(namespace)
 
-    @patch.object(ZmlpClient, 'upload_file')
-    @patch(patch_path, side_effect=MockImageAnnotatorClient)
-    def test_detect_label_with_debug(self, mock_image_annotator, upload_patch):
-        # initialize asset and processor
-        upload_patch.return_value = PROXY_FILE
-        asset = TestAsset(TOUCAN)
-        frame = Frame(asset)
-        store_asset_proxy(asset, TOUCAN, (200, 200))
-        processor = self.init_processor(CloudVisionDetectLabels(), {'debug': True})
-
-        ns = "analysis.google.labelDetection"
-
-        # run processor with declared frame and assert normal and debug values
-        processor.process(frame)
-        # assert asset's normal visionLabelDetection data
-        keyword_pth = "{}.labels".format(ns)
-        self.assertIn(u'Close-up', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Eye', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Photography', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Macro photography', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Wildlife', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Toucan', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Piciformes', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Beak', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Organism', frame.asset.get_attr(keyword_pth))
-        self.assertIn(u'Bird', frame.asset.get_attr(keyword_pth))
-        # assert debug values
-
-        self.assertEqual(frame.asset.get_attr(
-            "{}.pred0".format(ns)), u'Toucan')
-        self.assertEqual(frame.asset.get_attr(
-            "{}.pred1".format(ns)), u'Beak')
-        self.assertEqual(frame.asset.get_attr(
-            "{}.pred2".format(ns)), u'Bird')
-        self.assertEqual(frame.asset.get_attr(
-            "{}.pred3".format(ns)), u'Close-up')
-        self.assertEqual(frame.asset.get_attr(
-            "{}.pred4".format(ns)), u'Piciformes')
-        self.assertEqual(frame.asset.get_attr(
-            "{}.pred5".format(ns)), u'Organism')
-        self.assertEqual(frame.asset.get_attr(
-            "{}.pred6".format(ns)),
-            u'Macro photography')
-        self.assertEqual(frame.asset.get_attr(
-            "{}.pred7".format(ns)), u'Eye')
-        self.assertEqual(frame.asset.get_attr(
-            "{}.pred8".format(ns)), u'Photography')
-        self.assertEqual(frame.asset.get_attr(
-            "{}.pred9".format(ns)), u'Wildlife')
-        self.assertEqual(frame.asset.get_attr(
-            "{}.type".format(ns)), 'GCLabelDetection')
-        self.assertAlmostEqual(frame.asset.get_attr(
-            "{}.prob0".format(ns)),
-            0.9937642216682434, places=5)
-        self.assertAlmostEqual(frame.asset.get_attr(
-            "{}.prob1".format(ns)),
-            0.9705232977867126, places=5)
-        self.assertAlmostEqual(frame.asset.get_attr(
-            "{}.prob2".format(ns)),
-            0.9684256315231323, places=5)
-        self.assertAlmostEqual(frame.asset.get_attr(
-            "{}.prob3".format(ns)),
-            0.8934508562088013, places=5)
-        self.assertAlmostEqual(frame.asset.get_attr(
-            "{}.prob4".format(ns)),
-            0.8019669651985168, places=5)
-        self.assertAlmostEqual(frame.asset.get_attr(
-            "{}.prob5".format(ns)),
-            0.7671774625778198, places=5)
-        self.assertAlmostEqual(frame.asset.get_attr(
-            "{}.prob6".format(ns)),
-            0.7665587663650513, places=5)
-        self.assertAlmostEqual(frame.asset.get_attr(
-            "{}.prob7".format(ns)),
-            0.7586227655410767, places=5)
-        self.assertAlmostEqual(frame.asset.get_attr(
-            "{}.prob8".format(ns)),
-            0.6242249608039856, places=5)
-        self.assertAlmostEqual(frame.asset.get_attr(
-            "{}.prob9".format(ns)),
-            0.5761504173278809, places=5)
-        self.assertAlmostEqual(frame.asset.get_attr(
-            "{}.scores".format(ns)),
-            0.9937642216682434, places=5)
+        assert labels[0]['label'] == 'Toucan'
+        self.assertAlmostEqual(labels[0]['score'], 0.994)
+        assert labels[1]['label'] == 'Beak'
+        self.assertAlmostEqual(labels[1]['score'], 0.971)
+        assert labels[2]['label'] == 'Bird'
+        self.assertAlmostEqual(labels[2]['score'], 0.968)
 
 
 class CloudVisionDetectLandmarkTests(PluginUnitTestCase):

@@ -109,6 +109,28 @@
                     "type": "integer"
                   }
                 }
+              },
+              "label-detection": {
+                "dynamic": "strict",
+                "properties": {
+                  "labels": {
+                    "dynamic": "strict",
+                    "properties": {
+                      "label": {
+                        "type": "keyword",
+                        "fields": {
+                          "fulltext": {
+                            "type": "text",
+                            "analyzer": "default"
+                          }
+                        }
+                      },
+                      "score": {
+                        "type": "float"
+                      }
+                    }
+                  }
+                }
               }
             }
           },
@@ -118,9 +140,6 @@
               "predict": {
                 "dynamic": "strict",
                 "properties": {
-                  "model": {
-                    "type": "keyword"
-                  },
                   "labels": {
                     "dynamic": "strict",
                     "properties": {
