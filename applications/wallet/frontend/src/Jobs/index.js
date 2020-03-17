@@ -50,6 +50,7 @@ const Jobs = () => {
             css={{
               display: 'flex',
               alignItems: 'flex-end',
+              justifyContent: 'space-between',
               paddingTop: spacing.comfy,
               paddingBottom: spacing.normal,
             }}>
@@ -60,7 +61,6 @@ const Jobs = () => {
               }}>
               Number of Jobs: {count}
             </h3>
-            <div css={{ flex: 1 }} />
             <Refresh onClick={revalidate}>Refresh Jobs</Refresh>
           </div>
         )}
