@@ -34,7 +34,7 @@ const JobErrorAsset = ({ assetId }) => {
         css={{
           display: 'flex',
           alignItems: 'center',
-          backgroundColor: colors.structure.lead,
+          backgroundColor: colors.structure.iron,
           padding: spacing.normal,
         }}>
         <img
@@ -51,7 +51,7 @@ const JobErrorAsset = ({ assetId }) => {
       <div
         css={{
           padding: spacing.normal,
-          backgroundColor: colors.structure.black,
+          backgroundColor: colors.structure.coal,
         }}>
         <JsonDisplay json={asset} />
       </div>
