@@ -17,6 +17,7 @@ const TableContent = ({
   expandColumn,
   renderEmpty,
   renderRow,
+  renderBefore,
 }) => {
   const {
     query: { page = 1 },
@@ -32,6 +33,7 @@ const TableContent = ({
 
   return (
     <div css={{ height: count === 0 ? '100%' : 'auto' }}>
+      {renderBefore && renderBefore({ count, revalidate })}
       <table
         css={{
           width: '100%',
@@ -138,12 +140,17 @@ const TableContent = ({
   )
 }
 
+TableContent.defaultProps = {
+  renderBefore: () => {},
+}
+
 TableContent.propTypes = {
   url: PropTypes.string.isRequired,
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
   expandColumn: PropTypes.number.isRequired,
   renderEmpty: PropTypes.node.isRequired,
   renderRow: PropTypes.func.isRequired,
+  renderBefore: PropTypes.func,
 }
 
 export default TableContent
