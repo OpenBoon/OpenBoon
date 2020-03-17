@@ -83,7 +83,7 @@ class TaskActionsSerializer(serializers.Serializer):
 class TaskSerializer(serializers.Serializer):
     id = serializers.UUIDField(required=True)
     jobId = serializers.UUIDField(required=True)
-    projectId = serializers.UUIDField(required=True)
+    projectId = serializers.CharField(default="")
     dataSourceId = serializers.UUIDField(default="")
     name = serializers.CharField(required=True)
     state = serializers.CharField(required=True)
