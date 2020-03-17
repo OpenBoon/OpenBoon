@@ -53,7 +53,7 @@ const ACTIONS = {
       action: 'retry_all_failures',
     },
   ],
-  Finished: []
+  Finished: [],
 }
 
 const JobsMenu = ({ projectId, jobId, status, revalidate }) => {
