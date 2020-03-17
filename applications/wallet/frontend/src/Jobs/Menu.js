@@ -37,6 +37,23 @@ const ACTIONS = {
       action: 'resume',
     },
   ],
+
+  // Follwing statuses are here for backwards compatibility with ZVI.
+  Active: [
+    {
+      name: 'Cancel',
+      action: 'cancel',
+    },
+    {
+      name: 'Restart',
+      action: 'restart',
+    },
+    {
+      name: 'Retry All Failures',
+      action: 'retry_all_failures',
+    },
+  ],
+  Finished: []
 }
 
 const JobsMenu = ({ projectId, jobId, status, revalidate }) => {

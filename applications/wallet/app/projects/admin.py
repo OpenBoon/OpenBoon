@@ -17,6 +17,7 @@ class ProjectAdmin(ModelAdmin):
 
 @admin.register(Membership)
 class MembershipAdmin(ModelAdmin):
+    actions = None  # Removed since deleting a membership in the DB
 
     def save_model(self, request, obj, form, change):
         """When adding a membership if no api key is given then a new one is created."""
