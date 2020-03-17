@@ -11,6 +11,18 @@ from wallet.paginators import ZMLPFromSizePagination
 
 
 def set_asset_total_count(asset_counts):
+    """Sets the total count on the assetsCounts blob in Job and Task returns.
+
+    Sometimes the ZMLP api does not consistently return a total asset count. To maintain
+    consistency for the frontend, this checks each return blob and adds the assetTotalCount
+    to the return if it's missing or incorrect.
+
+    Args:
+        asset_counts: The full assetsCount JSON blob from the Task or Job returns.
+
+    Returns:
+        dict: The assetsCount blob with the assetsTotalCount added or corrected.
+    """
     total = (asset_counts.get('assetCreatedCount', 0)
              + asset_counts.get('assetReplacedCount', 0)
              + asset_counts.get('assetWarningCount', 0)
