@@ -37,7 +37,7 @@ class TestJobViewSet:
     def test_get_list_zmlp(self, zmlp_project_user, project, api_client, monkeypatch):
 
         def mock_api_response(*args, **kwargs):
-            response = {"list": [{"id": "82d53089-67c2-1433-8fef-0a580a000955", "organizationId": "00000000-9998-8888-7777-666666666666", "name": "test-whitespace.json", "type": "Import", "state": "Active", "assetCounts": {"assetCreatedCount": 0, "assetReplacedCount": 0, "assetWarningCount": 0, "assetErrorCount": 4}, "taskCounts": {"tasksTotal": 1, "tasksWaiting": 0, "tasksRunning": 0, "tasksSuccess": 0, "tasksFailure": 1, "tasksSkipped": 0, "tasksQueued": 0}, "createdUser": {"id": "00000000-7b0b-480e-8c36-f06f04aed2f1", "username": "admin", "email": "admin@zorroa.com", "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0", "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53", "organizationId": "00000000-9998-8888-7777-666666666666"}, "timeStarted": 1573090540886, "timeUpdated": 1573090536003, "timeCreated": 1573090536003, "priority": 100, "paused": False, "timePauseExpired": -1, "maxRunningTasks": 1024, "jobId": "82d53089-67c2-1433-8fef-0a580a000955"}], "page": {"from": 0, "size": 50, "totalCount": 0}}  # noqa
+            response = {"list": [{"id": "82d53089-67c2-1433-8fef-0a580a000955", "organizationId": "00000000-9998-8888-7777-666666666666", "name": "test-whitespace.json", "type": "Import", "state": "Active", "assetCounts": {"assetCreatedCount": 0, "assetReplacedCount": 0, "assetWarningCount": 0, "assetErrorCount": 4}, "taskCounts": {"tasksTotal": 1, "tasksWaiting": 0, "tasksRunning": 0, "tasksSuccess": 0, "tasksFailure": 1, "tasksSkipped": 0, "tasksQueued": 0}, "createdUser": {"id": "00000000-7b0b-480e-8c36-f06f04aed2f1", "username": "admin", "email": "admin@zorroa.com", "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0", "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53", "organizationId": "00000000-9998-8888-7777-666666666666"}, "timeStarted": 1573090540886, "timeUpdated": 1573090536003, "timeCreated": 1573090536003, "priority": 100, "paused": False, "timePauseExpired": -1, "maxRunningTasks": 1024, "jobId": "82d53089-67c2-1433-8fef-0a580a000955"}, {"id": "82d53089-67c2-1433-8fef-0a580a000955", "organizationId": "00000000-9998-8888-7777-666666666666", "name": "test-whitespace.json", "type": "Import", "state": "Active", "assetCounts": {"assetCreatedCount": 0, "assetReplacedCount": 0, "assetWarningCount": 0, "assetErrorCount": 4, "assetTotalCount": 19}, "taskCounts": {"tasksTotal": 1, "tasksWaiting": 0, "tasksRunning": 0, "tasksSuccess": 0, "tasksFailure": 1, "tasksSkipped": 0, "tasksQueued": 0}, "createdUser": {"id": "00000000-7b0b-480e-8c36-f06f04aed2f1", "username": "admin", "email": "admin@zorroa.com", "permissionId": "00000000-fc08-4e4a-aa7a-a183f42c9fa0", "homeFolderId": "00000000-2395-4e71-9e4c-dacceef6ad53", "organizationId": "00000000-9998-8888-7777-666666666666"}, "timeStarted": 1573090540886, "timeUpdated": 1573090536003, "timeCreated": 1573090536003, "priority": 100, "paused": False, "timePauseExpired": -1, "maxRunningTasks": 1024, "jobId": "82d53089-67c2-1433-8fef-0a580a000955"}], "page": {"from": 0, "size": 50, "totalCount": 0}}  # noqa
             return response
 
         monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
@@ -46,8 +46,10 @@ class TestJobViewSet:
         response = api_client.get(reverse('job-list', kwargs={'project_pk': project.id}))
         assert response.status_code == 200
         content = response.json()
-        assert len(content['results']) == 1
+        assert len(content['results']) == 2
         assert len(content['results'][0]) > 0
+        assert content['results'][0]['assetCounts']['assetTotalCount'] == 4
+        assert content['results'][1]['assetCounts']['assetTotalCount'] == 19
 
     def test_get_detail_zmlp(self, zmlp_project_user, project, api_client, monkeypatch, job_pk):
 
@@ -83,6 +85,7 @@ class TestJobViewSet:
         assert response.status_code == 200
         content = response.json()
         assert content['id'] == 'b8ec649d-67bc-1ab4-a0ae-0242ac120007'
+        assert content['assetCounts']['assetTotalCount'] == 301
 
     def test_get_detail_zvi_response(self, zmlp_project_user, project, api_client,
                                      monkeypatch, job_pk):
@@ -484,9 +487,10 @@ class TestTaskErrorViewSet:
 
 
 class TestJobTaskViewset:
+
     def test_list(self, monkeypatch, api_client, zmlp_project_user, project):
         def mock_post_response(*args, **kwargs):
-            return {'list': [{'id': '59527630-57f2-11ea-b3c8-0242ac120004', 'jobId': '5950534f-57f2-11ea-b3c8-0242ac120004', 'projectId': 'f7411da2-6573-4b1a-8e18-15af9bded45b', 'dataSourceId': '593689be-57f2-11ea-b3c8-0242ac120004', 'name': "Crawling files in 'gs://zorroa-dev-data'", 'state': 'Success', 'host': 'http://0945d0cfea37:5000', 'timeStarted': 1582652666857, 'timeStopped': 1582652672906, 'timeCreated': 1582650898050, 'timePing': 1582650898050, 'assetCounts': {'assetCreatedCount': 0, 'assetReplacedCount': 0, 'assetWarningCount': 0, 'assetErrorCount': 0, 'assetTotalCount': 0}, 'taskId': '59527630-57f2-11ea-b3c8-0242ac120004'}, {'id': '63bf1241-57f2-11ea-b3c8-0242ac120004', 'jobId': '5950534f-57f2-11ea-b3c8-0242ac120004', 'projectId': 'f7411da2-6573-4b1a-8e18-15af9bded45b', 'dataSourceId': '593689be-57f2-11ea-b3c8-0242ac120004', 'name': 'Expand with 7 assets, 8 processors.', 'state': 'Success', 'host': 'http://0945d0cfea37:5000', 'timeStarted': 1582650916053, 'timeStopped': 1582650958777, 'timeCreated': 1582650915539, 'timePing': 1582650930794, 'assetCounts': {'assetCreatedCount': 0, 'assetReplacedCount': 7, 'assetWarningCount': 0, 'assetErrorCount': 0, 'assetTotalCount': 7}, 'taskId': '63bf1241-57f2-11ea-b3c8-0242ac120004'}], 'page': {'from': 0, 'size': 50, 'disabled': False, 'totalCount': 2}}  # noqa
+            return {'list': [{'id': '59527630-57f2-11ea-b3c8-0242ac120004', 'jobId': '5950534f-57f2-11ea-b3c8-0242ac120004', 'projectId': 'f7411da2-6573-4b1a-8e18-15af9bded45b', 'dataSourceId': '593689be-57f2-11ea-b3c8-0242ac120004', 'name': "Crawling files in 'gs://zorroa-dev-data'", 'state': 'Success', 'host': 'http://0945d0cfea37:5000', 'timeStarted': 1582652666857, 'timeStopped': 1582652672906, 'timeCreated': 1582650898050, 'timePing': 1582650898050, 'assetCounts': {'assetCreatedCount': 0, 'assetReplacedCount': 0, 'assetWarningCount': 0, 'assetErrorCount': 2}, 'taskId': '59527630-57f2-11ea-b3c8-0242ac120004'}, {'id': '63bf1241-57f2-11ea-b3c8-0242ac120004', 'jobId': '5950534f-57f2-11ea-b3c8-0242ac120004', 'projectId': 'f7411da2-6573-4b1a-8e18-15af9bded45b', 'dataSourceId': '593689be-57f2-11ea-b3c8-0242ac120004', 'name': 'Expand with 7 assets, 8 processors.', 'state': 'Success', 'host': 'http://0945d0cfea37:5000', 'timeStarted': 1582650916053, 'timeStopped': 1582650958777, 'timeCreated': 1582650915539, 'timePing': 1582650930794, 'assetCounts': {'assetCreatedCount': 0, 'assetReplacedCount': 7, 'assetWarningCount': 0, 'assetErrorCount': 0, 'assetTotalCount': 7}, 'taskId': '63bf1241-57f2-11ea-b3c8-0242ac120004'}], 'page': {'from': 0, 'size': 50, 'disabled': False, 'totalCount': 2}}  # noqa
 
         monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
         monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
@@ -496,3 +500,4 @@ class TestJobTaskViewset:
         assert response.status_code == 200
         _json = response.json()
         assert _json['count'] == 2
+        assert _json['results'][0]['assetCounts']['assetTotalCount'] == 2
