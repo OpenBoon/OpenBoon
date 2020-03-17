@@ -12,7 +12,7 @@ const JobErrors = () => {
 
   return (
     <Table
-      assetType="Errors"
+      legend="Errors"
       url={`/api/v1/projects/${projectId}/jobs/${jobId}/errors/`}
       columns={[
         'Error Type',

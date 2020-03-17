@@ -35,7 +35,7 @@ const ProjectUsers = () => {
       />
 
       <Table
-        assetType="Users"
+        legend="Users"
         url={`/api/v1/projects/${projectId}/users/`}
         columns={['Email', 'Permissions', '#Actions#']}
         expandColumn={2}

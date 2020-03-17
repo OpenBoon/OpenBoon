@@ -10,7 +10,7 @@ describe('<Table />', () => {
 
     const component = TestRenderer.create(
       <Table
-        assetType="Stuff"
+        legend="Stuff"
         url=""
         columns={['ColumnOne, ColumnTwo']}
         expandColumn={2}

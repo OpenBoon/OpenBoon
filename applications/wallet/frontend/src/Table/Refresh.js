@@ -2,7 +2,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { keyframes } from '@emotion/core'
 
-import RefreshSvg from './refresh.svg'
+import RefreshSvg from '../Icons/refresh.svg'
 
 import { colors, spacing } from '../Styles'
 
@@ -13,18 +13,18 @@ const rotate = keyframes`
   to { transform:rotate(360deg); }
 `
 
-const TableRefresh = ({ onClick, assetType }) => {
+const TableRefresh = ({ onClick, legend }) => {
   const [clicked, setClicked] = useState(false)
-
-  const toggleClicked = () => setClicked(!clicked)
 
   return (
     <Button
       variant={VARIANTS.PRIMARY_SMALL}
       onClick={() => {
-        toggleClicked()
+        if (clicked) return
+
+        setClicked(true)
         onClick()
-        setTimeout(toggleClicked, 2000)
+        setTimeout(() => setClicked(false), 2000)
       }}>
       <div
         css={{
@@ -36,7 +36,7 @@ const TableRefresh = ({ onClick, assetType }) => {
           color={colors.structure.white}
           css={{ animation: clicked ? `${rotate} 1s linear 2` : '' }}
         />
-        <div css={{ paddingLeft: spacing.small }}>Refresh {assetType}</div>
+        <div css={{ paddingLeft: spacing.small }}>Refresh {legend}</div>
       </div>
     </Button>
   )
@@ -44,7 +44,7 @@ const TableRefresh = ({ onClick, assetType }) => {
 
 TableRefresh.propTypes = {
   onClick: PropTypes.func.isRequired,
-  assetType: PropTypes.string.isRequired,
+  legend: PropTypes.string.isRequired,
 }
 
 export default TableRefresh

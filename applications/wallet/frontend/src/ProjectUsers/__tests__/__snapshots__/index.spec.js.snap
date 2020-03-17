@@ -211,7 +211,6 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-top: 24px;
   padding-bottom: 16px;
 }
 
@@ -626,7 +625,6 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-top: 24px;
   padding-bottom: 16px;
 }
 
@@ -1122,7 +1120,6 @@ Array [
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-top: 24px;
   padding-bottom: 16px;
 }
 

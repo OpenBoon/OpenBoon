@@ -35,7 +35,7 @@ const DataSources = () => {
       />
 
       <Table
-        assetType="Sources"
+        legend="Sources"
         url={`/api/v1/projects/${projectId}/datasources/`}
         columns={[
           'Name',

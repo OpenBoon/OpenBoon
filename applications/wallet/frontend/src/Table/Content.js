@@ -18,7 +18,7 @@ const TableContent = ({
   expandColumn,
   renderEmpty,
   renderRow,
-  assetType,
+  legend,
 }) => {
   const {
     query: { page = 1 },
@@ -39,7 +39,6 @@ const TableContent = ({
           display: 'flex',
           alignItems: 'flex-end',
           justifyContent: 'space-between',
-          paddingTop: spacing.comfy,
           paddingBottom: spacing.normal,
         }}>
         <h3
@@ -47,9 +46,9 @@ const TableContent = ({
             color: colors.structure.zinc,
             fontWeight: typography.weight.regular,
           }}>
-          Number of {assetType}: {count}
+          Number of {legend}: {count}
         </h3>
-        <TableRefresh onClick={revalidate} assetType={assetType} />
+        <TableRefresh onClick={revalidate} legend={legend} />
       </div>
       <table
         css={{
@@ -163,7 +162,7 @@ TableContent.propTypes = {
   expandColumn: PropTypes.number.isRequired,
   renderEmpty: PropTypes.node.isRequired,
   renderRow: PropTypes.func.isRequired,
-  assetType: PropTypes.string.isRequired,
+  legend: PropTypes.string.isRequired,
 }
 
 export default TableContent

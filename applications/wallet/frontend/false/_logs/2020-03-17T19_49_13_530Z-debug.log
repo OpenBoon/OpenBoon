@@ -1,0 +1,40 @@
+0 info it worked if it ends with ok
+1 verbose cli [
+1 verbose cli   '/usr/local/Cellar/node/13.8.0/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'test:cover',
+1 verbose cli   '--no-cache'
+1 verbose cli ]
+2 info using npm@6.13.7
+3 info using node@v13.8.0
+4 verbose run-script [ 'pretest:cover', 'test:cover', 'posttest:cover' ]
+5 info lifecycle @~pretest:cover: @
+6 info lifecycle @~test:cover: @
+7 verbose lifecycle @~test:cover: unsafe-perm in lifecycle true
+8 verbose lifecycle @~test:cover: PATH: /usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/timchin/Documents/GitHub/zmlp/applications/wallet/frontend/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki
+9 verbose lifecycle @~test:cover: CWD: /Users/timchin/Documents/GitHub/zmlp/applications/wallet/frontend
+10 silly lifecycle @~test:cover: Args: [ '-c', 'TZ=UTC jest --coverage --verbose' ]
+11 silly lifecycle @~test:cover: Returned: code: 1  signal: null
+12 info lifecycle @~test:cover: Failed to exec test:cover script
+13 verbose stack Error: @ test:cover: `TZ=UTC jest --coverage --verbose`
+13 verbose stack Exit status 1
+13 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/index.js:332:16)
+13 verbose stack     at EventEmitter.emit (events.js:321:20)
+13 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/lib/spawn.js:55:14)
+13 verbose stack     at ChildProcess.emit (events.js:321:20)
+13 verbose stack     at maybeClose (internal/child_process.js:1026:16)
+13 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:286:5)
+14 verbose pkgid @
+15 verbose cwd /Users/timchin/Documents/GitHub/zmlp/applications/wallet/frontend
+16 verbose Darwin 19.3.0
+17 verbose argv "/usr/local/Cellar/node/13.8.0/bin/node" "/usr/local/bin/npm" "run" "test:cover" "--no-cache"
+18 verbose node v13.8.0
+19 verbose npm  v6.13.7
+20 error code ELIFECYCLE
+21 error errno 1
+22 error @ test:cover: `TZ=UTC jest --coverage --verbose`
+22 error Exit status 1
+23 error Failed at the @ test:cover script.
+23 error This is probably not a problem with npm. There is likely additional logging output above.
+24 verbose exit [ 1, true ]

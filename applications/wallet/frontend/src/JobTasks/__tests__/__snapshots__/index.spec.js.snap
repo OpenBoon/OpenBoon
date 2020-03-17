@@ -18,7 +18,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-top: 24px;
   padding-bottom: 16px;
 }
 
@@ -521,7 +520,6 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  padding-top: 24px;
   padding-bottom: 16px;
 }
 
