@@ -8,32 +8,18 @@ import Menu from '../Menu'
 import MenuButton from '../Menu/Button'
 import Button, { VARIANTS } from '../Button'
 
-const ACTIONS = [
-  {
-    name: 'Pause',
-    action: 'pause',
-  },
-  {
-    name: 'Resume',
-    action: 'resume',
-  },
-  {
-    name: 'Cancel',
-    action: 'cancel',
-  },
-  {
-    name: 'Restart',
-    action: 'restart',
-  },
-  {
-    name: 'Retry All Failures',
-    action: 'retry_all_failures',
-  },
-]
+import { ACTIONS } from './helpers'
 
-const JobMenu = ({ projectId, jobId, revalidate }) => {
+const JobMenu = ({ projectId, jobId, status, revalidate }) => {
+  if (!ACTIONS[status].length) return null
+
   return (
-    <div css={{ display: 'flex', marginBottom: -spacing.small }}>
+    <div
+      css={{
+        display: 'flex',
+        marginBottom: -spacing.small,
+        paddingRight: spacing.giant,
+      }}>
       <Menu
         open="left"
         button={({ onBlur, onClick }) => (
@@ -42,7 +28,7 @@ const JobMenu = ({ projectId, jobId, revalidate }) => {
         {({ onBlur, onClick }) => (
           <div>
             <ul>
-              {ACTIONS.map(({ name, action }) => (
+              {ACTIONS[status].map(({ name, action }) => (
                 <li key={action}>
                   <Button
                     variant={VARIANTS.MENU_ITEM}
@@ -73,6 +59,7 @@ const JobMenu = ({ projectId, jobId, revalidate }) => {
 JobMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   jobId: PropTypes.string.isRequired,
+  status: PropTypes.oneOf(Object.keys(ACTIONS)).isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 

@@ -14,7 +14,12 @@ describe('<JobErrorsMenu />', () => {
     fetch.mockResponseOnce('{}')
 
     const component = TestRenderer.create(
-      <JobMenu projectId={PROJECT_ID} jobId={JOB_ID} revalidate={mockFn} />,
+      <JobMenu
+        projectId={PROJECT_ID}
+        jobId={JOB_ID}
+        status="InProgress"
+        revalidate={mockFn}
+      />,
     )
 
     act(() => {

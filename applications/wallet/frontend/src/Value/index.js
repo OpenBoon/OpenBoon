@@ -7,8 +7,7 @@ const STYLES = {
     container: {
       display: 'flex',
       flexDirection: 'column',
-      paddingLeft: spacing.comfy,
-      paddingRight: spacing.comfy,
+      paddingRight: spacing.giant,
     },
   },
   SECONDARY: {

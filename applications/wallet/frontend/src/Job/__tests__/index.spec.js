@@ -34,7 +34,7 @@ describe('<Job />', () => {
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: job,
+      data: { ...job, paused: true },
     })
 
     const component = TestRenderer.create(<Job />)

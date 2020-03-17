@@ -1,15 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<JobErrorsMenu /> should render properly 1`] = `
-.emotion-8 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   margin-bottom: -4px;
+  padding-right: 48px;
 }
 
-.emotion-7 {
+.emotion-4 {
   position: relative;
 }
 
@@ -83,7 +84,7 @@ exports[`<JobErrorsMenu /> should render properly 1`] = `
   background-color: #808080;
 }
 
-.emotion-6 {
+.emotion-3 {
   position: absolute;
   z-index: 1;
   top: 100%;
@@ -94,7 +95,7 @@ exports[`<JobErrorsMenu /> should render properly 1`] = `
   width: 200px;
 }
 
-.emotion-6 ul {
+.emotion-3 ul {
   list-style-type: none;
   padding: 0;
   padding-top: 4px;
@@ -102,7 +103,7 @@ exports[`<JobErrorsMenu /> should render properly 1`] = `
   margin: 0;
 }
 
-.emotion-6 li {
+.emotion-3 li {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -165,10 +166,10 @@ exports[`<JobErrorsMenu /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-8"
+  className="emotion-5"
 >
   <div
-    className="emotion-7"
+    className="emotion-4"
   >
     <button
       aria-label="Toggle Dropdown Menu"
@@ -184,7 +185,7 @@ exports[`<JobErrorsMenu /> should render properly 1`] = `
       />
     </button>
     <div
-      className="emotion-6"
+      className="emotion-3"
     >
       <div>
         <ul>
@@ -205,37 +206,7 @@ exports[`<JobErrorsMenu /> should render properly 1`] = `
               onClick={[Function]}
               type="button"
             >
-              Resume
-            </button>
-          </li>
-          <li>
-            <button
-              className="emotion-1"
-              onBlur={[Function]}
-              onClick={[Function]}
-              type="button"
-            >
               Cancel
-            </button>
-          </li>
-          <li>
-            <button
-              className="emotion-1"
-              onBlur={[Function]}
-              onClick={[Function]}
-              type="button"
-            >
-              Restart
-            </button>
-          </li>
-          <li>
-            <button
-              className="emotion-1"
-              onBlur={[Function]}
-              onClick={[Function]}
-              type="button"
-            >
-              Retry All Failures
             </button>
           </li>
         </ul>
