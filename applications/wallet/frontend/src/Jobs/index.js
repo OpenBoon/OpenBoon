@@ -21,6 +21,7 @@ const Jobs = () => {
       <PageTitle>Job Queue</PageTitle>
 
       <Table
+        legend="Jobs"
         url={`/api/v1/projects/${projectId}/jobs/`}
         columns={[
           'Status',

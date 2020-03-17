@@ -1,11 +1,103 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<JobTasks /> should render properly with job tasks 1`] = `
-.emotion-20 {
+.emotion-26 {
   height: auto;
 }
 
-.emotion-19 {
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
+.emotion-0 {
+  color: #b3b3b3;
+  font-weight: 400;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-4[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
+  background-color: #73b61c;
+}
+
+.emotion-4:hover {
+  background-color: #96c955;
+}
+
+.emotion-4[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  padding-left: 4px;
+}
+
+.emotion-25 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -13,38 +105,38 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   white-space: nowrap;
 }
 
-.emotion-19 tr {
+.emotion-25 tr {
   background-color: #252525;
 }
 
-.emotion-19 tr:nth-of-type(2n) {
+.emotion-25 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-19 tr:hover {
+.emotion-25 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-19 tr:hover .gear {
+.emotion-25 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-19 tr:hover td {
+.emotion-25 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-19 tr:hover td:first-of-type {
+.emotion-25 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-19 tr:hover td:last-of-type {
+.emotion-25 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-19 td {
+.emotion-25 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -56,16 +148,16 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   border-right: 0;
 }
 
-.emotion-19 td:first-of-type {
+.emotion-25 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-19 td:last-of-type {
+.emotion-25 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-0 {
+.emotion-6 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -76,65 +168,99 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-0:nth-of-type(3) {
+.emotion-6:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-0:not(:last-child) {
+.emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-8 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-13 {
   padding-left: 16px;
 }
 
 <div
-  className="emotion-20"
+  className="emotion-26"
 >
+  <div
+    className="emotion-5"
+  >
+    <h3
+      className="emotion-0"
+    >
+      Number of 
+      Tasks
+      : 
+      3
+    </h3>
+    <button
+      className="emotion-4"
+      onClick={[Function]}
+      type="button"
+    >
+      <div
+        className="emotion-3"
+      >
+        <svg
+          className="emotion-1"
+          color="#ffffff"
+          data-file-name="refresh.svg"
+          width={20}
+        />
+        <div
+          className="emotion-2"
+        >
+          Refresh 
+          Tasks
+        </div>
+      </div>
+    </button>
+  </div>
   <table
-    className="emotion-19"
+    className="emotion-25"
   >
     <thead>
       <tr>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Task State
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Task ID
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Description
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Duration
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Assets
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Updated
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Errors
         </th>
@@ -143,7 +269,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
     <tbody>
       <tr>
         <td
-          className="emotion-8"
+          className="emotion-14"
         >
           <svg
             color="#ffffff"
@@ -151,7 +277,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             width={20}
           />
           <span
-            className="emotion-7"
+            className="emotion-13"
           >
             Waiting
           </span>
@@ -181,7 +307,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
       </tr>
       <tr>
         <td
-          className="emotion-8"
+          className="emotion-14"
         >
           <svg
             color="#ebb52e"
@@ -189,7 +315,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             width={20}
           />
           <span
-            className="emotion-7"
+            className="emotion-13"
           >
             Running
           </span>
@@ -219,7 +345,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
       </tr>
       <tr>
         <td
-          className="emotion-8"
+          className="emotion-14"
         >
           <svg
             color="#4ac565"
@@ -227,7 +353,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             width={20}
           />
           <span
-            className="emotion-7"
+            className="emotion-13"
           >
             Success
           </span>
@@ -257,7 +383,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
       </tr>
       <tr>
         <td
-          className="emotion-8"
+          className="emotion-14"
         >
           <svg
             color="#c92300"
@@ -265,7 +391,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             width={20}
           />
           <span
-            className="emotion-7"
+            className="emotion-13"
           >
             Failure
           </span>
@@ -295,7 +421,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
       </tr>
       <tr>
         <td
-          className="emotion-8"
+          className="emotion-14"
         >
           <svg
             color="#808080"
@@ -303,7 +429,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             width={20}
           />
           <span
-            className="emotion-7"
+            className="emotion-13"
           >
             Skipped
           </span>
@@ -333,7 +459,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
       </tr>
       <tr>
         <td
-          className="emotion-8"
+          className="emotion-14"
         >
           <svg
             color="#4a90e2"
@@ -341,7 +467,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             width={20}
           />
           <span
-            className="emotion-7"
+            className="emotion-13"
           >
             Queued
           </span>
@@ -381,7 +507,99 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
 `;
 
 exports[`<JobTasks /> should render properly without job tasks 1`] = `
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
 .emotion-0 {
+  color: #b3b3b3;
+  font-weight: 400;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-4[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
+  background-color: #73b61c;
+}
+
+.emotion-4:hover {
+  background-color: #96c955;
+}
+
+.emotion-4[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  padding-left: 4px;
+}
+
+.emotion-6 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -392,19 +610,19 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-0:nth-of-type(3) {
+.emotion-6:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-0:not(:last-child) {
+.emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-11 {
+.emotion-17 {
   height: 100%;
 }
 
-.emotion-10 {
+.emotion-16 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -412,38 +630,38 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   white-space: nowrap;
 }
 
-.emotion-10 tr {
+.emotion-16 tr {
   background-color: #252525;
 }
 
-.emotion-10 tr:nth-of-type(2n) {
+.emotion-16 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-10 tr:hover {
+.emotion-16 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-10 tr:hover .gear {
+.emotion-16 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-10 tr:hover td {
+.emotion-16 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-10 tr:hover td:first-of-type {
+.emotion-16 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-10 tr:hover td:last-of-type {
+.emotion-16 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-10 td {
+.emotion-16 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -455,21 +673,21 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   border-right: 0;
 }
 
-.emotion-10 td:first-of-type {
+.emotion-16 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-10 td:last-of-type {
+.emotion-16 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-9 {
+.emotion-15 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-8 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -491,7 +709,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   line-height: 19px;
 }
 
-.emotion-7 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -508,45 +726,79 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
 }
 
 <div
-  className="emotion-11"
+  className="emotion-17"
 >
+  <div
+    className="emotion-5"
+  >
+    <h3
+      className="emotion-0"
+    >
+      Number of 
+      Tasks
+      : 
+      0
+    </h3>
+    <button
+      className="emotion-4"
+      onClick={[Function]}
+      type="button"
+    >
+      <div
+        className="emotion-3"
+      >
+        <svg
+          className="emotion-1"
+          color="#ffffff"
+          data-file-name="refresh.svg"
+          width={20}
+        />
+        <div
+          className="emotion-2"
+        >
+          Refresh 
+          Tasks
+        </div>
+      </div>
+    </button>
+  </div>
   <table
-    className="emotion-10"
+    className="emotion-16"
   >
     <thead>
       <tr>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Task State
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Task ID
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Description
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Duration
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Assets
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Updated
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Errors
         </th>
@@ -554,16 +806,16 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
     </thead>
     <tbody>
       <tr
-        className="emotion-9"
+        className="emotion-15"
       >
         <td
           colSpan={7}
         >
           <div
-            className="emotion-8"
+            className="emotion-14"
           >
             <div
-              className="emotion-7"
+              className="emotion-13"
             >
               <svg
                 data-file-name="noJobs.svg"
