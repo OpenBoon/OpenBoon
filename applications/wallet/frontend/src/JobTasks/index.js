@@ -12,6 +12,7 @@ const JobTasks = () => {
 
   return (
     <Table
+      legend="Tasks"
       url={`/api/v1/projects/${projectId}/jobs/${jobId}/tasks`}
       columns={[
         'Task State',

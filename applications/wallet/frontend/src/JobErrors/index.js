@@ -12,6 +12,7 @@ const JobErrors = () => {
 
   return (
     <Table
+      legend="Errors"
       url={`/api/v1/projects/${projectId}/jobs/${jobId}/errors/`}
       columns={[
         'Error Type',
