@@ -2,8 +2,9 @@ import Head from 'next/head'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import importAll from 'import-all.macro'
 
-import PageTitle from '../PageTitle'
 import { spacing } from '../Styles'
+
+import PageTitle from '../PageTitle'
 
 const icons = importAll.sync('./*.svg')
 

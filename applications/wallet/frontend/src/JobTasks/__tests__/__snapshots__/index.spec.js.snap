@@ -146,8 +146,8 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           className="emotion-8"
         >
           <svg
-            color="#4a90e2"
-            data-file-name="pending.svg"
+            color="#ffffff"
+            data-file-name="clock.svg"
             width={20}
           />
           <span
@@ -261,7 +261,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
         >
           <svg
             color="#c92300"
-            data-file-name="cross.svg"
+            data-file-name="crossSmall.svg"
             width={20}
           />
           <span
@@ -337,7 +337,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
         >
           <svg
             color="#4a90e2"
-            data-file-name="pending.svg"
+            data-file-name="squareSquareSquare.svg"
             width={20}
           />
           <span
