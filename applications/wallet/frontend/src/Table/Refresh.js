@@ -1,26 +1,26 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { keyframes } from '@emotion/core'
 
 import RefreshSvg from './refresh.svg'
-import RefreshingSvg from './refreshing.svg'
 
 import { colors, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
-const REFRESH_HEIGHT = 32
+const rotate = keyframes`
+  from { transform:rotate(0deg); }
+  to { transform:rotate(360deg); }
+`
 
-const Refresh = ({ onClick, children }) => {
+const TableRefresh = ({ onClick, assetType }) => {
   const [clicked, setClicked] = useState(false)
 
   const toggleClicked = () => setClicked(!clicked)
 
   return (
     <Button
-      variant={VARIANTS.PRIMARY}
-      style={{
-        height: REFRESH_HEIGHT,
-      }}
+      variant={VARIANTS.PRIMARY_SMALL}
       onClick={() => {
         toggleClicked()
         onClick()
@@ -31,17 +31,20 @@ const Refresh = ({ onClick, children }) => {
           display: 'flex',
           alignItems: 'center',
         }}>
-        {!clicked && <RefreshSvg width={20} color={colors.structure.white} />}
-        {clicked && <RefreshingSvg width={20} color={colors.structure.white} />}
-        <div css={{ paddingLeft: spacing.small }}>{children}</div>
+        <RefreshSvg
+          width={20}
+          color={colors.structure.white}
+          css={{ animation: clicked ? `${rotate} 1s linear 2` : '' }}
+        />
+        <div css={{ paddingLeft: spacing.small }}>Refresh {assetType}</div>
       </div>
     </Button>
   )
 }
 
-Refresh.propTypes = {
+TableRefresh.propTypes = {
   onClick: PropTypes.func.isRequired,
-  children: PropTypes.string.isRequired,
+  assetType: PropTypes.string.isRequired,
 }
 
-export default Refresh
+export default TableRefresh

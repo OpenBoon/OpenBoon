@@ -28,6 +28,7 @@ const ApiKeys = () => {
       />
 
       <Table
+        assetType="Keys"
         url={`/api/v1/projects/${projectId}/apikeys/`}
         columns={['API Key Name', 'Permissions', '#Actions#']}
         expandColumn={2}

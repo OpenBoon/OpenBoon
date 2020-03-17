@@ -1,19 +1,19 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import Refresh from '..'
+import Refresh from '../Refresh'
 
 describe('<Refresh />', () => {
   it('should render properly', async () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
-      <Refresh onClick={mockFn}>Refresh Stuff</Refresh>,
+      <Refresh onClick={mockFn} assetType="Stuff" />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    await act(async () => {
-      component.root.findByProps({ variant: 'PRIMARY' }).props.onClick()
+    act(() => {
+      component.root.findByProps({ variant: 'PRIMARY_SMALL' }).props.onClick()
     })
 
     expect(mockFn).toHaveBeenCalled()

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Refresh /> should render properly 1`] = `
-.emotion-2 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -31,33 +31,33 @@ exports[`<Refresh /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  height: 32px;
+  padding: 8px 16px;
 }
 
-.emotion-2:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited {
   background-color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-3:hover {
   background-color: #96c955;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -68,34 +68,50 @@ exports[`<Refresh /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding-left: 4px;
 }
 
 <button
-  className="emotion-2"
+  className="emotion-3"
   onClick={[Function]}
   type="button"
 >
   <div
-    className="emotion-1"
+    className="emotion-2"
   >
     <svg
+      className="emotion-0"
       color="#ffffff"
       data-file-name="refresh.svg"
       width={20}
     />
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
-      Refresh Stuff
+      Refresh 
+      Stuff
     </div>
   </div>
 </button>
 `;
 
 exports[`<Refresh /> should render properly 2`] = `
-.emotion-2 {
+@keyframes animation-0 {
+  from {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -125,33 +141,33 @@ exports[`<Refresh /> should render properly 2`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  height: 32px;
+  padding: 8px 16px;
 }
 
-.emotion-2:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited {
   background-color: #73b61c;
 }
 
-.emotion-2:hover {
+.emotion-3:hover {
   background-color: #96c955;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -162,27 +178,34 @@ exports[`<Refresh /> should render properly 2`] = `
   align-items: center;
 }
 
-.emotion-0 {
+.emotion-1 {
   padding-left: 4px;
 }
 
+.emotion-0 {
+  -webkit-animation: animation-0 1s linear 2;
+  animation: animation-0 1s linear 2;
+}
+
 <button
-  className="emotion-2"
+  className="emotion-3"
   onClick={[Function]}
   type="button"
 >
   <div
-    className="emotion-1"
+    className="emotion-2"
   >
     <svg
+      className="emotion-0"
       color="#ffffff"
-      data-file-name="refreshing.svg"
+      data-file-name="refresh.svg"
       width={20}
     />
     <div
-      className="emotion-0"
+      className="emotion-1"
     >
-      Refresh Stuff
+      Refresh 
+      Stuff
     </div>
   </div>
 </button>

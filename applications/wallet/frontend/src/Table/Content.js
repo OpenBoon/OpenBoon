@@ -8,6 +8,7 @@ import Pagination from '../Pagination'
 
 import GearSvg from '../Icons/gear.svg'
 import TableException from './Exception'
+import TableRefresh from './Refresh'
 
 const SIZE = 20
 
@@ -17,7 +18,7 @@ const TableContent = ({
   expandColumn,
   renderEmpty,
   renderRow,
-  renderBefore,
+  assetType,
 }) => {
   const {
     query: { page = 1 },
@@ -33,7 +34,23 @@ const TableContent = ({
 
   return (
     <div css={{ height: count === 0 ? '100%' : 'auto' }}>
-      {renderBefore && renderBefore({ count, revalidate })}
+      <div
+        css={{
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'space-between',
+          paddingTop: spacing.comfy,
+          paddingBottom: spacing.normal,
+        }}>
+        <h3
+          css={{
+            color: colors.structure.zinc,
+            fontWeight: typography.weight.regular,
+          }}>
+          Number of {assetType}: {count}
+        </h3>
+        <TableRefresh onClick={revalidate} assetType={assetType} />
+      </div>
       <table
         css={{
           width: '100%',
@@ -140,17 +157,13 @@ const TableContent = ({
   )
 }
 
-TableContent.defaultProps = {
-  renderBefore: () => {},
-}
-
 TableContent.propTypes = {
   url: PropTypes.string.isRequired,
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
   expandColumn: PropTypes.number.isRequired,
   renderEmpty: PropTypes.node.isRequired,
   renderRow: PropTypes.func.isRequired,
-  renderBefore: PropTypes.func,
+  assetType: PropTypes.string.isRequired,
 }
 
 export default TableContent

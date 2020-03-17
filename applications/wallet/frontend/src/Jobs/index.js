@@ -1,11 +1,8 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { colors, spacing, typography } from '../Styles'
-
 import PageTitle from '../PageTitle'
 import Table from '../Table'
-import Refresh from '../Refresh'
 
 import JobsEmpty from './Empty'
 import JobsRow from './Row'
@@ -24,6 +21,7 @@ const Jobs = () => {
       <PageTitle>Job Queue</PageTitle>
 
       <Table
+        assetType="Jobs"
         url={`/api/v1/projects/${projectId}/jobs/`}
         columns={[
           'Status',
@@ -44,25 +42,6 @@ const Jobs = () => {
             job={result}
             revalidate={revalidate}
           />
-        )}
-        renderBefore={({ count, revalidate }) => (
-          <div
-            css={{
-              display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'space-between',
-              paddingTop: spacing.comfy,
-              paddingBottom: spacing.normal,
-            }}>
-            <h3
-              css={{
-                color: colors.structure.zinc,
-                fontWeight: typography.weight.regular,
-              }}>
-              Number of Jobs: {count}
-            </h3>
-            <Refresh onClick={revalidate}>Refresh Jobs</Refresh>
-          </div>
         )}
       />
     </>
