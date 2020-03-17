@@ -10,6 +10,17 @@ from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
 
+def set_asset_total_count(asset_counts):
+    total = (asset_counts.get('assetCreatedCount', 0)
+             + asset_counts.get('assetReplacedCount', 0)
+             + asset_counts.get('assetWarningCount', 0)
+             + asset_counts.get('assetErrorCount', 0))
+    if 'assetTotalCount' in asset_counts and asset_counts['assetTotalCount'] >= total:
+        return asset_counts
+    asset_counts['assetTotalCount'] = total
+    return asset_counts
+
+
 class JobViewSet(BaseProjectViewSet):
     """CRUD operations for ZMLP or ZVI processing jobs."""
     pagination_class = ZMLPFromSizePagination
@@ -20,6 +31,7 @@ class JobViewSet(BaseProjectViewSet):
         def item_modifier(request, job):
             job['actions'] = self._get_action_links(request, job['url'], detail=True)
             job['tasks'] = f'{job["url"]}tasks/'
+            job['assetCounts'] = set_asset_total_count(job['assetCounts'])
 
         return self._zmlp_list_from_search(request, item_modifier=item_modifier)
 
@@ -28,6 +40,7 @@ class JobViewSet(BaseProjectViewSet):
             current_url = request.build_absolute_uri(request.path)
             job['actions'] = self._get_action_links(request, current_url, detail=True)
             job['tasks'] = f'{current_url}tasks/'
+            job['assetCounts'] = set_asset_total_count(job['assetCounts'])
 
         return self._zmlp_retrieve(request, pk, item_modifier=item_modifier)
 
@@ -217,6 +230,7 @@ class JobTaskViewSet(BaseProjectViewSet):
             path = reverse('task-detail', kwargs={'project_pk': project_pk, 'pk': task['id']})
             task['url'] = request.build_absolute_uri(path)
             task['actions'] = {'retry': f'{task["url"]}{task["id"]}/retry/'}
+            task['assetCounts'] = set_asset_total_count(task['assetCounts'])
 
         return self._zmlp_list_from_search(request, item_modifier=item_modifier,
                                            filter={'jobIds': [job_pk]})
@@ -231,6 +245,7 @@ class TaskViewSet(BaseProjectViewSet):
         def item_modifier(request, task):
             item_url = request.build_absolute_uri(request.path)
             task['actions'] = {'retry': f'{item_url}{task["id"]}/retry/'}
+            task['assetCounts'] = set_asset_total_count(task['assetCounts'])
 
         return self._zmlp_list_from_search(request, item_modifier=item_modifier)
 
@@ -238,6 +253,7 @@ class TaskViewSet(BaseProjectViewSet):
         def item_modifier(request, task):
             item_url = request.build_absolute_uri(request.path)
             task['actions'] = {'retry': f'{item_url}{task["id"]}/retry/'}
+            task['assetCounts'] = set_asset_total_count(task['assetCounts'])
 
         return self._zmlp_retrieve(request, pk, item_modifier=item_modifier)
 

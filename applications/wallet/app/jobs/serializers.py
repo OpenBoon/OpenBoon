@@ -6,6 +6,8 @@ class AssetCountsSerializer(serializers.Serializer):
     assetReplacedCount = serializers.IntegerField(required=True)
     assetWarningCount = serializers.IntegerField(required=True)
     assetErrorCount = serializers.IntegerField(required=True)
+    # The views ensure assetTotalCount is set if it's missing
+    assetTotalCount = serializers.IntegerField()
 
 
 class TaskCountsSerializer(serializers.Serializer):
