@@ -45,7 +45,7 @@ const JobDetails = () => {
         />
 
         <Value legend="Job Status" variant={VARIANTS.PRIMARY}>
-          {state}
+          {status}
         </Value>
 
         <Value legend="Priority" variant={VARIANTS.PRIMARY}>

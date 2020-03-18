@@ -48,6 +48,7 @@ Array [
   flex-direction: column;
   background-color: #3b3b3b;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  border-radius: 2px;
 }
 
 .emotion-2 {
@@ -262,7 +263,7 @@ Array [
 
 .emotion-34 {
   margin: 0;
-  padding-bottom: 32px;
+  padding-bottom: 16px;
   color: #b3b3b3;
 }
 
@@ -428,7 +429,7 @@ Array [
                   3
                   : 
                 </span>
-                Inspect your new dataset
+                Inspect Your New Dataset
               </h4>
               <h5
                 className="emotion-8"

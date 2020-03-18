@@ -61,7 +61,7 @@ const ProjectCards = () => {
         <p
           css={{
             margin: 0,
-            paddingBottom: spacing.spacious,
+            paddingBottom: spacing.normal,
             color: colors.structure.zinc,
           }}>
           Create a ZMLP API key for use with external applications and tools.
