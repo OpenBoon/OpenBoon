@@ -9,6 +9,8 @@ const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 describe('<DataSourcesAddForm />', () => {
   it('should render properly', async () => {
     const mockFn = jest.fn()
+    const mockScrollTo = jest.fn()
+    Object.defineProperty(global.window, 'scrollTo', { value: mockScrollTo })
 
     require('next/router').__setMockPushFunction(mockFn)
 
@@ -74,6 +76,9 @@ describe('<DataSourcesAddForm />', () => {
         .findByProps({ children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
     })
+
+    expect(mockScrollTo).toHaveBeenCalledWith(0, 0)
+    mockScrollTo.mockClear()
 
     // Mock Success
     fetch.mockResponseOnce(JSON.stringify({ detail: 'Data Source Created' }))
