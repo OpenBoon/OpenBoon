@@ -215,5 +215,7 @@ export const onSubmit = async ({
     }, {})
 
     dispatch({ errors: parsedErrors })
+
+    window.scrollTo(0, 0)
   }
 }
