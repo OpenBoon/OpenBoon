@@ -14,8 +14,6 @@ import org.apache.mxnet.javaapi.DataDesc
 import org.apache.mxnet.javaapi.Image
 import org.apache.mxnet.javaapi.Shape
 import org.apache.mxnet.module.Module
-import org.elasticsearch.common.util.FloatArray
-import org.omg.CORBA.Environment
 import scala.Option
 import java.text.SimpleDateFormat
 import java.util.Arrays
