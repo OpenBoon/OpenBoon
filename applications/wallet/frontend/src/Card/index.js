@@ -16,6 +16,7 @@ const Card = ({ title, children }) => {
           flexDirection: 'column',
           backgroundColor: colors.structure.smoke,
           boxShadow: constants.boxShadows.tableRow,
+          borderRadius: constants.borderRadius.small,
         }}>
         {!!title && (
           <h3

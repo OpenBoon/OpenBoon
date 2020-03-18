@@ -68,7 +68,7 @@ const JobErrorsRow = ({
       <td style={{ width: '50%' }} title={path}>
         {path}
       </td>
-      <td>{processor}</td>
+      <td title={processor}>{processor}</td>
       <td>{formatFullDate({ timestamp: timeCreated })}</td>
       <td>
         <JobErrorsMenu

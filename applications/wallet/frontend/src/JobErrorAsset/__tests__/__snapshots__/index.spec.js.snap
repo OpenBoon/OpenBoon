@@ -16,7 +16,7 @@ exports[`<JobErrorAsset /> should render properly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background-color: #252525;
+  background-color: #4a4a4a;
   padding: 16px;
 }
 
@@ -32,7 +32,7 @@ exports[`<JobErrorAsset /> should render properly 1`] = `
 
 .emotion-3 {
   padding: 16px;
-  background-color: #000000;
+  background-color: #191919;
 }
 
 <div

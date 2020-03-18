@@ -402,7 +402,9 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
-        <td>
+        <td
+          title="HSVSimilarityProcessor"
+        >
           HSVSimilarityProcessor
         </td>
         <td>
@@ -475,7 +477,9 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
-        <td>
+        <td
+          title="DuplicateDetectionProcessor"
+        >
           DuplicateDetectionProcessor
         </td>
         <td>
@@ -548,7 +552,9 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
-        <td>
+        <td
+          title="ResNetSimilarityProcessor"
+        >
           ResNetSimilarityProcessor
         </td>
         <td>
@@ -621,7 +627,9 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
-        <td>
+        <td
+          title="ResNetClassifyProcessor"
+        >
           ResNetClassifyProcessor
         </td>
         <td>
@@ -694,7 +702,9 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
-        <td>
+        <td
+          title="FaceRecognitionProcessor"
+        >
           FaceRecognitionProcessor
         </td>
         <td>
@@ -767,7 +777,9 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
-        <td>
+        <td
+          title="ImageImporter"
+        >
           ImageImporter
         </td>
         <td>
