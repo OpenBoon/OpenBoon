@@ -67,7 +67,7 @@ def create_project_zero(apps, schema_editor):
         logger.error('Unable to sync Project Zero to ZMLP, please check.')
 
 
-@backoff.on_exception(backoff.expo, requests.exceptions.ConnectionError, max_time=120)
+@backoff.on_exception(backoff.expo, requests.exceptions.ConnectionError, max_time=300)
 def sync_project(project_zero, user):
     try:
         project_zero.sync_with_zmlp(user)

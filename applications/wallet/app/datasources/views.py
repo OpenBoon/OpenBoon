@@ -29,7 +29,7 @@ class DataSourceViewSet(BaseProjectViewSet):
                                                           credentials=creds,
                                                           file_types=data['fileTypes'])
         except ZmlpDuplicateException:
-            body = {'name': 'name', 'detail': 'A Data Source with that name already exists.'}
+            body = {'name': ['A Data Source with that name already exists.']}
             return Response(body, status=409)
         app.datasource.import_files(datasource)
         serializer = self.get_serializer(data=datasource._data)
