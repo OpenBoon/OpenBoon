@@ -5,6 +5,7 @@ import pytest
 from django.urls import reverse
 from zmlp import ZmlpClient
 from zmlp.app import DataSourceApp
+from zmlp.client import ZmlpDuplicateException
 from zmlp.datasource import DataSource
 
 pytestmark = pytest.mark.django_db
@@ -37,7 +38,6 @@ def test_datasource_viewset_create(api_client, monkeypatch, project, zmlp_projec
 def test_datasource_viewset_create_null_credentials(api_client, monkeypatch, project,
                                                     zmlp_project_user):
     api_client.force_login(zmlp_project_user)
-
     data = {'name': 'cats',
             'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats',
             'file_types': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
@@ -60,6 +60,25 @@ def test_datasource_viewset_create_null_credentials(api_client, monkeypatch, pro
     response_data['fileTypes'] = response_data['file_types']
     del response_data['file_types']
     response_data['credentials'] = []
+
+
+def test_datasource_viewset_create_duplicate(api_client, monkeypatch, project, zmlp_project_user):
+    api_client.force_login(zmlp_project_user)
+    data = {'name': 'cats',
+            'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats',
+            'file_types': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
+            'modules': [],
+            'credentials': [],
+            'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
+
+    def mock_create_datasource(*args, **kwargs):
+        raise ZmlpDuplicateException(data={})
+
+    monkeypatch.setattr(DataSourceApp, 'create_datasource', mock_create_datasource)
+    response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
+                               data)
+    assert response.status_code == 409
+    assert response.json() == {'name': ['A Data Source with that name already exists.']}
 
 
 def test_datasource_viewset_create_bad_request(api_client, monkeypatch, project, zmlp_project_user):

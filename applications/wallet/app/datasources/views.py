@@ -2,6 +2,7 @@ from functools import lru_cache
 
 from rest_framework import status
 from rest_framework.response import Response
+from zmlp.client import ZmlpDuplicateException
 
 from datasources.serializers import DataSourceSerializer
 from projects.views import BaseProjectViewSet
@@ -22,10 +23,14 @@ class DataSourceViewSet(BaseProjectViewSet):
         app = request.app
         data = serializer.validated_data
         creds = data.get('credentials') or None
-        datasource = app.datasource.create_datasource(name=data['name'], uri=data['uri'],
-                                                      modules=data['modules'],
-                                                      credentials=creds,
-                                                      file_types=data['fileTypes'])
+        try:
+            datasource = app.datasource.create_datasource(name=data['name'], uri=data['uri'],
+                                                          modules=data['modules'],
+                                                          credentials=creds,
+                                                          file_types=data['fileTypes'])
+        except ZmlpDuplicateException:
+            body = {'name': ['A Data Source with that name already exists.']}
+            return Response(body, status=409)
         app.datasource.import_files(datasource)
         serializer = self.get_serializer(data=datasource._data)
         if not serializer.is_valid():
