@@ -78,7 +78,7 @@ def test_datasource_viewset_create_duplicate(api_client, monkeypatch, project, z
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
     assert response.status_code == 409
-    assert response.json() == {'name': 'name', 'detail': 'A Data Source with that name already exists.'}  # noqa
+    assert response.json() == {'name': ['A Data Source with that name already exists.']}
 
 
 def test_datasource_viewset_create_bad_request(api_client, monkeypatch, project, zmlp_project_user):
