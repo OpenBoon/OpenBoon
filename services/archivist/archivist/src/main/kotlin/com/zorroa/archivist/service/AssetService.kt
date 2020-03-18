@@ -171,7 +171,6 @@ interface AssetService {
      * Create a List that contains Hashes generated from incoming files
      */
     fun generateHashList(files: Array<MultipartFile>): List<String>
-
 }
 
 @Service
@@ -470,7 +469,7 @@ class AssetServiceImpl : AssetService {
 
     override fun generateHashList(files: Array<MultipartFile>): List<String> {
         return files.map { file ->
-            assetToHash( properties.getString("mxnet.resnet.path"),file.bytes)
+            assetToHash(properties.getString("mxnet.resnet.path"), file.bytes)
         }.toList()
     }
 

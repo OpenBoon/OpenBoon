@@ -38,8 +38,10 @@ object StaticUtils {
         mapper.dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z")
     }
 
-    val UUID_REGEXP = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
-            RegexOption.IGNORE_CASE)
+    val UUID_REGEXP = Regex(
+        "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+        RegexOption.IGNORE_CASE
+    )
 }
 
 private const val SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321"
@@ -68,7 +70,7 @@ fun String.isUUID(): Boolean = StaticUtils.UUID_REGEXP.matches(this)
 /**
  * Convert a Byte Array to a MXNet Model Hash using generated attributes
  */
-fun assetToHash(modelPath: String, bytes: ByteArray): String{
+fun assetToHash(modelPath: String, bytes: ByteArray): String {
 
     // Prepare data
     var nd = Image.imDecode(bytes, 1, false)
@@ -113,8 +115,8 @@ fun hashFeatures(features: DoubleArray): String {
     val hash = StringBuilder()
     val doubleArray =
         IntStream.range(0, features.size)
-                 .mapToDouble { i: Int -> features[i].toDouble() }
-                 .toArray()
+            .mapToDouble { i: Int -> features[i].toDouble() }
+            .toArray()
 
     Arrays.stream(doubleArray)
         .map { f: Double -> (f * 16.0) }
