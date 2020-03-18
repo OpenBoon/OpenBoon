@@ -89,7 +89,7 @@ class TaskSerializer(serializers.Serializer):
     dataSourceId = serializers.UUIDField(default="")
     name = serializers.CharField(required=True)
     state = serializers.CharField(required=True)
-    host = serializers.CharField(required=True)
+    host = serializers.CharField(default='')
     timeStarted = serializers.IntegerField(required=True)
     timeCreated = serializers.IntegerField(required=True)
     timeStopped = serializers.IntegerField(required=True)
