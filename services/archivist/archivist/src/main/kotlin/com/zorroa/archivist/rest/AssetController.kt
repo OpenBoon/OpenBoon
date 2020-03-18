@@ -22,6 +22,14 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import org.apache.http.util.EntityUtils
+import org.apache.mxnet.Context
+import org.apache.mxnet.DataBatch
+import org.apache.mxnet.Model
+import org.apache.mxnet.javaapi.DType
+import org.apache.mxnet.javaapi.DataDesc
+import org.apache.mxnet.javaapi.Image
+import org.apache.mxnet.javaapi.Shape
+import org.apache.mxnet.module.Module
 import org.elasticsearch.common.Strings
 import org.elasticsearch.common.xcontent.ToXContent
 import org.elasticsearch.common.xcontent.XContentFactory
@@ -44,6 +52,9 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.multipart.MultipartFile
+import scala.Option
+import java.util.Arrays
+import java.util.stream.IntStream
 import javax.servlet.ServletOutputStream
 
 @RestController
@@ -58,6 +69,14 @@ class AssetController @Autowired constructor(
     val projectStorageService: ProjectStorageService,
     val jobLaunchService: JobLaunchService
 ) {
+
+    @PostMapping("/api/v3/assets/_batch_hash")
+    @PreAuthorize("hasAuthority('AssetsRead')")
+    fun batchHash(
+        @RequestPart(value = "files") files: Array<MultipartFile>
+    ): ResponseEntity<Any> {
+        return ResponseEntity.ok().body(assetService.generateHashList(files))
+    }
 
     @PreAuthorize("hasAuthority('AssetsRead')")
     @RequestMapping("/api/v3/assets/_search", method = [RequestMethod.GET, RequestMethod.POST])
