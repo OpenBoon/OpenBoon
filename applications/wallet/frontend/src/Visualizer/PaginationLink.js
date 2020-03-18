@@ -8,10 +8,7 @@ import { spacing, constants, colors } from '../Styles'
 import ChevronSvg from '../Icons/chevron.svg'
 
 const VisualizerPaginationLink = ({ currentPage, totalPages, direction }) => {
-  const {
-    pathname,
-    query: { projectId },
-  } = useRouter()
+  const { pathname, query } = useRouter()
 
   const isPrev = direction === 'prev'
 
@@ -49,7 +46,10 @@ const VisualizerPaginationLink = ({ currentPage, totalPages, direction }) => {
   const queryParamPage = isPrev ? currentPage - 1 : currentPage + 1
   const queryParam = queryParamPage === 1 ? '' : `?page=${queryParamPage}`
   const href = `${pathname}${queryParam}`
-  const as = href.replace('[projectId]', projectId)
+  const as = href
+    .split('/')
+    .map(s => s.replace(/\[(.*)\]/gi, (_, group) => query[group]))
+    .join('/')
 
   return (
     <Link href={href} as={as} passHref>
