@@ -32,5 +32,3 @@ class MembershipAdmin(ModelAdmin):
             permissions = ["AssetsImport", "ProjectManage", "AssetsRead", "AssetsDelete"]
             obj.apikey = create_zmlp_api_key(client, str(obj), permissions)
         obj.save()
-
-

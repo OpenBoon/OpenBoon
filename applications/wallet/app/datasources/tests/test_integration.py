@@ -62,8 +62,7 @@ def test_datasource_viewset_create_null_credentials(api_client, monkeypatch, pro
     response_data['credentials'] = []
 
 
-def test_datasource_viewset_create_duplicate(api_client, monkeypatch, project,
-                                                    zmlp_project_user):
+def test_datasource_viewset_create_duplicate(api_client, monkeypatch, project, zmlp_project_user):
     api_client.force_login(zmlp_project_user)
     data = {'name': 'cats',
             'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats',
