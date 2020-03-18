@@ -14,7 +14,7 @@ const JobErrorStackTrace = ({ jobError: { message, stackTrace } }) => {
       }}>
       <div
         css={{
-          backgroundColor: colors.structure.black,
+          backgroundColor: colors.structure.coal,
           padding: spacing.normal,
         }}>
         <div>&quot;message&quot;: {message}</div>

@@ -48,7 +48,7 @@ const STEPS = [
   },
   {
     step: 3,
-    title: 'Inspect your new dataset',
+    title: 'Inspect Your New Dataset',
     module: (
       <>
         <VisualizerSvg width={ICON_WIDTH} aria-hidden />
