@@ -17,6 +17,8 @@ RUN groupadd -r archivist && useradd -m --no-log-init -r -g archivist archivist
 COPY ./docker /service
 COPY --from=build /build/archivist/target/archivist.jar /service/service.jar
 
+COPY ./models /service/models
+
 USER archivist
 EXPOSE 8080
 WORKDIR /service
