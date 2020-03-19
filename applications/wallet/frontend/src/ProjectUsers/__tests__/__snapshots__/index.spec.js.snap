@@ -216,6 +216,8 @@ Array [
 
 .emotion-0 {
   color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
   font-weight: 400;
 }
 
@@ -630,6 +632,8 @@ Array [
 
 .emotion-0 {
   color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
   font-weight: 400;
 }
 
@@ -1125,6 +1129,8 @@ Array [
 
 .emotion-0 {
   color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
   font-weight: 400;
 }
 
