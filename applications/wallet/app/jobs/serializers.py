@@ -6,6 +6,8 @@ class AssetCountsSerializer(serializers.Serializer):
     assetReplacedCount = serializers.IntegerField(required=True)
     assetWarningCount = serializers.IntegerField(required=True)
     assetErrorCount = serializers.IntegerField(required=True)
+    # The views ensure assetTotalCount is set if it's missing
+    assetTotalCount = serializers.IntegerField()
 
 
 class TaskCountsSerializer(serializers.Serializer):
@@ -87,7 +89,7 @@ class TaskSerializer(serializers.Serializer):
     dataSourceId = serializers.UUIDField(default="")
     name = serializers.CharField(required=True)
     state = serializers.CharField(required=True)
-    host = serializers.CharField(required=True)
+    host = serializers.CharField(default='')
     timeStarted = serializers.IntegerField(required=True)
     timeCreated = serializers.IntegerField(required=True)
     timeStopped = serializers.IntegerField(required=True)

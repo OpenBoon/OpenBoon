@@ -245,7 +245,7 @@ class BaseProjectViewSet(ViewSet):
         serializer = self.get_serializer(data=content)
         if not serializer.is_valid():
             return Response({'detail': serializer.errors}, status=500)
-        return Response(serializer.validated_data)
+        return Response(serializer.data)
 
     def _zmlp_destroy(self, request, pk):
         """The result of this method can be returned for the destroy method of a concrete

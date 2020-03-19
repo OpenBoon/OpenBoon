@@ -63,7 +63,7 @@ const DataSourcesAddForm = () => {
           type="text"
           value={state.uri}
           onChange={({ target: { value } }) => dispatch({ uri: value })}
-          hasError={state.errors.name !== undefined}
+          hasError={state.errors.uri !== undefined}
           errorMessage={state.errors.uri}
         />
       </div>
@@ -75,7 +75,7 @@ const DataSourcesAddForm = () => {
           label="If this bucket is private, please paste the JSON service account credential:"
           value={state.credential}
           onChange={({ target: { value } }) => dispatch({ credential: value })}
-          hasError={state.errors.name !== undefined}
+          hasError={state.errors.credential !== undefined}
           errorMessage={state.errors.credential}
         />
       </div>

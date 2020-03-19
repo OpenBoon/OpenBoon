@@ -1,11 +1,105 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Table /> should render properly without data 1`] = `
-.emotion-4 {
+.emotion-10 {
   height: 100%;
 }
 
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
+.emotion-0 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-4[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
+  background-color: #73b61c;
+}
+
+.emotion-4:hover {
+  background-color: #96c955;
+}
+
+.emotion-4[aria-disabled=true] {
+  background-color: #808080;
+}
+
 .emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  padding-left: 4px;
+}
+
+.emotion-9 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -13,38 +107,38 @@ exports[`<Table /> should render properly without data 1`] = `
   white-space: nowrap;
 }
 
-.emotion-3 tr {
+.emotion-9 tr {
   background-color: #252525;
 }
 
-.emotion-3 tr:nth-of-type(2n) {
+.emotion-9 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-3 tr:hover {
+.emotion-9 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-3 tr:hover .gear {
+.emotion-9 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-3 tr:hover td {
+.emotion-9 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-3 tr:hover td:first-of-type {
+.emotion-9 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-3 tr:hover td:last-of-type {
+.emotion-9 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-3 td {
+.emotion-9 td {
   max-width: calc(100vw / 0);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -56,16 +150,16 @@ exports[`<Table /> should render properly without data 1`] = `
   border-right: 0;
 }
 
-.emotion-3 td:first-of-type {
+.emotion-9 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-3 td:last-of-type {
+.emotion-9 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-0 {
+.emotion-6 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -76,20 +170,20 @@ exports[`<Table /> should render properly without data 1`] = `
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-0:nth-of-type(2) {
+.emotion-6:nth-of-type(2) {
   width: 100%;
 }
 
-.emotion-0:not(:last-child) {
+.emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-2 {
+.emotion-8 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-1 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -112,15 +206,49 @@ exports[`<Table /> should render properly without data 1`] = `
 }
 
 <div
-  className="emotion-4"
+  className="emotion-10"
 >
+  <div
+    className="emotion-5"
+  >
+    <h3
+      className="emotion-0"
+    >
+      Number of 
+      Stuff
+      : 
+      0
+    </h3>
+    <button
+      className="emotion-4"
+      onClick={[Function]}
+      type="button"
+    >
+      <div
+        className="emotion-3"
+      >
+        <svg
+          className="emotion-1"
+          color="#ffffff"
+          data-file-name="refresh.svg"
+          width={20}
+        />
+        <div
+          className="emotion-2"
+        >
+          Refresh 
+          Stuff
+        </div>
+      </div>
+    </button>
+  </div>
   <table
-    className="emotion-3"
+    className="emotion-9"
   >
     <thead>
       <tr>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           ColumnOne, ColumnTwo
         </th>
@@ -128,13 +256,13 @@ exports[`<Table /> should render properly without data 1`] = `
     </thead>
     <tbody>
       <tr
-        className="emotion-2"
+        className="emotion-8"
       >
         <td
           colSpan={1}
         >
           <div
-            className="emotion-1"
+            className="emotion-7"
           >
             Empty
           </div>

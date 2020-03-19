@@ -1,11 +1,105 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<JobErrors /> should render properly with job errors 1`] = `
-.emotion-39 {
+.emotion-45 {
   height: auto;
 }
 
-.emotion-38 {
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
+.emotion-0 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-4[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
+  background-color: #73b61c;
+}
+
+.emotion-4:hover {
+  background-color: #96c955;
+}
+
+.emotion-4[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  padding-left: 4px;
+}
+
+.emotion-44 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -13,38 +107,38 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
   white-space: nowrap;
 }
 
-.emotion-38 tr {
+.emotion-44 tr {
   background-color: #252525;
 }
 
-.emotion-38 tr:nth-of-type(2n) {
+.emotion-44 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-38 tr:hover {
+.emotion-44 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-38 tr:hover .gear {
+.emotion-44 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-38 tr:hover td {
+.emotion-44 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-38 tr:hover td:first-of-type {
+.emotion-44 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-38 tr:hover td:last-of-type {
+.emotion-44 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-38 td {
+.emotion-44 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -56,16 +150,16 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
   border-right: 0;
 }
 
-.emotion-38 td:first-of-type {
+.emotion-44 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-38 td:last-of-type {
+.emotion-44 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-0 {
+.emotion-6 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -76,26 +170,26 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-0:nth-of-type(0) {
+.emotion-6:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-0:not(:last-child) {
+.emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-6 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-12 {
+.emotion-18 {
   cursor: pointer;
 }
 
-.emotion-8 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -110,21 +204,21 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
   padding-right: 8px;
 }
 
-.emotion-8 span {
+.emotion-14 span {
   padding-left: 12px;
   font-weight: 500;
 }
 
-.emotion-9:hover {
+.emotion-15:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11 {
+.emotion-17 {
   position: relative;
 }
 
-.emotion-10 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -161,63 +255,97 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
   border-radius: 32px;
 }
 
-.emotion-10:hover {
+.emotion-16:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-10:hover {
+.emotion-16:hover {
   color: #ffffff !important;
   background-color: #808080;
 }
 
 <div
-  className="emotion-39"
+  className="emotion-45"
 >
+  <div
+    className="emotion-5"
+  >
+    <h3
+      className="emotion-0"
+    >
+      Number of 
+      Errors
+      : 
+      6
+    </h3>
+    <button
+      className="emotion-4"
+      onClick={[Function]}
+      type="button"
+    >
+      <div
+        className="emotion-3"
+      >
+        <svg
+          className="emotion-1"
+          color="#ffffff"
+          data-file-name="refresh.svg"
+          width={20}
+        />
+        <div
+          className="emotion-2"
+        >
+          Refresh 
+          Errors
+        </div>
+      </div>
+    </button>
+  </div>
   <table
-    className="emotion-38"
+    className="emotion-44"
   >
     <thead>
       <tr>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Error Type
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Phase
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Message
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           File Name
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Processor
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Time
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           <div
-            className="emotion-6"
+            className="emotion-12"
           >
             <svg
               data-file-name="gear.svg"
@@ -229,12 +357,12 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
     </thead>
     <tbody>
       <tr
-        className="emotion-12"
+        className="emotion-18"
         onClick={[Function]}
       >
         <td>
           <div
-            className="emotion-8"
+            className="emotion-14"
           >
             <svg
               color="#d6680b"
@@ -257,7 +385,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
           }
         >
           <a
-            className="emotion-9"
+            className="emotion-15"
             href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86bc-74b9-1519-b065-d2f0132bc0c8"
             onClick={[Function]}
             onMouseEnter={[Function]}
@@ -276,7 +404,9 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
-        <td>
+        <td
+          title="HSVSimilarityProcessor"
+        >
           HSVSimilarityProcessor
         </td>
         <td>
@@ -284,11 +414,11 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-11"
+            className="emotion-17"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="gear emotion-10"
+              className="gear emotion-16"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -302,12 +432,12 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
       </tr>
       <tr
-        className="emotion-12"
+        className="emotion-18"
         onClick={[Function]}
       >
         <td>
           <div
-            className="emotion-8"
+            className="emotion-14"
           >
             <svg
               color="#c92300"
@@ -330,7 +460,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
           }
         >
           <a
-            className="emotion-9"
+            className="emotion-15"
             href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86bb-74b9-1519-b065-d2f0132bc0c8"
             onClick={[Function]}
             onMouseEnter={[Function]}
@@ -349,7 +479,9 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
-        <td>
+        <td
+          title="DuplicateDetectionProcessor"
+        >
           DuplicateDetectionProcessor
         </td>
         <td>
@@ -357,11 +489,11 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-11"
+            className="emotion-17"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="gear emotion-10"
+              className="gear emotion-16"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -375,12 +507,12 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
       </tr>
       <tr
-        className="emotion-12"
+        className="emotion-18"
         onClick={[Function]}
       >
         <td>
           <div
-            className="emotion-8"
+            className="emotion-14"
           >
             <svg
               color="#d6680b"
@@ -403,7 +535,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
           }
         >
           <a
-            className="emotion-9"
+            className="emotion-15"
             href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86ba-74b9-1519-b065-d2f0132bc0c8"
             onClick={[Function]}
             onMouseEnter={[Function]}
@@ -422,7 +554,9 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
-        <td>
+        <td
+          title="ResNetSimilarityProcessor"
+        >
           ResNetSimilarityProcessor
         </td>
         <td>
@@ -430,11 +564,11 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-11"
+            className="emotion-17"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="gear emotion-10"
+              className="gear emotion-16"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -448,12 +582,12 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
       </tr>
       <tr
-        className="emotion-12"
+        className="emotion-18"
         onClick={[Function]}
       >
         <td>
           <div
-            className="emotion-8"
+            className="emotion-14"
           >
             <svg
               color="#c92300"
@@ -476,7 +610,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
           }
         >
           <a
-            className="emotion-9"
+            className="emotion-15"
             href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86b9-74b9-1519-b065-d2f0132bc0c8"
             onClick={[Function]}
             onMouseEnter={[Function]}
@@ -495,7 +629,9 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
-        <td>
+        <td
+          title="ResNetClassifyProcessor"
+        >
           ResNetClassifyProcessor
         </td>
         <td>
@@ -503,11 +639,11 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-11"
+            className="emotion-17"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="gear emotion-10"
+              className="gear emotion-16"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -521,12 +657,12 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
       </tr>
       <tr
-        className="emotion-12"
+        className="emotion-18"
         onClick={[Function]}
       >
         <td>
           <div
-            className="emotion-8"
+            className="emotion-14"
           >
             <svg
               color="#d6680b"
@@ -549,7 +685,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
           }
         >
           <a
-            className="emotion-9"
+            className="emotion-15"
             href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86b8-74b9-1519-b065-d2f0132bc0c8"
             onClick={[Function]}
             onMouseEnter={[Function]}
@@ -568,7 +704,9 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
-        <td>
+        <td
+          title="FaceRecognitionProcessor"
+        >
           FaceRecognitionProcessor
         </td>
         <td>
@@ -576,11 +714,11 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-11"
+            className="emotion-17"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="gear emotion-10"
+              className="gear emotion-16"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -594,12 +732,12 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
       </tr>
       <tr
-        className="emotion-12"
+        className="emotion-18"
         onClick={[Function]}
       >
         <td>
           <div
-            className="emotion-8"
+            className="emotion-14"
           >
             <svg
               color="#d6680b"
@@ -622,7 +760,7 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
           }
         >
           <a
-            className="emotion-9"
+            className="emotion-15"
             href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors/916c86b7-74b9-1519-b065-d2f0132bc0c8"
             onClick={[Function]}
             onMouseEnter={[Function]}
@@ -641,7 +779,9 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         >
           gs://zorroa-deploy-testdata/zorroa-cypress-testdata/multipage/
         </td>
-        <td>
+        <td
+          title="ImageImporter"
+        >
           ImageImporter
         </td>
         <td>
@@ -649,11 +789,11 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
         </td>
         <td>
           <div
-            className="emotion-11"
+            className="emotion-17"
           >
             <button
               aria-label="Toggle Actions Menu"
-              className="gear emotion-10"
+              className="gear emotion-16"
               onBlur={[Function]}
               onClick={[Function]}
               type="button"
@@ -678,7 +818,101 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
 `;
 
 exports[`<JobErrors /> should render properly without job errors 1`] = `
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
 .emotion-0 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-4[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
+  background-color: #73b61c;
+}
+
+.emotion-4:hover {
+  background-color: #96c955;
+}
+
+.emotion-4[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  padding-left: 4px;
+}
+
+.emotion-6 {
   text-align: left;
   font-size: 15px;
   line-height: 19px;
@@ -689,26 +923,26 @@ exports[`<JobErrors /> should render properly without job errors 1`] = `
   border-bottom: 1px solid #2e2e2e;
 }
 
-.emotion-0:nth-of-type(0) {
+.emotion-6:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-0:not(:last-child) {
+.emotion-6:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-6 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-12 {
+.emotion-18 {
   height: 100%;
 }
 
-.emotion-11 {
+.emotion-17 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -716,38 +950,38 @@ exports[`<JobErrors /> should render properly without job errors 1`] = `
   white-space: nowrap;
 }
 
-.emotion-11 tr {
+.emotion-17 tr {
   background-color: #252525;
 }
 
-.emotion-11 tr:nth-of-type(2n) {
+.emotion-17 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-11 tr:hover {
+.emotion-17 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-11 tr:hover .gear {
+.emotion-17 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-11 tr:hover td {
+.emotion-17 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-11 tr:hover td:first-of-type {
+.emotion-17 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-11 tr:hover td:last-of-type {
+.emotion-17 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-11 td {
+.emotion-17 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -759,21 +993,21 @@ exports[`<JobErrors /> should render properly without job errors 1`] = `
   border-right: 0;
 }
 
-.emotion-11 td:first-of-type {
+.emotion-17 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-11 td:last-of-type {
+.emotion-17 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-10 {
+.emotion-16 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-9 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -795,7 +1029,7 @@ exports[`<JobErrors /> should render properly without job errors 1`] = `
   line-height: 19px;
 }
 
-.emotion-8 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -812,48 +1046,82 @@ exports[`<JobErrors /> should render properly without job errors 1`] = `
 }
 
 <div
-  className="emotion-12"
+  className="emotion-18"
 >
+  <div
+    className="emotion-5"
+  >
+    <h3
+      className="emotion-0"
+    >
+      Number of 
+      Errors
+      : 
+      0
+    </h3>
+    <button
+      className="emotion-4"
+      onClick={[Function]}
+      type="button"
+    >
+      <div
+        className="emotion-3"
+      >
+        <svg
+          className="emotion-1"
+          color="#ffffff"
+          data-file-name="refresh.svg"
+          width={20}
+        />
+        <div
+          className="emotion-2"
+        >
+          Refresh 
+          Errors
+        </div>
+      </div>
+    </button>
+  </div>
   <table
-    className="emotion-11"
+    className="emotion-17"
   >
     <thead>
       <tr>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Error Type
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Phase
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Message
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           File Name
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Processor
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           Time
         </th>
         <th
-          className="emotion-0"
+          className="emotion-6"
         >
           <div
-            className="emotion-6"
+            className="emotion-12"
           >
             <svg
               data-file-name="gear.svg"
@@ -865,16 +1133,16 @@ exports[`<JobErrors /> should render properly without job errors 1`] = `
     </thead>
     <tbody>
       <tr
-        className="emotion-10"
+        className="emotion-16"
       >
         <td
           colSpan={7}
         >
           <div
-            className="emotion-9"
+            className="emotion-15"
           >
             <div
-              className="emotion-8"
+              className="emotion-14"
             >
               <svg
                 data-file-name="noJobs.svg"

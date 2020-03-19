@@ -9,7 +9,7 @@ exports[`<Icons /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-53 {
+.emotion-59 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -55,7 +55,7 @@ exports[`<Icons /> should render properly 1`] = `
     Icons
   </h2>
   <div
-    className="emotion-53"
+    className="emotion-59"
   >
     <div
       className="emotion-2"
@@ -141,6 +141,22 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./crossSmall.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="crossSmall.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./dash.svg
       </div>
       <div
@@ -164,6 +180,22 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="datasources.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./dotDotDot.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="dotDotDot.svg"
           height="100%"
           width="100%"
         />
@@ -365,22 +397,6 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
-        ./pending.svg
-      </div>
-      <div
-        className="emotion-1"
-      >
-        <svg
-          data-file-name="pending.svg"
-          height="100%"
-          width="100%"
-        />
-      </div>
-    </div>
-    <div
-      className="emotion-2"
-    >
-      <div>
         ./projectDashboard.svg
       </div>
       <div
@@ -404,6 +420,38 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="queue.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./refresh.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="refresh.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./squareSquareSquare.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="squareSquareSquare.svg"
           height="100%"
           width="100%"
         />

@@ -508,7 +508,7 @@ Array [
 }
 
 .emotion-0 {
-  background-color: #000000;
+  background-color: #191919;
   padding: 16px;
 }
 
@@ -1035,7 +1035,7 @@ Array [
 }
 
 .emotion-1 {
-  background-color: #000000;
+  background-color: #191919;
   padding: 16px;
 }
 
@@ -1711,7 +1711,7 @@ Array [
 }
 
 .emotion-1 {
-  background-color: #000000;
+  background-color: #191919;
   padding: 16px;
 }
 
