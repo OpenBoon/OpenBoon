@@ -34,6 +34,14 @@ describe('<DataSourcesAddForm />', () => {
     act(() => {
       component.root
         .findByProps({ id: 'uri' })
+        .props.onChange({ target: { value: '' } })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ id: 'uri' })
         .props.onChange({ target: { value: 'gs://zorroa-dev-data' } })
     })
 
