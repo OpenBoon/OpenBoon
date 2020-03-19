@@ -79,6 +79,7 @@ Response Codes:
                 user = User.objects.create(username=email, email=email,
                                            first_name=first, last_name=last, is_active=False)
                 user.set_password(password)
+                user.save()
 
             # Issue a new registration token.
             token = UserRegistrationToken.objects.create(user=user)
