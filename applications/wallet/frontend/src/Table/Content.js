@@ -44,6 +44,8 @@ const TableContent = ({
         <h3
           css={{
             color: colors.structure.zinc,
+            fontSize: typography.size.regular,
+            lineHeight: typography.height.regular,
             fontWeight: typography.weight.regular,
           }}>
           Number of {legend}: {count}
