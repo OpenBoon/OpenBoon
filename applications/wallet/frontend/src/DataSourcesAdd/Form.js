@@ -21,7 +21,7 @@ import DataSourcesAddModules from './Modules'
 
 const INITIAL_STATE = {
   name: '',
-  uri: '',
+  uri: 'gs://',
   credential: '',
   fileTypes: {},
   modules: {},
@@ -63,8 +63,15 @@ const DataSourcesAddForm = () => {
           type="text"
           value={state.uri}
           onChange={({ target: { value } }) => dispatch({ uri: value })}
-          hasError={state.errors.uri !== undefined}
-          errorMessage={state.errors.uri}
+          hasError={
+            state.errors.uri !== undefined || state.uri.substr(0, 5) !== 'gs://'
+          }
+          errorMessage={
+            state.errors.uri ||
+            (state.uri.substr(0, 5) !== 'gs://'
+              ? 'Bucket address should start with gs://'
+              : '')
+          }
         />
       </div>
 
@@ -127,7 +134,7 @@ const DataSourcesAddForm = () => {
           onClick={() => onSubmit({ dispatch, projectId, state })}
           isDisabled={
             !state.name ||
-            !state.uri ||
+            state.uri.substr(0, 5) !== 'gs://' ||
             !Object.values(state.fileTypes).filter(Boolean).length > 0
           }>
           Create Data Source
