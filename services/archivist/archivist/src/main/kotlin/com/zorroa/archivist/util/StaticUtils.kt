@@ -6,12 +6,16 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.zorroa.archivist.domain.ArchivistException
+import com.zorroa.archivist.domain.InvalidRequestException
 import org.apache.mxnet.Context
 import org.apache.mxnet.DataBatch
+import org.apache.mxnet.MXNetError
 import org.apache.mxnet.Model
 import org.apache.mxnet.javaapi.DType
 import org.apache.mxnet.javaapi.DataDesc
 import org.apache.mxnet.javaapi.Image
+import org.apache.mxnet.javaapi.NDArray
 import org.apache.mxnet.javaapi.Shape
 import org.apache.mxnet.module.Module
 import scala.Option
@@ -36,8 +40,7 @@ object StaticUtils {
         mapper.dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z")
     }
 
-    val UUID_REGEXP = Regex(
-        "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", RegexOption.IGNORE_CASE)
+    val UUID_REGEXP = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", RegexOption.IGNORE_CASE)
 }
 
 private const val SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321"
@@ -69,7 +72,13 @@ fun String.isUUID(): Boolean = StaticUtils.UUID_REGEXP.matches(this)
 fun assetToHash(modelPath: String, bytes: ByteArray): String {
 
     // Prepare data
-    var nd = Image.imDecode(bytes, 1, false)
+    var nd: NDArray? = null
+    try {
+        nd = Image.imDecode(bytes, 1, false)
+    } catch (ex: MXNetError) {
+        throw(ArchivistException("File is not an image", ex))
+    }
+
     nd = Image.imResize(nd, 224, 224)
     nd = org.apache.mxnet.javaapi.NDArray.transpose(nd, Shape(intArrayOf(2, 0, 1)), null)[0] // HWC to CHW
     nd = org.apache.mxnet.javaapi.NDArray.expand_dims(nd, 0, null)[0] // Add N -> NCHW
