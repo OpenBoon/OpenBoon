@@ -750,7 +750,7 @@ Array [
             name="uri"
             onChange={[Function]}
             type="text"
-            value=""
+            value="gs://"
           />
         </div>
         <div
