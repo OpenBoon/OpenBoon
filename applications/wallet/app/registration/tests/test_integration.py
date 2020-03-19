@@ -58,10 +58,11 @@ def test_register_and_confirm(api_client, mailoutbox):
     api_client.logout()
 
     # Register a user
+    password = uuid.uuid4()
     response = api_client.post(reverse('api-user-register'), {'email': 'fake@fakerson.com',
                                                               'firstName': 'Fakey',
                                                               'lastName': 'Fakerson',
-                                                              'password': uuid.uuid4()})
+                                                              'password': password})
     assert response.status_code == 200
     user = User.objects.get(username='fake@fakerson.com')
     assert not user.is_active
@@ -75,7 +76,9 @@ def test_register_and_confirm(api_client, mailoutbox):
     # Activate the user's account.
     response = api_client.post(reverse('api-user-confirm'), {'token': token, 'userId': user_id})
     assert response.status_code == 200
-    assert User.objects.get(id=user.id).is_active
+    user = User.objects.get(id=user.id)
+    assert user.is_active
+    assert user.check_password(password)
     assert not UserRegistrationToken.objects.filter(token=token, user=user_id).exists()
 
 
