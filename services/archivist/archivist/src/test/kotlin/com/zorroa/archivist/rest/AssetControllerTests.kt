@@ -382,7 +382,7 @@ class AssetControllerTests : MockMvcTest() {
                 .headers(admin())
         )
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.length()",  CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.length()", CoreMatchers.equalTo(1)))
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
     }
