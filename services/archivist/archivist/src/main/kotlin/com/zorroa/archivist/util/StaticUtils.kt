@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.zorroa.archivist.domain.ArchivistException
-import com.zorroa.archivist.domain.InvalidRequestException
 import org.apache.mxnet.Context
 import org.apache.mxnet.DataBatch
 import org.apache.mxnet.MXNetError
