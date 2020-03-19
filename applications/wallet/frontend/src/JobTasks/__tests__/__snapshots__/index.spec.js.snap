@@ -23,6 +23,8 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
 
 .emotion-0 {
   color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
   font-weight: 400;
 }
 
@@ -525,6 +527,8 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
 
 .emotion-0 {
   color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
   font-weight: 400;
 }
 

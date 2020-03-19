@@ -23,6 +23,8 @@ exports[`<JobErrors /> should render properly with job errors 1`] = `
 
 .emotion-0 {
   color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
   font-weight: 400;
 }
 
@@ -834,6 +836,8 @@ exports[`<JobErrors /> should render properly without job errors 1`] = `
 
 .emotion-0 {
   color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
   font-weight: 400;
 }
 
