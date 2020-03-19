@@ -4,11 +4,14 @@ import uuid
 from django.conf import settings
 from django.db import models
 from django_cryptography.fields import encrypt
+from multiselectfield import MultiSelectField
 from zmlp.client import ZmlpDuplicateException
 
 from wallet.utils import get_zmlp_superuser_client
 
 logger = logging.getLogger(__name__)
+
+ROLES = [(role['name'], role['name'].replace('_', ' ')) for role in settings.ROLES]
 
 
 class Project(models.Model):
@@ -48,6 +51,7 @@ class Membership(models.Model):
                              on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     apikey = encrypt(models.TextField(blank=True))
+    roles = MultiSelectField(choices=ROLES, blank=True)
 
     class Meta:
         unique_together = (

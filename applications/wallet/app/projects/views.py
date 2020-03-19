@@ -351,13 +351,13 @@ class ProjectUserViewSet(BaseProjectViewSet):
     * **GET** _api/v1/projects/$Project_Id/users/_ - List the Users who are members of $Project_Id
     * **GET** _api/v1/projects/$Project_Id/users/$User_Id/_ - Detail info on $User_Id
     * **POST** _api/v1/projects/$Project_Id/users/_ - Create membership/s to $Project_Id
-        - To create one: `{"email": "user@email.com", "permissions": ["AssetsRead"]}`
+        - To create one: `{"email": "user@email.com", "roles": ["ML_Tools"]}`
         - To create multiple: `{"batch": [
-                                    {"email": "user@email.com", "permissions": ["AssetsRead"]},
-                                    {"email": "user2@email.com", "permissions": ["AssetsRead"]}
+                                    {"email": "user@email.com", "roles": ["API_Key"]},
+                                    {"email": "user2@email.com", "roles": ["User_Admin"]}
                                 ]}`
-    * **PUT** _api/v1/projects/$Project_Id/users/$User_Id/_ - Replace a Users permissions
-        - To modify: `{"permissions": ["$NewPermissionList"]}`
+    * **PUT** _api/v1/projects/$Project_Id/users/$User_Id/_ - Replace a Users Roles
+        - To modify: `{"roles": ["$NewRoleList"]}`
     * **DELETE** _api/v1/projects/$Project_Id/users/$User_Id/_ - Remove $User_Id from $Project_Id
 
     """
@@ -406,7 +406,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
             for entry in batch:
                 response = self._create_project_user(request, project_pk, entry)
                 content = {'email': entry.get('email'),
-                           'permissions': entry.get('permissions'),
+                           'roles': entry.get('roles'),
                            'status_code': response.status_code,
                            'body': response.data}
                 if response.status_code == status.HTTP_201_CREATED:
@@ -420,9 +420,9 @@ class ProjectUserViewSet(BaseProjectViewSet):
     def update(self, request, project_pk, pk):
         # Modify the permissions of the given user
         try:
-            new_permissions = request.data['permissions']
+            new_roles = request.data['roles']
         except KeyError:
-            return Response(data={'detail': 'Permissions must be supplied.'},
+            return Response(data={'detail': 'Roles must be supplied.'},
                             status=status.HTTP_400_BAD_REQUEST)
         membership = self.get_object(pk, project_pk)
         email = membership.user.username
@@ -435,6 +435,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
         # TODO: Replace Delete/Create logic when Auth Server supports PUT
         # Create new Key first and append epoch time (milli) to get a readable unique name
+        new_permissions = self._get_permissions_for_roles(new_roles)
         body = {'name': self._get_api_key_name(email, project_pk),
                 'permissions': new_permissions}
         try:
@@ -454,6 +455,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         membership.apikey = encode_apikey(new_apikey).decode('utf-8')
+        membership.roles = new_roles
         membership.save()
         serializer = self.get_serializer(membership.user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
@@ -499,10 +501,13 @@ class ProjectUserViewSet(BaseProjectViewSet):
         # Get the User and add the appropriate Membership & ApiKey
         try:
             email = data['email']
-            permissions = data['permissions']
+            requested_roles = data['roles']
         except KeyError:
-            return Response(data={'detail': 'Email and Permissions are required.'},
+            return Response(data={'detail': 'Email and Roles are required.'},
                             status=status.HTTP_400_BAD_REQUEST)
+
+        # Determine appropriate permissions for the roles entered
+        permissions = self._get_permissions_for_roles(requested_roles)
 
         # Get the current project and User
         project = self.get_project_object(project_pk)
@@ -521,11 +526,30 @@ class ProjectUserViewSet(BaseProjectViewSet):
                             status=status.HTTP_400_BAD_REQUEST)
 
         # Create a membership for given user
-        Membership.objects.create(user=user, project=project, apikey=encoded_apikey)
+        Membership.objects.create(user=user, project=project, apikey=encoded_apikey,
+                                  roles=requested_roles)
 
         # Serialize the Resulting user like the Detail endpoint
         serializer = self.get_serializer(user, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+
+    def _get_permissions_for_roles(self, requested_roles):
+        """Helper method to convert roles to permissions.
+
+        Pulls the appropriate roles from the Settings file and gathers all permissions
+        needed to satisfy the desired roles.
+
+        Args:
+            requested_roles: The roles to look up permissions for.
+
+        Returns:
+            list: The permissions needed for the given roles.
+        """
+        permissions = []
+        for role in settings.ROLES:
+            if role['name'] in requested_roles:
+                permissions.extend(role['permissions'])
+        return list(set(permissions))
 
     def _get_api_key_name(self, email, project_pk):
         """Generate a unique name to user for the api key."""
