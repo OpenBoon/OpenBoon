@@ -1,7 +1,6 @@
 import pytest
 from django.urls import reverse
 from django.test import override_settings
-from rest_framework import status
 
 from zmlp import ZmlpClient
 
@@ -37,9 +36,3 @@ class TestPermission:
         assert response.status_code == 200
         content = response.json()
         assert len(content['results']) == 4
-
-    def test_get_user_permissions(self, zmlp_project_user, project, api_client):
-        api_client.force_authenticate(zmlp_project_user)
-        api_client.force_login(zmlp_project_user)
-        response = api_client.get(reverse('permission-user', kwargs={'project_pk': project.id}))
-        assert response.status_code == status.HTTP_200_OK

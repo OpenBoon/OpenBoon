@@ -34,6 +34,7 @@ from assets.views import (AssetViewSet, FileCategoryViewSet,
 from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet, JobTaskViewSet
 from projects.views import ProjectViewSet, ProjectUserViewSet
 from permissions.views import PermissionViewSet
+from roles.views import RolesViewSet
 from subscriptions.views import SubscriptionViewSet
 
 
@@ -50,6 +51,7 @@ projects_router.register('taskerrors', TaskErrorViewSet, basename='taskerror')
 projects_router.register('users', ProjectUserViewSet, basename='projectuser')
 projects_router.register('assets', AssetViewSet, basename='asset')
 projects_router.register('apikeys', ApikeyViewSet, basename='apikey')
+projects_router.register('roles', RolesViewSet, basename='role')
 projects_router.register('permissions', PermissionViewSet, basename='permission')
 projects_router.register('datasources', DataSourceViewSet, basename='datasource')
 projects_router.register('subscriptions', SubscriptionViewSet, basename='subscription')

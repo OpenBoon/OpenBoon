@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Project
-        fields = ('id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users',
+        fields = ('id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                   'permissions', 'tasks', 'taskerrors', 'datasources', 'subscriptions')
 
     jobs = HyperlinkedIdentityField(
@@ -40,6 +40,10 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         view_name='projectuser-list',
         lookup_url_kwarg='project_pk'
     )
+    roles = HyperlinkedIdentityField(
+        view_name='role-list',
+        lookup_url_kwarg='project_pk'
+    )
     permissions = HyperlinkedIdentityField(
         view_name='permission-list',
         lookup_url_kwarg='project_pk',
@@ -57,11 +61,13 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.SerializerMethodField()
     permissions = serializers.SerializerMethodField()
+    roles = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()
         fields = ('id', 'url', 'username', 'first_name', 'last_name', 'email', 'is_active',
-                  'is_staff', 'is_superuser', 'last_login', 'date_joined', 'permissions')
+                  'is_staff', 'is_superuser', 'last_login', 'date_joined', 'roles',
+                  'permissions')
 
     def get_url(self, obj):
         request = self.context['request']
@@ -75,6 +81,10 @@ class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
     def get_permissions(self, obj):
         membership = self._get_membership_obj(obj)
         return self._get_decoded_permissions(membership.apikey)
+
+    def get_roles(self, obj):
+        membership = self._get_membership_obj(obj)
+        return membership.roles
 
     def _get_membership_obj(self, obj):
         project_pk = self.context['view'].kwargs['project_pk']

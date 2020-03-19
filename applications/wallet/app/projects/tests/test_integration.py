@@ -8,6 +8,7 @@ import pytest
 from django.http import JsonResponse, HttpResponseForbidden, Http404
 from django.test import RequestFactory, override_settings
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 from rest_framework import status
 from rest_framework.response import Response
 from zmlp import ZmlpClient
@@ -16,7 +17,7 @@ from zmlp.client import ZmlpDuplicateException, ZmlpInvalidRequestException
 from apikeys.utils import decode_apikey, encode_apikey
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
-from projects.views import BaseProjectViewSet
+from projects.views import BaseProjectViewSet, ProjectUserViewSet
 
 pytestmark = pytest.mark.django_db
 
@@ -72,7 +73,7 @@ def test_projects_view_with_projects(project, zmlp_project_user, api_client):
 def test_project_serializer_detail(project):
     serializer = ProjectSerializer(project, context={'request': None})
     data = serializer.data
-    expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users',
+    expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                        'permissions', 'tasks', 'datasources', 'taskerrors', 'subscriptions']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
@@ -80,6 +81,7 @@ def test_project_serializer_detail(project):
     assert data['url'] == f'/api/v1/projects/{project.id}/'
     assert data['jobs'] == f'/api/v1/projects/{project.id}/jobs/'
     assert data['users'] == f'/api/v1/projects/{project.id}/users/'
+    assert data['roles'] == f'/api/v1/projects/{project.id}/roles/'
     assert data['assets'] == f'/api/v1/projects/{project.id}/assets/'
     assert data['apikeys'] == f'/api/v1/projects/{project.id}/apikeys/'
     assert data['permissions'] == f'/api/v1/projects/{project.id}/permissions/'
@@ -283,6 +285,7 @@ class TestProjectUserGet:
         assert response.status_code == status.HTTP_200_OK
         content = response.json()
         assert content['results'][0]['id'] == zmlp_project_membership.user.id
+        assert content['results'][0]['roles'] == ['ML_Tools', 'User_Admin']
 
     @override_settings(PLATFORM='zmlp')
     def test_paginated_list(self, project, zmlp_project_user, zmlp_project_membership,
@@ -322,6 +325,7 @@ class TestProjectUserGet:
         assert content['username'] == zmlp_project_user.username
         assert content['permissions'] == ['SuperAdmin', 'ProjectAdmin',
                                           'AssetsRead', 'AssetsImport']
+        assert content['roles'] == ['ML_Tools', 'User_Admin']
 
     @override_settings(PLATFORM='zmlp')
     def test_with_bad_apikey(self, project, zmlp_project_user, zmlp_project_membership,
@@ -470,7 +474,7 @@ class TestProjectUserPost:
         monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        body = {'email': 'tester@fake.com', 'permissions': ['AssetsRead']}
+        body = {'email': 'tester@fake.com', 'roles': ['ML_Tools']}
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_201_CREATED
         membership = Membership.objects.get(user=new_user, project=project)
@@ -494,9 +498,9 @@ class TestProjectUserPost:
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         body = {'batch': [
-            {'email': 'tester1@fake.com', 'permissions': ['AssetsRead']},
-            {'email': 'tester2@fake.com', 'permissions': ['AssetsRead']},
-            {'email': 'tester3@fake.com', 'permissions': ['AssetsRead']}
+            {'email': 'tester1@fake.com', 'roles': ['ML_Tools']},
+            {'email': 'tester2@fake.com', 'roles': ['ML_Tools']},
+            {'email': 'tester3@fake.com', 'roles': ['ML_Tools']}
         ]}
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_207_MULTI_STATUS
@@ -510,7 +514,7 @@ class TestProjectUserPost:
         assert len(content['failed']) == 1
         assert content['failed'][0]['statusCode'] == status.HTTP_404_NOT_FOUND
         assert content['failed'][0]['email'] == 'tester3@fake.com'
-        assert content['failed'][0]['permissions'] == ['AssetsRead']
+        assert content['failed'][0]['roles'] == ['ML_Tools']
         assert content['failed'][0]['body']['detail'] == 'No user with the given email.'
 
     @override_settings(PLATFORM='zmlp')
@@ -525,7 +529,7 @@ class TestProjectUserPost:
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
         body = {'email': 'tester@fake.com',
-                'permissions': ['AssetsRead'],
+                'roles': ['ML_Tools'],
                 'batch': [{'email': 'fake'}]}
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -536,11 +540,11 @@ class TestProjectUserPost:
     def test_missing_email(self, project, zmlp_project_user, zmlp_project_membership, api_client):
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        body = {'permissions': ['AssetsRead']}
+        body = {'roles': ['ML_Tools']}
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Email and Permissions are required.'
+        assert content['detail'] == 'Email and Roles are required.'
 
     @override_settings(PLATFORM='zmlp')
     def test_missing_permissions(self, project, zmlp_project_user, zmlp_project_membership,
@@ -551,14 +555,14 @@ class TestProjectUserPost:
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Email and Permissions are required.'
+        assert content['detail'] == 'Email and Roles are required.'
 
     @override_settings(PLATFORM='zmlp')
     def test_nonexistent_user(self, project, zmlp_project_user, zmlp_project_membership,
                               api_client):
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        body = {'email': 'tester@fake.com', 'permissions': ['AssetsRead']}
+        body = {'email': 'tester@fake.com', 'roles': ['ML_Tools']}
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}),
                                    body)  # noqa
         assert response.status_code == status.HTTP_404_NOT_FOUND
@@ -576,11 +580,20 @@ class TestProjectUserPost:
         monkeypatch.setattr(ZmlpClient, 'post', mock_api_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        body = {'email': 'tester@fake.com', 'permissions': ['AssetsRead']}
+        body = {'email': 'tester@fake.com', 'roles': ['ML_Tools']}
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
         assert content['detail'] == 'Unable to create apikey.'
+
+    def test_get_permissions_for_roles(self):
+        view = ProjectUserViewSet()
+        roles = ['ML_Tools', 'User_Admin']
+        permissions = view._get_permissions_for_roles(roles)
+        expected = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'ProjectManage']
+        assert set(permissions) == set(expected)
+        permissions = view._get_permissions_for_roles(['User_Admin'])
+        assert permissions == ['ProjectManage']
 
 
 class TestProjectUserPut:
@@ -605,7 +618,7 @@ class TestProjectUserPut:
         Membership.objects.create(user=new_user, project=project, apikey=apikey)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        body = {'email': new_user.email, 'permissions': ['AssetsRead']}
+        body = {'email': new_user.email, 'roles': ['User_Admin']}
         response = api_client.put(reverse('projectuser-detail',
                                           kwargs={'project_pk': project.id,
                                                   'pk': new_user.id}), body)
@@ -613,6 +626,7 @@ class TestProjectUserPut:
         membership = Membership.objects.get(user=new_user, project=project)
         decoded_apikey = decode_apikey(membership.apikey)
         assert decoded_apikey['permissions'] == ['AssetsRead']
+        assert membership.roles == ['User_Admin']
 
     @override_settings(PLATFORM='zmlp')
     def test_no_permissions(self, project, zmlp_project_user, data, zmlp_project_membership,
@@ -625,7 +639,7 @@ class TestProjectUserPut:
                                                   'pk': 1}), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Permissions must be supplied.'
+        assert content['detail'] == 'Roles must be supplied.'
 
     @override_settings(PLATFORM='zmlp')
     def test_no_new_key(self, project, zmlp_project_user, monkeypatch, data,
@@ -647,7 +661,7 @@ class TestProjectUserPut:
         Membership.objects.create(user=new_user, project=project, apikey=apikey)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        body = {'email': new_user.email, 'permissions': ['AssetsRead']}
+        body = {'email': new_user.email, 'roles': ['User_Admin']}
         response = api_client.put(reverse('projectuser-detail',
                                           kwargs={'project_pk': project.id,
                                                   'pk': new_user.id}), body)
@@ -675,7 +689,7 @@ class TestProjectUserPut:
         Membership.objects.create(user=new_user, project=project, apikey=apikey)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        body = {'email': new_user.email, 'permissions': ['AssetsRead']}
+        body = {'email': new_user.email, 'roles': ['User_Admin']}
         response = api_client.put(reverse('projectuser-detail',
                                           kwargs={'project_pk': project.id,
                                                   'pk': new_user.id}), body)
@@ -703,7 +717,7 @@ class TestProjectUserPut:
         Membership.objects.create(user=new_user, project=project, apikey=apikey)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        body = {'email': new_user.email, 'permissions': ['AssetsRead']}
+        body = {'email': new_user.email, 'roles': ['User_Admin']}
         response = api_client.put(reverse('projectuser-detail',
                                           kwargs={'project_pk': project.id,
                                                   'pk': new_user.id}), body)
@@ -721,10 +735,44 @@ class TestProjectUserPut:
         Membership.objects.create(user=new_user, project=project, apikey=apikey)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        body = {'email': new_user.email, 'permissions': ['AssetsRead']}
+        body = {'email': new_user.email, 'roles': ['User_Admin']}
         response = api_client.put(reverse('projectuser-detail',
                                           kwargs={'project_pk': project.id,
                                                   'pk': new_user.id}), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
         assert content['detail'] == 'Unable to modify the admin key.'
+
+
+class TestMembershipModel:
+
+    @pytest.fixture
+    def clean_membership(self, zmlp_project_user, project):
+        original = Membership.objects.get(user=zmlp_project_user, project=project)
+        original.delete()
+
+    def test_save_membership_no_roles(self, zmlp_project_user, project, clean_membership):
+        membership = Membership(user=zmlp_project_user, project=project)
+        membership.full_clean()
+        membership.save()
+        from_db = Membership.objects.get(id=membership.id)
+        assert from_db.user == zmlp_project_user
+        assert str(from_db.project.id) == str(project.id)
+        assert from_db.roles == []
+
+    def test_save_with_roles(self, zmlp_project_user, project, clean_membership):
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['ML_Tools', 'User_Admin'])
+        membership.full_clean()
+        membership.save()
+        from_db = Membership.objects.get(id=membership.id)
+        assert from_db.user == zmlp_project_user
+        assert str(from_db.project.id) == str(project.id)
+        assert from_db.roles == ['ML_Tools', 'User_Admin']
+
+    def test_save_with_bad_role(self, zmlp_project_user, project, clean_membership):
+        membership = Membership(user=zmlp_project_user, project=project,
+                                roles=['Oh Hi'])
+        with pytest.raises(ValidationError) as excinfo:
+            membership.full_clean()
+        assert 'is not a valid choice.' in str(excinfo)
