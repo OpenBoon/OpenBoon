@@ -204,7 +204,7 @@ class JobViewSet(BaseProjectViewSet):
         The endpoint expects a `PUT` request with an empty body.
 
         """
-        response = request.client.put(f'{self.zmlp_root_api_path}{pk}/_retryAllFailures', {})
+        response = request.client.put(f'{self.zmlp_root_api_path}{pk}/_retry_all_failures', {})
         return Response(self._get_content(response))
 
     def _get_updated_info(self, client, pk, new_values):
