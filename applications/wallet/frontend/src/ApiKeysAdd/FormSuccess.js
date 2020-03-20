@@ -9,7 +9,7 @@ import Button, { VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import SectionTitle from '../SectionTitle'
 
-import { onCopy } from './helpers'
+import { onCopy } from '../Copy/helpers'
 
 const ApiKeysAddFormSuccess = ({
   projectId,
@@ -17,10 +17,10 @@ const ApiKeysAddFormSuccess = ({
   apikey,
   onReset,
 }) => {
-  const textareaRef = useRef()
+  const copyRef = useRef()
 
   useEffect(() => {
-    onCopy({ textareaRef })
+    onCopy({ copyRef })
   }, [])
 
   return (
@@ -49,7 +49,7 @@ const ApiKeysAddFormSuccess = ({
           paddingBottom: spacing.normal,
         }}>
         <textarea
-          ref={textareaRef}
+          ref={copyRef}
           defaultValue={JSON.stringify(apikey)}
           rows="5"
           css={{
@@ -79,7 +79,7 @@ const ApiKeysAddFormSuccess = ({
                 transition: 'opacity .3s ease',
               },
             }}
-            onClick={() => onCopy({ textareaRef })}>
+            onClick={() => onCopy({ copyRef })}>
             Copy Key
           </Button>
           <span css={{ padding: spacing.small, color: colors.structure.steel }}>

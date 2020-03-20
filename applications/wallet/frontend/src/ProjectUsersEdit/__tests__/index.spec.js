@@ -1,7 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import projectUser from '../../ProjectUser/__mocks__/projectUser'
-import permissions from '../../Permissions/__mocks__/permissions'
+import roles from '../../Roles/__mocks__/roles'
 
 import ProjectUsersEdit from '..'
 
@@ -11,7 +11,7 @@ const USER_ID = projectUser.id
 const noop = () => () => {}
 
 describe('<ProjectUsersEdit />', () => {
-  it('should render properly with a user and permissions', async () => {
+  it('should render properly with a user and roles', async () => {
     const mockFn = jest.fn()
 
     require('next/router').__setMockPushFunction(mockFn)
@@ -24,7 +24,7 @@ describe('<ProjectUsersEdit />', () => {
     require('swr').__setMockUseSWRResponse({
       data: {
         ...projectUser,
-        ...permissions,
+        ...roles,
       },
     })
 
@@ -36,7 +36,7 @@ describe('<ProjectUsersEdit />', () => {
     // Click checkbox
     await act(async () => {
       component.root
-        .findByProps({ value: 'AssetsRead' })
+        .findByProps({ value: 'ML_Tools' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -79,7 +79,7 @@ describe('<ProjectUsersEdit />', () => {
         'Content-Type': 'application/json;charset=UTF-8',
         'X-CSRFToken': 'CSRF_TOKEN',
       },
-      body: '{"permissions":["ApiKeyManage","ProjectManage","AssetsRead"]}',
+      body: '{"roles":["API_Keys"]}',
     })
 
     expect(mockFn).toHaveBeenCalledWith(

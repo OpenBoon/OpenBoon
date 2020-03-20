@@ -3,6 +3,7 @@ const projectUsersAdd = {
     succeeded: [
       {
         email: 'tester@fake.com',
+        roles: ['ML_Tools', 'API_Keys'],
         permissions: ['AssetsRead'],
         statusCode: 201,
         body: {
@@ -18,11 +19,15 @@ const projectUsersAdd = {
           isSuperuser: false,
           lastLogin: null,
           dateJoined: '2020-02-12T18:15:50Z',
+          roles: ['ML_Tools', 'API_Keys'],
           permissions: ['AssetsRead'],
         },
       },
+    ],
+    failed: [
       {
         email: 'danny@zorroa.com',
+        roles: ['ML_Tools', 'API_Keys'],
         permissions: ['AssetsRead'],
         statusCode: 201,
         body: {
@@ -38,11 +43,11 @@ const projectUsersAdd = {
           isSuperuser: false,
           lastLogin: '2020-02-07T02:34:48.138187Z',
           dateJoined: '2020-01-31T17:19:46.003951Z',
+          roles: ['ML_Tools', 'API_Keys'],
           permissions: ['AssetsRead'],
         },
       },
     ],
-    failed: [],
   },
 }
 
