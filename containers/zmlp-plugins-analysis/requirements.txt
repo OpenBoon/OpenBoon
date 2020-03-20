@@ -23,3 +23,6 @@ cmake
 cvlib
 matplotlib
 clarifai
+torch
+torchvision
+facenet-pytorch
