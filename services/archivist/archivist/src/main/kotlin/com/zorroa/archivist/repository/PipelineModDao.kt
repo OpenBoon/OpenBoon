@@ -3,7 +3,6 @@ package com.zorroa.archivist.repository
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModFilter
-import com.zorroa.archivist.domain.SupportedMedia
 import com.zorroa.zmlp.service.jpa.StringListConverter
 import com.zorroa.zmlp.util.Json
 import org.springframework.data.jpa.repository.JpaRepository

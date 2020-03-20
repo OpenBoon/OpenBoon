@@ -47,7 +47,7 @@ class PipelineMod(
     @ApiModelProperty("The general types of media this module can handle.")
     @Column(name = "str_supported_media")
     @Convert(converter = StringListConverter::class)
-    val supportedMedia : List<String>,
+    val supportedMedia: List<String>,
 
     @Column(name = "bool_restricted")
     @ApiModelProperty("This module is only available if granted to a project.")
@@ -157,7 +157,7 @@ class PipelineModUpdate(
     val category: String,
 
     @ApiModelProperty("The types of media this module can handle.")
-    val supportedMedia : List<SupportedMedia>,
+    val supportedMedia: List<SupportedMedia>,
 
     @ApiModelProperty("This module is only available if granted to a project.")
     val restricted: Boolean,
@@ -182,7 +182,7 @@ class PipelineModSpec(
     val category: String,
 
     @ApiModelProperty("The types of media this module can handle.")
-    val supportedMedia : List<SupportedMedia>,
+    val supportedMedia: List<SupportedMedia>,
 
     @ApiModelProperty("A list of operations to apply to the pipeline")
     val ops: List<ModOp>,
