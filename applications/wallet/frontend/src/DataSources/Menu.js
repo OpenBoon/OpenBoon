@@ -40,7 +40,7 @@ const DataSourcesMenu = ({ projectId, dataSourceId, revalidate }) => {
                       onClick()
 
                       await fetcher(
-                        `/api/v1/projects/${projectId}/datasources/${dataSourceId}/`,
+                        `/api/v1/projects/${projectId}/data_sources/${dataSourceId}/`,
                         { method: 'DELETE' },
                       )
 

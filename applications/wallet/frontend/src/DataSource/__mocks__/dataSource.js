@@ -11,7 +11,7 @@ const dataSource = {
   actorCreated: 'admin-key',
   actorModified: 'admin-key',
   url:
-    'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/datasources/2f0de857-95fd-120e-85f3-0242ac120002/',
+    'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/data_sources/2f0de857-95fd-120e-85f3-0242ac120002/',
 }
 
 export default dataSource

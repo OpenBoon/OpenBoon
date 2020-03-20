@@ -49,7 +49,7 @@ app.prepare().then(() => {
     server.post('/api/v1/password/reset/', success())
     server.get('/api/v1/projects/:projectId', mock(project))
     server.get(
-      '/api/v1/projects/:projectId/taskerrors/:errorId/',
+      '/api/v1/projects/:projectId/task_errors/:errorId/',
       mock(jobErrorNonFatal),
     )
     server.get(

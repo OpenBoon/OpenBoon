@@ -104,7 +104,7 @@ def test_datasource_viewset_list(api_client, monkeypatch, zmlp_project_user, pro
     api_client.force_login(zmlp_project_user)
     api_client.force_authenticate(zmlp_project_user)
     response = api_client.get(reverse('datasource-list', kwargs={'project_pk': project.id}))
-    assert response.json() == {'count': 1, 'next': None, 'previous': None, 'results': [{'id': '48b45e81-4c31-11ea-a1f6-eeae6cabf22b', 'projectId': '00000000-0000-0000-0000-000000000000', 'name': 'Dev Data Jpgs', 'uri': 'gs://zorroa-dev-data', 'fileTypes': ['jpg', 'jpeg'], 'credentials': [], 'modules': ['zmlp-labels'], 'timeCreated': 1581358514511, 'timeModified': 1581358514511, 'actorCreated': 'admin-key', 'actorModified': 'admin-key', 'url': 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/datasources/48b45e81-4c31-11ea-a1f6-eeae6cabf22b/'}]}  # noqa
+    assert response.json() == {'count': 1, 'next': None, 'previous': None, 'results': [{'id': '48b45e81-4c31-11ea-a1f6-eeae6cabf22b', 'projectId': '00000000-0000-0000-0000-000000000000', 'name': 'Dev Data Jpgs', 'uri': 'gs://zorroa-dev-data', 'fileTypes': ['jpg', 'jpeg'], 'credentials': [], 'modules': ['zmlp-labels'], 'timeCreated': 1581358514511, 'timeModified': 1581358514511, 'actorCreated': 'admin-key', 'actorModified': 'admin-key', 'url': 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/data_sources/48b45e81-4c31-11ea-a1f6-eeae6cabf22b/'}]}  # noqa
 
 
 def test_datasource_viewset_retrieve(api_client, monkeypatch, zmlp_project_user, project):
