@@ -22,9 +22,7 @@ const ProjectUsers = () => {
       <PageTitle>Project User Admin</PageTitle>
 
       {action === 'edit-user-success' && (
-        <FlashMessage variant={VARIANTS.SUCCESS}>
-          User Permissions Saved
-        </FlashMessage>
+        <FlashMessage variant={VARIANTS.SUCCESS}>User Roles Saved</FlashMessage>
       )}
 
       <Tabs
@@ -37,7 +35,7 @@ const ProjectUsers = () => {
       <Table
         legend="Users"
         url={`/api/v1/projects/${projectId}/users/`}
-        columns={['Email', 'Permissions', '#Actions#']}
+        columns={['Email', 'Roles', '#Actions#']}
         expandColumn={2}
         renderEmpty="No users"
         renderRow={({ result, revalidate }) => (

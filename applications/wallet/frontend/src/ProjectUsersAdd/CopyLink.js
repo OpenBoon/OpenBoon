@@ -4,10 +4,10 @@ import { spacing, colors, constants, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
-import { onCopy } from './helpers'
+import { onCopy } from '../Copy/helpers'
 
 const ProjectUsersAddCopyLink = () => {
-  const inputRef = useRef()
+  const copyRef = useRef()
 
   return (
     <div css={{ paddingTop: spacing.moderate }}>
@@ -26,7 +26,7 @@ const ProjectUsersAddCopyLink = () => {
           paddingTop: spacing.normal,
         }}>
         <input
-          ref={inputRef}
+          ref={copyRef}
           id="copyLink"
           type="text"
           value={`${window.location.origin}/create-account`}
@@ -58,7 +58,7 @@ const ProjectUsersAddCopyLink = () => {
                 transition: 'opacity .3s ease',
               },
             }}
-            onClick={() => onCopy({ inputRef })}>
+            onClick={() => onCopy({ copyRef })}>
             Copy Link
           </Button>
         </div>

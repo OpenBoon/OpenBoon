@@ -1,17 +1,18 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import apiKey from '../../ApiKey/__mocks__/apiKey'
 import permissions from '../../Permissions/__mocks__/permissions'
 
 import ApiKeysAdd from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
-jest.mock('../helpers')
+jest.mock('../../Copy/helpers')
 
 const noop = () => () => {}
 
 describe('<ApiKeysAdd />', () => {
-  it('should render properly', () => {
+  it('should render properly', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/api-keys/add',
       query: { projectId: PROJECT_ID },
@@ -23,7 +24,7 @@ describe('<ApiKeysAdd />', () => {
 
     const mockOnCopy = jest.fn()
 
-    require('../helpers').__setMockOnCopy(mockOnCopy)
+    require('../../Copy/helpers').__setMockOnCopy(mockOnCopy)
 
     const component = TestRenderer.create(<ApiKeysAdd />)
 
@@ -43,8 +44,11 @@ describe('<ApiKeysAdd />', () => {
         .props.onClick()
     })
 
+    // Mock Success
+    fetch.mockResponseOnce(JSON.stringify(apiKey))
+
     // Submit form
-    act(() => {
+    await act(async () => {
       component.root
         .findByProps({ type: 'submit' })
         .props.onClick({ preventDefault: noop })
@@ -59,7 +63,7 @@ describe('<ApiKeysAdd />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockOnCopy).toHaveBeenCalledWith({ textareaRef: { current: null } })
+    expect(mockOnCopy).toHaveBeenCalledWith({ copyRef: { current: null } })
 
     // Reset form
     act(() => {

@@ -3,13 +3,13 @@ import { fetcher } from '../Fetch/helpers'
 export const onSubmit = async ({
   projectId,
   dispatch,
-  state: { emails: e, permissions: p },
+  state: { emails: e, roles: r },
 }) => {
   try {
     const emails = e.split(',').map(str => str.trim(''))
-    const permissions = Object.keys(p).filter(name => p[name])
+    const roles = Object.keys(r).filter(name => r[name])
     const body = JSON.stringify({
-      batch: emails.map(email => ({ email, permissions })),
+      batch: emails.map(email => ({ email, roles })),
     })
 
     const {
@@ -21,19 +21,19 @@ export const onSubmit = async ({
 
     dispatch({ succeeded, failed })
   } catch (response) {
-    const errors = await response.json()
-    const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
-      acc[errorKey] = errors[errorKey].join(' ')
+    try {
+      const errors = await response.json()
 
-      return acc
-    }, {})
+      const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
+        acc[errorKey] = errors[errorKey].join(' ')
+        return acc
+      }, {})
 
-    dispatch({ errors: parsedErrors })
+      dispatch({ errors: parsedErrors })
+    } catch (error) {
+      dispatch({
+        errors: { global: 'Something went wrong. Please try again.' },
+      })
+    }
   }
-}
-
-export const onCopy = ({ inputRef }) => {
-  inputRef.current.select()
-  document.execCommand('copy')
-  inputRef.current.blur()
 }
