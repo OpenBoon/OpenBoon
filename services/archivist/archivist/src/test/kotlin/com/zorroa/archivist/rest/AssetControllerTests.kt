@@ -399,8 +399,7 @@ class AssetControllerTests : MockMvcTest() {
                 listOf(
                     AssetSpec("https://i.imgur.com/SSN26nN.jpg"),
                     AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
-                )
-                , state = AssetState.Analyzed
+                ), state = AssetState.Analyzed
             )
         )
 
@@ -505,8 +504,7 @@ class AssetControllerTests : MockMvcTest() {
                 listOf(
                     AssetSpec("https://i.imgur.com/SSN26nN.jpg"),
                     AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
-                )
-                , state = AssetState.Analyzed
+                ), state = AssetState.Analyzed
             )
         )
 

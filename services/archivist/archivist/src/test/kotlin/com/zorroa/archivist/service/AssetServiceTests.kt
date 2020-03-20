@@ -211,7 +211,7 @@ class AssetServiceTests : AbstractTest() {
             assets = listOf(
                 AssetSpec("gs://cats/large-brown-cat.jpg"),
                 AssetSpec("gs://dogs/large-brown-dog.jpg")
-            ), state=AssetState.Analyzed)
+            ), state = AssetState.Analyzed)
 
         assetService.batchCreate(batchCreate)
         val rsp = assetService.deleteByQuery(
