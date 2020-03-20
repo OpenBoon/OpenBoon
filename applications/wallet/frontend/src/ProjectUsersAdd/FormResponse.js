@@ -55,7 +55,7 @@ const ProjectUsersAddFormResponse = ({
             {succeeded.map(user => user.email).join(', ')}
           </div>
 
-          <SectionTitle>roles</SectionTitle>
+          <SectionTitle>Roles</SectionTitle>
           <ul css={{ color: colors.structure.zinc }}>
             {roles.map(role => (
               <li css={{ fontWeight: typography.weight.bold }} key={role}>
