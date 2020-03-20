@@ -5,6 +5,10 @@ import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.util.JdbcUtils
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
+import java.math.BigDecimal
+import java.util.Date
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -125,6 +129,91 @@ class ProjectFilter(
         names?.let {
             addToWhere(JdbcUtils.inClause("project.str_name", it.size))
             addToValues(it)
+        }
+    }
+}
+
+@ApiModel("Project Quotas", description = "Project ingest limits and counters")
+class ProjectQuotas(
+
+    @ApiModelProperty("The maximum amount of video that can be ingested, in seconds. ")
+    val videoSecondsMax: Long,
+
+    @ApiModelProperty("The current amount of video ingested, in seconds. ")
+    val videoSecondsCount: BigDecimal,
+
+    @ApiModelProperty("The maximum number of pages ingested.")
+    val pageMax: Long,
+
+    @ApiModelProperty("The current number of pages ingested.")
+    val pageCount: Long
+)
+
+@ApiModel("ProjectQuotasTimeSeriesEntry", description = "Quotas and other counters rolled up to the hour.")
+class ProjectQuotasTimeSeriesEntry(
+    @ApiModelProperty("The date of this interval.")
+    val date: Date,
+    @ApiModelProperty("The amount of video ingested during this interval.")
+    val videoSecondsCount: BigDecimal,
+    @ApiModelProperty("Th number of pages ingested during this interval.")
+    val pageCount: Long,
+    @ApiModelProperty("The number of unique video files ingested")
+    val videoFileCount: Long,
+    @ApiModelProperty("The number of unique document files ingested")
+    val documentFileCount: Long,
+    @ApiModelProperty("The number of unique image files ingested")
+    val imageFilesCount: Long,
+    @ApiModelProperty("The number of unique video clips ingested")
+    val videoClipCount: Long
+)
+
+/**
+ * ProjectQuotaCounters increments a set of counters.  This class is used
+ * when batch processing.
+ */
+class ProjectQuotaCounters {
+
+    var videoLength: Double = 0.0
+    var pageCount: Int = 0
+    var videoClipCount: Int = 0
+
+    var videoFileCount: Int = 0
+    var imageFileCount: Int = 0
+    var documentFileCount: Int = 0
+
+    /**
+     * Introspect the asset and increment the internal counters.
+     */
+    fun count(asset: Asset) {
+        val mediaType = asset.getAttr<String>("media.type")
+
+        when (mediaType) {
+            "video" -> {
+                val length = asset.getAttr("media.length", Double::class.java)
+                    ?: throw IllegalArgumentException("Video has no length property")
+
+                val clipType = asset.getAttr<String>("clip.type")
+                    ?: throw IllegalStateException("Asset $asset has no clip")
+
+                if (clipType == Clip.TYPE_FULL) {
+                    videoLength += length
+                    videoFileCount += 1
+                    videoClipCount += 1
+                } else {
+                    videoClipCount += 1
+                }
+            }
+            "document" -> {
+                pageCount += 1
+                documentFileCount += 1
+            }
+            "image" -> {
+                pageCount += 1
+                imageFileCount += 1
+            }
+            else -> {
+                throw IllegalArgumentException("The asset has no media.type property.")
+            }
         }
     }
 }

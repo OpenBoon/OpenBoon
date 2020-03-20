@@ -17,6 +17,7 @@ import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.Task
@@ -107,7 +108,7 @@ interface AssetService {
      * @return An ES [BulkResponse] which contains the result of the operation.
      *
      */
-    fun batchIndex(docs: Map<String, MutableMap<String, Any>>): BulkResponse
+    fun batchIndex(docs: Map<String, MutableMap<String, Any>>, setAnalyzed: Boolean = false): BulkResponse
 
     /**
      * Reindex a single asset.  The fully composed asset metadata must be provided,
@@ -173,6 +174,9 @@ class AssetServiceImpl : AssetService {
     lateinit var properties: ApplicationProperties
 
     @Autowired
+    lateinit var projectService: ProjectService
+
+    @Autowired
     lateinit var jobService: JobService
 
     @Autowired
@@ -203,7 +207,7 @@ class AssetServiceImpl : AssetService {
         val rest = indexRoutingService.getProjectRestClient()
         val req = rest.newSearchBuilder()
         val query = QueryBuilders.boolQuery()
-            .must(QueryBuilders.termsQuery("_id", ids))
+            .filter(QueryBuilders.termsQuery("_id", ids))
         req.source.size(ids.size)
         req.source.query(query)
         req.source.fetchSource(false)
@@ -326,26 +330,43 @@ class AssetServiceImpl : AssetService {
     override fun index(id: String, doc: MutableMap<String, Any>): Response {
         val rest = indexRoutingService.getProjectRestClient()
         val request = Request("PUT", "/${rest.route.indexName}/_doc/$id")
-        prepAssetForUpdate(id, doc)
-        request.setJsonEntity(Json.serializeToString(doc))
+        val asset = Asset(id, doc)
+        prepAssetForUpdate(asset)
+        request.setJsonEntity(Json.serializeToString(asset.document))
         return rest.client.lowLevelClient.performRequest(request)
     }
 
-    override fun batchIndex(docs: Map<String, MutableMap<String, Any>>): BulkResponse {
+    override fun batchIndex(docs: Map<String, MutableMap<String, Any>>, setAnalyzed: Boolean): BulkResponse {
         if (docs.isEmpty()) {
             throw IllegalArgumentException("Nothing to batch index.")
+        }
+
+        val validAssetIds = getValidAssetIds(docs.keys)
+        val notFound = docs.keys.minus(validAssetIds)
+        if (notFound.isNotEmpty()) {
+            throw IllegalArgumentException("The asset IDs '$notFound' were not found")
         }
 
         val rest = indexRoutingService.getProjectRestClient()
         val bulk = BulkRequest()
 
+        // A set of IDs where the stat changed to Analyzed.
+        val stateChangedIds = mutableSetOf<String>()
+
         docs.forEach { (id, doc) ->
-            prepAssetForUpdate(id, doc)
-            // Will always create for some reason
-            // TODO: probably have to check for existing IDs.
+
+            val asset = prepAssetForUpdate(id, doc)
+            if (setAnalyzed && !asset.isAnalyzed()) {
+                asset.setAttr("system.state", AssetState.Analyzed.name)
+                stateChangedIds.add(id)
+            }
+
+            /*
+             * Index here vs update because otherwise the new doc will
+             * be merge of the old one and the new one.
+             */
             bulk.add(
                 rest.newIndexRequest(id)
-                    .create(false)
                     .source(doc)
                     .opType(DocWriteRequest.OpType.INDEX)
             )
@@ -355,7 +376,14 @@ class AssetServiceImpl : AssetService {
             LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to docs.size)
         )
 
-        return rest.client.bulk(bulk, RequestOptions.DEFAULT)
+        val rsp = rest.client.bulk(bulk, RequestOptions.DEFAULT)
+        println("incrmenting project counters: $stateChangedIds")
+        if (stateChangedIds.isNotEmpty()) {
+            val successIds = rsp.filter { !it.isFailed }.map { it.id }
+            incrementProjectIngestCounters(stateChangedIds.intersect(successIds), docs)
+        }
+
+        return rsp
     }
 
     override fun delete(id: String): Response {
@@ -616,13 +644,14 @@ class AssetServiceImpl : AssetService {
         return asset
     }
 
-    fun prepAssetForUpdate(id: String, map: MutableMap<String, Any>?) {
-        if (map == null) {
-            return
-        }
+    fun prepAssetForUpdate(id: String, map: MutableMap<String, Any>): Asset {
+        val asset = Asset(id, map)
+        return prepAssetForUpdate(asset)
+    }
+
+    fun prepAssetForUpdate(asset: Asset): Asset {
 
         val time = java.time.Clock.systemUTC().instant().toString()
-        val asset = Asset(id, map)
 
         // Remove these which are used for temp attrs
         removeFieldsOnUpdate.forEach {
@@ -655,7 +684,8 @@ class AssetServiceImpl : AssetService {
         // Update various system properties.
         asset.setAttr("system.projectId", getProjectId().toString())
         asset.setAttr("system.timeModified", time)
-        asset.setAttr("system.state", AssetState.Analyzed.toString())
+
+        return asset
     }
 
     override fun assetNeedsReprocessing(asset: Asset, pipeline: List<ProcessorRef>): Boolean {
@@ -692,6 +722,17 @@ class AssetServiceImpl : AssetService {
                 false
             }
         }
+    }
+
+    /**
+     * Increment the project counters for the given collection of asset ids.
+     */
+    fun incrementProjectIngestCounters(ids: Collection<String>, docs: Map<String, MutableMap<String, Any>>) {
+        val counters = ProjectQuotaCounters()
+        ids.forEach {
+            counters.count(Asset(it, docs.getValue(it)))
+        }
+        projectService.incrementQuotaCounters(counters)
     }
 
     companion object {

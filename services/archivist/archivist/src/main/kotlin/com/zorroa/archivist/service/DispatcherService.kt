@@ -421,7 +421,7 @@ class DispatcherServiceImpl @Autowired constructor(
                 setOf(Permission.AssetsImport)
             )
         ) {
-            result = assetService.batchIndex(event.assets)
+            result = assetService.batchIndex(event.assets, true)
             result?.items?.forEach {
                 if (it.isFailed) {
                     val asset = Asset(it.id, event.assets[it.id] ?: mutableMapOf())

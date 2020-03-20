@@ -9,11 +9,15 @@ import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectFilter
+import com.zorroa.archivist.domain.ProjectQuotaCounters
+import com.zorroa.archivist.domain.ProjectQuotas
+import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.ProjectCustomDao
 import com.zorroa.archivist.repository.ProjectDao
+import com.zorroa.archivist.repository.ProjectQuotasDao
 import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.repository.throwWhenNotFound
 import com.zorroa.archivist.security.InternalThreadAuthentication
@@ -36,6 +40,7 @@ import org.springframework.security.crypto.keygen.KeyGenerators
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.Base64
+import java.util.Date
 import java.util.UUID
 
 interface ProjectService {
@@ -85,6 +90,21 @@ interface ProjectService {
      * Get the project settings blob.
      */
     fun updateSettings(projectId: UUID, settings: ProjectSettings): Boolean
+
+    /**
+     * Get the the given projects quotas.
+     */
+    fun getQuotas(projectId: UUID): ProjectQuotas
+
+    /**
+     * Increment project quotas.
+     */
+    fun incrementQuotaCounters(counters: ProjectQuotaCounters)
+
+    /**
+     * Get project quota time series info.
+     */
+    fun getQuotasTimeSeries(projectId: UUID, start: Date, end: Date): List<ProjectQuotasTimeSeriesEntry>
 }
 
 @Service
@@ -92,6 +112,7 @@ interface ProjectService {
 class ProjectServiceImpl constructor(
     val projectDao: ProjectDao,
     val projectCustomDao: ProjectCustomDao,
+    val projectStatsDao: ProjectQuotasDao,
     val authServerClient: AuthServerClient,
     val systemStorageService: SystemStorageService,
     val properties: ApplicationProperties,
@@ -118,7 +139,6 @@ class ProjectServiceImpl constructor(
             )
         )
         withAuth(InternalThreadAuthentication(project.id, setOf())) {
-
             val route = createIndexRoute(project)
             val pipeline = createDefaultPipeline(project)
             projectCustomDao.createSettings(
@@ -127,7 +147,10 @@ class ProjectServiceImpl constructor(
                     route.id
                 )
             )
+            projectStatsDao.createQuotasEntry(project.id)
+            projectStatsDao.createIngestTimeSeriesEntries(project.id)
         }
+
         txEvent.afterCommit(sync = true) {
             createCryptoKey(project)
             createStandardApiKeys(project)
@@ -184,6 +207,13 @@ class ProjectServiceImpl constructor(
     @Transactional(readOnly = true)
     override fun getSettings(projectId: UUID): ProjectSettings = projectCustomDao.getSettings(get(projectId).id)
 
+    @Transactional(readOnly = true)
+    override fun getQuotas(projectId: UUID): ProjectQuotas = projectStatsDao.getQuotas(get(projectId).id)
+
+    @Transactional(readOnly = true)
+    override fun getQuotasTimeSeries(projectId: UUID, start: Date, end: Date): List<ProjectQuotasTimeSeriesEntry> =
+        projectStatsDao.getTimeSeriesCounters(projectId, start, end)
+
     override fun updateSettings(projectId: UUID, settings: ProjectSettings): Boolean {
         val project = get(projectId)
 
@@ -210,6 +240,11 @@ class ProjectServiceImpl constructor(
         )
 
         return projectCustomDao.updateSettings(project.id, settings)
+    }
+
+    override fun incrementQuotaCounters(counters: ProjectQuotaCounters) {
+        projectStatsDao.incrementQuotas(counters)
+        projectStatsDao.incrementTimeSeriesCounters(Date(), counters)
     }
 
     /**
