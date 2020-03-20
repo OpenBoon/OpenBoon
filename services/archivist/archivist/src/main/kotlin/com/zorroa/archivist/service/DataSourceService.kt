@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.DataSourceSpec
 import com.zorroa.archivist.domain.DataSourceUpdate
+import com.zorroa.archivist.domain.FileTypes
 
 import com.zorroa.archivist.domain.JobFilter
 import com.zorroa.archivist.domain.JobState
@@ -81,7 +82,7 @@ class DataSourceServiceImpl(
                 getProjectId(),
                 spec.name,
                 spec.uri,
-                spec.fileTypes,
+                FileTypes.resolve(spec.fileTypes),
                 listOf(),
                 mods.map { it.id },
                 time,

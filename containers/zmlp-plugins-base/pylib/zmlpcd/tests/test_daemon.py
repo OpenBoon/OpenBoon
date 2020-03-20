@@ -21,7 +21,7 @@ class ZmlpContainerDaemonTests(unittest.TestCase):
         self.emitter = TestEventEmitter()
         self.zpsd = ZmlpContainerDaemon(9999, Reactor(self.emitter))
 
-    def test_event_handler_generate(self):
+    def test_event_handler_generate_no_file_types(self):
         event = {
             "type": "generate",
             "payload": {
@@ -37,7 +37,30 @@ class ZmlpContainerDaemonTests(unittest.TestCase):
                 }
             }
         }
-        # Run twice
+        self.zpsd.handle_event(event)
+        assert self.emitter.event_count("error") == 1
+        assert self.emitter.event_count("expand") == 0
+
+    def test_event_handler_generate(self):
+        event = {
+            "type": "generate",
+            "payload": {
+                "settings": {
+                    "fileTypes": ["jpg"]
+                },
+                "ref": {
+                    "className": "zmlpsdk.testing.TestGenerator",
+                    "image": TEST_IMAGE,
+                    "args": {
+                        "files": [
+                            "/test-data/images/set01/toucan.jpg",
+                            "/test-data/images/set01/faces.jpg"
+                        ]
+                    }
+                }
+            }
+        }
+
         self.zpsd.handle_event(event)
         assert self.emitter.event_count("error") == 0
         assert self.emitter.event_count("expand") == 1

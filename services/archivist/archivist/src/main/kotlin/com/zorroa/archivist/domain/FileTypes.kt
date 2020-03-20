@@ -1,5 +1,6 @@
 package com.zorroa.archivist.domain
 
+import org.apache.tika.Tika
 import java.lang.IllegalArgumentException
 
 /**
@@ -7,10 +8,11 @@ import java.lang.IllegalArgumentException
  */
 object FileTypes {
 
+    val tika = Tika()
+
     val image = setOf(
         "bmp",
         "cin",
-        "dds",
         "dpx",
         "gif",
         "jpg",
@@ -46,23 +48,34 @@ object FileTypes {
         "vss",
         "vst")
 
-    val all = doc.plus(video).plus(image)
+    val all = doc.plus(video).plus(image).toList()
+
+    val mediaTypes = mapOf(
+        "exr" to "image/x-exr",
+        "dpx" to "image/x-dpx",
+        "rla" to  "image/x-rla",
+        "cin" to  "image/x-cineon"
+    )
 
     fun isSupported(ext: String): Boolean {
         return (ext in image || ext in video || ext in doc)
     }
 
-    fun resolve(types: Collection<String>): List<String> {
+    fun resolve(types: Collection<String>?): List<String> {
+        if (types.isNullOrEmpty()) {
+            return all
+        }
+
         val result = mutableListOf<String>()
         for (type in types) {
             when {
-                type == "IMAGES" -> {
+                type == "images" -> {
                     result.addAll(image)
                 }
-                type == "VIDEOS" -> {
+                type == "videos" -> {
                     result.addAll(video)
                 }
-                type == "DOCUMENTS" -> {
+                type == "documents" -> {
                     result.addAll(doc)
                 }
                 isSupported(type) -> {
@@ -92,5 +105,15 @@ object FileTypes {
                 throw IllegalArgumentException("$ext not a supported file type")
             }
         }
+    }
+
+    fun getMediaType(ext: String) : String {
+        val filename = if ("." in ext) {
+            ext
+        }
+        else {
+            "file.$ext"
+        }
+        return mediaTypes[ext] ?: tika.detect(filename)
     }
 }
