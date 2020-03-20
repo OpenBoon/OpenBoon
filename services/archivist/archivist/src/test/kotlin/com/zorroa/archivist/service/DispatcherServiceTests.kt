@@ -4,6 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AnalystSpec
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetSpec
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchIndexAssetsEvent
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobPriority
@@ -93,9 +94,17 @@ class DispatcherServiceTests : AbstractTest() {
         jobService.create(spec)
         val task = dispatcherService.getWaitingTasks(getProjectId(), 1)[0]
 
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-cat.jpg"),
+                AssetSpec("gs://cats/large-brown-cat.mov"),
+                AssetSpec("gs://cats/large-brown-cat.pdf")
+            ))
+
+        val createRsp = assetService.batchCreate(batchCreate)
         authenticateAsAnalyst()
         val rsp = dispatcherService.handleIndexEvent(task, BatchIndexAssetsEvent(
-            mapOf("1234" to mutableMapOf<String, Any>("foo" to "bar")), null))
+            mapOf(createRsp.created[0] to mutableMapOf<String, Any>("foo" to "bar")), null))
         assertTrue(rsp?.hasFailures() ?: false)
 
         authenticate()
@@ -112,13 +121,23 @@ class DispatcherServiceTests : AbstractTest() {
             env = mutableMapOf("foo" to "bar")
         )
 
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-cat.jpg")
+            ))
+
+        val createRsp = assetService.batchCreate(batchCreate)
+
         jobService.create(spec)
         val task = dispatcherService.getWaitingTasks(getProjectId(), 1)[0]
 
         authenticateAsAnalyst()
-        val rsp = dispatcherService.handleIndexEvent(task, BatchIndexAssetsEvent(
-            mapOf("1234" to
-                mutableMapOf<String, Any>("source" to mutableMapOf("path" to "/cat.jpg"))), null))
+        dispatcherService.handleIndexEvent(task, BatchIndexAssetsEvent(
+            mapOf(createRsp.created[0] to
+                mutableMapOf<String, Any>(
+                    "source" to mutableMapOf("path" to "/cat.jpg"),
+                    "media" to mutableMapOf("type" to "image"))
+                ), null))
 
         authenticate()
         // should be no errors

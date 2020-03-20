@@ -36,6 +36,25 @@ class MockImageAnnotatorClient:
     def __init__(self):
         pass
 
+    def object_localization(self, image):
+        poly = types.geometry_pb2.BoundingPoly(normalized_vertices=[
+            types.geometry_pb2.NormalizedVertex(x=0.14627186954021454, y=0.625028669834137),
+            types.geometry_pb2.NormalizedVertex(x=0.4326733350753784, y=0.17461903393268585),
+            types.geometry_pb2.NormalizedVertex(x=0.4326733350753784, y=0.4123673439025879),
+            types.geometry_pb2.NormalizedVertex(x=0.14627186954021454, y=0.4123673439025879)])
+
+        class ObjectDetectionResponse(object):
+            def __init__(self):
+                self.localized_object_annotations = [
+                    types.image_annotator_pb2.LocalizedObjectAnnotation(mid="/m/0h9mv",
+                                                                        language_code="en-US",
+                                                                        name="Tire",
+                                                                        score=0.9025126695632935,
+                                                                        bounding_poly=poly)
+                ]
+
+        return ObjectDetectionResponse()
+
     def label_detection(self, image):
         mock_labels = [
             types.EntityAnnotation(description="Toucan",
@@ -477,6 +496,31 @@ class CloudVisionDetectImageTextTests(PluginUnitTestCase):
         sign_content = u'PASEO TAMAYO\nNIRVANA 6400 N\nNO OUTLET\u2192\nSTOP\n'
         asset_attr = "analysis.google.imageTextDetection.content"
         self.assertEqual(frame.asset.get_attr(asset_attr), sign_content)
+
+
+class TestCloudVisionDetectObjects(PluginUnitTestCase):
+
+    @patch.object(ZmlpClient, 'upload_file')
+    @patch(patch_path, side_effect=MockImageAnnotatorClient)
+    def test_detect_objects(self, mock_image_annotator, upload_patch):
+        upload_patch.return_value = PROXY_FILE
+        # initialize the asset and processor
+        asset = TestAsset(TOUCAN)
+        frame = Frame(asset)
+        store_asset_proxy(asset, TOUCAN, (200, 200))
+        p = CloudVisionDetectObjects()
+        processor = self.init_processor(CloudVisionDetectObjects())
+        # run processor with declared frame and assert asset attributes
+        processor.process(frame)
+
+        assert frame.asset.get_attr('analysis.gcp.object-detection.detected', 1)
+        assert frame.asset.get_attr('analysis.gcp.object-detection.labels', ['Tire'])
+        elements = frame.asset.get_attr('elements')
+        assert len(elements) == 1
+        assert ['Tire'] == elements[0]['labels']
+        assert len(elements[0]['rect']) == 8
+        assert 'object' == elements[0]['type']
+        self.assertAlmostEqual(0.903, elements[0]['score'])
 
 
 class CloudVisionDetectDocumentTextTests(PluginUnitTestCase):

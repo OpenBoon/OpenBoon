@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import java.util.UUID
 import java.util.concurrent.ThreadLocalRandom
 
@@ -38,6 +40,18 @@ fun randomString(length: Int = 16): String {
         buf[i] = SYMBOLS[random.nextInt(SYMBOLS.length)]
     }
     return String(buf)
+}
+
+/**
+ * Return the given Date with minutes and seconds zeroed out.
+ */
+fun toHourlyDate(date: Date?): Date {
+    val time: Calendar = Calendar.getInstance()
+    time.timeInMillis = date?.time ?: Date().time
+    time.set(Calendar.MINUTE, 0)
+    time.set(Calendar.SECOND, 0)
+    time.set(Calendar.MILLISECOND, 0)
+    return Date(time.toInstant().toEpochMilli())
 }
 
 /**

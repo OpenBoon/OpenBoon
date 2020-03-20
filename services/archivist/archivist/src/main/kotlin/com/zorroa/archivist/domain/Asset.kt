@@ -172,7 +172,7 @@ open class Asset(
      * Return true if the asset has been analayzed before.
      */
     fun isAnalyzed(): Boolean {
-        return attrExists("system.timeCreated") && attrExists("system.state")
+        return attrExists("system.timeCreated") && getAttr<String>("system.state") == AssetState.Analyzed.name
     }
 
     private fun getContainer(attr: String, forceExpand: Boolean): Any? {
