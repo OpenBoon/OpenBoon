@@ -6,14 +6,14 @@ export const onSubmit = async ({
   dispatch,
   projectId,
   userId,
-  state: { permissions: p },
+  state: { roles: r },
 }) => {
   try {
-    const permissions = Object.keys(p).filter(key => p[key])
+    const roles = Object.keys(r).filter(key => r[key])
 
     await fetcher(`/api/v1/projects/${projectId}/users/${userId}/`, {
       method: 'PUT',
-      body: JSON.stringify({ permissions }),
+      body: JSON.stringify({ roles }),
     })
 
     Router.push(

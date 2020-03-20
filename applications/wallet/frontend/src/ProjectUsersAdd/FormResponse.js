@@ -14,10 +14,10 @@ const ProjectUsersAddFormResponse = ({
   projectId,
   succeeded,
   failed,
-  permissions: p,
+  roles: r,
   onReset,
 }) => {
-  const permissions = Object.keys(p).filter(name => p[name])
+  const roles = Object.keys(r).filter(name => r[name])
 
   return (
     <div>
@@ -55,11 +55,11 @@ const ProjectUsersAddFormResponse = ({
             {succeeded.map(user => user.email).join(', ')}
           </div>
 
-          <SectionTitle>Permissions</SectionTitle>
+          <SectionTitle>roles</SectionTitle>
           <ul css={{ color: colors.structure.zinc }}>
-            {permissions.map(permission => (
-              <li css={{ fontWeight: typography.weight.bold }} key={permission}>
-                {permission.replace(/([A-Z])/g, match => ` ${match}`)}
+            {roles.map(role => (
+              <li css={{ fontWeight: typography.weight.bold }} key={role}>
+                {role.replace('_', ' ')}
               </li>
             ))}
           </ul>
@@ -83,16 +83,16 @@ ProjectUsersAddFormResponse.propTypes = {
   succeeded: PropTypes.arrayOf(
     PropTypes.shape({
       email: PropTypes.string.isRequired,
-      permissions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+      roles: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     }).isRequired,
   ).isRequired,
   failed: PropTypes.arrayOf(
     PropTypes.shape({
       email: PropTypes.string.isRequired,
-      permissions: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+      roles: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     }).isRequired,
   ).isRequired,
-  permissions: PropTypes.objectOf(PropTypes.bool.isRequired).isRequired,
+  roles: PropTypes.objectOf(PropTypes.bool.isRequired).isRequired,
   onReset: PropTypes.func.isRequired,
 }
 

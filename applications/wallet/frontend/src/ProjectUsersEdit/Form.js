@@ -19,12 +19,12 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
   const { data: user } = useSWR(`/api/v1/projects/${projectId}/users/${userId}`)
 
   const {
-    data: { results: permissions },
-  } = useSWR(`/api/v1/projects/${projectId}/permissions/`)
+    data: { results: roles },
+  } = useSWR(`/api/v1/projects/${projectId}/roles/`)
 
   const [state, dispatch] = useReducer(reducer, {
-    permissions: user.permissions.reduce((accumulator, permission) => {
-      accumulator[permission] = true
+    roles: user.roles.reduce((accumulator, role) => {
+      accumulator[role] = true
       return accumulator
     }, {}),
     error: '',
@@ -39,16 +39,14 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
       </FormAlert>
 
       <CheckboxGroup
-        legend="Edit Permissions"
-        onClick={permission =>
-          dispatch({ permissions: { ...state.permissions, ...permission } })
-        }
-        options={permissions.map(({ name, description }) => ({
+        legend="Edit Roles"
+        onClick={role => dispatch({ roles: { ...state.roles, ...role } })}
+        options={roles.map(({ name, description }) => ({
           value: name,
-          label: name.replace(/([A-Z])/g, match => ` ${match}`),
+          label: name.replace('_', ' '),
           icon: '',
           legend: description,
-          initialValue: !!user.permissions.includes(name),
+          initialValue: !!user.roles.includes(name),
           isDisabled: false,
         }))}
         variant={CHECKBOX_VARIANTS.PRIMARY}
