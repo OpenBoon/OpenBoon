@@ -24,6 +24,8 @@ const AssetsThumbnail = ({
 
   const containerWidth = 100 / thumbnailCount
 
+  const srcUrl = files[0] && files[0].url
+
   const srcSet = files.map(
     ({ url, attrs: { width: srcWidth } }) => `${url} ${srcWidth}w`,
   )
@@ -79,12 +81,20 @@ const AssetsThumbnail = ({
               overflow: 'hidden',
             }}
           >
-            <img
-              css={{ [largestDimension]: '100%' }}
-              srcSet={srcSet.join(',')}
-              src={files[0] && files[0].url}
-              alt={filename}
-            />
+            {srcUrl ? (
+              <img
+                css={{ [largestDimension]: '100%' }}
+                srcSet={srcSet.join(',')}
+                src={srcUrl}
+                alt={filename}
+              />
+            ) : (
+              <img
+                src="/icons/documents.png"
+                alt="No proxies"
+                css={{ width: containerWidth }}
+              />
+            )}
           </Button>
         </Link>
       </div>

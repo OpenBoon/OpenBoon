@@ -18,10 +18,13 @@ const JobErrorAsset = ({ assetId }) => {
     data: asset,
     data: {
       metadata: {
-        source: { filename, url },
+        files,
+        source: { filename },
       },
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
+
+  const srcUrl = files[0] && files[0].url
 
   return (
     <div
@@ -39,15 +42,27 @@ const JobErrorAsset = ({ assetId }) => {
           padding: spacing.normal,
         }}
       >
-        <img
-          src={url.replace('https://wallet.zmlp.zorroa.com', '')}
-          alt={filename}
-          css={{
-            width: ASSET_THUMBNAIL_SIZE,
-            height: ASSET_THUMBNAIL_SIZE,
-            objectFit: 'cover',
-          }}
-        />
+        {srcUrl ? (
+          <img
+            src={srcUrl}
+            alt={filename}
+            css={{
+              width: ASSET_THUMBNAIL_SIZE,
+              height: ASSET_THUMBNAIL_SIZE,
+              objectFit: 'cover',
+            }}
+          />
+        ) : (
+          <img
+            src="/icons/documents.png"
+            alt="No proxies"
+            css={{
+              width: ASSET_THUMBNAIL_SIZE,
+              height: ASSET_THUMBNAIL_SIZE,
+              objectFit: 'cover',
+            }}
+          />
+        )}
         <div css={{ paddingLeft: spacing.comfy }}>{filename}</div>
       </div>
       <div

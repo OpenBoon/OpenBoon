@@ -224,7 +224,7 @@ exports[`<Assets /> should handle page url 1`] = `
 }
 
 .emotion-0 {
-  height: 100%;
+  width: 12.5px;
 }
 
 <div
@@ -246,9 +246,9 @@ exports[`<Assets /> should handle page url 1`] = `
           onMouseEnter={[Function]}
         >
           <img
-            alt="TIFF_1MB.tiff"
+            alt="No proxies"
             className="emotion-0"
-            srcSet=""
+            src="/icons/documents.png"
           />
         </a>
       </div>
@@ -1426,7 +1426,7 @@ exports[`<Assets /> should render without proxy image 1`] = `
 }
 
 .emotion-0 {
-  height: 100%;
+  width: 12.5px;
 }
 
 <div
@@ -1448,9 +1448,9 @@ exports[`<Assets /> should render without proxy image 1`] = `
           onMouseEnter={[Function]}
         >
           <img
-            alt="TIFF_1MB.tiff"
+            alt="No proxies"
             className="emotion-0"
-            srcSet=""
+            src="/icons/documents.png"
           />
         </a>
       </div>
