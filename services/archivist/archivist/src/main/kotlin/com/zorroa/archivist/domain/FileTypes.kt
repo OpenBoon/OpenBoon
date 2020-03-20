@@ -4,6 +4,15 @@ import org.apache.tika.Tika
 import java.lang.IllegalArgumentException
 
 /**
+ * An enum class to define media groups.
+ */
+enum class SupportedMedia {
+    Images,
+    Video,
+    Documents
+}
+
+/**
  * A singleton object for supported file types.
  */
 object FileTypes {
