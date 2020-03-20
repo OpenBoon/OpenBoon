@@ -184,7 +184,7 @@ export const onSubmit = async ({
   state: { name, uri, credential, fileTypes, modules },
 }) => {
   try {
-    await fetcher(`/api/v1/projects/${projectId}/datasources/`, {
+    await fetcher(`/api/v1/projects/${projectId}/data_sources/`, {
       method: 'POST',
       body: JSON.stringify({
         name,

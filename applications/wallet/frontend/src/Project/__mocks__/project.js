@@ -6,7 +6,7 @@ const project = {
   jobs:
     'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/jobs/',
   apikeys:
-    'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/apikeys/',
+    'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/api_keys/',
   assets:
     'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/assets/',
   users:
@@ -15,10 +15,10 @@ const project = {
     'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/permissions/',
   tasks:
     'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/tasks/',
-  taskerrors:
-    'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/taskerrors/',
+  task_errors:
+    'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/task_errors/',
   datasources:
-    'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/datasources/',
+    'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/data_sources/',
 }
 
 export default project

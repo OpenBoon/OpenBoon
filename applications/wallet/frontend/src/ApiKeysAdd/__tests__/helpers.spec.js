@@ -28,7 +28,7 @@ describe('<ApiKeysAdd /> helpers', () => {
       expect(fetch.mock.calls.length).toEqual(1)
 
       expect(fetch.mock.calls[0][0]).toEqual(
-        '/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/apikeys/',
+        '/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/api_keys/',
       )
 
       expect(fetch.mock.calls[0][1]).toEqual({
@@ -70,7 +70,7 @@ describe('<ApiKeysAdd /> helpers', () => {
     expect(fetch.mock.calls.length).toEqual(1)
 
     expect(fetch.mock.calls[0][0]).toEqual(
-      '/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/apikeys/',
+      '/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/api_keys/',
     )
 
     expect(mockFn).toHaveBeenCalledWith({

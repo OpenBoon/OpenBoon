@@ -60,7 +60,7 @@ describe('<DataSourcesMenu />', () => {
     expect(fetch.mock.calls.length).toEqual(1)
 
     expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/projects/${PROJECT_ID}/datasources/${DATA_SOURCE_ID}/`,
+      `/api/v1/projects/${PROJECT_ID}/data_sources/${DATA_SOURCE_ID}/`,
     )
 
     expect(fetch.mock.calls[0][1]).toEqual({

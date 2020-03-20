@@ -1,5 +1,6 @@
 import os
 
+import stringcase
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -81,7 +82,8 @@ class JobViewSet(BaseProjectViewSet):
         is_detail = detail if detail is not None else self.detail
         for _action in actions:
             if _action.detail == is_detail:
-                action_map[_action.url_name] = f'{item_url}{_action.url_path}/'
+                action_key = stringcase.camelcase(_action.url_path)
+                action_map[action_key] = f'{item_url}{_action.url_path}/'
         return action_map
 
     @action(detail=True, methods=['get'])
@@ -171,7 +173,7 @@ class JobViewSet(BaseProjectViewSet):
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'], name='Max Running Tasks')
-    def maxRunningTasks(self, request, project_pk, pk):
+    def max_running_tasks(self, request, project_pk, pk):
         """
         Sets the maximum number of running tasks for the given job.
 
@@ -197,7 +199,7 @@ class JobViewSet(BaseProjectViewSet):
         return Response(self._get_content(response))
 
     @action(detail=True, methods=['put'], name='Retry All Failures')
-    def retryAllFailures(self, request, project_pk, pk):
+    def retry_all_failures(self, request, project_pk, pk):
         """
         Finds every failed task in the given job and retries them.
 

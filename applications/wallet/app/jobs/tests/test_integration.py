@@ -284,7 +284,7 @@ class TestJobViewSet:
     def test_put_max_running_tasks_no_body(self, zmlp_project_user, project, api_client, job_pk):
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        response = api_client.put(reverse('job-maxRunningTasks',
+        response = api_client.put(reverse('job-max-running-tasks',
                                           kwargs={'project_pk': project.id, 'pk': job_pk}))
         assert response.status_code == 400
         assert response.json()['msg'] == 'Unable to find a valid `max_running_tasks` value to use.'
@@ -292,7 +292,7 @@ class TestJobViewSet:
     def test_put_max_running_tasks_bad_body(self, zmlp_project_user, project, api_client, job_pk):
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        response = api_client.put(reverse('job-maxRunningTasks',
+        response = api_client.put(reverse('job-max-running-tasks',
                                           kwargs={'project_pk': project.id, 'pk': job_pk}),
                                   {'max_running_tasks': 'asdf'})
         assert response.status_code == 400
@@ -325,7 +325,7 @@ class TestJobViewSet:
         monkeypatch.setattr(ZmlpClient, 'put', mock_api_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        response = api_client.put(reverse('job-maxRunningTasks',
+        response = api_client.put(reverse('job-max-running-tasks',
                                           kwargs={'project_pk': project.id,
                                                   'pk': job_pk}),
                                   {'max_running_tasks': '10'})
@@ -344,7 +344,7 @@ class TestJobViewSet:
         monkeypatch.setattr(ZmlpClient, 'put', mock_api_response)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
-        response = api_client.put(reverse('job-retryAllFailures',
+        response = api_client.put(reverse('job-retry-all-failures',
                                           kwargs={'project_pk': project.id,
                                                   'pk': job_pk}))
         assert response.status_code == 200

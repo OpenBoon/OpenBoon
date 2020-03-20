@@ -22,7 +22,7 @@ const JobErrorContent = () => {
     data: jobError,
     data: { jobName, fatal, message, taskId, assetId },
     revalidate,
-  } = useSWR(`/api/v1/projects/${projectId}/taskerrors/${errorId}/`)
+  } = useSWR(`/api/v1/projects/${projectId}/task_errors/${errorId}/`)
 
   return (
     <>
