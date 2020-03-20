@@ -3,6 +3,8 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectFilter
+import com.zorroa.archivist.domain.ProjectQuotas
+import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectStorageEntity
@@ -24,10 +26,12 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
+import java.util.Date
 import java.util.UUID
 
 /**
@@ -94,6 +98,25 @@ class ProjectController constructor(
     @ApiOperation("Retrieve my current project.")
     fun getMyProject(): Project {
         return projectService.get(getProjectId())
+    }
+
+    @PreAuthorize("hasAuthority('ProjectManage')")
+    @GetMapping(value = ["/api/v1/project/_quotas"])
+    @ApiOperation("Retrieve my current project quotas")
+    fun getMyProjectQuotas(): ProjectQuotas {
+        return projectService.getQuotas(getProjectId())
+    }
+
+    @PreAuthorize("hasAuthority('ProjectManage')")
+    @GetMapping(value = ["/api/v1/project/_quotas_time_series"])
+    @ApiOperation("Retrieve time serious measurements of quota counters")
+    fun getMyProjectQuotasTimeSeries(
+        @RequestParam("start", required = false) start: Long?,
+        @RequestParam("stop", required = false) stop: Long?
+    ): List<ProjectQuotasTimeSeriesEntry> {
+        return projectService.getQuotasTimeSeries(getProjectId(),
+            Date(start ?: System.currentTimeMillis() - 86400000L),
+            Date(stop ?: System.currentTimeMillis()))
     }
 
     @PreAuthorize("hasAuthority('ProjectManage')")

@@ -3,9 +3,11 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Project
 import com.zorroa.archivist.domain.ProjectFileLocator
+import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageSpec
+import com.zorroa.archivist.repository.ProjectQuotasDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.zmlp.util.Json
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.io.File
+import java.util.Date
 
 class ProjectControllerTests : MockMvcTest() {
 
@@ -28,6 +31,9 @@ class ProjectControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var projectStorageService: ProjectStorageService
+
+    @Autowired
+    lateinit var projectQuotasDao: ProjectQuotasDao
 
     @Before
     fun init() {
@@ -208,13 +214,51 @@ class ProjectControllerTests : MockMvcTest() {
     @Test
     fun testGetMyProjectSettings() {
         mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/project/_settings")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
+                MockMvcRequestBuilders.get("/api/v1/project/_settings")
+                    .headers(admin())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+            )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.defaultPipelineId", CoreMatchers.anything()))
             .andExpect(jsonPath("$.defaultIndexRouteId", CoreMatchers.anything()))
+            .andReturn()
+    }
+
+    @Test
+    fun testGetMyProjecQuotas() {
+        mvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/project/_quotas")
+                    .headers(admin())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+            )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.videoSecondsMax", CoreMatchers.anything()))
+            .andExpect(jsonPath("$.videoSecondsCount", CoreMatchers.anything()))
+            .andExpect(jsonPath("$.pageMax", CoreMatchers.anything()))
+            .andExpect(jsonPath("$.pageCount", CoreMatchers.anything()))
+            .andReturn()
+    }
+
+    @Test
+    fun testGetMyProjecQuotasTimeSeries() {
+        val counters = ProjectQuotaCounters()
+        counters.videoClipCount = 1
+        counters.pageCount = 1
+        counters.videoLength = 10.0
+        counters.imageFileCount = 1
+        counters.documentFileCount = 1
+        counters.videoFileCount = 1
+
+        projectQuotasDao.incrementTimeSeriesCounters(Date(), counters)
+
+        mvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/project/_quotas_time_series")
+                    .headers(admin())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+            )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$[0].videoSecondsCount", CoreMatchers.anything()))
+            .andExpect(jsonPath("$[0].pageCount", CoreMatchers.anything()))
             .andReturn()
     }
 

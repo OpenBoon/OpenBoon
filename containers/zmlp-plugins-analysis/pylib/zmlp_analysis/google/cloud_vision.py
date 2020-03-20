@@ -296,14 +296,25 @@ class CloudVisionDetectObjects(AbstractCloudVisionProcessor):
         """
         response = self.image_annotator.object_localization(image=image)
         objects = response.localized_object_annotations
-        struct = {}
-        keywords = []
-        for i, object in enumerate(objects):
-            # skipping null values prevent images from being omitted from zvi
-            if object.name:
-                keywords.append(object.name)
-                if self.arg_value("debug"):
-                    struct["pred" + str(i)] = object.name
-                    struct["prob" + str(i)] = object.score
-        struct["keywords"] = list(set(keywords))
-        asset.add_analysis("google.objectDetection", struct)
+
+        all_labels = []
+        for obj in objects:
+
+            # build the bounding poly which is not a rect.
+            poly = []
+            for i in range(0, 4):
+                poly.append(obj.bounding_poly.normalized_vertices[i].x)
+                poly.append(obj.bounding_poly.normalized_vertices[i].y)
+
+            element = Element("object",
+                              "gcp.object-detection",
+                              labels=[obj.name],
+                              rect=poly,
+                              score=round(obj.score, 3))
+            asset.add_element(element)
+            all_labels.append(obj.name)
+
+        asset.add_analysis("gcp.object-detection", {
+            "detected": len(objects),
+            "labels": all_labels
+        })
