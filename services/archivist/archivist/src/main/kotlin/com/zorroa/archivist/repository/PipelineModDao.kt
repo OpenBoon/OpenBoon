@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModFilter
+import com.zorroa.zmlp.service.jpa.StringListConverter
 import com.zorroa.zmlp.util.Json
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.RowMapper
@@ -64,12 +65,17 @@ class PipelineModCustomDaoImpl : PipelineModCustomDao, AbstractDao() {
     companion object {
         const val GET = "SELECT * FROM module"
         const val COUNT = "SELECT COUNT(1) FROM module"
+        private val converter = StringListConverter()
 
         private val MAPPER = RowMapper { rs, _ ->
+
             PipelineMod(
                 rs.getObject("pk_module") as UUID,
                 rs.getString("str_name"),
                 rs.getString("str_description"),
+                rs.getString("str_provider"),
+                rs.getString("str_category"),
+                converter.convertToEntityAttribute(rs.getString("str_supported_media")) ?: listOf(),
                 rs.getBoolean("bool_restricted"),
                 Json.Mapper.readValue(rs.getString("json_ops")),
                 rs.getLong("time_created"),

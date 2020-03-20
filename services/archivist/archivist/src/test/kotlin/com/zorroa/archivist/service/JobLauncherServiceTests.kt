@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetSpec
+import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.CredentialsSpec
 import com.zorroa.archivist.domain.CredentialsType
@@ -86,7 +87,7 @@ class JobLauncherServiceTests : AbstractTest() {
         val spec = AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
         spec.attrs = mapOf("analysis.zmlp.similarity.vector" to "AABBCC00")
 
-        val batchCreate = BatchCreateAssetsRequest(listOf(spec))
+        val batchCreate = BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed)
         assetService.batchCreate(batchCreate)
 
         val req = ReprocessAssetSearchRequest(

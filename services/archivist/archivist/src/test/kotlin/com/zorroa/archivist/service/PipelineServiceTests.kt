@@ -1,12 +1,14 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.ModStandards
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.SupportedMedia
 import com.zorroa.archivist.security.getProjectId
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -99,7 +101,11 @@ class PipelineServiceTests : AbstractTest() {
     }
 
     fun createTestModule(name: String): PipelineMod {
-        val modSpec = PipelineModSpec(name, "test", listOf(), false)
+        val modSpec = PipelineModSpec(name, "test",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
+            listOf(), false)
         val mod = pipelineModService.create(modSpec)
         entityManager.flush()
         return mod

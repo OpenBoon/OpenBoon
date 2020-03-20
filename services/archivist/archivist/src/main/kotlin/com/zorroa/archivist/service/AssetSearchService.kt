@@ -105,10 +105,14 @@ class AssetSearchServiceImpl : AssetSearchService {
             Json.serializeToString(searchSource)
         )
 
+        val outerQuery = QueryBuilders.boolQuery()
+        outerQuery.filter(QueryBuilders.termQuery("system.state", "Analyzed"))
+
         val ssb = SearchSourceBuilder.fromXContent(parser)
-        if (ssb.query() == null) {
-            ssb.query(QueryBuilders.matchAllQuery())
+        if (ssb.query() != null) {
+            outerQuery.must(ssb.query())
         }
+        ssb.query(outerQuery)
 
         if (logger.isDebugEnabled) {
             logger.debug("SEARCH : {}", Strings.toString(ssb, true, true))

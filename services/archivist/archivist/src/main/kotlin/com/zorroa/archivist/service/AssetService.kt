@@ -14,6 +14,7 @@ import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.Element
 import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.domain.FileTypes
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.ProcessorRef
@@ -114,7 +115,7 @@ interface AssetService {
      * Reindex a single asset.  The fully composed asset metadata must be provided,
      * not a partial update.
      */
-    fun index(id: String, doc: MutableMap<String, Any>): Response
+    fun index(id: String, doc: MutableMap<String, Any>, setAnalyzed: Boolean = false): Response
 
     /**
      * Update a group of assets utilizing a query and a script.
@@ -284,7 +285,9 @@ class AssetServiceImpl : AssetService {
         val assets = request.assets.map { spec ->
             val id = AssetIdBuilder(spec).build()
             assetIds.add(id)
-            assetSpecToAsset(id, spec, request.task)
+            val asset = assetSpecToAsset(id, spec, request.task)
+            asset.setAttr("system.state", request.state.name)
+            asset
         }
 
         val existingAssetIds = getValidAssetIds(assetIds)
@@ -327,11 +330,14 @@ class AssetServiceImpl : AssetService {
         return rest.client.lowLevelClient.performRequest(request)
     }
 
-    override fun index(id: String, doc: MutableMap<String, Any>): Response {
+    override fun index(id: String, doc: MutableMap<String, Any>, setAnalyzed: Boolean): Response {
         val rest = indexRoutingService.getProjectRestClient()
         val request = Request("PUT", "/${rest.route.indexName}/_doc/$id")
         val asset = Asset(id, doc)
         prepAssetForUpdate(asset)
+        if (setAnalyzed) {
+            asset.setAttr("system.state", AssetState.Analyzed.name)
+        }
         request.setJsonEntity(Json.serializeToString(asset.document))
         return rest.client.lowLevelClient.performRequest(request)
     }
@@ -625,7 +631,7 @@ class AssetServiceImpl : AssetService {
             asset.setAttr("source.filename", FileUtils.filename(spec.uri))
             asset.setAttr("source.extension", FileUtils.extension(spec.uri))
 
-            val mediaType = FileUtils.getMediaType(spec.uri)
+            val mediaType = FileTypes.getMediaType(spec.uri)
             asset.setAttr("source.mimetype", mediaType)
 
             asset.setAttr("system.projectId", getProjectId().toString())
