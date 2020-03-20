@@ -4,6 +4,7 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetMetrics
 import com.zorroa.archivist.domain.AssetSpec
+import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
@@ -210,8 +211,8 @@ class AssetServiceTests : AbstractTest() {
             assets = listOf(
                 AssetSpec("gs://cats/large-brown-cat.jpg"),
                 AssetSpec("gs://dogs/large-brown-dog.jpg")
-            )
-        )
+            ), state=AssetState.Analyzed)
+
         assetService.batchCreate(batchCreate)
         val rsp = assetService.deleteByQuery(
             mapOf("query" to mapOf("match_all" to mapOf<String, Any>()))

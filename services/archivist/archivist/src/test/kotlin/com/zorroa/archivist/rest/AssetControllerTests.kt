@@ -3,6 +3,7 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.AssetSpec
+import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.ProjectStorageCategory
@@ -64,7 +65,7 @@ class AssetControllerTests : MockMvcTest() {
     @Test
     fun testDeleteByQuery() {
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+        assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed))
 
         val payload = """{
                 "query": {
@@ -276,12 +277,12 @@ class AssetControllerTests : MockMvcTest() {
             """{"assets":[{"uri": "src/test/resources/test-data/toucan.jpg"}]}""".toByteArray()
         )
 
-        val rsp = mvc.perform(
-            multipart("/api/v3/assets/_batch_upload")
-                .file(body)
-                .file(file)
-                .headers(admin())
-        )
+        mvc.perform(
+                multipart("/api/v3/assets/_batch_upload")
+                    .file(body)
+                    .file(file)
+                    .headers(admin())
+            )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.created[0]", CoreMatchers.anything()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.failed.length()", CoreMatchers.equalTo(0)))
@@ -372,7 +373,7 @@ class AssetControllerTests : MockMvcTest() {
     @Test
     fun testSearchNullBody() {
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+        assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed))
 
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/assets/_search")
@@ -399,6 +400,7 @@ class AssetControllerTests : MockMvcTest() {
                     AssetSpec("https://i.imgur.com/SSN26nN.jpg"),
                     AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
                 )
+                , state = AssetState.Analyzed
             )
         )
 
@@ -504,6 +506,7 @@ class AssetControllerTests : MockMvcTest() {
                     AssetSpec("https://i.imgur.com/SSN26nN.jpg"),
                     AssetSpec("https://i.imgur.com/LRoLTlK.jpg")
                 )
+                , state = AssetState.Analyzed
             )
         )
 

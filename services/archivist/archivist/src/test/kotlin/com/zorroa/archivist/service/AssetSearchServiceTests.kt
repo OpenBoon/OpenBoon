@@ -35,7 +35,7 @@ class AssetSearchServiceTests : AbstractTest() {
         val asset = assetService.getAsset(id)
         asset.setAttr("analysis.zvi.similarity.simhash", "AABBCC00")
         asset.setAttr("analysis.zvi.label-detection.labels", labels)
-        assetService.index(id, asset.document)
+        assetService.index(id, asset.document, true)
 
         indexRoutingService.getProjectRestClient().refresh()
     }

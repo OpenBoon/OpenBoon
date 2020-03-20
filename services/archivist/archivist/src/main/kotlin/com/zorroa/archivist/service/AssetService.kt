@@ -115,7 +115,7 @@ interface AssetService {
      * Reindex a single asset.  The fully composed asset metadata must be provided,
      * not a partial update.
      */
-    fun index(id: String, doc: MutableMap<String, Any>): Response
+    fun index(id: String, doc: MutableMap<String, Any>, setAnalyzed: Boolean = false): Response
 
     /**
      * Update a group of assets utilizing a query and a script.
@@ -285,7 +285,9 @@ class AssetServiceImpl : AssetService {
         val assets = request.assets.map { spec ->
             val id = AssetIdBuilder(spec).build()
             assetIds.add(id)
-            assetSpecToAsset(id, spec, request.task)
+            val asset = assetSpecToAsset(id, spec, request.task)
+            asset.setAttr("system.state", request.state.name)
+            asset
         }
 
         val existingAssetIds = getValidAssetIds(assetIds)
@@ -328,11 +330,14 @@ class AssetServiceImpl : AssetService {
         return rest.client.lowLevelClient.performRequest(request)
     }
 
-    override fun index(id: String, doc: MutableMap<String, Any>): Response {
+    override fun index(id: String, doc: MutableMap<String, Any>, setAnalyzed: Boolean): Response {
         val rest = indexRoutingService.getProjectRestClient()
         val request = Request("PUT", "/${rest.route.indexName}/_doc/$id")
         val asset = Asset(id, doc)
         prepAssetForUpdate(asset)
+        if (setAnalyzed) {
+            asset.setAttr("system.state", AssetState.Analyzed.name)
+        }
         request.setJsonEntity(Json.serializeToString(asset.document))
         return rest.client.lowLevelClient.performRequest(request)
     }
