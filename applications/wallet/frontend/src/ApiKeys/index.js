@@ -5,6 +5,7 @@ import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
 import Table from '../Table'
 
+import ApiKeysCopy from './Copy'
 import ApiKeysRow from './Row'
 
 const ApiKeys = () => {
@@ -20,6 +21,8 @@ const ApiKeys = () => {
 
       <PageTitle>Project API Keys</PageTitle>
 
+      <ApiKeysCopy />
+
       <Tabs
         tabs={[
           { title: 'View all', href: '/[projectId]/api-keys' },
@@ -29,7 +32,7 @@ const ApiKeys = () => {
 
       <Table
         legend="Keys"
-        url={`/api/v1/projects/${projectId}/api_keys/`}
+        url={`/api/v1/projects/${projectId}/apikeys/`}
         columns={['API Key Name', 'Permissions', '#Actions#']}
         expandColumn={2}
         renderEmpty="No api keys"
