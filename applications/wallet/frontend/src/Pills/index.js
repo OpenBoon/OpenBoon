@@ -15,7 +15,9 @@ const Pills = ({ children }) => {
         borderRadius: constants.borderRadius.large,
         fontFamily: 'Roboto Condensed',
       }}>
-      {child.replace(/([A-Z])/g, match => ` ${match}`)}
+      {child.includes('_')
+        ? child.replace('_', ' ')
+        : child.replace(/([A-Z])/g, match => ` ${match}`)}
     </span>
   ))
 }

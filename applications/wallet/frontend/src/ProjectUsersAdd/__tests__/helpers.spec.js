@@ -1,6 +1,6 @@
 import projectUsersAdd from '../__mocks__/projectUsersAdd'
 
-import { onSubmit, onCopy } from '../helpers'
+import { onSubmit } from '../helpers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
@@ -16,11 +16,10 @@ describe('<ProjectUsersAdd /> helpers', () => {
         projectId: PROJECT_ID,
         state: {
           emails: 'jane@zorroa.com, joe@zorroa.com',
-          permissions: {
-            SuperAdmin: true,
-            ProjectAdmin: false,
-            AssetsRead: true,
-            AssetsImport: false,
+          roles: {
+            ML_Tools: true,
+            API_Keys: false,
+            User_Admin: true,
           },
         },
       })
@@ -41,11 +40,11 @@ describe('<ProjectUsersAdd /> helpers', () => {
           batch: [
             {
               email: 'jane@zorroa.com',
-              permissions: ['SuperAdmin', 'AssetsRead'],
+              roles: ['ML_Tools', 'User_Admin'],
             },
             {
               email: 'joe@zorroa.com',
-              permissions: ['SuperAdmin', 'AssetsRead'],
+              roles: ['ML_Tools', 'User_Admin'],
             },
           ],
         }),
@@ -66,11 +65,10 @@ describe('<ProjectUsersAdd /> helpers', () => {
         projectId: PROJECT_ID,
         state: {
           emails: 'jane@zorroa.com, joe@zorroa.com',
-          permissions: {
-            SuperAdmin: true,
-            ProjectAdmin: true,
-            AssetsRead: true,
-            AssetsImport: false,
+          roles: {
+            ML_Tools: true,
+            API_Keys: false,
+            User_Admin: true,
           },
         },
       })
@@ -86,22 +84,6 @@ describe('<ProjectUsersAdd /> helpers', () => {
           name: "This email doesn't work.",
         },
       })
-    })
-  })
-
-  describe('onCopy()', () => {
-    it('should copy text to clipboard', () => {
-      const mockRef = { current: { select: jest.fn(), blur: jest.fn() } }
-
-      const mockFn = jest.fn()
-
-      Object.defineProperty(document, 'execCommand', { value: mockFn })
-
-      onCopy({ inputRef: mockRef })
-
-      expect(mockRef.current.select).toHaveBeenCalled()
-      expect(mockFn).toHaveBeenCalledWith('copy')
-      expect(mockRef.current.blur).toHaveBeenCalled()
     })
   })
 })

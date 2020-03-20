@@ -4,6 +4,7 @@ import useSWR from 'swr'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
+import FormAlert from '../FormAlert'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import CheckboxGroup from '../Checkbox/Group'
@@ -17,10 +18,10 @@ import ProjectUsersAddCopyLink from './CopyLink'
 
 const INITIAL_STATE = {
   emails: '',
-  permissions: {},
+  roles: {},
   succeeded: [],
   failed: [],
-  errors: {},
+  errors: { global: '' },
 }
 
 const reducer = (state, action) => ({ ...state, ...action })
@@ -31,8 +32,8 @@ const ProjectUsersAddForm = () => {
   } = useRouter()
 
   const {
-    data: { results: permissions },
-  } = useSWR(`/api/v1/projects/${projectId}/permissions/`)
+    data: { results: roles },
+  } = useSWR(`/api/v1/projects/${projectId}/roles/`)
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
@@ -42,7 +43,7 @@ const ProjectUsersAddForm = () => {
         projectId={projectId}
         succeeded={state.succeeded}
         failed={state.failed}
-        permissions={state.permissions}
+        roles={state.roles}
         onReset={() => dispatch(INITIAL_STATE)}
       />
     )
@@ -51,8 +52,17 @@ const ProjectUsersAddForm = () => {
   return (
     <div>
       <SectionTitle>Add User(s) to Project</SectionTitle>
+
       <ProjectUsersAddCopyLink />
+
       <Form>
+        <FormAlert
+          setErrorMessage={() =>
+            dispatch({ errors: { ...state.errors, global: '' } })
+          }>
+          {state.errors.global}
+        </FormAlert>
+
         <Input
           autoFocus
           id="emails"
@@ -66,13 +76,11 @@ const ProjectUsersAddForm = () => {
         />
 
         <CheckboxGroup
-          legend="Add Permissions"
-          onClick={permission =>
-            dispatch({ permissions: { ...state.permissions, ...permission } })
-          }
-          options={permissions.map(({ name, description }) => ({
+          legend="Add Roles"
+          onClick={role => dispatch({ roles: { ...state.roles, ...role } })}
+          options={roles.map(({ name, description }) => ({
             value: name,
-            label: name.replace(/([A-Z])/g, match => ` ${match}`),
+            label: name.replace('_', ' '),
             icon: '',
             legend: description,
             initialValue: false,

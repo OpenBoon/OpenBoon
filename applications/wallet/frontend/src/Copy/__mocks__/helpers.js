@@ -1,13 +1,4 @@
 /**
- * onSubmit
- */
-
-export const onSubmit = ({ dispatch }) =>
-  dispatch({
-    apikey: { permissions: ['ApiKeyManage'], secretKey: 'FooBarSecretKey' },
-  })
-
-/**
  * onCopy
  */
 
