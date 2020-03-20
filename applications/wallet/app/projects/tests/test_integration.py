@@ -87,7 +87,7 @@ def test_project_serializer_detail(project):
     assert data['apikeys'] == f'/api/v1/projects/{project.id}/api_keys/'
     assert data['permissions'] == f'/api/v1/projects/{project.id}/permissions/'
     assert data['tasks'] == f'/api/v1/projects/{project.id}/tasks/'
-    assert data['taskerrors'] == f'/api/v1/projects/{project.id}/taskerrors/'
+    assert data['taskerrors'] == f'/api/v1/projects/{project.id}/task_errors/'
     assert data['subscriptions'] == f'/api/v1/projects/{project.id}/subscriptions/'
 
 
