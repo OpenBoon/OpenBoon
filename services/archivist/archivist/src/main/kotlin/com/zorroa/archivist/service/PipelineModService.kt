@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModFilter
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
+import com.zorroa.archivist.domain.SupportedMedia
 import com.zorroa.archivist.domain.getStandardModules
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.PipelineModCustomDao
@@ -109,6 +110,9 @@ class PipelineModServiceImpl(
             id,
             spec.name,
             spec.description,
+            spec.provider,
+            spec.category,
+            spec.supportedMedia.map { it.name },
             spec.restricted,
             spec.ops,
             time, time, actor, actor
@@ -162,7 +166,9 @@ class PipelineModServiceImpl(
                         create(mod)
                     } else {
                         val update = PipelineModUpdate(
-                            pmod.name, pmod.description, pmod.restricted, pmod.ops
+                            pmod.name, pmod.description, pmod.provider,
+                            pmod.category, pmod.supportedMedia.map { SupportedMedia.valueOf(it) },
+                            pmod.restricted, pmod.ops
                         )
                         update(pmod.id, update)
                     }
