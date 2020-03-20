@@ -78,7 +78,7 @@ app.prepare().then(() => {
     server.post(`${PID_API_BASE}/datasources/`, success())
 
     server.get(`${PID_API_BASE}/api_keys/`, mock(apiKeys))
-    server.post(`${PID_API_BASE}/apikeys/`, mock(apiKey))
+    server.post(`${PID_API_BASE}/api_keys/`, mock(apiKey))
 
     server.get(`${PID_API_BASE}/users/`, mock(projectUsers))
     server.get(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
