@@ -29,6 +29,7 @@ django-rest-auth = "*"
 zmlp = {path = "./../../client/python"}
 backoff = "*"
 django-multiselectfield = "*"
+stringcase = "*"
 
 [requires]
 python_version = "3.7"

@@ -8,7 +8,7 @@ export const onSubmit = async ({
   try {
     const permissions = Object.keys(p).filter(key => p[key])
 
-    const apikey = await fetcher(`/api/v1/projects/${projectId}/apikeys/`, {
+    const apikey = await fetcher(`/api/v1/projects/${projectId}/api_keys/`, {
       method: 'POST',
       body: JSON.stringify({ name, permissions }),
     })

@@ -101,7 +101,7 @@ describe('<DataSourcesAddForm />', () => {
     expect(fetch.mock.calls.length).toEqual(2)
 
     expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/projects/${PROJECT_ID}/datasources/`,
+      `/api/v1/projects/${PROJECT_ID}/data_sources/`,
     )
 
     expect(fetch.mock.calls[0][1]).toEqual({

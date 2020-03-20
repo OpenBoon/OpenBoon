@@ -83,10 +83,11 @@ def test_project_serializer_detail(project):
     assert data['users'] == f'/api/v1/projects/{project.id}/users/'
     assert data['roles'] == f'/api/v1/projects/{project.id}/roles/'
     assert data['assets'] == f'/api/v1/projects/{project.id}/assets/'
-    assert data['apikeys'] == f'/api/v1/projects/{project.id}/apikeys/'
+    assert data['datasources'] == f'/api/v1/projects/{project.id}/data_sources/'
+    assert data['apikeys'] == f'/api/v1/projects/{project.id}/api_keys/'
     assert data['permissions'] == f'/api/v1/projects/{project.id}/permissions/'
     assert data['tasks'] == f'/api/v1/projects/{project.id}/tasks/'
-    assert data['taskerrors'] == f'/api/v1/projects/{project.id}/taskerrors/'
+    assert data['taskerrors'] == f'/api/v1/projects/{project.id}/task_errors/'
     assert data['subscriptions'] == f'/api/v1/projects/{project.id}/subscriptions/'
 
 
