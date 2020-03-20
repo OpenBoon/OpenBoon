@@ -73,7 +73,7 @@ app.prepare().then(() => {
       mock(jobErrorNonFatal),
     )
 
-    server.get(`${PID_API_BASE}/datasources/:dataSourceId/`, mock(dataSource))
+    server.get(`${PID_API_BASE}/data_sources/:dataSourceId/`, mock(dataSource))
     server.get(`${PID_API_BASE}/data_sources/`, mock(dataSources))
     server.post(`${PID_API_BASE}/data_sources/`, success())
 
