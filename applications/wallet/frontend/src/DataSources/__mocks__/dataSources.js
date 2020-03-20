@@ -16,7 +16,7 @@ const dataSources = {
       actorCreated: 'admin-key',
       actorModified: 'admin-key',
       url:
-        'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/datasources/2f0de857-95fd-120e-85f3-0242ac120002/',
+        'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/data_sources/2f0de857-95fd-120e-85f3-0242ac120002/',
     },
     {
       id: '2f0de85b-95fd-120e-85f3-0242ac120002',
@@ -31,7 +31,7 @@ const dataSources = {
       actorCreated: 'admin-key',
       actorModified: 'admin-key',
       url:
-        'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/datasources/2f0de85b-95fd-120e-85f3-0242ac120002/',
+        'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/data_sources/2f0de85b-95fd-120e-85f3-0242ac120002/',
     },
     {
       id: '2f0de85f-95fd-120e-85f3-0242ac120002',
@@ -46,7 +46,7 @@ const dataSources = {
       actorCreated: 'admin-key',
       actorModified: 'admin-key',
       url:
-        'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/datasources/2f0de85f-95fd-120e-85f3-0242ac120002/',
+        'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/data_sources/2f0de85f-95fd-120e-85f3-0242ac120002/',
     },
     {
       id: '3eee30e4-3aaf-1933-b424-0242ac12000e',
@@ -61,7 +61,7 @@ const dataSources = {
       actorCreated: 'admin-key',
       actorModified: 'admin-key',
       url:
-        'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/datasources/3eee30e4-3aaf-1933-b424-0242ac12000e/',
+        'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/data_sources/3eee30e4-3aaf-1933-b424-0242ac12000e/',
     },
     {
       id: '3eee30e8-3aaf-1933-b424-0242ac12000e',
@@ -76,7 +76,7 @@ const dataSources = {
       actorCreated: 'admin-key',
       actorModified: 'admin-key',
       url:
-        'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/datasources/3eee30e8-3aaf-1933-b424-0242ac12000e/',
+        'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/data_sources/3eee30e8-3aaf-1933-b424-0242ac12000e/',
     },
   ],
 }
