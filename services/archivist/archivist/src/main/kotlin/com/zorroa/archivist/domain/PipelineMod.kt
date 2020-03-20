@@ -5,12 +5,14 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType
 import com.zorroa.archivist.repository.KDaoFilter
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.archivist.util.JdbcUtils
+import com.zorroa.zmlp.service.jpa.StringListConverter
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
 import java.util.UUID
 import javax.persistence.Column
+import javax.persistence.Convert
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
@@ -33,6 +35,19 @@ class PipelineMod(
     @Column(name = "str_description")
     @ApiModelProperty("A description of what the module does")
     val description: String,
+
+    @ApiModelProperty("The provider or maintainer of module.")
+    @Column(name = "str_provider")
+    val provider: String,
+
+    @ApiModelProperty("The service or type of ML, eg \"Google Vision\")")
+    @Column(name = "str_category")
+    val category: String,
+
+    @ApiModelProperty("The general types of media this module can handle.")
+    @Column(name = "str_supported_media")
+    @Convert(converter = StringListConverter::class)
+    val supportedMedia: List<String>,
 
     @Column(name = "bool_restricted")
     @ApiModelProperty("This module is only available if granted to a project.")
@@ -64,6 +79,9 @@ class PipelineMod(
         return PipelineMod(id,
             update.name,
             update.description,
+            update.provider,
+            update.category,
+            update.supportedMedia.map { it.name },
             update.restricted,
             update.ops,
             timeCreated,
@@ -132,6 +150,15 @@ class PipelineModUpdate(
     @ApiModelProperty("A description of what the module does")
     val description: String,
 
+    @ApiModelProperty("The provider or maintainer of module.")
+    val provider: String,
+
+    @ApiModelProperty("The service or type of ML, eg \"Google Vision\")")
+    val category: String,
+
+    @ApiModelProperty("The types of media this module can handle.")
+    val supportedMedia: List<SupportedMedia>,
+
     @ApiModelProperty("This module is only available if granted to a project.")
     val restricted: Boolean,
 
@@ -147,6 +174,15 @@ class PipelineModSpec(
 
     @ApiModelProperty("A description of what the module does")
     val description: String,
+
+    @ApiModelProperty("The provider or maintainer of module.")
+    val provider: String,
+
+    @ApiModelProperty("The service or type of ML, eg \"Google Vision\")")
+    val category: String,
+
+    @ApiModelProperty("The types of media this module can handle.")
+    val supportedMedia: List<SupportedMedia>,
 
     @ApiModelProperty("A list of operations to apply to the pipeline")
     val ops: List<ModOp>,

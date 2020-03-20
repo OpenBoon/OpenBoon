@@ -8,14 +8,25 @@ object StandardContainers {
     const val ANALYSIS = "zmlp/plugins-analysis"
 }
 
+object ModStandards {
+    const val CLARIFAI = "Clarifai"
+    const val ZORROA = "Zorroa"
+    const val ZORROA_VINT = "Visual Intelligence"
+    const val GOOGLE = "Google"
+    const val GOOGLE_VISION = "Google Vision"
+}
+
 /**
  * Return a list of the standard pipeline modules.
  */
 fun getStandardModules(): List<PipelineModSpec> {
     return listOf(
         PipelineModSpec(
-            "zvi-doc-page-extraction",
+            "zvi-document-page-extraction",
             "Extract all pages in MS Office/PDF documents into separate assets.",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
                     ModOpType.SET_ARGS,
@@ -25,9 +36,12 @@ fun getStandardModules(): List<PipelineModSpec> {
             )
         ),
         PipelineModSpec(
-            "zvi-image-layer-extraction",
+            "zvi-image-page-extraction",
             "Extract all layers in multi page image formats such as tiff and psd as as " +
                 "separate assets",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Images),
             listOf(
                 ModOp(
                     ModOpType.SET_ARGS,
@@ -37,8 +51,11 @@ fun getStandardModules(): List<PipelineModSpec> {
             )
         ),
         PipelineModSpec(
-            "zvi-video-shot-extraction",
+            "zvi-video-shot-timeline",
             "Break video files into individual assets based on a shot detection algorithm.",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Video),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -52,6 +69,9 @@ fun getStandardModules(): List<PipelineModSpec> {
         PipelineModSpec(
             "zvi-object-detection",
             "Detect everyday objects in images, video, and documents.",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Images, SupportedMedia.Documents, SupportedMedia.Video),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -65,6 +85,9 @@ fun getStandardModules(): List<PipelineModSpec> {
         PipelineModSpec(
             "zvi-label-detection",
             "Generate keyword labels for image, video, and documents.",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Images, SupportedMedia.Documents, SupportedMedia.Video),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -76,8 +99,11 @@ fun getStandardModules(): List<PipelineModSpec> {
             )
         ),
         PipelineModSpec(
-            "clarifai-predict",
-            "Clarifai prediction API, standard model.",
+            "clarifai-predict-general",
+            "Clarifai prediction API with general model.",
+            ModStandards.CLARIFAI,
+            "Clarifai General Model",
+            listOf(SupportedMedia.Images, SupportedMedia.Documents, SupportedMedia.Video),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -92,6 +118,9 @@ fun getStandardModules(): List<PipelineModSpec> {
             "gcp-label-detection",
             "Utilize Google Cloud Vision label detection to detect and extract information about " +
                 "entities in an image, across a broad group of categories.",
+            ModStandards.GOOGLE,
+            ModStandards.GOOGLE_VISION,
+            listOf(SupportedMedia.Images, SupportedMedia.Documents, SupportedMedia.Video),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -106,6 +135,9 @@ fun getStandardModules(): List<PipelineModSpec> {
             "gcp-object-detection",
             "Utilize Google Cloud Vision label detection to detect and extract information about " +
                 "entities in an image, across a broad group of categories.",
+            ModStandards.GOOGLE,
+            ModStandards.GOOGLE_VISION,
+            listOf(SupportedMedia.Images, SupportedMedia.Documents, SupportedMedia.Video),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -113,17 +145,6 @@ fun getStandardModules(): List<PipelineModSpec> {
                         ProcessorRef("zmlp_analysis.google.CloudVisionDetectLabels",
                             StandardContainers.ANALYSIS)
                     )
-                )
-            )
-        ),
-        PipelineModSpec(
-            "zvi-disable-analysis",
-            "Disable all non-core processors",
-            listOf(
-                ModOp(
-                    ModOpType.REMOVE,
-                    null,
-                    OpFilter(OpFilterType.NOT_REGEX, "zmlp_core.*")
                 )
             )
         )

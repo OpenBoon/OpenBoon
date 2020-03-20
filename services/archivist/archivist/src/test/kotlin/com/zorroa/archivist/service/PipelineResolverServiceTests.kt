@@ -3,12 +3,14 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
+import com.zorroa.archivist.domain.ModStandards
 import com.zorroa.archivist.domain.OpFilter
 import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.SupportedMedia
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import javax.persistence.EntityManager
@@ -95,6 +97,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveLastOp() {
         val spec1 = PipelineModSpec(
             "append", "A append module",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -104,6 +109,9 @@ class PipelineResolverServiceTests : AbstractTest() {
         )
         val spec2 = PipelineModSpec(
             "last", "A last module",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
                     ModOpType.LAST,
@@ -129,6 +137,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveAppendOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -144,6 +155,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolvePrependOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -163,6 +177,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveRemoveOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
                     ModOpType.REMOVE,
@@ -180,6 +197,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveReplaceOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
                     ModOpType.REPLACE,
@@ -197,6 +217,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveAddBeforeOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
                     ModOpType.ADD_BEFORE,
@@ -214,6 +237,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveAddAfterOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
                     ModOpType.ADD_AFTER,
@@ -231,6 +257,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveSetArgsOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
                     ModOpType.SET_ARGS,
@@ -248,6 +277,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveRegexMatcher() {
         val spec = PipelineModSpec(
             "test", "A test module",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
                     ModOpType.REMOVE,
@@ -266,6 +298,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun testResolveMaxApplyCount() {
         val spec = PipelineModSpec(
             "test", "A test module",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
                     ModOpType.REMOVE,
