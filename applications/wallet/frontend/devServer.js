@@ -74,7 +74,7 @@ app.prepare().then(() => {
     )
 
     server.get(`${PID_API_BASE}/datasources/:dataSourceId/`, mock(dataSource))
-    server.get(`${PID_API_BASE}/datasources/`, mock(dataSources))
+    server.get(`${PID_API_BASE}/data_sources/`, mock(dataSources))
     server.post(`${PID_API_BASE}/data_sources/`, success())
 
     server.get(`${PID_API_BASE}/api_keys/`, mock(apiKeys))
