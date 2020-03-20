@@ -53,8 +53,8 @@ object FileTypes {
     val mediaTypes = mapOf(
         "exr" to "image/x-exr",
         "dpx" to "image/x-dpx",
-        "rla" to  "image/x-rla",
-        "cin" to  "image/x-cineon"
+        "rla" to "image/x-rla",
+        "cin" to "image/x-cineon"
     )
 
     fun isSupported(ext: String): Boolean {
@@ -107,11 +107,10 @@ object FileTypes {
         }
     }
 
-    fun getMediaType(ext: String) : String {
+    fun getMediaType(ext: String): String {
         val filename = if ("." in ext) {
             ext
-        }
-        else {
+        } else {
             "file.$ext"
         }
         return mediaTypes[ext] ?: tika.detect(filename)
