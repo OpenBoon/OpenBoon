@@ -228,6 +228,11 @@ class ProcessorWrapper(object):
         consumer = AssetConsumer(self.reactor, settings)
         start_time = time.monotonic()
         try:
+            # If there are no file types then a bunch of garbage can get
+            # imported, like .ds_store, etc.
+            if not consumer.file_types:
+                raise ValueError("No file types were supplied in job settings property")
+
             if self.instance:
                 self.instance.generate(consumer)
                 total_time = round(time.monotonic() - start_time, 2)
@@ -236,6 +241,7 @@ class ProcessorWrapper(object):
             else:
                 logger.warning("Generate warning, instance for '{}' does not exist."
                                .format(self.ref))
+
         except ZmlpFatalProcessorException as upe:
             # Set the asset to be skipped for further processing
             # It will not be included in result
@@ -244,7 +250,7 @@ class ProcessorWrapper(object):
                                upe, True, "execute", sys.exc_info()[2])
         except Exception as e:
             self.increment_stat("error_count")
-            self.reactor.error(None, self.instance, e, False, "execute", sys.exc_info()[2])
+            self.reactor.error(None, self.instance, e, True, "generate", sys.exc_info()[2])
         finally:
             consumer.check_expand(True)
             self.reactor.write_event("finished", {})
@@ -441,13 +447,15 @@ class AssetConsumer(object):
 
         """
         self.reactor = reactor
-        self.file_types = {ft.lower() for ft in settings.get("fileTypes", [])}
+        self.file_types = frozenset([ft.lower() for ft in settings.get("fileTypes", [])])
         self.batch_size = int(settings.get("batchSize", reactor.default_batch_size))
         self.frame_count = 0
         self.execute_count = 0
         self.expand_count = 0
         self.exit_status = 0
         self.expand = []
+
+        logger.info("File types filters: {}".format(self.file_types))
 
     def accept(self, asset):
         """
@@ -502,6 +510,7 @@ def is_file_type_allowed(asset, file_types):
             logger.warning('Failed to parse extension for file: {}'.format(asset.uri, e))
             return False
     else:
+        # Have to return true here for processors with no type filters.
         return True
 
 

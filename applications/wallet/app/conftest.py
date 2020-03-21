@@ -56,7 +56,8 @@ def zmlp_apikey():
 @pytest.fixture
 def zmlp_project_membership(project, user, zmlp_apikey):
     apikey = b64encode(zmlp_apikey).decode('utf-8')
-    return Membership.objects.create(user=user, project=project, apikey=apikey)
+    return Membership.objects.create(user=user, project=project, apikey=apikey,
+                                     roles=['ML_Tools', 'User_Admin'])
 
 
 @pytest.fixture
@@ -73,7 +74,8 @@ def project_zero():
 @pytest.fixture
 def project_zero_membership(project_zero, superuser, zmlp_apikey):
     apikey = b64encode(zmlp_apikey).decode('utf-8')
-    return Membership.objects.create(user=superuser, project=project_zero, apikey=apikey)
+    return Membership.objects.create(user=superuser, project=project_zero,
+                                     apikey=apikey, roles=['ML_Tools', 'API_Key', 'User_Admin'])
 
 
 @pytest.fixture
@@ -94,3 +96,9 @@ def zvi_project_membership(project, user):
 @pytest.fixture
 def zvi_project_user(user, zvi_project_membership):
     return user
+
+
+@pytest.fixture
+def login(api_client, zmlp_project_user):
+    api_client.force_authenticate(zmlp_project_user)
+    api_client.force_login(zmlp_project_user)

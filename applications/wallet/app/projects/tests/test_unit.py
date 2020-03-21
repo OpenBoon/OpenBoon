@@ -11,12 +11,16 @@ def project():
     return Project(id=uuid4(), name='butts')
 
 
+@pytest.fixture
+def user():
+    return User(username='fakey')
+
+
 def test_project_str(project):
     assert str(project) == 'butts'
 
 
-def test_membership_str(project):
-    user = User(username='fakey')
+def test_membership_str(user, project):
     membership = Membership(user=user, project=project)
     assert str(membership) == 'butts - fakey'
 

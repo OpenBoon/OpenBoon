@@ -68,4 +68,12 @@ class Clip(
         pile = pileId
         return pileId
     }
+
+    companion object {
+
+        /**
+         * The name of a full video clip.
+         */
+        const val TYPE_FULL = "full"
+    }
 }

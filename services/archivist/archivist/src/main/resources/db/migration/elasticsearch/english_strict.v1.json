@@ -110,6 +110,23 @@
                   }
                 }
               },
+              "object-detection": {
+                "dynamic": "strict",
+                "properties": {
+                  "detected": {
+                    "type": "integer"
+                  },
+                  "labels": {
+                    "type": "keyword",
+                    "fields": {
+                      "fulltext": {
+                        "type": "text",
+                        "analyzer": "default"
+                      }
+                    }
+                  }
+                }
+              },
               "label-detection": {
                 "dynamic": "strict",
                 "properties": {

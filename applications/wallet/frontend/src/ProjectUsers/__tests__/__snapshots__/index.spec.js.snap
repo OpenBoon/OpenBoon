@@ -90,7 +90,7 @@ Array [
       <div
         className="emotion-1"
       >
-        User Permissions Saved
+        User Roles Saved
       </div>
     </div>
   </div>,
@@ -444,7 +444,7 @@ Array [
           <th
             className="emotion-6"
           >
-            Permissions
+            Roles
           </th>
           <th
             className="emotion-6"
@@ -469,12 +469,12 @@ Array [
             <span
               className="emotion-10"
             >
-               Api Key Manage
+              ML Tools
             </span>
             <span
               className="emotion-10"
             >
-               Project Manage
+              API Keys
             </span>
           </td>
           <td />
@@ -871,7 +871,7 @@ Array [
           <th
             className="emotion-6"
           >
-            Permissions
+            Roles
           </th>
           <th
             className="emotion-6"
@@ -1003,7 +1003,7 @@ Array [
       <div
         className="emotion-1"
       >
-        User Permissions Saved
+        User Roles Saved
       </div>
     </div>
   </div>,
@@ -1412,7 +1412,7 @@ Array [
           <th
             className="emotion-6"
           >
-            Permissions
+            Roles
           </th>
           <th
             className="emotion-6"
@@ -1437,12 +1437,12 @@ Array [
             <span
               className="emotion-10"
             >
-               Api Key Manage
+              ML Tools
             </span>
             <span
               className="emotion-10"
             >
-               Project Manage
+              API Keys
             </span>
           </td>
           <td>

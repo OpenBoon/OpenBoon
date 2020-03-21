@@ -5,11 +5,13 @@ import com.zorroa.archivist.domain.OpFilter
 import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
+import com.zorroa.archivist.domain.ModStandards
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModFilter
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.SupportedMedia
 import com.zorroa.archivist.repository.PipelineModDao
 import com.zorroa.zmlp.util.Json
 import org.junit.Before
@@ -51,7 +53,11 @@ class PipelineModServiceTests : AbstractTest() {
             OpFilter(OpFilterType.SUBSTR, "OfficeImporter")
         )
 
-        spec = PipelineModSpec("test", "A test module", listOf(op1, op2))
+        spec = PipelineModSpec("test", "A test module",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
+            listOf(op1, op2))
         mod = pipelineModService.create(spec)
     }
 
@@ -70,6 +76,9 @@ class PipelineModServiceTests : AbstractTest() {
         val update = PipelineModUpdate(
             "hodoor",
             "spock",
+            ModStandards.ZORROA,
+            ModStandards.ZORROA_VINT,
+            listOf(SupportedMedia.Documents),
             true,
             listOf(ModOp(ModOpType.PREPEND, listOf(ProcessorRef("foo", "zmlp-plugins-foo"))))
         )

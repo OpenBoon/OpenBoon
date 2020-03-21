@@ -21,6 +21,7 @@ import projectUser from './src/ProjectUser/__mocks__/projectUser'
 import projectUsersAdd from './src/ProjectUsersAdd/__mocks__/projectUsersAdd'
 import assets from './src/Assets/__mocks__/assets'
 import subscriptions from './src/Subscriptions/__mocks__/subscriptions'
+import roles from './src/Roles/__mocks__/roles'
 
 const { STAGING, SLOW, MOCKED } = process.env
 
@@ -49,7 +50,7 @@ app.prepare().then(() => {
     server.post('/api/v1/password/reset/', success())
     server.get('/api/v1/projects/:projectId', mock(project))
     server.get(
-      '/api/v1/projects/:projectId/taskerrors/:errorId/',
+      '/api/v1/projects/:projectId/task_errors/:errorId/',
       mock(jobErrorNonFatal),
     )
     server.get(
@@ -73,12 +74,12 @@ app.prepare().then(() => {
       mock(jobErrorNonFatal),
     )
 
-    server.get(`${PID_API_BASE}/datasources/:dataSourceId/`, mock(dataSource))
-    server.get(`${PID_API_BASE}/datasources/`, mock(dataSources))
-    server.post(`${PID_API_BASE}/datasources/`, success())
+    server.get(`${PID_API_BASE}/data_sources/:dataSourceId/`, mock(dataSource))
+    server.get(`${PID_API_BASE}/data_sources/`, mock(dataSources))
+    server.post(`${PID_API_BASE}/data_sources/`, success())
 
-    server.get(`${PID_API_BASE}/apikeys/`, mock(apiKeys))
-    server.post(`${PID_API_BASE}/apikeys/`, mock(apiKey))
+    server.get(`${PID_API_BASE}/api_keys/`, mock(apiKeys))
+    server.post(`${PID_API_BASE}/api_keys/`, mock(apiKey))
 
     server.get(`${PID_API_BASE}/users/`, mock(projectUsers))
     server.get(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
@@ -88,6 +89,7 @@ app.prepare().then(() => {
 
     server.get(`${PID_API_BASE}/assets/`, mock(assets))
     server.get(`${PID_API_BASE}/subscriptions/`, mock(subscriptions))
+    server.get(`${PID_API_BASE}/roles/`, mock(roles))
   }
 
   // Proxy API calls

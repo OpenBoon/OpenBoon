@@ -1,6 +1,6 @@
 import apiKey from '../../ApiKey/__mocks__/apiKey'
 
-import { onSubmit, onCopy } from '../helpers'
+import { onSubmit } from '../helpers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
@@ -28,7 +28,7 @@ describe('<ApiKeysAdd /> helpers', () => {
       expect(fetch.mock.calls.length).toEqual(1)
 
       expect(fetch.mock.calls[0][0]).toEqual(
-        '/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/apikeys/',
+        '/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/api_keys/',
       )
 
       expect(fetch.mock.calls[0][1]).toEqual({
@@ -70,29 +70,13 @@ describe('<ApiKeysAdd /> helpers', () => {
     expect(fetch.mock.calls.length).toEqual(1)
 
     expect(fetch.mock.calls[0][0]).toEqual(
-      '/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/apikeys/',
+      '/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/api_keys/',
     )
 
     expect(mockFn).toHaveBeenCalledWith({
       errors: {
         name: 'This API key name is already in use.',
       },
-    })
-  })
-
-  describe('onCopy()', () => {
-    it('should copy text to clipboard', () => {
-      const mockRef = { current: { select: jest.fn(), blur: jest.fn() } }
-
-      const mockFn = jest.fn()
-
-      Object.defineProperty(document, 'execCommand', { value: mockFn })
-
-      onCopy({ textareaRef: mockRef })
-
-      expect(mockRef.current.select).toHaveBeenCalled()
-      expect(mockFn).toHaveBeenCalledWith('copy')
-      expect(mockRef.current.blur).toHaveBeenCalled()
     })
   })
 })

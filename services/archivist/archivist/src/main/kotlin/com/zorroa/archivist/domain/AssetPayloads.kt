@@ -71,7 +71,12 @@ class BatchCreateAssetsRequest(
 
     @JsonIgnore
     @ApiModelProperty("The taskId that is creating the assets via expand.", hidden = true)
-    val task: InternalTask? = null
+    val task: InternalTask? = null,
+
+    @JsonIgnore
+    @ApiModelProperty("The initial state of the asset", hidden = true)
+    val state: AssetState = AssetState.Pending
+
 )
 
 @ApiModel("Batch Create Assets Response",

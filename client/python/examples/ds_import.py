@@ -11,13 +11,17 @@ def main():
                         help="a DS name and url, like gs://zorroa-dev-data")
     parser.add_argument('-m', '--module', action='append',
                         help='Modules to assign to the DS')
+    parser.add_argument('-t', '--types', action='append',
+                        choices=['images', 'videos', 'documents'],
+                        help='File extensions to import')
 
     args = parser.parse_args()
 
     app = app_from_env()
     ds = app.datasource.create_datasource(args.create[0],
                                           args.create[1],
-                                          args.module)
+                                          args.module,
+                                          file_types=args.types)
     app.datasource.import_files(ds)
 
 

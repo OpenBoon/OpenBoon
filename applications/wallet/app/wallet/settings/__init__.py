@@ -232,3 +232,17 @@ if ENVIRONMENT == 'staging':
         'http://localhost:3000',
     ]
     CORS_ALLOW_CREDENTIALS = True
+
+# Roles & Permissions Mapping
+# Each Role is required to have at least one permission assigned to it.
+ROLES = [
+    {'name': 'ML_Tools',
+     'description': 'Provides access to the Job Queue, Data Sources, and Visualizer.',
+     'permissions': ['AssetsRead', 'AssetsImport', 'AssetsDelete']},
+    {'name': 'API_Keys',
+     'description': 'Provides access to API Key provisioning.',
+     'permissions': ['ProjectManage']},
+    {'name': 'User_Admin',
+     'description': 'Provides access to User Administration for a Project.',
+     'permissions': ['ProjectManage']},
+]

@@ -39,7 +39,7 @@ def test_apikey_url_generation(data, context):
     serializer = ApikeySerializer(data=data, context=context)
     assert serializer.is_valid()
     assert serializer.data['url'].endswith(
-        f'api/v1/projects/id/apikeys/{serializer.data["id"]}/'
+        f'api/v1/projects/id/api_keys/{serializer.data["id"]}/'
     )
 
 

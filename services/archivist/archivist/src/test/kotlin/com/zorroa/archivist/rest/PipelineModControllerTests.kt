@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.OpFilter
 import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
+import com.zorroa.archivist.domain.ModStandards
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
 import com.zorroa.archivist.domain.ProcessorRef
@@ -28,7 +29,11 @@ class PipelineModControllerTests : MockMvcTest() {
     lateinit var pipelineModService: PipelineModService
 
     val spec = PipelineModSpec(
-        "test", "A test module", listOf(
+        "test", "A test module",
+        ModStandards.ZORROA,
+        ModStandards.ZORROA_VINT,
+        listOf(),
+        listOf(
             ModOp(
                 ModOpType.SET_ARGS,
                 mapOf("extract_pages" to true),
@@ -62,6 +67,9 @@ class PipelineModControllerTests : MockMvcTest() {
 
         val mod = pipelineModService.create(spec)
         val update = PipelineModUpdate(name = "cats", description = "dogs",
+            provider = ModStandards.ZORROA,
+            category = ModStandards.ZORROA_VINT,
+            supportedMedia = listOf(),
             restricted = true, ops = listOf(op))
 
         mvc.perform(

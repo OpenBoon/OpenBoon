@@ -1,29 +1,30 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import permissions from '../../Permissions/__mocks__/permissions'
+import projectUsersAdd from '../__mocks__/projectUsersAdd'
+import roles from '../../Roles/__mocks__/roles'
 
 import ProjectUsersAdd from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
-jest.mock('../helpers')
+jest.mock('../../Copy/helpers')
 
 const noop = () => () => {}
 
 describe('<ProjectUsersAdd />', () => {
-  it('should render properly', () => {
+  it('should render properly', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/users/add',
       query: { projectId: PROJECT_ID },
     })
 
     require('swr').__setMockUseSWRResponse({
-      data: permissions,
+      data: roles,
     })
 
     const mockOnCopy = jest.fn()
 
-    require('../helpers').__setMockOnCopy(mockOnCopy)
+    require('../../Copy/helpers').__setMockOnCopy(mockOnCopy)
 
     const component = TestRenderer.create(<ProjectUsersAdd />)
 
@@ -36,17 +37,37 @@ describe('<ProjectUsersAdd />', () => {
         .props.onChange({ target: { value: 'jane@email.com' } })
     })
 
-    // Check permission box
+    // Check role box
     act(() => {
       component.root
-        .findByProps({ type: 'checkbox', value: 'SystemProjectOverride' })
+        .findByProps({ type: 'checkbox', value: 'ML_Tools' })
         .props.onClick()
     })
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Mock Failure
+    fetch.mockRejectOnce(null, { status: 500 })
+
+    // Click Submit
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Add' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // Dismiss Error Message
+    await act(async () => {
+      component.root
+        .findByProps({ 'aria-label': 'Close alert' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // Mock Success
+    fetch.mockResponseOnce(JSON.stringify(projectUsersAdd))
+
     // Submit the form
-    act(() => {
+    await act(async () => {
       component.root
         .findByProps({ children: 'Add' })
         .props.onClick({ preventDefault: noop })
@@ -61,7 +82,7 @@ describe('<ProjectUsersAdd />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(mockOnCopy).toHaveBeenCalledWith({ inputRef: { current: null } })
+    expect(mockOnCopy).toHaveBeenCalledWith({ copyRef: { current: null } })
 
     // Reset form
     act(() => {
