@@ -28,7 +28,6 @@ import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.ElasticSearchErrorTranslator
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.archivist.util.assetToHash
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
@@ -196,6 +195,9 @@ class AssetServiceImpl : AssetService {
 
     @Autowired
     lateinit var assetSearchService: AssetSearchService
+
+    @Autowired
+    lateinit var mlService: MLService
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -469,7 +471,7 @@ class AssetServiceImpl : AssetService {
 
     override fun generateHashList(files: Array<MultipartFile>): List<String> {
         return files.map { file ->
-            assetToHash(properties.getString("mxnet.resnet.path"), file.bytes)
+            mlService.assetToHash(file.bytes)
         }.toList()
     }
 
