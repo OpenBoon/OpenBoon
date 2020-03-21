@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:experimental
 FROM maven:3.6-jdk-11-slim as build
 
+ENV MXNET_OS linux
+
 RUN mkdir /build
 COPY ./ /build
 WORKDIR /build
