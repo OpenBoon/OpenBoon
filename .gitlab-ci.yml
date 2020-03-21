@@ -339,6 +339,7 @@ services_unit_tests:
     ZMLP_STORAGE_SYSTEM_URL: "http://localhost:9000"
     MINIO_ACCESS_KEY: "qwerty123"
     MINIO_SECRET_KEY: "123qwerty"
+    MXNET_OS: "linux"
   script:
     - export
     - IP="$(cat /etc/hosts |grep $HOSTNAME|cut -d$'\t' -f1)"
