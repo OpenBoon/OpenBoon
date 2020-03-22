@@ -13,7 +13,8 @@ from pathlib2 import Path
 from zmlp import app_from_env, Asset
 from zmlp.exception import ZmlpException
 from .base import ZmlpEnv
-from .cloud import get_cached_google_storage_client, get_pipeline_storage_client, get_cached_aws_client
+from .cloud import get_cached_google_storage_client, get_pipeline_storage_client,\
+    get_cached_aws_client
 
 __all__ = [
     "file_storage",
