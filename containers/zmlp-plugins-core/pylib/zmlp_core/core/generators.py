@@ -1,9 +1,9 @@
 from urllib.parse import urlparse
 
-from zmlpsdk import Generator, Argument
-from zmlpsdk.cloud import get_google_storage_client
-from zmlp.asset import FileImport
 from zmlp import app_from_env
+from zmlp.asset import FileImport
+from zmlpsdk import Generator, Argument
+from zmlpsdk.cloud import get_google_storage_client, get_aws_client
 
 
 class AssetSearchGenerator(Generator):
@@ -49,14 +49,13 @@ class AssetSearchGenerator(Generator):
 class GcsBucketGenerator(Generator):
     """Simple generator that fetches all of the objects in a GCS bucket.
 
-    To use this generator in production, google credentials must be mounted to the container.
-    If no credentials are found it will attempt to use anonymous credentials.  To open
+    To use this generator in production, GCP must be available. If no credentials are
+    found it will attempt to use anonymous credentials.  To open
     a bucket to an Anonymous GCS user, give  "Storage Object Viewer" or
     "Storage Legacy Bucket Reader" to "allUsers".
 
     Args:
         uri (str): Address of a bucket in the form "gs://<BUCKET_NAME>".
-
     """
 
     def __init__(self):
@@ -71,3 +70,30 @@ class GcsBucketGenerator(Generator):
                 continue
             gsuri = "gs://{}/{}".format(uri.netloc, blob.name)
             consumer.accept(FileImport(gsuri))
+
+
+class S3BucketGenerator(Generator):
+    """AWS S3 generator. To use this generator in production, AWS
+    credentials must be attached to the job.
+
+    Args:
+        uri (str): Address of a bucket in the form "s3://<BUCKET_NAME>".
+    """
+
+    def __init__(self):
+        super(S3BucketGenerator, self).__init__()
+        self.add_arg(Argument('uri', 'str', required=True))
+
+    def generate(self, consumer):
+        uri = urlparse(self.arg_value('uri'))
+        s3 = get_aws_client('s3')
+
+        pager = s3.get_paginator('list_objects_v2')
+        page_iter = pager.paginate(Bucket=uri.netloc, Prefix=uri.path.lstrip("/"))
+        for page in page_iter:
+            items = page.get('Contents', [])
+            for item in items:
+                if item['Key'].endswith("/"):
+                    continue
+                s3uri = "s3://{}/{}".format(uri.netloc, item['Key'])
+                consumer.accept(FileImport(s3uri))

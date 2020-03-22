@@ -16,7 +16,9 @@ requirements = [
     "pathlib2>=2.3.0",
     "backoff",
     "pytest",
-    "opencv-python-headless"
+    "opencv-python-headless",
+    "boto3",
+    "azure-storage-blob"
 ]
 
 setup(

@@ -13,7 +13,7 @@ from pathlib2 import Path
 from zmlp import app_from_env, Asset
 from zmlp.exception import ZmlpException
 from .base import ZmlpEnv
-from .cloud import get_cached_google_storage_client, get_pipeline_storage_client
+from .cloud import get_cached_google_storage_client, get_pipeline_storage_client, get_cached_aws_client
 
 __all__ = [
     "file_storage",
@@ -166,7 +166,8 @@ class LocalFileCache(object):
         "http",
         "https"
         "file",
-        "zmlp"
+        "zmlp",
+        "s3"
     ]
 
     def __init__(self):
@@ -258,6 +259,13 @@ class LocalFileCache(object):
             bucket = gcs_client.get_bucket(parsed_uri.netloc)
             blob = bucket.blob(parsed_uri.path[1:])
             blob.download_to_filename(path)
+
+        # S3 buckets
+        elif parsed_uri.scheme == 's3':
+            # Using cache, client is slow to connect
+            s3_client = get_cached_aws_client('s3')
+            s3_client.download_file(parsed_uri.netloc, parsed_uri.path[1:], path)
+
         elif parsed_uri.scheme == '' and parsed_uri.path.startswith("/"):
             path = parsed_uri.path
         else:

@@ -1,8 +1,6 @@
-import os
-
 from ..datasource import DataSource
-from ..util import is_valid_uuid, as_collection
 from ..job import Job
+from ..util import is_valid_uuid, as_collection
 
 
 class DataSourceApp(object):
@@ -17,24 +15,19 @@ class DataSourceApp(object):
         Args:
             name (str): The name of the data source.
             uri (str): The URI where the data can be found.
-            modules (list): A list of PipelineMods names to apply to the data
-            file_types (list of str): a list of file paths or mimetypes to match.
-            credentials (str): A file path to an associated credentials file.
+            modules (list): A list of PipelineMods names to apply to the data.
+            file_types (list of str): a list of file extensions or general types like
+                'images', 'videos', 'documents'. Defaults to all file types.
+            credentials (list of str): A list of pre-created credentials blob names.
         Returns:
             DataSource: The created DataSource
 
         """
-        if credentials:
-            if not os.path.exists(credentials):
-                raise ValueError('The credentials path {} does not exist')
-            else:
-                with open(credentials, 'r') as fp:
-                    credentials = fp.read()
         url = '/api/v1/data-sources'
         body = {
             'name': name,
             'uri': uri,
-            'credentials': credentials,
+            'credentials': as_collection(credentials),
             'fileTypes': file_types,
             'modules': as_collection(modules)
         }
