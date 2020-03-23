@@ -1,0 +1,261 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Overview /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Account Overview
+  </h2>,
+  .emotion-20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  max-height: 100vh;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+}
+
+.emotion-8 {
+  padding-right: 32px;
+  padding-bottom: 32px;
+  width: 470px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #3b3b3b;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  border-radius: 2px;
+}
+
+.emotion-6 {
+  padding: 32px;
+}
+
+.emotion-5 {
+  margin: -32px;
+}
+
+.emotion-4 {
+  padding: 32px;
+}
+
+.emotion-0 {
+  font-size: 17px;
+  line-height: 20px;
+}
+
+.emotion-1 {
+  font-size: 15px;
+  line-height: 19px;
+  color: #b3b3b3;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  background-color: #73b61c;
+}
+
+.emotion-2:hover {
+  background-color: #96c955;
+}
+
+.emotion-2[aria-disabled=true] {
+  background-color: #808080;
+}
+
+<div
+    className="emotion-20"
+  >
+    <div
+      className="emotion-9"
+    >
+      <div
+        className="emotion-8"
+      >
+        <div
+          className="emotion-7"
+        >
+          <div
+            className="emotion-6"
+          >
+            <div
+              className="emotion-5"
+            >
+              <div
+                className="emotion-4"
+              >
+                <h3
+                  className="emotion-0"
+                >
+                  Project: 
+                  qwerty
+                </h3>
+                 
+                <div
+                  className="emotion-1"
+                >
+                  Project ID: 
+                  76917058-b147-4556-987a-0a0f11e46d9b
+                </div>
+                 
+                <div
+                  className="emotion-3"
+                >
+                  <a
+                    className="emotion-2"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9b"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                  >
+                    View Dashboard
+                  </a>
+                </div>
+              </div>
+              <OverviewUsagePlan
+                projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <div
+        className="emotion-8"
+      >
+        <div
+          className="emotion-7"
+        >
+          <div
+            className="emotion-6"
+          >
+            <div
+              className="emotion-5"
+            >
+              <div
+                className="emotion-4"
+              >
+                <h3
+                  className="emotion-0"
+                >
+                  Project: 
+                  azerty
+                </h3>
+                 
+                <div
+                  className="emotion-1"
+                >
+                  Project ID: 
+                  76917058-b147-4556-987a-0a0f11e46d9c
+                </div>
+                 
+                <div
+                  className="emotion-3"
+                >
+                  <a
+                    className="emotion-2"
+                    href="/76917058-b147-4556-987a-0a0f11e46d9c"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                  >
+                    View Dashboard
+                  </a>
+                </div>
+              </div>
+              <OverviewUsagePlan
+                projectId="76917058-b147-4556-987a-0a0f11e46d9c"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;
