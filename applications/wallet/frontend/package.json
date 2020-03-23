@@ -108,7 +108,7 @@
     "@sentry/browser": "5.15.0",
     "@svgr/webpack": "5.2.0",
     "@zeit/next-source-maps": "0.0.4-canary.1",
-    "body-scroll-lock": "2.7.1",
+    "body-scroll-lock": "3.0.1",
     "dotenv": "8.2.0",
     "focus-visible": "5.0.2",
     "jwt-decode": "2.2.0",
