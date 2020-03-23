@@ -30,7 +30,8 @@ const VisualizerMetadata = ({ assets }) => {
         display: 'flex',
         flexDirection: 'column',
         boxShadow: constants.boxShadows.metadata,
-      }}>
+      }}
+    >
       <div
         css={{
           display: 'flex',
@@ -38,7 +39,8 @@ const VisualizerMetadata = ({ assets }) => {
           alignItems: 'center',
           borderBottom: constants.borders.divider,
           padding: spacing.normal,
-        }}>
+        }}
+      >
         <InformationSvg
           width={20}
           color={id ? colors.structure.white : colors.structure.steel}
@@ -48,7 +50,8 @@ const VisualizerMetadata = ({ assets }) => {
             padding: spacing.normal,
             color: id ? colors.structure.white : colors.structure.steel,
             fontWeight: typography.weight.bold,
-          }}>
+          }}
+        >
           ASSET METADATA
         </div>
       </div>
@@ -57,7 +60,8 @@ const VisualizerMetadata = ({ assets }) => {
           css={{
             color: filename ? colors.signal.sky.base : colors.key.one,
             fontStyle: filename ? '' : typography.style.italic,
-          }}>
+          }}
+        >
           {filename || 'Select an asset to view its metadata'}
         </div>
       </div>
@@ -70,7 +74,8 @@ const VisualizerMetadata = ({ assets }) => {
             : colors.structure.mattGrey,
           padding: spacing.normal,
           paddingBottom: 0,
-        }}>
+        }}
+      >
         <JsonDisplay json={asset} />
       </div>
     </div>

@@ -6,7 +6,7 @@ import Button, { VARIANTS } from '..'
 const variants = Object.keys(VARIANTS)
 const hrefs = ['/hello', undefined]
 const combinations = variants.reduce((accumulator, variant) => {
-  const combination = hrefs.map(p => [variant, p])
+  const combination = hrefs.map((p) => [variant, p])
   return [...accumulator, ...combination]
 }, [])
 
@@ -44,7 +44,8 @@ describe('<Button />', () => {
       <Button
         variant={VARIANTS.PRIMARY}
         href="http://www.aspiration.com"
-        target="_blank">
+        target="_blank"
+      >
         Hello
       </Button>,
     )

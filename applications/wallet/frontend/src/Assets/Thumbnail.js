@@ -45,7 +45,8 @@ const AssetsThumbnail = ({
         height: 0,
         paddingBottom: `${containerWidth}%`,
         position: 'relative',
-      }}>
+      }}
+    >
       <div
         css={{
           border: isSelected
@@ -59,11 +60,13 @@ const AssetsThumbnail = ({
               ? constants.borders.assetSelected
               : constants.borders.assetHover,
           },
-        }}>
+        }}
+      >
         <Link
           href={`/[projectId]/visualizer${queryParams}`}
           as={`/${projectId}/visualizer${queryParams}`}
-          passHref>
+          passHref
+        >
           <Button
             variant={VARIANTS.NEUTRAL}
             css={{
@@ -74,7 +77,8 @@ const AssetsThumbnail = ({
               alignItems: 'center',
               background: colors.structure.mattGrey,
               overflow: 'hidden',
-            }}>
+            }}
+          >
             <img
               css={{ [largestDimension]: '100%' }}
               srcSet={srcSet.join(',')}

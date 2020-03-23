@@ -29,7 +29,8 @@ const SidebarLink = ({ projectId, href, children }) => {
               color: isCurrentPage ? colors.structure.white : colors.key.one,
               backgroundColor: colors.structure.mattGrey,
             },
-          }}>
+          }}
+        >
           {children}
         </a>
       </Link>

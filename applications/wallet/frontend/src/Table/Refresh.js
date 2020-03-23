@@ -25,12 +25,14 @@ const TableRefresh = ({ onClick, legend }) => {
         setClicked(true)
         onClick()
         setTimeout(() => setClicked(false), 2000)
-      }}>
+      }}
+    >
       <div
         css={{
           display: 'flex',
           alignItems: 'center',
-        }}>
+        }}
+      >
         <RefreshSvg
           width={20}
           color={colors.structure.white}

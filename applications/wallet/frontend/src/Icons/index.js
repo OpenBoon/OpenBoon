@@ -28,7 +28,8 @@ const Icons = () => {
               alignItems: 'center',
               width: 200,
               height: 200,
-            }}>
+            }}
+          >
             <div>{key}</div>
             <div
               css={{
@@ -36,7 +37,8 @@ const Icons = () => {
                 padding: spacing.spacious,
                 display: 'flex',
                 flexDirection: 'column',
-              }}>
+              }}
+            >
               <Icon width="100%" height="100%" />
             </div>
           </div>

@@ -14,12 +14,14 @@ const ProgressBarLegend = ({ taskCounts }) => {
         fontFamily: 'Roboto Condensed',
         paddingLeft: spacing.small,
         paddingRight: spacing.small,
-      }}>
-      {Object.keys(TASK_STATUS_COLORS).map(statusName => {
+      }}
+    >
+      {Object.keys(TASK_STATUS_COLORS).map((statusName) => {
         return (
           <div
             key={statusName}
-            css={{ display: 'flex', padding: spacing.moderate }}>
+            css={{ display: 'flex', padding: spacing.moderate }}
+          >
             <div
               css={{
                 width: 2,
@@ -31,13 +33,15 @@ const ProgressBarLegend = ({ taskCounts }) => {
               css={{
                 color: colors.structure.pebble,
                 paddingLeft: spacing.base,
-              }}>
+              }}
+            >
               <div>{`${TASK_STATUS_LABELS[statusName]}:`}</div>
               <div
                 css={{
                   color: colors.structure.white,
                   fontWeight: typography.weight.bold,
-                }}>
+                }}
+              >
                 {taskCounts[statusName]}
               </div>
             </div>

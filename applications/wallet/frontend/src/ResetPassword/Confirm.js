@@ -28,7 +28,8 @@ const ResetPasswordConfirm = ({ uid, token }) => {
           fontWeight: typography.weight.regular,
           paddingTop: spacing.spacious,
           paddingBottom: spacing.spacious,
-        }}>
+        }}
+      >
         Enter New Password
       </h3>
 
@@ -59,7 +60,8 @@ const ResetPasswordConfirm = ({ uid, token }) => {
           paddingTop: spacing.normal,
           display: 'flex',
           justifyContent: 'center',
-        }}>
+        }}
+      >
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
@@ -71,7 +73,8 @@ const ResetPasswordConfirm = ({ uid, token }) => {
               token,
             })
           }
-          isDisabled={!state.newPassword || !state.newPassword2}>
+          isDisabled={!state.newPassword || !state.newPassword2}
+        >
           Save
         </Button>
       </div>

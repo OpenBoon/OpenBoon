@@ -45,7 +45,8 @@ const CheckboxIcon = ({ value, isChecked, isDisabled, onClick }) => (
         justifyContent: 'center',
         display: 'flex',
         cursor: isDisabled ? 'not-allowed' : 'pointer',
-      }}>
+      }}
+    >
       <CheckmarkSvg
         width={20}
         css={{

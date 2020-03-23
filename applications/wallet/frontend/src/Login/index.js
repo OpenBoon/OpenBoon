@@ -43,7 +43,8 @@ const Login = ({
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-      }}>
+      }}
+    >
       <Head>
         <title>Login</title>
       </Head>
@@ -82,7 +83,7 @@ const Login = ({
 
       <form
         method="post"
-        onSubmit={event => event.preventDefault()}
+        onSubmit={(event) => event.preventDefault()}
         css={{
           display: 'flex',
           flexDirection: 'column',
@@ -91,7 +92,8 @@ const Login = ({
           backgroundColor: colors.structure.mattGrey,
           borderRadius: constants.borderRadius.small,
           boxShadow: constants.boxShadows.default,
-        }}>
+        }}
+      >
         <LogoSvg width={LOGO_WIDTH} css={{ alignSelf: 'center' }} />
 
         <h3
@@ -101,7 +103,8 @@ const Login = ({
             lineHeight: typography.height.large,
             paddingTop: spacing.spacious,
             paddingBottom: spacing.spacious,
-          }}>
+          }}
+        >
           Welcome. Please login.
         </h3>
 
@@ -142,7 +145,8 @@ const Login = ({
                 padding: spacing.moderate,
                 outlineOffset: -2,
                 '&:hover': { color: colors.key.one },
-              }}>
+              }}
+            >
               {showPassword ? (
                 <VisibleSvg width={20} />
               ) : (
@@ -157,12 +161,14 @@ const Login = ({
             paddingTop: spacing.normal,
             display: 'flex',
             justifyContent: 'center',
-          }}>
+          }}
+        >
           <Button
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() => onSubmit({ username, password })}
-            isDisabled={!username || !password}>
+            isDisabled={!username || !password}
+          >
             Login
           </Button>
         </div>
@@ -174,7 +180,8 @@ const Login = ({
             a: {
               color: colors.structure.steel,
             },
-          }}>
+          }}
+        >
           <Link href="/create-account">
             <a>Create an account</a>
           </Link>

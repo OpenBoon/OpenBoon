@@ -32,9 +32,9 @@ const ApiKeysAddFormSuccess = ({
       <SectionTitle>Scope</SectionTitle>
 
       <ul css={{ color: colors.structure.zinc }}>
-        {permissions.map(permission => (
+        {permissions.map((permission) => (
           <li key={permission}>
-            {permission.replace(/([A-Z])/g, match => ` ${match}`)}
+            {permission.replace(/([A-Z])/g, (match) => ` ${match}`)}
           </li>
         ))}
       </ul>
@@ -47,7 +47,8 @@ const ApiKeysAddFormSuccess = ({
           alignItems: 'center',
           paddingTop: spacing.normal,
           paddingBottom: spacing.normal,
-        }}>
+        }}
+      >
         <textarea
           ref={copyRef}
           defaultValue={JSON.stringify(apikey)}
@@ -70,7 +71,8 @@ const ApiKeysAddFormSuccess = ({
             alignItems: 'center',
             paddingLeft: spacing.small,
             paddingRight: spacing.small,
-          }}>
+          }}
+        >
           <Button
             variant={VARIANTS.LINK}
             style={{
@@ -79,7 +81,8 @@ const ApiKeysAddFormSuccess = ({
                 transition: 'opacity .3s ease',
               },
             }}
-            onClick={() => onCopy({ copyRef })}>
+            onClick={() => onCopy({ copyRef })}
+          >
             Copy Key
           </Button>
           <span css={{ padding: spacing.small, color: colors.structure.steel }}>
@@ -90,7 +93,8 @@ const ApiKeysAddFormSuccess = ({
             download="api-key.json"
             href={`data:application/octet-stream;charset=utf-8;base64,${window.btoa(
               JSON.stringify(apikey),
-            )}`}>
+            )}`}
+          >
             Download
           </Button>
         </div>
@@ -103,7 +107,8 @@ const ApiKeysAddFormSuccess = ({
         <Link
           href="/[projectId]/api-keys"
           as={'/[projectId]/api-keys'.replace('[projectId]', projectId)}
-          passHref>
+          passHref
+        >
           <Button variant={VARIANTS.PRIMARY}>View All</Button>
         </Link>
       </ButtonGroup>

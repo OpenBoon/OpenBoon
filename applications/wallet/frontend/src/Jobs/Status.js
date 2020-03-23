@@ -24,8 +24,9 @@ const JobsStatus = ({ status }) => {
             ? colors.signal.canary.base
             : colors.structure.coal,
         fontFamily: 'Roboto Condensed',
-      }}>
-      {status.replace(/([A-Z])/g, match => ` ${match}`).trim()}
+      }}
+    >
+      {status.replace(/([A-Z])/g, (match) => ` ${match}`).trim()}
     </div>
   )
 }

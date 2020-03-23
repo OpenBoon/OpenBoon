@@ -15,7 +15,8 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
         margin: 0,
         paddingTop: spacing.moderate,
         paddingBottom: spacing.spacious,
-      }}>
+      }}
+    >
       <legend
         css={{
           float: 'left',
@@ -24,7 +25,8 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
           fontSize: typography.size.medium,
           lineHeight: typography.height.medium,
           fontWeight: typography.weight.medium,
-        }}>
+        }}
+      >
         {name}
       </legend>
       <div css={{ clear: 'both' }} />
@@ -79,7 +81,8 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
               },
             },
           },
-        }}>
+        }}
+      >
         <thead>
           <tr>
             <th>&nbsp;</th>
@@ -88,11 +91,11 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
           </tr>
         </thead>
         <tbody>
-          {options.map(option => (
+          {options.map((option) => (
             <CheckboxTableRow
               key={option.value}
               option={option}
-              onClick={value => onClick({ [option.value]: value })}
+              onClick={(value) => onClick({ [option.value]: value })}
             />
           ))}
         </tbody>

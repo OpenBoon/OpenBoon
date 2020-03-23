@@ -23,7 +23,8 @@ const Loading = () => {
         fontSize: typography.size.regular,
         lineHeight: typography.height.regular,
         boxShadow: constants.boxShadows.default,
-      }}>
+      }}
+    >
       <GeneratingSvg
         height={20}
         css={{

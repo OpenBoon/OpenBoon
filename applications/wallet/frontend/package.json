@@ -22,8 +22,8 @@
     "singleQuote": true,
     "trailingComma": "all",
     "bracketSpacing": true,
-    "jsxBracketSameLine": true,
-    "arrowParens": "avoid",
+    "jsxBracketSameLine": false,
+    "arrowParens": "always",
     "proseWrap": "always"
   },
   "jest": {

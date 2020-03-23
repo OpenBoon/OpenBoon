@@ -33,7 +33,7 @@ export const logout = ({ googleAuth, setUser }) => async ({ redirectUrl }) => {
   googleAuth.signOut()
 
   const { csrftoken } = Object.fromEntries(
-    document.cookie.split(/; */).map(c => {
+    document.cookie.split(/; */).map((c) => {
       const [key, ...v] = c.split('=')
       return [key, decodeURIComponent(v.join('='))]
     }),

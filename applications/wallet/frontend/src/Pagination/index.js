@@ -23,7 +23,8 @@ const Pagination = ({ currentPage, totalPages }) => {
           alignItems: 'center',
           color: colors.structure.white,
           backgroundColor: colors.structure.mattGrey,
-        }}>
+        }}
+      >
         {currentPage}
       </div>
 
@@ -33,7 +34,8 @@ const Pagination = ({ currentPage, totalPages }) => {
           display: 'flex',
           alignItems: 'center',
           color: colors.structure.zinc,
-        }}>
+        }}
+      >
         of {totalPages}
       </div>
 

@@ -16,7 +16,8 @@ const TableException = ({ numColumns, children }) => {
             color: colors.structure.steel,
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
-          }}>
+          }}
+        >
           {children}
         </div>
       </td>

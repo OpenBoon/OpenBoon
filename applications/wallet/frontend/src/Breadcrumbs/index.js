@@ -31,9 +31,12 @@ const Breadcrumbs = ({ crumbs }) => {
                 href={href}
                 as={href
                   .split('/')
-                  .map(s => s.replace(/\[(.*)\]/gi, (_, group) => query[group]))
+                  .map((s) =>
+                    s.replace(/\[(.*)\]/gi, (_, group) => query[group]),
+                  )
                   .join('/')}
-                passHref>
+                passHref
+              >
                 <a
                   css={{
                     ...BASE_STYLE,
@@ -41,7 +44,8 @@ const Breadcrumbs = ({ crumbs }) => {
                       textDecoration: 'none',
                       color: colors.structure.white,
                     },
-                  }}>
+                  }}
+                >
                   {title}
                 </a>
               </Link>
