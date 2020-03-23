@@ -15,12 +15,14 @@ const JobErrorTaskMenu = ({ projectId, taskId, revalidate }) => {
         display: 'flex',
         marginBottom: -spacing.small,
         paddingTop: spacing.comfy,
-      }}>
+      }}
+    >
       <Menu
         open="left"
         button={({ onBlur, onClick }) => (
           <MenuButton onBlur={onBlur} onClick={onClick} legend="Modify Task" />
-        )}>
+        )}
+      >
         {({ onBlur, onClick }) => (
           <div>
             <ul>
@@ -38,7 +40,8 @@ const JobErrorTaskMenu = ({ projectId, taskId, revalidate }) => {
 
                     revalidate()
                   }}
-                  isDisabled={false}>
+                  isDisabled={false}
+                >
                   Retry Task
                 </Button>
               </li>

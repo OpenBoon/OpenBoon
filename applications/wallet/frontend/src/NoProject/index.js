@@ -18,14 +18,16 @@ const NoProject = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-        }}>
+        }}
+      >
         <NoProjectSvg width={250} />
 
         <h3
           css={{
             color: colors.structure.steel,
             fontWeight: typography.weight.regular,
-          }}>
+          }}
+        >
           You currently have no projects
         </h3>
       </div>

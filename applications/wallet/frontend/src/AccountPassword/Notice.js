@@ -30,13 +30,15 @@ const AccountPasswordNotice = () => {
           border: constants.borders.divider,
           borderRadius: constants.borderRadius.small,
           padding: spacing.spacious,
-        }}>
+        }}
+      >
         <div
           css={{
             color: colors.structure.white,
             fontWeight: typography.weight.medium,
             paddingBottom: spacing.small,
-          }}>
+          }}
+        >
           Did you sign in with Google or another service?
         </div>
 
@@ -46,7 +48,8 @@ const AccountPasswordNotice = () => {
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
             fontWeight: typography.weight.regular,
-          }}>
+          }}
+        >
           If so, you may not have a Zorroa password. You can create one by
           resetting the password and checking your email for instructions.
         </div>
@@ -54,7 +57,8 @@ const AccountPasswordNotice = () => {
         <ButtonGroup>
           <Button
             variant={BUTTON_VARIANTS.PRIMARY_SMALL}
-            onClick={() => onReset({ setError, email, setUser, googleAuth })}>
+            onClick={() => onReset({ setError, email, setUser, googleAuth })}
+          >
             Reset Password
           </Button>
         </ButtonGroup>

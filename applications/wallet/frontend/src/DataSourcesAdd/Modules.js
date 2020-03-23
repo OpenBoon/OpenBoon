@@ -21,10 +21,11 @@ const DataSourcesAddModules = ({
             paddingTop: spacing.base,
             paddingBottom: spacing.normal,
             maxWidth: constants.paragraph.maxWidth,
-          }}>
+          }}
+        >
           {description}
         </p>
-        {categories.map(category => (
+        {categories.map((category) => (
           <CheckboxTable
             key={category.name}
             category={category}

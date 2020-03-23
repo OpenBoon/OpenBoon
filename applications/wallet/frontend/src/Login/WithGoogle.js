@@ -32,7 +32,8 @@ const LoginWithGoogle = ({ googleAuth, hasGoogleLoaded, onSubmit }) => {
         paddingBottom: spacing.comfy,
         display: 'flex',
         justifyContent: 'center',
-      }}>
+      }}
+    >
       <Button
         aria-label="Sign in with Google"
         variant={VARIANTS.NEUTRAL}
@@ -63,13 +64,15 @@ const LoginWithGoogle = ({ googleAuth, hasGoogleLoaded, onSubmit }) => {
           } catch (error) {
             setIsLoading(false)
           }
-        }}>
+        }}
+      >
         <div
           css={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-          }}>
+          }}
+        >
           <div
             css={{
               display: 'flex',
@@ -80,7 +83,8 @@ const LoginWithGoogle = ({ googleAuth, hasGoogleLoaded, onSubmit }) => {
                 ? colors.transparent
                 : colors.structure.white,
               borderRadius: constants.borderRadius.small,
-            }}>
+            }}
+          >
             {isLoading ? (
               <GeneratingSvg
                 height={HEIGHT}

@@ -18,14 +18,16 @@ const Modal = ({ title, message, action, onCancel, onConfirm }) => {
       getApplicationNode={() => document.getElementById('__next')}
       underlayColor="rgba(0, 0, 0, 0.75)"
       onExit={onCancel}
-      verticallyCenter>
+      verticallyCenter
+    >
       <div
         css={{
           display: 'flex',
           flexDirection: 'column',
           width: MODAL_WIDTH,
           height: MODAL_HEIGHT,
-        }}>
+        }}
+      >
         <header
           css={{
             backgroundColor: colors.structure.black,
@@ -34,14 +36,16 @@ const Modal = ({ title, message, action, onCancel, onConfirm }) => {
             alignItems: 'center',
             padding: spacing.normal,
             textTransform: 'uppercase',
-          }}>
+          }}
+        >
           <div css={{ color: colors.structure.zinc }}>{title}</div>
           <div
             role="button"
             aria-label="Close Modal"
             tabIndex="-1"
             onClick={onCancel}
-            onKeyDown={onCancel}>
+            onKeyDown={onCancel}
+          >
             <CrossSvg width={20} color={colors.structure.white} />
           </div>
         </header>
@@ -51,13 +55,15 @@ const Modal = ({ title, message, action, onCancel, onConfirm }) => {
             height: '100%',
             backgroundColor: colors.structure.iron,
             padding: spacing.spacious,
-          }}>
+          }}
+        >
           <div
             css={{
               display: 'flex',
               alignItems: 'center',
               color: colors.marble,
-            }}>
+            }}
+          >
             {message}
           </div>
           <div
@@ -71,13 +77,15 @@ const Modal = ({ title, message, action, onCancel, onConfirm }) => {
                 border: 'none',
                 borderRadius: constants.borderRadius.small,
               },
-            }}>
+            }}
+          >
             <Button
               variant={VARIANTS.SECONDARY}
               css={{
                 marginRight: spacing.normal,
               }}
-              onClick={onCancel}>
+              onClick={onCancel}
+            >
               Cancel
             </Button>
             <Button variant={VARIANTS.WARNING} onClick={onConfirm}>

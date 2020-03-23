@@ -11,7 +11,8 @@ const JobErrorType = ({ fatal }) => {
       css={{
         display: 'flex',
         paddingTop: spacing.spacious,
-      }}>
+      }}
+    >
       <div css={{ paddingRight: spacing.base }}>
         {fatal ? (
           <ErrorFatalSvg width={18} color={colors.signal.warning.base} />
@@ -25,7 +26,8 @@ const JobErrorType = ({ fatal }) => {
             ? colors.signal.warning.base
             : colors.signal.canary.strong,
           fontWeight: typography.weight.bold,
-        }}>
+        }}
+      >
         Error Type: {fatal ? 'Fatal' : 'Warning'}
       </div>
     </div>

@@ -70,18 +70,21 @@ const ProjectGettingStarted = ({ projectId }) => {
       {STEPS.map(({ step, title, module, content, cta, link }) => (
         <div
           key={step}
-          css={{ paddingBottom: step === STEPS.length ? 0 : spacing.comfy }}>
+          css={{ paddingBottom: step === STEPS.length ? 0 : spacing.comfy }}
+        >
           <div
             css={{
               borderBottom: step === STEPS.length ? 0 : constants.borders.tabs,
-            }}>
+            }}
+          >
             <h4
               css={{
                 fontWeight: typography.weight.regular,
                 fontSize: typography.size.medium,
                 lineHeight: typography.height.medium,
                 color: colors.key.one,
-              }}>
+              }}
+            >
               <span css={{ fontWeight: typography.weight.bold }}>
                 Step {step}:&nbsp;
               </span>
@@ -99,7 +102,8 @@ const ProjectGettingStarted = ({ projectId }) => {
                 svg: {
                   marginRight: spacing.base,
                 },
-              }}>
+              }}
+            >
               {module}
             </h5>
             <p
@@ -108,18 +112,21 @@ const ProjectGettingStarted = ({ projectId }) => {
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.normal,
                 color: colors.structure.zinc,
-              }}>
+              }}
+            >
               {content}
             </p>
             <div
               css={{
                 display: 'flex',
                 paddingBottom: step === STEPS.length ? 0 : spacing.comfy,
-              }}>
+              }}
+            >
               <Link
                 href={link}
                 as={link.replace('[projectId]', projectId)}
-                passHref>
+                passHref
+              >
                 <Button variant={VARIANTS.SECONDARY_SMALL}>{cta}</Button>
               </Link>
             </div>

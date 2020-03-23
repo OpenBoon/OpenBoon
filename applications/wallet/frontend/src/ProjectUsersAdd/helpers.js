@@ -6,10 +6,10 @@ export const onSubmit = async ({
   state: { emails: e, roles: r },
 }) => {
   try {
-    const emails = e.split(',').map(str => str.trim(''))
-    const roles = Object.keys(r).filter(name => r[name])
+    const emails = e.split(',').map((str) => str.trim(''))
+    const roles = Object.keys(r).filter((name) => r[name])
     const body = JSON.stringify({
-      batch: emails.map(email => ({ email, roles })),
+      batch: emails.map((email) => ({ email, roles })),
     })
 
     const {

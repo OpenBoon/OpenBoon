@@ -3,7 +3,7 @@
  */
 let mockAuthenticateUser = () => {}
 
-export const __setMockAuthenticateUser = fn => {
+export const __setMockAuthenticateUser = (fn) => {
   mockAuthenticateUser = fn
 }
 

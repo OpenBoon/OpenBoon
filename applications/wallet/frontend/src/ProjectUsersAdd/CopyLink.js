@@ -16,7 +16,8 @@ const ProjectUsersAddCopyLink = () => {
         css={{
           display: 'block',
           color: colors.structure.steel,
-        }}>
+        }}
+      >
         A user must have an account to be added. Accounts can be created here:
       </label>
       <div
@@ -24,7 +25,8 @@ const ProjectUsersAddCopyLink = () => {
           display: 'flex',
           alignItems: 'center',
           paddingTop: spacing.normal,
-        }}>
+        }}
+      >
         <input
           ref={copyRef}
           id="copyLink"
@@ -49,7 +51,8 @@ const ProjectUsersAddCopyLink = () => {
             alignItems: 'center',
             paddingLeft: spacing.small,
             paddingRight: spacing.small,
-          }}>
+          }}
+        >
           <Button
             variant={VARIANTS.LINK}
             style={{
@@ -58,7 +61,8 @@ const ProjectUsersAddCopyLink = () => {
                 transition: 'opacity .3s ease',
               },
             }}
-            onClick={() => onCopy({ copyRef })}>
+            onClick={() => onCopy({ copyRef })}
+          >
             Copy Link
           </Button>
         </div>

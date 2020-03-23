@@ -157,7 +157,7 @@ const Button = forwardRef(
       : {
           type: 'button',
           ...disabled,
-          onClick: event => {
+          onClick: (event) => {
             if (isDisabled) return event.preventDefault()
             return onClick(event)
           },
@@ -168,7 +168,8 @@ const Button = forwardRef(
         ref={ref}
         css={[BASE({ isDisabled }), STYLES[variant], style]}
         {...addedProps}
-        {...props}>
+        {...props}
+      >
         {children}
       </Element>
     )

@@ -11,7 +11,8 @@ const JobsEmpty = () => {
         alignItems: 'center',
         fontSize: typography.size.large,
         lineHeight: typography.height.large,
-      }}>
+      }}
+    >
       <NoJobsSvg width={200} />
       <div>There are currently no jobs in the queue.</div>
       <div>Any new job will appear here.</div>

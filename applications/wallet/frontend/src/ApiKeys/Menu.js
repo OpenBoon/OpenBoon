@@ -23,7 +23,8 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
                   onClick={() => {
                     setDeleteModalOpen(true)
                   }}
-                  isDisabled={false}>
+                  isDisabled={false}
+                >
                   Delete
                 </Button>
                 {isDeleteModalOpen && (

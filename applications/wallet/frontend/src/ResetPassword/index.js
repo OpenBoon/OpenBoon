@@ -23,14 +23,15 @@ const ResetPassword = () => {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-      }}>
+      }}
+    >
       <Head>
         <title>Reset Password</title>
       </Head>
 
       <form
         method="post"
-        onSubmit={event => event.preventDefault()}
+        onSubmit={(event) => event.preventDefault()}
         css={{
           display: 'flex',
           flexDirection: 'column',
@@ -39,7 +40,8 @@ const ResetPassword = () => {
           backgroundColor: colors.structure.mattGrey,
           borderRadius: constants.borderRadius.small,
           boxShadow: constants.boxShadows.default,
-        }}>
+        }}
+      >
         <LogoSvg width={LOGO_WIDTH} css={{ alignSelf: 'center' }} />
 
         {uid && token ? (

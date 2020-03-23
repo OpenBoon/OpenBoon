@@ -29,7 +29,8 @@ const Value = ({ variant, legend, children }) => (
         fontWeight: typography.weight.bold,
         color: colors.structure.white,
         paddingBottom: spacing.small,
-      }}>
+      }}
+    >
       {legend}:
     </div>
     <div css={{ color: colors.structure.zinc }}>{children}</div>

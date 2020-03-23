@@ -9,7 +9,8 @@ const Card = ({ title, children }) => {
         paddingRight: spacing.spacious,
         paddingBottom: spacing.spacious,
         width: constants.form.maxWidth,
-      }}>
+      }}
+    >
       <div
         css={{
           display: 'flex',
@@ -17,7 +18,8 @@ const Card = ({ title, children }) => {
           backgroundColor: colors.structure.smoke,
           boxShadow: constants.boxShadows.tableRow,
           borderRadius: constants.borderRadius.small,
-        }}>
+        }}
+      >
         {!!title && (
           <h3
             css={{
@@ -28,7 +30,8 @@ const Card = ({ title, children }) => {
               svg: {
                 marginRight: spacing.base,
               },
-            }}>
+            }}
+          >
             {title}
           </h3>
         )}

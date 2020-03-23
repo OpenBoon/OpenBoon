@@ -3,7 +3,7 @@ import SuspenseBoundary from '../SuspenseBoundary'
 
 import TableContent from './Content'
 
-const Table = props => {
+const Table = (props) => {
   return (
     <SuspenseBoundary>
       <TableContent {...props} />

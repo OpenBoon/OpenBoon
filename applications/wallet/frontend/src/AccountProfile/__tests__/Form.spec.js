@@ -16,7 +16,8 @@ describe('<AccountProfileForm />', () => {
           id: 1,
           username: 'jane.doe',
           email: 'jane.doe@zorroa.com',
-        }}>
+        }}
+      >
         <AccountProfileForm />
       </User>,
     )
@@ -61,7 +62,8 @@ describe('<AccountProfileForm />', () => {
           id: 1,
           username: 'jane.doe',
           email: 'jane.doe@zorroa.com',
-        }}>
+        }}
+      >
         <AccountProfileForm />
       </User>,
     )

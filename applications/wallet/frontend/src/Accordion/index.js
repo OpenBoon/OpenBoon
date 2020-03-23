@@ -12,19 +12,22 @@ const Accordion = ({ title, children }) => {
           backgroundColor: colors.structure.smoke,
           borderRadius: constants.borderRadius.small,
           boxShadow: constants.boxShadows.default,
-        }}>
+        }}
+      >
         <div
           css={{
             borderBottom: constants.borders.tabs,
             padding: spacing.normal,
-          }}>
+          }}
+        >
           <h4
             css={{
               fontSize: typography.size.medium,
               lineHeight: typography.height.medium,
               display: 'flex',
               alignItems: 'center',
-            }}>
+            }}
+          >
             {title}
           </h4>
         </div>
@@ -32,7 +35,8 @@ const Accordion = ({ title, children }) => {
           css={{
             padding: spacing.spacious,
             paddingTop: spacing.normal,
-          }}>
+          }}
+        >
           {children}
         </div>
       </div>

@@ -51,7 +51,8 @@ const Sidebar = forwardRef(
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-          }}>
+          }}
+        >
           <ul
             css={{
               listStyleType: 'none',
@@ -59,7 +60,8 @@ const Sidebar = forwardRef(
               margin: 0,
               paddingTop: spacing.moderate,
               paddingBottom: spacing.moderate,
-            }}>
+            }}
+          >
             <SidebarLink projectId={projectId} href="/[projectId]">
               <ProjectDashboardSvg width={ICON_WIDTH} aria-hidden />
               Project Dashboard
@@ -98,7 +100,8 @@ const Sidebar = forwardRef(
               paddingTop: spacing.moderate,
               paddingBottom: spacing.moderate,
               backgroundColor: colors.structure.smoke,
-            }}>
+            }}
+          >
             <SidebarLink projectId={projectId} href="/">
               <AccountDashboardSvg width={ICON_WIDTH} aria-hidden />
               Account Dashboard

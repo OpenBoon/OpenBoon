@@ -21,11 +21,13 @@ const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
               <Link
                 href="/[projectId]/users/[userId]/edit"
                 as={`/${projectId}/users/${userId}/edit`}
-                passHref>
+                passHref
+              >
                 <Button
                   variant={VARIANTS.MENU_ITEM}
                   onClick={onClick}
-                  isDisabled={false}>
+                  isDisabled={false}
+                >
                   Edit
                 </Button>
               </Link>
@@ -37,7 +39,8 @@ const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
                   onClick={() => {
                     setRemoveModalOpen(true)
                   }}
-                  isDisabled={false}>
+                  isDisabled={false}
+                >
                   Remove
                 </Button>
                 {isRemoveModalOpen && (

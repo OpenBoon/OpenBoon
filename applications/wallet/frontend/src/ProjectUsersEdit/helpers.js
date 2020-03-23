@@ -9,7 +9,7 @@ export const onSubmit = async ({
   state: { roles: r },
 }) => {
   try {
-    const roles = Object.keys(r).filter(key => r[key])
+    const roles = Object.keys(r).filter((key) => r[key])
 
     await fetcher(`/api/v1/projects/${projectId}/users/${userId}/`, {
       method: 'PUT',

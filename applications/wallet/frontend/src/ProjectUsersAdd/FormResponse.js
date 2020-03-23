@@ -17,7 +17,7 @@ const ProjectUsersAddFormResponse = ({
   roles: r,
   onReset,
 }) => {
-  const roles = Object.keys(r).filter(name => r[name])
+  const roles = Object.keys(r).filter((name) => r[name])
 
   return (
     <div>
@@ -32,8 +32,9 @@ const ProjectUsersAddFormResponse = ({
               paddingTop: spacing.moderate,
               paddingBottom: spacing.moderate,
               color: colors.structure.steel,
-            }}>
-            {failed.map(user => user.email).join(', ')}
+            }}
+          >
+            {failed.map((user) => user.email).join(', ')}
           </div>
 
           <ProjectUsersAddCopyLink />
@@ -51,13 +52,14 @@ const ProjectUsersAddFormResponse = ({
             css={{
               paddingTop: spacing.moderate,
               color: colors.structure.steel,
-            }}>
-            {succeeded.map(user => user.email).join(', ')}
+            }}
+          >
+            {succeeded.map((user) => user.email).join(', ')}
           </div>
 
           <SectionTitle>Roles</SectionTitle>
           <ul css={{ color: colors.structure.zinc }}>
-            {roles.map(role => (
+            {roles.map((role) => (
               <li css={{ fontWeight: typography.weight.bold }} key={role}>
                 {role.replace('_', ' ')}
               </li>

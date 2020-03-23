@@ -40,14 +40,16 @@ const TableContent = ({
           alignItems: 'flex-end',
           justifyContent: 'space-between',
           paddingBottom: spacing.normal,
-        }}>
+        }}
+      >
         <h3
           css={{
             color: colors.structure.zinc,
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
             fontWeight: typography.weight.regular,
-          }}>
+          }}
+        >
           Number of {legend}: {count}
         </h3>
         <TableRefresh onClick={revalidate} legend={legend} />
@@ -102,10 +104,11 @@ const TableContent = ({
               overflow: 'visible',
             },
           },
-        }}>
+        }}
+      >
         <thead>
           <tr>
-            {columns.map(column => (
+            {columns.map((column) => (
               <th
                 key={column}
                 css={{
@@ -121,7 +124,8 @@ const TableContent = ({
                   '&:not(:last-child)': {
                     borderRight: constants.borders.default,
                   },
-                }}>
+                }}
+              >
                 {column === '#Actions#' ? (
                   <div css={{ display: 'flex' }}>
                     <GearSvg width={20} />
@@ -139,7 +143,7 @@ const TableContent = ({
               {renderEmpty}
             </TableException>
           ) : (
-            results.map(result => renderRow({ result, revalidate }))
+            results.map((result) => renderRow({ result, revalidate }))
           )}
         </tbody>
       </table>
