@@ -52,7 +52,7 @@ const PaginationLink = ({ currentPage, totalPages, direction }) => {
   const href = `${pathname}${queryParam}`
   const as = href
     .split('/')
-    .map(s => s.replace(/\[(.*)\]/gi, (_, group) => query[group]))
+    .map((s) => s.replace(/\[(.*)\]/gi, (_, group) => query[group]))
     .join('/')
 
   return (

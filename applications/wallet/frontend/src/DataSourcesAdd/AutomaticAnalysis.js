@@ -14,7 +14,8 @@ const DataSourcesAddAutomaticAnalysis = () => {
             margin: 0,
             paddingTop: spacing.base,
             paddingBottom: spacing.normal,
-          }}>
+          }}
+        >
           The following basic analysis is applied to all data sets.
         </p>
         <ul
@@ -41,7 +42,8 @@ const DataSourcesAddAutomaticAnalysis = () => {
               fontWeight: typography.weight.bold,
               color: colors.structure.white,
             },
-          }}>
+          }}
+        >
           <li>
             <CheckmarkSvg />
             <div>

@@ -19,14 +19,15 @@ const JobErrorsRow = ({
   return (
     <tr
       css={{ cursor: 'pointer' }}
-      onClick={event => {
+      onClick={(event) => {
         const { target: { localName } = {} } = event || {}
         if (['a', 'button', 'svg', 'path'].includes(localName)) return
         Router.push(
           '/[projectId]/jobs/[jobId]/errors/[errorId]',
           `/${projectId}/jobs/${jobId}/errors/${errorId}`,
         )
-      }}>
+      }}
+    >
       <td>
         <div
           css={{
@@ -40,7 +41,8 @@ const JobErrorsRow = ({
               paddingLeft: spacing.moderate,
               fontWeight: typography.weight.medium,
             },
-          }}>
+          }}
+        >
           {fatal ? (
             <>
               <ErrorFatalSvg width={18} color={colors.signal.warning.base} />
@@ -59,7 +61,8 @@ const JobErrorsRow = ({
         <Link
           href="/[projectId]/jobs/[jobId]/errors/[errorId]"
           as={`/${projectId}/jobs/${jobId}/errors/${errorId}`}
-          passHref>
+          passHref
+        >
           <a css={{ ':hover': { textDecoration: 'none' } }} title={message}>
             {message}
           </a>

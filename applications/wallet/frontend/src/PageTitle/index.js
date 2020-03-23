@@ -11,7 +11,8 @@ const PageTitle = ({ children }) => {
         fontWeight: typography.weight.regular,
         paddingTop: spacing.comfy,
         paddingBottom: spacing.normal,
-      }}>
+      }}
+    >
       {children}
     </h2>
   )

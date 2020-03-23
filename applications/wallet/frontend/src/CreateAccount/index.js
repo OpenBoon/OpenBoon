@@ -60,7 +60,8 @@ const CreateAccount = () => {
           height: `calc(100vh - ${constants.navbar.height}px)`,
           display: 'flex',
           flexDirection: 'column',
-        }}>
+        }}
+      >
         <PageTitle>Create an Account</PageTitle>
 
         <Form>
@@ -77,7 +78,8 @@ const CreateAccount = () => {
                 css={{
                   width: 'max-content',
                   color: colors.signal.warning.base,
-                }}>
+                }}
+              >
                 Confirmation links expire after three days. Please create a new
                 account.
               </div>
@@ -159,7 +161,8 @@ const CreateAccount = () => {
                 !state.lastName ||
                 !state.password ||
                 state.password !== state.confirmPassword
-              }>
+              }
+            >
               Save
             </Button>
           </ButtonGroup>

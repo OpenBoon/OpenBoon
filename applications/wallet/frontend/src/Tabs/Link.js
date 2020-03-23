@@ -17,14 +17,16 @@ const TabsLink = ({ title, href }) => {
       css={{
         paddingRight: spacing.normal,
         marginBottom: -TABS_UNDERLINE_WIDTH,
-      }}>
+      }}
+    >
       <Link
         href={href}
         as={href
           .split('/')
-          .map(s => s.replace(/\[(.*)\]/gi, (_, group) => query[group]))
+          .map((s) => s.replace(/\[(.*)\]/gi, (_, group) => query[group]))
           .join('/')}
-        passHref>
+        passHref
+      >
         <a
           css={{
             border: `0 ${colors.key.one} solid`,
@@ -42,7 +44,8 @@ const TabsLink = ({ title, href }) => {
               textDecoration: 'none',
               color: isCurrentPage ? colors.white : colors.key.one,
             },
-          }}>
+          }}
+        >
           {title}
         </a>
       </Link>

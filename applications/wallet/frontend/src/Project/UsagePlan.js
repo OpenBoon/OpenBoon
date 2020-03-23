@@ -57,7 +57,8 @@ const ProjectUsagePlan = () => {
         css={{
           borderBottom: constants.borders.tabs,
           paddingBottom: spacing.normal,
-        }}>
+        }}
+      >
         <h4
           css={{
             display: 'flex',
@@ -65,7 +66,8 @@ const ProjectUsagePlan = () => {
             img: {
               marginRight: spacing.moderate,
             },
-          }}>
+          }}
+        >
           <img src="/icons/videos.png" alt="" width={IMG_WIDTH} /> Video:{' '}
           {videoLimit.toLocaleString()} hours
         </h4>
@@ -76,7 +78,8 @@ const ProjectUsagePlan = () => {
           borderBottom: constants.borders.tabs,
           paddingTop: spacing.normal,
           paddingBottom: spacing.normal,
-        }}>
+        }}
+      >
         <h4
           css={{
             display: 'flex',
@@ -84,7 +87,8 @@ const ProjectUsagePlan = () => {
             img: {
               marginRight: spacing.moderate,
             },
-          }}>
+          }}
+        >
           <img src="/icons/images.png" alt="" width={IMG_WIDTH} /> Image /
           Documents: {imageLimit.toLocaleString()}
         </h4>
@@ -95,7 +99,8 @@ const ProjectUsagePlan = () => {
           borderBottom: constants.borders.tabs,
           paddingTop: spacing.normal,
           paddingBottom: spacing.normal,
-        }}>
+        }}
+      >
         <h4>Additional Modules:</h4>
         <span css={{ color: colors.structure.zinc, fontStyle: 'italic' }}>
           None

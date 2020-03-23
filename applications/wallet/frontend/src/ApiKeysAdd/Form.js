@@ -64,13 +64,13 @@ const ApiKeysAddForm = () => {
         variant={CHECKBOX_VARIANTS.PRIMARY}
         options={permissions.map(({ name, description }) => ({
           value: name,
-          label: name.replace(/([A-Z])/g, match => ` ${match}`),
+          label: name.replace(/([A-Z])/g, (match) => ` ${match}`),
           icon: '',
           legend: description,
           initialValue: false,
           isDisabled: false,
         }))}
-        onClick={permission =>
+        onClick={(permission) =>
           dispatch({ permissions: { ...state.permissions, ...permission } })
         }
       />
@@ -80,7 +80,8 @@ const ApiKeysAddForm = () => {
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
           onClick={() => onSubmit({ dispatch, projectId, state })}
-          isDisabled={!state.name}>
+          isDisabled={!state.name}
+        >
           Generate Key &amp; Download
         </Button>
       </ButtonGroup>

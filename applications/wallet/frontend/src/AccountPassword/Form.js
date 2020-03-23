@@ -74,7 +74,8 @@ const AccountPasswordForm = () => {
         <ButtonGroup>
           <Button
             variant={BUTTON_VARIANTS.SECONDARY}
-            onClick={() => dispatch(INITIAL_STATE)}>
+            onClick={() => dispatch(INITIAL_STATE)}
+          >
             Cancel
           </Button>
 
@@ -86,7 +87,8 @@ const AccountPasswordForm = () => {
               !state.currentPassword ||
               !state.newPassword ||
               !state.confirmPassword
-            }>
+            }
+          >
             Save
           </Button>
         </ButtonGroup>

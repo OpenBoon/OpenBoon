@@ -58,7 +58,8 @@ const Checkbox = ({
         cursor: isDisabled ? 'not-allowed' : 'pointer',
         paddingBottom: spacing.normal,
         paddingLeft: STYLES[variant].label.paddingLeft,
-      }}>
+      }}
+    >
       <CheckboxIcon
         value={value}
         isChecked={isChecked}
@@ -75,7 +76,8 @@ const Checkbox = ({
             paddingLeft: spacing.comfy,
             display: 'flex',
             alignItems: 'center',
-          }}>
+          }}
+        >
           {icon}
         </div>
       )}
@@ -86,7 +88,8 @@ const Checkbox = ({
             fontSize: typography.size.regular,
             lineHeight: typography.height.regular,
             fontWeight: typography.weight.bold,
-          }}>
+          }}
+        >
           {label}
         </span>
         {!!legend && (
@@ -96,7 +99,8 @@ const Checkbox = ({
                 color: colors.structure.zinc,
               },
               STYLES[variant].legend,
-            ]}>
+            ]}
+          >
             {legend}
           </span>
         )}

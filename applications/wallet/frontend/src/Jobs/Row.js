@@ -34,11 +34,12 @@ const JobsRow = ({
   return (
     <tr
       css={{ cursor: 'pointer' }}
-      onClick={event => {
+      onClick={(event) => {
         const { target: { localName } = {} } = event || {}
         if (['a', 'button', 'svg', 'path'].includes(localName)) return
         Router.push('/[projectId]/jobs/[jobId]', `/${projectId}/jobs/${jobId}`)
-      }}>
+      }}
+    >
       <td>
         <JobsStatus status={status} />
       </td>
@@ -46,7 +47,8 @@ const JobsRow = ({
         <Link
           href="/[projectId]/jobs/[jobId]"
           as={`/${projectId}/jobs/${jobId}`}
-          passHref>
+          passHref
+        >
           <a css={{ ':hover': { textDecoration: 'none' } }}>{name}</a>
         </Link>
       </td>
@@ -60,7 +62,8 @@ const JobsRow = ({
           <Link
             href="/[projectId]/jobs/[jobId]/errors"
             as={`/${projectId}/jobs/${jobId}/errors`}
-            passHref>
+            passHref
+          >
             <a
               css={{
                 margin: '0 auto',
@@ -82,7 +85,8 @@ const JobsRow = ({
                   textDecoration: 'none',
                   cursor: 'pointer',
                 },
-              }}>
+              }}
+            >
               {assetCounts.assetErrorCount}
             </a>
           </Link>
@@ -92,7 +96,8 @@ const JobsRow = ({
         style={{
           minWidth: CONTAINER_WIDTH + spacing.normal * 2,
           overflow: 'visible',
-        }}>
+        }}
+      >
         <ProgressBar taskCounts={taskCounts} />
       </td>
       <td>

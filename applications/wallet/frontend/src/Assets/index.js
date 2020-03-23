@@ -19,7 +19,8 @@ const Assets = ({ assets }) => {
       css={{
         flex: 1,
         position: 'relative',
-      }}>
+      }}
+    >
       <div
         css={{
           height: '100%',
@@ -28,8 +29,9 @@ const Assets = ({ assets }) => {
           alignContent: 'flex-start',
           overflowY: 'auto',
           padding: spacing.small,
-        }}>
-        {assets.map(asset => (
+        }}
+      >
+        {assets.map((asset) => (
           <AssetsThumbnail
             key={asset.id}
             asset={asset}
