@@ -4,6 +4,7 @@ import com.aspose.pdf.Document
 import com.aspose.pdf.DocumentInfo
 import com.aspose.pdf.devices.JpegDevice
 import com.aspose.pdf.devices.Resolution
+import com.aspose.pdf.exceptions.EmptyValueException
 import com.aspose.pdf.facades.PdfExtractor
 import com.aspose.pdf.facades.PdfFileInfo
 import java.io.ByteArrayInputStream
@@ -55,7 +56,7 @@ class PdfDocument(options: RenderRequest, inputStream: InputStream) : com.zorroa
             metadata["author"] = fileInfo.author
             metadata["keywords"] = fileInfo.keywords
             metadata["description"] = fileInfo.subject
-            metadata["timeCreated"] = convertDate(documentInfo.creationDate)
+            metadata["timeCreated"] = getCreationDate(documentInfo)
             metadata["length"] = fileInfo.numberOfPages
 
             val virtPage = page.coerceAtLeast(1)
@@ -95,6 +96,15 @@ class PdfDocument(options: RenderRequest, inputStream: InputStream) : com.zorroa
             pdfDocument.close()
         } catch (e: Exception) {
             // ignore
+        }
+    }
+
+    fun getCreationDate(documentInfo: DocumentInfo) : String? {
+        return try {
+            convertDate(documentInfo.creationDate)
+        }
+        catch(e: EmptyValueException) {
+             null
         }
     }
 

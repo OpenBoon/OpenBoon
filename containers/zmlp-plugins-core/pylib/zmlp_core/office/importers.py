@@ -3,13 +3,14 @@ import json
 from zmlp import FileImport, Clip
 from zmlpsdk import AssetProcessor, Argument, ExpandFrame, ZmlpFatalProcessorException
 from zmlpsdk.storage import file_storage, ZmlpStorageException
+from ..util.media import FileTypes
 from .oclient import OfficerClient
 
 __all__ = ['OfficeImporter', '_content_sanitizer']
 
 
 class OfficeImporter(AssetProcessor):
-    file_types = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']
+    file_types = FileTypes.document
 
     # The tmp_loc_attribute store the document
     tmp_loc_attr = OfficerClient.tmp_loc_attr
@@ -69,6 +70,7 @@ class OfficeImporter(AssetProcessor):
         output_uri = self.render_pages(asset, page, not has_clip)
         media = self.get_metadata(output_uri, page)
         asset.set_attr('media', media)
+        asset.set_attr('media.type', 'document')
 
         if not has_clip:
             # Since there is no clip, then set a clip

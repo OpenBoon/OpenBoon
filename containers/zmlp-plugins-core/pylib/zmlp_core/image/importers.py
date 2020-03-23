@@ -9,7 +9,7 @@ from pathlib2 import Path
 from zmlp import Clip, FileImport
 from zmlpsdk import AssetProcessor, Argument, ExpandFrame
 from zmlpsdk.storage import file_storage
-from ..util.media import get_image_metadata, set_resolution_attrs
+from ..util.media import FileTypes, get_image_metadata, set_resolution_attrs
 
 
 class ImageImporter(AssetProcessor):
@@ -28,9 +28,7 @@ class ImageImporter(AssetProcessor):
                    'Exif.DateTime', 'IPTC.DateCreated', 'IPTC.TimeCreated', 'DateTime',
                    'File.FileModifiedDate', 'Date']
 
-    file_types = ["bmp", "cin", "dds", "dicom", "dpx", "gif", "hdr", "ico", "iff",
-                  "jpeg", "jpg", "jp2", "exr", "png", "pnm", "psd", "raw", "rla", "sgi",
-                  "tiff", "tif"]
+    file_types = FileTypes.images
 
     def __init__(self):
         super(ImageImporter, self).__init__()
