@@ -34,7 +34,8 @@ const VisualizerContent = () => {
         display: 'flex',
         flex: 1,
         flexDirection: 'column',
-      }}>
+      }}
+    >
       <VisualizerInfobar
         currentPage={parsedPage}
         totalPages={Math.ceil(count / SIZE)}
@@ -45,7 +46,8 @@ const VisualizerContent = () => {
           display: 'flex',
           height: '100%',
           overflowY: 'hidden',
-        }}>
+        }}
+      >
         <Assets assets={assets} />
         <VisualizerMetadata assets={assets} />
       </div>

@@ -59,7 +59,8 @@ const ProjectUsersAddForm = () => {
         <FormAlert
           setErrorMessage={() =>
             dispatch({ errors: { ...state.errors, global: '' } })
-          }>
+          }
+        >
           {state.errors.global}
         </FormAlert>
 
@@ -77,7 +78,7 @@ const ProjectUsersAddForm = () => {
 
         <CheckboxGroup
           legend="Add Roles"
-          onClick={role => dispatch({ roles: { ...state.roles, ...role } })}
+          onClick={(role) => dispatch({ roles: { ...state.roles, ...role } })}
           options={roles.map(({ name, description }) => ({
             value: name,
             label: name.replace('_', ' '),
@@ -94,7 +95,8 @@ const ProjectUsersAddForm = () => {
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() => onSubmit({ projectId, dispatch, state })}
-            isDisabled={!state.emails}>
+            isDisabled={!state.emails}
+          >
             Add
           </Button>
         </ButtonGroup>

@@ -89,7 +89,7 @@ const DataSourcesAddForm = () => {
 
       <CheckboxGroup
         legend="Select File Types to Import"
-        onClick={fileType =>
+        onClick={(fileType) =>
           dispatch({ fileTypes: { ...state.fileTypes, ...fileType } })
         }
         options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
@@ -111,11 +111,11 @@ const DataSourcesAddForm = () => {
 
       <DataSourcesAddAutomaticAnalysis />
 
-      {MODULES.map(module => (
+      {MODULES.map((module) => (
         <DataSourcesAddModules
           key={module.provider}
           module={module}
-          onClick={modules =>
+          onClick={(modules) =>
             dispatch({ modules: { ...state.modules, ...modules } })
           }
         />
@@ -125,7 +125,8 @@ const DataSourcesAddForm = () => {
         <Link
           href="/[projectId]/data-sources"
           as={`/${projectId}/data-sources`}
-          passHref>
+          passHref
+        >
           <Button variant={BUTTON_VARIANTS.SECONDARY}>Cancel</Button>
         </Link>
         <Button
@@ -136,7 +137,8 @@ const DataSourcesAddForm = () => {
             !state.name ||
             state.uri.substr(0, 5) !== 'gs://' ||
             !Object.values(state.fileTypes).filter(Boolean).length > 0
-          }>
+          }
+        >
           Create Data Source
         </Button>
       </ButtonGroup>

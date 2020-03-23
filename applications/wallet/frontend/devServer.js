@@ -28,7 +28,7 @@ const { STAGING, SLOW, MOCKED } = process.env
 const app = nextjs({ dev: true })
 const server = express()
 const handle = app.getRequestHandler()
-const mock = response => (_, res) => res.send(JSON.stringify(response))
+const mock = (response) => (_, res) => res.send(JSON.stringify(response))
 const success = () => (_, res) => res.send('{"detail":"Success"}')
 const proxy = createProxyMiddleware({
   target: STAGING ? 'https://wallet.zmlp.zorroa.com' : 'http://localhost',
@@ -100,7 +100,7 @@ app.prepare().then(() => {
 
   server.all('*', (req, res) => handle(req, res))
 
-  server.listen(3000, err => {
+  server.listen(3000, (err) => {
     if (err) {
       throw err
     }

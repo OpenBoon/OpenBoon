@@ -26,11 +26,12 @@ const ProgressBar = ({ taskCounts }) => {
         height: CONTAINER_HEIGHT,
         width: CONTAINER_WIDTH,
         position: 'relative',
-      }}>
+      }}
+    >
       <div css={{ display: 'flex', width: '100%' }}>
         {Object.keys(TASK_STATUS_COLORS)
-          .filter(taskStatus => taskCounts[taskStatus] > 0)
-          .map(taskStatus => {
+          .filter((taskStatus) => taskCounts[taskStatus] > 0)
+          .map((taskStatus) => {
             return (
               <div
                 key={taskStatus}
@@ -59,7 +60,8 @@ const ProgressBar = ({ taskCounts }) => {
             right: 0,
             boxShadow: constants.boxShadows.tableRow,
             zIndex: zIndex.reset,
-          }}>
+          }}
+        >
           <ProgressBarLegend taskCounts={taskCounts} />
         </div>
       )}

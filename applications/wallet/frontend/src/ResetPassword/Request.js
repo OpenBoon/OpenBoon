@@ -28,7 +28,8 @@ const ResetPasswordRequest = () => {
           fontWeight: typography.weight.regular,
           paddingTop: spacing.spacious,
           paddingBottom: spacing.spacious,
-        }}>
+        }}
+      >
         Did you forget your password?
       </h3>
 
@@ -57,12 +58,14 @@ const ResetPasswordRequest = () => {
           paddingTop: spacing.normal,
           display: 'flex',
           justifyContent: 'center',
-        }}>
+        }}
+      >
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
           onClick={() => onRequest({ dispatch, state })}
-          isDisabled={!state.email}>
+          isDisabled={!state.email}
+        >
           Request Reset Email
         </Button>
       </div>
@@ -74,7 +77,8 @@ const ResetPasswordRequest = () => {
           a: {
             color: colors.structure.steel,
           },
-        }}>
+        }}
+      >
         <Link href="/">
           <a>Go back to Login</a>
         </Link>

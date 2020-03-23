@@ -19,12 +19,14 @@ const JobMenu = ({ projectId, jobId, status, revalidate }) => {
         display: 'flex',
         marginBottom: -spacing.small,
         paddingRight: spacing.giant,
-      }}>
+      }}
+    >
       <Menu
         open="left"
         button={({ onBlur, onClick }) => (
           <MenuButton onBlur={onBlur} onClick={onClick} legend="Modify Job" />
-        )}>
+        )}
+      >
         {({ onBlur, onClick }) => (
           <div>
             <ul>
@@ -43,7 +45,8 @@ const JobMenu = ({ projectId, jobId, status, revalidate }) => {
 
                       revalidate()
                     }}
-                    isDisabled={false}>
+                    isDisabled={false}
+                  >
                     {name}
                   </Button>
                 </li>

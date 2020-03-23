@@ -34,7 +34,8 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
             }}
             onBlur={onBlur}
             onClick={onClick}
-            isDisabled={false}>
+            isDisabled={false}
+          >
             <div css={{ display: 'flex' }}>
               <div
                 css={{
@@ -54,7 +55,8 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                     ? colors.structure.lead
                     : colors.structure.steel,
                   fontWeight: typography.weight.bold,
-                }}>
+                }}
+              >
                 {`${firstName ? firstName[0] : ''}${
                   lastName ? lastName[0] : ''
                 }`}
@@ -69,14 +71,16 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
               />
             </div>
           </Button>
-        )}>
+        )}
+      >
         {({ onBlur, onClick }) => (
           <div>
             <div
               css={{
                 padding: spacing.normal,
                 borderBottom: constants.borders.separator,
-              }}>
+              }}
+            >
               <div css={{ fontWeight: typography.weight.bold }}>
                 {`${firstName} ${lastName}`}
               </div>
@@ -89,7 +93,8 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                     variant={VARIANTS.MENU_ITEM}
                     onBlur={onBlur}
                     onClick={onClick}
-                    isDisabled={false}>
+                    isDisabled={false}
+                  >
                     Manage Account
                   </Button>
                 </Link>
@@ -98,12 +103,13 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                 <Button
                   variant={VARIANTS.MENU_ITEM}
                   onBlur={onBlur}
-                  onClick={event => {
+                  onClick={(event) => {
                     onClick(event)
 
                     openContactForm({ user })
                   }}
-                  isDisabled={false}>
+                  isDisabled={false}
+                >
                   Contact Support
                 </Button>
               </li>
@@ -114,7 +120,8 @@ const UserMenu = ({ user, user: { firstName, lastName, email }, logout }) => {
                   variant={VARIANTS.MENU_ITEM}
                   onBlur={onBlur}
                   onClick={() => logout({ redirectUrl: '/' })}
-                  isDisabled={false}>
+                  isDisabled={false}
+                >
                   Sign Out
                 </Button>
               </li>

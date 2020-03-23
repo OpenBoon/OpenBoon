@@ -28,7 +28,7 @@ const User = ({ initialUser, children }) => {
     setHasLocalStorageLoaded(true)
 
     /* istanbul ignore next */
-    Sentry.configureScope(scope => {
+    Sentry.configureScope((scope) => {
       scope.setUser(storedUser)
     })
   }, [initialUser, hasLocalStorageLoaded, user, setStateUser])
@@ -42,7 +42,8 @@ const User = ({ initialUser, children }) => {
         setUser: setUser({ setStateUser, user }),
         googleAuth,
         setGoogleAuth,
-      }}>
+      }}
+    >
       {children}
     </UserContext.Provider>
   )

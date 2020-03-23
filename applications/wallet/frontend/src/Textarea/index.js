@@ -59,7 +59,8 @@ const Textarea = ({
         display: 'block',
         paddingBottom: PADDING,
         color: colors.structure.zinc,
-      }}>
+      }}
+    >
       {label}
     </label>
     <div css={{ position: 'relative' }}>
@@ -80,7 +81,8 @@ const Textarea = ({
           css={{
             color: colors.signal.warning.base,
             fontStyle: typography.style.italic,
-          }}>
+          }}
+        >
           {errorMessage}
         </span>
       )}

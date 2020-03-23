@@ -14,7 +14,8 @@ const CheckboxGroup = ({ legend, variant, options, onClick }) => {
         padding: 0,
         margin: 0,
         paddingTop: spacing.moderate,
-      }}>
+      }}
+    >
       <legend
         css={{
           float: 'left',
@@ -23,16 +24,17 @@ const CheckboxGroup = ({ legend, variant, options, onClick }) => {
           fontSize: typography.size.medium,
           lineHeight: typography.height.medium,
           fontWeight: typography.weight.medium,
-        }}>
+        }}
+      >
         {legend}
       </legend>
       <div css={{ clear: 'both' }} />
-      {options.map(option => (
+      {options.map((option) => (
         <Checkbox
           key={option.value}
           variant={variant}
           option={option}
-          onClick={value => onClick({ [option.value]: value })}
+          onClick={(value) => onClick({ [option.value]: value })}
         />
       ))}
     </fieldset>

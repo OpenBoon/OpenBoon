@@ -54,7 +54,8 @@ const AccountProfileForm = () => {
               fontSize: typography.size.medium,
               lineHeight: typography.height.medium,
               fontWeight: typography.weight.medium,
-            }}>
+            }}
+          >
             Name
           </div>
 
@@ -65,13 +66,15 @@ const AccountProfileForm = () => {
               lineHeight: typography.height.regular,
               fontWeight: typography.weight.regular,
               paddingBottom: spacing.comfy,
-            }}>
+            }}
+          >
             {`${state.firstName} ${state.lastName}`}
           </div>
 
           <Button
             variant={BUTTON_VARIANTS.PRIMARY}
-            onClick={() => dispatch({ showForm: true, success: false })}>
+            onClick={() => dispatch({ showForm: true, success: false })}
+          >
             Edit
           </Button>
         </>
@@ -107,7 +110,8 @@ const AccountProfileForm = () => {
               variant={BUTTON_VARIANTS.SECONDARY}
               onClick={() =>
                 dispatch(INITIAL_STATE({ id, firstName, lastName }))
-              }>
+              }
+            >
               Cancel
             </Button>
 
@@ -115,7 +119,8 @@ const AccountProfileForm = () => {
               type="submit"
               variant={BUTTON_VARIANTS.PRIMARY}
               onClick={() => onSubmit({ dispatch, state, setUser })}
-              isDisabled={!state.firstName || !state.lastName}>
+              isDisabled={!state.firstName || !state.lastName}
+            >
               Save
             </Button>
           </ButtonGroup>

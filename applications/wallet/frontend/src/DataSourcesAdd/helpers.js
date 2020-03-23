@@ -191,14 +191,14 @@ export const onSubmit = async ({
         uri,
         credential,
         file_types: Object.keys(fileTypes)
-          .filter(f => fileTypes[f])
-          .flatMap(f => {
+          .filter((f) => fileTypes[f])
+          .flatMap((f) => {
             const { legend: extensions } = FILE_TYPES.find(
               ({ value }) => value === f,
             )
             return extensions.toLowerCase().split(',')
           }),
-        modules: Object.keys(modules).filter(m => modules[m]),
+        modules: Object.keys(modules).filter((m) => modules[m]),
       }),
     })
 

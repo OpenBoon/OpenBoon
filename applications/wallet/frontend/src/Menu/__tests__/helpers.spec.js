@@ -8,7 +8,7 @@ describe('<UserMenu /> helpers', () => {
       const container = {
         current: {
           contains: jest.fn(
-            relatedTarget => relatedTarget === 'includes' || false,
+            (relatedTarget) => relatedTarget === 'includes' || false,
           ),
         },
       }
@@ -24,7 +24,7 @@ describe('<UserMenu /> helpers', () => {
       const container = {
         current: {
           contains: jest.fn(
-            relatedTarget => relatedTarget === 'includes' || false,
+            (relatedTarget) => relatedTarget === 'includes' || false,
           ),
         },
       }

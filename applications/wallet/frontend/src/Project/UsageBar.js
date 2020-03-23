@@ -16,7 +16,8 @@ const ProjectUsageBar = ({ limit, usage, legend }) => {
               paddingBottom: spacing.base,
               textAlign: 'right',
               color: colors.structure.zinc,
-            }}>
+            }}
+          >
             Used:{' '}
             <span css={{ fontWeight: typography.weight.bold }}>
               {usage.toLocaleString()}
@@ -32,7 +33,8 @@ const ProjectUsageBar = ({ limit, usage, legend }) => {
               paddingBottom: spacing.base,
               textAlign: 'right',
               color: colors.key.four,
-            }}>
+            }}
+          >
             Available:{' '}
             <span css={{ fontWeight: typography.weight.bold }}>
               {available.toLocaleString()}

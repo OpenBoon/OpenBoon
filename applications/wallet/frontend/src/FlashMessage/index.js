@@ -32,7 +32,8 @@ const FlashMessage = ({ variant, children }) => {
         display: 'flex',
         paddingTop: spacing.base,
         paddingBottom: spacing.base,
-      }}>
+      }}
+    >
       <div
         css={{
           display: 'flex',
@@ -42,7 +43,8 @@ const FlashMessage = ({ variant, children }) => {
           backgroundColor: colors.structure.white,
           border: STYLES[variant].border,
           boxShadow: constants.boxShadows.default,
-        }}>
+        }}
+      >
         <div
           css={{
             width: SIZE,
@@ -52,7 +54,8 @@ const FlashMessage = ({ variant, children }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-          }}>
+          }}
+        >
           {STYLES[variant].icon}
         </div>
         <div
@@ -62,7 +65,8 @@ const FlashMessage = ({ variant, children }) => {
             justifyContent: 'center',
             paddingLeft: spacing.normal,
             paddingRight: spacing.normal,
-          }}>
+          }}
+        >
           {children}
         </div>
       </div>

@@ -6,7 +6,8 @@ const ApiKeysCopy = () => {
       css={{
         maxWidth: constants.paragraph.maxWidth,
         color: colors.structure.zinc,
-      }}>
+      }}
+    >
       Create and manage API Keys for applications or tools you would like to
       integrate with ZVI. An API Key is required to access data for this project
       using the ZVI SDK and REST APIs. For more information please visit{' '}
@@ -14,7 +15,8 @@ const ApiKeysCopy = () => {
         css={{ color: colors.key.one }}
         target="_blank"
         rel="noopener noreferrer"
-        href="https://app.gitbook.com/@zorroa/s/zmlp/getting-started">
+        href="https://app.gitbook.com/@zorroa/s/zmlp/getting-started"
+      >
         our documentation
       </a>
       .
