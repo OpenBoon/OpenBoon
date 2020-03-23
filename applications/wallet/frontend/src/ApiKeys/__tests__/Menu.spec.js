@@ -60,7 +60,7 @@ describe('<ApiKeysMenu />', () => {
     expect(fetch.mock.calls.length).toEqual(1)
 
     expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/projects/${PROJECT_ID}/apikeys/${API_KEY_ID}/`,
+      `/api/v1/projects/${PROJECT_ID}/api_keys/${API_KEY_ID}/`,
     )
 
     expect(fetch.mock.calls[0][1]).toEqual({

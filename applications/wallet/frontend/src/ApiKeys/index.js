@@ -5,6 +5,7 @@ import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
 import Table from '../Table'
 
+import ApiKeysCopy from './Copy'
 import ApiKeysRow from './Row'
 
 const ApiKeys = () => {
@@ -19,6 +20,8 @@ const ApiKeys = () => {
       </Head>
 
       <PageTitle>Project API Keys</PageTitle>
+
+      <ApiKeysCopy />
 
       <Tabs
         tabs={[

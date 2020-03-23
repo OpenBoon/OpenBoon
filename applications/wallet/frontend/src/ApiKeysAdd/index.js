@@ -1,6 +1,7 @@
 import Head from 'next/head'
 
 import PageTitle from '../PageTitle'
+import ApiKeysCopy from '../ApiKeys/Copy'
 import Tabs from '../Tabs'
 import SuspenseBoundary from '../SuspenseBoundary'
 
@@ -14,6 +15,8 @@ const ApiKeysAdd = () => {
       </Head>
 
       <PageTitle>Project API Keys</PageTitle>
+
+      <ApiKeysCopy />
 
       <Tabs
         tabs={[
