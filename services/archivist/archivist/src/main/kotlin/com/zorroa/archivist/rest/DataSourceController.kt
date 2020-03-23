@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
-@PreAuthorize("hasAuthority('ProjectManage')")
+@PreAuthorize("hasAuthority('DataSourceManage')")
 @RestController
 @Timed
 class DataSourceController(

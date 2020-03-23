@@ -288,6 +288,16 @@ class TestProjectUserGet:
         assert content['results'][0]['id'] == zmlp_project_membership.user.id
         assert content['results'][0]['roles'] == ['ML_Tools', 'User_Admin']
 
+    def test_list_no_permissions(self, zmlp_project_membership, api_client):
+        zmlp_project_membership.roles = []
+        zmlp_project_membership.save()
+        api_client.force_authenticate(zmlp_project_membership.user)
+        api_client.force_login(zmlp_project_membership.user)
+        project_pk = zmlp_project_membership.project_id
+        response = api_client.get(reverse('projectuser-list', kwargs={'project_pk': project_pk}))
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.json() == {'detail': 'You do not have permission to manage users.'}
+
     @override_settings(PLATFORM='zmlp')
     def test_paginated_list(self, project, zmlp_project_user, zmlp_project_membership,
                             api_client, django_user_model, zmlp_apikey):
@@ -591,7 +601,8 @@ class TestProjectUserPost:
         view = ProjectUserViewSet()
         roles = ['ML_Tools', 'User_Admin']
         permissions = view._get_permissions_for_roles(roles)
-        expected = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'ProjectManage']
+        expected = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'ProjectManage',
+                    'DataSourceManage', 'DataQueueManage']
         assert set(permissions) == set(expected)
         permissions = view._get_permissions_for_roles(['User_Admin'])
         assert permissions == ['ProjectManage']
