@@ -94,7 +94,7 @@
     {
       "//": "polyfill & webpack runtime",
       "path": ".next/static/runtime/[polyfill|webpack]**.js",
-      "maxSize": "20 kB"
+      "maxSize": "26 kB"
     },
     {
       "//": "all pages and chunks",
