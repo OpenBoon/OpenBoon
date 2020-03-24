@@ -15,7 +15,11 @@ class ApikeyViewSet(BaseProjectViewSet):
     zmlp_only = True
 
     def list(self, request, project_pk):
-        return self._zmlp_list_from_search(request)
+        def item_filter(request, item):
+            if item['name'].startswith('Admin Console Generated Key'):
+                return False
+            return True
+        return self._zmlp_list_from_search(request, item_filter=item_filter)
 
     def retrieve(self, request, project_pk, pk):
         return self._zmlp_retrieve(request, pk)

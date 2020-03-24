@@ -33,5 +33,5 @@ class MembershipAdmin(ModelAdmin):
             for role in settings.ROLES:
                 permissions += role['permissions']
             client = get_zmlp_superuser_client(request.user, project_id=str(obj.project.id))
-            obj.apikey = create_zmlp_api_key(client, str(obj), permissions)
+            obj.apikey = create_zmlp_api_key(client, str(obj), permissions, internal=True)
         obj.save()
