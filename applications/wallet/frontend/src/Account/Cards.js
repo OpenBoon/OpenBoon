@@ -28,27 +28,32 @@ const AccountCards = () => {
               flexWrap: 'wrap',
               maxHeight: '100vh',
               alignContent: 'flex-start',
-            }}>
+            }}
+          >
             <Card title="">
               <div
                 css={{
                   margin: -spacing.spacious,
-                }}>
+                }}
+              >
                 <div
                   css={{
                     padding: spacing.spacious,
-                  }}>
+                  }}
+                >
                   <h3
                     css={{
                       paddingBottom: spacing.base,
-                    }}>
+                    }}
+                  >
                     Project: {name}
                   </h3>
                   <div
                     css={{
                       color: colors.structure.zinc,
                       paddingBottom: spacing.normal,
-                    }}>
+                    }}
+                  >
                     Project ID: {id}
                   </div>
                   <div css={{ display: 'flex' }}>

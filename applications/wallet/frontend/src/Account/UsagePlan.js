@@ -30,7 +30,8 @@ const AccountUsagePlan = ({ projectId }) => {
       css={{
         padding: spacing.spacious,
         borderTop: constants.borders.tabs,
-      }}>
+      }}
+    >
       {(videoOverTime > 1 || imageOverTime > 1) && (
         <div css={{ marginTop: -spacing.normal, marginBottom: spacing.normal }}>
           <FormAlert setErrorMessage={false}>
@@ -57,7 +58,8 @@ const AccountUsagePlan = ({ projectId }) => {
       <div
         css={{
           paddingBottom: spacing.normal,
-        }}>
+        }}
+      >
         <h4
           css={{
             display: 'flex',
@@ -65,7 +67,8 @@ const AccountUsagePlan = ({ projectId }) => {
             img: {
               marginRight: spacing.moderate,
             },
-          }}>
+          }}
+        >
           <img src="/icons/videos.png" alt="" width={IMG_WIDTH} /> Video:{' '}
           {videoLimit.toLocaleString()} hours
         </h4>
@@ -75,7 +78,8 @@ const AccountUsagePlan = ({ projectId }) => {
         css={{
           paddingTop: spacing.normal,
           paddingBottom: spacing.normal,
-        }}>
+        }}
+      >
         <h4
           css={{
             display: 'flex',
@@ -83,7 +87,8 @@ const AccountUsagePlan = ({ projectId }) => {
             img: {
               marginRight: spacing.moderate,
             },
-          }}>
+          }}
+        >
           <img src="/icons/images.png" alt="" width={IMG_WIDTH} /> Image /
           Documents: {imageLimit.toLocaleString()}
         </h4>
@@ -94,7 +99,8 @@ const AccountUsagePlan = ({ projectId }) => {
           paddingTop: spacing.normal,
           paddingBottom: spacing.normal,
           paddingLeft: LEFT_SPACING,
-        }}>
+        }}
+      >
         <h4>Additional Modules:</h4>
         <span css={{ color: colors.structure.zinc, fontStyle: 'italic' }}>
           None

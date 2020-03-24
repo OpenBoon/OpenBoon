@@ -13,12 +13,14 @@ const AccountUsage = ({ usage, limit, legend }) => {
         display: 'flex',
         flexDirection: 'column',
         paddingLeft: IMG_SPACING,
-      }}>
+      }}
+    >
       <div
         css={{
           color: colors.structure.zinc,
           paddingBottom: spacing.mini,
-        }}>
+        }}
+      >
         Used:{' '}
         <span css={{ fontWeight: typography.weight.bold }}>
           {usage.toLocaleString()}
@@ -28,7 +30,8 @@ const AccountUsage = ({ usage, limit, legend }) => {
       <div
         css={{
           color: colors.key.four,
-        }}>
+        }}
+      >
         Available:{' '}
         <span css={{ fontWeight: typography.weight.bold }}>
           {available.toLocaleString()}
