@@ -47,7 +47,7 @@ def create_project_zero(apps, schema_editor):
         inception_key = base64.b64encode(json.dumps(key_contents).encode('utf-8')).decode('utf-8')
 
     # Create the membership if it doesn't already exist
-    user = User.objects.get(username='admin')
+    user = User.objects.get(username='admin@admin.com')
     membership = None
     try:
         membership = Membership.objects.get(user=user, project=project_zero)
@@ -56,7 +56,7 @@ def create_project_zero(apps, schema_editor):
 
     if not membership:
         Membership.objects.create(user=user, project=project_zero, apikey=inception_key,
-                                  roles=settings.ROLES.keys())
+                                  roles=[r['name'] for r in settings.ROLES])
     else:
         logger.info('Project Zero membership already exists, not modifying.')
 
