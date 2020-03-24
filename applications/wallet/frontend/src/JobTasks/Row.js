@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types'
+import Router from 'next/router'
+import Link from 'next/link'
 
 import { formatFullDate, formatDuration } from '../Date/helpers'
 
@@ -7,8 +9,10 @@ import { spacing } from '../Styles'
 import JobTasksStateIcon from './StateIcon'
 
 const JobTasksRow = ({
+  projectId,
+  jobId,
   task: {
-    id,
+    id: taskId,
     name,
     state,
     timeStarted,
@@ -18,12 +22,32 @@ const JobTasksRow = ({
   },
 }) => {
   return (
-    <tr>
+    <tr
+      css={{ cursor: 'pointer' }}
+      onClick={(event) => {
+        const { target: { localName } = {} } = event || {}
+        if (['a', 'button', 'svg', 'path'].includes(localName)) return
+        Router.push(
+          '/[projectId]/jobs/[jobId]/tasks/[taskId]',
+          `/${projectId}/jobs/${jobId}/tasks/${taskId}`,
+        )
+      }}
+    >
       <td css={{ display: 'flex' }}>
         <JobTasksStateIcon state={state} />
         <span css={{ paddingLeft: spacing.normal }}>{state}</span>
       </td>
-      <td title={id}>{id}</td>
+      <td>
+        <Link
+          href="/[projectId]/jobs/[jobId]/tasks/[taskId]"
+          as={`/${projectId}/jobs/${jobId}/tasks/${taskId}`}
+          passHref
+        >
+          <a css={{ ':hover': { textDecoration: 'none' } }} title={taskId}>
+            {taskId}
+          </a>
+        </Link>
+      </td>
       <td title={name}>{name}</td>
       <td>{formatDuration({ seconds: timeStopped - timeStarted })}</td>
       <td>{assetTotalCount}</td>
@@ -34,6 +58,8 @@ const JobTasksRow = ({
 }
 
 JobTasksRow.propTypes = {
+  projectId: PropTypes.string.isRequired,
+  jobId: PropTypes.string.isRequired,
   task: PropTypes.shape({
     id: PropTypes.string.isRequired,
     jobId: PropTypes.string.isRequired,
@@ -53,7 +79,6 @@ JobTasksRow.propTypes = {
       assetErrorCount: PropTypes.number.isRequired,
       assetTotalCount: PropTypes.number.isRequired,
     }).isRequired,
-    taskId: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
   }).isRequired,
 }
