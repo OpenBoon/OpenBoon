@@ -2,14 +2,14 @@ from rest_framework import serializers
 
 
 class FilterSerializer(serializers.Serializer):
-    type = serializers.CharField(required=True)
+    type = serializers.CharField(default='')
     processor = serializers.CharField(default='')
 
 
 class OpSerializer(serializers.Serializer):
     type = serializers.CharField(required=True)
     apply = serializers.JSONField(default={})
-    filter = FilterSerializer(default={})
+    opFilter = FilterSerializer(default={})
     maxApplyCount = serializers.IntegerField(required=True)
 
 
