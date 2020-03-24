@@ -42,9 +42,9 @@ exports[`<JobErrorAsset /> should render properly when asset has no proxies 1`] 
     className="emotion-2"
   >
     <img
-      alt="No proxies"
+      alt="Proxy Unavailable"
       className="emotion-0"
-      src="/icons/documents.png"
+      src="/icons/fallback_26.png"
     />
     <div
       className="emotion-1"

@@ -54,8 +54,8 @@ const JobErrorAsset = ({ assetId }) => {
           />
         ) : (
           <img
-            src="/icons/documents.png"
-            alt="No proxies"
+            src="/icons/fallback_26.png"
+            alt="Proxy Unavailable"
             css={{
               width: ASSET_THUMBNAIL_SIZE,
               height: ASSET_THUMBNAIL_SIZE,

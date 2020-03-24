@@ -23,7 +23,6 @@ const AssetsThumbnail = ({
   } = useRouter()
 
   const containerWidth = 100 / thumbnailCount
-
   const srcUrl = files[0] && files[0].url
 
   const srcSet = files.map(
@@ -90,9 +89,13 @@ const AssetsThumbnail = ({
               />
             ) : (
               <img
-                src="/icons/documents.png"
-                alt="No proxies"
-                css={{ width: containerWidth }}
+                srcSet={
+                  (`/icons/fallback_256.png ${256}w`,
+                  `/icons/fallback_512.png ${512}w`,
+                  `/icons/fallback_1024.png ${1024}w`)
+                }
+                alt="Proxy Unavailable"
+                css={{ width: '100%' }}
               />
             )}
           </Button>
