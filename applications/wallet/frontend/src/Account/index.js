@@ -9,7 +9,7 @@ const Account = () => {
   return (
     <>
       <Head>
-        <title>Account Acc</title>
+        <title>Account Overview</title>
       </Head>
 
       <PageTitle>Account Overview</PageTitle>
