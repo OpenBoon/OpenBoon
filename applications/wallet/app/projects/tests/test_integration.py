@@ -620,8 +620,13 @@ class TestProjectUserPut:
         def mock_delete_response(*args, **kwargs):
             return Response(status=status.HTTP_200_OK)
 
+        def mock_get_response(*args, **kwargs):
+            return {'accessKey': 'access',
+                    'secretKey': 'secret'}
+
         monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
         monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
@@ -691,8 +696,13 @@ class TestProjectUserPut:
         def mock_delete_response(*args, **kwargs):
             raise ZmlpInvalidRequestException({'msg': 'bad'})
 
+        def mock_get_response(*args, **kwargs):
+            return {'accessKey': 'access',
+                    'secretKey': 'secret'}
+
         monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
         monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
@@ -719,8 +729,14 @@ class TestProjectUserPut:
         def mock_delete_response(*args, **kwargs):
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+        def mock_get_response(*args, **kwargs):
+            return {'accessKey': 'access',
+                    'secretKey': 'secret'}
+
         monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
         monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
