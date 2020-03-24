@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 from zmlp import app_from_env
 from zmlp.asset import FileImport
 from zmlpsdk import Generator, Argument
-from zmlpsdk.cloud import get_google_storage_client, get_aws_client
+from zmlpsdk.cloud import get_google_storage_client, get_aws_client, get_azure_storage_client
 
 
 class AssetSearchGenerator(Generator):
@@ -97,3 +97,31 @@ class S3BucketGenerator(Generator):
                     continue
                 s3uri = "s3://{}/{}".format(uri.netloc, item['Key'])
                 consumer.accept(FileImport(s3uri))
+
+
+class AzureBucketGenerator(Generator):
+    """Azure Blob storage generator. To use this generator in production, AWS
+    credentials must be attached to the job.
+
+    Args:
+        uri (str): Address of a bucket in the form "azure://<CONTAINER>".
+    """
+
+    def __init__(self):
+        super(AzureBucketGenerator, self).__init__()
+        self.add_arg(Argument('uri', 'str', required=True))
+
+    def generate(self, consumer):
+        uri = urlparse(self.arg_value('uri'))
+        client = get_azure_storage_client()
+
+        container_client = client.get_container_client(uri.netloc)
+        path = uri.path.lstrip("/")
+        if path:
+            blobs = container_client.list_blobs(name_starts_with=uri.path.lstrip("/"))
+        else:
+            blobs = container_client.list_blobs()
+
+        for blob in blobs:
+            azuri = "azure://{}/{}".format(uri.netloc, blob["name"])
+            consumer.accept(FileImport(azuri))

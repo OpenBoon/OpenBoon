@@ -7,6 +7,7 @@ import minio
 from google.auth.exceptions import DefaultCredentialsError
 from google.cloud import storage as gcs
 from google.oauth2 import service_account
+from azure.storage.blob import BlobServiceClient
 
 from zmlp import app_from_env
 from zmlp.client import ZmlpNotFoundException
@@ -115,6 +116,19 @@ def get_google_storage_client():
             return gcs.Client()
         except (DefaultCredentialsError, OSError):
             return gcs.Client.create_anonymous_client()
+
+
+def get_azure_storage_client():
+    creds = get_credentials_blob('AZURE')
+    if creds:
+        return BlobServiceClient.from_connection_string(creds['connection_string'])
+    else:
+        return None
+
+
+@memoize
+def get_cached_azure_storage_client():
+    return get_azure_storage_client()
 
 
 def get_pipeline_storage_client():

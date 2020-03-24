@@ -6,7 +6,8 @@ from unittest.mock import patch
 from dateutil.tz import tzutc
 
 from zmlp import ZmlpClient
-from zmlp_core.core.generators import GcsBucketGenerator, AssetSearchGenerator, S3BucketGenerator
+from zmlp_core.core.generators import GcsBucketGenerator, AssetSearchGenerator, \
+    S3BucketGenerator, AzureBucketGenerator
 from zmlpsdk import Context
 
 
@@ -32,11 +33,24 @@ class MockS3Client(object):
     """
     A Mock AWS S3 client.
     """
+
     def get_paginator(self, func):
         return self
 
     def paginate(self, **kwargs):
         return mock_aws_result
+
+
+class MockAzureClient(object):
+    """
+    A Mock MS Azure blob client.
+    """
+
+    def get_container_client(self, bucket):
+        return self
+
+    def list_blobs(self, name_starts_with=""):
+        return mock_azure_result
 
 
 class S3BucketGeneratorUnitTests(unittest.TestCase):
@@ -47,6 +61,18 @@ class S3BucketGeneratorUnitTests(unittest.TestCase):
         consumer = TestConsumer()
         generator = S3BucketGenerator()
         generator.set_context(Context(None, {'uri': 's3://zorroa-test-data'}, {}))
+        generator.generate(consumer)
+        assert consumer.count > 0
+
+
+class AzureBucketGeneratorUnitTests(unittest.TestCase):
+
+    @patch('zmlp_core.core.generators.get_azure_storage_client')
+    def test_generate(self, azure_client_patch):
+        azure_client_patch.return_value = MockAzureClient()
+        consumer = TestConsumer()
+        generator = AzureBucketGenerator()
+        generator.set_context(Context(None, {'uri': 'azure://zorroa-test-data'}, {}))
         generator.generate(consumer)
         assert consumer.count > 0
 
@@ -126,3 +152,21 @@ mock_aws_result = [{'ResponseMetadata': {'RequestId': '3EC30547D121F51E',
     {'Key': 'pics/spatoon.jpg', 'LastModified': datetime.datetime(2020, 3, 22, 15, 0, 29, tzinfo=tzutc()),
      'ETag': '"6bfcfc5b79076cee9f204ea015f7d351"', 'Size': 267907, 'StorageClass': 'STANDARD'}],
                     'Name': 'zorroa-test-data', 'Prefix': '', 'MaxKeys': 1000, 'EncodingType': 'url', 'KeyCount': 8}]
+
+mock_azure_result = [
+    {'name': 'office/multipage_tiff_small.tif', 'container': 'zorroa-test-data', 'snapshot': None, 'blob_type': None,
+     'metadata': {}, 'encrypted_metadata': None,
+     'last_modified': datetime.datetime(2020, 3, 22, 21, 2, 46, tzinfo=datetime.timezone.utc),
+     'etag': '0x8D7CEA45F32949D', 'size': 810405, 'content_range': None, 'append_blob_committed_block_count': None,
+     'page_blob_sequence_number': None, 'server_encrypted': True,
+     'copy': {'id': None, 'source': None, 'status': None, 'progress': None, 'completion_time': None,
+              'status_description': None, 'incremental_copy': None, 'destination_snapshot': None},
+     'content_settings': {'content_type': 'image/tiff', 'content_encoding': None, 'content_language': None,
+                          'content_md5': bytearray(b'\xfa#\xfb3\xbc9\xc4\xdd\x9c3:9\x83g\x13\x86'),
+                          'content_disposition': None, 'cache_control': None},
+     'lease': {'status': 'unlocked', 'state': 'available', 'duration': None}, 'blob_tier': 'Cool',
+     'blob_tier_change_time': None, 'blob_tier_inferred': True, 'deleted': None, 'deleted_time': None,
+     'remaining_retention_days': None,
+     'creation_time': datetime.datetime(2020, 3, 22, 21, 2, 46, tzinfo=datetime.timezone.utc), 'archive_status': None,
+     'encryption_key_sha256': None, 'encryption_scope': None, 'request_server_encrypted': None}
+]
