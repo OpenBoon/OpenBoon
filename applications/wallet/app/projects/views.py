@@ -10,14 +10,16 @@ from django.db import transaction
 from django.http import HttpResponseForbidden, Http404
 from rest_framework import status
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet, GenericViewSet
 from zmlp import ZmlpClient
-from zmlp.client import ZmlpInvalidRequestException
+from zmlp.client import ZmlpInvalidRequestException, ZmlpNotFoundException
 
-from apikeys.utils import create_zmlp_api_key, decode_apikey, encode_apikey
+from apikeys.utils import create_zmlp_api_key, decode_apikey
 from projects.clients import ZviClient
 from projects.models import Membership, Project
+from projects.permissions import ManagerUserPermissions
 from projects.serializers import ProjectSerializer, ProjectUserSerializer
 from wallet.paginators import FromSizePagination
 
@@ -361,10 +363,10 @@ class ProjectUserViewSet(BaseProjectViewSet):
     * **DELETE** _api/v1/projects/$Project_Id/users/$User_Id/_ - Remove $User_Id from $Project_Id
 
     """
-
     zmlp_only = True
     pagination_class = FromSizePagination
     serializer_class = ProjectUserSerializer
+    permission_classes = [IsAuthenticated, ManagerUserPermissions]
 
     def get_object(self, pk, project_pk):
         try:
@@ -436,10 +438,9 @@ class ProjectUserViewSet(BaseProjectViewSet):
         # TODO: Replace Delete/Create logic when Auth Server supports PUT
         # Create new Key first and append epoch time (milli) to get a readable unique name
         new_permissions = self._get_permissions_for_roles(new_roles)
-        body = {'name': self._get_api_key_name(email, project_pk),
-                'permissions': new_permissions}
         try:
-            new_apikey = request.client.post('/auth/v1/apikey', body)
+            name = self._get_api_key_name(email, project_pk)
+            new_apikey = create_zmlp_api_key(request.client, name, new_permissions)
         except ZmlpInvalidRequestException:
             return Response(data={'detail': "Unable to create apikey."},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -447,14 +448,17 @@ class ProjectUserViewSet(BaseProjectViewSet):
         # Delete old key on success
         try:
             response = request.client.delete(f'/auth/v1/apikey/{apikey_id}')
+            if not response.status_code == 200:
+                return Response(data={'detail': 'Error deleting apikey.'},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except ZmlpInvalidRequestException:
             return Response(data={'detail': "Unable to delete apikey."},
                             status=status.HTTP_400_BAD_REQUEST)
-        if not response.status_code == 200:
-            return Response(data={'detail': 'Error deleting apikey.'},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except ZmlpNotFoundException:
+            logger.warning(f'Tried to delete API Key {apikey_id} for user f{request.user.id} '
+                           f'while updating permissions. The API key could not be found.')
 
-        membership.apikey = encode_apikey(new_apikey).decode('utf-8')
+        membership.apikey = new_apikey
         membership.roles = new_roles
         membership.save()
         serializer = self.get_serializer(membership.user, context={'request': request})

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
-@PreAuthorize("hasAuthority('ProjectManage')")
+@PreAuthorize("hasAuthority('DataQueueManage')")
 @RestController
 @Timed
 @Api(tags = ["Task Error"], description = "Operations for interacting with Task Errors.")
