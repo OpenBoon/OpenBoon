@@ -10,7 +10,7 @@ from django.db import transaction
 from django.http import HttpResponseForbidden, Http404
 from rest_framework import status
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
-from rest_framework.permissions import BasePermission, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet, GenericViewSet
 from zmlp import ZmlpClient
@@ -19,6 +19,7 @@ from zmlp.client import ZmlpInvalidRequestException, ZmlpNotFoundException
 from apikeys.utils import create_zmlp_api_key, decode_apikey
 from projects.clients import ZviClient
 from projects.models import Membership, Project
+from projects.permissions import ManagerUserPermissions
 from projects.serializers import ProjectSerializer, ProjectUserSerializer
 from wallet.paginators import FromSizePagination
 
@@ -342,20 +343,6 @@ class ProjectViewSet(ListModelMixin,
                             status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-class ManagerUserPermissions(BasePermission):
-    """Permission class that looks for the User_Admin role for the current project."""
-    message = 'You do not have permission to manage users.'
-
-    def has_permission(self, request, view):
-        try:
-            roles = request.user.memberships.get(project_id=view.kwargs['project_pk']).roles
-        except ObjectDoesNotExist:
-            return False
-        if 'User_Admin' not in roles:
-            return False
-        return True
 
 
 class ProjectUserViewSet(BaseProjectViewSet):

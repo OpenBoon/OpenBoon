@@ -3,7 +3,7 @@ from django.db import migrations
 
 
 def forwards(apps, schema_editor):
-    User.objects.create_superuser(username='admin@admin.com', email='admin@admin.com',
+    User.objects.create_superuser(username='software@zorroa.com', email='software@zorroa.com',
                                   password='admin', first_name='Admin', last_name='Adminson')
 
 

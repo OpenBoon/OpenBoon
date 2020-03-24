@@ -47,7 +47,7 @@ def create_project_zero(apps, schema_editor):
         inception_key = base64.b64encode(json.dumps(key_contents).encode('utf-8')).decode('utf-8')
 
     # Create the membership if it doesn't already exist
-    user = User.objects.get(username='admin@admin.com')
+    user = User.objects.get(username='software@zorroa.com')
     membership = None
     try:
         membership = Membership.objects.get(user=user, project=project_zero)
