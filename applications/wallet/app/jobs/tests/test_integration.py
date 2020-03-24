@@ -363,7 +363,8 @@ class TestJobViewSet:
             'name': 'Test',
             'priority': 5,
             'paused': True,
-            'arbitraryKey': 'NewValue'
+            'arbitraryKey': 'NewValue',
+            'maxRunningTasks': 10
         }
         viewset = JobViewSet()
         new_job_spec = viewset._get_updated_info(api_client, job_pk, new_values)
@@ -371,6 +372,7 @@ class TestJobViewSet:
         assert new_job_spec['priority'] == new_values['priority']
         assert new_job_spec['paused'] == new_values['paused']
         assert new_job_spec['arbitraryKey'] == new_values['arbitraryKey']
+        assert new_job_spec['maxRunningTasks'] == new_values['maxRunningTasks']
 
 
 class TestTaskViewSet:

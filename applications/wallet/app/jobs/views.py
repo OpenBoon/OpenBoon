@@ -228,7 +228,8 @@ class JobViewSet(BaseProjectViewSet):
             'name': body['name'],
             'priority': body['priority'],
             'paused': body['paused'],
-            'timePauseExpired': body['timePauseExpired']
+            'timePauseExpired': body['timePauseExpired'],
+            'maxRunningTasks': body['maxRunningTasks']
         }
         job_spec.update(new_values)
         return job_spec
