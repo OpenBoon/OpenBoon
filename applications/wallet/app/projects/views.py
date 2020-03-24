@@ -129,8 +129,8 @@ class BaseProjectViewSet(ViewSet):
         assert self.paginator is not None
         return self.paginator.get_paginated_response(data)
 
-    def _zmlp_list_from_search(self, request, item_modifier=None, filter=None,
-                               serializer_class=None, base_url=None):
+    def _zmlp_list_from_search(self, request, item_modifier=None, search_filter=None,
+                               serializer_class=None, base_url=None, item_filter=None):
         """The result of this method can be returned for the list method of a concrete
         viewset if it just needs to proxy the results of a ZMLP search endpoint.
 
@@ -139,9 +139,13 @@ class BaseProjectViewSet(ViewSet):
             item_modifier (function): Each item dictionary returned by the API will be
               passed to this function along with the request. The function is expected to
               modify the item in place. The arguments are passed as (request, item).
-            filter (dict): Optional filter to pass to the zmlp search endpoint.
+            search_filter (dict): Optional filter to pass to the zmlp search endpoint.
             serializer_class (Serializer): Optional serializer to override the one set on
               the ViewSet.
+            item_filter (function): Each item dictionary returned by the API will be
+              passed to this function along with the request. If the function returns
+              False the item will not returned in the Response. The arguments are passed
+              as (request, item).
 
         Returns:
             Response: DRF Response that can be used directly by viewset action method.
@@ -151,17 +155,22 @@ class BaseProjectViewSet(ViewSet):
         payload = {'page': {'from': request.GET.get('from', 0),
                             'size': request.GET.get('size',
                                                     self.pagination_class.default_limit)}}
-        if filter:
-            payload.update(filter)
+        if search_filter:
+            payload.update(search_filter)
         path = os.path.join(base_url, '_search')
         response = request.client.post(path, payload)
         content = self._get_content(response)
         current_url = request.build_absolute_uri(request.path)
         items = content['list']
+        items_to_remove = []
         for item in items:
             item['url'] = f'{current_url}{item["id"]}/'
             if item_modifier:
                 item_modifier(request, item)
+            if item_filter and not item_filter(request, item):
+                items_to_remove.append(item)
+        for item in items_to_remove:
+            content['list'].remove(item)
         if serializer_class:
             serializer = serializer_class(data=content['list'], many=True)
         else:
@@ -436,10 +445,9 @@ class ProjectUserViewSet(BaseProjectViewSet):
         # TODO: Replace Delete/Create logic when Auth Server supports PUT
         # Create new Key first and append epoch time (milli) to get a readable unique name
         new_permissions = self._get_permissions_for_roles(new_roles)
-        body = {'name': self._get_api_key_name(email, project_pk),
-                'permissions': new_permissions}
         try:
-            new_apikey = request.client.post('/auth/v1/apikey', body)
+            name = self._get_api_key_name(email, project_pk)
+            new_apikey = create_zmlp_api_key(request.client, name, new_permissions, internal=True)
         except ZmlpInvalidRequestException:
             return Response(data={'detail': "Unable to create apikey."},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -454,7 +462,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
             return Response(data={'detail': 'Error deleting apikey.'},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        membership.apikey = encode_apikey(new_apikey).decode('utf-8')
+        membership.apikey = new_apikey
         membership.roles = new_roles
         membership.save()
         serializer = self.get_serializer(membership.user, context={'request': request})
@@ -520,7 +528,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
         # Create an apikey with the given permissions
         try:
             name = self._get_api_key_name(email, project_pk)
-            encoded_apikey = create_zmlp_api_key(request.client, name, permissions)
+            encoded_apikey = create_zmlp_api_key(request.client, name, permissions, internal=True)
         except ZmlpInvalidRequestException:
             return Response(data={'detail': "Unable to create apikey."},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -553,4 +561,4 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
     def _get_api_key_name(self, email, project_pk):
         """Generate a unique name to user for the api key."""
-        return f'{email}_{project_pk}_{int(time.time() * 1000)}'
+        return f'{email}_{project_pk}'

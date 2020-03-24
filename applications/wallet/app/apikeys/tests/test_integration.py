@@ -45,7 +45,22 @@ def list_data():
                  'timeCreated': 1583452650141,
                  'timeModified': 1583452650141,
                  'actorCreated': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key',
-                 'actorModified': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key'}]}
+                 'actorModified': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key'},
+                {'id': '091dfa7b-4e2e-468a-8065-a5c3593d646c',
+                 'projectId': '00000000-0000-0000-0000-000000000000',
+                 'accessKey': 'klai7JM3L_ZwExIagf1LWkMh8IH4ar5T',
+                 'secretKey': 'ENCRYPTED',
+                 'name': 'Admin Console Generated Key - Admin - Project Zero',
+                 'permissions': ['ProjectFilesRead',
+                                 'AssetsRead',
+                                 'SystemProjectDecrypt',
+                                 'AssetsImport',
+                                 'ProjectFilesWrite'],
+                 'timeCreated': 1583452650141,
+                 'timeModified': 1583452650141,
+                 'actorCreated': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key',
+                 'actorModified': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key'}
+            ]}
 
 
 class TestApikey:
