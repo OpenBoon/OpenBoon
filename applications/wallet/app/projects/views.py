@@ -1,6 +1,5 @@
 import logging
 import os
-import time
 
 import zmlp
 from django.conf import settings
