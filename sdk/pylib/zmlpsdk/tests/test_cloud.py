@@ -5,7 +5,8 @@ import json
 from unittest import TestCase
 from unittest.mock import patch
 
-from zmlpsdk.cloud import get_google_storage_client, get_pipeline_storage_client
+from zmlpsdk.cloud import get_google_storage_client, get_pipeline_storage_client, \
+    get_aws_client, get_credentials_blob
 from zmlp.client import ZmlpClient
 
 logging.basicConfig(level=logging.DEBUG)
@@ -58,3 +59,29 @@ class TetCloudUtilFunction(TestCase):
             assert type(client) == minio.api.Minio
         finally:
             del os.environ['ZMLP_STORAGE_PIPELINE_URL']
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get_aws_client(self, get_patch):
+        get_patch.return_value = {
+            'aws_access_key_id': 'boom',
+            'aws_secret_access_key': 'chakalakalaka'
+        }
+        client = get_aws_client('s3')
+        assert getattr(client, 'create_bucket')
+        assert getattr(client, 'get_object')
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get_credentials_blob(self, get_patch):
+        os.environ['ZMLP_JOB_ID'] = 'abc123'
+        os.environ['ZMLP_CREDENTIALS_TYPES'] = 'AWS'
+        try:
+            get_patch.return_value = {
+                'aws_access_key_id': 'boom',
+                'aws_secret_access_key': 'chakalakalaka'
+            }
+            blob = get_credentials_blob("AWS")
+            assert blob['aws_access_key_id'] == 'boom'
+            assert blob['aws_secret_access_key'] == 'chakalakalaka'
+        finally:
+            del os.environ['ZMLP_JOB_ID']
+            del os.environ['ZMLP_CREDENTIALS_TYPES']
