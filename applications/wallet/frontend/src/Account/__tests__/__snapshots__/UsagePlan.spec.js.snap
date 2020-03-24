@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<OverviewUsagePlan /> should not render without subscriptions 1`] = `null`;
+exports[`<AccountUsagePlan /> should not render without subscriptions 1`] = `null`;
 
-exports[`<OverviewUsagePlan /> should render properly 1`] = `
+exports[`<AccountUsagePlan /> should render properly 1`] = `
 .emotion-17 {
   padding: 32px;
   border-top: 1px solid #4a4a4a;
@@ -178,7 +178,7 @@ exports[`<OverviewUsagePlan /> should render properly 1`] = `
 </div>
 `;
 
-exports[`<OverviewUsagePlan /> should render properly with over usage 1`] = `
+exports[`<AccountUsagePlan /> should render properly with over usage 1`] = `
 .emotion-22 {
   padding: 32px;
   border-top: 1px solid #4a4a4a;

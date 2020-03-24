@@ -10,7 +10,7 @@ import OverviewUsage from './Usage'
 const IMG_WIDTH = 32
 const LEFT_SPACING = IMG_WIDTH + spacing.moderate
 
-const OverviewUsagePlan = ({ projectId }) => {
+const AccountUsagePlan = ({ projectId }) => {
   const {
     data: { results: subscriptions },
   } = useSWR(`/api/v1/projects/${projectId}/subscriptions/`)
@@ -104,8 +104,8 @@ const OverviewUsagePlan = ({ projectId }) => {
   )
 }
 
-OverviewUsagePlan.propTypes = {
+AccountUsagePlan.propTypes = {
   projectId: PropTypes.string.isRequired,
 }
 
-export default OverviewUsagePlan
+export default AccountUsagePlan

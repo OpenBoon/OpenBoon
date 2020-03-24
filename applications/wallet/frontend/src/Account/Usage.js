@@ -4,7 +4,7 @@ import { spacing, colors, typography } from '../Styles'
 
 const IMG_SPACING = 44
 
-const OverviewUsage = ({ usage, limit, legend }) => {
+const AccountUsage = ({ usage, limit, legend }) => {
   const available = limit - usage
 
   return (
@@ -39,10 +39,10 @@ const OverviewUsage = ({ usage, limit, legend }) => {
   )
 }
 
-OverviewUsage.propTypes = {
+AccountUsage.propTypes = {
   limit: PropTypes.number.isRequired,
   usage: PropTypes.number.isRequired,
   legend: PropTypes.string.isRequired,
 }
 
-export default OverviewUsage
+export default AccountUsage

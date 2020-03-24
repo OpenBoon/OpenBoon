@@ -3,16 +3,16 @@ import TestRenderer from 'react-test-renderer'
 import project from '../../Project/__mocks__/project'
 import subscriptions from '../../Subscriptions/__mocks__/subscriptions'
 
-import OverviewUsagePlan from '../UsagePlan'
+import AccountUsagePlan from '../UsagePlan'
 
 const PROJECT_ID = project.id
 
-describe('<OverviewUsagePlan />', () => {
+describe('<AccountUsagePlan />', () => {
   it('should render properly', () => {
     require('swr').__setMockUseSWRResponse({ data: subscriptions })
 
     const component = TestRenderer.create(
-      <OverviewUsagePlan projectId={PROJECT_ID} />,
+      <AccountUsagePlan projectId={PROJECT_ID} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -40,7 +40,7 @@ describe('<OverviewUsagePlan />', () => {
     })
 
     const component = TestRenderer.create(
-      <OverviewUsagePlan projectId={PROJECT_ID} />,
+      <AccountUsagePlan projectId={PROJECT_ID} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -62,7 +62,7 @@ describe('<OverviewUsagePlan />', () => {
     })
 
     const component = TestRenderer.create(
-      <OverviewUsagePlan projectId={PROJECT_ID} />,
+      <AccountUsagePlan projectId={PROJECT_ID} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

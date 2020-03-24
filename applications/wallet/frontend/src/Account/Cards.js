@@ -6,9 +6,9 @@ import { colors, spacing } from '../Styles'
 import Card from '../Card'
 import Button, { VARIANTS } from '../Button'
 
-import AccountDashboardUsagePlan from './UsagePlan'
+import AccountUsagePlan from './UsagePlan'
 
-const OverviewCards = () => {
+const AccountCards = () => {
   const {
     data: { results, count },
   } = useSWR(`/api/v1/projects`)
@@ -59,7 +59,7 @@ const OverviewCards = () => {
                     </Link>
                   </div>
                 </div>
-                <AccountDashboardUsagePlan projectId={id} />
+                <AccountUsagePlan projectId={id} />
               </div>
             </Card>
           </div>
@@ -69,4 +69,4 @@ const OverviewCards = () => {
   )
 }
 
-export default OverviewCards
+export default AccountCards
