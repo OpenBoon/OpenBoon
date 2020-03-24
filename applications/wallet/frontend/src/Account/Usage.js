@@ -27,11 +27,7 @@ const AccountUsage = ({ usage, limit, legend }) => {
           {legend}
         </span>
       </div>
-      <div
-        css={{
-          color: colors.key.four,
-        }}
-      >
+      <div css={{ color: colors.key.four }}>
         Available:{' '}
         <span css={{ fontWeight: typography.weight.bold }}>
           {available.toLocaleString()}

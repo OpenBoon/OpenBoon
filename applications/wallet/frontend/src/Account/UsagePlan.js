@@ -55,11 +55,7 @@ const AccountUsagePlan = ({ projectId }) => {
         </div>
       )}
       <h3 css={{ paddingBottom: spacing.normal }}>Usage Plan:</h3>
-      <div
-        css={{
-          paddingBottom: spacing.normal,
-        }}
-      >
+      <div css={{ paddingBottom: spacing.normal }}>
         <h4
           css={{
             display: 'flex',

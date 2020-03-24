@@ -36,18 +36,8 @@ const AccountCards = () => {
                 borderRadius: constants.borderRadius.small,
               }}
             >
-              <div
-                css={{
-                  padding: spacing.spacious,
-                }}
-              >
-                <h3
-                  css={{
-                    paddingBottom: spacing.base,
-                  }}
-                >
-                  Project: {name}
-                </h3>
+              <div css={{ padding: spacing.spacious }}>
+                <h3 css={{ paddingBottom: spacing.base }}>Project: {name}</h3>
                 <div
                   css={{
                     color: colors.structure.zinc,
