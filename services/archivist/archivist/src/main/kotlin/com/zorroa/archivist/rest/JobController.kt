@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.io.IOException
 import java.util.UUID
 
-@PreAuthorize("hasAuthority('ProjectManage')")
+@PreAuthorize("hasAuthority('DataQueueManage')")
 @RestController
 @Timed
 @Api(tags = ["Job"], description = "Operations for interacting with jobs.")

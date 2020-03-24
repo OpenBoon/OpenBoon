@@ -29,7 +29,7 @@ import java.io.IOException
 import java.util.UUID
 import java.util.concurrent.ExecutionException
 
-@PreAuthorize("hasAuthority('ProjectManage')")
+@PreAuthorize("hasAuthority('DataQueueManage')")
 @RestController
 @Timed
 @Api(tags = ["Task"], description = "Operations for interacting with Tasks.")
