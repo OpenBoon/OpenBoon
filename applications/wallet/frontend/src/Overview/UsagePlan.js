@@ -3,10 +3,12 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, constants, typography } from '../Styles'
 
-import ProjectUsageBar from '../Project/UsageBar'
 import FormAlert from '../FormAlert'
 
+import OverviewUsage from './Usage'
+
 const IMG_WIDTH = 32
+const LEFT_SPACING = IMG_WIDTH + spacing.moderate
 
 const OverviewUsagePlan = ({ projectId }) => {
   const {
@@ -24,7 +26,11 @@ const OverviewUsagePlan = ({ projectId }) => {
   const imageOverTime = imageUsage - imageLimit
 
   return (
-    <div css={{ padding: spacing.spacious, borderTop: constants.borders.tabs }}>
+    <div
+      css={{
+        padding: spacing.spacious,
+        borderTop: constants.borders.tabs,
+      }}>
       {(videoOverTime > 1 || imageOverTime > 1) && (
         <div css={{ marginTop: -spacing.normal, marginBottom: spacing.normal }}>
           <FormAlert setErrorMessage={false}>
@@ -47,9 +53,9 @@ const OverviewUsagePlan = ({ projectId }) => {
           </FormAlert>
         </div>
       )}
+      <h3 css={{ paddingBottom: spacing.normal }}>Usage Plan:</h3>
       <div
         css={{
-          borderBottom: constants.borders.tabs,
           paddingBottom: spacing.normal,
         }}>
         <h4
@@ -63,11 +69,10 @@ const OverviewUsagePlan = ({ projectId }) => {
           <img src="/icons/videos.png" alt="" width={IMG_WIDTH} /> Video:{' '}
           {videoLimit.toLocaleString()} hours
         </h4>
-        <ProjectUsageBar limit={videoLimit} usage={videoUsage} legend="/hrs" />
+        <OverviewUsage limit={videoLimit} usage={videoUsage} legend="/hrs" />
       </div>
       <div
         css={{
-          borderBottom: constants.borders.tabs,
           paddingTop: spacing.normal,
           paddingBottom: spacing.normal,
         }}>
@@ -82,22 +87,18 @@ const OverviewUsagePlan = ({ projectId }) => {
           <img src="/icons/images.png" alt="" width={IMG_WIDTH} /> Image /
           Documents: {imageLimit.toLocaleString()}
         </h4>
-        <ProjectUsageBar limit={imageLimit} usage={imageUsage} legend="" />
+        <OverviewUsage limit={imageLimit} usage={imageUsage} legend="" />
       </div>
       <div
         css={{
-          borderBottom: constants.borders.tabs,
           paddingTop: spacing.normal,
           paddingBottom: spacing.normal,
+          paddingLeft: LEFT_SPACING,
         }}>
         <h4>Additional Modules:</h4>
         <span css={{ color: colors.structure.zinc, fontStyle: 'italic' }}>
           None
         </span>
-      </div>
-      <div css={{ paddingTop: spacing.normal, color: colors.structure.zinc }}>
-        Contact your Account Manager to add additional modules and resources to
-        your plan.
       </div>
     </div>
   )

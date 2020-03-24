@@ -33,11 +33,23 @@ const ProjectCards = () => {
       }}
     >
       <Card title="">
-        <h3>Project: {name}</h3>
-        &nbsp;
-        <div>Project ID: {id}</div>
+        <h3
+          css={{
+            paddingBottom: spacing.base,
+          }}
+        >
+          Project: {name}
+        </h3>
+
+        <div
+          css={{
+            color: colors.structure.zinc,
+            paddingBottom: spacing.normal,
+          }}
+        >
+          Project ID: {id}
+        </div>
         <Bouncer role={ROLES.User_Admin}>
-          &nbsp;
           <div css={{ display: 'flex' }}>
             <Link
               href="/[projectId]/users/add"

@@ -15,6 +15,17 @@ Array [
   >
     Account Overview
   </h2>,
+  .emotion-0 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    Number of Projects: 
+    2
+  </h3>,
   .emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -74,14 +85,12 @@ Array [
 }
 
 .emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
+  padding-bottom: 8px;
 }
 
 .emotion-1 {
-  font-size: 15px;
-  line-height: 19px;
   color: #b3b3b3;
+  padding-bottom: 16px;
 }
 
 .emotion-3 {
@@ -174,14 +183,12 @@ Array [
                   Project: 
                   qwerty
                 </h3>
-                 
                 <div
                   className="emotion-1"
                 >
                   Project ID: 
                   76917058-b147-4556-987a-0a0f11e46d9b
                 </div>
-                 
                 <div
                   className="emotion-3"
                 >
@@ -227,14 +234,12 @@ Array [
                   Project: 
                   azerty
                 </h3>
-                 
                 <div
                   className="emotion-1"
                 >
                   Project ID: 
                   76917058-b147-4556-987a-0a0f11e46d9c
                 </div>
-                 
                 <div
                   className="emotion-3"
                 >
