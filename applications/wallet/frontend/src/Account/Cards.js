@@ -1,9 +1,8 @@
 import useSWR from 'swr'
 import Link from 'next/link'
 
-import { colors, spacing } from '../Styles'
+import { constants, colors, spacing } from '../Styles'
 
-import Card from '../Card'
 import Button, { VARIANTS } from '../Button'
 
 import AccountUsagePlan from './UsagePlan'
@@ -23,50 +22,50 @@ const AccountCards = () => {
           <div
             key={id}
             css={{
-              display: 'flex',
-              flexDirection: 'column',
-              flexWrap: 'wrap',
-              maxHeight: '100vh',
-              alignContent: 'flex-start',
+              paddingRight: spacing.spacious,
+              paddingBottom: spacing.spacious,
+              width: constants.form.maxWidth,
             }}
           >
-            <Card title="">
+            <div
+              css={{
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: colors.structure.smoke,
+                boxShadow: constants.boxShadows.tableRow,
+                borderRadius: constants.borderRadius.small,
+              }}
+            >
               <div
                 css={{
-                  margin: -spacing.spacious,
+                  padding: spacing.spacious,
                 }}
               >
-                <div
+                <h3
                   css={{
-                    padding: spacing.spacious,
+                    paddingBottom: spacing.base,
                   }}
                 >
-                  <h3
-                    css={{
-                      paddingBottom: spacing.base,
-                    }}
-                  >
-                    Project: {name}
-                  </h3>
-                  <div
-                    css={{
-                      color: colors.structure.zinc,
-                      paddingBottom: spacing.normal,
-                    }}
-                  >
-                    Project ID: {id}
-                  </div>
-                  <div css={{ display: 'flex' }}>
-                    <Link href="/[projectId]" as={`/${id}`} passHref>
-                      <Button variant={VARIANTS.PRIMARY_SMALL}>
-                        View Dashboard
-                      </Button>
-                    </Link>
-                  </div>
+                  Project: {name}
+                </h3>
+                <div
+                  css={{
+                    color: colors.structure.zinc,
+                    paddingBottom: spacing.normal,
+                  }}
+                >
+                  Project ID: {id}
                 </div>
-                <AccountUsagePlan projectId={id} />
+                <div css={{ display: 'flex' }}>
+                  <Link href="/[projectId]" as={`/${id}`} passHref>
+                    <Button variant={VARIANTS.PRIMARY_SMALL}>
+                      View Dashboard
+                    </Button>
+                  </Link>
+                </div>
               </div>
-            </Card>
+              <AccountUsagePlan projectId={id} />
+            </div>
           </div>
         ))}
       </div>
