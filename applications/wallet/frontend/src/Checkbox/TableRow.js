@@ -12,7 +12,7 @@ const CheckboxTableRow = ({
 }) => {
   const [isChecked, setIsChecked] = useState(initialValue)
 
-  const toggleValue = event => {
+  const toggleValue = (event) => {
     event.preventDefault()
     if (isDisabled) return
     setIsChecked(!isChecked)
@@ -22,7 +22,8 @@ const CheckboxTableRow = ({
   return (
     <tr
       css={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
-      onClick={toggleValue}>
+      onClick={toggleValue}
+    >
       <td>
         <label
           css={{
@@ -30,7 +31,8 @@ const CheckboxTableRow = ({
             userSelect: 'none', // Chrome
             WebkitUserSelect: 'none', // Safari
             MozUserSelect: 'none', // Firefox
-          }}>
+          }}
+        >
           <CheckboxIcon
             value={value}
             isChecked={isChecked}

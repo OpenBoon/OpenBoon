@@ -14,7 +14,7 @@ jest.mock('../../Layout', () => 'Layout')
 
 describe('<Authentication />', () => {
   Object.defineProperty(window, 'onload', {
-    set: cb => cb(),
+    set: (cb) => cb(),
   })
 
   Object.defineProperty(window, 'gapi', {

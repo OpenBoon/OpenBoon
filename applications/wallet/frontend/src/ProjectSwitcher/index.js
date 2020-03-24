@@ -37,7 +37,8 @@ const ProjectSwitcher = ({ projectId }) => {
           alignItems: 'center',
           padding: `${spacing.small}px ${spacing.base}px`,
           color: colors.key.one,
-        }}>
+        }}
+      >
         {selectedProject.name}
       </div>
     )
@@ -51,13 +52,15 @@ const ProjectSwitcher = ({ projectId }) => {
           variant={VARIANTS.MENU}
           onBlur={onBlur}
           onClick={onClick}
-          isDisabled={false}>
+          isDisabled={false}
+        >
           <div
             css={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-            }}>
+            }}
+          >
             {selectedProject.name}
             <ChevronSvg
               width={CHEVRON_WIDTH}
@@ -68,7 +71,8 @@ const ProjectSwitcher = ({ projectId }) => {
             />
           </div>
         </Button>
-      )}>
+      )}
+    >
       {({ onBlur, onClick }) => (
         <ul>
           {projects.map(({ id, name }) => (
@@ -76,12 +80,14 @@ const ProjectSwitcher = ({ projectId }) => {
               <Link
                 href={pathname}
                 as={pathname.replace('[projectId]', id)}
-                passHref>
+                passHref
+              >
                 <Button
                   variant={VARIANTS.MENU_ITEM}
                   onBlur={onBlur}
                   onClick={onClick}
-                  isDisabled={false}>
+                  isDisabled={false}
+                >
                   {name}
                 </Button>
               </Link>

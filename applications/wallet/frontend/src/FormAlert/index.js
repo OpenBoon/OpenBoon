@@ -29,7 +29,8 @@ const FormAlert = ({ setErrorMessage, children }) => {
           backgroundColor: colors.signal.warning.background,
           borderRadius: constants.borderRadius.small,
           padding: PADDING_INNER,
-        }}>
+        }}
+      >
         <WarningSvg height={ICON_HEIGHT} color={colors.signal.warning.base} />
 
         <div
@@ -39,7 +40,8 @@ const FormAlert = ({ setErrorMessage, children }) => {
             paddingLeft: PADDING_INNER,
             color: colors.structure.black,
             fontWeight: typography.weight.medium,
-          }}>
+          }}
+        >
           {children}
         </div>
 
@@ -48,7 +50,8 @@ const FormAlert = ({ setErrorMessage, children }) => {
             type="button"
             aria-label="Close alert"
             css={{ border: 0, padding: 0, background: 'none', display: 'flex' }}
-            onClick={() => setErrorMessage('')}>
+            onClick={() => setErrorMessage('')}
+          >
             <CrossSvg height={ICON_HEIGHT} color={colors.structure.black} />
           </button>
         )}

@@ -37,7 +37,8 @@ const Menu = ({ button, children, open }) => {
               margin: 0,
             },
             li: { display: 'flex' },
-          }}>
+          }}
+        >
           {children({ onBlur, onClick, isMenuOpen })}
         </div>
       )}

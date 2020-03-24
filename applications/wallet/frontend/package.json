@@ -22,8 +22,8 @@
     "singleQuote": true,
     "trailingComma": "all",
     "bracketSpacing": true,
-    "jsxBracketSameLine": true,
-    "arrowParens": "avoid",
+    "jsxBracketSameLine": false,
+    "arrowParens": "always",
     "proseWrap": "always"
   },
   "jest": {
@@ -94,7 +94,7 @@
     {
       "//": "polyfill & webpack runtime",
       "path": ".next/static/runtime/[polyfill|webpack]**.js",
-      "maxSize": "20 kB"
+      "maxSize": "26 kB"
     },
     {
       "//": "all pages and chunks",
@@ -105,18 +105,18 @@
   "dependencies": {
     "@emotion/babel-preset-css-prop": "10.0.27",
     "@emotion/core": "10.0.28",
-    "@sentry/browser": "5.14.2",
+    "@sentry/browser": "5.15.0",
     "@svgr/webpack": "5.2.0",
     "@zeit/next-source-maps": "0.0.4-canary.1",
-    "body-scroll-lock": "2.6.4",
+    "body-scroll-lock": "3.0.1",
     "dotenv": "8.2.0",
     "focus-visible": "5.0.2",
     "jwt-decode": "2.2.0",
-    "next": "9.3.0",
+    "next": "9.3.1",
     "prop-types": "15.7.2",
-    "react": "16.13.0",
+    "react": "16.13.1",
     "react-aria-modal": "4.0.0",
-    "react-dom": "16.13.0",
+    "react-dom": "16.13.1",
     "react-json-pretty": "2.2.0",
     "swr": "0.1.18"
   },
@@ -127,24 +127,24 @@
     "bundlesize": "0.18.0",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.1.0",
-    "eslint-config-prettier": "6.10.0",
+    "eslint-config-prettier": "6.10.1",
     "eslint-plugin-emotion": "10.0.27",
     "eslint-plugin-import": "2.20.1",
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.19.0",
-    "eslint-plugin-react-hooks": "2.5.0",
+    "eslint-plugin-react-hooks": "2.5.1",
     "esm": "3.2.25",
     "express": "4.17.1",
-    "http-proxy-middleware": "1.0.2",
+    "http-proxy-middleware": "1.0.3",
     "husky": "4.2.3",
     "import-all.macro": "2.0.3",
     "jest": "25.1.0",
     "jest-emotion": "10.0.32",
     "jest-fetch-mock": "3.0.3",
     "lint-staged": "10.0.8",
-    "morgan": "1.9.1",
-    "prettier": "1.19.1",
-    "react-test-renderer": "16.13.0",
+    "morgan": "1.10.0",
+    "prettier": "2.0.1",
+    "react-test-renderer": "16.13.1",
     "webpack-bundle-analyzer": "3.6.1"
   }
 }

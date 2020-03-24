@@ -30,7 +30,8 @@ const Layout = ({ user, logout, children }) => {
       <Navbar
         projectId={user.projectId}
         isSidebarOpen={isSidebarOpen}
-        setSidebarOpen={setSidebarOpen}>
+        setSidebarOpen={setSidebarOpen}
+      >
         <UserMenu user={user} logout={logout} />
       </Navbar>
 
@@ -50,7 +51,8 @@ const Layout = ({ user, logout, children }) => {
           height: `calc(100vh - ${constants.navbar.height}px)`,
           display: 'flex',
           flexDirection: 'column',
-        }}>
+        }}
+      >
         {children}
       </div>
     </div>

@@ -29,7 +29,7 @@ class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, info) {
-    Sentry.withScope(scope => {
+    Sentry.withScope((scope) => {
       scope.setExtras(info)
       Sentry.captureException(error)
     })
@@ -55,7 +55,8 @@ class ErrorBoundary extends Component {
               fontSize: typography.size.regular,
               lineHeight: typography.height.regular,
               boxShadow: constants.boxShadows.default,
-            }}>
+            }}
+          >
             <ErrorSvg width={604} />
             <br /> Hmmm, something went wrong.
             <br /> Please try refreshing.

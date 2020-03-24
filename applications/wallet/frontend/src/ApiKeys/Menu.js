@@ -23,7 +23,8 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
                   onClick={() => {
                     setDeleteModalOpen(true)
                   }}
-                  isDisabled={false}>
+                  isDisabled={false}
+                >
                   Delete
                 </Button>
                 {isDeleteModalOpen && (
@@ -40,7 +41,7 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
                       onClick()
 
                       await fetcher(
-                        `/api/v1/projects/${projectId}/apikeys/${apiKeyId}/`,
+                        `/api/v1/projects/${projectId}/api_keys/${apiKeyId}/`,
                         { method: 'DELETE' },
                       )
 

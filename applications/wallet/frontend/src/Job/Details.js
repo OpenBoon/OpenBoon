@@ -32,7 +32,8 @@ const JobDetails = () => {
           fontWeight: typography.weight.medium,
           paddingTop: spacing.normal,
           paddingBottom: spacing.normal,
-        }}>
+        }}
+      >
         Job: {name}
       </h3>
 

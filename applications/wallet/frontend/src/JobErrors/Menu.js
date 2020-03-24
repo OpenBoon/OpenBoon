@@ -34,7 +34,8 @@ const JobErrorsMenu = ({ projectId, jobId, revalidate }) => {
 
                     revalidate()
                   }}
-                  isDisabled={false}>
+                  isDisabled={false}
+                >
                   {name}
                 </Button>
               </li>

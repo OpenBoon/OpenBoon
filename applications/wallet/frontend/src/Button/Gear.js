@@ -23,7 +23,8 @@ const ButtonGear = ({ onBlur, onClick }) => (
     }}
     onBlur={onBlur}
     onClick={onClick}
-    isDisabled={false}>
+    isDisabled={false}
+  >
     <GearSvg width={20} />
   </Button>
 )

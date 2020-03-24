@@ -15,9 +15,11 @@ const VisualizerInfobar = ({ currentPage, totalPages, totalCount }) => {
         boxShadow: constants.boxShadows.infoBar,
         fontFamily: 'Roboto Condensed',
         padding: `0 ${spacing.normal}px`,
-      }}>
+      }}
+    >
       <div
-        css={{ color: colors.structure.steel, padding: `${spacing.base} 0` }}>
+        css={{ color: colors.structure.steel, padding: `${spacing.base} 0` }}
+      >
         Sort: Import Date
       </div>
 
@@ -28,7 +30,8 @@ const VisualizerInfobar = ({ currentPage, totalPages, totalCount }) => {
           color: colors.structure.zinc,
           padding: spacing.base,
           paddingRight: spacing.normal,
-        }}>
+        }}
+      >
         {totalCount} Results
       </div>
       <div css={{ color: colors.structure.steel }}>|</div>

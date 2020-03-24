@@ -10,7 +10,8 @@ const SectionTitle = ({ children }) => {
         lineHeight: typography.height.medium,
         fontWeight: typography.weight.medium,
         paddingTop: spacing.normal,
-      }}>
+      }}
+    >
       {children}
     </h3>
   )

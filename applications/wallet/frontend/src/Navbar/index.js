@@ -28,7 +28,8 @@ const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
         zIndex: zIndex.layout.navbar,
         paddingLeft: spacing.normal,
         paddingRight: spacing.normal,
-      }}>
+      }}
+    >
       <div css={{ display: 'flex', alignItems: 'stretch' }}>
         {!!projectId && (
           <button
@@ -46,7 +47,8 @@ const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
               margin: 0,
               marginLeft: -spacing.base,
               cursor: 'pointer',
-            }}>
+            }}
+          >
             <HamburgerSvg width={20} aria-hidden />
           </button>
         )}
@@ -54,7 +56,8 @@ const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
         <Link href="/" passHref>
           <a
             css={{ paddingLeft: spacing.base, paddingRight: spacing.base }}
-            aria-label="Home">
+            aria-label="Home"
+          >
             <LogoSvg width={LOGO_WIDTH} />
           </a>
         </Link>

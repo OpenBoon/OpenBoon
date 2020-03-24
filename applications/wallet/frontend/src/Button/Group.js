@@ -11,7 +11,8 @@ const ButtonGroup = ({ children }) => {
         'button, a': {
           marginRight: spacing.normal,
         },
-      }}>
+      }}
+    >
       {children}
     </div>
   )

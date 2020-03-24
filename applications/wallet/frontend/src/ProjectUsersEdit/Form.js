@@ -40,7 +40,7 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
 
       <CheckboxGroup
         legend="Edit Roles"
-        onClick={role => dispatch({ roles: { ...state.roles, ...role } })}
+        onClick={(role) => dispatch({ roles: { ...state.roles, ...role } })}
         options={roles.map(({ name, description }) => ({
           value: name,
           label: name.replace('_', ' '),
@@ -62,7 +62,8 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
           onClick={() =>
             onSubmit({ dispatch, projectId, userId: user.id, state })
           }
-          isDisabled={false}>
+          isDisabled={false}
+        >
           Save
         </Button>
       </ButtonGroup>

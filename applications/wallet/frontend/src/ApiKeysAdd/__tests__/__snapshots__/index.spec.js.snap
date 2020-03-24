@@ -15,6 +15,30 @@ Array [
   >
     Project API Keys
   </h2>,
+  .emotion-1 {
+  max-width: 600px;
+  color: #b3b3b3;
+}
+
+.emotion-0 {
+  color: #73b61c;
+}
+
+<p
+    className="emotion-1"
+  >
+    Create and manage API Keys for applications or tools you would like to integrate with ZVI. An API Key is required to access data for this project using the ZVI SDK and REST APIs. For more information please visit
+     
+    <a
+      className="emotion-0"
+      href="https://app.gitbook.com/@zorroa/s/zmlp/getting-started"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      our documentation
+    </a>
+    .
+  </p>,
   .emotion-5 {
   padding: 16px;
   padding-left: 0;
@@ -875,6 +899,30 @@ Array [
   >
     Project API Keys
   </h2>,
+  .emotion-1 {
+  max-width: 600px;
+  color: #b3b3b3;
+}
+
+.emotion-0 {
+  color: #73b61c;
+}
+
+<p
+    className="emotion-1"
+  >
+    Create and manage API Keys for applications or tools you would like to integrate with ZVI. An API Key is required to access data for this project using the ZVI SDK and REST APIs. For more information please visit
+     
+    <a
+      className="emotion-0"
+      href="https://app.gitbook.com/@zorroa/s/zmlp/getting-started"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      our documentation
+    </a>
+    .
+  </p>,
   .emotion-5 {
   padding: 16px;
   padding-left: 0;
@@ -1438,6 +1486,30 @@ Array [
   >
     Project API Keys
   </h2>,
+  .emotion-1 {
+  max-width: 600px;
+  color: #b3b3b3;
+}
+
+.emotion-0 {
+  color: #73b61c;
+}
+
+<p
+    className="emotion-1"
+  >
+    Create and manage API Keys for applications or tools you would like to integrate with ZVI. An API Key is required to access data for this project using the ZVI SDK and REST APIs. For more information please visit
+     
+    <a
+      className="emotion-0"
+      href="https://app.gitbook.com/@zorroa/s/zmlp/getting-started"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      our documentation
+    </a>
+    .
+  </p>,
   .emotion-5 {
   padding: 16px;
   padding-left: 0;

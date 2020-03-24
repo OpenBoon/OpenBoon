@@ -27,7 +27,8 @@ describe('<User />', () => {
               <span>{email}</span>
               <button
                 type="button"
-                onClick={() => setUser({ user: email ? null : user })}>
+                onClick={() => setUser({ user: email ? null : user })}
+              >
                 {email ? 'Logout' : 'Login'}
               </button>
             </div>

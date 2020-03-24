@@ -29,7 +29,8 @@ const ProjectCards = () => {
         flexWrap: 'wrap',
         maxHeight: '100vh',
         alignContent: 'flex-start',
-      }}>
+      }}
+    >
       <Card title="">
         <h3>Project: {name}</h3>
         &nbsp;
@@ -39,7 +40,8 @@ const ProjectCards = () => {
           <Link
             href="/[projectId]/users/add"
             as={`/${projectId}/users/add`}
-            passHref>
+            passHref
+          >
             <Button variant={VARIANTS.PRIMARY_SMALL}>
               + Add Users To Project
             </Button>
@@ -57,20 +59,23 @@ const ProjectCards = () => {
             <KeySvg width={20} aria-hidden color={colors.structure.zinc} />
             Project API Keys
           </>
-        }>
+        }
+      >
         <p
           css={{
             margin: 0,
             paddingBottom: spacing.normal,
             color: colors.structure.zinc,
-          }}>
+          }}
+        >
           Create a ZMLP API key for use with external applications and tools.
         </p>
         <div css={{ display: 'flex' }}>
           <Link
             href="/[projectId]/api-keys/add"
             as={`/${projectId}/api-keys/add`}
-            passHref>
+            passHref
+          >
             <Button variant={VARIANTS.SECONDARY_SMALL}>
               + Create an API Key
             </Button>

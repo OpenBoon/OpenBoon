@@ -4,7 +4,7 @@
 
 let mockOnCopy = () => {}
 
-export const __setMockOnCopy = fn => {
+export const __setMockOnCopy = (fn) => {
   mockOnCopy = fn
 }
 

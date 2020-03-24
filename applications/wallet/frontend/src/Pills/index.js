@@ -1,7 +1,7 @@
 import { colors, spacing, constants } from '../Styles'
 
 const Pills = ({ children }) => {
-  return children.map(child => (
+  return children.map((child) => (
     <span
       key={child}
       css={{
@@ -14,10 +14,11 @@ const Pills = ({ children }) => {
         marginRight: spacing.base,
         borderRadius: constants.borderRadius.large,
         fontFamily: 'Roboto Condensed',
-      }}>
+      }}
+    >
       {child.includes('_')
         ? child.replace('_', ' ')
-        : child.replace(/([A-Z])/g, match => ` ${match}`)}
+        : child.replace(/([A-Z])/g, (match) => ` ${match}`)}
     </span>
   ))
 }

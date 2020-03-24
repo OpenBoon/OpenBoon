@@ -7,7 +7,7 @@ const Form = ({ children, style }) => {
     <form
       action=""
       method="post"
-      onSubmit={event => event.preventDefault()}
+      onSubmit={(event) => event.preventDefault()}
       css={[
         {
           display: 'flex',
@@ -18,7 +18,8 @@ const Form = ({ children, style }) => {
           paddingRight: 0,
         },
         style,
-      ]}>
+      ]}
+    >
       {children}
     </form>
   )

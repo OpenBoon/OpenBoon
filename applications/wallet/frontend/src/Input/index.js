@@ -61,7 +61,8 @@ const Input = ({
         display: 'block',
         paddingBottom: PADDING,
         color: colors.structure.zinc,
-      }}>
+      }}
+    >
       {label}
     </label>
     <div css={{ position: 'relative' }}>
@@ -84,7 +85,8 @@ const Input = ({
             bottom: 0,
             display: 'flex',
             justifyContent: 'center',
-          }}>
+          }}
+        >
           {after}
         </div>
       )}
@@ -95,7 +97,8 @@ const Input = ({
           css={{
             color: colors.signal.warning.base,
             fontStyle: typography.style.italic,
-          }}>
+          }}
+        >
           {errorMessage}
         </span>
       )}

@@ -29,14 +29,16 @@ const JobErrorAsset = ({ assetId }) => {
         fontFamily: 'Roboto Mono',
         paddingBottom: spacing.spacious,
         height: 'auto',
-      }}>
+      }}
+    >
       <div
         css={{
           display: 'flex',
           alignItems: 'center',
           backgroundColor: colors.structure.iron,
           padding: spacing.normal,
-        }}>
+        }}
+      >
         <img
           src={url.replace('https://wallet.zmlp.zorroa.com', '')}
           alt={filename}
@@ -52,7 +54,8 @@ const JobErrorAsset = ({ assetId }) => {
         css={{
           padding: spacing.normal,
           backgroundColor: colors.structure.coal,
-        }}>
+        }}
+      >
         <JsonDisplay json={asset} />
       </div>
     </div>

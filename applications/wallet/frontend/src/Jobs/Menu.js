@@ -30,7 +30,8 @@ const JobsMenu = ({ projectId, jobId, status, revalidate }) => {
 
                     revalidate()
                   }}
-                  isDisabled={false}>
+                  isDisabled={false}
+                >
                   {name}
                 </Button>
               </li>

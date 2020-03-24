@@ -26,7 +26,8 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
       paddingBottom: spacing.small,
       paddingLeft: spacing.base,
       paddingRight: spacing.base,
-    }}>
+    }}
+  >
     <Button
       aria-label="Zoom Out"
       onClick={() => {
@@ -34,7 +35,8 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
       }}
       isDisabled={isMin}
       variant={VARIANTS.ICON}
-      css={{ opacity: constants.opacity.full, padding: spacing.base }}>
+      css={{ opacity: constants.opacity.full, padding: spacing.base }}
+    >
       <CircleMinusSvg width={20} />
     </Button>
     <Button
@@ -44,7 +46,8 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
       }}
       isDisabled={isMax}
       variant={VARIANTS.ICON}
-      css={{ opacity: constants.opacity.full, padding: spacing.base }}>
+      css={{ opacity: constants.opacity.full, padding: spacing.base }}
+    >
       <CirclePlusSvg width={20} />
     </Button>
   </div>

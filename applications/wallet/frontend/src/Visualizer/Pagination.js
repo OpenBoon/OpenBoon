@@ -14,7 +14,8 @@ const VisualizerPagination = ({ currentPage, totalPages }) => {
           display: 'flex',
           alignItems: 'center',
           color: colors.structure.zinc,
-        }}>
+        }}
+      >
         Page {currentPage} of {totalPages}
       </div>
       <VisualizerPaginationLink

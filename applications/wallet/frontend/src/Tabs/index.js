@@ -14,7 +14,8 @@ const Tabs = ({ tabs }) => {
           margin: 0,
           display: 'flex',
           borderBottom: constants.borders.tabs,
-        }}>
+        }}
+      >
         {tabs.map(({ title, href }) => (
           <TabsLink key={href} title={title} href={href} />
         ))}

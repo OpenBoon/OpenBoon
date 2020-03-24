@@ -39,5 +39,11 @@ enum class Permission(val internal: Boolean) {
     AssetsDelete(false),
 
     @ApiModelProperty("Provides ability to manage projects.")
-    ProjectManage(false);
+    ProjectManage(false),
+
+    @ApiModelProperty("Provides ability to manage datasources.")
+    DataSourceManage(false),
+
+    @ApiModelProperty("Provides ability to manage jobs and tasks.")
+    DataQueueManage(false);
 }

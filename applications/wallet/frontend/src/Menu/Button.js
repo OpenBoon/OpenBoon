@@ -33,7 +33,8 @@ const MenuButton = ({ onBlur, onClick, legend }) => (
     }}
     onBlur={onBlur}
     onClick={onClick}
-    isDisabled={false}>
+    isDisabled={false}
+  >
     {legend}
     <ChevronSvg width={20} />
   </Button>
