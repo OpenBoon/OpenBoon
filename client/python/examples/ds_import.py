@@ -15,13 +15,16 @@ def main():
                         choices=['images', 'videos', 'documents'],
                         help='File extensions to import')
 
+    parser.add_argument('-a', '--creds', action='append', help='Creds blob name')
+
     args = parser.parse_args()
 
     app = app_from_env()
     ds = app.datasource.create_datasource(args.create[0],
                                           args.create[1],
                                           args.module,
-                                          file_types=args.types)
+                                          file_types=args.types,
+                                          credentials=args.creds or None)
     app.datasource.import_files(ds)
 
 

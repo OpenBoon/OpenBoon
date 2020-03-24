@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 
@@ -28,7 +29,9 @@ class MembershipAdmin(ModelAdmin):
     def save_model(self, request, obj, form, change):
         """When adding a membership if no api key is given then a new one is created."""
         if not obj.apikey:
+            permissions = []
+            for role in settings.ROLES:
+                permissions += role['permissions']
             client = get_zmlp_superuser_client(request.user, project_id=str(obj.project.id))
-            permissions = ["AssetsImport", "ProjectManage", "AssetsRead", "AssetsDelete"]
             obj.apikey = create_zmlp_api_key(client, str(obj), permissions, internal=True)
         obj.save()

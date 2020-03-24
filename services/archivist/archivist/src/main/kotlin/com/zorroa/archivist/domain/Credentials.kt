@@ -18,6 +18,7 @@ enum class CredentialsType(vararg val keys: String) {
         "client_id", "auth_uri", "token_uri", "auth_provider_x509_cert_url",
         "client_x509_cert_url"),
     AWS("aws_access_key_id", "aws_secret_access_key"),
+    AZURE("connection_string"),
     CLARIFAI("apikey");
 
     fun validate(blob: String) {

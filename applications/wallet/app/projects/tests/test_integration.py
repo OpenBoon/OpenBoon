@@ -74,7 +74,8 @@ def test_project_serializer_detail(project):
     serializer = ProjectSerializer(project, context={'request': None})
     data = serializer.data
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
-                       'permissions', 'tasks', 'datasources', 'taskerrors', 'subscriptions']
+                       'permissions', 'tasks', 'datasources', 'taskerrors', 'subscriptions',
+                       'modules']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
@@ -89,6 +90,7 @@ def test_project_serializer_detail(project):
     assert data['tasks'] == f'/api/v1/projects/{project.id}/tasks/'
     assert data['taskerrors'] == f'/api/v1/projects/{project.id}/task_errors/'
     assert data['subscriptions'] == f'/api/v1/projects/{project.id}/subscriptions/'
+    assert data['modules'] == f'/api/v1/projects/{project.id}/modules/'
 
 
 def test_project_serializer_list(project, project2):
@@ -287,6 +289,16 @@ class TestProjectUserGet:
         content = response.json()
         assert content['results'][0]['id'] == zmlp_project_membership.user.id
         assert content['results'][0]['roles'] == ['ML_Tools', 'User_Admin']
+
+    def test_list_no_permissions(self, zmlp_project_membership, api_client):
+        zmlp_project_membership.roles = []
+        zmlp_project_membership.save()
+        api_client.force_authenticate(zmlp_project_membership.user)
+        api_client.force_login(zmlp_project_membership.user)
+        project_pk = zmlp_project_membership.project_id
+        response = api_client.get(reverse('projectuser-list', kwargs={'project_pk': project_pk}))
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.json() == {'detail': 'You do not have permission to manage users.'}
 
     @override_settings(PLATFORM='zmlp')
     def test_paginated_list(self, project, zmlp_project_user, zmlp_project_membership,
@@ -591,7 +603,8 @@ class TestProjectUserPost:
         view = ProjectUserViewSet()
         roles = ['ML_Tools', 'User_Admin']
         permissions = view._get_permissions_for_roles(roles)
-        expected = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'ProjectManage']
+        expected = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'ProjectManage',
+                    'DataSourceManage', 'DataQueueManage']
         assert set(permissions) == set(expected)
         permissions = view._get_permissions_for_roles(['User_Admin'])
         assert permissions == ['ProjectManage']
@@ -609,8 +622,13 @@ class TestProjectUserPut:
         def mock_delete_response(*args, **kwargs):
             return Response(status=status.HTTP_200_OK)
 
+        def mock_get_response(*args, **kwargs):
+            return {'accessKey': 'access',
+                    'secretKey': 'secret'}
+
         monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
         monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
@@ -680,8 +698,13 @@ class TestProjectUserPut:
         def mock_delete_response(*args, **kwargs):
             raise ZmlpInvalidRequestException({'msg': 'bad'})
 
+        def mock_get_response(*args, **kwargs):
+            return {'accessKey': 'access',
+                    'secretKey': 'secret'}
+
         monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
         monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
@@ -708,8 +731,14 @@ class TestProjectUserPut:
         def mock_delete_response(*args, **kwargs):
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+        def mock_get_response(*args, **kwargs):
+            return {'accessKey': 'access',
+                    'secretKey': 'secret'}
+
         monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
         monkeypatch.setattr(ZmlpClient, 'delete', mock_delete_response)
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
