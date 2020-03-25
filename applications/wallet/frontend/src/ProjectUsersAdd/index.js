@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 
 import PageTitle from '../PageTitle'
@@ -7,6 +8,10 @@ import SuspenseBoundary from '../SuspenseBoundary'
 import ProjectUsersAddForm from './Form'
 
 const ProjectUsersAdd = () => {
+  const {
+    query: { projectId },
+  } = useRouter()
+
   return (
     <>
       <Head>
@@ -23,7 +28,7 @@ const ProjectUsersAdd = () => {
       />
 
       <SuspenseBoundary>
-        <ProjectUsersAddForm />
+        <ProjectUsersAddForm key={projectId} />
       </SuspenseBoundary>
     </>
   )
