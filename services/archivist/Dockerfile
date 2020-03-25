@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:experimental
 FROM maven:3.6-jdk-11-slim as build
 
+ENV MXNET_OS linux
+
 RUN mkdir /build
 COPY ./ /build
 WORKDIR /build
@@ -16,6 +18,8 @@ RUN groupadd -r archivist && useradd -m --no-log-init -r -g archivist archivist
 
 COPY ./docker /service
 COPY --from=build /build/archivist/target/archivist.jar /service/service.jar
+
+COPY ./models /models
 
 USER archivist
 EXPOSE 8080

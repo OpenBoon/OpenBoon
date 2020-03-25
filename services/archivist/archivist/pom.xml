@@ -27,7 +27,22 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <zmlp-common.version>1.0.0</zmlp-common.version>
+        <mxnet.version>2.11</mxnet.version>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>os</id>
+            <activation>
+                <property>
+                    <name>!env.MXNET_OS</name>
+                </property>
+            </activation>
+            <properties>
+                <env.MXNET_OS>osx</env.MXNET_OS>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
 
@@ -271,6 +286,12 @@
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-pubsub</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.mxnet</groupId>
+            <artifactId>mxnet-full_${mxnet.version}-${env.MXNET_OS}-x86_64-cpu</artifactId>
+            <version>1.5.1</version>
         </dependency>
 
     </dependencies>

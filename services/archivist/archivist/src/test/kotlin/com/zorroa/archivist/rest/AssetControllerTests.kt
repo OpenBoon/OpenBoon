@@ -371,6 +371,41 @@ class AssetControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testFileMxNetHash() {
+        val file = MockMultipartFile(
+            "files", "toucan.jpg", "image/jpeg",
+            File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
+        )
+
+        val andReturn = mvc.perform(
+            multipart("/api/v3/assets/_batch_hash")
+                .file(file)
+                .headers(admin())
+        )
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.length()", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
+
+    @Test
+    fun testFileMxNetHashException() {
+        val file = MockMultipartFile(
+            "files", "toucan.jpg", "image/jpeg",
+            File("src/test/resources/test-data/files.json").inputStream().readBytes()
+        )
+
+        val andReturn = mvc.perform(
+            multipart("/api/v3/assets/_batch_hash")
+                .file(file)
+                .headers(admin())
+        )
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
+            .andReturn()
+    }
+
+    @Test
     fun testSearchNullBody() {
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed))
