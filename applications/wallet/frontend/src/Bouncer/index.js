@@ -11,7 +11,7 @@ export const ROLES = {
 
 const Bouncer = ({ role, children }) => {
   const {
-    user: { roles = [], projectId },
+    user: { roles = {}, projectId },
   } = useContext(UserContext)
 
   // Sorry mate, your name ain't on the list
