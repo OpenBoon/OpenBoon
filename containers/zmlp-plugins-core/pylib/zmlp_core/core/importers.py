@@ -1,7 +1,7 @@
 from zmlp_core.image.importers import ImageImporter
 from zmlp_core.office.importers import OfficeImporter
 from zmlp_core.video.importers import VideoImporter
-from zmlpsdk import AssetProcessor, Argument, ZmlpFatalProcessorException, FileTypes
+from zmlpsdk import AssetProcessor, Argument, ZmlpFatalProcessorException
 
 
 class FileImportProcessor(AssetProcessor):
