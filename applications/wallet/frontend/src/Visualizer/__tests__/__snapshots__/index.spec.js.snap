@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Visualizer /> should render properly 1`] = `
-.emotion-31 {
+.emotion-32 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -117,7 +117,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   transform: rotate(-90deg);
 }
 
-.emotion-30 {
+.emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -154,6 +154,8 @@ exports[`<Visualizer /> should render properly 1`] = `
   height: 0;
   padding-bottom: 12.5%;
   position: relative;
+  min-width: 100px;
+  min-height: 100px;
 }
 
 .emotion-13 {
@@ -240,7 +242,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 80;
+  z-index: 10;
   opacity: 0.8;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -356,7 +358,6 @@ exports[`<Visualizer /> should render properly 1`] = `
   background-color: #2e2e2e;
   margin-top: 1px;
   height: 100%;
-  width: 400px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -405,7 +406,7 @@ exports[`<Visualizer /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-31"
+  className="emotion-32"
 >
   <div
     className="emotion-10"
@@ -465,7 +466,7 @@ exports[`<Visualizer /> should render properly 1`] = `
     </div>
   </div>
   <div
-    className="emotion-30"
+    className="emotion-31"
   >
     <div
       className="emotion-23"
@@ -544,42 +545,50 @@ exports[`<Visualizer /> should render properly 1`] = `
         </button>
       </div>
     </div>
-    <div
-      className="emotion-29"
+    <Resizeable
+      initialWidth={400}
+      storageName="metadata-width"
     >
       <div
-        className="emotion-25"
+        className="emotion-29"
       >
-        <svg
-          color="#808080"
-          data-file-name="information.svg"
-          width={20}
+        <div
+          className="emotion-25"
+        >
+          <svg
+            color="#808080"
+            data-file-name="information.svg"
+            width={20}
+          />
+          <div
+            className="emotion-24"
+          >
+            ASSET METADATA
+          </div>
+        </div>
+        <div
+          className="emotion-27"
+        >
+          <div
+            className="emotion-26"
+          >
+            Select an asset to view its metadata
+          </div>
+        </div>
+        <div
+          className="emotion-28"
         />
-        <div
-          className="emotion-24"
-        >
-          ASSET METADATA
-        </div>
-      </div>
-      <div
-        className="emotion-27"
-      >
-        <div
-          className="emotion-26"
-        >
-          Select an asset to view its metadata
-        </div>
       </div>
       <div
         className="emotion-28"
       />
-    </div>
+    </Resizeable>
   </div>
 </div>
 `;
 
 exports[`<Visualizer /> should render selected asset 1`] = `
-.emotion-31 {
+.emotion-32 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -695,7 +704,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   transform: rotate(-90deg);
 }
 
-.emotion-30 {
+.emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -732,6 +741,8 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   height: 0;
   padding-bottom: 12.5%;
   position: relative;
+  min-width: 100px;
+  min-height: 100px;
 }
 
 .emotion-17 {
@@ -818,7 +829,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 80;
+  z-index: 10;
   opacity: 0.8;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -934,7 +945,6 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   background-color: #2e2e2e;
   margin-top: 1px;
   height: 100%;
-  width: 400px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -993,7 +1003,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
 }
 
 <div
-  className="emotion-31"
+  className="emotion-32"
 >
   <div
     className="emotion-10"
@@ -1053,7 +1063,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
     </div>
   </div>
   <div
-    className="emotion-30"
+    className="emotion-31"
   >
     <div
       className="emotion-23"
@@ -1132,30 +1142,171 @@ exports[`<Visualizer /> should render selected asset 1`] = `
         </button>
       </div>
     </div>
-    <div
-      className="emotion-29"
+    <Resizeable
+      initialWidth={400}
+      storageName="metadata-width"
     >
       <div
-        className="emotion-25"
+        className="emotion-29"
       >
-        <svg
-          color="#ffffff"
-          data-file-name="information.svg"
-          width={20}
-        />
         <div
-          className="emotion-24"
+          className="emotion-25"
         >
-          ASSET METADATA
+          <svg
+            color="#ffffff"
+            data-file-name="information.svg"
+            width={20}
+          />
+          <div
+            className="emotion-24"
+          >
+            ASSET METADATA
+          </div>
         </div>
-      </div>
-      <div
-        className="emotion-27"
-      >
         <div
-          className="emotion-26"
+          className="emotion-27"
         >
-          TIFF_1MB.tiff
+          <div
+            className="emotion-26"
+          >
+            TIFF_1MB.tiff
+          </div>
+        </div>
+        <div
+          className="emotion-28"
+        >
+          <JsonDisplay
+            json={
+              Object {
+                "id": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+                "metadata": Object {
+                  "analysis": Object {
+                    "zvi": Object {
+                      "tinyProxy": Array [
+                        "#f3dfc3",
+                        "#f4efd8",
+                        "#c18f46",
+                        "#ebdfbd",
+                        "#ccd3c0",
+                        "#e7d4bb",
+                        "#beae8e",
+                        "#cabf9e",
+                        "#d2c09c",
+                      ],
+                    },
+                  },
+                  "clip": Object {
+                    "length": 1,
+                    "pile": "pUn6wBxUN7x9JxOxLkvruOyNdYA",
+                    "sourceAssetId": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+                    "start": 1,
+                    "stop": 1,
+                    "type": "page",
+                  },
+                  "files": Array [
+                    Object {
+                      "attrs": Object {
+                        "height": 434,
+                        "width": 650,
+                      },
+                      "category": "proxy",
+                      "mimetype": "image/jpeg",
+                      "name": "image_650x434.jpg",
+                      "size": 89643,
+                      "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg",
+                    },
+                    Object {
+                      "attrs": Object {
+                        "height": 341,
+                        "width": 512,
+                      },
+                      "category": "proxy",
+                      "mimetype": "image/jpeg",
+                      "name": "image_512x341.jpg",
+                      "size": 60713,
+                      "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg",
+                    },
+                    Object {
+                      "attrs": Object {
+                        "height": 213,
+                        "width": 320,
+                      },
+                      "category": "proxy",
+                      "mimetype": "image/jpeg",
+                      "name": "image_320x213.jpg",
+                      "size": 30882,
+                      "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg",
+                    },
+                  ],
+                  "media": Object {
+                    "aspect": 1.5,
+                    "height": 434,
+                    "length": 1,
+                    "orientation": "landscape",
+                    "type": "image",
+                    "width": 650,
+                  },
+                  "metrics": Object {
+                    "pipeline": Array [
+                      Object {
+                        "checksum": 1621235190,
+                        "executionDate": "2020-03-03T21:22:27.694149",
+                        "executionTime": 0.11,
+                        "module": "standard",
+                        "processor": "zmlp_core.core.processors.PreCacheSourceFileProcessor",
+                      },
+                      Object {
+                        "checksum": 1426657387,
+                        "executionDate": "2020-03-03T21:22:28.215069",
+                        "executionTime": 0.26,
+                        "module": "standard",
+                        "processor": "zmlp_core.image.importers.ImageImporter",
+                      },
+                      Object {
+                        "checksum": 2001473853,
+                        "module": "standard",
+                        "processor": "zmlp_core.office.importers.OfficeImporter",
+                      },
+                      Object {
+                        "checksum": 3310423168,
+                        "module": "standard",
+                        "processor": "zmlp_core.video.VideoImporter",
+                      },
+                      Object {
+                        "checksum": 1841569083,
+                        "executionDate": "2020-03-03T21:22:29.654215",
+                        "executionTime": 0,
+                        "module": "standard",
+                        "processor": "zmlp_core.core.processors.AssertAttributesProcessor",
+                      },
+                    ],
+                  },
+                  "similarity": Object {
+                    "simhash": "NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP",
+                  },
+                  "source": Object {
+                    "checksum": 1867533868,
+                    "extension": "tiff",
+                    "filename": "TIFF_1MB.tiff",
+                    "filesize": 1131930,
+                    "mimetype": "image/tiff",
+                    "path": "gs://zorroa-dev-data/image/TIFF_1MB.tiff",
+                    "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff",
+                  },
+                  "system": Object {
+                    "dataSourceId": "10509c20-5d95-11ea-baea-364023b135f5",
+                    "jobId": "106d4be1-5d95-11ea-baea-364023b135f5",
+                    "projectId": "89382033-bcbb-4c8f-81a9-3d0883298a81",
+                    "state": "Analyzed",
+                    "taskId": "106e0f32-5d95-11ea-baea-364023b135f5",
+                    "timeCreated": "2020-03-03T21:22:24.922700Z",
+                    "timeModified": "2020-03-03T21:22:47.575195Z",
+                  },
+                },
+                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/",
+              }
+            }
+          />
         </div>
       </div>
       <div
@@ -1294,7 +1445,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           }
         />
       </div>
-    </div>
+    </Resizeable>
   </div>
 </div>
 `;
