@@ -5,8 +5,14 @@ const user = {
   firstName: 'Jane',
   lastName: 'Doe',
   groups: [],
-  roles: ['ML_Tools', 'API_Keys', 'User_Admin'],
-  permissions: [],
+  roles: {
+    '76917058-b147-4556-987a-0a0f11e46d9b': [
+      'ML_Tools',
+      'User_Admin',
+      'API_Keys',
+    ],
+    'e93cbadb-e5ae-4598-8395-4cf5b30c0e94': [],
+  },
   isActive: true,
   isStaff: true,
   isSuperuser: false,

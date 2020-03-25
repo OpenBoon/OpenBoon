@@ -11,11 +11,11 @@ export const ROLES = {
 
 const Bouncer = ({ role, children }) => {
   const {
-    user: { roles = [] },
+    user: { roles = [], projectId },
   } = useContext(UserContext)
 
   // Sorry mate, your name ain't on the list
-  if (!roles.includes(role)) return null
+  if (!roles[projectId] || !roles[projectId].includes(role)) return null
 
   return children
 }

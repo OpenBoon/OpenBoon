@@ -299,7 +299,7 @@ exports[`<ProjectSwitcher /> should render properly with data 2`] = `
       <li>
         <a
           className="emotion-3"
-          href="/76917058-b147-4556-987a-0a0f11e46d9c/jobs"
+          href="/e93cbadb-e5ae-4598-8395-4cf5b30c0e94/jobs"
           onBlur={[Function]}
           onClick={[Function]}
           onMouseEnter={[Function]}
