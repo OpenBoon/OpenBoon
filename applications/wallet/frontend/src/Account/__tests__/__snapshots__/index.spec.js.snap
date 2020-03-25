@@ -216,14 +216,14 @@ Array [
               className="emotion-1"
             >
               Project ID: 
-              76917058-b147-4556-987a-0a0f11e46d9c
+              e93cbadb-e5ae-4598-8395-4cf5b30c0e94
             </div>
             <div
               className="emotion-3"
             >
               <a
                 className="emotion-2"
-                href="/76917058-b147-4556-987a-0a0f11e46d9c"
+                href="/e93cbadb-e5ae-4598-8395-4cf5b30c0e94"
                 onClick={[Function]}
                 onMouseEnter={[Function]}
               >
@@ -233,7 +233,7 @@ Array [
           </div>
         </div>
         <AccountUsagePlan
-          projectId="76917058-b147-4556-987a-0a0f11e46d9c"
+          projectId="e93cbadb-e5ae-4598-8395-4cf5b30c0e94"
         />
       </div>
     </div>

@@ -73,7 +73,7 @@ const ProjectCards = () => {
 
       <Bouncer role={ROLES.API_Keys}>
         <Card
-          title={
+          header={
             <>
               <KeySvg width={20} aria-hidden color={colors.structure.zinc} />
               Project API Keys
