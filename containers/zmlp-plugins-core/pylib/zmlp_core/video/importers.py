@@ -4,8 +4,8 @@ from pathlib2 import Path
 
 from zmlp.asset import Clip
 from zmlpsdk.storage import file_storage
-from zmlpsdk.base import AssetProcessor, ZmlpProcessorException
-from ..util.media import FileTypes, get_video_metadata, create_video_thumbnail, set_resolution_attrs
+from zmlpsdk.base import AssetProcessor, ZmlpProcessorException, FileTypes
+from ..util.media import get_video_metadata, create_video_thumbnail, set_resolution_attrs
 
 
 class VideoImporter(AssetProcessor):
@@ -14,7 +14,7 @@ class VideoImporter(AssetProcessor):
     the video into individual clips and creating web proxies.
     """
 
-    file_types = FileTypes.video
+    file_types = FileTypes.videos
 
     def __init__(self):
         super(VideoImporter, self).__init__()

@@ -7,16 +7,9 @@ from subprocess import check_output, check_call, CalledProcessError
 import xmltodict
 from pathlib2 import Path
 
+from zmlpsdk.base import FileTypes
+
 logger = logging.getLogger(__name__)
-
-
-class FileTypes:
-    """
-    A class for storing the supported file types.
-    """
-    videos = ['mov', 'mp4', 'mpg', 'mpeg', 'm4v', 'webm', 'ogv', 'ogg', 'mxf']
-    image = ["bmp", "cin", "dpx", "gif", "jpg", "jpeg", "exr", "png", "psd", "rla", "tif", "tiff"]
-    document = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']
 
 
 def media_size(path):
