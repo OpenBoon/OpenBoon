@@ -34,6 +34,23 @@ class AssetStorage(object):
         self.lfc = lfc
         self.app = lfc.app
 
+    def get_native_uri(self, asset, category, name):
+        """
+        Return the file's native url (like gs://).
+
+        Args:
+            asset (mixed): The asset or the asset id.
+            category (str): Category of file.
+            name (str): Name of file.
+
+        Returns:
+            str: The native uri.
+
+        """
+        asset_id = getattr(asset, "id", None) or asset
+        return self.app.client.get('/api/v3/assets/{}/_locate/{}/{}'
+                                   .format(asset_id, category, name))['uri']
+
     def store_file(self, asset, src_path, category, rename=None, attrs=None):
         """
         Add a file to the asset's file list and store into externally
@@ -66,6 +83,57 @@ class AssetStorage(object):
         path = urlparse(str(src_path)).path
         result = self.app.client.upload_file(
             "/api/v3/assets/{}/_files".format(asset.id), path, spec)
+
+        # Store the path to the proxy in our local file storage
+        # because a processor will need it down the line.
+        self.localize_file(asset, result, path)
+
+        # Ensure the file doesn't already exist in the metadata
+        if not asset.get_files(name=spec["name"], category=category):
+            files = asset.get_attr("files") or []
+            files.append(result)
+            asset.set_attr("files", files)
+
+        return result
+
+    def store_data(self, asset, blob, category, name, attrs=None):
+        """
+        Add a blob of text to the asset's file list and store into externally
+        available cloud storage.
+
+        To obtain the local cache path for the file, call 'localize_asset_file'
+        with the result of this method.
+
+        Args:
+            asset (mixed): The asset or the unique asset ID.
+            blob (str): The blob of data to write.
+            category (str): The purpose of the file, ex proxy.
+            name (str): The name of th efile.
+            attrs (dict): Arbitrary attributes to attach to the file.
+        Returns:
+            dict: an Asset file storage dict.
+
+        """
+        asset_id = getattr(asset, "id", None) or asset
+        spec = {
+            "name": name,
+            "category": category,
+            "attrs": {}
+        }
+        if attrs:
+            spec["attrs"].update(attrs)
+
+        base, ext = os.path.splitext(name)
+        if not ext:
+            raise ValueError("The blob name requires a file extension")
+
+        # handle file:// urls
+        fd, path = tempfile.mkstemp(suffix=ext, prefix='jblob')
+        with open(path, 'w') as fp:
+            fp.write(blob)
+
+        result = self.app.client.upload_file(
+            "/api/v3/assets/{}/_files".format(asset_id), path, spec)
 
         # Store the path to the proxy in our local file storage
         # because a processor will need it down the line.
