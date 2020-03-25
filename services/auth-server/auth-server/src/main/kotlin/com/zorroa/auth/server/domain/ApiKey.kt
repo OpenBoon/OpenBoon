@@ -11,7 +11,6 @@ import com.zorroa.zmlp.apikey.ZmlpActor
 import com.zorroa.zmlp.service.jpa.StringSetConverter
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
-import org.hibernate.event.spi.PreInsertEvent
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
@@ -241,9 +240,9 @@ class ApiKeyFilterNamePrefix(
 
         cb.equal(root.get<UUID>("projectId"), getProjectId())
 
-        var predicate : Predicate = cb.`like`(root.get("name"), "")
-        super.names?.forEach{
-            predicate = cb.or(predicate, cb.`like`(root.get("name"), "${it}%"))
+        var predicate: Predicate = cb.`like`(root.get("name"), "")
+        super.names?.forEach {
+            predicate = cb.or(predicate, cb.`like`(root.get("name"), "$it%"))
         }
         where.add(predicate)
 

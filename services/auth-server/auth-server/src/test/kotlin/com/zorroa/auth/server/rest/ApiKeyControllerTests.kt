@@ -191,8 +191,6 @@ class ApiKeyControllerTests : MockMvcTest() {
                 )
             )
             .andReturn()
-
-
     }
 
     @Test
