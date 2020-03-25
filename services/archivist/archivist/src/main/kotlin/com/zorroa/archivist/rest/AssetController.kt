@@ -236,7 +236,7 @@ class AssetController @Autowired constructor(
         return projectStorageService.store(spec)
     }
 
-    @ApiOperation("Store an additional file to an asset.")
+    @ApiOperation("Stream a file associated with asset.")
     @PreAuthorize("hasAuthority('AssetsRead')")
     @GetMapping(value = ["/api/v3/assets/{id}/_files/{category}/{name}"])
     @ResponseBody
@@ -249,7 +249,21 @@ class AssetController @Autowired constructor(
         return projectStorageService.stream(locator)
     }
 
-    @ApiOperation("Store an additional file to an asset.")
+    @ApiOperation("Get get underlying file location.", hidden = true)
+    // Only job runners can get this.
+    @PreAuthorize("hasAuthority('SystemProjectDecrypt')")
+    @GetMapping(value = ["/api/v3/assets/{id}/_locate/{category}/{name}"])
+    @ResponseBody
+    fun getBlobLocation(
+        @PathVariable id: String,
+        @PathVariable category: String,
+        @PathVariable name: String
+    ): Any {
+        val locator = AssetFileLocator(id, category, name)
+        return mapOf("uri" to projectStorageService.getNativeUri(locator))
+    }
+
+    @ApiOperation("Delete an asset.")
     @PreAuthorize("hasAuthority('AssetsImport')")
     @DeleteMapping(value = ["/api/v3/assets/{id}"])
     @ResponseBody
@@ -261,7 +275,7 @@ class AssetController @Autowired constructor(
             .body(InputStreamResource(bytes.inputStream()))
     }
 
-    @ApiOperation("Store an additional file to an asset.")
+    @ApiOperation("Delete assets by query.")
     @PreAuthorize("hasAuthority('AssetsImport')")
     @DeleteMapping(value = ["/api/v3/assets/_delete_by_query"])
     @ResponseBody

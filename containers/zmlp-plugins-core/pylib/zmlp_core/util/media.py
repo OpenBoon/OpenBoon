@@ -1,12 +1,13 @@
 import json
 import logging
-import xmltodict
-import re
-import magic
 import os
-
-from pathlib2 import Path
+import re
 from subprocess import check_output, check_call, CalledProcessError
+
+import xmltodict
+from pathlib2 import Path
+
+from zmlpsdk.base import FileTypes
 
 logger = logging.getLogger(__name__)
 
@@ -21,13 +22,7 @@ def media_size(path):
     Returns:
         (width, height): The media dimensions in pixels.
     """
-    # Formats that may not be detected as video/* but need to use
-    # ffprobe for metadata extraction.
-    other_ffrobe_formats = [".mxf"]
-
-    mimetype = magic.detect_from_filename(path).mime_type
-
-    if mimetype.startswith("video/") or Path(path).suffix in other_ffrobe_formats:
+    if Path(path).suffix[1:] in FileTypes.videos:
         cmd = ["ffprobe",
                "-v",
                "error",

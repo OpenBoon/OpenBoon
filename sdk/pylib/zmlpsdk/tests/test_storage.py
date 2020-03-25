@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.DEBUG)
 class LocalFileCacheTests(TestCase):
 
     def setUp(self):
-        os.environ['ZMLP_STORAGE_PIPELINE_URL'] = "http://localhost:9000"
+        os.environ['ZMLP_STORAGE_PIPELINE_URL'] = 'http://localhost:9000'
         self.lfc = storage.LocalFileCache()
 
     def tearDown(self):
@@ -55,7 +55,7 @@ class LocalFileCacheTests(TestCase):
         assert path.endswith(filename)
 
     def test_get_path_with_project_env(self):
-        os.environ['ZMLP_PROJECT_ID'] = "abc123"
+        os.environ['ZMLP_PROJECT_ID'] = 'abc123'
         try:
             path = self.lfc.get_path('spock', '.kirk')
             filename = 'c85be874d0f9c380a790f583c2bec6633109386e.kirk'
@@ -118,7 +118,7 @@ class LocalFileCacheTests(TestCase):
 class TestAssetStorage(TestCase):
 
     def setUp(self):
-        os.environ['ZMLP_STORAGE_PIPELINE_URL'] = "http://localhost:9000"
+        os.environ['ZMLP_STORAGE_PIPELINE_URL'] = 'http://localhost:9000'
         self.lfc = storage.LocalFileCache()
 
     def tearDown(self):
@@ -135,6 +135,29 @@ class TestAssetStorage(TestCase):
             asset, zorroa_test_data('images/set01/toucan.jpg', uri=False), 'test')
         assert 'cat.jpg' == result['name']
         assert 'proxy' == result['category']
+
+    @patch.object(ZmlpClient, 'upload_file')
+    def test_store_data(self, upload_patch):
+        upload_patch.return_value = {
+            'name': 'vid-int-moderation.json',
+            'category': 'google'
+        }
+        asset = TestAsset(id='123456')
+        result = self.lfc.assets.store_data(
+            asset, '{"jo": "boo"}', 'google', 'vid-int-moderation.json')
+        assert 'google' == result['category']
+        assert 'vid-int-moderation.json' == result['name']
+
+    @patch.object(ZmlpClient, 'upload_file')
+    def test_store_data_no_ext(self, upload_patch):
+        upload_patch.return_value = {
+            'name': 'vid-int-moderation.json',
+            'category': 'google'
+        }
+        asset = TestAsset(id='123456')
+        with pytest.raises(ValueError):
+            self.lfc.assets.store_data(
+                asset, '{"jo": "boo"}', 'google', 'vid-int-moderation')
 
     @patch.object(ZmlpClient, 'stream')
     def test_localize_file_with_copy(self, post_patch):
@@ -167,13 +190,20 @@ class TestAssetStorage(TestCase):
         post_patch.return_value = '/tmp/cat.jpg'
         asset = TestAsset(id='123456')
         self.lfc.assets.localize_file(asset, pfile)
-        assert "assets/bingo/_files" in post_patch.call_args_list[0][0][0]
+        assert 'assets/bingo/_files' in post_patch.call_args_list[0][0][0]
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get_native_uri(self, get_patch):
+        get_patch.return_value = {'uri': 'gs://hulk-hogan'}
+        asset = TestAsset(id='123456')
+        uri = self.lfc.assets.get_native_uri(asset, 'cat', 'dog.jpg')
+        assert 'gs://hulk-hogan' == uri
 
 
 class TestProjectStorage(TestCase):
 
     def setUp(self):
-        os.environ['ZMLP_STORAGE_PIPELINE_URL'] = "http://localhost:9000"
+        os.environ['ZMLP_STORAGE_PIPELINE_URL'] = 'http://localhost:9000'
         self.lfc = storage.LocalFileCache()
 
     def tearDown(self):
@@ -186,8 +216,8 @@ class TestProjectStorage(TestCase):
             'category': 'face_model',
             'entity': 'model'
         }
-        path = os.path.dirname(__file__) + "/fake_model.dat"
-        result = self.lfc.projects.store_file(path, "model", "face_model", "celebs.dat")
+        path = os.path.dirname(__file__) + '/fake_model.dat'
+        result = self.lfc.projects.store_file(path, 'model', 'face_model', 'celebs.dat')
         assert 'celebs.dat' == result['name']
         assert 'face_model' == result['category']
 

@@ -38,9 +38,7 @@ class GcsProjectStorageService constructor(
     }
 
     override fun store(spec: ProjectStorageSpec): FileStorage {
-
-        val path = spec.locator.getPath()
-        val blobId = BlobId.of(properties.bucket, path)
+        val blobId = getBlobId(spec.locator)
         val info = BlobInfo.newBuilder(blobId)
 
         info.setMetadata(mapOf("attrs" to Json.serializeToString(spec.attrs)))
@@ -51,7 +49,7 @@ class GcsProjectStorageService constructor(
 
         return FileStorage(
             spec.locator.name,
-            spec.locator.category.toString().toLowerCase(),
+            spec.locator.category.toLowerCase(),
             spec.mimetype,
             spec.data.size.toLong(),
             spec.attrs
@@ -59,8 +57,7 @@ class GcsProjectStorageService constructor(
     }
 
     override fun stream(locator: ProjectStorageLocator): ResponseEntity<Resource> {
-        val path = locator.getPath()
-        val blobId = BlobId.of(properties.bucket, path)
+        val blobId = getBlobId(locator)
         val blob = gcs.get(blobId)
 
         return try {
@@ -75,10 +72,18 @@ class GcsProjectStorageService constructor(
     }
 
     override fun fetch(locator: ProjectStorageLocator): ByteArray {
-        val path = locator.getPath()
-        val blobId = BlobId.of(properties.bucket, path)
+        val blobId = getBlobId(locator)
         val blob = gcs.get(blobId)
         return blob.getContent()
+    }
+
+    override fun getNativeUri(locator: ProjectStorageLocator): String {
+        val path = locator.getPath()
+        return "gs://${properties.bucket}/$path"
+    }
+
+    fun getBlobId(locator: ProjectStorageLocator): BlobId {
+        return BlobId.of(properties.bucket, locator.getPath())
     }
 
     companion object {

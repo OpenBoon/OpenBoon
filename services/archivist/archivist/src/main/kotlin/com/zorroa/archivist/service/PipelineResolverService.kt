@@ -270,14 +270,8 @@ class PipelineResolverServiceImpl(
      */
     override fun getStandardPipeline(trimPrependMarker: Boolean): List<ProcessorRef> {
         return listOf(
-            ProcessorRef("zmlp_core.core.processors.PreCacheSourceFileProcessor", "zmlp/plugins-core"),
-            ProcessorRef("zmlp_core.image.importers.ImageImporter", "zmlp/plugins-core"),
-            ProcessorRef("zmlp_core.office.importers.OfficeImporter", "zmlp/plugins-core"),
-            ProcessorRef("zmlp_core.video.VideoImporter", "zmlp/plugins-core"),
-            ProcessorRef(
-                "zmlp_core.core.processors.AssertAttributesProcessor", "zmlp/plugins-core",
-                mapOf("attrs" to listOf("media.type"))
-            ),
+            ProcessorRef("zmlp_core.core.PreCacheSourceFileProcessor", "zmlp/plugins-core"),
+            ProcessorRef("zmlp_core.core.FileImportProcessor", "zmlp/plugins-core"),
             ProcessorRef("zmlp_core.proxy.ImageProxyProcessor", "zmlp/plugins-core"),
             ProcessorRef("zmlp_core.proxy.VideoProxyProcessor", "zmlp/plugins-core"),
             ProcessorRef("zmlp_analysis.mxnet.ZviSimilarityProcessor", "zmlp/plugins-analysis"),
