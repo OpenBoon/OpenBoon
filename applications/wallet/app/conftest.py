@@ -61,6 +61,13 @@ def zmlp_project_membership(project, user, zmlp_apikey):
 
 
 @pytest.fixture
+def zmlp_project2_membership(project2, user, zmlp_apikey):
+    apikey = b64encode(zmlp_apikey).decode('utf-8')
+    return Membership.objects.create(user=user, project=project2, apikey=apikey,
+                                     roles=['ML_Tools', 'User_Admin', 'API_Keys'])
+
+
+@pytest.fixture
 def zmlp_project_user(user, zmlp_project_membership):
     return user
 
