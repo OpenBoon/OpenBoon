@@ -50,8 +50,8 @@ class PipelineControllerTests : MockMvcTest() {
             listOf(
                 ModOp(
                     ModOpType.SET_ARGS,
-                    mapOf("extract_pages" to true),
-                    OpFilter(OpFilterType.SUBSTR, "OfficeImporter")
+                    mapOf("extract_doc_pages" to true),
+                    OpFilter(OpFilterType.SUBSTR, "FileImportProcessor")
                 )
             )
         )
@@ -211,8 +211,8 @@ class PipelineControllerTests : MockMvcTest() {
         )
             .andExpect(status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$[0].className",
-                CoreMatchers.equalTo("zmlp_core.core.processors.PreCacheSourceFileProcessor")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[2].args.extract_pages",
+                CoreMatchers.equalTo("zmlp_core.core.PreCacheSourceFileProcessor")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[1].args.extract_doc_pages",
                 CoreMatchers.equalTo(true)))
             .andReturn()
     }

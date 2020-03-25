@@ -51,6 +51,11 @@ interface ProjectStorageService {
     fun fetch(locator: ProjectStorageLocator): ByteArray
 
     /**
+     * Fetch the URI where the file is stored.
+     */
+    fun getNativeUri(locator: ProjectStorageLocator): String
+
+    /**
      * Log the storage of a file.
      */
     fun logStoreEvent(spec: ProjectStorageSpec) {

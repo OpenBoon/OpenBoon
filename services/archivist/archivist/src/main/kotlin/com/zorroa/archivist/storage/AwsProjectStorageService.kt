@@ -119,6 +119,10 @@ class AwsProjectStorageService constructor(
         return s3obj.objectContent.readBytes()
     }
 
+    override fun getNativeUri(locator: ProjectStorageLocator): String {
+        return "s3://${properties.bucket}/${locator.getPath()}"
+    }
+
     companion object {
         val logger = LoggerFactory.getLogger(AwsProjectStorageService::class.java)
     }

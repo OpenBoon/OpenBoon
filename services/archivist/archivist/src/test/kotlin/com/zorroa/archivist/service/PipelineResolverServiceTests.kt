@@ -184,12 +184,12 @@ class PipelineResolverServiceTests : AbstractTest() {
                 ModOp(
                     ModOpType.REMOVE,
                     null,
-                    OpFilter(OpFilterType.SUBSTR, "OfficeImporter")
+                    OpFilter(OpFilterType.SUBSTR, "FileImportProcessor")
                 )
             )
         )
         val resolved = setupTestPipeline(spec)
-        val idx = resolved.indexOfFirst { "OfficeImporter" in it.className }
+        val idx = resolved.indexOfFirst { "FileImportProcessor" in it.className }
         assertEquals(-1, idx)
     }
 
@@ -204,13 +204,13 @@ class PipelineResolverServiceTests : AbstractTest() {
                 ModOp(
                     ModOpType.REPLACE,
                     listOf(ProcessorRef("replaced", "zmlp-plugins-foo")),
-                    OpFilter(OpFilterType.SUBSTR, "OfficeImporter")
+                    OpFilter(OpFilterType.SUBSTR, "FileImportProcessor")
                 )
             )
         )
         val resolved = setupTestPipeline(spec)
         val idx = resolved.indexOfFirst { "replace" in it.className }
-        assertEquals(2, idx)
+        assertEquals(1, idx)
     }
 
     @Test
@@ -224,13 +224,13 @@ class PipelineResolverServiceTests : AbstractTest() {
                 ModOp(
                     ModOpType.ADD_BEFORE,
                     listOf(ProcessorRef("replaced", "zmlp-plugins-foo")),
-                    OpFilter(OpFilterType.SUBSTR, "OfficeImporter")
+                    OpFilter(OpFilterType.SUBSTR, "FileImportProcessor")
                 )
             )
         )
         val resolved = setupTestPipeline(spec)
         val idx = resolved.indexOfFirst { "replace" in it.className }
-        assertEquals(2, idx)
+        assertEquals(1, idx)
     }
 
     @Test
@@ -244,13 +244,13 @@ class PipelineResolverServiceTests : AbstractTest() {
                 ModOp(
                     ModOpType.ADD_AFTER,
                     listOf(ProcessorRef("replaced", "zmlp-plugins-foo")),
-                    OpFilter(OpFilterType.SUBSTR, "OfficeImporter")
+                    OpFilter(OpFilterType.SUBSTR, "FileImportProcessor")
                 )
             )
         )
         val resolved = setupTestPipeline(spec)
         val idx = resolved.indexOfFirst { "replace" in it.className }
-        assertEquals(3, idx)
+        assertEquals(2, idx)
     }
 
     @Test
@@ -263,14 +263,14 @@ class PipelineResolverServiceTests : AbstractTest() {
             listOf(
                 ModOp(
                     ModOpType.SET_ARGS,
-                    mapOf("extract_pages" to true),
-                    OpFilter(OpFilterType.SUBSTR, "OfficeImporter")
+                    mapOf("extract_doc_pages" to true),
+                    OpFilter(OpFilterType.SUBSTR, "FileImportProcessor")
                 )
             )
         )
         val resolved = setupTestPipeline(spec)
-        val idx = resolved.indexOfFirst { it.args?.get("extract_pages") == true }
-        assertEquals(2, idx)
+        val idx = resolved.indexOfFirst { it.args?.get("extract_doc_pages") == true }
+        assertEquals(1, idx)
     }
 
     @Test
@@ -284,14 +284,14 @@ class PipelineResolverServiceTests : AbstractTest() {
                 ModOp(
                     ModOpType.REMOVE,
                     null,
-                    OpFilter(OpFilterType.REGEX, ".*OfficeImporter|.*VideoImporter"),
+                    OpFilter(OpFilterType.REGEX, ".*ImageProxyProcessor|.*VideoProxyProcessor"),
                     maxApplyCount = 2
                 )
             )
         )
         val resolved = setupTestPipeline(spec)
-        assertEquals(-1, resolved.indexOfFirst { "VideoImporter" in it.className })
-        assertEquals(-1, resolved.indexOfFirst { "OfficeImporter" in it.className })
+        assertEquals(-1, resolved.indexOfFirst { "ImageProxyProcessor" in it.className })
+        assertEquals(-1, resolved.indexOfFirst { "VideoProxyProcessor" in it.className })
     }
 
     @Test
@@ -305,15 +305,15 @@ class PipelineResolverServiceTests : AbstractTest() {
                 ModOp(
                     ModOpType.REMOVE,
                     null,
-                    OpFilter(OpFilterType.REGEX, ".*OfficeImporter|.*VideoImporter"),
+                    OpFilter(OpFilterType.REGEX, ".*ImageProxyProcessor|.*VideoProxyProcessor"),
                     maxApplyCount = 1
                 )
             )
         )
         // Op only applied 1 time.
         val resolved = setupTestPipeline(spec)
-        assertEquals(-1, resolved.indexOfFirst { "OfficeImporter" in it.className })
-        assertEquals(2, resolved.indexOfFirst { "VideoImporter" in it.className })
+        assertEquals(-1, resolved.indexOfFirst { "ImageProxyProcessor" in it.className })
+        assertEquals(2, resolved.indexOfFirst { "VideoProxyProcessor" in it.className })
     }
 
     /**
