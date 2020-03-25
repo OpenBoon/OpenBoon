@@ -31,6 +31,11 @@ const Projects = ({ projectId, setUser, children }) => {
     return children
   }
 
+  // Render "Account Overview"
+  if (pathname === '/') {
+    return children
+  }
+
   // Render other pages without projectId
   if (!routerProjectId && NO_PROJECT_ID_ROUTES.includes(pathname)) {
     return children
