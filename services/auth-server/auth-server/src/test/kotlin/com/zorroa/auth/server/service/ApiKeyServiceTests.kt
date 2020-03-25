@@ -85,7 +85,7 @@ class ApiKeyServiceTests : AbstractTest() {
         apiKeyService.create(ApiKeySpec("test2", setOf(Permission.AssetsRead)))
         apiKeyService.create(ApiKeySpec("test3", setOf(Permission.AssetsRead)))
 
-        val keys = apiKeyService.searchByNamePrefixes(ApiKeyFilter(names = listOf("test","invalid")))
+        val keys = apiKeyService.searchByNamePrefixes(ApiKeyFilter(names = listOf("test", "invalid")))
 
         assertEquals(3, keys.list.size)
     }
