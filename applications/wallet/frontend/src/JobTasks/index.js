@@ -25,7 +25,14 @@ const JobTasks = () => {
       ]}
       expandColumn={3}
       renderEmpty={<JobTasksEmpty />}
-      renderRow={({ result }) => <JobTasksRow key={result.id} task={result} />}
+      renderRow={({ result }) => (
+        <JobTasksRow
+          key={result.id}
+          projectId={projectId}
+          jobId={jobId}
+          task={result}
+        />
+      )}
     />
   )
 }
