@@ -5,7 +5,6 @@ exports[`<AccountUsagePlan /> should not render without subscriptions 1`] = `nul
 exports[`<AccountUsagePlan /> should render properly 1`] = `
 .emotion-17 {
   padding: 32px;
-  border-top: 1px solid #4a4a4a;
 }
 
 .emotion-0 {
@@ -58,7 +57,6 @@ exports[`<AccountUsagePlan /> should render properly 1`] = `
 
 .emotion-16 {
   padding-top: 16px;
-  padding-bottom: 16px;
   padding-left: 44px;
 }
 
@@ -181,7 +179,6 @@ exports[`<AccountUsagePlan /> should render properly 1`] = `
 exports[`<AccountUsagePlan /> should render properly with over usage 1`] = `
 .emotion-22 {
   padding: 32px;
-  border-top: 1px solid #4a4a4a;
 }
 
 .emotion-5 {
@@ -234,7 +231,6 @@ exports[`<AccountUsagePlan /> should render properly with over usage 1`] = `
 
 .emotion-21 {
   padding-top: 16px;
-  padding-bottom: 16px;
   padding-left: 44px;
 }
 

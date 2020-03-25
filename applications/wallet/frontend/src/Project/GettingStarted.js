@@ -66,73 +66,76 @@ const STEPS = [
 
 const ProjectGettingStarted = ({ projectId }) => {
   return (
-    <Card title="Getting Started">
-      {STEPS.map(({ step, title, module, content, cta, link }) => (
-        <div
-          key={step}
-          css={{ paddingBottom: step === STEPS.length ? 0 : spacing.comfy }}
-        >
+    <Card header="Getting Started">
+      <div css={{ padding: spacing.spacious }}>
+        {STEPS.map(({ step, title, module, content, cta, link }) => (
           <div
-            css={{
-              borderBottom: step === STEPS.length ? 0 : constants.borders.tabs,
-            }}
+            key={step}
+            css={{ paddingBottom: step === STEPS.length ? 0 : spacing.comfy }}
           >
-            <h4
-              css={{
-                fontWeight: typography.weight.regular,
-                fontSize: typography.size.medium,
-                lineHeight: typography.height.medium,
-                color: colors.key.one,
-              }}
-            >
-              <span css={{ fontWeight: typography.weight.bold }}>
-                Step {step}:&nbsp;
-              </span>
-              {title}
-            </h4>
-            <h5
-              css={{
-                fontSize: typography.size.regular,
-                lineHeight: typography.height.regular,
-                fontWeight: typography.weight.bold,
-                margin: 0,
-                paddingTop: spacing.normal,
-                display: 'flex',
-                alignItems: 'center',
-                svg: {
-                  marginRight: spacing.base,
-                },
-              }}
-            >
-              {module}
-            </h5>
-            <p
-              css={{
-                margin: 0,
-                paddingTop: spacing.normal,
-                paddingBottom: spacing.normal,
-                color: colors.structure.zinc,
-              }}
-            >
-              {content}
-            </p>
             <div
               css={{
-                display: 'flex',
-                paddingBottom: step === STEPS.length ? 0 : spacing.comfy,
+                borderBottom:
+                  step === STEPS.length ? 0 : constants.borders.tabs,
               }}
             >
-              <Link
-                href={link}
-                as={link.replace('[projectId]', projectId)}
-                passHref
+              <h4
+                css={{
+                  fontWeight: typography.weight.regular,
+                  fontSize: typography.size.medium,
+                  lineHeight: typography.height.medium,
+                  color: colors.key.one,
+                }}
               >
-                <Button variant={VARIANTS.SECONDARY_SMALL}>{cta}</Button>
-              </Link>
+                <span css={{ fontWeight: typography.weight.bold }}>
+                  Step {step}:&nbsp;
+                </span>
+                {title}
+              </h4>
+              <h5
+                css={{
+                  fontSize: typography.size.regular,
+                  lineHeight: typography.height.regular,
+                  fontWeight: typography.weight.bold,
+                  margin: 0,
+                  paddingTop: spacing.normal,
+                  display: 'flex',
+                  alignItems: 'center',
+                  svg: {
+                    marginRight: spacing.base,
+                  },
+                }}
+              >
+                {module}
+              </h5>
+              <p
+                css={{
+                  margin: 0,
+                  paddingTop: spacing.normal,
+                  paddingBottom: spacing.normal,
+                  color: colors.structure.zinc,
+                }}
+              >
+                {content}
+              </p>
+              <div
+                css={{
+                  display: 'flex',
+                  paddingBottom: step === STEPS.length ? 0 : spacing.comfy,
+                }}
+              >
+                <Link
+                  href={link}
+                  as={link.replace('[projectId]', projectId)}
+                  passHref
+                >
+                  <Button variant={VARIANTS.SECONDARY_SMALL}>{cta}</Button>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </Card>
   )
 }

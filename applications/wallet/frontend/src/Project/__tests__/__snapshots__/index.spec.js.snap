@@ -144,6 +144,10 @@ Array [
   margin-right: 8px;
 }
 
+.emotion-32 {
+  padding: 32px;
+}
+
 .emotion-15 {
   padding-bottom: 24px;
 }
@@ -328,7 +332,7 @@ Array [
           Getting Started
         </h3>
         <div
-          className="emotion-4"
+          className="emotion-32"
         >
           <div
             className="emotion-15"
@@ -480,7 +484,7 @@ Array [
       <div
         className="emotion-5"
       >
-        <h3
+        <div
           className="emotion-7"
         >
           <svg
@@ -490,7 +494,7 @@ Array [
             width={20}
           />
           Project API Keys
-        </h3>
+        </div>
         <div
           className="emotion-4"
         >

@@ -2,7 +2,9 @@ import PropTypes from 'prop-types'
 
 import { spacing, colors, constants } from '../Styles'
 
-const Card = ({ title, children }) => {
+const Card = ({ header, children }) => {
+  const Element = typeof header === 'string' ? 'h3' : 'div'
+
   return (
     <div
       css={{
@@ -20,8 +22,8 @@ const Card = ({ title, children }) => {
           borderRadius: constants.borderRadius.small,
         }}
       >
-        {!!title && (
-          <h3
+        {!!header && (
+          <Element
             css={{
               padding: spacing.normal,
               borderBottom: constants.borders.tabs,
@@ -32,17 +34,18 @@ const Card = ({ title, children }) => {
               },
             }}
           >
-            {title}
-          </h3>
+            {header}
+          </Element>
         )}
-        <div css={{ padding: spacing.spacious }}>{children}</div>
+
+        {children}
       </div>
     </div>
   )
 }
 
 Card.propTypes = {
-  title: PropTypes.node.isRequired,
+  header: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired,
 }
 

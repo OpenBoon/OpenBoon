@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 
 import projectShape from '../Project/shape'
 
-import { constants, colors, spacing } from '../Styles'
+import { colors, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
+import Card from '../Card'
 
 import AccountUsagePlan from './UsagePlan'
 
@@ -13,24 +14,10 @@ const AccountCards = ({ projects }) => {
   return (
     <div css={{ display: 'flex', flexWrap: 'wrap' }}>
       {projects.map(({ id, name }) => (
-        <div
+        <Card
           key={id}
-          css={{
-            paddingRight: spacing.spacious,
-            paddingBottom: spacing.spacious,
-            width: constants.form.maxWidth,
-          }}
-        >
-          <div
-            css={{
-              display: 'flex',
-              flexDirection: 'column',
-              backgroundColor: colors.structure.smoke,
-              boxShadow: constants.boxShadows.tableRow,
-              borderRadius: constants.borderRadius.small,
-            }}
-          >
-            <div css={{ padding: spacing.spacious }}>
+          header={
+            <div css={{ padding: spacing.normal }}>
               <h3 css={{ paddingBottom: spacing.base }}>Project: {name}</h3>
               <div
                 css={{
@@ -48,9 +35,10 @@ const AccountCards = ({ projects }) => {
                 </Link>
               </div>
             </div>
-            <AccountUsagePlan projectId={id} />
-          </div>
-        </div>
+          }
+        >
+          <AccountUsagePlan projectId={id} />
+        </Card>
       ))}
     </div>
   )

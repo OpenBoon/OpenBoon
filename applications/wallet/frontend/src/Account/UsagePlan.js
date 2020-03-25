@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import PropTypes from 'prop-types'
 
-import { colors, spacing, constants, typography } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 
 import FormAlert from '../FormAlert'
 
@@ -26,12 +26,7 @@ const AccountUsagePlan = ({ projectId }) => {
   const imageOverTime = imageUsage - imageLimit
 
   return (
-    <div
-      css={{
-        padding: spacing.spacious,
-        borderTop: constants.borders.tabs,
-      }}
-    >
+    <div css={{ padding: spacing.spacious }}>
       {(videoOverTime > 1 || imageOverTime > 1) && (
         <div css={{ marginTop: -spacing.normal, marginBottom: spacing.normal }}>
           <FormAlert setErrorMessage={false}>
@@ -93,7 +88,6 @@ const AccountUsagePlan = ({ projectId }) => {
       <div
         css={{
           paddingTop: spacing.normal,
-          paddingBottom: spacing.normal,
           paddingLeft: LEFT_SPACING,
         }}
       >
