@@ -5,21 +5,11 @@ const projects = {
   results: [
     {
       id: '76917058-b147-4556-987a-0a0f11e46d9b',
-      url:
-        'http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/',
-      jobs:
-        'http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/jobs/',
       name: 'qwerty',
-      users: ['http://localhost/api/v1/users/1/'],
     },
     {
-      id: '76917058-b147-4556-987a-0a0f11e46d9c',
-      url:
-        'http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9c/',
-      jobs:
-        'http://localhost/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9c/jobs/',
+      id: 'e93cbadb-e5ae-4598-8395-4cf5b30c0e94',
       name: 'azerty',
-      users: ['http://localhost/api/v1/users/1/'],
     },
   ],
 }

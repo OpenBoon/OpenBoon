@@ -1,5 +1,9 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import mockUser from '../../User/__mocks__/user'
+
+import User from '../../User'
+
 import Sidebar from '..'
 
 const noop = () => () => {}
@@ -13,11 +17,13 @@ describe('<Sidebar />', () => {
     })
 
     const component = TestRenderer.create(
-      <Sidebar
-        projectId={PROJECT_ID}
-        isSidebarOpen={false}
-        setSidebarOpen={noop}
-      />,
+      <User initialUser={mockUser}>
+        <Sidebar
+          projectId={PROJECT_ID}
+          isSidebarOpen={false}
+          setSidebarOpen={noop}
+        />
+      </User>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -29,7 +35,9 @@ describe('<Sidebar />', () => {
     })
 
     const component = TestRenderer.create(
-      <Sidebar projectId={PROJECT_ID} isSidebarOpen setSidebarOpen={noop} />,
+      <User initialUser={mockUser}>
+        <Sidebar projectId={PROJECT_ID} isSidebarOpen setSidebarOpen={noop} />
+      </User>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
