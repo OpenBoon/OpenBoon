@@ -93,7 +93,7 @@ class JobViewSet(BaseProjectViewSet):
 
         """
         base_url = '/api/v1/taskerrors/'
-        return self._zmlp_list_from_search(request, filter={'jobIds': [pk]},
+        return self._zmlp_list_from_search(request, search_filter={'jobIds': [pk]},
                                            serializer_class=TaskErrorSerializer,
                                            base_url=base_url)
 
@@ -248,7 +248,7 @@ class JobTaskViewSet(BaseProjectViewSet):
             task['assetCounts'] = set_asset_total_count(task['assetCounts'])
 
         return self._zmlp_list_from_search(request, item_modifier=item_modifier,
-                                           filter={'jobIds': [job_pk]})
+                                           search_filter={'jobIds': [job_pk]})
 
 
 class TaskViewSet(BaseProjectViewSet):
