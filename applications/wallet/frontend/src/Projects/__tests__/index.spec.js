@@ -46,6 +46,24 @@ describe('<Projects />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render Account Overview properly', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/',
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: projects,
+    })
+
+    const component = TestRenderer.create(
+      <Projects projectId="" setUser={noop}>
+        Account Overview
+      </Projects>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should update the projectId if it is different from the router projectId', async () => {
     const mockFn = jest.fn()
 
