@@ -13,7 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet, GenericViewSet
 from zmlp import ZmlpClient
-from zmlp.client import ZmlpInvalidRequestException, ZmlpNotFoundException
+from zmlp.client import ZmlpNotFoundException
 
 from apikeys.utils import create_zmlp_api_key, decode_apikey
 from projects.clients import ZviClient
@@ -446,12 +446,8 @@ class ProjectUserViewSet(BaseProjectViewSet):
         # TODO: Replace Delete/Create logic when Auth Server supports PUT
         # Create new Key first and append epoch time (milli) to get a readable unique name
         new_permissions = self._get_permissions_for_roles(new_roles)
-        try:
-            name = self._get_api_key_name(email, project_pk)
-            new_apikey = create_zmlp_api_key(request.client, name, new_permissions, internal=True)
-        except ZmlpInvalidRequestException:
-            return Response(data={'detail': "Unable to create apikey."},
-                            status=status.HTTP_400_BAD_REQUEST)
+        name = self._get_api_key_name(email, project_pk)
+        new_apikey = create_zmlp_api_key(request.client, name, new_permissions, internal=True)
 
         # Delete old key on success
         try:
@@ -459,9 +455,6 @@ class ProjectUserViewSet(BaseProjectViewSet):
             if not response.status_code == 200:
                 return Response(data={'detail': 'Error deleting apikey.'},
                                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except ZmlpInvalidRequestException:
-            return Response(data={'detail': "Unable to delete apikey."},
-                            status=status.HTTP_400_BAD_REQUEST)
         except ZmlpNotFoundException:
             logger.warning(f'Tried to delete API Key {apikey_id} for user f{request.user.id} '
                            f'while updating permissions. The API key could not be found.')
@@ -493,11 +486,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
             apikey_readable = False
 
         if apikey_readable:
-            try:
-                response = request.client.delete(f'/auth/v1/apikey/{apikey_id}')
-            except ZmlpInvalidRequestException:
-                return Response(data={'detail': "Unable to delete apikey."},
-                                status=status.HTTP_400_BAD_REQUEST)
+            response = request.client.delete(f'/auth/v1/apikey/{apikey_id}')
             if not response.status_code == 200:
                 return Response(data={'detail': 'Error deleting apikey.'},
                                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -530,12 +519,8 @@ class ProjectUserViewSet(BaseProjectViewSet):
                             status=status.HTTP_404_NOT_FOUND)
 
         # Create an apikey with the given permissions
-        try:
-            name = self._get_api_key_name(email, project_pk)
-            encoded_apikey = create_zmlp_api_key(request.client, name, permissions, internal=True)
-        except ZmlpInvalidRequestException:
-            return Response(data={'detail': "Unable to create apikey."},
-                            status=status.HTTP_400_BAD_REQUEST)
+        name = self._get_api_key_name(email, project_pk)
+        encoded_apikey = create_zmlp_api_key(request.client, name, permissions, internal=True)
 
         # Create a membership for given user
         Membership.objects.create(user=user, project=project, apikey=encoded_apikey,
