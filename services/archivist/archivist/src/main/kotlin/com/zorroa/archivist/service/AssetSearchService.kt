@@ -132,7 +132,7 @@ class AssetSearchServiceImpl : AssetSearchService {
         private val allowedSearchProperties = setOf(
             "query", "from", "size", "timeout",
             "post_filter", "minscore", "suggest",
-            "highlight", "collapse",
+            "highlight", "collapse", "_source",
             "slice", "aggs", "aggregations", "sort"
         )
     }

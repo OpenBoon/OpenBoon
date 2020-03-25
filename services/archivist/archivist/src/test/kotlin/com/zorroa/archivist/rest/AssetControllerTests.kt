@@ -338,6 +338,23 @@ class AssetControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testGetNativeUri() {
+        val rsp = assetService.batchCreate(BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("https://i.imgur.com/SSN26nN.jpg"))
+        ))
+        val id = rsp.created[0]
+        val expected = "s3://project-storage-test/projects/00000000-0000-0000-0000-000000000000/$id/asset/proxy/bob.jpg"
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/assets/$id/_locate/proxy/bob.jpg")
+                .headers(job())
+                .contentType(MediaType.IMAGE_JPEG_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.uri", CoreMatchers.equalTo(expected)))
+            .andReturn()
+    }
+
+    @Test
     fun testUploadFile() {
 
         val file = MockMultipartFile(
