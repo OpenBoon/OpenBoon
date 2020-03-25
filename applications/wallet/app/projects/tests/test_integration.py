@@ -597,7 +597,7 @@ class TestProjectUserPost:
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Unable to create apikey.'
+        assert content['detail'] == 'Invalid request.'
 
     def test_get_permissions_for_roles(self):
         view = ProjectUserViewSet()
@@ -686,7 +686,7 @@ class TestProjectUserPut:
                                                   'pk': new_user.id}), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Unable to create apikey.'
+        assert content['detail'] == 'Invalid request.'
 
     @override_settings(PLATFORM='zmlp')
     def test_cannot_delete(self, project, zmlp_project_user, monkeypatch, data,
@@ -719,7 +719,7 @@ class TestProjectUserPut:
                                                   'pk': new_user.id}), body)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         content = response.json()
-        assert content['detail'] == 'Unable to delete apikey.'
+        assert content['detail'] == 'Invalid request.'
 
     @override_settings(PLATFORM='zmlp')
     def test_server_error(self, project, zmlp_project_user, monkeypatch, data,
