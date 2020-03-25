@@ -11,6 +11,7 @@ import com.zorroa.zmlp.apikey.ZmlpActor
 import com.zorroa.zmlp.service.jpa.StringSetConverter
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import org.hibernate.event.spi.PreInsertEvent
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
@@ -187,7 +188,7 @@ class ValidationKey(
  * Used for getting a filtered list of API keys.
  */
 @ApiModel("Api Key Filter", description = "Search filter for finding API keys.")
-class ApiKeyFilter(
+open class ApiKeyFilter(
 
     /**
      * A list of unique ApiKey  IDs.
@@ -228,4 +229,24 @@ class ApiKeyFilter(
 
     override val sortFields: Set<String>
         get() = setOf("id", "name")
+}
+
+@ApiModel("Api Key Filter By Name Prefix", description = "Search filter for finding API keys by Name Prefix.")
+class ApiKeyFilterNamePrefix(
+    val apiKeyFilter: ApiKeyFilter
+) : ApiKeyFilter(apiKeyFilter.ids, apiKeyFilter.names) {
+
+    override fun buildWhereClause(root: Root<ApiKey>, cb: CriteriaBuilder): Array<Predicate> {
+        val where = mutableListOf<Predicate>()
+
+        cb.equal(root.get<UUID>("projectId"), getProjectId())
+
+        var predicate : Predicate = cb.`like`(root.get("name"), "")
+        super.names?.forEach{
+            predicate = cb.or(predicate, cb.`like`(root.get("name"), "${it}%"))
+        }
+        where.add(predicate)
+
+        return where.toTypedArray()
+    }
 }

@@ -2,6 +2,7 @@ package com.zorroa.auth.server.service
 
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.domain.ApiKeyFilter
+import com.zorroa.auth.server.domain.ApiKeyFilterNamePrefix
 import com.zorroa.auth.server.domain.ApiKeySpec
 import com.zorroa.auth.server.repository.ApiKeyCustomRepository
 import com.zorroa.auth.server.repository.ApiKeyRepository
@@ -37,6 +38,8 @@ interface ApiKeyService {
     fun findOne(filter: ApiKeyFilter): ApiKey
 
     fun search(filter: ApiKeyFilter): PagedList<ApiKey>
+
+    fun searchByNamePrefixes(filter: ApiKeyFilter): PagedList<ApiKey>
 
     fun delete(apiKey: ApiKey)
 }
@@ -137,6 +140,11 @@ class ApiKeyServiceImpl constructor(
     @Transactional(readOnly = true)
     override fun search(filter: ApiKeyFilter): PagedList<ApiKey> {
         return apikeyCustomRepository.search(filter)
+    }
+
+    @Transactional(readOnly = true)
+    override fun searchByNamePrefixes(filter: ApiKeyFilter): PagedList<ApiKey> {
+        return apikeyCustomRepository.search(ApiKeyFilterNamePrefix(filter))
     }
 
     override fun delete(apiKey: ApiKey) {

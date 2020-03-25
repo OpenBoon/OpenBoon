@@ -63,6 +63,12 @@ class ApiKeyController(
         return apiKeyService.search(filter ?: ApiKeyFilter())
     }
 
+    @RequestMapping("/auth/v1/apikey/_searchByPrefix", method = [RequestMethod.GET, RequestMethod.POST])
+    @ApiOperation("Search for API Names Prefix")
+    fun searchByNamePrefixes(@RequestBody(required = false) filter: ApiKeyFilter?): PagedList<ApiKey> {
+        return apiKeyService.searchByNamePrefixes(filter ?: ApiKeyFilter())
+    }
+
     @GetMapping("/auth/v1/apikey/{id}/_download")
     @ApiOperation("Download API Key")
     fun download(@PathVariable id: UUID): ResponseEntity<ByteArray> {
