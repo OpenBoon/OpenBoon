@@ -1,6 +1,9 @@
 import TestRenderer from 'react-test-renderer'
 
 import project from '../__mocks__/project'
+import mockUser from '../../User/__mocks__/user'
+
+import User from '../../User'
 
 import Project from '..'
 
@@ -15,7 +18,11 @@ describe('<Project />', () => {
 
     require('swr').__setMockUseSWRResponse({ data: project })
 
-    const component = TestRenderer.create(<Project />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Project />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })

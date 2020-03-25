@@ -6,6 +6,7 @@ import { colors, spacing } from '../Styles'
 
 import Card from '../Card'
 import Button, { VARIANTS } from '../Button'
+import Bouncer, { ROLES } from '../Bouncer'
 
 import KeySvg from '../Icons/key.svg'
 
@@ -35,53 +36,59 @@ const ProjectCards = () => {
         <h3>Project: {name}</h3>
         &nbsp;
         <div>Project ID: {id}</div>
-        &nbsp;
-        <div css={{ display: 'flex' }}>
-          <Link
-            href="/[projectId]/users/add"
-            as={`/${projectId}/users/add`}
-            passHref
-          >
-            <Button variant={VARIANTS.PRIMARY_SMALL}>
-              + Add Users To Project
-            </Button>
-          </Link>
-        </div>
+        <Bouncer role={ROLES.User_Admin}>
+          &nbsp;
+          <div css={{ display: 'flex' }}>
+            <Link
+              href="/[projectId]/users/add"
+              as={`/${projectId}/users/add`}
+              passHref
+            >
+              <Button variant={VARIANTS.PRIMARY_SMALL}>
+                + Add Users To Project
+              </Button>
+            </Link>
+          </div>
+        </Bouncer>
       </Card>
 
       <ProjectUsagePlan />
 
-      <ProjectGettingStarted projectId={projectId} />
+      <Bouncer role={ROLES.ML_Tools}>
+        <ProjectGettingStarted projectId={projectId} />
+      </Bouncer>
 
-      <Card
-        title={
-          <>
-            <KeySvg width={20} aria-hidden color={colors.structure.zinc} />
-            Project API Keys
-          </>
-        }
-      >
-        <p
-          css={{
-            margin: 0,
-            paddingBottom: spacing.normal,
-            color: colors.structure.zinc,
-          }}
+      <Bouncer role={ROLES.API_Keys}>
+        <Card
+          title={
+            <>
+              <KeySvg width={20} aria-hidden color={colors.structure.zinc} />
+              Project API Keys
+            </>
+          }
         >
-          Create a ZMLP API key for use with external applications and tools.
-        </p>
-        <div css={{ display: 'flex' }}>
-          <Link
-            href="/[projectId]/api-keys/add"
-            as={`/${projectId}/api-keys/add`}
-            passHref
+          <p
+            css={{
+              margin: 0,
+              paddingBottom: spacing.normal,
+              color: colors.structure.zinc,
+            }}
           >
-            <Button variant={VARIANTS.SECONDARY_SMALL}>
-              + Create an API Key
-            </Button>
-          </Link>
-        </div>
-      </Card>
+            Create a ZMLP API key for use with external applications and tools.
+          </p>
+          <div css={{ display: 'flex' }}>
+            <Link
+              href="/[projectId]/api-keys/add"
+              as={`/${projectId}/api-keys/add`}
+              passHref
+            >
+              <Button variant={VARIANTS.SECONDARY_SMALL}>
+                + Create an API Key
+              </Button>
+            </Link>
+          </div>
+        </Card>
+      </Bouncer>
     </div>
   )
 }
