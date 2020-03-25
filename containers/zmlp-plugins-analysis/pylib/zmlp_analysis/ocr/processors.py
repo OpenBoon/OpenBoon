@@ -1,0 +1,23 @@
+import pytesseract
+
+from zmlpsdk.base import AssetProcessor, FileTypes
+from zmlpsdk.proxy import get_proxy_level_path
+
+
+class OcrProcessor(AssetProcessor):
+    """
+    Makes a proxy video for a full video file.  Clip assets will reference
+    this video file.
+    """
+    file_types = FileTypes.images
+
+    namespace = "zvi.text-detection"
+
+    def __init__(self):
+        super(OcrProcessor, self).__init__()
+
+    def process(self, frame):
+        p_path = get_proxy_level_path(frame.asset, 0)
+        data = pytesseract.image_to_string(p_path)
+        data = data.replace('\r', '').replace('\n', '')
+        frame.asset.add_analysis(self.namespace, {"content": data})
