@@ -7,6 +7,8 @@ import JsonDisplay from '../JsonDisplay'
 
 import { colors, spacing } from '../Styles'
 
+import FallbackSVG from '../Icons/fallback.svg'
+
 const ASSET_THUMBNAIL_SIZE = 48
 
 const JobErrorAsset = ({ assetId }) => {
@@ -53,15 +55,7 @@ const JobErrorAsset = ({ assetId }) => {
             }}
           />
         ) : (
-          <img
-            src="/icons/fallback_26.png"
-            alt="Proxy Unavailable"
-            css={{
-              width: ASSET_THUMBNAIL_SIZE,
-              height: ASSET_THUMBNAIL_SIZE,
-              objectFit: 'cover',
-            }}
-          />
+          <FallbackSVG width={ASSET_THUMBNAIL_SIZE} />
         )}
         <div css={{ paddingLeft: spacing.comfy }}>{filename}</div>
       </div>

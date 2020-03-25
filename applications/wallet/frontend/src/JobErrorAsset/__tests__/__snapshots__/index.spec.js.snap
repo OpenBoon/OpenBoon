@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<JobErrorAsset /> should render properly when asset has no proxies 1`] = `
-.emotion-4 {
+.emotion-3 {
   font-family: Roboto Mono;
   padding-bottom: 32px;
   height: auto;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -21,39 +21,32 @@ exports[`<JobErrorAsset /> should render properly when asset has no proxies 1`] 
 }
 
 .emotion-0 {
-  width: 48px;
-  height: 48px;
-  object-fit: cover;
-}
-
-.emotion-1 {
   padding-left: 24px;
 }
 
-.emotion-3 {
+.emotion-2 {
   padding: 16px;
   background-color: #191919;
 }
 
 <div
-  className="emotion-4"
+  className="emotion-3"
 >
   <div
-    className="emotion-2"
+    className="emotion-1"
   >
-    <img
-      alt="Proxy Unavailable"
-      className="emotion-0"
-      src="/icons/fallback_26.png"
+    <svg
+      data-file-name="fallback.svg"
+      width={48}
     />
     <div
-      className="emotion-1"
+      className="emotion-0"
     >
       TIFF_1MB.tiff
     </div>
   </div>
   <div
-    className="emotion-3"
+    className="emotion-2"
   >
     <div
       dangerouslySetInnerHTML={

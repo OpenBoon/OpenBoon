@@ -248,7 +248,8 @@ exports[`<Assets /> should handle page url 1`] = `
           <img
             alt="Proxy Unavailable"
             className="emotion-0"
-            srcSet="/icons/fallback_1024.png 1024w"
+            src="/icons/fallback.png"
+            srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
           />
         </a>
       </div>
@@ -1450,7 +1451,8 @@ exports[`<Assets /> should render without proxy image 1`] = `
           <img
             alt="Proxy Unavailable"
             className="emotion-0"
-            srcSet="/icons/fallback_1024.png 1024w"
+            src="/icons/fallback.png"
+            srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
           />
         </a>
       </div>

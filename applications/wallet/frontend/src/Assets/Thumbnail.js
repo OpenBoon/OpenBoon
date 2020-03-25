@@ -89,12 +89,9 @@ const AssetsThumbnail = ({
               />
             ) : (
               <img
-                srcSet={
-                  (`/icons/fallback_256.png ${256}w`,
-                  `/icons/fallback_512.png ${512}w`,
-                  `/icons/fallback_1024.png ${1024}w`)
-                }
+                srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
                 alt="Proxy Unavailable"
+                src="/icons/fallback.png"
                 css={{ width: '100%' }}
               />
             )}
