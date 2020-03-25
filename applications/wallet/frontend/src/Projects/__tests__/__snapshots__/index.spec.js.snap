@@ -4,6 +4,4 @@ exports[`<Projects /> should not redirect if there is no project id and the rout
 
 exports[`<Projects /> should render Account Overview properly 1`] = `"Account Overview"`;
 
-exports[`<Projects /> should render properly with no projects 1`] = `"You have 0 projects"`;
-
 exports[`<Projects /> should render properly with projects 1`] = `"Hello World"`;

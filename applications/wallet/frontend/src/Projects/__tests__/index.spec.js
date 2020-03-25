@@ -9,24 +9,6 @@ const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const noop = () => () => {}
 
 describe('<Projects />', () => {
-  it('should render properly with no projects', () => {
-    require('next/router').__setUseRouter({
-      pathname: '/',
-    })
-
-    require('swr').__setMockUseSWRResponse({
-      data: { results: [] },
-    })
-
-    const component = TestRenderer.create(
-      <Projects projectId="" setUser={noop}>
-        You have 0 projects
-      </Projects>,
-    )
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
   it('should render properly with projects', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',

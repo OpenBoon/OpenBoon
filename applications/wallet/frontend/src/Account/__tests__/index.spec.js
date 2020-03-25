@@ -14,4 +14,12 @@ describe('<Account />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render properly with no projects', () => {
+    require('swr').__setMockUseSWRResponse({ data: { results: [] } })
+
+    const component = TestRenderer.create(<Account />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

@@ -3,7 +3,7 @@ import Head from 'next/head'
 import PageTitle from '../PageTitle'
 import SuspenseBoundary from '../SuspenseBoundary'
 
-import AccountCards from './Cards'
+import AccountContent from './Content'
 
 const Account = () => {
   return (
@@ -15,7 +15,7 @@ const Account = () => {
       <PageTitle>Account Overview</PageTitle>
 
       <SuspenseBoundary>
-        <AccountCards />
+        <AccountContent />
       </SuspenseBoundary>
     </>
   )

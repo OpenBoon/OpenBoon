@@ -215,3 +215,60 @@ Array [
   </div>,
 ]
 `;
+
+exports[`<Account /> should render properly with no projects 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Account Overview
+  </h2>,
+  .emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-0 {
+  color: #808080;
+  font-weight: 400;
+}
+
+<div
+    className="emotion-1"
+  >
+    <svg
+      data-file-name="noProject.svg"
+      width={250}
+    />
+    <h3
+      className="emotion-0"
+    >
+      You currently have no projects
+    </h3>
+  </div>,
+]
+`;
