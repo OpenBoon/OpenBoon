@@ -2,7 +2,8 @@ from django.utils.translation import gettext_lazy
 from rest_framework import exceptions, status
 from rest_framework.exceptions import APIException
 from rest_framework.views import exception_handler
-from zmlp.client import ZmlpSecurityException, ZmlpInvalidRequestException
+from zmlp.client import ZmlpSecurityException, ZmlpInvalidRequestException, \
+    ZmlpNotFoundException, ZmlpDuplicateException
 
 
 class InvalidRequestError(APIException):
@@ -11,10 +12,18 @@ class InvalidRequestError(APIException):
     default_code = 'invalid_request'
 
 
+class DuplicateError(APIException):
+    status_code = status.HTTP_409_CONFLICT
+    default_detail = gettext_lazy('Resource already exists.')
+    default_code = 'already_exists'
+
+
 def zmlp_exception_handler(exc, context):
     """Custom DRF exception handler that converts ZMLP exceptions to built-in DRF exceptions."""
     exception_mapping = {ZmlpSecurityException: exceptions.PermissionDenied,
-                         ZmlpInvalidRequestException: InvalidRequestError}
+                         ZmlpInvalidRequestException: InvalidRequestError,
+                         ZmlpNotFoundException: exceptions.NotFound,
+                         ZmlpDuplicateException: DuplicateError}
     exc_type = type(exc)
     if exc_type in exception_mapping:
         exc = exception_mapping[exc_type]()
