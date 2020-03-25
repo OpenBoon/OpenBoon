@@ -50,6 +50,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 
 /**
  * AssetService contains the entry points for Asset CRUD operations. In general
@@ -166,6 +167,11 @@ interface AssetService {
         createdAssetIds: Collection<String>,
         existingAssetIds: Collection<String>
     ): Task?
+
+    /**
+     * Create a List that contains Hashes generated from incoming files
+     */
+    fun generateHashList(files: Array<MultipartFile>): List<String>
 }
 
 @Service
@@ -194,6 +200,9 @@ class AssetServiceImpl : AssetService {
 
     @Autowired
     lateinit var assetSearchService: AssetSearchService
+
+    @Autowired
+    lateinit var mlService: MLService
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -492,6 +501,12 @@ class AssetServiceImpl : AssetService {
             )
             return newTask
         }
+    }
+
+    override fun generateHashList(files: Array<MultipartFile>): List<String> {
+        return files.map { file ->
+            mlService.assetToHash(file.bytes)
+        }.toList()
     }
 
     override fun deriveClip(newAsset: Asset, spec: AssetSpec): Clip {
