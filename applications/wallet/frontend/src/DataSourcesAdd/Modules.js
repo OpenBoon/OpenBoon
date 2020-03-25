@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types'
 
-import checkboxOptionShape from '../Checkbox/optionShape'
-
 import { colors, spacing, constants } from '../Styles'
 
 import Accordion from '../Accordion'
@@ -25,10 +23,10 @@ const DataSourcesAddModules = ({
         >
           {description}
         </p>
-        {categories.map((category) => (
+        {Object.entries(categories).map(([name, options]) => (
           <CheckboxTable
-            key={category.name}
-            category={category}
+            key={name}
+            category={{ name, options }}
             onClick={onClick}
           />
         ))}
@@ -39,16 +37,9 @@ const DataSourcesAddModules = ({
 
 DataSourcesAddModules.propTypes = {
   module: PropTypes.shape({
-    provider: PropTypes.string.isRequired,
     logo: PropTypes.node.isRequired,
     description: PropTypes.node.isRequired,
-    categories: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        options: PropTypes.arrayOf(PropTypes.shape(checkboxOptionShape))
-          .isRequired,
-      }).isRequired,
-    ).isRequired,
+    categories: PropTypes.object.isRequired,
   }).isRequired,
   onClick: PropTypes.func.isRequired,
 }

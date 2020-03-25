@@ -11,6 +11,7 @@ import job from './src/Job/__mocks__/job'
 import jobTasks from './src/JobTasks/__mocks__/jobTasks'
 import jobErrors from './src/JobErrors/__mocks__/jobErrors'
 import { jobErrorNonFatal } from './src/JobError/__mocks__/jobError'
+import modules from './src/Modules/__mocks__/modules'
 import permissions from './src/Permissions/__mocks__/permissions'
 import dataSource from './src/DataSource/__mocks__/dataSource'
 import dataSources from './src/DataSources/__mocks__/dataSources'
@@ -63,6 +64,7 @@ app.prepare().then(() => {
 
     const PID_API_BASE = '/api/v1/projects/:projectId'
 
+    server.get(`${PID_API_BASE}/modules/`, mock(modules))
     server.get(`${PID_API_BASE}/permissions/`, mock(permissions))
 
     server.get(`${PID_API_BASE}/jobs/`, mock(jobs))

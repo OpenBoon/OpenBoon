@@ -1,5 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import modules from '../../Modules/__mocks__/modules'
+
 import DataSourcesAddForm from '../Form'
 
 const noop = () => () => {}
@@ -17,6 +19,10 @@ describe('<DataSourcesAddForm />', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/data-sources/add',
       query: { projectId: PROJECT_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: modules,
     })
 
     const component = TestRenderer.create(<DataSourcesAddForm />)
@@ -62,14 +68,14 @@ describe('<DataSourcesAddForm />', () => {
     // Select disabled module
     act(() => {
       component.root
-        .findByProps({ type: 'checkbox', value: 'gcp-shot-detection' })
+        .findByProps({ type: 'checkbox', value: 'clarifai-predict' })
         .props.onClick({ preventDefault: noop })
     })
 
     // Select module
     act(() => {
       component.root
-        .findByProps({ type: 'checkbox', value: 'zmlp-classification' })
+        .findByProps({ type: 'checkbox', value: 'zvi-disable-analysis' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -115,7 +121,7 @@ describe('<DataSourcesAddForm />', () => {
         uri: 'gs://zorroa-dev-data',
         credential: 'jkdT9Uherdozguie89FHIJS',
         file_types: ['gif', ' png', ' jpg', ' jpeg', ' tif', ' tiff', ' psd'],
-        modules: ['zmlp-classification'],
+        modules: ['zvi-disable-analysis'],
       }),
     })
 
