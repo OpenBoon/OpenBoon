@@ -27,7 +27,8 @@ class FileTypes:
     A class for storing the supported file types.
     """
     videos = frozenset(['mov', 'mp4', 'mpg', 'mpeg', 'm4v', 'webm', 'ogv', 'ogg', 'mxf'])
-    images = frozenset(["bmp", "cin", "dpx", "gif", "jpg", "jpeg", "exr", "png", "psd", "rla", "tif", "tiff"])
+    images = frozenset(["bmp", "cin", "dpx", "gif", "jpg",
+                        "jpeg", "exr", "png", "psd", "rla", "tif", "tiff"])
     documents = frozenset(['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'vsd', 'vsdx'])
     all = videos.union(images).union(documents)
 
