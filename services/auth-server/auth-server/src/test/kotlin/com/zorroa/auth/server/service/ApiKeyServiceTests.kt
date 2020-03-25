@@ -6,13 +6,13 @@ import com.zorroa.auth.server.domain.ApiKeySpec
 import com.zorroa.auth.server.security.getProjectId
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
-import java.util.UUID
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 import org.junit.Test
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import java.util.UUID
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ApiKeyServiceTests : AbstractTest() {
 
@@ -76,6 +76,18 @@ class ApiKeyServiceTests : AbstractTest() {
 
         assertEquals(1, keys.list.size)
         assertEquals("test", keys.list[0].name)
+    }
+
+    @Test
+    fun testSearchByPrefix() {
+
+        apiKeyService.create(ApiKeySpec("test1", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("test2", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("test3", setOf(Permission.AssetsRead)))
+
+        val keys = apiKeyService.searchByNamePrefixes(ApiKeyFilter(names = listOf("test","invalid")))
+
+        assertEquals(3, keys.list.size)
     }
 
     @Test(expected = EmptyResultDataAccessException::class)
