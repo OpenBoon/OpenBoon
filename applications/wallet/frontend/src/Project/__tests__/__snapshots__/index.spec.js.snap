@@ -144,10 +144,6 @@ Array [
   margin-right: 8px;
 }
 
-.emotion-32 {
-  padding: 32px;
-}
-
 .emotion-15 {
   padding-bottom: 24px;
 }
@@ -332,7 +328,7 @@ Array [
           Getting Started
         </h3>
         <div
-          className="emotion-32"
+          className="emotion-4"
         >
           <div
             className="emotion-15"

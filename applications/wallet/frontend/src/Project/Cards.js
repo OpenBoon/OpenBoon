@@ -32,38 +32,41 @@ const ProjectCards = () => {
         alignContent: 'flex-start',
       }}
     >
-      <Card header="">
-        <div css={{ padding: spacing.spacious }}>
-          <h3
-            css={{
-              paddingBottom: spacing.base,
-            }}
-          >
-            Project: {name}
-          </h3>
-          <div
-            css={{
-              color: colors.structure.zinc,
-              paddingBottom: spacing.normal,
-            }}
-          >
-            Project ID: {id}
-          </div>
-          <Bouncer role={ROLES.User_Admin}>
-            <div css={{ display: 'flex' }}>
-              <Link
-                href="/[projectId]/users/add"
-                as={`/${projectId}/users/add`}
-                passHref
-              >
-                <Button variant={VARIANTS.PRIMARY_SMALL}>
-                  + Add Users To Project
-                </Button>
-              </Link>
+      <Card
+        header=""
+        content={
+          <>
+            <h3
+              css={{
+                paddingBottom: spacing.base,
+              }}
+            >
+              Project: {name}
+            </h3>
+            <div
+              css={{
+                color: colors.structure.zinc,
+                paddingBottom: spacing.normal,
+              }}
+            >
+              Project ID: {id}
             </div>
-          </Bouncer>
-        </div>
-      </Card>
+            <Bouncer role={ROLES.User_Admin}>
+              <div css={{ display: 'flex' }}>
+                <Link
+                  href="/[projectId]/users/add"
+                  as={`/${projectId}/users/add`}
+                  passHref
+                >
+                  <Button variant={VARIANTS.PRIMARY_SMALL}>
+                    + Add Users To Project
+                  </Button>
+                </Link>
+              </div>
+            </Bouncer>
+          </>
+        }
+      />
 
       <ProjectUsagePlan />
 
@@ -79,31 +82,32 @@ const ProjectCards = () => {
               Project API Keys
             </>
           }
-        >
-          <div css={{ padding: spacing.spacious }}>
-            <p
-              css={{
-                margin: 0,
-                paddingBottom: spacing.normal,
-                color: colors.structure.zinc,
-              }}
-            >
-              Create a ZMLP API key for use with external applications and
-              tools.
-            </p>
-            <div css={{ display: 'flex' }}>
-              <Link
-                href="/[projectId]/api-keys/add"
-                as={`/${projectId}/api-keys/add`}
-                passHref
+          content={
+            <>
+              <p
+                css={{
+                  margin: 0,
+                  paddingBottom: spacing.normal,
+                  color: colors.structure.zinc,
+                }}
               >
-                <Button variant={VARIANTS.SECONDARY_SMALL}>
-                  + Create an API Key
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </Card>
+                Create a ZMLP API key for use with external applications and
+                tools.
+              </p>
+              <div css={{ display: 'flex' }}>
+                <Link
+                  href="/[projectId]/api-keys/add"
+                  as={`/${projectId}/api-keys/add`}
+                  passHref
+                >
+                  <Button variant={VARIANTS.SECONDARY_SMALL}>
+                    + Create an API Key
+                  </Button>
+                </Link>
+              </div>
+            </>
+          }
+        />
       </Bouncer>
     </div>
   )

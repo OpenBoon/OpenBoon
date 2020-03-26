@@ -1,5 +1,6 @@
-import useSWR from 'swr'
 import PropTypes from 'prop-types'
+
+import subscriptionShape from '../Subscription/shape'
 
 import { colors, spacing, typography } from '../Styles'
 
@@ -10,13 +11,7 @@ import OverviewUsage from './Usage'
 const IMG_WIDTH = 32
 const LEFT_SPACING = IMG_WIDTH + spacing.moderate
 
-const AccountUsagePlan = ({ projectId }) => {
-  const {
-    data: { results: subscriptions },
-  } = useSWR(`/api/v1/projects/${projectId}/subscriptions/`)
-
-  if (subscriptions.length === 0) return null
-
+const AccountUsagePlan = ({ subscriptions }) => {
   const {
     limits: { videoHours: videoLimit, imageCount: imageLimit },
     usage: { videoHours: videoUsage, imageCount: imageUsage },
@@ -26,7 +21,7 @@ const AccountUsagePlan = ({ projectId }) => {
   const imageOverTime = imageUsage - imageLimit
 
   return (
-    <div css={{ padding: spacing.spacious }}>
+    <>
       {(videoOverTime > 1 || imageOverTime > 1) && (
         <div css={{ marginTop: -spacing.normal, marginBottom: spacing.normal }}>
           <FormAlert setErrorMessage={false}>
@@ -96,12 +91,12 @@ const AccountUsagePlan = ({ projectId }) => {
           None
         </span>
       </div>
-    </div>
+    </>
   )
 }
 
 AccountUsagePlan.propTypes = {
-  projectId: PropTypes.string.isRequired,
+  subscriptions: PropTypes.arrayOf(subscriptionShape).isRequired,
 }
 
 export default AccountUsagePlan

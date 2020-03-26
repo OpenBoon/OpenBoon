@@ -3,16 +3,17 @@ import TestRenderer from 'react-test-renderer'
 import project from '../../Project/__mocks__/project'
 import subscriptions from '../../Subscriptions/__mocks__/subscriptions'
 
-import AccountUsagePlan from '../UsagePlan'
+import AccountCard from '../Card'
 
 const PROJECT_ID = project.id
+const PROJECT_NAME = project.name
 
-describe('<AccountUsagePlan />', () => {
+describe('<AccountCard />', () => {
   it('should render properly', () => {
     require('swr').__setMockUseSWRResponse({ data: subscriptions })
 
     const component = TestRenderer.create(
-      <AccountUsagePlan projectId={PROJECT_ID} />,
+      <AccountCard id={PROJECT_ID} name={PROJECT_NAME} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -40,7 +41,7 @@ describe('<AccountUsagePlan />', () => {
     })
 
     const component = TestRenderer.create(
-      <AccountUsagePlan projectId={PROJECT_ID} />,
+      <AccountCard id={PROJECT_ID} name={PROJECT_NAME} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -62,7 +63,7 @@ describe('<AccountUsagePlan />', () => {
     })
 
     const component = TestRenderer.create(
-      <AccountUsagePlan projectId={PROJECT_ID} />,
+      <AccountCard id={PROJECT_ID} name={PROJECT_NAME} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

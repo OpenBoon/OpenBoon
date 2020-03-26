@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { spacing, colors, constants } from '../Styles'
 
-const Card = ({ header, children }) => {
+const Card = ({ header, content }) => {
   const Element = typeof header === 'string' ? 'h3' : 'div'
 
   return (
@@ -38,7 +38,7 @@ const Card = ({ header, children }) => {
           </Element>
         )}
 
-        {children}
+        {!!content && <div css={{ padding: spacing.spacious }}>{content}</div>}
       </div>
     </div>
   )
@@ -46,7 +46,7 @@ const Card = ({ header, children }) => {
 
 Card.propTypes = {
   header: PropTypes.node.isRequired,
-  children: PropTypes.node.isRequired,
+  content: PropTypes.node.isRequired,
 }
 
 export default Card

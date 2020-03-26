@@ -4,14 +4,14 @@ import { spacing } from '../Styles'
 
 import NoProject from '../NoProject'
 
-import AccountCards from './Cards'
+import AccountCards from './Card'
 
 const AccountContent = () => {
   const {
-    data: { results, count },
+    data: { results: projects, count },
   } = useSWR(`/api/v1/projects`)
 
-  if (results.length === 0) {
+  if (projects.length === 0) {
     return <NoProject />
   }
 
@@ -20,7 +20,11 @@ const AccountContent = () => {
       <h3 css={{ paddingTop: spacing.normal, paddingBottom: spacing.normal }}>
         Number of Projects: {count}
       </h3>
-      <AccountCards projects={results} />
+      <div css={{ display: 'flex', flexWrap: 'wrap' }}>
+        {projects.map(({ id, name }) => (
+          <AccountCards key={id} id={id} name={name} />
+        ))}
+      </div>
     </>
   )
 }
