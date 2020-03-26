@@ -4,8 +4,7 @@ import Router from 'next/router'
 
 import { colors, spacing, zIndex, constants } from '../Styles'
 
-import SidebarLink from './Link'
-import SidebarOverlay from './Overlay'
+import Bouncer, { ROLES } from '../Bouncer'
 
 import ProjectDashboardSvg from '../Icons/projectDashboard.svg'
 import DataSourcesSvg from '../Icons/datasources.svg'
@@ -15,6 +14,9 @@ import KeySvg from '../Icons/key.svg'
 import UsersSvg from '../Icons/users.svg'
 import AccountDashboardSvg from '../Icons/accountDashboard.svg'
 import GearSvg from '../Icons/gear.svg'
+
+import SidebarLink from './Link'
+import SidebarOverlay from './Overlay'
 
 const WIDTH = 240
 const ICON_WIDTH = 20
@@ -67,30 +69,43 @@ const Sidebar = forwardRef(
               Project Dashboard
             </SidebarLink>
 
-            <SidebarLink projectId={projectId} href="/[projectId]/data-sources">
-              <DataSourcesSvg width={ICON_WIDTH} aria-hidden />
-              Data Sources
-            </SidebarLink>
+            <Bouncer role={ROLES.ML_Tools}>
+              <SidebarLink
+                projectId={projectId}
+                href="/[projectId]/data-sources"
+              >
+                <DataSourcesSvg width={ICON_WIDTH} aria-hidden />
+                Data Sources
+              </SidebarLink>
+            </Bouncer>
 
-            <SidebarLink projectId={projectId} href="/[projectId]/jobs">
-              <JobQueueSvg width={ICON_WIDTH} aria-hidden />
-              Job Queue
-            </SidebarLink>
+            <Bouncer role={ROLES.ML_Tools}>
+              <SidebarLink projectId={projectId} href="/[projectId]/jobs">
+                <JobQueueSvg width={ICON_WIDTH} aria-hidden />
+                Job Queue
+              </SidebarLink>
+            </Bouncer>
 
-            <SidebarLink projectId={projectId} href="/[projectId]/visualizer">
-              <VisualizerSvg width={ICON_WIDTH} aria-hidden />
-              Visualizer
-            </SidebarLink>
+            <Bouncer role={ROLES.ML_Tools}>
+              <SidebarLink projectId={projectId} href="/[projectId]/visualizer">
+                <VisualizerSvg width={ICON_WIDTH} aria-hidden />
+                Visualizer
+              </SidebarLink>
+            </Bouncer>
 
-            <SidebarLink projectId={projectId} href="/[projectId]/api-keys">
-              <KeySvg width={ICON_WIDTH} aria-hidden />
-              API Keys
-            </SidebarLink>
+            <Bouncer role={ROLES.API_Keys}>
+              <SidebarLink projectId={projectId} href="/[projectId]/api-keys">
+                <KeySvg width={ICON_WIDTH} aria-hidden />
+                API Keys
+              </SidebarLink>
+            </Bouncer>
 
-            <SidebarLink projectId={projectId} href="/[projectId]/users">
-              <UsersSvg width={ICON_WIDTH} aria-hidden />
-              User Admin
-            </SidebarLink>
+            <Bouncer role={ROLES.User_Admin}>
+              <SidebarLink projectId={projectId} href="/[projectId]/users">
+                <UsersSvg width={ICON_WIDTH} aria-hidden />
+                User Admin
+              </SidebarLink>
+            </Bouncer>
           </ul>
           <ul
             css={{

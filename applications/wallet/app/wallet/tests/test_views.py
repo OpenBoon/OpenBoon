@@ -32,6 +32,22 @@ def test_api_login_user_pass(api_client, user):
     assert response_data['lastName'] == ''
 
 
+def test_api_login_includes_projects(api_client, user, project, project2,
+                                     zmlp_project_membership, zmlp_project2_membership):
+    api_client.logout()
+    response = api_client.post(reverse('api-login'),
+                               {'username': 'user', 'password': 'letmein'})
+    assert response.status_code == 200
+    response_data = response.json()
+    expected_data = {
+        '6abc33f0-4acf-4196-95ff-4cbb7f640a06': ['ML_Tools', 'User_Admin'],
+        'e93cbadb-e5ae-4598-8395-4cf5b30c0e94': ['ML_Tools', 'User_Admin', 'API_Keys']
+    }
+
+    assert len(response_data['roles']) == 2
+    assert response_data['roles'] == expected_data
+
+
 def test_api_login_inactive_user_fail(api_client, user):
     api_client.logout()
     user.is_active = False

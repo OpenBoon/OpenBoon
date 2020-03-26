@@ -1,6 +1,5 @@
 from rest_framework import status
 from rest_framework.response import Response
-from zmlp.client import ZmlpInvalidRequestException
 
 from apikeys.serializers import ApikeySerializer
 from apikeys.utils import create_zmlp_api_key
@@ -29,12 +28,8 @@ class ApikeyViewSet(BaseProjectViewSet):
         if not serializer.is_valid():
             return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
-        try:
-            apikey = create_zmlp_api_key(request.client, serializer.validated_data['name'],
-                                         serializer.validated_data['permissions'], encode_b64=False)
-        except ZmlpInvalidRequestException:
-            return Response(data={'detail': 'Bad Request'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        apikey = create_zmlp_api_key(request.client, serializer.validated_data['name'],
+                                     serializer.validated_data['permissions'], encode_b64=False)
 
         return Response(status=status.HTTP_201_CREATED, data=apikey)
 

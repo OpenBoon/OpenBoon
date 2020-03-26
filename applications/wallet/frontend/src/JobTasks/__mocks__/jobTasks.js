@@ -22,7 +22,6 @@ const jobTasks = {
         assetErrorCount: 0,
         assetTotalCount: 20,
       },
-      taskId: 'c812fa09-5f3a-11ea-bb46-6a6895b1a9f6',
       url:
         'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f6/',
     },
@@ -46,7 +45,6 @@ const jobTasks = {
         assetErrorCount: 0,
         assetTotalCount: 0,
       },
-      taskId: 'ea7836f2-44a7-19e1-a67f-1e6fa1f82545',
       url:
         'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82545/',
     },
@@ -69,7 +67,6 @@ const jobTasks = {
         assetErrorCount: 0,
         assetTotalCount: 15,
       },
-      taskId: 'ea7836f3-44a7-19e1-a67f-1e6fa1f82545',
       url:
         'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82545/',
     },
@@ -92,7 +89,6 @@ const jobTasks = {
         assetErrorCount: 0,
         assetTotalCount: 20,
       },
-      taskId: 'c812fa09-5f3a-11ea-bb46-6a6895b1a9f9',
       url:
         'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f9/',
     },
@@ -116,7 +112,6 @@ const jobTasks = {
         assetErrorCount: 0,
         assetTotalCount: 0,
       },
-      taskId: 'ea7836f2-44a7-19e1-a67f-1e6fa1f82549',
       url:
         'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f825459/',
     },
@@ -139,7 +134,6 @@ const jobTasks = {
         assetErrorCount: 0,
         assetTotalCount: 15,
       },
-      taskId: 'ea7836f3-44a7-19e1-a67f-1e6fa1f82549',
       url:
         'https://wallet.zmlp.zorroa.com/api/v1/projects/00000000-0000-0000-0000-000000000000/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82549/',
     },

@@ -51,6 +51,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'subscriptions',
     'jobs',
+    'modules',
     'projects',
     'registration',
     'wallet',
@@ -176,6 +177,7 @@ REST_FRAMEWORK = {
         'djangorestframework_camel_case.parser.CamelCaseJSONParser',
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'EXCEPTION_HANDLER': 'wallet.exceptions.zmlp_exception_handler'
 }
 
 REST_AUTH_SERIALIZERS = {
