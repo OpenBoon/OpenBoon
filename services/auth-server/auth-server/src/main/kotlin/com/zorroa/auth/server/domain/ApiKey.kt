@@ -187,7 +187,7 @@ class ValidationKey(
  * Used for getting a filtered list of API keys.
  */
 @ApiModel("Api Key Filter", description = "Search filter for finding API keys.")
-open class ApiKeyFilter(
+class ApiKeyFilter(
 
     /**
      * A list of unique ApiKey  IDs.
