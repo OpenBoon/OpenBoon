@@ -18,7 +18,7 @@ const Resizeable = ({ children, initialWidth }) => {
       ref={wrapperRef}
       style={{ display: 'flex', alignItems: 'stretch', flexWrap: 'nowrap' }}
     >
-      <DraggableCore key="handle" onDrag={onDrag}>
+      <DraggableCore onDrag={onDrag}>
         <div
           css={{
             cursor: 'col-resize',
