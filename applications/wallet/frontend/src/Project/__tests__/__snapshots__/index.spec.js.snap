@@ -483,13 +483,15 @@ Array [
         <div
           className="emotion-7"
         >
-          <svg
-            aria-hidden={true}
-            color="#b3b3b3"
-            data-file-name="key.svg"
-            width={20}
-          />
-          Project API Keys
+          <h3>
+            <svg
+              aria-hidden={true}
+              color="#b3b3b3"
+              data-file-name="key.svg"
+              width={20}
+            />
+            Project API Keys
+          </h3>
         </div>
         <div
           className="emotion-4"

@@ -77,10 +77,10 @@ const ProjectCards = () => {
       <Bouncer role={ROLES.API_Keys}>
         <Card
           header={
-            <>
+            <h3>
               <KeySvg width={20} aria-hidden color={colors.structure.zinc} />
               Project API Keys
-            </>
+            </h3>
           }
           content={
             <>
