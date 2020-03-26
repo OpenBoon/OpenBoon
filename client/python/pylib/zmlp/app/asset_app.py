@@ -2,10 +2,9 @@ import io
 from collections import namedtuple
 
 from ..asset import Asset
-from ..search import AssetSearchResult, AssetSearchScroller
+from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
 from ..util import as_collection
 from ..job import Job
-
 
 class AssetApp(object):
 
@@ -405,6 +404,36 @@ class AssetApp(object):
 
         rsp = self.app.client.get("/api/v3/assets/{}/_files/{}".format(id, cat_name), is_json=False)
         return io.BytesIO(rsp.content)
+
+    def get_sim_hashes(self, images):
+        """
+        Return a similarity hash for the given array of images.
+
+        Args:
+            images (mixed): Can be an file handle (opened with 'rb'), or
+                path to a file.
+        Returns:
+            list of str: A list of similarity hashes.
+
+        """
+        return self.app.client.upload_files("/ml/v1/sim-hash",
+                                            as_collection(images), body=None)
+
+    def get_sim_query(self, images, min_score=0.75):
+        """
+        Analyze the given image files and return a SimilarityQuery which
+        can be used in a search.
+
+        Args:
+            images (mixed): Can be an file handle (opened with 'rb'), or
+                path to a file.
+            min_score (float): A float between, the higher the value the more similar
+                the results.  Defaults to 0.75
+
+        Returns:
+            SimilarityQuery: A configured SimilarityQuery
+        """
+        return SimilarityQuery(self.get_sim_hashes(images), min_score)
 
 
 """
