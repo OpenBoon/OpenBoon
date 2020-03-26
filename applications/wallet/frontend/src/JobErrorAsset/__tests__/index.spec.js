@@ -6,9 +6,21 @@ import assets from '../../Assets/__mocks__/assets'
 const ASSET = assets.results[0]
 
 describe('<JobErrorAsset />', () => {
-  it('should render properly', () => {
+  it('should render properly when asset has proxies', () => {
     require('swr').__setMockUseSWRResponse({
       data: ASSET,
+    })
+
+    const ASSET_ID = ASSET.id
+
+    const component = TestRenderer.create(<JobErrorAsset assetId={ASSET_ID} />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when asset has no proxies', () => {
+    require('swr').__setMockUseSWRResponse({
+      data: { ...ASSET, metadata: { ...ASSET.metadata, files: [] } },
     })
 
     const ASSET_ID = ASSET.id
