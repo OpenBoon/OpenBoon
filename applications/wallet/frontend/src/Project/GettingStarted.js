@@ -66,8 +66,9 @@ const STEPS = [
 
 const ProjectGettingStarted = ({ projectId }) => {
   return (
-    <Card title="Getting Started">
-      {STEPS.map(({ step, title, module, content, cta, link }) => (
+    <Card
+      header="Getting Started"
+      content={STEPS.map(({ step, title, module, content, cta, link }) => (
         <div
           key={step}
           css={{ paddingBottom: step === STEPS.length ? 0 : spacing.comfy }}
@@ -133,7 +134,7 @@ const ProjectGettingStarted = ({ projectId }) => {
           </div>
         </div>
       ))}
-    </Card>
+    />
   )
 }
 
