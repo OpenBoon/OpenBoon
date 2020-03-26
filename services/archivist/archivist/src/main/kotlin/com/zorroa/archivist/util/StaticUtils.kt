@@ -65,22 +65,3 @@ fun UUID.prefix(size: Int = 8): String {
  * Extension function to check if a string is a UUID
  */
 fun String.isUUID(): Boolean = StaticUtils.UUID_REGEXP.matches(this)
-
-/**
- * Compute a Hash from a Float Array
- */
-fun hashFeatures(features: DoubleArray): String {
-    val hash = StringBuilder()
-    val doubleArray =
-        IntStream.range(0, features.size)
-            .mapToDouble { i: Int -> features[i].toDouble() }
-            .toArray()
-
-    Arrays.stream(doubleArray)
-        .map { f: Double -> (f * 16.0) }
-        .map { f: Double -> Math.max(0.0, f) }
-        .map { f: Double -> Math.min(15.0, f) }
-        .map { f: Double -> (f + 65) }
-        .forEach { f: Double -> hash.append(f.toChar()) }
-    return hash.toString()
-}
