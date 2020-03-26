@@ -2,7 +2,7 @@
 
 exports[`<Resizeable /> should render properly 1`] = `
 .emotion-0 {
-  cursor: ew-resize;
+  cursor: col-resize;
   width: 20px;
   margin-left: -10px;
   margin-right: -10px;

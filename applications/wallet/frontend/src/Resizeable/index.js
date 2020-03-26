@@ -21,7 +21,7 @@ const Resizeable = ({ children, initialWidth }) => {
       <DraggableCore key="handle" onDrag={onDrag}>
         <div
           css={{
-            cursor: 'ew-resize',
+            cursor: 'col-resize',
             width: 20,
             marginLeft: -10,
             marginRight: -10,
