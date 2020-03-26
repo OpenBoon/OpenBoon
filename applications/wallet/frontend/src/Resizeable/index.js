@@ -6,40 +6,30 @@ import debounce from '../Debounce/helpers'
 
 // Only supports horizontal drag towards the left
 const Resizeable = ({ children }) => {
-  const [size, setSize] = useState(0)
+  const [size, setSize] = useState(400)
 
   const contentRef = useRef()
   const wrapperRef = useRef()
 
   const validateSize = debounce(() => {
-    const content = contentRef.current
-    const wrapper = wrapperRef.current
-    const actualContent = content.children[0]
-    const containerParent = wrapper.parentElement
+    const { current: { parentElement: { clientWidth } = {} } = {} } = wrapperRef
 
-    const minSize = actualContent.scrollWidth
-
-    if (size !== minSize) {
-      setSize(minSize)
-    } else {
-      // If our resizing has left the parent container's content overflowing
-      // then we need to shrink back down to fit
-      const overflow = containerParent.scrollWidth - containerParent.clientWidth
-
-      if (overflow) {
-        setSize(actualContent.clientWidth - overflow)
-      }
+    if (size > clientWidth) {
+      setSize(clientWidth)
     }
   }, 100)
 
   useEffect(() => {
-    const content = contentRef.current
-    const actualContent = content.children[0]
-    const initialSize = actualContent.offsetWidth()
+    if (size === 0) {
+      const content = contentRef.current
+      const actualContent = content.children[0]
+      const initialSize = actualContent.offsetWidth
 
-    setSize(initialSize)
+      setSize(initialSize)
+    }
+
     validateSize()
-  }, [validateSize])
+  }, [size, validateSize])
 
   const onDrag = (e, { deltaX }) => {
     setSize(Math.max(10, size - deltaX))

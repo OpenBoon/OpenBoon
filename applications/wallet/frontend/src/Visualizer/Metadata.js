@@ -28,8 +28,9 @@ const VisualizerMetadata = ({ assets }) => {
           backgroundColor: colors.structure.mattGrey,
           marginTop: spacing.hairline,
           height: '100%',
-          width: WIDTH,
+          // width: WIDTH,
           display: 'flex',
+          flex: 1,
           flexDirection: 'column',
           boxShadow: constants.boxShadows.metadata,
         }}
