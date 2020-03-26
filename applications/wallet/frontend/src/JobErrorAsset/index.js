@@ -5,9 +5,9 @@ import useSWR from 'swr'
 
 import JsonDisplay from '../JsonDisplay'
 
-import { colors, spacing } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
-import FallbackSVG from '../Icons/fallback.svg'
+import FallbackSvg from '../Icons/fallback.svg'
 
 const ASSET_THUMBNAIL_SIZE = 48
 
@@ -55,7 +55,14 @@ const JobErrorAsset = ({ assetId }) => {
             }}
           />
         ) : (
-          <FallbackSVG width={ASSET_THUMBNAIL_SIZE} />
+          <div
+            css={{
+              color: colors.structure.steel,
+              border: constants.borders.tableRow,
+            }}
+          >
+            <FallbackSvg width={ASSET_THUMBNAIL_SIZE} />
+          </div>
         )}
         <div css={{ paddingLeft: spacing.comfy }}>{filename}</div>
       </div>
