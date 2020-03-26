@@ -26,8 +26,8 @@ const Projects = ({ projectId, setUser, children }) => {
     return null
   }
 
-  // Render "No Projects" page
-  if (projects.length === 0 && pathname === '/') {
+  // Render "Account Overview"
+  if (pathname === '/') {
     return children
   }
 

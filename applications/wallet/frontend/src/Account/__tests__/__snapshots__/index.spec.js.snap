@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Account /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Account Overview
+  </h2>,
+  .emotion-0 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+<h3
+    className="emotion-0"
+  >
+    Number of Projects: 
+    2
+  </h3>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+<div
+    className="emotion-0"
+  >
+    <AccountCard
+      id="76917058-b147-4556-987a-0a0f11e46d9b"
+      name="qwerty"
+    />
+    <AccountCard
+      id="e93cbadb-e5ae-4598-8395-4cf5b30c0e94"
+      name="azerty"
+    />
+  </div>,
+]
+`;
+
+exports[`<Account /> should render properly with no projects 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    Account Overview
+  </h2>,
+  .emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-0 {
+  color: #808080;
+  font-weight: 400;
+}
+
+<div
+    className="emotion-1"
+  >
+    <svg
+      data-file-name="noProject.svg"
+      width={250}
+    />
+    <h3
+      className="emotion-0"
+    >
+      You currently have no projects
+    </h3>
+  </div>,
+]
+`;
