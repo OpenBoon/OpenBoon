@@ -100,6 +100,10 @@ exports[`<Assets /> should handle page url 1`] = `
   color: #2e2e2e;
 }
 
+.emotion-0 {
+  width: 100%;
+}
+
 .emotion-7 {
   position: absolute;
   bottom: 16px;
@@ -223,10 +227,6 @@ exports[`<Assets /> should handle page url 1`] = `
   color: #808080;
 }
 
-.emotion-0 {
-  height: 100%;
-}
-
 <div
   className="emotion-8"
 >
@@ -246,9 +246,10 @@ exports[`<Assets /> should handle page url 1`] = `
           onMouseEnter={[Function]}
         >
           <img
-            alt="TIFF_1MB.tiff"
+            alt="Proxy Unavailable"
             className="emotion-0"
-            srcSet=""
+            src="/icons/fallback.png"
+            srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
           />
         </a>
       </div>
@@ -1302,6 +1303,10 @@ exports[`<Assets /> should render without proxy image 1`] = `
   color: #2e2e2e;
 }
 
+.emotion-0 {
+  width: 100%;
+}
+
 .emotion-7 {
   position: absolute;
   bottom: 16px;
@@ -1425,10 +1430,6 @@ exports[`<Assets /> should render without proxy image 1`] = `
   color: #808080;
 }
 
-.emotion-0 {
-  height: 100%;
-}
-
 <div
   className="emotion-8"
 >
@@ -1448,9 +1449,10 @@ exports[`<Assets /> should render without proxy image 1`] = `
           onMouseEnter={[Function]}
         >
           <img
-            alt="TIFF_1MB.tiff"
+            alt="Proxy Unavailable"
             className="emotion-0"
-            srcSet=""
+            src="/icons/fallback.png"
+            srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
           />
         </a>
       </div>
