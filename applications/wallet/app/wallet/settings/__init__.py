@@ -51,6 +51,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'subscriptions',
     'jobs',
+    'modules',
     'projects',
     'registration',
     'wallet',
