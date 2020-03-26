@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import PageTitle from '../PageTitle'
-import Table from '../Table'
+import Table, { ROLES } from '../Table'
 
 import JobsEmpty from './Empty'
 import JobsRow from './Row'
@@ -21,6 +21,7 @@ const Jobs = () => {
       <PageTitle>Job Queue</PageTitle>
 
       <Table
+        role={ROLES.ML_Tools}
         legend="Jobs"
         url={`/api/v1/projects/${projectId}/jobs/`}
         columns={[

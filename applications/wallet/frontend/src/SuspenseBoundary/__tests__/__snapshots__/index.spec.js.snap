@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SuspenseBoundary /> should not render the child with no roles 1`] = `
+.emotion-3 {
+  height: 100%;
+}
+
+.emotion-2 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #252525;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+.emotion-0 {
+  padding-top: 16px;
+  font-size: 32px;
+  line-height: 43px;
+  font-weight: 700;
+  max-width: 600px;
+}
+
+.emotion-1 {
+  font-size: 18px;
+  line-height: 21px;
+  color: #b3b3b3;
+  max-width: 600px;
+}
+
+<div
+  className="emotion-3"
+>
+  <div
+    className="emotion-2"
+  >
+    <svg
+      data-file-name="lock.svg"
+      width={200}
+    />
+    <h3
+      className="emotion-0"
+    >
+      You do not have permission to access this page for this project.
+    </h3>
+    <p
+      className="emotion-1"
+    >
+      Contact your project admin to be added.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`<SuspenseBoundary /> should render the child properly with the appropriate role 1`] = `"Please come in!"`;

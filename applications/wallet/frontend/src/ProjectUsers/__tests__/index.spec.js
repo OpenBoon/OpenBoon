@@ -1,10 +1,11 @@
 import TestRenderer from 'react-test-renderer'
 
+import projectUsers from '../__mocks__/projectUsers'
+import mockUser from '../../User/__mocks__/user'
+
 import User from '../../User'
 
 import ProjectUsers from '..'
-
-import projectUsers from '../__mocks__/projectUsers'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
@@ -26,7 +27,11 @@ describe('<ProjectUsers />', () => {
       },
     })
 
-    const component = TestRenderer.create(<ProjectUsers />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <ProjectUsers />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -41,14 +46,18 @@ describe('<ProjectUsers />', () => {
       data: projectUsers,
     })
 
-    const component = TestRenderer.create(<ProjectUsers />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <ProjectUsers />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should hide the menu gear for the active user', () => {
     const component = TestRenderer.create(
-      <User initialUser={{ id: 42, email: 'jane@zorroa.com' }}>
+      <User initialUser={{ ...mockUser, email: 'jane@zorroa.com' }}>
         <ProjectUsers />
       </User>,
     )

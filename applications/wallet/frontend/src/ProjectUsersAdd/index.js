@@ -2,7 +2,7 @@ import Head from 'next/head'
 
 import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
-import SuspenseBoundary from '../SuspenseBoundary'
+import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 
 import ProjectUsersAddForm from './Form'
 
@@ -22,7 +22,7 @@ const ProjectUsersAdd = () => {
         ]}
       />
 
-      <SuspenseBoundary>
+      <SuspenseBoundary role={ROLES.User_Admin}>
         <ProjectUsersAddForm />
       </SuspenseBoundary>
     </>
