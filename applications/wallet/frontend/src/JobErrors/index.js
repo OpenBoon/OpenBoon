@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 
-import Table from '../Table'
+import Table, { ROLES } from '../Table'
 
 import JobErrorsEmpty from './Empty'
 import JobErrorsRow from './Row'
@@ -12,6 +12,7 @@ const JobErrors = () => {
 
   return (
     <Table
+      role={ROLES.ML_Tools}
       legend="Errors"
       url={`/api/v1/projects/${projectId}/jobs/${jobId}/errors/`}
       columns={[

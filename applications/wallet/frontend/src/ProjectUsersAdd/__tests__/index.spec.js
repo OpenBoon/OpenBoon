@@ -2,6 +2,9 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import projectUsersAdd from '../__mocks__/projectUsersAdd'
 import roles from '../../Roles/__mocks__/roles'
+import mockUser from '../../User/__mocks__/user'
+
+import User from '../../User'
 
 import ProjectUsersAdd from '..'
 
@@ -26,7 +29,11 @@ describe('<ProjectUsersAdd />', () => {
 
     require('../../Copy/helpers').__setMockOnCopy(mockOnCopy)
 
-    const component = TestRenderer.create(<ProjectUsersAdd />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <ProjectUsersAdd />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 

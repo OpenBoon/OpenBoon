@@ -3,7 +3,7 @@ import Head from 'next/head'
 import PageTitle from '../PageTitle'
 import ApiKeysCopy from '../ApiKeys/Copy'
 import Tabs from '../Tabs'
-import SuspenseBoundary from '../SuspenseBoundary'
+import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 
 import ApiKeysAddForm from './Form'
 
@@ -25,7 +25,7 @@ const ApiKeysAdd = () => {
         ]}
       />
 
-      <SuspenseBoundary>
+      <SuspenseBoundary role={ROLES.API_Keys}>
         <ApiKeysAddForm />
       </SuspenseBoundary>
     </>

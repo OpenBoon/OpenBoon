@@ -1,8 +1,11 @@
 import TestRenderer from 'react-test-renderer'
 
-import JobTasks from '..'
-
 import jobTasks from '../__mocks__/jobTasks'
+import mockUser from '../../User/__mocks__/user'
+
+import User from '../../User'
+
+import JobTasks from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const JOB_ID = 'c097596f-62ef-1f81-83f8-0a580a000954'
@@ -18,7 +21,11 @@ describe('<JobTasks />', () => {
       data: jobTasks,
     })
 
-    const component = TestRenderer.create(<JobTasks />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <JobTasks />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -33,7 +40,11 @@ describe('<JobTasks />', () => {
       data: {},
     })
 
-    const component = TestRenderer.create(<JobTasks />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <JobTasks />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })

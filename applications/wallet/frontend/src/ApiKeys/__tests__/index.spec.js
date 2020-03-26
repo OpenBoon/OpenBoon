@@ -1,8 +1,11 @@
 import TestRenderer from 'react-test-renderer'
 
-import ApiKeys from '..'
-
 import apiKeys from '../__mocks__/apiKeys'
+import mockUser from '../../User/__mocks__/user'
+
+import User from '../../User'
+
+import ApiKeys from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
@@ -22,7 +25,11 @@ describe('<ApiKeys />', () => {
       },
     })
 
-    const component = TestRenderer.create(<ApiKeys />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <ApiKeys />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -37,7 +44,11 @@ describe('<ApiKeys />', () => {
       data: apiKeys,
     })
 
-    const component = TestRenderer.create(<ApiKeys />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <ApiKeys />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
