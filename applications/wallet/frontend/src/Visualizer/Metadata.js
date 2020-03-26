@@ -22,15 +22,13 @@ const VisualizerMetadata = ({ assets }) => {
   const { metadata: { source: { filename } = {} } = {} } = asset || {}
 
   return (
-    <Resizeable>
+    <Resizeable initialWidth={WIDTH}>
       <div
         css={{
           backgroundColor: colors.structure.mattGrey,
           marginTop: spacing.hairline,
           height: '100%',
-          // width: WIDTH,
           display: 'flex',
-          flex: 1,
           flexDirection: 'column',
           boxShadow: constants.boxShadows.metadata,
         }}

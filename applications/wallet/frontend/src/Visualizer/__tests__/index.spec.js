@@ -5,6 +5,7 @@ import Visualizer from '..'
 import assets from '../../Assets/__mocks__/assets'
 
 jest.mock('../../JsonDisplay', () => 'JsonDisplay')
+jest.mock('../../Resizeable', () => 'Resizeable')
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = assets.results[0].id

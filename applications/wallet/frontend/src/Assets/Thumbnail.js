@@ -45,6 +45,8 @@ const AssetsThumbnail = ({
         height: 0,
         paddingBottom: `${containerWidth}%`,
         position: 'relative',
+        minWidth: 100,
+        minHeight: 100,
       }}
     >
       <div
