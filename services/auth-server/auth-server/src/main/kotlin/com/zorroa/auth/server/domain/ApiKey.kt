@@ -199,7 +199,14 @@ open class ApiKeyFilter(
      * A list of unique names.
      */
     @ApiModelProperty("The key names to match")
-    val names: List<String>? = null
+    val names: List<String>? = null,
+
+    /**
+     * A list of unique names.
+     */
+    @ApiModelProperty("Key name prefixes to match.")
+    val namePrefixes: List<String>? = null
+
 ) : AbstractJpaFilter<ApiKey>() {
 
     override fun buildWhereClause(root: Root<ApiKey>, cb: CriteriaBuilder): Array<Predicate> {
@@ -223,29 +230,16 @@ open class ApiKeyFilter(
             where.add(ic)
         }
 
+        namePrefixes?.let {
+            val matches = it.map { v ->
+                cb.like(root.get("name"), "$v%")
+            }
+            where.add(cb.or(*matches.toTypedArray()))
+        }
+
         return where.toTypedArray()
     }
 
     override val sortFields: Set<String>
         get() = setOf("id", "name")
-}
-
-@ApiModel("Api Key Filter By Name Prefix", description = "Search filter for finding API keys by Name Prefix.")
-class ApiKeyFilterNamePrefix(
-    val apiKeyFilter: ApiKeyFilter
-) : ApiKeyFilter(apiKeyFilter.ids, apiKeyFilter.names) {
-
-    override fun buildWhereClause(root: Root<ApiKey>, cb: CriteriaBuilder): Array<Predicate> {
-        val where = mutableListOf<Predicate>()
-
-        cb.equal(root.get<UUID>("projectId"), getProjectId())
-
-        var predicate: Predicate = cb.`like`(root.get("name"), "")
-        super.names?.forEach {
-            predicate = cb.or(predicate, cb.`like`(root.get("name"), "$it%"))
-        }
-        where.add(predicate)
-
-        return where.toTypedArray()
-    }
 }

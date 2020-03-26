@@ -84,10 +84,43 @@ class ApiKeyServiceTests : AbstractTest() {
         apiKeyService.create(ApiKeySpec("test1", setOf(Permission.AssetsRead)))
         apiKeyService.create(ApiKeySpec("test2", setOf(Permission.AssetsRead)))
         apiKeyService.create(ApiKeySpec("test3", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("try1", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("try2", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("try3", setOf(Permission.AssetsRead)))
 
-        val keys = apiKeyService.searchByNamePrefixes(ApiKeyFilter(names = listOf("test", "invalid")))
+        val keys = apiKeyService.search(ApiKeyFilter(namePrefixes = listOf("test", "try")))
 
-        assertEquals(3, keys.list.size)
+        assertEquals(6, keys.list.size)
+    }
+
+    @Test
+    fun testSearchByPrefixAndName() {
+
+        apiKeyService.create(ApiKeySpec("test1", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("test2", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("test3", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("try1", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("try2", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("try3", setOf(Permission.AssetsRead)))
+
+        val keys = apiKeyService.search(ApiKeyFilter(
+            namePrefixes = listOf("test"),
+            names = listOf("test1")))
+
+        assertEquals( 1, keys.list.size)
+    }
+
+    @Test
+    fun testSearchByNameAndId() {
+
+        val create1 = apiKeyService.create(ApiKeySpec("test1", setOf(Permission.AssetsRead)))
+        val create2 = apiKeyService.create(ApiKeySpec("try1", setOf(Permission.AssetsRead)))
+
+        val keys = apiKeyService.search(ApiKeyFilter(
+            ids = listOf(create1.id),
+            names = listOf(create2.name)))
+
+        assertEquals( 0, keys.list.size)
     }
 
     @Test(expected = EmptyResultDataAccessException::class)
