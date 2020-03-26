@@ -107,7 +107,7 @@ class ApiKeyServiceTests : AbstractTest() {
             namePrefixes = listOf("test"),
             names = listOf("test1")))
 
-        assertEquals( 1, keys.list.size)
+        assertEquals(1, keys.list.size)
     }
 
     @Test
@@ -120,7 +120,7 @@ class ApiKeyServiceTests : AbstractTest() {
             ids = listOf(create1.id),
             names = listOf(create2.name)))
 
-        assertEquals( 0, keys.list.size)
+        assertEquals(0, keys.list.size)
     }
 
     @Test(expected = EmptyResultDataAccessException::class)
