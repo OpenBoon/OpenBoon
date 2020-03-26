@@ -17,10 +17,11 @@ const RoleBoundary = () => {
           boxShadow: constants.boxShadows.default,
         }}
       >
-        <LockSvg width={225} />
+        <LockSvg width={200} />
+
         <h3
           css={{
-            paddingTop: spacing.comfy,
+            paddingTop: spacing.normal,
             fontSize: typography.size.giant,
             lineHeight: typography.height.giant,
             fontWeight: typography.weight.bold,
@@ -29,6 +30,7 @@ const RoleBoundary = () => {
         >
           You do not have permission to access this page for this project.
         </h3>
+
         <p
           css={{
             fontSize: typography.size.large,
