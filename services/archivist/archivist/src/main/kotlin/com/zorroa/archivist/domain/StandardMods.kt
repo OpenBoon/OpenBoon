@@ -32,7 +32,6 @@ object ModType {
     const val CLIPIFIER = "Asset Clipifier"
 }
 
-
 /**
  * Return a list of the standard pipeline modules.
  */
