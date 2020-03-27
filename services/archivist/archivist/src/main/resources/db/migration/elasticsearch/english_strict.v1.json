@@ -96,6 +96,23 @@
           }
         }
       },
+      "location": {
+        "dynamic": "strict",
+        "properties": {
+          "point": {
+            "type": "geo_point"
+          },
+          "city": {
+            "type": "keyword"
+          },
+          "code": {
+            "type": "keyword"
+          },
+          "country": {
+            "type": "keyword"
+          }
+        }
+      },
       "analysis": {
         "dynamic": "strict",
         "properties": {
