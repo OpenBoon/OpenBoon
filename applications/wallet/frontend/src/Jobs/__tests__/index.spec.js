@@ -1,8 +1,11 @@
 import TestRenderer from 'react-test-renderer'
 
-import Jobs from '..'
-
 import jobs from '../__mocks__/jobs'
+import mockUser from '../../User/__mocks__/user'
+
+import User from '../../User'
+
+import Jobs from '..'
 
 jest.mock('../../Pagination', () => 'Pagination')
 
@@ -19,7 +22,11 @@ describe('<Jobs />', () => {
       },
     })
 
-    const component = TestRenderer.create(<Jobs />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Jobs />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -34,7 +41,11 @@ describe('<Jobs />', () => {
       data: jobs,
     })
 
-    const component = TestRenderer.create(<Jobs />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Jobs />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })

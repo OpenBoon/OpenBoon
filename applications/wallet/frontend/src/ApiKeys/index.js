@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
-import Table from '../Table'
+import Table, { ROLES } from '../Table'
 
 import ApiKeysCopy from './Copy'
 import ApiKeysRow from './Row'
@@ -31,6 +31,7 @@ const ApiKeys = () => {
       />
 
       <Table
+        role={ROLES.API_Keys}
         legend="Keys"
         url={`/api/v1/projects/${projectId}/api_keys/`}
         columns={['API Key Name', 'Permissions', '#Actions#']}

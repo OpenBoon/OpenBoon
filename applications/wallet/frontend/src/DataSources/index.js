@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import PageTitle from '../PageTitle'
 import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
-import Table from '../Table'
+import Table, { ROLES } from '../Table'
 
 import DataSourcesRow from './Row'
 
@@ -35,6 +35,7 @@ const DataSources = () => {
       />
 
       <Table
+        role={ROLES.ML_Tools}
         legend="Sources"
         url={`/api/v1/projects/${projectId}/data_sources/`}
         columns={[
