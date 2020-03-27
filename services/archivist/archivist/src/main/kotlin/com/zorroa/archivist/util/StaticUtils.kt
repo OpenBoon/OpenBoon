@@ -7,12 +7,10 @@ import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.text.SimpleDateFormat
-import java.util.Arrays
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
 import java.util.concurrent.ThreadLocalRandom
-import java.util.stream.IntStream
 
 object StaticUtils {
 
