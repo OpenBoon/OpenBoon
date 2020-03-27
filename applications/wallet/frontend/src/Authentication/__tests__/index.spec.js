@@ -13,10 +13,6 @@ jest.mock('../../Projects', () => 'Projects')
 jest.mock('../../Layout', () => 'Layout')
 
 describe('<Authentication />', () => {
-  Object.defineProperty(window, 'onload', {
-    set: (cb) => cb(),
-  })
-
   Object.defineProperty(window, 'gapi', {
     writable: true,
     value: {
@@ -43,6 +39,8 @@ describe('<Authentication />', () => {
 
     // useEffect reads from localStorage
     await act(async () => {})
+
+    expect(component.root.findByType('Login').props.hasGoogleLoaded).toBe(true)
 
     // display <Login />
     expect(component.toJSON()).toMatchSnapshot()
@@ -72,19 +70,6 @@ describe('<Authentication />', () => {
 
     // Expect Hello World!
     expect(component.toJSON()).toEqual('Hello World!')
-  })
-
-  it('should load the Google SDK', async () => {
-    const component = TestRenderer.create(
-      <User initialUser={{}}>
-        <Authentication route="/">Hello World!</Authentication>
-      </User>,
-    )
-
-    // useEffect loads Google SDK
-    await act(async () => {})
-
-    expect(component.root.findByType('Login').props.hasGoogleLoaded).toBe(true)
   })
 
   it('should render properly when user is logged in', async () => {
