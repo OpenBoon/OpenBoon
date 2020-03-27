@@ -28,7 +28,7 @@ const Resizeable = ({ children, initialWidth, storageName }) => {
             width: DRAG_WIDTH,
             marginLeft: DRAG_OFFSET,
             marginRight: DRAG_OFFSET,
-            zIndex: zIndex.layout.drag,
+            zIndex: zIndex.layout.interactive,
           }}
         />
       </DraggableCore>

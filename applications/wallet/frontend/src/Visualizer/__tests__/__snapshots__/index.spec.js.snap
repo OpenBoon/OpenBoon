@@ -242,7 +242,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 80;
+  z-index: 10;
   opacity: 0.8;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -826,7 +826,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 80;
+  z-index: 10;
   opacity: 0.8;
   padding-top: 4px;
   padding-bottom: 4px;
