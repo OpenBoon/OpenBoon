@@ -40,7 +40,7 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineName() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("zvi-video-shot-timeline"))
+        val pspec = PipelineSpec("test", modules = listOf("zvi-video-shot-clips"))
         val pipeline = pipelineService.create(pspec)
 
         val resolved = pipelineResolverService.resolve(pipeline.name, null)
@@ -53,7 +53,7 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineNameAndPlusModules() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("+zvi-video-shot-timeline"))
+        val pspec = PipelineSpec("test", modules = listOf("+zvi-video-shot-clips"))
         val pipeline = pipelineService.create(pspec)
 
         val resolved = pipelineResolverService.resolve(pipeline.name, listOf("zvi-label-detection"))
@@ -70,10 +70,10 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineNameAndMinusModules() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("zvi-video-shot-timeline"))
+        val pspec = PipelineSpec("test", modules = listOf("zvi-video-shot-clips"))
         val pipeline = pipelineService.create(pspec)
 
-        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("-zvi-video-shot-timeline"))
+        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("-zvi-video-shot-clips"))
         val last = resolved.last()
 
         assertEquals(last.className, "zmlp_analysis.mxnet.ZviSimilarityProcessor")
