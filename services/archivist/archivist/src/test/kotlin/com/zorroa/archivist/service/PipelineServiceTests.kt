@@ -1,13 +1,15 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.ModStandards
+import com.zorroa.archivist.domain.Category
+import com.zorroa.archivist.domain.ModType
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.Provider
 import com.zorroa.archivist.domain.SupportedMedia
 import com.zorroa.archivist.security.getProjectId
 import org.junit.Test
@@ -102,8 +104,9 @@ class PipelineServiceTests : AbstractTest() {
 
     fun createTestModule(name: String): PipelineMod {
         val modSpec = PipelineModSpec(name, "test",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
             listOf(), false)
         val mod = pipelineModService.create(modSpec)

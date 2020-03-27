@@ -44,6 +44,10 @@ class PipelineMod(
     @Column(name = "str_category")
     val category: String,
 
+    @ApiModelProperty("The type of technology used in module")
+    @Column(name = "str_type")
+    val type: String,
+
     @ApiModelProperty("The general types of media this module can handle.")
     @Column(name = "str_supported_media")
     @Convert(converter = StringListConverter::class)
@@ -72,7 +76,12 @@ class PipelineMod(
 
     @Column(name = "actor_modified")
     @ApiModelProperty("The actor that last made the last modification the Pipeline Mod.")
-    val actorModified: String
+    val actorModified: String,
+
+    @Column(name = "bool_standard")
+    @ApiModelProperty("True if the module is maintained by Zorroa update cycle.")
+    val standard: Boolean
+
 ) {
     @JsonIgnore
     fun getUpdated(update: PipelineModUpdate): PipelineMod {
@@ -81,13 +90,15 @@ class PipelineMod(
             update.description,
             update.provider,
             update.category,
+            update.type,
             update.supportedMedia.map { it.name },
             update.restricted,
             update.ops,
             timeCreated,
             System.currentTimeMillis(),
             actorCreated,
-            getZmlpActor().toString())
+            getZmlpActor().toString(),
+            standard)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -111,7 +122,16 @@ class PipelineModFilter(
     val ids: List<UUID>? = null,
 
     @ApiModelProperty("The mod names to match")
-    val names: List<String>? = null
+    val names: List<String>? = null,
+
+    @ApiModelProperty("The mod type to match")
+    val types: List<String>? = null,
+
+    @ApiModelProperty("The categories type to match")
+    val categories: List<String>? = null,
+
+    @ApiModelProperty("The providerss type to match")
+    val providers: List<String>? = null
 
 ) : KDaoFilter() {
 
@@ -120,7 +140,10 @@ class PipelineModFilter(
             "name" to "module.str_name",
             "timeCreated" to "module.time_created",
             "timeModified" to "module.time_modified",
-            "id" to "module.pk_module"
+            "id" to "module.pk_module",
+            "type" to "module.str_type",
+            "provider" to "module.str_provider",
+            "category" to "module.str_category"
         )
 
     override fun build() {
@@ -136,6 +159,21 @@ class PipelineModFilter(
 
         names?.let {
             addToWhere(JdbcUtils.inClause("module.str_name", it.size))
+            addToValues(it)
+        }
+
+        types?.let {
+            addToWhere(JdbcUtils.inClause("module.str_type", it.size))
+            addToValues(it)
+        }
+
+        providers?.let {
+            addToWhere(JdbcUtils.inClause("module.str_provider", it.size))
+            addToValues(it)
+        }
+
+        categories?.let {
+            addToWhere(JdbcUtils.inClause("module.str_category", it.size))
             addToValues(it)
         }
     }
@@ -155,6 +193,9 @@ class PipelineModUpdate(
 
     @ApiModelProperty("The service or type of ML, eg \"Google Vision\")")
     val category: String,
+
+    @ApiModelProperty("The underlying technology type?")
+    val type: String,
 
     @ApiModelProperty("The types of media this module can handle.")
     val supportedMedia: List<SupportedMedia>,
@@ -178,8 +219,11 @@ class PipelineModSpec(
     @ApiModelProperty("The provider or maintainer of module.")
     val provider: String,
 
-    @ApiModelProperty("The service or type of ML, eg \"Google Vision\")")
+    @ApiModelProperty("The provider's service or product used for the module, eg \"Google Vision\")")
     val category: String,
+
+    @ApiModelProperty("The underlying technology type?")
+    val type: String,
 
     @ApiModelProperty("The types of media this module can handle.")
     val supportedMedia: List<SupportedMedia>,
@@ -188,7 +232,11 @@ class PipelineModSpec(
     val ops: List<ModOp>,
 
     @ApiModelProperty("This module is only available if granted to a project.")
-    val restricted: Boolean = false
+    val restricted: Boolean = false,
+
+    @JsonIgnore
+    @ApiModelProperty("This module is a standard module which may be updated or removed per release.", hidden = true)
+    val standard: Boolean = false
 )
 
 @ApiModel("Pipeline ModOpType", description = "Types of operations a Pipeline Mod can make.")

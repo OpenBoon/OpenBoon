@@ -29,6 +29,11 @@ interface PipelineModDao : JpaRepository<PipelineMod, UUID> {
      * method which throws if all Ids are not found.
      */
     fun findByNameIn(names: Collection<String>): List<PipelineMod>
+
+    /**
+     * Remove all modules with the given ids.
+     */
+    fun removeByIdNotIn(ids: Collection<UUID>): Int
 }
 
 interface PipelineModCustomDao {
@@ -75,13 +80,15 @@ class PipelineModCustomDaoImpl : PipelineModCustomDao, AbstractDao() {
                 rs.getString("str_description"),
                 rs.getString("str_provider"),
                 rs.getString("str_category"),
+                rs.getString("str_type"),
                 converter.convertToEntityAttribute(rs.getString("str_supported_media")) ?: listOf(),
                 rs.getBoolean("bool_restricted"),
                 Json.Mapper.readValue(rs.getString("json_ops")),
                 rs.getLong("time_created"),
                 rs.getLong("time_modified"),
                 rs.getString("actor_created"),
-                rs.getString("actor_modified")
+                rs.getString("actor_modified"),
+                rs.getBoolean("bool_standard")
             )
         }
     }
