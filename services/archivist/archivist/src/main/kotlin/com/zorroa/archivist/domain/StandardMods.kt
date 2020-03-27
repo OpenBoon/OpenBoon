@@ -25,7 +25,7 @@ object Provider {
 }
 
 object ModType {
-    const val OCR = "OCR"
+    const val OCR = "Optical Character Recognition (OCR)"
     const val LABEL_DETECTION = "Label Detection"
     const val OBJECT_DETECTION = "Object Detection"
     const val FACE_RECOGNITION = "Face Recognition"
@@ -123,6 +123,25 @@ fun getStandardModules(): List<PipelineModSpec> {
                     ModOpType.APPEND,
                     listOf(
                         ProcessorRef("zmlp_analysis.mxnet.ZviLabelDetectionResNet152",
+                            StandardContainers.ANALYSIS)
+                    )
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
+            "zvi-text-detection",
+            "Utilize OCR technology to detect text on an image.",
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.OCR,
+            listOf(SupportedMedia.Images),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef("zmlp_analysis.ocr.processors.OcrProcessor",
                             StandardContainers.ANALYSIS)
                     )
                 )
