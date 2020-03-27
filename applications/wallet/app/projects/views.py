@@ -4,7 +4,6 @@ import os
 import zmlp
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.http import HttpResponseForbidden, Http404
 from rest_framework import status
@@ -52,7 +51,7 @@ class BaseProjectViewSet(ViewSet):
 
         try:
             apikey = Membership.objects.get(user=request.user, project=kwargs['project_pk']).apikey
-        except ObjectDoesNotExist:
+        except Membership.DoesNotExist:
             return HttpResponseForbidden(f'{request.user.username} is not a member of '
                                          f'the project {project}')
 
@@ -524,14 +523,14 @@ class ProjectUserViewSet(BaseProjectViewSet):
 
         # If the membership already exists return the correct status code.
         try:
-            membership = Membership.objects.get(user=user, project=project)
-            serializer = self.get_serializer(user, context={'request': request})
+            membership = user.memberships.get(project=project)
             if membership.roles == requested_roles:
+                serializer = self.get_serializer(user, context={'request': request})
                 return Response(data=serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response({'detail': 'This user already exists in this project '
                                            'with different permissions.'}, status=409)
-        except ObjectDoesNotExist:
+        except Membership.DoesNotExist:
             pass
 
         # Create a membership for given user
