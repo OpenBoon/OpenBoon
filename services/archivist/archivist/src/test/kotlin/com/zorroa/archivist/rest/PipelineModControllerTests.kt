@@ -1,14 +1,16 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.domain.Category
 import com.zorroa.archivist.domain.OpFilter
 import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
-import com.zorroa.archivist.domain.ModStandards
+import com.zorroa.archivist.domain.ModType
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineModUpdate
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.Provider
 import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.zmlp.util.Json
 import org.hamcrest.CoreMatchers
@@ -30,8 +32,9 @@ class PipelineModControllerTests : MockMvcTest() {
 
     val spec = PipelineModSpec(
         "test", "A test module",
-        ModStandards.ZORROA,
-        ModStandards.ZORROA_VINT,
+        Provider.ZORROA,
+        Category.ZORROA_STD,
+        ModType.LABEL_DETECTION,
         listOf(),
         listOf(
             ModOp(
@@ -67,8 +70,9 @@ class PipelineModControllerTests : MockMvcTest() {
 
         val mod = pipelineModService.create(spec)
         val update = PipelineModUpdate(name = "cats", description = "dogs",
-            provider = ModStandards.ZORROA,
-            category = ModStandards.ZORROA_VINT,
+            provider = Provider.ZORROA,
+            category = Category.ZORROA_STD,
+            type = ModType.CLIPIFIER,
             supportedMedia = listOf(),
             restricted = true, ops = listOf(op))
 
@@ -82,6 +86,7 @@ class PipelineModControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("cats")))
             .andExpect(MockMvcResultMatchers.jsonPath("$.description", CoreMatchers.equalTo("dogs")))
             .andExpect(MockMvcResultMatchers.jsonPath("$.restricted", CoreMatchers.equalTo(true)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.type", CoreMatchers.equalTo("Clipifier")))
             .andExpect(MockMvcResultMatchers.jsonPath("$.ops[0].type", CoreMatchers.equalTo("APPEND")))
             .andReturn()
     }
