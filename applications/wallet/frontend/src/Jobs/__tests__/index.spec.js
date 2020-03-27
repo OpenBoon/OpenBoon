@@ -13,6 +13,11 @@ const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
 describe('<Jobs />', () => {
   it('should render properly with no jobs', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/jobs',
+      query: { projectId: PROJECT_ID },
+    })
+
     require('swr').__setMockUseSWRResponse({
       data: {
         count: 0,
