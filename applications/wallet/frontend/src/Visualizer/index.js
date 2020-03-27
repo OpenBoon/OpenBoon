@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-import SuspenseBoundary from '../SuspenseBoundary'
+import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 
 import VisualizerContent from './Content'
 
@@ -11,7 +11,7 @@ const Visualizer = () => {
         <title>Visualizer</title>
       </Head>
 
-      <SuspenseBoundary>
+      <SuspenseBoundary role={ROLES.ML_Tools}>
         <VisualizerContent />
       </SuspenseBoundary>
     </>

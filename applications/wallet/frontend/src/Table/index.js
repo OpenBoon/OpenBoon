@@ -1,14 +1,24 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import SuspenseBoundary from '../SuspenseBoundary'
+import PropTypes from 'prop-types'
+
+import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 
 import TableContent from './Content'
 
-const Table = (props) => {
+const Table = ({ role, ...props }) => {
   return (
-    <SuspenseBoundary>
+    <SuspenseBoundary role={role}>
       <TableContent {...props} />
     </SuspenseBoundary>
   )
 }
 
-export default Table
+Table.defaultProps = {
+  role: null,
+}
+
+Table.propTypes = {
+  role: PropTypes.oneOf(Object.keys(ROLES)),
+}
+
+export { Table as default, ROLES }

@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Bouncer /> should not render the child with no roles 1`] = `null`;
+
+exports[`<Bouncer /> should render the child properly with the appropriate role 1`] = `"Please come in!"`;

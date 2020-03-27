@@ -23,6 +23,7 @@ const AssetsThumbnail = ({
   } = useRouter()
 
   const containerWidth = 100 / thumbnailCount
+  const srcUrl = files[0] && files[0].url
 
   const srcSet = files.map(
     ({ url, attrs: { width: srcWidth } }) => `${url} ${srcWidth}w`,
@@ -79,12 +80,21 @@ const AssetsThumbnail = ({
               overflow: 'hidden',
             }}
           >
-            <img
-              css={{ [largestDimension]: '100%' }}
-              srcSet={srcSet.join(',')}
-              src={files[0] && files[0].url}
-              alt={filename}
-            />
+            {srcUrl ? (
+              <img
+                css={{ [largestDimension]: '100%' }}
+                srcSet={srcSet.join(',')}
+                src={srcUrl}
+                alt={filename}
+              />
+            ) : (
+              <img
+                srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
+                alt="Proxy Unavailable"
+                src="/icons/fallback.png"
+                css={{ width: '100%' }}
+              />
+            )}
           </Button>
         </Link>
       </div>

@@ -15,7 +15,7 @@ Array [
   >
     Project Dashboard
   </h2>,
-  .emotion-40 {
+  .emotion-42 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -32,13 +32,13 @@ Array [
   align-content: flex-start;
 }
 
-.emotion-4 {
+.emotion-6 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-3 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -51,18 +51,27 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-2 {
+.emotion-4 {
   padding: 32px;
 }
 
+.emotion-0 {
+  padding-bottom: 8px;
+}
+
 .emotion-1 {
+  color: #b3b3b3;
+  padding-bottom: 16px;
+}
+
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-0 {
+.emotion-2 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -95,30 +104,30 @@ Array [
   padding: 8px 16px;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
   background-color: #73b61c;
 }
 
-.emotion-0:hover {
+.emotion-2:hover {
   background-color: #96c955;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-2[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-5 {
+.emotion-7 {
   padding: 16px;
   border-bottom: 1px solid #4a4a4a;
   display: -webkit-box;
@@ -131,30 +140,30 @@ Array [
   align-items: center;
 }
 
-.emotion-5 svg {
+.emotion-7 svg {
   margin-right: 8px;
 }
 
-.emotion-13 {
+.emotion-15 {
   padding-bottom: 24px;
 }
 
-.emotion-12 {
+.emotion-14 {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-7 {
+.emotion-9 {
   font-weight: 400;
   font-size: 17px;
   line-height: 20px;
   color: #73b61c;
 }
 
-.emotion-6 {
+.emotion-8 {
   font-weight: 700;
 }
 
-.emotion-8 {
+.emotion-10 {
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
@@ -170,18 +179,18 @@ Array [
   align-items: center;
 }
 
-.emotion-8 svg {
+.emotion-10 svg {
   margin-right: 8px;
 }
 
-.emotion-9 {
+.emotion-11 {
   margin: 0;
   padding-top: 16px;
   padding-bottom: 16px;
   color: #b3b3b3;
 }
 
-.emotion-11 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -189,7 +198,7 @@ Array [
   padding-bottom: 24px;
 }
 
-.emotion-10 {
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -222,38 +231,38 @@ Array [
   padding: 8px 16px;
 }
 
-.emotion-10:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited {
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited {
   background-color: #808080;
 }
 
-.emotion-10:hover {
+.emotion-12:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-29 {
+.emotion-31 {
   padding-bottom: 0;
 }
 
-.emotion-28 {
+.emotion-30 {
   border-bottom: 0;
 }
 
-.emotion-27 {
+.emotion-29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -261,39 +270,41 @@ Array [
   padding-bottom: 0;
 }
 
-.emotion-34 {
+.emotion-36 {
   margin: 0;
   padding-bottom: 16px;
   color: #b3b3b3;
 }
 
 <div
-    className="emotion-40"
+    className="emotion-42"
   >
     <div
-      className="emotion-4"
+      className="emotion-6"
     >
       <div
-        className="emotion-3"
+        className="emotion-5"
       >
         <div
-          className="emotion-2"
+          className="emotion-4"
         >
-          <h3>
+          <h3
+            className="emotion-0"
+          >
             Project: 
             Project Zero
           </h3>
-           
-          <div>
-            Project ID: 
-            00000000-0000-0000-0000-000000000000
-          </div>
-           
           <div
             className="emotion-1"
           >
+            Project ID: 
+            00000000-0000-0000-0000-000000000000
+          </div>
+          <div
+            className="emotion-3"
+          >
             <a
-              className="emotion-0"
+              className="emotion-2"
               href="/00000000-0000-0000-0000-000000000000/users/add"
               onClick={[Function]}
               onMouseEnter={[Function]}
@@ -306,30 +317,30 @@ Array [
     </div>
     <ProjectUsagePlan />
     <div
-      className="emotion-4"
+      className="emotion-6"
     >
       <div
-        className="emotion-3"
+        className="emotion-5"
       >
         <h3
-          className="emotion-5"
+          className="emotion-7"
         >
           Getting Started
         </h3>
         <div
-          className="emotion-2"
+          className="emotion-4"
         >
           <div
-            className="emotion-13"
+            className="emotion-15"
           >
             <div
-              className="emotion-12"
+              className="emotion-14"
             >
               <h4
-                className="emotion-7"
+                className="emotion-9"
               >
                 <span
-                  className="emotion-6"
+                  className="emotion-8"
                 >
                   Step 
                   1
@@ -338,7 +349,7 @@ Array [
                 Create a Data Source
               </h4>
               <h5
-                className="emotion-8"
+                className="emotion-10"
               >
                 <svg
                   aria-hidden={true}
@@ -348,15 +359,15 @@ Array [
                 Data Sources
               </h5>
               <p
-                className="emotion-9"
+                className="emotion-11"
               >
                 To create a Data Source, connected to a bucket, choose which types of assets you’d like to process, and select which machine learning modules you’d like to apply to them.
               </p>
               <div
-                className="emotion-11"
+                className="emotion-13"
               >
                 <a
-                  className="emotion-10"
+                  className="emotion-12"
                   href="/00000000-0000-0000-0000-000000000000/data-sources/add"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -367,16 +378,16 @@ Array [
             </div>
           </div>
           <div
-            className="emotion-13"
+            className="emotion-15"
           >
             <div
-              className="emotion-12"
+              className="emotion-14"
             >
               <h4
-                className="emotion-7"
+                className="emotion-9"
               >
                 <span
-                  className="emotion-6"
+                  className="emotion-8"
                 >
                   Step 
                   2
@@ -385,7 +396,7 @@ Array [
                 Review Job Progress
               </h4>
               <h5
-                className="emotion-8"
+                className="emotion-10"
               >
                 <svg
                   aria-hidden={true}
@@ -395,15 +406,15 @@ Array [
                 Job Queue
               </h5>
               <p
-                className="emotion-9"
+                className="emotion-11"
               >
                 After a Data Source had been created a job kicks off and you can view its progress in the Job Queue. There you can and apply actions like “pause” “cancel” or “retry”. You can also inspect any errors that may have occurred.
               </p>
               <div
-                className="emotion-11"
+                className="emotion-13"
               >
                 <a
-                  className="emotion-10"
+                  className="emotion-12"
                   href="/00000000-0000-0000-0000-000000000000/jobs"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -414,16 +425,16 @@ Array [
             </div>
           </div>
           <div
-            className="emotion-29"
+            className="emotion-31"
           >
             <div
-              className="emotion-28"
+              className="emotion-30"
             >
               <h4
-                className="emotion-7"
+                className="emotion-9"
               >
                 <span
-                  className="emotion-6"
+                  className="emotion-8"
                 >
                   Step 
                   3
@@ -432,7 +443,7 @@ Array [
                 Inspect Your New Dataset
               </h4>
               <h5
-                className="emotion-8"
+                className="emotion-10"
               >
                 <svg
                   aria-hidden={true}
@@ -442,15 +453,15 @@ Array [
                 Visualizer
               </h5>
               <p
-                className="emotion-9"
+                className="emotion-11"
               >
                 Once a job has successfully completed then the assets will appear in the Visualizer.  There you can inspect your assets new data, view the dataset in a variety of meaningful ways, and XYZ
               </p>
               <div
-                className="emotion-27"
+                className="emotion-29"
               >
                 <a
-                  className="emotion-10"
+                  className="emotion-12"
                   href="/00000000-0000-0000-0000-000000000000/visualizer"
                   onClick={[Function]}
                   onMouseEnter={[Function]}
@@ -464,35 +475,37 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-6"
     >
       <div
-        className="emotion-3"
+        className="emotion-5"
       >
-        <h3
-          className="emotion-5"
-        >
-          <svg
-            aria-hidden={true}
-            color="#b3b3b3"
-            data-file-name="key.svg"
-            width={20}
-          />
-          Project API Keys
-        </h3>
         <div
-          className="emotion-2"
+          className="emotion-7"
+        >
+          <h3>
+            <svg
+              aria-hidden={true}
+              color="#b3b3b3"
+              data-file-name="key.svg"
+              width={20}
+            />
+            Project API Keys
+          </h3>
+        </div>
+        <div
+          className="emotion-4"
         >
           <p
-            className="emotion-34"
+            className="emotion-36"
           >
             Create a ZMLP API key for use with external applications and tools.
           </p>
           <div
-            className="emotion-1"
+            className="emotion-3"
           >
             <a
-              className="emotion-10"
+              className="emotion-12"
               href="/00000000-0000-0000-0000-000000000000/api-keys/add"
               onClick={[Function]}
               onMouseEnter={[Function]}

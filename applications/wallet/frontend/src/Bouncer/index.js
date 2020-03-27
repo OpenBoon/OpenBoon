@@ -1,13 +1,9 @@
 import { useContext } from 'react'
 import PropTypes from 'prop-types'
 
-import { UserContext } from '../User'
+import { ROLES } from '../Roles/helpers'
 
-export const ROLES = {
-  ML_Tools: 'ML_Tools',
-  API_Keys: 'API_Keys',
-  User_Admin: 'User_Admin',
-}
+import { UserContext } from '../User'
 
 const Bouncer = ({ role, children }) => {
   const {
@@ -25,4 +21,4 @@ Bouncer.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-export default Bouncer
+export { Bouncer as default, ROLES }

@@ -1,8 +1,11 @@
 import TestRenderer from 'react-test-renderer'
 
-import Visualizer from '..'
-
 import assets from '../../Assets/__mocks__/assets'
+import mockUser from '../../User/__mocks__/user'
+
+import User from '../../User'
+
+import Visualizer from '..'
 
 jest.mock('../../JsonDisplay', () => 'JsonDisplay')
 
@@ -19,7 +22,11 @@ describe('<Visualizer />', () => {
       query: { projectId: PROJECT_ID },
     })
 
-    const component = TestRenderer.create(<Visualizer />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Visualizer />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -33,7 +40,11 @@ describe('<Visualizer />', () => {
       query: { id: ASSET_ID, projectId: PROJECT_ID },
     })
 
-    const component = TestRenderer.create(<Visualizer />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Visualizer />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })

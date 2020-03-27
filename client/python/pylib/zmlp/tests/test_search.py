@@ -125,7 +125,7 @@ class TestLabelConfidenceQuery(unittest.TestCase):
 
 class TestImageSimilarityQuery(unittest.TestCase):
     def test_for_json(self):
-        s = SimilarityQuery("foo.vector", 0.50, "ABC123")
+        s = SimilarityQuery("ABC123", 0.50, "foo.vector")
         qjson = s.for_json()
 
         params = qjson["function_score"]["functions"][0]["script_score"]["script"]["params"]
@@ -137,12 +137,12 @@ class TestImageSimilarityQuery(unittest.TestCase):
         asset = Asset({"id": "123"})
         asset.set_attr("foo.vector", "OVER9000")
 
-        s = SimilarityQuery("foo.vector", 0.50)
+        s = SimilarityQuery(None, 0.50, "foo.vector")
         s.add_asset(asset)
         assert ['OVER9000'] == s.hashes
 
     def test_add_hash(self):
-        s = SimilarityQuery("foo.vector", 0.50)
+        s = SimilarityQuery(None, 0.50, "foo.vector")
         s.add_hash("OVER9000")
         assert ['OVER9000'] == s.hashes
         assert "foo.vector" == s.field

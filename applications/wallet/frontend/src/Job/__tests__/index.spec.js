@@ -1,6 +1,9 @@
 import TestRenderer from 'react-test-renderer'
 
 import job from '../__mocks__/job'
+import mockUser from '../../User/__mocks__/user'
+
+import User from '../../User'
 
 import Job from '..'
 
@@ -22,7 +25,11 @@ describe('<Job />', () => {
       data: job,
     })
 
-    const component = TestRenderer.create(<Job />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Job />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -37,7 +44,11 @@ describe('<Job />', () => {
       data: { ...job, paused: true },
     })
 
-    const component = TestRenderer.create(<Job />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Job />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })

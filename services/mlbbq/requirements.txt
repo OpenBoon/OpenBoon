@@ -1,0 +1,7 @@
+flask
+requests
+mxnet
+numpy
+opencv-python-headless
+gevent
+
