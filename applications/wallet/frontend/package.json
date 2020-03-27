@@ -117,7 +117,7 @@
     "react": "16.13.1",
     "react-aria-modal": "4.0.0",
     "react-dom": "16.13.1",
-    "react-draggable": "^4.2.0",
+    "react-draggable": "4.2.0",
     "react-json-pretty": "2.2.0",
     "swr": "0.1.18"
   },

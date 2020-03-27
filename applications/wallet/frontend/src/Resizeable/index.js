@@ -3,7 +3,12 @@ import { DraggableCore } from 'react-draggable'
 
 import useLocalStorage from '../LocalStorage'
 
+import { zIndex } from '../Styles'
+
 import { calculateDelta } from './helpers'
+
+const DRAG_WIDTH = 20
+const DRAG_OFFSET = -10
 
 // Only supports horizontal drag on the left of an element
 const Resizeable = ({ children, initialWidth, storageName }) => {
@@ -17,10 +22,10 @@ const Resizeable = ({ children, initialWidth, storageName }) => {
         <div
           css={{
             cursor: 'col-resize',
-            width: 20,
-            marginLeft: -10,
-            marginRight: -10,
-            zIndex: 10,
+            width: DRAG_WIDTH,
+            marginLeft: DRAG_OFFSET,
+            marginRight: DRAG_OFFSET,
+            zIndex: zIndex.layout.drag,
           }}
         />
       </DraggableCore>
