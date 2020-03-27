@@ -6,13 +6,13 @@ import com.zorroa.auth.server.domain.ApiKeySpec
 import com.zorroa.auth.server.security.getProjectId
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
-import java.util.UUID
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 import org.junit.Test
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import java.util.UUID
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ApiKeyServiceTests : AbstractTest() {
 
@@ -76,6 +76,51 @@ class ApiKeyServiceTests : AbstractTest() {
 
         assertEquals(1, keys.list.size)
         assertEquals("test", keys.list[0].name)
+    }
+
+    @Test
+    fun testSearchByPrefix() {
+
+        apiKeyService.create(ApiKeySpec("test1", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("test2", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("test3", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("try1", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("try2", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("try3", setOf(Permission.AssetsRead)))
+
+        val keys = apiKeyService.search(ApiKeyFilter(namePrefixes = listOf("test", "try")))
+
+        assertEquals(6, keys.list.size)
+    }
+
+    @Test
+    fun testSearchByPrefixAndName() {
+
+        apiKeyService.create(ApiKeySpec("test1", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("test2", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("test3", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("try1", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("try2", setOf(Permission.AssetsRead)))
+        apiKeyService.create(ApiKeySpec("try3", setOf(Permission.AssetsRead)))
+
+        val keys = apiKeyService.search(ApiKeyFilter(
+            namePrefixes = listOf("test"),
+            names = listOf("test1")))
+
+        assertEquals(1, keys.list.size)
+    }
+
+    @Test
+    fun testSearchByNameAndId() {
+
+        val create1 = apiKeyService.create(ApiKeySpec("test1", setOf(Permission.AssetsRead)))
+        val create2 = apiKeyService.create(ApiKeySpec("try1", setOf(Permission.AssetsRead)))
+
+        val keys = apiKeyService.search(ApiKeyFilter(
+            ids = listOf(create1.id),
+            names = listOf(create2.name)))
+
+        assertEquals(0, keys.list.size)
     }
 
     @Test(expected = EmptyResultDataAccessException::class)
