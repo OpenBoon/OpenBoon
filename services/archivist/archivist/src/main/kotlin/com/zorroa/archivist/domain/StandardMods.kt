@@ -29,7 +29,7 @@ object ModType {
     const val LABEL_DETECTION = "Label Detection"
     const val OBJECT_DETECTION = "Object Detection"
     const val FACE_RECOGNITION = "Face Recognition"
-    const val CLIPIFIER = "Clipifier"
+    const val CLIPIFIER = "Asset Clipifier"
 }
 
 
@@ -39,7 +39,7 @@ object ModType {
 fun getStandardModules(): List<PipelineModSpec> {
     return listOf(
         PipelineModSpec(
-            "zvi-document-page-extraction",
+            "zvi-document-page-clips",
             "Extract all pages in MS Office/PDF documents into separate assets.",
             Provider.ZORROA,
             Category.ZORROA_TL,
@@ -56,7 +56,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             standard = true
         ),
         PipelineModSpec(
-            "zvi-image-page-extraction",
+            "zvi-image-page-clips",
             "Extract all layers in multi page image formats such as tiff and psd as as " +
                 "separate assets",
             Provider.ZORROA,
@@ -74,7 +74,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             standard = true
         ),
         PipelineModSpec(
-            "zvi-video-shot-timeline",
+            "zvi-video-shot-clips",
             "Break video files into individual assets based on a shot detection algorithm.",
             Provider.ZORROA,
             Category.ZORROA_TL,
