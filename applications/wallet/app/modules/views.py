@@ -38,8 +38,8 @@ class ProviderViewSet(BaseProjectViewSet):
             name = provider.name.lower()
             if name in provider_map:
                 categories = []
-                for name, modules in provider_map[name].items():
-                    categories.append({'name': name, 'modules': modules})
+                for category_name, modules in provider_map[name].items():
+                    categories.append({'name': category_name, 'modules': modules})
                 results.append({'name': name,
                                 'logo': provider.logo_data_uri,
                                 'description': provider.description,
