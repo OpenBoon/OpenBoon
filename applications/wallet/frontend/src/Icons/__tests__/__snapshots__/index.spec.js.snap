@@ -9,7 +9,7 @@ exports[`<Icons /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-61 {
+.emotion-59 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -55,7 +55,7 @@ exports[`<Icons /> should render properly 1`] = `
     Icons
   </h2>
   <div
-    className="emotion-61"
+    className="emotion-59"
   >
     <div
       className="emotion-2"
@@ -253,22 +253,6 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
-        ./fallback.svg
-      </div>
-      <div
-        className="emotion-1"
-      >
-        <svg
-          data-file-name="fallback.svg"
-          height="100%"
-          width="100%"
-        />
-      </div>
-    </div>
-    <div
-      className="emotion-2"
-    >
-      <div>
         ./gear.svg
       </div>
       <div
@@ -356,22 +340,6 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="key.svg"
-          height="100%"
-          width="100%"
-        />
-      </div>
-    </div>
-    <div
-      className="emotion-2"
-    >
-      <div>
-        ./lock.svg
-      </div>
-      <div
-        className="emotion-1"
-      >
-        <svg
-          data-file-name="lock.svg"
           height="100%"
           width="100%"
         />

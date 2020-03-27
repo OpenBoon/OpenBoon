@@ -10,9 +10,9 @@ import Card from '../Card'
 import AccountUsagePlan from './UsagePlan'
 
 const AccountCard = ({ id, name }) => {
-  const {
-    data: { results: subscriptions },
-  } = useSWR(`/api/v1/projects/${id}/subscriptions/`)
+  const { data: { results: subscriptions = [] } = {} } = useSWR(
+    `/api/v1/projects/${id}/subscriptions/`,
+  )
 
   return (
     <Card

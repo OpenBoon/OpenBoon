@@ -53,14 +53,7 @@ describe('<AccountCard />', () => {
       query: { projectId: project.id },
     })
 
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        count: 0,
-        next: null,
-        previous: null,
-        results: [],
-      },
-    })
+    require('swr').__setMockUseSWRResponse({})
 
     const component = TestRenderer.create(
       <AccountCard id={PROJECT_ID} name={PROJECT_NAME} />,
