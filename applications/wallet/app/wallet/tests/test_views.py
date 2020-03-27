@@ -1,13 +1,13 @@
-import re
-import pytz
 import datetime
-import pytest
+import re
 
+import pytest
+import pytz
 from django.contrib.auth.models import User
 from django.urls import reverse
 from google.oauth2 import id_token
 
-from privacy.models import Agreement
+from agreements.models import Agreement
 
 pytestmark = pytest.mark.django_db
 
@@ -62,21 +62,27 @@ def test_api_login_includes_invalid_agreement(api_client, user):
 
 
 def test_api_login_includes_agreement_date(api_client, user):
+    timezone = pytz.timezone('America/Los_Angeles')
+
+    date = datetime.datetime(2019, 12, 8, 0, 0)
     agreement = Agreement(user=user)
     agreement.save()
+    agreement.created_date = timezone.localize(date)
+    agreement.save()
+
     date = datetime.datetime(2019, 12, 1, 0, 0)
-    timezone = pytz.timezone('America/Los_Angeles')
     agreement2 = Agreement(user=user)
     agreement2.save()
     agreement2.created_date = timezone.localize(date)
     agreement2.save()
+
     api_client.logout()
     response = api_client.post(reverse('api-login'),
                                {'username': 'user', 'password': 'letmein'})
     assert response.status_code == 200
     date = agreement.created_date
     response_data = response.json()
-    assert response_data['agreedToPolicies'] == f'{date.year}{date.month}{date.day}'
+    assert response_data['agreedToPolicies'] == '20191208'
 
 
 def test_api_login_inactive_user_fail(api_client, user):

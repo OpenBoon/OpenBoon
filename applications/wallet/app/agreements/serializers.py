@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from privacy.models import Agreement
+from agreements.models import Agreement
 
 
 class AgreementSerializer(serializers.ModelSerializer):

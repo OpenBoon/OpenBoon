@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from privacy.models import Agreement
+from agreements.models import Agreement
 
 admin.site.register(Agreement)

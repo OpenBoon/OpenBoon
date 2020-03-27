@@ -49,7 +49,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'privacy',
+    'agreements',
     'subscriptions',
     'jobs',
     'modules',

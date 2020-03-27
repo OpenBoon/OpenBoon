@@ -1,11 +1,11 @@
 from rest_framework import status
-from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
+from rest_framework.viewsets import GenericViewSet
 
-from privacy.models import Agreement
-from privacy.serializers import AgreementSerializer
+from agreements.models import Agreement
+from agreements.serializers import AgreementSerializer
 
 
 class AgreementViewSet(ListModelMixin,
@@ -29,10 +29,9 @@ class AgreementViewSet(ListModelMixin,
         else:
             ip_address = request.META.get('REMOTE_ADDR')
 
-        # Conform data
-        data = request.data
-        data['user'] = user_pk
-        data['ip_address'] = ip_address
+        # Update request data with calculated values
+        request.data['user'] = user_pk
+        request.data['ip_address'] = ip_address
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

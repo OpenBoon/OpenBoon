@@ -24,21 +24,20 @@ from rest_auth.views import PasswordResetView, PasswordResetConfirmView, \
 from rest_framework import routers
 from rest_framework_nested.routers import NestedSimpleRouter
 
-from datasources.views import DataSourceViewSet
-from registration.views import UserRegistrationView, UserConfirmationView
-from wallet import views as wallet_views
-from wallet.views import WalletAPIRootView, LoginView, LogoutView
+from agreements.views import AgreementViewSet
 from apikeys.views import ApikeyViewSet
 from assets.views import (AssetViewSet, FileCategoryViewSet,
                           FileNameViewSet, SourceFileViewSet)
+from datasources.views import DataSourceViewSet
 from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet, JobTaskViewSet
-from projects.views import ProjectViewSet, ProjectUserViewSet
+from modules.views import ModuleViewSet
 from permissions.views import PermissionViewSet
+from projects.views import ProjectViewSet, ProjectUserViewSet
+from registration.views import UserRegistrationView, UserConfirmationView
 from roles.views import RolesViewSet
 from subscriptions.views import SubscriptionViewSet
-from modules.views import ModuleViewSet
-from privacy.views import AgreementViewSet
-
+from wallet import views as wallet_views
+from wallet.views import WalletAPIRootView, LoginView, LogoutView
 
 router = routers.DefaultRouter()
 router.APIRootView = WalletAPIRootView

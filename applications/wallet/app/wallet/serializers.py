@@ -32,7 +32,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         if len(agreements) == 0:
             return '00000000'
         latest_date = agreements[0].created_date
-        return f'{latest_date.year}{latest_date.month}{latest_date.day}'
+        return f'{latest_date.year:04}{latest_date.month:02}{latest_date.day:02}'
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
