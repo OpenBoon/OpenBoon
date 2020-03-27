@@ -57,6 +57,16 @@ services:
     environment:
       ARCHIVIST_HOST: archivist:8080
       AUTH_SERVER_HOST: auth-server:9090
+      MLBBQ_SERVER_HOST: ml-bbq:8282
+
+  ml-bbq:
+    image: mlservice/mlservice:latest
+    depends_on:
+      - auth-server
+    build:
+      context: services/mlbbq
+    environment:
+      ZMLP_SECURITY_AUTHSERVER_URL : http://auth-server:9090
 
   # Auth server
   auth-server:
