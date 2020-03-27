@@ -45,11 +45,10 @@ def get_similarity_hash(stream):
         fe_mod = mxnet.mod.Module(symbol=fe_sym, context=mxnet.cpu(), label_names=None)
         fe_mod.bind(for_training=False, data_shapes=[('data', (1, 3, 224, 224))])
         fe_mod.set_params(SimilarityModel.arg_params, SimilarityModel.aux_params)
-
         fe_mod.forward(batch([mxnet.nd.array(img)]))
         features = fe_mod.get_outputs()[0].asnumpy()
-        features = np.squeeze(features)
-    
+
+    features = np.squeeze(features)
     mxh = np.clip((features * 16).astype(int), 0, 15) + 65
     mxhash = "".join([chr(item) for item in mxh])
 
