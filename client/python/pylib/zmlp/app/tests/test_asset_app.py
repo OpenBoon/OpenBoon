@@ -12,6 +12,7 @@ from zmlp.exception import ZmlpException
 
 from .util import get_test_file
 
+
 class AssetAppTests(unittest.TestCase):
 
     def setUp(self):

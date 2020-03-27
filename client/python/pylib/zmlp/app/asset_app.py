@@ -6,6 +6,7 @@ from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
 from ..util import as_collection
 from ..job import Job
 
+
 class AssetApp(object):
 
     def __init__(self, app):
