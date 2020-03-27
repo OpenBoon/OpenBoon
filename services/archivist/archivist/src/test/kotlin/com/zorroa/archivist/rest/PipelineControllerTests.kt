@@ -1,9 +1,10 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
+import com.zorroa.archivist.domain.Category
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
-import com.zorroa.archivist.domain.ModStandards
+import com.zorroa.archivist.domain.ModType
 import com.zorroa.archivist.domain.OpFilter
 import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.Pipeline
@@ -12,6 +13,7 @@ import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineMode
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
+import com.zorroa.archivist.domain.Provider
 import com.zorroa.archivist.domain.SupportedMedia
 import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.zmlp.util.Json
@@ -44,8 +46,9 @@ class PipelineControllerTests : MockMvcTest() {
     fun init() {
         val modSpec = PipelineModSpec(
             "test", "A test module",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(

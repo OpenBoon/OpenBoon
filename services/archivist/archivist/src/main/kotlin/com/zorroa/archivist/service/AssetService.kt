@@ -383,7 +383,6 @@ class AssetServiceImpl : AssetService {
         )
 
         val rsp = rest.client.bulk(bulk, RequestOptions.DEFAULT)
-        println("incrmenting project counters: $stateChangedIds")
         if (stateChangedIds.isNotEmpty()) {
             val successIds = rsp.filter { !it.isFailed }.map { it.id }
             incrementProjectIngestCounters(stateChangedIds.intersect(successIds), docs)

@@ -112,10 +112,11 @@ class PipelineModServiceImpl(
             spec.description,
             spec.provider,
             spec.category,
+            spec.type,
             spec.supportedMedia.map { it.name },
             spec.restricted,
             spec.ops,
-            time, time, actor, actor
+            time, time, actor, actor, spec.standard
         )
 
         val created = pipelineModDao.save(mod)
@@ -158,25 +159,34 @@ class PipelineModServiceImpl(
     @Transactional(propagation = Propagation.SUPPORTS)
     override fun updateStandardMods() {
         logger.info("Updating Standard Pipeline Mods")
+
+        val mods = getStandardModules()
+        val updated = mutableListOf<UUID>()
+
         withAuth(InternalThreadAuthentication(KnownKeys.PROJZERO)) {
-            for (mod in getStandardModules()) {
+            for (mod in mods) {
                 val pmod = pipelineModDao.getByName(mod.name)
                 try {
                     if (pmod == null) {
-                        create(mod)
+                        val m = create(mod)
+                        updated.add(m.id)
                     } else {
                         val update = PipelineModUpdate(
                             pmod.name, pmod.description, pmod.provider,
-                            pmod.category, pmod.supportedMedia.map { SupportedMedia.valueOf(it) },
+                            pmod.category, pmod.type,
+                            pmod.supportedMedia.map { SupportedMedia.valueOf(it) },
                             pmod.restricted, pmod.ops
                         )
                         update(pmod.id, update)
+                        updated.add(pmod.id)
                     }
                 } catch (ex: Exception) {
                     logger.warn("Failed to update standard pipeline mod, $pmod", ex)
                 }
             }
         }
+        // Remove mods we didn't update
+        pipelineModDao.removeByIdNotIn(updated)
     }
 
     companion object {
