@@ -7,7 +7,6 @@ describe('useLocalStorage()', () => {
   const mockGet = jest.fn()
 
   Object.defineProperty(window, 'localStorage', {
-    writable: true,
     value: { setItem: mockSet, getItem: mockGet },
   })
 
