@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import PageTitle from '../PageTitle'
 import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
-import Table from '../Table'
+import Table, { ROLES } from '../Table'
 
 import ProjectUsersRow from './Row'
 
@@ -33,6 +33,7 @@ const ProjectUsers = () => {
       />
 
       <Table
+        role={ROLES.User_Admin}
         legend="Users"
         url={`/api/v1/projects/${projectId}/users/`}
         columns={['Email', 'Roles', '#Actions#']}

@@ -2,6 +2,9 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import projectUser from '../../ProjectUser/__mocks__/projectUser'
 import roles from '../../Roles/__mocks__/roles'
+import mockUser from '../../User/__mocks__/user'
+
+import User from '../../User'
 
 import ProjectUsersEdit from '..'
 
@@ -29,7 +32,11 @@ describe('<ProjectUsersEdit />', () => {
     })
 
     // Render Form
-    const component = TestRenderer.create(<ProjectUsersEdit />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <ProjectUsersEdit />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 

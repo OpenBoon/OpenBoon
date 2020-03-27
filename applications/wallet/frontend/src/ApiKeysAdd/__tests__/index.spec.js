@@ -2,6 +2,9 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import apiKey from '../../ApiKey/__mocks__/apiKey'
 import permissions from '../../Permissions/__mocks__/permissions'
+import mockUser from '../../User/__mocks__/user'
+
+import User from '../../User'
 
 import ApiKeysAdd from '..'
 
@@ -26,7 +29,11 @@ describe('<ApiKeysAdd />', () => {
 
     require('../../Copy/helpers').__setMockOnCopy(mockOnCopy)
 
-    const component = TestRenderer.create(<ApiKeysAdd />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <ApiKeysAdd />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 

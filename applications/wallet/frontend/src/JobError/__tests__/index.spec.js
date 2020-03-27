@@ -1,7 +1,11 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import JobError from '..'
 import { jobErrorFatal, jobErrorNonFatal } from '../__mocks__/jobError'
+import mockUser from '../../User/__mocks__/user'
+
+import User from '../../User'
+
+import JobError from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const JOB_ID = jobErrorFatal.jobId
@@ -22,7 +26,11 @@ describe('<JobError />', () => {
       data: jobErrorFatal,
     })
 
-    const component = TestRenderer.create(<JobError />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <JobError />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -41,7 +49,11 @@ describe('<JobError />', () => {
       data: jobErrorNonFatal,
     })
 
-    const component = TestRenderer.create(<JobError />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <JobError />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -86,7 +98,11 @@ describe('<JobError />', () => {
       data: jobErrorFatal,
     })
 
-    const component = TestRenderer.create(<JobError />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <JobError />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
