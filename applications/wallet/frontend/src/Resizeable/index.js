@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import PropTypes from 'prop-types'
 import { DraggableCore } from 'react-draggable'
 
@@ -10,16 +9,10 @@ import { calculateDelta } from './helpers'
 const Resizeable = ({ children, initialWidth, storageName }) => {
   const [width, setWidth] = useLocalStorage(storageName, initialWidth)
 
-  const contentRef = useRef()
-  const wrapperRef = useRef()
-
   const onDrag = calculateDelta({ width, setWidth })
 
   return (
-    <div
-      ref={wrapperRef}
-      style={{ display: 'flex', alignItems: 'stretch', flexWrap: 'nowrap' }}
-    >
+    <div style={{ display: 'flex', alignItems: 'stretch', flexWrap: 'nowrap' }}>
       <DraggableCore onDrag={onDrag}>
         <div
           css={{
@@ -31,9 +24,7 @@ const Resizeable = ({ children, initialWidth, storageName }) => {
           }}
         />
       </DraggableCore>
-      <div ref={contentRef} css={{ flex: 1, width }}>
-        {children}
-      </div>
+      <div css={{ flex: 1, width }}>{children}</div>
     </div>
   )
 }
