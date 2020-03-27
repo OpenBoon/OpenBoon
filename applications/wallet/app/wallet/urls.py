@@ -36,8 +36,7 @@ from projects.views import ProjectViewSet, ProjectUserViewSet
 from permissions.views import PermissionViewSet
 from roles.views import RolesViewSet
 from subscriptions.views import SubscriptionViewSet
-from modules.views import ModuleViewSet
-
+from modules.views import ModuleViewSet, ProviderViewSet
 
 router = routers.DefaultRouter()
 router.APIRootView = WalletAPIRootView
@@ -57,6 +56,7 @@ projects_router.register('permissions', PermissionViewSet, basename='permission'
 projects_router.register('data_sources', DataSourceViewSet, basename='datasource')
 projects_router.register('subscriptions', SubscriptionViewSet, basename='subscription')
 projects_router.register('modules', ModuleViewSet, basename='module')
+projects_router.register('providers', ProviderViewSet, basename='provider')
 
 assets_files_router = NestedSimpleRouter(projects_router, 'assets', lookup='asset')
 assets_files_router.register('files/category', FileCategoryViewSet, basename='category')

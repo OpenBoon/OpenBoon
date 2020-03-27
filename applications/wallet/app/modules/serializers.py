@@ -26,3 +26,15 @@ class ModuleSerializer(serializers.Serializer):
     timeModified = serializers.IntegerField(required=True)
     actorCreated = serializers.CharField(required=True)
     actorModified = serializers.CharField(required=True)
+
+
+class CategorySerializer(serializers.Serializer):
+    name = serializers.CharField(required=True)
+    modules = serializers.ListField(child=ModuleSerializer())
+
+
+class ProviderSerializer(serializers.Serializer):
+    name = serializers.CharField(required=True)
+    logo = serializers.CharField(required=True)
+    description = serializers.CharField(required=True)
+    categories = serializers.ListField(child=CategorySerializer())
