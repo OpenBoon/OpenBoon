@@ -9,12 +9,13 @@ import FormAlert from '../FormAlert'
 import OverviewUsage from './Usage'
 
 const IMG_WIDTH = 32
-const LEFT_SPACING = IMG_WIDTH + spacing.moderate
 
 const AccountUsagePlan = ({ subscriptions }) => {
   const {
+    id: subscriptionId,
     limits: { videoHours: videoLimit, imageCount: imageLimit },
     usage: { videoHours: videoUsage, imageCount: imageUsage },
+    modules,
   } = subscriptions[0]
 
   const videoOverTime = videoUsage - videoLimit
@@ -44,7 +45,15 @@ const AccountUsagePlan = ({ subscriptions }) => {
           </FormAlert>
         </div>
       )}
-      <h3 css={{ paddingBottom: spacing.normal }}>Usage Plan:</h3>
+      <h3
+        css={{
+          paddingBottom: spacing.comfy,
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
+        }}
+      >
+        Usage Plan:
+      </h3>
       <div css={{ paddingBottom: spacing.normal }}>
         <h4
           css={{
@@ -83,13 +92,29 @@ const AccountUsagePlan = ({ subscriptions }) => {
       <div
         css={{
           paddingTop: spacing.normal,
-          paddingLeft: LEFT_SPACING,
         }}
       >
-        <h4>Additional Modules:</h4>
-        <span css={{ color: colors.structure.zinc, fontStyle: 'italic' }}>
-          None
-        </span>
+        <h4 css={{ paddingBottom: spacing.small }}>Additional Modules:</h4>
+
+        {modules.length === 0 ? (
+          <span css={{ color: colors.structure.zinc, fontStyle: 'italic' }}>
+            None
+          </span>
+        ) : (
+          modules.map((module) => (
+            <span
+              key={subscriptionId + module}
+              css={{
+                fontFamily: 'Roboto Mono',
+                color: colors.structure.zinc,
+                display: 'block',
+                paddingBottom: spacing.mini,
+              }}
+            >
+              {module}
+            </span>
+          ))
+        )}
       </div>
     </>
   )

@@ -3,13 +3,13 @@
 exports[`<ProjectUsagePlan /> should not render without subscriptions 1`] = `null`;
 
 exports[`<ProjectUsagePlan /> should render properly 1`] = `
-.emotion-26 {
+.emotion-30 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-25 {
+.emotion-29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -39,7 +39,7 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
   margin-right: 8px;
 }
 
-.emotion-24 {
+.emotion-28 {
   padding: 32px;
 }
 
@@ -146,20 +146,26 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
 }
 
 .emotion-21 {
-  color: #b3b3b3;
-  font-style: italic;
+  padding-bottom: 4px;
 }
 
-.emotion-23 {
+.emotion-22 {
+  font-family: Roboto Mono;
+  color: #b3b3b3;
+  display: block;
+  padding-bottom: 2px;
+}
+
+.emotion-27 {
   padding-top: 16px;
   color: #b3b3b3;
 }
 
 <div
-  className="emotion-26"
+  className="emotion-30"
 >
   <div
-    className="emotion-25"
+    className="emotion-29"
   >
     <h3
       className="emotion-0"
@@ -167,7 +173,7 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
       Project Usage Plan
     </h3>
     <div
-      className="emotion-24"
+      className="emotion-28"
     >
       <div
         className="emotion-10"
@@ -286,17 +292,34 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
       <div
         className="emotion-20"
       >
-        <h4>
+        <h4
+          className="emotion-21"
+        >
           Additional Modules:
         </h4>
         <span
-          className="emotion-21"
+          className="emotion-22"
         >
-          None
+          zmlp-classification
+        </span>
+        <span
+          className="emotion-22"
+        >
+          zmlp-face-recognition
+        </span>
+        <span
+          className="emotion-22"
+        >
+          shot-detection
+        </span>
+        <span
+          className="emotion-22"
+        >
+          gcp-vision-text-detection
         </span>
       </div>
       <div
-        className="emotion-23"
+        className="emotion-27"
       >
         Contact your Account Manager to add additional modules and resources to your plan.
       </div>
@@ -306,13 +329,13 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
 `;
 
 exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
-.emotion-27 {
+.emotion-31 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-26 {
+.emotion-30 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -342,7 +365,7 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   margin-right: 8px;
 }
 
-.emotion-25 {
+.emotion-29 {
   padding: 32px;
 }
 
@@ -402,11 +425,17 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
 }
 
 .emotion-22 {
-  color: #b3b3b3;
-  font-style: italic;
+  padding-bottom: 4px;
 }
 
-.emotion-24 {
+.emotion-23 {
+  font-family: Roboto Mono;
+  color: #b3b3b3;
+  display: block;
+  padding-bottom: 2px;
+}
+
+.emotion-28 {
   padding-top: 16px;
   color: #b3b3b3;
 }
@@ -489,10 +518,10 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
 }
 
 <div
-  className="emotion-27"
+  className="emotion-31"
 >
   <div
-    className="emotion-26"
+    className="emotion-30"
   >
     <h3
       className="emotion-0"
@@ -500,7 +529,7 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
       Project Usage Plan
     </h3>
     <div
-      className="emotion-25"
+      className="emotion-29"
     >
       <div
         className="emotion-5"
@@ -635,17 +664,34 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
       <div
         className="emotion-21"
       >
-        <h4>
+        <h4
+          className="emotion-22"
+        >
           Additional Modules:
         </h4>
         <span
-          className="emotion-22"
+          className="emotion-23"
         >
-          None
+          zmlp-classification
+        </span>
+        <span
+          className="emotion-23"
+        >
+          zmlp-face-recognition
+        </span>
+        <span
+          className="emotion-23"
+        >
+          shot-detection
+        </span>
+        <span
+          className="emotion-23"
+        >
+          gcp-vision-text-detection
         </span>
       </div>
       <div
-        className="emotion-24"
+        className="emotion-28"
       >
         Contact your Account Manager to add additional modules and resources to your plan.
       </div>

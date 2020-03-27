@@ -156,13 +156,13 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
 `;
 
 exports[`<AccountCard /> should render properly 1`] = `
-.emotion-25 {
+.emotion-29 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-24 {
+.emotion-28 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -268,11 +268,17 @@ exports[`<AccountCard /> should render properly 1`] = `
   background-color: #808080;
 }
 
-.emotion-23 {
+.emotion-27 {
   padding: 32px;
 }
 
 .emotion-6 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-13 {
   padding-bottom: 16px;
 }
 
@@ -320,21 +326,26 @@ exports[`<AccountCard /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-22 {
+.emotion-26 {
   padding-top: 16px;
-  padding-left: 44px;
 }
 
 .emotion-21 {
+  padding-bottom: 4px;
+}
+
+.emotion-22 {
+  font-family: Roboto Mono;
   color: #b3b3b3;
-  font-style: italic;
+  display: block;
+  padding-bottom: 2px;
 }
 
 <div
-  className="emotion-25"
+  className="emotion-29"
 >
   <div
-    className="emotion-24"
+    className="emotion-28"
   >
     <div
       className="emotion-5"
@@ -369,7 +380,7 @@ exports[`<AccountCard /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-23"
+      className="emotion-27"
     >
       <h3
         className="emotion-6"
@@ -377,7 +388,7 @@ exports[`<AccountCard /> should render properly 1`] = `
         Usage Plan:
       </h3>
       <div
-        className="emotion-6"
+        className="emotion-13"
       >
         <h4
           className="emotion-7"
@@ -465,15 +476,32 @@ exports[`<AccountCard /> should render properly 1`] = `
         </div>
       </div>
       <div
-        className="emotion-22"
+        className="emotion-26"
       >
-        <h4>
+        <h4
+          className="emotion-21"
+        >
           Additional Modules:
         </h4>
         <span
-          className="emotion-21"
+          className="emotion-22"
         >
-          None
+          zmlp-classification
+        </span>
+        <span
+          className="emotion-22"
+        >
+          zmlp-face-recognition
+        </span>
+        <span
+          className="emotion-22"
+        >
+          shot-detection
+        </span>
+        <span
+          className="emotion-22"
+        >
+          gcp-vision-text-detection
         </span>
       </div>
     </div>
@@ -482,13 +510,13 @@ exports[`<AccountCard /> should render properly 1`] = `
 `;
 
 exports[`<AccountCard /> should render properly with over usage 1`] = `
-.emotion-30 {
+.emotion-34 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-29 {
+.emotion-33 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -594,11 +622,17 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   background-color: #808080;
 }
 
-.emotion-28 {
+.emotion-32 {
   padding: 32px;
 }
 
 .emotion-11 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-18 {
   padding-bottom: 16px;
 }
 
@@ -646,14 +680,19 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-27 {
+.emotion-31 {
   padding-top: 16px;
-  padding-left: 44px;
 }
 
 .emotion-26 {
+  padding-bottom: 4px;
+}
+
+.emotion-27 {
+  font-family: Roboto Mono;
   color: #b3b3b3;
-  font-style: italic;
+  display: block;
+  padding-bottom: 2px;
 }
 
 .emotion-10 {
@@ -694,10 +733,10 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
 }
 
 <div
-  className="emotion-30"
+  className="emotion-34"
 >
   <div
-    className="emotion-29"
+    className="emotion-33"
   >
     <div
       className="emotion-5"
@@ -732,7 +771,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
       </div>
     </div>
     <div
-      className="emotion-28"
+      className="emotion-32"
     >
       <div
         className="emotion-10"
@@ -780,7 +819,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
         Usage Plan:
       </h3>
       <div
-        className="emotion-11"
+        className="emotion-18"
       >
         <h4
           className="emotion-12"
@@ -868,15 +907,32 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
         </div>
       </div>
       <div
-        className="emotion-27"
+        className="emotion-31"
       >
-        <h4>
+        <h4
+          className="emotion-26"
+        >
           Additional Modules:
         </h4>
         <span
-          className="emotion-26"
+          className="emotion-27"
         >
-          None
+          zmlp-classification
+        </span>
+        <span
+          className="emotion-27"
+        >
+          zmlp-face-recognition
+        </span>
+        <span
+          className="emotion-27"
+        >
+          shot-detection
+        </span>
+        <span
+          className="emotion-27"
+        >
+          gcp-vision-text-detection
         </span>
       </div>
     </div>
