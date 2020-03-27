@@ -1,10 +1,13 @@
 import Router from 'next/router'
+import { cache } from 'swr'
 
 export const authenticateUser = ({ setUser, setErrorMessage }) => async ({
   username,
   password,
   idToken,
 }) => {
+  cache.clear()
+
   setErrorMessage('')
 
   const response = await fetch('/api/v1/login/', {
@@ -48,6 +51,8 @@ export const logout = ({ googleAuth, setUser }) => async ({ redirectUrl }) => {
   })
 
   setUser({ user: null })
+
+  cache.clear()
 
   Router.push(redirectUrl)
 }

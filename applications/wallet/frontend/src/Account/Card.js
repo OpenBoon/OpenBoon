@@ -9,10 +9,10 @@ import Card from '../Card'
 
 import AccountUsagePlan from './UsagePlan'
 
-const AccountCard = ({ id, name }) => {
+const AccountCard = ({ projectId, name }) => {
   const {
     data: { results: subscriptions },
-  } = useSWR(`/api/v1/projects/${id}/subscriptions/`)
+  } = useSWR(`/api/v1/projects/${projectId}/subscriptions/`)
 
   return (
     <Card
@@ -25,10 +25,10 @@ const AccountCard = ({ id, name }) => {
               paddingBottom: spacing.normal,
             }}
           >
-            Project ID: {id}
+            Project ID: {projectId}
           </div>
           <div css={{ display: 'flex' }}>
-            <Link href="/[projectId]" as={`/${id}`} passHref>
+            <Link href="/[projectId]" as={`/${projectId}`} passHref>
               <Button variant={VARIANTS.PRIMARY_SMALL}>View Dashboard</Button>
             </Link>
           </div>
@@ -46,7 +46,7 @@ const AccountCard = ({ id, name }) => {
 }
 
 AccountCard.propTypes = {
-  id: PropTypes.string.isRequired,
+  projectId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 }
 
