@@ -27,7 +27,7 @@ from rest_framework_nested.routers import NestedSimpleRouter
 from datasources.views import DataSourceViewSet
 from registration.views import UserRegistrationView, UserConfirmationView
 from wallet import views as wallet_views
-from wallet.views import WalletAPIRootView, LoginView, LogoutView
+from wallet.views import WalletAPIRootView, LoginView, LogoutView, MeView
 from apikeys.views import ApikeyViewSet
 from assets.views import (AssetViewSet, FileCategoryViewSet,
                           FileNameViewSet, SourceFileViewSet)
@@ -80,6 +80,7 @@ BROWSABLE_API_URLS = [
                                          PasswordResetConfirmView.as_view(),
                                          name='api-password-reset-confirm')),
     ('logout', path('api/v1/logout/', LogoutView.as_view(), name='api-logout')),
+    ('me', path('api/v1/me/', MeView.as_view(), name='me')),
     ('user-registration', path('api/v1/accounts/register',
                                UserRegistrationView.as_view(),
                                name='api-user-register')),
