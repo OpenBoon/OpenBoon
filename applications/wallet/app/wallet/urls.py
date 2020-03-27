@@ -37,6 +37,7 @@ from permissions.views import PermissionViewSet
 from roles.views import RolesViewSet
 from subscriptions.views import SubscriptionViewSet
 from modules.views import ModuleViewSet
+from privacy.views import AgreementViewSet
 
 
 router = routers.DefaultRouter()
@@ -44,6 +45,9 @@ router.APIRootView = WalletAPIRootView
 router.register('users', wallet_views.UserViewSet, basename='user')
 router.register('groups', wallet_views.GroupViewSet, basename='group')
 router.register('projects', ProjectViewSet, basename='project')
+
+users_router = NestedSimpleRouter(router, 'users', lookup='user')
+users_router.register('agreements', AgreementViewSet, basename='agreement')
 
 projects_router = NestedSimpleRouter(router, 'projects', lookup='project')
 projects_router.register('jobs', JobViewSet, basename='job')
@@ -93,6 +97,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/login/', LoginView.as_view(), name='api-login'),
     path('api/v1/', include(router.urls)),
+    path('api/v1/', include(users_router.urls)),
     path('api/v1/', include(projects_router.urls)),
     path('api/v1/', include(assets_files_router.urls)),
     path('api/v1/', include(assets_file_names_router.urls)),
