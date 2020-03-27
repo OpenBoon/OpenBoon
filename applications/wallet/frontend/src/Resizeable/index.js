@@ -12,7 +12,10 @@ const DRAG_OFFSET = -10
 
 // Only supports horizontal drag on the left of an element
 const Resizeable = ({ children, initialWidth, storageName }) => {
-  const [width, setWidth] = useLocalStorage(storageName, initialWidth)
+  const [width, setWidth] = useLocalStorage({
+    key: storageName,
+    initialValue: initialWidth,
+  })
 
   const onDrag = calculateDelta({ width, setWidth })
 

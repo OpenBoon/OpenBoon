@@ -7,12 +7,16 @@ describe('useLocalStorage()', () => {
   const mockGet = jest.fn()
 
   Object.defineProperty(window, 'localStorage', {
+    writable: true,
     value: { setItem: mockSet, getItem: mockGet },
   })
 
   it('should return properly', () => {
     const TestComponent = () => {
-      const [value, setValue] = useLocalStorage('name', 100)
+      const [value, setValue] = useLocalStorage({
+        key: 'name',
+        initialValue: 100,
+      })
       return (
         <button type="button" onClick={setValue}>
           {value}
@@ -23,7 +27,9 @@ describe('useLocalStorage()', () => {
     const component = TestRenderer.create(<TestComponent />)
 
     act(() => {
-      component.root.findByProps({ type: 'button' }).props.onClick(200)
+      component.root
+        .findByProps({ type: 'button' })
+        .props.onClick({ value: 200 })
     })
 
     expect(mockGet).toHaveBeenCalledWith('name')
@@ -34,7 +40,7 @@ describe('useLocalStorage()', () => {
     mockGet.mockImplementationOnce(() => 200)
 
     const TestComponent = () => {
-      const [value, setValue] = useLocalStorage('name')
+      const [value, setValue] = useLocalStorage({ key: 'name' })
       return (
         <button type="button" onClick={setValue}>
           {value}

@@ -7,7 +7,7 @@ describe('<Resizeable /> helper', () => {
 
       calculateDelta({ width: 400, setWidth: mockSet })('', { deltaX: 10 })
 
-      expect(mockSet).toHaveBeenCalledWith(390)
+      expect(mockSet).toHaveBeenCalledWith({ value: 390 })
     })
   })
 })
