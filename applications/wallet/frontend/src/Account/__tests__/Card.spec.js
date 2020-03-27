@@ -13,7 +13,7 @@ describe('<AccountCard />', () => {
     require('swr').__setMockUseSWRResponse({ data: subscriptions })
 
     const component = TestRenderer.create(
-      <AccountCard id={PROJECT_ID} name={PROJECT_NAME} />,
+      <AccountCard projectId={PROJECT_ID} name={PROJECT_NAME} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -22,7 +22,7 @@ describe('<AccountCard />', () => {
   it('should render properly with over usage', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]',
-      query: { projectId: project.id },
+      query: { projectId: PROJECT_ID },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -41,7 +41,7 @@ describe('<AccountCard />', () => {
     })
 
     const component = TestRenderer.create(
-      <AccountCard id={PROJECT_ID} name={PROJECT_NAME} />,
+      <AccountCard projectId={PROJECT_ID} name={PROJECT_NAME} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -50,7 +50,7 @@ describe('<AccountCard />', () => {
   it('should not render without subscriptions', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]',
-      query: { projectId: project.id },
+      query: { projectId: PROJECT_ID },
     })
 
     require('swr').__setMockUseSWRResponse({
@@ -63,7 +63,7 @@ describe('<AccountCard />', () => {
     })
 
     const component = TestRenderer.create(
-      <AccountCard id={PROJECT_ID} name={PROJECT_NAME} />,
+      <AccountCard projectId={PROJECT_ID} name={PROJECT_NAME} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
