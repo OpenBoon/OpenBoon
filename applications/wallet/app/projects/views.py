@@ -522,6 +522,18 @@ class ProjectUserViewSet(BaseProjectViewSet):
         name = self._get_api_key_name(email, project_pk)
         encoded_apikey = create_zmlp_api_key(request.client, name, permissions, internal=True)
 
+        # If the membership already exists return the correct status code.
+        try:
+            membership = Membership.objects.get(user=user, project=project)
+            serializer = self.get_serializer(user, context={'request': request})
+            if membership.roles == requested_roles:
+                return Response(data=serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({'detail': 'This user already exists in this project '
+                                           'with different permissions.'}, status=409)
+        except ObjectDoesNotExist:
+            pass
+
         # Create a membership for given user
         Membership.objects.create(user=user, project=project, apikey=encoded_apikey,
                                   roles=requested_roles)
