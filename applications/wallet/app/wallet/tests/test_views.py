@@ -152,9 +152,7 @@ def test_api_login_google_oauth_bad_issuer(api_client, monkeypatch, user):
     assert response.status_code == 401
 
 
-def test_me(api_client, user):
-    api_client.force_login(user)
-    api_client.force_authenticate(user)
+def test_me(login, api_client):
     response = api_client.get(reverse('me'))
     assert response.status_code == 200
     response_data = response.json()
