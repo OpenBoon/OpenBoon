@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<DataSourcesAddForm /> should render properly 1`] = `
-.emotion-168 {
+.emotion-162 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -307,7 +307,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   max-width: 600px;
 }
 
-.emotion-94 {
+.emotion-130 {
   border: none;
   padding: 0;
   margin: 0;
@@ -328,69 +328,69 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   clear: both;
 }
 
-.emotion-93 {
+.emotion-129 {
   width: 100%;
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-93 th,
-.emotion-93 td {
+.emotion-129 th,
+.emotion-129 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-93 th:first-of-type,
-.emotion-93 td:first-of-type {
+.emotion-129 th:first-of-type,
+.emotion-129 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-93 th:nth-of-type(2),
-.emotion-93 td:nth-of-type(2) {
+.emotion-129 th:nth-of-type(2),
+.emotion-129 td:nth-of-type(2) {
   min-width: 300px;
 }
 
-.emotion-93 th:nth-of-type(3),
-.emotion-93 td:nth-of-type(3) {
+.emotion-129 th:nth-of-type(3),
+.emotion-129 td:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-93 th {
+.emotion-129 th {
   color: #b3b3b3;
   font-weight: 500;
 }
 
-.emotion-93 td {
+.emotion-129 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
 }
 
-.emotion-93 td:first-of-type {
+.emotion-129 td:first-of-type {
   border: none;
 }
 
-.emotion-93 td:nth-of-type(2) {
+.emotion-129 td:nth-of-type(2) {
   font-family: Roboto Mono;
 }
 
-.emotion-93 tr:hover td {
+.emotion-129 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-93 tr:hover + tr td {
+.emotion-129 tr:hover + tr td {
   border-top-color: transparent;
 }
 
-.emotion-93 tr:last-of-type td {
+.emotion-129 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-93 tr:last-of-type td:first-of-type {
+.emotion-129 tr:last-of-type td:first-of-type {
   border: none;
 }
 
 .emotion-68 {
-  cursor: pointer;
+  cursor: not-allowed;
 }
 
 .emotion-67 {
@@ -402,15 +402,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   -moz-user-select: none;
 }
 
-.emotion-110 {
-  color: #73b61c;
-}
-
-.emotion-119 {
-  cursor: not-allowed;
-}
-
-.emotion-114 {
+.emotion-63 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -422,7 +414,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   cursor: not-allowed;
 }
 
-.emotion-116 {
+.emotion-65 {
   position: absolute;
   top: 0;
   left: 0;
@@ -443,7 +435,15 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   cursor: not-allowed;
 }
 
-.emotion-167 {
+.emotion-74 {
+  cursor: pointer;
+}
+
+.emotion-146 {
+  color: #73b61c;
+}
+
+.emotion-161 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -452,12 +452,12 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-167 button,
-.emotion-167 a {
+.emotion-161 button,
+.emotion-161 a {
   margin-right: 16px;
 }
 
-.emotion-165 {
+.emotion-159 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -489,30 +489,30 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-165:hover {
+.emotion-159:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-165[aria-disabled=true] {
+.emotion-159[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-165,
-.emotion-165:hover,
-.emotion-165:visited {
+.emotion-159,
+.emotion-159:hover,
+.emotion-159:visited {
   background-color: #808080;
 }
 
-.emotion-165:hover {
+.emotion-159:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-165[aria-disabled=true] {
+.emotion-159[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-166 {
+.emotion-160 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -544,32 +544,32 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-166:hover {
+.emotion-160:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-166[aria-disabled=true] {
+.emotion-160[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-166,
-.emotion-166:hover,
-.emotion-166:visited {
+.emotion-160,
+.emotion-160:hover,
+.emotion-160:visited {
   background-color: #73b61c;
 }
 
-.emotion-166:hover {
+.emotion-160:hover {
   background-color: #96c955;
 }
 
-.emotion-166[aria-disabled=true] {
+.emotion-160[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
   action=""
-  className="emotion-168"
+  className="emotion-162"
   method="post"
   onSubmit={[Function]}
 >
@@ -931,7 +931,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
           </span>
         </p>
         <fieldset
-          className="emotion-94"
+          className="emotion-130"
         >
           <legend
             className="emotion-61"
@@ -943,7 +943,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
           />
           <table
             cellSpacing="0"
-            className="emotion-93"
+            className="emotion-129"
           >
             <thead>
               <tr>
@@ -971,14 +971,14 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                       className="emotion-24"
                     >
                       <input
-                        className="emotion-21"
+                        className="emotion-63"
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zmlp-classification"
+                        value="clarifai-predict"
                       />
                       <div
-                        className="emotion-23"
+                        className="emotion-65"
                       >
                         <svg
                           className="emotion-22"
@@ -990,27 +990,21 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      zmlp-classification
-                      , 
-                      Label Detection
+                      clarifai-predict
                       : 
-                      Adds a list of predicted label that apply to the media.
+                      Clarifai prediction API, standard model.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zmlp-classification
+                  clarifai-predict
                 </td>
                 <td>
-                  <strong>
-                    Label Detection
-                    : 
-                  </strong>
-                  Adds a list of predicted label that apply to the media.
+                  Clarifai prediction API, standard model.
                 </td>
               </tr>
               <tr
-                className="emotion-68"
+                className="emotion-74"
                 onClick={[Function]}
               >
                 <td>
@@ -1025,7 +1019,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zmlp-objects"
+                        value="gcp-label-detection"
                       />
                       <div
                         className="emotion-23"
@@ -1040,27 +1034,21 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      zmlp-objects
-                      , 
-                      Object Detection
+                      gcp-label-detection
                       : 
-                      Detects up to 80 everyday objects.
+                      Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zmlp-objects
+                  gcp-label-detection
                 </td>
                 <td>
-                  <strong>
-                    Object Detection
-                    : 
-                  </strong>
-                  Detects up to 80 everyday objects.
+                  Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                 </td>
               </tr>
               <tr
-                className="emotion-68"
+                className="emotion-74"
                 onClick={[Function]}
               >
                 <td>
@@ -1075,7 +1063,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zmlp-face-recognition"
+                        value="gcp-object-detection"
                       />
                       <div
                         className="emotion-23"
@@ -1090,27 +1078,21 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      zmlp-face-recognition
-                      , 
-                      Facial Recognition
+                      gcp-object-detection
                       : 
-                      Recognizes faces within an image.
+                      Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zmlp-face-recognition
+                  gcp-object-detection
                 </td>
                 <td>
-                  <strong>
-                    Facial Recognition
-                    : 
-                  </strong>
-                  Recognizes faces within an image.
+                  Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                 </td>
               </tr>
               <tr
-                className="emotion-68"
+                className="emotion-74"
                 onClick={[Function]}
               >
                 <td>
@@ -1125,7 +1107,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zmlp-ocr"
+                        value="zvi-disable-analysis"
                       />
                       <div
                         className="emotion-23"
@@ -1140,27 +1122,21 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      zmlp-ocr
-                      , 
-                      OCR (Optical Character Recognition)
+                      zvi-disable-analysis
                       : 
-                      Transcribes text found in images.
+                      Disable all non-core processors
                     </div>
                   </label>
                 </td>
                 <td>
-                  zmlp-ocr
+                  zvi-disable-analysis
                 </td>
                 <td>
-                  <strong>
-                    OCR (Optical Character Recognition)
-                    : 
-                  </strong>
-                  Transcribes text found in images.
+                  Disable all non-core processors
                 </td>
               </tr>
               <tr
-                className="emotion-68"
+                className="emotion-74"
                 onClick={[Function]}
               >
                 <td>
@@ -1175,7 +1151,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zml-deep-document"
+                        value="zvi-doc-page-extraction"
                       />
                       <div
                         className="emotion-23"
@@ -1190,30 +1166,288 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      zml-deep-document
-                      , 
-                      Page Analysis
+                      zvi-doc-page-extraction
                       : 
-                      Breaks multipage document into individual pages and imports them as individual entities.
+                      Extract all pages in MS Office/PDF documents into separate assets.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zml-deep-document
+                  zvi-doc-page-extraction
                 </td>
                 <td>
-                  <strong>
-                    Page Analysis
-                    : 
-                  </strong>
-                  Breaks multipage document into individual pages and imports them as individual entities.
+                  Extract all pages in MS Office/PDF documents into separate assets.
+                </td>
+              </tr>
+              <tr
+                className="emotion-74"
+                onClick={[Function]}
+              >
+                <td>
+                  <label
+                    className="emotion-67"
+                  >
+                    <div
+                      className="emotion-24"
+                    >
+                      <input
+                        className="emotion-21"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="zvi-document-page-extraction"
+                      />
+                      <div
+                        className="emotion-23"
+                      >
+                        <svg
+                          className="emotion-22"
+                          data-file-name="checkmark.svg"
+                          width={20}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="hidden"
+                    >
+                      zvi-document-page-extraction
+                      : 
+                      Extract all pages in MS Office/PDF documents into separate assets.
+                    </div>
+                  </label>
+                </td>
+                <td>
+                  zvi-document-page-extraction
+                </td>
+                <td>
+                  Extract all pages in MS Office/PDF documents into separate assets.
+                </td>
+              </tr>
+              <tr
+                className="emotion-74"
+                onClick={[Function]}
+              >
+                <td>
+                  <label
+                    className="emotion-67"
+                  >
+                    <div
+                      className="emotion-24"
+                    >
+                      <input
+                        className="emotion-21"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="zvi-image-layer-extraction"
+                      />
+                      <div
+                        className="emotion-23"
+                      >
+                        <svg
+                          className="emotion-22"
+                          data-file-name="checkmark.svg"
+                          width={20}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="hidden"
+                    >
+                      zvi-image-layer-extraction
+                      : 
+                      Extract all layers in multi page image formats such as tiff and psd as as separate assets
+                    </div>
+                  </label>
+                </td>
+                <td>
+                  zvi-image-layer-extraction
+                </td>
+                <td>
+                  Extract all layers in multi page image formats such as tiff and psd as as separate assets
+                </td>
+              </tr>
+              <tr
+                className="emotion-74"
+                onClick={[Function]}
+              >
+                <td>
+                  <label
+                    className="emotion-67"
+                  >
+                    <div
+                      className="emotion-24"
+                    >
+                      <input
+                        className="emotion-21"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="zvi-image-page-extraction"
+                      />
+                      <div
+                        className="emotion-23"
+                      >
+                        <svg
+                          className="emotion-22"
+                          data-file-name="checkmark.svg"
+                          width={20}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="hidden"
+                    >
+                      zvi-image-page-extraction
+                      : 
+                      Extract all layers in multi page image formats such as tiff and psd as as separate assets
+                    </div>
+                  </label>
+                </td>
+                <td>
+                  zvi-image-page-extraction
+                </td>
+                <td>
+                  Extract all layers in multi page image formats such as tiff and psd as as separate assets
+                </td>
+              </tr>
+              <tr
+                className="emotion-74"
+                onClick={[Function]}
+              >
+                <td>
+                  <label
+                    className="emotion-67"
+                  >
+                    <div
+                      className="emotion-24"
+                    >
+                      <input
+                        className="emotion-21"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="zvi-label-detection"
+                      />
+                      <div
+                        className="emotion-23"
+                      >
+                        <svg
+                          className="emotion-22"
+                          data-file-name="checkmark.svg"
+                          width={20}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="hidden"
+                    >
+                      zvi-label-detection
+                      : 
+                      Generate keyword labels for image, video, and documents.
+                    </div>
+                  </label>
+                </td>
+                <td>
+                  zvi-label-detection
+                </td>
+                <td>
+                  Generate keyword labels for image, video, and documents.
+                </td>
+              </tr>
+              <tr
+                className="emotion-74"
+                onClick={[Function]}
+              >
+                <td>
+                  <label
+                    className="emotion-67"
+                  >
+                    <div
+                      className="emotion-24"
+                    >
+                      <input
+                        className="emotion-21"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="zvi-object-detection"
+                      />
+                      <div
+                        className="emotion-23"
+                      >
+                        <svg
+                          className="emotion-22"
+                          data-file-name="checkmark.svg"
+                          width={20}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="hidden"
+                    >
+                      zvi-object-detection
+                      : 
+                      Detect everyday objects in images, video, and documents.
+                    </div>
+                  </label>
+                </td>
+                <td>
+                  zvi-object-detection
+                </td>
+                <td>
+                  Detect everyday objects in images, video, and documents.
+                </td>
+              </tr>
+              <tr
+                className="emotion-74"
+                onClick={[Function]}
+              >
+                <td>
+                  <label
+                    className="emotion-67"
+                  >
+                    <div
+                      className="emotion-24"
+                    >
+                      <input
+                        className="emotion-21"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="zvi-video-shot-extraction"
+                      />
+                      <div
+                        className="emotion-23"
+                      >
+                        <svg
+                          className="emotion-22"
+                          data-file-name="checkmark.svg"
+                          width={20}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="hidden"
+                    >
+                      zvi-video-shot-extraction
+                      : 
+                      Break video files into individual assets based on a shot detection algorithm.
+                    </div>
+                  </label>
+                </td>
+                <td>
+                  zvi-video-shot-extraction
+                </td>
+                <td>
+                  Break video files into individual assets based on a shot detection algorithm.
                 </td>
               </tr>
             </tbody>
           </table>
         </fieldset>
         <fieldset
-          className="emotion-94"
+          className="emotion-130"
         >
           <legend
             className="emotion-61"
@@ -1225,7 +1459,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
           />
           <table
             cellSpacing="0"
-            className="emotion-93"
+            className="emotion-129"
           >
             <thead>
               <tr>
@@ -1242,7 +1476,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
             </thead>
             <tbody>
               <tr
-                className="emotion-68"
+                className="emotion-74"
                 onClick={[Function]}
               >
                 <td>
@@ -1257,7 +1491,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="shot-detection"
+                        value="zvi-video-shot-timeline"
                       />
                       <div
                         className="emotion-23"
@@ -1272,23 +1506,17 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                     <div
                       className="hidden"
                     >
-                      shot-detection
-                      , 
-                      Shot Detection
+                      zvi-video-shot-timeline
                       : 
-                      Intelligently breaks a video into separate shots and imports each as its own entity.
+                      Break video files into individual assets based on a shot detection algorithm.
                     </div>
                   </label>
                 </td>
                 <td>
-                  shot-detection
+                  zvi-video-shot-timeline
                 </td>
                 <td>
-                  <strong>
-                    Shot Detection
-                    : 
-                  </strong>
-                  Intelligently breaks a video into separate shots and imports each as its own entity.
+                  Break video files into individual assets based on a shot detection algorithm.
                 </td>
               </tr>
             </tbody>
@@ -1323,7 +1551,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
         >
           <span>
             <span
-              className="emotion-110"
+              className="emotion-146"
             >
               Contact your Account Manager to activate.
             </span>
@@ -1332,7 +1560,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
           </span>
         </p>
         <fieldset
-          className="emotion-94"
+          className="emotion-130"
         >
           <legend
             className="emotion-61"
@@ -1344,7 +1572,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
           />
           <table
             cellSpacing="0"
-            className="emotion-93"
+            className="emotion-129"
           >
             <thead>
               <tr>
@@ -1359,212 +1587,11 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                 </th>
               </tr>
             </thead>
-            <tbody>
-              <tr
-                className="emotion-119"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-67"
-                  >
-                    <div
-                      className="emotion-24"
-                    >
-                      <input
-                        className="emotion-114"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-vision-crop-hints"
-                      />
-                      <div
-                        className="emotion-116"
-                      >
-                        <svg
-                          className="emotion-22"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-vision-crop-hints
-                      , 
-                      Crop Hints (Vision)
-                      : 
-                      Determine suggested vertices for a crop region on an image.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-vision-crop-hints
-                </td>
-                <td>
-                  <strong>
-                    Crop Hints (Vision)
-                    : 
-                  </strong>
-                  Determine suggested vertices for a crop region on an image.
-                </td>
-              </tr>
-              <tr
-                className="emotion-119"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-67"
-                  >
-                    <div
-                      className="emotion-24"
-                    >
-                      <input
-                        className="emotion-114"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-document-text-detection"
-                      />
-                      <div
-                        className="emotion-116"
-                      >
-                        <svg
-                          className="emotion-22"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-document-text-detection
-                      , 
-                      OCR Documents (Vision)
-                      : 
-                      Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-document-text-detection
-                </td>
-                <td>
-                  <strong>
-                    OCR Documents (Vision)
-                    : 
-                  </strong>
-                  Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image.
-                </td>
-              </tr>
-              <tr
-                className="emotion-119"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-67"
-                  >
-                    <div
-                      className="emotion-24"
-                    >
-                      <input
-                        className="emotion-114"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-vision-text-detection"
-                      />
-                      <div
-                        className="emotion-116"
-                      >
-                        <svg
-                          className="emotion-22"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-vision-text-detection
-                      , 
-                      OCR Images (Vision)
-                      : 
-                      Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-vision-text-detection
-                </td>
-                <td>
-                  <strong>
-                    OCR Images (Vision)
-                    : 
-                  </strong>
-                  Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image
-                </td>
-              </tr>
-              <tr
-                className="emotion-119"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-67"
-                  >
-                    <div
-                      className="emotion-24"
-                    >
-                      <input
-                        className="emotion-114"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-vision-label-detection"
-                      />
-                      <div
-                        className="emotion-116"
-                      >
-                        <svg
-                          className="emotion-22"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-vision-label-detection
-                      , 
-                      Label Detection (Vision)
-                      : 
-                      Add labels based on image content.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-vision-label-detection
-                </td>
-                <td>
-                  <strong>
-                    Label Detection (Vision)
-                    : 
-                  </strong>
-                  Add labels based on image content.
-                </td>
-              </tr>
-            </tbody>
+            <tbody />
           </table>
         </fieldset>
         <fieldset
-          className="emotion-94"
+          className="emotion-130"
         >
           <legend
             className="emotion-61"
@@ -1576,7 +1603,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
           />
           <table
             cellSpacing="0"
-            className="emotion-93"
+            className="emotion-129"
           >
             <thead>
               <tr>
@@ -1591,168 +1618,17 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
                 </th>
               </tr>
             </thead>
-            <tbody>
-              <tr
-                className="emotion-119"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-67"
-                  >
-                    <div
-                      className="emotion-24"
-                    >
-                      <input
-                        className="emotion-114"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-video-label-detection"
-                      />
-                      <div
-                        className="emotion-116"
-                      >
-                        <svg
-                          className="emotion-22"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-video-label-detection
-                      , 
-                      Label Detection (Video)
-                      : 
-                      Identifies objects, locations, activities, animal species, products, and more.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-video-label-detection
-                </td>
-                <td>
-                  <strong>
-                    Label Detection (Video)
-                    : 
-                  </strong>
-                  Identifies objects, locations, activities, animal species, products, and more.
-                </td>
-              </tr>
-              <tr
-                className="emotion-119"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-67"
-                  >
-                    <div
-                      className="emotion-24"
-                    >
-                      <input
-                        className="emotion-114"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-shot-detection"
-                      />
-                      <div
-                        className="emotion-116"
-                      >
-                        <svg
-                          className="emotion-22"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-shot-detection
-                      , 
-                      Shot Change (Video)
-                      : 
-                      Shot change analysis detects shot changes in a video
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-shot-detection
-                </td>
-                <td>
-                  <strong>
-                    Shot Change (Video)
-                    : 
-                  </strong>
-                  Shot change analysis detects shot changes in a video
-                </td>
-              </tr>
-              <tr
-                className="emotion-119"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-67"
-                  >
-                    <div
-                      className="emotion-24"
-                    >
-                      <input
-                        className="emotion-114"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-explicit-content-detection"
-                      />
-                      <div
-                        className="emotion-116"
-                      >
-                        <svg
-                          className="emotion-22"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-explicit-content-detection
-                      , 
-                      Explicit Content Detection (Video)
-                      : 
-                      Explicit Content Detection detects adult content in videos. Adult content is content generally inappropriate for those under under 18 years of age and includes, but is not limited to, nudity, sexual activities, and pornography. Such content detected in cartoons or anime is also identified.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-explicit-content-detection
-                </td>
-                <td>
-                  <strong>
-                    Explicit Content Detection (Video)
-                    : 
-                  </strong>
-                  Explicit Content Detection detects adult content in videos. Adult content is content generally inappropriate for those under under 18 years of age and includes, but is not limited to, nudity, sexual activities, and pornography. Such content detected in cartoons or anime is also identified.
-                </td>
-              </tr>
-            </tbody>
+            <tbody />
           </table>
         </fieldset>
       </div>
     </div>
   </div>
   <div
-    className="emotion-167"
+    className="emotion-161"
   >
     <a
-      className="emotion-165"
+      className="emotion-159"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -1761,7 +1637,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
     </a>
     <button
       aria-disabled={true}
-      className="emotion-166"
+      className="emotion-160"
       onClick={[Function]}
       type="submit"
     >
@@ -1772,7 +1648,7 @@ exports[`<DataSourcesAddForm /> should render properly 1`] = `
 `;
 
 exports[`<DataSourcesAddForm /> should render properly 2`] = `
-.emotion-169 {
+.emotion-163 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2078,7 +1954,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
   max-width: 600px;
 }
 
-.emotion-95 {
+.emotion-131 {
   border: none;
   padding: 0;
   margin: 0;
@@ -2099,69 +1975,69 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
   clear: both;
 }
 
-.emotion-94 {
+.emotion-130 {
   width: 100%;
   color: #ffffff;
   text-align: left;
 }
 
-.emotion-94 th,
-.emotion-94 td {
+.emotion-130 th,
+.emotion-130 td {
   padding: 16px;
   padding-left: 0;
 }
 
-.emotion-94 th:first-of-type,
-.emotion-94 td:first-of-type {
+.emotion-130 th:first-of-type,
+.emotion-130 td:first-of-type {
   padding-left: 16px;
 }
 
-.emotion-94 th:nth-of-type(2),
-.emotion-94 td:nth-of-type(2) {
+.emotion-130 th:nth-of-type(2),
+.emotion-130 td:nth-of-type(2) {
   min-width: 300px;
 }
 
-.emotion-94 th:nth-of-type(3),
-.emotion-94 td:nth-of-type(3) {
+.emotion-130 th:nth-of-type(3),
+.emotion-130 td:nth-of-type(3) {
   width: 100%;
 }
 
-.emotion-94 th {
+.emotion-130 th {
   color: #b3b3b3;
   font-weight: 500;
 }
 
-.emotion-94 td {
+.emotion-130 td {
   border-top: 1px solid #4a4a4a;
   vertical-align: top;
 }
 
-.emotion-94 td:first-of-type {
+.emotion-130 td:first-of-type {
   border: none;
 }
 
-.emotion-94 td:nth-of-type(2) {
+.emotion-130 td:nth-of-type(2) {
   font-family: Roboto Mono;
 }
 
-.emotion-94 tr:hover td {
+.emotion-130 tr:hover td {
   background-color: #4a4a4a;
 }
 
-.emotion-94 tr:hover + tr td {
+.emotion-130 tr:hover + tr td {
   border-top-color: transparent;
 }
 
-.emotion-94 tr:last-of-type td {
+.emotion-130 tr:last-of-type td {
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-94 tr:last-of-type td:first-of-type {
+.emotion-130 tr:last-of-type td:first-of-type {
   border: none;
 }
 
 .emotion-69 {
-  cursor: pointer;
+  cursor: not-allowed;
 }
 
 .emotion-68 {
@@ -2173,15 +2049,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
   -moz-user-select: none;
 }
 
-.emotion-111 {
-  color: #73b61c;
-}
-
-.emotion-120 {
-  cursor: not-allowed;
-}
-
-.emotion-115 {
+.emotion-64 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -2193,7 +2061,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
   cursor: not-allowed;
 }
 
-.emotion-117 {
+.emotion-66 {
   position: absolute;
   top: 0;
   left: 0;
@@ -2214,7 +2082,15 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
   cursor: not-allowed;
 }
 
-.emotion-168 {
+.emotion-75 {
+  cursor: pointer;
+}
+
+.emotion-147 {
+  color: #73b61c;
+}
+
+.emotion-162 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2223,12 +2099,12 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
   padding-bottom: 16px;
 }
 
-.emotion-168 button,
-.emotion-168 a {
+.emotion-162 button,
+.emotion-162 a {
   margin-right: 16px;
 }
 
-.emotion-166 {
+.emotion-160 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2260,30 +2136,30 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
   background-color: transparent;
 }
 
-.emotion-166:hover {
+.emotion-160:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-166[aria-disabled=true] {
+.emotion-160[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-166,
-.emotion-166:hover,
-.emotion-166:visited {
+.emotion-160,
+.emotion-160:hover,
+.emotion-160:visited {
   background-color: #808080;
 }
 
-.emotion-166:hover {
+.emotion-160:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-166[aria-disabled=true] {
+.emotion-160[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-167 {
+.emotion-161 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2315,26 +2191,26 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
   background-color: transparent;
 }
 
-.emotion-167:hover {
+.emotion-161:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-167[aria-disabled=true] {
+.emotion-161[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-167,
-.emotion-167:hover,
-.emotion-167:visited {
+.emotion-161,
+.emotion-161:hover,
+.emotion-161:visited {
   background-color: #73b61c;
 }
 
-.emotion-167:hover {
+.emotion-161:hover {
   background-color: #96c955;
 }
 
-.emotion-167[aria-disabled=true] {
+.emotion-161[aria-disabled=true] {
   background-color: #808080;
 }
 
@@ -2367,7 +2243,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
 
 <form
   action=""
-  className="emotion-169"
+  className="emotion-163"
   method="post"
   onSubmit={[Function]}
 >
@@ -2734,7 +2610,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
           </span>
         </p>
         <fieldset
-          className="emotion-95"
+          className="emotion-131"
         >
           <legend
             className="emotion-62"
@@ -2746,7 +2622,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
           />
           <table
             cellSpacing="0"
-            className="emotion-94"
+            className="emotion-130"
           >
             <thead>
               <tr>
@@ -2774,14 +2650,14 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                       className="emotion-25"
                     >
                       <input
-                        className="emotion-22"
+                        className="emotion-64"
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zmlp-classification"
+                        value="clarifai-predict"
                       />
                       <div
-                        className="emotion-24"
+                        className="emotion-66"
                       >
                         <svg
                           className="emotion-23"
@@ -2793,27 +2669,21 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                     <div
                       className="hidden"
                     >
-                      zmlp-classification
-                      , 
-                      Label Detection
+                      clarifai-predict
                       : 
-                      Adds a list of predicted label that apply to the media.
+                      Clarifai prediction API, standard model.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zmlp-classification
+                  clarifai-predict
                 </td>
                 <td>
-                  <strong>
-                    Label Detection
-                    : 
-                  </strong>
-                  Adds a list of predicted label that apply to the media.
+                  Clarifai prediction API, standard model.
                 </td>
               </tr>
               <tr
-                className="emotion-69"
+                className="emotion-75"
                 onClick={[Function]}
               >
                 <td>
@@ -2828,7 +2698,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zmlp-objects"
+                        value="gcp-label-detection"
                       />
                       <div
                         className="emotion-24"
@@ -2843,27 +2713,21 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                     <div
                       className="hidden"
                     >
-                      zmlp-objects
-                      , 
-                      Object Detection
+                      gcp-label-detection
                       : 
-                      Detects up to 80 everyday objects.
+                      Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zmlp-objects
+                  gcp-label-detection
                 </td>
                 <td>
-                  <strong>
-                    Object Detection
-                    : 
-                  </strong>
-                  Detects up to 80 everyday objects.
+                  Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                 </td>
               </tr>
               <tr
-                className="emotion-69"
+                className="emotion-75"
                 onClick={[Function]}
               >
                 <td>
@@ -2878,7 +2742,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zmlp-face-recognition"
+                        value="gcp-object-detection"
                       />
                       <div
                         className="emotion-24"
@@ -2893,27 +2757,21 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                     <div
                       className="hidden"
                     >
-                      zmlp-face-recognition
-                      , 
-                      Facial Recognition
+                      gcp-object-detection
                       : 
-                      Recognizes faces within an image.
+                      Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zmlp-face-recognition
+                  gcp-object-detection
                 </td>
                 <td>
-                  <strong>
-                    Facial Recognition
-                    : 
-                  </strong>
-                  Recognizes faces within an image.
+                  Utilize Google Cloud Vision label detection to detect and extract information about entities in an image, across a broad group of categories.
                 </td>
               </tr>
               <tr
-                className="emotion-69"
+                className="emotion-75"
                 onClick={[Function]}
               >
                 <td>
@@ -2928,7 +2786,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zmlp-ocr"
+                        value="zvi-disable-analysis"
                       />
                       <div
                         className="emotion-24"
@@ -2943,27 +2801,21 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                     <div
                       className="hidden"
                     >
-                      zmlp-ocr
-                      , 
-                      OCR (Optical Character Recognition)
+                      zvi-disable-analysis
                       : 
-                      Transcribes text found in images.
+                      Disable all non-core processors
                     </div>
                   </label>
                 </td>
                 <td>
-                  zmlp-ocr
+                  zvi-disable-analysis
                 </td>
                 <td>
-                  <strong>
-                    OCR (Optical Character Recognition)
-                    : 
-                  </strong>
-                  Transcribes text found in images.
+                  Disable all non-core processors
                 </td>
               </tr>
               <tr
-                className="emotion-69"
+                className="emotion-75"
                 onClick={[Function]}
               >
                 <td>
@@ -2978,7 +2830,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="zml-deep-document"
+                        value="zvi-doc-page-extraction"
                       />
                       <div
                         className="emotion-24"
@@ -2993,30 +2845,288 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                     <div
                       className="hidden"
                     >
-                      zml-deep-document
-                      , 
-                      Page Analysis
+                      zvi-doc-page-extraction
                       : 
-                      Breaks multipage document into individual pages and imports them as individual entities.
+                      Extract all pages in MS Office/PDF documents into separate assets.
                     </div>
                   </label>
                 </td>
                 <td>
-                  zml-deep-document
+                  zvi-doc-page-extraction
                 </td>
                 <td>
-                  <strong>
-                    Page Analysis
-                    : 
-                  </strong>
-                  Breaks multipage document into individual pages and imports them as individual entities.
+                  Extract all pages in MS Office/PDF documents into separate assets.
+                </td>
+              </tr>
+              <tr
+                className="emotion-75"
+                onClick={[Function]}
+              >
+                <td>
+                  <label
+                    className="emotion-68"
+                  >
+                    <div
+                      className="emotion-25"
+                    >
+                      <input
+                        className="emotion-22"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="zvi-document-page-extraction"
+                      />
+                      <div
+                        className="emotion-24"
+                      >
+                        <svg
+                          className="emotion-23"
+                          data-file-name="checkmark.svg"
+                          width={20}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="hidden"
+                    >
+                      zvi-document-page-extraction
+                      : 
+                      Extract all pages in MS Office/PDF documents into separate assets.
+                    </div>
+                  </label>
+                </td>
+                <td>
+                  zvi-document-page-extraction
+                </td>
+                <td>
+                  Extract all pages in MS Office/PDF documents into separate assets.
+                </td>
+              </tr>
+              <tr
+                className="emotion-75"
+                onClick={[Function]}
+              >
+                <td>
+                  <label
+                    className="emotion-68"
+                  >
+                    <div
+                      className="emotion-25"
+                    >
+                      <input
+                        className="emotion-22"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="zvi-image-layer-extraction"
+                      />
+                      <div
+                        className="emotion-24"
+                      >
+                        <svg
+                          className="emotion-23"
+                          data-file-name="checkmark.svg"
+                          width={20}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="hidden"
+                    >
+                      zvi-image-layer-extraction
+                      : 
+                      Extract all layers in multi page image formats such as tiff and psd as as separate assets
+                    </div>
+                  </label>
+                </td>
+                <td>
+                  zvi-image-layer-extraction
+                </td>
+                <td>
+                  Extract all layers in multi page image formats such as tiff and psd as as separate assets
+                </td>
+              </tr>
+              <tr
+                className="emotion-75"
+                onClick={[Function]}
+              >
+                <td>
+                  <label
+                    className="emotion-68"
+                  >
+                    <div
+                      className="emotion-25"
+                    >
+                      <input
+                        className="emotion-22"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="zvi-image-page-extraction"
+                      />
+                      <div
+                        className="emotion-24"
+                      >
+                        <svg
+                          className="emotion-23"
+                          data-file-name="checkmark.svg"
+                          width={20}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="hidden"
+                    >
+                      zvi-image-page-extraction
+                      : 
+                      Extract all layers in multi page image formats such as tiff and psd as as separate assets
+                    </div>
+                  </label>
+                </td>
+                <td>
+                  zvi-image-page-extraction
+                </td>
+                <td>
+                  Extract all layers in multi page image formats such as tiff and psd as as separate assets
+                </td>
+              </tr>
+              <tr
+                className="emotion-75"
+                onClick={[Function]}
+              >
+                <td>
+                  <label
+                    className="emotion-68"
+                  >
+                    <div
+                      className="emotion-25"
+                    >
+                      <input
+                        className="emotion-22"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="zvi-label-detection"
+                      />
+                      <div
+                        className="emotion-24"
+                      >
+                        <svg
+                          className="emotion-23"
+                          data-file-name="checkmark.svg"
+                          width={20}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="hidden"
+                    >
+                      zvi-label-detection
+                      : 
+                      Generate keyword labels for image, video, and documents.
+                    </div>
+                  </label>
+                </td>
+                <td>
+                  zvi-label-detection
+                </td>
+                <td>
+                  Generate keyword labels for image, video, and documents.
+                </td>
+              </tr>
+              <tr
+                className="emotion-75"
+                onClick={[Function]}
+              >
+                <td>
+                  <label
+                    className="emotion-68"
+                  >
+                    <div
+                      className="emotion-25"
+                    >
+                      <input
+                        className="emotion-22"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="zvi-object-detection"
+                      />
+                      <div
+                        className="emotion-24"
+                      >
+                        <svg
+                          className="emotion-23"
+                          data-file-name="checkmark.svg"
+                          width={20}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="hidden"
+                    >
+                      zvi-object-detection
+                      : 
+                      Detect everyday objects in images, video, and documents.
+                    </div>
+                  </label>
+                </td>
+                <td>
+                  zvi-object-detection
+                </td>
+                <td>
+                  Detect everyday objects in images, video, and documents.
+                </td>
+              </tr>
+              <tr
+                className="emotion-75"
+                onClick={[Function]}
+              >
+                <td>
+                  <label
+                    className="emotion-68"
+                  >
+                    <div
+                      className="emotion-25"
+                    >
+                      <input
+                        className="emotion-22"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="zvi-video-shot-extraction"
+                      />
+                      <div
+                        className="emotion-24"
+                      >
+                        <svg
+                          className="emotion-23"
+                          data-file-name="checkmark.svg"
+                          width={20}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className="hidden"
+                    >
+                      zvi-video-shot-extraction
+                      : 
+                      Break video files into individual assets based on a shot detection algorithm.
+                    </div>
+                  </label>
+                </td>
+                <td>
+                  zvi-video-shot-extraction
+                </td>
+                <td>
+                  Break video files into individual assets based on a shot detection algorithm.
                 </td>
               </tr>
             </tbody>
           </table>
         </fieldset>
         <fieldset
-          className="emotion-95"
+          className="emotion-131"
         >
           <legend
             className="emotion-62"
@@ -3028,7 +3138,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
           />
           <table
             cellSpacing="0"
-            className="emotion-94"
+            className="emotion-130"
           >
             <thead>
               <tr>
@@ -3045,7 +3155,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
             </thead>
             <tbody>
               <tr
-                className="emotion-69"
+                className="emotion-75"
                 onClick={[Function]}
               >
                 <td>
@@ -3060,7 +3170,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                         defaultChecked={false}
                         onClick={[Function]}
                         type="checkbox"
-                        value="shot-detection"
+                        value="zvi-video-shot-timeline"
                       />
                       <div
                         className="emotion-24"
@@ -3075,23 +3185,17 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                     <div
                       className="hidden"
                     >
-                      shot-detection
-                      , 
-                      Shot Detection
+                      zvi-video-shot-timeline
                       : 
-                      Intelligently breaks a video into separate shots and imports each as its own entity.
+                      Break video files into individual assets based on a shot detection algorithm.
                     </div>
                   </label>
                 </td>
                 <td>
-                  shot-detection
+                  zvi-video-shot-timeline
                 </td>
                 <td>
-                  <strong>
-                    Shot Detection
-                    : 
-                  </strong>
-                  Intelligently breaks a video into separate shots and imports each as its own entity.
+                  Break video files into individual assets based on a shot detection algorithm.
                 </td>
               </tr>
             </tbody>
@@ -3126,7 +3230,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
         >
           <span>
             <span
-              className="emotion-111"
+              className="emotion-147"
             >
               Contact your Account Manager to activate.
             </span>
@@ -3135,7 +3239,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
           </span>
         </p>
         <fieldset
-          className="emotion-95"
+          className="emotion-131"
         >
           <legend
             className="emotion-62"
@@ -3147,7 +3251,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
           />
           <table
             cellSpacing="0"
-            className="emotion-94"
+            className="emotion-130"
           >
             <thead>
               <tr>
@@ -3162,212 +3266,11 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                 </th>
               </tr>
             </thead>
-            <tbody>
-              <tr
-                className="emotion-120"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-68"
-                  >
-                    <div
-                      className="emotion-25"
-                    >
-                      <input
-                        className="emotion-115"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-vision-crop-hints"
-                      />
-                      <div
-                        className="emotion-117"
-                      >
-                        <svg
-                          className="emotion-23"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-vision-crop-hints
-                      , 
-                      Crop Hints (Vision)
-                      : 
-                      Determine suggested vertices for a crop region on an image.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-vision-crop-hints
-                </td>
-                <td>
-                  <strong>
-                    Crop Hints (Vision)
-                    : 
-                  </strong>
-                  Determine suggested vertices for a crop region on an image.
-                </td>
-              </tr>
-              <tr
-                className="emotion-120"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-68"
-                  >
-                    <div
-                      className="emotion-25"
-                    >
-                      <input
-                        className="emotion-115"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-document-text-detection"
-                      />
-                      <div
-                        className="emotion-117"
-                      >
-                        <svg
-                          className="emotion-23"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-document-text-detection
-                      , 
-                      OCR Documents (Vision)
-                      : 
-                      Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-document-text-detection
-                </td>
-                <td>
-                  <strong>
-                    OCR Documents (Vision)
-                    : 
-                  </strong>
-                  Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image.
-                </td>
-              </tr>
-              <tr
-                className="emotion-120"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-68"
-                  >
-                    <div
-                      className="emotion-25"
-                    >
-                      <input
-                        className="emotion-115"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-vision-text-detection"
-                      />
-                      <div
-                        className="emotion-117"
-                      >
-                        <svg
-                          className="emotion-23"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-vision-text-detection
-                      , 
-                      OCR Images (Vision)
-                      : 
-                      Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-vision-text-detection
-                </td>
-                <td>
-                  <strong>
-                    OCR Images (Vision)
-                    : 
-                  </strong>
-                  Perform Optical Character Recognition (OCR) on text within the image. Text detection is optimized for areas of sparse text within a larger image
-                </td>
-              </tr>
-              <tr
-                className="emotion-120"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-68"
-                  >
-                    <div
-                      className="emotion-25"
-                    >
-                      <input
-                        className="emotion-115"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-vision-label-detection"
-                      />
-                      <div
-                        className="emotion-117"
-                      >
-                        <svg
-                          className="emotion-23"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-vision-label-detection
-                      , 
-                      Label Detection (Vision)
-                      : 
-                      Add labels based on image content.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-vision-label-detection
-                </td>
-                <td>
-                  <strong>
-                    Label Detection (Vision)
-                    : 
-                  </strong>
-                  Add labels based on image content.
-                </td>
-              </tr>
-            </tbody>
+            <tbody />
           </table>
         </fieldset>
         <fieldset
-          className="emotion-95"
+          className="emotion-131"
         >
           <legend
             className="emotion-62"
@@ -3379,7 +3282,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
           />
           <table
             cellSpacing="0"
-            className="emotion-94"
+            className="emotion-130"
           >
             <thead>
               <tr>
@@ -3394,168 +3297,17 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
                 </th>
               </tr>
             </thead>
-            <tbody>
-              <tr
-                className="emotion-120"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-68"
-                  >
-                    <div
-                      className="emotion-25"
-                    >
-                      <input
-                        className="emotion-115"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-video-label-detection"
-                      />
-                      <div
-                        className="emotion-117"
-                      >
-                        <svg
-                          className="emotion-23"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-video-label-detection
-                      , 
-                      Label Detection (Video)
-                      : 
-                      Identifies objects, locations, activities, animal species, products, and more.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-video-label-detection
-                </td>
-                <td>
-                  <strong>
-                    Label Detection (Video)
-                    : 
-                  </strong>
-                  Identifies objects, locations, activities, animal species, products, and more.
-                </td>
-              </tr>
-              <tr
-                className="emotion-120"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-68"
-                  >
-                    <div
-                      className="emotion-25"
-                    >
-                      <input
-                        className="emotion-115"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-shot-detection"
-                      />
-                      <div
-                        className="emotion-117"
-                      >
-                        <svg
-                          className="emotion-23"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-shot-detection
-                      , 
-                      Shot Change (Video)
-                      : 
-                      Shot change analysis detects shot changes in a video
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-shot-detection
-                </td>
-                <td>
-                  <strong>
-                    Shot Change (Video)
-                    : 
-                  </strong>
-                  Shot change analysis detects shot changes in a video
-                </td>
-              </tr>
-              <tr
-                className="emotion-120"
-                onClick={[Function]}
-              >
-                <td>
-                  <label
-                    className="emotion-68"
-                  >
-                    <div
-                      className="emotion-25"
-                    >
-                      <input
-                        className="emotion-115"
-                        defaultChecked={false}
-                        onClick={[Function]}
-                        type="checkbox"
-                        value="gcp-explicit-content-detection"
-                      />
-                      <div
-                        className="emotion-117"
-                      >
-                        <svg
-                          className="emotion-23"
-                          data-file-name="checkmark.svg"
-                          width={20}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="hidden"
-                    >
-                      gcp-explicit-content-detection
-                      , 
-                      Explicit Content Detection (Video)
-                      : 
-                      Explicit Content Detection detects adult content in videos. Adult content is content generally inappropriate for those under under 18 years of age and includes, but is not limited to, nudity, sexual activities, and pornography. Such content detected in cartoons or anime is also identified.
-                    </div>
-                  </label>
-                </td>
-                <td>
-                  gcp-explicit-content-detection
-                </td>
-                <td>
-                  <strong>
-                    Explicit Content Detection (Video)
-                    : 
-                  </strong>
-                  Explicit Content Detection detects adult content in videos. Adult content is content generally inappropriate for those under under 18 years of age and includes, but is not limited to, nudity, sexual activities, and pornography. Such content detected in cartoons or anime is also identified.
-                </td>
-              </tr>
-            </tbody>
+            <tbody />
           </table>
         </fieldset>
       </div>
     </div>
   </div>
   <div
-    className="emotion-168"
+    className="emotion-162"
   >
     <a
-      className="emotion-166"
+      className="emotion-160"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -3564,7 +3316,7 @@ exports[`<DataSourcesAddForm /> should render properly 2`] = `
     </a>
     <button
       aria-disabled={true}
-      className="emotion-167"
+      className="emotion-161"
       onClick={[Function]}
       type="submit"
     >

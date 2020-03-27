@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types'
 
-import checkboxOptionShape from './optionShape'
-
 import { spacing, colors, constants, typography } from '../Styles'
 
 import CheckboxTableRow from './TableRow'
@@ -91,7 +89,7 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
           </tr>
         </thead>
         <tbody>
-          {options.map((option) => (
+          {Object.values(options).map((option) => (
             <CheckboxTableRow
               key={option.value}
               option={option}
@@ -107,7 +105,7 @@ const CheckboxTable = ({ category: { name, options }, onClick }) => {
 CheckboxTable.propTypes = {
   category: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    options: PropTypes.arrayOf(PropTypes.shape(checkboxOptionShape)).isRequired,
+    options: PropTypes.object.isRequired,
   }).isRequired,
   onClick: PropTypes.func.isRequired,
 }
