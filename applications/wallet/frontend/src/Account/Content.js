@@ -9,7 +9,7 @@ import AccountCards from './Card'
 const AccountContent = () => {
   const {
     data: { results: projects, count },
-  } = useSWR(`/api/v1/projects`)
+  } = useSWR('/api/v1/projects/')
 
   if (projects.length === 0) {
     return <NoProject />
@@ -21,8 +21,8 @@ const AccountContent = () => {
         Number of Projects: {count}
       </h3>
       <div css={{ display: 'flex', flexWrap: 'wrap' }}>
-        {projects.map(({ id, name }) => (
-          <AccountCards key={id} id={id} name={name} />
+        {projects.map(({ id: projectId, name }) => (
+          <AccountCards key={projectId} projectId={projectId} name={name} />
         ))}
       </div>
     </>
