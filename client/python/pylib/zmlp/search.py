@@ -277,16 +277,16 @@ class SimilarityQuery:
             "query": {
                 "bool": {
                     "must": [
-                        SimilarityQuery("analysis.zmlp.similarity.vector", 0.85, hash_string)
+                        SimilarityQuery(hash_string)
                     ]
                 }
             }
         }
     """
-    def __init__(self, field, min_score=0.75, *hashes):
-        self.field = field
+    def __init__(self, hashes, min_score=0.75, field="analysis.zvi.similarity.simhash"):
+        self.hashes = as_collection(hashes) or []
         self.min_score = min_score
-        self.hashes = list(hashes)
+        self.field = field
 
     def add_hash(self, simhash):
         """
