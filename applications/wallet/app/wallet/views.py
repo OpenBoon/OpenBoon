@@ -78,6 +78,12 @@ class LogoutView(APIView):
         return Response({})
 
 
+class MeView(APIView):
+    """Simple view that returns information about the current user."""
+    def get(self, request):
+        return Response(UserSerializer(request.user, context={'request': request}).data)
+
+
 class WalletAPIRootView(APIRootView):
     "Extends the default DRF API root view to allow adding extra views."
     def get(self, request, *args, **kwargs):
