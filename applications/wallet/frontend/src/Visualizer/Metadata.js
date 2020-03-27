@@ -22,7 +22,7 @@ const VisualizerMetadata = ({ assets }) => {
   const { metadata: { source: { filename } = {} } = {} } = asset || {}
 
   return (
-    <Resizeable initialWidth={WIDTH}>
+    <Resizeable initialWidth={WIDTH} storageName="metadata-width">
       <div
         css={{
           backgroundColor: colors.structure.mattGrey,
@@ -77,7 +77,7 @@ const VisualizerMetadata = ({ assets }) => {
             paddingBottom: 0,
           }}
         >
-          <JsonDisplay json={asset} />
+          {!!asset && <JsonDisplay json={asset} />}
         </div>
       </div>
     </Resizeable>

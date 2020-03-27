@@ -547,6 +547,7 @@ exports[`<Visualizer /> should render properly 1`] = `
     </div>
     <Resizeable
       initialWidth={400}
+      storageName="metadata-width"
     >
       <div
         className="emotion-29"
@@ -576,11 +577,7 @@ exports[`<Visualizer /> should render properly 1`] = `
         </div>
         <div
           className="emotion-28"
-        >
-          <JsonDisplay
-            json={false}
-          />
-        </div>
+        />
       </div>
     </Resizeable>
   </div>
@@ -1144,6 +1141,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
     </div>
     <Resizeable
       initialWidth={400}
+      storageName="metadata-width"
     >
       <div
         className="emotion-29"
