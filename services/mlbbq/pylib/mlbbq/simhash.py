@@ -17,16 +17,18 @@ class SimilarityModel:
     lock = threading.Lock()
 
 
-def get_similarity_hash(data):
+def get_similarity_hash(stream):
     """
+    Load the current stream as an image and generate a similarity hash.
 
     Args:
-        data:
+        stream (file): A file type object.
 
     Returns:
+        str: A similarity hash.
 
     """
-    img = cv2.imdecode(numpy.fromstring(data.read(), numpy.uint8), cv2.IMREAD_UNCHANGED)
+    img = cv2.imdecode(numpy.fromstring(stream.read(), numpy.uint8), cv2.IMREAD_UNCHANGED)
     img = cv2.resize(img, (224, 224))
     if img.shape == (224, 224):
         img = cv2.cvtColor(img, cv2.CV_GRAY2RGB)
@@ -36,7 +38,7 @@ def get_similarity_hash(data):
 
     # Mxnet is not thread safe.
     with SimilarityModel.lock:
-        Batch = namedtuple('Batch', ['data'])
+        batch = namedtuple('Batch', ['data'])
 
         all_layers = SimilarityModel.sym.get_internals()
         fe_sym = all_layers['flatten0_output']
@@ -44,11 +46,11 @@ def get_similarity_hash(data):
         fe_mod.bind(for_training=False, data_shapes=[('data', (1, 3, 224, 224))])
         fe_mod.set_params(SimilarityModel.arg_params, SimilarityModel.aux_params)
 
-        fe_mod.forward(Batch([mxnet.nd.array(img)]))
+        fe_mod.forward(batch([mxnet.nd.array(img)]))
         features = fe_mod.get_outputs()[0].asnumpy()
         features = np.squeeze(features)
+    
+    mxh = np.clip((features * 16).astype(int), 0, 15) + 65
+    mxhash = "".join([chr(item) for item in mxh])
 
-        mxh = np.clip((features * 16).astype(int), 0, 15) + 65
-        mxhash = "".join([chr(item) for item in mxh])
-
-        return mxhash
+    return mxhash
