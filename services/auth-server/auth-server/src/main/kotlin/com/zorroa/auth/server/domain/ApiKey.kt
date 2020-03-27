@@ -199,7 +199,14 @@ class ApiKeyFilter(
      * A list of unique names.
      */
     @ApiModelProperty("The key names to match")
-    val names: List<String>? = null
+    val names: List<String>? = null,
+
+    /**
+     * A list of unique names.
+     */
+    @ApiModelProperty("Key name prefixes to match.")
+    val namePrefixes: List<String>? = null
+
 ) : AbstractJpaFilter<ApiKey>() {
 
     override fun buildWhereClause(root: Root<ApiKey>, cb: CriteriaBuilder): Array<Predicate> {
@@ -221,6 +228,13 @@ class ApiKeyFilter(
                 ic.value(v)
             }
             where.add(ic)
+        }
+
+        namePrefixes?.let {
+            val matches = it.map { v ->
+                cb.like(root.get("name"), "$v%")
+            }
+            where.add(cb.or(*matches.toTypedArray()))
         }
 
         return where.toTypedArray()
