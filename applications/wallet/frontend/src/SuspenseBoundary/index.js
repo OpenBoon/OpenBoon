@@ -1,5 +1,6 @@
 import { useContext, Suspense } from 'react'
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 
 import { ROLES } from '../Roles/helpers'
 
@@ -10,7 +11,11 @@ import Loading from '../Loading'
 
 const SuspenseBoundary = ({ role, children }) => {
   const {
-    user: { roles = {}, projectId },
+    query: { projectId },
+  } = useRouter()
+
+  const {
+    user: { roles = {} },
   } = useContext(UserContext)
 
   if (role && (!roles[projectId] || !roles[projectId].includes(role))) {
