@@ -4,7 +4,9 @@ USER root
 RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
     python3-dev \
     build-essential \
-    libglib2.0-0
+    libglib2.0-0 \
+    tesseract-ocr \
+    libtesseract-dev
 
 COPY pylib /zps/pylib
 

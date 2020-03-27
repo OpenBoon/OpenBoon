@@ -75,7 +75,7 @@ def test_project_serializer_detail(project):
     data = serializer.data
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                        'permissions', 'tasks', 'datasources', 'taskerrors', 'subscriptions',
-                       'modules']
+                       'modules', 'providers']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
@@ -91,6 +91,7 @@ def test_project_serializer_detail(project):
     assert data['taskerrors'] == f'/api/v1/projects/{project.id}/task_errors/'
     assert data['subscriptions'] == f'/api/v1/projects/{project.id}/subscriptions/'
     assert data['modules'] == f'/api/v1/projects/{project.id}/modules/'
+    assert data['providers'] == f'/api/v1/projects/{project.id}/providers/'
 
 
 def test_project_serializer_list(project, project2):
@@ -493,6 +494,49 @@ class TestProjectUserPost:
         membership = Membership.objects.get(user=new_user, project=project)
         decoded_apikey = decode_apikey(membership.apikey)
         assert decoded_apikey['secretKey'] == api_key['secretKey']
+
+    @override_settings(PLATFORM='zmlp')
+    def test_create_already_exists(self, project, zmlp_project_user,
+                                   zmlp_project_membership,
+                                   api_client, monkeypatch, django_user_model, data,
+                                   api_key):
+        def mock_post_response(*args, **kwargs):
+            return data
+
+        def mock_get_response(*args, **kwargs):
+            return api_key
+
+        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        body = {'email': zmlp_project_membership.user.username,
+                'roles': zmlp_project_membership.roles}
+        response = api_client.post(
+            reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
+        assert response.status_code == status.HTTP_200_OK
+
+    @override_settings(PLATFORM='zmlp')
+    def test_create_already_exists_different_roles(self, project, zmlp_project_user,
+                                                   zmlp_project_membership,
+                                                   api_client, monkeypatch,
+                                                   django_user_model, data,
+                                                   api_key):
+        def mock_post_response(*args, **kwargs):
+            return data
+
+        def mock_get_response(*args, **kwargs):
+            return api_key
+
+        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        body = {'email': zmlp_project_membership.user.username,
+                'roles': []}
+        response = api_client.post(
+            reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
+        assert response.status_code == 409
 
     @override_settings(PLATFORM='zmlp')
     def test_create_batch(self, project, zmlp_project_user, zmlp_project_membership,

@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import Breadcrumbs from '../Breadcrumbs'
-import SuspenseBoundary from '../SuspenseBoundary'
+import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 import Tabs from '../Tabs'
 
 import JobTasks from '../JobTasks'
@@ -26,7 +26,7 @@ const Job = () => {
         ]}
       />
 
-      <SuspenseBoundary>
+      <SuspenseBoundary role={ROLES.ML_Tools}>
         <JobDetails />
 
         <Tabs

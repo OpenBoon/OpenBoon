@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 import Breadcrumbs from '../Breadcrumbs'
-import SuspenseBoundary from '../SuspenseBoundary'
+import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 
 import JobErrorContent from './Content'
 
@@ -20,7 +20,7 @@ const JobError = () => {
         ]}
       />
 
-      <SuspenseBoundary>
+      <SuspenseBoundary role={ROLES.ML_Tools}>
         <JobErrorContent />
       </SuspenseBoundary>
     </>

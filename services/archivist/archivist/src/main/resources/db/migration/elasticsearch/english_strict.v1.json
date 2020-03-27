@@ -193,6 +193,15 @@
                   }
                 }
               },
+              "text-detection": {
+                "dynamic": "strict",
+                "properties": {
+                  "content": {
+                    "type": "text",
+                    "analyzer": "default"
+                  }
+                }
+              },
               "label-detection": {
                 "dynamic": "strict",
                 "properties": {

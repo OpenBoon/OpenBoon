@@ -1,15 +1,17 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.Category
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
-import com.zorroa.archivist.domain.ModStandards
+import com.zorroa.archivist.domain.ModType
 import com.zorroa.archivist.domain.OpFilter
 import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.Provider
 import com.zorroa.archivist.domain.SupportedMedia
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,7 +40,7 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineName() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("zvi-video-shot-timeline"))
+        val pspec = PipelineSpec("test", modules = listOf("zvi-video-shot-clips"))
         val pipeline = pipelineService.create(pspec)
 
         val resolved = pipelineResolverService.resolve(pipeline.name, null)
@@ -51,7 +53,7 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineNameAndPlusModules() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("+zvi-video-shot-timeline"))
+        val pspec = PipelineSpec("test", modules = listOf("+zvi-video-shot-clips"))
         val pipeline = pipelineService.create(pspec)
 
         val resolved = pipelineResolverService.resolve(pipeline.name, listOf("zvi-label-detection"))
@@ -68,10 +70,10 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveUsingPipelineNameAndMinusModules() {
         pipelineModService.updateStandardMods()
 
-        val pspec = PipelineSpec("test", modules = listOf("zvi-video-shot-timeline"))
+        val pspec = PipelineSpec("test", modules = listOf("zvi-video-shot-clips"))
         val pipeline = pipelineService.create(pspec)
 
-        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("-zvi-video-shot-timeline"))
+        val resolved = pipelineResolverService.resolve(pipeline.name, listOf("-zvi-video-shot-clips"))
         val last = resolved.last()
 
         assertEquals(last.className, "zmlp_analysis.mxnet.ZviSimilarityProcessor")
@@ -97,8 +99,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveLastOp() {
         val spec1 = PipelineModSpec(
             "append", "A append module",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
@@ -109,8 +112,9 @@ class PipelineResolverServiceTests : AbstractTest() {
         )
         val spec2 = PipelineModSpec(
             "last", "A last module",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
@@ -137,8 +141,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveAppendOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
@@ -155,8 +160,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolvePrependOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
@@ -177,8 +183,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveRemoveOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
@@ -197,8 +204,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveReplaceOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
@@ -217,8 +225,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveAddBeforeOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
@@ -237,8 +246,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveAddAfterOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
@@ -257,8 +267,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveSetArgsOp() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
@@ -277,8 +288,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun resolveRegexMatcher() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(
@@ -298,8 +310,9 @@ class PipelineResolverServiceTests : AbstractTest() {
     fun testResolveMaxApplyCount() {
         val spec = PipelineModSpec(
             "test", "A test module",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
             listOf(
                 ModOp(

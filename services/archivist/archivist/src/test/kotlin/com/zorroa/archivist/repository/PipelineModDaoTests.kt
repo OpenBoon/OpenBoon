@@ -1,9 +1,11 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.ModStandards
+import com.zorroa.archivist.domain.Category
+import com.zorroa.archivist.domain.ModType
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModSpec
+import com.zorroa.archivist.domain.Provider
 import com.zorroa.archivist.service.PipelineModService
 import org.junit.Before
 import org.junit.Test
@@ -27,8 +29,9 @@ class PipelineModDaoTests : AbstractTest() {
     @Before
     fun init() {
         val spec = PipelineModSpec("foo", "test",
-            ModStandards.ZORROA,
-            ModStandards.ZORROA_VINT,
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
             listOf(), listOf(), false)
         module = pipelineModService.create(spec)
     }

@@ -59,14 +59,6 @@ class AssetController @Autowired constructor(
     val jobLaunchService: JobLaunchService
 ) {
 
-    @PostMapping("/api/v3/assets/_batch_hash")
-    @PreAuthorize("hasAuthority('AssetsRead')")
-    fun batchHash(
-        @RequestPart(value = "files") files: Array<MultipartFile>
-    ): ResponseEntity<Any> {
-        return ResponseEntity.ok().body(assetService.generateHashList(files))
-    }
-
     @PreAuthorize("hasAuthority('AssetsRead')")
     @RequestMapping("/api/v3/assets/_search", method = [RequestMethod.GET, RequestMethod.POST])
     fun search(

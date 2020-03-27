@@ -15,7 +15,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         model = Project
         fields = ('id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                   'permissions', 'tasks', 'taskerrors', 'datasources', 'subscriptions',
-                  'modules')
+                  'modules', 'providers')
 
     jobs = HyperlinkedIdentityField(
         view_name='job-list',
@@ -59,6 +59,10 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     )
     modules = HyperlinkedIdentityField(
         view_name='module-list',
+        lookup_url_kwarg='project_pk',
+    )
+    providers = HyperlinkedIdentityField(
+        view_name='provider-list',
         lookup_url_kwarg='project_pk',
     )
 

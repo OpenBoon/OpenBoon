@@ -1,11 +1,13 @@
 package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.ModStandards
+import com.zorroa.archivist.domain.Category
+import com.zorroa.archivist.domain.ModType
 import com.zorroa.archivist.domain.PipelineFilter
 import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.PipelineUpdate
+import com.zorroa.archivist.domain.Provider
 import com.zorroa.archivist.service.PipelineModService
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -51,10 +53,13 @@ class PipelineDaoTests : AbstractTest() {
             PipelineModSpec(
                 "test",
                 "1234",
-                ModStandards.ZORROA,
-                ModStandards.ZORROA_VINT,
+                Provider.ZORROA,
+                Category.ZORROA_STD,
+                ModType.LABEL_DETECTION,
                 listOf(),
-                listOf(), false
+                listOf(),
+                restricted = false,
+                standard = true
             )
         )
         entityManager.flush()

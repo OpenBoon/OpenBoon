@@ -9,6 +9,7 @@ import random
 import sys
 import time
 from urllib.parse import urljoin
+from io import IOBase
 
 import jwt
 import requests
@@ -129,8 +130,12 @@ class ZmlpClient(object):
         try:
             post_files = []
             for f in files:
-                post_files.append(
-                    ("files", (os.path.basename(f), open(f, 'rb'))))
+                if isinstance(f, IOBase):
+                    post_files.append(
+                        ("files", (os.path.basename(f.name), f)))
+                else:
+                    post_files.append(
+                        ("files", (os.path.basename(f), open(f, 'rb'))))
 
             if body is not None:
                 post_files.append(

@@ -30,13 +30,14 @@ from assets.views import (AssetViewSet, FileCategoryViewSet,
                           FileNameViewSet, SourceFileViewSet)
 from datasources.views import DataSourceViewSet
 from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet, JobTaskViewSet
-from modules.views import ModuleViewSet
+from modules.views import ModuleViewSet, ProviderViewSet
 from permissions.views import PermissionViewSet
 from projects.views import ProjectViewSet, ProjectUserViewSet
 from registration.views import UserRegistrationView, UserConfirmationView
 from roles.views import RolesViewSet
 from subscriptions.views import SubscriptionViewSet
 from wallet import views as wallet_views
+from wallet.views import MeView
 from wallet.views import WalletAPIRootView, LoginView, LogoutView
 
 router = routers.DefaultRouter()
@@ -60,6 +61,7 @@ projects_router.register('permissions', PermissionViewSet, basename='permission'
 projects_router.register('data_sources', DataSourceViewSet, basename='datasource')
 projects_router.register('subscriptions', SubscriptionViewSet, basename='subscription')
 projects_router.register('modules', ModuleViewSet, basename='module')
+projects_router.register('providers', ProviderViewSet, basename='provider')
 
 assets_files_router = NestedSimpleRouter(projects_router, 'assets', lookup='asset')
 assets_files_router.register('files/category', FileCategoryViewSet, basename='category')
@@ -83,6 +85,7 @@ BROWSABLE_API_URLS = [
                                          PasswordResetConfirmView.as_view(),
                                          name='api-password-reset-confirm')),
     ('logout', path('api/v1/logout/', LogoutView.as_view(), name='api-logout')),
+    ('me', path('api/v1/me/', MeView.as_view(), name='me')),
     ('user-registration', path('api/v1/accounts/register',
                                UserRegistrationView.as_view(),
                                name='api-user-register')),

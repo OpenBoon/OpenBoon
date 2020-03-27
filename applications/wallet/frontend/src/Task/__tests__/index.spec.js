@@ -1,8 +1,11 @@
 import TestRenderer from 'react-test-renderer'
 
-import Task from '..'
-
 import task from '../__mocks__/task'
+import mockUser from '../../User/__mocks__/user'
+
+import User from '../../User'
+
+import Task from '..'
 
 jest.mock('../../Pagination', () => 'Pagination')
 
@@ -20,7 +23,11 @@ describe('<Task />', () => {
       data: task,
     })
 
-    const component = TestRenderer.create(<Task />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Task />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -35,7 +42,11 @@ describe('<Task />', () => {
       data: task,
     })
 
-    const component = TestRenderer.create(<Task />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Task />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -50,7 +61,11 @@ describe('<Task />', () => {
       data: task,
     })
 
-    const component = TestRenderer.create(<Task />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Task />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -65,7 +80,11 @@ describe('<Task />', () => {
       data: task,
     })
 
-    const component = TestRenderer.create(<Task />)
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Task />
+      </User>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
