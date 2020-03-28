@@ -20,6 +20,19 @@ class FileImportProcessorTests(PluginUnitTestCase):
         ih = self.init_processor(FileImportProcessor())
         ih.process(frame)
 
+    def test_process_gps_point(self):
+        frame = Frame(TestAsset(zorroa_test_data('video/sample_ipad.m4v')))
+        frame.asset.set_attr("location.point.lat", -37.81)
+        frame.asset.set_attr("location.point.lon", 144.96)
+        ih = self.init_processor(FileImportProcessor())
+        ih.process(frame)
+
+        assert -37.81 == frame.asset.get_attr('location.point.lat')
+        assert 144.96 == frame.asset.get_attr('location.point.lon')
+        assert 'Melbourne' == frame.asset.get_attr('location.city')
+        assert 'AU' == frame.asset.get_attr('location.country_code')
+        assert 'Australia' == frame.asset.get_attr('location.country')
+
     @patch.object(OfficeImporter, 'get_metadata',
                   return_value={'author': 'Zach', 'content': 'temp'})
     @patch.object(OfficerClient, 'render', return_value='/fake')

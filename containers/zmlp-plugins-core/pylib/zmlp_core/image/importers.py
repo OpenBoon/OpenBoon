@@ -100,8 +100,8 @@ class ImageImporter(AssetProcessor):
             if gps_data['LongitudeRef'].lower() == 'w':
                 longitude *= -1
             if latitude and longitude:
-                document.set_attr('media.latitude', latitude)
-                document.set_attr('media.longitude', longitude)
+                document.set_attr('location.point.lat', latitude)
+                document.set_attr('location.point.lon', longitude)
 
     def _get_degrees_from_coordinates(self, coordinates):
         """Takes a coordinates string in the form "degrees, minutes, seconds" and returns
