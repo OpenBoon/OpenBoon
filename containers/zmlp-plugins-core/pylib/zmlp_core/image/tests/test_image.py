@@ -70,8 +70,8 @@ class ImageImporterUnitTestCase(PluginUnitTestCase):
         processor = self.init_processor(ImageImporter(), {})
         processor.process(frame)
         document = frame.asset
-        assert document.get_attr('media.latitude') == 45.99255
-        assert document.get_attr('media.longitude') == 7.754069444444444
+        assert document.get_attr('location.point.lat') == 45.99255
+        assert document.get_attr('location.point.lon') == 7.754069444444444
 
     def test_media_type_set(self):
         frame = Frame(TestAsset(RLA_FILE))

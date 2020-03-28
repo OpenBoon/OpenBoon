@@ -1,3 +1,5 @@
+import reverse_geocode
+
 from zmlp_core.image.importers import ImageImporter
 from zmlp_core.office.importers import OfficeImporter
 from zmlp_core.video.importers import VideoImporter
@@ -45,3 +47,19 @@ class FileImportProcessor(AssetProcessor):
         if not frame.asset.get_attr("media.type"):
             raise ZmlpFatalProcessorException(
                 "The asset type '{}' is not supported".format(ext, asset.uri))
+
+        if asset.attr_exists('location.point'):
+            self.apply_reverse_geocode(asset)
+
+    def apply_reverse_geocode(self, asset):
+        try:
+            lat = asset.get_attr('location.point.lat')
+            lon = asset.get_attr('location.point.lon')
+            coords = (lat, lon),
+            rev = reverse_geocode.search(coords)
+            if rev:
+                asset.set_attr("location.city", rev[0]['city'])
+                asset.set_attr("location.country_code", rev[0]['country_code'])
+                asset.set_attr("location.country", rev[0]['country'])
+        except Exception as e:
+            self.logger.warning("Failed to apply geo data '%s'", e)
