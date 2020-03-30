@@ -1,5 +1,6 @@
 import { useReducer } from 'react'
 import { useRouter } from 'next/router'
+import useSWR from 'swr'
 import Link from 'next/link'
 
 import { constants } from '../Styles'
@@ -14,7 +15,7 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 
-import { FILE_TYPES, MODULES, onSubmit } from './helpers'
+import { FILE_TYPES, onSubmit } from './helpers'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
 import DataSourcesAddModules from './Modules'
@@ -31,11 +32,15 @@ const INITIAL_STATE = {
 const reducer = (state, action) => ({ ...state, ...action })
 
 const DataSourcesAddForm = () => {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
-
   const {
     query: { projectId },
   } = useRouter()
+
+  const {
+    data: { results: providers },
+  } = useSWR(`/api/v1/projects/${projectId}/providers/`)
+
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   return (
     <Form style={{ width: 'auto' }}>
@@ -111,12 +116,12 @@ const DataSourcesAddForm = () => {
 
       <DataSourcesAddAutomaticAnalysis />
 
-      {MODULES.map((module) => (
+      {providers.map((provider) => (
         <DataSourcesAddModules
-          key={module.provider}
-          module={module}
-          onClick={(modules) =>
-            dispatch({ modules: { ...state.modules, ...modules } })
+          key={provider.name}
+          provider={provider}
+          onClick={(module) =>
+            dispatch({ modules: { ...state.module, ...module } })
           }
         />
       ))}
