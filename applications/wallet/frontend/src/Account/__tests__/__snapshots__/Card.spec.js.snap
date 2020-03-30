@@ -156,13 +156,13 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
 `;
 
 exports[`<AccountCard /> should render properly 1`] = `
-.emotion-29 {
+.emotion-30 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-28 {
+.emotion-29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -268,7 +268,7 @@ exports[`<AccountCard /> should render properly 1`] = `
   background-color: #808080;
 }
 
-.emotion-27 {
+.emotion-28 {
   padding: 32px;
 }
 
@@ -326,12 +326,17 @@ exports[`<AccountCard /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-26 {
+.emotion-27 {
   padding-top: 16px;
 }
 
 .emotion-21 {
   padding-bottom: 4px;
+}
+
+.emotion-26 {
+  padding: 0;
+  margin: 0;
 }
 
 .emotion-22 {
@@ -342,10 +347,10 @@ exports[`<AccountCard /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-29"
+  className="emotion-30"
 >
   <div
-    className="emotion-28"
+    className="emotion-29"
   >
     <div
       className="emotion-5"
@@ -380,7 +385,7 @@ exports[`<AccountCard /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-27"
+      className="emotion-28"
     >
       <h3
         className="emotion-6"
@@ -476,33 +481,37 @@ exports[`<AccountCard /> should render properly 1`] = `
         </div>
       </div>
       <div
-        className="emotion-26"
+        className="emotion-27"
       >
         <h4
           className="emotion-21"
         >
           Additional Modules:
         </h4>
-        <span
-          className="emotion-22"
+        <ul
+          className="emotion-26"
         >
-          zmlp-classification
-        </span>
-        <span
-          className="emotion-22"
-        >
-          zmlp-face-recognition
-        </span>
-        <span
-          className="emotion-22"
-        >
-          shot-detection
-        </span>
-        <span
-          className="emotion-22"
-        >
-          gcp-vision-text-detection
-        </span>
+          <li
+            className="emotion-22"
+          >
+            zmlp-classification
+          </li>
+          <li
+            className="emotion-22"
+          >
+            zmlp-face-recognition
+          </li>
+          <li
+            className="emotion-22"
+          >
+            shot-detection
+          </li>
+          <li
+            className="emotion-22"
+          >
+            gcp-vision-text-detection
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -847,13 +856,13 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
 `;
 
 exports[`<AccountCard /> should render properly with over usage 1`] = `
-.emotion-34 {
+.emotion-35 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-33 {
+.emotion-34 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -959,7 +968,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   background-color: #808080;
 }
 
-.emotion-32 {
+.emotion-33 {
   padding: 32px;
 }
 
@@ -1017,12 +1026,17 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-31 {
+.emotion-32 {
   padding-top: 16px;
 }
 
 .emotion-26 {
   padding-bottom: 4px;
+}
+
+.emotion-31 {
+  padding: 0;
+  margin: 0;
 }
 
 .emotion-27 {
@@ -1070,10 +1084,10 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
 }
 
 <div
-  className="emotion-34"
+  className="emotion-35"
 >
   <div
-    className="emotion-33"
+    className="emotion-34"
   >
     <div
       className="emotion-5"
@@ -1108,7 +1122,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
       </div>
     </div>
     <div
-      className="emotion-32"
+      className="emotion-33"
     >
       <div
         className="emotion-10"
@@ -1244,33 +1258,37 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
         </div>
       </div>
       <div
-        className="emotion-31"
+        className="emotion-32"
       >
         <h4
           className="emotion-26"
         >
           Additional Modules:
         </h4>
-        <span
-          className="emotion-27"
+        <ul
+          className="emotion-31"
         >
-          zmlp-classification
-        </span>
-        <span
-          className="emotion-27"
-        >
-          zmlp-face-recognition
-        </span>
-        <span
-          className="emotion-27"
-        >
-          shot-detection
-        </span>
-        <span
-          className="emotion-27"
-        >
-          gcp-vision-text-detection
-        </span>
+          <li
+            className="emotion-27"
+          >
+            zmlp-classification
+          </li>
+          <li
+            className="emotion-27"
+          >
+            zmlp-face-recognition
+          </li>
+          <li
+            className="emotion-27"
+          >
+            shot-detection
+          </li>
+          <li
+            className="emotion-27"
+          >
+            gcp-vision-text-detection
+          </li>
+        </ul>
       </div>
     </div>
   </div>

@@ -22,7 +22,6 @@ const ProjectUsagePlan = () => {
   if (subscriptions.length === 0) return null
 
   const {
-    id: subscriptionId,
     limits: { videoHours: videoLimit, imageCount: imageLimit },
     usage: { videoHours: videoUsage, imageCount: imageUsage },
     modules,
@@ -120,19 +119,21 @@ const ProjectUsagePlan = () => {
                 None
               </span>
             ) : (
-              modules.map((module) => (
-                <span
-                  key={subscriptionId + module}
-                  css={{
-                    fontFamily: 'Roboto Mono',
-                    color: colors.structure.zinc,
-                    display: 'block',
-                    paddingBottom: spacing.mini,
-                  }}
-                >
-                  {module}
-                </span>
-              ))
+              <ul css={{ padding: 0, margin: 0 }}>
+                {modules.map((module) => (
+                  <li
+                    key={module}
+                    css={{
+                      fontFamily: 'Roboto Mono',
+                      color: colors.structure.zinc,
+                      display: 'block',
+                      paddingBottom: spacing.mini,
+                    }}
+                  >
+                    {module}
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
           <div
