@@ -13,12 +13,6 @@ jest.mock('../../Projects', () => 'Projects')
 jest.mock('../../Layout', () => 'Layout')
 
 describe('<Authentication />', () => {
-  window.addEventListener = jest.fn((event, cb) => {
-    if (event === 'load') {
-      cb()
-    }
-  })
-
   Object.defineProperty(window, 'gapi', {
     writable: true,
     value: {
