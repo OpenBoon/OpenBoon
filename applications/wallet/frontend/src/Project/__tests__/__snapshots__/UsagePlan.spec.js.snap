@@ -152,12 +152,12 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
 .emotion-26 {
   padding: 0;
   margin: 0;
+  list-style: none;
 }
 
 .emotion-22 {
   font-family: Roboto Mono;
   color: #b3b3b3;
-  display: block;
   padding-bottom: 2px;
 }
 
@@ -749,12 +749,12 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
 .emotion-27 {
   padding: 0;
   margin: 0;
+  list-style: none;
 }
 
 .emotion-23 {
   font-family: Roboto Mono;
   color: #b3b3b3;
-  display: block;
   padding-bottom: 2px;
 }
 

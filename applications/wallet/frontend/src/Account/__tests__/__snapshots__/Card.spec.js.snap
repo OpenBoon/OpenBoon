@@ -337,12 +337,12 @@ exports[`<AccountCard /> should render properly 1`] = `
 .emotion-26 {
   padding: 0;
   margin: 0;
+  list-style: none;
 }
 
 .emotion-22 {
   font-family: Roboto Mono;
   color: #b3b3b3;
-  display: block;
   padding-bottom: 2px;
 }
 
@@ -1037,12 +1037,12 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
 .emotion-31 {
   padding: 0;
   margin: 0;
+  list-style: none;
 }
 
 .emotion-27 {
   font-family: Roboto Mono;
   color: #b3b3b3;
-  display: block;
   padding-bottom: 2px;
 }
 

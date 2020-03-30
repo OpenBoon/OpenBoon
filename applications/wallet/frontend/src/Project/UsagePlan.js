@@ -119,14 +119,13 @@ const ProjectUsagePlan = () => {
                 None
               </span>
             ) : (
-              <ul css={{ padding: 0, margin: 0 }}>
+              <ul css={{ padding: 0, margin: 0, listStyle: 'none' }}>
                 {modules.map((module) => (
                   <li
                     key={module}
                     css={{
                       fontFamily: 'Roboto Mono',
                       color: colors.structure.zinc,
-                      display: 'block',
                       paddingBottom: spacing.mini,
                     }}
                   >
