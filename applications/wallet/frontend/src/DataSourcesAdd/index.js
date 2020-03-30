@@ -2,6 +2,7 @@ import Head from 'next/head'
 
 import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
+import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 
 import DataSourcesAddForm from './Form'
 
@@ -21,7 +22,9 @@ const DataSourcesAdd = () => {
         ]}
       />
 
-      <DataSourcesAddForm />
+      <SuspenseBoundary role={ROLES.ML_Tools}>
+        <DataSourcesAddForm />
+      </SuspenseBoundary>
     </>
   )
 }
