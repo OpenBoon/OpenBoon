@@ -34,15 +34,13 @@ const Authentication = ({ route, children }) => {
   const fetcher = initializeFetcher({ setUser })
 
   useEffect(() => {
-    window.addEventListener('load', () => {
-      window.gapi.load('auth2', async () => {
-        setGoogleAuth(
-          window.gapi.auth2.init({
-            client_id: `${GOOGLE_OAUTH_CLIENT_ID}`,
-          }),
-        )
-        setHasGoogleLoaded(true)
-      })
+    window.gapi.load('auth2', async () => {
+      setGoogleAuth(
+        window.gapi.auth2.init({
+          client_id: `${GOOGLE_OAUTH_CLIENT_ID}`,
+        }),
+      )
+      setHasGoogleLoaded(true)
     })
   }, [setGoogleAuth])
 

@@ -11,7 +11,28 @@ class MyDocument extends Document {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta charSet="utf-8" />
-          <script src="https://apis.google.com/js/platform.js" async defer />
+          <script src="https://apis.google.com/js/platform.js" />
+          <link
+            rel="preload"
+            href="/fonts/roboto-latin-400.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
+          <link
+            rel="preload"
+            href="/fonts/roboto-latin-500.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
+          <link
+            rel="preload"
+            href="/fonts/roboto-latin-700.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
         </Head>
         <Zendesk />
         <StylesReset />
