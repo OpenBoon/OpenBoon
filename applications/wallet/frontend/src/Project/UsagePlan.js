@@ -24,6 +24,7 @@ const ProjectUsagePlan = () => {
   const {
     limits: { videoHours: videoLimit, imageCount: imageLimit },
     usage: { videoHours: videoUsage, imageCount: imageUsage },
+    modules,
   } = subscriptions[0]
 
   const videoOverTime = videoUsage - videoLimit
@@ -111,10 +112,28 @@ const ProjectUsagePlan = () => {
               paddingBottom: spacing.normal,
             }}
           >
-            <h4>Additional Modules:</h4>
-            <span css={{ color: colors.structure.zinc, fontStyle: 'italic' }}>
-              None
-            </span>
+            <h4 css={{ paddingBottom: spacing.small }}>Additional Modules:</h4>
+
+            {modules.length === 0 ? (
+              <span css={{ color: colors.structure.zinc, fontStyle: 'italic' }}>
+                None
+              </span>
+            ) : (
+              <ul css={{ padding: 0, margin: 0, listStyle: 'none' }}>
+                {modules.map((module) => (
+                  <li
+                    key={module}
+                    css={{
+                      fontFamily: 'Roboto Mono',
+                      color: colors.structure.zinc,
+                      paddingBottom: spacing.mini,
+                    }}
+                  >
+                    {module}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           <div
             css={{ paddingTop: spacing.normal, color: colors.structure.zinc }}
