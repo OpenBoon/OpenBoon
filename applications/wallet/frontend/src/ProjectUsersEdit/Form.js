@@ -5,7 +5,7 @@ import useSWR from 'swr'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
-import FormAlert from '../FormAlert'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS } from '../Button'
@@ -34,9 +34,7 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
     <Form>
       <SectionTitle>Email: {user.email}</SectionTitle>
 
-      <FormAlert setErrorMessage={() => dispatch({ error: '' })}>
-        {state.error}
-      </FormAlert>
+      <FlashMessage variant={FLASH_VARIANTS.ERROR}>{state.error}</FlashMessage>
 
       <CheckboxGroup
         legend="Edit Roles"

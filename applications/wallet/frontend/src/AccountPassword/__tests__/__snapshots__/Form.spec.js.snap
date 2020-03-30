@@ -408,7 +408,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 `;
 
 exports[`<AccountPasswordForm /> should render properly 2`] = `
-.emotion-5 {
+.emotion-4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -417,12 +417,12 @@ exports[`<AccountPasswordForm /> should render properly 2`] = `
   padding-bottom: 16px;
 }
 
-.emotion-5 button,
-.emotion-5 a {
+.emotion-4 button,
+.emotion-4 a {
   margin-right: 16px;
 }
 
-.emotion-4 {
+.emotion-3 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -454,30 +454,30 @@ exports[`<AccountPasswordForm /> should render properly 2`] = `
   background-color: transparent;
 }
 
-.emotion-4:hover {
+.emotion-3:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited {
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited {
   background-color: #73b61c;
 }
 
-.emotion-4:hover {
+.emotion-3:hover {
   background-color: #96c955;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-3[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -486,82 +486,53 @@ exports[`<AccountPasswordForm /> should render properly 2`] = `
   padding-bottom: 8px;
 }
 
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  justify-self: flex-start;
-  color: #000000;
-  font-weight: 500;
-  background-color: #ffffff;
-  border: 1px solid #4ac565;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-}
-
-.emotion-0 {
-  width: 40px;
-  height: 40px;
-  color: #ffffff;
-  background-color: #4ac565;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
 .emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  padding-left: 16px;
-  padding-right: 16px;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #000000;
+  font-weight: 500;
 }
 
 <div>
   <div
-    className="emotion-3"
+    className="emotion-2"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
+      <svg
+        color="#4ac565"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
       <div
         className="emotion-0"
-      >
-        <svg
-          data-file-name="checkmark.svg"
-          width={20}
-        />
-      </div>
-      <div
-        className="emotion-1"
+        role="alert"
       >
         New Password Saved
       </div>
     </div>
   </div>
   <div
-    className="emotion-5"
+    className="emotion-4"
   >
     <button
-      className="emotion-4"
+      className="emotion-3"
       onClick={[Function]}
       type="button"
     >

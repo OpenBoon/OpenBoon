@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<CreateAccount /> should render properly when the activation link is expired 1`] = `
-.emotion-44 {
+.emotion-43 {
   height: 100%;
 }
 
@@ -46,7 +46,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-right: 8px;
 }
 
-.emotion-43 {
+.emotion-42 {
   margin-top: 44px;
   padding-left: 32px;
   padding-right: 32px;
@@ -69,7 +69,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-bottom: 16px;
 }
 
-.emotion-42 {
+.emotion-41 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -95,45 +95,13 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   height: 20px;
 }
 
-.emotion-10 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   padding-top: 8px;
   padding-bottom: 8px;
-}
-
-.emotion-9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  justify-self: flex-start;
-  color: #000000;
-  font-weight: 500;
-  background-color: #ffffff;
-  border: 2px solid #c92300;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-}
-
-.emotion-7 {
-  width: 40px;
-  height: 40px;
-  color: #ffffff;
-  background-color: #c92300;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
 }
 
 .emotion-8 {
@@ -141,47 +109,53 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  padding-left: 16px;
-  padding-right: 16px;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
 }
 
-.emotion-11 {
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #000000;
+  font-weight: 500;
+}
+
+.emotion-10 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   color: #c92300;
 }
 
-.emotion-12 {
+.emotion-11 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-top: 16px;
 }
 
-.emotion-16 {
+.emotion-15 {
   padding-top: 8px;
 }
 
-.emotion-13 {
+.emotion-12 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-15 {
+.emotion-14 {
   position: relative;
 }
 
-.emotion-14 {
+.emotion-13 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -193,17 +167,17 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   border-width: 2px;
 }
 
-.emotion-14:focus {
+.emotion-13:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-14:focus {
+.emotion-13:focus {
   color: #000000;
   background-color: #ffffff;
 }
 
-.emotion-41 {
+.emotion-40 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -212,12 +186,12 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-bottom: 16px;
 }
 
-.emotion-41 button,
-.emotion-41 a {
+.emotion-40 button,
+.emotion-40 a {
   margin-right: 16px;
 }
 
-.emotion-39 {
+.emotion-38 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -249,30 +223,30 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   background-color: transparent;
 }
 
-.emotion-39:hover {
+.emotion-38:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-39[aria-disabled=true] {
+.emotion-38[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-39,
-.emotion-39:hover,
-.emotion-39:visited {
+.emotion-38,
+.emotion-38:hover,
+.emotion-38:visited {
   background-color: #808080;
 }
 
-.emotion-39:hover {
+.emotion-38:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-39[aria-disabled=true] {
+.emotion-38[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-40 {
+.emotion-39 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -304,31 +278,31 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   background-color: transparent;
 }
 
-.emotion-40:hover {
+.emotion-39:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-40[aria-disabled=true] {
+.emotion-39[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-40,
-.emotion-40:hover,
-.emotion-40:visited {
+.emotion-39,
+.emotion-39:hover,
+.emotion-39:visited {
   background-color: #73b61c;
 }
 
-.emotion-40:hover {
+.emotion-39:hover {
   background-color: #96c955;
 }
 
-.emotion-40[aria-disabled=true] {
+.emotion-39[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-  className="emotion-44"
+  className="emotion-43"
 >
   <div
     className="emotion-2"
@@ -352,7 +326,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
     <div />
   </div>
   <div
-    className="emotion-43"
+    className="emotion-42"
   >
     <h2
       className="emotion-3"
@@ -361,7 +335,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
     </h2>
     <form
       action=""
-      className="emotion-42"
+      className="emotion-41"
       method="post"
       onSubmit={[Function]}
     >
@@ -377,51 +351,49 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         </div>
       </div>
       <div
-        className="emotion-10"
+        className="emotion-9"
       >
         <div
-          className="emotion-9"
+          className="emotion-8"
         >
+          <svg
+            color="#c92300"
+            data-file-name="warning.svg"
+            height={20}
+          />
           <div
             className="emotion-7"
-          >
-            <svg
-              data-file-name="warning.svg"
-              width={20}
-            />
-          </div>
-          <div
-            className="emotion-8"
+            role="alert"
           >
             Confirmation Link Expired
           </div>
         </div>
       </div>
       <div
-        className="emotion-11"
+        className="emotion-10"
       >
         Confirmation links expire after three days. Please create a new account.
       </div>
       <h3
-        className="emotion-12"
+        className="emotion-11"
       >
         Name
       </h3>
       <div
-        className="emotion-16"
+        className="emotion-15"
       >
         <label
-          className="emotion-13"
+          className="emotion-12"
           htmlFor="firstName"
         >
           First Name
         </label>
         <div
-          className="emotion-15"
+          className="emotion-14"
         >
           <input
             autoFocus={true}
-            className="emotion-14"
+            className="emotion-13"
             id="firstName"
             name="firstName"
             onChange={[Function]}
@@ -430,25 +402,25 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           />
         </div>
         <div
-          className="emotion-16"
+          className="emotion-15"
         >
            
         </div>
       </div>
       <div
-        className="emotion-16"
+        className="emotion-15"
       >
         <label
-          className="emotion-13"
+          className="emotion-12"
           htmlFor="lastName"
         >
           Last Name
         </label>
         <div
-          className="emotion-15"
+          className="emotion-14"
         >
           <input
-            className="emotion-14"
+            className="emotion-13"
             id="lastName"
             name="lastName"
             onChange={[Function]}
@@ -457,25 +429,25 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           />
         </div>
         <div
-          className="emotion-16"
+          className="emotion-15"
         >
            
         </div>
       </div>
       <div
-        className="emotion-16"
+        className="emotion-15"
       >
         <label
-          className="emotion-13"
+          className="emotion-12"
           htmlFor="email"
         >
           Email
         </label>
         <div
-          className="emotion-15"
+          className="emotion-14"
         >
           <input
-            className="emotion-14"
+            className="emotion-13"
             id="email"
             name="email"
             onChange={[Function]}
@@ -484,30 +456,30 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           />
         </div>
         <div
-          className="emotion-16"
+          className="emotion-15"
         >
            
         </div>
       </div>
       <h3
-        className="emotion-12"
+        className="emotion-11"
       >
         Password
       </h3>
       <div
-        className="emotion-16"
+        className="emotion-15"
       >
         <label
-          className="emotion-13"
+          className="emotion-12"
           htmlFor="password"
         >
           Password
         </label>
         <div
-          className="emotion-15"
+          className="emotion-14"
         >
           <input
-            className="emotion-14"
+            className="emotion-13"
             id="password"
             name="password"
             onChange={[Function]}
@@ -516,25 +488,25 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           />
         </div>
         <div
-          className="emotion-16"
+          className="emotion-15"
         >
            
         </div>
       </div>
       <div
-        className="emotion-16"
+        className="emotion-15"
       >
         <label
-          className="emotion-13"
+          className="emotion-12"
           htmlFor="confirmPassword"
         >
           Confirm Password
         </label>
         <div
-          className="emotion-15"
+          className="emotion-14"
         >
           <input
-            className="emotion-14"
+            className="emotion-13"
             id="confirmPassword"
             name="confirmPassword"
             onChange={[Function]}
@@ -543,16 +515,16 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           />
         </div>
         <div
-          className="emotion-16"
+          className="emotion-15"
         >
            
         </div>
       </div>
       <div
-        className="emotion-41"
+        className="emotion-40"
       >
         <a
-          className="emotion-39"
+          className="emotion-38"
           href="/"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -561,7 +533,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         </a>
         <button
           aria-disabled={true}
-          className="emotion-40"
+          className="emotion-39"
           onClick={[Function]}
           type="submit"
         >

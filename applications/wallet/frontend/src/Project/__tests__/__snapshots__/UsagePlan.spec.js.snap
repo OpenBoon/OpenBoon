@@ -769,6 +769,10 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
 }
 
 .emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   padding-top: 8px;
   padding-bottom: 8px;
 }

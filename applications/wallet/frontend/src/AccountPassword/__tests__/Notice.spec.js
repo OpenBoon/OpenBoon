@@ -18,12 +18,5 @@ describe('<AccountPasswordNotice />', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
-
-    // Dismiss Error Message
-    await act(async () => {
-      component.root
-        .findByProps({ 'aria-label': 'Close alert' })
-        .props.onClick({ preventDefault: noop })
-    })
   })
 })

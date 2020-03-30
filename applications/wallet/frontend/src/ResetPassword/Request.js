@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { colors, typography, spacing } from '../Styles'
 
-import FormAlert from '../FormAlert'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
@@ -38,9 +38,7 @@ const ResetPasswordRequest = () => {
         one.
       </div>
 
-      <FormAlert setErrorMessage={() => dispatch({ error: '' })}>
-        {state.error}
-      </FormAlert>
+      <FlashMessage variant={FLASH_VARIANTS.ERROR}>{state.error}</FlashMessage>
 
       <Input
         autoFocus

@@ -1524,23 +1524,23 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-4 {
+  .emotion-3 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
   padding-top: 16px;
 }
 
-.emotion-11 {
+.emotion-10 {
   padding-top: 12px;
 }
 
-.emotion-6 {
+.emotion-5 {
   display: block;
   color: #808080;
 }
 
-.emotion-10 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1552,7 +1552,7 @@ Array [
   padding-top: 16px;
 }
 
-.emotion-7 {
+.emotion-6 {
   width: 470px;
   font-size: 15px;
   line-height: 19px;
@@ -1564,7 +1564,7 @@ Array [
   resize: none;
 }
 
-.emotion-9 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1577,7 +1577,7 @@ Array [
   padding-right: 4px;
 }
 
-.emotion-8 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1611,33 +1611,33 @@ Array [
   font-weight: 400;
 }
 
-.emotion-8:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-8[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-8,
-.emotion-8:hover,
-.emotion-8:visited {
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited {
   color: #73b61c;
 }
 
-.emotion-8:hover {
+.emotion-7:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
-.emotion-8:active {
+.emotion-7:active {
   opacity: 0;
   -webkit-transition: opacity .3s ease;
   transition: opacity .3s ease;
 }
 
-.emotion-23 {
+.emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1646,12 +1646,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-23 button,
-.emotion-23 a {
+.emotion-21 button,
+.emotion-21 a {
   margin-right: 16px;
 }
 
-.emotion-22 {
+.emotion-20 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1683,30 +1683,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-22:hover {
+.emotion-20:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-22[aria-disabled=true] {
+.emotion-20[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-22,
-.emotion-22:hover,
-.emotion-22:visited {
+.emotion-20,
+.emotion-20:hover,
+.emotion-20:visited {
   background-color: #73b61c;
 }
 
-.emotion-22:hover {
+.emotion-20:hover {
   background-color: #96c955;
 }
 
-.emotion-22[aria-disabled=true] {
+.emotion-20[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1715,111 +1715,66 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  justify-self: flex-start;
-  color: #000000;
-  font-weight: 500;
-  background-color: #ffffff;
-  border: 2px solid #c92300;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-}
-
-.emotion-0 {
-  width: 40px;
-  height: 40px;
-  color: #ffffff;
-  background-color: #c92300;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
 .emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  padding-left: 16px;
-  padding-right: 16px;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
 }
 
-.emotion-5 {
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #000000;
+  font-weight: 500;
+}
+
+.emotion-4 {
   padding-top: 12px;
   padding-bottom: 12px;
   color: #808080;
 }
 
-.emotion-24 {
+.emotion-22 {
   padding-top: 24px;
 }
 
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  justify-self: flex-start;
-  color: #000000;
-  font-weight: 500;
-  background-color: #ffffff;
-  border: 1px solid #4ac565;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-}
-
 .emotion-12 {
-  width: 40px;
-  height: 40px;
-  color: #ffffff;
-  background-color: #4ac565;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  border-radius: 2px;
+  padding: 12px;
 }
 
-.emotion-17 {
+.emotion-15 {
   padding-top: 12px;
   color: #808080;
 }
 
-.emotion-20 {
+.emotion-18 {
   color: #b3b3b3;
 }
 
-.emotion-19 {
+.emotion-17 {
   font-weight: 700;
 }
 
-.emotion-21 {
+.emotion-19 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1851,85 +1806,83 @@ Array [
   background-color: transparent;
 }
 
-.emotion-21:hover {
+.emotion-19:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-19[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-21,
-.emotion-21:hover,
-.emotion-21:visited {
+.emotion-19,
+.emotion-19:hover,
+.emotion-19:visited {
   background-color: #808080;
 }
 
-.emotion-21:hover {
+.emotion-19:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-19[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div>
     <div
-      className="emotion-3"
+      className="emotion-2"
     >
       <div
-        className="emotion-2"
+        className="emotion-1"
       >
+        <svg
+          color="#c92300"
+          data-file-name="warning.svg"
+          height={20}
+        />
         <div
           className="emotion-0"
-        >
-          <svg
-            data-file-name="warning.svg"
-            width={20}
-          />
-        </div>
-        <div
-          className="emotion-1"
+          role="alert"
         >
           Users Not Added
         </div>
       </div>
     </div>
     <h3
-      className="emotion-4"
+      className="emotion-3"
     >
       Users that Need an Account
     </h3>
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       danny@zorroa.com
     </div>
     <div
-      className="emotion-11"
+      className="emotion-10"
     >
       <label
-        className="emotion-6"
+        className="emotion-5"
         htmlFor="copyLink"
       >
         A user must have an account to be added. Accounts can be created here:
       </label>
       <div
-        className="emotion-10"
+        className="emotion-9"
       >
         <input
-          className="emotion-7"
+          className="emotion-6"
           id="copyLink"
           readOnly={true}
           type="text"
           value="http://localhost/create-account"
         />
         <div
-          className="emotion-9"
+          className="emotion-8"
         >
           <button
-            className="emotion-8"
+            className="emotion-7"
             onClick={[Function]}
             type="button"
           >
@@ -1939,65 +1892,63 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-24"
+      className="emotion-22"
     >
       <div
-        className="emotion-3"
+        className="emotion-2"
       >
         <div
-          className="emotion-14"
+          className="emotion-12"
         >
+          <svg
+            color="#4ac565"
+            data-file-name="checkmark.svg"
+            height={20}
+          />
           <div
-            className="emotion-12"
-          >
-            <svg
-              data-file-name="checkmark.svg"
-              width={20}
-            />
-          </div>
-          <div
-            className="emotion-1"
+            className="emotion-0"
+            role="alert"
           >
             Users Added
           </div>
         </div>
       </div>
       <h3
-        className="emotion-4"
+        className="emotion-3"
       >
         Users Added
       </h3>
       <div
-        className="emotion-17"
+        className="emotion-15"
       >
         tester@fake.com
       </div>
       <h3
-        className="emotion-4"
+        className="emotion-3"
       >
         Roles
       </h3>
       <ul
-        className="emotion-20"
+        className="emotion-18"
       >
         <li
-          className="emotion-19"
+          className="emotion-17"
         >
           ML Tools
         </li>
       </ul>
       <div
-        className="emotion-23"
+        className="emotion-21"
       >
         <button
-          className="emotion-21"
+          className="emotion-19"
           onClick={[Function]}
           type="button"
         >
           Add Another User
         </button>
         <a
-          className="emotion-22"
+          className="emotion-20"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
           onClick={[Function]}
           onMouseEnter={[Function]}
