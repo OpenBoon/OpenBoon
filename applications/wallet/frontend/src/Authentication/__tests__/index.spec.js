@@ -13,8 +13,10 @@ jest.mock('../../Projects', () => 'Projects')
 jest.mock('../../Layout', () => 'Layout')
 
 describe('<Authentication />', () => {
-  Object.defineProperty(window, 'onload', {
-    set: (cb) => cb(),
+  window.addEventListener = jest.fn((event, cb) => {
+    if (event === 'load') {
+      cb()
+    }
   })
 
   Object.defineProperty(window, 'gapi', {
