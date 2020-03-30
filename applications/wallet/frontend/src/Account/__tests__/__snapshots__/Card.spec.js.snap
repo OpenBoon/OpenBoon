@@ -156,332 +156,6 @@ exports[`<AccountCard /> should not render without subscriptions 1`] = `
 `;
 
 exports[`<AccountCard /> should render properly 1`] = `
-.emotion-25 {
-  padding-right: 32px;
-  padding-bottom: 32px;
-  width: 470px;
-}
-
-.emotion-24 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  background-color: #3b3b3b;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
-  border-radius: 2px;
-}
-
-.emotion-5 {
-  padding: 16px;
-  border-bottom: 1px solid #4a4a4a;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-5 svg {
-  margin-right: 8px;
-}
-
-.emotion-4 {
-  padding: 16px;
-}
-
-.emotion-0 {
-  padding-bottom: 8px;
-}
-
-.emotion-1 {
-  color: #b3b3b3;
-  padding-bottom: 16px;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-2 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px 16px;
-}
-
-.emotion-2:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited {
-  background-color: #73b61c;
-}
-
-.emotion-2:hover {
-  background-color: #96c955;
-}
-
-.emotion-2[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-23 {
-  padding: 32px;
-}
-
-.emotion-6 {
-  padding-bottom: 16px;
-}
-
-.emotion-7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-7 img {
-  margin-right: 12px;
-}
-
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  padding-left: 44px;
-}
-
-.emotion-9 {
-  color: #b3b3b3;
-  padding-bottom: 2px;
-}
-
-.emotion-8 {
-  font-weight: 700;
-}
-
-.emotion-11 {
-  color: #cdf6a8;
-}
-
-.emotion-20 {
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-.emotion-22 {
-  padding-top: 16px;
-  padding-left: 44px;
-}
-
-.emotion-21 {
-  color: #b3b3b3;
-  font-style: italic;
-}
-
-<div
-  className="emotion-25"
->
-  <div
-    className="emotion-24"
-  >
-    <div
-      className="emotion-5"
-    >
-      <div
-        className="emotion-4"
-      >
-        <h3
-          className="emotion-0"
-        >
-          Project: 
-          Project Zero
-        </h3>
-        <div
-          className="emotion-1"
-        >
-          Project ID: 
-          00000000-0000-0000-0000-000000000000
-        </div>
-        <div
-          className="emotion-3"
-        >
-          <a
-            className="emotion-2"
-            href="/00000000-0000-0000-0000-000000000000"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-          >
-            View Dashboard
-          </a>
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-23"
-    >
-      <h3
-        className="emotion-6"
-      >
-        Usage Plan:
-      </h3>
-      <div
-        className="emotion-6"
-      >
-        <h4
-          className="emotion-7"
-        >
-          <img
-            alt=""
-            src="/icons/videos.png"
-            width={32}
-          />
-           Video:
-           
-          300
-           hours
-        </h4>
-        <div
-          className="emotion-12"
-        >
-          <div
-            className="emotion-9"
-          >
-            Used:
-             
-            <span
-              className="emotion-8"
-            >
-              100
-              /hrs
-            </span>
-          </div>
-          <div
-            className="emotion-11"
-          >
-            Available:
-             
-            <span
-              className="emotion-8"
-            >
-              200
-              /hrs
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-20"
-      >
-        <h4
-          className="emotion-7"
-        >
-          <img
-            alt=""
-            src="/icons/images.png"
-            width={32}
-          />
-           Image / Documents: 
-          30,000
-        </h4>
-        <div
-          className="emotion-12"
-        >
-          <div
-            className="emotion-9"
-          >
-            Used:
-             
-            <span
-              className="emotion-8"
-            >
-              20,000
-              
-            </span>
-          </div>
-          <div
-            className="emotion-11"
-          >
-            Available:
-             
-            <span
-              className="emotion-8"
-            >
-              10,000
-              
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-22"
-      >
-        <h4>
-          Additional Modules:
-        </h4>
-        <span
-          className="emotion-21"
-        >
-          None
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<AccountCard /> should render properly with over usage 1`] = `
 .emotion-30 {
   padding-right: 32px;
   padding-bottom: 32px;
@@ -598,7 +272,713 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   padding: 32px;
 }
 
+.emotion-6 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-13 {
+  padding-bottom: 16px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-7 img {
+  margin-right: 12px;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 44px;
+}
+
+.emotion-9 {
+  color: #b3b3b3;
+  padding-bottom: 2px;
+}
+
+.emotion-8 {
+  font-weight: 700;
+}
+
 .emotion-11 {
+  color: #cdf6a8;
+}
+
+.emotion-20 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-27 {
+  padding-top: 16px;
+}
+
+.emotion-21 {
+  padding-bottom: 4px;
+}
+
+.emotion-26 {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.emotion-22 {
+  font-family: Roboto Mono;
+  color: #b3b3b3;
+  padding-bottom: 2px;
+}
+
+<div
+  className="emotion-30"
+>
+  <div
+    className="emotion-29"
+  >
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-4"
+      >
+        <h3
+          className="emotion-0"
+        >
+          Project: 
+          Project Zero
+        </h3>
+        <div
+          className="emotion-1"
+        >
+          Project ID: 
+          00000000-0000-0000-0000-000000000000
+        </div>
+        <div
+          className="emotion-3"
+        >
+          <a
+            className="emotion-2"
+            href="/00000000-0000-0000-0000-000000000000"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+          >
+            View Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-28"
+    >
+      <h3
+        className="emotion-6"
+      >
+        Usage Plan:
+      </h3>
+      <div
+        className="emotion-13"
+      >
+        <h4
+          className="emotion-7"
+        >
+          <img
+            alt=""
+            src="/icons/videos.png"
+            width={32}
+          />
+           Video:
+           
+          300
+           hours
+        </h4>
+        <div
+          className="emotion-12"
+        >
+          <div
+            className="emotion-9"
+          >
+            Used:
+             
+            <span
+              className="emotion-8"
+            >
+              100
+              /hrs
+            </span>
+          </div>
+          <div
+            className="emotion-11"
+          >
+            Available:
+             
+            <span
+              className="emotion-8"
+            >
+              200
+              /hrs
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-20"
+      >
+        <h4
+          className="emotion-7"
+        >
+          <img
+            alt=""
+            src="/icons/images.png"
+            width={32}
+          />
+           Image / Documents: 
+          30,000
+        </h4>
+        <div
+          className="emotion-12"
+        >
+          <div
+            className="emotion-9"
+          >
+            Used:
+             
+            <span
+              className="emotion-8"
+            >
+              20,000
+              
+            </span>
+          </div>
+          <div
+            className="emotion-11"
+          >
+            Available:
+             
+            <span
+              className="emotion-8"
+            >
+              10,000
+              
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-27"
+      >
+        <h4
+          className="emotion-21"
+        >
+          Additional Modules:
+        </h4>
+        <ul
+          className="emotion-26"
+        >
+          <li
+            className="emotion-22"
+          >
+            zmlp-classification
+          </li>
+          <li
+            className="emotion-22"
+          >
+            zmlp-face-recognition
+          </li>
+          <li
+            className="emotion-22"
+          >
+            shot-detection
+          </li>
+          <li
+            className="emotion-22"
+          >
+            gcp-vision-text-detection
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AccountCard /> should render properly with no modules 1`] = `
+.emotion-26 {
+  padding-right: 32px;
+  padding-bottom: 32px;
+  width: 470px;
+}
+
+.emotion-25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #3b3b3b;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  border-radius: 2px;
+}
+
+.emotion-5 {
+  padding: 16px;
+  border-bottom: 1px solid #4a4a4a;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-5 svg {
+  margin-right: 8px;
+}
+
+.emotion-4 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  color: #b3b3b3;
+  padding-bottom: 16px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  background-color: #73b61c;
+}
+
+.emotion-2:hover {
+  background-color: #96c955;
+}
+
+.emotion-2[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-24 {
+  padding: 32px;
+}
+
+.emotion-6 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-13 {
+  padding-bottom: 16px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-7 img {
+  margin-right: 12px;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 44px;
+}
+
+.emotion-9 {
+  color: #b3b3b3;
+  padding-bottom: 2px;
+}
+
+.emotion-8 {
+  font-weight: 700;
+}
+
+.emotion-11 {
+  color: #cdf6a8;
+}
+
+.emotion-20 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-23 {
+  padding-top: 16px;
+}
+
+.emotion-21 {
+  padding-bottom: 4px;
+}
+
+.emotion-22 {
+  color: #b3b3b3;
+  font-style: italic;
+}
+
+<div
+  className="emotion-26"
+>
+  <div
+    className="emotion-25"
+  >
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-4"
+      >
+        <h3
+          className="emotion-0"
+        >
+          Project: 
+          Project Zero
+        </h3>
+        <div
+          className="emotion-1"
+        >
+          Project ID: 
+          00000000-0000-0000-0000-000000000000
+        </div>
+        <div
+          className="emotion-3"
+        >
+          <a
+            className="emotion-2"
+            href="/00000000-0000-0000-0000-000000000000"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+          >
+            View Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-24"
+    >
+      <h3
+        className="emotion-6"
+      >
+        Usage Plan:
+      </h3>
+      <div
+        className="emotion-13"
+      >
+        <h4
+          className="emotion-7"
+        >
+          <img
+            alt=""
+            src="/icons/videos.png"
+            width={32}
+          />
+           Video:
+           
+          300
+           hours
+        </h4>
+        <div
+          className="emotion-12"
+        >
+          <div
+            className="emotion-9"
+          >
+            Used:
+             
+            <span
+              className="emotion-8"
+            >
+              100
+              /hrs
+            </span>
+          </div>
+          <div
+            className="emotion-11"
+          >
+            Available:
+             
+            <span
+              className="emotion-8"
+            >
+              200
+              /hrs
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-20"
+      >
+        <h4
+          className="emotion-7"
+        >
+          <img
+            alt=""
+            src="/icons/images.png"
+            width={32}
+          />
+           Image / Documents: 
+          30,000
+        </h4>
+        <div
+          className="emotion-12"
+        >
+          <div
+            className="emotion-9"
+          >
+            Used:
+             
+            <span
+              className="emotion-8"
+            >
+              20,000
+              
+            </span>
+          </div>
+          <div
+            className="emotion-11"
+          >
+            Available:
+             
+            <span
+              className="emotion-8"
+            >
+              10,000
+              
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-23"
+      >
+        <h4
+          className="emotion-21"
+        >
+          Additional Modules:
+        </h4>
+        <span
+          className="emotion-22"
+        >
+          None
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AccountCard /> should render properly with over usage 1`] = `
+.emotion-35 {
+  padding-right: 32px;
+  padding-bottom: 32px;
+  width: 470px;
+}
+
+.emotion-34 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #3b3b3b;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
+  border-radius: 2px;
+}
+
+.emotion-5 {
+  padding: 16px;
+  border-bottom: 1px solid #4a4a4a;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-5 svg {
+  margin-right: 8px;
+}
+
+.emotion-4 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  color: #b3b3b3;
+  padding-bottom: 16px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px 16px;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  background-color: #73b61c;
+}
+
+.emotion-2:hover {
+  background-color: #96c955;
+}
+
+.emotion-2[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-33 {
+  padding: 32px;
+}
+
+.emotion-11 {
+  padding-bottom: 24px;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-18 {
   padding-bottom: 16px;
 }
 
@@ -646,14 +1026,24 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-27 {
+.emotion-32 {
   padding-top: 16px;
-  padding-left: 44px;
 }
 
 .emotion-26 {
+  padding-bottom: 4px;
+}
+
+.emotion-31 {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.emotion-27 {
+  font-family: Roboto Mono;
   color: #b3b3b3;
-  font-style: italic;
+  padding-bottom: 2px;
 }
 
 .emotion-10 {
@@ -694,10 +1084,10 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
 }
 
 <div
-  className="emotion-30"
+  className="emotion-35"
 >
   <div
-    className="emotion-29"
+    className="emotion-34"
   >
     <div
       className="emotion-5"
@@ -732,7 +1122,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
       </div>
     </div>
     <div
-      className="emotion-28"
+      className="emotion-33"
     >
       <div
         className="emotion-10"
@@ -780,7 +1170,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
         Usage Plan:
       </h3>
       <div
-        className="emotion-11"
+        className="emotion-18"
       >
         <h4
           className="emotion-12"
@@ -868,16 +1258,37 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
         </div>
       </div>
       <div
-        className="emotion-27"
+        className="emotion-32"
       >
-        <h4>
-          Additional Modules:
-        </h4>
-        <span
+        <h4
           className="emotion-26"
         >
-          None
-        </span>
+          Additional Modules:
+        </h4>
+        <ul
+          className="emotion-31"
+        >
+          <li
+            className="emotion-27"
+          >
+            zmlp-classification
+          </li>
+          <li
+            className="emotion-27"
+          >
+            zmlp-face-recognition
+          </li>
+          <li
+            className="emotion-27"
+          >
+            shot-detection
+          </li>
+          <li
+            className="emotion-27"
+          >
+            gcp-vision-text-detection
+          </li>
+        </ul>
       </div>
     </div>
   </div>
