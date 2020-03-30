@@ -34,7 +34,7 @@ const Authentication = ({ route, children }) => {
   const fetcher = initializeFetcher({ setUser })
 
   useEffect(() => {
-    window.onload = () => {
+    window.addEventListener('load', () => {
       window.gapi.load('auth2', async () => {
         setGoogleAuth(
           window.gapi.auth2.init({
@@ -43,7 +43,7 @@ const Authentication = ({ route, children }) => {
         )
         setHasGoogleLoaded(true)
       })
-    }
+    })
   }, [setGoogleAuth])
 
   if (AUTHENTICATION_LESS_ROUTES.includes(route)) {
