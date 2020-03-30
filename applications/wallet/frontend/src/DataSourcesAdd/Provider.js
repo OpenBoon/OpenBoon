@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types'
 
-import checkboxOptionShape from '../Checkbox/optionShape'
-
 import { colors, spacing, constants } from '../Styles'
 
 import Accordion from '../Accordion'
 import CheckboxTable from '../Checkbox/Table'
 
-const DataSourcesAddModules = ({
-  module: { logo, description, categories },
+const IMG_HEIGHT = 32
+
+const DataSourcesAddProvider = ({
+  provider: { name, logo, description, categories },
   onClick,
 }) => {
   return (
-    <Accordion title={logo}>
+    <Accordion title={<img src={logo} alt={name} height={IMG_HEIGHT} />}>
       <>
         <p
           css={{
@@ -28,7 +28,15 @@ const DataSourcesAddModules = ({
         {categories.map((category) => (
           <CheckboxTable
             key={category.name}
-            category={category}
+            category={{
+              name: category.name,
+              options: category.modules.map((module) => ({
+                value: module.name,
+                label: module.description,
+                initialValue: false,
+                isDisabled: module.restricted,
+              })),
+            }}
             onClick={onClick}
           />
         ))}
@@ -37,20 +45,19 @@ const DataSourcesAddModules = ({
   )
 }
 
-DataSourcesAddModules.propTypes = {
-  module: PropTypes.shape({
-    provider: PropTypes.string.isRequired,
+DataSourcesAddProvider.propTypes = {
+  provider: PropTypes.shape({
+    name: PropTypes.string.isRequired,
     logo: PropTypes.node.isRequired,
     description: PropTypes.node.isRequired,
     categories: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
-        options: PropTypes.arrayOf(PropTypes.shape(checkboxOptionShape))
-          .isRequired,
+        modules: PropTypes.arrayOf(PropTypes.shape()).isRequired,
       }).isRequired,
     ).isRequired,
   }).isRequired,
   onClick: PropTypes.func.isRequired,
 }
 
-export default DataSourcesAddModules
+export default DataSourcesAddProvider
