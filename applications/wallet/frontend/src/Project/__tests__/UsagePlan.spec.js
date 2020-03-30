@@ -45,6 +45,29 @@ describe('<ProjectUsagePlan />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render properly with no modules', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]',
+      query: { projectId: project.id },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...subscriptions,
+        results: [
+          {
+            ...subscriptions.results[0],
+            modules: [],
+          },
+        ],
+      },
+    })
+
+    const component = TestRenderer.create(<ProjectUsagePlan />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should not render without subscriptions', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]',
