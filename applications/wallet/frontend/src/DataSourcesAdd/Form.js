@@ -18,7 +18,7 @@ import CheckboxGroup from '../Checkbox/Group'
 import { FILE_TYPES, onSubmit } from './helpers'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
-import DataSourcesAddModules from './Modules'
+import DataSourcesAddProvider from './Provider'
 
 const INITIAL_STATE = {
   name: '',
@@ -117,7 +117,7 @@ const DataSourcesAddForm = () => {
       <DataSourcesAddAutomaticAnalysis />
 
       {providers.map((provider) => (
-        <DataSourcesAddModules
+        <DataSourcesAddProvider
           key={provider.name}
           provider={provider}
           onClick={(module) =>

@@ -7,7 +7,7 @@ import CheckboxTable from '../Checkbox/Table'
 
 const IMG_HEIGHT = 32
 
-const DataSourcesAddModules = ({
+const DataSourcesAddProvider = ({
   provider: { name, logo, description, categories },
   onClick,
 }) => {
@@ -25,16 +25,16 @@ const DataSourcesAddModules = ({
         >
           {description}
         </p>
-        {categories.map((c) => (
+        {categories.map((category) => (
           <CheckboxTable
-            key={c.name}
+            key={category.name}
             category={{
-              name: c.name,
-              options: c.modules.map((m) => ({
-                value: m.name,
-                label: m.description,
+              name: category.name,
+              options: category.modules.map((module) => ({
+                value: module.name,
+                label: module.description,
                 initialValue: false,
-                isDisabled: m.restricted,
+                isDisabled: module.restricted,
               })),
             }}
             onClick={onClick}
@@ -45,7 +45,7 @@ const DataSourcesAddModules = ({
   )
 }
 
-DataSourcesAddModules.propTypes = {
+DataSourcesAddProvider.propTypes = {
   provider: PropTypes.shape({
     name: PropTypes.string.isRequired,
     logo: PropTypes.node.isRequired,
@@ -60,4 +60,4 @@ DataSourcesAddModules.propTypes = {
   onClick: PropTypes.func.isRequired,
 }
 
-export default DataSourcesAddModules
+export default DataSourcesAddProvider
