@@ -1,4 +1,4 @@
-
+# flake8: noqa
 from zmlpsdk import AssetProcessor, Argument
 
 
@@ -20,7 +20,7 @@ class MyExampleProcessor(AssetProcessor):
 
     def __init__(self):
         self.add_arg(Argument('example_arg', 'str', default="hello", required=True))
-    
+
     def init(self):
         """
         The init() function is run once for each batch of files.  Use this
@@ -60,4 +60,3 @@ class MyExampleProcessor(AssetProcessor):
         to clean up or finalize any resources that were created in the init() function.
         """
         pass
-
