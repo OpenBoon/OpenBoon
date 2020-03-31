@@ -24,6 +24,11 @@ from wallet.paginators import FromSizePagination
 logger = logging.getLogger(__name__)
 User = get_user_model()
 
+ES_SEARCH_TERMS = ['query', 'from', 'size', 'timeout',
+                   'post_filter', 'minscore', 'suggest',
+                   'highlight', 'collapse', '_source',
+                   'slice', 'aggs', 'aggregations', 'sort']
+
 
 class BaseProjectViewSet(ViewSet):
     """Base viewset to inherit from when needing to interact with a ZMLP Archivist in a
@@ -152,9 +157,9 @@ class BaseProjectViewSet(ViewSet):
 
         """
         base_url = base_url or self.zmlp_root_api_path
-        payload = {'page': {'from': request.GET.get('from', 0),
-                            'size': request.GET.get('size',
-                                                    self.pagination_class.default_limit)}}
+        payload = {'page': {'from': request.query_params.get('from', 0),
+                            'size': request.query_params.get('size',
+                                                             self.pagination_class.default_limit)}}
         if search_filter:
             payload.update(search_filter)
         path = os.path.join(base_url, '_search')
@@ -197,11 +202,20 @@ class BaseProjectViewSet(ViewSet):
             Response: DRF Response that can be used directly by viewset action method.
 
         """
-        payload = {'from': request.GET.get('from', 0),
-                   'size': request.GET.get('size', self.pagination_class.default_limit)}
+        # Check for pagination query params first, and then check the post body
+        payload = {'from': request.query_params.get('from', request.data.get('from', 0)),
+                   'size': request.query_params.get('size', request.data.get('size', self.pagination_class.default_limit))}  # noqa
+
+        # Whitelist any of the ES specific query related terms
+        for term in ES_SEARCH_TERMS:
+            value = request.data.get(term)
+            if value:
+                payload[term] = value
+
         path = os.path.join(self.zmlp_root_api_path, '_search')
         response = request.client.post(path, payload)
         content = self._get_content(response)
+
         items = content['hits']['hits']
         for item in items:
             if item_modifier:
