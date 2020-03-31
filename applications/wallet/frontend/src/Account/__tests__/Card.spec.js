@@ -66,7 +66,7 @@ describe('<AccountCard />', () => {
     })
 
     const component = TestRenderer.create(
-      <AccountCard id={PROJECT_ID} name={PROJECT_NAME} />,
+      <AccountCard projectId={PROJECT_ID} name={PROJECT_NAME} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
