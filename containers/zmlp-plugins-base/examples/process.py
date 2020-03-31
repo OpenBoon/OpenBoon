@@ -31,6 +31,3 @@ socket.send_json(payload)
 socket.send_json(payload)
 print(json.dumps(socket.recv_json(), indent=4))
 print(json.dumps(socket.recv_json(), indent=4))
-
-
-
