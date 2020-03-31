@@ -258,7 +258,7 @@ class BaseProjectViewSet(ViewSet):
 
     def _zmlp_destroy(self, request, pk):
         """The result of this method can be returned for the destroy method of a concrete
-        viewset. if it just needs to proxy the results of a standard ZMLP endpoint for a single
+        viewset if it just needs to proxy the results of a standard ZMLP endpoint for a single
         object.
 
         Args:
@@ -271,6 +271,28 @@ class BaseProjectViewSet(ViewSet):
         """
         response = request.client.delete(os.path.join(self.zmlp_root_api_path, pk))
         return Response(response)
+
+    def _zmlp_update(self, request, pk):
+        """The result of this method can be returned for the update method of a concrete
+        viewset if it just needs to proxy the results of a standard ZMLP endpoint for a single
+        object.
+
+        Args:
+            request (Request): Request the view method was given.
+            pk (str): Primary key of the object to return in the response.
+
+        Returns:
+            Response: DRF Response that can be used directly by viewset action method.
+
+        """
+        update_serializer = self.get_serializer(data=request.data)
+        update_serializer.is_valid(raise_exception=True)
+        zmlp_response = request.client.put(f'{self.zmlp_root_api_path}{request.data["id"]}',
+                                           update_serializer.validated_data)
+        response_serializer = self.get_serializer(data=zmlp_response)
+        if not response_serializer.is_valid():
+            Response({'detail': response_serializer.errors}, status=500)
+        return Response(response_serializer.validated_data)
 
     def _get_content(self, response):
         """Returns the content of Response from the ZVI or ZMLP and as a dict."""
