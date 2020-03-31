@@ -1,0 +1,4 @@
+mounts: ["../"]
+supported_types: ["jpg", "png"]
+batch_size: 2
+api_key: "apikey123"
