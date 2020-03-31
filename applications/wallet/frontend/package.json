@@ -10,9 +10,9 @@
     "prod": "next build && next start",
     "size": "rimraf .next && next build && bundlesize",
     "start": "next start",
-    "test": "TZ=UTC jest --watch --notify --verbose",
-    "test:cover": "TZ=UTC jest --coverage --verbose",
-    "test:hook": "TZ=UTC jest --bail --findRelatedTests"
+    "test": "TZ=UTC jest --watch --notify --verbose --no-cache",
+    "test:cover": "TZ=UTC jest --coverage --verbose --no-cache",
+    "test:hook": "TZ=UTC jest --bail --findRelatedTests --no-cache"
   },
   "prettier": {
     "printWidth": 80,
