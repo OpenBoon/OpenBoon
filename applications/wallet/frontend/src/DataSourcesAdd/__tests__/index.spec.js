@@ -99,6 +99,16 @@ describe('<DataSourcesAdd />', () => {
     expect(mockScrollTo).toHaveBeenCalledWith(0, 0)
     mockScrollTo.mockClear()
 
+    // Mock Unknown Failure
+    fetch.mockRejectOnce(null, { status: 500 })
+
+    // Click Submit
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Create Data Source' })
+        .props.onClick({ preventDefault: noop })
+    })
+
     // Mock Success
     fetch.mockResponseOnce(JSON.stringify({ detail: 'Data Source Created' }))
 
@@ -109,7 +119,7 @@ describe('<DataSourcesAdd />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(fetch.mock.calls.length).toEqual(2)
+    expect(fetch.mock.calls.length).toEqual(3)
 
     expect(fetch.mock.calls[0][0]).toEqual(
       `/api/v1/projects/${PROJECT_ID}/data_sources/`,

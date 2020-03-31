@@ -78,6 +78,7 @@ const ProjectUsersAddForm = () => {
 
         <CheckboxGroup
           legend="Add Roles"
+          description=""
           onClick={(role) => dispatch({ roles: { ...state.roles, ...role } })}
           options={roles.map(({ name, description }) => ({
             value: name,
