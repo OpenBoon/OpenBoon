@@ -42,6 +42,7 @@ exports[`<Login /> should render password changed 1`] = `
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
+  background-color: #d7f2de;
   border-radius: 2px;
   padding: 12px;
 }
@@ -607,6 +608,7 @@ exports[`<Login /> should render properly 1`] = `
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
+  background-color: #d7f2de;
   border-radius: 2px;
   padding: 12px;
 }
@@ -1172,6 +1174,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
+  background-color: #d7f2de;
   border-radius: 2px;
   padding: 12px;
 }
@@ -1737,6 +1740,7 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
+  background-color: #d7f2de;
   border-radius: 2px;
   padding: 12px;
 }

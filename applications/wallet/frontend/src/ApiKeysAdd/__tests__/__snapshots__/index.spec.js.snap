@@ -1115,6 +1115,7 @@ Array [
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
+  background-color: #d7f2de;
   border-radius: 2px;
   padding: 12px;
 }
