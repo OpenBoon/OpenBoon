@@ -9,20 +9,36 @@ import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 /**
+ * Returns the proper [ProjectStorageLocator] implementation for the given settings.
+ */
+fun getFileLocator(entity: String, id: String, category: String, name: String): ProjectStorageLocator {
+
+    return when (val entityType = ProjectStorageEntity.valueOf(entity.toUpperCase())) {
+        ProjectStorageEntity.ASSETS -> {
+            AssetFileLocator(id, category, name)
+        }
+        ProjectStorageEntity.MODELS -> {
+            ProjectFileLocator(entityType, category, name)
+        }
+    }
+}
+
+/**
  * Internal enum class which describes the file storage entity,
- * such as an Asset, Job, Task,etc.
+ * such as an Assets, Models, Jobs, tasks.  The name matches
+ * the name used in the REST API.
  */
 enum class ProjectStorageEntity {
 
     /**
      * The stored file is associated with an asset.
      */
-    ASSET,
+    ASSETS,
 
     /**
      * The stored file is a model.
      */
-    MODEL;
+    MODELS;
 
     fun lower() = this.toString().toLowerCase()
 }
@@ -44,7 +60,7 @@ object ProjectStorageCategory {
     const val PROXY = "proxy"
 }
 
-@ApiModel("ProjectS torage Request", description = "Properties needed to store a file into ProjectStorage.")
+@ApiModel("Project Storage Request", description = "Properties needed to store a file into ProjectStorage.")
 class ProjectStorageRequest(
 
     @ApiModelProperty("The name of the file, overrides the local file name.")
@@ -81,6 +97,11 @@ interface ProjectStorageLocator {
      * The full path into bucket storage where the file is stored.
      */
     fun getPath(): String
+
+    /**
+     * A partial URI path that can be used with the Archivist URI.
+     */
+    fun getFileId(): String
 }
 
 /**
@@ -103,6 +124,10 @@ class ProjectFileLocator(
             "projects/$pid/${entity.lower()}/$id/$category/$name"
         }
     }
+
+    override fun getFileId(): String {
+        return "${entity.lower()}/$id/$category/$name"
+    }
 }
 
 /**
@@ -122,7 +147,11 @@ class AssetFileLocator(
     val projectId: UUID? = null
 ) : ProjectStorageLocator {
 
-    val entity = ProjectStorageEntity.ASSET
+    val entity = ProjectStorageEntity.ASSETS
+
+    override fun getFileId(): String {
+        return "${entity.lower()}/$id/$category/$name"
+    }
 
     override fun getPath(): String {
 
@@ -158,6 +187,9 @@ class ProjectStorageSpec(
 
 @ApiModel("FileStorage", description = "Describes a file stored in ZMLP storage.")
 class FileStorage(
+
+    @ApiModelProperty("The file name")
+    val id: String,
 
     @ApiModelProperty("The file name")
     val name: String,

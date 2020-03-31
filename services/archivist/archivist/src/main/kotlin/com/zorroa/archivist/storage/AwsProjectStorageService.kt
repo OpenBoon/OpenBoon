@@ -90,6 +90,7 @@ class AwsProjectStorageService constructor(
         logStoreEvent(spec)
 
         return FileStorage(
+            spec.locator.getFileId(),
             spec.locator.name,
             spec.locator.category,
             spec.mimetype,

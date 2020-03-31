@@ -343,7 +343,7 @@ class AssetControllerTests : MockMvcTest() {
             assets = listOf(AssetSpec("https://i.imgur.com/SSN26nN.jpg"))
         ))
         val id = rsp.created[0]
-        val expected = "s3://project-storage-test/projects/00000000-0000-0000-0000-000000000000/$id/asset/proxy/bob.jpg"
+        val expected = "s3://project-storage-test/projects/00000000-0000-0000-0000-000000000000/$id/assets/proxy/bob.jpg"
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v3/assets/$id/_locate/proxy/bob.jpg")
                 .headers(job())
