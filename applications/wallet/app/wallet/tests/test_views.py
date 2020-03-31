@@ -58,20 +58,20 @@ def test_api_login_includes_invalid_agreement(api_client, user):
                                {'username': 'user', 'password': 'letmein'})
     assert response.status_code == 200
     response_data = response.json()
-    assert response_data['agreedToPolicies'] == '00000000'
+    assert response_data['agreedToPoliciesDate'] == '00000000'
 
 
 def test_api_login_includes_agreement_date(api_client, user):
     timezone = pytz.timezone('America/Los_Angeles')
 
     date = datetime.datetime(2019, 12, 8, 0, 0)
-    agreement = Agreement(user=user)
+    agreement = Agreement(user=user, policies_date='20191204')
     agreement.save()
     agreement.created_date = timezone.localize(date)
     agreement.save()
 
     date = datetime.datetime(2019, 12, 1, 0, 0)
-    agreement2 = Agreement(user=user)
+    agreement2 = Agreement(user=user, policies_date='20191122')
     agreement2.save()
     agreement2.created_date = timezone.localize(date)
     agreement2.save()
@@ -80,9 +80,8 @@ def test_api_login_includes_agreement_date(api_client, user):
     response = api_client.post(reverse('api-login'),
                                {'username': 'user', 'password': 'letmein'})
     assert response.status_code == 200
-    date = agreement.created_date
     response_data = response.json()
-    assert response_data['agreedToPolicies'] == '20191208'
+    assert response_data['agreedToPoliciesDate'] == '20191204'
 
 
 def test_api_login_inactive_user_fail(api_client, user):

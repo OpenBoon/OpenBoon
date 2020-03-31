@@ -22,6 +22,21 @@ class AgreementViewSet(ListModelMixin,
         if int(user_pk) != request.user.id:
             return Response(data={'detail': 'Request user and context user do not match.'},
                             status=status.HTTP_403_FORBIDDEN)
+
+        # Check that we got a good policies date
+        policies_date = request.data.get('policies_date')
+        if not policies_date:
+            return Response(data={'detail': 'Missing `policies_date` in the request.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        try:
+            int(policies_date)
+            if len(policies_date) != 8:
+                raise ValueError
+        except ValueError:
+            return Response(data={'detail': 'Value for `policies_date` must be an 8 character date '
+                                  'string in the YYYYMMDD format.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
         # Get the IP
         forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if forwarded_for:

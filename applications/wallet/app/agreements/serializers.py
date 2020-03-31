@@ -6,8 +6,7 @@ from agreements.models import Agreement
 class AgreementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agreement
-        fields = ('id', 'user', 'privacy_policy_filename', 'terms_and_conditions_filename',
-                  'ip_address', 'created_date', 'modified_date')
+        fields = ('id', 'user', 'policies_date', 'ip_address', 'created_date', 'modified_date')
 
     def to_representation(self, instance):
         self.fields['user'] = serializers.HyperlinkedRelatedField(view_name='user-detail',
