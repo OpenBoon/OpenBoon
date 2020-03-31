@@ -10,7 +10,8 @@ __all__ = [
     "FileImport",
     "FileUpload",
     "Clip",
-    "Element"
+    "Element",
+    "StoredFile"
 ]
 
 logger = logging.getLogger(__name__)
@@ -270,8 +271,27 @@ class Asset(DocumentMixin):
         """
         return self.get_attr("source.path")
 
+    def add_file(self, stored_file):
+        """
+        Adds the StoredFile record to the asset's list of associated files.
+
+        Args:
+            stored_file (StoredFile): A file that has been stored in ZMLP
+
+        Returns:
+            bool: True if the file was added to the list, False if it was a duplicate.
+
+        """
+        # Ensure the file doesn't already exist in the metadata
+        if not self.get_files(id=stored_file.id):
+            files = self.get_attr("files") or []
+            files.append(stored_file._data)
+            self.set_attr("files", files)
+            return True
+        return False
+
     def get_files(self, name=None, category=None, mimetype=None, extension=None,
-                  attrs=None, attr_keys=None, sort_func=None):
+                  id=None, attrs=None, attr_keys=None, sort_func=None):
         """
         Return all stored files associated with this asset.  Optionally
         filter the results.
@@ -285,13 +305,16 @@ class Asset(DocumentMixin):
             attr_keys: (list): A list of attribute keys that must be present.
             sort_func: (func): A lambda function for sorting the result.
         Returns:
-            list of dict: A list of ZMLP file records.
+            list of StoredFile: A list of ZMLP file records.
 
         """
         result = []
         files = self.get_attr("files") or []
         for fs in files:
             match = True
+            if id and not any((item for item in as_collection(id)
+                               if fs["id"] == item)):
+                match = False
             if name and not any((item for item in as_collection(name)
                                  if fs["name"] == item)):
                 match = False
@@ -315,7 +338,7 @@ class Asset(DocumentMixin):
                     if file_attrs.get(k) != v:
                         match = False
             if match:
-                result.append(fs)
+                result.append(StoredFile(fs))
 
         if sort_func:
             result = sorted(result, key=sort_func)
@@ -416,6 +439,79 @@ class Clip(object):
         """
         serializable_dict = {}
         attrs = ['type', 'start', 'stop', 'timeline']
+        for attr in attrs:
+            if getattr(self, attr, None) is not None:
+                serializable_dict[attr] = getattr(self, attr)
+        return serializable_dict
+
+
+class StoredFile(object):
+    """
+    The StoredFile class represnents a supporting file that has been stored in ZVI.
+    """
+
+    def __init__(self, data):
+        self._data = data
+
+    @property
+    def id(self):
+        """
+        The unique ID of the file.
+        """
+        return self._data['id']
+
+    @property
+    def name(self):
+        """
+        The file name..
+        """
+        return self._data['name']
+
+    @property
+    def category(self):
+        """
+        The file category.
+        """
+        return self._data['category']
+
+    @property
+    def attrs(self):
+        """
+        Arbitrary attributes.
+        """
+        return self._data['attrs']
+
+    @property
+    def mimetype(self):
+        """
+        The file mimetype.
+        """
+        return self._data['mimetype']
+
+    @property
+    def size(self):
+        """
+        The size of the file.
+        """
+        return self._data['size']
+
+    def __str__(self):
+        return "<StoredFile {}>".format(self.id)
+
+    def __eq__(self, other):
+        return other.id
+
+    def __hash__(self):
+        return hash(self.id)
+
+    def for_json(self):
+        """Return a JSON serialized copy.
+
+        Returns:
+            :obj:`dict`: A json serializable dict.
+        """
+        serializable_dict = {}
+        attrs = self._data.keys()
         for attr in attrs:
             if getattr(self, attr, None) is not None:
                 serializable_dict[attr] = getattr(self, attr)

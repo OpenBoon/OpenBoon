@@ -1,7 +1,12 @@
 import io
+import os
+import tempfile
 from collections import namedtuple
+from urllib.parse import urlparse
 
-from ..asset import Asset
+from pathlib2 import Path
+
+from ..asset import Asset, StoredFile
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
 from ..util import as_collection
 from ..job import Job
@@ -398,13 +403,89 @@ class AssetApp(object):
         """
         if isinstance(file_id, str):
             cat_name = file_id
-        elif isinstance(file_id, dict):
+        elif isinstance(file_id, StoredFile):
             cat_name = "{}/{}".format(file_id["category"], file_id["name"])
         else:
             raise ValueError("file_id must be a string or dict")
 
         rsp = self.app.client.get("/api/v3/assets/{}/_files/{}".format(id, cat_name), is_json=False)
         return io.BytesIO(rsp.content)
+
+    def store_file(self, asset, src_path, category, rename=None, attrs=None):
+        """
+        Add a file to the asset's file list and store into externally
+        available cloud storage. Also stores a copy into the
+        local file cache for use by other processors.
+
+        To obtain the local cache path for the file, call 'localize_asset_file'
+        with the result of this method.
+
+        Args:
+            asset (Asset): The purpose of the file, ex proxy.
+            src_path (str): The local path to the file.
+            category (str): The purpose of the file, ex proxy.
+            rename (str): Rename the file to something better.
+            attrs (dict): Arbitrary attributes to attach to the file.
+
+        Returns:
+            StoredFile: A stored file record.
+
+        """
+        asset_id = getattr(asset, "id", asset)
+        spec = {
+            "name": rename or Path(src_path).name,
+            "category": category,
+            "attrs": {}
+        }
+        if attrs:
+            spec["attrs"].update(attrs)
+
+        result = StoredFile(self.app.client.upload_file(
+            "/api/v3/assets/{}/_files".format(asset_id), src_path, spec))
+        asset.add_file(result)
+        return result
+
+    def store_blob(self, asset, blob, category, name, attrs=None):
+        """
+        Add a blob of text to the asset's file list and store into externally
+        available cloud storage.  This is mainly a convenience function that
+        eliminates the need for the user to write a file to disk.
+
+        To obtain the local cache path for the file, call 'localize_asset_file'
+        with the result of this method.
+
+        Args:
+            asset (mixed): The asset or the unique asset ID.
+            blob (str): The string blob of data to write.
+            category (str): The purpose of the file, ex proxy.
+            name (str): The name of th efile.
+            attrs (dict): Arbitrary attributes to attach to the file.
+        Returns:
+            StoredFile: The stored file record.
+
+        """
+        asset_id = getattr(asset, "id", None) or asset
+        spec = {
+            "name": name,
+            "category": category,
+            "attrs": {}
+        }
+        if attrs:
+            spec["attrs"].update(attrs)
+
+        base, ext = os.path.splitext(name)
+        if not ext:
+            raise ValueError("The blob name requires a file extension")
+
+        # handle file:// urls
+        fd, path = tempfile.mkstemp(suffix=ext, prefix='zblob')
+        with open(path, 'w') as fp:
+            fp.write(blob)
+
+        result = self.app.client.upload_file(
+            "/api/v3/assets/{}/_files".format(asset_id), path, spec)
+        asset.add_file(result)
+        return result
 
     def get_sim_hashes(self, images):
         """

@@ -20,6 +20,7 @@ MANUAL = zorroa_test_data("images/set09/nvidia_manual_page.jpg")
 TOOBIG = zorroa_test_data("images/set09/heckabig.jpg")
 
 PROXY_FILE = {
+    "id": "assets/abc123/proxy/proxy_512x341.jpg",
     "name": "proxy_512x341.jpg",
     "category": "proxy",
     "mimetype": "image/jpeg",

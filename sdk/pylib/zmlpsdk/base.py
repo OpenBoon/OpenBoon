@@ -14,7 +14,6 @@ __all__ = [
     "Generator",
     "AssetProcessor",
     "Argument",
-    "ProcessorHelper",
     "ZmlpFatalProcessorException",
     "ZmlpProcessorException",
     "ZmlpEnv",
@@ -26,12 +25,19 @@ class FileTypes:
     """
     A class for storing the supported file types.
     """
+
     videos = frozenset(['mov', 'mp4', 'mpg', 'mpeg', 'm4v', 'webm', 'ogv', 'ogg', 'mxf'])
+    """A set of supported video file formats."""
+
     images = frozenset(["bmp", "cin", "dpx", "gif", "jpg",
                         "jpeg", "exr", "png", "psd", "rla", "tif", "tiff"])
-    documents = frozenset(['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'vsd', 'vsdx'])
-    all = videos.union(images).union(documents)
+    """A set of supported image file formats."""
 
+    documents = frozenset(['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'vsd', 'vsdx'])
+    """A set of supported document file formats."""
+
+    all = videos.union(images).union(documents)
+    """A set of all supported file formats."""
 
 class UnsetArgumentValue(object):
     def __repr__(self):
@@ -373,31 +379,6 @@ class Processor(object):
             except Exception:
                 pass
 
-    @DeprecationWarning
-    def instantiate_helper(self, helper_data):
-        """Dynamically imports a ProcessorHelper subclass and instantiates it.
-
-        The helper_data argument must be a dictionary matching the structure
-        below. The "class" entry should be a dot path to the class for
-        importing. The "kwargs" entry should be a dictionary of keyword
-        arguments to instantiate the class with.
-
-        Example helper_data:
-            .. code-block:: json
-
-                {
-                    'class': 'dot.path.to.import.Class',
-                    'kwargs': {'foo': 'bar'}
-                }
-
-        Args:
-            helper_data (dict): Dictionary describing the ProcessorHelper.
-
-        Returns:
-            object: Object described by the helper data.
-        """
-        raise NotImplementedError('instantiate_helper is not implemented')
-
 
 class Generator(Processor):
     """
@@ -421,7 +402,7 @@ class Generator(Processor):
 
 class AssetProcessor(Processor):
     """
-    Base class for AssetBuilder processors. An AssetBuilder is handed a Frame
+    Base class for AssetBuilder processors. An AssetProcessor is handed a Frame
     which contains the Asset being processed.
     """
 
@@ -461,27 +442,6 @@ class AssetProcessor(Processor):
             raise ZmlpException("No reactor set on processor")
         return self.reactor.add_expand_frame(parent_frame, expand_frame,
                                              batch_size, force)
-
-
-class ProcessorHelper(object):
-    """Abstract Helper class used for swapping out different pieces of
-    functionality in a Processor. All concrete ProcessorHelper classes should
-    inherit from this class.  These classes are designed to dynamically
-    imported and instantiated using the DocumentProcessor.instantiate_helper
-    method. This provides an easy way to plugin custom functionality to
-    existing processors.
-
-    Args:
-        processor (Processor): Processor that is being helped.
-
-    """
-
-    def __init__(self, processor):
-        self.processor = processor
-
-    @property
-    def logger(self):
-        return self.processor.logger
 
 
 class ZmlpEnv:

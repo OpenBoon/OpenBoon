@@ -32,6 +32,7 @@ def store_asset_proxy(asset, path, size, type="image", attrs=None):
     proxy_attrs['height'] = size[1]
     if attrs:
         proxy_attrs.update(attrs)
+
     return file_storage.assets.store_file(asset, path, 'proxy', rename=name, attrs=proxy_attrs)
 
 
@@ -53,12 +54,12 @@ def get_proxy_level_path(asset, level, mimetype="image/"):
 
     """
     files = asset.get_files(mimetype=mimetype, category='proxy', attr_keys=['width'],
-                            sort_func=lambda f: f['attrs']['width'])
+                            sort_func=lambda f: f.attrs.get('width', 0))
     if level >= len(files):
         level = -1
     try:
         proxy = files[level]
-        return file_storage.assets.localize_file(asset, proxy)
+        return file_storage.localize_file(proxy)
     except IndexError:
         return None
 
@@ -78,7 +79,7 @@ def get_proxy_level(asset, level, mimetype="image/"):
         dict: A proxy file record.
     """
     files = asset.get_files(mimetype=mimetype, category='proxy', attr_keys=['width'],
-                            sort_func=lambda f: f['attrs']['width'])
+                            sort_func=lambda f: f.attrs.get('width', 0))
     if level >= len(files):
         level = -1
     try:

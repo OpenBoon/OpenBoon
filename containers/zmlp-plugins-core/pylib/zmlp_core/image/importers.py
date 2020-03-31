@@ -38,7 +38,7 @@ class ImageImporter(AssetProcessor):
 
     def process(self, frame):
         asset = frame.asset
-        path = Path(file_storage.localize_remote_file(asset))
+        path = Path(file_storage.localize_file(asset))
         metadata = get_image_metadata(path)
         set_resolution_attrs(asset, int(metadata.get('full_width')),
                              int(metadata.get('full_height')))

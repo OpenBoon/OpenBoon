@@ -14,6 +14,7 @@ VIDEO_MP4 = zorroa_test_data('video/sample_ipad.m4v')
 class ProxyFunctionTests(TestCase):
     file_list = [
         {
+            'id': "assets/123456/proxy/image_200x200.jpg",
             'name': 'image_200x200.jpg',
             'category': 'proxy',
             'mimetype': 'image/jpeg',
@@ -23,6 +24,7 @@ class ProxyFunctionTests(TestCase):
             }
         },
         {
+            'id': "assets/123456/proxy/image_400x400.jpg",
             'name': 'image_400x400.jpg',
             'category': 'proxy',
             'mimetype': 'image/jpeg',
@@ -32,6 +34,7 @@ class ProxyFunctionTests(TestCase):
             }
         },
         {
+            'id': "assets/123456/proxy/video_400x400.mp4",
             'name': 'video_400x400.mp4',
             'category': 'proxy',
             'mimetype': 'video/mp4',
@@ -41,6 +44,7 @@ class ProxyFunctionTests(TestCase):
             }
         },
         {
+            'id': "assets/123456/proxy/video_500x500.mp4",
             'name': 'video_500x500.mp4',
             'category': 'proxy',
             'mimetype': 'video/mp4',
@@ -57,10 +61,10 @@ class ProxyFunctionTests(TestCase):
         asset.set_attr('files', self.file_list)
 
         prx1 = zmlpsdk.proxy.get_proxy_level(asset, 0)
-        assert 'image_200x200.jpg' == prx1['name']
+        assert 'image_200x200.jpg' == prx1.name
 
         prx1 = zmlpsdk.proxy.get_proxy_level(asset, 9)
-        assert 'image_400x400.jpg' == prx1['name']
+        assert 'image_400x400.jpg' == prx1.name
 
     @patch.object(ZmlpClient, 'stream')
     def test_get_proxy_level_path(self, stream_patch):
@@ -68,15 +72,16 @@ class ProxyFunctionTests(TestCase):
         asset.set_attr('files', self.file_list)
 
         path = zmlpsdk.proxy.get_proxy_level_path(asset, 0)
-        assert '4b6f2919eb95dca550bd50deb5e84b25aec42ccc' in path
+        assert '6942633d44e2d734460b5855926e1b47eea67d86.jpg' in path
 
         path = zmlpsdk.proxy.get_proxy_level_path(asset, 9)
-        assert '760e2adca79e16645154b8a3ece4c6fc35b46663' in path
+        assert 'd64a279e098c9bda4a8156d9c60e3337f7d96b31.jpg' in path
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_store_asset_proxy_unique(self, upload_patch):
         asset = TestAsset(IMAGE_JPG)
         upload_patch.return_value = {
+            'id': 'assets/123456/proxy/image_200x200.jpg',
             'name': 'image_200x200.jpg',
             'category': 'proxy',
             'mimetype': 'image/jpeg',
@@ -90,6 +95,7 @@ class ProxyFunctionTests(TestCase):
         zmlpsdk.proxy.store_asset_proxy(asset, IMAGE_JPG, (200, 200))
 
         upload_patch.return_value = {
+            'id': 'assets/123456/proxy/image_200x200.mp4',
             'name': 'image_200x200.mp4',
             'category': 'proxy',
             'mimetype': 'video/mp4',

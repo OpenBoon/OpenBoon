@@ -10,10 +10,10 @@ from urllib.parse import urlparse
 
 from pathlib2 import Path
 
-from zmlp import app_from_env, Asset
+from zmlp import app_from_env, Asset, StoredFile
 from zmlp.exception import ZmlpException
 from .base import ZmlpEnv
-from .cloud import get_cached_google_storage_client, get_pipeline_storage_client,\
+from .cloud import get_cached_google_storage_client, get_pipeline_storage_client, \
     get_cached_aws_client, get_cached_azure_storage_client
 
 __all__ = [
@@ -30,9 +30,9 @@ class AssetStorage(object):
     files are stored in cloud storage.
     """
 
-    def __init__(self, lfc):
-        self.lfc = lfc
-        self.app = lfc.app
+    def __init__(self, app, cache):
+        self.app = app
+        self.cache = cache
 
     def get_native_uri(self, asset, category, name):
         """
@@ -53,101 +53,51 @@ class AssetStorage(object):
 
     def store_file(self, asset, src_path, category, rename=None, attrs=None):
         """
-        Add a file to the asset's file list and store into externally
-        available cloud storage. Also stores a copy into the
-        local file cache for use by other processors.
-
-        To obtain the local cache path for the file, call 'localize_asset_file'
-        with the result of this method.
+        Store a file and associate it with Asset.  The file is copied into
+        the local cache automatically, so subsequent calls to localize the
+        file will be a no-op.
 
         Args:
-            asset (Asset): The purpose of the file, ex proxy.
-            src_path (str): The local path to the file.
-            category (str): The purpose of the file, ex proxy.
-            rename (str): Rename the file to something better.
-            attrs (dict): Arbitrary attributes to attach to the file.
+            asset (Asset): The asset to store the file on.
+            src_path (str): The source path to the file.
+            category (str): The category of the file.
+            rename (str): The file name if you want to rename the soure file.
+            attrs (dict): A map of key/value pairs for arbitrary file attrs.
 
         Returns:
-            dict: an Asset file storage dict.
+            StoredFile: The StoredFile record.
 
         """
-        spec = {
-            "name": rename or Path(src_path).name,
-            "category": category,
-            "attrs": {}
-        }
-        if attrs:
-            spec["attrs"].update(attrs)
-
-        # handle file:// urls
-        path = urlparse(str(src_path)).path
-        result = self.app.client.upload_file(
-            "/api/v3/assets/{}/_files".format(asset.id), path, spec)
-
-        # Store the path to the proxy in our local file storage
-        # because a processor will need it down the line.
-        self.localize_file(asset, result, path)
-
-        # Ensure the file doesn't already exist in the metadata
-        if not asset.get_files(name=spec["name"], category=category):
-            files = asset.get_attr("files") or []
-            files.append(result)
-            asset.set_attr("files", files)
-
+        # Use the ZMLP client to store the file in the cloud
+        result = self.app.assets.store_file(asset, src_path, category, rename, attrs)
+        self.localize_file(result, src_path)
         return result
 
-    def store_data(self, asset, blob, category, name, attrs=None):
+    def store_blob(self, asset, blob, category, name, attrs=None):
         """
-        Add a blob of text to the asset's file list and store into externally
-        available cloud storage.
-
-        To obtain the local cache path for the file, call 'localize_asset_file'
-        with the result of this method.
+        Store a file and associate it with Asset.  The file is copied into
+        the local cache automatically, so subsequent calls to localize the
+        file will be a no-op.
 
         Args:
-            asset (mixed): The asset or the unique asset ID.
-            blob (str): The blob of data to write.
-            category (str): The purpose of the file, ex proxy.
-            name (str): The name of th efile.
-            attrs (dict): Arbitrary attributes to attach to the file.
+            asset (Asset): The asset to store the file on.
+            blob (str): The blob of data, could be a pickle, json, base64, etc.
+            category (str): The category of the file.
+            name (str): The name of the blob, must have proper file extension.
+            attrs (dict): A map of key/value pairs for arbitrary file attrs.
+
         Returns:
-            dict: an Asset file storage dict.
+            StoredFile: The StoredFile record.
 
         """
-        asset_id = getattr(asset, "id", None) or asset
-        spec = {
-            "name": name,
-            "category": category,
-            "attrs": {}
-        }
-        if attrs:
-            spec["attrs"].update(attrs)
-
-        base, ext = os.path.splitext(name)
-        if not ext:
-            raise ValueError("The blob name requires a file extension")
-
-        # handle file:// urls
-        fd, path = tempfile.mkstemp(suffix=ext, prefix='jblob')
-        with open(path, 'w') as fp:
+        # Use the ZMLP client to store the file in the cloud
+        stored_file = self.app.assets.store_blob(asset, blob, category, name, attrs)
+        path = self.cache.get_path(stored_file.id)
+        with open(path, "w") as fp:
             fp.write(blob)
+        return stored_file
 
-        result = self.app.client.upload_file(
-            "/api/v3/assets/{}/_files".format(asset_id), path, spec)
-
-        # Store the path to the proxy in our local file storage
-        # because a processor will need it down the line.
-        self.localize_file(asset, result, path)
-
-        # Ensure the file doesn't already exist in the metadata
-        if not asset.get_files(name=spec["name"], category=category):
-            files = asset.get_attr("files") or []
-            files.append(result)
-            asset.set_attr("files", files)
-
-        return result
-
-    def localize_file(self, asset, fdict, precache_file=None):
+    def localize_file(self, sfile, precache_file=None):
         """
         Localize the file described by the Asset file storage dictionary.
         If a path argument is provided, overwrite the file cache
@@ -157,30 +107,22 @@ class AssetStorage(object):
         like proxy images.
 
         Args:
-            asset (Asset): The ID of the asset.
-            fdict (dict): a ZMLP Project file storage dictionary.
+            sfile (StoredFile): a ZMLP StoredFile object.
             precache_file (str): an optional path to a file to copy into the cache location.
 
         Returns:
             str: a path to a location in the local file cache.
 
         """
-        _, suffix = os.path.splitext(precache_file or fdict['name'])
-        # Obtain the necessary properties to formulate a cache key.
-        name = fdict['name']
-        category = fdict['category']
-        # handle the pfile referencing another asset.
-        asset_id = fdict.get("sourceAssetId", asset.id)
-        key = ''.join((asset_id, name, category))
+        _, suffix = os.path.splitext(precache_file or sfile.name)
+        cache_path = self.cache.get_path(sfile.id, suffix)
 
-        cache_path = self.lfc.get_path(key, suffix)
         if precache_file:
             precache_path = urlparse(str(precache_file)).path
             logger.debug("Pre-caching {} to {}".format(precache_path, cache_path))
             shutil.copy(urlparse(precache_path).path, cache_path)
         elif not os.path.exists(cache_path):
-            self.app.client.stream('/api/v3/assets/{}/_files/{}/{}'
-                                   .format(asset_id, category, name), cache_path)
+            self.app.client.stream('/api/v1/files/{}'.format(sfile.id), cache_path)
         return cache_path
 
 
@@ -188,9 +130,10 @@ class ProjectStorage(object):
     """
     Provides access to Project cloud storage.
     """
-    def __init__(self, lfc):
-        self.lfc = lfc
-        self.app = lfc.app
+
+    def __init__(self, app, cache):
+        self.app = app
+        self.cache = cache
 
     def store_file(self, src_path, entity, category, rename=None):
         spec = {
@@ -218,13 +161,13 @@ class ProjectStorage(object):
     def localize_file(self, entity, category, name):
         _, suffix = os.path.splitext(name)
         key = "".join((entity, category, name))
-        cache_path = self.lfc.get_path(key, suffix)
+        cache_path = self.cache.get_path(key, suffix)
         self.app.client.stream('/api/v3/project/files/{}/{}/{}'.format(
             entity, category, name), cache_path)
         return cache_path
 
 
-class LocalFileCache(object):
+class FileCache(object):
     """
     The LocalFileCache provides a temporary place for storing source and
     support files such as thumbnails for processing.
@@ -238,15 +181,16 @@ class LocalFileCache(object):
         "zmlp",
         "s3"
     ]
+    """
+    List of supported URI schemas.
+    """
 
-    def __init__(self):
+    def __init__(self, app):
         """
         Create a new LocalFileCache instance.
         """
         self.root = None
-        self.app = app_from_env()
-        self.assets = AssetStorage(self)
-        self.projects = ProjectStorage(self)
+        self.app = app
 
     def __init_root(self):
         """
@@ -261,35 +205,6 @@ class LocalFileCache(object):
             else:
                 self.root = os.path.join(tempfile.gettempdir(), task)
                 os.makedirs(self.root, exist_ok=True)
-
-    def localize_remote_file(self, rep):
-        """
-        Localize a remote file representation.
-
-        The 'rep' value can be:
-            - A supported URI
-            - Asset instance
-
-        To localize an Asset the file must be in ZMLP storage or a remoote
-        file available with the current DataSource credentials (if any).
-
-        Args:
-            rep(mixed): The uri or Asset to localize.
-
-        Returns:
-            str: a local file path to a remote file
-
-        """
-        if isinstance(rep, str):
-            return self.localize_uri(rep)
-        elif isinstance(rep, Asset):
-            source_files = rep.get_files(category="source")
-            if source_files:
-                return self.assets.localize_file(rep, source_files[0])
-            else:
-                return self.localize_uri(rep.uri)
-        else:
-            raise ValueError("cannot localize file, unable to determine the remote file source")
 
     def localize_uri(self, uri):
         """
@@ -396,6 +311,47 @@ class LocalFileCache(object):
         shutil.rmtree(self.root)
 
 
+class FileStorage(object):
+    """
+    The FileStorage class handles storing, retrieving and caching files
+    from various sources.
+
+    """
+
+    def __init__(self):
+        self.app = app_from_env()
+        self.cache = FileCache(self.app)
+        self.assets = AssetStorage(self.app, self.cache)
+        self.projects = ProjectStorage(self.app, self.cache)
+
+    def localize_file(self, rep):
+        """
+        Download and and cache the file the given file rep points to
+        and return the local file path location.
+
+        Args:
+            rep (mixed): Supported types are an Asset, StoredFile, or URI (str).
+        Returns:
+            str: The local path to the file.
+
+        """
+        if isinstance(rep, str):
+            return self.cache.localize_uri(rep)
+        elif isinstance(rep, Asset):
+            # To localize the asset source, we need to check for
+            # a "source" entry in the file array, then fall back
+            # on the uri.
+            source_files = rep.get_files(category="source")
+            if source_files:
+                return self.assets.localize_file(source_files[0])
+            else:
+                return self.cache.localize_uri(rep.uri)
+        elif isinstance(rep, StoredFile):
+            return self.assets.localize_file(rep)
+        else:
+            raise ValueError("cannot localize file, unable to determine the remote file source")
+
+
 class ZmlpStorageException(ZmlpException):
     """
     This exception is thrown if there are problems with storing or retrieving a file.
@@ -406,4 +362,4 @@ class ZmlpStorageException(ZmlpException):
 """
 A local file cache singleton.
 """
-file_storage = LocalFileCache()
+file_storage = FileStorage()

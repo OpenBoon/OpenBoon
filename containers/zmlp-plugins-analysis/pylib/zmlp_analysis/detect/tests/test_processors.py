@@ -17,6 +17,7 @@ class ZmlpObjectDetectionProcessorTests(PluginUnitTestCase):
     @patch.object(ZmlpClient, 'upload_file')
     def test_process(self, upload_patch):
         upload_patch.return_value = {
+            'id': 'assets/id/proxy/proxy_200x200.jpg',
             'name': 'proxy_200x200.jpg',
             'category': 'proxy',
             'mimetype': 'image/jpeg',

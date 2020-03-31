@@ -38,6 +38,7 @@ class ClarifaiPredictProcessorTests(PluginUnitTestCase):
     def test_process(self, get_app_patch, upload_patch):
         get_app_patch.return_value = MockClarifaiApp()
         upload_patch.return_value = {
+            'id': 'foo/bar/proxy/proxy_200x200.jpg',
             'name': 'proxy_200x200.jpg',
             'category': 'proxy',
             'mimetype': 'image/jpeg',

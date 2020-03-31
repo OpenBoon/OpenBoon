@@ -19,6 +19,7 @@ class MxUnitTests(PluginUnitTestCase):
     @patch.object(ZmlpClient, 'upload_file')
     def test_ResNetSimilarity_defaults(self, upload_patch):
         upload_patch.return_value = {
+            'id': 'foo/bar/proxy/proxy_200x200.jpg',
             'name': 'proxy_200x200.jpg',
             'category': 'proxy',
             'assetId': '12345',
@@ -37,6 +38,7 @@ class MxUnitTests(PluginUnitTestCase):
     @patch.object(ZmlpClient, 'upload_file')
     def test_MxNetClassify_defaults(self, upload_patch):
         upload_patch.return_value = {
+            'id': 'assets/{}/proxy/proxy_200x200.jpg'.format(self.frame.asset.id),
             'name': 'proxy_200x200.jpg',
             'category': 'proxy',
             'assetId': '12345',

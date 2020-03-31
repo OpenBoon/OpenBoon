@@ -90,7 +90,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         processor.process(Frame(self.asset))
         assert expand_patch.call_count == 2
 
-    @patch.object(file_storage, 'localize_uri')
+    @patch.object(file_storage, 'localize_file')
     def test_get_metadata(self, cache_patch):
         path = os.path.dirname(__file__) + '/test_metadata.json'
         cache_patch.return_value = path

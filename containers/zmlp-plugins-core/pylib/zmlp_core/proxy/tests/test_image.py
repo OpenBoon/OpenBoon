@@ -23,7 +23,8 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         self.frame.asset.set_attr('tmp.proxy_source_image', TOUCAN)
         self.processor = self.init_processor(ImageProxyProcessor(), {})
 
-        self.storage_patch = {
+        self.storage_patch1 = {
+            "id": "foo/bar/proxy/proxy_512x341.jpg",
             "name": "proxy_512x341.jpg",
             "category": "proxy",
             "mimetype": "image/jpeg",
@@ -34,6 +35,9 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
             }
         }
 
+        self.storage_patch2 = self.storage_patch1.copy()
+        self.storage_patch2["id"] = "foo/bar/proxy/proxy_256x256.jpg"
+
     def test_init(self):
         with pytest.raises(ValueError) as error:
             self.init_processor(ImageProxyProcessor(), {'file_type': 'butts'})
@@ -41,7 +45,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_process(self, post_patch):
-        post_patch.return_value = self.storage_patch
+        post_patch.side_effect = [self.storage_patch1, self.storage_patch2]
         self.processor.process(self.frame)
         assert len(self.frame.asset.get_attr('analysis.zvi.tinyProxy')) == 9
         assert len(self.frame.asset.get_attr('files')) == 2
@@ -84,7 +88,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_process_asset_without_media_namespace(self, post_patch):
-        post_patch.return_value = self.storage_patch
+        post_patch.side_effect = [self.storage_patch1, self.storage_patch2]
         self.frame.asset.set_attr('media', {})
         self.processor.process(self.frame)
 

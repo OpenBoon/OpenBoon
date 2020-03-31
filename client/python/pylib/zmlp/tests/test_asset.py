@@ -1,7 +1,7 @@
 import logging
 import unittest
 
-from zmlp import Asset, Element
+from zmlp import Asset, Element, StoredFile
 from zmlp.asset import FileImport, Clip
 
 logging.basicConfig(level=logging.DEBUG)
@@ -12,6 +12,7 @@ class AssetTests(unittest.TestCase):
 
     def setUp(self):
         self.test_files = [{
+            "id": "assets/123/proxy/proxy_200x200.jpg",
             "category": "proxy",
             "name": "proxy_200x200.jpg",
             "mimetype": "image/jpeg",
@@ -20,6 +21,13 @@ class AssetTests(unittest.TestCase):
                 "height": 200
             }
         }]
+
+    def test_add_file(self):
+        asset = Asset({"id": "123"})
+        asset.add_file(StoredFile(self.test_files[0]))
+        assert 1 == len(asset.get_files(name="proxy_200x200.jpg"))
+        assert 1 == len(asset.get_files(name=["proxy_200x200.jpg"]))
+        assert 0 == len(asset.get_files(name="spock"))
 
     def test_get_files_filter_name(self):
         asset = Asset({"id": "123"})
@@ -91,13 +99,13 @@ class AssetTests(unittest.TestCase):
             }
         ]
         asset.set_attr("files", test_files)
-        top = asset.get_files(attr_keys=["width"], sort_func=lambda x: x["name"])[0]
-        assert top["name"] == "aaa.jpg"
+        top = asset.get_files(attr_keys=["width"], sort_func=lambda x: x.name)[0]
+        assert top.name == "aaa.jpg"
 
     def test_get_files_sort_func_and_filtered(self):
         asset = Asset({"id": "123"})
         asset.set_attr("files", self.test_files)
-        top = asset.get_files(attr_keys=["dog"], sort_func=lambda x: x["name"])
+        top = asset.get_files(attr_keys=["dog"], sort_func=lambda x: x.name)
         assert len(top) == 0
 
     def test_get_files_by_all(self):

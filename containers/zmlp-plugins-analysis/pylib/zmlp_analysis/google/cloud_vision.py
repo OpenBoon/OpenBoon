@@ -184,8 +184,8 @@ class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
                           rect.vertices[2].y])
 
         # Once we have a proxy with boxes we can make elements
-        pwidth = large_proxy["attrs"]["width"]
-        pheight = large_proxy["attrs"]["height"]
+        pwidth = large_proxy.attrs["width"]
+        pheight = large_proxy.attrs["height"]
         for rect, face in zip(rects, faces):
             element = Element('face', self.namespace,
                               rect=Element.calculate_normalized_rect(pwidth, pheight, rect),

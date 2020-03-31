@@ -37,7 +37,7 @@ class VideoImporter(AssetProcessor):
         # If there is no media type, then we have to
         # fetch metadata for this file.
         if not has_media_type:
-            path = file_storage.localize_remote_file(asset)
+            path = file_storage.localize_file(asset)
             probe = get_video_metadata(path)
             asset.set_attr('media.type', 'video')
 
@@ -69,7 +69,7 @@ class VideoImporter(AssetProcessor):
         # Cannot use clip.length because it might not be set at this point.
         seconds = round(
             max(0, (asset.get_attr('clip.stop') - asset.get_attr('clip.start')) / 2.0), 2)
-        source_path = Path(file_storage.localize_remote_file(asset))
+        source_path = Path(file_storage.localize_file(asset))
         destination_path = Path(tempfile.mkdtemp('video_ingestor'), asset.id + '.jpg')
 
         # If the thumbnail fails to generate at the specified point, then
