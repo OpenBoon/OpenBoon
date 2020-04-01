@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from pathlib2 import Path
+from pathlib import Path
 
 from zmlpsdk.storage import file_storage
 from zmlpsdk.testing import TestAsset, MockRequestsResponse, zorroa_test_data

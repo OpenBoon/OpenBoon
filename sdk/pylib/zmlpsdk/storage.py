@@ -6,9 +6,8 @@ import pickle
 import shutil
 import tempfile
 import urllib
+from pathlib import Path
 from urllib.parse import urlparse
-
-from pathlib2 import Path
 
 from zmlp import app_from_env, Asset, StoredFile
 from zmlp.exception import ZmlpException

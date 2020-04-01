@@ -4,7 +4,7 @@ import tempfile
 import backoff
 from google.api_core.exceptions import ResourceExhausted
 from google.cloud import videointelligence_v1p2beta1 as videointelligence
-from pathlib2 import Path
+from pathlib import Path
 
 from zmlpsdk import Argument, AssetProcessor
 from zmlpsdk.proxy import get_proxy_level_path

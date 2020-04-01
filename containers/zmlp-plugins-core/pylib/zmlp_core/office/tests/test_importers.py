@@ -3,7 +3,7 @@ import os
 from unittest.mock import patch
 
 import pytest
-from pathlib2 import Path
+from pathlib import Path
 
 from zmlpsdk import Frame, ZmlpFatalProcessorException
 from zmlpsdk.storage import file_storage

@@ -4,7 +4,7 @@ from collections import namedtuple
 import cv2
 import mxnet
 import numpy as np
-from pathlib2 import Path
+from pathlib import Path
 
 from zmlpsdk import AssetProcessor, Argument
 from zmlpsdk.proxy import get_proxy_level_path

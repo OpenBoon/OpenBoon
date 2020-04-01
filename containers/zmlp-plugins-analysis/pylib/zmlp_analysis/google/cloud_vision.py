@@ -5,8 +5,8 @@ from google.api_core.exceptions import ResourceExhausted
 from google.cloud import vision
 from google.cloud.vision import types
 
-from zmlpsdk import file_storage, Argument, AssetProcessor, ZmlpProcessorException
-from zmlpsdk.proxy import get_proxy_level_path, get_proxy_level, calculate_normalized_bbox
+from zmlpsdk import file_storage, Argument, AssetProcessor
+from zmlpsdk.proxy import get_proxy_level, calculate_normalized_bbox
 from .gcp_client import initialize_gcp_client
 
 __all__ = [

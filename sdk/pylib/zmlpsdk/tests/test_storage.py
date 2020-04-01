@@ -211,7 +211,7 @@ class TestAssetStorage(TestCase):
         })
         post_patch.return_value = '/tmp/cat.jpg'
         self.fs.assets.localize_file(pfile)
-        assert 'assets/123456/_files' in post_patch.call_args_list[0][0][0]
+        assert 'assets/123456/proxy/cat.jpg' in post_patch.call_args_list[0][0][0]
 
     @patch.object(ZmlpClient, 'get')
     def test_get_native_uri(self, get_patch):

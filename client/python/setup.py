@@ -13,7 +13,6 @@ requirements = [
     "requests",
     "pyOpenSSL",
     "PyJWT",
-    "pathlib2>=2.3.0",
     "backoff",
     "pytest"
 ]
