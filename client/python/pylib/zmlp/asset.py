@@ -1,8 +1,6 @@
-import json
 import logging
 import os
 
-from .client import ZmlpJsonEncoder
 from .util import as_collection
 
 __all__ = [
