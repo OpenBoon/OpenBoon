@@ -27,6 +27,7 @@ const colors = {
     },
     grass: {
       base: '#4ac565',
+      background: '#d7f2de',
     },
   },
 

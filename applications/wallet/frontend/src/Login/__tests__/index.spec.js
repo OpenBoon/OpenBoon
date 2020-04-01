@@ -18,7 +18,6 @@ describe('<Login />', () => {
         googleAuth={{ signIn: noop }}
         hasGoogleLoaded
         errorMessage=""
-        setErrorMessage={noop}
         onSubmit={mockFn}
       />,
     )
@@ -61,7 +60,6 @@ describe('<Login />', () => {
         googleAuth={{ signIn: noop }}
         hasGoogleLoaded
         errorMessage=""
-        setErrorMessage={noop}
         onSubmit={mockFn}
       />,
     )
@@ -82,7 +80,6 @@ describe('<Login />', () => {
         googleAuth={{ signIn: noop }}
         hasGoogleLoaded
         errorMessage=""
-        setErrorMessage={noop}
         onSubmit={mockFn}
       />,
     )
@@ -99,7 +96,6 @@ describe('<Login />', () => {
         googleAuth={{ signIn: noop }}
         hasGoogleLoaded
         errorMessage=""
-        setErrorMessage={noop}
         onSubmit={mockOnSubmit}
       />,
     )
@@ -118,7 +114,6 @@ describe('<Login />', () => {
         googleAuth={{ signIn: noop }}
         hasGoogleLoaded
         errorMessage=""
-        setErrorMessage={noop}
         onSubmit={noop}
       />,
     )
@@ -149,7 +144,24 @@ describe('<Login />', () => {
         googleAuth={{ signIn: noop }}
         hasGoogleLoaded
         errorMessage=""
-        setErrorMessage={noop}
+        onSubmit={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render error', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/',
+      query: { action: 'password-reset-update-success' },
+    })
+
+    const component = TestRenderer.create(
+      <Login
+        googleAuth={{ signIn: noop }}
+        hasGoogleLoaded
+        errorMessage="Something went wrong"
         onSubmit={noop}
       />,
     )
