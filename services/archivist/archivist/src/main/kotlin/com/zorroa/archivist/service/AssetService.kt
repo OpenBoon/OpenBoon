@@ -12,7 +12,6 @@ import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
-import com.zorroa.archivist.domain.Element
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileTypes
 import com.zorroa.archivist.domain.InternalTask
@@ -673,17 +672,6 @@ class AssetServiceImpl : AssetService {
                 ?: throw IllegalStateException("Invalid clip data for asset ${asset.id}")
             clip.putInPile(asset.id)
             asset.setAttr("clip", clip)
-        }
-
-        // Uniquify the elements
-        if (asset.attrExists("elements")) {
-            val elements = asset.getAttr("elements", Element.JSON_SET_OF)
-            if (elements != null && elements.size > maxElementCount) {
-                throw IllegalStateException(
-                    "Asset ${asset.id} has to many elements, > $maxElementCount"
-                )
-            }
-            asset.setAttr("elements", elements)
         }
 
         // Update various system properties.

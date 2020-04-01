@@ -1,5 +1,6 @@
 package com.zorroa.archivist.rest
 
+import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.getFileLocator
 import com.zorroa.archivist.storage.ProjectStorageService
 import io.swagger.annotations.ApiOperation
@@ -18,7 +19,7 @@ class FileStorageController(
 
     @ApiOperation("Stream a file associated with any entity.")
     @PreAuthorize("hasAuthority('AssetsRead')")
-    @GetMapping(value = ["/api/v1/files/{entityType}/{entityId}/{category}/{name}"])
+    @GetMapping(value = ["/api/v3/files/_stream/{entityType}/{entityId}/{category}/{name}"])
     @ResponseBody
     fun streamFile(
         @PathVariable entityType: String,
@@ -29,4 +30,20 @@ class FileStorageController(
         val locator = getFileLocator(entityType, entityId, category, name)
         return projectStorageService.stream(locator)
     }
+
+    @ApiOperation("Get get underlying file location.", hidden = true)
+    // Only job runners can get this.
+    @PreAuthorize("hasAuthority('SystemProjectDecrypt')")
+    @GetMapping(value = ["/api/v3/files/_locate/{entityType}/{entityId}/{category}/{name}"])
+    @ResponseBody
+    fun getCloudLocation(
+        @PathVariable entityType: String,
+        @PathVariable entityId: String,
+        @PathVariable category: String,
+        @PathVariable name: String
+    ): Any {
+        val locator = getFileLocator(entityType, entityId, category, name)
+        return mapOf("uri" to projectStorageService.getNativeUri(locator))
+    }
+
 }

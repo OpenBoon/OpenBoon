@@ -36,7 +36,7 @@ class FileStorageControllerTests : MockMvcTest() {
         projectStorageService.store(storage)
 
         mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/files/assets/$id//proxy/bob.jpg")
+            MockMvcRequestBuilders.get("/api/v3/files/_stream/assets/$id//proxy/bob.jpg")
                 .headers(admin())
                 .contentType(MediaType.IMAGE_JPEG_VALUE)
         )
