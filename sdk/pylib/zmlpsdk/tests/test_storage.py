@@ -72,10 +72,6 @@ class FileCacheTests(TestCase):
         assert not os.path.exists(path)
 
     def test_close(self):
-        pfile = {
-            'name': 'cat.jpg',
-            'category': 'proxy'
-        }
         self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
         self.lfc.close()
 
