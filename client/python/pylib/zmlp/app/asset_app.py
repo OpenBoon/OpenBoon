@@ -2,14 +2,13 @@ import io
 import os
 import tempfile
 from collections import namedtuple
-from urllib.parse import urlparse
 
 from pathlib2 import Path
 
 from ..asset import Asset, StoredFile
+from ..job import Job
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
 from ..util import as_collection
-from ..job import Job
 
 
 class AssetApp(object):
