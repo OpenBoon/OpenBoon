@@ -39,6 +39,7 @@ class FileTypes:
     all = videos.union(images).union(documents)
     """A set of all supported file formats."""
 
+
 class UnsetArgumentValue(object):
     def __repr__(self):
         return self.__str__()
