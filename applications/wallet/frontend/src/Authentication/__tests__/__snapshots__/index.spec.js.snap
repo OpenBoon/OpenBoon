@@ -58,6 +58,5 @@ exports[`<Authentication /> should render properly when user is logged out 2`] =
   }
   hasGoogleLoaded={true}
   onSubmit={[Function]}
-  setErrorMessage={[Function]}
 />
 `;

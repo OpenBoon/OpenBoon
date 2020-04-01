@@ -59,7 +59,6 @@ const Authentication = ({ route, children }) => {
         googleAuth={googleAuth}
         hasGoogleLoaded={hasGoogleLoaded}
         errorMessage={errorMessage}
-        setErrorMessage={setErrorMessage}
         onSubmit={authenticateUser({ setUser, setErrorMessage })}
       />
     )
