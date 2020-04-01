@@ -38,7 +38,11 @@ const ResetPasswordRequest = () => {
         one.
       </div>
 
-      <FlashMessage variant={FLASH_VARIANTS.ERROR}>{state.error}</FlashMessage>
+      {!!state.error && (
+        <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+          {state.error}
+        </FlashMessage>
+      )}
 
       <Input
         autoFocus

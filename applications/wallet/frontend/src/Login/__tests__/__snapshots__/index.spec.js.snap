@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Login /> should render password changed 1`] = `
-.emotion-30 {
+.emotion-27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -56,7 +56,7 @@ exports[`<Login /> should render password changed 1`] = `
   font-weight: 500;
 }
 
-.emotion-29 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -197,35 +197,21 @@ exports[`<Login /> should render password changed 1`] = `
   flex: 1;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #ffb6b2;
-  border-radius: 2px;
-  padding: 12px;
-}
-
-.emotion-17 {
+.emotion-14 {
   padding-top: 8px;
 }
 
-.emotion-14 {
+.emotion-11 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-16 {
+.emotion-13 {
   position: relative;
 }
 
-.emotion-15 {
+.emotion-12 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -237,12 +223,12 @@ exports[`<Login /> should render password changed 1`] = `
   border-width: 2px;
 }
 
-.emotion-15:focus {
+.emotion-12:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-22 {
+.emotion-19 {
   position: absolute;
   right: 0;
   top: 0;
@@ -257,7 +243,7 @@ exports[`<Login /> should render password changed 1`] = `
   justify-content: center;
 }
 
-.emotion-21 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -293,20 +279,20 @@ exports[`<Login /> should render password changed 1`] = `
   outline-offset: -2px;
 }
 
-.emotion-21:hover {
+.emotion-18:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-18[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-21:hover {
+.emotion-18:hover {
   color: #73b61c;
 }
 
-.emotion-27 {
+.emotion-24 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -318,7 +304,7 @@ exports[`<Login /> should render password changed 1`] = `
   justify-content: center;
 }
 
-.emotion-26 {
+.emotion-23 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -350,40 +336,40 @@ exports[`<Login /> should render password changed 1`] = `
   background-color: transparent;
 }
 
-.emotion-26:hover {
+.emotion-23:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-26[aria-disabled=true] {
+.emotion-23[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-26,
-.emotion-26:hover,
-.emotion-26:visited {
+.emotion-23,
+.emotion-23:hover,
+.emotion-23:visited {
   background-color: #73b61c;
 }
 
-.emotion-26:hover {
+.emotion-23:hover {
   background-color: #96c955;
 }
 
-.emotion-26[aria-disabled=true] {
+.emotion-23[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-28 {
+.emotion-25 {
   padding-top: 32px;
   text-align: center;
 }
 
-.emotion-28 a {
+.emotion-25 a {
   color: #808080;
 }
 
 <div
-  className="emotion-30"
+  className="emotion-27"
 >
   <div
     className="emotion-3"
@@ -409,7 +395,7 @@ exports[`<Login /> should render password changed 1`] = `
     </div>
   </div>
   <form
-    className="emotion-29"
+    className="emotion-26"
     method="post"
     onSubmit={[Function]}
   >
@@ -452,39 +438,20 @@ exports[`<Login /> should render password changed 1`] = `
       </button>
     </div>
     <div
-      className="emotion-2"
-    >
-      <div
-        className="emotion-12"
-      >
-        <svg
-          color="#c92300"
-          data-file-name="warning.svg"
-          height={20}
-        />
-        <div
-          className="emotion-0"
-          role="alert"
-        >
-          
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-17"
+      className="emotion-14"
     >
       <label
-        className="emotion-14"
+        className="emotion-11"
         htmlFor="username"
       >
         Email
       </label>
       <div
-        className="emotion-16"
+        className="emotion-13"
       >
         <input
           autoFocus={true}
-          className="emotion-15"
+          className="emotion-12"
           id="username"
           name="username"
           onChange={[Function]}
@@ -493,25 +460,25 @@ exports[`<Login /> should render password changed 1`] = `
         />
       </div>
       <div
-        className="emotion-17"
+        className="emotion-14"
       >
          
       </div>
     </div>
     <div
-      className="emotion-17"
+      className="emotion-14"
     >
       <label
-        className="emotion-14"
+        className="emotion-11"
         htmlFor="password"
       >
         Password
       </label>
       <div
-        className="emotion-16"
+        className="emotion-13"
       >
         <input
-          className="emotion-15"
+          className="emotion-12"
           id="password"
           name="password"
           onChange={[Function]}
@@ -519,11 +486,11 @@ exports[`<Login /> should render password changed 1`] = `
           value=""
         />
         <div
-          className="emotion-22"
+          className="emotion-19"
         >
           <button
             aria-label="Show password"
-            className="emotion-21"
+            className="emotion-18"
             onClick={[Function]}
             type="button"
           >
@@ -535,17 +502,17 @@ exports[`<Login /> should render password changed 1`] = `
         </div>
       </div>
       <div
-        className="emotion-17"
+        className="emotion-14"
       >
          
       </div>
     </div>
     <div
-      className="emotion-27"
+      className="emotion-24"
     >
       <button
         aria-disabled={true}
-        className="emotion-26"
+        className="emotion-23"
         onClick={[Function]}
         type="submit"
       >
@@ -553,7 +520,7 @@ exports[`<Login /> should render password changed 1`] = `
       </button>
     </div>
     <div
-      className="emotion-28"
+      className="emotion-25"
     >
       <a
         href="/create-account"
@@ -577,7 +544,7 @@ exports[`<Login /> should render password changed 1`] = `
 `;
 
 exports[`<Login /> should render properly 1`] = `
-.emotion-30 {
+.emotion-27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -632,7 +599,7 @@ exports[`<Login /> should render properly 1`] = `
   font-weight: 500;
 }
 
-.emotion-29 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -773,35 +740,21 @@ exports[`<Login /> should render properly 1`] = `
   flex: 1;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #ffb6b2;
-  border-radius: 2px;
-  padding: 12px;
-}
-
-.emotion-17 {
+.emotion-14 {
   padding-top: 8px;
 }
 
-.emotion-14 {
+.emotion-11 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-16 {
+.emotion-13 {
   position: relative;
 }
 
-.emotion-15 {
+.emotion-12 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -813,12 +766,12 @@ exports[`<Login /> should render properly 1`] = `
   border-width: 2px;
 }
 
-.emotion-15:focus {
+.emotion-12:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-22 {
+.emotion-19 {
   position: absolute;
   right: 0;
   top: 0;
@@ -833,7 +786,7 @@ exports[`<Login /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-21 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -869,20 +822,20 @@ exports[`<Login /> should render properly 1`] = `
   outline-offset: -2px;
 }
 
-.emotion-21:hover {
+.emotion-18:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-18[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-21:hover {
+.emotion-18:hover {
   color: #73b61c;
 }
 
-.emotion-27 {
+.emotion-24 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -894,7 +847,7 @@ exports[`<Login /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-26 {
+.emotion-23 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -926,40 +879,40 @@ exports[`<Login /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-26:hover {
+.emotion-23:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-26[aria-disabled=true] {
+.emotion-23[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-26,
-.emotion-26:hover,
-.emotion-26:visited {
+.emotion-23,
+.emotion-23:hover,
+.emotion-23:visited {
   background-color: #73b61c;
 }
 
-.emotion-26:hover {
+.emotion-23:hover {
   background-color: #96c955;
 }
 
-.emotion-26[aria-disabled=true] {
+.emotion-23[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-28 {
+.emotion-25 {
   padding-top: 32px;
   text-align: center;
 }
 
-.emotion-28 a {
+.emotion-25 a {
   color: #808080;
 }
 
 <div
-  className="emotion-30"
+  className="emotion-27"
 >
   <div
     className="emotion-3"
@@ -985,7 +938,7 @@ exports[`<Login /> should render properly 1`] = `
     </div>
   </div>
   <form
-    className="emotion-29"
+    className="emotion-26"
     method="post"
     onSubmit={[Function]}
   >
@@ -1028,39 +981,20 @@ exports[`<Login /> should render properly 1`] = `
       </button>
     </div>
     <div
-      className="emotion-2"
-    >
-      <div
-        className="emotion-12"
-      >
-        <svg
-          color="#c92300"
-          data-file-name="warning.svg"
-          height={20}
-        />
-        <div
-          className="emotion-0"
-          role="alert"
-        >
-          
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-17"
+      className="emotion-14"
     >
       <label
-        className="emotion-14"
+        className="emotion-11"
         htmlFor="username"
       >
         Email
       </label>
       <div
-        className="emotion-16"
+        className="emotion-13"
       >
         <input
           autoFocus={true}
-          className="emotion-15"
+          className="emotion-12"
           id="username"
           name="username"
           onChange={[Function]}
@@ -1069,25 +1003,25 @@ exports[`<Login /> should render properly 1`] = `
         />
       </div>
       <div
-        className="emotion-17"
+        className="emotion-14"
       >
          
       </div>
     </div>
     <div
-      className="emotion-17"
+      className="emotion-14"
     >
       <label
-        className="emotion-14"
+        className="emotion-11"
         htmlFor="password"
       >
         Password
       </label>
       <div
-        className="emotion-16"
+        className="emotion-13"
       >
         <input
-          className="emotion-15"
+          className="emotion-12"
           id="password"
           name="password"
           onChange={[Function]}
@@ -1095,11 +1029,11 @@ exports[`<Login /> should render properly 1`] = `
           value=""
         />
         <div
-          className="emotion-22"
+          className="emotion-19"
         >
           <button
             aria-label="Show password"
-            className="emotion-21"
+            className="emotion-18"
             onClick={[Function]}
             type="button"
           >
@@ -1111,17 +1045,17 @@ exports[`<Login /> should render properly 1`] = `
         </div>
       </div>
       <div
-        className="emotion-17"
+        className="emotion-14"
       >
          
       </div>
     </div>
     <div
-      className="emotion-27"
+      className="emotion-24"
     >
       <button
         aria-disabled={true}
-        className="emotion-26"
+        className="emotion-23"
         onClick={[Function]}
         type="submit"
       >
@@ -1129,7 +1063,7 @@ exports[`<Login /> should render properly 1`] = `
       </button>
     </div>
     <div
-      className="emotion-28"
+      className="emotion-25"
     >
       <a
         href="/create-account"
@@ -1153,7 +1087,7 @@ exports[`<Login /> should render properly 1`] = `
 `;
 
 exports[`<Login /> should render properly on account activation success 1`] = `
-.emotion-30 {
+.emotion-27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1208,7 +1142,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   font-weight: 500;
 }
 
-.emotion-29 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1349,35 +1283,21 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   flex: 1;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #ffb6b2;
-  border-radius: 2px;
-  padding: 12px;
-}
-
-.emotion-17 {
+.emotion-14 {
   padding-top: 8px;
 }
 
-.emotion-14 {
+.emotion-11 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-16 {
+.emotion-13 {
   position: relative;
 }
 
-.emotion-15 {
+.emotion-12 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -1389,12 +1309,12 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   border-width: 2px;
 }
 
-.emotion-15:focus {
+.emotion-12:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-22 {
+.emotion-19 {
   position: absolute;
   right: 0;
   top: 0;
@@ -1409,7 +1329,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   justify-content: center;
 }
 
-.emotion-21 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1445,20 +1365,20 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   outline-offset: -2px;
 }
 
-.emotion-21:hover {
+.emotion-18:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-18[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-21:hover {
+.emotion-18:hover {
   color: #73b61c;
 }
 
-.emotion-27 {
+.emotion-24 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1470,7 +1390,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   justify-content: center;
 }
 
-.emotion-26 {
+.emotion-23 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1502,40 +1422,40 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   background-color: transparent;
 }
 
-.emotion-26:hover {
+.emotion-23:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-26[aria-disabled=true] {
+.emotion-23[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-26,
-.emotion-26:hover,
-.emotion-26:visited {
+.emotion-23,
+.emotion-23:hover,
+.emotion-23:visited {
   background-color: #73b61c;
 }
 
-.emotion-26:hover {
+.emotion-23:hover {
   background-color: #96c955;
 }
 
-.emotion-26[aria-disabled=true] {
+.emotion-23[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-28 {
+.emotion-25 {
   padding-top: 32px;
   text-align: center;
 }
 
-.emotion-28 a {
+.emotion-25 a {
   color: #808080;
 }
 
 <div
-  className="emotion-30"
+  className="emotion-27"
 >
   <div
     className="emotion-3"
@@ -1561,7 +1481,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
     </div>
   </div>
   <form
-    className="emotion-29"
+    className="emotion-26"
     method="post"
     onSubmit={[Function]}
   >
@@ -1604,39 +1524,20 @@ exports[`<Login /> should render properly on account activation success 1`] = `
       </button>
     </div>
     <div
-      className="emotion-2"
-    >
-      <div
-        className="emotion-12"
-      >
-        <svg
-          color="#c92300"
-          data-file-name="warning.svg"
-          height={20}
-        />
-        <div
-          className="emotion-0"
-          role="alert"
-        >
-          
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-17"
+      className="emotion-14"
     >
       <label
-        className="emotion-14"
+        className="emotion-11"
         htmlFor="username"
       >
         Email
       </label>
       <div
-        className="emotion-16"
+        className="emotion-13"
       >
         <input
           autoFocus={true}
-          className="emotion-15"
+          className="emotion-12"
           id="username"
           name="username"
           onChange={[Function]}
@@ -1645,25 +1546,25 @@ exports[`<Login /> should render properly on account activation success 1`] = `
         />
       </div>
       <div
-        className="emotion-17"
+        className="emotion-14"
       >
          
       </div>
     </div>
     <div
-      className="emotion-17"
+      className="emotion-14"
     >
       <label
-        className="emotion-14"
+        className="emotion-11"
         htmlFor="password"
       >
         Password
       </label>
       <div
-        className="emotion-16"
+        className="emotion-13"
       >
         <input
-          className="emotion-15"
+          className="emotion-12"
           id="password"
           name="password"
           onChange={[Function]}
@@ -1671,11 +1572,11 @@ exports[`<Login /> should render properly on account activation success 1`] = `
           value=""
         />
         <div
-          className="emotion-22"
+          className="emotion-19"
         >
           <button
             aria-label="Show password"
-            className="emotion-21"
+            className="emotion-18"
             onClick={[Function]}
             type="button"
           >
@@ -1687,17 +1588,17 @@ exports[`<Login /> should render properly on account activation success 1`] = `
         </div>
       </div>
       <div
-        className="emotion-17"
+        className="emotion-14"
       >
          
       </div>
     </div>
     <div
-      className="emotion-27"
+      className="emotion-24"
     >
       <button
         aria-disabled={true}
-        className="emotion-26"
+        className="emotion-23"
         onClick={[Function]}
         type="submit"
       >
@@ -1705,7 +1606,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
       </button>
     </div>
     <div
-      className="emotion-28"
+      className="emotion-25"
     >
       <a
         href="/create-account"
@@ -1729,7 +1630,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
 `;
 
 exports[`<Login /> should render properly on account creation success 1`] = `
-.emotion-30 {
+.emotion-27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1784,7 +1685,7 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   font-weight: 500;
 }
 
-.emotion-29 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1925,35 +1826,21 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   flex: 1;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #ffb6b2;
-  border-radius: 2px;
-  padding: 12px;
-}
-
-.emotion-17 {
+.emotion-14 {
   padding-top: 8px;
 }
 
-.emotion-14 {
+.emotion-11 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-16 {
+.emotion-13 {
   position: relative;
 }
 
-.emotion-15 {
+.emotion-12 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -1965,12 +1852,12 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   border-width: 2px;
 }
 
-.emotion-15:focus {
+.emotion-12:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-22 {
+.emotion-19 {
   position: absolute;
   right: 0;
   top: 0;
@@ -1985,7 +1872,7 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   justify-content: center;
 }
 
-.emotion-21 {
+.emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2021,20 +1908,20 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   outline-offset: -2px;
 }
 
-.emotion-21:hover {
+.emotion-18:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-21[aria-disabled=true] {
+.emotion-18[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-21:hover {
+.emotion-18:hover {
   color: #73b61c;
 }
 
-.emotion-27 {
+.emotion-24 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2046,7 +1933,7 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   justify-content: center;
 }
 
-.emotion-26 {
+.emotion-23 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2078,40 +1965,40 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   background-color: transparent;
 }
 
-.emotion-26:hover {
+.emotion-23:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-26[aria-disabled=true] {
+.emotion-23[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-26,
-.emotion-26:hover,
-.emotion-26:visited {
+.emotion-23,
+.emotion-23:hover,
+.emotion-23:visited {
   background-color: #73b61c;
 }
 
-.emotion-26:hover {
+.emotion-23:hover {
   background-color: #96c955;
 }
 
-.emotion-26[aria-disabled=true] {
+.emotion-23[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-28 {
+.emotion-25 {
   padding-top: 32px;
   text-align: center;
 }
 
-.emotion-28 a {
+.emotion-25 a {
   color: #808080;
 }
 
 <div
-  className="emotion-30"
+  className="emotion-27"
 >
   <div
     className="emotion-3"
@@ -2137,7 +2024,7 @@ exports[`<Login /> should render properly on account creation success 1`] = `
     </div>
   </div>
   <form
-    className="emotion-29"
+    className="emotion-26"
     method="post"
     onSubmit={[Function]}
   >
@@ -2180,39 +2067,20 @@ exports[`<Login /> should render properly on account creation success 1`] = `
       </button>
     </div>
     <div
-      className="emotion-2"
-    >
-      <div
-        className="emotion-12"
-      >
-        <svg
-          color="#c92300"
-          data-file-name="warning.svg"
-          height={20}
-        />
-        <div
-          className="emotion-0"
-          role="alert"
-        >
-          
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-17"
+      className="emotion-14"
     >
       <label
-        className="emotion-14"
+        className="emotion-11"
         htmlFor="username"
       >
         Email
       </label>
       <div
-        className="emotion-16"
+        className="emotion-13"
       >
         <input
           autoFocus={true}
-          className="emotion-15"
+          className="emotion-12"
           id="username"
           name="username"
           onChange={[Function]}
@@ -2221,25 +2089,25 @@ exports[`<Login /> should render properly on account creation success 1`] = `
         />
       </div>
       <div
-        className="emotion-17"
+        className="emotion-14"
       >
          
       </div>
     </div>
     <div
-      className="emotion-17"
+      className="emotion-14"
     >
       <label
-        className="emotion-14"
+        className="emotion-11"
         htmlFor="password"
       >
         Password
       </label>
       <div
-        className="emotion-16"
+        className="emotion-13"
       >
         <input
-          className="emotion-15"
+          className="emotion-12"
           id="password"
           name="password"
           onChange={[Function]}
@@ -2247,11 +2115,11 @@ exports[`<Login /> should render properly on account creation success 1`] = `
           value=""
         />
         <div
-          className="emotion-22"
+          className="emotion-19"
         >
           <button
             aria-label="Show password"
-            className="emotion-21"
+            className="emotion-18"
             onClick={[Function]}
             type="button"
           >
@@ -2263,17 +2131,17 @@ exports[`<Login /> should render properly on account creation success 1`] = `
         </div>
       </div>
       <div
-        className="emotion-17"
+        className="emotion-14"
       >
          
       </div>
     </div>
     <div
-      className="emotion-27"
+      className="emotion-24"
     >
       <button
         aria-disabled={true}
-        className="emotion-26"
+        className="emotion-23"
         onClick={[Function]}
         type="submit"
       >
@@ -2281,7 +2149,7 @@ exports[`<Login /> should render properly on account creation success 1`] = `
       </button>
     </div>
     <div
-      className="emotion-28"
+      className="emotion-25"
     >
       <a
         href="/create-account"

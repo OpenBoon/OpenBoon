@@ -60,7 +60,7 @@ exports[`<ResetPassword /> should render <ResetPasswordConfirm /> 1`] = `
 `;
 
 exports[`<ResetPassword /> should render properly 1`] = `
-.emotion-15 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -76,7 +76,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
   height: 100vh;
 }
 
-.emotion-14 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -110,53 +110,21 @@ exports[`<ResetPassword /> should render properly 1`] = `
   color: #b3b3b3;
 }
 
-.emotion-5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+.emotion-6 {
   padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #ffb6b2;
-  border-radius: 2px;
-  padding: 12px;
 }
 
 .emotion-3 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #000000;
-  font-weight: 500;
-}
-
-.emotion-9 {
-  padding-top: 8px;
-}
-
-.emotion-6 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-8 {
+.emotion-5 {
   position: relative;
 }
 
-.emotion-7 {
+.emotion-4 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -168,12 +136,12 @@ exports[`<ResetPassword /> should render properly 1`] = `
   border-width: 2px;
 }
 
-.emotion-7:focus {
+.emotion-4:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-12 {
+.emotion-9 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -185,7 +153,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-11 {
+.emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -217,43 +185,43 @@ exports[`<ResetPassword /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-11:hover {
+.emotion-8:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited {
   background-color: #73b61c;
 }
 
-.emotion-11:hover {
+.emotion-8:hover {
   background-color: #96c955;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-8[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-13 {
+.emotion-10 {
   padding-top: 32px;
   text-align: center;
 }
 
-.emotion-13 a {
+.emotion-10 a {
   color: #808080;
 }
 
 <div
-  className="emotion-15"
+  className="emotion-12"
 >
   <form
-    className="emotion-14"
+    className="emotion-11"
     method="post"
     onSubmit={[Function]}
   >
@@ -273,39 +241,20 @@ exports[`<ResetPassword /> should render properly 1`] = `
       Enter your email below and we'll send you a link to create a new one.
     </div>
     <div
-      className="emotion-5"
-    >
-      <div
-        className="emotion-4"
-      >
-        <svg
-          color="#c92300"
-          data-file-name="warning.svg"
-          height={20}
-        />
-        <div
-          className="emotion-3"
-          role="alert"
-        >
-          
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-9"
+      className="emotion-6"
     >
       <label
-        className="emotion-6"
+        className="emotion-3"
         htmlFor="email"
       >
         Email
       </label>
       <div
-        className="emotion-8"
+        className="emotion-5"
       >
         <input
           autoFocus={true}
-          className="emotion-7"
+          className="emotion-4"
           id="email"
           name="email"
           onChange={[Function]}
@@ -314,17 +263,17 @@ exports[`<ResetPassword /> should render properly 1`] = `
         />
       </div>
       <div
-        className="emotion-9"
+        className="emotion-6"
       >
          
       </div>
     </div>
     <div
-      className="emotion-12"
+      className="emotion-9"
     >
       <button
         aria-disabled={true}
-        className="emotion-11"
+        className="emotion-8"
         onClick={[Function]}
         type="submit"
       >
@@ -332,7 +281,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
       </button>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-10"
     >
       <a
         href="/"

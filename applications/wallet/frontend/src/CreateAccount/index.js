@@ -64,7 +64,9 @@ const CreateAccount = () => {
         <PageTitle>Create an Account</PageTitle>
 
         <Form>
-          <FlashMessage variant={VARIANTS.ERROR}>{state.error}</FlashMessage>
+          {!!state.error && (
+            <FlashMessage variant={VARIANTS.ERROR}>{state.error}</FlashMessage>
+          )}
 
           {action === 'account-activation-expired' && (
             <>

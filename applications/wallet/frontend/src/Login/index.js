@@ -107,9 +107,11 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
           onSubmit={onSubmit}
         />
 
-        <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-          {errorMessage}
-        </FlashMessage>
+        {!!errorMessage && (
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+            {errorMessage}
+          </FlashMessage>
+        )}
 
         <Input
           autoFocus

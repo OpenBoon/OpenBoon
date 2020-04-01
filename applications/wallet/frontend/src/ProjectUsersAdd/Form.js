@@ -56,9 +56,11 @@ const ProjectUsersAddForm = () => {
       <ProjectUsersAddCopyLink />
 
       <Form>
-        <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-          {state.errors.global}
-        </FlashMessage>
+        {!!state.errors.global && (
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+            {state.errors.global}
+          </FlashMessage>
+        )}
 
         <Input
           autoFocus

@@ -34,7 +34,11 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
     <Form>
       <SectionTitle>Email: {user.email}</SectionTitle>
 
-      <FlashMessage variant={FLASH_VARIANTS.ERROR}>{state.error}</FlashMessage>
+      {!!state.error && (
+        <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+          {state.error}
+        </FlashMessage>
+      )}
 
       <CheckboxGroup
         legend="Edit Roles"
