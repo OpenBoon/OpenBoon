@@ -61,6 +61,7 @@ const ApiKeysAddForm = () => {
 
       <CheckboxGroup
         legend="Add Scope"
+        description=""
         variant={CHECKBOX_VARIANTS.PRIMARY}
         options={permissions.map(({ name, description }) => ({
           value: name,

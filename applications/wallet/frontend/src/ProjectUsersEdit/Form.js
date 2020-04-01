@@ -40,6 +40,7 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
 
       <CheckboxGroup
         legend="Edit Roles"
+        description=""
         onClick={(role) => dispatch({ roles: { ...state.roles, ...role } })}
         options={roles.map(({ name, description }) => ({
           value: name,

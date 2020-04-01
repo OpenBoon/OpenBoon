@@ -52,15 +52,21 @@ export const onSubmit = async ({
       `/${projectId}/data-sources?action=add-datasource-success`,
     )
   } catch (response) {
-    const errors = await response.json()
+    try {
+      const errors = await response.json()
 
-    const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
-      acc[errorKey] = errors[errorKey].join(' ')
-      return acc
-    }, {})
+      const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {
+        acc[errorKey] = errors[errorKey].join(' ')
+        return acc
+      }, {})
 
-    dispatch({ errors: parsedErrors })
+      dispatch({ errors: parsedErrors })
 
-    window.scrollTo(0, 0)
+      window.scrollTo(0, 0)
+    } catch (error) {
+      dispatch({
+        errors: { global: 'Something went wrong. Please try again.' },
+      })
+    }
   }
 }

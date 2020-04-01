@@ -52,6 +52,7 @@ const Input = ({
   hasError,
   errorMessage,
   after,
+  isRequired,
   ...props
 }) => (
   <div css={{ paddingTop: PADDING }}>
@@ -64,6 +65,10 @@ const Input = ({
       }}
     >
       {label}
+
+      {!!isRequired && (
+        <span css={{ color: colors.signal.warning.base }}> *</span>
+      )}
     </label>
     <div css={{ position: 'relative' }}>
       <input
@@ -110,6 +115,7 @@ const Input = ({
 Input.defaultProps = {
   after: false,
   errorMessage: '',
+  isRequired: false,
 }
 
 Input.propTypes = {
@@ -122,6 +128,7 @@ Input.propTypes = {
   hasError: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string,
   after: PropTypes.node,
+  isRequired: PropTypes.bool,
 }
 
 export default Input

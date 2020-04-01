@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<CheckboxGroup /> should render properly 1`] = `
-.emotion-10 {
+.emotion-11 {
   border: none;
   padding: 0;
   margin: 0;
@@ -19,9 +19,15 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
 
 .emotion-1 {
   clear: both;
+  padding-bottom: 8px;
+  color: #b3b3b3;
 }
 
-.emotion-9 {
+.emotion-2 {
+  clear: both;
+}
+
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -35,7 +41,7 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   padding-left: 0;
 }
 
-.emotion-5 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -43,7 +49,7 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   position: relative;
 }
 
-.emotion-2 {
+.emotion-3 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -55,7 +61,7 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-4 {
+.emotion-5 {
   position: absolute;
   top: 0;
   left: 0;
@@ -76,13 +82,13 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-3 path {
+.emotion-4 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
 }
 
-.emotion-8 {
+.emotion-9 {
   padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -93,20 +99,20 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-6 {
+.emotion-7 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-7 {
+.emotion-8 {
   color: #b3b3b3;
   padding-left: 0;
 }
 
 <fieldset
-  className="emotion-10"
+  className="emotion-11"
 >
   <legend
     className="emotion-0"
@@ -115,40 +121,45 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   </legend>
   <div
     className="emotion-1"
+  >
+    Tele Tele Scope
+  </div>
+  <div
+    className="emotion-2"
   />
   <label
-    className="emotion-9"
+    className="emotion-10"
   >
     <div
-      className="emotion-5"
+      className="emotion-6"
     >
       <input
-        className="emotion-2"
+        className="emotion-3"
         defaultChecked={true}
         onClick={[Function]}
         type="checkbox"
         value="api"
       />
       <div
-        className="emotion-4"
+        className="emotion-5"
       >
         <svg
-          className="emotion-3"
+          className="emotion-4"
           data-file-name="checkmark.svg"
           width={20}
         />
       </div>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <span
-        className="emotion-6"
+        className="emotion-7"
       >
         API
       </span>
       <span
-        className="emotion-7"
+        className="emotion-8"
       >
         Dude You're Getting A Telescope
       </span>
@@ -158,7 +169,7 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
 `;
 
 exports[`<CheckboxGroup /> should render properly 2`] = `
-.emotion-10 {
+.emotion-11 {
   border: none;
   padding: 0;
   margin: 0;
@@ -176,9 +187,15 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
 
 .emotion-1 {
   clear: both;
+  padding-bottom: 8px;
+  color: #b3b3b3;
 }
 
-.emotion-9 {
+.emotion-2 {
+  clear: both;
+}
+
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -192,7 +209,7 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   padding-left: 0;
 }
 
-.emotion-5 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -200,7 +217,7 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   position: relative;
 }
 
-.emotion-4 {
+.emotion-5 {
   position: absolute;
   top: 0;
   left: 0;
@@ -221,7 +238,7 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   cursor: pointer;
 }
 
-.emotion-8 {
+.emotion-9 {
   padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -232,19 +249,19 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   flex-direction: column;
 }
 
-.emotion-6 {
+.emotion-7 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-7 {
+.emotion-8 {
   color: #b3b3b3;
   padding-left: 0;
 }
 
-.emotion-2 {
+.emotion-3 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -256,14 +273,14 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   cursor: pointer;
 }
 
-.emotion-3 path {
+.emotion-4 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
 <fieldset
-  className="emotion-10"
+  className="emotion-11"
 >
   <legend
     className="emotion-0"
@@ -272,40 +289,45 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   </legend>
   <div
     className="emotion-1"
+  >
+    Tele Tele Scope
+  </div>
+  <div
+    className="emotion-2"
   />
   <label
-    className="emotion-9"
+    className="emotion-10"
   >
     <div
-      className="emotion-5"
+      className="emotion-6"
     >
       <input
-        className="emotion-2"
+        className="emotion-3"
         defaultChecked={false}
         onClick={[Function]}
         type="checkbox"
         value="api"
       />
       <div
-        className="emotion-4"
+        className="emotion-5"
       >
         <svg
-          className="emotion-3"
+          className="emotion-4"
           data-file-name="checkmark.svg"
           width={20}
         />
       </div>
     </div>
     <div
-      className="emotion-8"
+      className="emotion-9"
     >
       <span
-        className="emotion-6"
+        className="emotion-7"
       >
         API
       </span>
       <span
-        className="emotion-7"
+        className="emotion-8"
       >
         Dude You're Getting A Telescope
       </span>
