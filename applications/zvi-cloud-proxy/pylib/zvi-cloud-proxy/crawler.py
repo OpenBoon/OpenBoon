@@ -1,8 +1,10 @@
+import json
 import os
 import time
-import json
-from zmlp import ZmlpApp, FileUpload
+
 import yaml
+
+from zmlp import ZmlpApp, FileUpload
 
 
 class Crawler(object):
@@ -12,12 +14,14 @@ class Crawler(object):
             with open("../properties.yaml", 'r') as stream:
                 try:
                     self.properties = yaml.safe_load(stream)
-                    self.app = ZmlpApp(self.properties["api_key"])
+                    self.app = ZmlpApp(self.properties["api_key"], self.properties["zmlp_server"])
                 except yaml.YAMLError as exc:
                     print("Failed on yaml reading: {0}".format(exc))
         except FileNotFoundError as err:
             self.properties = {}
             print("yaml not found: {0}".format(str(err)))
+
+        self.crawl()
 
     def crawl(self):
 
@@ -31,6 +35,7 @@ class Crawler(object):
                     for name in names:
                         filename = "{0}/{1}".format(path, name)
                         if filename not in batch and filename not in uploaded:
+                            print(filename)
                             batch.append(filename)
                         if len(batch) >= int(self.properties["batch_size"]):
                             try:
@@ -43,3 +48,7 @@ class Crawler(object):
     def upload_batch(self, batch):
         assets = [FileUpload(path) for path in batch]
         print(json.dumps(self.app.assets.batch_upload_files(assets)))
+
+
+if __name__ == "__main__":
+    Crawler()

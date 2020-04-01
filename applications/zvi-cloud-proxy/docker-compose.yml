@@ -1,0 +1,8 @@
+version: '3.1'
+
+services:
+  zvi-cloud-proxy:
+    image: zvi-cloud-proxy:latest
+    volumes:
+      - ${PWD}/pylib/properties.yaml:/build/properties.yaml
+
