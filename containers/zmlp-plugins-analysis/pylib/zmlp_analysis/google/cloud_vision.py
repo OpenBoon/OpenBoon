@@ -4,7 +4,7 @@ import backoff
 from google.api_core.exceptions import ResourceExhausted
 from google.cloud import vision
 from google.cloud.vision import types
-from pathlib2 import Path
+from pathlib import Path
 
 from zmlp import Element
 from zmlpsdk import Argument, AssetProcessor, ZmlpProcessorException

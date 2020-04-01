@@ -5,7 +5,7 @@ import logging
 import collections
 
 from PIL import Image
-from pathlib2 import Path
+from pathlib import Path
 
 from zmlpsdk import AssetProcessor, Argument
 from zmlpsdk.storage import file_storage

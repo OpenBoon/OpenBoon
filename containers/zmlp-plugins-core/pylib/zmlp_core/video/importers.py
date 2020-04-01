@@ -1,6 +1,6 @@
 import tempfile
 import os
-from pathlib2 import Path
+from pathlib import Path
 
 from zmlp.asset import Clip
 from zmlpsdk.storage import file_storage

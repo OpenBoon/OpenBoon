@@ -4,7 +4,7 @@ from datetime import datetime
 from functools import reduce
 
 import dateutil.parser
-from pathlib2 import Path
+from pathlib import Path
 
 from zmlp import Clip, FileImport
 from zmlpsdk import AssetProcessor, Argument, ExpandFrame, FileTypes
