@@ -5,18 +5,24 @@ import { colors, constants, typography, spacing } from '../Styles'
 import CheckmarkSvg from '../Icons/checkmark.svg'
 import WarningSvg from '../Icons/warning.svg'
 
-const SIZE = 40
+const PADDING_OUTER = spacing.base
+const PADDING_INNER = spacing.moderate
+const ICON_HEIGHT = 20
 
 const STYLES = {
   SUCCESS: {
     border: constants.borders.success,
-    backgroundColor: colors.signal.grass.base,
-    icon: <CheckmarkSvg width={SIZE / 2} />,
+    backgroundColor: colors.signal.grass.background,
+    icon: (
+      <CheckmarkSvg height={ICON_HEIGHT} color={colors.signal.grass.base} />
+    ),
   },
   ERROR: {
     border: constants.borders.error,
-    backgroundColor: colors.signal.warning.base,
-    icon: <WarningSvg width={SIZE / 2} />,
+    backgroundColor: colors.signal.warning.background,
+    icon: (
+      <WarningSvg height={ICON_HEIGHT} color={colors.signal.warning.base} />
+    ),
   },
 }
 
@@ -30,41 +36,28 @@ const FlashMessage = ({ variant, children }) => {
     <div
       css={{
         display: 'flex',
-        paddingTop: spacing.base,
-        paddingBottom: spacing.base,
+        paddingTop: PADDING_OUTER,
+        paddingBottom: PADDING_OUTER,
       }}
     >
       <div
         css={{
           display: 'flex',
-          justifySelf: 'flex-start',
-          color: colors.structure.black,
-          fontWeight: typography.weight.medium,
-          backgroundColor: colors.structure.white,
-          border: STYLES[variant].border,
-          boxShadow: constants.boxShadows.default,
+          alignItems: 'flex-start',
+          backgroundColor: STYLES[variant].backgroundColor,
+          borderRadius: constants.borderRadius.small,
+          padding: PADDING_INNER,
         }}
       >
+        {STYLES[variant].icon}
+
         <div
+          role="alert"
           css={{
-            width: SIZE,
-            height: SIZE,
-            color: colors.structure.white,
-            backgroundColor: STYLES[variant].backgroundColor,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {STYLES[variant].icon}
-        </div>
-        <div
-          css={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingLeft: spacing.normal,
-            paddingRight: spacing.normal,
+            flex: 1,
+            paddingLeft: PADDING_INNER,
+            color: colors.structure.black,
+            fontWeight: typography.weight.medium,
           }}
         >
           {children}
@@ -76,7 +69,7 @@ const FlashMessage = ({ variant, children }) => {
 
 FlashMessage.propTypes = {
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
-  children: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 }
 
 export default FlashMessage

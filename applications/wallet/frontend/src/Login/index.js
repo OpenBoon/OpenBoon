@@ -11,7 +11,6 @@ import HiddenSvg from '../Icons/hidden.svg'
 import VisibleSvg from '../Icons/visible.svg'
 
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
-import FormAlert from '../FormAlert'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
@@ -20,13 +19,7 @@ import LoginWithGoogle from './WithGoogle'
 const WIDTH = 446
 const LOGO_WIDTH = 143
 
-const Login = ({
-  googleAuth,
-  hasGoogleLoaded,
-  errorMessage,
-  setErrorMessage,
-  onSubmit,
-}) => {
+const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
   const {
     query: { action },
   } = useRouter()
@@ -114,7 +107,11 @@ const Login = ({
           onSubmit={onSubmit}
         />
 
-        <FormAlert setErrorMessage={setErrorMessage}>{errorMessage}</FormAlert>
+        {!!errorMessage && (
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+            {errorMessage}
+          </FlashMessage>
+        )}
 
         <Input
           autoFocus
@@ -202,7 +199,6 @@ Login.propTypes = {
   }).isRequired,
   hasGoogleLoaded: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string.isRequired,
-  setErrorMessage: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 }
 

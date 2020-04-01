@@ -7,7 +7,6 @@ import { colors, constants, spacing } from '../Styles'
 
 import Navbar from '../Navbar'
 import PageTitle from '../PageTitle'
-import FormAlert from '../FormAlert'
 import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Form from '../Form'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
@@ -65,9 +64,9 @@ const CreateAccount = () => {
         <PageTitle>Create an Account</PageTitle>
 
         <Form>
-          <FormAlert setErrorMessage={() => dispatch({ error: '' })}>
-            {state.error}
-          </FormAlert>
+          {!!state.error && (
+            <FlashMessage variant={VARIANTS.ERROR}>{state.error}</FlashMessage>
+          )}
 
           {action === 'account-activation-expired' && (
             <>

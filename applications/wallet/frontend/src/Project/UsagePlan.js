@@ -6,7 +6,7 @@ import { colors, spacing, constants, typography } from '../Styles'
 import Card from '../Card'
 
 import ProjectUsageBar from './UsageBar'
-import FormAlert from '../FormAlert'
+import FlashMessage, { VARIANTS } from '../FlashMessage'
 
 const IMG_WIDTH = 32
 
@@ -39,7 +39,7 @@ const ProjectUsagePlan = () => {
             <div
               css={{ marginTop: -spacing.normal, marginBottom: spacing.normal }}
             >
-              <FormAlert setErrorMessage={false}>
+              <FlashMessage variant={VARIANTS.ERROR}>
                 <div css={{ fontWeight: typography.weight.regular }}>
                   You are{' '}
                   {videoOverTime > 1 && (
@@ -57,7 +57,7 @@ const ProjectUsagePlan = () => {
                   )}
                   . Contact your Account Manager to add more resources.
                 </div>
-              </FormAlert>
+              </FlashMessage>
             </div>
           )}
           <div

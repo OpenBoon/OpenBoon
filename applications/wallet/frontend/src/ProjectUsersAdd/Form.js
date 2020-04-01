@@ -4,7 +4,7 @@ import useSWR from 'swr'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
-import FormAlert from '../FormAlert'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import CheckboxGroup from '../Checkbox/Group'
@@ -56,13 +56,11 @@ const ProjectUsersAddForm = () => {
       <ProjectUsersAddCopyLink />
 
       <Form>
-        <FormAlert
-          setErrorMessage={() =>
-            dispatch({ errors: { ...state.errors, global: '' } })
-          }
-        >
-          {state.errors.global}
-        </FormAlert>
+        {!!state.errors.global && (
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+            {state.errors.global}
+          </FlashMessage>
+        )}
 
         <Input
           autoFocus

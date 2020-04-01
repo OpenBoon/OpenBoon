@@ -4,7 +4,7 @@ import subscriptionShape from '../Subscription/shape'
 
 import { colors, spacing, typography } from '../Styles'
 
-import FormAlert from '../FormAlert'
+import FlashMessage, { VARIANTS } from '../FlashMessage'
 
 import OverviewUsage from './Usage'
 
@@ -24,7 +24,7 @@ const AccountUsagePlan = ({ subscriptions }) => {
     <>
       {(videoOverTime > 1 || imageOverTime > 1) && (
         <div css={{ marginTop: -spacing.normal, marginBottom: spacing.normal }}>
-          <FormAlert setErrorMessage={false}>
+          <FlashMessage variant={VARIANTS.ERROR}>
             <div css={{ fontWeight: typography.weight.regular }}>
               You are{' '}
               {videoOverTime > 1 && (
@@ -41,7 +41,7 @@ const AccountUsagePlan = ({ subscriptions }) => {
               )}
               . Contact your Account Manager to add more resources.
             </div>
-          </FormAlert>
+          </FlashMessage>
         </div>
       )}
       <h3

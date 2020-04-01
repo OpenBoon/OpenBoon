@@ -83,13 +83,6 @@ describe('<CreateAccount />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    // Dismiss Error Message
-    await act(async () => {
-      component.root
-        .findByProps({ 'aria-label': 'Close alert' })
-        .props.onClick({ preventDefault: noop })
-    })
-
     // Mock Success
     fetch.mockResponseOnce(JSON.stringify({ detail: 'Account Created' }))
 
