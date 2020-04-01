@@ -2,11 +2,11 @@ import os
 from unittest.mock import patch
 
 from zmlp import ZmlpClient
+from zmlp_analysis.clarifai.processors import ClarifaiPredictGeneralProcessor
 from zmlpsdk import Frame
 from zmlpsdk.proxy import store_asset_proxy
-from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
-
-from zmlp_analysis.clarifai.processors import ClarifaiPredictProcessor
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, \
+    TestAsset, get_prediction_labels
 
 
 class MockClarifaiApp(object):
@@ -27,7 +27,7 @@ class MockClarifaiApp(object):
         self.public_models = PublicModels()
 
 
-class ClarifaiPredictProcessorTests(PluginUnitTestCase):
+class ClarifaiPredictGeneralProcessorTests(PluginUnitTestCase):
 
     def setUp(self):
         self.image_path = zorroa_test_data('images/detect/dogbike.jpg')
@@ -49,5 +49,12 @@ class ClarifaiPredictProcessorTests(PluginUnitTestCase):
         }
 
         store_asset_proxy(self.frame.asset, self.image_path, (576, 1024))
-        processor = self.init_processor(ClarifaiPredictProcessor(), {})
+        processor = self.init_processor(ClarifaiPredictGeneralProcessor(), {})
         processor.process(self.frame)
+
+        print(self.frame.asset.document)
+
+        analysis = self.frame.asset.get_attr('analysis.clarifai-predict-general')
+        assert 'wheel' in get_prediction_labels(analysis)
+        assert 'labels' in analysis['type']
+        assert 20 == analysis['count']

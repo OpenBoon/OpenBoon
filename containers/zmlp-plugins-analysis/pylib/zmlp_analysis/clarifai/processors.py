@@ -6,11 +6,11 @@ from zmlpsdk import AssetProcessor, ZmlpEnv, ZmlpFatalProcessorException
 from zmlpsdk.proxy import get_proxy_level_path
 
 
-class ClarifaiPredictProcessor(AssetProcessor):
-    namespace = 'clarifai.predict'
+class ClarifaiPredictGeneralProcessor(AssetProcessor):
+    namespace = 'clarifai-predict-general'
 
     def __init_(self):
-        super(ClarifaiPredictProcessor, self).__init__()
+        super(ClarifaiPredictGeneralProcessor, self).__init__()
         self.clarifai = None
 
     def init(self):
@@ -23,10 +23,16 @@ class ClarifaiPredictProcessor(AssetProcessor):
         model = self.clarifai.public_models.general_model
         response = model.predict_by_filename(p_path)
         labels = response['outputs'][0]['data']['concepts']
-        model = response['outputs'][0]['model']['name']
 
-        result = [{'label': label['name'], 'score': label['value']} for label in labels]
-        asset.add_analysis(self.namespace, {'model': model, 'labels': result})
+        result = [
+            {'label': label['name'],
+             'score': round(label['value'], 3)} for label in labels]
+
+        asset.add_analysis(self.namespace, {
+            'predictions': result,
+            'count': len(result),
+            'type': 'labels'
+        })
 
 
 def get_clarifai_app():
