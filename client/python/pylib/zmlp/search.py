@@ -219,7 +219,7 @@ class LabelConfidenceQuery(object):
         Create a new LabelConfidenceScoreQuery.
 
         Args:
-            field (str): The field with the labels array.
+            field (str): The predictions field. 
             labels (list): A list of labels to filter.
             min_score (float): The minimum label score.
             max_score (float): The maximum score, defaults to 1.0 which is highest
@@ -283,7 +283,7 @@ class SimilarityQuery:
             }
         }
     """
-    def __init__(self, hashes, min_score=0.75, field="analysis.zvi.similarity.simhash"):
+    def __init__(self, hashes, min_score=0.75, field="analysis.zvi-image-similarity.simhash"):
         self.hashes = as_collection(hashes) or []
         self.min_score = min_score
         self.field = field
