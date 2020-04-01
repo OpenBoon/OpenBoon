@@ -454,7 +454,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
                            'roles': entry.get('roles'),
                            'status_code': response.status_code,
                            'body': response.data}
-                if response.status_code == status.HTTP_201_CREATED:
+                if response.status_code in [status.HTTP_201_CREATED, status.HTTP_200_OK]:
                     response_body['results']['succeeded'].append(content)
                 else:
                     response_body['results']['failed'].append(content)
