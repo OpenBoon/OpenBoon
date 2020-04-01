@@ -518,9 +518,9 @@ class TestProjectUserPost:
 
     @override_settings(PLATFORM='zmlp')
     def test_create_already_exists_batch(self, project, zmlp_project_user,
-                                   zmlp_project_membership,
-                                   api_client, monkeypatch, django_user_model, data,
-                                   api_key):
+                                         zmlp_project_membership,
+                                         api_client, monkeypatch, django_user_model, data,
+                                         api_key):
         def mock_post_response(*args, **kwargs):
             return data
 
