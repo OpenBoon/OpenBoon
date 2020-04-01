@@ -1,7 +1,7 @@
 import logging
 import unittest
 
-from zmlp import Asset, Element, StoredFile
+from zmlp import Asset, StoredFile
 from zmlp.asset import FileImport, Clip
 
 logging.basicConfig(level=logging.DEBUG)
@@ -154,25 +154,3 @@ class ClipTests(unittest.TestCase):
         assert clip.stop == 2
         assert clip.type == 'scene'
         assert clip.timeline == 'faces'
-
-
-class ElementTests(unittest.TestCase):
-    stored_file = {
-        'name': 'cat_object.jpg',
-        'category': 'element',
-        'attrs': {
-            'width': 300,
-            'height': 300
-        }
-    }
-
-    def test_create_min_element(self):
-        element = Element('object', labels='cat')
-        assert element.type == 'object'
-        assert element.labels == ['cat']
-        assert element.rect is None
-        assert element.score is None
-
-    def test_normalize_rect(self):
-        norm_rect = Element.calculate_normalized_rect(100, 100, [50, 50, 50, 50])
-        assert [0.5, 0.5, 0.5, 0.5] == norm_rect

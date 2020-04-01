@@ -10,7 +10,6 @@ __all__ = [
     "FileImport",
     "FileUpload",
     "Clip",
-    "Element",
     "StoredFile"
 ]
 
@@ -517,75 +516,3 @@ class StoredFile(object):
                 serializable_dict[attr] = getattr(self, attr)
         return serializable_dict
 
-
-class Element(object):
-    """
-    An Element describes a region within an image which contains a specific prediction,
-    such as a face or object.  Elements are stored as nested objects in ElasticSearch
-    which allows for specific combinations of types, labels, regions, etc to be searched.
-
-    Elements are considered unique by type, labels, rect, and stored_file name.
-
-    Attributes:
-        regions (list[str]): The region of the image where the Element exists. This
-            is automatically set if it can be calculated from the rect and
-            the stored_file size.
-
-    """
-
-    # The attributes that get serialized for json.  If you change this, you'll likely
-    # have to change the ES mapping.
-    attrs = ['type', 'labels', 'rect', 'score', 'analysis', 'simhash']
-
-    def __init__(self, type, analysis=None, labels=None, score=None, rect=None, simhash=None):
-        """
-        Create a new Element instance.
-
-        Args:
-            type (str): The type of element, typically 'object' or 'face' but
-                it can be an arbitrary value.
-            analysis: (str): The analysis namespace associated with this element.
-            labels (list[str]): A list of predicted labels.
-            score (float): If a prediction is made, a score describes the confidence level.
-            rect (list[int]): A list of 4 integers describe the rectangle containing the element.
-                The ints represent the upper left point and lower left point of the rectangle.
-            simhash (str): A similarity hash if any.
-        """
-        self.type = type
-        self.analysis = analysis
-        self.labels = as_collection(labels)
-        self.score = round(float(score), 6) if score else None
-        self.rect = rect
-        self.simhash = simhash
-
-    def for_json(self):
-        """
-        Serialize the Element to JSON.
-        Returns:
-            dict: A serialized Element
-        """
-        serializable_dict = {}
-        for attr in self.attrs:
-            if getattr(self, attr, None) is not None:
-                serializable_dict[attr] = getattr(self, attr)
-        return serializable_dict
-
-    @staticmethod
-    def calculate_normalized_rect(img_width, img_height, rect):
-        """
-        Calculate points for normalized rectangle based on the given
-        image width and height.
-        Args:
-            img_width (int): The width of the image the rect was calculated in.
-            img_height (int): The height of the image the rect was calculated in.
-            rect: (list): An array of 4 points that make up the rectangle.
-
-        Returns:
-            list<float> An array of points for a normalized rectangle.
-        """
-        return [
-            round(rect[0] / float(img_width), 3),
-            round(rect[1] / float(img_height), 3),
-            round(rect[2] / float(img_width), 3),
-            round(rect[3] / float(img_height), 3)
-        ]
