@@ -15,7 +15,8 @@ requirements = [
     "PyJWT",
     "pathlib2>=2.3.0",
     "backoff",
-    "pytest"
+    "pytest",
+    "pathlib2"
 ]
 
 setup(
