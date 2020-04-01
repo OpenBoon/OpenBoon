@@ -84,18 +84,6 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-6 {
-  padding: 8px;
-}
-
-.emotion-5 {
-  padding: 12px;
-}
-
-.emotion-4 {
-  height: 20px;
-}
-
-.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -104,7 +92,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-bottom: 8px;
 }
 
-.emotion-8 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -118,7 +106,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding: 12px;
 }
 
-.emotion-7 {
+.emotion-4 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -345,16 +333,24 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         <div
           className="emotion-5"
         >
+          <svg
+            color="#c92300"
+            data-file-name="warning.svg"
+            height={20}
+          />
           <div
             className="emotion-4"
-          />
+            role="alert"
+          >
+            
+          </div>
         </div>
       </div>
       <div
-        className="emotion-9"
+        className="emotion-6"
       >
         <div
-          className="emotion-8"
+          className="emotion-5"
         >
           <svg
             color="#c92300"
@@ -362,7 +358,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
             height={20}
           />
           <div
-            className="emotion-7"
+            className="emotion-4"
             role="alert"
           >
             Confirmation Link Expired
@@ -631,15 +627,35 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 }
 
 .emotion-6 {
-  padding: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 .emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
   padding: 12px;
 }
 
 .emotion-4 {
-  height: 20px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #000000;
+  font-weight: 500;
 }
 
 .emotion-7 {
@@ -853,9 +869,17 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
         <div
           className="emotion-5"
         >
+          <svg
+            color="#c92300"
+            data-file-name="warning.svg"
+            height={20}
+          />
           <div
             className="emotion-4"
-          />
+            role="alert"
+          >
+            
+          </div>
         </div>
       </div>
       <h3

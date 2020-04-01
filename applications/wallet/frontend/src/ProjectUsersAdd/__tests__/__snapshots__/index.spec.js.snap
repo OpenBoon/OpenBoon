@@ -247,15 +247,35 @@ Array [
 }
 
 .emotion-9 {
-  padding: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 .emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
   padding: 12px;
 }
 
 .emotion-7 {
-  height: 20px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #000000;
+  font-weight: 500;
 }
 
 .emotion-13 {
@@ -517,9 +537,17 @@ Array [
         <div
           className="emotion-8"
         >
+          <svg
+            color="#c92300"
+            data-file-name="warning.svg"
+            height={20}
+          />
           <div
             className="emotion-7"
-          />
+            role="alert"
+          >
+            
+          </div>
         </div>
       </div>
       <div
@@ -941,15 +969,35 @@ Array [
 }
 
 .emotion-9 {
-  padding: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 .emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
   padding: 12px;
 }
 
 .emotion-7 {
-  height: 20px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #000000;
+  font-weight: 500;
 }
 
 .emotion-13 {
@@ -1229,9 +1277,17 @@ Array [
         <div
           className="emotion-8"
         >
+          <svg
+            color="#c92300"
+            data-file-name="warning.svg"
+            height={20}
+          />
           <div
             className="emotion-7"
-          />
+            role="alert"
+          >
+            
+          </div>
         </div>
       </div>
       <div
@@ -1637,6 +1693,38 @@ Array [
   transition: opacity .3s ease;
 }
 
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #000000;
+  font-weight: 500;
+}
+
 .emotion-21 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1704,38 +1792,6 @@ Array [
 
 .emotion-20[aria-disabled=true] {
   background-color: #808080;
-}
-
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #ffb6b2;
-  border-radius: 2px;
-  padding: 12px;
-}
-
-.emotion-0 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #000000;
-  font-weight: 500;
 }
 
 .emotion-4 {
@@ -2209,15 +2265,35 @@ Array [
 }
 
 .emotion-9 {
-  padding: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 .emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
   padding: 12px;
 }
 
 .emotion-7 {
-  height: 20px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #000000;
+  font-weight: 500;
 }
 
 .emotion-13 {
@@ -2479,9 +2555,17 @@ Array [
         <div
           className="emotion-8"
         >
+          <svg
+            color="#c92300"
+            data-file-name="warning.svg"
+            height={20}
+          />
           <div
             className="emotion-7"
-          />
+            role="alert"
+          >
+            
+          </div>
         </div>
       </div>
       <div

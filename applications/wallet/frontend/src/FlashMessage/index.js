@@ -32,16 +32,6 @@ export const VARIANTS = Object.keys(STYLES).reduce(
 )
 
 const FlashMessage = ({ variant, children }) => {
-  if (!children) {
-    return (
-      <div css={{ padding: PADDING_OUTER }}>
-        <div css={{ padding: PADDING_INNER }}>
-          <div css={{ height: ICON_HEIGHT }} />
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div
       css={{

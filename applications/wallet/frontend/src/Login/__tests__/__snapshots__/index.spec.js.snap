@@ -197,16 +197,18 @@ exports[`<Login /> should render password changed 1`] = `
   flex: 1;
 }
 
-.emotion-13 {
-  padding: 8px;
-}
-
 .emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
   padding: 12px;
-}
-
-.emotion-11 {
-  height: 20px;
 }
 
 .emotion-17 {
@@ -450,14 +452,22 @@ exports[`<Login /> should render password changed 1`] = `
       </button>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-2"
     >
       <div
         className="emotion-12"
       >
-        <div
-          className="emotion-11"
+        <svg
+          color="#c92300"
+          data-file-name="warning.svg"
+          height={20}
         />
+        <div
+          className="emotion-0"
+          role="alert"
+        >
+          
+        </div>
       </div>
     </div>
     <div
@@ -763,16 +773,18 @@ exports[`<Login /> should render properly 1`] = `
   flex: 1;
 }
 
-.emotion-13 {
-  padding: 8px;
-}
-
 .emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
   padding: 12px;
-}
-
-.emotion-11 {
-  height: 20px;
 }
 
 .emotion-17 {
@@ -1016,14 +1028,22 @@ exports[`<Login /> should render properly 1`] = `
       </button>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-2"
     >
       <div
         className="emotion-12"
       >
-        <div
-          className="emotion-11"
+        <svg
+          color="#c92300"
+          data-file-name="warning.svg"
+          height={20}
         />
+        <div
+          className="emotion-0"
+          role="alert"
+        >
+          
+        </div>
       </div>
     </div>
     <div
@@ -1329,16 +1349,18 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   flex: 1;
 }
 
-.emotion-13 {
-  padding: 8px;
-}
-
 .emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
   padding: 12px;
-}
-
-.emotion-11 {
-  height: 20px;
 }
 
 .emotion-17 {
@@ -1582,14 +1604,22 @@ exports[`<Login /> should render properly on account activation success 1`] = `
       </button>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-2"
     >
       <div
         className="emotion-12"
       >
-        <div
-          className="emotion-11"
+        <svg
+          color="#c92300"
+          data-file-name="warning.svg"
+          height={20}
         />
+        <div
+          className="emotion-0"
+          role="alert"
+        >
+          
+        </div>
       </div>
     </div>
     <div
@@ -1895,16 +1925,18 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   flex: 1;
 }
 
-.emotion-13 {
-  padding: 8px;
-}
-
 .emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
   padding: 12px;
-}
-
-.emotion-11 {
-  height: 20px;
 }
 
 .emotion-17 {
@@ -2148,14 +2180,22 @@ exports[`<Login /> should render properly on account creation success 1`] = `
       </button>
     </div>
     <div
-      className="emotion-13"
+      className="emotion-2"
     >
       <div
         className="emotion-12"
       >
-        <div
-          className="emotion-11"
+        <svg
+          color="#c92300"
+          data-file-name="warning.svg"
+          height={20}
         />
+        <div
+          className="emotion-0"
+          role="alert"
+        >
+          
+        </div>
       </div>
     </div>
     <div
