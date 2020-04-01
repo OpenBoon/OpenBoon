@@ -517,6 +517,30 @@ class TestProjectUserPost:
         assert response.status_code == status.HTTP_200_OK
 
     @override_settings(PLATFORM='zmlp')
+    def test_create_already_exists_batch(self, project, zmlp_project_user,
+                                         zmlp_project_membership,
+                                         api_client, monkeypatch, django_user_model, data,
+                                         api_key):
+        def mock_post_response(*args, **kwargs):
+            return data
+
+        def mock_get_response(*args, **kwargs):
+            return api_key
+
+        monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_response)
+        api_client.force_authenticate(zmlp_project_user)
+        api_client.force_login(zmlp_project_user)
+        body = {'batch': [{'email': zmlp_project_membership.user.username,
+                           'roles': zmlp_project_membership.roles}]}
+        response = api_client.post(
+            reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
+        results = response.json()['results']
+        assert response.status_code == 207
+        assert len(results['succeeded']) == 1
+        assert not results['failed']
+
+    @override_settings(PLATFORM='zmlp')
     def test_create_already_exists_different_roles(self, project, zmlp_project_user,
                                                    zmlp_project_membership,
                                                    api_client, monkeypatch,
