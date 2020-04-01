@@ -3,7 +3,7 @@ import os
 import tempfile
 from collections import namedtuple
 
-from pathlib2 import Path
+from pathlib import Path
 
 from ..asset import Asset, StoredFile
 from ..job import Job
