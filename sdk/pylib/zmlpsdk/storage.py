@@ -34,22 +34,18 @@ class AssetStorage(object):
         self.app = app
         self.cache = cache
 
-    def get_native_uri(self, asset, category, name):
+    def get_native_uri(self, stored_file):
         """
         Return the file's native url (like gs://).
 
         Args:
-            asset (mixed): The asset or the asset id.
-            category (str): Category of file.
-            name (str): Name of file.
-
+            stored_file (StoredFile): A filed stored in the Zorroa backend.
         Returns:
             str: The native uri.
 
         """
-        asset_id = getattr(asset, "id", None) or asset
-        return self.app.client.get('/api/v3/assets/{}/_locate/{}/{}'
-                                   .format(asset_id, category, name))['uri']
+        return self.app.client.get('/api/v3/files/_locate/{}'
+                                   .format(stored_file.id))['uri']
 
     def store_file(self, asset, src_path, category, rename=None, attrs=None):
         """
@@ -122,7 +118,7 @@ class AssetStorage(object):
             logger.debug("Pre-caching {} to {}".format(precache_path, cache_path))
             shutil.copy(urlparse(precache_path).path, cache_path)
         elif not os.path.exists(cache_path):
-            self.app.client.stream('/api/v1/files/{}'.format(sfile.id), cache_path)
+            self.app.client.stream('/api/v3/files/_stream/{}'.format(sfile.id), cache_path)
         return cache_path
 
 

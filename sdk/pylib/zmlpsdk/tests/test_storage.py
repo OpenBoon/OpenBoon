@@ -220,8 +220,13 @@ class TestAssetStorage(TestCase):
     @patch.object(ZmlpClient, 'get')
     def test_get_native_uri(self, get_patch):
         get_patch.return_value = {'uri': 'gs://hulk-hogan'}
-        asset = TestAsset(id='123456')
-        uri = self.fs.assets.get_native_uri(asset, 'cat', 'dog.jpg')
+        pfile = StoredFile({
+            'name': 'cat.jpg',
+            'category': 'proxy',
+            'attrs': {},
+            'id': 'assets/123456/proxy/cat.jpg'
+        })
+        uri = self.fs.assets.get_native_uri(pfile)
         assert 'gs://hulk-hogan' == uri
 
 
