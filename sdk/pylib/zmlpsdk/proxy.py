@@ -86,3 +86,27 @@ def get_proxy_level(asset, level, mimetype="image/"):
         return files[level]
     except IndexError:
         return None
+
+
+def calculate_normalized_bbox(img_width, img_height, poly):
+    """
+    Calculate points for normalized bouding box based on the given
+    image width and height.
+
+    Args:
+        img_width (int): The width of the image the rect was calculated in.
+        img_height (int): The height of the image the rect was calculated in.
+        poly: (list): An array of 4 points, assuming x,y,x,y,x,y..
+
+    Returns:
+        list<float> An array of points for a normalized rectangle.
+
+    """
+    result = []
+    for idx, value in enumerate(poly):
+        if idx % 2 == 0:
+            result.append(round(poly[idx] / float(img_width), 3))
+        else:
+            result.append(round(poly[idx] / float(img_height), 3))
+    return result
+

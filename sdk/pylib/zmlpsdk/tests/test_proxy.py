@@ -55,6 +55,12 @@ class ProxyFunctionTests(TestCase):
         }
     ]
 
+    def test_calculate_noralized_bbox(self):
+        rect = zmlpsdk.proxy.calculate_normalized_bbox(1000, 1000, [
+            0, 0, 500, 500, 200, 200
+        ])
+        assert [0.0, 0.0, 0.5, 0.5, 0.2, 0.2] == rect
+
     @patch.object(ZmlpClient, 'stream')
     def test_get_proxy_level(self, stream_patch):
         asset = TestAsset(IMAGE_JPG, id='123456')
