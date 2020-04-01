@@ -114,22 +114,6 @@ class DocumentMixin(object):
         attr = "analysis.%s" % id
         self.set_attr(attr, val)
 
-    def add_element(self, element):
-        """
-        Add a new Element instance to this Asset instance.  The Element is not
-        saved to the serve until the asset is re-indexed.
-
-        Args:
-            element (Element): An element instance.
-
-        """
-        if not isinstance(element, Element):
-            raise ValueError("Could not add element, value was not an Element instance.")
-
-        elements = self.get_attr("elements") or []
-        elements.append(json.loads(json.dumps(element, cls=ZmlpJsonEncoder)))
-        self.set_attr("elements", elements)
-
     def extend_list_attr(self, attr, items):
         """
         Adds the given items to the given attr. The attr must be a list or set.
@@ -515,4 +499,3 @@ class StoredFile(object):
             if getattr(self, attr, None) is not None:
                 serializable_dict[attr] = getattr(self, attr)
         return serializable_dict
-

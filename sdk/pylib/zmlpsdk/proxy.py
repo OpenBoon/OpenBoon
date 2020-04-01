@@ -109,4 +109,3 @@ def calculate_normalized_bbox(img_width, img_height, poly):
         else:
             result.append(round(poly[idx] / float(img_height), 3))
     return result
-

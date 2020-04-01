@@ -1,6 +1,5 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.getFileLocator
 import com.zorroa.archivist.storage.ProjectStorageService
 import io.swagger.annotations.ApiOperation
@@ -45,5 +44,4 @@ class FileStorageController(
         val locator = getFileLocator(entityType, entityId, category, name)
         return mapOf("uri" to projectStorageService.getNativeUri(locator))
     }
-
 }
