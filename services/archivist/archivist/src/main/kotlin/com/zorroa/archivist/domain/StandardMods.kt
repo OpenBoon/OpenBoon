@@ -28,6 +28,8 @@ object ModType {
     const val OCR = "Optical Character Recognition (OCR)"
     const val LABEL_DETECTION = "Label Detection"
     const val OBJECT_DETECTION = "Object Detection"
+    const val LANDMARK_DETECTION = "Landmark Detection"
+    const val LOGO_DETECTION = "Logo Detection"
     const val FACE_RECOGNITION = "Face Recognition"
     const val CLIPIFIER = "Asset Clipifier"
 }
@@ -159,7 +161,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.clarifai.ClarifaiPredictProcessor",
+                        ProcessorRef("zmlp_analysis.clarifai.ClarifaiPredictGeneralProcessor",
                             StandardContainers.ANALYSIS)
                     )
                 )
@@ -169,8 +171,8 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "gcp-label-detection",
-            "Utilize Google Cloud Vision label detection to detect and extract information about " +
-                "entities in an image, across a broad group of categories.",
+            "Detect and extract information about entities in " +
+                "an image, across a broad group of categories.",
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModType.LABEL_DETECTION,
@@ -189,8 +191,7 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "gcp-object-detection",
-            "Utilize Google Cloud Vision label detection to detect and extract information about " +
-                "entities in an image, across a broad group of categories.",
+            "Detect and extract multiple objects in an image.",
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModType.OBJECT_DETECTION,
@@ -199,7 +200,45 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.google.CloudVisionDetectLabels",
+                        ProcessorRef("zmlp_analysis.google.CloudVisionDetectObjects",
+                            StandardContainers.ANALYSIS)
+                    )
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
+            "gcp-logo-detection",
+            "Detect popular product logos within an image.",
+            Provider.GOOGLE,
+            Category.GOOGLE_VISION,
+            ModType.LOGO_DETECTION,
+            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef("zmlp_analysis.google.CloudVisionDetectLogos",
+                            StandardContainers.ANALYSIS)
+                    )
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
+            "gcp-landmark-detection",
+            "Detect popular natural and man-made structures within an image.",
+            Provider.GOOGLE,
+            Category.GOOGLE_VISION,
+            ModType.LANDMARK_DETECTION,
+            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef("zmlp_analysis.google.CloudVisionDetectLandmarks",
                             StandardContainers.ANALYSIS)
                     )
                 )
