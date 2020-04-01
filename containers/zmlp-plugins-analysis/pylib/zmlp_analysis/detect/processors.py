@@ -1,14 +1,13 @@
 import cv2
 import cvlib as cv
 
-from zmlp.asset import Element
 from zmlpsdk import AssetProcessor
-from zmlpsdk.proxy import get_proxy_level_path
+from zmlpsdk.proxy import get_proxy_level_path, calculate_normalized_bbox
 
 
 class ZmlpObjectDetectionProcessor(AssetProcessor):
 
-    namespace = "zvi.object-detection"
+    namespace = "zvi-object-detection"
 
     def process(self, frame):
         asset = frame.asset
@@ -16,14 +15,21 @@ class ZmlpObjectDetectionProcessor(AssetProcessor):
 
         im = cv2.imread(p_path)
         bbox, labels, conf = cv.detect_common_objects(im)
-        if bbox:
-            for elem in zip(bbox, labels, conf):
-                rect = Element.calculate_normalized_rect(im.shape[1], im.shape[0], elem[0])
-                element = Element("object",
-                                  self.namespace,
-                                  labels=elem[1],
-                                  rect=rect,
-                                  score=elem[2])
-                asset.add_element(element)
 
-            asset.add_analysis(self.namespace, {"detected": len(bbox)})
+        if not bbox:
+            return
+
+        predictions = []
+        for elem in zip(bbox, labels, conf):
+            rect = calculate_normalized_bbox(im.shape[1], im.shape[0], elem[0])
+            predictions.append({
+                "label": elem[1],
+                "score": elem[2],
+                "bbox": rect
+            })
+
+        asset.add_analysis(self.namespace, {
+            "count": len(bbox),
+            "type": "objects",
+            "predictions": predictions
+        })
