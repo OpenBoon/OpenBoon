@@ -20,7 +20,7 @@ class ZviLabelDetectionResNet152(AssetProcessor):
         'debug': 'Run in debug mode. This creates a few extra fields, including confidence values.'
     }
 
-    namespace = 'zvi.label-detection'
+    namespace = 'zvi-label-detection'
 
     # MXNet is not thread safe.
     use_threads = False
@@ -62,15 +62,17 @@ class ZviLabelDetectionResNet152(AssetProcessor):
         # psort is a sorting of prob. We need to keep prob in order to assign
         # the floating point probabilities attrs
         psort = np.argsort(prob)[::-1]
-        labels = []
+        predictions = []
         for j, i in enumerate(psort[0:20]):
             if prob[i] < 0.10:
                 break
             for label in self.labels[i].split(","):
-                labels.append({"label": label.strip(), "score": round(float(prob[i]), 3)})
+                predictions.append({"label": label.strip(), "score": round(float(prob[i]), 3)})
 
         struct = {
-            'labels': labels
+            'type': 'labels',
+            'predictions': predictions,
+            'count': len(predictions)
         }
 
         asset.add_analysis(self.namespace, struct)
@@ -81,7 +83,7 @@ class ZviSimilarityProcessor(AssetProcessor):
     make a hash with ResNet
     """
 
-    namespace = "zvi.similarity"
+    namespace = "zvi-image-similarity"
 
     # MXNet is not thread safe.
     use_threads = False
@@ -136,6 +138,7 @@ class ZviSimilarityProcessor(AssetProcessor):
 
         mxhash = mxhash
         struct = {
+            'type': 'similarity',
             'simhash': mxhash
         }
 
