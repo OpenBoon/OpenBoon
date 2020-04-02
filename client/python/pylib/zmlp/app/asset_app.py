@@ -455,7 +455,7 @@ class AssetApp(object):
 
         Args:
             asset (mixed): The asset or the unique asset ID.
-            blob (str): The string blob of data to write.
+            blob (bytes): The string blob of data to write.
             category (str): The purpose of the file, ex proxy.
             name (str): The name of th efile.
             attrs (dict): Arbitrary attributes to attach to the file.
@@ -478,7 +478,7 @@ class AssetApp(object):
 
         # handle file:// urls
         fd, path = tempfile.mkstemp(suffix=ext, prefix='zblob')
-        with open(path, 'w') as fp:
+        with open(path, 'wb') as fp:
             fp.write(blob)
 
         result = self.app.client.upload_file(
