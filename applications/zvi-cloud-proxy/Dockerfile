@@ -10,9 +10,4 @@ RUN rm requirements.txt; rm properties.yaml
 
 WORKDIR /build/zvi-cloud-proxy
 
-USER zorroa
-
 ENTRYPOINT ["python3", "crawler.py"]
-
-
-

@@ -5,5 +5,5 @@ services:
     image: zvi-cloud-proxy:latest
     volumes:
       - ${PWD}/pylib/properties.yaml:/build/properties.yaml
-      - ${PWD}/pylib/sqlite.db:/build/sqlite.db
-
+      - ${PWD}/pylib/sqlite.db:/build/sqlite.db:consistent
+      - ${VOLUME_ABSOLUTE_PATH}:/mnt # Mount crawled folders in /mnt

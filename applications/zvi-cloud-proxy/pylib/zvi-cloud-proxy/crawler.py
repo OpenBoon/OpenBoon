@@ -34,7 +34,8 @@ class Crawler(object):
         while True:
             time.sleep(1)
             for mount in self.properties["mounts"]:
-                for path, dirnames, names in os.walk(mount):
+                folders = "/mnt/%s" % mount
+                for path, dirnames, names in os.walk(folders):
                     for name in names:
                         filename = "{0}/{1}".format(path, name)
 
