@@ -1,0 +1,72 @@
+import TestRenderer, { act } from 'react-test-renderer'
+
+import Policies from '..'
+
+const noop = () => () => {}
+
+describe('<Policies />', () => {
+  it('should render properly', async () => {
+    const mockFn = jest.fn()
+
+    const component = TestRenderer.create(
+      <Policies userId={42} setUser={mockFn} />,
+    )
+
+    act(() => {
+      component.root.findByProps({ type: 'checkbox' }).props.onClick()
+    })
+
+    // Mock Failure
+    fetch.mockRejectOnce({ error: 'Invalid' }, { status: 400 })
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Continue' })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Mock Success
+    fetch.mockResponseOnce('{}')
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Continue' })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    expect(fetch.mock.calls.length).toEqual(2)
+
+    expect(fetch.mock.calls[0][0]).toEqual(`/api/v1/users/42/agreements/`)
+
+    expect(fetch.mock.calls[0][1]).toEqual({
+      headers: {
+        'X-CSRFToken': 'CSRF_TOKEN',
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      body: '{"policies_date":"20200626"}',
+      method: 'POST',
+    })
+
+    expect(mockFn).toHaveBeenCalledWith({
+      user: { agreedToPoliciesDate: '20200626' },
+    })
+  })
+
+  it('should not POST the form', () => {
+    const mockFn = jest.fn()
+    const mockOnSubmit = jest.fn()
+
+    const component = TestRenderer.create(
+      <Policies userId={42} setUser={noop} />,
+    )
+
+    component.root
+      .findByProps({ method: 'post' })
+      .props.onSubmit({ preventDefault: mockFn })
+
+    expect(mockOnSubmit).not.toHaveBeenCalled()
+    expect(mockFn).toHaveBeenCalled()
+  })
+})

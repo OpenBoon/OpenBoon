@@ -62,6 +62,7 @@ app.prepare().then(() => {
 
     const userpatch = { ...user, firstName: 'David', lastName: 'Smith' }
     server.patch(`/api/v1/users/:userId/`, mock(userpatch))
+    server.post(`/api/v1/users/:userId/agreements/`, success())
 
     const PID_API_BASE = '/api/v1/projects/:projectId'
 
