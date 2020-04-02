@@ -133,7 +133,15 @@ def test_datasource_viewset_update(api_client, monkeypatch, zmlp_project_user, p
     def mock_put_response(*args, **kwargs):
         return data
 
+    def mock_get_datasource(*args, **kwargs):
+        return DataSource(data)
+
+    def mock_import_files(*args, **kwargs):
+        return None
+
     monkeypatch.setattr(ZmlpClient, 'put', mock_put_response)
+    monkeypatch.setattr(DataSourceApp, 'get_datasource', mock_get_datasource)
+    monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
     kwargs = {'project_pk': project.id, 'pk': '48b45e81-4c31-11ea-a1f6-eeae6cabf22b'}
     response = api_client.put(reverse('datasource-detail', kwargs=kwargs), data)
     assert response.status_code == 200
