@@ -1,7 +1,10 @@
 import logging
 import os
+import json
 
 from .util import as_collection
+from .client import to_json
+
 
 __all__ = [
     "Asset",
@@ -110,7 +113,7 @@ class DocumentMixin(object):
         if not id or not val:
             raise ValueError("Analysis requires a unique ID and value")
         attr = "analysis.%s" % id
-        self.set_attr(attr, val)
+        self.set_attr(attr, json.loads(to_json(val)))
 
     def extend_list_attr(self, attr, items):
         """
