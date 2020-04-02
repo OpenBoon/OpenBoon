@@ -93,7 +93,7 @@ const Policies = ({ userId, setUser }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Terms&nbsp;and&nbsp;Conditions
+            Terms&nbsp;&amp;&nbsp;Conditions
           </a>{' '}
           and{' '}
           <a

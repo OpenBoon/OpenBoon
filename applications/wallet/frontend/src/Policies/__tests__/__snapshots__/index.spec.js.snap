@@ -292,7 +292,7 @@ exports[`<Policies /> should render properly 1`] = `
         rel="noopener noreferrer"
         target="_blank"
       >
-        Terms and Conditions
+        Terms & Conditions
       </a>
        
       and

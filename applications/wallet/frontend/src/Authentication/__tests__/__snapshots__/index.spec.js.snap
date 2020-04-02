@@ -296,7 +296,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
         rel="noopener noreferrer"
         target="_blank"
       >
-        Terms and Conditions
+        Terms & Conditions
       </a>
        
       and
