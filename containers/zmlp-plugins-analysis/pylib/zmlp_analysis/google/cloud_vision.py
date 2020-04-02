@@ -7,6 +7,7 @@ from google.cloud.vision import types
 
 from zmlpsdk import file_storage, Argument, AssetProcessor
 from zmlpsdk.proxy import get_proxy_level, calculate_normalized_bbox
+from zmlpsdk.schema import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
 from .gcp_client import initialize_gcp_client
 
 __all__ = [
@@ -96,17 +97,9 @@ class CloudVisionDetectImageText(AbstractCloudVisionProcessor):
         if not text:
             return
 
-        if len(text) > 32766:
-            text = text[:32765]
-
-        words = text.split()
-        text = " ".join(words)
-
-        asset.add_analysis('gcp-vision-image-text-detection', {
-            'content': text,
-            'type': 'content',
-            'count': len(words)
-        })
+        analysis = ContentDetectionAnalysis()
+        analysis.add_content(text)
+        asset.add_analysis('gcp-vision-image-text-detection', analysis)
 
 
 class CloudVisionDetectDocumentText(AbstractCloudVisionProcessor):
@@ -122,17 +115,9 @@ class CloudVisionDetectDocumentText(AbstractCloudVisionProcessor):
         if not text:
             return
 
-        if len(text) > 32766:
-            text = text[:32765]
-
-        words = text.split()
-        text = " ".join(words)
-
-        asset.add_analysis('gcp-vision-doc-text-detection', {
-            'content': text,
-            'type': 'content',
-            'count': len(words)
-        })
+        analysis = ContentDetectionAnalysis()
+        analysis.add_content(text)
+        asset.add_analysis('gcp-vision-doc-text-detection', analysis)
 
 
 class CloudVisionDetectLandmarks(AbstractCloudVisionProcessor):
@@ -148,22 +133,19 @@ class CloudVisionDetectLandmarks(AbstractCloudVisionProcessor):
         if not landmarks:
             return
 
-        predictions = []
+        analysis = LabelDetectionAnalysis()
+
         for landmark in landmarks:
-            predictions.append({
-                'label': landmark.description,
-                'score': round(float(landmark.score), 3),
-                'point': {
+            analysis.add_prediction(Prediction(
+                landmark.description,
+                landmark.score,
+                point={
                     'lat': landmark.locations[0].lat_lng.latitude,
                     'lon':  landmark.locations[0].lat_lng.longitude
                 }
-            })
+            ))
 
-        asset.add_analysis('gcp-vision-landmark-detection', {
-            'type': 'landmarks',
-            'predictions': predictions,
-            'count': len(predictions)
-        })
+        asset.add_analysis('gcp-vision-landmark-detection', analysis)
 
 
 class CloudVisionDetectExplicit(AbstractCloudVisionProcessor):
@@ -177,8 +159,8 @@ class CloudVisionDetectExplicit(AbstractCloudVisionProcessor):
         rsp = self.image_annotator.safe_search_detection(image=self.get_vision_image(proxy))
         result = rsp.safe_search_annotation
 
-        predictions = []
-        safe = True
+        analysis = LabelDetectionAnalysis()
+        analysis.set_attr('safe', True)
 
         for category in ['adult', 'spoof', 'medical', 'violence', 'racy']:
             rating = getattr(result, category)
@@ -186,20 +168,12 @@ class CloudVisionDetectExplicit(AbstractCloudVisionProcessor):
                 continue
             score = (float(rating) - 1.0) * 0.25
             if score >= 0.50:
-                safe = False
+                analysis.set_attr('safe', False)
 
-            predictions.append({
-                'label': category,
-                'score': score
-            })
+            analysis.add_prediction(Prediction(category, score))
 
-        if predictions:
-            asset.add_analysis('gcp-vision-content-moderation', {
-                'predictions': predictions,
-                'type': 'moderation',
-                'safe': safe,
-                'count': len(predictions)
-            })
+        if analysis.predictions:
+            asset.add_analysis('gcp-vision-content-moderation', analysis)
 
 
 class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
@@ -240,21 +214,16 @@ class CloudVisionDetectFaces(AbstractCloudVisionProcessor):
         pwidth = proxy.attrs['width']
         pheight = proxy.attrs['height']
 
-        predictions = []
+        analysis = LabelDetectionAnalysis()
+        face_num = 1
         for rect, face in zip(rects, faces):
-            predictions.append({
-                'bbox': calculate_normalized_bbox(pwidth, pheight, rect),
-                'score': face.detection_confidence,
-                'attributes': self.get_face_emotions(face)
-            })
+            analysis.add_prediction(Prediction(
+                "face%02d" % face_num,
+                face.detection_confidence,
+                bbox=calculate_normalized_bbox(pwidth, pheight, rect),
+                tags=self.get_face_emotions(face)))
 
-        struct = {
-            'count': len(predictions),
-            'type': 'faces',
-            'predictions': predictions,
-        }
-
-        asset.add_analysis("gcp-vision-face-detection", struct)
+        asset.add_analysis("gcp-vision-face-detection", analysis)
 
     def get_face_emotions(self, face):
         labels = []
@@ -277,18 +246,14 @@ class CloudVisionDetectLabels(AbstractCloudVisionProcessor):
         if not labels:
             return
 
-        predictions = []
+        analysis = LabelDetectionAnalysis()
         for label in labels:
-            predictions.append({
-                'label': label.description,
-                'score': round(float(label.score), 3)
-            })
+            analysis.add_prediction(Prediction(
+                label.description,
+                label.score
+            ))
 
-        asset.add_analysis('gcp-vision-label-detection', {
-            'predictions': predictions,
-            'type': 'labels',
-            'count': len(predictions)
-        })
+        asset.add_analysis('gcp-vision-label-detection', analysis)
 
 
 class CloudVisionDetectLogos(AbstractCloudVisionProcessor):
@@ -317,19 +282,12 @@ class CloudVisionDetectLogos(AbstractCloudVisionProcessor):
                 rect.vertices[2].x,
                 rect.vertices[2].y])
 
-        predictions = []
+        analysis = LabelDetectionAnalysis()
         for logo, rect in zip(logos, rects):
-            predictions.append({
-                'label': logo.description,
-                'bbox': calculate_normalized_bbox(pwidth, pheight, rect),
-                'score': round(float(logo.score), 3)
-            })
+            bbox = calculate_normalized_bbox(pwidth, pheight, rect)
+            analysis.add_prediction(Prediction(logo.description, logo.score, bbox=bbox))
 
-        asset.add_analysis('gcp-vision-logo-detection', {
-            'count': len(logos),
-            'type': 'objects',
-            'predictions': predictions
-        })
+        asset.add_analysis('gcp-vision-logo-detection', analysis)
 
 
 class CloudVisionDetectObjects(AbstractCloudVisionProcessor):
@@ -346,7 +304,7 @@ class CloudVisionDetectObjects(AbstractCloudVisionProcessor):
         if not objects:
             return
 
-        predictions = []
+        analysis = LabelDetectionAnalysis()
         for obj in objects:
             # build the bounding poly which is not a rect.
             poly = []
@@ -354,14 +312,12 @@ class CloudVisionDetectObjects(AbstractCloudVisionProcessor):
                 poly.append(round(obj.bounding_poly.normalized_vertices[i].x, 4))
                 poly.append(round(obj.bounding_poly.normalized_vertices[i].y, 4))
 
-            predictions.append({
-                'label': obj.name,
-                'bbox': poly,
-                'score': round(float(obj.score), 3)
-            })
+            analysis.add_prediction(
+                Prediction(
+                    obj.name,
+                    obj.score,
+                    bbox=poly
+                )
+            )
 
-        asset.add_analysis('gcp-vision-object-detection', {
-            'count': len(objects),
-            'type': 'objects',
-            'predictions': predictions
-        })
+        asset.add_analysis('gcp-vision-object-detection', analysis)

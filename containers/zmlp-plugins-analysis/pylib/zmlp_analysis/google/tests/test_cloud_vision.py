@@ -391,7 +391,7 @@ class CloudVisionDetectLandmarkTests(PluginUnitTestCase):
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-landmark-detection')
-        assert 'landmarks' == analysis['type']
+        assert 'labels' == analysis['type']
         assert 'Eiffel Tower' in get_prediction_labels(analysis)
         assert 'France Eiffel Hotel' in get_prediction_labels(analysis)
         assert 2 == analysis['count']
@@ -414,7 +414,7 @@ class CloudVisionDetectExplicitTests(PluginUnitTestCase):
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-content-moderation')
-        assert 'moderation' == analysis['type']
+        assert 'labels' == analysis['type']
         assert True is analysis['safe']
         assert 'spoof' in get_prediction_labels(analysis)
         assert 'racy' in get_prediction_labels(analysis)
@@ -439,7 +439,7 @@ class CloudVisionDetectFacesTests(PluginUnitTestCase):
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-face-detection')
         assert 1 == analysis['count']
-        assert 'faces' == analysis['type']
+        assert 'labels' == analysis['type']
 
 
 class CloudVisionDetectImageTextTests(PluginUnitTestCase):
@@ -461,7 +461,7 @@ class CloudVisionDetectImageTextTests(PluginUnitTestCase):
         analysis = frame.asset.get_attr('analysis.gcp-vision-image-text-detection')
         assert 'content' == analysis['type']
         assert 'PASEO TAMAYO' in analysis['content']
-        assert 8 == analysis['count']
+        assert 8 == analysis['words']
 
 
 class TestCloudVisionDetectObjects(PluginUnitTestCase):
@@ -483,7 +483,7 @@ class TestCloudVisionDetectObjects(PluginUnitTestCase):
         analysis = frame.asset.get_attr('analysis.gcp-vision-object-detection')
         assert 'Tire' in get_prediction_labels(analysis)
         assert 1 == analysis['count']
-        assert 'objects' == analysis['type']
+        assert 'labels' == analysis['type']
 
 
 class CloudVisionDetectDocumentTextTests(PluginUnitTestCase):
@@ -506,4 +506,4 @@ class CloudVisionDetectDocumentTextTests(PluginUnitTestCase):
         analysis = frame.asset.get_attr('analysis.gcp-vision-doc-text-detection')
         assert 'Notice The information' in analysis['content']
         assert 'content' in analysis['type']
-        assert 764 == analysis['count']
+        assert 764 == analysis['words']

@@ -212,12 +212,15 @@ class ContentDetectionAnalysis:
             :obj:`dict`: A JSON serializable version of this Document.
         """
         text = ' '.join(self.content)
-
         words = text.split()
+
+        # this basic processing removes line breaks, etc.
         if self.unique_words:
             words = frozenset(words)
             # Words are only sorted if unqiue.
             text = ' '.join(sorted(words))
+        else:
+            text = ' '.join(words)
 
         if len(text) > 32766:
             text = text[:32765]
