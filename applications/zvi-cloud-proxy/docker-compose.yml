@@ -5,4 +5,5 @@ services:
     image: zvi-cloud-proxy:latest
     volumes:
       - ${PWD}/pylib/properties.yaml:/build/properties.yaml
+      - ${PWD}/pylib/sqlite.db:/build/sqlite.db
 

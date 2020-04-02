@@ -1,6 +1,6 @@
-mounts: ["../../../test-data/images/set01/"]
+mounts: [".","../../../../test-data/images/set01", "../../../../test-data/images/set02", "../../../../test-data/images/set03", "../../../../test-data/images/set04"]
 supported_types: ["jpg", "png"]
 batch_size: 2
-api_key: "ewogICAgImFjY2Vzc0tleSI6ICJSRGMyTmtFeVFVWXRRakJHUXkwMFFVVkVMVGsxTVRZdE9UVTBOME5DTXpOQ05rTTJDZyIsCiAgICAic2VjcmV0S2V5IjogInBjZWtqRFZfaXBTTVhBYUJxcXRxNkp3eTVGQU1uamVoVVFyTUVoYkc4VzAxZ2lWcVZMZkVOOUZkTUl2enUwcmIiCn0KCg=="
-zmlp_server: "http://localhost:8080"
-sqlite_db: "sqlite.db"
+api_key: "ewogICAgIm5hbWUiOiAiYWRtaW4ta2V5IiwKICAgICJwcm9qZWN0SWQiOiAiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwKICAgICJpZCI6ICIxMzczMTgwMC05NzQ3LWQ5MGEtNDUwNy04NDE4NTFkOWVkNTciLAogICAgImFjY2Vzc0tleSI6ICJ1QXA1ZTc4a2I1NEZFOWxLN2UwdEtmT1NKUVQyMHh0aVc3QWxBZmF1OGY4V2NSaEpaYiIsCiAgICAic2VjcmV0S2V5IjogIkdQWVY5cUdCa1V0QlVQbFpTOGZSRzl5OTJ2TGJCWVZVYjdremtBZndYVHMyam9ZVFU0QWc4U3piRzZ4RDRuWTgiLAogICAgInBlcm1pc3Npb25zIjogWwogICAgICAgICJQcm9qZWN0RmlsZXNXcml0ZSIsICJTeXN0ZW1Qcm9qZWN0RGVjcnlwdCIsICJTeXN0ZW1NYW5hZ2UiLCAiU3lzdGVtUHJvamVjdE92ZXJyaWRlIiwgIkFzc2V0c0ltcG9ydCIsICJTeXN0ZW1Nb25pdG9yIiwgIlByb2plY3RNYW5hZ2UiLCAiUHJvamVjdEZpbGVzUmVhZCIsICJBc3NldHNSZWFkIiwgIkFzc2V0c0RlbGV0ZSIKICAgIF0KfQo="
+zmlp_server:
+sqlite_db: "../sqlite.db"
