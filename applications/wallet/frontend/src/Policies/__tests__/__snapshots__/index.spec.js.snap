@@ -1,69 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Authentication /> should render properly when user is logged in 1`] = `
-<SWRConfig
-  value={
-    Object {
-      "fetcher": [Function],
-      "suspense": true,
-    }
-  }
->
-  <Projects
-    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
-    setUser={[Function]}
-  >
-    <Layout
-      user={
-        Object {
-          "agreedToPoliciesDate": "20200626",
-          "dateJoined": "2020-03-02T19:09:16Z",
-          "email": "jane.doe@zorroa.com",
-          "firstName": "Jane",
-          "groups": Array [],
-          "id": 1,
-          "isActive": true,
-          "isStaff": true,
-          "isSuperuser": false,
-          "lastLogin": "2020-03-20T18:17:02.472778Z",
-          "lastName": "Doe",
-          "projectId": "76917058-b147-4556-987a-0a0f11e46d9b",
-          "roles": Object {
-            "76917058-b147-4556-987a-0a0f11e46d9b": Array [
-              "ML_Tools",
-              "User_Admin",
-              "API_Keys",
-            ],
-            "e93cbadb-e5ae-4598-8395-4cf5b30c0e94": Array [],
-          },
-          "username": "jane.doe",
-        }
-      }
-    >
-      Hello World!
-    </Layout>
-  </Projects>
-</SWRConfig>
-`;
-
-exports[`<Authentication /> should render properly when user is logged out 1`] = `null`;
-
-exports[`<Authentication /> should render properly when user is logged out 2`] = `
-<Login
-  errorMessage=""
-  googleAuth={
-    Object {
-      "signIn": [Function],
-      "signOut": [Function],
-    }
-  }
-  hasGoogleLoaded={true}
-  onSubmit={[Function]}
-/>
-`;
-
-exports[`<Authentication /> should render properly when user needs to approve new policies 1`] = `
-.emotion-14 {
+exports[`<Policies /> should render properly 1`] = `
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -82,7 +20,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   height: 100vh;
 }
 
-.emotion-13 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -110,18 +48,18 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   padding-top: 32px;
 }
 
-.emotion-2 {
+.emotion-6 {
   margin: 0;
   padding-top: 32px;
   color: #b3b3b3;
   text-align: center;
 }
 
-.emotion-2 a {
+.emotion-6 a {
   color: #73b61c;
 }
 
-.emotion-10 {
+.emotion-14 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -133,7 +71,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   justify-content: center;
 }
 
-.emotion-9 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -147,7 +85,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   padding-left: 0;
 }
 
-.emotion-6 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -155,19 +93,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   position: relative;
 }
 
-.emotion-3 {
-  margin: 0;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #808080;
-  border-radius: 2px;
-  cursor: pointer;
-}
-
-.emotion-5 {
+.emotion-9 {
   position: absolute;
   top: 0;
   left: 0;
@@ -188,13 +114,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   cursor: pointer;
 }
 
-.emotion-4 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 0;
-}
-
-.emotion-8 {
+.emotion-12 {
   padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -205,14 +125,32 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   flex-direction: column;
 }
 
-.emotion-7 {
+.emotion-11 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-11 {
+.emotion-7 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: #73b61c;
+  border: 2px solid #73b61c;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-8 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+}
+
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -239,39 +177,75 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   line-height: 19px;
   font-weight: 500;
   border: none;
-  cursor: not-allowed;
+  cursor: pointer;
   color: #ffffff;
   background-color: transparent;
 }
 
-.emotion-11:hover {
+.emotion-15:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
   background-color: #73b61c;
 }
 
-.emotion-11:hover {
+.emotion-15:hover {
   background-color: #96c955;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
   background-color: #808080;
 }
 
+.emotion-5 {
+  padding-top: 32px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #ffb6b2;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #000000;
+  font-weight: 500;
+}
+
 <div
-  className="emotion-14"
+  className="emotion-18"
 >
   <form
-    className="emotion-13"
+    className="emotion-17"
     method="post"
     onSubmit={[Function]}
   >
@@ -285,9 +259,31 @@ exports[`<Authentication /> should render properly when user needs to approve ne
     >
       Terms & Conditions and Privacy Policy
     </h3>
-    
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-4"
+      >
+        <div
+          className="emotion-3"
+        >
+          <svg
+            color="#c92300"
+            data-file-name="warning.svg"
+            height={20}
+          />
+          <div
+            className="emotion-2"
+            role="alert"
+          >
+            Something went wrong. Please try again.
+          </div>
+        </div>
+      </div>
+    </div>
     <p
-      className="emotion-2"
+      className="emotion-6"
     >
       By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
        
@@ -311,36 +307,36 @@ exports[`<Authentication /> should render properly when user needs to approve ne
       .
     </p>
     <div
-      className="emotion-10"
+      className="emotion-14"
     >
       <label
-        className="emotion-9"
+        className="emotion-13"
       >
         <div
-          className="emotion-6"
+          className="emotion-10"
         >
           <input
-            className="emotion-3"
-            defaultChecked={false}
+            className="emotion-7"
+            defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="isChecked"
           />
           <div
-            className="emotion-5"
+            className="emotion-9"
           >
             <svg
-              className="emotion-4"
+              className="emotion-8"
               data-file-name="checkmark.svg"
               width={20}
             />
           </div>
         </div>
         <div
-          className="emotion-8"
+          className="emotion-12"
         >
           <span
-            className="emotion-7"
+            className="emotion-11"
           >
             Accept
           </span>
@@ -348,11 +344,10 @@ exports[`<Authentication /> should render properly when user needs to approve ne
       </label>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-14"
     >
       <button
-        aria-disabled={true}
-        className="emotion-11"
+        className="emotion-15"
         onClick={[Function]}
         type="submit"
       >
