@@ -188,7 +188,7 @@ class ProjectStorageSpec(
 @ApiModel("FileStorage", description = "Describes a file stored in ZMLP storage.")
 class FileStorage(
 
-    @ApiModelProperty("The file name")
+    @ApiModelProperty("The unique ID of the file.")
     val id: String,
 
     @ApiModelProperty("The file name")

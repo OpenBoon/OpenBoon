@@ -513,12 +513,8 @@ class AssetServiceImpl : AssetService {
                     file.category == ProjectStorageCategory.SOURCE
                 }
             }
-
-            // We have to reference the source asset in the StorageFile
-            // record so the client side storage system to find the file.
-            sourceFiles.forEach { it.sourceAssetId = clipSource.id }
-
-            // Set the files property
+            // Set the files property. The source files will reference the
+            // original asset id.
             newAsset.setAttr("files", sourceFiles)
         } else {
             clip.putInPile(newAsset.id)
