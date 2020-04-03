@@ -131,7 +131,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         Args:
             asset (Asset): The asset to process.
             results (dict): The JSON compatible result.
-    
+
         """
         def process_label_annotations(annotations):
             for annotation in annotations:
