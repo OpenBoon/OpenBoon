@@ -1,9 +1,10 @@
+import { mutate } from 'swr'
+
 import { fetcher } from '../Fetch/helpers'
 
 export const onSubmit = async ({
   dispatch,
   state: { id, firstName, lastName },
-  mutate,
 }) => {
   try {
     await fetcher(`/api/v1/users/${id}/`, {
@@ -17,7 +18,7 @@ export const onSubmit = async ({
       errors: {},
     })
 
-    mutate((user) => ({ ...user, firstName, lastName }), false)
+    mutate('/api/v1/me/', (user) => ({ ...user, firstName, lastName }), false)
   } catch (response) {
     const errors = await response.json()
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {

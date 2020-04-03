@@ -6,8 +6,6 @@ import Projects from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
-const noop = () => () => {}
-
 describe('<Projects />', () => {
   it('should render properly with projects', () => {
     require('next/router').__setUseRouter({
@@ -20,9 +18,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId={PROJECT_ID} mutate={noop}>
-        Hello World
-      </Projects>,
+      <Projects projectId={PROJECT_ID}>Hello World</Projects>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -38,20 +34,16 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="" mutate={noop}>
-        Account Overview
-      </Projects>,
+      <Projects projectId="">Account Overview</Projects>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should update the projectId if it is different from the router projectId', async () => {
-    let user = {}
+    const mockMutate = jest.fn()
 
-    const mockFn = jest.fn((cb) => {
-      user = cb(user)
-    })
+    require('swr').__setMockMutateFn(mockMutate)
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
@@ -63,15 +55,13 @@ describe('<Projects />', () => {
     })
 
     TestRenderer.create(
-      <Projects projectId="not-the-same-project-id" mutate={mockFn}>
-        Hello World
-      </Projects>,
+      <Projects projectId="not-the-same-project-id">Hello World</Projects>,
     )
 
     // useEffect
     await act(async () => {})
 
-    expect(user).toEqual({ projectId: PROJECT_ID })
+    expect(mockMutate).toHaveBeenCalledWith({ projectId: PROJECT_ID })
   })
 
   it('should redirect if there is no project id and the route requires a project id', () => {
@@ -89,9 +79,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="" mutate={noop}>
-        Hello World
-      </Projects>,
+      <Projects projectId="">Hello World</Projects>,
     )
 
     expect(mockFn).toHaveBeenCalledWith(
@@ -113,9 +101,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="" mutate={noop}>
-        Hello World
-      </Projects>,
+      <Projects projectId="">Hello World</Projects>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -136,9 +122,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="" mutate={noop}>
-        Hello World
-      </Projects>,
+      <Projects projectId="">Hello World</Projects>,
     )
 
     expect(mockFn).toHaveBeenCalledWith(
@@ -164,9 +148,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="" mutate={noop}>
-        Hello World
-      </Projects>,
+      <Projects projectId="">Hello World</Projects>,
     )
 
     expect(mockFn).toHaveBeenCalledWith('/')
@@ -175,11 +157,9 @@ describe('<Projects />', () => {
   })
 
   it('should reset an invalid user projectId', async () => {
-    let user = {}
+    const mockMutate = jest.fn()
 
-    const mockMutate = jest.fn((cb) => {
-      user = cb(user)
-    })
+    require('swr').__setMockMutateFn(mockMutate)
 
     const mockRouterPush = jest.fn()
 
@@ -195,12 +175,10 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="not-a-valid-project-id" mutate={mockMutate}>
-        Hello World
-      </Projects>,
+      <Projects projectId="not-a-valid-project-id">Hello World</Projects>,
     )
 
-    expect(user).toEqual({ projectId: '' })
+    expect(mockMutate).toHaveBeenCalledWith({ projectId: '' })
 
     expect(mockRouterPush).not.toHaveBeenCalled()
 

@@ -1,3 +1,5 @@
+import { mutate } from 'swr'
+
 let enhancedFetch
 
 export const getCsrfToken = () => {
@@ -13,7 +15,7 @@ export const getCsrfToken = () => {
   return csrftoken
 }
 
-export const initializeFetcher = ({ mutate }) => {
+export const initializeFetcher = () => {
   enhancedFetch = async (url, options = {}) => {
     const csrftoken = getCsrfToken()
 
@@ -27,7 +29,7 @@ export const initializeFetcher = ({ mutate }) => {
     })
 
     if ([401, 403].includes(response.status)) {
-      mutate({}, false)
+      mutate('/api/v1/me/', {}, false)
 
       return {}
     }

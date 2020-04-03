@@ -1,5 +1,3 @@
-const noop = () => () => {}
-
 /**
  * fetch
  */
@@ -10,7 +8,7 @@ const { initializeFetcher } = require('./src/Fetch/helpers')
 beforeEach(() => {
   fetch.resetMocks()
 
-  initializeFetcher({ mutate: noop })
+  initializeFetcher()
 })
 
 /**

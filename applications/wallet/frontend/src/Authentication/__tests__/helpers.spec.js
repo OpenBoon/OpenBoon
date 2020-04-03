@@ -12,8 +12,9 @@ describe('<Authentication /> helpers', () => {
       const mockSetErrorMessage = jest.fn()
       const mockMutate = jest.fn()
 
+      require('swr').__setMockMutateFn(mockMutate)
+
       await authenticateUser({
-        mutate: mockMutate,
         setErrorMessage: mockSetErrorMessage,
       })({
         username: 'username',
@@ -30,10 +31,7 @@ describe('<Authentication /> helpers', () => {
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
-      expect(mockMutate).toHaveBeenCalledWith(
-        { id: 12345, projectId: '' },
-        false,
-      )
+      expect(mockMutate).toHaveBeenCalledWith({ id: 12345, projectId: '' })
     })
 
     it('should authenticate the user with a Google JWT', async () => {
@@ -42,8 +40,9 @@ describe('<Authentication /> helpers', () => {
       const mockSetErrorMessage = jest.fn()
       const mockMutate = jest.fn()
 
+      require('swr').__setMockMutateFn(mockMutate)
+
       await authenticateUser({
-        mutate: mockMutate,
         setErrorMessage: mockSetErrorMessage,
       })({
         idToken: 'ID_TOKEN',
@@ -61,7 +60,7 @@ describe('<Authentication /> helpers', () => {
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
-      expect(mockMutate).toHaveBeenCalledWith(user, false)
+      expect(mockMutate).toHaveBeenCalledWith(user)
     })
 
     it('should authenticate a user with no project', async () => {
@@ -69,17 +68,19 @@ describe('<Authentication /> helpers', () => {
 
       const mockMutate = jest.fn()
 
+      require('swr').__setMockMutateFn(mockMutate)
+
       await authenticateUser({
-        mutate: mockMutate,
         setErrorMessage: noop,
       })({
         idToken: 'ID_TOKEN',
       })
 
-      expect(mockMutate).toHaveBeenCalledWith(
-        { ...user, roles: {}, projectId: '' },
-        false,
-      )
+      expect(mockMutate).toHaveBeenCalledWith({
+        ...user,
+        roles: {},
+        projectId: '',
+      })
     })
 
     it('should display an alert for incorrect username/password', async () => {
@@ -121,16 +122,16 @@ describe('<Authentication /> helpers', () => {
       const mockMutate = jest.fn()
       const mockRouterPush = jest.fn()
 
+      require('swr').__setMockMutateFn(mockMutate)
       require('next/router').__setMockPushFunction(mockRouterPush)
 
       await logout({
         googleAuth: { signOut: mockSignOut },
-        mutate: mockMutate,
       })({ redirectUrl: '/' })
 
       expect(mockSignOut).toHaveBeenCalled()
 
-      expect(mockMutate).toHaveBeenCalledWith({}, false)
+      expect(mockMutate).toHaveBeenCalledWith({})
 
       expect(fetch.mock.calls.length).toEqual(1)
       expect(fetch.mock.calls[0][0]).toEqual('/api/v1/logout/')

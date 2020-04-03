@@ -7,7 +7,6 @@ import { noop, meFetcher } from './helpers'
 
 export const UserContext = createContext({
   user: {},
-  mutate: noop,
   googleAuth: {},
   setGoogleAuth: noop,
 })
@@ -15,7 +14,7 @@ export const UserContext = createContext({
 const User = ({ initialUser, children }) => {
   const [googleAuth, setGoogleAuth] = useState({ signIn: noop, signOut: noop })
 
-  const { data, mutate } = useSWR(`/api/v1/me/`, meFetcher)
+  const { data } = useSWR(`/api/v1/me/`, meFetcher)
 
   const user = initialUser.id ? initialUser : data
 
@@ -32,7 +31,6 @@ const User = ({ initialUser, children }) => {
     <UserContext.Provider
       value={{
         user,
-        mutate,
         googleAuth,
         setGoogleAuth,
       }}

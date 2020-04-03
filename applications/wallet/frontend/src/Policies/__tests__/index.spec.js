@@ -6,15 +6,11 @@ const noop = () => () => {}
 
 describe('<Policies />', () => {
   it('should render properly', async () => {
-    let user = {}
+    const mockMutate = jest.fn()
 
-    const mockMutate = jest.fn((cb) => {
-      user = cb(user)
-    })
+    require('swr').__setMockMutateFn(mockMutate)
 
-    const component = TestRenderer.create(
-      <Policies userId={42} mutate={mockMutate} />,
-    )
+    const component = TestRenderer.create(<Policies userId={42} />)
 
     act(() => {
       component.root.findByProps({ type: 'checkbox' }).props.onClick()
@@ -53,16 +49,16 @@ describe('<Policies />', () => {
       method: 'POST',
     })
 
-    expect(user).toEqual({ agreedToPoliciesDate: '20200626' })
+    expect(mockMutate).toHaveBeenCalledWith({
+      agreedToPoliciesDate: '20200626',
+    })
   })
 
   it('should not POST the form', () => {
     const mockFn = jest.fn()
     const mockOnSubmit = jest.fn()
 
-    const component = TestRenderer.create(
-      <Policies userId={42} mutate={noop} />,
-    )
+    const component = TestRenderer.create(<Policies userId={42} />)
 
     component.root
       .findByProps({ method: 'post' })

@@ -91,6 +91,7 @@ describe('<AccountPassword /> helpers', () => {
       const mockSignOut = jest.fn()
       const mockRouterPush = jest.fn()
 
+      require('swr').__setMockMutateFn(mockMutate)
       require('next/router').__setMockPushFunction(mockRouterPush)
 
       fetch.mockResponseOnce(JSON.stringify({ email: 'jane@zorroa.com' }))
@@ -98,7 +99,6 @@ describe('<AccountPassword /> helpers', () => {
       await onReset({
         setError: mockSetError,
         email: 'jane@zorroa.com',
-        mutate: mockMutate,
         googleAuth: {
           signOut: mockSignOut,
         },
@@ -116,7 +116,7 @@ describe('<AccountPassword /> helpers', () => {
       })
 
       expect(mockSetError).not.toHaveBeenCalled()
-      expect(mockMutate).toHaveBeenCalledWith({}, false)
+      expect(mockMutate).toHaveBeenCalledWith({})
       expect(mockSignOut).toHaveBeenCalled()
       expect(mockRouterPush).toHaveBeenCalledWith(
         '/?action=password-reset-request-success',
@@ -131,7 +131,6 @@ describe('<AccountPassword /> helpers', () => {
       await onReset({
         setError: mockSetError,
         email: 'jane@zorroa.com',
-        mutate: noop,
         googleAuth: noop,
       })
 

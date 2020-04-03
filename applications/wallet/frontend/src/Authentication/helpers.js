@@ -1,7 +1,7 @@
 import Router from 'next/router'
-import { cache } from 'swr'
+import { cache, mutate } from 'swr'
 
-export const authenticateUser = ({ mutate, setErrorMessage }) => async ({
+export const authenticateUser = ({ setErrorMessage }) => async ({
   username,
   password,
   idToken,
@@ -30,10 +30,10 @@ export const authenticateUser = ({ mutate, setErrorMessage }) => async ({
   const user = await response.json()
   const projectId = user.roles ? Object.keys(user.roles)[0] || '' : ''
 
-  return mutate({ ...user, projectId }, false)
+  return mutate('/api/v1/me/', { ...user, projectId }, false)
 }
 
-export const logout = ({ googleAuth, mutate }) => async ({ redirectUrl }) => {
+export const logout = ({ googleAuth }) => async ({ redirectUrl }) => {
   googleAuth.signOut()
 
   const { csrftoken } = Object.fromEntries(
@@ -51,7 +51,7 @@ export const logout = ({ googleAuth, mutate }) => async ({ redirectUrl }) => {
     },
   })
 
-  mutate({}, false)
+  mutate('/api/v1/me/', {}, false)
 
   cache.clear()
 

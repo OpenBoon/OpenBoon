@@ -27,12 +27,12 @@ const {
 export const noop = () => () => {}
 
 const Authentication = ({ route, children }) => {
-  const { user, mutate, googleAuth, setGoogleAuth } = useContext(UserContext)
+  const { user, googleAuth, setGoogleAuth } = useContext(UserContext)
 
   const [hasGoogleLoaded, setHasGoogleLoaded] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 
-  const fetcher = initializeFetcher({ mutate })
+  const fetcher = initializeFetcher()
 
   useEffect(() => {
     window.gapi.load('auth2', async () => {
@@ -60,7 +60,7 @@ const Authentication = ({ route, children }) => {
         googleAuth={googleAuth}
         hasGoogleLoaded={hasGoogleLoaded}
         errorMessage={errorMessage}
-        onSubmit={authenticateUser({ mutate, setErrorMessage })}
+        onSubmit={authenticateUser({ setErrorMessage })}
       />
     )
   }
@@ -69,15 +69,15 @@ const Authentication = ({ route, children }) => {
     !user.agreedToPoliciesDate ||
     user.agreedToPoliciesDate !== CURRENT_POLICIES_DATE
   ) {
-    return <Policies userId={user.id} mutate={mutate} />
+    return <Policies userId={user.id} />
   }
 
   return (
     <SWRConfig value={{ fetcher, suspense: true }}>
       <ErrorBoundary variant={VARIANTS.GLOBAL}>
         <Suspense fallback={<AuthenticationLoading />}>
-          <Projects projectId={user.projectId} mutate={mutate}>
-            <Layout user={user} logout={logout({ googleAuth, mutate })}>
+          <Projects projectId={user.projectId}>
+            <Layout user={user} logout={logout({ googleAuth })}>
               <ErrorBoundary variant={VARIANTS.LOCAL}>{children}</ErrorBoundary>
             </Layout>
           </Projects>

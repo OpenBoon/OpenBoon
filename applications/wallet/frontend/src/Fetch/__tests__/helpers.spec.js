@@ -1,11 +1,9 @@
 import { initializeFetcher, fetcher } from '../helpers'
 
-const noop = () => () => {}
-
 describe('<Fetch /> helpers', () => {
   describe('fetcher()', () => {
     it('should fetch data', async () => {
-      initializeFetcher({ mutate: noop })
+      initializeFetcher()
 
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
@@ -15,7 +13,7 @@ describe('<Fetch /> helpers', () => {
     })
 
     it('should return the raw response in case of error', async () => {
-      initializeFetcher({ mutate: noop })
+      initializeFetcher()
 
       fetch.mockResponseOnce(null, { status: 500 })
 
@@ -31,7 +29,7 @@ describe('<Fetch /> helpers', () => {
     })
 
     it('should return the raw response if its not a json', async () => {
-      initializeFetcher({ mutate: noop })
+      initializeFetcher()
 
       fetch.mockResponseOnce(null, { status: 200 })
 
@@ -49,7 +47,9 @@ describe('<Fetch /> helpers', () => {
     it('should logout the user', async () => {
       const mockMutate = jest.fn()
 
-      initializeFetcher({ mutate: mockMutate })
+      require('swr').__setMockMutateFn(mockMutate)
+
+      initializeFetcher()
 
       fetch.mockResponseOnce(null, { status: 401 })
 
@@ -57,7 +57,7 @@ describe('<Fetch /> helpers', () => {
 
       expect(data).toEqual({})
 
-      expect(mockMutate).toHaveBeenCalledWith({}, false)
+      expect(mockMutate).toHaveBeenCalledWith({})
     })
   })
 })

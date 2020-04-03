@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Router, { useRouter } from 'next/router'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 
 const NO_PROJECT_ID_ROUTES = ['/icons', '/account', '/account/password']
 
-const Projects = ({ projectId, mutate, children }) => {
+const Projects = ({ projectId, children }) => {
   const { query: { projectId: routerProjectId } = {}, pathname } = useRouter()
 
   const {
@@ -17,12 +17,16 @@ const Projects = ({ projectId, mutate, children }) => {
 
     if (projectId === routerProjectId) return
 
-    mutate((user) => ({ ...user, projectId: routerProjectId }), false)
-  }, [projectId, routerProjectId, mutate])
+    mutate(
+      '/api/v1/me/',
+      (user) => ({ ...user, projectId: routerProjectId }),
+      false,
+    )
+  }, [projectId, routerProjectId])
 
   // Reset user projectId if not part of current projects
   if (projectId && !projects.find(({ id }) => projectId === id)) {
-    mutate((user) => ({ ...user, projectId: '' }), false)
+    mutate('/api/v1/me/', (user) => ({ ...user, projectId: '' }), false)
     return null
   }
 
@@ -53,7 +57,6 @@ const Projects = ({ projectId, mutate, children }) => {
 
 Projects.propTypes = {
   projectId: PropTypes.string.isRequired,
-  mutate: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 }
 
