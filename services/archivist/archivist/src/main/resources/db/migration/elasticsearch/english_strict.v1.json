@@ -334,8 +334,8 @@
         }
       },
       {
-        "analysis_attributes": {
-          "path_match": "analysis.*.predictions.attributes",
+        "analysis_tags": {
+          "path_match": "analysis.*.predictions.tags",
           "match_mapping_type": "string",
           "mapping": {
             "type": "keyword",
