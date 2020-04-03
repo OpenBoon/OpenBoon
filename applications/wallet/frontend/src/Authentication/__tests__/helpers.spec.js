@@ -1,4 +1,8 @@
+import user from '../../User/__mocks__/user'
+
 import { authenticateUser, logout } from '../helpers'
+
+const noop = () => () => {}
 
 describe('<Authentication /> helpers', () => {
   describe('authenticateUser()', () => {
@@ -33,7 +37,7 @@ describe('<Authentication /> helpers', () => {
     })
 
     it('should authenticate the user with a Google JWT', async () => {
-      fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
+      fetch.mockResponseOnce(JSON.stringify(user))
 
       const mockSetErrorMessage = jest.fn()
       const mockMutate = jest.fn()
@@ -57,8 +61,23 @@ describe('<Authentication /> helpers', () => {
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
+      expect(mockMutate).toHaveBeenCalledWith(user, false)
+    })
+
+    it('should authenticate a user with no project', async () => {
+      fetch.mockResponseOnce(JSON.stringify({ ...user, roles: {} }))
+
+      const mockMutate = jest.fn()
+
+      await authenticateUser({
+        mutate: mockMutate,
+        setErrorMessage: noop,
+      })({
+        idToken: 'ID_TOKEN',
+      })
+
       expect(mockMutate).toHaveBeenCalledWith(
-        { id: 12345, projectId: '' },
+        { ...user, roles: {}, projectId: '' },
         false,
       )
     })
