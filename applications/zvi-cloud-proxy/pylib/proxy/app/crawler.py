@@ -16,7 +16,7 @@ class Crawler(object):
     filtered by extension and location folder
     """
 
-    def __init__(self):
+    def __init__(self, properties_file_path="../properties.yaml"):
 
         """
             Initialize application, Load properties from properties.yaml
@@ -24,7 +24,7 @@ class Crawler(object):
         """
 
         try:
-            with open("../properties.yaml", 'r') as stream:
+            with open(properties_file_path, 'r') as stream:
                 try:
                     self.properties = yaml.safe_load(stream)
                     self.app = ZmlpApp(self.properties["api_key"], self.properties["zmlp_server"])

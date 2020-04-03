@@ -1,13 +1,14 @@
 FROM zmlp/py3-client
 USER root
 
-RUN mkdir /build
-COPY ./pylib /build
+RUN mkdir /build; mkdir /build/app
+COPY ./pylib/proxy/app /build/app
+COPY ./pylib/proxy/requirements.txt /build
 WORKDIR /build
 
 RUN pip3 install --no-cache-dir -r requirements.txt
-RUN rm requirements.txt; rm properties.yaml
+RUN rm requirements.txt
 
-WORKDIR /build/zvi-cloud-proxy
+WORKDIR /build/app
 
 ENTRYPOINT ["python3", "crawler.py"]
