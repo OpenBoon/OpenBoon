@@ -83,6 +83,16 @@ describe('<Authentication />', () => {
     expect(component.root.findByType('Login').props.hasGoogleLoaded).toBe(true)
   })
 
+  it('should render properly when user needs to approve new policies', async () => {
+    const component = TestRenderer.create(
+      <User initialUser={{ ...mockUser, agreedToPoliciesDate: '00000000' }}>
+        <Authentication route="/">Hello World!</Authentication>
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly when user is logged in', async () => {
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
