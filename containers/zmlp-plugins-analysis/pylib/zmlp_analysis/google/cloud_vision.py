@@ -5,7 +5,7 @@ from google.api_core.exceptions import ResourceExhausted
 from google.cloud import vision
 from google.cloud.vision import types
 
-from zmlpsdk import file_storage, Argument, AssetProcessor
+from zmlpsdk import file_storage, Argument, AssetProcessor, FileTypes
 from zmlpsdk.proxy import get_proxy_level, calculate_normalized_bbox
 from zmlpsdk.schema import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
 from .gcp_client import initialize_gcp_client
@@ -27,6 +27,8 @@ class AbstractCloudVisionProcessor(AssetProcessor):
     This base class is used for all Google Vision features.  Subclasses
     only have to implement the "detect(asset, image) method.
     """
+
+    file_types = FileTypes.images | FileTypes.documents
 
     def __init__(self):
         super(AbstractCloudVisionProcessor, self).__init__()
