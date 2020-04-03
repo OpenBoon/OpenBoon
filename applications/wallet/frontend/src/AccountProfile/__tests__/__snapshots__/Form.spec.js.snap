@@ -482,7 +482,7 @@ Array [
 
 exports[`<AccountProfileForm /> should render properly when a user edits their name 3`] = `
 Array [
-  .emotion-3 {
+  .emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -491,71 +491,43 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  justify-self: flex-start;
-  color: #000000;
-  font-weight: 500;
-  background-color: #ffffff;
-  border: 1px solid #4ac565;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-}
-
-.emotion-0 {
-  width: 40px;
-  height: 40px;
-  color: #ffffff;
-  background-color: #4ac565;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
 .emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  padding-left: 16px;
-  padding-right: 16px;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #d7f2de;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #000000;
+  font-weight: 500;
 }
 
 <div
-    className="emotion-3"
+    className="emotion-2"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
+      <svg
+        color="#4ac565"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
       <div
         className="emotion-0"
-      >
-        <svg
-          data-file-name="checkmark.svg"
-          width={20}
-        />
-      </div>
-      <div
-        className="emotion-1"
+        role="alert"
       >
         New Name Saved
       </div>

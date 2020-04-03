@@ -2,6 +2,7 @@ import mimetypes
 
 import requests
 from django.http import StreamingHttpResponse
+from rest_framework.decorators import action
 
 from assets.serializers import AssetSerializer
 from projects.views import BaseProjectViewSet
@@ -50,6 +51,23 @@ class AssetViewSet(BaseProjectViewSet):
 
     def retrieve(self, request, project_pk, pk):
         return self._zmlp_retrieve(request, pk, item_modifier=asset_modifier)
+
+    @action(detail=False, methods=['post'])
+    def search(self, request, project_pk):
+        """Searches the assets for this project with whichever query is given.
+
+        Pagination arguments are expected in the POST body, rather than the querystring.
+
+            Args:
+                request (Request): Request the view method was given.
+                project_pk (int): The Project ID to search under.
+
+            Returns:
+                Response: DRF Response with the results of the search
+
+            """
+
+        return self._zmlp_list_from_es(request, item_modifier=asset_modifier)
 
 
 class SourceFileViewSet(BaseProjectViewSet):

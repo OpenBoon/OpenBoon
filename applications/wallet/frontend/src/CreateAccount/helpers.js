@@ -15,7 +15,7 @@ export const onRegister = async ({
   state: { firstName, lastName, email, password },
 }) => {
   try {
-    const response = await fetch(`/api/v1/accounts/register`, {
+    const response = await fetch(`/api/v1/accounts/register/`, {
       ...BASE_HEADER,
       body: JSON.stringify({
         email,
@@ -35,7 +35,7 @@ export const onRegister = async ({
 
 export const onConfirm = async ({ uid, token }) => {
   try {
-    const response = await fetch(`/api/v1/accounts/confirm`, {
+    const response = await fetch(`/api/v1/accounts/confirm/`, {
       ...BASE_HEADER,
       body: JSON.stringify({
         userId: uid,

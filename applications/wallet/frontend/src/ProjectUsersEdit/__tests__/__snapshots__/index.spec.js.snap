@@ -131,7 +131,7 @@ Array [
       </li>
     </ul>
   </nav>,
-  .emotion-34 {
+  .emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -152,26 +152,14 @@ Array [
   padding-top: 16px;
 }
 
-.emotion-3 {
-  padding: 8px;
-}
-
-.emotion-2 {
-  padding: 12px;
-}
-
-.emotion-1 {
-  height: 20px;
-}
-
-.emotion-30 {
+.emotion-27 {
   border: none;
   padding: 0;
   margin: 0;
   padding-top: 12px;
 }
 
-.emotion-4 {
+.emotion-1 {
   float: left;
   padding: 0;
   padding-bottom: 12px;
@@ -180,11 +168,11 @@ Array [
   font-weight: 500;
 }
 
-.emotion-5 {
+.emotion-2 {
   clear: both;
 }
 
-.emotion-13 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -198,7 +186,7 @@ Array [
   padding-left: 0;
 }
 
-.emotion-9 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -206,7 +194,7 @@ Array [
   position: relative;
 }
 
-.emotion-6 {
+.emotion-3 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -218,7 +206,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-8 {
+.emotion-5 {
   position: absolute;
   top: 0;
   left: 0;
@@ -239,13 +227,13 @@ Array [
   cursor: pointer;
 }
 
-.emotion-7 path {
+.emotion-4 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
 }
 
-.emotion-12 {
+.emotion-9 {
   padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -256,19 +244,19 @@ Array [
   flex-direction: column;
 }
 
-.emotion-10 {
+.emotion-7 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-11 {
+.emotion-8 {
   color: #b3b3b3;
   padding-left: 0;
 }
 
-.emotion-22 {
+.emotion-19 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -280,13 +268,13 @@ Array [
   cursor: pointer;
 }
 
-.emotion-23 path {
+.emotion-20 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-33 {
+.emotion-30 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -295,12 +283,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-33 button,
-.emotion-33 a {
+.emotion-30 button,
+.emotion-30 a {
   margin-right: 16px;
 }
 
-.emotion-31 {
+.emotion-28 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -332,30 +320,30 @@ Array [
   background-color: transparent;
 }
 
-.emotion-31:hover {
+.emotion-28:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-31[aria-disabled=true] {
+.emotion-28[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-31,
-.emotion-31:hover,
-.emotion-31:visited {
+.emotion-28,
+.emotion-28:hover,
+.emotion-28:visited {
   background-color: #808080;
 }
 
-.emotion-31:hover {
+.emotion-28:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-31[aria-disabled=true] {
+.emotion-28[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-32 {
+.emotion-29 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -387,32 +375,32 @@ Array [
   background-color: transparent;
 }
 
-.emotion-32:hover {
+.emotion-29:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-32[aria-disabled=true] {
+.emotion-29[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-32,
-.emotion-32:hover,
-.emotion-32:visited {
+.emotion-29,
+.emotion-29:hover,
+.emotion-29:visited {
   background-color: #73b61c;
 }
 
-.emotion-32:hover {
+.emotion-29:hover {
   background-color: #96c955;
 }
 
-.emotion-32[aria-disabled=true] {
+.emotion-29[aria-disabled=true] {
   background-color: #808080;
 }
 
 <form
     action=""
-    className="emotion-34"
+    className="emotion-31"
     method="post"
     onSubmit={[Function]}
   >
@@ -422,137 +410,127 @@ Array [
       Email: 
       jane@zorroa.com
     </h3>
-    <div
-      className="emotion-3"
-    >
-      <div
-        className="emotion-2"
-      >
-        <div
-          className="emotion-1"
-        />
-      </div>
-    </div>
     <fieldset
-      className="emotion-30"
+      className="emotion-27"
     >
       <legend
-        className="emotion-4"
+        className="emotion-1"
       >
         Edit Roles
       </legend>
+      
       <div
-        className="emotion-5"
+        className="emotion-2"
       />
       <label
-        className="emotion-13"
+        className="emotion-10"
       >
         <div
-          className="emotion-9"
+          className="emotion-6"
         >
           <input
-            className="emotion-6"
+            className="emotion-3"
             defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="ML_Tools"
           />
           <div
-            className="emotion-8"
+            className="emotion-5"
           >
             <svg
-              className="emotion-7"
+              className="emotion-4"
               data-file-name="checkmark.svg"
               width={20}
             />
           </div>
         </div>
         <div
-          className="emotion-12"
+          className="emotion-9"
         >
           <span
-            className="emotion-10"
+            className="emotion-7"
           >
             ML Tools
           </span>
           <span
-            className="emotion-11"
+            className="emotion-8"
           >
             Provides access to the Job Queue, Data Sources, and Visualizer.
           </span>
         </div>
       </label>
       <label
-        className="emotion-13"
+        className="emotion-10"
       >
         <div
-          className="emotion-9"
+          className="emotion-6"
         >
           <input
-            className="emotion-6"
+            className="emotion-3"
             defaultChecked={true}
             onClick={[Function]}
             type="checkbox"
             value="API_Keys"
           />
           <div
-            className="emotion-8"
+            className="emotion-5"
           >
             <svg
-              className="emotion-7"
+              className="emotion-4"
               data-file-name="checkmark.svg"
               width={20}
             />
           </div>
         </div>
         <div
-          className="emotion-12"
+          className="emotion-9"
         >
           <span
-            className="emotion-10"
+            className="emotion-7"
           >
             API Keys
           </span>
           <span
-            className="emotion-11"
+            className="emotion-8"
           >
             Provides access to API Key provisioning.
           </span>
         </div>
       </label>
       <label
-        className="emotion-13"
+        className="emotion-10"
       >
         <div
-          className="emotion-9"
+          className="emotion-6"
         >
           <input
-            className="emotion-22"
+            className="emotion-19"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="User_Admin"
           />
           <div
-            className="emotion-8"
+            className="emotion-5"
           >
             <svg
-              className="emotion-23"
+              className="emotion-20"
               data-file-name="checkmark.svg"
               width={20}
             />
           </div>
         </div>
         <div
-          className="emotion-12"
+          className="emotion-9"
         >
           <span
-            className="emotion-10"
+            className="emotion-7"
           >
             User Admin
           </span>
           <span
-            className="emotion-11"
+            className="emotion-8"
           >
             Provides access to User Administration for a Project.
           </span>
@@ -560,10 +538,10 @@ Array [
       </label>
     </fieldset>
     <div
-      className="emotion-33"
+      className="emotion-30"
     >
       <a
-        className="emotion-31"
+        className="emotion-28"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -571,7 +549,7 @@ Array [
         Cancel
       </a>
       <button
-        className="emotion-32"
+        className="emotion-29"
         onClick={[Function]}
         type="submit"
       >

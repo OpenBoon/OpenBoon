@@ -9,6 +9,7 @@ import { initializeFetcher } from '../Fetch/helpers'
 import { UserContext } from '../User'
 
 import Login from '../Login'
+import Policies, { CURRENT_POLICIES_DATE } from '../Policies'
 import Projects from '../Projects'
 import Layout from '../Layout'
 import ErrorBoundary, { VARIANTS } from '../ErrorBoundary'
@@ -59,10 +60,16 @@ const Authentication = ({ route, children }) => {
         googleAuth={googleAuth}
         hasGoogleLoaded={hasGoogleLoaded}
         errorMessage={errorMessage}
-        setErrorMessage={setErrorMessage}
         onSubmit={authenticateUser({ setUser, setErrorMessage })}
       />
     )
+  }
+
+  if (
+    !user.agreedToPoliciesDate ||
+    user.agreedToPoliciesDate !== CURRENT_POLICIES_DATE
+  ) {
+    return <Policies userId={user.id} setUser={setUser} />
   }
 
   return (

@@ -48,6 +48,12 @@ class DataSourceViewSet(BaseProjectViewSet):
     def retrieve(self, request, project_pk, pk):
         return self._zmlp_retrieve(request, pk)
 
+    def update(self, request, project_pk, pk):
+        response = self._zmlp_update(request, pk)
+        datasource = request.app.datasource.get_datasource(pk)
+        request.app.datasource.import_files(datasource)
+        return response
+
     def destroy(self, request, project_pk, pk):
         return self._zmlp_destroy(request, pk)
 

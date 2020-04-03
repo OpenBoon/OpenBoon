@@ -24,6 +24,11 @@ from wallet.paginators import FromSizePagination
 logger = logging.getLogger(__name__)
 User = get_user_model()
 
+ES_SEARCH_TERMS = ['query', 'from', 'size', 'timeout',
+                   'post_filter', 'minscore', 'suggest',
+                   'highlight', 'collapse', '_source',
+                   'slice', 'aggs', 'aggregations', 'sort']
+
 
 class BaseProjectViewSet(ViewSet):
     """Base viewset to inherit from when needing to interact with a ZMLP Archivist in a
@@ -152,9 +157,9 @@ class BaseProjectViewSet(ViewSet):
 
         """
         base_url = base_url or self.zmlp_root_api_path
-        payload = {'page': {'from': request.GET.get('from', 0),
-                            'size': request.GET.get('size',
-                                                    self.pagination_class.default_limit)}}
+        payload = {'page': {'from': request.query_params.get('from', 0),
+                            'size': request.query_params.get('size',
+                                                             self.pagination_class.default_limit)}}
         if search_filter:
             payload.update(search_filter)
         path = os.path.join(base_url, '_search')
@@ -197,11 +202,20 @@ class BaseProjectViewSet(ViewSet):
             Response: DRF Response that can be used directly by viewset action method.
 
         """
-        payload = {'from': request.GET.get('from', 0),
-                   'size': request.GET.get('size', self.pagination_class.default_limit)}
+        # Check for pagination query params first, and then check the post body
+        payload = {'from': request.query_params.get('from', request.data.get('from', 0)),
+                   'size': request.query_params.get('size', request.data.get('size', self.pagination_class.default_limit))}  # noqa
+
+        # Whitelist any of the ES specific query related terms
+        for term in ES_SEARCH_TERMS:
+            value = request.data.get(term)
+            if value:
+                payload[term] = value
+
         path = os.path.join(self.zmlp_root_api_path, '_search')
         response = request.client.post(path, payload)
         content = self._get_content(response)
+
         items = content['hits']['hits']
         for item in items:
             if item_modifier:
@@ -258,7 +272,7 @@ class BaseProjectViewSet(ViewSet):
 
     def _zmlp_destroy(self, request, pk):
         """The result of this method can be returned for the destroy method of a concrete
-        viewset. if it just needs to proxy the results of a standard ZMLP endpoint for a single
+        viewset if it just needs to proxy the results of a standard ZMLP endpoint for a single
         object.
 
         Args:
@@ -271,6 +285,28 @@ class BaseProjectViewSet(ViewSet):
         """
         response = request.client.delete(os.path.join(self.zmlp_root_api_path, pk))
         return Response(response)
+
+    def _zmlp_update(self, request, pk):
+        """The result of this method can be returned for the update method of a concrete
+        viewset if it just needs to proxy the results of a standard ZMLP endpoint for a single
+        object.
+
+        Args:
+            request (Request): Request the view method was given.
+            pk (str): Primary key of the object to return in the response.
+
+        Returns:
+            Response: DRF Response that can be used directly by viewset action method.
+
+        """
+        update_serializer = self.get_serializer(data=request.data)
+        update_serializer.is_valid(raise_exception=True)
+        zmlp_response = request.client.put(f'{self.zmlp_root_api_path}{request.data["id"]}',
+                                           update_serializer.data)
+        response_serializer = self.get_serializer(data=zmlp_response)
+        if not response_serializer.is_valid():
+            Response({'detail': response_serializer.errors}, status=500)
+        return Response(response_serializer.validated_data)
 
     def _get_content(self, response):
         """Returns the content of Response from the ZVI or ZMLP and as a dict."""
@@ -418,7 +454,7 @@ class ProjectUserViewSet(BaseProjectViewSet):
                            'roles': entry.get('roles'),
                            'status_code': response.status_code,
                            'body': response.data}
-                if response.status_code == status.HTTP_201_CREATED:
+                if response.status_code in [status.HTTP_201_CREATED, status.HTTP_200_OK]:
                     response_body['results']['succeeded'].append(content)
                 else:
                     response_body['results']['failed'].append(content)

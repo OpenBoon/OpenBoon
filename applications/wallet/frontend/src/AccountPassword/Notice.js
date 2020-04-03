@@ -4,7 +4,7 @@ import { colors, constants, typography, spacing } from '../Styles'
 
 import { UserContext } from '../User'
 
-import FormAlert from '../FormAlert'
+import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 
@@ -22,7 +22,7 @@ const AccountPasswordNotice = () => {
   return (
     <div css={{ paddingTop: spacing.normal, paddingLeft: spacing.giant }}>
       {error && (
-        <FormAlert setErrorMessage={() => setError('')}>{error}</FormAlert>
+        <FlashMessage variant={FLASH_VARIANTS.ERROR}>{error}</FlashMessage>
       )}
       <div
         css={{

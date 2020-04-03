@@ -2,11 +2,11 @@ import PropTypes from 'prop-types'
 
 import checkboxOptionShape from './optionShape'
 
-import { spacing, typography } from '../Styles'
+import { colors, spacing, typography } from '../Styles'
 
 import Checkbox, { VARIANTS } from '.'
 
-const CheckboxGroup = ({ legend, variant, options, onClick }) => {
+const CheckboxGroup = ({ legend, description, variant, options, onClick }) => {
   return (
     <fieldset
       css={{
@@ -28,6 +28,17 @@ const CheckboxGroup = ({ legend, variant, options, onClick }) => {
       >
         {legend}
       </legend>
+      {description && (
+        <div
+          css={{
+            clear: 'both',
+            paddingBottom: spacing.base,
+            color: colors.structure.zinc,
+          }}
+        >
+          {description}
+        </div>
+      )}
       <div css={{ clear: 'both' }} />
       {options.map((option) => (
         <Checkbox
@@ -43,6 +54,7 @@ const CheckboxGroup = ({ legend, variant, options, onClick }) => {
 
 CheckboxGroup.propTypes = {
   legend: PropTypes.string.isRequired,
+  description: PropTypes.node.isRequired,
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   options: PropTypes.arrayOf(PropTypes.shape(checkboxOptionShape)).isRequired,
   onClick: PropTypes.func.isRequired,

@@ -13,7 +13,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from agreements.models import Agreement
+from agreements.views import get_ip_from_request
 from registration.models import UserRegistrationToken
+from registration.serializers import RegistrationSerializer
 
 User = get_user_model()
 
@@ -28,7 +31,8 @@ Example POST json body:
         "email": "fake@gmail.com",
         "firstName": "Fakey",
         "lastName": "Fakerson",
-        "password": "sjlhdffiuhdaifuh"
+        "password": "sjlhdffiuhdaifuh",
+        "policiesDate": "200010101"
     }
 
 Response Codes:
@@ -43,14 +47,13 @@ Response Codes:
     permission_classes = []
 
     def post(self, request, *args, **kwargs):
-        try:
-            email = request.data['email']
-            first = request.data['first_name']
-            last = request.data['last_name']
-            password = request.data['password']
-        except KeyError:
-            msg = 'Request must contain email, firstName, lastName, and password'
-            return Response(data={'detail': msg}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = RegistrationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        validated_data = serializer.validated_data
+        password = validated_data['password']
+        email = validated_data['email']
+        first = validated_data['first_name']
+        last = validated_data['last_name']
 
         try:
             validate_password(password)
@@ -83,6 +86,11 @@ Response Codes:
 
             # Issue a new registration token.
             token = UserRegistrationToken.objects.create(user=user)
+
+            # Create an agreement.
+            if validated_data.get('policies_date'):
+                Agreement.objects.create(user=user, policies_date=serializer['policies_date'],
+                                         ip_address=get_ip_from_request(request))
 
         # Email the user a link to activate their account.
         subject = 'Welcome To ZVI - Please Activate Your Account.'
