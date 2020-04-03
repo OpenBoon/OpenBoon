@@ -87,7 +87,7 @@ describe('<AccountPassword /> helpers', () => {
   describe('onReset()', () => {
     it('should send a reset password request', async () => {
       const mockSetError = jest.fn()
-      const mockSetUser = jest.fn()
+      const mockMutate = jest.fn()
       const mockSignOut = jest.fn()
       const mockRouterPush = jest.fn()
 
@@ -98,7 +98,7 @@ describe('<AccountPassword /> helpers', () => {
       await onReset({
         setError: mockSetError,
         email: 'jane@zorroa.com',
-        setUser: mockSetUser,
+        mutate: mockMutate,
         googleAuth: {
           signOut: mockSignOut,
         },
@@ -116,7 +116,7 @@ describe('<AccountPassword /> helpers', () => {
       })
 
       expect(mockSetError).not.toHaveBeenCalled()
-      expect(mockSetUser).toHaveBeenCalledWith({ user: null })
+      expect(mockMutate).toHaveBeenCalledWith({}, false)
       expect(mockSignOut).toHaveBeenCalled()
       expect(mockRouterPush).toHaveBeenCalledWith(
         '/?action=password-reset-request-success',
@@ -131,7 +131,7 @@ describe('<AccountPassword /> helpers', () => {
       await onReset({
         setError: mockSetError,
         email: 'jane@zorroa.com',
-        setUser: noop,
+        mutate: noop,
         googleAuth: noop,
       })
 

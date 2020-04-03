@@ -5,7 +5,7 @@ const noop = () => () => {}
 describe('<Fetch /> helpers', () => {
   describe('fetcher()', () => {
     it('should fetch data', async () => {
-      initializeFetcher({ setUser: noop })
+      initializeFetcher({ mutate: noop })
 
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
@@ -15,7 +15,7 @@ describe('<Fetch /> helpers', () => {
     })
 
     it('should return the raw response in case of error', async () => {
-      initializeFetcher({ setUser: noop })
+      initializeFetcher({ mutate: noop })
 
       fetch.mockResponseOnce(null, { status: 500 })
 
@@ -31,7 +31,7 @@ describe('<Fetch /> helpers', () => {
     })
 
     it('should return the raw response if its not a json', async () => {
-      initializeFetcher({ setUser: noop })
+      initializeFetcher({ mutate: noop })
 
       fetch.mockResponseOnce(null, { status: 200 })
 
@@ -47,9 +47,9 @@ describe('<Fetch /> helpers', () => {
     })
 
     it('should logout the user', async () => {
-      const mockSetUser = jest.fn()
+      const mockMutate = jest.fn()
 
-      initializeFetcher({ setUser: mockSetUser })
+      initializeFetcher({ mutate: mockMutate })
 
       fetch.mockResponseOnce(null, { status: 401 })
 
@@ -57,7 +57,7 @@ describe('<Fetch /> helpers', () => {
 
       expect(data).toEqual({})
 
-      expect(mockSetUser).toHaveBeenCalledWith({ user: null })
+      expect(mockMutate).toHaveBeenCalledWith({}, false)
     })
   })
 })

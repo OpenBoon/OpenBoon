@@ -6,7 +6,7 @@ describe('<AccountProfile /> helpers', () => {
   describe('onSubmit()', () => {
     it('should update the first and last name ', async () => {
       const mockDispatch = jest.fn()
-      const mockSetUser = jest.fn()
+      const mockMutate = jest.fn()
 
       fetch.mockResponseOnce(
         JSON.stringify({
@@ -22,7 +22,7 @@ describe('<AccountProfile /> helpers', () => {
           firstName: 'John',
           lastName: 'Smith',
         },
-        setUser: mockSetUser,
+        mutate: mockMutate,
       })
 
       expect(fetch.mock.calls.length).toEqual(1)
@@ -46,11 +46,9 @@ describe('<AccountProfile /> helpers', () => {
         errors: {},
       })
 
-      expect(mockSetUser).toHaveBeenCalledWith({
-        user: {
-          firstName: 'John',
-          lastName: 'Smith',
-        },
+      expect(mockMutate).toHaveBeenCalledWith({
+        firstName: 'John',
+        lastName: 'Smith',
       })
     })
 

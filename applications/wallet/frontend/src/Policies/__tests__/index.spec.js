@@ -9,7 +9,7 @@ describe('<Policies />', () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
-      <Policies userId={42} setUser={mockFn} />,
+      <Policies userId={42} mutate={mockFn} />,
     )
 
     act(() => {
@@ -49,9 +49,10 @@ describe('<Policies />', () => {
       method: 'POST',
     })
 
-    expect(mockFn).toHaveBeenCalledWith({
-      user: { agreedToPoliciesDate: '20200626' },
-    })
+    expect(mockFn).toHaveBeenCalledWith(
+      { agreedToPoliciesDate: '20200626' },
+      true,
+    )
   })
 
   it('should not POST the form', () => {
@@ -59,7 +60,7 @@ describe('<Policies />', () => {
     const mockOnSubmit = jest.fn()
 
     const component = TestRenderer.create(
-      <Policies userId={42} setUser={noop} />,
+      <Policies userId={42} mutate={noop} />,
     )
 
     component.root

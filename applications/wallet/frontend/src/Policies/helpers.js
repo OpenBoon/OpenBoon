@@ -12,14 +12,14 @@ import { fetcher } from '../Fetch/helpers'
 
 export const CURRENT_POLICIES_DATE = '20200626'
 
-export const onSubmit = async ({ dispatch, userId, setUser }) => {
+export const onSubmit = async ({ dispatch, userId, mutate }) => {
   try {
     await fetcher(`/api/v1/users/${userId}/agreements/`, {
       method: 'POST',
       body: JSON.stringify({ policies_date: CURRENT_POLICIES_DATE }),
     })
 
-    setUser({ user: { agreedToPoliciesDate: CURRENT_POLICIES_DATE } })
+    mutate({ agreedToPoliciesDate: CURRENT_POLICIES_DATE }, true)
   } catch (response) {
     dispatch({ errors: { global: 'Something went wrong. Please try again.' } })
   }

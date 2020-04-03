@@ -13,7 +13,7 @@ export const getCsrfToken = () => {
   return csrftoken
 }
 
-export const initializeFetcher = ({ setUser }) => {
+export const initializeFetcher = ({ mutate }) => {
   enhancedFetch = async (url, options = {}) => {
     const csrftoken = getCsrfToken()
 
@@ -27,7 +27,7 @@ export const initializeFetcher = ({ setUser }) => {
     })
 
     if ([401, 403].includes(response.status)) {
-      setUser({ user: null })
+      mutate({}, false)
 
       return {}
     }

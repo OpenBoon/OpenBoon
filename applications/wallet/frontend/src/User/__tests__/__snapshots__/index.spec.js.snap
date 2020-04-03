@@ -16,12 +16,14 @@ exports[`<User /> should update localStorage and the user state 1`] = `
 
 exports[`<User /> should update localStorage and the user state 2`] = `
 <div>
-  <span />
+  <span>
+    jane.doe@zorroa.com
+  </span>
   <button
     onClick={[Function]}
     type="button"
   >
-    Login
+    Logout
   </button>
 </div>
 `;

@@ -34,7 +34,7 @@ export const onSubmit = async ({
   }
 }
 
-export const onReset = async ({ setError, email, setUser, googleAuth }) => {
+export const onReset = async ({ setError, email, mutate, googleAuth }) => {
   const csrftoken = getCsrfToken()
 
   try {
@@ -53,7 +53,7 @@ export const onReset = async ({ setError, email, setUser, googleAuth }) => {
 
     logout({
       googleAuth,
-      setUser,
+      mutate,
     })({ redirectUrl: '/?action=password-reset-request-success' })
   } catch (response) {
     setError('Error. Please try again.')

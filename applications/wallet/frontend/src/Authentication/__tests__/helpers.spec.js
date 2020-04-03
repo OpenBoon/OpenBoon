@@ -6,10 +6,10 @@ describe('<Authentication /> helpers', () => {
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
       const mockSetErrorMessage = jest.fn()
-      const mockSetUser = jest.fn()
+      const mockMutate = jest.fn()
 
       await authenticateUser({
-        setUser: mockSetUser,
+        mutate: mockMutate,
         setErrorMessage: mockSetErrorMessage,
       })({
         username: 'username',
@@ -26,19 +26,20 @@ describe('<Authentication /> helpers', () => {
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
-      expect(mockSetUser).toHaveBeenCalledWith({
-        user: { id: 12345, projectId: '' },
-      })
+      expect(mockMutate).toHaveBeenCalledWith(
+        { id: 12345, projectId: '' },
+        false,
+      )
     })
 
     it('should authenticate the user with a Google JWT', async () => {
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
       const mockSetErrorMessage = jest.fn()
-      const mockSetUser = jest.fn()
+      const mockMutate = jest.fn()
 
       await authenticateUser({
-        setUser: mockSetUser,
+        mutate: mockMutate,
         setErrorMessage: mockSetErrorMessage,
       })({
         idToken: 'ID_TOKEN',
@@ -56,9 +57,10 @@ describe('<Authentication /> helpers', () => {
 
       expect(mockSetErrorMessage).toHaveBeenCalledWith('')
 
-      expect(mockSetUser).toHaveBeenCalledWith({
-        user: { id: 12345, projectId: '' },
-      })
+      expect(mockMutate).toHaveBeenCalledWith(
+        { id: 12345, projectId: '' },
+        false,
+      )
     })
 
     it('should display an alert for incorrect username/password', async () => {
@@ -97,19 +99,19 @@ describe('<Authentication /> helpers', () => {
   describe('logout()', () => {
     it('should logout the user', async () => {
       const mockSignOut = jest.fn()
-      const mockSetUser = jest.fn()
+      const mockMutate = jest.fn()
       const mockRouterPush = jest.fn()
 
       require('next/router').__setMockPushFunction(mockRouterPush)
 
       await logout({
         googleAuth: { signOut: mockSignOut },
-        setUser: mockSetUser,
+        mutate: mockMutate,
       })({ redirectUrl: '/' })
 
       expect(mockSignOut).toHaveBeenCalled()
 
-      expect(mockSetUser).toHaveBeenCalledWith({ user: null })
+      expect(mockMutate).toHaveBeenCalledWith({}, false)
 
       expect(fetch.mock.calls.length).toEqual(1)
       expect(fetch.mock.calls[0][0]).toEqual('/api/v1/logout/')

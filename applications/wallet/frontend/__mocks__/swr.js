@@ -19,10 +19,10 @@ export const { cache } = jest.requireActual('swr')
  * useSWR
  */
 
-let mockUseSWRResponse = {}
+let mockUseSWRResponse = { revalidate: noop, mutate: noop }
 
 export const __setMockUseSWRResponse = (data) => {
-  mockUseSWRResponse = { revalidate: noop, ...data }
+  mockUseSWRResponse = { revalidate: noop, mutate: noop, ...data }
 }
 
 const useSWR = () => {

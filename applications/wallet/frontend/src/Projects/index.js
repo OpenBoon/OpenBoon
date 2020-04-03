@@ -5,7 +5,7 @@ import useSWR from 'swr'
 
 const NO_PROJECT_ID_ROUTES = ['/icons', '/account', '/account/password']
 
-const Projects = ({ projectId, setUser, children }) => {
+const Projects = ({ projectId, mutate, children }) => {
   const { query: { projectId: routerProjectId } = {}, pathname } = useRouter()
 
   const {
@@ -17,12 +17,12 @@ const Projects = ({ projectId, setUser, children }) => {
 
     if (projectId === routerProjectId) return
 
-    setUser({ user: { projectId: routerProjectId } })
-  }, [projectId, routerProjectId, setUser])
+    mutate((user) => ({ ...user, projectId: routerProjectId }), false)
+  }, [projectId, routerProjectId, mutate])
 
   // Reset user projectId if not part of current projects
   if (projectId && !projects.find(({ id }) => projectId === id)) {
-    setUser({ user: { projectId: '' } })
+    mutate((user) => ({ ...user, projectId: '' }), false)
     return null
   }
 
@@ -53,7 +53,7 @@ const Projects = ({ projectId, setUser, children }) => {
 
 Projects.propTypes = {
   projectId: PropTypes.string.isRequired,
-  setUser: PropTypes.func.isRequired,
+  mutate: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 }
 

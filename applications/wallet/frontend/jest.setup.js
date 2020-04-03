@@ -10,7 +10,7 @@ const { initializeFetcher } = require('./src/Fetch/helpers')
 beforeEach(() => {
   fetch.resetMocks()
 
-  initializeFetcher({ setUser: noop })
+  initializeFetcher({ mutate: noop })
 })
 
 /**

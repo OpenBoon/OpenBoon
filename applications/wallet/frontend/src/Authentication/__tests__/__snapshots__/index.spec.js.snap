@@ -10,8 +10,8 @@ exports[`<Authentication /> should render properly when user is logged in 1`] = 
   }
 >
   <Projects
+    mutate={[Function]}
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
-    setUser={[Function]}
   >
     <Layout
       user={
@@ -46,9 +46,7 @@ exports[`<Authentication /> should render properly when user is logged in 1`] = 
 </SWRConfig>
 `;
 
-exports[`<Authentication /> should render properly when user is logged out 1`] = `null`;
-
-exports[`<Authentication /> should render properly when user is logged out 2`] = `
+exports[`<Authentication /> should render properly when user is logged out 1`] = `
 <Login
   errorMessage=""
   googleAuth={
@@ -57,7 +55,7 @@ exports[`<Authentication /> should render properly when user is logged out 2`] =
       "signOut": [Function],
     }
   }
-  hasGoogleLoaded={true}
+  hasGoogleLoaded={false}
   onSubmit={[Function]}
 />
 `;

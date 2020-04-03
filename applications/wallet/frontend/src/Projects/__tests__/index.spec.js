@@ -20,7 +20,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId={PROJECT_ID} setUser={noop}>
+      <Projects projectId={PROJECT_ID} mutate={noop}>
         Hello World
       </Projects>,
     )
@@ -38,7 +38,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="" setUser={noop}>
+      <Projects projectId="" mutate={noop}>
         Account Overview
       </Projects>,
     )
@@ -47,7 +47,11 @@ describe('<Projects />', () => {
   })
 
   it('should update the projectId if it is different from the router projectId', async () => {
-    const mockFn = jest.fn()
+    let user = {}
+
+    const mockFn = jest.fn((cb) => {
+      user = cb(user)
+    })
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/jobs',
@@ -59,7 +63,7 @@ describe('<Projects />', () => {
     })
 
     TestRenderer.create(
-      <Projects projectId="not-the-same-project-id" setUser={mockFn}>
+      <Projects projectId="not-the-same-project-id" mutate={mockFn}>
         Hello World
       </Projects>,
     )
@@ -67,7 +71,7 @@ describe('<Projects />', () => {
     // useEffect
     await act(async () => {})
 
-    expect(mockFn).toHaveBeenCalledWith({ user: { projectId: PROJECT_ID } })
+    expect(user).toEqual({ projectId: PROJECT_ID })
   })
 
   it('should redirect if there is no project id and the route requires a project id', () => {
@@ -85,7 +89,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="" setUser={noop}>
+      <Projects projectId="" mutate={noop}>
         Hello World
       </Projects>,
     )
@@ -109,7 +113,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="" setUser={noop}>
+      <Projects projectId="" mutate={noop}>
         Hello World
       </Projects>,
     )
@@ -132,7 +136,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="" setUser={noop}>
+      <Projects projectId="" mutate={noop}>
         Hello World
       </Projects>,
     )
@@ -160,7 +164,7 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="" setUser={noop}>
+      <Projects projectId="" mutate={noop}>
         Hello World
       </Projects>,
     )
@@ -171,7 +175,12 @@ describe('<Projects />', () => {
   })
 
   it('should reset an invalid user projectId', async () => {
-    const mockSetUser = jest.fn()
+    let user = {}
+
+    const mockMutate = jest.fn((cb) => {
+      user = cb(user)
+    })
+
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
@@ -186,12 +195,12 @@ describe('<Projects />', () => {
     })
 
     const component = TestRenderer.create(
-      <Projects projectId="not-a-valid-project-id" setUser={mockSetUser}>
+      <Projects projectId="not-a-valid-project-id" mutate={mockMutate}>
         Hello World
       </Projects>,
     )
 
-    expect(mockSetUser).toHaveBeenCalledWith({ user: { projectId: '' } })
+    expect(user).toEqual({ projectId: '' })
 
     expect(mockRouterPush).not.toHaveBeenCalled()
 

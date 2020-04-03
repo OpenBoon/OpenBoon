@@ -3,7 +3,7 @@ import { fetcher } from '../Fetch/helpers'
 export const onSubmit = async ({
   dispatch,
   state: { id, firstName, lastName },
-  setUser,
+  mutate,
 }) => {
   try {
     const user = await fetcher(`/api/v1/users/${id}/`, {
@@ -19,7 +19,7 @@ export const onSubmit = async ({
       errors: {},
     })
 
-    setUser({ user })
+    mutate(user)
   } catch (response) {
     const errors = await response.json()
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {

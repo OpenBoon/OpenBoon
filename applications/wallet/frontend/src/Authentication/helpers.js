@@ -1,7 +1,7 @@
 import Router from 'next/router'
 import { cache } from 'swr'
 
-export const authenticateUser = ({ setUser, setErrorMessage }) => async ({
+export const authenticateUser = ({ mutate, setErrorMessage }) => async ({
   username,
   password,
   idToken,
@@ -28,11 +28,12 @@ export const authenticateUser = ({ setUser, setErrorMessage }) => async ({
   }
 
   const user = await response.json()
+  const projectId = user.roles ? Object.keys(user.roles)[0] || '' : ''
 
-  return setUser({ user: { ...user, projectId: '' } })
+  return mutate({ ...user, projectId }, false)
 }
 
-export const logout = ({ googleAuth, setUser }) => async ({ redirectUrl }) => {
+export const logout = ({ googleAuth, mutate }) => async ({ redirectUrl }) => {
   googleAuth.signOut()
 
   const { csrftoken } = Object.fromEntries(
@@ -50,7 +51,7 @@ export const logout = ({ googleAuth, setUser }) => async ({ redirectUrl }) => {
     },
   })
 
-  setUser({ user: null })
+  mutate({}, false)
 
   cache.clear()
 
