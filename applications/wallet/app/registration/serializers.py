@@ -25,4 +25,4 @@ class RegistrationSerializer(serializers.Serializer):
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     password = serializers.CharField(required=True)
-    policies_date = serializers.IntegerField(required=False)
+    policies_date = serializers.CharField(required=False)
