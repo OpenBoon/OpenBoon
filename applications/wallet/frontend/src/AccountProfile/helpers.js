@@ -6,20 +6,18 @@ export const onSubmit = async ({
   mutate,
 }) => {
   try {
-    const user = await fetcher(`/api/v1/users/${id}/`, {
+    await fetcher(`/api/v1/users/${id}/`, {
       method: 'PATCH',
       body: JSON.stringify({ firstName, lastName }),
     })
 
     dispatch({
-      firstName: user.firstName,
-      lastName: user.lastName,
       showForm: false,
       success: true,
       errors: {},
     })
 
-    mutate(user)
+    mutate((user) => ({ ...user, firstName, lastName }), false)
   } catch (response) {
     const errors = await response.json()
     const parsedErrors = Object.keys(errors).reduce((acc, errorKey) => {

@@ -6,10 +6,14 @@ const noop = () => () => {}
 
 describe('<Policies />', () => {
   it('should render properly', async () => {
-    const mockFn = jest.fn()
+    let user = {}
+
+    const mockMutate = jest.fn((cb) => {
+      user = cb(user)
+    })
 
     const component = TestRenderer.create(
-      <Policies userId={42} mutate={mockFn} />,
+      <Policies userId={42} mutate={mockMutate} />,
     )
 
     act(() => {
@@ -49,10 +53,7 @@ describe('<Policies />', () => {
       method: 'POST',
     })
 
-    expect(mockFn).toHaveBeenCalledWith(
-      { agreedToPoliciesDate: '20200626' },
-      true,
-    )
+    expect(user).toEqual({ agreedToPoliciesDate: '20200626' })
   })
 
   it('should not POST the form', () => {

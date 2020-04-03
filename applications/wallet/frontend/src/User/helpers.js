@@ -6,8 +6,13 @@ export const meFetcher =
     : async (url) => {
         try {
           const response = await fetch(url)
+
           if (response.status >= 400) throw response
-          return response.json()
+
+          const user = await response.json()
+          const projectId = user.roles ? Object.keys(user.roles)[0] || '' : ''
+
+          return { ...user, projectId }
         } catch (error) {
           return {}
         }

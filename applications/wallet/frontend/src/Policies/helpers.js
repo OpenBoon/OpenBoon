@@ -19,7 +19,10 @@ export const onSubmit = async ({ dispatch, userId, mutate }) => {
       body: JSON.stringify({ policies_date: CURRENT_POLICIES_DATE }),
     })
 
-    mutate({ agreedToPoliciesDate: CURRENT_POLICIES_DATE }, true)
+    mutate(
+      (user) => ({ ...user, agreedToPoliciesDate: CURRENT_POLICIES_DATE }),
+      false,
+    )
   } catch (response) {
     dispatch({ errors: { global: 'Something went wrong. Please try again.' } })
   }
