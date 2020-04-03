@@ -22,7 +22,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
     tool_tips = {
         'detect_labels': tip,
-        'detect_text': tip,
+        'detect_text': "Set to true to enable text detetecction.",
         'detect_objects': tip,
         'detect_logos': tip,
         'detect_explicit': 'An integer level of confidence to tag as explicit. 0=disabled, max=5'
@@ -47,7 +47,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                               toolTip=self.tool_tips['detect_explicit']))
         self.add_arg(Argument('detect_labels', 'float', default=-1,
                               toolTip=self.tool_tips['detect_labels']))
-        self.add_arg(Argument('detect_text', 'float', default=-1,
+        self.add_arg(Argument('detect_text', 'bool', default=False,
                               toolTip=self.tool_tips['detect_text']))
         self.add_arg(Argument('detect_objects', 'float', default=-1,
                               toolTip=self.tool_tips['detect_objects']))
@@ -94,7 +94,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         if self.arg_value('detect_labels') != -1:
             self.handle_detect_labels(asset, annotation_result)
 
-        if self.arg_value('detect_text') != -1:
+        if self.arg_value('detect_text'):
             self.handle_detect_text(asset, annotation_result)
 
         if self.arg_value('detect_explicit') != -1:
@@ -190,7 +190,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             features.append(videointelligence.enums.Feature.EXPLICIT_CONTENT_DETECTION)
         if self.arg_value('detect_labels') > -1:
             features.append(videointelligence.enums.Feature.LABEL_DETECTION)
-        if self.arg_value('detect_text') > -1:
+        if self.arg_value('detect_text'):
             features.append(videointelligence.enums.Feature.TEXT_DETECTION)
         if self.arg_value('detect_objects') > -1:
             features.append(videointelligence.enums.Feature.OBJECT_TRACKING)
