@@ -1,4 +1,5 @@
 import os
+import pytest
 from unittest.mock import patch
 
 from zmlp_analysis.google.cloud_video import AsyncVideoIntelligenceProcessor
@@ -8,6 +9,7 @@ from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
 CREDS = os.path.join(os.path.dirname(__file__)) + '/gcp-creds.json'
 
 
+@pytest.mark.skip(reason='dont run automaticallly')
 class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
 
     def setUp(self):

@@ -415,7 +415,7 @@ class CloudVisionDetectExplicitTests(PluginUnitTestCase):
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-content-moderation')
         assert 'labels' == analysis['type']
-        assert True is analysis['safe']
+        assert not analysis['explicit']
         assert 'spoof' in get_prediction_labels(analysis)
         assert 'racy' in get_prediction_labels(analysis)
         assert 2 == analysis['count']

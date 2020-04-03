@@ -135,6 +135,7 @@ class AsyncVideoIntelligenceProcessorTestCase(PluginUnitTestCase):
         assert 'very_unlikely' in get_prediction_labels(analysis)
         assert 'unlikely' in get_prediction_labels(analysis)
         assert 2 == analysis['count']
+        assert not analysis['explicit']
 
     def load_results(self, name):
         rsp = video_intelligence_pb2.AnnotateVideoResponse()

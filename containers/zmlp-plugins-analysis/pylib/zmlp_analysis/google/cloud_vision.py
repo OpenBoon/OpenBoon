@@ -162,15 +162,15 @@ class CloudVisionDetectExplicit(AbstractCloudVisionProcessor):
         result = rsp.safe_search_annotation
 
         analysis = LabelDetectionAnalysis()
-        analysis.set_attr('safe', True)
+        analysis.set_attr('explicit', False)
 
         for category in ['adult', 'spoof', 'medical', 'violence', 'racy']:
             rating = getattr(result, category)
             if rating <= 1 or rating > 5:
                 continue
             score = (float(rating) - 1.0) * 0.25
-            if score >= 0.50:
-                analysis.set_attr('safe', False)
+            if score >= 0.50 and category in ('adult', 'racy'):
+                analysis.set_attr('explicit', True)
 
             analysis.add_prediction(Prediction(category, score))
 
