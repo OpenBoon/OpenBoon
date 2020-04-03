@@ -31,7 +31,8 @@ Example POST json body:
         "email": "fake@gmail.com",
         "firstName": "Fakey",
         "lastName": "Fakerson",
-        "password": "sjlhdffiuhdaifuh"
+        "password": "sjlhdffiuhdaifuh",
+        "policiesDate": "200010101"
     }
 
 Response Codes:

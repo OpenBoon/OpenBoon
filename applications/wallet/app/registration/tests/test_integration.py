@@ -64,7 +64,7 @@ def test_register_and_confirm(api_client, mailoutbox):
                                                               'firstName': 'Fakey',
                                                               'lastName': 'Fakerson',
                                                               'password': password,
-                                                              'policiesDate': 20010101})
+                                                              'policiesDate': '20010101'})
     assert response.status_code == 200
     user = User.objects.get(username='fake@fakerson.com')
     assert not user.is_active
