@@ -49,6 +49,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'searches',
     'agreements',
     'subscriptions',
     'jobs',
