@@ -10,9 +10,9 @@ from urllib.parse import urlparse
 
 import requests
 
+from zmlp.asset import FileImport, Asset, StoredFile
 from zmlpsdk.base import Context, AssetProcessor, Generator, Argument, \
     ZmlpFatalProcessorException
-from zmlp.asset import FileImport, Asset
 
 logger = logging.getLogger(__name__)
 
@@ -326,3 +326,56 @@ class MockRequestsResponse:
     def raise_for_status(self):
         if self.status_code > 299:
             raise requests.RequestException("Failed with status {}".format(self.status_code))
+
+
+def get_prediction_labels(analysis):
+    """
+    Takes a raw predictions list and returns an array of labels.
+
+    Args:
+        analysis (dict): An analysis namespace with a predictions property.
+
+    Returns:
+        list[str] A list of label values.
+
+    """
+    return [p["label"] for p in analysis['predictions']]
+
+
+def get_prediction_map(analysis):
+    """
+    Takes a raw predictions list and returns an dictionary of
+    labels and confidence scores.
+
+    Args:
+        analysis (dict):
+
+    Returns:
+
+    """
+    return dict([(p["label"], p['score']) for p in analysis['predictions']])
+
+
+def get_mock_stored_file(category="proxy"):
+    """
+    A convenience methods for returning mock stored file with a
+    random name.  This ensures the the local file cache is always
+    seeing a new file.
+
+    Args:
+        category (str): An optional category name.
+
+    Returns:
+        StoredFile: A stored file with cache-buster values.
+    """
+    return StoredFile({
+        'id': 'assets/{}/{}/bar.jpg'.format(uuid.uuid4(), category),
+        'name': 'bar.jpg',
+        'attrs': {
+            'width': 100,
+            'height': 100
+        },
+        'mimetype': 'image/jpeg',
+        'size': 1000,
+        "category": 'proxy'
+    })

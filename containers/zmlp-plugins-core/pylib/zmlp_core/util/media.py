@@ -5,7 +5,7 @@ import re
 from subprocess import check_output, check_call, CalledProcessError
 
 import xmltodict
-from pathlib2 import Path
+from pathlib import Path
 
 from zmlpsdk.base import FileTypes
 

@@ -70,7 +70,7 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
                          * The value of our field must be a kwconf structure.  Just skip over assets
                          * where it does not exist or cannot be cast.
                          */
-                        val kwconf = lookup.source().extractValue("$field.labels") ?: return score
+                        val kwconf = lookup.source().extractValue(field) ?: return score
                         val labels: List<Map<String, Any>> = kwconf as List<Map<String, Any>>
                         for (map in labels) {
                             val keyword = map.getValue("label").toString()

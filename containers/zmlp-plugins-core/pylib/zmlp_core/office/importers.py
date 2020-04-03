@@ -37,7 +37,7 @@ class OfficeImporter(AssetProcessor):
         """
         try:
             zuri = '{}/metadata.{}.json'.format(uri, page)
-            with open(file_storage.localize_uri(zuri), 'r') as fp:
+            with open(file_storage.localize_file(zuri), 'r') as fp:
                 return json.load(fp, object_hook=_content_sanitizer)
         except ZmlpStorageException as e:
             raise ZmlpFatalProcessorException(

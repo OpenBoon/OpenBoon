@@ -7,6 +7,8 @@ import pytest
 import urllib3
 from minio.api import Minio
 
+import zmlp
+from zmlp.asset import StoredFile
 from zmlp.client import ZmlpClient
 from zmlpsdk import storage
 from zmlpsdk.testing import zorroa_test_data, TestAsset
@@ -14,11 +16,11 @@ from zmlpsdk.testing import zorroa_test_data, TestAsset
 logging.basicConfig(level=logging.DEBUG)
 
 
-class LocalFileCacheTests(TestCase):
+class FileCacheTests(TestCase):
 
     def setUp(self):
         os.environ['ZMLP_STORAGE_PIPELINE_URL'] = 'http://localhost:9000'
-        self.lfc = storage.LocalFileCache()
+        self.lfc = storage.FileCache(zmlp.app_from_env())
 
     def tearDown(self):
         self.lfc.clear()
@@ -26,7 +28,7 @@ class LocalFileCacheTests(TestCase):
     def test_init_with_task_id(self):
         os.environ['ZMLP_TASK_ID'] = '1234abcd5678'
         try:
-            cache = storage.LocalFileCache()
+            cache = storage.FileCache(zmlp.app_from_env())
             path = cache.localize_uri('https://i.imgur.com/WkomVeG.jpg')
             assert os.environ['ZMLP_TASK_ID'] in path
         finally:
@@ -69,25 +71,41 @@ class LocalFileCacheTests(TestCase):
         self.lfc.clear()
         assert not os.path.exists(path)
 
+    def test_close(self):
+        self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
+        self.lfc.close()
+
+        with pytest.raises(FileNotFoundError):
+            self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
+
+
+class FileStorageTests(TestCase):
+
+    def setUp(self):
+        os.environ['ZMLP_STORAGE_PIPELINE_URL'] = 'http://localhost:9000'
+        self.fs = storage.FileStorage()
+
     @patch.object(ZmlpClient, 'stream')
     def test_localize_remote_file(self, post_patch):
         pfile = {
             'name': 'cat.jpg',
-            'category': 'source'
+            'category': 'source',
+            'attrs': {},
+            'id': 'assets/123456/source/cat.jpg'
         }
         post_patch.return_value = '/tmp/cat.jpg'
         asset = TestAsset(id='123456')
         asset.set_attr('files', [pfile])
-        path = self.lfc.localize_remote_file(asset)
-        assert path.endswith('3c25baa7cf0b59d64c0179a1e0030072444eac3b.jpg')
+        path = self.fs.localize_file(asset)
+        assert path.endswith('34d8c2639fcb5f54c50d6a211aaf63f04f679bfb.jpg')
 
     def test_localize_file_obj_with_uri(self):
         test_asset = TestAsset('https://i.imgur.com/WkomVeG.jpg')
-        path = self.lfc.localize_remote_file(test_asset)
+        path = self.fs.localize_file(test_asset)
         assert os.path.exists(path)
 
     def test_localize_file_str(self):
-        path = self.lfc.localize_remote_file('https://i.imgur.com/WkomVeG.jpg')
+        path = self.fs.localize_file('https://i.imgur.com/WkomVeG.jpg')
         assert os.path.exists(path)
 
     @patch.object(Minio, 'get_object')
@@ -96,107 +114,115 @@ class LocalFileCacheTests(TestCase):
         r = http.request('GET', 'http://i.imgur.com/WkomVeG.jpg', preload_content=False)
 
         get_object_patch.return_value = r
-        path = self.lfc.localize_remote_file('zmlp://internal/officer/pdf/proxy.1.jpg')
+        path = self.fs.localize_file('zmlp://internal/officer/pdf/proxy.1.jpg')
 
         assert os.path.exists(path)
         assert os.path.getsize(path) == 267493
-
-    def test_close(self):
-        pfile = {
-            'name': 'cat.jpg',
-            'category': 'proxy'
-        }
-        self.lfc.assets.localize_file(TestAsset(), pfile,
-                                      zorroa_test_data('images/set01/toucan.jpg'))
-        self.lfc.close()
-
-        with pytest.raises(FileNotFoundError):
-            self.lfc.assets.localize_file(TestAsset(), pfile,
-                                          zorroa_test_data('images/set01/toucan.jpg'))
 
 
 class TestAssetStorage(TestCase):
 
     def setUp(self):
         os.environ['ZMLP_STORAGE_PIPELINE_URL'] = 'http://localhost:9000'
-        self.lfc = storage.LocalFileCache()
+        self.fs = storage.FileStorage()
+        self.pfile_dict = {
+            'name': 'cat.jpg',
+            'category': 'source',
+            'attrs': {},
+            'id': 'assets/123456/source/cat.jpg'
+        }
 
     def tearDown(self):
-        self.lfc.clear()
+        self.fs.cache.clear()
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_store_file(self, upload_patch):
         upload_patch.return_value = {
             'name': 'cat.jpg',
-            'category': 'proxy'
+            'category': 'proxy',
+            'attrs': {},
+            'id': 'assets/123456/proxy/cat.jpg'
         }
         asset = TestAsset(id='123456')
-        result = self.lfc.assets.store_file(
+        result = self.fs.assets.store_file(
             asset, zorroa_test_data('images/set01/toucan.jpg', uri=False), 'test')
-        assert 'cat.jpg' == result['name']
-        assert 'proxy' == result['category']
+        assert 'cat.jpg' == result.name
+        assert 'proxy' == result.category
 
     @patch.object(ZmlpClient, 'upload_file')
-    def test_store_data(self, upload_patch):
-        upload_patch.return_value = {
+    def test_store_blob(self, upload_patch):
+        upload_patch.return_value = StoredFile({
             'name': 'vid-int-moderation.json',
-            'category': 'google'
-        }
+            'category': 'google',
+            'attrs': {},
+            'id': 'assets/123456/google/vid-int-moderation.json',
+        })
         asset = TestAsset(id='123456')
-        result = self.lfc.assets.store_data(
+        result = self.fs.assets.store_blob(
             asset, '{"jo": "boo"}', 'google', 'vid-int-moderation.json')
-        assert 'google' == result['category']
-        assert 'vid-int-moderation.json' == result['name']
+        assert 'google' == result.category
+        assert 'vid-int-moderation.json' == result.name
 
     @patch.object(ZmlpClient, 'upload_file')
-    def test_store_data_no_ext(self, upload_patch):
-        upload_patch.return_value = {
+    def test_store_blob_no_ext(self, upload_patch):
+        upload_patch.return_value = StoredFile({
             'name': 'vid-int-moderation.json',
-            'category': 'google'
-        }
+            'category': 'google',
+            'attrs': {},
+            'id': 'assets/123456/google/vid-int-moderation.json',
+        })
         asset = TestAsset(id='123456')
         with pytest.raises(ValueError):
-            self.lfc.assets.store_data(
+            self.fs.assets.store_blob(
                 asset, '{"jo": "boo"}', 'google', 'vid-int-moderation')
 
     @patch.object(ZmlpClient, 'stream')
     def test_localize_file_with_copy(self, post_patch):
-        pfile = {
+        pfile = StoredFile({
             'name': 'cat.jpg',
-            'category': 'proxy'
-        }
+            'category': 'proxy',
+            'attrs': {},
+            'id': 'assets/123456/proxy/cat.jpg'
+        })
         post_patch.return_value = '/tmp/toucan.jpg'
         bird = zorroa_test_data('images/set01/toucan.jpg', uri=False)
-        path = self.lfc.assets.localize_file(TestAsset(id='123456'), pfile, bird)
+        path = self.fs.assets.localize_file(pfile, bird)
         assert os.path.getsize(path) == os.path.getsize(bird)
 
     @patch.object(ZmlpClient, 'stream')
     def test_localize_file(self, post_patch):
         post_patch.return_value = '/tmp/toucan.jpg'
-        pfile = {
+        pfile = StoredFile({
             'name': 'cat.jpg',
-            'category': 'proxy'
-        }
-        path = self.lfc.assets.localize_file(TestAsset(id='123456'), pfile)
-        assert path.endswith('c7bc251d55d2cfb3f5b0c86d739877583556f890.jpg')
+            'category': 'proxy',
+            'attrs': {},
+            'id': 'assets/123456/proxy/cat.jpg'
+        })
+        path = self.fs.assets.localize_file(pfile)
+        assert path.endswith('b9430537beae3fe8e6ba2e11667f0ccc9be82a28.jpg')
 
     @patch.object(ZmlpClient, 'stream')
     def test_localize_asset_file_with_asset_override(self, post_patch):
-        pfile = {
+        pfile = StoredFile({
             'name': 'cat.jpg',
             'category': 'proxy',
-            'sourceAssetId': 'bingo'
-        }
+            'attrs': {},
+            'id': 'assets/123456/proxy/cat.jpg'
+        })
         post_patch.return_value = '/tmp/cat.jpg'
-        asset = TestAsset(id='123456')
-        self.lfc.assets.localize_file(asset, pfile)
-        assert 'assets/bingo/_files' in post_patch.call_args_list[0][0][0]
+        self.fs.assets.localize_file(pfile)
+        assert 'assets/123456/proxy/cat.jpg' in post_patch.call_args_list[0][0][0]
 
     @patch.object(ZmlpClient, 'get')
     def test_get_native_uri(self, get_patch):
         get_patch.return_value = {'uri': 'gs://hulk-hogan'}
-        asset = TestAsset(id='123456')
-        uri = self.lfc.assets.get_native_uri(asset, 'cat', 'dog.jpg')
+        pfile = StoredFile({
+            'name': 'cat.jpg',
+            'category': 'proxy',
+            'attrs': {},
+            'id': 'assets/123456/proxy/cat.jpg'
+        })
+        uri = self.fs.assets.get_native_uri(pfile)
         assert 'gs://hulk-hogan' == uri
 
 
@@ -204,10 +230,10 @@ class TestProjectStorage(TestCase):
 
     def setUp(self):
         os.environ['ZMLP_STORAGE_PIPELINE_URL'] = 'http://localhost:9000'
-        self.lfc = storage.LocalFileCache()
+        self.fs = storage.FileStorage()
 
     def tearDown(self):
-        self.lfc.clear()
+        self.fs.cache.clear()
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_store_file_with_rename(self, upload_patch):
@@ -217,7 +243,7 @@ class TestProjectStorage(TestCase):
             'entity': 'model'
         }
         path = os.path.dirname(__file__) + '/fake_model.dat'
-        result = self.lfc.projects.store_file(path, 'model', 'face_model', 'celebs.dat')
+        result = self.fs.projects.store_file(path, 'model', 'face_model', 'celebs.dat')
         assert 'celebs.dat' == result['name']
         assert 'face_model' == result['category']
 
@@ -228,6 +254,6 @@ class TestProjectStorage(TestCase):
             'category': 'fake'
         }
         path = os.path.dirname(__file__) + '/fake_model.dat'
-        result = self.lfc.projects.store_file(path, 'model', 'fake', 'fake_model.dat')
+        result = self.fs.projects.store_file(path, 'model', 'fake', 'fake_model.dat')
         assert 'fake_model.dat' == result['name']
         assert 'fake' == result['category']

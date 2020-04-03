@@ -33,8 +33,8 @@ class AssetSearchServiceTests : AbstractTest() {
         val rsp = assetService.batchCreate(batchCreate)
         val id = rsp.created[0]
         val asset = assetService.getAsset(id)
-        asset.setAttr("analysis.zvi.similarity.simhash", "AABBCC00")
-        asset.setAttr("analysis.zvi.label-detection.labels", labels)
+        asset.setAttr("analysis.zvi-image-similarity.simhash", "AABBCC00")
+        asset.setAttr("analysis.zvi-label-detection.predictions", labels)
         assetService.index(id, asset.document, true)
 
         indexRoutingService.getProjectRestClient().refresh()
@@ -140,7 +140,7 @@ class AssetSearchServiceTests : AbstractTest() {
                             "lang" : "zorroa-similarity",
                             "params" : {
                               "minScore" : 0.50,
-                              "field" : "analysis.zvi.similarity.simhash",
+                              "field" : "analysis.zvi-image-similarity.simhash",
                               "hashes" : ["AABBDD00"]
                             }
                           }
@@ -156,6 +156,9 @@ class AssetSearchServiceTests : AbstractTest() {
                 }
             }
         """.trimIndent()
+
+        Json.prettyPrint(indexRoutingService.getProjectRestClient().getMapping())
+
         val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
         assertEquals(1, rsp.hits.hits.size)
         assertTrue(rsp.hits.hits[0].score > 0.98)
@@ -174,7 +177,7 @@ class AssetSearchServiceTests : AbstractTest() {
                             "lang" : "zorroa-similarity",
                             "params" : {
                               "minScore" : 0.50,
-                              "field" : "analysis.zvi.similarity.simhash",
+                              "field" : "analysis.zvi-image-similarity.simhash",
                               "hashes" : ["PPPPPPPP"]
                             }
                           }
@@ -207,7 +210,7 @@ class AssetSearchServiceTests : AbstractTest() {
                             "lang" : "zorroa-kwconf",
                             "params" : {
                               "range": [0.5, 1.0],
-                              "field" : "analysis.zvi.label-detection",
+                              "field" : "analysis.zvi-label-detection.predictions",
                               "labels" : ["toucan"]
                             }
                           }
@@ -240,7 +243,7 @@ class AssetSearchServiceTests : AbstractTest() {
                             "lang" : "zorroa-kwconf",
                             "params" : {
                               "range": [0.1, 0.2],
-                              "field" : "analysis.zvi.label-detection",
+                              "field" : "analysis.zvi-label-detection",
                               "labels" : ["toucan"]
                             }
                           }

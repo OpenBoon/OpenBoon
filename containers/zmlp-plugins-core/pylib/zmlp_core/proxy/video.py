@@ -32,7 +32,7 @@ class VideoProxyProcessor(AssetProcessor):
         self.make_h264_proxy(asset)
 
     def make_h264_proxy(self, asset):
-        source_path = file_storage.localize_remote_file(asset)
+        source_path = file_storage.localize_file(asset)
         with tempfile.NamedTemporaryFile(suffix=".mp4") as tf:
             cmd = ['ffmpeg',
                    '-y',
@@ -74,7 +74,7 @@ class ExtractVideoClipProxyProcessor(AssetProcessor):
         self.make_h264_proxy_cut(asset)
 
     def make_h264_proxy_cut(self, asset):
-        source_path = file_storage.localize_remote_file(asset)
+        source_path = file_storage.localize_file(asset)
         with tempfile.NamedTemporaryFile(suffix=".mp4") as tf:
             cmd = ['ffmpeg',
                    '-y',

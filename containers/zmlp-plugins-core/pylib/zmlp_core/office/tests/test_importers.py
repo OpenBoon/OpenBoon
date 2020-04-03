@@ -3,7 +3,7 @@ import os
 from unittest.mock import patch
 
 import pytest
-from pathlib2 import Path
+from pathlib import Path
 
 from zmlpsdk import Frame, ZmlpFatalProcessorException
 from zmlpsdk.storage import file_storage
@@ -90,7 +90,7 @@ class OfficeImporterUnitTestCase(PluginUnitTestCase):
         processor.process(Frame(self.asset))
         assert expand_patch.call_count == 2
 
-    @patch.object(file_storage, 'localize_uri')
+    @patch.object(file_storage, 'localize_file')
     def test_get_metadata(self, cache_patch):
         path = os.path.dirname(__file__) + '/test_metadata.json'
         cache_patch.return_value = path
