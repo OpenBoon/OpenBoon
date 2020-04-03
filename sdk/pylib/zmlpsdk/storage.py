@@ -48,49 +48,87 @@ class AssetStorage(object):
 
     def store_file(self, asset, src_path, category, rename=None, attrs=None):
         """
-        Store a file and associate it with Asset.  The file is copied into
-        the local cache automatically, so subsequent calls to localize the
-        file will be a no-op.
+        Add a file to the asset's file list and store into externally
+        available cloud storage. Also stores a copy into the
+        local file cache for use by other processors.
+
+        To obtain the local cache path for the file, call 'localize_asset_file'
+        with the result of this method.
 
         Args:
-            asset (Asset): The asset to store the file on.
-            src_path (str): The source path to the file.
-            category (str): The category of the file.
-            rename (str): The file name if you want to rename the soure file.
-            attrs (dict): A map of key/value pairs for arbitrary file attrs.
+            asset (Asset): The purpose of the file, ex proxy.
+            src_path (str): The local path to the file.
+            category (str): The purpose of the file, ex proxy.
+            rename (str): Rename the file to something better.
+            attrs (dict): Arbitrary attributes to attach to the file.
 
         Returns:
-            StoredFile: The StoredFile record.
+            StoredFile: A stored file record.
 
         """
-        # Use the ZMLP client to store the file in the cloud
-        result = self.app.assets.store_file(asset, src_path, category, rename, attrs)
+        asset_id = getattr(asset, "id", asset)
+        spec = {
+            "name": rename or Path(src_path).name,
+            "category": category,
+            "attrs": {}
+        }
+        if attrs:
+            spec["attrs"].update(attrs)
+
+        result = StoredFile(self.app.client.upload_file(
+            "/api/v3/assets/{}/_files".format(asset_id), src_path, spec))
+        asset.add_file(result)
         self.localize_file(result, src_path)
         return result
 
     def store_blob(self, asset, blob, category, name, attrs=None):
         """
-        Store a file and associate it with Asset.  The file is copied into
-        the local cache automatically, so subsequent calls to localize the
-        file will be a no-op.
+        Add a blob of text to the asset's file list and store into externally
+        available cloud storage.  This is mainly a convenience function that
+        eliminates the need for the user to write a file to disk.
+
+        To obtain the local cache path for the file, call 'localize_asset_file'
+        with the result of this method.
 
         Args:
-            asset (Asset): The asset to store the file on.
-            blob (str): The blob of data, could be a pickle, json, base64, etc.
-            category (str): The category of the file.
-            name (str): The name of the blob, must have proper file extension.
-            attrs (dict): A map of key/value pairs for arbitrary file attrs.
-
+            asset (mixed): The asset or the unique asset ID.
+            blob (bytes): The string blob of data to write.
+            category (str): The purpose of the file, ex proxy.
+            name (str): The name of th efile.
+            attrs (dict): Arbitrary attributes to attach to the file.
         Returns:
-            StoredFile: The StoredFile record.
+            StoredFile: The stored file record.
 
         """
-        # Use the ZMLP client to store the file in the cloud
-        stored_file = self.app.assets.store_blob(asset, blob, category, name, attrs)
-        path = self.cache.get_path(stored_file.id)
-        with open(path, "w") as fp:
+        asset_id = getattr(asset, "id", None) or asset
+        spec = {
+            "name": name,
+            "category": category,
+            "attrs": {}
+        }
+        if attrs:
+            spec["attrs"].update(attrs)
+
+        # The blob should be bytes
+        if isinstance(blob, str):
+            blob = blob.encode('utf-8')
+        elif not isinstance(blob, (bytes, bytearray)):
+            raise ValueError("The blob must be a bytes like object or bytearray")
+
+        base, ext = os.path.splitext(name)
+        if not ext:
+            raise ValueError("The blob name requires a file extension")
+
+        fd, tmp_path = tempfile.mkstemp(suffix=ext, prefix='zblob')
+        with open(tmp_path, 'wb') as fp:
             fp.write(blob)
-        return stored_file
+
+        result = StoredFile(self.app.client.upload_file(
+            "/api/v3/assets/{}/_files".format(asset_id), tmp_path, spec))
+        asset.add_file(result)
+
+        shutil.copy(tmp_path, self.cache.get_path(result.id))
+        return result
 
     def localize_file(self, sfile, precache_file=None):
         """

@@ -151,15 +151,15 @@ class TestAssetStorage(TestCase):
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_store_blob(self, upload_patch):
-        upload_patch.return_value = StoredFile({
+        upload_patch.return_value = {
             'name': 'vid-int-moderation.json',
             'category': 'google',
             'attrs': {},
             'id': 'assets/123456/google/vid-int-moderation.json',
-        })
+        }
         asset = TestAsset(id='123456')
         result = self.fs.assets.store_blob(
-            asset, '{"jo": "boo"}', 'google', 'vid-int-moderation.json')
+            asset, b'{"jo": "boo"}', 'google', 'vid-int-moderation.json')
         assert 'google' == result.category
         assert 'vid-int-moderation.json' == result.name
 

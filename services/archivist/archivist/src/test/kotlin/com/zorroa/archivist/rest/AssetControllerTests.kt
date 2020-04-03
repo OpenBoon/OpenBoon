@@ -378,7 +378,7 @@ class AssetControllerTests : MockMvcTest() {
             multipart("/api/v3/assets/$id/_files")
                 .file(body)
                 .file(file)
-                .headers(admin())
+                .headers(job())
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.category", CoreMatchers.equalTo("proxy")))
