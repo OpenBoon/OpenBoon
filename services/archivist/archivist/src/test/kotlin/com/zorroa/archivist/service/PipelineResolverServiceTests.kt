@@ -13,7 +13,6 @@ import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.Provider
 import com.zorroa.archivist.domain.SupportedMedia
-import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
@@ -197,7 +196,7 @@ class PipelineResolverServiceTests : AbstractTest() {
         )
 
         val resolved = setupTestPipeline(spec1, spec2)
-        assertEquals(1, resolved.filter { it.className ==  "Foo.FooProcessor"}.size)
+        assertEquals(1, resolved.filter { it.className == "Foo.FooProcessor" }.size)
 
         val last = resolved.last()
         assertEquals("cat", last.args?.get("dog"))
@@ -382,7 +381,7 @@ class PipelineResolverServiceTests : AbstractTest() {
      * Makes a test pipeline with the given module and resolves
      * into a list of [ProcessorRef]
      */
-    private fun setupTestPipeline(spec: PipelineModSpec, spec2: PipelineModSpec?=null): List<ProcessorRef> {
+    private fun setupTestPipeline(spec: PipelineModSpec, spec2: PipelineModSpec? = null): List<ProcessorRef> {
         val mods = mutableListOf<UUID>()
         mods.add(pipelineModService.create(spec).id)
         if (spec2 != null) {

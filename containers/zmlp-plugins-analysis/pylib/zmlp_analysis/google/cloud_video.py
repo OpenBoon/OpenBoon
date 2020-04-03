@@ -40,7 +40,6 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         "very_likely"]
     """A list of confidence labels used by Google."""
 
-
     def __init__(self):
         super(AsyncVideoIntelligenceProcessor, self).__init__()
         self.add_arg(Argument('detect_explicit', 'int', default=-1,
@@ -134,7 +133,6 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             results (dict): The JSON compatible result.
     
         """
-
         def process_label_annotations(annotations):
             for annotation in annotations:
                 labels = [annotation.entity.description]

@@ -35,6 +35,4 @@ class MxUnitTests(PluginUnitTestCase):
         processor.process(self.frame)
 
         analysis = self.frame.asset['analysis.zvi-label-detection']
-        print(analysis)
         assert 'toucan' in get_prediction_labels(analysis)
-
