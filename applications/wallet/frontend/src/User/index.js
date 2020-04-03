@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import useSWR from 'swr'
 import * as Sentry from '@sentry/browser'
 
-export const noop = () => {}
+import { noop, meFetcher } from './helpers'
 
 export const UserContext = createContext({
   user: {},
@@ -15,20 +15,7 @@ export const UserContext = createContext({
 const User = ({ initialUser, children }) => {
   const [googleAuth, setGoogleAuth] = useState({ signIn: noop, signOut: noop })
 
-  const { data, mutate } = useSWR(
-    `/api/v1/me/`,
-    typeof window === 'undefined'
-      ? noop
-      : async (url) => {
-          try {
-            const response = await fetch(url)
-            if (response.status >= 400) throw response
-            return response.json()
-          } catch (error) {
-            return {}
-          }
-        },
-  )
+  const { data, mutate } = useSWR(`/api/v1/me/`, meFetcher)
 
   const user = initialUser.id ? initialUser : data
 

@@ -1,50 +1,15 @@
-import TestRenderer, { act } from 'react-test-renderer'
+import TestRenderer from 'react-test-renderer'
 
-import user from '../__mocks__/user'
-
-import User, { UserContext, noop } from '..'
+import User from '..'
 
 describe('<User />', () => {
-  it.skip('should update localStorage and the user state', () => {
+  it('should return null while the user is loading', () => {
+    require('swr').__setMockUseSWRResponse({ data: null })
+
     const component = TestRenderer.create(
-      <User initialUser={user}>
-        <UserContext.Consumer>
-          {({ user: { email }, mutate }) => (
-            <div>
-              <span>{email}</span>
-              <button type="button" onClick={() => mutate(email ? {} : user)}>
-                {email ? 'Logout' : 'Login'}
-              </button>
-            </div>
-          )}
-        </UserContext.Consumer>
-      </User>,
+      <User initialUser={{}}>Hello world!</User>,
     )
 
-    expect(component.toJSON()).toMatchSnapshot()
-
-    act(() => {
-      component.root
-        .findByProps({ children: 'Logout' })
-        .props.onClick({ preventDefault: noop })
-    })
-
-    expect(component.toJSON()).toMatchSnapshot()
-
-    expect(component.root.findByType('span').props.children).toBeUndefined()
-
-    act(() => {
-      component.root
-        .findByProps({ children: 'Login' })
-        .props.onClick({ preventDefault: noop })
-    })
-
-    expect(component.toJSON()).toMatchSnapshot()
-
-    expect(component.root.findByType('span').props.children).toBe(user.email)
-  })
-
-  it('noop should do nothing', () => {
-    expect(noop()).toBe(undefined)
+    expect(component.toJSON()).toBe(null)
   })
 })
