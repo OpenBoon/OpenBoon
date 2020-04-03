@@ -13,8 +13,10 @@ import com.zorroa.archivist.domain.PipelineUpdate
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.Provider
 import com.zorroa.archivist.domain.SupportedMedia
+import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.UUID
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
@@ -154,6 +156,53 @@ class PipelineResolverServiceTests : AbstractTest() {
         )
         val resolved = setupTestPipeline(spec)
         assertEquals("foo", resolved.last().className)
+    }
+
+    @Test
+    fun resolveAppendOnceOp() {
+        val spec1 = PipelineModSpec(
+            "test", "A test module",
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
+            listOf(SupportedMedia.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(ProcessorRef("Foo.FooProcessor", "zmlp-plugins-foo", mapOf("dog" to "cat")))
+                ),
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(ProcessorRef("Foo.FooProcessor", "zmlp-plugins-foo", mapOf("capt" to "kirk")))
+                )
+            )
+        )
+
+        val spec2 = PipelineModSpec(
+            "test2", "A test module",
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
+            listOf(SupportedMedia.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(ProcessorRef("Foo.FooProcessor", "zmlp-plugins-foo", mapOf("capt" to "picard")))
+                ),
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(ProcessorRef("Foo.FooProcessor", "zmlp-plugins-foo", mapOf("bilbo" to "baggins")))
+                )
+            )
+        )
+
+        val resolved = setupTestPipeline(spec1, spec2)
+        assertEquals(1, resolved.filter { it.className ==  "Foo.FooProcessor"}.size)
+
+        val last = resolved.last()
+        assertEquals("cat", last.args?.get("dog"))
+        assertEquals("picard", last.args?.get("capt"))
+        assertEquals("baggins", last.args?.get("bilbo"))
     }
 
     @Test
@@ -333,13 +382,17 @@ class PipelineResolverServiceTests : AbstractTest() {
      * Makes a test pipeline with the given module and resolves
      * into a list of [ProcessorRef]
      */
-    private fun setupTestPipeline(spec: PipelineModSpec): List<ProcessorRef> {
-        val mod = pipelineModService.create(spec)
+    private fun setupTestPipeline(spec: PipelineModSpec, spec2: PipelineModSpec?=null): List<ProcessorRef> {
+        val mods = mutableListOf<UUID>()
+        mods.add(pipelineModService.create(spec).id)
+        if (spec2 != null) {
+            mods.add(pipelineModService.create(spec2).id)
+        }
         entityManager.flush()
         val pipeline = pipelineService.create(PipelineSpec("test"))
         pipelineService.update(
             pipeline.id, PipelineUpdate(
-                pipeline.name, pipeline.processors, listOf(mod.id)
+                pipeline.name, pipeline.processors, mods
             )
         )
         return pipelineResolverService.resolve(pipeline.id)
