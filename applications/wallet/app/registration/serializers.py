@@ -1,5 +1,6 @@
 from django.conf import settings
 from rest_auth.serializers import PasswordResetSerializer
+from rest_framework import serializers
 
 
 class PasswordResetSerializer(PasswordResetSerializer):
@@ -17,3 +18,11 @@ class PasswordResetSerializer(PasswordResetSerializer):
         }
         opts.update(self.get_email_options())
         self.reset_form.save(**opts)
+
+
+class RegistrationSerializer(serializers.Serializer):
+    email = serializers.CharField(required=True)
+    first_name = serializers.CharField(required=True)
+    last_name = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+    policies_date = serializers.IntegerField(required=False)

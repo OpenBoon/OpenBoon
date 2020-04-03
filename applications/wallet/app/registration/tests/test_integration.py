@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.utils.timezone import now
 from rest_framework.reverse import reverse
 
+from agreements.models import Agreement
 from registration.models import UserRegistrationToken
 
 pytestmark = pytest.mark.django_db
@@ -62,7 +63,8 @@ def test_register_and_confirm(api_client, mailoutbox):
     response = api_client.post(reverse('api-user-register'), {'email': 'fake@fakerson.com',
                                                               'firstName': 'Fakey',
                                                               'lastName': 'Fakerson',
-                                                              'password': password})
+                                                              'password': password,
+                                                              'policiesDate': 20010101})
     assert response.status_code == 200
     user = User.objects.get(username='fake@fakerson.com')
     assert not user.is_active
@@ -72,6 +74,7 @@ def test_register_and_confirm(api_client, mailoutbox):
     token = search.group('token')
     user_id = search.group('id')
     assert UserRegistrationToken.objects.filter(token=token, user=user_id).exists()
+    assert Agreement.objects.get(user=user)
 
     # Activate the user's account.
     response = api_client.post(reverse('api-user-confirm'), {'token': token, 'userId': user_id})
