@@ -8,10 +8,18 @@ from agreements.models import Agreement
 from agreements.serializers import AgreementSerializer
 
 
-class AgreementViewSet(ListModelMixin,
-                       GenericViewSet):
-    """Viewset for working with Privacy & Terms Agreements"""
+def get_ip_from_request(request):
+    """Returns the IP address from a request."""
+    forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if forwarded_for:
+        ip_address = forwarded_for.split(',')[0]
+    else:
+        ip_address = request.META.get('REMOTE_ADDR')
+    return ip_address
 
+
+class AgreementViewSet(ListModelMixin, GenericViewSet):
+    """Viewset for working with Privacy & Terms Agreements"""
     serializer_class = AgreementSerializer
 
     def get_queryset(self):
@@ -38,11 +46,7 @@ class AgreementViewSet(ListModelMixin,
                             status=status.HTTP_400_BAD_REQUEST)
 
         # Get the IP
-        forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-        if forwarded_for:
-            ip_address = forwarded_for.split(',')[0]
-        else:
-            ip_address = request.META.get('REMOTE_ADDR')
+        ip_address = get_ip_from_request(request)
 
         # Update request data with calculated values
         request.data['user'] = user_pk
