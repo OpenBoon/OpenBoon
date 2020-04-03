@@ -3,12 +3,8 @@
  */
 require('jest-fetch-mock').enableMocks()
 
-const { initializeFetcher } = require('./src/Fetch/helpers')
-
 beforeEach(() => {
   fetch.resetMocks()
-
-  initializeFetcher()
 })
 
 /**

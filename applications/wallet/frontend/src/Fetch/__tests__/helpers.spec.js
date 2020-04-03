@@ -1,10 +1,8 @@
-import { initializeFetcher, fetcher } from '../helpers'
+import { fetcher } from '../helpers'
 
 describe('<Fetch /> helpers', () => {
   describe('fetcher()', () => {
     it('should fetch data', async () => {
-      initializeFetcher()
-
       fetch.mockResponseOnce(JSON.stringify({ id: 12345 }))
 
       const data = await fetcher('/url')
@@ -13,8 +11,6 @@ describe('<Fetch /> helpers', () => {
     })
 
     it('should return the raw response in case of error', async () => {
-      initializeFetcher()
-
       fetch.mockResponseOnce(null, { status: 500 })
 
       try {
@@ -29,8 +25,6 @@ describe('<Fetch /> helpers', () => {
     })
 
     it('should return the raw response if its not a json', async () => {
-      initializeFetcher()
-
       fetch.mockResponseOnce(null, { status: 200 })
 
       try {
@@ -48,8 +42,6 @@ describe('<Fetch /> helpers', () => {
       const mockMutate = jest.fn()
 
       require('swr').__setMockMutateFn(mockMutate)
-
-      initializeFetcher()
 
       fetch.mockResponseOnce(null, { status: 401 })
 

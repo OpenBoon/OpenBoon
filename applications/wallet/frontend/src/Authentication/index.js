@@ -4,7 +4,7 @@ import getConfig from 'next/config'
 import { SWRConfig } from 'swr'
 import Router from 'next/router'
 
-import { initializeFetcher } from '../Fetch/helpers'
+import { fetcher } from '../Fetch/helpers'
 
 import { UserContext } from '../User'
 
@@ -31,8 +31,6 @@ const Authentication = ({ route, children }) => {
 
   const [hasGoogleLoaded, setHasGoogleLoaded] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-
-  const fetcher = initializeFetcher()
 
   useEffect(() => {
     window.gapi.load('auth2', async () => {
