@@ -9,7 +9,7 @@ object StandardContainers {
 }
 
 object Category {
-    const val GOOGLE_VIDEO = "Video Intelligence"
+    const val GOOGLE_VIDEO = "Google Video Intelligence"
     const val GOOGLE_VISION = "Google Vision"
     const val AWS_REK = "Amazon Rekognition"
     const val ZORROA_TL = "Zorroa Timeline Extraction"
@@ -25,11 +25,14 @@ object Provider {
 }
 
 object ModType {
-    const val OCR = "Optical Character Recognition (OCR)"
     const val LABEL_DETECTION = "Label Detection"
     const val OBJECT_DETECTION = "Object Detection"
+    const val LANDMARK_DETECTION = "Landmark Detection"
+    const val LOGO_DETECTION = "Logo Detection"
     const val FACE_RECOGNITION = "Face Recognition"
     const val CLIPIFIER = "Asset Clipifier"
+    const val EXPLICIT_DETECTION = "Explicit Detection"
+    const val TEXT_DETECTION = "Text Detection (OCR)"
 }
 
 /**
@@ -134,7 +137,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             "Utilize OCR technology to detect text on an image.",
             Provider.ZORROA,
             Category.ZORROA_STD,
-            ModType.OCR,
+            ModType.TEXT_DETECTION,
             listOf(SupportedMedia.Images),
             listOf(
                 ModOp(
@@ -159,7 +162,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.clarifai.ClarifaiPredictProcessor",
+                        ProcessorRef("zmlp_analysis.clarifai.ClarifaiPredictGeneralProcessor",
                             StandardContainers.ANALYSIS)
                     )
                 )
@@ -169,8 +172,8 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "gcp-label-detection",
-            "Utilize Google Cloud Vision label detection to detect and extract information about " +
-                "entities in an image, across a broad group of categories.",
+            "Detect and extract information about entities in " +
+                "an image, across a broad group of categories.",
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModType.LABEL_DETECTION,
@@ -189,8 +192,7 @@ fun getStandardModules(): List<PipelineModSpec> {
         ),
         PipelineModSpec(
             "gcp-object-detection",
-            "Utilize Google Cloud Vision label detection to detect and extract information about " +
-                "entities in an image, across a broad group of categories.",
+            "Detect and extract multiple objects in an image.",
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModType.OBJECT_DETECTION,
@@ -199,8 +201,162 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.google.CloudVisionDetectLabels",
+                        ProcessorRef("zmlp_analysis.google.CloudVisionDetectObjects",
                             StandardContainers.ANALYSIS)
+                    )
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
+            "gcp-logo-detection",
+            "Detect popular product logos within an image.",
+            Provider.GOOGLE,
+            Category.GOOGLE_VISION,
+            ModType.LOGO_DETECTION,
+            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef("zmlp_analysis.google.CloudVisionDetectLogos",
+                            StandardContainers.ANALYSIS)
+                    )
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
+            "gcp-landmark-detection",
+            "Detect popular natural and man-made structures within an image.",
+            Provider.GOOGLE,
+            Category.GOOGLE_VISION,
+            ModType.LANDMARK_DETECTION,
+            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.google.CloudVisionDetectLandmarks",
+                            StandardContainers.ANALYSIS
+                        )
+                    )
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
+            "gcp-video-label-detection",
+            "Detect labels within a video.",
+            Provider.GOOGLE,
+            Category.GOOGLE_VIDEO,
+            ModType.LABEL_DETECTION,
+            listOf(SupportedMedia.Video),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
+                            StandardContainers.ANALYSIS,
+                            mapOf("detect_labels" to 0.15)
+                        )
+                    )
+                ),
+                ModOp(
+                    ModOpType.SET_ARGS,
+                    OpFilter(OpFilterType.REGEX, ".*AsyncVideoIntelligenceProcessor")
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
+            "gcp-video-logo-detection",
+            "Detect logos within a video.",
+            Provider.GOOGLE,
+            Category.GOOGLE_VIDEO,
+            ModType.LOGO_DETECTION,
+            listOf(SupportedMedia.Video),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
+                            StandardContainers.ANALYSIS,
+                            mapOf("detect_logos" to 0.15)
+                        )
+                    )
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
+            "gcp-video-object-detection",
+            "Detect objects within a video.",
+            Provider.GOOGLE,
+            Category.GOOGLE_VIDEO,
+            ModType.OBJECT_DETECTION,
+            listOf(SupportedMedia.Video),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
+                            StandardContainers.ANALYSIS,
+                            mapOf("detect_objects" to 0.15)
+                        )
+                    )
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
+            "gcp-video-explicit-detection",
+            "Detect explicit content in videos.",
+            Provider.GOOGLE,
+            Category.GOOGLE_VIDEO,
+            ModType.EXPLICIT_DETECTION,
+            listOf(SupportedMedia.Video),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
+                            StandardContainers.ANALYSIS,
+                            mapOf("detect_explicit" to 4)
+                        )
+                    )
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
+            "gcp-video-text-detection",
+            "Detect and extract text from video using OCR",
+            Provider.GOOGLE,
+            Category.GOOGLE_VIDEO,
+            ModType.TEXT_DETECTION,
+            listOf(SupportedMedia.Video),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
+                            StandardContainers.ANALYSIS,
+                            mutableMapOf("detect_text" to true)
+                        )
                     )
                 )
             ),

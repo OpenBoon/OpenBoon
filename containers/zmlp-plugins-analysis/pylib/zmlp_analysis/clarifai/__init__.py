@@ -1,2 +1,2 @@
 # flake8: noqa
-from .processors import ClarifaiPredictProcessor
+from .processors import ClarifaiPredictGeneralProcessor

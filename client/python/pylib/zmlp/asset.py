@@ -1,16 +1,17 @@
-import json
 import logging
 import os
+import json
 
-from .client import ZmlpJsonEncoder
 from .util import as_collection
+from .client import to_json
+
 
 __all__ = [
     "Asset",
     "FileImport",
     "FileUpload",
     "Clip",
-    "Element"
+    "StoredFile"
 ]
 
 logger = logging.getLogger(__name__)
@@ -112,23 +113,7 @@ class DocumentMixin(object):
         if not id or not val:
             raise ValueError("Analysis requires a unique ID and value")
         attr = "analysis.%s" % id
-        self.set_attr(attr, val)
-
-    def add_element(self, element):
-        """
-        Add a new Element instance to this Asset instance.  The Element is not
-        saved to the serve until the asset is re-indexed.
-
-        Args:
-            element (Element): An element instance.
-
-        """
-        if not isinstance(element, Element):
-            raise ValueError("Could not add element, value was not an Element instance.")
-
-        elements = self.get_attr("elements") or []
-        elements.append(json.loads(json.dumps(element, cls=ZmlpJsonEncoder)))
-        self.set_attr("elements", elements)
+        self.set_attr(attr, json.loads(to_json(val)))
 
     def extend_list_attr(self, attr, items):
         """
@@ -270,8 +255,27 @@ class Asset(DocumentMixin):
         """
         return self.get_attr("source.path")
 
+    def add_file(self, stored_file):
+        """
+        Adds the StoredFile record to the asset's list of associated files.
+
+        Args:
+            stored_file (StoredFile): A file that has been stored in ZMLP
+
+        Returns:
+            bool: True if the file was added to the list, False if it was a duplicate.
+
+        """
+        # Ensure the file doesn't already exist in the metadata
+        if not self.get_files(id=stored_file.id):
+            files = self.get_attr("files") or []
+            files.append(stored_file._data)
+            self.set_attr("files", files)
+            return True
+        return False
+
     def get_files(self, name=None, category=None, mimetype=None, extension=None,
-                  attrs=None, attr_keys=None, sort_func=None):
+                  id=None, attrs=None, attr_keys=None, sort_func=None):
         """
         Return all stored files associated with this asset.  Optionally
         filter the results.
@@ -285,13 +289,16 @@ class Asset(DocumentMixin):
             attr_keys: (list): A list of attribute keys that must be present.
             sort_func: (func): A lambda function for sorting the result.
         Returns:
-            list of dict: A list of ZMLP file records.
+            list of StoredFile: A list of ZMLP file records.
 
         """
         result = []
         files = self.get_attr("files") or []
         for fs in files:
             match = True
+            if id and not any((item for item in as_collection(id)
+                               if fs["id"] == item)):
+                match = False
             if name and not any((item for item in as_collection(name)
                                  if fs["name"] == item)):
                 match = False
@@ -315,7 +322,7 @@ class Asset(DocumentMixin):
                     if file_attrs.get(k) != v:
                         match = False
             if match:
-                result.append(fs)
+                result.append(StoredFile(fs))
 
         if sort_func:
             result = sorted(result, key=sort_func)
@@ -422,74 +429,74 @@ class Clip(object):
         return serializable_dict
 
 
-class Element(object):
+class StoredFile(object):
     """
-    An Element describes a region within an image which contains a specific prediction,
-    such as a face or object.  Elements are stored as nested objects in ElasticSearch
-    which allows for specific combinations of types, labels, regions, etc to be searched.
-
-    Elements are considered unique by type, labels, rect, and stored_file name.
-
-    Attributes:
-        regions (list[str]): The region of the image where the Element exists. This
-            is automatically set if it can be calculated from the rect and
-            the stored_file size.
-
+    The StoredFile class represnents a supporting file that has been stored in ZVI.
     """
 
-    # The attributes that get serialized for json.  If you change this, you'll likely
-    # have to change the ES mapping.
-    attrs = ['type', 'labels', 'rect', 'score', 'analysis', 'simhash']
+    def __init__(self, data):
+        self._data = data
 
-    def __init__(self, type, analysis=None, labels=None, score=None, rect=None, simhash=None):
+    @property
+    def id(self):
         """
-        Create a new Element instance.
+        The unique ID of the file.
+        """
+        return self._data['id']
 
-        Args:
-            type (str): The type of element, typically 'object' or 'face' but
-                it can be an arbitrary value.
-            analysis: (str): The analysis namespace associated with this element.
-            labels (list[str]): A list of predicted labels.
-            score (float): If a prediction is made, a score describes the confidence level.
-            rect (list[int]): A list of 4 integers describe the rectangle containing the element.
-                The ints represent the upper left point and lower left point of the rectangle.
-            simhash (str): A similarity hash if any.
+    @property
+    def name(self):
         """
-        self.type = type
-        self.analysis = analysis
-        self.labels = as_collection(labels)
-        self.score = round(float(score), 6) if score else None
-        self.rect = rect
-        self.simhash = simhash
+        The file name..
+        """
+        return self._data['name']
+
+    @property
+    def category(self):
+        """
+        The file category.
+        """
+        return self._data['category']
+
+    @property
+    def attrs(self):
+        """
+        Arbitrary attributes.
+        """
+        return self._data['attrs']
+
+    @property
+    def mimetype(self):
+        """
+        The file mimetype.
+        """
+        return self._data['mimetype']
+
+    @property
+    def size(self):
+        """
+        The size of the file.
+        """
+        return self._data['size']
+
+    def __str__(self):
+        return "<StoredFile {}>".format(self.id)
+
+    def __eq__(self, other):
+        return other.id
+
+    def __hash__(self):
+        return hash(self.id)
 
     def for_json(self):
-        """
-        Serialize the Element to JSON.
+        """Return a JSON serialized copy.
+
         Returns:
-            dict: A serialized Element
+            :obj:`dict`: A json serializable dict.
         """
         serializable_dict = {}
-        for attr in self.attrs:
+        attrs = self._data.keys()
+        for attr in attrs:
             if getattr(self, attr, None) is not None:
                 serializable_dict[attr] = getattr(self, attr)
         return serializable_dict
-
-    @staticmethod
-    def calculate_normalized_rect(img_width, img_height, rect):
-        """
-        Calculate points for normalized rectangle based on the given
-        image width and height.
-        Args:
-            img_width (int): The width of the image the rect was calculated in.
-            img_height (int): The height of the image the rect was calculated in.
-            rect: (list): An array of 4 points that make up the rectangle.
-
-        Returns:
-            list<float> An array of points for a normalized rectangle.
-        """
-        return [
-            round(rect[0] / float(img_width), 3),
-            round(rect[1] / float(img_height), 3),
-            round(rect[2] / float(img_width), 3),
-            round(rect[3] / float(img_height), 3)
-        ]

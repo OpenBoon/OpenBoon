@@ -5,7 +5,7 @@ import logging
 import collections
 
 from PIL import Image
-from pathlib2 import Path
+from pathlib import Path
 
 from zmlpsdk import AssetProcessor, Argument
 from zmlpsdk.storage import file_storage
@@ -182,14 +182,14 @@ class ImageProxyProcessor(AssetProcessor):
 
         proxy_source_file = asset.get_attr("tmp.proxy_source_image")
         if proxy_source_file:
-            return file_storage.localize_uri(proxy_source_file)
+            return file_storage.localize_file(proxy_source_file)
 
         # Handles pulling the actual source.path or a files source.
         # If the source file type is not an image, this processor
         # has no chance of making a proxy, so we're going to skip
         # generating an error.
         if asset.get_attr("media.type") == "image":
-            return file_storage.localize_remote_file(asset)
+            return file_storage.localize_file(asset)
         return None
 
     def _get_valid_sizes(self, width, height):

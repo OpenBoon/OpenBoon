@@ -1,10 +1,10 @@
 import io
 from collections import namedtuple
 
-from ..asset import Asset
+from ..asset import Asset, StoredFile
+from ..job import Job
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
 from ..util import as_collection
-from ..job import Job
 
 
 class AssetApp(object):
@@ -398,7 +398,7 @@ class AssetApp(object):
         """
         if isinstance(file_id, str):
             cat_name = file_id
-        elif isinstance(file_id, dict):
+        elif isinstance(file_id, StoredFile):
             cat_name = "{}/{}".format(file_id["category"], file_id["name"])
         else:
             raise ValueError("file_id must be a string or dict")

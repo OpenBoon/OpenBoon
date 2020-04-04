@@ -257,7 +257,9 @@ enum class ModOpType() {
     @ApiModelProperty("Remove matched processors")
     REMOVE,
     @ApiModelProperty("Append processors as far back as possible.")
-    LAST
+    LAST,
+    @ApiModelProperty("Append once and only once, merge args if any.")
+    APPEND_MERGE,
 }
 
 @ApiModel("Pipeline Mod Operation", description = "An operation to apply to a Pipeline")

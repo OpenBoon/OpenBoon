@@ -24,7 +24,7 @@ class PreCacheSourceFileProcessor(AssetProcessor):
         asset = frame.asset
         try:
             self.logger.info('precaching source file')
-            path = file_storage.localize_remote_file(asset)
+            path = file_storage.localize_file(asset)
             # Virtual clip assets don't get a file size or checksum.
             if not asset.attr_exists('source.filesize') and \
                     not asset.attr_exists('clip.sourceAssetId'):

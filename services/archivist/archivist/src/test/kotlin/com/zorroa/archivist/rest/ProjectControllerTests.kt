@@ -128,12 +128,12 @@ class ProjectControllerTests : MockMvcTest() {
 
     @Test
     fun testSteamFile() {
-        val loc = ProjectFileLocator(ProjectStorageEntity.MODEL, "face_v1", "model.txt")
+        val loc = ProjectFileLocator(ProjectStorageEntity.MODELS, "face_v1", "model.txt")
         val storage = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         projectStorageService.store(storage)
 
         mvc.perform(
-            MockMvcRequestBuilders.get("/api/v3/project/_files/model/face_v1/model.txt")
+            MockMvcRequestBuilders.get("/api/v3/project/_files/models/face_v1/model.txt")
                 .headers(admin())
                 .contentType(MediaType.IMAGE_JPEG_VALUE)
         )
@@ -152,7 +152,7 @@ class ProjectControllerTests : MockMvcTest() {
 
         val payload = """
             {
-                "entity": "model",
+                "entity": "models",
                 "category": "image",
                 "name": "toucan.jpg",
                 "attrs": {

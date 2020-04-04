@@ -4,7 +4,7 @@ from datetime import datetime
 from functools import reduce
 
 import dateutil.parser
-from pathlib2 import Path
+from pathlib import Path
 
 from zmlp import Clip, FileImport
 from zmlpsdk import AssetProcessor, Argument, ExpandFrame, FileTypes
@@ -38,7 +38,7 @@ class ImageImporter(AssetProcessor):
 
     def process(self, frame):
         asset = frame.asset
-        path = Path(file_storage.localize_remote_file(asset))
+        path = Path(file_storage.localize_file(asset))
         metadata = get_image_metadata(path)
         set_resolution_attrs(asset, int(metadata.get('full_width')),
                              int(metadata.get('full_height')))

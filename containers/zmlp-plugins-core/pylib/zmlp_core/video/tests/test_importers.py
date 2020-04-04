@@ -1,4 +1,4 @@
-from pathlib2 import Path
+from pathlib import Path
 
 from zmlp_core.video.importers import VideoImporter
 from zmlpsdk import Frame, ZmlpProcessorException
