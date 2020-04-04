@@ -48,6 +48,21 @@ class TestAgreementList:
         assert result['createdDate']
         assert result['modifiedDate']
 
+    def test_get_list_for_other_user(self, zmlp_project_user, api_client,
+                                     login, django_user_model):
+        Agreement.objects.create(user=zmlp_project_user, policies_date='20200511',
+                                 ip_address='127.0.0.1')
+        user2 = django_user_model.objects.create_user('user2', 'user2@fake.com', 'letmein')
+        agreement2 = Agreement.objects.create(user=user2, policies_date='20200311',
+                                              ip_address='127.0.0.1')
+        response = api_client.get(reverse('agreement-list', kwargs={'user_pk': str(user2.id)}))  # noqa
+        assert response.status_code == status.HTTP_200_OK
+        content = response.json()
+        result = content['results']
+        # Should be the agreement for the User in the URI, not the request user
+        assert result[0]['id'] == str(agreement2.id)
+        assert result[0]['policiesDate'] == '20200311'
+
 
 class TestAgreementCreate:
 

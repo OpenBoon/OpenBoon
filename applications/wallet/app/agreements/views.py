@@ -15,7 +15,7 @@ class AgreementViewSet(ListModelMixin,
     serializer_class = AgreementSerializer
 
     def get_queryset(self):
-        return Agreement.objects.filter(user=self.request.user)
+        return Agreement.objects.filter(user=self.kwargs['user_pk'])
 
     def create(self, request, user_pk):
         # Ensure the user can only create their own agreement
