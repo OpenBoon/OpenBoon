@@ -6,8 +6,6 @@ from django.db import models
 from projects.models import Project
 from wallet.fields import JSONField
 
-# from django.contrib.postgres.fields import JSONField
-
 User = get_user_model()
 
 

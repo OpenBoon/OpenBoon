@@ -13,6 +13,7 @@ if 'sqlite' in settings.DATABASES['default']['ENGINE']:
     # This is a very basic implementation of the JSONField for SQLite so that we
     # can continue to use the SQLite In Memory DB for testing. It doesn't allow for
     # queries or any of the more complicated field interactions.
+    # Based on: https://medium.com/@philamersune/using-postgresql-jsonfield-in-sqlite-95ad4ad2e5f1
     class JSONField(Field):
         def db_type(self, connection):
             return 'text'
