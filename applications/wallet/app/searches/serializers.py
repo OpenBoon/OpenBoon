@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from searches.models import Search
 
+
 class SearchSerializer(serializers.ModelSerializer):
     """Serializer to return a Saved Search"""
 

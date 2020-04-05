@@ -1,10 +1,12 @@
 import uuid
 
-from django.db import models
 from django.contrib.auth import get_user_model
-from django.contrib.postgres.fields import JSONField
+from django.db import models
 
 from projects.models import Project
+from wallet.fields import JSONField
+
+# from django.contrib.postgres.fields import JSONField
 
 User = get_user_model()
 
@@ -21,3 +23,6 @@ class Search(models.Model):
 
     class Meta:
         verbose_name_plural = 'Searches'
+
+    def __str__(self):
+        return f'{self.project} - {self.name}'
