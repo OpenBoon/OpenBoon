@@ -11,7 +11,7 @@ class OcrProcessor(AssetProcessor):
     """
     file_types = FileTypes.images
 
-    namespace = "zvi.text-detection"
+    namespace = "zvi-text-detection"
 
     def __init__(self):
         super(OcrProcessor, self).__init__()
@@ -20,4 +20,8 @@ class OcrProcessor(AssetProcessor):
         p_path = get_proxy_level_path(frame.asset, 0)
         data = pytesseract.image_to_string(p_path)
         data = data.replace('\r', '').replace('\n', '')
-        frame.asset.add_analysis(self.namespace, {"content": data})
+        frame.asset.add_analysis(self.namespace, {
+            'type': 'content',
+            'content': data,
+            'count': len(data.split())
+        })

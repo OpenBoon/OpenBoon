@@ -130,6 +130,12 @@ class PipelineResolverServiceImpl(
 
     @Transactional(readOnly = true)
     override fun resolveModular(mods: List<PipelineMod>): List<ProcessorRef> {
+
+        /**
+         * The current pipeline.  This is re-resolved after every pipeline module, which
+         * means that ModOps in the same module cannot see modifications made by
+         * previous ModOps.
+         */
         var currentPipeline = getStandardPipeline()
 
         for (module in mods) {
@@ -141,9 +147,27 @@ class PipelineResolverServiceImpl(
                 getMatchingOps(ref, module)
             }
 
+            /**
+             * The newPipeline becomes the currentPipeline after each mod iteration.
+             */
             val newPipeline = mutableListOf<ProcessorRef>()
+
+            /**
+             * The append list contains newly appended processors.
+             */
             val append = mutableListOf<ProcessorRef>()
+
+            /**
+             * The prepend list contains newly prepended processors which get put at
+             * the prepend marker.
+             */
             val prepend = mutableListOf<ProcessorRef>()
+
+            /**
+             * The last list contains newly appended  processors that must be
+             * last or close to last. Usually these don't modify assets, but
+             * emit them somewhere.
+             */
             val last = mutableListOf<ProcessorRef>()
 
             currentPipeline.zip(matchingOps).forEach { (ref, ops) ->
@@ -177,6 +201,27 @@ class PipelineResolverServiceImpl(
                                 newPipeline.add(ref)
                                 op.apply?.let {
                                     append.addAll(parsePipelineFragment(module.name, it))
+                                }
+                            }
+                            ModOpType.APPEND_MERGE -> {
+                                newPipeline.add(ref)
+                                val names = (currentPipeline.map { it.className } +
+                                    newPipeline.map { it.className } +
+                                    append.map { it.className })
+                                // Iterate procs in the fragment and add ones that don't exist,
+                                // and merge args for the ones that do.
+                                val frag = parsePipelineFragment(module.name, op.apply)
+                                for (proc in frag) {
+                                    if (proc.className !in names) {
+                                        append.add(proc)
+                                    } else {
+                                        val existing = currentPipeline.find { it == proc }
+                                            ?: newPipeline.find { it == proc }
+                                            ?: append.find { it == proc }
+                                        existing?.let { p ->
+                                            p.args = (p.args ?: mapOf()) + (proc.args ?: mapOf())
+                                        }
+                                    }
                                 }
                             }
                             ModOpType.PREPEND -> {
@@ -216,8 +261,12 @@ class PipelineResolverServiceImpl(
         return currentPipeline.filterNot { it.className == "PrependMarker" }
     }
 
-    fun parsePipelineFragment(module: String, frag: Any): List<ProcessorRef> {
+    fun parsePipelineFragment(module: String, frag: Any?): List<ProcessorRef> {
+        if (frag == null) {
+            return emptyList()
+        }
         val result = Json.Mapper.convertValue<List<ProcessorRef>>(frag)
+        // Sets the module name
         result.forEach { it.module = module }
         return result
     }

@@ -16,6 +16,8 @@ def main():
                         help='Build JVM services')
     parser.add_argument('--analysis', '-a', action='store_true',
                         help='Build zmlp-plugins-analysis and SDK requirements')
+    parser.add_argument('--list', '-l', action='store_true',
+                        help='Output list of containers')
 
     args = parser.parse_args()
     if args.containers:
@@ -39,10 +41,10 @@ def main():
                            'zmlp-plugins-base',
                            'zmlp-plugins-analysis'])
 
-    build_dependency_tree(containers)
+    build_dependency_tree(containers, args.list)
 
 
-def build_dependency_tree(to_build):
+def build_dependency_tree(to_build, list_only):
     env = os.environ
     env['DOCKER_CLI_EXPERIMENTAL'] = 'enabled'
     with open('docker-compose.yml') as fp:
@@ -71,6 +73,14 @@ def build_dependency_tree(to_build):
                 phase_built.add(svc_name)
         built.update(phase_built)
         phases.append(phase_built)
+
+    if list_only:
+        for idx, phase in enumerate(phases):
+            print("Phase {}".format(idx))
+            print("-------")
+            for item in phase:
+                print(" - {}".format(item))
+        return
 
     # Pass #3
     for phase in phases:

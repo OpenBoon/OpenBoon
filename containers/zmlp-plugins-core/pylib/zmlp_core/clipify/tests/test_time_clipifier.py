@@ -16,6 +16,7 @@ class TimeBasedVideoClipifierTests(PluginUnitTestCase):
     @patch.object(TimeBasedVideoClipifier, 'expand')
     def test_process(self, expand_patch, upload_patch):
         upload_patch.return_value = {
+            "id": "assets/id/proxy/video_1x1.m4v",
             "name": "video_1x1.m4v",
             "category": "proxy",
             "mimetype": "video/m4v",

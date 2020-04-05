@@ -1,129 +1,204 @@
-import subprocess
-import tempfile
+import logging
+import time
 
 import backoff
 from google.api_core.exceptions import ResourceExhausted
-from google.cloud import videointelligence_v1p2beta1 as videointelligence
-from pathlib2 import Path
+from google.cloud import videointelligence
 
-from zmlpsdk import Argument, AssetProcessor
-from zmlpsdk.proxy import get_proxy_level_path
-
+from zmlpsdk import Argument, AssetProcessor, FileTypes, file_storage
+from zmlpsdk.schema import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
 from .gcp_client import initialize_gcp_client
 
+logger = logging.getLogger(__name__)
 
-class CloudVideoIntelligenceProcessor(AssetProcessor):
-    """Use Google Cloud Video Intelligence API to label videos."""
+tip = 'Minimum confidence score between 0 and 1 required to add a ' \
+      'prediction.  Defaults to disabled'
 
-    file_types = ['mov', 'mp4', 'mpg', 'mpeg', 'm4v', 'webm', 'ogv', 'ogg']
+
+class AsyncVideoIntelligenceProcessor(AssetProcessor):
+    """Use Google Cloud Video Intelligence to detect explicit content."""
+
+    file_types = FileTypes.videos
 
     tool_tips = {
-        'detect_labels': 'If True then label detection will be run.',
-        'detect_text': 'If True OCR will be run.'
+        'detect_labels': tip,
+        'detect_text': "Set to true to enable text detetecction.",
+        'detect_objects': tip,
+        'detect_logos': tip,
+        'detect_explicit': 'An integer level of confidence to tag as explicit. 0=disabled, max=5'
     }
 
+    max_length_sec = 30 * 60
+    """By default we allow up to 30 minutes of video."""
+
+    conf_labels = [
+        "IGNORE",
+        "very_unlikely",
+        "unlikely",
+        "possible",
+        "likely",
+        "very_likely"]
+    """A list of confidence labels used by Google."""
+
     def __init__(self):
-        super(CloudVideoIntelligenceProcessor, self).__init__()
-        self.add_arg(Argument('detect_labels', 'bool', default=True,
+        super(AsyncVideoIntelligenceProcessor, self).__init__()
+        self.add_arg(Argument('detect_explicit', 'int', default=-1,
+                              toolTip=self.tool_tips['detect_explicit']))
+        self.add_arg(Argument('detect_labels', 'float', default=-1,
                               toolTip=self.tool_tips['detect_labels']))
-        self.add_arg(Argument('detect_text', 'bool', default=True,
+        self.add_arg(Argument('detect_text', 'bool', default=False,
                               toolTip=self.tool_tips['detect_text']))
+        self.add_arg(Argument('detect_objects', 'float', default=-1,
+                              toolTip=self.tool_tips['detect_objects']))
+        self.add_arg(Argument('detect_logos', 'float', default=-1,
+                              toolTip=self.tool_tips['detect_logos']))
+
         self.video_intel_client = None
 
     def init(self):
-        super(CloudVideoIntelligenceProcessor, self).init()
+        super(AsyncVideoIntelligenceProcessor, self).init()
         self.video_intel_client = initialize_gcp_client(
             videointelligence.VideoIntelligenceServiceClient)
 
     def process(self, frame):
         asset = frame.asset
-        if not asset.attr_exists("clip"):
-            self.logger.info('Skipping this frame, it is not a video clip.')
-            return
-        clip_contents = self._get_clip_bytes(asset)
-        annotation_result = self._get_video_annotations(clip_contents)
-        if self.arg_value('detect_labels'):
-            self._add_video_intel_labels(asset, 'google.videoLabel.segment.keywords',
-                                         annotation_result.segment_label_annotations)
-            self._add_video_intel_labels(asset, 'google.videoLabel.shot.keywords',
-                                         annotation_result.shot_label_annotations)
-            self._add_video_intel_labels(asset, 'google.videoLabel.frame.keywords',
-                                         annotation_result.frame_label_annotations)
-        if self.arg_value('detect_text'):
-            text = ' '.join(t.text for t in annotation_result.text_annotations)
-            if text:
-                asset.add_analysis('google.videoText.content', text)
 
-    def _get_clip_bytes(self, asset):
-        """Gets the in/out points for the clip specified in the metadata and transcodes
-        that section into a new video. The bytes of that new video file are returned.
+        if not asset.get_attr('source.path').startswith('gs://'):
+            self.logger.info('Skipping, video must be in a GCS bucket.')
+            return -1
+
+        # Cannot run on clips without transcoding the clip
+        if asset.get_attr('clip.timeline') != 'full':
+            self.logger.info('Skipping, cannot run processor on clips.')
+            return -1
+
+        # If the length is over time time
+        if asset.get_attr('media.length') > self.max_length_sec:
+            self.logger.info(
+                'Skipping, video is longer than {} seconds.'.format(self.max_length_sec))
+            return
+
+        annotation_result = self._get_video_annotations(asset.get_attr('source.path'))
+        file_storage.assets.store_blob(asset,
+                                       annotation_result.SerializeToString(),
+                                       'gcp',
+                                       'video-intelligence.dat')
+
+        if self.arg_value('detect_logos') != -1:
+            self.handle_detect_logos(asset, annotation_result)
+
+        if self.arg_value('detect_objects') != -1:
+            self.handle_detect_objects(asset, annotation_result)
+
+        if self.arg_value('detect_labels') != -1:
+            self.handle_detect_labels(asset, annotation_result)
+
+        if self.arg_value('detect_text'):
+            self.handle_detect_text(asset, annotation_result)
+
+        if self.arg_value('detect_explicit') != -1:
+            self.handle_detect_explicit(asset, annotation_result)
+
+    def handle_detect_logos(self, asset, results):
+        """
+        Detect logos in video and adds analysis to the given aszet.
 
         Args:
-            asset (Asset): Asset that has clip metadata.
+            asset (Asset): The asset.
+            results (obj): The video intelligence result.
+        """
+        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_logos'))
+        for annotation in results.logo_recognition_annotations:
+            for track in annotation.tracks:
+                analysis.add_prediction(Prediction(
+                    annotation.entity.description,
+                    track.confidence))
+        asset.add_analysis('gcp-video-logo-detection', analysis)
 
-        Returns:
-            str: Byte contents of the video clip that was created.
+    def handle_detect_objects(self, asset, annotation_result):
+        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_objects'))
+        for annotation in annotation_result.object_annotations:
+            pred = Prediction(annotation.entity.description,
+                              annotation.confidence)
+            analysis.add_prediction(pred)
+
+        asset.add_analysis('gcp-video-object-detection', analysis)
+
+    def handle_detect_labels(self, asset, results):
+        """
+        Handles processing segment and shot labels.
+
+        Args:
+            asset (Asset): The asset to process.
+            results (dict): The JSON compatible result.
 
         """
-        clip_start = float(asset.get_attr('clip.start'))
-        clip_length = float(asset.get_attr('clip.length'))
-        video_length = asset.get_attr('media.duration')
-        seek = max(clip_start - 0.25, 0)
-        duration = min(clip_length + 0.5, video_length)
-        clip_path = Path(tempfile.mkdtemp(),
-                         next(tempfile._get_candidate_names()) + '.mp4')
+        def process_label_annotations(annotations):
+            for annotation in annotations:
+                labels = [annotation.entity.description]
 
-        # Construct ffmpeg command line
-        # check for proxy
-        command = ['ffmpeg',
-                   '-i', get_proxy_level_path(asset, 3, mimetype="video/"),
-                   '-ss', str(seek),
-                   '-t', str(duration),
-                   '-s', '512x288',
-                   str(clip_path)]
-        self.logger.info('Executing: %s' % command)
-        subprocess.check_call(command)
+                for category in annotation.category_entities:
+                    labels.append(category.description)
 
-        # Read the extracted video file
-        with clip_path.open('rb') as _file:
-            return _file.read()
+                for segment in annotation.segments:
+                    for label in labels:
+                        analysis.add_prediction(Prediction(label, segment.confidence))
+
+        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_labels'))
+        process_label_annotations(results.segment_label_annotations)
+        process_label_annotations(results.shot_label_annotations)
+        asset.add_analysis('gcp-video-label-detection', analysis)
+
+    def handle_detect_text(self, asset, annotation_result):
+        analysis = ContentDetectionAnalysis()
+        analysis.add_content(
+            ' '.join(t.text for t in annotation_result.text_annotations))
+
+        if analysis.content:
+            asset.add_analysis('gcp-video-text-detection', analysis)
+
+    def handle_detect_explicit(self, asset, annotation_result):
+        analysis = LabelDetectionAnalysis()
+        analysis.set_attr('explicit', False)
+
+        for frame in annotation_result.explicit_annotation.frames:
+            if frame.pornography_likelihood == 0:
+                continue
+
+            pred = Prediction(self.conf_labels[frame.pornography_likelihood], 1)
+            analysis.add_prediction(pred)
+            if frame.pornography_likelihood >= self.arg_value("detect_explicit"):
+                analysis.set_attr('explicit', True)
+
+        asset.add_analysis('gcp-video-explicit-detection', analysis)
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=5 * 60 * 60)
-    def _get_video_annotations(self, video_contents):
+    def _get_video_annotations(self, uri):
         """Uses the Google Video Intelligence API to get video annotations.
 
         Args:
-            video_contents (str): Contents of a video file to send to the Google API.
+            uri (str): The gs:// uri where the video resides.
 
         Returns:
             VideoAnnotationResults: Results from Google API.
 
         """
         features = []
-        if self.arg_value('detect_labels'):
+        if self.arg_value('detect_explicit') > -1:
+            features.append(videointelligence.enums.Feature.EXPLICIT_CONTENT_DETECTION)
+        if self.arg_value('detect_labels') > -1:
             features.append(videointelligence.enums.Feature.LABEL_DETECTION)
         if self.arg_value('detect_text'):
             features.append(videointelligence.enums.Feature.TEXT_DETECTION)
-        operation = self.video_intel_client.annotate_video(input_content=video_contents,
-                                                           features=features, )
-        return operation.result(timeout=500).annotation_results[0]
+        if self.arg_value('detect_objects') > -1:
+            features.append(videointelligence.enums.Feature.OBJECT_TRACKING)
+        if self.arg_value('detect_logos') > -1:
+            features.append(videointelligence.enums.Feature.LOGO_RECOGNITION)
 
-    def _add_video_intel_labels(self, asset, analysis_field, annotations):
-        """Extracts labels from a Google VideoAnnotationResults object and adds them to
-        the metadata of an Asset.
+        operation = self.video_intel_client.annotate_video(input_uri=uri, features=features)
+        while not operation.done():
+            logger.info("Waiting on Google Visual Intelligence {}".format(uri))
+            time.sleep(1)
 
-        Args:
-            asset (Asset): Asset to add metadata to.
-            analysis_field (str): Metadata field in the "analysis" namespace to add
-             values to.
-            annotations (VideoAnnotationResults): Results from a call to Cloud Video
-             Intelligence API to get labels from.
-
-        """
-        keywords = []
-        for annotation in annotations:
-            keywords.append(annotation.entity.description)
-            for category_entity in annotation.category_entities:
-                keywords.append(category_entity.description)
-        if keywords:
-            asset.add_analysis(analysis_field, keywords)
+        res = operation.result()
+        return res.annotation_results[0]

@@ -169,8 +169,8 @@ plugin-container-tests:
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
     - ./buildx analyst zmlp-py3-base zmlp-py3-client zmlp-py3-sdk zmlp-plugins-base zmlp-plugins-core zmlp-plugins-analysis
-    - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-core:latest pytest -s /zps/pylib
-    - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-analysis:latest pytest -s /zps/pylib
+    - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-core:latest pytest -s /zvi/pylib
+    - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-analysis:latest pytest -s /zvi/pylib
   only:
     refs:
       - merge_requests
@@ -373,6 +373,6 @@ services_unit_tests-all-stable-branches:
 #    - pip3 install wheel
 #    - ./build-images.py
 #  script:
-#    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-analysis /zps/pylib/zplugins
-#    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-core /zps/pylib/zplugins
+#    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-analysis /zvi/pylib/zplugins
+#    - docker run -v $PWD/test-data:/test-data --entrypoint pytest zmlp-plugins-core /zvi/pylib/zplugins
 
