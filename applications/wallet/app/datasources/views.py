@@ -1,33 +1,96 @@
+import json
+import uuid
+
 from functools import lru_cache
 
-from rest_framework import status
 from rest_framework.response import Response
 from zmlp.client import ZmlpDuplicateException
+from zmlp.datasource import DataSource
 
-from datasources.serializers import DataSourceSerializer
+from datasources.serializers import DataSourceSerializer, CreateDataSourceSerializer, \
+    AzureCredentialSerializer, AwsCredentialSerializer, GcpCredentialSerializer
 from projects.views import BaseProjectViewSet
 from wallet.paginators import ZMLPFromSizePagination
 
 
+def create_zmlp_credential(client, wallet_credential, project_id, datasource_name):
+    """Creates and returns ZMLP credentials based on a wallet credential object."""
+    if not wallet_credential:
+        return None
+    credential_type = wallet_credential['type'].upper()
+
+    # Validate the credential data.
+    serializer_map = {'GCP': GcpCredentialSerializer,
+                      'AWS': AwsCredentialSerializer,
+                      'AZURE': AzureCredentialSerializer}
+    serializer_map[credential_type](data=wallet_credential).is_valid(raise_exception=True)
+
+    # Create a new credential and return its UUID.
+    blob = wallet_credential.copy()
+    del blob['type']
+    if credential_type == 'GCP':
+        blob = json.loads(wallet_credential['service_account_json_key'])
+    payload = {'name': f'console - {datasource_name[:15]} - {uuid.uuid4()}',
+               'type': credential_type,
+               'blob': json.dumps(blob)}
+    credential = client.post('/api/v1/credentials', payload)
+    return credential['id']
+
+
 class DataSourceViewSet(BaseProjectViewSet):
-    """CRUD operations for ZMLP Data Sources."""
+    """CRUD operations for ZMLP Data Sources.
+
+When creating a data source 3 types of credentials can be passed; GCP, AWS, or AZURE.
+Below are examples of all 3.
+
+***GCP Credential:***
+
+    "credentials": {
+        "type": "GCP",
+        "service_account_json_key": "<Contents of GCP json service key file>"
+    }
+
+
+***AWS Credential:***
+
+    "credentials": {
+        "type": "AWS",
+        "aws_access_key_id": "sdlkmsoijes;kfjnskajnre",
+        "aws_secret_access_key": "sdkjfipuenkjrfewrf"
+    }
+
+
+***Azure Credential:***
+
+    "credentials": {
+        "type": "AZURE",
+        "connection_string": "DefaultEndpointsProtocol=http;AccountName=account;AccountKey=myKey;",
+    }
+
+"""
     serializer_class = DataSourceSerializer
     pagination_class = ZMLPFromSizePagination
     zmlp_only = True
     zmlp_root_api_path = '/api/v1/data-sources/'
 
     def create(self, request, project_pk):
-        serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
+        serializer = CreateDataSourceSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         app = request.app
         data = serializer.validated_data
-        creds = data.get('credentials') or None
+        credential = create_zmlp_credential(request.client, data.get('credentials'),
+                                            project_pk, data.get('name'))
         try:
-            datasource = app.datasource.create_datasource(name=data['name'], uri=data['uri'],
-                                                          modules=data['modules'],
-                                                          credentials=creds,
-                                                          file_types=data['fileTypes'])
+            body = {'name': data['name'],
+                    'uri': data['uri'],
+                    'modules': data['modules'],
+                    'credentials': [credential] if credential else [],
+                    'fileTypes': data['fileTypes']}
+
+            # TODO: There is ZMLP bug where the credentials list is always empty in the return to
+            #  the POST. Once ZMLP-338 is fixed remove this note.
+            datasource = DataSource(request.client.post(self.zmlp_root_api_path, body=body))
+
         except ZmlpDuplicateException:
             body = {'name': ['A Data Source with that name already exists.']}
             return Response(body, status=409)
