@@ -9,7 +9,6 @@ import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.emptyZpsScript
-import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
