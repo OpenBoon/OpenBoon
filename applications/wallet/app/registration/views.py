@@ -89,7 +89,7 @@ Response Codes:
 
             # Create an agreement.
             if validated_data.get('policies_date'):
-                Agreement.objects.create(user=user, policies_date=serializer['policies_date'],
+                Agreement.objects.create(user=user, policies_date=validated_data['policies_date'],
                                          ip_address=get_ip_from_request(request))
 
         # Email the user a link to activate their account.
