@@ -11,25 +11,110 @@ from zmlp.datasource import DataSource
 pytestmark = pytest.mark.django_db
 
 
+@pytest.fixture
+def gcp_credentials():
+    return {'type': 'GCP',
+            'service_account_json_key': r'{"type": "service_account","project_id": "zorroa-rnd","private_key_id": "2abb67ab2ce060c2720","private_key": "-----BEGIN PRIVATE KEY-----\n3Ivqovn4vm1KIUvorP32fi0Em+EDmZqOLx5KG7g5/Z4MgtGUAqZm2aT7yMUC4YAL\nL8s3ZWsQ6aqHjhOUF+2zw5F689Q+n20o5YRWYm1Qy5cN7M+hCbzRqXQpx/fF64nT\npGaDUMQPMvC9yYSHhdmNDO4TkF9LkcS8eDS13/CPBS6sEw8IV8IwUvDkKgMnZSHM\nK6Z6K4iJTNic7qCVCR5IFag3adPVAe9NW7gRkFVZmUKqVBahGb0Gvw75IWCFedfI\nncQGzAVEd9YgYC8JMi8kF3Q3MrMASSzGOINIRcYajEMqgThabnn1RN5lOl2XBWqD\nvu9PdM79AgMBAAECggEAGW2J1LvOwOhljWi1HQpTy2I3iKEDzzEMlnfOpnWma8uB\njAhyHp6Zs3v75G33R19Ra8yAV6xPoQrx5DeYoMVfr+aXoIY6YHFhrqiqz7K0YQ18\nwWvASrla9nsZGUeK3ak9tYTQrnh4Vp6VHq25UV9JkdyGqhvrpdr8JJm8MYnsrqRe\nbaZNM5crVOif1PDadSvv7aTjjRuKXs18giDh7qP6ucsDgVZ02x/zQqSeyvMHos2X\nIO92OEdB2q0n36JVKEY8EFXbRwwsBaQCPPgtJNyjqx4HMYra41fjQGD8gRHCd9B5\n4P/44jzo2IPA4PTDnxOSuV7ynVwCuxZLRjQbvEweAQKBgQDam6aLw6I0tavngdMM\ncnqpFzeA7zBk6gWgKTOreIjLfADLTjvjC7mOlXTQwOmGfg2O//QhOIWd18LzGdtB\neTMKcNAp4sSNedB1VgLItbxoZcB9QAT20ApLiHZUyxHy/wY77EUXjOXSQOvqTuZe\nEjE7EzuXDfTqJQCF9lcmCD/8fQKBgQDIbAvEm5MhaTDFCKGsI27Nfq0IyhCjCsQJ\nanVB+sakm1tRyZXkv3nu23ZKZOq27jrQFHEaSSLZUdre/WRiJBrZ2aLD1MelEROv\nI/Tr/NrpJd5vNYoWA0peK/aZcIm3u/wlXoQvSEa15XEXS2fVAHVbW6tQOCbsmAkx\n8PzIFZkkgQKBgQCKROD2jerOxAnTCD5hJReIU/L7Tk6hxZOBVg4kary7V9d4wCcI\n2KWpFccpMpuCQcB5rlLPoFyDFbFs6fHQW8R42hoQJCqGAYJkdN6V7L0amyFBF3kM\nU1HvrISL5VWZCMz8odihqLDEZ+PP88+puIADCYsrY9yBLJ5EHSfKGnW+UQKBgGqM\njkEKmFCF1KibKyARgkF7G9B1ZBzZh1ieIRJfmKU/9m9npOmEJfWm9J8eQW3Y/qlK\nhMp9oSo5iwtLWMeX/DJeslo7z5tglb9hdT7UISkbucITi4KiYzHnW2U9X+mu5aCU\nO9/LI9Rl0xaYPu4NHVbhSBUQlRjoxtKnFCvm15CBAoGBAMT91VolLmQkZ+CP77eY\nENUDnwA4F7yvTcUHuVeeZfJB0qvMQJOm4meutZoK+ZFZBK71jSvh3SdTgBOmZ7wQ\np6Rk9hg7oXQ2XrR75/Tx1lQXme1Mj+5mKAVk+je/YYlfXmFDy7L0x7FhIKvfG1fF\n7JWeqzsRVoqnKB7GfBKbtzWn\n-----END PRIVATE KEY-----\n","client_email": "187634815620-compute@developer.gserviceaccount.com","client_id": "114806297107550223607","auth_uri": "https://accounts.google.com/o/oauth2/auth","token_uri": "https://accounts.google.com/o/oauth2/token","auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs","client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/187634815620-compute%40developer.gserviceaccount.com"}'}  # noqa
+
+
+@pytest.fixture
+def aws_credentials():
+    return {'type': 'AWS',
+            'aws_access_key_id': 'slkjdflksjflds',
+            'aws_secret_access_key': 'kjshdflukenwrfwe'}
+
+
+@pytest.fixture
+def azure_credentials():
+    return {'type': 'AZURE',
+            'connection_string': 'DefaultEndpointsProtocol=https;AccountName=myAccount;AccountKey=myKey;'}  # noqa
+
+
+def mock_import_files(*args, **kwargs):
+    return None
+
+
+def mock_zmlp_create_datasource_post_response(*args, **kwargs):
+    if args[1] == '/api/v1/credentials':
+        return {'id': 'c3ed494f-521c-1224-9431-0603ac5ae8e1',
+                'projectId': '00000000-0000-0000-0000-000000000000',
+                'name': 'test1', 'type': args[2]['type'], 'timeCreated': 1585948881230,
+                'timeModified': 1585948881230,
+                'actorCreated': 'f7dba5ce-7eda-3d05-5eb0-9789358c094e/admin-key',
+                'actorModified': 'f7dba5ce-7eda-3d05-5eb0-9789358c094e/admin-key'}
+    elif args[1] == '/api/v1/data-sources/':
+        datasource = {'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6', 'projectId': '00000000-0000-0000-0000-000000000000', 'name': 'cats', 'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats', 'fileTypes': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'], 'credentials': [], 'modules': [], 'timeCreated': 1583450294925, 'timeModified': 1583450294925, 'actorCreated': 'admin-key', 'actorModified': 'admin-key'}  # noqa)
+        if kwargs['body']['credentials']:
+            datasource['credentials'] = ["2766f591-5c6a-1ab1-b6d5-0242ac12000b"]
+        return datasource
+
+
 def test_datasource_viewset_create(api_client, monkeypatch, project, zmlp_project_user, login):
     data = {'name': 'cats',
             'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats',
             'file_types': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
             'modules': [],
+            'credentials': {},
             'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
 
-    def mock_create_datasource(*args, **kwargs):
-        return DataSource({'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6', 'projectId': '00000000-0000-0000-0000-000000000000', 'name': 'cats', 'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats', 'fileTypes': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'], 'credentials': [], 'modules': [], 'timeCreated': 1583450294925, 'timeModified': 1583450294925, 'actorCreated': 'admin-key', 'actorModified': 'admin-key'})  # noqa)
-
-    def mock_import_files(*args, **kwargs):
-        return None
-
-    monkeypatch.setattr(DataSourceApp, 'create_datasource', mock_create_datasource)
+    monkeypatch.setattr(ZmlpClient, 'post', mock_zmlp_create_datasource_post_response)
     monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
     assert response.status_code == 200
     assert response.json()['credentials'] == []
+    assert response.json()['name'] == 'cats'
+
+
+def test_datasource_viewset_create_gcp_creds(api_client, monkeypatch, project,
+                                             zmlp_project_user, login, gcp_credentials):
+    data = {'name': 'cats',
+            'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats',
+            'file_types': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
+            'modules': [],
+            'credentials': gcp_credentials,
+            'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
+
+    monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
+    monkeypatch.setattr(ZmlpClient, 'post', mock_zmlp_create_datasource_post_response)
+    response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
+                               data)
+    assert response.status_code == 200
+    assert response.json()['name'] == 'cats'
+
+
+def test_datasource_viewset_create_aws_creds(api_client, monkeypatch, project,
+                                             zmlp_project_user, login, aws_credentials):
+    data = {'name': 'cats',
+            'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats',
+            'file_types': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
+            'modules': [],
+            'credentials': aws_credentials,
+            'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
+
+    monkeypatch.setattr(ZmlpClient, 'post', mock_zmlp_create_datasource_post_response)
+    monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
+    response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
+                               data)
+    assert response.status_code == 200
+    assert response.json()['name'] == 'cats'
+
+
+def test_datasource_viewset_create_azure_creds(api_client, monkeypatch, project,
+                                               zmlp_project_user, login,
+                                               azure_credentials):
+    data = {'name': 'cats',
+            'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats',
+            'file_types': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
+            'modules': [],
+            'credentials': azure_credentials,
+            'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
+
+    monkeypatch.setattr(ZmlpClient, 'post', mock_zmlp_create_datasource_post_response)
+    monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
+    response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
+                               data)
+    assert response.status_code == 200
     assert response.json()['name'] == 'cats'
 
 
@@ -39,16 +124,10 @@ def test_datasource_viewset_create_null_credentials(api_client, monkeypatch, pro
             'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats',
             'file_types': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
             'modules': [],
-            'credentials': [],
+            'credentials': {},
             'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
 
-    def mock_create_datasource(*args, **kwargs):
-        return DataSource({'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6', 'projectId': '00000000-0000-0000-0000-000000000000', 'name': 'cats', 'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats', 'fileTypes': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'], 'credentials': [], 'modules': [], 'timeCreated': 1583450294925, 'timeModified': 1583450294925, 'actorCreated': 'admin-key', 'actorModified': 'admin-key'})  # noqa)
-
-    def mock_import_files(*args, **kwargs):
-        return None
-
-    monkeypatch.setattr(DataSourceApp, 'create_datasource', mock_create_datasource)
+    monkeypatch.setattr(ZmlpClient, 'post', mock_zmlp_create_datasource_post_response)
     monkeypatch.setattr(DataSourceApp, 'import_files', mock_import_files)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
@@ -65,13 +144,13 @@ def test_datasource_viewset_create_duplicate(api_client, monkeypatch, project, z
             'uri': 'gs://zorroa-deploy-testdata/zorroa-cypress-testdata/cats',
             'file_types': ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
             'modules': [],
-            'credentials': [],
+            'credentials': {},
             'id': '96fd6483-5f37-11ea-bb46-6a6895b1a9f6'}
 
-    def mock_create_datasource(*args, **kwargs):
+    def mock_post_response(*args, **kwargs):
         raise ZmlpDuplicateException(data={})
 
-    monkeypatch.setattr(DataSourceApp, 'create_datasource', mock_create_datasource)
+    monkeypatch.setattr(ZmlpClient, 'post', mock_post_response)
     response = api_client.post(reverse('datasource-list', kwargs={'project_pk': project.id}),
                                data)
     assert response.status_code == 409
@@ -135,9 +214,6 @@ def test_datasource_viewset_update(api_client, monkeypatch, zmlp_project_user, p
 
     def mock_get_datasource(*args, **kwargs):
         return DataSource(data)
-
-    def mock_import_files(*args, **kwargs):
-        return None
 
     monkeypatch.setattr(ZmlpClient, 'put', mock_put_response)
     monkeypatch.setattr(DataSourceApp, 'get_datasource', mock_get_datasource)

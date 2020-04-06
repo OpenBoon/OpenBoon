@@ -14,3 +14,23 @@ class DataSourceSerializer(serializers.Serializer):
     timeCreated = serializers.IntegerField(default=0)
     timeModified = serializers.IntegerField(default=0)
     url = serializers.CharField(required=False)
+
+
+class CreateDataSourceSerializer(DataSourceSerializer):
+    credentials = serializers.DictField(required=True)
+
+
+class GcpCredentialSerializer(serializers.Serializer):
+    type = serializers.CharField(required=True)
+    service_account_json_key = serializers.CharField(required=True)
+
+
+class AwsCredentialSerializer(serializers.Serializer):
+    type = serializers.CharField(required=True)
+    aws_access_key_id = serializers.CharField(required=True)
+    aws_secret_access_key = serializers.CharField(required=True)
+
+
+class AzureCredentialSerializer(serializers.Serializer):
+    type = serializers.CharField(required=True)
+    connection_string = serializers.CharField(required=True)
