@@ -212,6 +212,18 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   font-weight: 700;
 }
 
+.emotion-12 {
+  padding-top: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
 .emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -348,7 +360,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
       </label>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-12"
     >
       <button
         aria-disabled={true}

@@ -132,6 +132,18 @@ exports[`<Policies /> should render properly 1`] = `
   font-weight: 700;
 }
 
+.emotion-16 {
+  padding-top: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
 .emotion-7 {
   margin: 0;
   padding: 0;
@@ -344,7 +356,7 @@ exports[`<Policies /> should render properly 1`] = `
       </label>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-16"
     >
       <button
         className="emotion-15"
