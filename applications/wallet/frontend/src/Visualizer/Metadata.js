@@ -76,7 +76,7 @@ const VisualizerMetadata = ({ assets }) => {
           paddingBottom: 0,
         }}
       >
-        <JsonDisplay json={asset} />
+        {asset && <JsonDisplay json={asset} />}
       </div>
     </div>
   )
