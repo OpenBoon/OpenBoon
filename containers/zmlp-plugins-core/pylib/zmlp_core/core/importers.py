@@ -40,10 +40,12 @@ class FileImportProcessor(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
         ext = asset.get_attr("source.extension").lower()
+
         for proc in self.procs:
             if ext in proc.file_types:
                 proc.process(frame)
                 break
+
         if not frame.asset.get_attr("media.type"):
             raise ZmlpFatalProcessorException(
                 "The asset type '{}' is not supported".format(ext, asset.uri))

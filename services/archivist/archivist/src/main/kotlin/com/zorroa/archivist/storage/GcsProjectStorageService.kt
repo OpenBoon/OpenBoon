@@ -48,6 +48,7 @@ class GcsProjectStorageService constructor(
         logStoreEvent(spec)
 
         return FileStorage(
+            spec.locator.getFileId(),
             spec.locator.name,
             spec.locator.category.toLowerCase(),
             spec.mimetype,

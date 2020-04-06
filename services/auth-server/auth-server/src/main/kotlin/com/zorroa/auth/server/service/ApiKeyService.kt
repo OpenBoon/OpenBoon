@@ -62,8 +62,8 @@ class ApiKeyServiceImpl constructor(
         val key = ApiKey(
             UUID.randomUUID(),
             getProjectId(),
-            KeyGenerator.generate(24),
-            encryptionService.encryptString(KeyGenerator.generate(64), ApiKey.CRYPT_VARIANCE),
+            KeyGenerator.generate(16),
+            encryptionService.encryptString(KeyGenerator.generate(16), ApiKey.CRYPT_VARIANCE),
             spec.name,
             spec.permissions.map { it.name }.toSet(),
             time, time,

@@ -8,8 +8,8 @@ import os
 import random
 import sys
 import time
-from urllib.parse import urljoin
 from io import IOBase
+from urllib.parse import urljoin
 
 import jwt
 import requests
@@ -55,7 +55,7 @@ class ZmlpClient(object):
 
                 if not response.ok:
                     raise ZmlpClientException(
-                        "Failed to stream asset: %s" % response)
+                        "Failed to stream asset: %s, %s" % (url, response))
 
                 for block in response.iter_content(1024):
                     handle.write(block)

@@ -114,146 +114,8 @@
         }
       },
       "analysis": {
-        "dynamic": "strict",
+        "dynamic": true,
         "properties": {
-          "gcp": {
-            "dynamic": "strict",
-            "properties": {
-              "face-detection": {
-                "dynamic": "strict",
-                "properties": {
-                  "detected": {
-                    "type": "integer"
-                  }
-                }
-              },
-              "object-detection": {
-                "dynamic": "strict",
-                "properties": {
-                  "detected": {
-                    "type": "integer"
-                  },
-                  "labels": {
-                    "type": "keyword",
-                    "fields": {
-                      "fulltext": {
-                        "type": "text",
-                        "analyzer": "default"
-                      }
-                    }
-                  }
-                }
-              },
-              "label-detection": {
-                "dynamic": "strict",
-                "properties": {
-                  "labels": {
-                    "dynamic": "strict",
-                    "properties": {
-                      "label": {
-                        "type": "keyword",
-                        "fields": {
-                          "fulltext": {
-                            "type": "text",
-                            "analyzer": "default"
-                          }
-                        }
-                      },
-                      "score": {
-                        "type": "float"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "clarifai": {
-            "dynamic": "strict",
-            "properties": {
-              "predict": {
-                "dynamic": "strict",
-                "properties": {
-                  "labels": {
-                    "dynamic": "strict",
-                    "properties": {
-                      "label": {
-                        "type": "keyword",
-                        "fields": {
-                          "fulltext": {
-                            "type": "text",
-                            "analyzer": "default"
-                          }
-                        }
-                      },
-                      "score": {
-                        "type": "float"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "zvi": {
-            "dynamic": "strict",
-            "properties": {
-              "tinyProxy": {
-                "type": "keyword"
-              },
-              "similarity": {
-                "dynamic": "strict",
-                "properties": {
-                  "simhash": {
-                    "type": "keyword",
-                    "index": false
-                  }
-                }
-              },
-              "text-detection": {
-                "dynamic": "strict",
-                "properties": {
-                  "content": {
-                    "type": "text",
-                    "analyzer": "default"
-                  }
-                }
-              },
-              "label-detection": {
-                "dynamic": "strict",
-                "properties": {
-                  "model": {
-                    "type": "keyword"
-                  },
-                  "labels": {
-                    "dynamic": "strict",
-                    "properties": {
-                      "label": {
-                        "type": "keyword",
-                        "fields": {
-                          "fulltext": {
-                            "type": "text",
-                            "analyzer": "default"
-                          }
-                        }
-                      },
-                      "score": {
-                        "type": "float"
-                      }
-                    }
-                  }
-                }
-              },
-              "object-detection": {
-                "dynamic": "strict",
-                "properties": {
-                  "detected": {
-                    "type": "integer"
-                  }
-                }
-              }
-            }
-          }
         }
       },
       "clip": {
@@ -360,43 +222,6 @@
         "type": "object",
         "enabled": false
       },
-      "elements": {
-        "dynamic": "strict",
-        "type": "nested",
-        "properties": {
-          "analysis": {
-            "type": "keyword",
-            "fields": {
-              "fulltext": {
-                "type": "text",
-                "analyzer": "default"
-              }
-            }
-          },
-          "type": {
-            "type": "keyword"
-          },
-          "labels": {
-            "type": "keyword",
-            "fields": {
-              "fulltext": {
-                "type": "text",
-                "analyzer": "default"
-              }
-            }
-          },
-          "rect": {
-            "type": "float"
-          },
-          "score": {
-            "type": "double"
-          },
-          "simhash": {
-            "type": "keyword",
-            "index": false
-          }
-        }
-      },
       "metrics": {
         "dynamic": "strict",
         "type": "object",
@@ -465,7 +290,86 @@
           }
         }
       }
-    }
+    },
+    "dynamic_templates": [
+      {
+        "analysis_label": {
+          "path_match": "analysis.*.predictions.label",
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          }
+        }
+      },
+      {
+        "analysis_score": {
+          "path_match": "analysis.*.predictions.score",
+          "match_mapping_type": "*",
+          "mapping": {
+            "coerce": true,
+            "type": "float"
+          }
+        }
+      },
+      {
+        "analysis_point": {
+          "path_match": "analysis.*.predictions.point",
+          "mapping": {
+            "type": "geo_point"
+          }
+        }
+      },
+      {
+        "analysis_bbox": {
+          "path_match": "analysis.*.predictions.bbox",
+          "mapping": {
+            "type": "float"
+          }
+        }
+      },
+      {
+        "analysis_tags": {
+          "path_match": "analysis.*.predictions.tags",
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          }
+        }
+      },
+      {
+        "simhash": {
+          "match_pattern": "regex",
+          "match": "simhash",
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      },
+      {
+        "content": {
+          "match": "content",
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "text",
+            "analyzer": "default"
+          }
+        }
+      }
+    ]
   }
 }
 

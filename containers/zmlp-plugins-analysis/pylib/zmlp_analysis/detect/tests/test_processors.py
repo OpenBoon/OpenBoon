@@ -3,7 +3,8 @@ from unittest.mock import patch
 from zmlp import ZmlpClient
 from zmlpsdk import Frame
 from zmlpsdk.proxy import store_asset_proxy
-from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset, \
+    get_prediction_labels
 
 from zmlp_analysis.detect.processors import ZmlpObjectDetectionProcessor
 
@@ -17,6 +18,7 @@ class ZmlpObjectDetectionProcessorTests(PluginUnitTestCase):
     @patch.object(ZmlpClient, 'upload_file')
     def test_process(self, upload_patch):
         upload_patch.return_value = {
+            'id': 'assets/id/proxy/proxy_200x200.jpg',
             'name': 'proxy_200x200.jpg',
             'category': 'proxy',
             'mimetype': 'image/jpeg',
@@ -32,10 +34,9 @@ class ZmlpObjectDetectionProcessorTests(PluginUnitTestCase):
         processor = self.init_processor(ZmlpObjectDetectionProcessor(), {})
         processor.process(self.frame)
 
-        elements = self.frame.asset.document['elements']
-        grouped = dict([(e['labels'][0], e) for e in elements])
-
+        analysis = self.frame.asset.get_attr('analysis.zvi-object-detection')
+        grouped = get_prediction_labels(analysis)
         assert 'dog' in grouped
         assert 'toilet' in grouped
         assert 'bicycle' in grouped
-        assert 'zvi.object-detection' == elements[0]['analysis']
+        assert 'objects' == analysis['type']

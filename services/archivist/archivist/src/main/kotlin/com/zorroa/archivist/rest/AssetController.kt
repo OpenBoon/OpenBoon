@@ -214,7 +214,8 @@ class AssetController @Autowired constructor(
     }
 
     @ApiOperation("Store an additional file to an asset.")
-    @PreAuthorize("hasAuthority('AssetsImport')")
+    // Only job runner keys can store files.
+    @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
     @PostMapping(value = ["/api/v3/assets/{id}/_files"], consumes = ["multipart/form-data"])
     @ResponseBody
     fun uploadFile(

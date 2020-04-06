@@ -1,7 +1,6 @@
 flask
 requests
 psutil
-pathlib2
 gevent
 zmq
 docker

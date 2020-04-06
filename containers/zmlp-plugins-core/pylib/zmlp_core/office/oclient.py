@@ -119,7 +119,7 @@ class OfficerClient(object):
         """
         # localizes the asset's source file if it's not
         # already localized.
-        file_path = file_storage.localize_remote_file(asset)
+        file_path = file_storage.localize_file(asset)
 
         if not page:
             # -1 means render everything.

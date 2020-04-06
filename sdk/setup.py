@@ -13,12 +13,15 @@ requirements = [
     "zmlp",
     "minio",
     "google-cloud-storage>=1.20.0",
-    "pathlib2>=2.3.0",
     "backoff",
     "pytest",
     "opencv-python-headless",
     "boto3",
-    "azure-storage-blob"
+    "azure-storage-blob",
+    "opencv-python-headless",
+    "opencv-contrib-python-headless",
+    "Pillow",
+    "pdoc3"
 ]
 
 setup(
