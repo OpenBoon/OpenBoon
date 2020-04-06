@@ -17,7 +17,7 @@ def create_zmlp_credential(client, wallet_credential, project_id, datasource_nam
     """Creates and returns ZMLP credentials based on a wallet credential object."""
     if not wallet_credential:
         return None
-    credential_type = wallet_credential['type']
+    credential_type = wallet_credential['type'].upper()
 
     # Validate the credential data.
     serializer_map = {'GCP': GcpCredentialSerializer,
