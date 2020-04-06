@@ -17,7 +17,7 @@ export const onSubmit = async ({ dispatch, userId, setUser }) => {
   try {
     await fetcher(`/api/v1/users/${userId}/agreements/`, {
       method: 'POST',
-      body: JSON.stringify({ policies_date: CURRENT_POLICIES_DATE }),
+      body: JSON.stringify({ policiesDate: CURRENT_POLICIES_DATE }),
     })
 
     setUser({ user: { agreedToPoliciesDate: CURRENT_POLICIES_DATE } })

@@ -1,6 +1,7 @@
 import Router from 'next/router'
 
 import { getCsrfToken } from '../Fetch/helpers'
+import { CURRENT_POLICIES_DATE } from '../Policies/helpers'
 
 const BASE_HEADER = {
   method: 'POST',
@@ -22,6 +23,7 @@ export const onRegister = async ({
         firstName,
         lastName,
         password,
+        policiesDate: CURRENT_POLICIES_DATE,
       }),
     })
 
