@@ -34,8 +34,7 @@ class Crawler(object):
 
         except FileNotFoundError as err:
             self.properties = {}
-            print("yaml not found: {0}".format(str(err)))
-
+            raise ZmlpException(err, "Properties File not found")
         self.crawl()
 
     def crawl(self):
@@ -72,7 +71,7 @@ class Crawler(object):
                                     self.db_utils.insert_batch(batch)
                                     batch = []
                                 except ValueError as error:
-                                    print(error)
+                                    raise ZmlpException(error)
 
     def upload_batch(self, batch):
         """
