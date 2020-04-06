@@ -48,6 +48,7 @@ app.prepare().then(() => {
   // Mock API calls
   if (MOCKED) {
     server.post('/api/v1/login/', mock(user))
+    server.get('/api/v1/me/', mock(user))
     server.get('/api/v1/projects/', mock(projects))
     server.post('/api/v1/password/reset/', success())
     server.get('/api/v1/projects/:projectId', mock(project))

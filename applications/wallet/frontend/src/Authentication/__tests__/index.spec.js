@@ -28,17 +28,13 @@ describe('<Authentication />', () => {
 
     require('../helpers').__setMockAuthenticateUser(mockFn)
 
+    require('swr').__setMockUseSWRResponse({ data: {} })
+
     const component = TestRenderer.create(
       <User initialUser={{}}>
         <Authentication route="/">Hello World!</Authentication>
       </User>,
     )
-
-    // user is loading
-    expect(component.toJSON()).toMatchSnapshot()
-
-    // useEffect reads from localStorage
-    await act(async () => {})
 
     // display <Login />
     expect(component.toJSON()).toMatchSnapshot()

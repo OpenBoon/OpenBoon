@@ -15,7 +15,6 @@ const AccountPasswordNotice = () => {
 
   const {
     user: { email },
-    setUser,
     googleAuth,
   } = useContext(UserContext)
 
@@ -57,7 +56,7 @@ const AccountPasswordNotice = () => {
         <ButtonGroup>
           <Button
             variant={BUTTON_VARIANTS.PRIMARY_SMALL}
-            onClick={() => onReset({ setError, email, setUser, googleAuth })}
+            onClick={() => onReset({ setError, email, googleAuth })}
           >
             Reset Password
           </Button>
