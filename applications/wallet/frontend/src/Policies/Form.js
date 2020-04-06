@@ -14,10 +14,7 @@ const PoliciesForm = ({ dispatch }) => {
           margin: 0,
           paddingTop: spacing.spacious,
           color: colors.structure.zinc,
-          textAlign: 'center',
-          a: {
-            color: colors.key.one,
-          },
+          a: { color: colors.key.one },
         }}
       >
         By accepting and clicking the &quot;Continue&quot; button you confirm
@@ -40,13 +37,7 @@ const PoliciesForm = ({ dispatch }) => {
         .
       </p>
 
-      <div
-        css={{
-          paddingTop: spacing.normal,
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
+      <div css={{ paddingTop: spacing.normal }}>
         <Checkbox
           variant={CHECKBOX_VARIANTS.PRIMARY}
           option={{

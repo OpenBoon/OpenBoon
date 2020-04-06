@@ -76,7 +76,16 @@ const Policies = ({ userId, setUser }) => {
           </div>
         )}
 
-        <PoliciesForm dispatch={dispatch} />
+        <div
+          css={{
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <PoliciesForm dispatch={dispatch} />
+        </div>
 
         <div
           css={{
