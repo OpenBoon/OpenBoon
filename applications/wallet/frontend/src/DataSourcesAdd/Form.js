@@ -2,6 +2,7 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
+import PropTypes from 'prop-types'
 
 import { colors, constants, typography } from '../Styles'
 
@@ -34,7 +35,7 @@ const INITIAL_STATE = {
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-const DataSourcesAddForm = () => {
+const DataSourcesAddForm = ({ initialState }) => {
   const {
     query: { projectId },
   } = useRouter()
@@ -43,7 +44,7 @@ const DataSourcesAddForm = () => {
     data: { results: providers },
   } = useSWR(`/api/v1/projects/${projectId}/providers/`)
 
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   const { credentials, errors, fileTypes, name, source, uri } = state
 
@@ -122,7 +123,7 @@ const DataSourcesAddForm = () => {
             label,
             icon: <img src={icon} alt={label} width="40px" />,
             legend,
-            initialValue: false,
+            initialValue: state.fileTypes[value],
             isDisabled: false,
           }))}
           variant={CHECKBOX_VARIANTS.SECONDARY}
@@ -173,6 +174,21 @@ const DataSourcesAddForm = () => {
       </Form>
     </>
   )
+}
+
+DataSourcesAddForm.defaultProps = {
+  initialState: INITIAL_STATE,
+}
+
+DataSourcesAddForm.propTypes = {
+  initialState: PropTypes.shape({
+    name: PropTypes.string,
+    uri: PropTypes.string,
+    credential: PropTypes.string,
+    fileTypes: PropTypes.arrayOf(PropTypes.string),
+    modules: PropTypes.arrayOf(PropTypes.string),
+    errors: PropTypes.shape({ global: PropTypes.string }),
+  }),
 }
 
 export default DataSourcesAddForm
