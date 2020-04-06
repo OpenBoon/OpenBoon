@@ -129,13 +129,13 @@ class DataSourceServiceImpl(
             ds.actorCreated,
             getZmlpActor().toString())
 
+        dataSourceDao.saveAndFlush(updated)
         update.credentials?.let {
             setCredentials(id, it)
         }
 
-        val result = dataSourceDao.saveAndFlush(updated)
-        entityManager.detach(result)
-        return get(result.id)
+        entityManager.detach(ds)
+        return get(id)
     }
 
     override fun delete(id: UUID) {
