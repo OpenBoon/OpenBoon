@@ -7,7 +7,8 @@ import { fetcher } from '../Fetch/helpers'
  * 3. Add both `terms-and-conditions.pdf` and `privacy-policy.pdf` new files
  *    in that folder, even if only one has changed
  * 4. Update `agreedToPoliciesDate` in `src/User/__mocks__/user.js`
- * 5. Update exactly 3 snapshots, where only CURRENT_POLICIES_DATE changes
+ * 5. Update exactly 5 snapshots failed from 3 test suites,
+ *    where only CURRENT_POLICIES_DATE changes
  */
 
 export const CURRENT_POLICIES_DATE = '20200626'
