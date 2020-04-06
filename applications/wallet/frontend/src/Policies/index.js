@@ -22,7 +22,7 @@ const INITIAL_STATE = {
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-const Policies = ({ userId, setUser }) => {
+const Policies = ({ userId }) => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   const { isChecked } = state
@@ -135,7 +135,7 @@ const Policies = ({ userId, setUser }) => {
           <Button
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
-            onClick={() => onSubmit({ dispatch, userId, setUser })}
+            onClick={() => onSubmit({ dispatch, userId })}
             isDisabled={!isChecked}
           >
             Continue
@@ -148,7 +148,6 @@ const Policies = ({ userId, setUser }) => {
 
 Policies.propTypes = {
   userId: PropTypes.number.isRequired,
-  setUser: PropTypes.func.isRequired,
 }
 
 export { Policies as default, CURRENT_POLICIES_DATE }

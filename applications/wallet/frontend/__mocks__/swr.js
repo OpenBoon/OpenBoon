@@ -19,6 +19,20 @@ export const { cache } = jest.requireActual('swr')
  * useSWR
  */
 
+let mockMutateFn = () => {}
+
+export const __setMockMutateFn = (fn) => {
+  mockMutateFn = fn
+}
+
+export const mutate = (_, cb) => {
+  return mockMutateFn(typeof cb === 'function' ? cb() : cb)
+}
+
+/**
+ * useSWR
+ */
+
 let mockUseSWRResponse = {}
 
 export const __setMockUseSWRResponse = (data) => {
