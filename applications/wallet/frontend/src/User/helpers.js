@@ -1,23 +1,19 @@
-export const USER = 'user'
+export const noop = () => {}
 
-export const getUser = () => {
-  try {
-    return JSON.parse(localStorage.getItem(USER)) || {}
-  } catch (error) {
-    return {}
-  }
-}
+export const meFetcher =
+  typeof window === 'undefined'
+    ? noop
+    : async (url) => {
+        try {
+          const response = await fetch(url)
 
-export const setUser = ({ setStateUser, user }) => ({ user: updates }) => {
-  if (updates === null) {
-    localStorage.removeItem(USER)
+          if (response.status >= 400) throw response
 
-    setStateUser({})
-  } else {
-    const updatedUser = { ...user, ...updates }
+          const user = await response.json()
+          const projectId = user.roles ? Object.keys(user.roles)[0] || '' : ''
 
-    localStorage.setItem(USER, JSON.stringify(updatedUser))
-
-    setStateUser(updatedUser)
-  }
-}
+          return { ...user, projectId }
+        } catch (error) {
+          return {}
+        }
+      }

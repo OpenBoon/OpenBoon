@@ -6,7 +6,6 @@ export const noop = () => {}
 
 export const UserContext = createContext({
   user,
-  setUser: noop,
   googleAuth: {},
   setGoogleAuth: noop,
 })

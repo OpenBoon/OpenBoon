@@ -9,8 +9,6 @@ import ProjectUsers from '..'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
-jest.mock('../../User/helpers')
-
 describe('<ProjectUsers />', () => {
   it('should render properly with no project users', () => {
     require('next/router').__setUseRouter({
