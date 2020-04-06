@@ -35,10 +35,9 @@ class DataSourceController(
 ) {
 
     @ApiOperation("Create a DataSource")
-
     @PostMapping("/api/v1/data-sources")
     fun create(@ApiParam("Create a new data set.") @RequestBody spec: DataSourceSpec): DataSource {
-        return dataSourceService.get(dataSourceService.create(spec).id)
+        return dataSourceService.create(spec)
     }
 
     @PutMapping("/api/v1/data-sources/{id}")
@@ -46,7 +45,7 @@ class DataSourceController(
         @ApiParam("The DataSource unique Id.") @PathVariable id: UUID,
         @ApiParam("Create a new data set.") @RequestBody update: DataSourceUpdate
     ): DataSource {
-        return dataSourceService.get(dataSourceService.update(id, update).id)
+        return dataSourceService.update(id, update)
     }
 
     @DeleteMapping("/api/v1/data-sources/{id}")

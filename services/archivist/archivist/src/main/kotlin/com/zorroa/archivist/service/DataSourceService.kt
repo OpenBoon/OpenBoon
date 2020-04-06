@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 interface DataSourceService {
 
@@ -68,6 +70,9 @@ class DataSourceServiceImpl(
     @Autowired
     lateinit var pipelineModService: PipelineModService
 
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
+
     override fun create(spec: DataSourceSpec): DataSource {
 
         val time = System.currentTimeMillis()
@@ -102,7 +107,8 @@ class DataSourceServiceImpl(
                 "newDataSourceName" to result.name
             )
         )
-        return result
+        entityManager.detach(result)
+        return get(result.id)
     }
 
     override fun update(id: UUID, update: DataSourceUpdate): DataSource {
@@ -123,10 +129,13 @@ class DataSourceServiceImpl(
             ds.actorCreated,
             getZmlpActor().toString())
 
+        dataSourceDao.saveAndFlush(updated)
         update.credentials?.let {
             setCredentials(id, it)
         }
-        return dataSourceDao.saveAndFlush(updated)
+
+        entityManager.detach(ds)
+        return get(id)
     }
 
     override fun delete(id: UUID) {

@@ -9,6 +9,7 @@ import com.zorroa.archivist.domain.DataSourceUpdate
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.emptyZpsScript
+import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
@@ -77,13 +78,10 @@ class DataSourceServiceTests : AbstractTest() {
         )
 
         val ds = dataSourceService.create(spec2)
-
-        entityManager.flush()
-        entityManager.clear()
-
         val ds2 = dataSourceService.get(ds.id)
         assertEquals(1, jdbc.queryForObject("SELECT COUNT(1) FROM x_credentials_datasource", Int::class.java))
         assertTrue(ds2.credentials.isNotEmpty())
+        assertTrue(ds.credentials.isNotEmpty())
     }
 
     @Test
@@ -151,6 +149,7 @@ class DataSourceServiceTests : AbstractTest() {
         val credsIds = jdbc.queryForList(
             "SELECT pk_credentials FROM x_credentials_datasource WHERE pk_datasource=?",
             UUID::class.java, ds2.id)
+        Json.prettyPrint(credsIds)
         assertTrue(creds.id in credsIds)
     }
 
