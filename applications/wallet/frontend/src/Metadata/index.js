@@ -6,6 +6,7 @@ import InformationSvg from '../Icons/information.svg'
 
 import Resizeable from '../Resizeable'
 import SuspenseBoundary from '../SuspenseBoundary'
+
 import MetadataContent from './Content'
 import MetadataSelect from './Select'
 
