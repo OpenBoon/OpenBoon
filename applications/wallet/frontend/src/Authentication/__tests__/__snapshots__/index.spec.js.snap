@@ -63,7 +63,7 @@ exports[`<Authentication /> should render properly when user is logged out 2`] =
 `;
 
 exports[`<Authentication /> should render properly when user needs to approve new policies 1`] = `
-.emotion-14 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -82,7 +82,7 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   height: 100vh;
 }
 
-.emotion-13 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -110,11 +110,25 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   padding-top: 32px;
 }
 
+.emotion-11 {
+  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
 .emotion-2 {
   margin: 0;
   padding-top: 32px;
   color: #b3b3b3;
-  text-align: center;
 }
 
 .emotion-2 a {
@@ -123,14 +137,6 @@ exports[`<Authentication /> should render properly when user needs to approve ne
 
 .emotion-10 {
   padding-top: 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
 }
 
 .emotion-9 {
@@ -212,7 +218,19 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   font-weight: 700;
 }
 
-.emotion-11 {
+.emotion-13 {
+  padding-top: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.emotion-12 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -244,34 +262,34 @@ exports[`<Authentication /> should render properly when user needs to approve ne
   background-color: transparent;
 }
 
-.emotion-11:hover {
+.emotion-12:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-11,
-.emotion-11:hover,
-.emotion-11:visited {
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited {
   background-color: #73b61c;
 }
 
-.emotion-11:hover {
+.emotion-12:hover {
   background-color: #96c955;
 }
 
-.emotion-11[aria-disabled=true] {
+.emotion-12[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-  className="emotion-14"
+  className="emotion-15"
 >
   <form
-    className="emotion-13"
+    className="emotion-14"
     method="post"
     onSubmit={[Function]}
   >
@@ -286,73 +304,77 @@ exports[`<Authentication /> should render properly when user needs to approve ne
       Terms & Conditions and Privacy Policy
     </h3>
     
-    <p
-      className="emotion-2"
-    >
-      By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
-       
-      <a
-        href="/policies/20200626/terms-and-conditions.pdf"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Terms & Conditions
-      </a>
-       
-      and
-       
-      <a
-        href="/policies/20200626/privacy-policy.pdf"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Privacy Policy
-      </a>
-      .
-    </p>
     <div
-      className="emotion-10"
+      className="emotion-11"
     >
-      <label
-        className="emotion-9"
+      <p
+        className="emotion-2"
       >
-        <div
-          className="emotion-6"
+        By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
+         
+        <a
+          href="/policies/20200626/terms-and-conditions.pdf"
+          rel="noopener noreferrer"
+          target="_blank"
         >
-          <input
-            className="emotion-3"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="isChecked"
-          />
+          Terms & Conditions
+        </a>
+         
+        and
+         
+        <a
+          href="/policies/20200626/privacy-policy.pdf"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Privacy Policy
+        </a>
+        .
+      </p>
+      <div
+        className="emotion-10"
+      >
+        <label
+          className="emotion-9"
+        >
           <div
-            className="emotion-5"
+            className="emotion-6"
           >
-            <svg
-              className="emotion-4"
-              data-file-name="checkmark.svg"
-              width={20}
+            <input
+              className="emotion-3"
+              defaultChecked={false}
+              onClick={[Function]}
+              type="checkbox"
+              value="isChecked"
             />
+            <div
+              className="emotion-5"
+            >
+              <svg
+                className="emotion-4"
+                data-file-name="checkmark.svg"
+                width={20}
+              />
+            </div>
           </div>
-        </div>
-        <div
-          className="emotion-8"
-        >
-          <span
-            className="emotion-7"
+          <div
+            className="emotion-8"
           >
-            Accept
-          </span>
-        </div>
-      </label>
+            <span
+              className="emotion-7"
+            >
+              Accept
+            </span>
+          </div>
+        </label>
+      </div>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-13"
     >
       <button
         aria-disabled={true}
-        className="emotion-11"
+        className="emotion-12"
         onClick={[Function]}
         type="submit"
       >

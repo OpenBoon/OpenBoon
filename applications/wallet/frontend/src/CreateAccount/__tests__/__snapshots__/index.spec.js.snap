@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<CreateAccount /> should render properly when the activation link is expired 1`] = `
-.emotion-40 {
+.emotion-49 {
   height: 100%;
 }
 
@@ -46,7 +46,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-right: 8px;
 }
 
-.emotion-39 {
+.emotion-48 {
   margin-top: 44px;
   padding-left: 32px;
   padding-right: 32px;
@@ -69,7 +69,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-bottom: 16px;
 }
 
-.emotion-38 {
+.emotion-47 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -165,7 +165,100 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   background-color: #ffffff;
 }
 
-.emotion-37 {
+.emotion-35 {
+  margin: 0;
+  padding-top: 32px;
+  color: #b3b3b3;
+}
+
+.emotion-35 a {
+  color: #73b61c;
+}
+
+.emotion-43 {
+  padding-top: 16px;
+}
+
+.emotion-42 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 0;
+}
+
+.emotion-39 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-36 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-38 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+}
+
+.emotion-37 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-41 {
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-40 {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 700;
+}
+
+.emotion-46 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -174,12 +267,12 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   padding-bottom: 16px;
 }
 
-.emotion-37 button,
-.emotion-37 a {
+.emotion-46 button,
+.emotion-46 a {
   margin-right: 16px;
 }
 
-.emotion-35 {
+.emotion-44 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -211,30 +304,30 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   background-color: transparent;
 }
 
-.emotion-35:hover {
+.emotion-44:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-35[aria-disabled=true] {
+.emotion-44[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-35,
-.emotion-35:hover,
-.emotion-35:visited {
+.emotion-44,
+.emotion-44:hover,
+.emotion-44:visited {
   background-color: #808080;
 }
 
-.emotion-35:hover {
+.emotion-44:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-35[aria-disabled=true] {
+.emotion-44[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-36 {
+.emotion-45 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -266,31 +359,31 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   background-color: transparent;
 }
 
-.emotion-36:hover {
+.emotion-45:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-36[aria-disabled=true] {
+.emotion-45[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-36,
-.emotion-36:hover,
-.emotion-36:visited {
+.emotion-45,
+.emotion-45:hover,
+.emotion-45:visited {
   background-color: #73b61c;
 }
 
-.emotion-36:hover {
+.emotion-45:hover {
   background-color: #96c955;
 }
 
-.emotion-36[aria-disabled=true] {
+.emotion-45[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-  className="emotion-40"
+  className="emotion-49"
 >
   <div
     className="emotion-2"
@@ -314,7 +407,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
     <div />
   </div>
   <div
-    className="emotion-39"
+    className="emotion-48"
   >
     <h2
       className="emotion-3"
@@ -323,7 +416,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
     </h2>
     <form
       action=""
-      className="emotion-38"
+      className="emotion-47"
       method="post"
       onSubmit={[Function]}
     >
@@ -497,11 +590,72 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
            
         </div>
       </div>
+      <p
+        className="emotion-35"
+      >
+        By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
+         
+        <a
+          href="/policies/20200626/terms-and-conditions.pdf"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Terms & Conditions
+        </a>
+         
+        and
+         
+        <a
+          href="/policies/20200626/privacy-policy.pdf"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Privacy Policy
+        </a>
+        .
+      </p>
       <div
-        className="emotion-37"
+        className="emotion-43"
+      >
+        <label
+          className="emotion-42"
+        >
+          <div
+            className="emotion-39"
+          >
+            <input
+              className="emotion-36"
+              defaultChecked={false}
+              onClick={[Function]}
+              type="checkbox"
+              value="isChecked"
+            />
+            <div
+              className="emotion-38"
+            >
+              <svg
+                className="emotion-37"
+                data-file-name="checkmark.svg"
+                width={20}
+              />
+            </div>
+          </div>
+          <div
+            className="emotion-41"
+          >
+            <span
+              className="emotion-40"
+            >
+              Accept
+            </span>
+          </div>
+        </label>
+      </div>
+      <div
+        className="emotion-46"
       >
         <a
-          className="emotion-35"
+          className="emotion-44"
           href="/"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -510,7 +664,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         </a>
         <button
           aria-disabled={true}
-          className="emotion-36"
+          className="emotion-45"
           onClick={[Function]}
           type="submit"
         >
@@ -525,7 +679,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 exports[`<CreateAccount /> should render properly when there is a token 1`] = `null`;
 
 exports[`<CreateAccount /> should render properly when there is no token 1`] = `
-.emotion-36 {
+.emotion-45 {
   height: 100%;
 }
 
@@ -570,7 +724,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   padding-right: 8px;
 }
 
-.emotion-35 {
+.emotion-44 {
   margin-top: 44px;
   padding-left: 32px;
   padding-right: 32px;
@@ -593,7 +747,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-34 {
+.emotion-43 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -650,7 +804,100 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   background-color: #ffffff;
 }
 
-.emotion-33 {
+.emotion-31 {
+  margin: 0;
+  padding-top: 32px;
+  color: #b3b3b3;
+}
+
+.emotion-31 a {
+  color: #73b61c;
+}
+
+.emotion-39 {
+  padding-top: 16px;
+}
+
+.emotion-38 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 0;
+}
+
+.emotion-35 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-32 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-34 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+}
+
+.emotion-33 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-37 {
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-36 {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 700;
+}
+
+.emotion-42 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -659,12 +906,12 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-33 button,
-.emotion-33 a {
+.emotion-42 button,
+.emotion-42 a {
   margin-right: 16px;
 }
 
-.emotion-31 {
+.emotion-40 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -696,30 +943,30 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   background-color: transparent;
 }
 
-.emotion-31:hover {
+.emotion-40:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-31[aria-disabled=true] {
+.emotion-40[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-31,
-.emotion-31:hover,
-.emotion-31:visited {
+.emotion-40,
+.emotion-40:hover,
+.emotion-40:visited {
   background-color: #808080;
 }
 
-.emotion-31:hover {
+.emotion-40:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-31[aria-disabled=true] {
+.emotion-40[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-32 {
+.emotion-41 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -751,31 +998,31 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   background-color: transparent;
 }
 
-.emotion-32:hover {
+.emotion-41:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-32[aria-disabled=true] {
+.emotion-41[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-32,
-.emotion-32:hover,
-.emotion-32:visited {
+.emotion-41,
+.emotion-41:hover,
+.emotion-41:visited {
   background-color: #73b61c;
 }
 
-.emotion-32:hover {
+.emotion-41:hover {
   background-color: #96c955;
 }
 
-.emotion-32[aria-disabled=true] {
+.emotion-41[aria-disabled=true] {
   background-color: #808080;
 }
 
 <div
-  className="emotion-36"
+  className="emotion-45"
 >
   <div
     className="emotion-2"
@@ -799,7 +1046,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
     <div />
   </div>
   <div
-    className="emotion-35"
+    className="emotion-44"
   >
     <h2
       className="emotion-3"
@@ -808,7 +1055,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
     </h2>
     <form
       action=""
-      className="emotion-34"
+      className="emotion-43"
       method="post"
       onSubmit={[Function]}
     >
@@ -958,11 +1205,72 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
            
         </div>
       </div>
+      <p
+        className="emotion-31"
+      >
+        By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
+         
+        <a
+          href="/policies/20200626/terms-and-conditions.pdf"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Terms & Conditions
+        </a>
+         
+        and
+         
+        <a
+          href="/policies/20200626/privacy-policy.pdf"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Privacy Policy
+        </a>
+        .
+      </p>
       <div
-        className="emotion-33"
+        className="emotion-39"
+      >
+        <label
+          className="emotion-38"
+        >
+          <div
+            className="emotion-35"
+          >
+            <input
+              className="emotion-32"
+              defaultChecked={false}
+              onClick={[Function]}
+              type="checkbox"
+              value="isChecked"
+            />
+            <div
+              className="emotion-34"
+            >
+              <svg
+                className="emotion-33"
+                data-file-name="checkmark.svg"
+                width={20}
+              />
+            </div>
+          </div>
+          <div
+            className="emotion-37"
+          >
+            <span
+              className="emotion-36"
+            >
+              Accept
+            </span>
+          </div>
+        </label>
+      </div>
+      <div
+        className="emotion-42"
       >
         <a
-          className="emotion-31"
+          className="emotion-40"
           href="/"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -971,7 +1279,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
         </a>
         <button
           aria-disabled={true}
-          className="emotion-32"
+          className="emotion-41"
           onClick={[Function]}
           type="submit"
         >
