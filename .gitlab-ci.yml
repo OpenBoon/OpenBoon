@@ -231,6 +231,7 @@ docker_hub_build_push:
     - docker push zmlp/plugins-analysis:latest
     - docker push zmlp/analyst:latest
     - docker push zmlp/jvm-common:latest
+    - docker push zmlp/ml-bbq:latest
   only:
     - development
 
