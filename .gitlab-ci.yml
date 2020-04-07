@@ -38,6 +38,23 @@ wallet-frontend-test-suite:
       - applications/wallet/frontend/**/*
       - .gitlab-ci.yml
 
+## Zvi Cloud Proxy
+zvi-cloud-proxy:
+  stage: test
+  image: zmlp/py3-client
+  before_script:
+    - cd applications/zvi-cloud-proxy/
+    - pip3 install .
+    - cd pylib/proxy/tests
+  script:
+    - pytest
+  only:
+    refs:
+      - merge_requests
+    changes:
+      - applications/zvi-cloud-proxy/pylib/proxy/**/*
+      - .gitlab-ci.yml
+
 wallet-frontend-test-suite-all-stable-branches:
   extends:
     - wallet-frontend-test-suite
