@@ -57,7 +57,7 @@ class ErrorBoundary extends Component {
               boxShadow: constants.boxShadows.default,
             }}
           >
-            <ErrorSvg width={604} />
+            <ErrorSvg width={604} css={{ maxWidth: '80%' }} />
             <br /> Hmmm, something went wrong.
             <br /> Please try refreshing.
           </div>
