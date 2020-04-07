@@ -572,11 +572,7 @@ exports[`<Visualizer /> should render properly 1`] = `
       </div>
       <div
         className="emotion-28"
-      >
-        <JsonDisplay
-          json={false}
-        />
-      </div>
+      />
     </div>
   </div>
 </div>
