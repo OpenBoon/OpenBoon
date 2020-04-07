@@ -26,7 +26,7 @@ export const FILE_TYPES = [
   },
 ]
 
-export const onSubmit = async ({
+export const onSubmitAdd = async ({
   dispatch,
   projectId,
   state: { name, uri, credentials, source, fileTypes, modules },

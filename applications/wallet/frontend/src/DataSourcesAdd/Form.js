@@ -16,7 +16,8 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 
-import { FILE_TYPES, onSubmit } from './helpers'
+import { FILE_TYPES, onSubmitAdd } from './helpers'
+import { onSubmitEdit } from '../DataSourcesEdit/helpers'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
 import DataSourcesAddProvider from './Provider'
@@ -37,7 +38,7 @@ const reducer = (state, action) => ({ ...state, ...action })
 
 const DataSourcesAddForm = ({ initialState }) => {
   const {
-    query: { projectId },
+    query: { projectId, dataSourceId },
   } = useRouter()
 
   const {
@@ -123,7 +124,7 @@ const DataSourcesAddForm = ({ initialState }) => {
             label,
             icon: <img src={icon} alt={label} width="40px" />,
             legend,
-            initialValue: state.fileTypes[value],
+            initialValue: fileTypes[value],
             isDisabled: false,
           }))}
           variant={CHECKBOX_VARIANTS.SECONDARY}
@@ -158,7 +159,7 @@ const DataSourcesAddForm = ({ initialState }) => {
           <Button
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
-            onClick={() => onSubmit({ dispatch, projectId, state })}
+            onClick={() => onSubmit()}
             isDisabled={
               !name ||
               !source ||
@@ -168,7 +169,7 @@ const DataSourcesAddForm = ({ initialState }) => {
               isFileTypesEmpty
             }
           >
-            Create Data Source
+            {dataSourceId ? 'Edit' : 'Create'} Data Source
           </Button>
         </ButtonGroup>
       </Form>

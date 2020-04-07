@@ -27,8 +27,6 @@ const DataSourcesEditContent = () => {
     {},
   )
 
-  console.log(modules)
-
   const initialState = {
     name,
     uri,

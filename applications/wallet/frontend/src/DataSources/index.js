@@ -27,6 +27,12 @@ const DataSources = () => {
         </FlashMessage>
       )}
 
+      {action === 'edit-datasource-success' && (
+        <FlashMessage variant={VARIANTS.SUCCESS}>
+          Data Source Edited
+        </FlashMessage>
+      )}
+
       <Tabs
         tabs={[
           { title: 'View all', href: '/[projectId]/data-sources' },
