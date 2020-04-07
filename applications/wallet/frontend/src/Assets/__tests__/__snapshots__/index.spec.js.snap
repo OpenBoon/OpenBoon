@@ -29,6 +29,8 @@ exports[`<Assets /> should handle page url 1`] = `
   height: 0;
   padding-bottom: 12.5%;
   position: relative;
+  min-width: 100px;
+  min-height: 100px;
 }
 
 .emotion-2 {
@@ -115,7 +117,7 @@ exports[`<Assets /> should handle page url 1`] = `
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 80;
+  z-index: 10;
   opacity: 0.8;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -314,6 +316,8 @@ exports[`<Assets /> should render properly 1`] = `
   height: 0;
   padding-bottom: 12.5%;
   position: relative;
+  min-width: 100px;
+  min-height: 100px;
 }
 
 .emotion-2 {
@@ -400,7 +404,7 @@ exports[`<Assets /> should render properly 1`] = `
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 80;
+  z-index: 10;
   opacity: 0.8;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -699,7 +703,7 @@ exports[`<Assets /> should render properly 2`] = `
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 80;
+  z-index: 10;
   opacity: 0.8;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -816,6 +820,8 @@ exports[`<Assets /> should render properly 2`] = `
   height: 0;
   padding-bottom: 100%;
   position: relative;
+  min-width: 100px;
+  min-height: 100px;
 }
 
 <div
@@ -926,6 +932,8 @@ exports[`<Assets /> should render properly 3`] = `
   height: 0;
   padding-bottom: 12.5%;
   position: relative;
+  min-width: 100px;
+  min-height: 100px;
 }
 
 .emotion-2 {
@@ -1012,7 +1020,7 @@ exports[`<Assets /> should render properly 3`] = `
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 80;
+  z-index: 10;
   opacity: 0.8;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1232,6 +1240,8 @@ exports[`<Assets /> should render without proxy image 1`] = `
   height: 0;
   padding-bottom: 12.5%;
   position: relative;
+  min-width: 100px;
+  min-height: 100px;
 }
 
 .emotion-2 {
@@ -1318,7 +1328,7 @@ exports[`<Assets /> should render without proxy image 1`] = `
   border-radius: 2px;
   background-color: #252525;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 80;
+  z-index: 10;
   opacity: 0.8;
   padding-top: 4px;
   padding-bottom: 4px;

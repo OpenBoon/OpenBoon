@@ -20,7 +20,7 @@ const AssetsResize = ({ dispatch, isMin, isMax }) => (
       borderRadius: constants.borderRadius.small,
       backgroundColor: colors.structure.lead,
       boxShadow: constants.boxShadows.default,
-      zIndex: zIndex.layout.overlay,
+      zIndex: zIndex.layout.interactive,
       opacity: constants.opacity.eighth,
       paddingTop: spacing.small,
       paddingBottom: spacing.small,

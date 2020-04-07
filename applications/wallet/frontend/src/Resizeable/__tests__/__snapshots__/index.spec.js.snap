@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Resizeable /> should render properly 1`] = `
+.emotion-0 {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: col-resize;
+  width: 20px;
+  margin-left: -10px;
+  margin-right: -10px;
+  z-index: 10;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  width: 400px;
+}
+
+<div
+  style={
+    Object {
+      "alignItems": "stretch",
+      "display": "flex",
+      "flexWrap": "nowrap",
+    }
+  }
+>
+  <div
+    className="emotion-0"
+    onMouseDown={[Function]}
+  />
+  <div
+    className="emotion-1"
+  >
+    Yoga div
+  </div>
+</div>
+`;
