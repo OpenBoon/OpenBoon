@@ -13,6 +13,7 @@ import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
 import SectionTitle from '../SectionTitle'
+import PoliciesForm from '../Policies/Form'
 
 import { onRegister, onConfirm } from './helpers'
 
@@ -22,6 +23,7 @@ const INITIAL_STATE = {
   email: '',
   password: '',
   confirmPassword: '',
+  isChecked: false,
   error: '',
 }
 
@@ -147,6 +149,8 @@ const CreateAccount = () => {
             errorMessage=""
           />
 
+          <PoliciesForm dispatch={dispatch} />
+
           <ButtonGroup>
             <Link href="/" passHref>
               <Button variant={BUTTON_VARIANTS.SECONDARY}>Cancel</Button>
@@ -159,7 +163,8 @@ const CreateAccount = () => {
                 !state.firstName ||
                 !state.lastName ||
                 !state.password ||
-                state.password !== state.confirmPassword
+                state.password !== state.confirmPassword ||
+                !state.isChecked
               }
             >
               Save

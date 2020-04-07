@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Policies /> should render properly 1`] = `
-.emotion-18 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -20,7 +20,7 @@ exports[`<Policies /> should render properly 1`] = `
   height: 100vh;
 }
 
-.emotion-17 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -48,11 +48,25 @@ exports[`<Policies /> should render properly 1`] = `
   padding-top: 32px;
 }
 
+.emotion-15 {
+  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
 .emotion-6 {
   margin: 0;
   padding-top: 32px;
   color: #b3b3b3;
-  text-align: center;
 }
 
 .emotion-6 a {
@@ -61,14 +75,6 @@ exports[`<Policies /> should render properly 1`] = `
 
 .emotion-14 {
   padding-top: 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
 }
 
 .emotion-13 {
@@ -132,6 +138,18 @@ exports[`<Policies /> should render properly 1`] = `
   font-weight: 700;
 }
 
+.emotion-17 {
+  padding-top: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
 .emotion-7 {
   margin: 0;
   padding: 0;
@@ -150,7 +168,7 @@ exports[`<Policies /> should render properly 1`] = `
   opacity: 100;
 }
 
-.emotion-15 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -182,26 +200,26 @@ exports[`<Policies /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-15:hover {
+.emotion-16:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-15,
-.emotion-15:hover,
-.emotion-15:visited {
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited {
   background-color: #73b61c;
 }
 
-.emotion-15:hover {
+.emotion-16:hover {
   background-color: #96c955;
 }
 
-.emotion-15[aria-disabled=true] {
+.emotion-16[aria-disabled=true] {
   background-color: #808080;
 }
 
@@ -242,10 +260,10 @@ exports[`<Policies /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-18"
+  className="emotion-19"
 >
   <form
-    className="emotion-17"
+    className="emotion-18"
     method="post"
     onSubmit={[Function]}
   >
@@ -282,72 +300,76 @@ exports[`<Policies /> should render properly 1`] = `
         </div>
       </div>
     </div>
-    <p
-      className="emotion-6"
-    >
-      By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
-       
-      <a
-        href="/policies/20200626/terms-and-conditions.pdf"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Terms & Conditions
-      </a>
-       
-      and
-       
-      <a
-        href="/policies/20200626/privacy-policy.pdf"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Privacy Policy
-      </a>
-      .
-    </p>
     <div
-      className="emotion-14"
+      className="emotion-15"
     >
-      <label
-        className="emotion-13"
+      <p
+        className="emotion-6"
       >
-        <div
-          className="emotion-10"
+        By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
+         
+        <a
+          href="/policies/20200626/terms-and-conditions.pdf"
+          rel="noopener noreferrer"
+          target="_blank"
         >
-          <input
-            className="emotion-7"
-            defaultChecked={true}
-            onClick={[Function]}
-            type="checkbox"
-            value="isChecked"
-          />
+          Terms & Conditions
+        </a>
+         
+        and
+         
+        <a
+          href="/policies/20200626/privacy-policy.pdf"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Privacy Policy
+        </a>
+        .
+      </p>
+      <div
+        className="emotion-14"
+      >
+        <label
+          className="emotion-13"
+        >
           <div
-            className="emotion-9"
+            className="emotion-10"
           >
-            <svg
-              className="emotion-8"
-              data-file-name="checkmark.svg"
-              width={20}
+            <input
+              className="emotion-7"
+              defaultChecked={true}
+              onClick={[Function]}
+              type="checkbox"
+              value="isChecked"
             />
+            <div
+              className="emotion-9"
+            >
+              <svg
+                className="emotion-8"
+                data-file-name="checkmark.svg"
+                width={20}
+              />
+            </div>
           </div>
-        </div>
-        <div
-          className="emotion-12"
-        >
-          <span
-            className="emotion-11"
+          <div
+            className="emotion-12"
           >
-            Accept
-          </span>
-        </div>
-      </label>
+            <span
+              className="emotion-11"
+            >
+              Accept
+            </span>
+          </div>
+        </label>
+      </div>
     </div>
     <div
-      className="emotion-14"
+      className="emotion-17"
     >
       <button
-        className="emotion-15"
+        className="emotion-16"
         onClick={[Function]}
         type="submit"
       >
