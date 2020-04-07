@@ -17,7 +17,7 @@ class DataSourceSerializer(serializers.Serializer):
 
 
 class CreateDataSourceSerializer(DataSourceSerializer):
-    credentials = serializers.DictField(required=True)
+    credentials = serializers.DictField(required=False)
 
 
 class GcpCredentialSerializer(serializers.Serializer):
