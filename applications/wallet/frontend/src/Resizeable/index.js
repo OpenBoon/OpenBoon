@@ -15,15 +15,18 @@ const Resizeable = ({ children, initialWidth, storageName }) => {
     initialValue: initialWidth,
   })
 
+  /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
     setWidth({ value: Math.max(10, width - (clientX - originX)) })
   }
 
+  /* istanbul ignore next */
   const handleMouseUp = () => {
     window.removeEventListener('mousemove', handleMouseMove)
     window.removeEventListener('mouseup', handleMouseUp)
   }
 
+  /* istanbul ignore next */
   const handleMouseDown = ({ clientX }) => {
     originX = clientX
 
