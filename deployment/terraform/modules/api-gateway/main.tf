@@ -76,6 +76,10 @@ resource "kubernetes_deployment" "api-gateway" {
             name  = "AUTH_SERVER_HOST"
             value = var.auth_server_host
           }
+          env {
+            name  = "MLBBQ_SERVER_HOST"
+            value = var.ml_bbq_host
+          }
         }
       }
     }

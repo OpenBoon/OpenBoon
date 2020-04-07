@@ -140,6 +140,7 @@ module "api-gateway" {
   image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
   archivist_host    = module.archivist.ip-address
   auth_server_host  = module.auth-server.ip-address
+  ml_bbq_host       = module.ml-bbq.ip-address
 }
 
 module "officer" {
@@ -179,3 +180,8 @@ module "wallet" {
   fqdn                    = "https://wallet.zmlp.zorroa.com"
 }
 
+module "ml-bbq" {
+  source                 = "./modules/ml-bbq"
+  image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
+  auth-server-url        = "http://${module.auth-server.ip-address}"
+}
