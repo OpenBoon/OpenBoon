@@ -74,24 +74,10 @@ const VisualizerMetadata = ({ assets }) => {
               ? colors.structure.coal
               : colors.structure.mattGrey,
             padding: spacing.normal,
-            paddingBottom: 0,
           }}
         >
           {!!asset && <JsonDisplay json={asset} />}
         </div>
-      </div>
-      <div
-        css={{
-          height: '100%',
-          overflow: 'auto',
-          backgroundColor: id
-            ? colors.structure.coal
-            : colors.structure.mattGrey,
-          padding: spacing.normal,
-          paddingBottom: 0,
-        }}
-      >
-        {asset && <JsonDisplay json={asset} />}
       </div>
     </Resizeable>
   )
