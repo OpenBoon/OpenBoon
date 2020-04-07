@@ -1,4 +1,5 @@
 import copy
+import tempfile
 import unittest
 import unittest.mock as mock
 from unittest.mock import patch
@@ -7,9 +8,8 @@ import pytest
 
 from zmlp import Asset
 from zmlp import ZmlpClient, app_from_env
-from zmlp.asset import FileImport, FileUpload
+from zmlp.asset import FileImport, FileUpload, StoredFile
 from zmlp.exception import ZmlpException
-
 from .util import get_test_file
 
 
@@ -256,8 +256,43 @@ class AssetAppTests(unittest.TestCase):
         mockresponse.content = data
         get_patch.return_value = mockresponse
 
-        b = self.app.assets.download_file('123', 'proxy/proxy123.jpg')
+        b = self.app.assets.download_file('assets/123/proxy/proxy123.jpg')
         assert 'some_data' == b.read().decode()
+
+    @patch.object(ZmlpClient, 'get')
+    def test_download_file_using_stored_file(self, get_patch):
+        data = b'some_data'
+        mockresponse = mock.Mock()
+        mockresponse.content = data
+        get_patch.return_value = mockresponse
+
+        sf = StoredFile({"id": "assets/123/proxy/foo.jpg"})
+        b = self.app.assets.download_file(sf)
+        assert 'some_data' == b.read().decode()
+
+    @patch.object(ZmlpClient, 'get')
+    def test_download_file_to_file(self, get_patch):
+        data = b'some_data'
+        mockresponse = mock.Mock()
+        mockresponse.content = data
+        get_patch.return_value = mockresponse
+
+        fd, path = tempfile.mkstemp(".jpg")
+        size = self.app.assets.download_file_to_file(
+            'assets/123/proxy/proxy123.jpg', path)
+        assert 9 == size
+
+    @patch.object(ZmlpClient, 'get')
+    def test_download_file_to_file_using_stored_file(self, get_patch):
+        data = b'some_data'
+        mockresponse = mock.Mock()
+        mockresponse.content = data
+        get_patch.return_value = mockresponse
+
+        fd, path = tempfile.mkstemp(".jpg")
+        sf = StoredFile({"id": "assets/123/proxy/foo.jpg"})
+        size = self.app.assets.download_file_to_file(sf, path)
+        assert 9 == size
 
     @patch.object(ZmlpClient, 'upload_files')
     def test_et_sim_hashes(self, upload_patch):

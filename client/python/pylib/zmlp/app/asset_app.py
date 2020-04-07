@@ -382,29 +382,54 @@ class AssetApp(object):
         """
         return Asset(self.app.client.get("/api/v3/assets/{}".format(id)))
 
-    def download_file(self, id, file_id):
+    def download_file(self, stored_file):
         """
-        Download given file into memory.  The file ID can be specified
-        as either a string like "proxy/image_450x360.jpg" or the
-        dictionary format returned from the get_files() method.
+        Download given file and store results in memory.  The stored_file ID
+        can be specified as either a string like "assets/<id>/proxy/image_450x360.jpg"
+        or a StoredFile instance can be used.
 
         Args:
-            id (str): The ID of the asset.
-            file_id (mixed): The ID of the file as a string or dictionary
+            stored_file (mixed): The StoredFile instance or its ID.
 
         Returns:
             io.BytesIO instance containing the binary data.
 
         """
-        if isinstance(file_id, str):
-            cat_name = file_id
-        elif isinstance(file_id, StoredFile):
-            cat_name = "{}/{}".format(file_id["category"], file_id["name"])
+        if isinstance(stored_file, str):
+            path = stored_file
+        elif isinstance(stored_file, StoredFile):
+            path = stored_file.id
         else:
-            raise ValueError("file_id must be a string or dict")
+            raise ValueError("stored_file must be a string or StoredFile instance")
 
-        rsp = self.app.client.get("/api/v3/assets/{}/_files/{}".format(id, cat_name), is_json=False)
+        rsp = self.app.client.get("/api/v3/files/_stream/{}".format(path), is_json=False)
         return io.BytesIO(rsp.content)
+
+    def download_file_to_file(self, stored_file, dst_path):
+        """
+        Download given file and store it in th destination path.
+        The stored_file ID can be specified as either a string like
+        "assets/<id>/proxy/image_450x360.jpg" or a StoredFile
+        instance like those from Asset.get_files can be used.
+
+        Args:
+            stored_file (mixed): The StoredFile instance or its ID.
+            dst_path (str): The path to the destination file.
+
+        Returns:
+            int: the file size in bytes
+        """
+        if isinstance(stored_file, str):
+            path = stored_file
+        elif isinstance(stored_file, StoredFile):
+            path = stored_file.id
+        else:
+            raise ValueError("stored_file must be a string or StoredFile instance")
+
+        rsp = self.app.client.get("/api/v3/files/_stream/{}".format(path), is_json=False)
+        with open(dst_path, 'wb') as fp:
+            fp.write(rsp.content)
+        return len(rsp.content)
 
     def get_sim_hashes(self, images):
         """
