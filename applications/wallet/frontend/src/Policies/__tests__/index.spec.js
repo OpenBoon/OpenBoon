@@ -45,7 +45,7 @@ describe('<Policies />', () => {
         'X-CSRFToken': 'CSRF_TOKEN',
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      body: '{"policies_date":"20200626"}',
+      body: '{"policiesDate":"20200626"}',
       method: 'POST',
     })
 

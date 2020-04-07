@@ -7,10 +7,11 @@ import { colors, constants, typography, spacing } from '../Styles'
 import LogoSvg from '../Icons/logo.svg'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 
 import { CURRENT_POLICIES_DATE, onSubmit } from './helpers'
+
+import PoliciesForm from './Form'
 
 const WIDTH = 446
 const LOGO_WIDTH = 143
@@ -75,54 +76,15 @@ const Policies = ({ userId }) => {
           </div>
         )}
 
-        <p
-          css={{
-            margin: 0,
-            paddingTop: spacing.spacious,
-            color: colors.structure.zinc,
-            textAlign: 'center',
-            a: {
-              color: colors.key.one,
-            },
-          }}
-        >
-          By accepting and clicking the &quot;Continue&quot; button you confirm
-          that you have read and agree with Zorroa’s{' '}
-          <a
-            href={`/policies/${CURRENT_POLICIES_DATE}/terms-and-conditions.pdf`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Terms&nbsp;&amp;&nbsp;Conditions
-          </a>{' '}
-          and{' '}
-          <a
-            href={`/policies/${CURRENT_POLICIES_DATE}/privacy-policy.pdf`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Privacy&nbsp;Policy
-          </a>
-          .
-        </p>
-
         <div
           css={{
-            paddingTop: spacing.normal,
+            textAlign: 'center',
             display: 'flex',
-            justifyContent: 'center',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          <Checkbox
-            variant={CHECKBOX_VARIANTS.PRIMARY}
-            option={{
-              value: 'isChecked',
-              label: 'Accept',
-              initialValue: false,
-              isDisabled: false,
-            }}
-            onClick={(value) => dispatch({ isChecked: value })}
-          />
+          <PoliciesForm dispatch={dispatch} />
         </div>
 
         <div
