@@ -1,4 +1,5 @@
 import copy
+import os
 import tempfile
 import unittest
 import unittest.mock as mock
@@ -104,7 +105,60 @@ class AssetAppTests(unittest.TestCase):
         assert asset.document is not None
 
     @patch.object(ZmlpClient, 'upload_files')
-    def test_upload_assets(self, post_patch):
+    def test_batch_upload_directory(self, post_patch):
+        post_patch.return_value = self.mock_import_result
+        path = get_test_file('images/set01/toucan.jpg')
+
+        called = []
+
+        def callback(files, rsp):
+            print(rsp)
+            called.extend(files)
+
+        rsp = self.app.assets.batch_upload_directory(
+            os.path.dirname(path),
+            callback=callback)
+
+        assert 5 == rsp['file_count']
+        assert 579485 == rsp['file_size']
+        assert 1 == rsp['batch_count']
+        assert called
+
+    @patch.object(ZmlpClient, 'upload_files')
+    def test_batch_upload_directory_file_types(self, post_patch):
+        post_patch.return_value = self.mock_import_result
+        path = get_test_file('images/set01/toucan.jpg')
+
+        called = []
+
+        def callback(files, rsp):
+            called.extend(files)
+
+        rsp = self.app.assets.batch_upload_directory(
+            os.path.dirname(path),
+            file_types=['doc'],
+            callback=callback)
+
+        assert 0 == rsp['file_count']
+        assert 0 == rsp['file_size']
+        assert 0 == rsp['batch_count']
+        assert not called
+
+    @patch.object(ZmlpClient, 'upload_files')
+    def test_batch_upload_directory_batch_size(self, post_patch):
+        post_patch.return_value = self.mock_import_result
+        path = get_test_file('images/set01/toucan.jpg')
+
+        rsp = self.app.assets.batch_upload_directory(
+            os.path.dirname(path),
+            batch_size=1)
+
+        assert 5 == rsp['file_count']
+        assert 579485 == rsp['file_size']
+        assert 5 == rsp['batch_count']
+
+    @patch.object(ZmlpClient, 'upload_files')
+    def test_batch_upload_files(self, post_patch):
         post_patch.return_value = self.mock_import_result
 
         path = get_test_file('images/set01/toucan.jpg')
