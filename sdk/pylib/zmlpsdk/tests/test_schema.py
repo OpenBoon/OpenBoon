@@ -52,6 +52,15 @@ class LabelDetectionAnalysisTests(TestCase):
         assert self.analysis.add_prediction(schema.Prediction('dog', 0.01)) is False
         assert 1 == len(self.analysis.predictions)
 
+    def test_add_label_and_score(self):
+        assert self.analysis.add_label_and_score("dog", 0.5, color='brown') is True
+        assert self.analysis.add_label_and_score("dog", 0.6) is True
+        assert 1 == len(self.analysis.predictions)
+        pred = self.analysis.predictions['dog']
+        assert 'dog' == pred.label
+        assert 0.6 == pred.score
+        assert 'brown' == pred.attrs['color']
+
     def test_max_predictions(self):
         self.analysis.max_predictions = 1
         self.analysis.add_prediction(self.pred)
