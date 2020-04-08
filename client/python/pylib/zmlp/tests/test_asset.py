@@ -2,7 +2,7 @@ import logging
 import unittest
 
 from zmlp import Asset, StoredFile
-from zmlp.asset import FileImport, Clip
+from zmlp.asset import FileImport, Clip, FileTypes
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -154,3 +154,30 @@ class ClipTests(unittest.TestCase):
         assert clip.stop == 2
         assert clip.type == 'scene'
         assert clip.timeline == 'faces'
+
+
+class FileTypesTests(unittest.TestCase):
+
+    def test_resolve_images(self):
+        exts = FileTypes.resolve('images')
+        assert 'bmp' in exts
+
+    def test_resolve_videos(self):
+        exts = FileTypes.resolve('videos')
+        assert 'mp4' in exts
+
+    def test_resolve_images(self):
+        exts = FileTypes.resolve('documents')
+        assert 'doc' in exts
+
+    def test_resolve_ext(self):
+        exts = FileTypes.resolve(['exr', 'mp4', 'doc'])
+        assert 'exr' in exts
+        assert 'mp4' in exts
+        assert 'doc' in exts
+        assert 3 == len(exts)
+
+    def test_resolve_mixed(self):
+        exts = FileTypes.resolve(['jpg', 'videos'])
+        assert 'jpg' in exts
+        assert 'mp4' in exts

@@ -1,7 +1,8 @@
 import io
+import os
 from collections import namedtuple
 
-from ..asset import Asset, StoredFile
+from ..asset import Asset, StoredFile, FileUpload, FileTypes
 from ..job import Job
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
 from ..util import as_collection
@@ -12,12 +13,12 @@ class AssetApp(object):
     def __init__(self, app):
         self.app = app
 
-    def batch_import_files(self, assets, modules=None):
+    def batch_import_files(self, files, modules=None):
         """
         Import a list of FileImport instances.
 
         Args:
-            assets (list of FileImport): The list of files to import as Assets.
+            files (list of FileImport): The list of files to import as Assets.
             modules (list): A list of Pipeline Modules to apply to the data.
 
         Notes:
@@ -56,19 +57,19 @@ class AssetApp(object):
 
         """
         body = {
-            "assets": assets,
+            "assets": files,
             "modules": modules
         }
         return self.app.client.post("/api/v3/assets/_batch_create", body)
 
-    def batch_upload_files(self, assets, modules=None):
+    def batch_upload_files(self, files, modules=None):
         """
         Batch upload a list of files and return a structure which contains
         an ES bulk response object, a list of failed file paths, a list of created
         asset Ids, and a processing jobId.
 
         Args:
-            assets (list of FileUpload):
+            files (list of FileUpload):
             modules (list): A list of Pipeline Modules to apply to the data.
 
         Notes:
@@ -105,14 +106,83 @@ class AssetApp(object):
             dict: A dictionary containing an ES bulk response, failed files,
             and created asset ids.
         """
-        assets = as_collection(assets)
-        files = [asset.uri for asset in assets]
+        files = as_collection(files)
+        file_paths = [f.uri for f in files]
         body = {
-            "assets": assets,
+            "assets": files,
             "modules": modules
         }
         return self.app.client.upload_files("/api/v3/assets/_batch_upload",
-                                            files, body)
+                                            file_paths, body)
+
+    def batch_upload_directory(self, path, file_types=None,
+                               batch_size=50, modules=None, callback=None):
+        """
+        Recursively upload all files in the given directory path.
+
+        This method takes an optional callback function which takes two
+        arguments, files and response.  This callback is called for
+        each batch of files submitted.
+
+        Examples:
+
+            def batch_callback(files, response):
+                print("--processed files--")
+                for path in files:
+                    print(path)
+                print("--zvi response--")
+                pprint.pprint(rsp)
+
+            app.assets.batch_upload_directory("/home", file_types=['images'],
+                callback=batch_callback)
+
+        Args:
+            path (str): A file path to a directory.
+            file_types (list): a list of file extensions and/or
+                categories(documents, images, videos)
+            batch_size (int) The number of files to upload per batch.
+            modules (list): An array of modules to apply to the files.
+            callback (func): A function to call for every batch
+
+        Returns:
+            dict: A dictionary containing batch operation counters.
+        """
+        batch = []
+        totals = {
+            "file_count": 0,
+            "file_size": 0,
+            "batch_count": 0,
+        }
+
+        def process_batch():
+            totals['batch_count'] += 1
+            totals['file_count'] += len(batch)
+            totals['file_size'] += sum([os.path.getsize(f) for f in batch])
+
+            rsp = self.batch_upload_files(
+                [FileUpload(f) for f in batch], modules)
+            if callback:
+                callback(batch.copy(), rsp)
+            batch.clear()
+
+        file_types = FileTypes.resolve(file_types)
+        for root, dirs, files in os.walk(path):
+            for fname in files:
+                if fname.startswith("."):
+                    continue
+                _, ext = os.path.splitext(fname)
+                if not ext:
+                    continue
+                if ext[1:].lower() not in file_types:
+                    continue
+                batch.append(os.path.abspath(os.path.join(root, fname)))
+                if len(batch) >= batch_size:
+                    process_batch()
+
+        if batch:
+            process_batch()
+
+        return totals
 
     def index(self, asset):
         """
