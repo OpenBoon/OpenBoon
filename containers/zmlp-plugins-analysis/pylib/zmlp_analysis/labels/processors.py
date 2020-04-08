@@ -14,6 +14,8 @@ class ZviLabelDetectionProcessor(AssetProcessor):
     Performs image classification using Resnet152 and imagenet weights.
     """
 
+    use_threads = False
+
     def init(self):
         self.model = ResNet152V2(weights='imagenet', input_tensor=Input(shape=(224, 224, 3)))
 
