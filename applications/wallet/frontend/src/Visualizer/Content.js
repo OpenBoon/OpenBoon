@@ -4,9 +4,9 @@ import useSWR from 'swr'
 import { colors, spacing } from '../Styles'
 
 import Assets from '../Assets'
+import Metadata from '../Metadata'
 
 import VisualizerInfobar from './Infobar'
-import VisualizerMetadata from './Metadata'
 
 const SIZE = 50
 
@@ -49,7 +49,7 @@ const VisualizerContent = () => {
         }}
       >
         <Assets assets={assets} />
-        <VisualizerMetadata assets={assets} />
+        <Metadata />
       </div>
     </div>
   )
