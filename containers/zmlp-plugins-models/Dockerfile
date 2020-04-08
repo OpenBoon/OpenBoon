@@ -1,0 +1,21 @@
+FROM zmlp/plugins-base:latest
+
+RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
+    python3-dev \
+    build-essential
+
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
+RUN rm requirements.txt
+RUN pip3 uninstall -y protobuf
+RUN pip3 install protobuf
+
+USER zorroa
+COPY --chown=zorroa:zorroa get_models.py /tmp
+COPY --chown=zorroa:zorroa fruit.jpg /tmp/fruit.jpg
+RUN python3 /tmp/get_models.py; rm /tmp/get_models.py; rm /tmp/fruit.jpg
+
+USER root
+RUN mkdir /models
+COPY resnet-152 /models/resnet-152
+
