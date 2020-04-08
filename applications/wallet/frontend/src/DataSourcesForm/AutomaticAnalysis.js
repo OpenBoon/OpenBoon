@@ -4,7 +4,7 @@ import CheckmarkSvg from '../Icons/checkmark.svg'
 
 import Accordion from '../Accordion'
 
-const DataSourcesAddAutomaticAnalysis = () => {
+const DataSourcesFormAutomaticAnalysis = () => {
   return (
     <Accordion title="Zorroa Automatic Analysis">
       <>
@@ -75,4 +75,4 @@ const DataSourcesAddAutomaticAnalysis = () => {
   )
 }
 
-export default DataSourcesAddAutomaticAnalysis
+export default DataSourcesFormAutomaticAnalysis

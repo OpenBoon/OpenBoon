@@ -7,7 +7,7 @@ import CheckboxTable from '../Checkbox/Table'
 
 const IMG_HEIGHT = 32
 
-const DataSourcesAddProvider = ({
+const DataSourcesFormProvider = ({
   provider: { name, logo, description, categories },
   onClick,
 }) => {
@@ -45,7 +45,7 @@ const DataSourcesAddProvider = ({
   )
 }
 
-DataSourcesAddProvider.propTypes = {
+DataSourcesFormProvider.propTypes = {
   provider: PropTypes.shape({
     name: PropTypes.string.isRequired,
     logo: PropTypes.node.isRequired,
@@ -60,4 +60,4 @@ DataSourcesAddProvider.propTypes = {
   onClick: PropTypes.func.isRequired,
 }
 
-export default DataSourcesAddProvider
+export default DataSourcesFormProvider

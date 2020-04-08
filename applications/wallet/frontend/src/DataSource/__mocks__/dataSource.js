@@ -4,7 +4,7 @@ const dataSource = {
   name: 'test',
   uri: 'gs://zorroa-dev-data/images',
   fileTypes: ['jpg'],
-  credentials: [],
+  credentials: '',
   modules: ['1810b623-4b95-11ea-8b23-0242ac120004'],
   timeCreated: 1581298667707,
   timeModified: 1581298667707,

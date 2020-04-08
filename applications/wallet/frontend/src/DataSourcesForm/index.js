@@ -16,8 +16,7 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 
-import { FILE_TYPES, onSubmitAdd } from './helpers'
-import { onSubmitEdit } from '../DataSourcesEdit/helpers'
+import { FILE_TYPES, onSubmitAdd, onSubmitEdit } from './helpers'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
 import DataSourcesAddProvider from './Provider'
@@ -36,7 +35,7 @@ const INITIAL_STATE = {
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-const DataSourcesAddForm = ({ initialState }) => {
+const DataSourcesForm = ({ initialState }) => {
   const {
     query: { projectId, dataSourceId },
   } = useRouter()
@@ -136,10 +135,10 @@ const DataSourcesAddForm = ({ initialState }) => {
           Choose the type of analysis you would like performed on your data set:
         </SectionSubTitle>
 
-        <DataSourcesAddAutomaticAnalysis />
+        <DataSourcesFormAutomaticAnalysis />
 
         {providers.map((provider) => (
-          <DataSourcesAddProvider
+          <DataSourcesFormProvider
             key={provider.name}
             provider={provider}
             onClick={(module) =>
@@ -159,7 +158,11 @@ const DataSourcesAddForm = ({ initialState }) => {
           <Button
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
-            onClick={() => onSubmit()}
+            onClick={() =>
+              dataSourceId
+                ? onSubmitEdit({ dispatch, projectId, dataSourceId, state })
+                : onSubmitAdd({ dispatch, projectId, state })
+            }
             isDisabled={
               !name ||
               !source ||
@@ -177,19 +180,19 @@ const DataSourcesAddForm = ({ initialState }) => {
   )
 }
 
-DataSourcesAddForm.defaultProps = {
+DataSourcesForm.defaultProps = {
   initialState: INITIAL_STATE,
 }
 
-DataSourcesAddForm.propTypes = {
+DataSourcesForm.propTypes = {
   initialState: PropTypes.shape({
     name: PropTypes.string,
     uri: PropTypes.string,
     credential: PropTypes.string,
-    fileTypes: PropTypes.arrayOf(PropTypes.string),
+    fileTypes: PropTypes.object,
     modules: PropTypes.arrayOf(PropTypes.string),
     errors: PropTypes.shape({ global: PropTypes.string }),
   }),
 }
 
-export default DataSourcesAddForm
+export default DataSourcesForm
