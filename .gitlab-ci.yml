@@ -258,6 +258,7 @@ deploy_development:
     - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch-data
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} ml-bbq
 
 # Kotlin services - Unit tests - Step 1
 services_build_artifacts:

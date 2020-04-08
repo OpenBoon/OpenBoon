@@ -1,0 +1,13 @@
+version: "3.6"
+services:
+  workbench:
+    image: zmlp/workbench
+    ports:
+      - 8888:8888
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ZMLP_API_URL: http://api-gateway:80
+    volumes:
+      - "./applications/workbench/data:/data"
