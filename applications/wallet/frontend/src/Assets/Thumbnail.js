@@ -23,13 +23,13 @@ const AssetsThumbnail = ({
   } = useRouter()
 
   const containerWidth = 100 / thumbnailCount
-  const srcUrl = files[0] && files[0].url
 
-  const srcSet = files.map(
-    ({ url, attrs: { width: srcWidth } }) => `${url} ${srcWidth}w`,
-  )
+  const { url: srcUrl, attrs: { width, height } = {} } =
+    files.find(({ mimetype }) => mimetype === 'image/jpeg') || {}
 
-  const { attrs: { width, height } = {} } = files[0] || {}
+  const srcSet = files
+    .filter(({ mimetype }) => mimetype === 'image/jpeg')
+    .map(({ url, attrs: { width: srcWidth } }) => `${url} ${srcWidth}w`)
 
   const largestDimension = width > height ? 'width' : 'height'
 
@@ -85,14 +85,14 @@ const AssetsThumbnail = ({
             {srcUrl ? (
               <img
                 css={{ [largestDimension]: '100%' }}
-                srcSet={srcSet.join(',')}
+                srcSet={srcSet.join(', ')}
                 src={srcUrl}
                 alt={filename}
               />
             ) : (
               <img
                 srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
-                alt="Proxy Unavailable"
+                alt={filename}
                 src="/icons/fallback.png"
                 css={{ width: '100%' }}
               />

@@ -248,7 +248,7 @@ exports[`<Assets /> should handle page url 1`] = `
           onMouseEnter={[Function]}
         >
           <img
-            alt="Proxy Unavailable"
+            alt="TIFF_1MB.tiff"
             className="emotion-0"
             src="/icons/fallback.png"
             srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
@@ -538,7 +538,7 @@ exports[`<Assets /> should render properly 1`] = `
             alt="TIFF_1MB.tiff"
             className="emotion-0"
             src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg"
-            srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg 650w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg 512w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg 320w"
+            srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg 650w, https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg 512w, https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg 320w"
           />
         </a>
       </div>
@@ -559,7 +559,7 @@ exports[`<Assets /> should render properly 1`] = `
             alt="TIFF_1MB.tiff"
             className="emotion-0"
             src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg"
-            srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg 800w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_512x384.jpg 512w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_320x240.jpg 320w"
+            srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg 800w, https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_512x384.jpg 512w, https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_320x240.jpg 320w"
           />
         </a>
       </div>
@@ -846,7 +846,7 @@ exports[`<Assets /> should render properly 2`] = `
             alt="TIFF_1MB.tiff"
             className="emotion-0"
             src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg"
-            srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg 650w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg 512w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg 320w"
+            srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg 650w, https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg 512w, https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg 320w"
           />
         </a>
       </div>
@@ -867,7 +867,7 @@ exports[`<Assets /> should render properly 2`] = `
             alt="TIFF_1MB.tiff"
             className="emotion-0"
             src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg"
-            srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg 800w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_512x384.jpg 512w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_320x240.jpg 320w"
+            srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg 800w, https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_512x384.jpg 512w, https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_320x240.jpg 320w"
           />
         </a>
       </div>
@@ -1154,7 +1154,7 @@ exports[`<Assets /> should render properly 3`] = `
             alt="TIFF_1MB.tiff"
             className="emotion-0"
             src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg"
-            srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg 650w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg 512w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg 320w"
+            srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg 650w, https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg 512w, https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg 320w"
           />
         </a>
       </div>
@@ -1175,7 +1175,7 @@ exports[`<Assets /> should render properly 3`] = `
             alt="TIFF_1MB.tiff"
             className="emotion-0"
             src="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg"
-            srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg 800w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_512x384.jpg 512w,https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_320x240.jpg 320w"
+            srcSet="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg 800w, https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_512x384.jpg 512w, https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_320x240.jpg 320w"
           />
         </a>
       </div>
@@ -1459,7 +1459,7 @@ exports[`<Assets /> should render without proxy image 1`] = `
           onMouseEnter={[Function]}
         >
           <img
-            alt="Proxy Unavailable"
+            alt="TIFF_1MB.tiff"
             className="emotion-0"
             src="/icons/fallback.png"
             srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
