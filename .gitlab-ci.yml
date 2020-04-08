@@ -168,7 +168,7 @@ plugin-container-tests:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
-    - ./buildx analyst zmlp-py3-base zmlp-py3-client zmlp-py3-sdk zmlp-plugins-base mlp-plugins-models zmlp-plugins-core zmlp-plugins-analysis
+    - ./buildx analyst zmlp-py3-base zmlp-py3-client zmlp-py3-sdk zmlp-plugins-base zmlp-plugins-models zmlp-plugins-core zmlp-plugins-analysis
     - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-core:latest pytest -s /zvi/pylib
     - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-analysis:latest pytest -s /zvi/pylib
   only:
