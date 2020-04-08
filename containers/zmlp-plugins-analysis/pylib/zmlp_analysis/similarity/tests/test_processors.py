@@ -17,6 +17,10 @@ class MxUnitTests(PluginUnitTestCase):
 
     def setUp(self):
         self.frame = Frame(TestAsset(self.toucan_path))
+        if not os.path.exists("/models"):
+            path = "/../../../../../zmlp-plugins-models/resnet-152"
+            ZviSimilarityProcessor.model_path = os.path.normpath(
+                os.path.dirname(__file__)) + path
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_ResNetSimilarity_defaults(self, upload_patch):
@@ -24,8 +28,7 @@ class MxUnitTests(PluginUnitTestCase):
 
         store_asset_proxy(self.frame.asset, self.toucan_path, (512, 512))
         processor = ZviSimilarityProcessor()
-        processor.model_path = os.path.normpath(os.path.dirname(__file__) +
-                                                "/../../../../../zmlp-plugins-models/resnet-152")
+
         processor = self.init_processor(processor, {'debug': True})
         processor.process(self.frame)
 
