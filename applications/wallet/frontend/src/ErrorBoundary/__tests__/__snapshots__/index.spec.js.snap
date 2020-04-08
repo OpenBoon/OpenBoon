@@ -3,11 +3,11 @@
 exports[`<ErrorBoundary /> should render children 1`] = `<div />`;
 
 exports[`<ErrorBoundary /> should render generic when caught 1`] = `
-.emotion-1 {
+.emotion-2 {
   height: 100%;
 }
 
-.emotion-0 {
+.emotion-1 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -32,13 +32,18 @@ exports[`<ErrorBoundary /> should render generic when caught 1`] = `
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
 
+.emotion-0 {
+  max-width: 80%;
+}
+
 <div
-  className="emotion-1"
+  className="emotion-2"
 >
   <div
-    className="emotion-0"
+    className="emotion-1"
   >
     <svg
+      className="emotion-0"
       data-file-name="error.svg"
       width={604}
     />
