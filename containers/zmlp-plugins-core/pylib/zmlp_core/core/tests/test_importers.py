@@ -30,7 +30,7 @@ class FileImportProcessorTests(PluginUnitTestCase):
         assert -37.81 == frame.asset.get_attr('location.point.lat')
         assert 144.96 == frame.asset.get_attr('location.point.lon')
         assert 'Melbourne' == frame.asset.get_attr('location.city')
-        assert 'AU' == frame.asset.get_attr('location.country_code')
+        assert 'AU' == frame.asset.get_attr('location.code')
         assert 'Australia' == frame.asset.get_attr('location.country')
 
     @patch.object(OfficeImporter, 'get_metadata',

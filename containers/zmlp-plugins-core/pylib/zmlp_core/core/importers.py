@@ -61,7 +61,7 @@ class FileImportProcessor(AssetProcessor):
             rev = reverse_geocode.search(coords)
             if rev:
                 asset.set_attr("location.city", rev[0]['city'])
-                asset.set_attr("location.country_code", rev[0]['country_code'])
+                asset.set_attr("location.code", rev[0]['country_code'])
                 asset.set_attr("location.country", rev[0]['country'])
         except Exception as e:
             self.logger.warning("Failed to apply geo data '%s'", e)
