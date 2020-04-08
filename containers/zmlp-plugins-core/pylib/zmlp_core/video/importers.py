@@ -4,7 +4,8 @@ from pathlib import Path
 
 from zmlp.asset import Clip
 from zmlpsdk.storage import file_storage
-from zmlpsdk.base import AssetProcessor, ZmlpProcessorException, FileTypes
+from zmlpsdk.base import AssetProcessor, ZmlpProcessorException, FileTypes, \
+    ZmlpFatalProcessorException
 from ..util.media import get_video_metadata, create_video_thumbnail, set_resolution_attrs
 
 
@@ -39,13 +40,18 @@ class VideoImporter(AssetProcessor):
         if not has_media_type:
             path = file_storage.localize_file(asset)
             probe = get_video_metadata(path)
-            asset.set_attr('media.type', 'video')
 
-            for key in ('description', 'title', 'width', 'height', 'length', 'timeCreated'):
-                asset.set_attr("media.{}".format(key), probe[key])
+            # Required attributes
+            for key in ['width', 'height', 'length']:
+                try:
+                    asset.set_attr("media.{}".format(key), probe[key])
+                except KeyError:
+                    raise ZmlpFatalProcessorException('Unable to determine falue for {}'.format(key))
 
-            if probe.get('width') and probe.get('height'):
-                set_resolution_attrs(asset, probe.get('width'), probe.get('height'))
+            for key in ['description', 'title', 'timeCreated']:
+                asset.set_attr("media.{}".format(key), probe.get(key))
+
+            set_resolution_attrs(asset, probe.get('width'), probe.get('height'))
 
             # Everything has a clip, even if it's the whole movie.
             # Only add the clip if we didn't have have it.
@@ -53,6 +59,9 @@ class VideoImporter(AssetProcessor):
                 # Since there is no clip, then set a clip, as all pages
                 # need to have a clip.
                 asset.set_attr('clip', Clip.scene(0.0, probe['length'], 'full'))
+
+            # Set this last.
+            asset.set_attr('media.type', 'video')
 
     def _create_proxy_source_image(self, asset):
         """Creates a source image to be used by the ProxyIngestor.

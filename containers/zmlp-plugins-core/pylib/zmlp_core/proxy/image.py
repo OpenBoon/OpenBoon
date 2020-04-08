@@ -1,5 +1,5 @@
 import subprocess
-import sys
+import os
 import tempfile
 import logging
 import collections
@@ -87,7 +87,7 @@ class ImageProxyProcessor(AssetProcessor):
         # If we had outputs then we need to actually shell out to oiiotool.
         if proxy_descriptors:
             self.logger.info('oiiotool command to create proxies: %s' % oiiotool_command)
-            subprocess.check_call(oiiotool_command, stdout=sys.stdout, stderr=sys.stdout)
+            subprocess.check_call(oiiotool_command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             self.created_proxy_count += len(proxy_descriptors)
         else:
             self.logger.info('All proxies already exist. No proxies will be created.')
@@ -109,7 +109,7 @@ class ImageProxyProcessor(AssetProcessor):
         source_path = self._get_source_path(asset)
 
         # Crete the base of the oiiotool shell command.
-        oiiotool_command = ['oiiotool', '-native', '-wildcardoff', source_path,
+        oiiotool_command = ['oiiotool', '-q', '-native', '-wildcardoff', source_path,
                             '--threads', '--cache 100', '--clear-keywords',
                             '--nosoftwareattrib', '--eraseattrib', 'thumbnail_image',
                             '--eraseattrib', 'Exif:.*', '--eraseattrib', 'IPTC:.*']
