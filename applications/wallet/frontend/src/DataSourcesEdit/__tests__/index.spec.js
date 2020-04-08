@@ -21,7 +21,7 @@ describe('<DataSourcesEdit />', () => {
     require('next/router').__setMockPushFunction(mockFn)
 
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/data-sources/edit',
+      pathname: '/[projectId]/data-sources/[dataSourceId]/edit',
       query: { projectId: PROJECT_ID, dataSourceId: DATA_SOURCE_ID },
     })
 

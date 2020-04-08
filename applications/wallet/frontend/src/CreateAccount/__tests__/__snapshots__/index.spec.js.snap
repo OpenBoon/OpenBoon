@@ -464,6 +464,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
           <input
             autoFocus={true}
             className="emotion-10"
+            disabled={false}
             id="firstName"
             name="firstName"
             onChange={[Function]}
@@ -491,6 +492,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         >
           <input
             className="emotion-10"
+            disabled={false}
             id="lastName"
             name="lastName"
             onChange={[Function]}
@@ -518,6 +520,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         >
           <input
             className="emotion-10"
+            disabled={false}
             id="email"
             name="email"
             onChange={[Function]}
@@ -550,6 +553,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         >
           <input
             className="emotion-10"
+            disabled={false}
             id="password"
             name="password"
             onChange={[Function]}
@@ -577,6 +581,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         >
           <input
             className="emotion-10"
+            disabled={false}
             id="confirmPassword"
             name="confirmPassword"
             onChange={[Function]}
@@ -1079,6 +1084,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
           <input
             autoFocus={true}
             className="emotion-6"
+            disabled={false}
             id="firstName"
             name="firstName"
             onChange={[Function]}
@@ -1106,6 +1112,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
         >
           <input
             className="emotion-6"
+            disabled={false}
             id="lastName"
             name="lastName"
             onChange={[Function]}
@@ -1133,6 +1140,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
         >
           <input
             className="emotion-6"
+            disabled={false}
             id="email"
             name="email"
             onChange={[Function]}
@@ -1165,6 +1173,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
         >
           <input
             className="emotion-6"
+            disabled={false}
             id="password"
             name="password"
             onChange={[Function]}
@@ -1192,6 +1201,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
         >
           <input
             className="emotion-6"
+            disabled={false}
             id="confirmPassword"
             name="confirmPassword"
             onChange={[Function]}

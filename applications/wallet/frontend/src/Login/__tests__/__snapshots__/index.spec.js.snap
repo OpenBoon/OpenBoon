@@ -490,6 +490,7 @@ exports[`<Login /> should render error 1`] = `
         <input
           autoFocus={true}
           className="emotion-15"
+          disabled={false}
           id="username"
           name="username"
           onChange={[Function]}
@@ -522,6 +523,7 @@ exports[`<Login /> should render error 1`] = `
       >
         <input
           className="emotion-15"
+          disabled={false}
           id="password"
           name="password"
           onChange={[Function]}
@@ -1043,6 +1045,7 @@ exports[`<Login /> should render password changed 1`] = `
         <input
           autoFocus={true}
           className="emotion-12"
+          disabled={false}
           id="username"
           name="username"
           onChange={[Function]}
@@ -1070,6 +1073,7 @@ exports[`<Login /> should render password changed 1`] = `
       >
         <input
           className="emotion-12"
+          disabled={false}
           id="password"
           name="password"
           onChange={[Function]}
@@ -1586,6 +1590,7 @@ exports[`<Login /> should render properly 1`] = `
         <input
           autoFocus={true}
           className="emotion-12"
+          disabled={false}
           id="username"
           name="username"
           onChange={[Function]}
@@ -1613,6 +1618,7 @@ exports[`<Login /> should render properly 1`] = `
       >
         <input
           className="emotion-12"
+          disabled={false}
           id="password"
           name="password"
           onChange={[Function]}
@@ -2129,6 +2135,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
         <input
           autoFocus={true}
           className="emotion-12"
+          disabled={false}
           id="username"
           name="username"
           onChange={[Function]}
@@ -2156,6 +2163,7 @@ exports[`<Login /> should render properly on account activation success 1`] = `
       >
         <input
           className="emotion-12"
+          disabled={false}
           id="password"
           name="password"
           onChange={[Function]}
@@ -2672,6 +2680,7 @@ exports[`<Login /> should render properly on account creation success 1`] = `
         <input
           autoFocus={true}
           className="emotion-12"
+          disabled={false}
           id="username"
           name="username"
           onChange={[Function]}
@@ -2699,6 +2708,7 @@ exports[`<Login /> should render properly on account creation success 1`] = `
       >
         <input
           className="emotion-12"
+          disabled={false}
           id="password"
           name="password"
           onChange={[Function]}

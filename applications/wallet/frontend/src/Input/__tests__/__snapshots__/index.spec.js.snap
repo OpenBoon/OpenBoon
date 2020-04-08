@@ -52,6 +52,7 @@ exports[`<Input /> should render properly with an error 1`] = `
     <input
       autoFocus={true}
       className="emotion-1"
+      disabled={false}
       id="username"
       name="username"
       onChange={[Function]}

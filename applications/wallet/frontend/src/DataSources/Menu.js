@@ -22,8 +22,8 @@ const DataSourcesMenu = ({ projectId, dataSourceId, revalidate }) => {
                 variant={VARIANTS.MENU_ITEM}
                 onClick={() => {
                   Router.push(
-                    '/[projectId]/data-sources/edit/[dataSourceId]',
-                    `/${projectId}/data-sources/edit/${dataSourceId}`,
+                    '/[projectId]/data-sources/[dataSourceId]/edit',
+                    `/${projectId}/data-sources/${dataSourceId}/edit`,
                   )
                 }}
                 isDisabled={false}

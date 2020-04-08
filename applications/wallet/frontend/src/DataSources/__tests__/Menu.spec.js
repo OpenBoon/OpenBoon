@@ -89,8 +89,8 @@ describe('<DataSourcesMenu />', () => {
     })
 
     expect(mockRouter).toHaveBeenCalledWith(
-      '/[projectId]/data-sources/edit/[dataSourceId]',
-      `/${PROJECT_ID}/data-sources/edit/${DATA_SOURCE_ID}`,
+      '/[projectId]/data-sources/[dataSourceId]/edit',
+      `/${PROJECT_ID}/data-sources/${DATA_SOURCE_ID}/edit`,
     )
   })
 })

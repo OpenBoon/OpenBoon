@@ -57,8 +57,6 @@ const Input = ({
   isDisabled,
   ...props
 }) => {
-  const disabled = isDisabled ? { 'aria-disabled': true } : {}
-
   return (
     <div css={{ paddingTop: PADDING }}>
       <label
@@ -87,8 +85,7 @@ const Input = ({
             STYLES[variant],
             BORDER_STYLES({ hasError }),
           ]}
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          {...disabled}
+          disabled={isDisabled}
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...props}
         />

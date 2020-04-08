@@ -21,7 +21,7 @@ const DataSourcesEdit = () => {
           { title: 'Add Data Source', href: '/[projectId]/data-sources/add' },
           {
             title: 'Edit Data Source',
-            href: '/[projectId]/data-sources/edit/[dataSourceId]',
+            href: '/[projectId]/data-sources/[dataSourceId]/edit',
           },
         ]}
       />
