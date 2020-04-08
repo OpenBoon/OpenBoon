@@ -36,7 +36,6 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -96,7 +95,6 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -253,7 +251,6 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -313,7 +310,6 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -469,7 +465,6 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -529,7 +524,6 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -685,7 +679,6 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -745,7 +738,6 @@ Array [
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 2px solid #c92300;

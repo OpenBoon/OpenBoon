@@ -11,7 +11,7 @@ const BASE = ({ isDisabled }) => ({
   borderRadius: constants.borderRadius.small,
   boxShadow: constants.boxShadows.input,
   width: '100%',
-  cursor: isDisabled ? 'not-allowed' : 'text',
+  cursor: isDisabled ? 'not-allowed' : '',
   '&:focus': {
     border: constants.borders.input,
     outline: colors.key.one,

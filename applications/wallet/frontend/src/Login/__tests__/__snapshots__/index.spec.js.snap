@@ -371,7 +371,6 @@ exports[`<Login /> should render error 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 2px solid #c92300;
@@ -809,7 +808,6 @@ exports[`<Login /> should render password changed 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -1353,7 +1351,6 @@ exports[`<Login /> should render properly 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -1897,7 +1894,6 @@ exports[`<Login /> should render properly on account activation success 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
@@ -2441,7 +2437,6 @@ exports[`<Login /> should render properly on account creation success 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
-  cursor: text;
   color: #000000;
   background-color: #ffffff;
   border: 1px solid transparent;
