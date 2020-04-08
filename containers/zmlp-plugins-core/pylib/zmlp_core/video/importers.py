@@ -46,7 +46,8 @@ class VideoImporter(AssetProcessor):
                 try:
                     asset.set_attr("media.{}".format(key), probe[key])
                 except KeyError:
-                    raise ZmlpFatalProcessorException('Unable to determine falue for {}'.format(key))
+                    raise ZmlpFatalProcessorException(
+                        'Unable to determine failure for {}'.format(key))
 
             for key in ['description', 'title', 'timeCreated']:
                 asset.set_attr("media.{}".format(key), probe.get(key))
