@@ -8,6 +8,9 @@ const DATA_SOURCE_ID = '2f0de857-95fd-120e-85f3-0242ac120002'
 describe('<DataSourcesMenu />', () => {
   it('should render properly', async () => {
     const mockFn = jest.fn()
+    const mockRouter = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouter)
 
     fetch.mockResponseOnce('{}')
 
@@ -72,5 +75,22 @@ describe('<DataSourcesMenu />', () => {
     })
 
     expect(mockFn).toHaveBeenCalledWith()
+
+    // Open Menu
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Toggle Actions Menu' })
+        .props.onClick()
+    })
+
+    // Select Edit
+    await act(async () => {
+      component.root.findByProps({ children: 'Edit' }).props.onClick()
+    })
+
+    expect(mockRouter).toHaveBeenCalledWith(
+      '/[projectId]/data-sources/edit/[dataSourceId]',
+      `/${PROJECT_ID}/data-sources/edit/${DATA_SOURCE_ID}`,
+    )
   })
 })

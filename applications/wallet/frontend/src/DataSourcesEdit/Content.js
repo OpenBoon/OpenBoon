@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
-import { FILE_TYPES } from '../DataSourcesAdd/helpers'
+import { FILE_TYPES } from '../DataSourcesForm/helpers'
 
 import DataSourcesForm from '../DataSourcesForm'
 
