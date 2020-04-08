@@ -50,6 +50,11 @@ def get_similarity_hashes():
         logger.exception("Failed to calculate similarity hash {}".format(e))
 
 
+@app.route('/healthcheck', methods=['GET'])
+def get_heath_check():
+    return jsonify({'healthy': True})
+
+
 def authenticate(token):
     """
     Authenticate the given token.  Throws if auth fails.
