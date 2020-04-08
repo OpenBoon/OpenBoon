@@ -166,7 +166,7 @@ class FileTypesTests(unittest.TestCase):
         exts = FileTypes.resolve('videos')
         assert 'mp4' in exts
 
-    def test_resolve_images(self):
+    def test_resolve_documents(self):
         exts = FileTypes.resolve('documents')
         assert 'doc' in exts
 
