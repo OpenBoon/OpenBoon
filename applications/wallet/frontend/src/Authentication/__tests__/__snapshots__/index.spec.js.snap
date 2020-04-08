@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Authentication /> should render properly when the Google SDK is blocked 1`] = `
+<Login
+  errorMessage=""
+  googleAuth={
+    Object {
+      "signIn": [Function],
+      "signOut": [Function],
+    }
+  }
+  hasGoogleLoaded={false}
+  onSubmit={[Function]}
+/>
+`;
+
 exports[`<Authentication /> should render properly when user is logged in 1`] = `
 <SWRConfig
   value={
