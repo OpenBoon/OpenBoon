@@ -33,6 +33,8 @@ const Authentication = ({ route, children }) => {
   const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
+    if (typeof window.gapi === 'undefined') return
+
     window.gapi.load('auth2', async () => {
       setGoogleAuth(
         window.gapi.auth2.init({

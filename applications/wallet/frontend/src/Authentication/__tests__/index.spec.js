@@ -115,6 +115,23 @@ describe('<Authentication />', () => {
     expect(component.toJSON()).toEqual(null)
   })
 
+  it('should render properly when the Google SDK is blocked', async () => {
+    window.gapi = undefined
+
+    const component = TestRenderer.create(
+      <User initialUser={{}}>
+        <Authentication route="/">Hello World!</Authentication>
+      </User>,
+    )
+
+    // useEffect loads Google SDK
+    await act(async () => {})
+
+    expect(component.root.findByType('Login').props.hasGoogleLoaded).toBe(false)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('noop should do nothing', () => {
     expect(noop()()).toBe(undefined)
   })
