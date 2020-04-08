@@ -9,7 +9,7 @@ import requests
 from flask import Flask, jsonify
 from gevent.pywsgi import WSGIServer
 
-from .simhash import get_similarity_hash
+from .simhash import get_similarity_hash, SimilarityModel
 
 app = Flask(__name__)
 logger = logging.getLogger(__name__)
@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 auth_url = os.environ.get("ZMLP_SECURITY_AUTHSERVER_URL", "http://auth-server:9090")
 auth_endpoint = "{}/auth/v1/auth-token".format(auth_url)
 
+SimilarityModel.load()
 
 def main():
     parser = argparse.ArgumentParser(prog='zmld')

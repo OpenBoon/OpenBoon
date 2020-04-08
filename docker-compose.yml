@@ -63,6 +63,7 @@ services:
     image: zmlp/ml-bbq:latest
     depends_on:
       - auth-server
+      - zmlp-plugins-models
     build:
       context: services/mlbbq
     environment:
@@ -210,10 +211,18 @@ services:
       context: containers/zmlp-plugins-core
     command: echo
 
+  zmlp-plugins-models:
+    image: zmlp/plugins-models:latest
+    depends_on:
+      - zmlp-plugins-base
+    build:
+      context: containers/zmlp-plugins-models
+    command: echo
+
   zmlp-plugins-analysis:
     image: zmlp/plugins-analysis:latest
     depends_on:
-      - zmlp-plugins-base
+      - zmlp-plugins-models
     build:
       context: containers/zmlp-plugins-analysis
     command: echo
