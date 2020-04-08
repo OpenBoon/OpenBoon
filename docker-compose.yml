@@ -60,7 +60,7 @@ services:
       MLBBQ_SERVER_HOST: ml-bbq:8282
 
   ml-bbq:
-    image: mlservice/mlservice:latest
+    image: zmlp/ml-bbq:latest
     depends_on:
       - auth-server
     build:
