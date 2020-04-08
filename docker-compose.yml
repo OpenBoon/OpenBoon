@@ -63,6 +63,8 @@ services:
     image: zmlp/ml-bbq:latest
     depends_on:
       - auth-server
+    ports:
+      - "8282:8282"
     build:
       context: services/mlbbq
     environment:

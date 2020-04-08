@@ -217,21 +217,21 @@ docker_hub_build_push:
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
     - ./buildx
-    - docker push zmlp/archivist:latest
-    - docker push zmlp/officer:latest
-    - docker push zmlp/wallet:latest
-    - docker push zmlp/elasticsearch:latest
-    - docker push zmlp/authserver:latest
-    - docker push zmlp/apigateway:latest
-    - docker push zmlp/py3-base:latest
-    - docker push zmlp/py3-client:latest
-    - docker push zmlp/py3-sdk:latest
-    - docker push zmlp/plugins-base:latest
-    - docker push zmlp/plugins-core:latest
-    - docker push zmlp/plugins-analysis:latest
-    - docker push zmlp/analyst:latest
-    - docker push zmlp/jvm-common:latest
-    - docker push zmlp/ml-bbq:latest
+    - "docker push zmlp/archivist:latest"
+    - "docker push zmlp/officer:latest"
+    - "docker push zmlp/wallet:latest"
+    - "docker push zmlp/elasticsearch:latest"
+    - "docker push zmlp/authserver:latest"
+    - "docker push zmlp/apigateway:latest"
+    - "docker push zmlp/py3-base:latest"
+    - "docker push zmlp/py3-client:latest"
+    - "docker push zmlp/py3-sdk:latest"
+    - "docker push zmlp/plugins-base:latest"
+    - "docker push zmlp/plugins-core:latest"
+    - "docker push zmlp/plugins-analysis:latest"
+    - "docker push zmlp/analyst:latest"
+    - "docker push zmlp/jvm-common:latest"
+    - "docker push zmlp/ml-bbq:latest"
   only:
     - development
 
@@ -257,6 +257,7 @@ deploy_development:
     - ${DEPLOY_SCRIPT} statefulset ${PROJECT} elasticsearch-data
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} officer
     - ${DEPLOY_SCRIPT} deployment ${PROJECT} wallet
+    - ${DEPLOY_SCRIPT} deployment ${PROJECT} ml-bbq
 
 # Kotlin services - Unit tests - Step 1
 services_build_artifacts:
