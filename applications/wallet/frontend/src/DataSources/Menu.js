@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import Router from 'next/router'
+import Link from 'next/link'
 
 import { fetcher } from '../Fetch/helpers'
 
@@ -18,18 +18,15 @@ const DataSourcesMenu = ({ projectId, dataSourceId, revalidate }) => {
         <div>
           <ul>
             <li>
-              <Button
-                variant={VARIANTS.MENU_ITEM}
-                onClick={() => {
-                  Router.push(
-                    '/[projectId]/data-sources/[dataSourceId]/edit',
-                    `/${projectId}/data-sources/${dataSourceId}/edit`,
-                  )
-                }}
-                isDisabled={false}
+              <Link
+                href="/[projectId]/data-sources/[dataSourceId]/edit"
+                as={'/[projectId]/data-sources/[dataSourceId]/edit'
+                  .replace('[projectId]', projectId)
+                  .replace('[dataSourceId]', dataSourceId)}
+                passHref
               >
-                Edit
-              </Button>
+                <Button variant={VARIANTS.MENU_ITEM}>Edit</Button>
+              </Link>
             </li>
             <li>
               <>
