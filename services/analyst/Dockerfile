@@ -23,6 +23,7 @@ RUN groupadd -r analyst && useradd --no-log-init -r -g analyst analyst
 ARG EXT_MOUNT="/zorroa"
 ENV PYTHONPATH="/service/pylib"
 
+USER root
 EXPOSE 5000
 ENTRYPOINT ["/service/bin/analystd"]
 
