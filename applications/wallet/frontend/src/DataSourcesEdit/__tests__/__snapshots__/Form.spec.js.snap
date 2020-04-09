@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DataSourcesEdit /> should render properly 1`] = `
+exports[`<DataSourcesEditForm /> should render properly 1`] = `
 Array [
   .emotion-0 {
   font-size: 18px;
@@ -131,23 +131,50 @@ Array [
       </li>
     </ul>
   </nav>,
-  <DataSourcesEditForm
-    initialState={
-      Object {
-        "credentials": "",
-        "errors": Object {
-          "global": "",
-        },
-        "fileTypes": Object {
-          "images": true,
-        },
-        "modules": Array [
-          "1810b623-4b95-11ea-8b23-0242ac120004",
-        ],
-        "name": "test",
-        "uri": "gs://zorroa-dev-data/images",
-      }
-    }
-  />,
+  .emotion-1 {
+  height: 100%;
+}
+
+.emotion-0 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #808080;
+  background-color: #252525;
+  font-size: 15px;
+  line-height: 19px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+}
+
+<div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-0"
+    >
+      <svg
+        data-file-name="error.svg"
+        width={604}
+      />
+      <br />
+       Hmmm, something went wrong.
+      <br />
+       Please try refreshing.
+    </div>
+  </div>,
 ]
 `;

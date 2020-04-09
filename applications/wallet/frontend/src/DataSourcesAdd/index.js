@@ -4,7 +4,7 @@ import PageTitle from '../PageTitle'
 import Tabs from '../Tabs'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 
-import DataSourcesForm from '../DataSourcesForm'
+import DataSourcesForm from './Form'
 
 const DataSourcesAdd = () => {
   return (

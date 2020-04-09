@@ -57,7 +57,7 @@ export const onSubmitAdd = async ({
             const { legend: extensions } = FILE_TYPES.find(
               ({ value }) => value === f,
             )
-            return extensions.toLowerCase().split(',')
+            return extensions.toLowerCase().split(', ')
           }),
         modules: Object.keys(modules).filter((m) => modules[m]),
       }),

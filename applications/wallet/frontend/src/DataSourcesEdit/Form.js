@@ -10,32 +10,25 @@ import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import SectionSubTitle from '../SectionSubTitle'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
+import Textarea, { VARIANTS as TEXTAREA_VARIANTS } from '../Textarea'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 
-import { FILE_TYPES, onSubmitAdd, onSubmitEdit } from './helpers'
+import { FILE_TYPES } from '../DataSourcesAdd/helpers'
 
-import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
-import DataSourcesAddProvider from './Provider'
-import DataSourcesAddCopy from './Copy'
-import DataSourcesAddSource, { SOURCES } from './Source'
+import { onSubmit } from './helpers'
 
-const INITIAL_STATE = {
-  name: '',
-  source: '',
-  uri: '',
-  credentials: {},
-  fileTypes: {},
-  modules: {},
-  errors: { global: '', name: '', uri: '' },
-}
+import DataSourcesAddAutomaticAnalysis from '../DataSourcesAdd/AutomaticAnalysis'
+import DataSourcesAddProvider from '../DataSourcesAdd/Provider'
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-const DataSourcesForm = ({ initialState }) => {
+const noop = () => () => {}
+
+const DataSourcesEditForm = ({ initialState }) => {
   const {
     query: { projectId, dataSourceId },
   } = useRouter()
@@ -46,29 +39,17 @@ const DataSourcesForm = ({ initialState }) => {
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  const { credentials, errors, fileTypes, name, source, uri } = state
-
-  const isFileTypesEmpty = !Object.values(fileTypes).find((value) => !!value)
-
-  const isRequiredCredentialsEmpty = credentials[source]
-    ? Object.keys(credentials[source]).reduce((count, credential) => {
-        const { isRequired, value } = credentials[source][credential]
-        const currentCount = isRequired && value === '' ? 1 : 0
-        return count + currentCount
-      }, 0) > 0
-    : true
+  console.log(state)
 
   return (
     <>
-      {errors.global && (
+      {state.errors.global && (
         <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-          {errors.global}
+          {state.errors.global}
         </FlashMessage>
       )}
 
       <Form style={{ width: 'auto' }}>
-        <DataSourcesAddCopy />
-
         <div css={{ width: constants.form.maxWidth }}>
           <span
             css={{
@@ -88,23 +69,41 @@ const DataSourcesForm = ({ initialState }) => {
             variant={INPUT_VARIANTS.SECONDARY}
             label="Name"
             type="text"
-            value={name}
-            onChange={({ target: { value } }) => {
-              const nameError = value === '' ? 'Name cannot be empty' : ''
-
-              return dispatch({
-                name: value,
-                errors: { ...errors, name: nameError },
-              })
-            }}
-            hasError={!!errors.name}
-            errorMessage={errors.name}
+            value={state.name}
+            onChange={({ target: { value } }) => dispatch({ name: value })}
+            hasError={state.errors.name !== undefined}
+            errorMessage={state.errors.name}
             isRequired
           />
 
-          <SectionTitle>Connect to Source</SectionTitle>
+          <SectionTitle>Connect to Source: Google Cloud Storage</SectionTitle>
 
-          <DataSourcesAddSource dispatch={dispatch} state={state} />
+          <Input
+            id="uri"
+            variant={INPUT_VARIANTS.SECONDARY}
+            label="Bucket Address"
+            type="text"
+            value={state.uri}
+            onChange={noop}
+            hasError={false}
+            errorMessage=""
+            isRequired
+            isDisabled
+          />
+        </div>
+
+        <div css={{ minWidth: constants.form.maxWidth, maxWidth: '50%' }}>
+          <Textarea
+            id="credentials"
+            variant={TEXTAREA_VARIANTS.SECONDARY}
+            label="If this bucket is private, please paste the JSON service account credentials:"
+            value={state.credentials}
+            onChange={({ target: { value } }) =>
+              dispatch({ credentials: value })
+            }
+            hasError={state.errors.credentials !== undefined}
+            errorMessage={state.errors.credentials}
+          />
         </div>
 
         <CheckboxGroup
@@ -116,14 +115,14 @@ const DataSourcesForm = ({ initialState }) => {
             </div>
           }
           onClick={(fileType) =>
-            dispatch({ fileTypes: { ...fileTypes, ...fileType } })
+            dispatch({ fileTypes: { ...state.fileTypes, ...fileType } })
           }
           options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
             value,
             label,
             icon: <img src={icon} alt={label} width="40px" />,
             legend,
-            initialValue: fileTypes[value],
+            initialValue: state.fileTypes[value] || false,
             isDisabled: false,
           }))}
           variant={CHECKBOX_VARIANTS.SECONDARY}
@@ -135,10 +134,10 @@ const DataSourcesForm = ({ initialState }) => {
           Choose the type of analysis you would like performed on your data set:
         </SectionSubTitle>
 
-        <DataSourcesFormAutomaticAnalysis />
+        <DataSourcesAddAutomaticAnalysis />
 
         {providers.map((provider) => (
-          <DataSourcesFormProvider
+          <DataSourcesAddProvider
             key={provider.name}
             provider={provider}
             onClick={(module) =>
@@ -159,20 +158,15 @@ const DataSourcesForm = ({ initialState }) => {
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() =>
-              dataSourceId
-                ? onSubmitEdit({ dispatch, projectId, dataSourceId, state })
-                : onSubmitAdd({ dispatch, projectId, state })
+              onSubmit({ dispatch, projectId, dataSourceId, state })
             }
             isDisabled={
-              !name ||
-              !source ||
-              uri === SOURCES[source].uri ||
-              !!errors.uri ||
-              isRequiredCredentialsEmpty ||
-              isFileTypesEmpty
+              !state.name ||
+              state.uri.substr(0, 5) !== 'gs://' ||
+              !Object.values(state.fileTypes).filter(Boolean).length > 0
             }
           >
-            {dataSourceId ? 'Edit' : 'Create'} Data Source
+            Edit Data Source
           </Button>
         </ButtonGroup>
       </Form>
@@ -180,19 +174,15 @@ const DataSourcesForm = ({ initialState }) => {
   )
 }
 
-DataSourcesForm.defaultProps = {
-  initialState: INITIAL_STATE,
-}
-
-DataSourcesForm.propTypes = {
+DataSourcesEditForm.propTypes = {
   initialState: PropTypes.shape({
     name: PropTypes.string,
     uri: PropTypes.string,
-    credential: PropTypes.string,
+    credentials: PropTypes.array,
     fileTypes: PropTypes.object,
     modules: PropTypes.arrayOf(PropTypes.string),
     errors: PropTypes.shape({ global: PropTypes.string }),
-  }),
+  }).isRequired,
 }
 
-export default DataSourcesForm
+export default DataSourcesEditForm
