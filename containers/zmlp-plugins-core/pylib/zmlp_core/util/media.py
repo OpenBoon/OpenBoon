@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import re
-from subprocess import check_output, check_call, CalledProcessError
+from subprocess import check_output, check_call, CalledProcessError, DEVNULL
 
 import xmltodict
 from pathlib import Path
@@ -46,10 +46,11 @@ def media_size(path):
         # On large files, PIL blows up with PIL.Image.DecompressionBombError:
         # Image size (264192000 pixels) exceeds limit of 178956970 pixels,
         # could be decompression bomb DOS attack.
-        cmd = ["oiiotool", "--wildcardoff", "--info", str(path)]
+        cmd = ["oiiotool", "-q", "--wildcardoff", "--info", str(path)]
         try:
             logger.info("running command: %s" % cmd)
-            line = [e for e in check_output(cmd, shell=False).decode().split(" ") if e]
+            line = [e for e in
+                    check_output(cmd, shell=False, stderr=DEVNULL).decode().split(" ") if e]
             idx = line.index("x")
             return int(line[idx-1]), int(re.sub('[^0-9]', '', line[idx+1]))
         except CalledProcessError:
@@ -68,6 +69,7 @@ def get_image_metadata(file_path):
 
     """
     cmd = ['oiiotool',
+           '-q',
            '--wildcardoff',
            '--info:format=xml:verbose=1',
            str(file_path)]
@@ -75,7 +77,7 @@ def get_image_metadata(file_path):
     logger.info("running command: %s" % cmd)
 
     # Have to remove bad unicode chars with decode
-    output = check_output(cmd, shell=False)
+    output = check_output(cmd, shell=False, stderr=DEVNULL)
     if isinstance(output, (bytes, bytearray)):
         output = output.decode('ascii', errors='ignore')
     output = re.sub(r"&#\d+;", "", output)
@@ -230,7 +232,7 @@ def create_video_thumbnail(source_path, destination_path, seconds):
 
     logger.info("running command: %s" % cmd)
     try:
-        check_call(cmd, shell=False)
+        check_call(cmd, shell=False, stderr=DEVNULL)
     except CalledProcessError:
         # Don't let CalledProcessError bubble out
         # we're only sending IOError
