@@ -26,7 +26,8 @@ const JobErrorAsset = ({ assetId }) => {
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
-  const srcUrl = files[0] && files[0].url
+  const { url: srcUrl } =
+    files.find(({ mimetype }) => mimetype === 'image/jpeg') || {}
 
   return (
     <div
