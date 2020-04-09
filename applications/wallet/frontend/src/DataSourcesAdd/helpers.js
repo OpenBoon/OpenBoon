@@ -26,7 +26,7 @@ export const FILE_TYPES = [
 export const onSubmit = async ({
   dispatch,
   projectId,
-  state: { name, uri, credential, fileTypes, modules },
+  state: { name, uri, credentials, source, fileTypes, modules },
 }) => {
   try {
     await fetcher(`/api/v1/projects/${projectId}/data_sources/`, {
@@ -34,7 +34,7 @@ export const onSubmit = async ({
       body: JSON.stringify({
         name,
         uri,
-        credential,
+        credentials: { type: source, ...credentials[source] },
         file_types: Object.keys(fileTypes)
           .filter((f) => fileTypes[f])
           .flatMap((f) => {

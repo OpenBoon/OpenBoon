@@ -9,7 +9,6 @@ import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import SectionSubTitle from '../SectionSubTitle'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
-import Textarea, { VARIANTS as TEXTAREA_VARIANTS } from '../Textarea'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
@@ -20,14 +19,17 @@ import { FILE_TYPES, onSubmit } from './helpers'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
 import DataSourcesAddProvider from './Provider'
+import DataSourcesAddCopy from './Copy'
+import DataSourcesAddSource, { SOURCES } from './Source'
 
 const INITIAL_STATE = {
   name: '',
-  uri: 'gs://',
-  credential: '',
+  source: '',
+  uri: '',
+  credentials: {},
   fileTypes: {},
   modules: {},
-  errors: { global: '' },
+  errors: { global: '', name: '', uri: '' },
 }
 
 const reducer = (state, action) => ({ ...state, ...action })
@@ -43,15 +45,25 @@ const DataSourcesAddForm = () => {
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
+  const { credentials, errors, fileTypes, name, source, uri } = state
+
+  const isFileTypesEmpty = !Object.values(fileTypes).find((value) => !!value)
+
+  const isCredentialsEmpty = credentials[source]
+    ? Object.values(credentials[source]).includes('')
+    : true
+
   return (
     <>
-      {state.errors.global && (
+      {errors.global && (
         <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-          {state.errors.global}
+          {errors.global}
         </FlashMessage>
       )}
 
       <Form style={{ width: 'auto' }}>
+        <DataSourcesAddCopy />
+
         <div css={{ width: constants.form.maxWidth }}>
           <span
             css={{
@@ -71,48 +83,23 @@ const DataSourcesAddForm = () => {
             variant={INPUT_VARIANTS.SECONDARY}
             label="Name"
             type="text"
-            value={state.name}
-            onChange={({ target: { value } }) => dispatch({ name: value })}
-            hasError={state.errors.name !== undefined}
-            errorMessage={state.errors.name}
+            value={name}
+            onChange={({ target: { value } }) => {
+              const nameError = value === '' ? 'Name cannot be empty' : ''
+
+              return dispatch({
+                name: value,
+                errors: { ...errors, name: nameError },
+              })
+            }}
+            hasError={!!errors.name}
+            errorMessage={errors.name}
             isRequired
           />
 
-          <SectionTitle>Connect to Source: Google Cloud Storage</SectionTitle>
+          <SectionTitle>Connect to Source</SectionTitle>
 
-          <Input
-            id="uri"
-            variant={INPUT_VARIANTS.SECONDARY}
-            label="Bucket Address"
-            type="text"
-            value={state.uri}
-            onChange={({ target: { value } }) => dispatch({ uri: value })}
-            hasError={
-              state.errors.uri !== undefined ||
-              state.uri.substr(0, 5) !== 'gs://'
-            }
-            errorMessage={
-              state.errors.uri ||
-              (state.uri.substr(0, 5) !== 'gs://'
-                ? 'Bucket address should start with gs://'
-                : '')
-            }
-            isRequired
-          />
-        </div>
-
-        <div css={{ minWidth: constants.form.maxWidth, maxWidth: '50%' }}>
-          <Textarea
-            id="credential"
-            variant={TEXTAREA_VARIANTS.SECONDARY}
-            label="If this bucket is private, please paste the JSON service account credential:"
-            value={state.credential}
-            onChange={({ target: { value } }) =>
-              dispatch({ credential: value })
-            }
-            hasError={state.errors.credential !== undefined}
-            errorMessage={state.errors.credential}
-          />
+          <DataSourcesAddSource dispatch={dispatch} state={state} />
         </div>
 
         <CheckboxGroup
@@ -124,7 +111,7 @@ const DataSourcesAddForm = () => {
             </div>
           }
           onClick={(fileType) =>
-            dispatch({ fileTypes: { ...state.fileTypes, ...fileType } })
+            dispatch({ fileTypes: { ...fileTypes, ...fileType } })
           }
           options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
             value,
@@ -168,9 +155,12 @@ const DataSourcesAddForm = () => {
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() => onSubmit({ dispatch, projectId, state })}
             isDisabled={
-              !state.name ||
-              state.uri.substr(0, 5) !== 'gs://' ||
-              !Object.values(state.fileTypes).filter(Boolean).length > 0
+              !name ||
+              !source ||
+              uri === SOURCES[source].uri ||
+              !!errors.uri ||
+              isCredentialsEmpty ||
+              isFileTypesEmpty
             }
           >
             Create Data Source

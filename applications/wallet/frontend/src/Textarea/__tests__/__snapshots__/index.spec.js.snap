@@ -68,3 +68,62 @@ exports[`<Textarea /> should render properly with an error 1`] = `
   </div>
 </div>
 `;
+
+exports[`<Textarea /> should render properly with no error 1`] = `
+.emotion-3 {
+  padding-top: 8px;
+}
+
+.emotion-0 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  position: relative;
+}
+
+.emotion-1 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  font-size: 15px;
+  line-height: 19px;
+  color: #000000;
+  background-color: #ffffff;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+<div
+  className="emotion-3"
+>
+  <label
+    className="emotion-0"
+    htmlFor="username"
+  >
+    Email
+  </label>
+  <div
+    className="emotion-2"
+  >
+    <textarea
+      autoFocus={true}
+      className="emotion-1"
+      id="username"
+      name="username"
+      onChange={[Function]}
+      rows="5"
+      value="foo@bar.baz"
+    />
+  </div>
+  <div
+    className="emotion-3"
+  >
+     
+  </div>
+</div>
+`;
