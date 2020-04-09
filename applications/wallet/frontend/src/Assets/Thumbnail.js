@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
@@ -16,13 +15,10 @@ const AssetsThumbnail = ({
       source: { filename },
     },
   },
-  thumbnailCount,
 }) => {
   const {
     query: { projectId, page, id: selectedId },
   } = useRouter()
-
-  const containerWidth = 100 / thumbnailCount
 
   const { url: srcUrl, attrs: { width, height } = {} } =
     files.find(({ mimetype }) => mimetype === 'image/jpeg') || {}
@@ -41,10 +37,9 @@ const AssetsThumbnail = ({
 
   return (
     <div
+      className="container"
       css={{
-        width: `${containerWidth}%`,
         height: 0,
-        paddingBottom: `${containerWidth}%`,
         position: 'relative',
         minWidth: 100,
         minHeight: 100,
@@ -106,7 +101,6 @@ const AssetsThumbnail = ({
 
 AssetsThumbnail.propTypes = {
   asset: assetShape.isRequired,
-  thumbnailCount: PropTypes.number.isRequired,
 }
 
 export default AssetsThumbnail

@@ -52,10 +52,13 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding: 4px;
 }
 
-.emotion-3 {
+.emotion-8 .container {
   width: 12.5%;
-  height: 0;
   padding-bottom: 12.5%;
+}
+
+.emotion-3 {
+  height: 0;
   position: relative;
   min-width: 100px;
   min-height: 100px;
@@ -270,7 +273,7 @@ exports[`<Visualizer /> should render properly 1`] = `
         className="emotion-8"
       >
         <div
-          className="emotion-3"
+          className="container emotion-3"
         >
           <div
             className="emotion-2"
@@ -291,7 +294,7 @@ exports[`<Visualizer /> should render properly 1`] = `
           </div>
         </div>
         <div
-          className="emotion-3"
+          className="container emotion-3"
         >
           <div
             className="emotion-2"
@@ -397,10 +400,13 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   padding: 4px;
 }
 
-.emotion-3 {
+.emotion-8 .container {
   width: 12.5%;
-  height: 0;
   padding-bottom: 12.5%;
+}
+
+.emotion-3 {
+  height: 0;
   position: relative;
   min-width: 100px;
   min-height: 100px;
@@ -626,7 +632,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
         className="emotion-8"
       >
         <div
-          className="emotion-3"
+          className="container emotion-3"
         >
           <div
             className="emotion-2"
@@ -647,7 +653,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           </div>
         </div>
         <div
-          className="emotion-3"
+          className="container emotion-3"
         >
           <div
             className="emotion-6"

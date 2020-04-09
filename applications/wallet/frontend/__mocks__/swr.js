@@ -13,7 +13,7 @@ export const SWRConfig = ({ children, ...rest }) =>
  * cache
  */
 
-export const { cache } = jest.requireActual('swr')
+export const { cache, useSWRPages } = jest.requireActual('swr')
 
 /**
  * useSWR
