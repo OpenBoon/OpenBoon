@@ -15,6 +15,9 @@ COPY --chown=zorroa:zorroa get_models.py /tmp
 COPY --chown=zorroa:zorroa fruit.jpg /tmp/fruit.jpg
 RUN python3 /tmp/get_models.py; rm /tmp/get_models.py; rm /tmp/fruit.jpg
 
+RUN mkdir -p /home/zorroa/.keras/models
+COPY imagenet_class_index.json /home/zorroa/.keras/models
+
 USER root
 RUN mkdir /models
 COPY resnet-152 /models/resnet-152
