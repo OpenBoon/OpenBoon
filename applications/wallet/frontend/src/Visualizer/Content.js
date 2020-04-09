@@ -6,8 +6,6 @@ import { colors, spacing } from '../Styles'
 import Assets from '../Assets'
 import Metadata from '../Metadata'
 
-import VisualizerInfobar from './Infobar'
-
 const SIZE = 50
 
 const VisualizerContent = () => {
@@ -19,7 +17,7 @@ const VisualizerContent = () => {
   const from = SIZE * (parsedPage - 1)
 
   const {
-    data: { results: assets, count },
+    data: { results: assets },
   } = useSWR(`/api/v1/projects/${projectId}/assets/?from=${from}&size=${SIZE}`)
 
   return (
@@ -36,11 +34,6 @@ const VisualizerContent = () => {
         flexDirection: 'column',
       }}
     >
-      <VisualizerInfobar
-        currentPage={parsedPage}
-        totalPages={Math.ceil(count / SIZE)}
-        totalCount={count}
-      />
       <div
         css={{
           display: 'flex',
