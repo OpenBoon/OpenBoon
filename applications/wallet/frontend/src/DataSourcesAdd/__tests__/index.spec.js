@@ -34,32 +34,79 @@ describe('<DataSourcesAdd />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Input email
+    // Input invalid name
+    act(() => {
+      component.root
+        .findByProps({ id: 'name' })
+        .props.onChange({ target: { value: '' } })
+    })
+
+    // Input valid name
     act(() => {
       component.root
         .findByProps({ id: 'name' })
         .props.onChange({ target: { value: 'My Data Source' } })
     })
 
-    // Input url
+    // Input source
     act(() => {
       component.root
-        .findByProps({ id: 'uri' })
-        .props.onChange({ target: { value: '' } })
+        .findByProps({ id: 'source-selection' })
+        .props.onChange({ target: { value: 'AWS' } })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Input source
+    act(() => {
+      component.root
+        .findByProps({ id: 'source-selection' })
+        .props.onChange({ target: { value: 'AZURE' } })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Input source
+    act(() => {
+      component.root
+        .findByProps({ id: 'source-selection' })
+        .props.onChange({ target: { value: 'GCP' } })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Input invalid uri
+    act(() => {
+      component.root
+        .findByProps({ id: 'uri' })
+        .props.onChange({ target: { value: 'fooBar://zorroa-dev-data/' } })
+    })
+
+    // Input invalid uri
+    act(() => {
+      component.root
+        .findByProps({ id: 'uri' })
+        .props.onChange({ target: { value: 'gs://' } })
+    })
+
+    // Input valid uri
     act(() => {
       component.root
         .findByProps({ id: 'uri' })
         .props.onChange({ target: { value: 'gs://zorroa-dev-data' } })
     })
 
+    // Input invalid credential
+    act(() => {
+      component.root
+        .findByProps({ id: 'service_account_json_key' })
+        .props.onChange({ target: { value: '' } })
+    })
+
     // Input credential
     act(() => {
       component.root
-        .findByProps({ id: 'credential' })
+        .findByProps({ id: 'service_account_json_key' })
         .props.onChange({ target: { value: 'jkdT9Uherdozguie89FHIJS' } })
     })
 
@@ -134,7 +181,10 @@ describe('<DataSourcesAdd />', () => {
       body: JSON.stringify({
         name: 'My Data Source',
         uri: 'gs://zorroa-dev-data',
-        credential: 'jkdT9Uherdozguie89FHIJS',
+        credentials: {
+          type: 'GCP',
+          service_account_json_key: 'jkdT9Uherdozguie89FHIJS',
+        },
         file_types: ['gif', ' png', ' jpg', ' jpeg', ' tif', ' tiff', ' psd'],
         modules: ['zvi-label-detection'],
       }),
