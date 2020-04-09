@@ -376,8 +376,7 @@ class DockerContainerWrapper(object):
                                                            entrypoint="/usr/local/bin/server",
                                                            network=network,
                                                            ports=ports,
-                                                           labels=["zmlpcd"],
-                                                           user="zorroa")
+                                                           labels=["zmlpcd"])
 
         logger.info("started container {} tags: {}".format(
             self.container.image.id, self.container.image.tags))
