@@ -17,7 +17,7 @@ const AssetsThumbnail = ({
   },
 }) => {
   const {
-    query: { projectId, page, id: selectedId },
+    query: { projectId, id: selectedId },
   } = useRouter()
 
   const { url: srcUrl, attrs: { width, height } = {} } =
@@ -30,9 +30,7 @@ const AssetsThumbnail = ({
   const largestDimension = width > height ? 'width' : 'height'
 
   const isSelected = id === selectedId
-  const queryString = [page ? `page=${page}` : '', isSelected ? '' : `id=${id}`]
-    .filter(Boolean)
-    .join('&')
+  const queryString = isSelected ? '' : `id=${id}`
   const queryParams = queryString ? `?${queryString}` : ''
 
   return (

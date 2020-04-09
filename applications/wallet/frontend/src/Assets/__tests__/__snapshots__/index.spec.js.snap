@@ -15,7 +15,7 @@ exports[`<Assets /> should handle page url 1`] = `
   }
 }
 
-.emotion-7 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -84,21 +84,7 @@ exports[`<Assets /> should handle page url 1`] = `
   margin-right: 16px;
 }
 
-.emotion-6 {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-radius: 2px;
-  background-color: #252525;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 10;
-  opacity: 0.8;
-  padding-top: 4px;
-  padding-bottom: 4px;
+.emotion-5 {
   padding-left: 8px;
   padding-right: 8px;
 }
@@ -133,9 +119,7 @@ exports[`<Assets /> should handle page url 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
-  opacity: 1;
-  padding: 8px;
+  width: 100%;
 }
 
 .emotion-4:hover {
@@ -147,15 +131,92 @@ exports[`<Assets /> should handle page url 1`] = `
   color: #2e2e2e;
 }
 
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
+  background-color: #808080;
+}
+
 .emotion-4:hover {
-  color: #73b61c;
+  background-color: #b3b3b3;
 }
 
 .emotion-4[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-8 {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 2px;
+  background-color: #252525;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  z-index: 10;
+  opacity: 0.8;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  opacity: 1;
+  padding: 8px;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-6:hover {
+  color: #73b61c;
+}
+
+.emotion-6[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-5 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -190,51 +251,65 @@ exports[`<Assets /> should handle page url 1`] = `
   padding: 8px;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   color: #73b61c;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #808080;
 }
 
 <div
-  className="emotion-7"
+  className="emotion-9"
 >
-  <div
-    className="emotion-3"
-  >
+  <div>
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <div
-        className="emotion-1"
+        className="emotion-2"
       >
-        <svg
-          className="emotion-0"
-          data-file-name="generating.svg"
-          height={20}
-        />
-        Loading...
+        <div
+          className="emotion-1"
+        >
+          <svg
+            className="emotion-0"
+            data-file-name="generating.svg"
+            height={20}
+          />
+          Loading...
+        </div>
       </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-4"
+        onClick={[Function]}
+        type="button"
+      >
+        . . .
+      </button>
     </div>
   </div>
   <div
-    className="emotion-6"
+    className="emotion-8"
   >
     <button
       aria-disabled={true}
       aria-label="Zoom Out"
-      className="emotion-4"
+      className="emotion-6"
       onClick={[Function]}
       type="button"
     >
@@ -245,7 +320,7 @@ exports[`<Assets /> should handle page url 1`] = `
     </button>
     <button
       aria-label="Zoom In"
-      className="emotion-5"
+      className="emotion-7"
       onClick={[Function]}
       type="button"
     >
@@ -273,7 +348,7 @@ exports[`<Assets /> should render properly 1`] = `
   }
 }
 
-.emotion-7 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -342,21 +417,7 @@ exports[`<Assets /> should render properly 1`] = `
   margin-right: 16px;
 }
 
-.emotion-6 {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-radius: 2px;
-  background-color: #252525;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 10;
-  opacity: 0.8;
-  padding-top: 4px;
-  padding-bottom: 4px;
+.emotion-5 {
   padding-left: 8px;
   padding-right: 8px;
 }
@@ -391,9 +452,7 @@ exports[`<Assets /> should render properly 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
-  opacity: 1;
-  padding: 8px;
+  width: 100%;
 }
 
 .emotion-4:hover {
@@ -405,15 +464,92 @@ exports[`<Assets /> should render properly 1`] = `
   color: #2e2e2e;
 }
 
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
+  background-color: #808080;
+}
+
 .emotion-4:hover {
-  color: #73b61c;
+  background-color: #b3b3b3;
 }
 
 .emotion-4[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-8 {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 2px;
+  background-color: #252525;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  z-index: 10;
+  opacity: 0.8;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  opacity: 1;
+  padding: 8px;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-6:hover {
+  color: #73b61c;
+}
+
+.emotion-6[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-5 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -448,51 +584,65 @@ exports[`<Assets /> should render properly 1`] = `
   padding: 8px;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   color: #73b61c;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #808080;
 }
 
 <div
-  className="emotion-7"
+  className="emotion-9"
 >
-  <div
-    className="emotion-3"
-  >
+  <div>
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <div
-        className="emotion-1"
+        className="emotion-2"
       >
-        <svg
-          className="emotion-0"
-          data-file-name="generating.svg"
-          height={20}
-        />
-        Loading...
+        <div
+          className="emotion-1"
+        >
+          <svg
+            className="emotion-0"
+            data-file-name="generating.svg"
+            height={20}
+          />
+          Loading...
+        </div>
       </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-4"
+        onClick={[Function]}
+        type="button"
+      >
+        . . .
+      </button>
     </div>
   </div>
   <div
-    className="emotion-6"
+    className="emotion-8"
   >
     <button
       aria-disabled={true}
       aria-label="Zoom Out"
-      className="emotion-4"
+      className="emotion-6"
       onClick={[Function]}
       type="button"
     >
@@ -503,7 +653,7 @@ exports[`<Assets /> should render properly 1`] = `
     </button>
     <button
       aria-label="Zoom In"
-      className="emotion-5"
+      className="emotion-7"
       onClick={[Function]}
       type="button"
     >
@@ -531,7 +681,7 @@ exports[`<Assets /> should render properly 2`] = `
   }
 }
 
-.emotion-7 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -579,7 +729,68 @@ exports[`<Assets /> should render properly 2`] = `
   margin-right: 16px;
 }
 
-.emotion-6 {
+.emotion-5 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  width: 100%;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-4[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
+  background-color: #808080;
+}
+
+.emotion-4:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-4[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-8 {
   position: absolute;
   bottom: 16px;
   right: 16px;
@@ -598,7 +809,7 @@ exports[`<Assets /> should render properly 2`] = `
   padding-right: 8px;
 }
 
-.emotion-5 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -633,24 +844,24 @@ exports[`<Assets /> should render properly 2`] = `
   padding: 8px;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   color: #73b61c;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-4 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -685,20 +896,20 @@ exports[`<Assets /> should render properly 2`] = `
   padding: 8px;
 }
 
-.emotion-4:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-4:hover {
+.emotion-6:hover {
   color: #73b61c;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #808080;
 }
 
@@ -724,32 +935,46 @@ exports[`<Assets /> should render properly 2`] = `
 }
 
 <div
-  className="emotion-7"
+  className="emotion-9"
 >
-  <div
-    className="emotion-3"
-  >
+  <div>
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <div
-        className="emotion-1"
+        className="emotion-2"
       >
-        <svg
-          className="emotion-0"
-          data-file-name="generating.svg"
-          height={20}
-        />
-        Loading...
+        <div
+          className="emotion-1"
+        >
+          <svg
+            className="emotion-0"
+            data-file-name="generating.svg"
+            height={20}
+          />
+          Loading...
+        </div>
       </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-4"
+        onClick={[Function]}
+        type="button"
+      >
+        . . .
+      </button>
     </div>
   </div>
   <div
-    className="emotion-6"
+    className="emotion-8"
   >
     <button
       aria-label="Zoom Out"
-      className="emotion-4"
+      className="emotion-6"
       onClick={[Function]}
       type="button"
     >
@@ -761,7 +986,7 @@ exports[`<Assets /> should render properly 2`] = `
     <button
       aria-disabled={true}
       aria-label="Zoom In"
-      className="emotion-5"
+      className="emotion-7"
       onClick={[Function]}
       type="button"
     >
@@ -789,7 +1014,7 @@ exports[`<Assets /> should render properly 3`] = `
   }
 }
 
-.emotion-7 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -858,21 +1083,7 @@ exports[`<Assets /> should render properly 3`] = `
   margin-right: 16px;
 }
 
-.emotion-6 {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-radius: 2px;
-  background-color: #252525;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 10;
-  opacity: 0.8;
-  padding-top: 4px;
-  padding-bottom: 4px;
+.emotion-5 {
   padding-left: 8px;
   padding-right: 8px;
 }
@@ -907,9 +1118,7 @@ exports[`<Assets /> should render properly 3`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
-  opacity: 1;
-  padding: 8px;
+  width: 100%;
 }
 
 .emotion-4:hover {
@@ -921,15 +1130,92 @@ exports[`<Assets /> should render properly 3`] = `
   color: #2e2e2e;
 }
 
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
+  background-color: #808080;
+}
+
 .emotion-4:hover {
-  color: #73b61c;
+  background-color: #b3b3b3;
 }
 
 .emotion-4[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-8 {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 2px;
+  background-color: #252525;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  z-index: 10;
+  opacity: 0.8;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  opacity: 1;
+  padding: 8px;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-6:hover {
+  color: #73b61c;
+}
+
+.emotion-6[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-5 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -964,51 +1250,65 @@ exports[`<Assets /> should render properly 3`] = `
   padding: 8px;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   color: #73b61c;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #808080;
 }
 
 <div
-  className="emotion-7"
+  className="emotion-9"
 >
-  <div
-    className="emotion-3"
-  >
+  <div>
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <div
-        className="emotion-1"
+        className="emotion-2"
       >
-        <svg
-          className="emotion-0"
-          data-file-name="generating.svg"
-          height={20}
-        />
-        Loading...
+        <div
+          className="emotion-1"
+        >
+          <svg
+            className="emotion-0"
+            data-file-name="generating.svg"
+            height={20}
+          />
+          Loading...
+        </div>
       </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-4"
+        onClick={[Function]}
+        type="button"
+      >
+        . . .
+      </button>
     </div>
   </div>
   <div
-    className="emotion-6"
+    className="emotion-8"
   >
     <button
       aria-disabled={true}
       aria-label="Zoom Out"
-      className="emotion-4"
+      className="emotion-6"
       onClick={[Function]}
       type="button"
     >
@@ -1019,7 +1319,7 @@ exports[`<Assets /> should render properly 3`] = `
     </button>
     <button
       aria-label="Zoom In"
-      className="emotion-5"
+      className="emotion-7"
       onClick={[Function]}
       type="button"
     >
@@ -1047,7 +1347,7 @@ exports[`<Assets /> should render without proxy image 1`] = `
   }
 }
 
-.emotion-7 {
+.emotion-9 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1116,21 +1416,7 @@ exports[`<Assets /> should render without proxy image 1`] = `
   margin-right: 16px;
 }
 
-.emotion-6 {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-radius: 2px;
-  background-color: #252525;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 10;
-  opacity: 0.8;
-  padding-top: 4px;
-  padding-bottom: 4px;
+.emotion-5 {
   padding-left: 8px;
   padding-right: 8px;
 }
@@ -1165,9 +1451,7 @@ exports[`<Assets /> should render without proxy image 1`] = `
   cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
-  opacity: 1;
-  padding: 8px;
+  width: 100%;
 }
 
 .emotion-4:hover {
@@ -1179,15 +1463,92 @@ exports[`<Assets /> should render without proxy image 1`] = `
   color: #2e2e2e;
 }
 
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited {
+  background-color: #808080;
+}
+
 .emotion-4:hover {
-  color: #73b61c;
+  background-color: #b3b3b3;
 }
 
 .emotion-4[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-8 {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 2px;
+  background-color: #252525;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+  z-index: 10;
+  opacity: 0.8;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.emotion-6 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 8px;
+  opacity: 1;
+  padding: 8px;
+}
+
+.emotion-6:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-6[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-6:hover {
+  color: #73b61c;
+}
+
+.emotion-6[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-5 {
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1222,51 +1583,65 @@ exports[`<Assets /> should render without proxy image 1`] = `
   padding: 8px;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-7:hover {
   color: #73b61c;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-7[aria-disabled=true] {
   color: #808080;
 }
 
 <div
-  className="emotion-7"
+  className="emotion-9"
 >
-  <div
-    className="emotion-3"
-  >
+  <div>
     <div
-      className="emotion-2"
+      className="emotion-3"
     >
       <div
-        className="emotion-1"
+        className="emotion-2"
       >
-        <svg
-          className="emotion-0"
-          data-file-name="generating.svg"
-          height={20}
-        />
-        Loading...
+        <div
+          className="emotion-1"
+        >
+          <svg
+            className="emotion-0"
+            data-file-name="generating.svg"
+            height={20}
+          />
+          Loading...
+        </div>
       </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-4"
+        onClick={[Function]}
+        type="button"
+      >
+        . . .
+      </button>
     </div>
   </div>
   <div
-    className="emotion-6"
+    className="emotion-8"
   >
     <button
       aria-disabled={true}
       aria-label="Zoom Out"
-      className="emotion-4"
+      className="emotion-6"
       onClick={[Function]}
       type="button"
     >
@@ -1277,7 +1652,7 @@ exports[`<Assets /> should render without proxy image 1`] = `
     </button>
     <button
       aria-label="Zoom In"
-      className="emotion-5"
+      className="emotion-7"
       onClick={[Function]}
       type="button"
     >

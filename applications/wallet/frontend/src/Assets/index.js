@@ -8,6 +8,7 @@ import Loading from '../Loading'
 
 import AssetsResize from './Resize'
 import AssetsThumbnail from './Thumbnail'
+import AssetsLoadMore from './LoadMore'
 
 import { reducer, INITIAL_STATE } from './reducer'
 
@@ -53,6 +54,7 @@ const Assets = () => {
     },
 
     // offset of next page
+    /* istanbul ignore next */
     ({ data: { count } }, index) => {
       const offset = (index + 1) * SIZE
       return offset < count ? offset : null
@@ -64,21 +66,29 @@ const Assets = () => {
 
   return (
     <div css={{ flex: 1, position: 'relative' }}>
-      <div
-        css={{
-          height: '100%',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignContent: 'flex-start',
-          overflowY: 'auto',
-          padding: spacing.small,
-          '.container': {
-            width: `${containerWidth}%`,
-            paddingBottom: `${containerWidth}%`,
-          },
-        }}
-      >
-        {pages}
+      <div>
+        <div
+          css={{
+            height: '100%',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignContent: 'flex-start',
+            overflowY: 'auto',
+            padding: spacing.small,
+            '.container': {
+              width: `${containerWidth}%`,
+              paddingBottom: `${containerWidth}%`,
+            },
+          }}
+        >
+          {pages}
+        </div>
+
+        <AssetsLoadMore
+          isLoadingMore={isLoadingMore}
+          isReachingEnd={isReachingEnd}
+          loadMore={loadMore}
+        />
       </div>
 
       <AssetsResize dispatch={dispatch} isMin={isMin} isMax={isMax} />
