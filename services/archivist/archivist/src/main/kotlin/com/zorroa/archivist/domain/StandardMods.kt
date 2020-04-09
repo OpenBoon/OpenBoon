@@ -124,7 +124,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.mxnet.ZviLabelDetectionResNet152",
+                        ProcessorRef("zmlp_analysis.labels.ZviLabelDetectionProcessor",
                             StandardContainers.ANALYSIS)
                     )
                 )

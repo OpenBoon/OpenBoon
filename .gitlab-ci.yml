@@ -168,7 +168,7 @@ plugin-container-tests:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
-    - ./buildx analyst zmlp-py3-base zmlp-py3-client zmlp-py3-sdk zmlp-plugins-base zmlp-plugins-core zmlp-plugins-analysis
+    - ./buildx analyst zmlp-py3-base zmlp-py3-client zmlp-py3-sdk zmlp-plugins-base zmlp-plugins-models zmlp-plugins-core zmlp-plugins-analysis
     - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-core:latest pytest -s /zvi/pylib
     - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-analysis:latest pytest -s /zvi/pylib
   only:
@@ -217,21 +217,22 @@ docker_hub_build_push:
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
     - ./buildx
-    - "docker push zmlp/archivist:latest"
-    - "docker push zmlp/officer:latest"
-    - "docker push zmlp/wallet:latest"
-    - "docker push zmlp/elasticsearch:latest"
-    - "docker push zmlp/authserver:latest"
-    - "docker push zmlp/apigateway:latest"
-    - "docker push zmlp/py3-base:latest"
-    - "docker push zmlp/py3-client:latest"
-    - "docker push zmlp/py3-sdk:latest"
-    - "docker push zmlp/plugins-base:latest"
-    - "docker push zmlp/plugins-core:latest"
-    - "docker push zmlp/plugins-analysis:latest"
-    - "docker push zmlp/analyst:latest"
-    - "docker push zmlp/jvm-common:latest"
-    - "docker push zmlp/ml-bbq:latest"
+    - docker push zmlp/archivist:latest
+    - docker push zmlp/officer:latest
+    - docker push zmlp/wallet:latest
+    - docker push zmlp/elasticsearch:latest
+    - docker push zmlp/authserver:latest
+    - docker push zmlp/apigateway:latest
+    - docker push zmlp/py3-base:latest
+    - docker push zmlp/py3-client:latest
+    - docker push zmlp/py3-sdk:latest
+    - docker push zmlp/plugins-base:latest
+    - docker push zmlp/plugins-models:latest
+    - docker push zmlp/plugins-core:latest
+    - docker push zmlp/plugins-analysis:latest
+    - docker push zmlp/analyst:latest
+    - docker push zmlp/jvm-common:latest
+    - docker push zmlp/ml-bbq:latest
   only:
     - development
 

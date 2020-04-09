@@ -11,7 +11,8 @@ __all__ = [
     "FileImport",
     "FileUpload",
     "Clip",
-    "StoredFile"
+    "StoredFile",
+    "FileTypes"
 ]
 
 logger = logging.getLogger(__name__)
@@ -227,6 +228,20 @@ class FileUpload(FileImport):
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))
 
+    def for_json(self):
+        """Returns a dictionary suitable for JSON encoding.
+
+        The ZpsJsonEncoder will call this method automatically.
+
+        Returns:
+            :obj:`dict`: A JSON serializable version of this Document.
+
+        """
+        return {
+            "uri": self.uri,
+            "clip": self.clip
+        }
+
 
 class Asset(DocumentMixin):
     """
@@ -431,7 +446,7 @@ class Clip(object):
 
 class StoredFile(object):
     """
-    The StoredFile class represnents a supporting file that has been stored in ZVI.
+    The StoredFile class represents a supporting file that has been stored in ZVI.
     """
 
     def __init__(self, data):
@@ -500,3 +515,50 @@ class StoredFile(object):
             if getattr(self, attr, None) is not None:
                 serializable_dict[attr] = getattr(self, attr)
         return serializable_dict
+
+
+class FileTypes:
+    """
+    A class for storing the supported file types.
+    """
+
+    videos = frozenset(['mov', 'mp4', 'mpg', 'mpeg', 'm4v', 'webm', 'ogv', 'ogg', 'mxf'])
+    """A set of supported video file formats."""
+
+    images = frozenset(["bmp", "cin", "dpx", "gif", "jpg",
+                        "jpeg", "exr", "png", "psd", "rla", "tif", "tiff"])
+    """A set of supported image file formats."""
+
+    documents = frozenset(['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'vsd', 'vsdx'])
+    """A set of supported document file formats."""
+
+    all = frozenset(videos.union(images).union(documents))
+
+    """A set of all supported file formats."""
+
+    @classmethod
+    def resolve(cls, file_types):
+        """
+        Resolve a list of file extenions or types (images, documents, videos) to
+        a supported list of extensions.
+
+        Args:
+            file_types (list): A list of file extensions, dot not included.
+
+        Returns:
+            list: The valid list of extensions from the given list
+
+        """
+        file_types = as_collection(file_types)
+        if not file_types:
+            return cls.all
+        result = set()
+        for file_type in file_types:
+            if file_type in cls.all:
+                result.add(file_type)
+            else:
+                exts = getattr(cls, file_type, None)
+                if exts:
+                    result.update(exts)
+
+        return sorted(list(result))

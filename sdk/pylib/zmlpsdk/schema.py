@@ -5,15 +5,17 @@ class Prediction:
     and a score.
 
     """
+    precision = 3
+
     def __init__(self, label, score, **kwargs):
         """
         Create a new Prediction instance.
         Args:
             label (str): The string label.
-            score (float): The score.
+            score (float): The score/confidence.
         """
         self.label = label
-        self.score = score
+        self.score = round(float(score), self.precision)
         self.occurrences = 1
         self.attrs = dict(kwargs)
 
@@ -28,7 +30,7 @@ class Prediction:
 
         """
         self.occurrences += 1
-        score = round(score, 3)
+        score = round(float(score), self.precision)
         if score > self.score:
             self.score = score
 
@@ -106,6 +108,18 @@ class LabelDetectionAnalysis:
 
         """
         self.attrs[key] = value
+
+    def add_label_and_score(self, label, score, **kwargs):
+        """
+        A convenience methods for adding a Prediction.
+        Args:
+            label (str): The label name.
+            score (float): The score/confidence.
+            **kwargs: Arbitrary key/value pairs added to the predication.
+        Returns:
+            bool: True if prediction was added. False if the score was not high enough.
+        """
+        return self.add_prediction(Prediction(label, score, **kwargs))
 
     def add_prediction(self, pred):
         """
