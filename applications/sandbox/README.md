@@ -29,3 +29,5 @@ Then navigate to http://localhost:8501
 
 To change the Streamlit app, edit applications/sandbox/sandbox.sandbox.py. It is not necessary to restart the docker image when you edit the app, which makes it very easy to
 develop. Once you save a change to this file, the live Streamlit app will show a refresh button.
+
+!["Sandbox"](sandbox_pom.png "Sandbox")
