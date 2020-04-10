@@ -4,7 +4,7 @@ import { fetcher } from '../Fetch/helpers'
 
 import { FILE_TYPES } from '../DataSourcesAdd/helpers'
 
-export const onSubmitEdit = async ({
+export const onSubmit = async ({
   dispatch,
   projectId,
   dataSourceId,

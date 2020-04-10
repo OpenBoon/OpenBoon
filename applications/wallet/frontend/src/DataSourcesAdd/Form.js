@@ -15,7 +15,7 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 
-import { FILE_TYPES, onSubmitAdd } from './helpers'
+import { FILE_TYPES, onSubmit } from './helpers'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
 import DataSourcesAddProvider from './Provider'
@@ -157,7 +157,7 @@ const DataSourcesAddForm = () => {
           <Button
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
-            onClick={() => onSubmitAdd({ dispatch, projectId, state })}
+            onClick={() => onSubmit({ dispatch, projectId, state })}
             isDisabled={
               !name ||
               !source ||

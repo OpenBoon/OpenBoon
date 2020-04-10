@@ -22,7 +22,7 @@ import DataSourcesAddAutomaticAnalysis from '../DataSourcesAdd/AutomaticAnalysis
 import DataSourcesAddProvider from '../DataSourcesAdd/Provider'
 import DataSourcesAddCopy from '../DataSourcesAdd/Copy'
 
-import { onSubmitEdit } from './helpers'
+import { onSubmit } from './helpers'
 
 const reducer = (state, action) => ({ ...state, ...action })
 
@@ -120,7 +120,7 @@ const DataSourcesEditForm = ({ initialState }) => {
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() =>
-              onSubmitEdit({ dispatch, projectId, dataSourceId, state })
+              onSubmit({ dispatch, projectId, dataSourceId, state })
             }
             isDisabled={!name}
           >
