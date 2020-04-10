@@ -332,8 +332,8 @@ class AssetAppTests(unittest.TestCase):
         get_patch.return_value = mockresponse
 
         fd, path = tempfile.mkstemp(".jpg")
-        size = self.app.assets.download_file_to_file(
-            'assets/123/proxy/proxy123.jpg', path)
+        size = self.app.assets.download_file(
+            'assets/123/proxy/proxy123.jpg', dst_file=path)
         assert 9 == size
 
     @patch.object(ZmlpClient, 'get')
@@ -345,7 +345,7 @@ class AssetAppTests(unittest.TestCase):
 
         fd, path = tempfile.mkstemp(".jpg")
         sf = StoredFile({"id": "assets/123/proxy/foo.jpg"})
-        size = self.app.assets.download_file_to_file(sf, path)
+        size = self.app.assets.download_file(sf, path)
         assert 9 == size
 
     @patch.object(ZmlpClient, 'upload_files')
