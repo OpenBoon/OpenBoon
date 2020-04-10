@@ -19,10 +19,11 @@ import CheckboxGroup from '../Checkbox/Group'
 import { FILE_TYPES } from '../DataSourcesAdd/helpers'
 
 import DataSourcesAddAutomaticAnalysis from '../DataSourcesAdd/AutomaticAnalysis'
-import DataSourcesAddProvider from '../DataSourcesAdd/Provider'
 import DataSourcesAddCopy from '../DataSourcesAdd/Copy'
 
-import { onSubmit } from './helpers'
+import DataSourcesEditProvider from './Provider'
+
+import { getInitialModules, onSubmit } from './helpers'
 
 const reducer = (state, action) => ({ ...state, ...action })
 
@@ -35,7 +36,13 @@ const DataSourcesEditForm = ({ initialState }) => {
     data: { results: providers },
   } = useSWR(`/api/v1/projects/${projectId}/providers/`)
 
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
+    modules: getInitialModules({
+      initialState,
+      providers,
+    }),
+  })
 
   const { errors, fileTypes, name, uri } = state
 
@@ -99,11 +106,12 @@ const DataSourcesEditForm = ({ initialState }) => {
         <DataSourcesAddAutomaticAnalysis />
 
         {providers.map((provider) => (
-          <DataSourcesAddProvider
+          <DataSourcesEditProvider
             key={provider.name}
             provider={provider}
+            modules={state.modules}
             onClick={(module) =>
-              dispatch({ modules: { ...module, ...module } })
+              dispatch({ modules: { ...state.modules, ...module } })
             }
           />
         ))}
@@ -134,11 +142,11 @@ const DataSourcesEditForm = ({ initialState }) => {
 
 DataSourcesEditForm.propTypes = {
   initialState: PropTypes.shape({
-    name: PropTypes.string,
-    uri: PropTypes.string,
-    fileTypes: PropTypes.object,
-    modules: PropTypes.arrayOf(PropTypes.string),
-    errors: PropTypes.shape({ global: PropTypes.string }),
+    name: PropTypes.string.isRequired,
+    uri: PropTypes.string.isRequired,
+    fileTypes: PropTypes.object.isRequired,
+    modules: PropTypes.arrayOf(PropTypes.string).isRequired,
+    errors: PropTypes.shape({ global: PropTypes.string }).isRequired,
   }).isRequired,
 }
 

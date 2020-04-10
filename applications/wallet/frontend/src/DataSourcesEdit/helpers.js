@@ -4,6 +4,26 @@ import { fetcher } from '../Fetch/helpers'
 
 import { FILE_TYPES } from '../DataSourcesAdd/helpers'
 
+export const getInitialModules = ({
+  initialState: { modules: existingModules },
+  providers,
+}) => {
+  const results = {}
+
+  providers.map(({ categories }) =>
+    categories.map(({ modules }) =>
+      modules.map(({ id, name }) => {
+        if (existingModules.includes(id)) {
+          results[name] = true
+        }
+        return false
+      }),
+    ),
+  )
+
+  return results
+}
+
 export const onSubmit = async ({
   dispatch,
   projectId,
