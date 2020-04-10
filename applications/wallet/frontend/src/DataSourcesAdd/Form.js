@@ -141,7 +141,7 @@ const DataSourcesAddForm = () => {
             key={provider.name}
             provider={provider}
             onClick={(module) =>
-              dispatch({ modules: { ...state.module, ...module } })
+              dispatch({ modules: { ...state.modules, ...module } })
             }
           />
         ))}
