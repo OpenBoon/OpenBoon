@@ -28,13 +28,26 @@ export const onSubmit = async ({
   projectId,
   state: { name, uri, credentials, source, fileTypes, modules },
 }) => {
+  const parsedCredentials = Object.keys(credentials[source]).reduce(
+    (acc, credential) => {
+      const { value } = credentials[source][credential]
+      if (value) {
+        acc[credential] = value
+      }
+      return acc
+    },
+    {},
+  )
+
   try {
     await fetcher(`/api/v1/projects/${projectId}/data_sources/`, {
       method: 'POST',
       body: JSON.stringify({
         name,
         uri,
-        credentials: { type: source, ...credentials[source] },
+        credentials: Object.keys(parsedCredentials).length
+          ? { type: source, ...parsedCredentials }
+          : {},
         file_types: Object.keys(fileTypes)
           .filter((f) => fileTypes[f])
           .flatMap((f) => {

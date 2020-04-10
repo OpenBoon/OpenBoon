@@ -49,8 +49,12 @@ const DataSourcesAddForm = () => {
 
   const isFileTypesEmpty = !Object.values(fileTypes).find((value) => !!value)
 
-  const isCredentialsEmpty = credentials[source]
-    ? Object.values(credentials[source]).includes('')
+  const isRequiredCredentialsEmpty = credentials[source]
+    ? Object.keys(credentials[source]).reduce((count, credential) => {
+        const { isRequired, value } = credentials[source][credential]
+        const currentCount = isRequired && value === '' ? 1 : 0
+        return count + currentCount
+      }, 0) > 0
     : true
 
   return (
@@ -159,7 +163,7 @@ const DataSourcesAddForm = () => {
               !source ||
               uri === SOURCES[source].uri ||
               !!errors.uri ||
-              isCredentialsEmpty ||
+              isRequiredCredentialsEmpty ||
               isFileTypesEmpty
             }
           >
