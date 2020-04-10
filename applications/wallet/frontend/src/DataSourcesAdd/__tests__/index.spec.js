@@ -207,7 +207,7 @@ describe('<DataSourcesAdd />', () => {
         .props.onChange({ target: { value: 'My Data Source' } })
     })
 
-    // Input source with optional credentials
+    // Input source
     act(() => {
       component.root
         .findByProps({ id: 'source-selection' })
@@ -223,7 +223,7 @@ describe('<DataSourcesAdd />', () => {
         .props.onChange({ target: { value: 'gs://zorroa-dev-data' } })
     })
 
-    // Input credential
+    // Input optional credential
     act(() => {
       component.root
         .findByProps({ id: 'service_account_json_key' })
@@ -312,14 +312,14 @@ describe('<DataSourcesAdd />', () => {
         .props.onChange({ target: { value: 's3://zorroa-dev-data' } })
     })
 
-    // Input invalid credential
+    // Input invalid required credential
     act(() => {
       component.root
         .findByProps({ id: 'aws_access_key_id' })
         .props.onChange({ target: { value: '' } })
     })
 
-    // Input credentials
+    // Input valid required credentials
     act(() => {
       component.root
         .findByProps({ id: 'aws_access_key_id' })
