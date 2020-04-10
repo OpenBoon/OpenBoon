@@ -20,9 +20,7 @@ const DataSourcesMenu = ({ projectId, dataSourceId, revalidate }) => {
             <li>
               <Link
                 href="/[projectId]/data-sources/[dataSourceId]/edit"
-                as={'/[projectId]/data-sources/[dataSourceId]/edit'
-                  .replace('[projectId]', projectId)
-                  .replace('[dataSourceId]', dataSourceId)}
+                as={`/${projectId}/data-sources/${dataSourceId}/edit`}
                 passHref
               >
                 <Button variant={VARIANTS.MENU_ITEM}>Edit</Button>

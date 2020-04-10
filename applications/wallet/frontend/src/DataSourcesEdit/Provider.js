@@ -60,8 +60,7 @@ DataSourcesEditProvider.propTypes = {
       }).isRequired,
     ).isRequired,
   }).isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  modules: PropTypes.object.isRequired,
+  modules: PropTypes.shape({}).isRequired,
   onClick: PropTypes.func.isRequired,
 }
 

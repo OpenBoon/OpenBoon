@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import { FILE_TYPES } from '../DataSourcesAdd/helpers'
 
-import DataSourcesForm from './Form'
+import DataSourcesEditForm from './Form'
 
 const DataSourcesEditContent = () => {
   const {
@@ -35,7 +35,7 @@ const DataSourcesEditContent = () => {
     errors: { global: '' },
   }
 
-  return <DataSourcesForm initialState={initialState} />
+  return <DataSourcesEditForm initialState={initialState} />
 }
 
 export default DataSourcesEditContent
