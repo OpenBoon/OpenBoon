@@ -214,8 +214,6 @@ describe('<DataSourcesAdd />', () => {
         .props.onChange({ target: { value: 'GCP' } })
     })
 
-    expect(component.toJSON()).toMatchSnapshot()
-
     // Input valid uri
     act(() => {
       component.root
@@ -302,8 +300,6 @@ describe('<DataSourcesAdd />', () => {
         .findByProps({ id: 'source-selection' })
         .props.onChange({ target: { value: 'AWS' } })
     })
-
-    expect(component.toJSON()).toMatchSnapshot()
 
     // Input uri
     act(() => {
