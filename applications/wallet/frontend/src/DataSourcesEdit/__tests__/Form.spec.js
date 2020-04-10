@@ -9,6 +9,7 @@ const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const DATA_SOURCE_ID = dataSource.id
+const MODULE = providers.results[0].categories[0].modules[0]
 
 describe('<DataSourcesEditForm />', () => {
   it('should render properly', async () => {
@@ -31,7 +32,7 @@ describe('<DataSourcesEditForm />', () => {
           name: dataSource.name,
           uri: dataSource.uri,
           fileTypes: { video: true },
-          modules: [],
+          modules: [MODULE.id],
           errors: { global: '' },
         }}
       />,
@@ -132,7 +133,7 @@ describe('<DataSourcesEditForm />', () => {
           'tiff',
           'psd',
         ],
-        modules: ['zvi-label-detection'],
+        modules: [MODULE.name, 'zvi-label-detection'],
       }),
     })
 
