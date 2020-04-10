@@ -11,7 +11,7 @@ const DataSourcesEditContent = () => {
   } = useRouter()
 
   const {
-    data: { name, uri, credentials, fileTypes, modules },
+    data: { name, uri, fileTypes, modules },
   } = useSWR(`/api/v1/projects/${projectId}/data_sources/${dataSourceId}`)
 
   const groupedFileTypes = FILE_TYPES.reduce(
@@ -26,10 +26,10 @@ const DataSourcesEditContent = () => {
     },
     {},
   )
+
   const initialState = {
     name,
     uri,
-    credentials,
     fileTypes: groupedFileTypes,
     modules,
     errors: { global: '' },

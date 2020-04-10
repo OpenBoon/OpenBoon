@@ -4,13 +4,12 @@ import useSWR from 'swr'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 
-import { colors, constants, typography } from '../Styles'
+import { constants, spacing } from '../Styles'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
 import SectionSubTitle from '../SectionSubTitle'
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
-import Textarea, { VARIANTS as TEXTAREA_VARIANTS } from '../Textarea'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
@@ -19,14 +18,13 @@ import CheckboxGroup from '../Checkbox/Group'
 
 import { FILE_TYPES } from '../DataSourcesAdd/helpers'
 
-import { onSubmit } from './helpers'
-
 import DataSourcesAddAutomaticAnalysis from '../DataSourcesAdd/AutomaticAnalysis'
 import DataSourcesAddProvider from '../DataSourcesAdd/Provider'
+import DataSourcesAddCopy from '../DataSourcesAdd/Copy'
+
+import { onSubmitEdit } from './helpers'
 
 const reducer = (state, action) => ({ ...state, ...action })
-
-const noop = () => () => {}
 
 const DataSourcesEditForm = ({ initialState }) => {
   const {
@@ -39,28 +37,25 @@ const DataSourcesEditForm = ({ initialState }) => {
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  console.log(state)
+  const { errors, fileTypes, name, uri } = state
 
   return (
     <>
-      {state.errors.global && (
+      {errors.global && (
         <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-          {state.errors.global}
+          {errors.global}
         </FlashMessage>
       )}
 
       <Form style={{ width: 'auto' }}>
-        <div css={{ width: constants.form.maxWidth }}>
-          <span
-            css={{
-              fontStyle: typography.style.italic,
-              color: colors.structure.zinc,
-            }}
-          >
-            <span css={{ color: colors.signal.warning.base }}>*</span> required
-            field
-          </span>
+        <DataSourcesAddCopy />
 
+        <div
+          css={{
+            width: constants.form.maxWidth,
+            paddingBottom: spacing.normal,
+          }}
+        >
           <SectionTitle>Data Source Name </SectionTitle>
 
           <Input
@@ -69,60 +64,27 @@ const DataSourcesEditForm = ({ initialState }) => {
             variant={INPUT_VARIANTS.SECONDARY}
             label="Name"
             type="text"
-            value={state.name}
+            value={name}
             onChange={({ target: { value } }) => dispatch({ name: value })}
-            hasError={state.errors.name !== undefined}
-            errorMessage={state.errors.name}
-            isRequired
+            hasError={errors.name !== undefined}
+            errorMessage={errors.name}
           />
 
-          <SectionTitle>Connect to Source: Google Cloud Storage</SectionTitle>
-
-          <Input
-            id="uri"
-            variant={INPUT_VARIANTS.SECONDARY}
-            label="Bucket Address"
-            type="text"
-            value={state.uri}
-            onChange={noop}
-            hasError={false}
-            errorMessage=""
-            isRequired
-            isDisabled
-          />
-        </div>
-
-        <div css={{ minWidth: constants.form.maxWidth, maxWidth: '50%' }}>
-          <Textarea
-            id="credentials"
-            variant={TEXTAREA_VARIANTS.SECONDARY}
-            label="If this bucket is private, please paste the JSON service account credentials:"
-            value={state.credentials}
-            onChange={({ target: { value } }) =>
-              dispatch({ credentials: value })
-            }
-            hasError={state.errors.credentials !== undefined}
-            errorMessage={state.errors.credentials}
-          />
+          <SectionTitle>{`Storage Address: ${uri}`}</SectionTitle>
         </div>
 
         <CheckboxGroup
           legend="Select File Types to Import"
-          description={
-            <div>
-              A minimum of one file type must be selected{' '}
-              <span css={{ color: colors.signal.warning.base }}>*</span>
-            </div>
-          }
+          description={<div>A minimum of one file type must be selected </div>}
           onClick={(fileType) =>
-            dispatch({ fileTypes: { ...state.fileTypes, ...fileType } })
+            dispatch({ fileTypes: { ...fileTypes, ...fileType } })
           }
           options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
             value,
             label,
             icon: <img src={icon} alt={label} width="40px" />,
             legend,
-            initialValue: state.fileTypes[value] || false,
+            initialValue: fileTypes[value] || false,
             isDisabled: false,
           }))}
           variant={CHECKBOX_VARIANTS.SECONDARY}
@@ -141,7 +103,7 @@ const DataSourcesEditForm = ({ initialState }) => {
             key={provider.name}
             provider={provider}
             onClick={(module) =>
-              dispatch({ modules: { ...state.module, ...module } })
+              dispatch({ modules: { ...module, ...module } })
             }
           />
         ))}
@@ -158,13 +120,9 @@ const DataSourcesEditForm = ({ initialState }) => {
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
             onClick={() =>
-              onSubmit({ dispatch, projectId, dataSourceId, state })
+              onSubmitEdit({ dispatch, projectId, dataSourceId, state })
             }
-            isDisabled={
-              !state.name ||
-              state.uri.substr(0, 5) !== 'gs://' ||
-              !Object.values(state.fileTypes).filter(Boolean).length > 0
-            }
+            isDisabled={!name}
           >
             Edit Data Source
           </Button>
@@ -178,7 +136,6 @@ DataSourcesEditForm.propTypes = {
   initialState: PropTypes.shape({
     name: PropTypes.string,
     uri: PropTypes.string,
-    credentials: PropTypes.array,
     fileTypes: PropTypes.object,
     modules: PropTypes.arrayOf(PropTypes.string),
     errors: PropTypes.shape({ global: PropTypes.string }),

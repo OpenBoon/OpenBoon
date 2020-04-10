@@ -169,7 +169,7 @@ describe('<DataSourcesAdd />', () => {
         name: 'My Data Source',
         uri: 'gs://zorroa-dev-data',
         credentials: {},
-        file_types: ['gif', ' png', ' jpg', ' jpeg', ' tif', ' tiff', ' psd'],
+        file_types: ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
         modules: ['zvi-label-detection'],
       }),
     })

@@ -1,10 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
 import providers from '../../Providers/__mocks__/providers'
-import mockUser from '../../User/__mocks__/user'
 import dataSource from '../../DataSource/__mocks__/dataSource'
-
-import User from '../../User'
 
 import DataSourcesEditForm from '../Form'
 
@@ -33,7 +30,6 @@ describe('<DataSourcesEditForm />', () => {
         initialState={{
           name: dataSource.name,
           uri: dataSource.uri,
-          credentials: dataSource.credentials,
           fileTypes: { video: true },
           modules: [],
           errors: { global: '' },
@@ -43,33 +39,11 @@ describe('<DataSourcesEditForm />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Input email
+    // Update name
     act(() => {
       component.root
         .findByProps({ id: 'name' })
         .props.onChange({ target: { value: 'My Updated Data Source' } })
-    })
-
-    // Input url
-    act(() => {
-      component.root
-        .findByProps({ id: 'uri' })
-        .props.onChange({ target: { value: '' } })
-    })
-
-    expect(component.toJSON()).toMatchSnapshot()
-
-    act(() => {
-      component.root
-        .findByProps({ id: 'uri' })
-        .props.onChange({ target: { value: 'gs://zorroa-dev-data' } })
-    })
-
-    // Input credential
-    act(() => {
-      component.root
-        .findByProps({ id: 'credential' })
-        .props.onChange({ target: { value: 'jkdT9Uherdozguie89FHIJS' } })
     })
 
     // Select file type
@@ -101,7 +75,7 @@ describe('<DataSourcesEditForm />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Edit Data' })
+        .findByProps({ children: 'Edit Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -114,7 +88,7 @@ describe('<DataSourcesEditForm />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Edit Data' })
+        .findByProps({ children: 'Edit Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -124,7 +98,7 @@ describe('<DataSourcesEditForm />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Edit Data' })
+        .findByProps({ children: 'Edit Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -142,8 +116,7 @@ describe('<DataSourcesEditForm />', () => {
       },
       body: JSON.stringify({
         name: 'My Updated Data Source',
-        uri: 'gs://zorroa-dev-data',
-        credential: 'jkdT9Uherdozguie89FHIJS',
+        uri: 'gs://zorroa-dev-data/images',
         file_types: [
           'mp4',
           'm4v',

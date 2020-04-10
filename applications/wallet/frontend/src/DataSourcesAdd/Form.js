@@ -15,7 +15,7 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 
-import { FILE_TYPES, onSubmit } from './helpers'
+import { FILE_TYPES, onSubmitAdd } from './helpers'
 
 import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
 import DataSourcesAddProvider from './Provider'
@@ -122,7 +122,7 @@ const DataSourcesAddForm = () => {
             label,
             icon: <img src={icon} alt={label} width="40px" />,
             legend,
-            initialValue: fileTypes[value],
+            initialValue: false,
             isDisabled: false,
           }))}
           variant={CHECKBOX_VARIANTS.SECONDARY}
@@ -157,7 +157,7 @@ const DataSourcesAddForm = () => {
           <Button
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
-            onClick={() => onSubmit({ dispatch, projectId, state })}
+            onClick={() => onSubmitAdd({ dispatch, projectId, state })}
             isDisabled={
               !name ||
               !source ||

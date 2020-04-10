@@ -134,7 +134,6 @@ Array [
   <DataSourcesEditForm
     initialState={
       Object {
-        "credentials": "",
         "errors": Object {
           "global": "",
         },
