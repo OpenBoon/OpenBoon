@@ -25,7 +25,13 @@ const Assets = () => {
 
   const containerWidth = 100 / thumbnailCount
 
-  const { pages, isLoadingMore, isReachingEnd, loadMore } = useSWRPages(
+  const {
+    pages,
+    pageCount,
+    isLoadingMore,
+    isReachingEnd,
+    loadMore,
+  } = useSWRPages(
     // page key
     'visualizer',
 
@@ -41,6 +47,9 @@ const Assets = () => {
       )
 
       if (!results) {
+        /* istanbul ignore next */
+        if (offset > 0) return null
+
         return (
           <div css={{ flex: 1, display: 'flex', height: '100%' }}>
             <Loading />
@@ -57,7 +66,7 @@ const Assets = () => {
     /* istanbul ignore next */
     ({ data: { count } }, index) => {
       const offset = (index + 1) * SIZE
-      return offset < count ? offset : null
+      return offset < count ? index + 1 : null
     },
 
     // deps of the page component
@@ -66,31 +75,28 @@ const Assets = () => {
 
   return (
     <div css={{ flex: 1, position: 'relative' }}>
-      <div>
-        <div
-          css={{
-            height: '100%',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignContent: 'flex-start',
-            overflowY: 'auto',
-            padding: spacing.small,
-            '.container': {
-              width: `${containerWidth}%`,
-              paddingBottom: `${containerWidth}%`,
-            },
-          }}
-        >
-          {pages}
-        </div>
-
+      <div
+        css={{
+          height: '100%',
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignContent: 'flex-start',
+          overflowY: 'auto',
+          padding: spacing.small,
+          '.container': {
+            width: `${containerWidth}%`,
+            paddingBottom: `${containerWidth}%`,
+          },
+        }}
+      >
+        {pages}
         <AssetsLoadMore
+          pageCount={pageCount}
           isLoadingMore={isLoadingMore}
           isReachingEnd={isReachingEnd}
           loadMore={loadMore}
         />
       </div>
-
       <AssetsResize dispatch={dispatch} isMin={isMin} isMax={isMax} />
     </div>
   )
