@@ -72,12 +72,5 @@ describe('<DataSourcesMenu />', () => {
     })
 
     expect(mockFn).toHaveBeenCalledWith()
-
-    // Open Menu
-    act(() => {
-      component.root
-        .findByProps({ 'aria-label': 'Toggle Actions Menu' })
-        .props.onClick()
-    })
   })
 })
