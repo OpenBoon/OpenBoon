@@ -6,6 +6,7 @@ import { fetcher } from '../Fetch/helpers'
  * How to update legal documents:
  * 1. Update the CURRENT_POLICIES_DATE constant below
  * 2. Create a new folder `/public/policies/${CURRENT_POLICIES_DATE}/`
+ *    leaving older folders intact.
  * 3. Add both `terms-of-use.pdf` and `privacy-policy.pdf` new files
  *    in that folder, even if only one has changed
  * 4. Update `agreedToPoliciesDate` in `src/User/__mocks__/user.js`
