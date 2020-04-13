@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.routers import APIRootView
 from rest_framework.views import APIView
 
+from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.serializers import UserSerializer, GroupSerializer
 
 
@@ -24,7 +25,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
-class LoginView(APIView):
+class LoginView(ConvertCamelToSnakeViewSetMixin, APIView):
     """Login view that supports Google OAuth bearer tokens passed in the "Authorization"
     header or a username and password sent in the json payload.
 
@@ -71,14 +72,14 @@ class LoginView(APIView):
         return Response(UserSerializer(user, context={'request': request}).data)
 
 
-class LogoutView(APIView):
+class LogoutView(ConvertCamelToSnakeViewSetMixin, APIView):
     """Basic logout view. Logs the user out and returns and empty json payload."""
     def post(self, request):
         logout(request)
         return Response({})
 
 
-class MeView(APIView):
+class MeView(ConvertCamelToSnakeViewSetMixin, APIView):
     """Simple view that returns information about the current user."""
     def get(self, request):
         return Response(UserSerializer(request.user, context={'request': request}).data)
