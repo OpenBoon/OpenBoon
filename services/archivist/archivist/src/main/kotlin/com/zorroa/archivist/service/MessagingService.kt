@@ -41,7 +41,7 @@ interface MessagingService {
  * messaging service is not configured.
  */
 @Service
-@Profile("none")
+@Profile("none", "test")
 class NullMessagingService : MessagingService {
     override fun sendMessage(actionType: ActionType, projectId: UUID?, data: Map<Any, Any>) {}
 }
