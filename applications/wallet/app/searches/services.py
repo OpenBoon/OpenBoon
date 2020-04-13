@@ -18,8 +18,8 @@ class FieldService(object):
         """Recursively build the dict structure for an attribute and retrieve it's filters.
 
         Returns:
-            list<dict>: A list of dicts where the key is the attr dot path, and the
-            value is the type
+            <dict>: A dict of dicts where each key is part of the attriburte dot path,
+            and the final value is the list of allowed filters.
         """
         fields = {property_name: {}}
         if 'type' in values:
