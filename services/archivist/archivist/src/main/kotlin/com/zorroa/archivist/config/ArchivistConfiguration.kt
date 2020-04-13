@@ -128,7 +128,7 @@ class ArchivistConfiguration {
 
 
 @Configuration
-class MessageServiceConfiguration{
+class MessageServiceConfiguration {
 
     @Autowired
     lateinit var env: Environment
@@ -171,5 +171,4 @@ class MessageServiceConfiguration{
     fun messageConverter(): Jackson2JsonMessageConverter {
         return Jackson2JsonMessageConverter()
     }
-
 }

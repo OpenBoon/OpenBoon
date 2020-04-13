@@ -125,6 +125,6 @@ class RabbitMQMessagingService(
             "data" to data
         )
 
-        rabbitTemplate.convertAndSend(topicExchanger, routingKey, content);
+        rabbitTemplate.convertAndSend(topicExchanger, routingKey, content)
     }
 }
