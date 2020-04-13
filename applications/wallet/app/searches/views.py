@@ -2,11 +2,15 @@ from django.http import Http404
 from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
                                    CreateModelMixin, UpdateModelMixin, DestroyModelMixin)
 from rest_framework.viewsets import GenericViewSet
+from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from projects.views import BaseProjectViewSet
 from searches.models import Search
 from searches.serializers import SearchSerializer
 from wallet.paginators import FromSizePagination
+from .services import FieldService
 
 
 class SearchViewSet(CreateModelMixin,
@@ -49,6 +53,7 @@ class SearchViewSet(CreateModelMixin,
     zmlp_only = True
     pagination_class = FromSizePagination
     serializer_class = SearchSerializer
+    field_service = FieldService()
 
     def get_object(self):
         try:
@@ -65,3 +70,19 @@ class SearchViewSet(CreateModelMixin,
         # Always correct the created_by value
         request.data['created_by'] = str(request.user.id)
         return super(SearchViewSet, self).create(request, *args, **kwargs)
+
+    @action(detail=False, methods=['get'])
+    def fields(self, request, project_pk):
+        """Returns all available fields in the ES index and their type."""
+        path = 'api/v3/fields/_mapping'
+        content = request.client.get(path)
+        indexes = list(content.keys())
+        if len(indexes) != 1:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            data={'detail': 'ZMLP did not return field mappings as expected.'})
+
+        index = indexes[0]
+        mappings = content[index]['mappings']
+        fields = self.field_service.get_fields_from_mappings(mappings)
+
+        return Response(status=status.HTTP_200_OK, data=fields)
