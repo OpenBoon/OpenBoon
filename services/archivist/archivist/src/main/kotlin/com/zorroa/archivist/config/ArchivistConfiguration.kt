@@ -126,7 +126,6 @@ class ArchivistConfiguration {
     }
 }
 
-
 @Configuration
 class MessageServiceConfiguration {
 
