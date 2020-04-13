@@ -204,35 +204,7 @@ const assets = {
           pile: 'pUn6wBxUN7x9JxOxLkvruOyNdYA',
           sourceAssetId: 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C',
         },
-        files: [
-          {
-            name: 'image_800x600.jpg',
-            category: 'proxy',
-            mimetype: 'image/jpeg',
-            size: 78408,
-            attrs: { width: 800, height: 600 },
-            url:
-              'https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_800x600.jpg',
-          },
-          {
-            name: 'image_512x384.jpg',
-            category: 'proxy',
-            mimetype: 'image/jpeg',
-            size: 42889,
-            attrs: { width: 512, height: 384 },
-            url:
-              'https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_512x384.jpg',
-          },
-          {
-            name: 'image_320x240.jpg',
-            category: 'proxy',
-            mimetype: 'image/jpeg',
-            size: 20676,
-            attrs: { width: 320, height: 240 },
-            url:
-              'https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/XK6ra3Jl_xhtrqP0Nf8hNJ7JcIRfWXCE/files/category/proxy/name/image_320x240.jpg',
-          },
-        ],
+        files: [],
         analysis: {
           zvi: {
             tinyProxy: [
