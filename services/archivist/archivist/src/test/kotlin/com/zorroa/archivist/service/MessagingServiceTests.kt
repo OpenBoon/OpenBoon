@@ -4,15 +4,15 @@ import com.google.protobuf.ByteString
 import com.zorroa.archivist.AbstractTest
 import org.junit.Ignore
 import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.mock.mockito.MockBean
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class MessagingServiceTests : AbstractTest() {
 
-    @Autowired
-    lateinit var messageService: PubSubMessagingService
+    @MockBean
+    lateinit var pubSubMessagingService: PubSubMessagingService
 
     @Test
     fun testgetMessage() {
@@ -39,7 +39,7 @@ class MessagingServiceTests : AbstractTest() {
             projectId = UUID.randomUUID(),
             data = data
         )
-        val future = messageService.publish(message)
+        val future = pubSubMessagingService.publish(message)
         val result = future.get()
         assertTrue(future.isDone)
     }
