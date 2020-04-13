@@ -5,7 +5,7 @@ import Input, { VARIANTS } from '..'
 const noop = () => () => {}
 
 describe('<Input />', () => {
-  it('should render properly with an error', () => {
+  it('should render properly with an error and disabled', () => {
     const component = TestRenderer.create(
       <Input
         autoFocus
@@ -17,6 +17,7 @@ describe('<Input />', () => {
         onChange={noop}
         hasError
         errorMessage="Error"
+        isDisabled
       />,
     )
 

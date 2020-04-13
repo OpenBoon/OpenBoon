@@ -763,6 +763,7 @@ Array [
           <input
             autoFocus={true}
             className="emotion-7"
+            disabled={false}
             id="name"
             name="name"
             onChange={[Function]}
@@ -2339,6 +2340,7 @@ Array [
           <input
             autoFocus={true}
             className="emotion-7"
+            disabled={false}
             id="name"
             name="name"
             onChange={[Function]}
@@ -2424,6 +2426,7 @@ Array [
           >
             <input
               className="emotion-7"
+              disabled={false}
               id="uri"
               name="uri"
               onChange={[Function]}
@@ -2456,6 +2459,7 @@ Array [
           >
             <input
               className="emotion-7"
+              disabled={false}
               id="aws_access_key_id"
               name="aws_access_key_id"
               onChange={[Function]}
@@ -2488,6 +2492,7 @@ Array [
           >
             <input
               className="emotion-7"
+              disabled={false}
               id="aws_secret_access_key"
               name="aws_secret_access_key"
               onChange={[Function]}
@@ -4010,6 +4015,7 @@ Array [
           <input
             autoFocus={true}
             className="emotion-7"
+            disabled={false}
             id="name"
             name="name"
             onChange={[Function]}
@@ -4095,6 +4101,7 @@ Array [
           >
             <input
               className="emotion-7"
+              disabled={false}
               id="uri"
               name="uri"
               onChange={[Function]}
@@ -4127,6 +4134,7 @@ Array [
           >
             <input
               className="emotion-7"
+              disabled={false}
               id="connection_string"
               name="connection_string"
               onChange={[Function]}
@@ -5649,6 +5657,7 @@ Array [
           <input
             autoFocus={true}
             className="emotion-7"
+            disabled={false}
             id="name"
             name="name"
             onChange={[Function]}
@@ -5734,6 +5743,7 @@ Array [
           >
             <input
               className="emotion-7"
+              disabled={false}
               id="uri"
               name="uri"
               onChange={[Function]}
@@ -5761,6 +5771,7 @@ Array [
           >
             <input
               className="emotion-7"
+              disabled={false}
               id="service_account_json_key"
               name="service_account_json_key"
               onChange={[Function]}
