@@ -5,7 +5,7 @@ from zmlpcd.logs import setup_logging
 from zmlpcd.process import ProcessorExecutor, AssetConsumer, is_file_type_allowed
 from zmlpcd.reactor import Reactor
 from zmlpsdk import Frame
-from zmlpsdk.testing import TestEventEmitter, TestAsset
+from zmlpsdk.testing import TestEventEmitter, TestAsset, TestProcessor
 
 setup_logging()
 
@@ -52,6 +52,37 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert "zmlpsdk.testing.TestProcessor" \
                == assets[0]["document"]["metrics"]["pipeline"][0]["processor"]
 
+    def test_execute_processor_and_raise(self):
+        req = {
+            "ref": {
+                "className": "zmlpsdk.testing.TestProcessor",
+                "args": {"raise": True},
+                "image": TEST_IMAGE
+            },
+            "assets": [
+                {
+                    "id": "1234",
+                    "document": {
+                        "source": {
+                            "path": "/foo/bing.jpg"
+                        }
+                    }
+                }
+            ]
+        }
+
+        asset = self.pe.execute_processor(req)[0]
+        assert self.emitter.event_count("asset") == 1
+        assert self.emitter.event_count("error") == 1
+        assert self.emitter.event_total() == 2
+
+        error = self.emitter.get_events("error")[0]
+        assert error["payload"]["processor"] == "zmlpsdk.testing.TestProcessor"
+        assert error["payload"]["fatal"] is False
+        assert error["payload"]["phase"] == "execute"
+        assert error["payload"]["path"] == "/foo/bing.jpg"
+        assert asset["document"]["metrics"]["pipeline"][0]["error"] == "warning"
+
     def test_execute_processor_and_raise_fatal(self):
         req = {
             "ref": {
@@ -81,8 +112,43 @@ class ProcessorExecutorTests(unittest.TestCase):
         assert error["payload"]["fatal"] is True
         assert error["payload"]["phase"] == "execute"
         assert error["payload"]["path"] == "/foo/bing.jpg"
-
         assert asset["document"]["metrics"]["pipeline"][0]["error"] == "fatal"
+
+    def test_execute_processor_with_fatal_errors_setting(self):
+        req = {
+            "ref": {
+                "className": "zmlpsdk.testing.TestProcessor",
+                "args": {"raise": True},
+                "image": TEST_IMAGE
+            },
+            "assets": [
+                {
+                    "id": "1234",
+                    "document": {
+                        "source": {
+                            "path": "/foo/bing.jpg"
+                        }
+                    }
+                }
+            ]
+        }
+
+        # All errors are fatal
+        TestProcessor.fatal_errors = True
+
+        try:
+            self.pe.execute_processor(req)[0]
+            assert self.emitter.event_count("asset") == 1
+            assert self.emitter.event_count("error") == 1
+            assert self.emitter.event_total() == 2
+
+            error = self.emitter.get_events("error")[0]
+            assert error["payload"]["processor"] == "zmlpsdk.testing.TestProcessor"
+            assert error["payload"]["fatal"] is True
+            assert error["payload"]["phase"] == "execute"
+            assert error["payload"]["path"] == "/foo/bing.jpg"
+        finally:
+            TestProcessor.fatal_errors = False
 
     def test_apply_metrics(self):
         ref = {

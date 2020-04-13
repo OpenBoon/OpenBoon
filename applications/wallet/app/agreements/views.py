@@ -6,6 +6,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from agreements.models import Agreement
 from agreements.serializers import AgreementSerializer
+from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 
 
 def get_ip_from_request(request):
@@ -18,7 +19,7 @@ def get_ip_from_request(request):
     return ip_address
 
 
-class AgreementViewSet(ListModelMixin, GenericViewSet):
+class AgreementViewSet(ConvertCamelToSnakeViewSetMixin, ListModelMixin, GenericViewSet):
     """Viewset for working with Privacy & Terms Agreements"""
     serializer_class = AgreementSerializer
 

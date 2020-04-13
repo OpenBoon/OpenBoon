@@ -17,11 +17,12 @@ from agreements.models import Agreement
 from agreements.views import get_ip_from_request
 from registration.models import UserRegistrationToken
 from registration.serializers import RegistrationSerializer
+from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 
 User = get_user_model()
 
 
-class UserRegistrationView(APIView):
+class UserRegistrationView(ConvertCamelToSnakeViewSetMixin, APIView):
     """Allows anyone to sign up for a new account. The user is created and email
 is sent with a link that will activate the account.
 
@@ -107,7 +108,7 @@ Response Codes:
         return Response(data={'detail': 'Success, confirmation email has been sent.'})
 
 
-class UserConfirmationView(APIView):
+class UserConfirmationView(ConvertCamelToSnakeViewSetMixin, APIView):
     """Activates a newly created account. Requires a user id and registration token that
 are sent in an email to the user on registration.
 

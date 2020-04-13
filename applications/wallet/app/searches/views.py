@@ -6,10 +6,12 @@ from rest_framework.viewsets import GenericViewSet
 from projects.views import BaseProjectViewSet
 from searches.models import Search
 from searches.serializers import SearchSerializer
+from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.paginators import FromSizePagination
 
 
-class SearchViewSet(CreateModelMixin,
+class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
+                    CreateModelMixin,
                     UpdateModelMixin,
                     ListModelMixin,
                     RetrieveModelMixin,

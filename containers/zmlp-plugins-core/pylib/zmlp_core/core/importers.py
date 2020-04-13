@@ -17,6 +17,9 @@ class FileImportProcessor(AssetProcessor):
     set, which eliminates the need for an assertion processor.
     """
 
+    fatal_errors = True
+    """All errors from this processor are fatal."""
+
     def __init__(self):
         super(FileImportProcessor, self).__init__()
         self.add_arg(Argument('extract_doc_pages',
@@ -41,13 +44,10 @@ class FileImportProcessor(AssetProcessor):
         asset = frame.asset
         ext = asset.get_attr("source.extension").lower()
 
-        try:
-            for proc in self.procs:
-                if ext in proc.file_types:
-                    proc.process(frame)
-                    break
-        except Exception as e:
-            raise ZmlpFatalProcessorException("Failed to to process: {}".format(asset.uri), e)
+        for proc in self.procs:
+            if ext in proc.file_types:
+                proc.process(frame)
+                break
 
         if not frame.asset.get_attr("media.type"):
             raise ZmlpFatalProcessorException(

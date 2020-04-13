@@ -178,28 +178,28 @@ class ProcessorException(Exception):
 class Processor(object):
     """The base class for all Processors.
 
-    There are currently three types of processors:
+    There are currently two types of processors:
 
     * Generators - create documents to process.
     * AssetBuilders - process assets created by generators.
 
-    Attributes:
-        file_types (list): An optional set of file types a subclass allows.
-        version (int): The version of the processor, defaults to 1.  If you
-            increment the version of your processor, it will not be skipped
-            on a re-process operation.
-        namespace (str): The attribute namespace the processor controls.
-        use_threads (bool): Set to true if the processor is thread safe.
-
     """
 
     file_types = FileTypes.all
+    """An optional set of file types a subclass allows."""
 
     version = 1
+    """The version of the processor, defaults to 1.  If you increment the version
+     of your processor, it will not be skipped on a re-process operation."""
 
     namespace = None
+    """The attribute namespace the processor controls, this is mainly informational."""
 
     use_threads = True
+    """If True, the processor executes batches of assets in parallel."""
+
+    fatal_errors = False
+    """If True, all errors are fatal."""
 
     def __init__(self):
         self.execute = []

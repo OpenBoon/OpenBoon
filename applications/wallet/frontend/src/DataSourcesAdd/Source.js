@@ -13,20 +13,38 @@ export const SOURCES = {
     label: 'Amazon Web Service (AWS)',
     uri: 's3://',
     credentials: [
-      { key: 'aws_access_key_id', label: 'AWS Access Key ID' },
-      { key: 'aws_secret_access_key', label: 'AWS Secret Access Key' },
+      {
+        key: 'aws_access_key_id',
+        label: 'AWS Access Key ID',
+        isRequired: true,
+      },
+      {
+        key: 'aws_secret_access_key',
+        label: 'AWS Secret Access Key',
+        isRequired: true,
+      },
     ],
   },
   AZURE: {
     label: 'Azure',
     uri: 'azure://',
-    credentials: [{ key: 'connection_string', label: 'Connection String' }],
+    credentials: [
+      {
+        key: 'connection_string',
+        label: 'Connection String',
+        isRequired: true,
+      },
+    ],
   },
   GCP: {
     label: 'Google Cloud Platform (GCP)',
     uri: 'gs://',
     credentials: [
-      { key: 'service_account_json_key', label: 'Service Account JSON Key' },
+      {
+        key: 'service_account_json_key',
+        label: 'Service Account JSON Key',
+        isRequired: false,
+      },
     ],
   },
 }
@@ -50,7 +68,8 @@ const DataSourcesAddSource = ({
           onChange={({ target: { value } }) => {
             const requiredCredentials = SOURCES[value].credentials.reduce(
               (acc, cred) => {
-                acc[cred.key] = ''
+                const { key, isRequired } = cred
+                acc[key] = { value: '', isRequired }
                 return acc
               },
               {},
@@ -124,7 +143,7 @@ const DataSourcesAddSource = ({
             errorMessage={stateErrors.uri}
             isRequired
           />
-          {SOURCES[source].credentials.map(({ key, label }) => {
+          {SOURCES[source].credentials.map(({ key, label, isRequired }) => {
             return (
               <Input
                 key={key}
@@ -132,15 +151,20 @@ const DataSourcesAddSource = ({
                 variant={INPUT_VARIANTS.SECONDARY}
                 label={label}
                 type="text"
-                value={credentials[source][key]}
+                value={credentials[source][key].value}
                 onChange={({ target: { value } }) => {
                   const errorMessage =
-                    value === '' ? `${label} must not be empty` : ''
+                    isRequired && value === ''
+                      ? `${label} must not be empty`
+                      : ''
 
                   return dispatch({
                     credentials: {
                       ...credentials,
-                      [source]: { ...credentials[source], [key]: value },
+                      [source]: {
+                        ...credentials[source],
+                        [key]: { value, isRequired },
+                      },
                     },
                     errors: {
                       ...stateErrors,
@@ -155,7 +179,7 @@ const DataSourcesAddSource = ({
                   stateErrors[source] ? !!stateErrors[source][key] : false
                 }
                 errorMessage={stateErrors[source] && stateErrors[source][key]}
-                isRequired
+                isRequired={isRequired}
               />
             )
           })}

@@ -12,7 +12,7 @@ import requests
 
 from zmlp.asset import FileImport, Asset, StoredFile
 from zmlpsdk.base import Context, AssetProcessor, Generator, Argument, \
-    ZmlpFatalProcessorException
+    ZmlpFatalProcessorException, ZmlpProcessorException
 
 logger = logging.getLogger(__name__)
 
@@ -35,11 +35,16 @@ class TestProcessor(AssetProcessor):
         self.add_arg(Argument('send_event', 'str', default=None))
         self.add_arg(Argument('raise_fatal', 'bool', default=False,
                               toolTip='Raise a ZmlpFatalProcessorException'))
+        self.add_arg(Argument('raise', 'bool', default=False,
+                              toolTip='Raise a ProcessorException'))
 
     def process(self, frame):
         self.logger.info('Running TestProcessor process()')
         if self.arg_value('raise_fatal'):
             raise ZmlpFatalProcessorException('Fatal exception raised')
+
+        if self.arg_value('raise'):
+            raise ZmlpProcessorException('Warning exception raised')
 
         attrs = self.arg_value('attrs')
         if attrs:
