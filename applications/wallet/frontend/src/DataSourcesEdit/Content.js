@@ -12,7 +12,7 @@ const DataSourcesEditContent = () => {
 
   const {
     data: { name, uri, fileTypes, modules },
-  } = useSWR(`/api/v1/projects/${projectId}/data_sources/${dataSourceId}`)
+  } = useSWR(`/api/v1/projects/${projectId}/data_sources/${dataSourceId}/`)
 
   const groupedFileTypes = FILE_TYPES.reduce(
     (accumulator, { value, identifier }) => {

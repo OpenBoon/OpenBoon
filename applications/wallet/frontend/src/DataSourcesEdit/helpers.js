@@ -10,13 +10,12 @@ export const getInitialModules = ({
 }) => {
   const results = {}
 
-  providers.map(({ categories }) =>
-    categories.map(({ modules }) =>
-      modules.map(({ id, name }) => {
+  providers.forEach(({ categories }) =>
+    categories.forEach(({ modules }) =>
+      modules.forEach(({ id, name }) => {
         if (existingModules.includes(id)) {
           results[name] = true
         }
-        return false
       }),
     ),
   )
