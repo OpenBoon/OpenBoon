@@ -4,15 +4,11 @@ import com.google.protobuf.ByteString
 import com.zorroa.archivist.AbstractTest
 import org.junit.Ignore
 import org.junit.Test
-import org.springframework.boot.test.mock.mockito.MockBean
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class MessagingServiceTests : AbstractTest() {
-
-    @MockBean
-    lateinit var pubSubMessagingService: PubSubMessagingService
 
     @Test
     fun testgetMessage() {
@@ -33,13 +29,15 @@ class MessagingServiceTests : AbstractTest() {
             "topic. You can use the `gcloud auth application-default login` command to authenticate."
     )
     fun testPubSubIntegrationTest() {
+        var pubSubMessagingService = PubSubMessagingService(properties)
+
         val data: Map<Any, Any> = mapOf("id" to 1)
         val message = PubSubMessagingService.getMessage(
             actionType = ActionType.AssetsDeleted,
             projectId = UUID.randomUUID(),
             data = data
         )
-        val future = pubSubMessagingService.publish(message)
+        val future = (pubSubMessagingService as PubSubMessagingService).publish(message)
         val result = future.get()
         assertTrue(future.isDone)
     }
