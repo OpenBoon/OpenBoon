@@ -65,7 +65,7 @@ const Policies = ({ userId }) => {
             paddingTop: spacing.spacious,
           }}
         >
-          Terms &amp; Conditions and Privacy Policy
+          Terms of Use and Privacy Policy
         </h3>
 
         {state.errors.global && (
