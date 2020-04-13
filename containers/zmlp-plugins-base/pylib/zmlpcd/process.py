@@ -249,8 +249,12 @@ class ProcessorWrapper(object):
             self.reactor.error(None, self["ref"]["className"],
                                upe, True, "execute", sys.exc_info()[2])
         except Exception as e:
-            self.increment_stat("error_count")
-            self.reactor.error(None, self.instance, e, True, "generate", sys.exc_info()[2])
+            if self.instance.fatal_errors:
+                self.increment_stat("unrecoverable_error_count")
+            else:
+                self.increment_stat("error_count")
+            self.reactor.error(None, self.instance, e, self.instance.fatal_errors,
+                               "generate", sys.exc_info()[2])
         finally:
             consumer.check_expand(True)
             self.reactor.write_event("finished", {})
@@ -306,9 +310,14 @@ class ProcessorWrapper(object):
             self.reactor.error(frame, self.ref,
                                upe, True, "execute", sys.exc_info()[2])
         except Exception as e:
-            error = "warning"
-            self.increment_stat("error_count")
-            self.reactor.error(frame, self.ref, e, False, "execute", sys.exc_info()[2])
+            if self.instance.fatal_errors:
+                error = "fatal"
+                self.increment_stat("unrecoverable_error_count")
+            else:
+                error = "warning"
+                self.increment_stat("error_count")
+            self.reactor.error(frame, self.ref, e,
+                               self.instance.fatal_errors, "execute", sys.exc_info()[2])
         finally:
             # Always show metrics even if it was skipped because otherwise
             # the pipeline checksums don't work.
