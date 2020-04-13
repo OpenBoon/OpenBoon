@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class FieldController(
-        val indexRoutingService: IndexRoutingService
+    val indexRoutingService: IndexRoutingService
 ) {
 
     @PreAuthorize("hasAuthority('AssetsRead')")

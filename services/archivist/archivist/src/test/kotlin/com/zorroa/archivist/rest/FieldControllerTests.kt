@@ -1,8 +1,6 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
-import com.zorroa.archivist.service.IndexRoutingService
-import org.springframework.beans.factory.annotation.Autowired
 import org.junit.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -20,5 +18,4 @@ class FieldControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
     }
-
 }
