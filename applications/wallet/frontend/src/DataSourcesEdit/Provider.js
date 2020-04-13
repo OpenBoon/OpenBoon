@@ -35,7 +35,7 @@ const DataSourcesEditProvider = ({
                 return {
                   value: module.name,
                   label: module.description,
-                  initialValue: modules[module.name] || false,
+                  initialValue: !!modules[module.name],
                   isDisabled: module.restricted,
                 }
               }),
