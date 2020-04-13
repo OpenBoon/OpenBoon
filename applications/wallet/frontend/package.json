@@ -136,7 +136,7 @@
     "esm": "3.2.25",
     "express": "4.17.1",
     "http-proxy-middleware": "1.0.3",
-    "husky": "4.2.3",
+    "husky": "4.2.5",
     "import-all.macro": "3.0.0",
     "jest": "25.2.7",
     "jest-emotion": "10.0.32",
