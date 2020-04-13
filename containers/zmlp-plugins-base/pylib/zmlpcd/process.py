@@ -316,7 +316,8 @@ class ProcessorWrapper(object):
             else:
                 error = "warning"
                 self.increment_stat("error_count")
-            self.reactor.error(frame, self.ref, e, self.instance.fatal_errors, "execute", sys.exc_info()[2])
+            self.reactor.error(frame, self.ref, e,
+                               self.instance.fatal_errors, "execute", sys.exc_info()[2])
         finally:
             # Always show metrics even if it was skipped because otherwise
             # the pipeline checksums don't work.
