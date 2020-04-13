@@ -3,7 +3,9 @@ import requests
 from django.http import StreamingHttpResponse
 from django.urls import reverse
 from rest_framework import status
-from zmlp import ZmlpClient
+from zmlp import ZmlpClient, Asset
+
+from assets.views import MetadataExportViewSet
 
 pytestmark = pytest.mark.django_db
 
@@ -196,3 +198,22 @@ class TestFileNameViewSet:
                                                                       'category_pk': 'proxy',
                                                                       'pk': filename}))
         assert isinstance(response, StreamingHttpResponse)
+
+
+class TestMetadataExportView:
+
+    def test_post(self, login, api_client, monkeypatch, project):
+
+        def mock_search_for_assets(*args, **kwargs):
+            return [
+                Asset({'id': '1', 'document': {'resolution': {'width': 10, 'height': 10}}}),
+                Asset({'id': '2', 'document': {'resolution': {'width': 20, 'height': 20}}}),
+                Asset({'id': '3', 'document': {'resolution': {'width': 30, 'height': 30}}}),
+            ]
+
+        monkeypatch.setattr(MetadataExportViewSet, '_search_for_assets', mock_search_for_assets)
+        result = api_client.post(reverse('export-list', kwargs={'project_pk': project.id}), {})
+        assert result.status_code == 200
+        assert result.accepted_media_type == 'text/csv'
+        assert result.content == b'id,resolution.height,resolution.width\r\n,10,10\r\n,20,20\r\n,30,30\r\n'  # noqa
+        assert result.charset == 'utf-8'

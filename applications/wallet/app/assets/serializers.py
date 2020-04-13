@@ -12,3 +12,7 @@ class AssetSerializer(serializers.Serializer):
 class AssetsSerializer(serializers.Serializer):
     list = AssetSerializer(many=True, required=True)
     page = PageSerializer(required=True)
+
+
+class MetadataExportSerializer(serializers.Serializer):
+    search = serializers.DictField(required=False)
