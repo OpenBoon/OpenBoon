@@ -19,6 +19,7 @@ from projects.clients import ZviClient
 from projects.models import Membership, Project
 from projects.permissions import ManagerUserPermissions
 from projects.serializers import ProjectSerializer, ProjectUserSerializer
+from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.paginators import FromSizePagination
 
 logger = logging.getLogger(__name__)
@@ -315,7 +316,8 @@ class BaseProjectViewSet(ViewSet):
         return response.json()
 
 
-class ProjectViewSet(ListModelMixin,
+class ProjectViewSet(ConvertCamelToSnakeViewSetMixin,
+                     ListModelMixin,
                      RetrieveModelMixin,
                      GenericViewSet):
     """
@@ -388,7 +390,7 @@ class ProjectViewSet(ListModelMixin,
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class ProjectUserViewSet(BaseProjectViewSet):
+class ProjectUserViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
     """Users who are Members of this Project.
 
     Available HTTP methods, endpoints, and what they do:

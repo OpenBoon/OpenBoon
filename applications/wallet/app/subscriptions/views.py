@@ -5,10 +5,12 @@ from rest_framework.viewsets import GenericViewSet
 from projects.views import BaseProjectViewSet
 from subscriptions.models import Subscription
 from subscriptions.serializers import SubscriptionSerializer
+from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.paginators import FromSizePagination
 
 
-class SubscriptionViewSet(ListModelMixin,
+class SubscriptionViewSet(ConvertCamelToSnakeViewSetMixin,
+                          ListModelMixin,
                           RetrieveModelMixin,
                           BaseProjectViewSet,
                           GenericViewSet):
