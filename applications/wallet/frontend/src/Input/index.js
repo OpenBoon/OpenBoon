@@ -5,17 +5,18 @@ import { constants, spacing, colors, typography } from '../Styles'
 const PADDING = spacing.base
 const BORDER_WIDTH = 2
 
-const BASE = {
+const BASE = ({ isDisabled }) => ({
   outlineOffset: 0,
   padding: `${spacing.moderate - BORDER_WIDTH}px ${spacing.moderate}px`,
   borderRadius: constants.borderRadius.small,
   boxShadow: constants.boxShadows.input,
   width: '100%',
+  cursor: isDisabled ? 'not-allowed' : '',
   '&:focus': {
     border: constants.borders.input,
     outline: colors.key.one,
   },
-}
+})
 
 const STYLES = {
   PRIMARY: {
@@ -53,69 +54,78 @@ const Input = ({
   errorMessage,
   after,
   isRequired,
+  isDisabled,
   ...props
-}) => (
-  <div css={{ paddingTop: PADDING }}>
-    <label
-      htmlFor={id}
-      css={{
-        display: 'block',
-        paddingBottom: PADDING,
-        color: colors.structure.zinc,
-      }}
-    >
-      {label}
-
-      {!!isRequired && (
-        <span css={{ color: colors.signal.warning.base }}> *</span>
-      )}
-    </label>
-    <div css={{ position: 'relative' }}>
-      <input
-        id={id}
-        type={type}
-        name={id}
-        value={value}
-        onChange={onChange}
-        css={[BASE, STYLES[variant], BORDER_STYLES({ hasError })]}
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...props}
-      />
-      {!!after && (
-        <div
-          css={{
-            position: 'absolute',
-            right: 0,
-            top: 0,
-            bottom: 0,
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          {after}
-        </div>
-      )}
-    </div>
+}) => {
+  return (
     <div css={{ paddingTop: PADDING }}>
-      {hasError && (
-        <span
-          css={{
-            color: colors.signal.warning.base,
-            fontStyle: typography.style.italic,
-          }}
-        >
-          {errorMessage}
-        </span>
-      )}
-      &nbsp;
+      <label
+        htmlFor={id}
+        css={{
+          display: 'block',
+          paddingBottom: PADDING,
+          color: colors.structure.zinc,
+        }}
+      >
+        {label}
+
+        {!!isRequired && (
+          <span css={{ color: colors.signal.warning.base }}> *</span>
+        )}
+      </label>
+      <div css={{ position: 'relative' }}>
+        <input
+          id={id}
+          type={type}
+          name={id}
+          value={value}
+          onChange={onChange}
+          css={[
+            BASE({ isDisabled }),
+            STYLES[variant],
+            BORDER_STYLES({ hasError }),
+          ]}
+          disabled={isDisabled}
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...props}
+        />
+        {!!after && (
+          <div
+            css={{
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              bottom: 0,
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            {after}
+          </div>
+        )}
+      </div>
+      <div css={{ paddingTop: PADDING }}>
+        {hasError && (
+          <span
+            css={{
+              color: colors.signal.warning.base,
+              fontStyle: typography.style.italic,
+            }}
+          >
+            {errorMessage}
+          </span>
+        )}
+        &nbsp;
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 Input.defaultProps = {
   after: false,
   errorMessage: '',
   isRequired: false,
+  isDisabled: false,
 }
 
 Input.propTypes = {
@@ -129,6 +139,7 @@ Input.propTypes = {
   errorMessage: PropTypes.string,
   after: PropTypes.node,
   isRequired: PropTypes.bool,
+  isDisabled: PropTypes.bool,
 }
 
 export default Input

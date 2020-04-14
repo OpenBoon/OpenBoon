@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import Link from 'next/link'
 
 import { fetcher } from '../Fetch/helpers'
 
@@ -16,6 +17,15 @@ const DataSourcesMenu = ({ projectId, dataSourceId, revalidate }) => {
       {({ onClick }) => (
         <div>
           <ul>
+            <li>
+              <Link
+                href="/[projectId]/data-sources/[dataSourceId]/edit"
+                as={`/${projectId}/data-sources/${dataSourceId}/edit`}
+                passHref
+              >
+                <Button variant={VARIANTS.MENU_ITEM}>Edit</Button>
+              </Link>
+            </li>
             <li>
               <>
                 <Button
