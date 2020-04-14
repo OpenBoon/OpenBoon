@@ -58,4 +58,32 @@ describe('<Checkbox />', () => {
 
     expect(mockFn).not.toHaveBeenCalled()
   })
+
+  it('should render properly locked', () => {
+    const mockFn = jest.fn()
+
+    const component = TestRenderer.create(
+      <Checkbox
+        variant={VARIANTS.PRIMARY}
+        option={{
+          value: 'checkbox',
+          label: 'Checkbox',
+          icon: '',
+          legend: '',
+          initialValue: true,
+          isDisabled: true,
+          isLocked: true,
+        }}
+        onClick={mockFn}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root.findByProps({ type: 'checkbox' }).props.onClick()
+    })
+
+    expect(mockFn).not.toHaveBeenCalled()
+  })
 })

@@ -194,22 +194,58 @@ Array [
   padding-left: 12px;
 }
 
+.emotion-39 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: not-allowed;
+  padding-bottom: 16px;
+  padding-left: 16px;
+}
+
 .emotion-31 {
   margin: 0;
   padding: 0;
   width: 20px;
   height: 20px;
   -webkit-appearance: none;
-  background-color: #73b61c;
-  border: 2px solid #73b61c;
+  background-color: transparent;
+  border: none;
   border-radius: 2px;
-  cursor: pointer;
+  cursor: not-allowed;
+}
+
+.emotion-33 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: not-allowed;
 }
 
 .emotion-32 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
+  fill: #73b61c;
 }
 
 .emotion-42 {
@@ -396,39 +432,6 @@ Array [
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
-}
-
-.emotion-55 {
-  margin: 0;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: #73b61c;
-  border: 2px solid #73b61c;
-  border-radius: 2px;
-  cursor: not-allowed;
-}
-
-.emotion-57 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
 }
 
 .emotion-66 {
@@ -735,7 +738,7 @@ Array [
         </div>
       </label>
       <label
-        className="emotion-21"
+        className="emotion-39"
       >
         <div
           className="emotion-16"
@@ -748,7 +751,7 @@ Array [
             value="video"
           />
           <div
-            className="emotion-15"
+            className="emotion-33"
           >
             <svg
               className="emotion-32"
@@ -926,14 +929,14 @@ Array [
                         className="emotion-16"
                       >
                         <input
-                          className="emotion-55"
+                          className="emotion-31"
                           defaultChecked={true}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-57"
+                          className="emotion-33"
                         >
                           <svg
                             className="emotion-32"

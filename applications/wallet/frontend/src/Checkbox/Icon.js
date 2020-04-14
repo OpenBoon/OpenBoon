@@ -7,7 +7,9 @@ import CheckmarkSvg from '../Icons/checkmark.svg'
 
 const SIZE = 20
 
-const getBorder = ({ isChecked, isDisabled }) => {
+const getBorder = ({ isChecked, isDisabled, isLocked }) => {
+  if (isLocked) return 'none'
+
   if (isChecked) return `2px solid ${colors.key.one}`
 
   if (isDisabled) return `2px solid ${colors.structure.mattGrey}`
@@ -15,7 +17,7 @@ const getBorder = ({ isChecked, isDisabled }) => {
   return `2px solid ${colors.structure.steel}`
 }
 
-const CheckboxIcon = ({ value, isChecked, isDisabled, onClick }) => (
+const CheckboxIcon = ({ value, isChecked, isDisabled, isLocked, onClick }) => (
   <div css={{ display: 'flex', position: 'relative' }}>
     <input
       type="checkbox"
@@ -28,8 +30,9 @@ const CheckboxIcon = ({ value, isChecked, isDisabled, onClick }) => (
         width: SIZE,
         height: SIZE,
         WebkitAppearance: 'none',
-        backgroundColor: isChecked ? colors.key.one : colors.transparent,
-        border: getBorder({ isChecked, isDisabled }),
+        backgroundColor:
+          isChecked && !isLocked ? colors.key.one : colors.transparent,
+        border: getBorder({ isChecked, isDisabled, isLocked }),
         borderRadius: constants.borderRadius.small,
         cursor: isDisabled ? 'not-allowed' : 'pointer',
       }}
@@ -44,7 +47,7 @@ const CheckboxIcon = ({ value, isChecked, isDisabled, onClick }) => (
         alignItems: 'center',
         justifyContent: 'center',
         display: 'flex',
-        cursor: isDisabled ? 'not-allowed' : 'pointer',
+        cursor: isDisabled || isLocked ? 'not-allowed' : 'pointer',
       }}
     >
       <CheckmarkSvg
@@ -53,7 +56,7 @@ const CheckboxIcon = ({ value, isChecked, isDisabled, onClick }) => (
           path: {
             transition: 'all .3s ease',
             opacity: isChecked ? 100 : 0,
-            fill: colors.white,
+            fill: isLocked ? colors.key.one : colors.white,
           },
         }}
       />
@@ -65,6 +68,7 @@ CheckboxIcon.propTypes = {
   value: PropTypes.string.isRequired,
   isChecked: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool.isRequired,
+  isLocked: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
 }
 

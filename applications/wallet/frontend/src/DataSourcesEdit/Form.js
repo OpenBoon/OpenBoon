@@ -36,12 +36,14 @@ const DataSourcesEditForm = ({ initialState }) => {
     data: { results: providers },
   } = useSWR(`/api/v1/projects/${projectId}/providers/`)
 
+  const initialModules = getInitialModules({
+    initialState,
+    providers,
+  })
+
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
-    modules: getInitialModules({
-      initialState,
-      providers,
-    }),
+    modules: initialModules,
   })
 
   const { errors, fileTypes, name, uri } = state
@@ -91,8 +93,9 @@ const DataSourcesEditForm = ({ initialState }) => {
             label,
             icon: <img src={icon} alt={label} width="40px" />,
             legend,
-            initialValue: fileTypes[value] || false,
-            isDisabled: false,
+            initialValue: !!initialState.fileTypes[value],
+            isDisabled: !!initialState.fileTypes[value],
+            isLocked: !!initialState.fileTypes[value],
           }))}
           variant={CHECKBOX_VARIANTS.SECONDARY}
         />
@@ -109,6 +112,7 @@ const DataSourcesEditForm = ({ initialState }) => {
           <DataSourcesEditProvider
             key={provider.name}
             provider={provider}
+            initialModules={initialModules}
             modules={state.modules}
             onClick={(module) =>
               dispatch({ modules: { ...state.modules, ...module } })

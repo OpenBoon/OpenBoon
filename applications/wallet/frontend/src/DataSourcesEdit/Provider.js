@@ -9,6 +9,7 @@ const IMG_HEIGHT = 32
 
 const DataSourcesEditProvider = ({
   provider: { name, logo, description, categories },
+  initialModules,
   modules,
   onClick,
 }) => {
@@ -36,7 +37,9 @@ const DataSourcesEditProvider = ({
                   value: module.name,
                   label: module.description,
                   initialValue: !!modules[module.name],
-                  isDisabled: module.restricted,
+                  isDisabled:
+                    !!initialModules[module.name] || module.restricted,
+                  isLocked: !!initialModules[module.name],
                 }
               }),
             }}
@@ -60,6 +63,7 @@ DataSourcesEditProvider.propTypes = {
       }).isRequired,
     ).isRequired,
   }).isRequired,
+  initialModules: PropTypes.shape({}).isRequired,
   modules: PropTypes.shape({}).isRequired,
   onClick: PropTypes.func.isRequired,
 }
