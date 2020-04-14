@@ -8,6 +8,9 @@ import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
+import com.zorroa.archivist.domain.DataSetLabel
+import com.zorroa.archivist.domain.DataSetSpec
+import com.zorroa.archivist.domain.DataSetType
 import com.zorroa.archivist.domain.FileTypes
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.JobSpec
@@ -18,6 +21,7 @@ import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.FileUtils
+import com.zorroa.zmlp.util.Json
 import org.elasticsearch.client.ResponseException
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,6 +47,9 @@ class AssetServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var dispatcherService: DispatcherService
+
+    @Autowired
+    lateinit var dataSetSetSerice: DataSetService
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -176,6 +183,29 @@ class AssetServiceTests : AbstractTest() {
         assertEquals("page", assets[0].getAttr<String?>("clip.type"))
         assertEquals("pages", assets[0].getAttr<String?>("clip.timeline"))
         assertEquals("bLyf1hG1kgdyYYyrdzXgVdBt0ok", assets[0].getAttr<String?>("clip.pile"))
+    }
+
+    @Test
+    fun testBatchCreateAssetsWithLabel() {
+        val ds = dataSetSetSerice.create(DataSetSpec("hobbits", DataSetType.LabelDetection))
+
+        val spec = AssetSpec(
+            "gs://cats/large-brown-cat.jpg",
+            mapOf("system.hello" to "foo"),
+            label = DataSetLabel(ds.id, "bilbo")
+        )
+
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(spec)
+        )
+        val rsp = assetService.batchCreate(req)
+        val asset = assetService.getAll(rsp.created)[0]
+
+        assertTrue(asset.attrExists("datasets"))
+        val datasetLabels = asset.getAttr("datasets", DataSetLabel.LIST_OF) ?: listOf<DataSetLabel>()
+        assertEquals(1, datasetLabels.size)
+        assertEquals("bilbo", datasetLabels[0].label)
+        assertEquals(ds.id, datasetLabels[0].dataSetId)
     }
 
     /**

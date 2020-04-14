@@ -101,5 +101,8 @@ class DataSetLabel(
     companion object {
         val SET_OF: TypeReference<MutableSet<DataSetLabel>> = object :
             TypeReference<MutableSet<DataSetLabel>>() {}
+
+        val LIST_OF: TypeReference<List<DataSetLabel>> = object :
+            TypeReference<List<DataSetLabel>>() {}
     }
 }
