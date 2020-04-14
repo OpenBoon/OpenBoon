@@ -169,7 +169,7 @@ class FileImport(object):
     An FileImport is used to import a new file and metadata into ZMLP.
     """
 
-    def __init__(self, uri, attrs=None, clip=None):
+    def __init__(self, uri, attrs=None, clip=None, label=None):
         """
         Construct an FileImport instance which can point to a remote URI.
 
@@ -179,11 +179,14 @@ class FileImport(object):
                 attributes to set on the asset.
             clip (Clip): Defines a subset of the asset to be processed, for example a
                 page of a PDF or time code from a video.
+            label (DataSetLabel): An optional dataset label which will add the file to
+                a DataSet automatically.
         """
         super(FileImport, self).__init__()
         self.uri = uri
         self.attrs = attrs or {}
         self.clip = clip
+        self.label = label
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
@@ -212,7 +215,7 @@ class FileUpload(FileImport):
     FileUpload instances point to a local file that will be uploaded for analysis.
     """
 
-    def __init__(self, path, attrs=None, clip=None):
+    def __init__(self, path, attrs=None, clip=None, label=None):
         """
         Create a new FileUpload instance.
 
@@ -221,8 +224,10 @@ class FileUpload(FileImport):
             attrs (dict): A shallow key/value pair dictionary of starting point
                 attributes to set on the asset.
             clip (Clip): Clip settings if applicable.
+            label (DataSetLabel): An optional dataset label which will add the file to
+                a DataSet automatically.
         """
-        super(FileUpload, self).__init__(os.path.normpath(os.path.abspath(path)), attrs, clip)
+        super(FileUpload, self).__init__(os.path.normpath(os.path.abspath(path)), attrs, clip, label)
 
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))
