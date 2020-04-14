@@ -58,8 +58,8 @@ class ContentAnalysisSchema(AbstractAnalysisSchema):
     required_properties = ['type', 'count', 'content']
 
     def get_representation(self):
-        return {f'{self.property_name}': {'content': STRING_FILTERS},
-                f'{self.property_name}': {'count': NUMBER_FILTERS}}
+        return {f'{self.property_name}': {'content': STRING_FILTERS,
+                                          'count': NUMBER_FILTERS}}
 
 
 class LabelsAnalysisSchema(AbstractAnalysisSchema):
@@ -70,7 +70,7 @@ class LabelsAnalysisSchema(AbstractAnalysisSchema):
         # Not sure how to filter predictions yet, so return the empty string for now
         repr = {f'{self.property_name}': {'predictions': []}}
         if 'count' in self.child_properties:
-            repr[f'{self.property_name}'] = {'count': NUMBER_FILTERS}
+            repr[f'{self.property_name}']['count'] = NUMBER_FILTERS
         if 'safe' in self.child_properties:
-            repr[f'{self.property_name}'] = {'safe': BOOLEAN_FILTERS}
+            repr[f'{self.property_name}']['safe'] = BOOLEAN_FILTERS
         return repr
