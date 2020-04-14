@@ -8,6 +8,7 @@ const MetadataSelect = () => {
           css={{
             color: colors.key.one,
             fontStyle: typography.style.italic,
+            whiteSpace: 'nowrap',
           }}
         >
           Select an asset to view its metadata

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Metadata /> should render properly 1`] = `
-.emotion-5 {
+.emotion-6 {
   background-color: #2e2e2e;
   margin-top: 1px;
   height: 100%;
@@ -15,7 +15,7 @@ exports[`<Metadata /> should render properly 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -30,21 +30,27 @@ exports[`<Metadata /> should render properly 1`] = `
 }
 
 .emotion-0 {
+  min-width: 20px;
+}
+
+.emotion-1 {
   padding: 16px;
   color: #808080;
   font-weight: 700;
-}
-
-.emotion-3 {
-  padding: 16px;
-}
-
-.emotion-2 {
-  color: #73b61c;
-  font-style: italic;
+  white-space: nowrap;
 }
 
 .emotion-4 {
+  padding: 16px;
+}
+
+.emotion-3 {
+  color: #73b61c;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.emotion-5 {
   height: 100%;
   overflow: auto;
   background-color: #2e2e2e;
@@ -53,43 +59,45 @@ exports[`<Metadata /> should render properly 1`] = `
 
 <Resizeable
   initialWidth={400}
+  minWidth={52}
   storageName="metadata-width"
 >
   <div
-    className="emotion-5"
+    className="emotion-6"
   >
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <svg
+        className="emotion-0"
         color="#808080"
         data-file-name="information.svg"
         width={20}
       />
       <div
-        className="emotion-0"
+        className="emotion-1"
       >
         ASSET METADATA
       </div>
     </div>
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         Select an asset to view its metadata
       </div>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-5"
     />
   </div>
 </Resizeable>
 `;
 
 exports[`<Metadata /> should render selected asset 1`] = `
-.emotion-5 {
+.emotion-6 {
   background-color: #2e2e2e;
   margin-top: 1px;
   height: 100%;
@@ -103,7 +111,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-1 {
+.emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -118,20 +126,25 @@ exports[`<Metadata /> should render selected asset 1`] = `
 }
 
 .emotion-0 {
+  min-width: 20px;
+}
+
+.emotion-1 {
   padding: 16px;
   color: #ffffff;
   font-weight: 700;
-}
-
-.emotion-3 {
-  padding: 16px;
-}
-
-.emotion-2 {
-  color: #4a90e2;
+  white-space: nowrap;
 }
 
 .emotion-4 {
+  padding: 16px;
+}
+
+.emotion-3 {
+  color: #4a90e2;
+}
+
+.emotion-5 {
   height: 100%;
   overflow: auto;
   background-color: #191919;
@@ -140,36 +153,38 @@ exports[`<Metadata /> should render selected asset 1`] = `
 
 <Resizeable
   initialWidth={400}
+  minWidth={52}
   storageName="metadata-width"
 >
   <div
-    className="emotion-5"
+    className="emotion-6"
   >
     <div
-      className="emotion-1"
+      className="emotion-2"
     >
       <svg
+        className="emotion-0"
         color="#ffffff"
         data-file-name="information.svg"
         width={20}
       />
       <div
-        className="emotion-0"
+        className="emotion-1"
       >
         ASSET METADATA
       </div>
     </div>
     <div
-      className="emotion-3"
+      className="emotion-4"
     >
       <div
-        className="emotion-2"
+        className="emotion-3"
       >
         TIFF_1MB.tiff
       </div>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-5"
     >
       <JsonDisplay
         json={

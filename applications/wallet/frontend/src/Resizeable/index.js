@@ -9,7 +9,7 @@ const DRAG_WIDTH = 20
 
 let originX
 
-const Resizeable = ({ children, initialWidth, storageName }) => {
+const Resizeable = ({ initialWidth, minWidth, storageName, children }) => {
   const [width, setWidth] = useLocalStorage({
     key: storageName,
     initialValue: initialWidth,
@@ -17,7 +17,7 @@ const Resizeable = ({ children, initialWidth, storageName }) => {
 
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
-    setWidth({ value: Math.max(10, width - (clientX - originX)) })
+    setWidth({ value: Math.max(minWidth, width - (clientX - originX)) })
   }
 
   /* istanbul ignore next */
@@ -53,9 +53,10 @@ const Resizeable = ({ children, initialWidth, storageName }) => {
 }
 
 Resizeable.propTypes = {
-  children: PropTypes.node.isRequired,
   initialWidth: PropTypes.number.isRequired,
+  minWidth: PropTypes.number.isRequired,
   storageName: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 }
 
 export default Resizeable

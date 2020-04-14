@@ -12,13 +12,20 @@ import MetadataSelect from './Select'
 
 export const WIDTH = 400
 
+const IMG_WIDTH = 20
+const PADDING = spacing.normal
+
 const Metadata = () => {
   const {
     query: { projectId, id: assetId },
   } = useRouter()
 
   return (
-    <Resizeable initialWidth={WIDTH} storageName="metadata-width">
+    <Resizeable
+      initialWidth={WIDTH}
+      minWidth={IMG_WIDTH + PADDING * 2}
+      storageName="metadata-width"
+    >
       <div
         css={{
           backgroundColor: colors.structure.mattGrey,
@@ -35,18 +42,20 @@ const Metadata = () => {
             height: constants.navbar.height,
             alignItems: 'center',
             borderBottom: constants.borders.divider,
-            padding: spacing.normal,
+            padding: PADDING,
           }}
         >
           <InformationSvg
-            width={20}
+            width={IMG_WIDTH}
             color={assetId ? colors.structure.white : colors.structure.steel}
+            css={{ minWidth: IMG_WIDTH }}
           />
           <div
             css={{
-              padding: spacing.normal,
+              padding: PADDING,
               color: assetId ? colors.structure.white : colors.structure.steel,
               fontWeight: typography.weight.bold,
+              whiteSpace: 'nowrap',
             }}
           >
             ASSET METADATA
