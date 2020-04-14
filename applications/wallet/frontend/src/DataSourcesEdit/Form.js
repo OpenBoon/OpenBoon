@@ -2,8 +2,9 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
+import PropTypes from 'prop-types'
 
-import { colors, constants, typography } from '../Styles'
+import { constants, spacing } from '../Styles'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
@@ -15,47 +16,35 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import ButtonGroup from '../Button/Group'
 import CheckboxGroup from '../Checkbox/Group'
 
-import { FILE_TYPES, onSubmit } from './helpers'
+import { FILE_TYPES } from '../DataSourcesAdd/helpers'
 
-import DataSourcesAddAutomaticAnalysis from './AutomaticAnalysis'
-import DataSourcesAddProvider from './Provider'
-import DataSourcesAddCopy from './Copy'
-import DataSourcesAddSource, { SOURCES } from './Source'
+import DataSourcesAddAutomaticAnalysis from '../DataSourcesAdd/AutomaticAnalysis'
+import DataSourcesAddCopy from '../DataSourcesAdd/Copy'
 
-const INITIAL_STATE = {
-  name: '',
-  source: '',
-  uri: '',
-  credentials: {},
-  fileTypes: {},
-  modules: {},
-  errors: { global: '', name: '', uri: '' },
-}
+import DataSourcesEditProvider from './Provider'
+
+import { getInitialModules, onSubmit } from './helpers'
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-const DataSourcesAddForm = () => {
+const DataSourcesEditForm = ({ initialState }) => {
   const {
-    query: { projectId },
+    query: { projectId, dataSourceId },
   } = useRouter()
 
   const {
     data: { results: providers },
   } = useSWR(`/api/v1/projects/${projectId}/providers/`)
 
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
+    modules: getInitialModules({
+      initialState,
+      providers,
+    }),
+  })
 
-  const { credentials, errors, fileTypes, name, source, uri } = state
-
-  const isFileTypesEmpty = !Object.values(fileTypes).find((value) => !!value)
-
-  const isRequiredCredentialsEmpty = credentials[source]
-    ? Object.keys(credentials[source]).reduce((count, credential) => {
-        const { isRequired, value } = credentials[source][credential]
-        const currentCount = isRequired && value === '' ? 1 : 0
-        return count + currentCount
-      }, 0) > 0
-    : true
+  const { errors, fileTypes, name, uri } = state
 
   return (
     <>
@@ -68,17 +57,12 @@ const DataSourcesAddForm = () => {
       <Form style={{ width: 'auto' }}>
         <DataSourcesAddCopy />
 
-        <div css={{ width: constants.form.maxWidth }}>
-          <span
-            css={{
-              fontStyle: typography.style.italic,
-              color: colors.structure.zinc,
-            }}
-          >
-            <span css={{ color: colors.signal.warning.base }}>*</span> required
-            field
-          </span>
-
+        <div
+          css={{
+            width: constants.form.maxWidth,
+            paddingBottom: spacing.normal,
+          }}
+        >
           <SectionTitle>Data Source Name </SectionTitle>
 
           <Input
@@ -88,32 +72,17 @@ const DataSourcesAddForm = () => {
             label="Name"
             type="text"
             value={name}
-            onChange={({ target: { value } }) => {
-              const nameError = value === '' ? 'Name cannot be empty' : ''
-
-              return dispatch({
-                name: value,
-                errors: { ...errors, name: nameError },
-              })
-            }}
-            hasError={!!errors.name}
+            onChange={({ target: { value } }) => dispatch({ name: value })}
+            hasError={errors.name !== undefined}
             errorMessage={errors.name}
-            isRequired
           />
 
-          <SectionTitle>Connect to Source</SectionTitle>
-
-          <DataSourcesAddSource dispatch={dispatch} state={state} />
+          <SectionTitle>{`Storage Address: ${uri}`}</SectionTitle>
         </div>
 
         <CheckboxGroup
           legend="Select File Types to Import"
-          description={
-            <div>
-              A minimum of one file type must be selected{' '}
-              <span css={{ color: colors.signal.warning.base }}>*</span>
-            </div>
-          }
+          description={<div>A minimum of one file type must be selected </div>}
           onClick={(fileType) =>
             dispatch({ fileTypes: { ...fileTypes, ...fileType } })
           }
@@ -122,7 +91,7 @@ const DataSourcesAddForm = () => {
             label,
             icon: <img src={icon} alt={label} width="40px" />,
             legend,
-            initialValue: false,
+            initialValue: fileTypes[value] || false,
             isDisabled: false,
           }))}
           variant={CHECKBOX_VARIANTS.SECONDARY}
@@ -137,9 +106,10 @@ const DataSourcesAddForm = () => {
         <DataSourcesAddAutomaticAnalysis />
 
         {providers.map((provider) => (
-          <DataSourcesAddProvider
+          <DataSourcesEditProvider
             key={provider.name}
             provider={provider}
+            modules={state.modules}
             onClick={(module) =>
               dispatch({ modules: { ...state.modules, ...module } })
             }
@@ -157,17 +127,12 @@ const DataSourcesAddForm = () => {
           <Button
             type="submit"
             variant={BUTTON_VARIANTS.PRIMARY}
-            onClick={() => onSubmit({ dispatch, projectId, state })}
-            isDisabled={
-              !name ||
-              !source ||
-              uri === SOURCES[source].uri ||
-              !!errors.uri ||
-              isRequiredCredentialsEmpty ||
-              isFileTypesEmpty
+            onClick={() =>
+              onSubmit({ dispatch, projectId, dataSourceId, state })
             }
+            isDisabled={!name}
           >
-            Create Data Source
+            Edit Data Source
           </Button>
         </ButtonGroup>
       </Form>
@@ -175,4 +140,14 @@ const DataSourcesAddForm = () => {
   )
 }
 
-export default DataSourcesAddForm
+DataSourcesEditForm.propTypes = {
+  initialState: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    uri: PropTypes.string.isRequired,
+    fileTypes: PropTypes.object.isRequired,
+    modules: PropTypes.arrayOf(PropTypes.string).isRequired,
+    errors: PropTypes.shape({ global: PropTypes.string }).isRequired,
+  }).isRequired,
+}
+
+export default DataSourcesEditForm

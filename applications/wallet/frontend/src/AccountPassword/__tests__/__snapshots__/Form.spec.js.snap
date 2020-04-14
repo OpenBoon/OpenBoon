@@ -287,6 +287,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
         <input
           autoFocus={true}
           className="emotion-1"
+          disabled={false}
           id="currentPassword"
           name="currentPassword"
           onChange={[Function]}
@@ -314,6 +315,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
       >
         <input
           className="emotion-1"
+          disabled={false}
           id="newPassword"
           name="newPassword"
           onChange={[Function]}
@@ -341,6 +343,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
       >
         <input
           className="emotion-1"
+          disabled={false}
           id="confirmPassword"
           name="confirmPassword"
           onChange={[Function]}
@@ -830,6 +833,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
         <input
           autoFocus={true}
           className="emotion-1"
+          disabled={false}
           id="currentPassword"
           name="currentPassword"
           onChange={[Function]}
@@ -857,6 +861,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
       >
         <input
           className="emotion-1"
+          disabled={false}
           id="newPassword"
           name="newPassword"
           onChange={[Function]}
@@ -884,6 +889,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
       >
         <input
           className="emotion-1"
+          disabled={false}
           id="confirmPassword"
           name="confirmPassword"
           onChange={[Function]}
@@ -1237,6 +1243,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
         <input
           autoFocus={true}
           className="emotion-1"
+          disabled={false}
           id="currentPassword"
           name="currentPassword"
           onChange={[Function]}
@@ -1264,6 +1271,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
       >
         <input
           className="emotion-1"
+          disabled={false}
           id="newPassword"
           name="newPassword"
           onChange={[Function]}
@@ -1291,6 +1299,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
       >
         <input
           className="emotion-1"
+          disabled={false}
           id="confirmPassword"
           name="confirmPassword"
           onChange={[Function]}

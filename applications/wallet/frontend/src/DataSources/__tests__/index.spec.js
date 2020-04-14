@@ -52,4 +52,23 @@ describe('<DataSources />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render properly with edit success', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/data-sources',
+      query: { projectId: PROJECT_ID, action: 'edit-datasource-success' },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: dataSources,
+    })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <DataSources />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

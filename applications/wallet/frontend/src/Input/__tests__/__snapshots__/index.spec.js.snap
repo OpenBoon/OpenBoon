@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Input /> should render properly with an error 1`] = `
+exports[`<Input /> should render properly with an error and disabled 1`] = `
 .emotion-4 {
   padding-top: 8px;
 }
@@ -21,6 +21,7 @@ exports[`<Input /> should render properly with an error 1`] = `
   border-radius: 2px;
   box-shadow: inset 0 1px 3px 0 transparent;
   width: 100%;
+  cursor: not-allowed;
   color: #000000;
   background-color: #ffffff;
   border: 2px solid #c92300;
@@ -52,6 +53,7 @@ exports[`<Input /> should render properly with an error 1`] = `
     <input
       autoFocus={true}
       className="emotion-1"
+      disabled={true}
       id="username"
       name="username"
       onChange={[Function]}
