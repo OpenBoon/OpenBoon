@@ -4,7 +4,7 @@ export const ACTIONS = {
 }
 
 export const INITIAL_STATE = {
-  thumbnailCount: 8,
+  columnCount: 8,
   isMin: true,
   isMax: false,
 }
@@ -12,16 +12,16 @@ export const INITIAL_STATE = {
 export const reducer = (state, action) => {
   switch (action.type) {
     case 'DECREMENT':
-      if (state.thumbnailCount === 1)
-        return { ...state, thumbnailCount: 4, isMax: false }
-      if (state.thumbnailCount === 4)
-        return { ...state, thumbnailCount: 8, isMin: true }
+      if (state.columnCount === 1)
+        return { ...state, columnCount: 4, isMax: false }
+      if (state.columnCount === 4)
+        return { ...state, columnCount: 8, isMin: true }
       return state
     case 'INCREMENT':
-      if (state.thumbnailCount === 8)
-        return { ...state, thumbnailCount: 4, isMin: false }
-      if (state.thumbnailCount === 4)
-        return { ...state, thumbnailCount: 1, isMax: true }
+      if (state.columnCount === 8)
+        return { ...state, columnCount: 4, isMin: false }
+      if (state.columnCount === 4)
+        return { ...state, columnCount: 1, isMax: true }
       return state
     default:
       return state

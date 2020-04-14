@@ -2,17 +2,17 @@ import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR, { useSWRPages } from 'swr'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import InfiniteLoader from 'react-window-infinite-loader'
 import { FixedSizeGrid } from 'react-window'
 
 import Loading from '../Loading'
 
 import AssetsResize from './Resize'
 import AssetsThumbnail from './Thumbnail'
-import AssetsLoadMore from './LoadMore'
 
 import { reducer, INITIAL_STATE } from './reducer'
 
-const SIZE = 50
+const SIZE = 100
 
 const Assets = () => {
   const {
@@ -21,16 +21,9 @@ const Assets = () => {
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
-  const { thumbnailCount, isMin, isMax } = state
+  const { columnCount, isMin, isMax } = state
 
-  const {
-    pages,
-    pageCount,
-    isLoadingMore,
-    isReachingEnd,
-    loadMore,
-    pageSWRs,
-  } = useSWRPages(
+  const { pages, loadMore, pageSWRs } = useSWRPages(
     // page key
     'visualizer',
 
@@ -77,37 +70,59 @@ const Assets = () => {
       })
     : []
 
+  const { data: { count: itemCount } = {} } = pageSWRs[0] || {}
+
   return (
     <div css={{ flex: 1, position: 'relative', overflow: 'scroll' }}>
       {pages}
       <AutoSizer>
         {({ height, width }) => (
-          <FixedSizeGrid
-            columnCount={thumbnailCount}
-            columnWidth={Math.max(100, width / thumbnailCount)}
-            rowHeight={Math.max(100, width / thumbnailCount)}
-            rowCount={Math.ceil(items.length / thumbnailCount)}
-            width={width}
-            height={height}
+          <InfiniteLoader
+            isItemLoaded={(index) => !!items[index]}
+            itemCount={itemCount}
+            loadMoreItems={loadMore}
           >
-            {({ columnIndex, rowIndex, style }) => {
-              const index = columnIndex + rowIndex * thumbnailCount
-              if (!items[index]) return null
-              return (
-                <div style={style}>
-                  <AssetsThumbnail asset={items[index]} />
-                </div>
-              )
-            }}
-          </FixedSizeGrid>
+            {({ onItemsRendered, ref }) => (
+              <FixedSizeGrid
+                ref={ref}
+                onItemsRendered={({
+                  visibleRowStartIndex,
+                  visibleRowStopIndex,
+                  visibleColumnStartIndex,
+                  visibleColumnStopIndex,
+                }) => {
+                  const visibleStartIndex =
+                    visibleRowStartIndex * columnCount + visibleColumnStartIndex
+
+                  const visibleStopIndex =
+                    visibleRowStopIndex * columnCount + visibleColumnStopIndex
+
+                  onItemsRendered({
+                    visibleStartIndex,
+                    visibleStopIndex,
+                  })
+                }}
+                columnCount={columnCount}
+                columnWidth={Math.max(100, width / columnCount)}
+                rowHeight={Math.max(100, width / columnCount)}
+                rowCount={Math.ceil(items.length / columnCount)}
+                width={width}
+                height={height}
+              >
+                {({ columnIndex, rowIndex, style }) => {
+                  const index = columnIndex + rowIndex * columnCount
+                  if (!items[index]) return null
+                  return (
+                    <div style={style}>
+                      <AssetsThumbnail asset={items[index]} />
+                    </div>
+                  )
+                }}
+              </FixedSizeGrid>
+            )}
+          </InfiniteLoader>
         )}
       </AutoSizer>
-      {/* <AssetsLoadMore
-        pageCount={pageCount}
-        isLoadingMore={isLoadingMore}
-        isReachingEnd={isReachingEnd}
-        loadMore={loadMore}
-      /> */}
       <AssetsResize dispatch={dispatch} isMin={isMin} isMax={isMax} />
     </div>
   )
