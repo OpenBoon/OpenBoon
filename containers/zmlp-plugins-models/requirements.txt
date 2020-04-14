@@ -1,4 +1,4 @@
-tensorflow==2.0.0
+tensorflow
 opencv-python-headless
 opencv-contrib-python-headless
 cvlib
