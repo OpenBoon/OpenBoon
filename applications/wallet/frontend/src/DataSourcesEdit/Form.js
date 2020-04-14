@@ -136,7 +136,7 @@ const DataSourcesEditForm = ({ initialState }) => {
             }
             isDisabled={!name}
           >
-            Edit Data Source
+            Update Data Source
           </Button>
         </ButtonGroup>
       </Form>

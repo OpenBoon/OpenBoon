@@ -1355,7 +1355,7 @@ Array [
         onClick={[Function]}
         type="submit"
       >
-        Edit Data Source
+        Update Data Source
       </button>
     </div>
   </form>,

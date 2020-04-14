@@ -76,7 +76,7 @@ describe('<DataSourcesEditForm />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Edit Data Source' })
+        .findByProps({ children: 'Update Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -89,7 +89,7 @@ describe('<DataSourcesEditForm />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Edit Data Source' })
+        .findByProps({ children: 'Update Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -99,7 +99,7 @@ describe('<DataSourcesEditForm />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ children: 'Edit Data Source' })
+        .findByProps({ children: 'Update Data Source' })
         .props.onClick({ preventDefault: noop })
     })
 
