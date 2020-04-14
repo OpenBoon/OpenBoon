@@ -1,9 +1,8 @@
 import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR, { useSWRPages } from 'swr'
+import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeGrid } from 'react-window'
-
-import { spacing } from '../Styles'
 
 import Loading from '../Loading'
 
@@ -23,8 +22,6 @@ const Assets = () => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
   const { thumbnailCount, isMin, isMax } = state
-
-  const containerWidth = 100 / thumbnailCount
 
   const {
     pages,
@@ -80,50 +77,37 @@ const Assets = () => {
       })
     : []
 
-  console.warn(items)
-
   return (
-    <div css={{ flex: 1, position: 'relative' }}>
-      <div
-        css={{
-          height: '100%',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignContent: 'flex-start',
-          overflowY: 'auto',
-          padding: spacing.small,
-          '.container': {
-            width: `${containerWidth}%`,
-            paddingBottom: `${containerWidth}%`,
-          },
-        }}
-      >
-        {pages}
-        <FixedSizeGrid
-          columnCount={6}
-          columnWidth={100}
-          rowHeight={100}
-          rowCount={Math.ceil(items.length / 6)}
-          width={860}
-          height={903}
-        >
-          {({ columnIndex, rowIndex, style }) => {
-            const index = columnIndex + rowIndex * 6
-            if (!items[index]) return null
-            return (
-              <div style={style}>
-                <AssetsThumbnail asset={items[index]} />
-              </div>
-            )
-          }}
-        </FixedSizeGrid>
-        <AssetsLoadMore
-          pageCount={pageCount}
-          isLoadingMore={isLoadingMore}
-          isReachingEnd={isReachingEnd}
-          loadMore={loadMore}
-        />
-      </div>
+    <div css={{ flex: 1, position: 'relative', overflow: 'scroll' }}>
+      {pages}
+      <AutoSizer>
+        {({ height, width }) => (
+          <FixedSizeGrid
+            columnCount={thumbnailCount}
+            columnWidth={Math.max(100, width / thumbnailCount)}
+            rowHeight={Math.max(100, width / thumbnailCount)}
+            rowCount={Math.ceil(items.length / thumbnailCount)}
+            width={width}
+            height={height}
+          >
+            {({ columnIndex, rowIndex, style }) => {
+              const index = columnIndex + rowIndex * thumbnailCount
+              if (!items[index]) return null
+              return (
+                <div style={style}>
+                  <AssetsThumbnail asset={items[index]} />
+                </div>
+              )
+            }}
+          </FixedSizeGrid>
+        )}
+      </AutoSizer>
+      {/* <AssetsLoadMore
+        pageCount={pageCount}
+        isLoadingMore={isLoadingMore}
+        isReachingEnd={isReachingEnd}
+        loadMore={loadMore}
+      /> */}
       <AssetsResize dispatch={dispatch} isMin={isMin} isMax={isMax} />
     </div>
   )
