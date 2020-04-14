@@ -122,7 +122,7 @@ class MetadataExportViewSet(BaseProjectViewSet):
         flat_assets = []
         for asset in assets:
             flat_asset = flatten(asset.document, reducer=dot_reducer)
-            flat_asset['id'] = asset['id']
+            flat_asset['id'] = asset.id
             flat_assets.append(flat_asset)
 
         # Return the CSV file to the client.
