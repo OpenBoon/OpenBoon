@@ -180,7 +180,7 @@ describe('<DataSourcesAdd />', () => {
     )
   })
 
-  it('should render properly with optional credentials', () => {
+  it('should render properly with optional credentials', async () => {
     const mockFn = jest.fn()
     const mockScrollTo = jest.fn()
     Object.defineProperty(global.window, 'scrollTo', { value: mockScrollTo })
@@ -236,7 +236,7 @@ describe('<DataSourcesAdd />', () => {
     })
 
     // Click Submit
-    act(async () => {
+    await act(async () => {
       component.root
         .findByProps({ children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
@@ -267,7 +267,7 @@ describe('<DataSourcesAdd />', () => {
     })
   })
 
-  it('should render properly with required credentials', () => {
+  it('should render properly with required credentials', async () => {
     const mockFn = jest.fn()
     const mockScrollTo = jest.fn()
     Object.defineProperty(global.window, 'scrollTo', { value: mockScrollTo })
@@ -336,7 +336,7 @@ describe('<DataSourcesAdd />', () => {
     })
 
     // Click Submit
-    act(async () => {
+    await act(async () => {
       component.root
         .findByProps({ children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
