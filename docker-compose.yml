@@ -52,6 +52,7 @@ services:
     depends_on:
       - auth-server
       - archivist
+      - ml-bbq
     ports:
       - 8080:80
     environment:
