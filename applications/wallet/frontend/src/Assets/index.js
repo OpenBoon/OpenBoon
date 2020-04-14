@@ -14,6 +14,7 @@ import { reducer, INITIAL_STATE } from './reducer'
 
 const SIZE = 100
 
+/* istanbul ignore next */
 const Assets = () => {
   const {
     query: { projectId },
@@ -39,7 +40,6 @@ const Assets = () => {
       )
 
       if (!results) {
-        /* istanbul ignore next */
         if (offset > 0) return null
 
         return (
@@ -53,7 +53,6 @@ const Assets = () => {
     },
 
     // offset of next page
-    /* istanbul ignore next */
     ({ data: { count } }, index) => {
       const offset = (index + 1) * SIZE
       return offset < count ? index + 1 : null
@@ -111,7 +110,9 @@ const Assets = () => {
               >
                 {({ columnIndex, rowIndex, style }) => {
                   const index = columnIndex + rowIndex * columnCount
+
                   if (!items[index]) return null
+
                   return (
                     <div style={style}>
                       <AssetsThumbnail asset={items[index]} />
