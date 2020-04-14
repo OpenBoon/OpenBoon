@@ -93,7 +93,7 @@ const DataSourcesEditForm = ({ initialState }) => {
             label,
             icon: <img src={icon} alt={label} width="40px" />,
             legend,
-            initialValue: !!initialState.fileTypes[value],
+            initialValue: !!fileTypes[value],
             isDisabled: !!initialState.fileTypes[value],
             isLocked: !!initialState.fileTypes[value],
           }))}
