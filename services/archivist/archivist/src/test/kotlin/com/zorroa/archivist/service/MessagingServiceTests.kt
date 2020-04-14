@@ -37,7 +37,7 @@ class MessagingServiceTests : AbstractTest() {
             projectId = UUID.randomUUID(),
             data = data
         )
-        val future = (pubSubMessagingService as PubSubMessagingService).publish(message)
+        val future = pubSubMessagingService.publish(message)
         val result = future.get()
         assertTrue(future.isDone)
     }
