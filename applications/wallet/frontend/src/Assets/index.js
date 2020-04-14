@@ -1,6 +1,7 @@
 import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR, { useSWRPages } from 'swr'
+import { FixedSizeGrid } from 'react-window'
 
 import { spacing } from '../Styles'
 
@@ -31,6 +32,7 @@ const Assets = () => {
     isLoadingMore,
     isReachingEnd,
     loadMore,
+    pageSWRs,
   } = useSWRPages(
     // page key
     'visualizer',
@@ -57,9 +59,7 @@ const Assets = () => {
         )
       }
 
-      return results.map((asset) => (
-        <AssetsThumbnail key={asset.id} asset={asset} />
-      ))
+      return null
     },
 
     // offset of next page
@@ -72,6 +72,15 @@ const Assets = () => {
     // deps of the page component
     [],
   )
+
+  const items = Array.isArray(pageSWRs)
+    ? pageSWRs.flatMap((pageSWR) => {
+        const { data: { results } = {} } = pageSWR || {}
+        return results
+      })
+    : []
+
+  console.warn(items)
 
   return (
     <div css={{ flex: 1, position: 'relative' }}>
@@ -90,6 +99,24 @@ const Assets = () => {
         }}
       >
         {pages}
+        <FixedSizeGrid
+          columnCount={6}
+          columnWidth={100}
+          rowHeight={100}
+          rowCount={Math.ceil(items.length / 6)}
+          width={860}
+          height={903}
+        >
+          {({ columnIndex, rowIndex, style }) => {
+            const index = columnIndex + rowIndex * 6
+            if (!items[index]) return null
+            return (
+              <div style={style}>
+                <AssetsThumbnail asset={items[index]} />
+              </div>
+            )
+          }}
+        </FixedSizeGrid>
         <AssetsLoadMore
           pageCount={pageCount}
           isLoadingMore={isLoadingMore}
