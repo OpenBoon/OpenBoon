@@ -84,10 +84,9 @@ class DataSetServiceImpl(
     @Transactional(readOnly = true)
     override fun get(id: UUID): DataSet {
         try {
-            // can get hit hard during ingests so this is cached
             return cache.get(id)
         } catch (e: ExecutionException) {
-           throw e.cause ?: EmptyResultDataAccessException("DataSet Id not found", 1)
+            throw e.cause ?: EmptyResultDataAccessException("DataSet Id not found", 1)
         }
     }
 

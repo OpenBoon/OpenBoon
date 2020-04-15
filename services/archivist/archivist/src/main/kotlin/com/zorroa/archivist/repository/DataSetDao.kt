@@ -1,6 +1,5 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.Credentials
 import com.zorroa.archivist.domain.DataSet
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository

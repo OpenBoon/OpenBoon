@@ -1,13 +1,9 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.Asset
-import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
-import com.zorroa.archivist.domain.ProjectStorageCategory
-import com.zorroa.archivist.domain.ProjectStorageRequest
-import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchResponse
 import com.zorroa.archivist.domain.UpdateAssetRequest
@@ -15,7 +11,6 @@ import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.service.AssetSearchService
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.JobLaunchService
-import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.RawByteArrayOutputStream
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
@@ -55,7 +50,6 @@ import javax.servlet.ServletOutputStream
 class AssetController @Autowired constructor(
     val assetService: AssetService,
     val assetSearchService: AssetSearchService,
-    val projectStorageService: ProjectStorageService,
     val jobLaunchService: JobLaunchService
 ) {
 
@@ -156,20 +150,6 @@ class AssetController @Autowired constructor(
             .body(InputStreamResource(content.byteInputStream()))
     }
 
-    @ApiOperation("Stream the source file for the asset is in ZMLP external storage")
-    @PreAuthorize("hasAuthority('AssetsRead')")
-    @GetMapping(value = ["/api/v3/assets/{id}/_stream"])
-    fun streamAsset(
-        @ApiParam("Unique ID of the Asset.") @PathVariable id: String
-    ): ResponseEntity<Resource> {
-        val asset = assetService.getAsset(id)
-        val locator = AssetFileLocator(
-            id, ProjectStorageCategory.SOURCE,
-            asset.getAttr("source.filename", String::class.java) as String
-        )
-        return projectStorageService.stream(locator)
-    }
-
     @PreAuthorize("hasAuthority('AssetsImport')")
     @PostMapping("/api/v3/assets/_batch_create")
     fun batchCreate(@RequestBody request: BatchCreateAssetsRequest):
@@ -211,49 +191,6 @@ class AssetController @Autowired constructor(
             this.files = files
         }
         return assetService.batchUpload(req)
-    }
-
-    @ApiOperation("Store an additional file to an asset.")
-    // Only job runner keys can store files.
-    @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
-    @PostMapping(value = ["/api/v3/assets/{id}/_files"], consumes = ["multipart/form-data"])
-    @ResponseBody
-    fun uploadFile(
-        @PathVariable id: String,
-        @RequestPart(value = "file") file: MultipartFile,
-        @RequestPart(value = "body") req: ProjectStorageRequest
-    ): Any {
-        val asset = assetService.getAsset(id)
-        val locator = AssetFileLocator(asset.id, req.category, req.name)
-        val spec = ProjectStorageSpec(locator, req.attrs, file.bytes)
-        return projectStorageService.store(spec)
-    }
-
-    @ApiOperation("Stream a file associated with asset.")
-    @PreAuthorize("hasAuthority('AssetsRead')")
-    @GetMapping(value = ["/api/v3/assets/{id}/_files/{category}/{name}"])
-    @ResponseBody
-    fun streamFile(
-        @PathVariable id: String,
-        @PathVariable category: String,
-        @PathVariable name: String
-    ): ResponseEntity<Resource> {
-        val locator = AssetFileLocator(id, category, name)
-        return projectStorageService.stream(locator)
-    }
-
-    @ApiOperation("Get get underlying file location.", hidden = true)
-    // Only job runners can get this.
-    @PreAuthorize("hasAuthority('SystemProjectDecrypt')")
-    @GetMapping(value = ["/api/v3/assets/{id}/_locate/{category}/{name}"])
-    @ResponseBody
-    fun getBlobLocation(
-        @PathVariable id: String,
-        @PathVariable category: String,
-        @PathVariable name: String
-    ): Any {
-        val locator = AssetFileLocator(id, category, name)
-        return mapOf("uri" to projectStorageService.getNativeUri(locator))
     }
 
     @ApiOperation("Delete an asset.")

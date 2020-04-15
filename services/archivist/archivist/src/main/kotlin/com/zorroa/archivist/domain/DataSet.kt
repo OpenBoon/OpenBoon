@@ -65,7 +65,6 @@ class DataSet(
 
 )
 
-
 @ApiModel("AddAssetToDataSetRequest", description = "Adds a list of labeled Assets to a DataSet")
 class AddAssetsToDataSetRequest(
     val labels: List<AssetLabel>
@@ -74,7 +73,7 @@ class AddAssetsToDataSetRequest(
 class AssetLabel(
     val assetId: String,
     val label: String,
-    val bbox: List<Float>?=null
+    val bbox: List<Float>? = null
 )
 
 class DataSetLabel(
@@ -83,7 +82,7 @@ class DataSetLabel(
     @ApiModelProperty("The label for the DataSet")
     val label: String,
     @ApiModelProperty("An optional bounding box")
-    val bbox: List<Float>?=null
+    val bbox: List<Float>? = null
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

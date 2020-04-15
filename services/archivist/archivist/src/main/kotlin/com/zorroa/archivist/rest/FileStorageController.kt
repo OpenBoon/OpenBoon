@@ -1,6 +1,11 @@
 package com.zorroa.archivist.rest
 
-import com.zorroa.archivist.domain.getFileLocator
+import com.zorroa.archivist.domain.ProjectFileLocator
+import com.zorroa.archivist.domain.ProjectStorageEntity
+import com.zorroa.archivist.domain.ProjectStorageRequest
+import com.zorroa.archivist.domain.ProjectStorageSpec
+import com.zorroa.archivist.service.AssetService
+import com.zorroa.archivist.service.DataSetService
 import com.zorroa.archivist.storage.ProjectStorageService
 import io.swagger.annotations.ApiOperation
 import org.springframework.core.io.Resource
@@ -8,13 +13,33 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
+import java.util.UUID
 
 @RestController
 class FileStorageController(
-    val projectStorageService: ProjectStorageService
+    val projectStorageService: ProjectStorageService,
+    val assetService: AssetService,
+    val dataSetService: DataSetService
 ) {
+
+    @ApiOperation("Store an additional file to an asset.")
+    // Only job runner keys can store files.
+    @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
+    @PostMapping(value = ["/api/v3/files/_upload"], consumes = ["multipart/form-data"])
+    @ResponseBody
+    fun uploadFile(
+        @RequestPart(value = "file") file: MultipartFile,
+        @RequestPart(value = "body") req: ProjectStorageRequest
+    ): Any {
+        val locator = ProjectFileLocator(req.entity, req.entityId, req.category, req.name)
+        val spec = ProjectStorageSpec(locator, req.attrs, file.bytes)
+        return projectStorageService.store(spec)
+    }
 
     @ApiOperation("Stream a file associated with any entity.")
     @PreAuthorize("hasAuthority('AssetsRead')")
@@ -26,7 +51,11 @@ class FileStorageController(
         @PathVariable category: String,
         @PathVariable name: String
     ): ResponseEntity<Resource> {
-        val locator = getFileLocator(entityType, entityId, category, name)
+        val locator = ProjectFileLocator(
+            ProjectStorageEntity.valueOf(
+                entityType.toUpperCase()
+            ), entityId, category, name
+        )
         return projectStorageService.stream(locator)
     }
 
@@ -41,7 +70,22 @@ class FileStorageController(
         @PathVariable category: String,
         @PathVariable name: String
     ): Any {
-        val locator = getFileLocator(entityType, entityId, category, name)
+        val locator = ProjectFileLocator(
+            ProjectStorageEntity.valueOf(
+                entityType.toUpperCase()
+            ), entityId, category, name
+        )
         return mapOf("uri" to projectStorageService.getNativeUri(locator))
+    }
+
+    fun validateEntityId(locator: ProjectFileLocator) {
+        when (locator.entity) {
+            ProjectStorageEntity.ASSETS -> {
+                assetService.getAsset(locator.entityId)
+            }
+            ProjectStorageEntity.DATASETS -> {
+                dataSetService.get(UUID.fromString(locator.entityId))
+            }
+        }
     }
 }

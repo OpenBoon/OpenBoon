@@ -3,7 +3,6 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetCounters
-import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.AssetIdBuilder
 import com.zorroa.archivist.domain.AssetMetrics
 import com.zorroa.archivist.domain.AssetSpec
@@ -18,8 +17,10 @@ import com.zorroa.archivist.domain.FileTypes
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectStorageCategory
+import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskSpec
@@ -262,8 +263,8 @@ class AssetServiceImpl : AssetService {
             asset.setAttr("source.filesize", mpfile.size)
             asset.setAttr("source.checksum", idgen.checksum)
 
-            val locator = AssetFileLocator(
-                id, ProjectStorageCategory.SOURCE, mpfile.originalFilename
+            val locator = ProjectFileLocator(
+                ProjectStorageEntity.ASSETS, id, ProjectStorageCategory.SOURCE, mpfile.originalFilename
             )
 
             val file = projectStorageService.store(
