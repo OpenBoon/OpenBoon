@@ -9,21 +9,6 @@ import io.swagger.annotations.ApiModelProperty
 import java.util.UUID
 
 /**
- * Returns the proper [ProjectStorageLocator] implementation for the given settings.
- */
-fun getFileLocator(entity: String, id: String, category: String, name: String): ProjectStorageLocator {
-
-    return when (val entityType = ProjectStorageEntity.valueOf(entity.toUpperCase())) {
-        ProjectStorageEntity.ASSETS -> {
-            AssetFileLocator(id, category, name)
-        }
-        ProjectStorageEntity.MODELS -> {
-            ProjectFileLocator(entityType, category, name)
-        }
-    }
-}
-
-/**
  * Internal enum class which describes the file storage entity,
  * such as an Assets, Models, Jobs, tasks.  The name matches
  * the name used in the REST API.
@@ -36,9 +21,9 @@ enum class ProjectStorageEntity {
     ASSETS,
 
     /**
-     * The stored file is a model.
+     * The stored file is associated with a dataset.
      */
-    MODELS;
+    DATASETS;
 
     fun lower() = this.toString().toLowerCase()
 }
@@ -58,10 +43,21 @@ object ProjectStorageCategory {
      * The file is a proxy or alternative low resolution representation."
      */
     const val PROXY = "proxy"
+
+    /**
+     * The file is a model to be used with classification.
+     */
+    const val MODEL = "model"
 }
 
 @ApiModel("Project Storage Request", description = "Properties needed to store a file into ProjectStorage.")
 class ProjectStorageRequest(
+
+    @ApiModelProperty("The entity the file is related to.")
+    var entity: ProjectStorageEntity,
+
+    @ApiModelProperty("The Id the entity the file is related to.")
+    var entityId: String,
 
     @ApiModelProperty("The name of the file, overrides the local file name.")
     var name: String,
@@ -69,11 +65,8 @@ class ProjectStorageRequest(
     @ApiModelProperty("The category of the file.")
     var category: String,
 
-    @ApiModelProperty("The file used internally by ZMLP.  Internal files cannot be created by REST calls.")
-    var attrs: Map<String, Any>,
-
-    @ApiModelProperty("The entity the file is related to.")
-    var entity: ProjectStorageEntity? = null
+    @ApiModelProperty("Arbitrary attrs associated with file.")
+    var attrs: Map<String, Any> = mapOf()
 )
 
 /**
@@ -105,66 +98,24 @@ interface ProjectStorageLocator {
 }
 
 /**
- *
+ * The properties required to locate a file.
  */
 class ProjectFileLocator(
     val entity: ProjectStorageEntity,
+    val entityId: String,
     override val category: String,
     override val name: String,
-    val id: String? = null,
     @JsonIgnore
     val projectId: UUID? = null
 ) : ProjectStorageLocator {
 
     override fun getPath(): String {
         val pid = projectId ?: getProjectId()
-        return if (id != null) {
-            "projects/$pid/${entity.lower()}/$category/$name"
-        } else {
-            "projects/$pid/${entity.lower()}/$id/$category/$name"
-        }
+        return "projects/$pid/${entity.lower()}/$entityId/$category/$name"
     }
 
     override fun getFileId(): String {
-        return "${entity.lower()}/$id/$category/$name"
-    }
-}
-
-/**
- * Internal class for storing the location details of a project based file.
- *
- * @property type The type of ZMLP object.
- * @property id The id of the object.
- * @property category The category the object belongs in, this is just the directory it lives in.
- * @property name The name of the file.
- * @property projectId An optional projectId for superadmin ops.
- */
-class AssetFileLocator(
-    val id: String,
-    override val category: String,
-    override val name: String,
-    @JsonIgnore
-    val projectId: UUID? = null
-) : ProjectStorageLocator {
-
-    val entity = ProjectStorageEntity.ASSETS
-
-    override fun getFileId(): String {
-        return "${entity.lower()}/$id/$category/$name"
-    }
-
-    override fun getPath(): String {
-
-        if (name.lastIndexOf('.') == -1) {
-            throw IllegalArgumentException("File name has no extension: $name")
-        }
-
-        if ("/" in name || ".." in name) {
-            throw IllegalArgumentException("Illegal characters in file name")
-        }
-
-        val proj = projectId ?: getProjectId()
-        return "projects/$proj/$id/${entity.lower()}/$category/$name"
+        return "${entity.lower()}/$entityId/$category/$name"
     }
 }
 

@@ -1,7 +1,6 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
-import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
@@ -286,104 +285,6 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.created[0]", CoreMatchers.anything()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.failed.length()", CoreMatchers.equalTo(0)))
-            .andReturn()
-    }
-
-    @Test
-    fun testStreamSourceFile() {
-        val batchUpload = BatchUploadAssetsRequest(
-            assets = listOf(AssetSpec("/foo/bar/toucan.jpg"))
-        )
-        batchUpload.files = arrayOf(
-            MockMultipartFile(
-                "files", "toucan.jpg", "image/jpeg",
-                File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
-            )
-        )
-
-        val rsp = assetService.batchUpload(batchUpload)
-        val id = rsp.created[0]
-
-        mvc.perform(
-            MockMvcRequestBuilders.get("/api/v3/assets/$id/_stream")
-                .headers(admin())
-                .contentType(MediaType.IMAGE_JPEG_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.IMAGE_JPEG_VALUE))
-            .andReturn()
-    }
-
-    @Test
-    fun testSteamFile() {
-        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        val rsp = assetService.batchCreate(
-            BatchCreateAssetsRequest(
-                assets = listOf(spec)
-            )
-        )
-        val id = rsp.created[0]
-        val loc = AssetFileLocator(id, ProjectStorageCategory.PROXY, "bob.jpg")
-        val storage = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
-        projectStorageService.store(storage)
-
-        mvc.perform(
-            MockMvcRequestBuilders.get("/api/v3/assets/$id/_files/proxy/bob.jpg")
-                .headers(admin())
-                .contentType(MediaType.IMAGE_JPEG_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.IMAGE_JPEG_VALUE))
-            .andReturn()
-    }
-
-    @Test
-    fun testGetNativeUri() {
-        val rsp = assetService.batchCreate(BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec("https://i.imgur.com/SSN26nN.jpg"))
-        ))
-        val id = rsp.created[0]
-        val expected = "s3://project-storage-test/projects/00000000-0000-0000-0000-000000000000/$id/assets/proxy/bob.jpg"
-        mvc.perform(
-            MockMvcRequestBuilders.get("/api/v3/assets/$id/_locate/proxy/bob.jpg")
-                .headers(job())
-                .contentType(MediaType.IMAGE_JPEG_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.uri", CoreMatchers.equalTo(expected)))
-            .andReturn()
-    }
-
-    @Test
-    fun testUploadFile() {
-
-        val file = MockMultipartFile(
-            "file", "toucan.jpg", "image/jpeg",
-            File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
-        )
-
-        val body = MockMultipartFile(
-            "body", "",
-            "application/json",
-            "{\"category\": \"proxy\", \"name\": \"toucan.jpg\", \"attrs\": {\"foo\": \"bar\"}}".toByteArray()
-
-        )
-
-        val rsp = assetService.batchCreate(BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec("https://i.imgur.com/SSN26nN.jpg"))
-        ))
-        val id = rsp.created[0]
-
-        mvc.perform(
-            multipart("/api/v3/assets/$id/_files")
-                .file(body)
-                .file(file)
-                .headers(job())
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.category", CoreMatchers.equalTo("proxy")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("toucan.jpg")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.size", CoreMatchers.equalTo(97221)))
             .andReturn()
     }
 
