@@ -10,7 +10,6 @@ import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.DataSetService
-import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.archivist.storage.ProjectStorageService
 import org.hamcrest.CoreMatchers
 import org.junit.Test
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -31,7 +29,6 @@ class FileStorageControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var dataSetService: DataSetService
-
 
     @Test
     fun testSteamFile() {
@@ -74,7 +71,7 @@ class FileStorageControllerTests : MockMvcTest() {
 
         val payload = """
             {
-                "entityId": "${id}",
+                "entityId": "$id",
                 "entity": "asset",
                 "category": "image",
                 "name": "toucan.jpg",
@@ -101,7 +98,6 @@ class FileStorageControllerTests : MockMvcTest() {
             .andExpect(jsonPath("$.name", CoreMatchers.equalTo("toucan.jpg")))
             .andExpect(jsonPath("$.size", CoreMatchers.equalTo(97221)))
             .andReturn()
-
     }
 
     @Test
