@@ -10,12 +10,14 @@ def main():
     parser = argparse.ArgumentParser(description='Build docker containers with buildx')
     parser.add_argument('containers', metavar='C', type=str, nargs='*',
                         help='Container names to build')
-    parser.add_argument('--core', '-c', action='store_true',
-                        help='Build zmlp-plugins-core and SDK requirements')
     parser.add_argument('--jvm', '-j', action='store_true',
                         help='Build JVM services')
+    parser.add_argument('--core', '-c', action='store_true',
+                        help='Build zmlp-plugins-core and SDK requirements')
     parser.add_argument('--analysis', '-a', action='store_true',
                         help='Build zmlp-plugins-analysis and SDK requirements')
+    parser.add_argument('--models', '-m', action='store_true',
+                        help='Build zmlp-plugins-models container (long time)')
     parser.add_argument('--list', '-l', action='store_true',
                         help='Output list of containers')
 
@@ -40,6 +42,9 @@ def main():
                            'zmlp-py3-sdk',
                            'zmlp-plugins-base',
                            'zmlp-plugins-analysis'])
+
+    if args.models:
+        containers.update(['zmlp-plugins-models'])
 
     build_dependency_tree(containers, args.list)
 
