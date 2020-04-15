@@ -59,7 +59,7 @@ describe('<Checkbox />', () => {
     expect(mockFn).not.toHaveBeenCalled()
   })
 
-  it('should render properly locked', () => {
+  it('should render properly checked and disabled', () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
