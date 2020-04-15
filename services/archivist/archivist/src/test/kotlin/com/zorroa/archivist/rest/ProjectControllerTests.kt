@@ -2,11 +2,8 @@ package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.Project
-import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectSpec
-import com.zorroa.archivist.domain.ProjectStorageEntity
-import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.repository.ProjectQuotasDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService

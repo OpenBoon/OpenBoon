@@ -18,14 +18,27 @@ enum class ProjectStorageEntity {
     /**
      * The stored file is associated with an asset.
      */
-    ASSETS,
+    ASSET,
 
     /**
      * The stored file is associated with a dataset.
      */
-    DATASETS;
+    DATASET;
 
-    fun lower() = this.toString().toLowerCase()
+    /**
+     * The name of the entity used in file paths or unique Ids.  Note the trailing 's'.
+     */
+    fun pathName() = "${name.toLowerCase()}s"
+
+    companion object {
+
+        /**
+         * Finds the ProjectStorageEntity using a name like 'assets'.
+         */
+        fun find(name: String): ProjectStorageEntity {
+            return valueOf(name.toUpperCase().trimEnd('S'))
+        }
+    }
 }
 
 /**
@@ -111,11 +124,11 @@ class ProjectFileLocator(
 
     override fun getPath(): String {
         val pid = projectId ?: getProjectId()
-        return "projects/$pid/${entity.lower()}/$entityId/$category/$name"
+        return "projects/$pid/${entity.pathName()}/$entityId/$category/$name"
     }
 
     override fun getFileId(): String {
-        return "${entity.lower()}/$entityId/$category/$name"
+        return "${entity.pathName()}/$entityId/$category/$name"
     }
 }
 

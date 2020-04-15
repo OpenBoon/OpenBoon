@@ -264,7 +264,7 @@ class AssetServiceImpl : AssetService {
             asset.setAttr("source.checksum", idgen.checksum)
 
             val locator = ProjectFileLocator(
-                ProjectStorageEntity.ASSETS, id, ProjectStorageCategory.SOURCE, mpfile.originalFilename
+                ProjectStorageEntity.ASSET, id, ProjectStorageCategory.SOURCE, mpfile.originalFilename
             )
 
             val file = projectStorageService.store(

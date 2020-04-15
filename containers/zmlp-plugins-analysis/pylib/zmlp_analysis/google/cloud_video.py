@@ -79,8 +79,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             return
 
         annotation_result = self._get_video_annotations(asset.get_attr('source.path'))
-        file_storage.assets.store_blob(asset,
-                                       annotation_result.SerializeToString(),
+        file_storage.assets.store_blob(annotation_result.SerializeToString(),
+                                       asset,
                                        'gcp',
                                        'video-intelligence.dat')
 

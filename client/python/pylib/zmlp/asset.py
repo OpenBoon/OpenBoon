@@ -227,7 +227,8 @@ class FileUpload(FileImport):
             label (DataSetLabel): An optional dataset label which will add the file to
                 a DataSet automatically.
         """
-        super(FileUpload, self).__init__(os.path.normpath(os.path.abspath(path)), attrs, clip, label)
+        super(FileUpload, self).__init__(
+            os.path.normpath(os.path.abspath(path)), attrs, clip, label)
 
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))

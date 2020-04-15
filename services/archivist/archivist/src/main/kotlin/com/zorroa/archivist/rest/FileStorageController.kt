@@ -37,6 +37,8 @@ class FileStorageController(
         @RequestPart(value = "body") req: ProjectStorageRequest
     ): Any {
         val locator = ProjectFileLocator(req.entity, req.entityId, req.category, req.name)
+        validateEntity(locator)
+
         val spec = ProjectStorageSpec(locator, req.attrs, file.bytes)
         return projectStorageService.store(spec)
     }
@@ -52,9 +54,7 @@ class FileStorageController(
         @PathVariable name: String
     ): ResponseEntity<Resource> {
         val locator = ProjectFileLocator(
-            ProjectStorageEntity.valueOf(
-                entityType.toUpperCase()
-            ), entityId, category, name
+            ProjectStorageEntity.find(entityType), entityId, category, name
         )
         return projectStorageService.stream(locator)
     }
@@ -71,19 +71,17 @@ class FileStorageController(
         @PathVariable name: String
     ): Any {
         val locator = ProjectFileLocator(
-            ProjectStorageEntity.valueOf(
-                entityType.toUpperCase()
-            ), entityId, category, name
+            ProjectStorageEntity.find(entityType), entityId, category, name
         )
         return mapOf("uri" to projectStorageService.getNativeUri(locator))
     }
 
-    fun validateEntityId(locator: ProjectFileLocator) {
+    fun validateEntity(locator: ProjectFileLocator) {
         when (locator.entity) {
-            ProjectStorageEntity.ASSETS -> {
+            ProjectStorageEntity.ASSET -> {
                 assetService.getAsset(locator.entityId)
             }
-            ProjectStorageEntity.DATASETS -> {
+            ProjectStorageEntity.DATASET -> {
                 dataSetService.get(UUID.fromString(locator.entityId))
             }
         }

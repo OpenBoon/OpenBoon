@@ -25,4 +25,3 @@ class BaseEntity:
     def actor_modified(self):
         """The UUID of the actor that modified the entity."""
         return self._data['actorModified']
-

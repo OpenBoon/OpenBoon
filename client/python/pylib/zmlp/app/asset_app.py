@@ -514,6 +514,7 @@ class AssetApp(object):
         """
         return SimilarityQuery(self.get_sim_hashes(images), min_score)
 
+
 """
 A named tuple to define a ReprocessSearchResponse
 """

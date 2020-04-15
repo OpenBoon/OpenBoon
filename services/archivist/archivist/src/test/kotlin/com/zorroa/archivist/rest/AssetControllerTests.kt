@@ -4,9 +4,6 @@ import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
-import com.zorroa.archivist.domain.BatchUploadAssetsRequest
-import com.zorroa.archivist.domain.ProjectStorageCategory
-import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.AssetSearchService
 import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.archivist.storage.ProjectStorageService

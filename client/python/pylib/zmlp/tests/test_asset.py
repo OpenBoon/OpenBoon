@@ -19,18 +19,18 @@ class AssetTests(unittest.TestCase):
             "attrs": {
                 "width": 200,
                 "height": 200
-            }
-        },
-        {
-            "id": "assets/123/proxy/proxy_400x400.jpg",
-            "category": "proxy",
-            "name": "proxy_400x400.jpg",
-            "mimetype": "image/jpeg",
-            "attrs": {
-                "width": 400,
-                "height": 400
-            }
-        }]
+                }
+            },
+            {
+                "id": "assets/123/proxy/proxy_400x400.jpg",
+                "category": "proxy",
+                "name": "proxy_400x400.jpg",
+                "mimetype": "image/jpeg",
+                "attrs": {
+                    "width": 400,
+                    "height": 400
+                }
+            }]
 
     def test_add_file(self):
         asset = Asset({"id": "123"})
@@ -146,6 +146,7 @@ class AssetTests(unittest.TestCase):
 
         f = asset.get_thumbnail(100)
         assert "assets/123/proxy/proxy_400x400.jpg" == f.id
+
 
 class FileImportTests(unittest.TestCase):
 

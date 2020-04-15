@@ -1,5 +1,6 @@
 from .entity import BaseEntity
 
+
 class Project(BaseEntity):
     """
     Represents a ZMLP Project.
