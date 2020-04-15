@@ -297,7 +297,7 @@ exports[`<VisualizerPanel /> should render properly 2`] = `
   <Resizeable
     minWidth={400}
     onMouseUp={[Function]}
-    position="left"
+    position="right"
     storageName="leftPanelWidth"
   >
     <div

@@ -60,7 +60,7 @@ const VisualizerPanel = () => {
         <Resizeable
           minWidth={MIN_WIDTH}
           storageName="leftPanelWidth"
-          position="left"
+          position="right"
           onMouseUp={({ width }) => {
             if (width < MIN_WIDTH) setPanelOpen(false)
           }}

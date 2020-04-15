@@ -21,7 +21,7 @@ const Resizeable = ({
     initialValue: minWidth,
   })
 
-  const direction = position === 'right' ? 1 : -1
+  const direction = position === 'left' ? 1 : -1
 
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {

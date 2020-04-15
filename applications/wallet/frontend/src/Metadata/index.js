@@ -22,7 +22,7 @@ const Metadata = () => {
     <Resizeable
       minWidth={WIDTH}
       storageName="metadata-width"
-      position="right"
+      position="left"
       onMouseUp={noop}
     >
       <div
