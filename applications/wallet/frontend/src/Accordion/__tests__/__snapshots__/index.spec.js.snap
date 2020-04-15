@@ -22,6 +22,10 @@ exports[`<Accordion /> should render properly with data 1`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-0 {
@@ -31,9 +35,6 @@ exports[`<Accordion /> should render properly with data 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -70,7 +71,6 @@ exports[`<Accordion /> should render properly with data 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
   padding: 0;
 }
 
@@ -85,10 +85,6 @@ exports[`<Accordion /> should render properly with data 1`] = `
 
 .emotion-2:hover {
   color: #73b61c;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-1 {
@@ -110,6 +106,7 @@ exports[`<Accordion /> should render properly with data 1`] = `
         Hi
       </h4>
       <button
+        aria-label="Expand Section"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -147,6 +144,10 @@ exports[`<Accordion /> should render properly with data 2`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-0 {
@@ -156,9 +157,6 @@ exports[`<Accordion /> should render properly with data 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -195,7 +193,6 @@ exports[`<Accordion /> should render properly with data 2`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
   padding: 0;
 }
 
@@ -210,10 +207,6 @@ exports[`<Accordion /> should render properly with data 2`] = `
 
 .emotion-2:hover {
   color: #73b61c;
-}
-
-.emotion-2[aria-disabled=true] {
-  color: #808080;
 }
 
 .emotion-1 {
@@ -243,6 +236,7 @@ exports[`<Accordion /> should render properly with data 2`] = `
         Hi
       </h4>
       <button
+        aria-label="Collapse Section"
         className="emotion-2"
         onClick={[Function]}
         type="button"

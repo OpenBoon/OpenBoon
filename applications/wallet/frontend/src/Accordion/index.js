@@ -27,6 +27,7 @@ const Accordion = ({ title, children, isInitiallyOpen }) => {
             padding: spacing.normal,
             display: 'flex',
             justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
           <h4
@@ -34,22 +35,26 @@ const Accordion = ({ title, children, isInitiallyOpen }) => {
               fontSize: typography.size.medium,
               lineHeight: typography.height.medium,
               display: 'flex',
-              flex: 1,
               alignItems: 'center',
             }}
           >
             {title}
           </h4>
           <Button
-            variant={VARIANTS.ICON}
-            css={{ padding: 0 }}
+            aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
+            variant={VARIANTS.NEUTRAL}
+            css={{
+              ':hover': {
+                color: colors.key.one,
+              },
+            }}
             onClick={() => setOpen(!isOpen)}
           >
             <ChevronSvg
               width={CHEVRON_WIDTH}
               css={{
                 marginLeft: spacing.base,
-                transform: `${isOpen ? 'rotate(-180deg)' : ''}`,
+                transform: isOpen ? 'rotate(-180deg)' : '',
               }}
             />
           </Button>
