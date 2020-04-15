@@ -8,6 +8,8 @@ import CheckmarkSvg from '../Icons/checkmark.svg'
 const SIZE = 20
 
 const getBorder = ({ isChecked, isDisabled }) => {
+  if (isDisabled && isChecked) return 'none'
+
   if (isChecked) return `2px solid ${colors.key.one}`
 
   if (isDisabled) return `2px solid ${colors.structure.mattGrey}`
@@ -28,7 +30,8 @@ const CheckboxIcon = ({ value, isChecked, isDisabled, onClick }) => (
         width: SIZE,
         height: SIZE,
         WebkitAppearance: 'none',
-        backgroundColor: isChecked ? colors.key.one : colors.transparent,
+        backgroundColor:
+          isChecked && !isDisabled ? colors.key.one : colors.transparent,
         border: getBorder({ isChecked, isDisabled }),
         borderRadius: constants.borderRadius.small,
         cursor: isDisabled ? 'not-allowed' : 'pointer',
@@ -53,7 +56,7 @@ const CheckboxIcon = ({ value, isChecked, isDisabled, onClick }) => (
           path: {
             transition: 'all .3s ease',
             opacity: isChecked ? 100 : 0,
-            fill: colors.white,
+            fill: isDisabled ? colors.key.one : colors.white,
           },
         }}
       />
