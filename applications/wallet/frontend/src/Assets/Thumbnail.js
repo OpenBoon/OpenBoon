@@ -35,64 +35,53 @@ const AssetsThumbnail = ({
 
   return (
     <div
-      className="container"
       css={{
-        height: 0,
-        position: 'relative',
-        minWidth: 100,
-        minHeight: 100,
-      }}
-    >
-      <div
-        css={{
+        border: isSelected
+          ? constants.borders.assetSelected
+          : constants.borders.assetInactive,
+        width: '100%',
+        height: '100%',
+        ':hover': {
           border: isSelected
             ? constants.borders.assetSelected
-            : constants.borders.assetInactive,
-          width: '100%',
-          height: '100%',
-          position: 'absolute',
-          ':hover': {
-            border: isSelected
-              ? constants.borders.assetSelected
-              : constants.borders.assetHover,
-          },
-        }}
+            : constants.borders.assetHover,
+        },
+      }}
+    >
+      <Link
+        href={`/[projectId]/visualizer${queryParams}`}
+        as={`/${projectId}/visualizer${queryParams}`}
+        passHref
       >
-        <Link
-          href={`/[projectId]/visualizer${queryParams}`}
-          as={`/${projectId}/visualizer${queryParams}`}
-          passHref
+        <Button
+          variant={VARIANTS.NEUTRAL}
+          css={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: colors.structure.mattGrey,
+            overflow: 'hidden',
+          }}
         >
-          <Button
-            variant={VARIANTS.NEUTRAL}
-            css={{
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              background: colors.structure.mattGrey,
-              overflow: 'hidden',
-            }}
-          >
-            {srcUrl ? (
-              <img
-                css={{ [largestDimension]: '100%' }}
-                srcSet={srcSet.join(', ')}
-                src={srcUrl}
-                alt={filename}
-              />
-            ) : (
-              <img
-                srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
-                alt={filename}
-                src="/icons/fallback.png"
-                css={{ width: '100%' }}
-              />
-            )}
-          </Button>
-        </Link>
-      </div>
+          {srcUrl ? (
+            <img
+              css={{ [largestDimension]: '100%' }}
+              srcSet={srcSet.join(', ')}
+              src={srcUrl}
+              alt={filename}
+            />
+          ) : (
+            <img
+              srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
+              alt={filename}
+              src="/icons/fallback.png"
+              css={{ width: '100%' }}
+            />
+          )}
+        </Button>
+      </Link>
     </div>
   )
 }
