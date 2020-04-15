@@ -11,7 +11,7 @@ import { fetcher } from '../Fetch/helpers'
  *    in that folder, even if only one has changed
  * 4. Update `agreedToPoliciesDate` in `src/User/__mocks__/user.js`
  * 5. Update <Policies /> test
- * 6. Update exactly 3 snapshots failed from 3 test suites,
+ * 6. Update exactly 5 snapshots failed from 3 test suites,
  *    where only CURRENT_POLICIES_DATE changes
  */
 
