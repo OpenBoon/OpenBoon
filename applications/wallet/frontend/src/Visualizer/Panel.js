@@ -6,11 +6,13 @@ import AccountDashboardSvg from '../Icons/accountDashboard.svg'
 import PausedSvg from '../Icons/paused.svg'
 
 import Button, { VARIANTS } from '../Button'
+import Resizeable from '../Resizeable'
 
+const MIN_WIDTH = 400
 const ICON_WIDTH = 20
 
 const VisualizerPanel = () => {
-  const [isPanelOpen, setPanelOpen] = useState(true)
+  const [isPanelOpen, setPanelOpen] = useState(false)
 
   return (
     <div
@@ -55,48 +57,56 @@ const VisualizerPanel = () => {
         />
       </div>
       {isPanelOpen && (
-        <div
-          css={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: 400,
+        <Resizeable
+          minWidth={MIN_WIDTH}
+          storageName="leftPanelWidth"
+          position="right"
+          onMouseUp={({ width }) => {
+            if (width < MIN_WIDTH) setPanelOpen(false)
           }}
         >
           <div
             css={{
               display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              backgroundColor: colors.structure.lead,
-              padding: spacing.base,
-              borderBottom: constants.borders.divider,
+              flexDirection: 'column',
             }}
           >
-            <h2
+            <div
               css={{
-                textTransform: 'uppercase',
-                fontWeight: typography.weight.medium,
-                fontSize: typography.size.regular,
-                lineHeight: typography.height.regular,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                backgroundColor: colors.structure.lead,
+                padding: spacing.base,
+                borderBottom: constants.borders.divider,
               }}
             >
-              Filter
-            </h2>
-            <Button
-              aria-label="Filters"
-              variant={VARIANTS.NEUTRAL}
-              onClick={() => setPanelOpen((isOpen) => !isOpen)}
-              isDisabled={false}
-              style={{ ':hover': { color: colors.key.one } }}
-            >
-              <PausedSvg
-                width={ICON_WIDTH}
-                css={{ transform: 'rotate(180deg)' }}
-                aria-hidden
-              />
-            </Button>
+              <h2
+                css={{
+                  textTransform: 'uppercase',
+                  fontWeight: typography.weight.medium,
+                  fontSize: typography.size.regular,
+                  lineHeight: typography.height.regular,
+                }}
+              >
+                Filter
+              </h2>
+              <Button
+                aria-label="Filters"
+                variant={VARIANTS.NEUTRAL}
+                onClick={() => setPanelOpen((isOpen) => !isOpen)}
+                isDisabled={false}
+                style={{ ':hover': { color: colors.key.one } }}
+              >
+                <PausedSvg
+                  width={ICON_WIDTH}
+                  css={{ transform: 'rotate(180deg)' }}
+                  aria-hidden
+                />
+              </Button>
+            </div>
           </div>
-        </div>
+        </Resizeable>
       )}
     </div>
   )

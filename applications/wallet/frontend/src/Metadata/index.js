@@ -18,7 +18,12 @@ const Metadata = () => {
   } = useRouter()
 
   return (
-    <Resizeable initialWidth={WIDTH} storageName="metadata-width">
+    <Resizeable
+      minWidth={WIDTH}
+      storageName="metadata-width"
+      position="left"
+      onMouseUp={() => {}}
+    >
       <div
         css={{
           backgroundColor: colors.structure.mattGrey,
