@@ -191,9 +191,9 @@ class ProjectStorage(object):
         """
         _, suffix = os.path.splitext(sfile.name)
         cache_path = self.cache.get_path(sfile.id, suffix)
-        logger.info("localizing file: {}".format(sfile.id))
 
         if not os.path.exists(cache_path):
+            logger.info("localizing file: {}".format(sfile.id))
             self.app.client.stream('/api/v3/files/_stream/{}'.format(sfile.id), cache_path)
         return cache_path
 
