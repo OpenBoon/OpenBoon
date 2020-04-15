@@ -19,4 +19,19 @@ describe('<Resizeable />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render properly with the cursor right', () => {
+    const component = TestRenderer.create(
+      <Resizeable
+        minWidth={400}
+        storageName="yoga-div"
+        position="right"
+        onMouseUp={noop}
+      >
+        Yoga div
+      </Resizeable>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })
