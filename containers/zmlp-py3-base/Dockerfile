@@ -1,4 +1,4 @@
-FROM ubuntu:disco
+FROM ubuntu:focal
 RUN groupadd -r zorroa && useradd --no-log-init -r -m -g zorroa zorroa
 
 RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
@@ -8,8 +8,8 @@ RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y i
     wget \
      --no-install-recommends
 
-# pip20 causing issues
-RUN pip3 install pip==19.3.1
+# Auto-updating pip sometimes causes issues.
+RUN pip3 install pip==20.0.2
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 RUN rm requirements.txt

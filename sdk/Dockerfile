@@ -20,7 +20,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y i
 RUN mkdir /build
 COPY ./ /build
 WORKDIR /build
-RUN --mount=type=cache,target=/root/.cache/pip pip install .
+RUN pip3 install .
 
 ARG ffmver=4.2.1-amd64
 COPY ffmpeg-$ffmver-static.tar.xz .
