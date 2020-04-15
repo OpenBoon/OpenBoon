@@ -1,23 +1,17 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.Project
-import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
-import com.zorroa.archivist.domain.ProjectStorageEntity
-import com.zorroa.archivist.domain.ProjectStorageRequest
-import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.ProjectService
 import com.zorroa.archivist.storage.ProjectStorageService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
-import org.springframework.core.io.Resource
-import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -27,10 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RequestPart
-import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.multipart.MultipartFile
 import java.util.Date
 import java.util.UUID
 
@@ -134,37 +125,5 @@ class ProjectController constructor(
         val id = getProjectId()
         projectService.updateSettings(id, settings)
         return projectService.getSettings(id)
-    }
-
-    @ApiOperation("Upload a file into project cloud storage.")
-    @PreAuthorize("hasAuthority('ProjectFilesWrite')")
-    @PostMapping(value = ["/api/v3/project/_files"], consumes = ["multipart/form-data"])
-    @ResponseBody
-    fun uploadFile(
-        @RequestPart(value = "file") file: MultipartFile,
-        @RequestPart(value = "body") req: ProjectStorageRequest
-    ): Any {
-
-        req.entity?.let {
-            val locator = ProjectFileLocator(it, req.category, req.name)
-            val spec = ProjectStorageSpec(locator, req.attrs, file.bytes)
-            return projectStorageService.store(spec)
-        }
-
-        throw IllegalArgumentException("An storage entity must be defined.")
-    }
-
-    @ApiOperation("Fetch a file from project cloud storage.")
-    @PreAuthorize("hasAuthority('ProjectFilesRead')")
-    @GetMapping(value = ["/api/v3/project/_files/{entity}/{category}/{name}"])
-    @ResponseBody
-    fun streamFile(
-        @PathVariable entity: String,
-        @PathVariable category: String,
-        @PathVariable name: String
-    ): ResponseEntity<Resource> {
-        val locator = ProjectFileLocator(
-            ProjectStorageEntity.valueOf(entity.toUpperCase()), category, name)
-        return projectStorageService.stream(locator)
     }
 }

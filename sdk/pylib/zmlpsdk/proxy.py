@@ -1,4 +1,5 @@
 import os
+import logging
 
 from zmlpsdk.storage import file_storage
 
@@ -7,6 +8,8 @@ __all__ = [
     'get_proxy_level_path',
     'get_proxy_level'
 ]
+
+logger = logging.getLogger(__name__)
 
 
 def store_asset_proxy(asset, path, size, type="image", attrs=None):
@@ -33,7 +36,7 @@ def store_asset_proxy(asset, path, size, type="image", attrs=None):
     if attrs:
         proxy_attrs.update(attrs)
 
-    return file_storage.assets.store_file(asset, path, 'proxy', rename=name, attrs=proxy_attrs)
+    return file_storage.assets.store_file(path, asset, 'proxy', rename=name, attrs=proxy_attrs)
 
 
 def get_proxy_level_path(asset, level, mimetype="image/"):
@@ -61,6 +64,7 @@ def get_proxy_level_path(asset, level, mimetype="image/"):
         proxy = files[level]
         return file_storage.localize_file(proxy)
     except IndexError:
+        logger.warning("No proxies found for {}".format(asset))
         return None
 
 

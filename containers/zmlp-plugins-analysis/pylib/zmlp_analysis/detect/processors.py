@@ -1,6 +1,7 @@
 import cv2
 import cvlib as cv
 
+import tensorflow
 from zmlpsdk import AssetProcessor
 from zmlpsdk.proxy import get_proxy_level_path, calculate_normalized_bbox
 
@@ -8,6 +9,11 @@ from zmlpsdk.proxy import get_proxy_level_path, calculate_normalized_bbox
 class ZmlpObjectDetectionProcessor(AssetProcessor):
 
     namespace = "zvi-object-detection"
+
+    use_threads = False
+
+    def init(self):
+        tensorflow.config.set_visible_devices([], 'GPU')
 
     def process(self, frame):
         asset = frame.asset

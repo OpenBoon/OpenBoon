@@ -118,6 +118,27 @@
         "properties": {
         }
       },
+      "datasets": {
+        "dynamic": "strict",
+        "type": "nested",
+        "properties": {
+          "label": {
+            "type": "keyword",
+            "fields": {
+              "fulltext": {
+                "type": "text",
+                "analyzer": "default"
+              }
+            }
+          },
+          "dataSetId": {
+            "type": "keyword"
+          },
+          "bbox": {
+            "type": "float"
+          }
+        }
+      },
       "clip": {
         "dynamic": "strict",
         "properties": {
