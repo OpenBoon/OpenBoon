@@ -1,4 +1,5 @@
 import numpy as np
+import tensorflow
 from tensorflow.keras.applications.imagenet_utils import decode_predictions
 from tensorflow.keras.applications.resnet_v2 import ResNet152V2, preprocess_input
 from tensorflow.keras.layers import Input
@@ -14,8 +15,9 @@ class ZviLabelDetectionProcessor(AssetProcessor):
     Performs image classification using Resnet152 and imagenet weights.
     """
     def init(self):
+        tensorflow.config.set_visible_devices([], 'GPU')
         self.model = ResNet152V2(weights='imagenet', input_tensor=Input(shape=(224, 224, 3)))
-        self.model.compile()
+        self.model.compile(loss='mse', optimizer='rmsprop')
 
     def process(self, frame):
         asset = frame.asset
