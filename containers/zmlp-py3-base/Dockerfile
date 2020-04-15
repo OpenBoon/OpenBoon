@@ -1,4 +1,4 @@
-FROM ubuntu:focal
+FROM ubuntu:eoan
 RUN groupadd -r zorroa && useradd --no-log-init -r -m -g zorroa zorroa
 
 RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \

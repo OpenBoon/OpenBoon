@@ -10,6 +10,8 @@ class ZmlpObjectDetectionProcessor(AssetProcessor):
 
     namespace = "zvi-object-detection"
 
+    use_threads = False
+
     def init(self):
         tensorflow.config.set_visible_devices([], 'GPU')
 
