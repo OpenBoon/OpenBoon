@@ -255,6 +255,7 @@ exports[`<ResetPassword /> should render properly 1`] = `
         <input
           autoFocus={true}
           className="emotion-4"
+          disabled={false}
           id="email"
           name="email"
           onChange={[Function]}

@@ -169,7 +169,7 @@ describe('<DataSourcesAdd />', () => {
         name: 'My Data Source',
         uri: 'gs://zorroa-dev-data',
         credentials: {},
-        file_types: ['gif', ' png', ' jpg', ' jpeg', ' tif', ' tiff', ' psd'],
+        file_types: ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
         modules: ['zvi-label-detection'],
       }),
     })
@@ -180,7 +180,7 @@ describe('<DataSourcesAdd />', () => {
     )
   })
 
-  it('should render properly with optional credentials', () => {
+  it('should render properly with optional credentials', async () => {
     const mockFn = jest.fn()
     const mockScrollTo = jest.fn()
     Object.defineProperty(global.window, 'scrollTo', { value: mockScrollTo })
@@ -236,7 +236,7 @@ describe('<DataSourcesAdd />', () => {
     })
 
     // Click Submit
-    act(async () => {
+    await act(async () => {
       component.root
         .findByProps({ children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
@@ -261,13 +261,13 @@ describe('<DataSourcesAdd />', () => {
           type: 'GCP',
           service_account_json_key: 'jkdT9Uherdozguie89FHIJS',
         },
-        file_types: ['gif', ' png', ' jpg', ' jpeg', ' tif', ' tiff', ' psd'],
+        file_types: ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
         modules: [],
       }),
     })
   })
 
-  it('should render properly with required credentials', () => {
+  it('should render properly with required credentials', async () => {
     const mockFn = jest.fn()
     const mockScrollTo = jest.fn()
     Object.defineProperty(global.window, 'scrollTo', { value: mockScrollTo })
@@ -336,7 +336,7 @@ describe('<DataSourcesAdd />', () => {
     })
 
     // Click Submit
-    act(async () => {
+    await act(async () => {
       component.root
         .findByProps({ children: 'Create Data Source' })
         .props.onClick({ preventDefault: noop })
@@ -362,7 +362,7 @@ describe('<DataSourcesAdd />', () => {
           aws_access_key_id: 'sdlkmsoijes;kfjnskajnre',
           aws_secret_access_key: 'sdkjfipuenkjrfewrf',
         },
-        file_types: ['gif', ' png', ' jpg', ' jpeg', ' tif', ' tiff', ' psd'],
+        file_types: ['gif', 'png', 'jpg', 'jpeg', 'tif', 'tiff', 'psd'],
         modules: [],
       }),
     })

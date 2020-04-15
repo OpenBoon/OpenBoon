@@ -417,6 +417,7 @@ Array [
         <input
           autoFocus={true}
           className="emotion-1"
+          disabled={false}
           id="firstName"
           name="firstName"
           onChange={[Function]}
@@ -444,6 +445,7 @@ Array [
       >
         <input
           className="emotion-1"
+          disabled={false}
           id="lastName"
           name="lastName"
           onChange={[Function]}

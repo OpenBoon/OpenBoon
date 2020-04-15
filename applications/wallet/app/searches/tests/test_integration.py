@@ -3,6 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 
 from searches.models import Search
+from zmlp import ZmlpClient
 from wallet.tests.utils import check_response
 
 pytestmark = pytest.mark.django_db
@@ -205,3 +206,32 @@ class TestSearchDestroy:
         response = api_client.delete(reverse('search-detail', kwargs={'project_pk': str(project2.id),  # noqa
                                                                       'pk': str(search2.id)}))
         assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+class TestFieldsAction:
+
+    @pytest.fixture
+    def mapping_response(self):
+        return {'u1oi7jlkrqcxxvkc': {'aliases': {}, 'mappings': {'dynamic': 'strict', 'dynamic_templates': [{'analysis_label': {'path_match': 'analysis.*.predictions.label', 'match_mapping_type': 'string', 'mapping': {'fields': {'fulltext': {'analyzer': 'default', 'type': 'text'}}, 'type': 'keyword'}}}, {'analysis_score': {'path_match': 'analysis.*.predictions.score', 'mapping': {'coerce': True, 'type': 'float'}}}, {'analysis_point': {'path_match': 'analysis.*.predictions.point', 'mapping': {'type': 'geo_point'}}}, {'analysis_bbox': {'path_match': 'analysis.*.predictions.bbox', 'mapping': {'type': 'float'}}}, {'analysis_tags': {'path_match': 'analysis.*.predictions.tags', 'match_mapping_type': 'string', 'mapping': {'fields': {'fulltext': {'analyzer': 'default', 'type': 'text'}}, 'type': 'keyword'}}}, {'simhash': {'match': 'simhash', 'match_mapping_type': 'string', 'match_pattern': 'regex', 'mapping': {'index': False, 'type': 'keyword'}}}, {'content': {'match': 'content', 'match_mapping_type': 'string', 'mapping': {'analyzer': 'default', 'type': 'text'}}}], 'properties': {'analysis': {'dynamic': 'true', 'properties': {'zvi': {'properties': {'tinyProxy': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}}}}, 'zvi-image-similarity': {'properties': {'simhash': {'type': 'keyword', 'index': False}, 'type': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}}}}}}, 'aux': {'type': 'object', 'enabled': False}, 'clip': {'dynamic': 'strict', 'properties': {'length': {'type': 'double'}, 'pile': {'type': 'keyword'}, 'sourceAssetId': {'type': 'keyword'}, 'start': {'type': 'double'}, 'stop': {'type': 'double'}, 'timeline': {'type': 'keyword'}, 'type': {'type': 'keyword'}}}, 'files': {'type': 'object', 'enabled': False}, 'location': {'dynamic': 'strict', 'properties': {'city': {'type': 'keyword'}, 'code': {'type': 'keyword'}, 'country': {'type': 'keyword'}, 'point': {'type': 'geo_point'}}}, 'media': {'dynamic': 'strict', 'properties': {'aspect': {'type': 'float'}, 'author': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'content': {'type': 'text'}, 'description': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'height': {'type': 'float'}, 'keywords': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'length': {'type': 'float'}, 'orientation': {'type': 'keyword'}, 'timeCreated': {'type': 'date'}, 'title': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'type': {'type': 'keyword'}, 'width': {'type': 'float'}}}, 'metrics': {'dynamic': 'strict', 'properties': {'pipeline': {'type': 'nested', 'dynamic': 'strict', 'properties': {'checksum': {'type': 'long'}, 'error': {'type': 'keyword'}, 'executionDate': {'type': 'date'}, 'executionTime': {'type': 'double'}, 'module': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'processor': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}}}}}, 'source': {'dynamic': 'strict', 'properties': {'checksum': {'type': 'long'}, 'extension': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'filename': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'filesize': {'type': 'long'}, 'mimetype': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}}}, 'path': {'type': 'keyword', 'fields': {'fulltext': {'type': 'text'}, 'path': {'type': 'text', 'analyzer': 'path_analyzer', 'fielddata': True}}}}}, 'system': {'dynamic': 'strict', 'properties': {'dataSourceId': {'type': 'keyword'}, 'jobId': {'type': 'keyword'}, 'projectId': {'type': 'keyword'}, 'state': {'type': 'keyword'}, 'taskId': {'type': 'keyword'}, 'timeCreated': {'type': 'date'}, 'timeModified': {'type': 'date'}}}, 'tmp': {'type': 'object', 'enabled': False}}}, 'settings': {'index': {'mapping': {'coerce': 'false', 'ignore_malformed': 'false'}, 'number_of_shards': '2', 'provided_name': 'u1oi7jlkrqcxxvkc', 'creation_date': '1586588369756', 'analysis': {'filter': {'delimiter_filter': {'type': 'word_delimiter', 'preserve_original': 'true'}, 'stemmer_english': {'type': 'stemmer', 'language': 'english'}}, 'analyzer': {'default': {'filter': ['trim', 'stop', 'lowercase', 'delimiter_filter', 'stemmer_english'], 'tokenizer': 'standard'}, 'path_analyzer': {'type': 'custom', 'tokenizer': 'path_tokenizer'}}, 'tokenizer': {'path_tokenizer': {'type': 'path_hierarchy', 'delimiter': '/'}}}, 'number_of_replicas': '0', 'uuid': 'Y1vGPS26QWGiDJNhtV8FLQ', 'version': {'created': '7050199'}}}}}  # noqa
+
+    def test_get(self, login, api_client, monkeypatch, mapping_response, project):
+        def mock_response(*args, **kwargs):
+            return mapping_response
+
+        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
+        response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
+        content = check_response(response)
+        assert content['analysis']['zvi']['tinyProxy'] == ['facet', 'text', 'exists']
+        assert content['clip']['start'] == ['range', 'exists']
+        assert content['media']['type'] == ['facet', 'text', 'exists']
+        assert content['aux'] == ['exists']
+        assert content['tmp'] == ['exists']
+
+    def test_failed_get(self, login, api_client, monkeypatch, project):
+        def mock_response(*args, **kwargs):
+            return {'34tdfgsdfgddas': {}, '23rgfdfg34f3df': {}}
+
+        monkeypatch.setattr(ZmlpClient, 'get', mock_response)
+        response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
+        content = check_response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
+        assert content == {'detail': 'ZMLP did not return field mappings as expected.'}
