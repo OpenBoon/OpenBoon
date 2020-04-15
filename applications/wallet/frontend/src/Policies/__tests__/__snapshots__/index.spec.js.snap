@@ -275,7 +275,7 @@ exports[`<Policies /> should render properly 1`] = `
     <h3
       className="emotion-1"
     >
-      Terms & Conditions and Privacy Policy
+      Terms of Use and Privacy Policy
     </h3>
     <div
       className="emotion-5"
@@ -309,17 +309,17 @@ exports[`<Policies /> should render properly 1`] = `
         By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
          
         <a
-          href="/policies/20200626/terms-and-conditions.pdf"
+          href="/policies/20200410/terms-of-use.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
-          Terms & Conditions
+          Terms of Use
         </a>
          
         and
          
         <a
-          href="/policies/20200626/privacy-policy.pdf"
+          href="/policies/20200410/privacy-policy.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >

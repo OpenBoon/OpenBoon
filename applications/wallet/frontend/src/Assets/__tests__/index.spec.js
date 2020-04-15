@@ -3,17 +3,30 @@ import TestRenderer, { act } from 'react-test-renderer'
 import Assets from '..'
 
 import assets from '../__mocks__/assets'
-import emptyFileAssets from '../__mocks__/emptyFileAssets'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
 describe('<Assets />', () => {
+  it('should render properly while loading', () => {
+    require('next/router').__setUseRouter({
+      query: { projectId: PROJECT_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: undefined })
+
+    const component = TestRenderer.create(<Assets />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly', () => {
     require('next/router').__setUseRouter({
       query: { projectId: PROJECT_ID },
     })
 
-    const component = TestRenderer.create(<Assets assets={assets.results} />)
+    require('swr').__setMockUseSWRResponse({ data: assets })
+
+    const component = TestRenderer.create(<Assets />)
 
     expect(component.toJSON()).toMatchSnapshot()
 
@@ -55,26 +68,6 @@ describe('<Assets />', () => {
     expect(
       component.root.findByProps({ 'aria-label': 'Zoom Out' }).props.isDisabled,
     ).toBe(true)
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
-  it('should handle page url', () => {
-    require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, page: 2 },
-    })
-
-    const component = TestRenderer.create(
-      <Assets assets={emptyFileAssets.results} />,
-    )
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
-  it('should render without proxy image', () => {
-    const component = TestRenderer.create(
-      <Assets assets={emptyFileAssets.results} />,
-    )
-
     expect(component.toJSON()).toMatchSnapshot()
   })
 })

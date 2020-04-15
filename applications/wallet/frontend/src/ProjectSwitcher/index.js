@@ -16,6 +16,7 @@ const ProjectSwitcher = ({ projectId }) => {
   const {
     pathname,
     query: { projectId: routerProjectId },
+    asPath,
   } = useRouter()
 
   const { data: { results: projects = [] } = {} } = useSWR('/api/v1/projects/')
@@ -78,8 +79,20 @@ const ProjectSwitcher = ({ projectId }) => {
           {projects.map(({ id, name }) => (
             <li key={id}>
               <Link
-                href={pathname}
-                as={pathname.replace('[projectId]', id)}
+                href={
+                  id === projectId
+                    ? pathname
+                    : pathname.split('/').slice(0, 3).join('/')
+                }
+                as={
+                  id === projectId
+                    ? asPath
+                    : pathname
+                        .replace('[projectId]', id)
+                        .split('/')
+                        .slice(0, 3)
+                        .join('/')
+                }
                 passHref
               >
                 <Button

@@ -24,6 +24,7 @@ describe('<ProjectSwitcher />', () => {
 
   it('should render properly with data', () => {
     require('next/router').__setUseRouter({
+      asPath: `/${PROJECT_ID}/jobs`,
       pathname: '/[projectId]/jobs',
       query: { projectId: PROJECT_ID },
     })

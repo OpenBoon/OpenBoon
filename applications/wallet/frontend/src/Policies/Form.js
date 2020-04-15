@@ -20,11 +20,11 @@ const PoliciesForm = ({ dispatch }) => {
         By accepting and clicking the &quot;Continue&quot; button you confirm
         that you have read and agree with Zorroa’s{' '}
         <a
-          href={`/policies/${CURRENT_POLICIES_DATE}/terms-and-conditions.pdf`}
+          href={`/policies/${CURRENT_POLICIES_DATE}/terms-of-use.pdf`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          Terms&nbsp;&amp;&nbsp;Conditions
+          Terms of Use
         </a>{' '}
         and{' '}
         <a
