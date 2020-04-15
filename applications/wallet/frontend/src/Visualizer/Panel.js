@@ -92,7 +92,7 @@ const VisualizerPanel = () => {
                 Filter
               </h2>
               <Button
-                aria-label="Filters"
+                aria-label="Close Panel"
                 variant={VARIANTS.NEUTRAL}
                 onClick={() => setPanelOpen((isOpen) => !isOpen)}
                 isDisabled={false}

@@ -11,6 +11,7 @@ import MetadataContent from './Content'
 import MetadataSelect from './Select'
 
 export const WIDTH = 400
+export const noop = () => {}
 
 const Metadata = () => {
   const {
@@ -22,7 +23,7 @@ const Metadata = () => {
       minWidth={WIDTH}
       storageName="metadata-width"
       position="left"
-      onMouseUp={() => {}}
+      onMouseUp={noop}
     >
       <div
         css={{
