@@ -39,6 +39,9 @@ class AssetSpec(
     @ApiModelProperty("Optional clip metadata specifies the portion of the asset to process.")
     var clip: Clip? = null,
 
+    @ApiModelProperty("Optional DataSet label which puts the asset in the given DataSet.")
+    val label: DataSetLabel? = null,
+
     @ApiModelProperty("An optional unique ID for the asset to override the auto-generated ID.")
     val id: String? = null,
 

@@ -3,7 +3,6 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetCounters
-import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.AssetIdBuilder
 import com.zorroa.archivist.domain.AssetMetrics
 import com.zorroa.archivist.domain.AssetSpec
@@ -12,13 +11,16 @@ import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
+import com.zorroa.archivist.domain.DataSetLabel
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileTypes
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectStorageCategory
+import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskSpec
@@ -165,6 +167,11 @@ interface AssetService {
         createdAssetIds: Collection<String>,
         existingAssetIds: Collection<String>
     ): Task?
+
+    /**
+     * Add the asset to the given DataSet. An Asset can only have 1 label per DataSet.
+     */
+    fun addToDataSet(asset: Asset, label: DataSetLabel)
 }
 
 @Service
@@ -193,6 +200,9 @@ class AssetServiceImpl : AssetService {
 
     @Autowired
     lateinit var assetSearchService: AssetSearchService
+
+    @Autowired
+    lateinit var dataSetService: DataSetService
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -253,8 +263,8 @@ class AssetServiceImpl : AssetService {
             asset.setAttr("source.filesize", mpfile.size)
             asset.setAttr("source.checksum", idgen.checksum)
 
-            val locator = AssetFileLocator(
-                id, ProjectStorageCategory.SOURCE, mpfile.originalFilename
+            val locator = ProjectFileLocator(
+                ProjectStorageEntity.ASSET, id, ProjectStorageCategory.SOURCE, mpfile.originalFilename
             )
 
             val file = projectStorageService.store(
@@ -621,6 +631,10 @@ class AssetServiceImpl : AssetService {
                 deriveClip(asset, spec)
             }
 
+            if (spec.label != null) {
+                addToDataSet(asset, spec.label)
+            }
+
             asset.setAttr("source.path", spec.uri)
             asset.setAttr("source.filename", FileUtils.filename(spec.uri))
             asset.setAttr("source.extension", FileUtils.extension(spec.uri))
@@ -711,6 +725,13 @@ class AssetServiceImpl : AssetService {
                 false
             }
         }
+    }
+
+    override fun addToDataSet(asset: Asset, label: DataSetLabel) {
+        dataSetService.get(label.dataSetId)
+        val allLabels = asset.getAttr("datasets", DataSetLabel.SET_OF) ?: mutableSetOf()
+        allLabels.add(label)
+        asset.setAttr("datasets", allLabels)
     }
 
     /**

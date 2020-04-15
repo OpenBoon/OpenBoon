@@ -2,7 +2,6 @@ import glob
 import hashlib
 import logging
 import os
-import pickle
 import shutil
 import tempfile
 import urllib
@@ -26,12 +25,14 @@ logger = logging.getLogger(__name__)
 class AssetStorage(object):
     """
     AssetStorage provides ability to store and retrieve files related to the asset.  The
-    files are stored in cloud storage.
+    files are stored in cloud storage.  This is mostly a convenience class around
+    the ProjectStorage class, however it performs the extra job or appending the
+    StoredFile to the files namepace.
     """
 
-    def __init__(self, app, cache):
+    def __init__(self, app, proj_store):
         self.app = app
-        self.cache = cache
+        self.proj_store = proj_store
 
     def get_native_uri(self, stored_file):
         """
@@ -46,7 +47,7 @@ class AssetStorage(object):
         return self.app.client.get('/api/v3/files/_locate/{}'
                                    .format(stored_file.id))['uri']
 
-    def store_file(self, asset, src_path, category, rename=None, attrs=None):
+    def store_file(self, src_path, asset, category, rename=None, attrs=None):
         """
         Add a file to the asset's file list and store into externally
         available cloud storage. Also stores a copy into the
@@ -56,8 +57,8 @@ class AssetStorage(object):
         with the result of this method.
 
         Args:
-            asset (Asset): The purpose of the file, ex proxy.
             src_path (str): The local path to the file.
+            asset (Asset):  A ZMLP Asset instance.
             category (str): The purpose of the file, ex proxy.
             rename (str): Rename the file to something better.
             attrs (dict): Arbitrary attributes to attach to the file.
@@ -66,22 +67,11 @@ class AssetStorage(object):
             StoredFile: A stored file record.
 
         """
-        asset_id = getattr(asset, "id", asset)
-        spec = {
-            "name": rename or Path(src_path).name,
-            "category": category,
-            "attrs": {}
-        }
-        if attrs:
-            spec["attrs"].update(attrs)
-
-        result = StoredFile(self.app.client.upload_file(
-            "/api/v3/assets/{}/_files".format(asset_id), src_path, spec))
+        result = self.proj_store.store_file(src_path, asset, category, rename, attrs)
         asset.add_file(result)
-        self.localize_file(result, src_path)
         return result
 
-    def store_blob(self, asset, blob, category, name, attrs=None):
+    def store_blob(self, blob, asset, category, name, attrs=None):
         """
         Add a blob of text to the asset's file list and store into externally
         available cloud storage.  This is mainly a convenience function that
@@ -91,8 +81,8 @@ class AssetStorage(object):
         with the result of this method.
 
         Args:
-            asset (mixed): The asset or the unique asset ID.
             blob (bytes): The string blob of data to write.
+            asset (Asset): A ZMLP Asset instance.
             category (str): The purpose of the file, ex proxy.
             name (str): The name of th efile.
             attrs (dict): Arbitrary attributes to attach to the file.
@@ -100,63 +90,9 @@ class AssetStorage(object):
             StoredFile: The stored file record.
 
         """
-        asset_id = getattr(asset, "id", None) or asset
-        spec = {
-            "name": name,
-            "category": category,
-            "attrs": {}
-        }
-        if attrs:
-            spec["attrs"].update(attrs)
-
-        # The blob should be bytes
-        if isinstance(blob, str):
-            blob = blob.encode('utf-8')
-        elif not isinstance(blob, (bytes, bytearray)):
-            raise ValueError("The blob must be a bytes like object or bytearray")
-
-        base, ext = os.path.splitext(name)
-        if not ext:
-            raise ValueError("The blob name requires a file extension")
-
-        fd, tmp_path = tempfile.mkstemp(suffix=ext, prefix='zblob')
-        with open(tmp_path, 'wb') as fp:
-            fp.write(blob)
-
-        result = StoredFile(self.app.client.upload_file(
-            "/api/v3/assets/{}/_files".format(asset_id), tmp_path, spec))
+        result = self.proj_store.store_blob(blob, asset, category, name, attrs)
         asset.add_file(result)
-
-        shutil.copy(tmp_path, self.cache.get_path(result.id))
         return result
-
-    def localize_file(self, sfile, precache_file=None):
-        """
-        Localize the file described by the Asset file storage dictionary.
-        If a path argument is provided, overwrite the file cache
-        location with that file.
-
-        This storage is used for files you want to serve externally,
-        like proxy images.
-
-        Args:
-            sfile (StoredFile): a ZMLP StoredFile object.
-            precache_file (str): an optional path to a file to copy into the cache location.
-
-        Returns:
-            str: a path to a location in the local file cache.
-
-        """
-        _, suffix = os.path.splitext(precache_file or sfile.name)
-        cache_path = self.cache.get_path(sfile.id, suffix)
-
-        if precache_file:
-            precache_path = urlparse(str(precache_file)).path
-            logger.debug("Pre-caching {} to {}".format(precache_path, cache_path))
-            shutil.copy(urlparse(precache_path).path, cache_path)
-        elif not os.path.exists(cache_path):
-            self.app.client.stream('/api/v3/files/_stream/{}'.format(sfile.id), cache_path)
-        return cache_path
 
 
 class ProjectStorage(object):
@@ -168,35 +104,97 @@ class ProjectStorage(object):
         self.app = app
         self.cache = cache
 
-    def store_file(self, src_path, entity, category, rename=None):
+    def store_file(self, src_path, entity, category, rename=None, attrs=None):
+        """
+        Store an arbitrary file against the project.
+
+        Args:
+            src_path (str): The src path to the file.
+            entity (mixed): The instance of the entity to store a file against.
+            category (str): The general category for the file. (proxy, model, etc)
+            rename (str): An optional file name if it should not be based on the src_path name.
+
+        Returns:
+            StoredFile: A record for the stored file.
+
+        """
         spec = {
-            "entity": entity,
+            "entity": entity.__class__.__name__,
+            "entityId": entity.id,
             "category": category,
             "name": rename or Path(src_path).name,
-            "attrs": {}
+            "attrs": attrs
         }
+
         path = urlparse(str(src_path)).path
-        return self.app.client.upload_file("/api/v3/project/_files".format, path, spec)
+        result = StoredFile(self.app.client.upload_file(
+            "/api/v3/files/_upload", path, spec))
+        self.cache.precache_file(result, path)
+        return result
 
     def store_blob(self, src_blob, entity, category, name, attrs=None):
+        """
+        Store an arbitrary blob against the given entity.
+
+        Args:
+            src_blob (bytes): A byte string or array.
+            entity (mixed): The instance of the entity to store a file against.
+            category (str): A general category for the blob.
+            name (str): A name for the blob
+            attrs (dict): Arbitrary attrs for the blob.
+
+        Returns:
+            StoredFile: A stored file record.
+
+        """
+        if isinstance(src_blob, str):
+            src_blob = src_blob.encode('utf-8')
+        elif not isinstance(src_blob, (bytes, bytearray)):
+            raise ValueError("The blob must be a bytes like object or bytearray")
+
+        base, ext = os.path.splitext(name)
+        if not ext:
+            raise ValueError("The blob name requires a file extension")
+
+        fd, tmp_path = tempfile.mkstemp(suffix=ext, prefix='zblob')
+        with open(tmp_path, 'wb') as fp:
+            fp.write(src_blob)
+
         spec = {
-            "entity": entity,
+            "entity": entity.__class__.__name__,
+            "entityId": entity.id,
             "category": category,
             "name": name,
             "attrs": attrs
         }
-        with tempfile.NamedTemporaryFile(suffix=".dat") as tf:
-            pickle.dump(src_blob, tf)
-            result = self.app.client.upload_file("/api/v3/project/_files".format, tf.name, spec)
 
+        result = StoredFile(self.app.client.upload_file(
+            "/api/v3/files/_upload", tmp_path, spec))
+        self.cache.precache_file(result, tmp_path)
         return result
 
-    def localize_file(self, entity, category, name):
-        _, suffix = os.path.splitext(name)
-        key = "".join((entity, category, name))
-        cache_path = self.cache.get_path(key, suffix)
-        self.app.client.stream('/api/v3/project/files/{}/{}/{}'.format(
-            entity, category, name), cache_path)
+    def localize_file(self, sfile):
+        """
+        Localize the file described by the StoredFile instance.
+        If a path argument is provided, overwrite the file cache
+        location with that file.
+
+        This storage is used for files you want to serve externally,
+        like proxy images.
+
+        Args:
+            sfile (StoredFile): a ZMLP StoredFile object.
+
+        Returns:
+            str: a path to a location in the local file cache.
+
+        """
+        _, suffix = os.path.splitext(sfile.name)
+        cache_path = self.cache.get_path(sfile.id, suffix)
+
+        if not os.path.exists(cache_path):
+            logger.info("localizing file: {}".format(sfile.id))
+            self.app.client.stream('/api/v3/files/_stream/{}'.format(sfile.id), cache_path)
         return cache_path
 
 
@@ -238,6 +236,26 @@ class FileCache(object):
             else:
                 self.root = os.path.join(tempfile.gettempdir(), task)
                 os.makedirs(self.root, exist_ok=True)
+
+    def precache_file(self, sfile, src_path):
+        """
+        Precache the src_file to the cache location for the provided StoredFile.
+
+        Args:
+            sfile (StoredFile): A StoredFile instance.
+            src_path (str): A path to the file to precache.
+
+        Returns:
+            str: The precache location.
+
+        """
+        _, suffix = os.path.splitext(sfile.name)
+        cache_path = self.get_path(sfile.id, suffix)
+
+        precache_path = urlparse(str(src_path)).path
+        logger.info("Pre-caching {} to {}".format(precache_path, cache_path))
+        shutil.copy(urlparse(precache_path).path, cache_path)
+        return cache_path
 
     def localize_uri(self, uri):
         """
@@ -354,8 +372,8 @@ class FileStorage(object):
     def __init__(self):
         self.app = app_from_env()
         self.cache = FileCache(self.app)
-        self.assets = AssetStorage(self.app, self.cache)
         self.projects = ProjectStorage(self.app, self.cache)
+        self.assets = AssetStorage(self.app, self.projects)
 
     def localize_file(self, rep):
         """
@@ -376,11 +394,11 @@ class FileStorage(object):
             # on the uri.
             source_files = rep.get_files(category="source")
             if source_files:
-                return self.assets.localize_file(source_files[0])
+                return self.projects.localize_file(source_files[0])
             else:
                 return self.cache.localize_uri(rep.uri)
         elif isinstance(rep, StoredFile):
-            return self.assets.localize_file(rep)
+            return self.projects.localize_file(rep)
         else:
             raise ValueError("cannot localize file, unable to determine the remote file source")
 

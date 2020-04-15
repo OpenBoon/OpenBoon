@@ -1,4 +1,7 @@
-class DataSource(object):
+from .entity import BaseEntity
+
+
+class DataSource(BaseEntity):
     """
     A DataSource is a remote source for Assets that can be
     iterated by the Analysis framework and imported
@@ -6,7 +9,7 @@ class DataSource(object):
     """
 
     def __init__(self, data):
-        self._data = data
+        super(DataSource, self).__init__(data)
 
     @property
     def id(self):
