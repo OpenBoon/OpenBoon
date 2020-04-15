@@ -72,7 +72,6 @@ describe('<Checkbox />', () => {
           legend: '',
           initialValue: true,
           isDisabled: true,
-          isLocked: true,
         }}
         onClick={mockFn}
       />,

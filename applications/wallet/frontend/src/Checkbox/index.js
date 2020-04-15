@@ -44,7 +44,7 @@ export const VARIANTS = Object.keys(STYLES).reduce(
 
 const Checkbox = ({
   variant,
-  option: { value, label, icon, legend, initialValue, isDisabled, isLocked },
+  option: { value, label, icon, legend, initialValue, isDisabled },
   onClick,
 }) => {
   const [isChecked, setIsChecked] = useState(initialValue)
@@ -64,7 +64,6 @@ const Checkbox = ({
         value={value}
         isChecked={isChecked}
         isDisabled={isDisabled}
-        isLocked={isLocked || false}
         onClick={() => {
           if (isDisabled) return
           setIsChecked(!isChecked)

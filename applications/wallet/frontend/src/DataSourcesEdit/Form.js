@@ -95,7 +95,6 @@ const DataSourcesEditForm = ({ initialState }) => {
             legend,
             initialValue: !!fileTypes[value],
             isDisabled: !!initialState.fileTypes[value],
-            isLocked: !!initialState.fileTypes[value],
           }))}
           variant={CHECKBOX_VARIANTS.SECONDARY}
         />

@@ -7,7 +7,7 @@ import checkboxOptionShape from './optionShape'
 import CheckboxIcon from './Icon'
 
 const CheckboxTableRow = ({
-  option: { value, label, initialValue, isDisabled, isLocked },
+  option: { value, label, initialValue, isDisabled },
   onClick,
 }) => {
   const [isChecked, setIsChecked] = useState(initialValue)
@@ -37,7 +37,6 @@ const CheckboxTableRow = ({
             value={value}
             isChecked={isChecked}
             isDisabled={isDisabled}
-            isLocked={isLocked || false}
             onClick={toggleValue}
           />
           <div className="hidden">
