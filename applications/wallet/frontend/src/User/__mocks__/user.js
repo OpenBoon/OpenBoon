@@ -19,7 +19,7 @@ const user = {
   lastLogin: '2020-03-20T18:17:02.472778Z',
   dateJoined: '2020-03-02T19:09:16Z',
   projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
-  agreedToPoliciesDate: '20200410',
+  agreedToPoliciesDate: '20200414',
 }
 
 export default user

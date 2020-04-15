@@ -45,12 +45,12 @@ describe('<Policies />', () => {
         'X-CSRFToken': 'CSRF_TOKEN',
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      body: '{"policiesDate":"20200410"}',
+      body: '{"policiesDate":"20200414"}',
       method: 'POST',
     })
 
     expect(mockMutate).toHaveBeenCalledWith({
-      agreedToPoliciesDate: '20200410',
+      agreedToPoliciesDate: '20200414',
     })
   })
 
