@@ -3,10 +3,13 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.DataSetSpec
+import com.zorroa.archivist.domain.DataSetType
 import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageSpec
+import com.zorroa.archivist.service.DataSetService
 import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.archivist.storage.ProjectStorageService
 import org.hamcrest.CoreMatchers
@@ -27,7 +30,8 @@ class FileStorageControllerTests : MockMvcTest() {
     lateinit var projectStorageService: ProjectStorageService
 
     @Autowired
-    lateinit var pipelineModService: PipelineModService
+    lateinit var dataSetService: DataSetService
+
 
     @Test
     fun testSteamFile() {
@@ -48,14 +52,21 @@ class FileStorageControllerTests : MockMvcTest() {
                 .headers(admin())
                 .contentType(MediaType.IMAGE_JPEG_VALUE)
         )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.IMAGE_JPEG_VALUE))
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE))
             .andReturn()
     }
 
     @Test
-    fun testUploadFile() {
+    fun testUploadFileToAsset() {
 
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val rsp = assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                assets = listOf(spec)
+            )
+        )
+        val id = rsp.created[0]
         val file = MockMultipartFile(
             "file", "toucan.jpg", "image/jpeg",
             File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
@@ -63,8 +74,8 @@ class FileStorageControllerTests : MockMvcTest() {
 
         val payload = """
             {
-                "entityId": "12345",
-                "entity": "datasets",
+                "entityId": "${id}",
+                "entity": "asset",
                 "category": "image",
                 "name": "toucan.jpg",
                 "attrs": {
@@ -83,7 +94,48 @@ class FileStorageControllerTests : MockMvcTest() {
             MockMvcRequestBuilders.multipart("/api/v3/files/_upload")
                 .file(body)
                 .file(file)
-                .headers(admin())
+                .headers(job())
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.category", CoreMatchers.equalTo("image")))
+            .andExpect(jsonPath("$.name", CoreMatchers.equalTo("toucan.jpg")))
+            .andExpect(jsonPath("$.size", CoreMatchers.equalTo(97221)))
+            .andReturn()
+
+    }
+
+    @Test
+    fun testUploadFileToDataSet() {
+
+        val ds = dataSetService.create(DataSetSpec("foo", DataSetType.LabelDetection))
+        val file = MockMultipartFile(
+            "file", "toucan.jpg", "image/jpeg",
+            File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
+        )
+
+        val payload = """
+            {
+                "entityId": "${ds.id}",
+                "entity": "dataset",
+                "category": "image",
+                "name": "toucan.jpg",
+                "attrs": {
+                    "foo": "bar"
+                }
+            }
+        """.trimIndent()
+
+        val body = MockMultipartFile(
+            "body", "",
+            "application/json",
+            payload.toByteArray()
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.multipart("/api/v3/files/_upload")
+                .file(body)
+                .file(file)
+                .headers(job())
         )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.category", CoreMatchers.equalTo("image")))

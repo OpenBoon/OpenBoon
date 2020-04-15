@@ -77,13 +77,17 @@ class FileStorageController(
     }
 
     fun validateEntity(locator: ProjectFileLocator) {
-        when (locator.entity) {
-            ProjectStorageEntity.ASSET -> {
-                assetService.getAsset(locator.entityId)
+        try {
+            when (locator.entity) {
+                ProjectStorageEntity.ASSET -> {
+                    assetService.getAsset(locator.entityId)
+                }
+                ProjectStorageEntity.DATASET -> {
+                    dataSetService.get(UUID.fromString(locator.entityId))
+                }
             }
-            ProjectStorageEntity.DATASET -> {
-                dataSetService.get(UUID.fromString(locator.entityId))
-            }
+        } catch (e: Exception) {
+            throw IllegalArgumentException("Invalid ID for type: ${locator.entity}")
         }
     }
 }
