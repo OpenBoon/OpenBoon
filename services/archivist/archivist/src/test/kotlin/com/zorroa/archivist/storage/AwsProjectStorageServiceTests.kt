@@ -19,7 +19,7 @@ class AwsProjectStorageServiceTests : AbstractTest() {
 
     @Test
     fun testStore() {
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS,
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET,
             "1234", ProjectStorageCategory.SOURCE, "bob.jpg")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
 
@@ -33,7 +33,7 @@ class AwsProjectStorageServiceTests : AbstractTest() {
 
     @Test
     fun testFetch() {
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
 
         val result = projectStorageService.store(spec)
@@ -43,7 +43,7 @@ class AwsProjectStorageServiceTests : AbstractTest() {
 
     @Test
     fun testStream() {
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
 
         val entity = projectStorageService.stream(loc)

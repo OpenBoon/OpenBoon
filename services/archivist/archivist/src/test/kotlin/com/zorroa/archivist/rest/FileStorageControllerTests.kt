@@ -38,7 +38,7 @@ class FileStorageControllerTests : MockMvcTest() {
             )
         )
         val id = rsp.created[0]
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS,
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET,
             id, ProjectStorageCategory.PROXY, "bob.jpg")
         val storage = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         projectStorageService.store(storage)
