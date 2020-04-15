@@ -6,7 +6,7 @@ import Accordion from '../Accordion'
 
 const DataSourcesAddAutomaticAnalysis = () => {
   return (
-    <Accordion title="Zorroa Automatic Analysis">
+    <Accordion title="Zorroa Automatic Analysis" isInitiallyOpen>
       <>
         <p
           css={{
