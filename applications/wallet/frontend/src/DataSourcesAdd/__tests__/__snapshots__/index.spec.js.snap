@@ -577,6 +577,13 @@ Array [
   cursor: not-allowed;
 }
 
+.emotion-65 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+  fill: #73b61c;
+}
+
 .emotion-75 {
   cursor: pointer;
 }
@@ -1153,7 +1160,7 @@ Array [
                           className="emotion-66"
                         >
                           <svg
-                            className="emotion-23"
+                            className="emotion-65"
                             data-file-name="checkmark.svg"
                             width={20}
                           />
@@ -2154,6 +2161,13 @@ Array [
   cursor: not-allowed;
 }
 
+.emotion-83 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+  fill: #73b61c;
+}
+
 .emotion-93 {
   cursor: pointer;
 }
@@ -2828,7 +2842,7 @@ Array [
                           className="emotion-84"
                         >
                           <svg
-                            className="emotion-41"
+                            className="emotion-83"
                             data-file-name="checkmark.svg"
                             width={20}
                           />
@@ -3829,6 +3843,13 @@ Array [
   cursor: not-allowed;
 }
 
+.emotion-77 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+  fill: #73b61c;
+}
+
 .emotion-87 {
   cursor: pointer;
 }
@@ -4470,7 +4491,7 @@ Array [
                           className="emotion-78"
                         >
                           <svg
-                            className="emotion-35"
+                            className="emotion-77"
                             data-file-name="checkmark.svg"
                             width={20}
                           />
@@ -5471,6 +5492,13 @@ Array [
   cursor: not-allowed;
 }
 
+.emotion-76 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+  fill: #73b61c;
+}
+
 .emotion-86 {
   cursor: pointer;
 }
@@ -6107,7 +6135,7 @@ Array [
                           className="emotion-77"
                         >
                           <svg
-                            className="emotion-34"
+                            className="emotion-76"
                             data-file-name="checkmark.svg"
                             width={20}
                           />
