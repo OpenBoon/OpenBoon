@@ -12,7 +12,10 @@ const DataSourcesAddProvider = ({
   onClick,
 }) => {
   return (
-    <Accordion title={<img src={logo} alt={name} height={IMG_HEIGHT} />}>
+    <Accordion
+      title={<img src={logo} alt={name} height={IMG_HEIGHT} />}
+      isInitiallyOpen
+    >
       <>
         <p
           css={{

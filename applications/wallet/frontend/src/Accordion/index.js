@@ -1,10 +1,17 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { typography, colors, spacing, constants } from '../Styles'
 
-export const CHECKMARK_WIDTH = 28
+import Button, { VARIANTS } from '../Button'
 
-const Accordion = ({ title, children }) => {
+import ChevronSvg from '../Icons/chevron.svg'
+
+const CHEVRON_WIDTH = 20
+
+const Accordion = ({ title, children, isInitiallyOpen }) => {
+  const [isOpen, setOpen] = useState(isInitiallyOpen)
+
   return (
     <div css={{ paddingTop: spacing.normal }}>
       <div
@@ -17,13 +24,33 @@ const Accordion = ({ title, children }) => {
         <div
           css={{
             borderBottom: constants.borders.tabs,
-            padding: spacing.normal,
+            paddingTop: spacing.normal,
+            paddingBottom: spacing.normal,
+            paddingLeft: spacing.moderate,
+            display: 'flex',
           }}
         >
+          <Button
+            aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
+            variant={VARIANTS.NEUTRAL}
+            onClick={() => setOpen(!isOpen)}
+          >
+            <ChevronSvg
+              width={CHEVRON_WIDTH}
+              color={colors.structure.steel}
+              css={{
+                transform: isOpen ? 'rotate(-180deg)' : '',
+                ':hover': {
+                  color: colors.structure.white,
+                },
+              }}
+            />
+          </Button>
           <h4
             css={{
               fontSize: typography.size.medium,
               lineHeight: typography.height.medium,
+              paddingLeft: spacing.moderate,
               display: 'flex',
               alignItems: 'center',
             }}
@@ -31,14 +58,16 @@ const Accordion = ({ title, children }) => {
             {title}
           </h4>
         </div>
-        <div
-          css={{
-            padding: spacing.spacious,
-            paddingTop: spacing.normal,
-          }}
-        >
-          {children}
-        </div>
+        {isOpen && (
+          <div
+            css={{
+              padding: spacing.spacious,
+              paddingTop: spacing.normal,
+            }}
+          >
+            {children}
+          </div>
+        )}
       </div>
     </div>
   )
@@ -47,6 +76,7 @@ const Accordion = ({ title, children }) => {
 Accordion.propTypes = {
   title: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired,
+  isInitiallyOpen: PropTypes.bool.isRequired,
 }
 
 export default Accordion
