@@ -8,10 +8,13 @@ import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
+import com.amazonaws.services.s3.model.AmazonS3Exception
+import com.amazonaws.services.s3.model.DeleteObjectRequest
 import com.amazonaws.services.s3.model.GetObjectRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
 import com.google.cloud.storage.StorageException
+import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.ProjectStorageLocator
 import com.zorroa.archivist.domain.ProjectStorageSpec
@@ -84,8 +87,12 @@ class AwsProjectStorageService constructor(
         metadata.contentLength = spec.data.size.toLong()
         metadata.userMetadata = mapOf("attrs" to Json.serializeToString(spec.attrs))
 
-        s3Client.putObject(PutObjectRequest(properties.bucket, path,
-            spec.data.inputStream(), metadata))
+        s3Client.putObject(
+            PutObjectRequest(
+                properties.bucket, path,
+                spec.data.inputStream(), metadata
+            )
+        )
 
         logStoreEvent(spec)
 
@@ -122,6 +129,16 @@ class AwsProjectStorageService constructor(
 
     override fun getNativeUri(locator: ProjectStorageLocator): String {
         return "s3://${properties.bucket}/${locator.getPath()}"
+    }
+
+    override fun delete(locator: ProjectStorageLocator) {
+        try {
+            val s3Object = s3Client.getObject(GetObjectRequest(properties.bucket, locator.getPath()))
+            var obj = DeleteObjectRequest(properties.bucket, s3Object.key)
+            s3Client.deleteObject(obj)
+        } catch (ex: AmazonS3Exception) {
+            throw ArchivistException(ex)
+        }
     }
 
     companion object {

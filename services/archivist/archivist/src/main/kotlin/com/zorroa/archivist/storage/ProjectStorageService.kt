@@ -56,6 +56,11 @@ interface ProjectStorageService {
     fun getNativeUri(locator: ProjectStorageLocator): String
 
     /**
+     * Delete File from storage server
+     */
+    fun delete(locator: ProjectStorageLocator)
+
+    /**
      * Log the storage of a file.
      */
     fun logStoreEvent(spec: ProjectStorageSpec) {

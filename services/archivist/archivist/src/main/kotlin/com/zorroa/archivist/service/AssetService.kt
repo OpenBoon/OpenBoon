@@ -37,6 +37,7 @@ import com.zorroa.zmlp.util.Json
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.bulk.BulkResponse
+import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
@@ -156,6 +157,11 @@ interface AssetService {
      * Return true of the given asset would need reprocessing with the given Pipeline.
      */
     fun assetNeedsReprocessing(asset: Asset, pipeline: List<ProcessorRef>): Boolean
+
+    /**
+     * Delete Assets associated files by asset Id
+     */
+    fun deleteAssociatedFilesByAssetId(id: String)
 
     /**
      * Create new child task to the given task.
@@ -394,11 +400,24 @@ class AssetServiceImpl : AssetService {
         val rest = indexRoutingService.getProjectRestClient()
         val request = Request("DELETE", "/${rest.route.indexName}/_doc/$id")
 
+        deleteAssociatedFilesByAssetId(id)
+
         logger.event(
             LogObject.ASSET, LogAction.DELETE, mapOf("assetId" to id)
         )
 
         return rest.client.lowLevelClient.performRequest(request)
+    }
+
+    override fun deleteAssociatedFilesByAssetId(id: String){
+        val asset = getAsset(id)
+
+        val locator = AssetFileLocator(
+            id, ProjectStorageCategory.SOURCE,
+            asset.getAttr("source.filename", String::class.java) as String
+        )
+
+        projectStorageService.delete(locator)
     }
 
     override fun deleteByQuery(req: Map<String, Any>): BulkByScrollResponse {

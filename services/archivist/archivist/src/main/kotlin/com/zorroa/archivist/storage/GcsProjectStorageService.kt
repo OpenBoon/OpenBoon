@@ -83,6 +83,11 @@ class GcsProjectStorageService constructor(
         return "gs://${properties.bucket}/$path"
     }
 
+    override fun delete(locator: ProjectStorageLocator) {
+        val blobId = getBlobId(locator)
+        gcs.delete(blobId)
+    }
+
     fun getBlobId(locator: ProjectStorageLocator): BlobId {
         return BlobId.of(properties.bucket, locator.getPath())
     }
