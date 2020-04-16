@@ -1,0 +1,331 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<VisualizerPanel /> should render properly 1`] = `
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 1px;
+  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-right: 1px;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  padding: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: #252525;
+  margin-bottom: 1px;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0:hover {
+  color: #73b61c;
+  background-color: #2e2e2e;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #252525;
+}
+
+<div
+  className="emotion-3"
+>
+  <div
+    className="emotion-2"
+  >
+    <button
+      aria-label="Filters"
+      className="emotion-0"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        aria-hidden={true}
+        data-file-name="accountDashboard.svg"
+        width={20}
+      />
+    </button>
+    <div
+      className="emotion-1"
+    />
+  </div>
+</div>
+`;
+
+exports[`<VisualizerPanel /> should render properly 2`] = `
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 1px;
+  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-right: 1px;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  padding: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: #252525;
+  margin-bottom: 1px;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0:hover {
+  color: #73b61c;
+  background-color: #2e2e2e;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #252525;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #252525;
+  padding: 8px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-3 {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5:hover {
+  color: #73b61c;
+}
+
+.emotion-4 {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+<div
+  className="emotion-8"
+>
+  <div
+    className="emotion-2"
+  >
+    <button
+      aria-label="Filters"
+      className="emotion-0"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        aria-hidden={true}
+        data-file-name="accountDashboard.svg"
+        width={20}
+      />
+    </button>
+    <div
+      className="emotion-1"
+    />
+  </div>
+  <Resizeable
+    minWidth={400}
+    onMouseUp={[Function]}
+    position="right"
+    storageName="leftPanelWidth"
+  >
+    <div
+      className="emotion-7"
+    >
+      <div
+        className="emotion-6"
+      >
+        <h2
+          className="emotion-3"
+        >
+          Filter
+        </h2>
+        <button
+          aria-label="Close Panel"
+          className="emotion-5"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            className="emotion-4"
+            data-file-name="paused.svg"
+            width={20}
+          />
+        </button>
+      </div>
+    </div>
+  </Resizeable>
+</div>
+`;
