@@ -11,8 +11,8 @@ const jobTasks = {
       name: 'Expand with 20 assets, 8 processors.',
       state: 'Waiting',
       host: 'http://analyst-7b7fd7958-9zl69:5000',
-      timeStarted: 1583451666243,
-      timeStopped: 1583451715081,
+      timeStarted: -1,
+      timeStopped: -1,
       timeCreated: 1583451665765,
       timePing: 1583451688085,
       assetCounts: {
@@ -35,7 +35,7 @@ const jobTasks = {
       state: 'Running',
       host: 'http://analyst-7b7fd7958-9zl69:5000',
       timeStarted: 1583451662066,
-      timeStopped: 1583451666124,
+      timeStopped: -1,
       timeCreated: 1583451652154,
       timePing: 1583451652154,
       assetCounts: {

@@ -7,8 +7,14 @@ import jobErrors from '../__mocks__/jobErrors'
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const JOB_ID = 'c097596f-62ef-1f81-83f8-0a580a000954'
 const ERROR = jobErrors.results[0]
+const TASK_WAITING = jobTasks.results[0]
+const TASK_SUCCESS = jobTasks.results[1]
 
 const noop = () => () => {}
+
+jest.mock('../helpers', () => ({
+  getDuration: () => 1587969769607,
+}))
 
 describe('<JobErrorsRow />', () => {
   it('should navigate on a click on the row directly', async () => {
@@ -57,4 +63,21 @@ describe('<JobErrorsRow />', () => {
 
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
+
+  // it('should render properly when duration is not calculated', async () => {
+  //   const mockRouterPush = jest.fn()
+
+  //   require('next/router').__setMockPushFunction(mockRouterPush)
+
+  //   const component = TestRenderer.create(
+  //     <JobTasksRow
+  //       projectId={PROJECT_ID}
+  //       jobId={JOB_ID}
+  //       task={TASK_WAITING}
+  //       revalidate={noop}
+  //     />,
+  //   )
+
+  //   expect(component.toJSON()).toMatchSnapshot()
+  // })
 })

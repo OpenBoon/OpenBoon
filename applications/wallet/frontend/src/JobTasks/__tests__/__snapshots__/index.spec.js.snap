@@ -259,7 +259,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
         <th
           className="emotion-6"
         >
-          Updated
+          Started
         </th>
         <th
           className="emotion-6"
@@ -295,13 +295,21 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           Expand with 20 assets, 8 processors.
         </td>
         <td>
-          13h : 33m : 58s
+          <div
+            className="emotion-16"
+          >
+            Waiting...
+          </div>
         </td>
         <td>
           20
         </td>
         <td>
-          2020-03-05 23:41:28
+          <div
+            className="emotion-16"
+          >
+            Waiting...
+          </div>
         </td>
         <td>
           0
@@ -333,13 +341,13 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'
         </td>
         <td>
-          01h : 07m : 38s
+          06h : 42m : 49s
         </td>
         <td>
           0
         </td>
         <td>
-          2020-03-05 23:40:52
+          2020-03-05 23:41:02
         </td>
         <td>
           0
@@ -371,13 +379,13 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           Expand with 15 assets, 8 processors.
         </td>
         <td>
-          10h : 26m : 32s
+          06h : 42m : 49s
         </td>
         <td>
           15
         </td>
         <td>
-          2020-03-05 23:42:28
+          2020-03-05 23:41:55
         </td>
         <td>
           0
@@ -409,13 +417,13 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           Expand with 20 assets, 8 processors.
         </td>
         <td>
-          13h : 33m : 58s
+          06h : 42m : 49s
         </td>
         <td>
           20
         </td>
         <td>
-          2020-03-05 23:41:28
+          2020-03-05 23:41:06
         </td>
         <td>
           0
@@ -447,13 +455,13 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'
         </td>
         <td>
-          01h : 07m : 38s
+          06h : 42m : 49s
         </td>
         <td>
           0
         </td>
         <td>
-          2020-03-05 23:40:52
+          2020-03-05 23:41:02
         </td>
         <td>
           0
@@ -485,13 +493,13 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           Expand with 15 assets, 8 processors.
         </td>
         <td>
-          10h : 26m : 32s
+          06h : 42m : 49s
         </td>
         <td>
           15
         </td>
         <td>
-          2020-03-05 23:42:28
+          2020-03-05 23:41:55
         </td>
         <td>
           0
@@ -799,7 +807,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
         <th
           className="emotion-6"
         >
-          Updated
+          Started
         </th>
         <th
           className="emotion-6"

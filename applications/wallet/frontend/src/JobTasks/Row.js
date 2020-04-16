@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 
 import { formatFullDate, formatDuration } from '../Date/helpers'
-
-import { spacing } from '../Styles'
+import { spacing, typography } from '../Styles'
 
 import JobTasksStateIcon from './StateIcon'
+import { getDuration } from './helpers'
 
 const JobTasksRow = ({
   task: {
@@ -13,10 +13,16 @@ const JobTasksRow = ({
     state,
     timeStarted,
     timeStopped,
-    timePing,
     assetCounts: { assetErrorCount, assetTotalCount },
   },
 }) => {
+  const isStarted = timeStarted !== -1
+  const taskDuration = getDuration({
+    timeStarted,
+    timeStopped,
+    now: Date.now(),
+  })
+
   return (
     <tr>
       <td css={{ display: 'flex' }}>
@@ -25,9 +31,27 @@ const JobTasksRow = ({
       </td>
       <td title={taskId}>{taskId}</td>
       <td title={name}>{name}</td>
-      <td>{formatDuration({ seconds: timeStopped - timeStarted })}</td>
+      <td>
+        {isStarted ? (
+          formatDuration({
+            seconds: taskDuration / 1000,
+          })
+        ) : (
+          <div
+            css={{ fontStyle: typography.style.italic }}
+          >{`${state}...`}</div>
+        )}
+      </td>
       <td>{assetTotalCount}</td>
-      <td>{formatFullDate({ timestamp: timePing })}</td>
+      <td>
+        {isStarted ? (
+          formatFullDate({ timestamp: timeStarted })
+        ) : (
+          <div
+            css={{ fontStyle: typography.style.italic }}
+          >{`${state}...`}</div>
+        )}
+      </td>
       <td>{assetErrorCount}</td>
     </tr>
   )
