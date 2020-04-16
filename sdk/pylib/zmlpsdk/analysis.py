@@ -268,3 +268,6 @@ class ContentDetectionAnalysis:
         }
         base.update(self.attrs)
         return base
+
+    def __bool__(self):
+        return len(self.content) > 0

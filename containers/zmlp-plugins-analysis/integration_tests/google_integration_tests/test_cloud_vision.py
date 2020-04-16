@@ -14,7 +14,7 @@ from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, \
     get_prediction_labels, get_mock_stored_file
 
 
-@pytest.mark.skip(reason='dont run automaticallly')
+@pytest.mark.skip(reason='dont run automatically')
 class CloudVisionProcessorTestCase(PluginUnitTestCase):
 
     def setUp(self):
