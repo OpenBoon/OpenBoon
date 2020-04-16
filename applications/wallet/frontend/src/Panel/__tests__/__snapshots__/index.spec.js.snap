@@ -1,43 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Visualizer /> should render properly 1`] = `
-.emotion-13 {
-  height: 100%;
-  background-color: #191919;
-  margin-left: -32px;
-  margin-right: -32px;
-  margin-bottom: -32px;
-  margin-top: 1px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 100%;
-  overflow-y: hidden;
-}
-
-.emotion-3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  margin-top: 1px;
-  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
-}
-
+exports[`<Panel /> should render properly opening to the left 1`] = `
 .emotion-2 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -109,138 +72,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   background-color: #252525;
 }
 
-.emotion-7 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  position: relative;
-  overflow: scroll;
-}
-
-.emotion-6 {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-radius: 2px;
-  background-color: #252525;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 10;
-  opacity: 0.8;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.emotion-4 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: not-allowed;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  opacity: 1;
-  padding: 8px;
-}
-
-.emotion-4:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-4:hover {
-  color: #73b61c;
-}
-
-.emotion-4[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-5 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 8px;
-  opacity: 1;
-  padding: 8px;
-}
-
-.emotion-5:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-5:hover {
-  color: #73b61c;
-}
-
-.emotion-5[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-11 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -250,130 +82,260 @@ exports[`<Visualizer /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-13"
+  className="emotion-3"
 >
   <div
-    className="emotion-12"
+    className="emotion-2"
   >
-    <div
-      className="emotion-3"
+    <button
+      aria-label="Metadata"
+      className="emotion-0"
+      onClick={[Function]}
+      type="button"
     >
-      <div
-        className="emotion-2"
-      >
-        <button
-          aria-label="Filters"
-          className="emotion-0"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            aria-hidden={true}
-            data-file-name="accountDashboard.svg"
-            width={20}
-          />
-        </button>
-        <div
-          className="emotion-1"
-        />
-      </div>
-    </div>
-    <div
-      className="emotion-7"
-    >
-      <div
-        style={
-          Object {
-            "height": 0,
-            "overflow": "visible",
-            "width": 0,
-          }
-        }
+      <svg
+        aria-hidden={true}
+        data-file-name="accountDashboard.svg"
+        width={20}
       />
-      <div
-        className="emotion-6"
-      >
-        <button
-          aria-disabled={true}
-          aria-label="Zoom Out"
-          className="emotion-4"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            data-file-name="circleMinus.svg"
-            width={20}
-          />
-        </button>
-        <button
-          aria-label="Zoom In"
-          className="emotion-5"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            data-file-name="circlePlus.svg"
-            width={20}
-          />
-        </button>
-      </div>
-    </div>
+    </button>
     <div
-      className="emotion-11"
-    >
-      <div
-        className="emotion-2"
-      >
-        <button
-          aria-label="Asset Metadata"
-          className="emotion-0"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            aria-hidden={true}
-            data-file-name="information.svg"
-            width={20}
-          />
-        </button>
-        <div
-          className="emotion-1"
-        />
-      </div>
-    </div>
+      className="emotion-1"
+    />
   </div>
 </div>
 `;
 
-exports[`<Visualizer /> should render selected asset 1`] = `
-.emotion-13 {
-  height: 100%;
-  background-color: #191919;
-  margin-left: -32px;
-  margin-right: -32px;
-  margin-bottom: -32px;
-  margin-top: 1px;
+exports[`<Panel /> should render properly opening to the left 2`] = `
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  margin-right: 1px;
 }
 
-.emotion-12 {
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #252525;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  height: 100%;
-  overflow-y: hidden;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  padding: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: #252525;
+  margin-bottom: 1px;
+  color: #73b61c;
 }
 
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5:hover {
+  color: #ffffff;
+  background-color: #2e2e2e;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100%;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #252525;
+  padding: 8px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-0 {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  color: #808080;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 1px;
+  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
+.emotion-1 {
+  -webkit-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+
+<div
+  className="emotion-8"
+>
+  <Resizeable
+    minWidth={400}
+    onMouseUp={[Function]}
+    openToThe="left"
+    storageName="leftOpeningPanelWidth"
+  >
+    <div
+      className="emotion-4"
+    >
+      <div
+        className="emotion-3"
+      >
+        <h2
+          className="emotion-0"
+        >
+          Metadata
+        </h2>
+        <button
+          aria-label="Close Panel"
+          className="emotion-2"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            className="emotion-1"
+            data-file-name="paused.svg"
+            width={20}
+          />
+        </button>
+      </div>
+      
+    </div>
+  </Resizeable>
+  <div
+    className="emotion-7"
+  >
+    <button
+      aria-label="Metadata"
+      className="emotion-5"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        aria-hidden={true}
+        data-file-name="accountDashboard.svg"
+        width={20}
+      />
+    </button>
+    <div
+      className="emotion-6"
+    />
+  </div>
+</div>
+`;
+
+exports[`<Panel /> should render properly opening to the right 1`] = `
 .emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -454,34 +416,60 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   background-color: #252525;
 }
 
-.emotion-7 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  position: relative;
-  overflow: scroll;
-}
+<div
+  className="emotion-3"
+>
+  <div
+    className="emotion-2"
+  >
+    <button
+      aria-label="Filters"
+      className="emotion-0"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        aria-hidden={true}
+        data-file-name="accountDashboard.svg"
+        width={20}
+      />
+    </button>
+    <div
+      className="emotion-1"
+    />
+  </div>
+</div>
+`;
 
-.emotion-6 {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
+exports[`<Panel /> should render properly opening to the right 2`] = `
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  border-radius: 2px;
-  background-color: #252525;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-  z-index: 10;
-  opacity: 0.8;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
+  margin-top: 1px;
+  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-4 {
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-right: 1px;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #252525;
+}
+
+.emotion-0 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -508,29 +496,66 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   line-height: 19px;
   font-weight: 500;
   border: none;
-  cursor: not-allowed;
+  cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  padding: 0;
   padding: 8px;
-  opacity: 1;
-  padding: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: #252525;
+  margin-bottom: 1px;
+  color: #73b61c;
 }
 
-.emotion-4:hover {
+.emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-4[aria-disabled=true] {
+.emotion-0[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-4:hover {
-  color: #73b61c;
+.emotion-0:hover {
+  color: #ffffff;
+  background-color: #2e2e2e;
 }
 
-.emotion-4[aria-disabled=true] {
-  color: #808080;
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100%;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #252525;
+  padding: 8px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-3 {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
 }
 
 .emotion-5 {
@@ -563,9 +588,8 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
-  padding: 8px;
-  opacity: 1;
-  padding: 8px;
+  padding: 0;
+  color: #808080;
 }
 
 .emotion-5:hover {
@@ -578,114 +602,70 @@ exports[`<Visualizer /> should render selected asset 1`] = `
 }
 
 .emotion-5:hover {
-  color: #73b61c;
+  color: #ffffff;
 }
 
-.emotion-5[aria-disabled=true] {
-  color: #808080;
-}
-
-.emotion-11 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  margin-top: 1px;
-  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
+.emotion-4 {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 <div
-  className="emotion-13"
+  className="emotion-8"
 >
   <div
-    className="emotion-12"
+    className="emotion-2"
   >
-    <div
-      className="emotion-3"
+    <button
+      aria-label="Filters"
+      className="emotion-0"
+      onClick={[Function]}
+      type="button"
     >
-      <div
-        className="emotion-2"
-      >
-        <button
-          aria-label="Filters"
-          className="emotion-0"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            aria-hidden={true}
-            data-file-name="accountDashboard.svg"
-            width={20}
-          />
-        </button>
-        <div
-          className="emotion-1"
-        />
-      </div>
-    </div>
+      <svg
+        aria-hidden={true}
+        data-file-name="accountDashboard.svg"
+        width={20}
+      />
+    </button>
+    <div
+      className="emotion-1"
+    />
+  </div>
+  <Resizeable
+    minWidth={400}
+    onMouseUp={[Function]}
+    openToThe="right"
+    storageName="rightOpeningPanelWidth"
+  >
     <div
       className="emotion-7"
     >
       <div
-        style={
-          Object {
-            "height": 0,
-            "overflow": "visible",
-            "width": 0,
-          }
-        }
-      />
-      <div
         className="emotion-6"
       >
-        <button
-          aria-disabled={true}
-          aria-label="Zoom Out"
-          className="emotion-4"
-          onClick={[Function]}
-          type="button"
+        <h2
+          className="emotion-3"
         >
-          <svg
-            data-file-name="circleMinus.svg"
-            width={20}
-          />
-        </button>
+          Filters
+        </h2>
         <button
-          aria-label="Zoom In"
+          aria-label="Close Panel"
           className="emotion-5"
           onClick={[Function]}
           type="button"
         >
           <svg
-            data-file-name="circlePlus.svg"
-            width={20}
-          />
-        </button>
-      </div>
-    </div>
-    <div
-      className="emotion-11"
-    >
-      <div
-        className="emotion-2"
-      >
-        <button
-          aria-label="Asset Metadata"
-          className="emotion-0"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
             aria-hidden={true}
-            data-file-name="information.svg"
+            className="emotion-4"
+            data-file-name="paused.svg"
             width={20}
           />
         </button>
-        <div
-          className="emotion-1"
-        />
       </div>
+      
     </div>
-  </div>
+  </Resizeable>
 </div>
 `;
