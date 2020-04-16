@@ -6,10 +6,8 @@ import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.AssetFileLocator
 import org.junit.Test
-import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
-import kotlin.test.assertFails
 import kotlin.test.assertFailsWith
 
 /**
@@ -32,7 +30,6 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         assertEquals(result.mimetype, "image/jpeg")
         assertEquals(result.attrs, mapOf("cats" to 100))
         projectStorageService.delete(loc)
-
     }
 
     @Test

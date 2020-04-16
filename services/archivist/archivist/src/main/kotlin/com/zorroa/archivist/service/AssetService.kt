@@ -37,7 +37,6 @@ import com.zorroa.zmlp.util.Json
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.bulk.BulkResponse
-import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
@@ -409,7 +408,7 @@ class AssetServiceImpl : AssetService {
         return rest.client.lowLevelClient.performRequest(request)
     }
 
-    override fun deleteAssociatedFilesByAssetId(id: String){
+    override fun deleteAssociatedFilesByAssetId(id: String) {
         val asset = getAsset(id)
 
         val locator = AssetFileLocator(
