@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<JobTasks /> should render properly with job tasks 1`] = `
-.emotion-38 {
+.emotion-26 {
   height: auto;
 }
 
@@ -99,7 +99,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   padding-left: 4px;
 }
 
-.emotion-37 {
+.emotion-25 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -107,38 +107,38 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   white-space: nowrap;
 }
 
-.emotion-37 tr {
+.emotion-25 tr {
   background-color: #252525;
 }
 
-.emotion-37 tr:nth-of-type(2n) {
+.emotion-25 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-37 tr:hover {
+.emotion-25 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-37 tr:hover .gear {
+.emotion-25 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-37 tr:hover td {
+.emotion-25 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-37 tr:hover td:first-of-type {
+.emotion-25 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-37 tr:hover td:last-of-type {
+.emotion-25 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-37 td {
+.emotion-25 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -150,11 +150,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   border-right: 0;
 }
 
-.emotion-37 td:first-of-type {
+.emotion-25 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-37 td:last-of-type {
+.emotion-25 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -178,10 +178,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-16 {
-  cursor: pointer;
-}
-
 .emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -193,13 +189,8 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   padding-left: 16px;
 }
 
-.emotion-15:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
 <div
-  className="emotion-38"
+  className="emotion-26"
 >
   <div
     className="emotion-5"
@@ -236,7 +227,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
     </button>
   </div>
   <table
-    className="emotion-37"
+    className="emotion-25"
   >
     <thead>
       <tr>
@@ -278,10 +269,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
       </tr>
     </thead>
     <tbody>
-      <tr
-        className="emotion-16"
-        onClick={[Function]}
-      >
+      <tr>
         <td
           className="emotion-14"
         >
@@ -296,16 +284,10 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             Waiting
           </span>
         </td>
-        <td>
-          <a
-            className="emotion-15"
-            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f6"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-            title="c812fa09-5f3a-11ea-bb46-6a6895b1a9f6"
-          >
-            c812fa09-5f3a-11ea-bb46-6a6895b1a9f6
-          </a>
+        <td
+          title="c812fa09-5f3a-11ea-bb46-6a6895b1a9f6"
+        >
+          c812fa09-5f3a-11ea-bb46-6a6895b1a9f6
         </td>
         <td
           title="Expand with 20 assets, 8 processors."
@@ -325,10 +307,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           0
         </td>
       </tr>
-      <tr
-        className="emotion-16"
-        onClick={[Function]}
-      >
+      <tr>
         <td
           className="emotion-14"
         >
@@ -343,16 +322,10 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             Running
           </span>
         </td>
-        <td>
-          <a
-            className="emotion-15"
-            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82545"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-            title="ea7836f2-44a7-19e1-a67f-1e6fa1f82545"
-          >
-            ea7836f2-44a7-19e1-a67f-1e6fa1f82545
-          </a>
+        <td
+          title="ea7836f2-44a7-19e1-a67f-1e6fa1f82545"
+        >
+          ea7836f2-44a7-19e1-a67f-1e6fa1f82545
         </td>
         <td
           title="Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'"
@@ -372,10 +345,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           0
         </td>
       </tr>
-      <tr
-        className="emotion-16"
-        onClick={[Function]}
-      >
+      <tr>
         <td
           className="emotion-14"
         >
@@ -390,16 +360,10 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             Success
           </span>
         </td>
-        <td>
-          <a
-            className="emotion-15"
-            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82545"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-            title="ea7836f3-44a7-19e1-a67f-1e6fa1f82545"
-          >
-            ea7836f3-44a7-19e1-a67f-1e6fa1f82545
-          </a>
+        <td
+          title="ea7836f3-44a7-19e1-a67f-1e6fa1f82545"
+        >
+          ea7836f3-44a7-19e1-a67f-1e6fa1f82545
         </td>
         <td
           title="Expand with 15 assets, 8 processors."
@@ -419,10 +383,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           0
         </td>
       </tr>
-      <tr
-        className="emotion-16"
-        onClick={[Function]}
-      >
+      <tr>
         <td
           className="emotion-14"
         >
@@ -437,16 +398,10 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             Failure
           </span>
         </td>
-        <td>
-          <a
-            className="emotion-15"
-            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/c812fa09-5f3a-11ea-bb46-6a6895b1a9f9"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-            title="c812fa09-5f3a-11ea-bb46-6a6895b1a9f9"
-          >
-            c812fa09-5f3a-11ea-bb46-6a6895b1a9f9
-          </a>
+        <td
+          title="c812fa09-5f3a-11ea-bb46-6a6895b1a9f9"
+        >
+          c812fa09-5f3a-11ea-bb46-6a6895b1a9f9
         </td>
         <td
           title="Expand with 20 assets, 8 processors."
@@ -466,10 +421,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           0
         </td>
       </tr>
-      <tr
-        className="emotion-16"
-        onClick={[Function]}
-      >
+      <tr>
         <td
           className="emotion-14"
         >
@@ -484,16 +436,10 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             Skipped
           </span>
         </td>
-        <td>
-          <a
-            className="emotion-15"
-            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f2-44a7-19e1-a67f-1e6fa1f82549"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-            title="ea7836f2-44a7-19e1-a67f-1e6fa1f82549"
-          >
-            ea7836f2-44a7-19e1-a67f-1e6fa1f82549
-          </a>
+        <td
+          title="ea7836f2-44a7-19e1-a67f-1e6fa1f82549"
+        >
+          ea7836f2-44a7-19e1-a67f-1e6fa1f82549
         </td>
         <td
           title="Crawling files in 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/'"
@@ -513,10 +459,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           0
         </td>
       </tr>
-      <tr
-        className="emotion-16"
-        onClick={[Function]}
-      >
+      <tr>
         <td
           className="emotion-14"
         >
@@ -531,16 +474,10 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             Queued
           </span>
         </td>
-        <td>
-          <a
-            className="emotion-15"
-            href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/tasks/ea7836f3-44a7-19e1-a67f-1e6fa1f82549"
-            onClick={[Function]}
-            onMouseEnter={[Function]}
-            title="ea7836f3-44a7-19e1-a67f-1e6fa1f82549"
-          >
-            ea7836f3-44a7-19e1-a67f-1e6fa1f82549
-          </a>
+        <td
+          title="ea7836f3-44a7-19e1-a67f-1e6fa1f82549"
+        >
+          ea7836f3-44a7-19e1-a67f-1e6fa1f82549
         </td>
         <td
           title="Expand with 15 assets, 8 processors."

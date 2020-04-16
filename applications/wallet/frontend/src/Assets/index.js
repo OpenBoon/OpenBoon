@@ -1,19 +1,20 @@
 import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import useSWR, { useSWRPages } from 'swr'
-
-import { spacing } from '../Styles'
+import AutoSizer from 'react-virtualized-auto-sizer'
+import InfiniteLoader from 'react-window-infinite-loader'
+import { FixedSizeGrid } from 'react-window'
 
 import Loading from '../Loading'
 
 import AssetsResize from './Resize'
 import AssetsThumbnail from './Thumbnail'
-import AssetsLoadMore from './LoadMore'
 
 import { reducer, INITIAL_STATE } from './reducer'
 
-const SIZE = 50
+const SIZE = 100
 
+/* istanbul ignore next */
 const Assets = () => {
   const {
     query: { projectId },
@@ -21,17 +22,9 @@ const Assets = () => {
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
-  const { thumbnailCount, isMin, isMax } = state
+  const { columnCount, isMin, isMax } = state
 
-  const containerWidth = 100 / thumbnailCount
-
-  const {
-    pages,
-    pageCount,
-    isLoadingMore,
-    isReachingEnd,
-    loadMore,
-  } = useSWRPages(
+  const { pages, loadMore, pageSWRs } = useSWRPages(
     // page key
     'visualizer',
 
@@ -47,7 +40,6 @@ const Assets = () => {
       )
 
       if (!results) {
-        /* istanbul ignore next */
         if (offset > 0) return null
 
         return (
@@ -57,13 +49,10 @@ const Assets = () => {
         )
       }
 
-      return results.map((asset) => (
-        <AssetsThumbnail key={asset.id} asset={asset} />
-      ))
+      return null
     },
 
     // offset of next page
-    /* istanbul ignore next */
     ({ data: { count } }, index) => {
       const offset = (index + 1) * SIZE
       return offset < count ? index + 1 : null
@@ -73,30 +62,68 @@ const Assets = () => {
     [],
   )
 
+  const items = Array.isArray(pageSWRs)
+    ? pageSWRs.flatMap((pageSWR) => {
+        const { data: { results } = {} } = pageSWR || {}
+        return results
+      })
+    : []
+
+  const { data: { count: itemCount } = {} } = pageSWRs[0] || {}
+
   return (
-    <div css={{ flex: 1, position: 'relative' }}>
-      <div
-        css={{
-          height: '100%',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignContent: 'flex-start',
-          overflowY: 'auto',
-          padding: spacing.small,
-          '.container': {
-            width: `${containerWidth}%`,
-            paddingBottom: `${containerWidth}%`,
-          },
-        }}
-      >
-        {pages}
-        <AssetsLoadMore
-          pageCount={pageCount}
-          isLoadingMore={isLoadingMore}
-          isReachingEnd={isReachingEnd}
-          loadMore={loadMore}
-        />
-      </div>
+    <div css={{ flex: 1, position: 'relative', overflow: 'scroll' }}>
+      {pages}
+      <AutoSizer>
+        {({ height, width }) => (
+          <InfiniteLoader
+            isItemLoaded={(index) => !!items[index]}
+            itemCount={itemCount}
+            loadMoreItems={loadMore}
+          >
+            {({ onItemsRendered, ref }) => (
+              <FixedSizeGrid
+                ref={ref}
+                onItemsRendered={({
+                  visibleRowStartIndex,
+                  visibleRowStopIndex,
+                  visibleColumnStartIndex,
+                  visibleColumnStopIndex,
+                }) => {
+                  const visibleStartIndex =
+                    visibleRowStartIndex * columnCount + visibleColumnStartIndex
+
+                  const visibleStopIndex =
+                    visibleRowStopIndex * columnCount + visibleColumnStopIndex
+
+                  onItemsRendered({
+                    visibleStartIndex,
+                    visibleStopIndex,
+                  })
+                }}
+                columnCount={columnCount}
+                columnWidth={Math.max(100, width / columnCount)}
+                rowHeight={Math.max(100, width / columnCount)}
+                rowCount={Math.ceil(items.length / columnCount)}
+                width={width}
+                height={height}
+              >
+                {({ columnIndex, rowIndex, style }) => {
+                  const index = columnIndex + rowIndex * columnCount
+
+                  if (!items[index]) return null
+
+                  return (
+                    <div style={style}>
+                      <AssetsThumbnail asset={items[index]} />
+                    </div>
+                  )
+                }}
+              </FixedSizeGrid>
+            )}
+          </InfiniteLoader>
+        )}
+      </AutoSizer>
       <AssetsResize dispatch={dispatch} isMin={isMin} isMax={isMax} />
     </div>
   )

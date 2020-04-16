@@ -1,10 +1,9 @@
+import json
 import logging
 import os
-import json
 
-from .util import as_collection
 from .client import to_json
-
+from .util import as_collection
 
 __all__ = [
     "Asset",
@@ -170,7 +169,7 @@ class FileImport(object):
     An FileImport is used to import a new file and metadata into ZMLP.
     """
 
-    def __init__(self, uri, attrs=None, clip=None):
+    def __init__(self, uri, attrs=None, clip=None, label=None):
         """
         Construct an FileImport instance which can point to a remote URI.
 
@@ -180,11 +179,14 @@ class FileImport(object):
                 attributes to set on the asset.
             clip (Clip): Defines a subset of the asset to be processed, for example a
                 page of a PDF or time code from a video.
+            label (DataSetLabel): An optional dataset label which will add the file to
+                a DataSet automatically.
         """
         super(FileImport, self).__init__()
         self.uri = uri
         self.attrs = attrs or {}
         self.clip = clip
+        self.label = label
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
@@ -213,7 +215,7 @@ class FileUpload(FileImport):
     FileUpload instances point to a local file that will be uploaded for analysis.
     """
 
-    def __init__(self, path, attrs=None, clip=None):
+    def __init__(self, path, attrs=None, clip=None, label=None):
         """
         Create a new FileUpload instance.
 
@@ -222,8 +224,11 @@ class FileUpload(FileImport):
             attrs (dict): A shallow key/value pair dictionary of starting point
                 attributes to set on the asset.
             clip (Clip): Clip settings if applicable.
+            label (DataSetLabel): An optional dataset label which will add the file to
+                a DataSet automatically.
         """
-        super(FileUpload, self).__init__(os.path.normpath(os.path.abspath(path)), attrs, clip)
+        super(FileUpload, self).__init__(
+            os.path.normpath(os.path.abspath(path)), attrs, clip, label)
 
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))
@@ -343,6 +348,30 @@ class Asset(DocumentMixin):
             result = sorted(result, key=sort_func)
 
         return result
+
+    def get_thumbnail(self, level):
+        """
+        Return an thumbnail StoredFile record for the Asset. The level
+        corresponds size of the thumbnail, 0 for the smallest, and
+        up to N for the largest.  Levels 0,1,and 2 are smaller than
+        the source media, level 3 or above  (if they exist) will
+        be full resolution or higher images used for OCR purposes.
+
+        To download the thumbnail call app.assets.download_file(stored_file)
+
+        Args:
+            level (int): The size level, 0 for smallest up to N.
+
+        Returns:
+            StoredFile: A StoredFile instance or None if no image proxies exist.
+        """
+        files = self.get_files(mimetype="image/", category="proxy",
+                               sort_func=lambda f: f.attrs.get('width', 0))
+        if not files:
+            return None
+        if level >= len(files):
+            level = -1
+        return files[level]
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
@@ -493,6 +522,14 @@ class StoredFile(object):
         The size of the file.
         """
         return self._data['size']
+
+    @property
+    def cache_id(self):
+        """
+        A string suitable for on-disk caching/filenames.  Replaces
+        all slashes in id with underscores.
+        """
+        return self.id.replace("/", "_")
 
     def __str__(self):
         return "<StoredFile {}>".format(self.id)

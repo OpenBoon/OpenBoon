@@ -1,11 +1,13 @@
+from .entity import BaseEntity
 
-class Job(object):
+
+class Job(BaseEntity):
     """
     A Job represents a background file import process.
     """
 
     def __init__(self, data):
-        self._data = data
+        super(Job, self).__init__(data)
 
     @property
     def id(self):

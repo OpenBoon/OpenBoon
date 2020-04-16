@@ -3,6 +3,8 @@ import { colors, spacing } from '../Styles'
 import Assets from '../Assets'
 import Metadata from '../Metadata'
 
+import VisualizerPanel from './Panel'
+
 const VisualizerContent = () => {
   return (
     <div
@@ -19,6 +21,7 @@ const VisualizerContent = () => {
       }}
     >
       <div css={{ display: 'flex', height: '100%', overflowY: 'hidden' }}>
+        <VisualizerPanel />
         <Assets />
         <Metadata />
       </div>

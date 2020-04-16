@@ -11,6 +11,7 @@ import MetadataContent from './Content'
 import MetadataSelect from './Select'
 
 export const WIDTH = 400
+export const noop = () => {}
 
 const Metadata = () => {
   const {
@@ -18,7 +19,12 @@ const Metadata = () => {
   } = useRouter()
 
   return (
-    <Resizeable initialWidth={WIDTH} storageName="metadata-width">
+    <Resizeable
+      minWidth={WIDTH}
+      storageName="metadata-width"
+      position="left"
+      onMouseUp={noop}
+    >
       <div
         css={{
           backgroundColor: colors.structure.mattGrey,

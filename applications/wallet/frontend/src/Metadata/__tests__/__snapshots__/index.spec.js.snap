@@ -52,7 +52,9 @@ exports[`<Metadata /> should render properly 1`] = `
 }
 
 <Resizeable
-  initialWidth={400}
+  minWidth={400}
+  onMouseUp={[Function]}
+  position="left"
   storageName="metadata-width"
 >
   <div
@@ -139,7 +141,9 @@ exports[`<Metadata /> should render selected asset 1`] = `
 }
 
 <Resizeable
-  initialWidth={400}
+  minWidth={400}
+  onMouseUp={[Function]}
+  position="left"
   storageName="metadata-width"
 >
   <div

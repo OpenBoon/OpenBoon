@@ -1,9 +1,10 @@
 package com.zorroa.archivist.storage
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageCategory
+import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageSpec
-import com.zorroa.archivist.domain.AssetFileLocator
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
@@ -18,7 +19,8 @@ class AwsProjectStorageServiceTests : AbstractTest() {
 
     @Test
     fun testStore() {
-        val loc = AssetFileLocator("1234", ProjectStorageCategory.SOURCE, "bob.jpg")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET,
+            "1234", ProjectStorageCategory.SOURCE, "bob.jpg")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
 
         val result = projectStorageService.store(spec)
@@ -31,7 +33,7 @@ class AwsProjectStorageServiceTests : AbstractTest() {
 
     @Test
     fun testFetch() {
-        val loc = AssetFileLocator("1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
 
         val result = projectStorageService.store(spec)
@@ -41,7 +43,7 @@ class AwsProjectStorageServiceTests : AbstractTest() {
 
     @Test
     fun testStream() {
-        val loc = AssetFileLocator("1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
 
         val entity = projectStorageService.stream(loc)

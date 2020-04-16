@@ -139,13 +139,20 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 )
             )
 
-            if (newState in START_STATES) {
-                jdbc.update(
-                    "UPDATE task SET time_started=?, int_run_count=int_run_count+1, " +
-                        "time_stopped=-1 WHERE pk_task=?", time, task.taskId
-                )
-            } else if (newState in STOP_STATES) {
-                jdbc.update("UPDATE task SET time_stopped=? WHERE pk_task=?", time, task.taskId)
+            when (newState) {
+                in RESET_STATES -> {
+                    jdbc.update(
+                        "UPDATE task SET time_started=-1, time_stopped=-1 WHERE pk_task=?", task.taskId)
+                }
+                in START_STATES -> {
+                    jdbc.update(
+                        "UPDATE task SET time_started=?, int_run_count=int_run_count+1, " +
+                            "time_stopped=-1 WHERE pk_task=?", time, task.taskId
+                    )
+                }
+                in STOP_STATES -> {
+                    jdbc.update("UPDATE task SET time_stopped=? WHERE pk_task=?", time, task.taskId)
+                }
             }
         }
 
@@ -237,6 +244,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     }
 
     companion object {
+
+        private val RESET_STATES = setOf(TaskState.Waiting)
 
         private val START_STATES = setOf(TaskState.Running)
 
