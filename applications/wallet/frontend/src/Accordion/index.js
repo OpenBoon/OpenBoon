@@ -24,40 +24,39 @@ const Accordion = ({ title, children, isInitiallyOpen }) => {
         <div
           css={{
             borderBottom: constants.borders.tabs,
-            padding: spacing.normal,
+            paddingTop: spacing.normal,
+            paddingBottom: spacing.normal,
+            paddingLeft: spacing.moderate,
             display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
           }}
         >
+          <Button
+            aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
+            variant={VARIANTS.NEUTRAL}
+            onClick={() => setOpen(!isOpen)}
+          >
+            <ChevronSvg
+              width={CHEVRON_WIDTH}
+              color={colors.structure.steel}
+              css={{
+                transform: isOpen ? 'rotate(-180deg)' : '',
+                ':hover': {
+                  color: colors.structure.white,
+                },
+              }}
+            />
+          </Button>
           <h4
             css={{
               fontSize: typography.size.medium,
               lineHeight: typography.height.medium,
+              paddingLeft: spacing.moderate,
               display: 'flex',
               alignItems: 'center',
             }}
           >
             {title}
           </h4>
-          <Button
-            aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
-            variant={VARIANTS.NEUTRAL}
-            css={{
-              ':hover': {
-                color: colors.key.one,
-              },
-            }}
-            onClick={() => setOpen(!isOpen)}
-          >
-            <ChevronSvg
-              width={CHEVRON_WIDTH}
-              css={{
-                marginLeft: spacing.base,
-                transform: isOpen ? 'rotate(-180deg)' : '',
-              }}
-            />
-          </Button>
         </div>
         {isOpen && (
           <div

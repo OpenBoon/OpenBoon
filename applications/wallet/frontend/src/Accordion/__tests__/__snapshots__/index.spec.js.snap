@@ -13,35 +13,16 @@ exports[`<Accordion /> should render properly with data 1`] = `
 
 .emotion-3 {
   border-bottom: 1px solid #4a4a4a;
-  padding: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
 }
 
-.emotion-0 {
-  font-size: 17px;
-  line-height: 20px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.emotion-2 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -74,21 +55,31 @@ exports[`<Accordion /> should render properly with data 1`] = `
   padding: 0;
 }
 
-.emotion-2:hover {
+.emotion-1:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-2[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-2:hover {
-  color: #73b61c;
+.emotion-0:hover {
+  color: #ffffff;
 }
 
-.emotion-1 {
-  margin-left: 8px;
+.emotion-2 {
+  font-size: 17px;
+  line-height: 20px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 <div
@@ -100,23 +91,24 @@ exports[`<Accordion /> should render properly with data 1`] = `
     <div
       className="emotion-3"
     >
-      <h4
-        className="emotion-0"
-      >
-        Hi
-      </h4>
       <button
         aria-label="Expand Section"
-        className="emotion-2"
+        className="emotion-1"
         onClick={[Function]}
         type="button"
       >
         <svg
-          className="emotion-1"
+          className="emotion-0"
+          color="#808080"
           data-file-name="chevron.svg"
           width={20}
         />
       </button>
+      <h4
+        className="emotion-2"
+      >
+        Hi
+      </h4>
     </div>
   </div>
 </div>
