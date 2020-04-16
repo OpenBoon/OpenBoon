@@ -1,313 +1,199 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Metadata /> should render properly 1`] = `
-.emotion-5 {
-  background-color: #2e2e2e;
-  margin-top: 1px;
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 44px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border-bottom: 1px solid #3b3b3b;
+Array [
+  .emotion-1 {
   padding: 16px;
 }
 
 .emotion-0 {
-  padding: 16px;
-  color: #808080;
-  font-weight: 700;
-}
-
-.emotion-3 {
-  padding: 16px;
-}
-
-.emotion-2 {
   color: #73b61c;
   font-style: italic;
 }
 
-.emotion-4 {
+<div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-0"
+    >
+      Select an asset to view its metadata
+    </div>
+  </div>,
+  .emotion-0 {
   height: 100%;
   overflow: auto;
   background-color: #2e2e2e;
   padding: 16px;
 }
 
-<Resizeable
-  minWidth={400}
-  onMouseUp={[Function]}
-  openToThe="left"
-  storageName="metadata-width"
->
-  <div
-    className="emotion-5"
-  >
-    <div
-      className="emotion-1"
-    >
-      <svg
-        color="#808080"
-        data-file-name="information.svg"
-        width={20}
-      />
-      <div
-        className="emotion-0"
-      >
-        ASSET METADATA
-      </div>
-    </div>
-    <div
-      className="emotion-3"
-    >
-      <div
-        className="emotion-2"
-      >
-        Select an asset to view its metadata
-      </div>
-    </div>
-    <div
-      className="emotion-4"
-    />
-  </div>
-</Resizeable>
+<div
+    className="emotion-0"
+  />,
+]
 `;
 
 exports[`<Metadata /> should render selected asset 1`] = `
-.emotion-5 {
-  background-color: #2e2e2e;
-  margin-top: 1px;
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 44px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border-bottom: 1px solid #3b3b3b;
+Array [
+  .emotion-1 {
   padding: 16px;
 }
 
 .emotion-0 {
-  padding: 16px;
-  color: #ffffff;
-  font-weight: 700;
-}
-
-.emotion-3 {
-  padding: 16px;
-}
-
-.emotion-2 {
   color: #4a90e2;
 }
 
-.emotion-4 {
+<div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-0"
+    >
+      TIFF_1MB.tiff
+    </div>
+  </div>,
+  .emotion-0 {
   height: 100%;
   overflow: auto;
   background-color: #191919;
   padding: 16px;
 }
 
-<Resizeable
-  minWidth={400}
-  onMouseUp={[Function]}
-  openToThe="left"
-  storageName="metadata-width"
->
-  <div
-    className="emotion-5"
+<div
+    className="emotion-0"
   >
-    <div
-      className="emotion-1"
-    >
-      <svg
-        color="#ffffff"
-        data-file-name="information.svg"
-        width={20}
-      />
-      <div
-        className="emotion-0"
-      >
-        ASSET METADATA
-      </div>
-    </div>
-    <div
-      className="emotion-3"
-    >
-      <div
-        className="emotion-2"
-      >
-        TIFF_1MB.tiff
-      </div>
-    </div>
-    <div
-      className="emotion-4"
-    >
-      <JsonDisplay
-        json={
-          Object {
-            "id": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
-            "metadata": Object {
-              "analysis": Object {
-                "zvi": Object {
-                  "tinyProxy": Array [
-                    "#f3dfc3",
-                    "#f4efd8",
-                    "#c18f46",
-                    "#ebdfbd",
-                    "#ccd3c0",
-                    "#e7d4bb",
-                    "#beae8e",
-                    "#cabf9e",
-                    "#d2c09c",
-                  ],
-                },
-              },
-              "clip": Object {
-                "length": 1,
-                "pile": "pUn6wBxUN7x9JxOxLkvruOyNdYA",
-                "sourceAssetId": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
-                "start": 1,
-                "stop": 1,
-                "type": "page",
-              },
-              "files": Array [
-                Object {
-                  "attrs": Object {
-                    "height": 434,
-                    "width": 650,
-                  },
-                  "category": "proxy",
-                  "mimetype": "image/jpeg",
-                  "name": "image_650x434.jpg",
-                  "size": 89643,
-                  "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg",
-                },
-                Object {
-                  "attrs": Object {
-                    "height": 341,
-                    "width": 512,
-                  },
-                  "category": "proxy",
-                  "mimetype": "image/jpeg",
-                  "name": "image_512x341.jpg",
-                  "size": 60713,
-                  "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg",
-                },
-                Object {
-                  "attrs": Object {
-                    "height": 213,
-                    "width": 320,
-                  },
-                  "category": "proxy",
-                  "mimetype": "image/jpeg",
-                  "name": "image_320x213.jpg",
-                  "size": 30882,
-                  "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg",
-                },
-              ],
-              "media": Object {
-                "aspect": 1.5,
-                "height": 434,
-                "length": 1,
-                "orientation": "landscape",
-                "type": "image",
-                "width": 650,
-              },
-              "metrics": Object {
-                "pipeline": Array [
-                  Object {
-                    "checksum": 1621235190,
-                    "executionDate": "2020-03-03T21:22:27.694149",
-                    "executionTime": 0.11,
-                    "module": "standard",
-                    "processor": "zmlp_core.core.processors.PreCacheSourceFileProcessor",
-                  },
-                  Object {
-                    "checksum": 1426657387,
-                    "executionDate": "2020-03-03T21:22:28.215069",
-                    "executionTime": 0.26,
-                    "module": "standard",
-                    "processor": "zmlp_core.image.importers.ImageImporter",
-                  },
-                  Object {
-                    "checksum": 2001473853,
-                    "module": "standard",
-                    "processor": "zmlp_core.office.importers.OfficeImporter",
-                  },
-                  Object {
-                    "checksum": 3310423168,
-                    "module": "standard",
-                    "processor": "zmlp_core.video.VideoImporter",
-                  },
-                  Object {
-                    "checksum": 1841569083,
-                    "executionDate": "2020-03-03T21:22:29.654215",
-                    "executionTime": 0,
-                    "module": "standard",
-                    "processor": "zmlp_core.core.processors.AssertAttributesProcessor",
-                  },
+    <JsonDisplay
+      json={
+        Object {
+          "id": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+          "metadata": Object {
+            "analysis": Object {
+              "zvi": Object {
+                "tinyProxy": Array [
+                  "#f3dfc3",
+                  "#f4efd8",
+                  "#c18f46",
+                  "#ebdfbd",
+                  "#ccd3c0",
+                  "#e7d4bb",
+                  "#beae8e",
+                  "#cabf9e",
+                  "#d2c09c",
                 ],
               },
-              "similarity": Object {
-                "simhash": "NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP",
-              },
-              "source": Object {
-                "checksum": 1867533868,
-                "extension": "tiff",
-                "filename": "TIFF_1MB.tiff",
-                "filesize": 1131930,
-                "mimetype": "image/tiff",
-                "path": "gs://zorroa-dev-data/image/TIFF_1MB.tiff",
-                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff",
-              },
-              "system": Object {
-                "dataSourceId": "10509c20-5d95-11ea-baea-364023b135f5",
-                "jobId": "106d4be1-5d95-11ea-baea-364023b135f5",
-                "projectId": "89382033-bcbb-4c8f-81a9-3d0883298a81",
-                "state": "Analyzed",
-                "taskId": "106e0f32-5d95-11ea-baea-364023b135f5",
-                "timeCreated": "2020-03-03T21:22:24.922700Z",
-                "timeModified": "2020-03-03T21:22:47.575195Z",
-              },
             },
-            "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/",
-          }
+            "clip": Object {
+              "length": 1,
+              "pile": "pUn6wBxUN7x9JxOxLkvruOyNdYA",
+              "sourceAssetId": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+              "start": 1,
+              "stop": 1,
+              "type": "page",
+            },
+            "files": Array [
+              Object {
+                "attrs": Object {
+                  "height": 434,
+                  "width": 650,
+                },
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "name": "image_650x434.jpg",
+                "size": 89643,
+                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg",
+              },
+              Object {
+                "attrs": Object {
+                  "height": 341,
+                  "width": 512,
+                },
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "name": "image_512x341.jpg",
+                "size": 60713,
+                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg",
+              },
+              Object {
+                "attrs": Object {
+                  "height": 213,
+                  "width": 320,
+                },
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "name": "image_320x213.jpg",
+                "size": 30882,
+                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg",
+              },
+            ],
+            "media": Object {
+              "aspect": 1.5,
+              "height": 434,
+              "length": 1,
+              "orientation": "landscape",
+              "type": "image",
+              "width": 650,
+            },
+            "metrics": Object {
+              "pipeline": Array [
+                Object {
+                  "checksum": 1621235190,
+                  "executionDate": "2020-03-03T21:22:27.694149",
+                  "executionTime": 0.11,
+                  "module": "standard",
+                  "processor": "zmlp_core.core.processors.PreCacheSourceFileProcessor",
+                },
+                Object {
+                  "checksum": 1426657387,
+                  "executionDate": "2020-03-03T21:22:28.215069",
+                  "executionTime": 0.26,
+                  "module": "standard",
+                  "processor": "zmlp_core.image.importers.ImageImporter",
+                },
+                Object {
+                  "checksum": 2001473853,
+                  "module": "standard",
+                  "processor": "zmlp_core.office.importers.OfficeImporter",
+                },
+                Object {
+                  "checksum": 3310423168,
+                  "module": "standard",
+                  "processor": "zmlp_core.video.VideoImporter",
+                },
+                Object {
+                  "checksum": 1841569083,
+                  "executionDate": "2020-03-03T21:22:29.654215",
+                  "executionTime": 0,
+                  "module": "standard",
+                  "processor": "zmlp_core.core.processors.AssertAttributesProcessor",
+                },
+              ],
+            },
+            "similarity": Object {
+              "simhash": "NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP",
+            },
+            "source": Object {
+              "checksum": 1867533868,
+              "extension": "tiff",
+              "filename": "TIFF_1MB.tiff",
+              "filesize": 1131930,
+              "mimetype": "image/tiff",
+              "path": "gs://zorroa-dev-data/image/TIFF_1MB.tiff",
+              "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff",
+            },
+            "system": Object {
+              "dataSourceId": "10509c20-5d95-11ea-baea-364023b135f5",
+              "jobId": "106d4be1-5d95-11ea-baea-364023b135f5",
+              "projectId": "89382033-bcbb-4c8f-81a9-3d0883298a81",
+              "state": "Analyzed",
+              "taskId": "106e0f32-5d95-11ea-baea-364023b135f5",
+              "timeCreated": "2020-03-03T21:22:24.922700Z",
+              "timeModified": "2020-03-03T21:22:47.575195Z",
+            },
+          },
+          "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/",
         }
-      />
-    </div>
-  </div>
-</Resizeable>
+      }
+    />
+  </div>,
+]
 `;

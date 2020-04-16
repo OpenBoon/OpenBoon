@@ -7,7 +7,7 @@ import AccountDashboardSvg from '../../Icons/accountDashboard.svg'
 jest.mock('../../Resizeable', () => 'Resizeable')
 
 describe('<Panel />', () => {
-  it('should render properly', () => {
+  it('should render properly opening to the right', () => {
     const component = TestRenderer.create(
       <Panel openToThe="right">
         {{
@@ -60,5 +60,28 @@ describe('<Panel />', () => {
         .findByProps({ 'aria-label': 'Close Panel' })
         .props.onClick()
     })
+  })
+
+  it('should render properly opening to the left', () => {
+    const component = TestRenderer.create(
+      <Panel openToThe="left">
+        {{
+          metadata: {
+            title: 'Metadata',
+            icon: <AccountDashboardSvg width={20} aria-hidden />,
+            content: '',
+          },
+        }}
+      </Panel>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Open Panel with Icon
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Metadata' }).props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 })

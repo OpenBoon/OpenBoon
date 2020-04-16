@@ -1,18 +1,19 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { colors, spacing, typography, constants } from '../Styles'
+import useLocalStorage from '../LocalStorage'
 
-import PausedSvg from '../Icons/paused.svg'
+import { colors, spacing, constants } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
-import Resizeable from '../Resizeable'
 
-const MIN_WIDTH = 400
-const ICON_WIDTH = 20
+import PanelContent from './Content'
 
 const Panel = ({ openToThe, children }) => {
-  const [openPanel, setOpenPanel] = useState(null)
+  const [openPanel, setOpenPanel] = useLocalStorage({
+    key: `${openToThe}OpeningPanel`,
+    initialValue: '',
+  })
+
   const panel = children[openPanel]
 
   return (
@@ -20,9 +21,18 @@ const Panel = ({ openToThe, children }) => {
       css={{
         display: 'flex',
         marginTop: spacing.hairline,
-        boxShadow: constants.boxShadows.leftPanel,
+        boxShadow: `${openToThe === 'left' ? '-' : ''}${
+          constants.boxShadows.panel
+        }`,
       }}
     >
+      {!!openPanel && openToThe === 'left' && (
+        <PanelContent
+          openToThe={openToThe}
+          panel={panel}
+          setOpenPanel={setOpenPanel}
+        />
+      )}
       <div
         css={{
           display: 'flex',
@@ -35,7 +45,9 @@ const Panel = ({ openToThe, children }) => {
             key={title}
             aria-label={title}
             variant={VARIANTS.NEUTRAL}
-            onClick={() => setOpenPanel((oP) => (oP === key ? null : key))}
+            onClick={() =>
+              setOpenPanel({ value: key === openPanel ? '' : key })
+            }
             isDisabled={false}
             style={{
               padding: spacing.base,
@@ -43,8 +55,10 @@ const Panel = ({ openToThe, children }) => {
               paddingBottom: spacing.normal,
               backgroundColor: colors.structure.lead,
               marginBottom: spacing.hairline,
+              color:
+                key === openPanel ? colors.key.one : colors.structure.steel,
               ':hover': {
-                color: colors.key.one,
+                color: colors.structure.white,
                 backgroundColor: colors.structure.mattGrey,
               },
             }}
@@ -59,58 +73,12 @@ const Panel = ({ openToThe, children }) => {
           }}
         />
       </div>
-      {!!openPanel && (
-        <Resizeable
-          minWidth={MIN_WIDTH}
-          storageName={`${openToThe}OpeningPanelWidth`}
-          openToThe="right"
-          onMouseUp={({ width }) => {
-            if (width < MIN_WIDTH) setOpenPanel(null)
-          }}
-        >
-          <div
-            css={{
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <div
-              css={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                backgroundColor: colors.structure.lead,
-                padding: spacing.base,
-                borderBottom: constants.borders.divider,
-              }}
-            >
-              <h2
-                css={{
-                  textTransform: 'uppercase',
-                  fontWeight: typography.weight.medium,
-                  fontSize: typography.size.regular,
-                  lineHeight: typography.height.regular,
-                }}
-              >
-                {panel.title}
-              </h2>
-              <Button
-                aria-label="Close Panel"
-                variant={VARIANTS.NEUTRAL}
-                onClick={() => setOpenPanel(null)}
-                isDisabled={false}
-                style={{ ':hover': { color: colors.key.one } }}
-              >
-                <PausedSvg
-                  width={ICON_WIDTH}
-                  css={{ transform: 'rotate(180deg)' }}
-                  aria-hidden
-                />
-              </Button>
-            </div>
-            {panel.content}
-          </div>
-        </Resizeable>
+      {!!openPanel && openToThe === 'right' && (
+        <PanelContent
+          openToThe={openToThe}
+          panel={panel}
+          setOpenPanel={setOpenPanel}
+        />
       )}
     </div>
   )

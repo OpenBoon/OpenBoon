@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Visualizer /> should render properly 1`] = `
-.emotion-9 {
+.emotion-13 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-8 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -85,6 +85,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding-bottom: 16px;
   background-color: #252525;
   margin-bottom: 1px;
+  color: #808080;
 }
 
 .emotion-0:hover {
@@ -97,7 +98,7 @@ exports[`<Visualizer /> should render properly 1`] = `
 }
 
 .emotion-0:hover {
-  color: #73b61c;
+  color: #ffffff;
   background-color: #2e2e2e;
 }
 
@@ -239,11 +240,20 @@ exports[`<Visualizer /> should render properly 1`] = `
   color: #808080;
 }
 
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 1px;
+  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
 <div
-  className="emotion-9"
+  className="emotion-13"
 >
   <div
-    className="emotion-8"
+    className="emotion-12"
   >
     <div
       className="emotion-3"
@@ -308,13 +318,35 @@ exports[`<Visualizer /> should render properly 1`] = `
         </button>
       </div>
     </div>
-    <Metadata />
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-2"
+      >
+        <button
+          aria-label="Asset Metadata"
+          className="emotion-0"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="information.svg"
+            width={20}
+          />
+        </button>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
   </div>
 </div>
 `;
 
 exports[`<Visualizer /> should render selected asset 1`] = `
-.emotion-9 {
+.emotion-13 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -333,7 +365,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   flex-direction: column;
 }
 
-.emotion-8 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -398,6 +430,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   padding-bottom: 16px;
   background-color: #252525;
   margin-bottom: 1px;
+  color: #808080;
 }
 
 .emotion-0:hover {
@@ -410,7 +443,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
 }
 
 .emotion-0:hover {
-  color: #73b61c;
+  color: #ffffff;
   background-color: #2e2e2e;
 }
 
@@ -552,11 +585,20 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   color: #808080;
 }
 
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 1px;
+  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
 <div
-  className="emotion-9"
+  className="emotion-13"
 >
   <div
-    className="emotion-8"
+    className="emotion-12"
   >
     <div
       className="emotion-3"
@@ -621,7 +663,29 @@ exports[`<Visualizer /> should render selected asset 1`] = `
         </button>
       </div>
     </div>
-    <Metadata />
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-2"
+      >
+        <button
+          aria-label="Asset Metadata"
+          className="emotion-0"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="information.svg"
+            width={20}
+          />
+        </button>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
   </div>
 </div>
 `;

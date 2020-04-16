@@ -5,6 +5,7 @@ import Assets from '../Assets'
 import Metadata from '../Metadata'
 
 import AccountDashboardSvg from '../Icons/accountDashboard.svg'
+import InformationSvg from '../Icons/information.svg'
 
 const ICON_WIDTH = 20
 
@@ -34,7 +35,15 @@ const VisualizerContent = () => {
           }}
         </Panel>
         <Assets />
-        <Metadata />
+        <Panel openToThe="left">
+          {{
+            metadata: {
+              title: 'Asset Metadata',
+              icon: <InformationSvg width={ICON_WIDTH} aria-hidden />,
+              content: <Metadata />,
+            },
+          }}
+        </Panel>
       </div>
     </div>
   )
