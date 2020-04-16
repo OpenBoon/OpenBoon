@@ -2,13 +2,12 @@ package com.zorroa.archivist.storage
 
 import com.amazonaws.services.s3.model.AmazonS3Exception
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.AssetFileLocator
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageSpec
-import com.zorroa.archivist.domain.AssetFileLocator
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 /**
  * This is just testing the AWS implementation.
@@ -32,16 +31,14 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         projectStorageService.delete(loc)
     }
 
-    @Test
+    @Test(expected = AmazonS3Exception::class)
     fun testDelete() {
         val loc = AssetFileLocator("1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         val result = projectStorageService.store(spec)
         projectStorageService.delete(loc)
 
-        assertFailsWith(AmazonS3Exception::class) {
-            projectStorageService.fetch(loc)
-        }
+        projectStorageService.fetch(loc)
     }
 
     @Test
