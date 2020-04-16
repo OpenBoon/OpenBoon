@@ -2,16 +2,16 @@ import json
 from unittest import TestCase
 
 from zmlp.client import to_json
-from zmlpsdk import schema
+from zmlpsdk import analysis
 
 
 class PredicationTests(TestCase):
 
     def setUp(self):
-        self.pred = schema.Prediction('cat', 0.50)
+        self.pred = analysis.Prediction('cat', 0.50)
 
     def test_create(self):
-        pred = schema.Prediction('dog', 0.15, simhash="abc", tags=['brown'])
+        pred = analysis.Prediction('dog', 0.15, simhash="abc", tags=['brown'])
         serialized = pred.for_json()
         assert 'dog' == serialized['label']
         assert 0.15 == serialized['score']
@@ -40,23 +40,23 @@ class PredicationTests(TestCase):
         assert 'ABCD' == serialized['simhash']
 
 
-class LabelDetectionAnalysisTests(TestCase):
+class LabelDetectionAnalysisTestsCollapsed(TestCase):
 
     def setUp(self):
-        self.analysis = schema.LabelDetectionAnalysis()
-        self.pred = schema.Prediction('cat', 0.50)
+        self.analysis = analysis.LabelDetectionAnalysis(collapse_labels=True)
+        self.pred = analysis.Prediction('cat', 0.50)
 
     def test_add_prediction(self):
         assert self.analysis.add_prediction(self.pred) is True
         assert self.analysis.add_prediction(self.pred) is True
-        assert self.analysis.add_prediction(schema.Prediction('dog', 0.01)) is False
-        assert 1 == len(self.analysis.predictions)
+        assert self.analysis.add_prediction(analysis.Prediction('dog', 0.01)) is False
+        assert 1 == len(self.analysis)
 
     def test_add_label_and_score(self):
         assert self.analysis.add_label_and_score("dog", 0.5, color='brown') is True
         assert self.analysis.add_label_and_score("dog", 0.6) is True
-        assert 1 == len(self.analysis.predictions)
-        pred = self.analysis.predictions['dog']
+        assert 1 == len(self.analysis)
+        pred = self.analysis.pred_map['dog']
         assert 'dog' == pred.label
         assert 0.6 == pred.score
         assert 'brown' == pred.attrs['color']
@@ -64,8 +64,40 @@ class LabelDetectionAnalysisTests(TestCase):
     def test_max_predictions(self):
         self.analysis.max_predictions = 1
         self.analysis.add_prediction(self.pred)
-        self.analysis.add_prediction(schema.Prediction('dog', 0.54))
-        assert 2 == len(self.analysis.predictions)
+        self.analysis.add_prediction(analysis.Prediction('dog', 0.54))
+        assert 2 == len(self.analysis)
+
+        serialized = json.loads(to_json(self.analysis))
+        assert 1 == len(serialized['predictions'])
+        assert 'dog' == serialized['predictions'][0]['label']
+
+
+class LabelDetectionAnalysisTests(TestCase):
+
+    def setUp(self):
+        self.analysis = analysis.LabelDetectionAnalysis(collapse_labels=False)
+        self.pred = analysis.Prediction('cat', 0.50)
+
+    def test_add_prediction(self):
+        assert self.analysis.add_prediction(self.pred) is True
+        assert self.analysis.add_prediction(self.pred) is True
+        assert self.analysis.add_prediction(analysis.Prediction('dog', 0.01)) is False
+        assert 2 == len(self.analysis)
+
+    def test_add_label_and_score(self):
+        assert self.analysis.add_label_and_score("dog", 0.5, color='brown') is True
+        assert self.analysis.add_label_and_score("dog", 0.6) is True
+        assert 2 == len(self.analysis)
+        pred = self.analysis.pred_list[0]
+        assert 'dog' == pred.label
+        assert 0.5 == pred.score
+        assert 'brown' == pred.attrs['color']
+
+    def test_max_predictions(self):
+        self.analysis.max_predictions = 1
+        self.analysis.add_prediction(self.pred)
+        self.analysis.add_prediction(analysis.Prediction('dog', 0.54))
+        assert 2 == len(self.analysis)
 
         serialized = json.loads(to_json(self.analysis))
         assert 1 == len(serialized['predictions'])
@@ -75,7 +107,7 @@ class LabelDetectionAnalysisTests(TestCase):
 class ContentDetectionAnalysisTests(TestCase):
 
     def setUp(self):
-        self.analysis = schema.ContentDetectionAnalysis(lang="us")
+        self.analysis = analysis.ContentDetectionAnalysis(lang="us")
 
     def test_add_content(self):
         text = 'The dog ran'
@@ -92,13 +124,13 @@ class ContentDetectionAnalysisTests(TestCase):
         assert "us" == serialized['lang']
 
     def test_for_json_unique(self):
-        analysis = schema.ContentDetectionAnalysis(unique_words=True, lang="us")
+        predictions = analysis.ContentDetectionAnalysis(unique_words=True, lang="us")
         text1 = 'dog cat dog cat mouse'
         text2 = 'mouse dog cat dog'
-        analysis.add_content(text1)
-        analysis.add_content(text2)
+        predictions.add_content(text1)
+        predictions.add_content(text2)
 
-        serialized = json.loads(to_json(analysis))
+        serialized = json.loads(to_json(predictions))
         print(serialized)
         assert 3 == serialized['words']
         assert "us" == serialized['lang']
