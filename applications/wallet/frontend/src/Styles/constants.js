@@ -37,8 +37,7 @@ const boxShadows = {
   navBar: `0 0 4px 0 rgba(0, 0, 0, ${opacity.half})`,
   dropdown: `0 2px 6px 0 ${colors.structure.black}`,
   tableRow: `0 0 5px 0 rgba(0, 0, 0, ${opacity.half})`,
-  metadata: `-3px 0 3px 0px rgba(0, 0, 0,${opacity.third})`,
-  leftPanel: `3px 0 3px 0px rgba(0, 0, 0,${opacity.third})`,
+  panel: `3px 0 3px 0px rgba(0, 0, 0,${opacity.third})`,
   infoBar: `0px 3px 3px 0 rgba(0, 0, 0, ${opacity.third})`,
 }
 

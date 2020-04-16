@@ -10,7 +10,7 @@ describe('<Resizeable />', () => {
       <Resizeable
         minWidth={400}
         storageName="yoga-div"
-        position="left"
+        openToThe="left"
         onMouseUp={noop}
       >
         Yoga div
@@ -25,7 +25,7 @@ describe('<Resizeable />', () => {
       <Resizeable
         minWidth={400}
         storageName="yoga-div"
-        position="right"
+        openToThe="right"
         onMouseUp={noop}
       >
         Yoga div
