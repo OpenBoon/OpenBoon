@@ -174,7 +174,7 @@ class CloudVisionDetectExplicit(AbstractCloudVisionProcessor):
 
             analysis.add_prediction(Prediction(category, score))
 
-        if analysis.predictions:
+        if analysis:
             asset.add_analysis('gcp-vision-content-moderation', analysis)
 
 
@@ -297,7 +297,7 @@ class CloudVisionDetectObjects(AbstractCloudVisionProcessor):
 
     def __init__(self):
         super(CloudVisionDetectObjects, self).__init__()
-        self.proxy_level = 2
+        self.proxy_level = 1
 
     @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
     def detect(self, asset, proxy):

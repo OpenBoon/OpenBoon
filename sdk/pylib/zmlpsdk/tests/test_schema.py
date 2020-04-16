@@ -40,23 +40,23 @@ class PredicationTests(TestCase):
         assert 'ABCD' == serialized['simhash']
 
 
-class LabelDetectionAnalysisTests(TestCase):
+class LabelDetectionAnalysisTestsCollapsed(TestCase):
 
     def setUp(self):
-        self.analysis = schema.LabelDetectionAnalysis()
+        self.analysis = schema.LabelDetectionAnalysis(collapse_labels=True)
         self.pred = schema.Prediction('cat', 0.50)
 
     def test_add_prediction(self):
         assert self.analysis.add_prediction(self.pred) is True
         assert self.analysis.add_prediction(self.pred) is True
         assert self.analysis.add_prediction(schema.Prediction('dog', 0.01)) is False
-        assert 1 == len(self.analysis.predictions)
+        assert 1 == len(self.analysis)
 
     def test_add_label_and_score(self):
         assert self.analysis.add_label_and_score("dog", 0.5, color='brown') is True
         assert self.analysis.add_label_and_score("dog", 0.6) is True
-        assert 1 == len(self.analysis.predictions)
-        pred = self.analysis.predictions['dog']
+        assert 1 == len(self.analysis)
+        pred = self.analysis.pred_map['dog']
         assert 'dog' == pred.label
         assert 0.6 == pred.score
         assert 'brown' == pred.attrs['color']
@@ -65,7 +65,39 @@ class LabelDetectionAnalysisTests(TestCase):
         self.analysis.max_predictions = 1
         self.analysis.add_prediction(self.pred)
         self.analysis.add_prediction(schema.Prediction('dog', 0.54))
-        assert 2 == len(self.analysis.predictions)
+        assert 2 == len(self.analysis)
+
+        serialized = json.loads(to_json(self.analysis))
+        assert 1 == len(serialized['predictions'])
+        assert 'dog' == serialized['predictions'][0]['label']
+
+
+class LabelDetectionAnalysisTests(TestCase):
+
+    def setUp(self):
+        self.analysis = schema.LabelDetectionAnalysis(collapse_labels=False)
+        self.pred = schema.Prediction('cat', 0.50)
+
+    def test_add_prediction(self):
+        assert self.analysis.add_prediction(self.pred) is True
+        assert self.analysis.add_prediction(self.pred) is True
+        assert self.analysis.add_prediction(schema.Prediction('dog', 0.01)) is False
+        assert 2 == len(self.analysis)
+
+    def test_add_label_and_score(self):
+        assert self.analysis.add_label_and_score("dog", 0.5, color='brown') is True
+        assert self.analysis.add_label_and_score("dog", 0.6) is True
+        assert 2 == len(self.analysis)
+        pred = self.analysis.pred_list[0]
+        assert 'dog' == pred.label
+        assert 0.5 == pred.score
+        assert 'brown' == pred.attrs['color']
+
+    def test_max_predictions(self):
+        self.analysis.max_predictions = 1
+        self.analysis.add_prediction(self.pred)
+        self.analysis.add_prediction(schema.Prediction('dog', 0.54))
+        assert 2 == len(self.analysis)
 
         serialized = json.loads(to_json(self.analysis))
         assert 1 == len(serialized['predictions'])
