@@ -1,8 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Metadata /> should render properly 1`] = `
-Array [
-  .emotion-1 {
+.emotion-2 {
+  background-color: #252525;
+  height: 100%;
+}
+
+.emotion-1 {
   padding: 16px;
 }
 
@@ -12,6 +16,9 @@ Array [
 }
 
 <div
+  className="emotion-2"
+>
+  <div
     className="emotion-1"
   >
     <div
@@ -19,31 +26,234 @@ Array [
     >
       Select an asset to view its metadata
     </div>
-  </div>,
-  .emotion-0 {
-  height: 100%;
-  overflow: auto;
-  background-color: #2e2e2e;
-  padding: 16px;
-}
-
-<div
-    className="emotion-0"
-  />,
-]
+  </div>
+</div>
 `;
 
 exports[`<Metadata /> should render selected asset 1`] = `
-Array [
-  .emotion-1 {
+.emotion-49 {
+  height: 100%;
+  background-color: #252525;
+}
+
+.emotion-1 {
   padding: 16px;
+  border-bottom: 1px solid #3b3b3b;
 }
 
 .emotion-0 {
   color: #4a90e2;
 }
 
+.emotion-5 {
+  padding: 8px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border: 1px solid #808080;
+  border-radius: 2px;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: #808080;
+  color: #ffffff;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-3:hover {
+  color: #ffffff;
+}
+
+.emotion-48 {
+  height: 100%;
+  overflow: auto;
+}
+
+.emotion-10 {
+  background-color: #252525;
+  border-radius: 2px;
+}
+
+.emotion-9 {
+  border-bottom: 1px solid #4a4a4a;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-7:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-7[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-6:hover {
+  color: #ffffff;
+}
+
+.emotion-8 {
+  font-size: 17px;
+  line-height: 20px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-weight: 400;
+}
+
 <div
+  className="emotion-49"
+>
+  <div
     className="emotion-1"
   >
     <div
@@ -51,8 +261,385 @@ Array [
     >
       TIFF_1MB.tiff
     </div>
-  </div>,
-  .emotion-0 {
+  </div>
+  <div
+    className="emotion-5"
+  >
+    <div
+      className="emotion-4"
+    >
+      <button
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        PRETTY
+      </button>
+      <button
+        className="emotion-3"
+        onClick={[Function]}
+        type="button"
+      >
+        RAW JSON
+      </button>
+    </div>
+  </div>
+  <div
+    className="emotion-48"
+  >
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-10"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Expand Section"
+            className="emotion-7"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-6"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-8"
+          >
+            System
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-10"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Expand Section"
+            className="emotion-7"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-6"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-8"
+          >
+            Source
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-10"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Expand Section"
+            className="emotion-7"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-6"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-8"
+          >
+            Files
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-10"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Expand Section"
+            className="emotion-7"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-6"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-8"
+          >
+            Metrics
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-10"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Expand Section"
+            className="emotion-7"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-6"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-8"
+          >
+            Media
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-10"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Expand Section"
+            className="emotion-7"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-6"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-8"
+          >
+            Analysis
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-10"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Expand Section"
+            className="emotion-7"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-6"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-8"
+          >
+            Clip
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Metadata /> should render selected asset 2`] = `
+.emotion-7 {
+  height: 100%;
+  background-color: #252525;
+}
+
+.emotion-1 {
+  padding: 16px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-0 {
+  color: #4a90e2;
+}
+
+.emotion-5 {
+  padding: 8px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border: 1px solid #808080;
+  border-radius: 2px;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: #808080;
+  color: #ffffff;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-3:hover {
+  color: #ffffff;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+}
+
+.emotion-6 {
   height: 100%;
   overflow: auto;
   background-color: #191919;
@@ -60,7 +647,41 @@ Array [
 }
 
 <div
-    className="emotion-0"
+  className="emotion-7"
+>
+  <div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-0"
+    >
+      TIFF_1MB.tiff
+    </div>
+  </div>
+  <div
+    className="emotion-5"
+  >
+    <div
+      className="emotion-4"
+    >
+      <button
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        PRETTY
+      </button>
+      <button
+        className="emotion-3"
+        onClick={[Function]}
+        type="button"
+      >
+        RAW JSON
+      </button>
+    </div>
+  </div>
+  <div
+    className="emotion-6"
   >
     <JsonDisplay
       json={
@@ -194,6 +815,6 @@ Array [
         }
       }
     />
-  </div>,
-]
+  </div>
+</div>
 `;

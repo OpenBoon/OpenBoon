@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import asset from '../../Asset/__mocks__/asset'
 import mockUser from '../../User/__mocks__/user'
@@ -40,6 +40,12 @@ describe('<Metadata />', () => {
         <Metadata />
       </User>,
     )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root.findByProps({ children: 'RAW JSON' }).props.onClick()
+    })
 
     expect(component.toJSON()).toMatchSnapshot()
   })
