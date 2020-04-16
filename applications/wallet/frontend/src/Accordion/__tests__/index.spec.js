@@ -16,10 +16,12 @@ describe('<Accordion />', () => {
 
     act(() => {
       component.root
-        .findByType('button')
+        .findByProps({ 'aria-label': 'Expand Section' })
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(component.toJSON()).toMatchSnapshot()
+    expect(
+      component.root.findByProps({ 'aria-label': 'Collapse Section' }),
+    ).toBeTruthy()
   })
 })
