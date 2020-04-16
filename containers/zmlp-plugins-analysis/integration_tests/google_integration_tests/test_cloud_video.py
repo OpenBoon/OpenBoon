@@ -9,7 +9,7 @@ from zmlpsdk.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
 CREDS = os.path.join(os.path.dirname(__file__)) + '/gcp-creds.json'
 
 
-@pytest.mark.skip(reason='dont run automaticallly')
+@pytest.mark.skip(reason='dont run automatically')
 class AsyncVideoIntelligenceProcessorITestCase(PluginUnitTestCase):
 
     def setUp(self):
