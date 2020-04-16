@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<JobTasks /> should render properly with job tasks 1`] = `
-.emotion-26 {
+.emotion-28 {
   height: auto;
 }
 
@@ -99,7 +99,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   padding-left: 4px;
 }
 
-.emotion-25 {
+.emotion-27 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -107,38 +107,38 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   white-space: nowrap;
 }
 
-.emotion-25 tr {
+.emotion-27 tr {
   background-color: #252525;
 }
 
-.emotion-25 tr:nth-of-type(2n) {
+.emotion-27 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-25 tr:hover {
+.emotion-27 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-25 tr:hover .gear {
+.emotion-27 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-25 tr:hover td {
+.emotion-27 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-25 tr:hover td:first-of-type {
+.emotion-27 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-25 tr:hover td:last-of-type {
+.emotion-27 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-25 td {
+.emotion-27 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -150,11 +150,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   border-right: 0;
 }
 
-.emotion-25 td:first-of-type {
+.emotion-27 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-25 td:last-of-type {
+.emotion-27 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -189,8 +189,12 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   padding-left: 16px;
 }
 
+.emotion-15 {
+  font-style: italic;
+}
+
 <div
-  className="emotion-26"
+  className="emotion-28"
 >
   <div
     className="emotion-5"
@@ -227,7 +231,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
     </button>
   </div>
   <table
-    className="emotion-25"
+    className="emotion-27"
   >
     <thead>
       <tr>
@@ -296,7 +300,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-15"
           >
             Waiting...
           </div>
@@ -306,7 +310,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
         </td>
         <td>
           <div
-            className="emotion-16"
+            className="emotion-15"
           >
             Waiting...
           </div>
