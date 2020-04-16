@@ -29,7 +29,8 @@ class Prediction:
             score (float): the score for the new occurrence.
 
         """
-        self.occurrences += 1
+        if self.occurrences is not None:
+            self.occurrences += 1
         score = round(float(score), self.precision)
         if score > self.score:
             self.score = score
@@ -60,9 +61,11 @@ class Prediction:
         base = {
             "label": self.label,
             "score": self.score,
-            "occurrences": self.occurrences,
         }
         base.update(self.attrs)
+        # If occurrences is nulled out, don't include.
+        if self.occurrences is not None:
+            base["occurrences"] = self.occurrences
         return base
 
     def __eq__(self, other):
@@ -83,18 +86,23 @@ class LabelDetectionAnalysis:
     more suitable for ElasticSearch.
 
     """
-    def __init__(self, min_score=0.15, max_predictions=128):
+
+    def __init__(self, min_score=0.15, max_predictions=32, collapse_labels=False):
         """
         Create a new LabelDetectionSchema instance.
 
         Args:
             min_score (float): The minimum score a prediction must have to be included.
             max_predictions (int): The max number of predictions.
+            collapse_labels (bool): If true, labels of the same name are collapsed into single
+                entry with an occurrence count. This is desired fo video. Default its false.
 
         """
         self.min_score = min_score
         self.max_predictions = max_predictions
-        self.predictions = {}
+        self.collapse_labels = collapse_labels
+        self.pred_map = {}
+        self.pred_list = []
         self.attrs = {}
 
     def set_attr(self, key, value):
@@ -123,7 +131,10 @@ class LabelDetectionAnalysis:
 
     def add_prediction(self, pred):
         """
-        Add a label prediction to this schema.
+        Add a label prediction to this schema.  If label collapsing is enabled
+        and a label with the same name is added it will not be added again.  However
+        the confidence value will be updated if the new prediction has a higher
+        confidence value.
 
         Args:
             pred (Prediction):
@@ -133,12 +144,18 @@ class LabelDetectionAnalysis:
         """
         if pred.score < self.min_score:
             return False
-        existing = self.predictions.get(pred.label)
-        if not existing:
-            self.predictions[pred.label] = pred
+
+        if self.collapse_labels:
+            existing = self.pred_map.get(pred.label)
+            if not existing:
+                self.pred_map[pred.label] = pred
+            else:
+                existing.add_occurrence(pred.score)
+            return True
         else:
-            existing.add_occurrence(pred.score)
-        return True
+            self.pred_list.append(pred)
+            pred.occurrences = None
+            return True
 
     def predictions_list(self):
         """
@@ -147,16 +164,12 @@ class LabelDetectionAnalysis:
         Returns:
             list[str]: A list of labels.
         """
-        return sorted([p for p in self.predictions.values()], key=lambda o: o.score, reverse=True)
 
-    def predictions_map(self):
-        """
-        Return a dictionary of label to confidence.
-
-        Returns:
-            dict[str,float] - A dict of labels and confidence.
-        """
-        return dict([(p.label, p.score) for p in self.predictions.values()])
+        if self.collapse_labels:
+            base_list = [p for p in self.pred_map.values()]
+        else:
+            base_list = self.pred_list
+        return sorted(base_list, key=lambda o: o.score, reverse=True)
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
@@ -175,6 +188,15 @@ class LabelDetectionAnalysis:
         }
         base.update(self.attrs)
         return base
+
+    def __len__(self):
+        if self.collapse_labels:
+            return len(self.pred_map)
+        else:
+            return len(self.pred_list)
+
+    def __bool__(self):
+        return len(self) > 0
 
 
 class ContentDetectionAnalysis:
