@@ -22,7 +22,17 @@ describe('<Panel />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Open Panel
+    // Open Panel with Icon
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Filters' }).props.onClick()
+    })
+
+    // Close Panel with Icon
+    act(() => {
+      component.root.findByProps({ 'aria-label': 'Filters' }).props.onClick()
+    })
+
+    // Open Panel with Icon
     act(() => {
       component.root.findByProps({ 'aria-label': 'Filters' }).props.onClick()
     })
@@ -39,12 +49,12 @@ describe('<Panel />', () => {
       component.root.findByType('Resizeable').props.onMouseUp({ width: 100 })
     })
 
-    // Open Panel
+    // Open Panel with Icon
     act(() => {
       component.root.findByProps({ 'aria-label': 'Filters' }).props.onClick()
     })
 
-    // Close Panel
+    // Close Panel with Chevron
     act(() => {
       component.root
         .findByProps({ 'aria-label': 'Close Panel' })
