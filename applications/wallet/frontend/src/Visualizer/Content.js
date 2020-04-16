@@ -1,9 +1,12 @@
 import { colors, spacing } from '../Styles'
 
+import Panel from '../Panel'
 import Assets from '../Assets'
 import Metadata from '../Metadata'
 
-import VisualizerPanel from './Panel'
+import AccountDashboardSvg from '../Icons/accountDashboard.svg'
+
+const ICON_WIDTH = 20
 
 const VisualizerContent = () => {
   return (
@@ -21,7 +24,15 @@ const VisualizerContent = () => {
       }}
     >
       <div css={{ display: 'flex', height: '100%', overflowY: 'hidden' }}>
-        <VisualizerPanel />
+        <Panel openToThe="right">
+          {{
+            filters: {
+              title: 'Filters',
+              icon: <AccountDashboardSvg width={ICON_WIDTH} aria-hidden />,
+              content: '',
+            },
+          }}
+        </Panel>
         <Assets />
         <Metadata />
       </div>

@@ -12,7 +12,7 @@ let originX
 const Resizeable = ({
   minWidth,
   storageName,
-  position,
+  openToThe,
   onMouseUp,
   children,
 }) => {
@@ -21,7 +21,7 @@ const Resizeable = ({
     initialValue: minWidth,
   })
 
-  const direction = position === 'left' ? 1 : -1
+  const direction = openToThe === 'left' ? 1 : -1
 
   /* istanbul ignore next */
   const handleMouseMove = ({ clientX }) => {
@@ -50,7 +50,7 @@ const Resizeable = ({
 
   return (
     <div style={{ display: 'flex', alignItems: 'stretch', flexWrap: 'nowrap' }}>
-      {position === 'left' && (
+      {openToThe === 'left' && (
         <div
           css={{
             userSelect: 'none',
@@ -64,7 +64,7 @@ const Resizeable = ({
         />
       )}
       <div css={{ flex: 1, width }}>{children}</div>
-      {position === 'right' && (
+      {openToThe === 'right' && (
         <div
           css={{
             userSelect: 'none',
@@ -84,7 +84,7 @@ const Resizeable = ({
 Resizeable.propTypes = {
   minWidth: PropTypes.number.isRequired,
   storageName: PropTypes.string.isRequired,
-  position: PropTypes.oneOf(['left', 'right']).isRequired,
+  openToThe: PropTypes.oneOf(['left', 'right']).isRequired,
   onMouseUp: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 }

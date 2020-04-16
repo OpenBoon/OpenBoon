@@ -1,12 +1,24 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import VisualizerPanel from '../Panel'
+import Panel from '..'
+
+import AccountDashboardSvg from '../../Icons/accountDashboard.svg'
 
 jest.mock('../../Resizeable', () => 'Resizeable')
 
-describe('<VisualizerPanel />', () => {
+describe('<Panel />', () => {
   it('should render properly', () => {
-    const component = TestRenderer.create(<VisualizerPanel />)
+    const component = TestRenderer.create(
+      <Panel openToThe="right">
+        {{
+          filters: {
+            title: 'Filters',
+            icon: <AccountDashboardSvg width={20} aria-hidden />,
+            content: '',
+          },
+        }}
+      </Panel>,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
 

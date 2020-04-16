@@ -1,8 +1,8 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 import { colors, spacing, typography, constants } from '../Styles'
 
-import AccountDashboardSvg from '../Icons/accountDashboard.svg'
 import PausedSvg from '../Icons/paused.svg'
 
 import Button, { VARIANTS } from '../Button'
@@ -11,8 +11,9 @@ import Resizeable from '../Resizeable'
 const MIN_WIDTH = 400
 const ICON_WIDTH = 20
 
-const VisualizerPanel = () => {
-  const [isPanelOpen, setPanelOpen] = useState(false)
+const Panel = ({ openToThe, children }) => {
+  const [openPanel, setOpenPanel] = useState(null)
+  const panel = children[openPanel]
 
   return (
     <div
@@ -26,29 +27,31 @@ const VisualizerPanel = () => {
         css={{
           display: 'flex',
           flexDirection: 'column',
-
           marginRight: spacing.hairline,
         }}
       >
-        <Button
-          aria-label="Filters"
-          variant={VARIANTS.NEUTRAL}
-          onClick={() => setPanelOpen((isOpen) => !isOpen)}
-          isDisabled={false}
-          style={{
-            padding: spacing.base,
-            paddingTop: spacing.normal,
-            paddingBottom: spacing.normal,
-            backgroundColor: colors.structure.lead,
-            marginBottom: spacing.hairline,
-            ':hover': {
-              color: colors.key.one,
-              backgroundColor: colors.structure.mattGrey,
-            },
-          }}
-        >
-          <AccountDashboardSvg width={ICON_WIDTH} aria-hidden />
-        </Button>
+        {Object.entries(children).map(([key, { title, icon }]) => (
+          <Button
+            key={title}
+            aria-label={title}
+            variant={VARIANTS.NEUTRAL}
+            onClick={() => setOpenPanel((oP) => (oP === key ? null : key))}
+            isDisabled={false}
+            style={{
+              padding: spacing.base,
+              paddingTop: spacing.normal,
+              paddingBottom: spacing.normal,
+              backgroundColor: colors.structure.lead,
+              marginBottom: spacing.hairline,
+              ':hover': {
+                color: colors.key.one,
+                backgroundColor: colors.structure.mattGrey,
+              },
+            }}
+          >
+            {icon}
+          </Button>
+        ))}
         <div
           css={{
             flex: 1,
@@ -56,13 +59,13 @@ const VisualizerPanel = () => {
           }}
         />
       </div>
-      {isPanelOpen && (
+      {!!openPanel && (
         <Resizeable
           minWidth={MIN_WIDTH}
-          storageName="leftPanelWidth"
-          position="right"
+          storageName={`${openToThe}OpeningPanelWidth`}
+          openToThe="right"
           onMouseUp={({ width }) => {
-            if (width < MIN_WIDTH) setPanelOpen(false)
+            if (width < MIN_WIDTH) setOpenPanel(null)
           }}
         >
           <div
@@ -89,12 +92,12 @@ const VisualizerPanel = () => {
                   lineHeight: typography.height.regular,
                 }}
               >
-                Filter
+                {panel.title}
               </h2>
               <Button
                 aria-label="Close Panel"
                 variant={VARIANTS.NEUTRAL}
-                onClick={() => setPanelOpen((isOpen) => !isOpen)}
+                onClick={() => setOpenPanel(null)}
                 isDisabled={false}
                 style={{ ':hover': { color: colors.key.one } }}
               >
@@ -105,6 +108,7 @@ const VisualizerPanel = () => {
                 />
               </Button>
             </div>
+            {panel.content}
           </div>
         </Resizeable>
       )}
@@ -112,4 +116,15 @@ const VisualizerPanel = () => {
   )
 }
 
-export default VisualizerPanel
+Panel.propTypes = {
+  openToThe: PropTypes.oneOf(['left', 'right']).isRequired,
+  children: PropTypes.objectOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      icon: PropTypes.node.isRequired,
+      content: PropTypes.node.isRequired,
+    }).isRequired,
+  ).isRequired,
+}
+
+export default Panel
