@@ -124,13 +124,13 @@ class ContentDetectionAnalysisTests(TestCase):
         assert "us" == serialized['lang']
 
     def test_for_json_unique(self):
-        prediction = analysis.ContentDetectionAnalysis(unique_words=True, lang="us")
+        predictions = analysis.ContentDetectionAnalysis(unique_words=True, lang="us")
         text1 = 'dog cat dog cat mouse'
         text2 = 'mouse dog cat dog'
-        prediction.add_content(text1)
-        prediction.add_content(text2)
+        predictions.add_content(text1)
+        predictions.add_content(text2)
 
-        serialized = json.loads(to_json(analysis))
+        serialized = json.loads(to_json(predictions))
         print(serialized)
         assert 3 == serialized['words']
         assert "us" == serialized['lang']
