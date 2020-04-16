@@ -13,6 +13,9 @@ variable "image-pull-secret" {
 variable "archivist-url" {
 }
 
+variable "officer-url" {
+}
+
 variable "container-tag" {
   default = "latest"
 }
