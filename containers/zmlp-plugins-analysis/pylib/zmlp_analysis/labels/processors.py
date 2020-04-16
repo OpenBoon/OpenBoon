@@ -7,7 +7,7 @@ from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 from zmlpsdk import AssetProcessor
 from zmlpsdk.proxy import get_proxy_level_path
-from zmlpsdk.schema import LabelDetectionAnalysis
+from zmlpsdk.analysis import LabelDetectionAnalysis
 
 
 class ZviLabelDetectionProcessor(AssetProcessor):

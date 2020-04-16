@@ -7,7 +7,7 @@ from google.cloud.vision import types
 
 from zmlpsdk import file_storage, Argument, AssetProcessor, FileTypes
 from zmlpsdk.proxy import get_proxy_level, calculate_normalized_bbox
-from zmlpsdk.schema import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
+from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
 from .gcp_client import initialize_gcp_client
 
 __all__ = [

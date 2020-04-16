@@ -3,7 +3,7 @@ import cvlib as cv
 
 from zmlpsdk import AssetProcessor
 from zmlpsdk.proxy import get_proxy_level_path, calculate_normalized_bbox
-from zmlpsdk.schema import LabelDetectionAnalysis
+from zmlpsdk.analysis import LabelDetectionAnalysis
 
 
 class ZmlpObjectDetectionProcessor(AssetProcessor):

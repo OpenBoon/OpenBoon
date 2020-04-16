@@ -6,7 +6,7 @@ from google.api_core.exceptions import ResourceExhausted
 from google.cloud import videointelligence
 
 from zmlpsdk import Argument, AssetProcessor, FileTypes, file_storage
-from zmlpsdk.schema import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
+from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
 from .gcp_client import initialize_gcp_client
 
 logger = logging.getLogger(__name__)
