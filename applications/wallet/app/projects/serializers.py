@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.relations import HyperlinkedIdentityField
 
-from apikeys.utils import decode_apikey
+from wallet.utils import convert_base64_to_json
 from projects.models import Project
 
 logger = logging.getLogger(__name__)
@@ -105,7 +105,7 @@ class ProjectUserSerializer(serializers.HyperlinkedModelSerializer):
 
     def _get_decoded_permissions(self, apikey):
         try:
-            key_data = decode_apikey(apikey)
+            key_data = convert_base64_to_json(apikey)
         except ValueError:
             # Something wrong with the json string
             logger.warning('Unable to decode apikey.')

@@ -11,7 +11,7 @@ from searches.models import Search
 from searches.serializers import SearchSerializer
 from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.paginators import FromSizePagination
-from .services import FieldService
+from .services import FieldService, FilterService
 
 
 class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
@@ -88,3 +88,20 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
         fields = self.field_service.get_fields_from_mappings(mappings)
 
         return Response(status=status.HTTP_200_OK, data=fields)
+
+    @action(detail=False, methods=['get'])
+    def query_filters(self, request, project_pk):
+        """Accepts a request that includes filter objects and runs the appropriate query."""
+        # always serialize these as their stripped down thumbnail reps
+        return Response(status=status.HTTP_501_NOT_IMPLEMENTED, data={})
+
+    @action(detail=False, methods=['get'])
+    def load_filter(self, request, project_pk):
+        """Takes a filter object and runs the aggregation to populate the UI"""
+        filter_service = FilterService()
+        filter = filter_service.get_filter_from_request(request)
+        filter.is_valid(raise_exception=True)
+
+        response = request.client.post('api/v3/assets/_search', filter.get_es_agg())
+
+        return Response(status=status.HTTP_200_OK, data=filter.serialize_agg_response(response))

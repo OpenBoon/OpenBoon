@@ -1,10 +1,15 @@
+import json
+import base64
 import pytest
+
 from django.urls import reverse
 from rest_framework import status
 
 from searches.models import Search
+from searches.filters import BaseFilter
 from zmlp import ZmlpClient
 from wallet.tests.utils import check_response
+from wallet.utils import convert_base64_to_json, convert_json_to_base64
 
 pytestmark = pytest.mark.django_db
 
@@ -235,3 +240,85 @@ class TestFieldsAction:
         response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
         content = check_response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
         assert content == {'detail': 'ZMLP did not return field mappings as expected.'}
+
+
+class BaseFiltersTestCase(object):
+
+    @pytest.fixture
+    def range_load(self):
+        return {
+            'type': 'range',
+            'attribute': 'source.filesize',
+            'exists': True
+        }
+
+    @pytest.fixture
+    def range_load_qs(self, range_load):
+        return convert_json_to_base64(range_load)
+
+
+class TestQueryFilters(BaseFiltersTestCase):
+
+    def test_get(self, login, api_client, project):
+        response = api_client.get(reverse('search-query-filters', kwargs={'project_pk': project.id}))
+        content = check_response(response, status=status.HTTP_501_NOT_IMPLEMENTED)
+
+
+class TestLoadFilter(BaseFiltersTestCase):
+
+    def test_get(self, login, api_client, project, range_load_qs, monkeypatch):
+        def mock_response(*args, **kwargs):
+            return {'took': 34,
+                    'timed_out': False,
+                    '_shards': {'total': 2, 'successful': 2, 'skipped': 0, 'failed': 0},
+                    'hits': {'total': {'value': 24, 'relation': 'eq'},
+                             'max_score': None,
+                             'hits': []},
+                    'aggregations': {'stats#0d2a26ea-1006-4e75-8626-b81809a7a021': {'count': 24,
+                                                                                    'min': 7555.0,
+                                                                                    'max': 64657027.0,
+                                                                                    'avg': 5725264.875,
+                                                                                    'sum': 137406357.0}}}
+
+        def mock_init(*args, **kwargs):
+            # Need to override the internally created name so we can parse our fake response
+            (self, data) = (args[0], args[1])
+            self.data = data
+            self.name = '0d2a26ea-1006-4e75-8626-b81809a7a021'
+
+        monkeypatch.setattr(ZmlpClient, 'post', mock_response)
+        monkeypatch.setattr(BaseFilter, '__init__', mock_init)
+        response = api_client.get(reverse('search-load-filter', kwargs={'project_pk': project.id}),
+                                  {'filter': range_load_qs})
+        content = check_response(response, status=status.HTTP_200_OK)
+        assert content['count'] == 24
+        assert content['results']['min'] == 7555.0
+        assert content['results']['max'] == 64657027.0
+
+    def test_get_missing_querystring(self, login, api_client, project, range_load_qs):
+        response = api_client.get(reverse('search-load-filter', kwargs={'project_pk': project.id}))
+        content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
+        assert content['detail'] == 'No `filter` querystring included.'
+
+    def test_get_bad_querystring_encoding(self, login, api_client, project, range_load_qs):
+        range_load_qs = 'thisisnolongerencodedright' + range_load_qs.decode('utf-8')
+        response = api_client.get(reverse('search-load-filter', kwargs={'project_pk': project.id}),
+                                  {'filter': range_load_qs})
+        content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
+        assert content['detail'] == 'Unable to decode `filter` querystring.'
+
+    def test_get_missing_filter_type(self, login, api_client, project, range_load):
+        del(range_load['type'])
+        encoded_filter = convert_json_to_base64(range_load)
+        response = api_client.get(reverse('search-load-filter', kwargs={'project_pk': project.id}),
+                                  {'filter': encoded_filter})
+        content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
+        assert content['detail'] == 'Filter description is missing a `type`.'
+
+    def test_get_missing_filter_type(self, login, api_client, project, range_load):
+        range_load['type'] = 'fake_type'
+        encoded_filter = convert_json_to_base64(range_load)
+        response = api_client.get(reverse('search-load-filter', kwargs={'project_pk': project.id}),
+                                  {'filter': encoded_filter})
+        content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
+        assert content['detail'] == 'Unsupported filter `fake_type` given.'
