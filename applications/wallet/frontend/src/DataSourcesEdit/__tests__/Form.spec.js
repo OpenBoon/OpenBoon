@@ -118,21 +118,7 @@ describe('<DataSourcesEditForm />', () => {
       body: JSON.stringify({
         name: 'My Updated Data Source',
         uri: 'gs://zorroa-dev-data/images',
-        file_types: [
-          'mp4',
-          'm4v',
-          'mov',
-          'mpg',
-          'mpeg',
-          'ogg',
-          'gif',
-          'png',
-          'jpg',
-          'jpeg',
-          'tif',
-          'tiff',
-          'psd',
-        ],
+        fileTypes: ['video', 'images'],
         modules: [MODULE.name, 'zvi-label-detection'],
       }),
     })
