@@ -67,12 +67,10 @@ const Assets = () => {
   )
 
   const items = Array.isArray(pageSWRs)
-    ? pageSWRs
-        .flatMap((pageSWR) => {
-          const { data: { results } = {} } = pageSWR || {}
-          return results
-        })
-        .slice(0, 42)
+    ? pageSWRs.flatMap((pageSWR) => {
+        const { data: { results } = {} } = pageSWR || {}
+        return results
+      })
     : []
 
   const { data: { count: itemCount } = {} } = pageSWRs[0] || {}
