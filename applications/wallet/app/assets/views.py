@@ -87,10 +87,10 @@ class FileCategoryViewSet(BaseProjectViewSet):
 
 class FileNameViewSet(BaseProjectViewSet):
     zmlp_only = True
-    zmlp_root_api_path = 'api/v3/assets'
+    zmlp_root_api_path = 'api/v3/files/_stream'
     lookup_value_regex = '[^/]+'
 
     def retrieve(self, request, project_pk, asset_pk, category_pk, pk):
-        path = f'{self.zmlp_root_api_path}/{asset_pk}/_files/{category_pk}/{pk}'
+        path = f'{self.zmlp_root_api_path}/assets/{asset_pk}/{category_pk}/{pk}'
         content_type, encoding = mimetypes.guess_type(pk)
         return StreamingHttpResponse(stream(request, path), content_type=content_type)
