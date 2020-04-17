@@ -22,35 +22,6 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
                     DestroyModelMixin,
                     BaseProjectViewSet,
                     GenericViewSet):
-    """Allows a User to save a Search/Filter query for later use.
-
-    Searches are associated with a Project, and viewable by any user with a membership
-    to that project.
-
-    Available HTTP methods, endpoints, and what they do:
-
-    * **GET** _api/v1/projects/$Project_Id/searches/_ - List the saved searches for $Project_Id
-    * **GET** _api/v1/projects/$Project_Id/searches/$Search_Id/_ - Detail info on $Search_Id
-    * **POST** _api/v1/projects/*Project_Id/searches/ - Create a new Saved Search
-        - To create one, you only need to send a name for the search and the query fields to save:
-            `{
-                "name": "My Search",
-                "search": {
-                    "query": {
-                        "prefix": {
-                            "files.name": {
-                                "value": "image"
-                            }
-                        }
-                    }
-                }
-            }`
-    * **PUT** _api/v1/projects/$Project_Id/searches/$Search_Id/_ - Send the full object
-    with updated values.
-    * **PATCH** _api/v1/projects/$Project_Id/searches/$Search_Id/_ - Send only the new
-    values to update the object.
-    * **DELETE** _api/v1/projects/$Project_Id/searches/$Search_Id/_ - Remove the Saved Search
-    """
 
     zmlp_only = True
     pagination_class = FromSizePagination
@@ -90,13 +61,13 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
         return Response(status=status.HTTP_200_OK, data=fields)
 
     @action(detail=False, methods=['get'])
-    def query_filters(self, request, project_pk):
+    def query(self, request, project_pk):
         """Accepts a request that includes filter objects and runs the appropriate query."""
         # always serialize these as their stripped down thumbnail reps
         return Response(status=status.HTTP_501_NOT_IMPLEMENTED, data={})
 
     @action(detail=False, methods=['get'])
-    def load_filter(self, request, project_pk):
+    def aggregate(self, request, project_pk):
         """Takes a filter object and runs the aggregation to populate the UI"""
         filter_service = FilterService()
         filter = filter_service.get_filter_from_request(request)

@@ -260,7 +260,7 @@ class BaseFiltersTestCase(object):
 class TestQueryFilters(BaseFiltersTestCase):
 
     def test_get(self, login, api_client, project):
-        response = api_client.get(reverse('search-query-filters', kwargs={'project_pk': project.id}))
+        response = api_client.get(reverse('search-query', kwargs={'project_pk': project.id}))
         content = check_response(response, status=status.HTTP_501_NOT_IMPLEMENTED)
 
 
@@ -288,7 +288,7 @@ class TestLoadFilter(BaseFiltersTestCase):
 
         monkeypatch.setattr(ZmlpClient, 'post', mock_response)
         monkeypatch.setattr(BaseFilter, '__init__', mock_init)
-        response = api_client.get(reverse('search-load-filter', kwargs={'project_pk': project.id}),
+        response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
                                   {'filter': range_load_qs})
         content = check_response(response, status=status.HTTP_200_OK)
         assert content['count'] == 24
@@ -296,13 +296,13 @@ class TestLoadFilter(BaseFiltersTestCase):
         assert content['results']['max'] == 64657027.0
 
     def test_get_missing_querystring(self, login, api_client, project, range_load_qs):
-        response = api_client.get(reverse('search-load-filter', kwargs={'project_pk': project.id}))
+        response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}))
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
         assert content['detail'] == 'No `filter` querystring included.'
 
     def test_get_bad_querystring_encoding(self, login, api_client, project, range_load_qs):
         range_load_qs = 'thisisnolongerencodedright' + range_load_qs.decode('utf-8')
-        response = api_client.get(reverse('search-load-filter', kwargs={'project_pk': project.id}),
+        response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
                                   {'filter': range_load_qs})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
         assert content['detail'] == 'Unable to decode `filter` querystring.'
@@ -310,7 +310,7 @@ class TestLoadFilter(BaseFiltersTestCase):
     def test_get_missing_filter_type(self, login, api_client, project, range_load):
         del(range_load['type'])
         encoded_filter = convert_json_to_base64(range_load)
-        response = api_client.get(reverse('search-load-filter', kwargs={'project_pk': project.id}),
+        response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
                                   {'filter': encoded_filter})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
         assert content['detail'] == 'Filter description is missing a `type`.'
@@ -318,7 +318,7 @@ class TestLoadFilter(BaseFiltersTestCase):
     def test_get_missing_filter_type(self, login, api_client, project, range_load):
         range_load['type'] = 'fake_type'
         encoded_filter = convert_json_to_base64(range_load)
-        response = api_client.get(reverse('search-load-filter', kwargs={'project_pk': project.id}),
+        response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
                                   {'filter': encoded_filter})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
         assert content['detail'] == 'Unsupported filter `fake_type` given.'
