@@ -10,17 +10,11 @@ import JsonDisplay from '../JsonDisplay'
 
 import MetadataPretty from './Pretty'
 
-const DISPLAY_OPTIONS = [
-  { value: 'pretty', name: 'PRETTY' },
-  {
-    value: 'rawJson',
-    name: 'RAW JSON',
-  },
-]
+const DISPLAY_OPTIONS = ['pretty', 'raw json']
 
 const MetadataContent = ({ projectId, assetId }) => {
   const [displayOption, setDisplayOption] = useLocalStorage({
-    key: 'displayOption',
+    key: 'metadataFormat',
     initialValue: 'pretty',
   })
 
@@ -62,7 +56,7 @@ const MetadataContent = ({ projectId, assetId }) => {
             borderRadius: constants.borderRadius.small,
           }}
         >
-          {DISPLAY_OPTIONS.map(({ value, name }) => (
+          {DISPLAY_OPTIONS.map((value) => (
             <Button
               key={value}
               style={{
@@ -82,11 +76,12 @@ const MetadataContent = ({ projectId, assetId }) => {
                 ':hover': {
                   color: colors.structure.white,
                 },
+                textTransform: 'uppercase',
               }}
               variant={VARIANTS.NEUTRAL}
               onClick={() => setDisplayOption({ value })}
             >
-              {name}
+              {value}
             </Button>
           ))}
         </div>
@@ -94,7 +89,7 @@ const MetadataContent = ({ projectId, assetId }) => {
 
       {displayOption === 'pretty' && <MetadataPretty asset={asset} />}
 
-      {displayOption === 'rawJson' && (
+      {displayOption === 'raw json' && (
         <div
           css={{
             height: '100%',

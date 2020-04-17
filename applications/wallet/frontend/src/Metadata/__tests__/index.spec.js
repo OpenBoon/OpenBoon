@@ -44,7 +44,7 @@ describe('<Metadata />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
-      component.root.findByProps({ children: 'RAW JSON' }).props.onClick()
+      component.root.findByProps({ children: 'raw json' }).props.onClick()
     })
 
     expect(component.toJSON()).toMatchSnapshot()
