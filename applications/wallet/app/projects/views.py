@@ -14,7 +14,8 @@ from rest_framework.viewsets import ViewSet, GenericViewSet
 from zmlp import ZmlpClient
 from zmlp.client import ZmlpNotFoundException
 
-from apikeys.utils import create_zmlp_api_key, decode_apikey
+from wallet.utils import convert_base64_to_json
+from apikeys.utils import create_zmlp_api_key
 from projects.clients import ZviClient
 from projects.models import Membership, Project
 from projects.permissions import ManagerUserPermissions
@@ -473,7 +474,7 @@ class ProjectUserViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
                             status=status.HTTP_400_BAD_REQUEST)
         membership = self.get_object(pk, project_pk)
         email = membership.user.username
-        apikey = decode_apikey(membership.apikey)
+        apikey = convert_base64_to_json(membership.apikey)
         apikey_id = apikey['id']
         apikey_name = apikey.get('name')
         if apikey_name == 'admin-key':
@@ -516,7 +517,7 @@ class ProjectUserViewSet(ConvertCamelToSnakeViewSetMixin, BaseProjectViewSet):
         # Delete Users Apikey
         apikey_readable = True
         try:
-            key_data = decode_apikey(apikey)
+            key_data = convert_base64_to_json(apikey)
             apikey_id = key_data['id']
         except (ValueError, KeyError):
             logger.warning(f'Unable to decode apikey during delete for user {membership.user.id}.')
