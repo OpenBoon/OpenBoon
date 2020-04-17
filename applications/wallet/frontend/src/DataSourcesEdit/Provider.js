@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, constants } from '../Styles'
 
-import Accordion from '../Accordion'
+import Accordion, { VARIANTS } from '../Accordion'
 import CheckboxTable from '../Checkbox/Table'
 
 const IMG_HEIGHT = 32
@@ -15,6 +15,7 @@ const DataSourcesEditProvider = ({
 }) => {
   return (
     <Accordion
+      variant={VARIANTS.PRIMARY}
       title={<img src={logo} alt={name} height={IMG_HEIGHT} />}
       isInitiallyOpen
     >
