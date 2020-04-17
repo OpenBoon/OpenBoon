@@ -74,6 +74,19 @@ interface ProjectStorageService {
         )
     }
 
+    /**
+     * Log the storage of a file.
+     */
+    fun logDeleteEvent(locator: ProjectStorageLocator) {
+        logger.event(
+            LogObject.PROJECT_STORAGE, LogAction.DELETE,
+            mapOf(
+                "fileId" to locator.getFileId(),
+                "filePath" to locator.getPath()
+            )
+        )
+    }
+
     companion object {
         val logger = LoggerFactory.getLogger(ProjectStorageService::class.java)
     }

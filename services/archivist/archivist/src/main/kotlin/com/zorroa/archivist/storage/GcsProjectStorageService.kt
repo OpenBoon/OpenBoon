@@ -85,7 +85,10 @@ class GcsProjectStorageService constructor(
 
     override fun delete(locator: ProjectStorageLocator) {
         val blobId = getBlobId(locator)
-        gcs.delete(blobId)
+        blobId.let {
+            gcs.delete(it)
+            logDeleteEvent(locator)
+        }
     }
 
     fun getBlobId(locator: ProjectStorageLocator): BlobId {
