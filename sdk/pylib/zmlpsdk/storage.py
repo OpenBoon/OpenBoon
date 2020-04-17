@@ -8,8 +8,7 @@ import urllib
 from pathlib import Path
 from urllib.parse import urlparse
 
-from zmlp import app_from_env, Asset, StoredFile
-from zmlp.exception import ZmlpException
+from zmlp import app_from_env, Asset, StoredFile, ZmlpException
 from .base import ZmlpEnv
 from .cloud import get_cached_google_storage_client, get_pipeline_storage_client, \
     get_cached_aws_client, get_cached_azure_storage_client

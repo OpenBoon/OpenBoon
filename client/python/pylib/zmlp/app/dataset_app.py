@@ -1,4 +1,4 @@
-from ..dataset import DataSet
+from ..entity import DataSet
 
 
 class DataSetApp:

@@ -1,7 +1,6 @@
 import unittest
 
-from zmlp import Asset
-from zmlp.datasource import DataSource
+from zmlp import Asset, DataSource
 from zmlp.client import SearchResult, to_json
 
 

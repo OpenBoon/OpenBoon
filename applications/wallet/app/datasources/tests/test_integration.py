@@ -6,7 +6,7 @@ from django.urls import reverse
 from zmlp import ZmlpClient
 from zmlp.app import DataSourceApp
 from zmlp.client import ZmlpDuplicateException
-from zmlp.datasource import DataSource
+from zmlp import DataSource
 
 pytestmark = pytest.mark.django_db
 

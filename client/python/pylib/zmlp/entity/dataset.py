@@ -1,4 +1,10 @@
-from .entity import BaseEntity
+from .base import BaseEntity
+
+__all__ = [
+    'DataSet',
+    'DataSetLabel',
+    'DataSetType'
+]
 
 
 class DataSet(BaseEntity):
