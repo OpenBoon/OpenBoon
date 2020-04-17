@@ -56,9 +56,9 @@ interface ProjectStorageService {
     fun getNativeUri(locator: ProjectStorageLocator): String
 
     /**
-     * Delete File from storage server
+     * Delete all associated Asset files from storage server
      */
-    fun delete(locator: ProjectStorageLocator)
+    fun deleteAsset(id: String)
 
     /**
      * Log the storage of a file.
@@ -77,12 +77,11 @@ interface ProjectStorageService {
     /**
      * Log the storage of a file.
      */
-    fun logDeleteEvent(locator: ProjectStorageLocator) {
+    fun logDeleteEvent(assetPath: String) {
         logger.event(
             LogObject.PROJECT_STORAGE, LogAction.DELETE,
             mapOf(
-                "fileId" to locator.getFileId(),
-                "filePath" to locator.getPath()
+                "assetPath" to assetPath
             )
         )
     }

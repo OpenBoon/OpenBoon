@@ -28,7 +28,7 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         assertEquals(result.size, 4)
         assertEquals(result.mimetype, "image/jpeg")
         assertEquals(result.attrs, mapOf("cats" to 100))
-        projectStorageService.delete(loc)
+        projectStorageService.deleteAsset(loc.id)
     }
 
     @Test(expected = AmazonS3Exception::class)
@@ -36,8 +36,9 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         val loc = AssetFileLocator("1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         val result = projectStorageService.store(spec)
-        projectStorageService.delete(loc)
+        projectStorageService.deleteAsset(loc.id)
 
+        //Throws AmazonS3Exception
         projectStorageService.fetch(loc)
     }
 
@@ -49,7 +50,7 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         val result = projectStorageService.store(spec)
         val bytes = projectStorageService.fetch(loc)
         assertEquals(result.size, bytes.size.toLong())
-        projectStorageService.delete(loc)
+        projectStorageService.deleteAsset(loc.id)
     }
 
     @Test
@@ -61,6 +62,6 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         val entity = projectStorageService.stream(loc)
         val value = String(entity.body.inputStream.readBytes())
         assertEquals("test", value)
-        projectStorageService.delete(loc)
+        projectStorageService.deleteAsset(loc.id)
     }
 }

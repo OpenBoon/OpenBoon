@@ -409,14 +409,7 @@ class AssetServiceImpl : AssetService {
     }
 
     override fun deleteAssociatedFilesByAssetId(id: String) {
-        val asset = getAsset(id)
-
-        val locator = AssetFileLocator(
-            id, ProjectStorageCategory.SOURCE,
-            asset.getAttr("source.filename", String::class.java) as String
-        )
-
-        projectStorageService.delete(locator)
+        projectStorageService.deleteAsset(id)
     }
 
     override fun deleteByQuery(req: Map<String, Any>): BulkByScrollResponse {

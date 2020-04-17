@@ -9,7 +9,6 @@ import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.amazonaws.services.s3.model.AmazonS3Exception
-import com.amazonaws.services.s3.model.DeleteObjectRequest
 import com.amazonaws.services.s3.model.GetObjectRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
@@ -18,6 +17,7 @@ import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.ProjectStorageLocator
 import com.zorroa.archivist.domain.ProjectStorageSpec
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.zmlp.util.Json
 import java.util.concurrent.TimeUnit
@@ -131,13 +131,11 @@ class AwsProjectStorageService constructor(
         return "s3://${properties.bucket}/${locator.getPath()}"
     }
 
-    override fun delete(locator: ProjectStorageLocator) {
+    override fun deleteAsset(id: String) {
         try {
-            if (s3Client.doesObjectExist(properties.bucket, locator.getPath())) {
-                val s3Object = s3Client.getObject(GetObjectRequest(properties.bucket, locator.getPath()))
-                var obj = DeleteObjectRequest(properties.bucket, s3Object.key)
-                s3Client.deleteObject(obj)
-                logDeleteEvent(locator)
+            val assetPath = "/projects/${getProjectId()}/${id}"
+            s3Client.listObjects(properties.bucket, assetPath).objectSummaries.forEach{
+                s3Client.deleteObject(properties.bucket, it.key)
             }
         } catch (ex: AmazonS3Exception) {
             throw ArchivistException(ex)
