@@ -414,12 +414,20 @@ class AssetServiceImpl : AssetService {
 
     override fun deleteByQuery(req: Map<String, Any>): BulkByScrollResponse {
         val rest = indexRoutingService.getProjectRestClient()
+        val search = assetSearchService.search(req)
 
-        return rest.client.deleteByQuery(
+        val deleteByQuery = rest.client.deleteByQuery(
             DeleteByQueryRequest(rest.route.indexName)
-                .setQuery(assetSearchService.mapToSearchSourceBuilder(
-                    req).query()), RequestOptions.DEFAULT
+                .setQuery(
+                    assetSearchService.mapToSearchSourceBuilder(
+                        req
+                    ).query()
+                ), RequestOptions.DEFAULT
         )
+
+        search.hits.hits.forEach { projectStorageService.deleteAsset(it.id) }
+
+        return deleteByQuery
     }
 
     /**
