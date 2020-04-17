@@ -51,7 +51,7 @@ export const onSubmit = async ({
         credentials: Object.keys(parsedCredentials).length
           ? { type: source, ...parsedCredentials }
           : {},
-        fileTypes: Object.keys(fileTypes),
+        fileTypes: Object.keys(fileTypes).filter((f) => fileTypes[f]),
         modules: Object.keys(modules).filter((m) => modules[m]),
       }),
     })

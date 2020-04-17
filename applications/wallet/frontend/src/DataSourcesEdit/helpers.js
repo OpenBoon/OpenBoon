@@ -36,7 +36,7 @@ export const onSubmit = async ({
           name,
           uri,
           credential,
-          fileTypes: Object.keys(fileTypes),
+          fileTypes: Object.keys(fileTypes).filter((f) => fileTypes[f]),
           modules: Object.keys(modules).filter((m) => modules[m]),
         }),
       },
