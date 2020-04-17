@@ -133,8 +133,8 @@ class AwsProjectStorageService constructor(
 
     override fun deleteAsset(id: String) {
         try {
-            val assetPath = "/projects/${getProjectId()}/${id}"
-            s3Client.listObjects(properties.bucket, assetPath).objectSummaries.forEach{
+            val assetPath = "/projects/${getProjectId()}/$id"
+            s3Client.listObjects(properties.bucket, assetPath).objectSummaries.forEach {
                 s3Client.deleteObject(properties.bucket, it.key)
             }
         } catch (ex: AmazonS3Exception) {

@@ -38,7 +38,7 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         val result = projectStorageService.store(spec)
         projectStorageService.deleteAsset(loc.id)
 
-        //Throws AmazonS3Exception
+        // Throws AmazonS3Exception
         projectStorageService.fetch(loc)
     }
 

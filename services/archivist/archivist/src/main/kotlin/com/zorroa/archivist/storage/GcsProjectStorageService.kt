@@ -85,8 +85,8 @@ class GcsProjectStorageService constructor(
     }
 
     override fun deleteAsset(id: String) {
-        val assetPath = "/projects/${getProjectId()}/${id}"
-        gcs.list(assetPath).values.forEach{
+        val assetPath = "/projects/${getProjectId()}/$id"
+        gcs.list(assetPath).values.forEach {
             gcs.delete(it.blobId)
         }
         logDeleteEvent(assetPath)
