@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from zmlp import ZmlpClient
 from zmlp.client import ZmlpDuplicateException, ZmlpInvalidRequestException
 
-from apikeys.utils import decode_apikey, encode_apikey
+from wallet.utils import convert_base64_to_json, convert_json_to_base64
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
 from projects.views import BaseProjectViewSet, ProjectUserViewSet
@@ -493,7 +493,7 @@ class TestProjectUserPost:
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_201_CREATED
         membership = Membership.objects.get(user=new_user, project=project)
-        decoded_apikey = decode_apikey(membership.apikey)
+        decoded_apikey = convert_base64_to_json(membership.apikey)
         assert decoded_apikey['secretKey'] == api_key['secretKey']
 
     @override_settings(PLATFORM='zmlp')
@@ -588,7 +588,7 @@ class TestProjectUserPost:
         assert response.status_code == status.HTTP_207_MULTI_STATUS
         # Verify at leaset one membership was created
         membership1 = Membership.objects.get(user=tester1, project=project)
-        decoded_apikey = decode_apikey(membership1.apikey)
+        decoded_apikey = convert_base64_to_json(membership1.apikey)
         assert decoded_apikey['permissions'] == ['AssetsRead']
         # Verify Individual response objects
         content = response.json()['results']
@@ -702,7 +702,7 @@ class TestProjectUserPut:
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
         old_data['permissions'] = ['AssetsWrite']
-        apikey = encode_apikey(data).decode('utf-8')
+        apikey = convert_json_to_base64(data).decode('utf-8')
         Membership.objects.create(user=new_user, project=project, apikey=apikey)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
@@ -712,7 +712,7 @@ class TestProjectUserPut:
                                                   'pk': new_user.id}), body)
         assert response.status_code == status.HTTP_200_OK
         membership = Membership.objects.get(user=new_user, project=project)
-        decoded_apikey = decode_apikey(membership.apikey)
+        decoded_apikey = convert_base64_to_json(membership.apikey)
         assert decoded_apikey['permissions'] == ['AssetsRead']
         assert membership.roles == ['User_Admin']
 
@@ -745,7 +745,7 @@ class TestProjectUserPut:
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
         old_data['permissions'] = ['AssetsWrite']
-        apikey = encode_apikey(data).decode('utf-8')
+        apikey = convert_json_to_base64(data).decode('utf-8')
         Membership.objects.create(user=new_user, project=project, apikey=apikey)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
@@ -778,7 +778,7 @@ class TestProjectUserPut:
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
         old_data['permissions'] = ['AssetsWrite']
-        apikey = encode_apikey(data).decode('utf-8')
+        apikey = convert_json_to_base64(data).decode('utf-8')
         Membership.objects.create(user=new_user, project=project, apikey=apikey)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
@@ -812,7 +812,7 @@ class TestProjectUserPut:
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com', 'letmein')  # noqa
         old_data = copy.deepcopy(data)
         old_data['permissions'] = ['AssetsWrite']
-        apikey = encode_apikey(data).decode('utf-8')
+        apikey = convert_json_to_base64(data).decode('utf-8')
         Membership.objects.create(user=new_user, project=project, apikey=apikey)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
@@ -830,7 +830,7 @@ class TestProjectUserPut:
 
         new_user = django_user_model.objects.create_user('tester@fake.com', 'tester@fake.com',
                                                          'letmein')  # noqa
-        apikey = encode_apikey(inception_key).decode('utf-8')
+        apikey = convert_json_to_base64(inception_key).decode('utf-8')
         Membership.objects.create(user=new_user, project=project, apikey=apikey)
         api_client.force_authenticate(zmlp_project_user)
         api_client.force_login(zmlp_project_user)
