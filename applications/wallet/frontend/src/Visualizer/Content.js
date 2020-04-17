@@ -18,7 +18,7 @@ const VisualizerContent = () => {
         marginLeft: -spacing.spacious,
         marginRight: -spacing.spacious,
         marginBottom: -spacing.spacious,
-        marginTop: spacing.hairline,
+        paddingTop: spacing.hairline,
         display: 'flex',
         flex: 1,
         flexDirection: 'column',
