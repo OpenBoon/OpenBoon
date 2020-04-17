@@ -1,11 +1,19 @@
 from datetime import datetime
-from.util import ObjectView
-from .entity import BaseEntity
+
+from .base import BaseEntity
+from ..util import ObjectView
+
+__all__ = [
+    'Job',
+    'Task',
+    'TaskError'
+]
 
 
 class Job(BaseEntity):
     """
-    A Job represents a background file import process.
+    A Job represents a backend data process.  Jobs are made up of Tasks
+    which are scheduled to execute on Analyst data processing nodes.
     """
 
     def __init__(self, data):
@@ -23,7 +31,7 @@ class Job(BaseEntity):
 
     @property
     def paused(self):
-        """True if the job is paused."""
+        """True if the Job is paused."""
         return self._data['paused']
 
     @property
@@ -49,15 +57,17 @@ class Job(BaseEntity):
 
     @property
     def asset_counts(self):
+        """Asset counts for the Job"""
         return ObjectView(self._data['assetCounts'])
 
     @property
     def task_counts(self):
+        """Task counts for the Job"""
         return ObjectView(self._data['taskCounts'])
 
     @property
     def time_modified(self):
-        """The date/time the entity was modified."""
+        """The date/time the Job was modified."""
         return datetime.fromtimestamp(self._data['timeUpdated'] / 1000.0)
 
 
@@ -71,13 +81,18 @@ class Task(BaseEntity):
 
     @property
     def job_id(self):
-        """The DataSource Id if any """
-        return self._data.get('datasourceId')
+        """The Job Id"""
+        return self._data['jobId']
 
     @property
     def name(self):
         """The name of the Task"""
         return self._data['name']
+
+    @property
+    def state(self):
+        """The name of the Task"""
+        return self._data['state']
 
     @property
     def time_started(self):
@@ -102,6 +117,11 @@ class Task(BaseEntity):
             return None
         else:
             return datetime.fromtimestamp(self._data['timePing'] / 1000.0)
+
+    @property
+    def time_modified(self):
+        """The date/time the Job was modified."""
+        return self.time_pinged
 
     @property
     def asset_counts(self):
@@ -175,4 +195,3 @@ class TaskError:
     def stack_trace(self):
         """Full stack trace from the error, if any."""
         return self._data['stackTrace']
-

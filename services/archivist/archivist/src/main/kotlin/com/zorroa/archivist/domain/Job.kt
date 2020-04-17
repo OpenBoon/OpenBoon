@@ -253,7 +253,7 @@ class JobFilter(
             addToValues(it)
         }
 
-        ids?.let {
+        datasourceIds?.let {
             addToWhere(JdbcUtils.inClause("job.pk_datasource", it.size))
             addToValues(it)
         }
