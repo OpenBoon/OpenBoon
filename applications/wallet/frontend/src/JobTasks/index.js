@@ -21,7 +21,7 @@ const JobTasks = () => {
         'Description',
         'Duration',
         'Assets',
-        'Updated',
+        'Started',
         'Errors',
       ]}
       expandColumn={3}
