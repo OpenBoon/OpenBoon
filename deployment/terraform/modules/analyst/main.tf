@@ -103,6 +103,10 @@ resource "kubernetes_deployment" "analyst" {
             name  = "ANALYST_SHAREDKEY"
             value = "QjZEQzRDQTgtOUUwRC00NUE1LUFCNjktRUYwQTA4ODc4MTM3Cg"
           }
+          env {
+            name = "OFFICER_URL"
+            value = var.officer-url
+          }
           liveness_probe {
             initial_delay_seconds = 120
             period_seconds        = 5

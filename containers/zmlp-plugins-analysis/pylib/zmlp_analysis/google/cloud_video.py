@@ -201,7 +201,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         operation = self.video_intel_client.annotate_video(input_uri=uri, features=features)
         while not operation.done():
             logger.info("Waiting on Google Visual Intelligence {}".format(uri))
-            time.sleep(1)
+            time.sleep(0.5)
 
         res = operation.result()
         return res.annotation_results[0]

@@ -144,6 +144,7 @@ services:
       ANALYST_DOCKER_PULL: "false"
       ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
       ZMLP_SERVER: http://archivist:8080
+      OFFICER_URL: http://localhost
 
   # Console web application.
   wallet:
