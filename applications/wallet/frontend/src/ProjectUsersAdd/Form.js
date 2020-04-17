@@ -10,6 +10,7 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
+import { spacing } from '../Styles'
 
 import { onSubmit } from './helpers'
 
@@ -51,17 +52,25 @@ const ProjectUsersAddForm = () => {
 
   return (
     <div>
+      {!!state.errors.global && (
+        <div
+          css={{
+            display: 'flex',
+            paddingTop: spacing.base,
+            paddingBottom: spacing.base,
+          }}
+        >
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+            {state.errors.global}
+          </FlashMessage>
+        </div>
+      )}
+
       <SectionTitle>Add User(s) to Project</SectionTitle>
 
       <ProjectUsersAddCopyLink />
 
       <Form>
-        {!!state.errors.global && (
-          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-            {state.errors.global}
-          </FlashMessage>
-        )}
-
         <Input
           autoFocus
           id="emails"

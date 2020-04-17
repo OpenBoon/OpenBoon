@@ -19,9 +19,16 @@ const AccountPasswordNotice = () => {
   } = useContext(UserContext)
 
   return (
-    <div css={{ paddingTop: spacing.normal, paddingLeft: spacing.giant }}>
+    <div
+      css={{
+        paddingTop: spacing.comfy,
+        paddingLeft: spacing.giant,
+      }}
+    >
       {error && (
-        <FlashMessage variant={FLASH_VARIANTS.ERROR}>{error}</FlashMessage>
+        <div css={{ display: 'flex', paddingBottom: spacing.moderate }}>
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>{error}</FlashMessage>
+        </div>
       )}
       <div
         css={{

@@ -39,9 +39,16 @@ const ResetPasswordRequest = () => {
       </div>
 
       {!!state.error && (
-        <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-          {state.error}
-        </FlashMessage>
+        <div
+          css={{
+            paddingTop: spacing.normal,
+            paddingBottom: spacing.moderate,
+          }}
+        >
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+            {state.error}
+          </FlashMessage>
+        </div>
       )}
 
       <Input

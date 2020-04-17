@@ -21,7 +21,6 @@ Array [
   display: -ms-flexbox;
   display: flex;
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-1 {
@@ -43,7 +42,7 @@ Array [
   -ms-flex: 1;
   flex: 1;
   padding-left: 12px;
-  color: #000000;
+  color: #191919;
   font-weight: 500;
 }
 
@@ -62,7 +61,7 @@ Array [
         className="emotion-0"
         role="alert"
       >
-        User Roles Saved
+        User roles saved.
       </div>
     </div>
   </div>,
@@ -906,7 +905,6 @@ Array [
   display: -ms-flexbox;
   display: flex;
   padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-1 {
@@ -928,7 +926,7 @@ Array [
   -ms-flex: 1;
   flex: 1;
   padding-left: 12px;
-  color: #000000;
+  color: #191919;
   font-weight: 500;
 }
 
@@ -947,7 +945,7 @@ Array [
         className="emotion-0"
         role="alert"
       >
-        User Roles Saved
+        User roles saved.
       </div>
     </div>
   </div>,

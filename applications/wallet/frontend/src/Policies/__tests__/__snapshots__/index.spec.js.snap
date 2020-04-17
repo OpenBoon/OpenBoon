@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Policies /> should render properly 1`] = `
-.emotion-19 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -20,7 +20,7 @@ exports[`<Policies /> should render properly 1`] = `
   height: 100vh;
 }
 
-.emotion-18 {
+.emotion-17 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -48,7 +48,7 @@ exports[`<Policies /> should render properly 1`] = `
   padding-top: 32px;
 }
 
-.emotion-15 {
+.emotion-14 {
   text-align: center;
   display: -webkit-box;
   display: -webkit-flex;
@@ -63,21 +63,21 @@ exports[`<Policies /> should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-6 {
+.emotion-5 {
   margin: 0;
   padding-top: 32px;
   color: #b3b3b3;
 }
 
-.emotion-6 a {
+.emotion-5 a {
   color: #73b61c;
 }
 
-.emotion-14 {
+.emotion-13 {
   padding-top: 16px;
 }
 
-.emotion-13 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -91,7 +91,7 @@ exports[`<Policies /> should render properly 1`] = `
   padding-left: 0;
 }
 
-.emotion-10 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -99,7 +99,7 @@ exports[`<Policies /> should render properly 1`] = `
   position: relative;
 }
 
-.emotion-9 {
+.emotion-8 {
   position: absolute;
   top: 0;
   left: 0;
@@ -120,7 +120,7 @@ exports[`<Policies /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-12 {
+.emotion-11 {
   padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -131,14 +131,14 @@ exports[`<Policies /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-11 {
+.emotion-10 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-17 {
+.emotion-16 {
   padding-top: 16px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -150,7 +150,7 @@ exports[`<Policies /> should render properly 1`] = `
   justify-content: center;
 }
 
-.emotion-7 {
+.emotion-6 {
   margin: 0;
   padding: 0;
   width: 20px;
@@ -162,13 +162,13 @@ exports[`<Policies /> should render properly 1`] = `
   cursor: pointer;
 }
 
-.emotion-8 path {
+.emotion-7 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 100;
 }
 
-.emotion-16 {
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -200,40 +200,31 @@ exports[`<Policies /> should render properly 1`] = `
   background-color: transparent;
 }
 
-.emotion-16:hover {
+.emotion-15:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-16[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-16,
-.emotion-16:hover,
-.emotion-16:visited {
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
   background-color: #73b61c;
 }
 
-.emotion-16:hover {
+.emotion-15:hover {
   background-color: #96c955;
 }
 
-.emotion-16[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-5 {
-  padding-top: 32px;
-}
-
 .emotion-4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 32px;
 }
 
 .emotion-3 {
@@ -255,15 +246,15 @@ exports[`<Policies /> should render properly 1`] = `
   -ms-flex: 1;
   flex: 1;
   padding-left: 12px;
-  color: #000000;
+  color: #191919;
   font-weight: 500;
 }
 
 <div
-  className="emotion-19"
+  className="emotion-18"
 >
   <form
-    className="emotion-18"
+    className="emotion-17"
     method="post"
     onSubmit={[Function]}
   >
@@ -278,33 +269,29 @@ exports[`<Policies /> should render properly 1`] = `
       Terms of Use and Privacy Policy
     </h3>
     <div
-      className="emotion-5"
+      className="emotion-4"
     >
       <div
-        className="emotion-4"
+        className="emotion-3"
       >
+        <svg
+          color="#c92300"
+          data-file-name="warning.svg"
+          height={20}
+        />
         <div
-          className="emotion-3"
+          className="emotion-2"
+          role="alert"
         >
-          <svg
-            color="#c92300"
-            data-file-name="warning.svg"
-            height={20}
-          />
-          <div
-            className="emotion-2"
-            role="alert"
-          >
-            Something went wrong. Please try again.
-          </div>
+          Something went wrong. Please try again.
         </div>
       </div>
     </div>
     <div
-      className="emotion-15"
+      className="emotion-14"
     >
       <p
-        className="emotion-6"
+        className="emotion-5"
       >
         By accepting and clicking the "Continue" button you confirm that you have read and agree with Zorroa’s
          
@@ -328,36 +315,36 @@ exports[`<Policies /> should render properly 1`] = `
         .
       </p>
       <div
-        className="emotion-14"
+        className="emotion-13"
       >
         <label
-          className="emotion-13"
+          className="emotion-12"
         >
           <div
-            className="emotion-10"
+            className="emotion-9"
           >
             <input
-              className="emotion-7"
+              className="emotion-6"
               defaultChecked={true}
               onClick={[Function]}
               type="checkbox"
               value="isChecked"
             />
             <div
-              className="emotion-9"
+              className="emotion-8"
             >
               <svg
-                className="emotion-8"
+                className="emotion-7"
                 data-file-name="checkmark.svg"
                 width={20}
               />
             </div>
           </div>
           <div
-            className="emotion-12"
+            className="emotion-11"
           >
             <span
-              className="emotion-11"
+              className="emotion-10"
             >
               Accept
             </span>
@@ -366,10 +353,10 @@ exports[`<Policies /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-17"
+      className="emotion-16"
     >
       <button
-        className="emotion-16"
+        className="emotion-15"
         onClick={[Function]}
         type="submit"
       >

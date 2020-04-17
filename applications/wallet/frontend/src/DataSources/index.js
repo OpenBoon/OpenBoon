@@ -5,6 +5,7 @@ import PageTitle from '../PageTitle'
 import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
+import { spacing } from '../Styles'
 
 import DataSourcesRow from './Row'
 
@@ -22,15 +23,19 @@ const DataSources = () => {
       <PageTitle>Data Sources</PageTitle>
 
       {action === 'add-datasource-success' && (
-        <FlashMessage variant={VARIANTS.SUCCESS}>
-          Data Source Created
-        </FlashMessage>
+        <div css={{ display: 'flex', paddingTop: spacing.base }}>
+          <FlashMessage variant={VARIANTS.SUCCESS}>
+            Data source created.
+          </FlashMessage>
+        </div>
       )}
 
       {action === 'edit-datasource-success' && (
-        <FlashMessage variant={VARIANTS.SUCCESS}>
-          Data Source Edited
-        </FlashMessage>
+        <div css={{ display: 'flex', paddingTop: spacing.base }}>
+          <FlashMessage variant={VARIANTS.SUCCESS}>
+            Data source edited.
+          </FlashMessage>
+        </div>
       )}
 
       <Tabs

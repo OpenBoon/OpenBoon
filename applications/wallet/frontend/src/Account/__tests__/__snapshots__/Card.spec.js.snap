@@ -856,13 +856,13 @@ exports[`<AccountCard /> should render properly with no modules 1`] = `
 `;
 
 exports[`<AccountCard /> should render properly with over usage 1`] = `
-.emotion-35 {
+.emotion-34 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-34 {
+.emotion-33 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -968,21 +968,21 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   background-color: #808080;
 }
 
-.emotion-33 {
+.emotion-32 {
   padding: 32px;
 }
 
-.emotion-11 {
+.emotion-10 {
   padding-bottom: 24px;
   font-size: 15px;
   line-height: 19px;
 }
 
-.emotion-18 {
+.emotion-9 {
   padding-bottom: 16px;
 }
 
-.emotion-12 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -993,11 +993,11 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   align-items: center;
 }
 
-.emotion-12 img {
+.emotion-11 img {
   margin-right: 12px;
 }
 
-.emotion-17 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1008,56 +1008,42 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   padding-left: 44px;
 }
 
-.emotion-14 {
+.emotion-13 {
   color: #b3b3b3;
   padding-bottom: 2px;
 }
 
-.emotion-13 {
+.emotion-12 {
   font-weight: 700;
 }
 
-.emotion-16 {
+.emotion-15 {
   color: #cdf6a8;
 }
 
-.emotion-25 {
+.emotion-24 {
   padding-top: 16px;
   padding-bottom: 16px;
 }
 
-.emotion-32 {
+.emotion-31 {
   padding-top: 16px;
 }
 
-.emotion-26 {
+.emotion-25 {
   padding-bottom: 4px;
 }
 
-.emotion-31 {
+.emotion-30 {
   padding: 0;
   margin: 0;
   list-style: none;
 }
 
-.emotion-27 {
+.emotion-26 {
   font-family: Roboto Mono;
   color: #b3b3b3;
   padding-bottom: 2px;
-}
-
-.emotion-10 {
-  margin-top: -16px;
-  margin-bottom: 16px;
-}
-
-.emotion-9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 .emotion-8 {
@@ -1079,7 +1065,7 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
   -ms-flex: 1;
   flex: 1;
   padding-left: 12px;
-  color: #000000;
+  color: #191919;
   font-weight: 500;
 }
 
@@ -1088,10 +1074,10 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
 }
 
 <div
-  className="emotion-35"
+  className="emotion-34"
 >
   <div
-    className="emotion-34"
+    className="emotion-33"
   >
     <div
       className="emotion-5"
@@ -1126,58 +1112,54 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
       </div>
     </div>
     <div
-      className="emotion-33"
+      className="emotion-32"
     >
       <div
-        className="emotion-10"
+        className="emotion-9"
       >
         <div
-          className="emotion-9"
+          className="emotion-8"
         >
+          <svg
+            color="#c92300"
+            data-file-name="warning.svg"
+            height={20}
+          />
           <div
-            className="emotion-8"
+            className="emotion-7"
+            role="alert"
           >
-            <svg
-              color="#c92300"
-              data-file-name="warning.svg"
-              height={20}
-            />
             <div
-              className="emotion-7"
-              role="alert"
+              className="emotion-6"
             >
-              <div
-                className="emotion-6"
-              >
-                You are
-                 
-                <strong>
-                  20
-                   hours over
-                </strong>
-                 your video plan
-                 and 
-                <strong>
-                  40
-                   assets over
-                </strong>
-                 your image & documents plan
-                . Contact your Account Manager to add more resources.
-              </div>
+              You are
+               
+              <strong>
+                20
+                 hours over
+              </strong>
+               your video plan
+               and 
+              <strong>
+                40
+                 assets over
+              </strong>
+               your image & documents plan
+              . Contact your Account Manager to add more resources.
             </div>
           </div>
         </div>
       </div>
       <h3
-        className="emotion-11"
+        className="emotion-10"
       >
         Usage Plan:
       </h3>
       <div
-        className="emotion-18"
+        className="emotion-9"
       >
         <h4
-          className="emotion-12"
+          className="emotion-11"
         >
           <img
             alt=""
@@ -1190,27 +1172,27 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
            hours
         </h4>
         <div
-          className="emotion-17"
+          className="emotion-16"
         >
           <div
-            className="emotion-14"
+            className="emotion-13"
           >
             Used:
              
             <span
-              className="emotion-13"
+              className="emotion-12"
             >
               320
               /hrs
             </span>
           </div>
           <div
-            className="emotion-16"
+            className="emotion-15"
           >
             Available:
              
             <span
-              className="emotion-13"
+              className="emotion-12"
             >
               -20
               /hrs
@@ -1219,10 +1201,10 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
         </div>
       </div>
       <div
-        className="emotion-25"
+        className="emotion-24"
       >
         <h4
-          className="emotion-12"
+          className="emotion-11"
         >
           <img
             alt=""
@@ -1233,27 +1215,27 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
           30,000
         </h4>
         <div
-          className="emotion-17"
+          className="emotion-16"
         >
           <div
-            className="emotion-14"
+            className="emotion-13"
           >
             Used:
              
             <span
-              className="emotion-13"
+              className="emotion-12"
             >
               30,040
               
             </span>
           </div>
           <div
-            className="emotion-16"
+            className="emotion-15"
           >
             Available:
              
             <span
-              className="emotion-13"
+              className="emotion-12"
             >
               -40
               
@@ -1262,33 +1244,33 @@ exports[`<AccountCard /> should render properly with over usage 1`] = `
         </div>
       </div>
       <div
-        className="emotion-32"
+        className="emotion-31"
       >
         <h4
-          className="emotion-26"
+          className="emotion-25"
         >
           Additional Modules:
         </h4>
         <ul
-          className="emotion-31"
+          className="emotion-30"
         >
           <li
-            className="emotion-27"
+            className="emotion-26"
           >
             zmlp-classification
           </li>
           <li
-            className="emotion-27"
+            className="emotion-26"
           >
             zmlp-face-recognition
           </li>
           <li
-            className="emotion-27"
+            className="emotion-26"
           >
             shot-detection
           </li>
           <li
-            className="emotion-27"
+            className="emotion-26"
           >
             gcp-vision-text-detection
           </li>

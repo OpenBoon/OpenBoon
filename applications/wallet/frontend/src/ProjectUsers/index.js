@@ -5,6 +5,7 @@ import PageTitle from '../PageTitle'
 import FlashMessage, { VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
+import { spacing } from '../Styles'
 
 import ProjectUsersRow from './Row'
 
@@ -22,7 +23,16 @@ const ProjectUsers = () => {
       <PageTitle>Project User Admin</PageTitle>
 
       {action === 'edit-user-success' && (
-        <FlashMessage variant={VARIANTS.SUCCESS}>User Roles Saved</FlashMessage>
+        <div
+          css={{
+            display: 'flex',
+            paddingTop: spacing.base,
+          }}
+        >
+          <FlashMessage variant={VARIANTS.SUCCESS}>
+            User roles saved.
+          </FlashMessage>
+        </div>
       )}
 
       <Tabs

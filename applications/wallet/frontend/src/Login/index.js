@@ -45,7 +45,7 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
       {action === 'password-reset-request-success' && (
         <div css={{ paddingBottom: spacing.normal }}>
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Password Reset Email Sent
+            Password reset email sent.
           </FlashMessage>
         </div>
       )}
@@ -53,7 +53,7 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
       {action === 'password-reset-update-success' && (
         <div css={{ paddingBottom: spacing.normal }}>
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Password has been updated
+            Password has been updated.
           </FlashMessage>
         </div>
       )}
@@ -61,7 +61,7 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
       {action === 'create-account-success' && (
         <div css={{ paddingBottom: spacing.normal }}>
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Account created, please click the activation link in your email
+            Account created. Please click the activation link in your email.
           </FlashMessage>
         </div>
       )}
@@ -69,7 +69,7 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
       {action === 'account-activation-success' && (
         <div css={{ paddingBottom: spacing.normal }}>
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Account activated, please login now
+            Account activated. Please login now.
           </FlashMessage>
         </div>
       )}
@@ -108,9 +108,15 @@ const Login = ({ googleAuth, hasGoogleLoaded, errorMessage, onSubmit }) => {
         />
 
         {!!errorMessage && (
-          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-            {errorMessage}
-          </FlashMessage>
+          <div
+            css={{
+              paddingBottom: spacing.base,
+            }}
+          >
+            <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+              {errorMessage}
+            </FlashMessage>
+          </div>
         )}
 
         <Input

@@ -183,7 +183,7 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 }
 
 .emotion-24 {
-  padding-top: 16px;
+  padding-top: 24px;
   padding-left: 48px;
 }
 
@@ -411,7 +411,59 @@ exports[`<AccountPasswordForm /> should render properly 1`] = `
 `;
 
 exports[`<AccountPasswordForm /> should render properly 2`] = `
-.emotion-4 {
+Array [
+  .emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #d7f2de;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+}
+
+<div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#4ac565"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-0"
+        role="alert"
+      >
+        New password saved.
+      </div>
+    </div>
+  </div>,
+  .emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -420,12 +472,12 @@ exports[`<AccountPasswordForm /> should render properly 2`] = `
   padding-bottom: 16px;
 }
 
-.emotion-4 button,
-.emotion-4 a {
+.emotion-1 button,
+.emotion-1 a {
   margin-right: 16px;
 }
 
-.emotion-3 {
+.emotion-0 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -457,93 +509,41 @@ exports[`<AccountPasswordForm /> should render properly 2`] = `
   background-color: transparent;
 }
 
-.emotion-3:hover {
+.emotion-0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-0[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-3,
-.emotion-3:hover,
-.emotion-3:visited {
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
   background-color: #73b61c;
 }
 
-.emotion-3:hover {
+.emotion-0:hover {
   background-color: #96c955;
 }
 
-.emotion-3[aria-disabled=true] {
+.emotion-0[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.emotion-1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: flex-start;
-  -webkit-box-align: flex-start;
-  -ms-flex-align: flex-start;
-  align-items: flex-start;
-  background-color: #d7f2de;
-  border-radius: 2px;
-  padding: 12px;
-}
-
-.emotion-0 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding-left: 12px;
-  color: #000000;
-  font-weight: 500;
-}
-
-<div>
-  <div
-    className="emotion-2"
-  >
-    <div
-      className="emotion-1"
-    >
-      <svg
-        color="#4ac565"
-        data-file-name="checkmark.svg"
-        height={20}
-      />
-      <div
-        className="emotion-0"
-        role="alert"
-      >
-        New Password Saved
-      </div>
-    </div>
-  </div>
-  <div
-    className="emotion-4"
+<div
+    className="emotion-1"
   >
     <button
-      className="emotion-3"
+      className="emotion-0"
       onClick={[Function]}
       type="button"
     >
       Edit Password Again
     </button>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<AccountPasswordForm /> should render properly 3`] = `
@@ -729,7 +729,7 @@ exports[`<AccountPasswordForm /> should render properly 3`] = `
 }
 
 .emotion-24 {
-  padding-top: 16px;
+  padding-top: 24px;
   padding-left: 48px;
 }
 
@@ -1139,7 +1139,7 @@ exports[`<AccountPasswordForm /> should render properly when a user cancels 1`] 
 }
 
 .emotion-24 {
-  padding-top: 16px;
+  padding-top: 24px;
   padding-left: 48px;
 }
 

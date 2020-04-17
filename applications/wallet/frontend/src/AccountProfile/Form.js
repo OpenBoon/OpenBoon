@@ -38,9 +38,17 @@ const AccountProfileForm = () => {
   return (
     <>
       {state.success && !state.showForm && (
-        <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-          New Name Saved
-        </FlashMessage>
+        <div
+          css={{
+            display: 'flex',
+            paddingTop: spacing.base,
+            paddingBottom: spacing.base,
+          }}
+        >
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            New name saved.
+          </FlashMessage>
+        </div>
       )}
 
       <SectionTitle>{`Email: ${email}`}</SectionTitle>

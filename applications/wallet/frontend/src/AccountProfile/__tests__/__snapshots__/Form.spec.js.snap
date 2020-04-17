@@ -512,7 +512,7 @@ Array [
   -ms-flex: 1;
   flex: 1;
   padding-left: 12px;
-  color: #000000;
+  color: #191919;
   font-weight: 500;
 }
 
@@ -531,7 +531,7 @@ Array [
         className="emotion-0"
         role="alert"
       >
-        New Name Saved
+        New name saved.
       </div>
     </div>
   </div>,

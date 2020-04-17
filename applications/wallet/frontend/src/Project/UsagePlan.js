@@ -36,9 +36,7 @@ const ProjectUsagePlan = () => {
       content={
         <>
           {(videoOverTime > 1 || imageOverTime > 1) && (
-            <div
-              css={{ marginTop: -spacing.normal, marginBottom: spacing.normal }}
-            >
+            <div css={{ paddingBottom: spacing.comfy }}>
               <FlashMessage variant={VARIANTS.ERROR}>
                 <div css={{ fontWeight: typography.weight.regular }}>
                   You are{' '}
