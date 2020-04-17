@@ -302,7 +302,7 @@ class BaseProjectViewSet(ViewSet):
         """
         update_serializer = self.get_serializer(data=request.data)
         update_serializer.is_valid(raise_exception=True)
-        zmlp_response = request.client.put(f'{self.zmlp_root_api_path}{request.data["id"]}',
+        zmlp_response = request.client.put(f'{self.zmlp_root_api_path}{pk}',
                                            update_serializer.data)
         response_serializer = self.get_serializer(data=zmlp_response)
         if not response_serializer.is_valid():
