@@ -66,7 +66,6 @@ class BaseFilter(object):
         return {'count': count, 'results': data}
 
 
-
 class ExistsFilter(BaseFilter):
 
     type = 'exists'

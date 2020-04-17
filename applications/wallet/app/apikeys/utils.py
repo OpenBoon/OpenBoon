@@ -1,6 +1,7 @@
 import uuid
 from wallet.utils import convert_json_to_base64
 
+
 def create_zmlp_api_key(client, name, permissions, encode_b64=True, internal=False):
     """Creates an API key for ZMLP and returns it as a base64 encoded string.
 

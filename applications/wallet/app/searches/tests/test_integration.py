@@ -1,5 +1,3 @@
-import json
-import base64
 import pytest
 
 from django.urls import reverse
@@ -9,7 +7,7 @@ from searches.models import Search
 from searches.filters import BaseFilter
 from zmlp import ZmlpClient
 from wallet.tests.utils import check_response
-from wallet.utils import convert_base64_to_json, convert_json_to_base64
+from wallet.utils import convert_json_to_base64
 
 pytestmark = pytest.mark.django_db
 
@@ -261,7 +259,7 @@ class TestQueryFilters(BaseFiltersTestCase):
 
     def test_get(self, login, api_client, project):
         response = api_client.get(reverse('search-query', kwargs={'project_pk': project.id}))
-        content = check_response(response, status=status.HTTP_501_NOT_IMPLEMENTED)
+        check_response(response, status=status.HTTP_501_NOT_IMPLEMENTED)
 
 
 class TestLoadFilter(BaseFiltersTestCase):
@@ -274,11 +272,13 @@ class TestLoadFilter(BaseFiltersTestCase):
                     'hits': {'total': {'value': 24, 'relation': 'eq'},
                              'max_score': None,
                              'hits': []},
-                    'aggregations': {'stats#0d2a26ea-1006-4e75-8626-b81809a7a021': {'count': 24,
-                                                                                    'min': 7555.0,
-                                                                                    'max': 64657027.0,
-                                                                                    'avg': 5725264.875,
-                                                                                    'sum': 137406357.0}}}
+                    'aggregations': {
+                        'stats#0d2a26ea-1006-4e75-8626-b81809a7a021': {
+                            'count': 24,
+                            'min': 7555.0,
+                            'max': 64657027.0,
+                            'avg': 5725264.875,
+                            'sum': 137406357.0}}}
 
         def mock_init(*args, **kwargs):
             # Need to override the internally created name so we can parse our fake response

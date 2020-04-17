@@ -118,9 +118,3 @@ class FilterService(object):
             raise ParseError(detail=f'Unsupported filter `{filter_type}` given.')
 
         return Filter(raw_filter)
-
-
-
-
-
-

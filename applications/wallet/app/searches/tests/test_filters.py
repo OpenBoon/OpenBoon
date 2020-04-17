@@ -1,7 +1,8 @@
 import pytest
+
 from rest_framework.exceptions import ValidationError
 
-from searches.filters import *
+from searches.filters import BaseFilter, RangeFilter, ExistsFilter, FacetFilter
 
 
 class MockFilter(BaseFilter):
