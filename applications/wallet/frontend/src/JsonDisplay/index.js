@@ -17,8 +17,7 @@ const JsonDisplay = ({ json }) => (
 )
 
 JsonDisplay.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  json: PropTypes.object.isRequired,
+  json: PropTypes.shape({}).isRequired,
 }
 
 export default JsonDisplay

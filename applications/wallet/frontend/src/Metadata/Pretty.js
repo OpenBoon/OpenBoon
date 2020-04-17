@@ -1,47 +1,24 @@
-import Accordion, { VARIANTS } from '../Accordion'
+import assetShape from '../Asset/shape'
 
-const MetadataPretty = () => {
+import MetadataSection from './Section'
+
+const MetadataPretty = ({
+  asset: {
+    metadata: { system, source, media, clip },
+  },
+}) => {
   return (
-    <div css={{ height: '100%', overflow: 'auto' }}>
-      <Accordion
-        variant={VARIANTS.PANEL}
-        title="System"
-        isInitiallyOpen={false}
-      >
-        <div />
-      </Accordion>
-      <Accordion
-        variant={VARIANTS.PANEL}
-        title="Source"
-        isInitiallyOpen={false}
-      >
-        <div />
-      </Accordion>
-      <Accordion variant={VARIANTS.PANEL} title="Files" isInitiallyOpen={false}>
-        <div />
-      </Accordion>
-      <Accordion
-        variant={VARIANTS.PANEL}
-        title="Metrics"
-        isInitiallyOpen={false}
-      >
-        <div />
-      </Accordion>
-      <Accordion variant={VARIANTS.PANEL} title="Media" isInitiallyOpen={false}>
-        <div />
-      </Accordion>
-      <Accordion
-        variant={VARIANTS.PANEL}
-        title="Analysis"
-        isInitiallyOpen={false}
-      >
-        <div />
-      </Accordion>
-      <Accordion variant={VARIANTS.PANEL} title="Clip" isInitiallyOpen={false}>
-        <div />
-      </Accordion>
+    <div css={{ overflow: 'auto' }}>
+      <MetadataSection title="System" metadata={system} />
+      <MetadataSection title="Source" metadata={source} />
+      <MetadataSection title="Media" metadata={media} />
+      <MetadataSection title="Clip" metadata={clip} />
     </div>
   )
+}
+
+MetadataPretty.propTypes = {
+  asset: assetShape.isRequired,
 }
 
 export default MetadataPretty
