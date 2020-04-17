@@ -2,3 +2,4 @@ matplotlib
 numpy
 opencv_python
 streamlit
+cvlib
