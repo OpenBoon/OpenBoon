@@ -3,36 +3,56 @@ import PropTypes from 'prop-types'
 
 import { typography, colors, spacing, constants } from '../Styles'
 
-import Button, { VARIANTS } from '../Button'
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import ChevronSvg from '../Icons/chevron.svg'
 
 const CHEVRON_WIDTH = 20
 
-const Accordion = ({ title, children, isInitiallyOpen }) => {
+const STYLES = {
+  PRIMARY: {
+    wrapper: { paddingTop: spacing.normal },
+    backgroundColor: colors.structure.smoke,
+    boxShadow: constants.boxShadows.default,
+    verticalPadding: spacing.normal,
+  },
+  PANEL: {
+    wrapper: {},
+    backgroundColor: colors.structure.lead,
+    titleWeight: typography.weight.regular,
+    verticalPadding: spacing.moderate,
+  },
+}
+
+export const VARIANTS = Object.keys(STYLES).reduce(
+  (accumulator, style) => ({ ...accumulator, [style]: style }),
+  {},
+)
+
+const Accordion = ({ variant, title, children, isInitiallyOpen }) => {
   const [isOpen, setOpen] = useState(isInitiallyOpen)
 
   return (
-    <div css={{ paddingTop: spacing.normal }}>
+    <div css={STYLES[variant].wrapper}>
       <div
         css={{
-          backgroundColor: colors.structure.smoke,
+          backgroundColor: STYLES[variant].backgroundColor,
           borderRadius: constants.borderRadius.small,
-          boxShadow: constants.boxShadows.default,
+          boxShadow: STYLES[variant].boxShadow,
         }}
       >
         <div
           css={{
             borderBottom: constants.borders.tabs,
-            paddingTop: spacing.normal,
-            paddingBottom: spacing.normal,
+            paddingTop: STYLES[variant].verticalPadding,
+            paddingBottom: STYLES[variant].verticalPadding,
             paddingLeft: spacing.moderate,
             display: 'flex',
           }}
         >
           <Button
             aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
-            variant={VARIANTS.NEUTRAL}
+            variant={BUTTON_VARIANTS.NEUTRAL}
             onClick={() => setOpen(!isOpen)}
           >
             <ChevronSvg
@@ -53,6 +73,7 @@ const Accordion = ({ title, children, isInitiallyOpen }) => {
               paddingLeft: spacing.moderate,
               display: 'flex',
               alignItems: 'center',
+              fontWeight: STYLES[variant].titleWeight,
             }}
           >
             {title}
@@ -74,6 +95,7 @@ const Accordion = ({ title, children, isInitiallyOpen }) => {
 }
 
 Accordion.propTypes = {
+  variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   title: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired,
   isInitiallyOpen: PropTypes.bool.isRequired,
