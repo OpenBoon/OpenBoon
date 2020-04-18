@@ -27,3 +27,4 @@ holoviews
 tqdm
 MulticoreTSNE
 cvlib
+nltk
