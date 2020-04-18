@@ -14,7 +14,7 @@ from urllib.parse import urljoin
 import jwt
 import requests
 
-from .exception import ZmlpException
+from .entity.exception import ZmlpException
 
 logger = logging.getLogger(__name__)
 
@@ -225,7 +225,7 @@ class ZmlpClient(object):
          """
         return self._make_request('delete', path, body, is_json)
 
-    def iter_paged_results(self, url, req, maxitems, cls):
+    def iter_paged_results(self, url, req, limit, cls):
         """
         Handles paging through the results of the standard _search
         endpoints on the backend.
@@ -233,27 +233,27 @@ class ZmlpClient(object):
         Args:
             url (str): the URL to POST a search to
             req (object): the search request body
-            maxitems (int): the maximum items to return
+            limit (int): the maximum items to return, None for no limit.
             cls (type): the class to wrap each result in
 
         Yields:
             Generator
 
         """
-        left_to_return = maxitems or sys.maxsize
+        left_to_return = limit or sys.maxsize
         page = 0
         req["page"] = {}
         while True:
             if left_to_return < 1:
                 break
             page += 1
-            req["page"]["size"] = min(50, left_to_return)
+            req["page"]["size"] = min(100, left_to_return)
             req["page"]["from"] = (page - 1) * req["page"]["size"]
             rsp = self.post(url, req)
             if not rsp.get("list"):
                 break
             for f in rsp["list"]:
-                yield (cls(f))
+                yield cls(f)
                 left_to_return -= 1
             # Used to break before pulling new batch
             if rsp.get("break"):

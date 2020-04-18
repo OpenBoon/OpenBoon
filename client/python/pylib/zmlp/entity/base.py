@@ -7,6 +7,11 @@ class BaseEntity:
         self._data = data
 
     @property
+    def id(self):
+        """The id of the Entity"""
+        return self._data['id']
+
+    @property
     def time_created(self):
         """The date/time the entity was created."""
         return datetime.fromtimestamp(self._data['timeCreated'] / 1000.0)
@@ -25,3 +30,12 @@ class BaseEntity:
     def actor_modified(self):
         """The UUID of the actor that modified the entity."""
         return self._data['actorModified']
+
+    def __hash__(self):
+        return hash(self._data['id'])
+
+    def __eq__(self, other):
+        return self._data['id'] == getattr(other, 'id', None)
+
+    def __str__(self):
+        return "<{} id={}>".format(self.__class__.__name__, self.id)

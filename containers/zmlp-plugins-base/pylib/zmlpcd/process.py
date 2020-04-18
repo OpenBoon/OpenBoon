@@ -8,7 +8,7 @@ import threading
 import time
 from queue import Queue
 
-from zmlp.asset import Asset
+from zmlp import Asset
 from zmlpsdk import Frame, Context, ZmlpFatalProcessorException
 from .logs import AssetLogger
 

@@ -5,7 +5,7 @@ from functools import lru_cache
 
 from rest_framework.response import Response
 from zmlp.client import ZmlpDuplicateException
-from zmlp.datasource import DataSource
+from zmlp import DataSource
 
 from datasources.serializers import DataSourceSerializer, CreateDataSourceSerializer, \
     AzureCredentialSerializer, AwsCredentialSerializer, GcpCredentialSerializer

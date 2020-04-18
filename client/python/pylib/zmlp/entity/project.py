@@ -1,4 +1,8 @@
-from .entity import BaseEntity
+from .base import BaseEntity
+
+__all__ = [
+    'Project'
+]
 
 
 class Project(BaseEntity):

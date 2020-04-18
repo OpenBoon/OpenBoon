@@ -2,8 +2,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from zmlp import ZmlpClient, ZmlpApp
-from zmlp.dataset import DataSetType
+from zmlp import ZmlpClient, ZmlpApp, DataSetType
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
