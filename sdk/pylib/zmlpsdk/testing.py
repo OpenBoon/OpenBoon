@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 
 import requests
 
-from zmlp.asset import FileImport, Asset, StoredFile
+from zmlp import FileImport, Asset, StoredFile
 from zmlpsdk.base import Context, AssetProcessor, Generator, Argument, \
     ZmlpFatalProcessorException, ZmlpProcessorException
 

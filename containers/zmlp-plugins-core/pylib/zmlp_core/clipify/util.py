@@ -1,6 +1,6 @@
 from zmlpsdk.proxy import get_proxy_level_path
 from zmlpsdk.base import ExpandFrame
-from zmlp.asset import Clip, FileImport
+from zmlp import Clip, FileImport
 
 
 def check_video_clip_preconditions(asset):

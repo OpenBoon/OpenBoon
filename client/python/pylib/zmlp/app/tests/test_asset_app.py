@@ -7,10 +7,8 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp import Asset
-from zmlp import ZmlpClient, app_from_env
-from zmlp.asset import FileImport, FileUpload, StoredFile
-from zmlp.exception import ZmlpException
+from zmlp import Asset, ZmlpClient, app_from_env, \
+    FileImport, FileUpload, StoredFile, ZmlpException
 from .util import get_test_file
 
 

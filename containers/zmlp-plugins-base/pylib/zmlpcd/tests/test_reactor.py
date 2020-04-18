@@ -3,7 +3,7 @@ import unittest
 from zmlpcd.reactor import Reactor
 from zmlpsdk.base import ExpandFrame, Frame
 from zmlpsdk.testing import TestEventEmitter, TestAsset
-from zmlp.asset import FileImport
+from zmlp import FileImport
 
 
 class ReactorTests(unittest.TestCase):

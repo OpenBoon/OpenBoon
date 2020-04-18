@@ -2,16 +2,16 @@ import json
 import logging
 import os
 
-from .client import to_json
-from .util import as_collection
+from ..client import to_json
+from ..util import as_collection
 
 __all__ = [
-    "Asset",
-    "FileImport",
-    "FileUpload",
-    "Clip",
-    "StoredFile",
-    "FileTypes"
+    'Asset',
+    'FileImport',
+    'FileUpload',
+    'Clip',
+    'StoredFile',
+    'FileTypes'
 ]
 
 logger = logging.getLogger(__name__)

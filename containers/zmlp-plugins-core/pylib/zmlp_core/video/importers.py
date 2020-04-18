@@ -2,7 +2,7 @@ import tempfile
 import os
 from pathlib import Path
 
-from zmlp.asset import Clip
+from zmlp import Clip
 from zmlpsdk.storage import file_storage
 from zmlpsdk.base import AssetProcessor, ZmlpProcessorException, FileTypes, \
     ZmlpFatalProcessorException
