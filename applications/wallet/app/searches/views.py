@@ -62,13 +62,89 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
     @action(detail=False, methods=['get'])
     def query(self, request, project_pk):
-        """Accepts a request that includes filter objects and runs the appropriate query."""
+        """Takes a querystring and runs the query to filter the assets.
+
+        The querystring should be in the form
+
+            ?query=$base64_json_string
+
+        `query` is the querystring key. The value `$base64_json_string` is the JSON
+        representation of a list of Filter Objects. The encoded json body should match the
+        format:
+
+            [$filter1, $filter2, $filter3]
+
+        The JSON Filter Objects you can run queries for are:
+
+        Exists:
+
+            {
+                "type": "exists",
+                "attribute": "$metadata_attribute_dot_path",
+                "values": {
+                    "exists": $boolean
+                }
+            }
+
+        Range:
+
+            {
+                "type": "range",
+                "attribute": "$metadata_attribute_dot_path",
+                "values": {
+                    "min": $value,
+                    "max": $value
+                }
+            }
+
+        Facet:
+
+            {
+                "type": "facet",
+                "attribute": "$metadata_attribute_dot_path",
+                "values": {
+                    "facets": [$attibute_values_to_filter]
+                }
+            }
+        """
         # always serialize these as their stripped down thumbnail reps
         return Response(status=status.HTTP_501_NOT_IMPLEMENTED, data={})
 
     @action(detail=False, methods=['get'])
     def aggregate(self, request, project_pk):
-        """Takes a filter object and runs the aggregation to populate the UI"""
+        """Takes a filter querystring and runs the aggregation to populate that filter's UI.
+
+        The querystring should be in the form
+
+            ?filter=$base64_json_string
+
+        `filter` is the querystring key. The value `$base64_json_string` is the JSON
+        representation of the filter object, dumped to a string and then Base64 encoded.
+
+
+        The JSON Filter Objects you can run aggregations for are:
+
+        Range:
+
+            {
+                "type": "range",
+                "attribute": "$metadata_attribute_dot_path"
+            }
+
+        Facet:
+
+            {
+                "type": "facet",
+                "attribute": "$metadata_attribute_dot_path"
+            }
+
+        Facet aggregations can also be sorted and filtered with the additional
+        key/values:
+
+            "order": "asc" OR "desc"
+
+            "minimum_count": $integer
+        """
         filter_service = FilterService()
         filter = filter_service.get_filter_from_request(request)
         filter.is_valid(raise_exception=True)
