@@ -3,7 +3,7 @@ const dataSource = {
   projectId: '00000000-0000-0000-0000-000000000000',
   name: 'test',
   uri: 'gs://zorroa-dev-data/images',
-  fileTypes: ['jpg'],
+  fileTypes: ['images'],
   credentials: [],
   modules: ['1810b623-4b95-11ea-8b23-0242ac120004'],
   timeCreated: 1581298667707,

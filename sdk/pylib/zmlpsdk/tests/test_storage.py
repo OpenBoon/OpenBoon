@@ -8,9 +8,7 @@ import urllib3
 from minio.api import Minio
 
 import zmlp
-from zmlp.asset import StoredFile
-from zmlp.dataset import DataSet
-from zmlp.client import ZmlpClient
+from zmlp import StoredFile, DataSet, ZmlpClient
 from zmlpsdk import storage
 from zmlpsdk.testing import zorroa_test_data, TestAsset
 

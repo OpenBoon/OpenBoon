@@ -1,7 +1,6 @@
 from urllib.parse import urlparse
 
-from zmlp import app_from_env
-from zmlp.asset import FileImport
+from zmlp import app_from_env, FileImport
 from zmlpsdk import Generator, Argument
 from zmlpsdk.cloud import get_google_storage_client, get_aws_client, get_azure_storage_client
 

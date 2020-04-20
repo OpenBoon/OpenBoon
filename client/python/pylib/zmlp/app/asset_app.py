@@ -2,8 +2,7 @@ import io
 import os
 from collections import namedtuple
 
-from ..asset import Asset, StoredFile, FileUpload, FileTypes
-from ..job import Job
+from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
 from ..util import as_collection
 

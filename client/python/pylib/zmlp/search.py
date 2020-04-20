@@ -1,8 +1,15 @@
 import copy
 
 from .util import as_collection
-from .asset import Asset
-from .exception import ZmlpException
+from .entity import Asset, ZmlpException
+
+
+__all__ = [
+    'AssetSearchScroller',
+    'AssetSearchResult',
+    'LabelConfidenceQuery',
+    'SimilarityQuery'
+]
 
 
 class AssetSearchScroller(object):

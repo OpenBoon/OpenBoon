@@ -1,8 +1,7 @@
 import logging
 import unittest
 
-from zmlp import Asset, StoredFile
-from zmlp.asset import FileImport, Clip, FileTypes
+from zmlp import Asset, StoredFile, FileImport, Clip, FileTypes
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)

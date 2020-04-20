@@ -2,8 +2,6 @@ import Router from 'next/router'
 
 import { fetcher } from '../Fetch/helpers'
 
-import { FILE_TYPES } from '../DataSourcesAdd/helpers'
-
 export const getInitialModules = ({
   initialState: { modules: existingModules },
   providers,
@@ -38,14 +36,7 @@ export const onSubmit = async ({
           name,
           uri,
           credential,
-          file_types: Object.keys(fileTypes)
-            .filter((f) => fileTypes[f])
-            .flatMap((f) => {
-              const { legend: extensions } = FILE_TYPES.find(
-                ({ value }) => value === f,
-              )
-              return extensions.toLowerCase().split(', ')
-            }),
+          fileTypes: Object.keys(fileTypes).filter((f) => fileTypes[f]),
           modules: Object.keys(modules).filter((m) => modules[m]),
         }),
       },

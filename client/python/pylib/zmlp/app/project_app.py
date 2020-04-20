@@ -1,5 +1,5 @@
 
-from ..project import Project
+from ..entity import Project
 
 
 class ProjectApp(object):
