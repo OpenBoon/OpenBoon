@@ -5,7 +5,7 @@ COPY es-similarity-query es-similarity-query
 COPY pom.xml pom.xml
 RUN mvn clean install -Dmaven.test.skip=true
 
-FROM docker.elastic.co/elasticsearch/elasticsearch-oss:7.5.1
+FROM docker.elastic.co/elasticsearch/elasticsearch:7.5.1
 
 COPY ./docker/jvm.options /usr/share/elasticsearch/config
 COPY --from=mvn_build ./es-kwconf/target/releases/es-kwconf.zip /usr/share/elasticsearch/plugins/es-kwconf.zip
@@ -35,5 +35,10 @@ RUN yum remove -y unzip wget
 #RUN wget https://distfiles.compuscene.net/elasticsearch/elasticsearch-prometheus-exporter-7.5.1.0.zip
 #RUN unzip elasticsearch-prometheus-exporter-7.5.1.0.zip
 #RUN rm elasticsearch-prometheus-exporter-7.5.1.0.zip
+
+# Installs plugins to allow recovery snapshots to be stored in gcs or s3.
+RUN yes | elasticsearch-plugin install repository-gcs -s
+RUN yes | elasticsearch-plugin install repository-s3 -s
+
 
 WORKDIR /usr/share/elasticsearch
