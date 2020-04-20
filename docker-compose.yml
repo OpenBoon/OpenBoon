@@ -170,6 +170,17 @@ services:
     depends_on:
       - postgres
 
+  # RabbitMQ service
+  rabbitmq:
+    image: 'rabbitmq:3.8-management-alpine'
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+    ports:
+      # The standard AMQP protocol port
+      - '5672:5672'
+      # HTTP management UI
+      - '15672:15672'
   # These services are only here because their images need to be built.
   zmlp-jvm-common:
     image: zmlp/jvm-common:latest

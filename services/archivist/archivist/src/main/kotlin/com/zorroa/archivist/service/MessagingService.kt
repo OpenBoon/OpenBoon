@@ -6,8 +6,13 @@ import com.google.cloud.pubsub.v1.Publisher
 import com.google.protobuf.ByteString
 import com.google.pubsub.v1.ProjectTopicName
 import com.google.pubsub.v1.PubsubMessage
+import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Profile
+import org.springframework.stereotype.Service
 import java.util.UUID
 
 enum class ActionType(val label: String) {
@@ -19,6 +24,7 @@ enum class ActionType(val label: String) {
 /**
  * The MessagingService is used to publish messages to a messaging queue such as Google Pub/Sub or RabbitMQ.
  */
+@Service
 interface MessagingService {
     /**
      * Publishes a message to the messaging service.
@@ -34,6 +40,8 @@ interface MessagingService {
  * MessagingService implementation that does nothing. This is the default service that is instantiated when a real
  * messaging service is not configured.
  */
+@Service
+@Profile("none", "test")
 class NullMessagingService : MessagingService {
     override fun sendMessage(actionType: ActionType, projectId: UUID?, data: Map<Any, Any>) {}
 }
@@ -43,10 +51,18 @@ class NullMessagingService : MessagingService {
  *
  * @param[topicId] ID/name of the Pub/Sub topic to publish messages to.
  */
-class PubSubMessagingService constructor(val topicId: String) : MessagingService {
+@Service
+@Profile("googlepubsub")
+class PubSubMessagingService(
+    var properties: ApplicationProperties
+) : MessagingService {
+
     private val publisher: Publisher
+    lateinit var topicId: String
 
     init {
+
+        topicId = properties.getString("archivist.messaging-service.topicId")
         val topicName = ProjectTopicName.of(ServiceOptions.getDefaultProjectId(), topicId)
         publisher = Publisher.newBuilder(topicName).build()
         logger.info("Initialized Pub/Sub publisher on $topicId topic.")
@@ -86,5 +102,29 @@ class PubSubMessagingService constructor(val topicId: String) : MessagingService
                 .build()
             return pubsubMessage
         }
+    }
+}
+
+@Service
+@Profile("rabbitmq")
+class RabbitMQMessagingService(
+    var rabbitTemplate: RabbitTemplate
+) : MessagingService {
+
+    @Value("\${archivist.messaging-service.rabbitmq.topicExchanger}")
+    lateinit var topicExchanger: String
+
+    @Value("\${archivist.messaging-service.rabbitmq.routingKey}")
+    lateinit var routingKey: String
+
+    override fun sendMessage(actionType: ActionType, projectId: UUID?, data: Map<Any, Any>) {
+
+        var content = mapOf(
+            "action" to actionType,
+            "projectId" to projectId,
+            "data" to data
+        )
+
+        rabbitTemplate.convertAndSend(topicExchanger, routingKey, content)
     }
 }

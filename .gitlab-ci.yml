@@ -322,6 +322,8 @@ services_unit_tests:
     - name: $LOCAL_ES_NAME
       alias: elasticsearch
       command: ["bin/elasticsearch", "-Ediscovery.type=single-node"]
+    - name: rabbitmq:3.8-management-alpine
+      alias: rabbitmq
   variables:
     POSTGRES_PASSWORD: "zorroa"
     POSTGRES_USER: "zorroa"
@@ -329,6 +331,8 @@ services_unit_tests:
     PGDATA: "/var/lib/postgresql/data/pgdata"
     ARCHIVIST_ES_URL: "http://localhost:9200"
     SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/zorroa?currentSchema=archivist_test"
+    SPRING_RABBITMQ_USERNAME: "guest"
+    SPRING_RABBITMQ_PASSWORD: "guest"
     LOGGING_LEVEL_COM_ZORROA: "WARN"
     USER: "gitlab"
     ZMLP_STORAGE_PROJECT_ACCESSKEY: "qwerty123"
