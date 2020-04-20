@@ -29,20 +29,21 @@ const MetadataContent = ({ projectId, assetId }) => {
   } = asset
 
   return (
-    <div css={{ height: '100%', backgroundColor: colors.structure.lead }}>
+    <div
+      css={{
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: colors.structure.lead,
+        overflow: 'hidden',
+      }}
+    >
       <div
         css={{
           padding: spacing.normal,
           borderBottom: constants.borders.divider,
         }}
       >
-        <div
-          css={{
-            color: colors.signal.sky.base,
-          }}
-        >
-          {filename}
-        </div>
+        <div css={{ color: colors.signal.sky.base }}>{filename}</div>
       </div>
 
       <div
@@ -61,6 +62,7 @@ const MetadataContent = ({ projectId, assetId }) => {
               key={value}
               style={{
                 borderRadius: 0,
+                border: constants.borders.transparent,
                 paddingTop: spacing.base,
                 paddingBottom: spacing.base,
                 paddingLeft: spacing.moderate,
@@ -95,7 +97,9 @@ const MetadataContent = ({ projectId, assetId }) => {
             height: '100%',
             overflow: 'auto',
             backgroundColor: colors.structure.coal,
-            padding: spacing.normal,
+            pre: {
+              padding: spacing.normal,
+            },
           }}
         >
           <JsonDisplay json={asset} />
