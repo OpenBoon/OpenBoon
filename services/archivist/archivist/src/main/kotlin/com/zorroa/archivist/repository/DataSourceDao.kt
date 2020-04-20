@@ -41,7 +41,7 @@ interface DataSourceJdbcDao {
 }
 
 @Repository
-class JdbcDataSourceJdbcDaoImpl : AbstractDao(), DataSourceJdbcDao {
+class DataSourceJdbcDaoImpl : AbstractDao(), DataSourceJdbcDao {
 
     override fun setCredentials(id: UUID, creds: List<Credentials>) {
         jdbc.update("DELETE FROM x_credentials_datasource WHERE pk_datasource=?", id)

@@ -118,7 +118,7 @@
         "properties": {
         }
       },
-      "datasets": {
+      "labels": {
         "dynamic": "strict",
         "type": "nested",
         "properties": {

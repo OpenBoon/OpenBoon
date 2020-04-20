@@ -4,6 +4,7 @@ import com.zorroa.archivist.config.ApplicationProperties
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.AssetIdBuilder
+import com.zorroa.archivist.domain.AssetIterator
 import com.zorroa.archivist.domain.AssetMetrics
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
@@ -11,11 +12,11 @@ import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
-import com.zorroa.archivist.domain.DataSetLabel
 import com.zorroa.archivist.domain.FileStorage
 import com.zorroa.archivist.domain.FileTypes
 import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectQuotaCounters
@@ -27,6 +28,7 @@ import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.domain.ZpsScript
+import com.zorroa.archivist.repository.DataSetDao
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.ElasticSearchErrorTranslator
@@ -43,14 +45,18 @@ import org.elasticsearch.action.support.WriteRequest
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.Response
+import org.elasticsearch.common.unit.TimeValue
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.reindex.BulkByScrollResponse
 import org.elasticsearch.index.reindex.DeleteByQueryRequest
+import org.elasticsearch.search.sort.FieldSortBuilder
+import org.elasticsearch.search.sort.SortOrder
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 /**
  * AssetService contains the entry points for Asset CRUD operations. In general
@@ -169,9 +175,9 @@ interface AssetService {
     ): Task?
 
     /**
-     * Add the asset to the given DataSet. An Asset can only have 1 label per DataSet.
+     * Update the Assets contained in the [UpdateAssetLabelsRequest] with provided [DataSet] labels.
      */
-    fun addToDataSet(asset: Asset, label: DataSetLabel)
+    fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse
 }
 
 @Service
@@ -203,6 +209,9 @@ class AssetServiceImpl : AssetService {
 
     @Autowired
     lateinit var dataSetService: DataSetService
+
+    @Autowired
+    lateinit var dataSetDao: DataSetDao
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -610,6 +619,7 @@ class AssetServiceImpl : AssetService {
 
     fun assetSpecToAsset(id: String, spec: AssetSpec, task: InternalTask? = null): Asset {
         val asset = Asset(id)
+        val projectId = getProjectId()
 
         spec.attrs?.forEach { k, v ->
             val prefix = try {
@@ -632,7 +642,11 @@ class AssetServiceImpl : AssetService {
             }
 
             if (spec.label != null) {
-                addToDataSet(asset, spec.label)
+                if (!dataSetDao.existsByProjectIdAndId(projectId, spec.label.dataSetId)) {
+                    throw java.lang.IllegalArgumentException(
+                        "The DataSet Id ${spec.label.dataSetId} does not exist.")
+                }
+                asset.addLabels(listOf(spec.label))
             }
 
             asset.setAttr("source.path", spec.uri)
@@ -642,7 +656,7 @@ class AssetServiceImpl : AssetService {
             val mediaType = FileTypes.getMediaType(spec.uri)
             asset.setAttr("source.mimetype", mediaType)
 
-            asset.setAttr("system.projectId", getProjectId().toString())
+            asset.setAttr("system.projectId", projectId)
             task?.let {
                 asset.setAttr("system.dataSourceId", it.dataSourceId)
                 asset.setAttr("system.jobId", it.jobId)
@@ -727,11 +741,63 @@ class AssetServiceImpl : AssetService {
         }
     }
 
-    override fun addToDataSet(asset: Asset, label: DataSetLabel) {
-        dataSetService.get(label.dataSetId)
-        val allLabels = asset.getAttr("datasets", DataSetLabel.SET_OF) ?: mutableSetOf()
-        allLabels.add(label)
-        asset.setAttr("datasets", allLabels)
+    override fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse {
+        val bulkSize = 50
+        if (req.add?.size ?: 0 > bulkSize) {
+            throw IllegalArgumentException(
+                "Cannot add labels to more than 100 assets at a time.")
+        }
+
+        if (req.remove?.size ?: 0 > bulkSize) {
+            throw IllegalArgumentException(
+                "Cannot remove labels from more than 100 assets at a time.")
+        }
+
+        // Gather up unique Assets and DataSets
+        val allAssetIds = (req.add?.keys ?: setOf()) + (req.remove?.keys ?: setOf())
+        val addDataSets = mutableSetOf<UUID>()
+        req.add?.values?.forEach { labels ->
+            addDataSets.addAll(labels.map { it.dataSetId })
+        }
+
+        // Validate the datasets we're adding are legit.
+        val projectId = getProjectId()
+        addDataSets.forEach {
+            if (!dataSetDao.existsByProjectIdAndId(projectId, it)) {
+                throw IllegalArgumentException("DataSetId $it not found")
+            }
+        }
+
+        // Build a search for assets.
+        val rest = indexRoutingService.getProjectRestClient()
+        val builder = rest.newSearchBuilder()
+
+        builder.source.query(QueryBuilders.termsQuery("_id", allAssetIds))
+        builder.source.sort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)
+        builder.source.size(bulkSize)
+        builder.request.scroll(TimeValue(60000))
+        builder.source.fetchSource("datasets", null)
+
+        // Build a bulk update.
+        val rsp = rest.client.search(builder.request, RequestOptions.DEFAULT)
+        val bulk = BulkRequest()
+        bulk.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+
+        for (asset in AssetIterator(rest.client, rsp, 1000)) {
+            val removeLabels = req.remove?.get(asset.id)
+            removeLabels?.let {
+                asset.removeLabels(it)
+                bulk.add(rest.newUpdateRequest(asset.id).doc(asset.document))
+            }
+
+            val addLabels = req.add?.get(asset.id)
+            addLabels?.let {
+                asset.addLabels(it)
+                bulk.add(rest.newUpdateRequest(asset.id).doc(asset.document))
+            }
+        }
+
+        return rest.client.bulk(bulk, RequestOptions.DEFAULT)
     }
 
     /**
@@ -761,10 +827,5 @@ class AssetServiceImpl : AssetService {
          */
         val removeFieldsOnCreate =
             setOf("system", "source", "files", "elements", "metrics", "datasets", "analysis")
-
-        /**
-         * Maximum number of elements you can have in an asset.
-         */
-        const val maxElementCount = 25
     }
 }

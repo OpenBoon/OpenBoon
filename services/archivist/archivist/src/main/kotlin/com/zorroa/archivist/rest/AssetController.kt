@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
+import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchResponse
 import com.zorroa.archivist.domain.UpdateAssetRequest
@@ -211,6 +212,18 @@ class AssetController @Autowired constructor(
     @ResponseBody
     fun deleteByQuery(@RequestBody req: Map<String, Any>): ResponseEntity<Resource> {
         val rsp = assetService.deleteByQuery(req)
+        val content = Strings.toString(rsp)
+        return ResponseEntity.ok()
+            .contentLength(content.length.toLong())
+            .body(InputStreamResource(content.byteInputStream()))
+    }
+
+    @ApiOperation("Delete assets by query.")
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @PutMapping(value = ["/api/v3/assets/_update_labels"])
+    @ResponseBody
+    fun updateLabels(@RequestBody req: UpdateAssetLabelsRequest): ResponseEntity<Resource> {
+        val rsp = assetService.updateLabels(req)
         val content = Strings.toString(rsp)
         return ResponseEntity.ok()
             .contentLength(content.length.toLong())

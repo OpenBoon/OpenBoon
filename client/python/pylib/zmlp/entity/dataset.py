@@ -29,14 +29,28 @@ class DataSet(BaseEntity):
         """The type of DataSet"""
         return self._data['type']
 
+    def make_label(self, label, bbox=None):
+        """
+        Make an instance of a DataSetLabel which can be used
+        to label assets.
+
+        Args:
+            label (str): The label name.
+            bbox (list[float]): A open bounding box.
+
+        Returns:
+            DataSetLabel: The new label.
+        """
+        return DataSetLabel(self,label, bbox)
+
 
 class DataSetLabel:
     """
     A Label that can be added to an Asset either at import time
     or once the Asset has been imported.
     """
-    def __init__(self, id, label, bbox=None):
-        self.id = getattr(id, 'id', id)
+    def __init__(self, dataset, label, bbox=None):
+        self.dataset_id = getattr(dataset, 'id', dataset)
         self.label = label
         self.bbox = bbox
 
@@ -50,8 +64,8 @@ class DataSetLabel:
 
         """
         return {
-            "id": self.id,
-            "label": self.get_attr("source.path"),
+            "dataSetId": self.dataset_id,
+            "label": self.label,
             "bbox": self.bbox
         }
 
