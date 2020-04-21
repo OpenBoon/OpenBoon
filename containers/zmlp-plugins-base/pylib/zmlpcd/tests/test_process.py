@@ -142,6 +142,9 @@ class ProcessorExecutorTests(unittest.TestCase):
             assert self.emitter.event_count("error") == 1
             assert self.emitter.event_total() == 2
 
+            asset = self.emitter.get_events("asset")[0]
+            assert asset['payload']['skip'] is True
+
             error = self.emitter.get_events("error")[0]
             assert error["payload"]["processor"] == "zmlpsdk.testing.TestProcessor"
             assert error["payload"]["fatal"] is True
