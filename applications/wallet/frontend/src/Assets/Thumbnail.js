@@ -21,10 +21,10 @@ const AssetsThumbnail = ({
   } = useRouter()
 
   const { url: srcUrl, attrs: { width, height } = {} } =
-    files.find(({ mimetype }) => mimetype === 'image/jpegs') || {}
+    files.find(({ mimetype }) => mimetype === 'image/jpeg') || {}
 
   const srcSet = files
-    .filter(({ mimetype }) => mimetype === 'image/jpegs')
+    .filter(({ mimetype }) => mimetype === 'image/jpeg')
     .map(({ url, attrs: { width: srcWidth } }) => `${url} ${srcWidth}w`)
 
   const largestDimension = width > height ? 'width' : 'height'

@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Filters /> should render properly 1`] = `
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #252525;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 4px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  border: none;
+  padding: 12px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  color: #e0e0e0;
+  background-color: #191919;
+}
+
+.emotion-0:focus {
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-1 {
+  width: 42px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  color: #000000;
+  background-color: #808080;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  cursor: not-allowed;
+}
+
+<form
+  action=""
+  className="emotion-3"
+  method="post"
+  onSubmit={[Function]}
+>
+  <div
+    className="emotion-2"
+  >
+    <input
+      className="emotion-0"
+      onChange={[Function]}
+      placeholder="Create text filter (search name or field value)"
+      type="text"
+      value=""
+    />
+    <button
+      aria-disabled={true}
+      aria-label="Search"
+      className="emotion-1"
+      onClick={[Function]}
+      type="submit"
+    >
+      +
+    </button>
+  </div>
+</form>
+`;

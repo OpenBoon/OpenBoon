@@ -53,8 +53,13 @@ const Filters = () => {
         />
         <button
           type="submit"
+          aria-disabled={!searchString}
+          aria-label="Search"
           onClick={() => {
+            if (searchString === '') return
+
             setSearchString('')
+
             dispatch({
               action: ACTIONS.ADD_FILTER,
               payload: {
@@ -76,6 +81,7 @@ const Filters = () => {
             margin: 0,
             padding: 0,
             border: 0,
+            cursor: searchString === '' ? 'not-allowed' : 'pointer',
           }}
         >
           +
