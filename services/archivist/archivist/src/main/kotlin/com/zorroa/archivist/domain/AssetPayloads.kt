@@ -135,3 +135,22 @@ class UpdateAssetLabelsRequest(
     @ApiModelProperty("The labels to remove.")
     val remove: Map<String, List<DataSetLabel>>? = null
 )
+
+@ApiModel("BatchDeleteAssetsRequest",
+    description = "Response for batch deleting of assets.")
+class BatchDeleteAssetsRequest(
+
+    @ApiModelProperty("The assets that were removed")
+    val assetIds: Set<String>
+)
+
+@ApiModel("BatchDeleteAssetsResponse",
+    description = "Response for batch deleting of assets.")
+class BatchDeleteAssetResponse(
+
+    @ApiModelProperty("The assets that were removed")
+    val deleted: List<String>,
+
+    @ApiModelProperty("The assets that failed to be removed.")
+    val failed: List<String>
+)

@@ -8,14 +8,19 @@ import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
+import com.amazonaws.services.s3.model.AmazonS3Exception
 import com.amazonaws.services.s3.model.GetObjectRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
 import com.google.cloud.storage.StorageException
 import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectStorageLocator
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.IndexRoutingService
+import com.zorroa.zmlp.service.logging.LogAction
+import com.zorroa.zmlp.service.logging.LogObject
+import com.zorroa.zmlp.service.logging.warnEvent
 import com.zorroa.zmlp.util.Json
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
@@ -84,8 +89,12 @@ class AwsProjectStorageService constructor(
         metadata.contentLength = spec.data.size.toLong()
         metadata.userMetadata = mapOf("attrs" to Json.serializeToString(spec.attrs))
 
-        s3Client.putObject(PutObjectRequest(properties.bucket, path,
-            spec.data.inputStream(), metadata))
+        s3Client.putObject(
+            PutObjectRequest(
+                properties.bucket, path,
+                spec.data.inputStream(), metadata
+            )
+        )
 
         logStoreEvent(spec)
 
@@ -116,12 +125,32 @@ class AwsProjectStorageService constructor(
 
     override fun fetch(locator: ProjectStorageLocator): ByteArray {
         val path = locator.getPath()
-        val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path))
-        return s3obj.objectContent.readBytes()
+        try {
+            val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path))
+            return s3obj.objectContent.readBytes()
+        } catch (ex: AmazonS3Exception) {
+            throw ProjectStorageException("Failed to fetch $path", ex)
+        }
     }
 
     override fun getNativeUri(locator: ProjectStorageLocator): String {
         return "s3://${properties.bucket}/${locator.getPath()}"
+    }
+
+    override fun recursiveDelete(locator: ProjectDirLocator) {
+        val path = locator.getPath()
+        logger.info("Recursive delete path:${properties.bucket}/$path")
+
+        try {
+            s3Client.listObjects(properties.bucket, path).objectSummaries.forEach {
+                s3Client.deleteObject(properties.bucket, it.key)
+                logDeleteEvent("${properties.bucket}${it.key}")
+            }
+        } catch (ex: AmazonS3Exception) {
+            logger.warnEvent(LogObject.PROJECT_STORAGE, LogAction.DELETE,
+                "Failed to delete ${ex.message}",
+                mapOf("entityId" to locator.entityId, "entity" to locator.entity))
+        }
     }
 
     companion object {

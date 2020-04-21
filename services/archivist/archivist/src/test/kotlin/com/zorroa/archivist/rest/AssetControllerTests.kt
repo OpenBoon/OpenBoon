@@ -4,6 +4,7 @@ import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
 import com.zorroa.archivist.domain.DataSetSpec
 import com.zorroa.archivist.domain.DataSetType
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
@@ -60,33 +61,29 @@ class AssetControllerTests : MockMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$._id", CoreMatchers.equalTo(id)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.result", CoreMatchers.equalTo("deleted")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
             .andReturn()
     }
 
     @Test
-    fun testDeleteByQuery() {
+    fun testBatchDelete() {
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
-        assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed))
+        val createRsp = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed))
 
-        val payload = """{
-                "query": {
-                    "match_all": { }
-                }
-            }
-        """.trimIndent()
+        val req = BatchDeleteAssetsRequest(createRsp.created.toSet())
 
         mvc.perform(
-            MockMvcRequestBuilders.delete("/api/v3/assets/_delete_by_query")
+            MockMvcRequestBuilders.delete("/api/v3/assets/_batch_delete")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(payload)
+                .content(Json.serialize(req))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.total", CoreMatchers.equalTo(1)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.deleted", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.deleted[0]", CoreMatchers.equalTo(createRsp.created[0])))
             .andReturn()
+
+        // For co-routing logs
+        Thread.sleep(1000)
     }
 
     @Test

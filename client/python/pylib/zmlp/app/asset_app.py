@@ -4,7 +4,7 @@ from collections import namedtuple
 
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
-from ..util import as_collection, as_id_collection
+from ..util import as_collection, as_id_collection, as_id
 
 
 class AssetApp(object):
@@ -327,7 +327,7 @@ class AssetApp(object):
         """
         return self.app.client.post("/api/v3/assets/_batch_update", docs)
 
-    def delete(self, asset):
+    def delete_asset(self, asset):
         """
         Delete the given asset.
 
@@ -335,36 +335,26 @@ class AssetApp(object):
             asset (mixed): unique Id or Asset instance.
 
         Returns:
-            An ES Delete response.
+            bool: True if the asset was deleted.
 
         """
-        asset_id = getattr(asset, "id", None) or asset
-        return self.app.client.delete("/api/v3/assets/{}".format(asset_id))
+        asset_id = as_id(asset)
+        return self.app.client.delete("/api/v3/assets/{}".format(asset_id))['success']
 
-    def delete_by_query(self, search):
+    def batch_delete_assets(self, assets):
         """
-        Delete assets by the given search.
+        Batch delete the given list of Assets or asset ids.
 
         Args:
-            search (dict): An ES search.
-
-        Notes:
-            Example Request:
-                {
-                    "query": {
-                        "terms": {
-                            "source.filename": {
-                                "bob.jpg"
-                            }
-                        }
-                    }
-                }
+            assets (list): A list of Assets or unique asset ids.
 
         Returns:
-            An ES delete by query response.
-
+            dict: A dictionary containing deleted and errored asset Ids.
         """
-        return self.app.client.delete("/api/v3/assets/_delete_by_query", search)
+        body = {
+            "assetIds": as_id_collection(assets)
+        }
+        return self.app.client.delete("/api/v3/assets/_batch_delete", body)
 
     def search(self, search=None):
         """

@@ -111,6 +111,20 @@ interface ProjectStorageLocator {
 }
 
 /**
+ * Properties required to locate a directory.
+ */
+class ProjectDirLocator(
+    val entity: ProjectStorageEntity,
+    val entityId: String,
+    val projectId: UUID? = null
+) {
+    fun getPath(): String {
+        val pid = projectId ?: getProjectId()
+        return "projects/$pid/${entity.pathName()}/$entityId"
+    }
+}
+
+/**
  * The properties required to locate a file.
  */
 class ProjectFileLocator(
