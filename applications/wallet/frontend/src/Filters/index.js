@@ -1,27 +1,20 @@
-import { useState } from 'react'
 import { useRouter } from 'next/router'
 
-import { colors, spacing, constants } from '../Styles'
+import { colors, spacing } from '../Styles'
 
 import { dispatch, ACTIONS } from './helpers'
 
-const BUTTON_SIZE = 42
+import SearchFilter from '../SearchFilter'
 
 const Filters = () => {
   const {
-    query: { projectId, id: assetId, filters: f = '[]' },
+    query: { projectId, id: assetId = '', filters: f = '[]' },
   } = useRouter()
-  const filters = JSON.parse(f)
 
-  const [searchString, setSearchString] = useState('')
-
-  const hasSearch = searchString !== ''
+  const filters = JSON.parse(f || '[]')
 
   return (
-    <form
-      action=""
-      method="post"
-      onSubmit={(event) => event.preventDefault()}
+    <div
       css={{
         flex: 1,
         backgroundColor: colors.structure.lead,
@@ -31,63 +24,38 @@ const Filters = () => {
         padding: spacing.small,
       }}
     >
-      <div css={{ display: 'flex' }}>
-        <input
-          type="text"
-          placeholder="Create text filter (search name or field value)"
-          value={searchString}
-          onChange={({ target: { value } }) => setSearchString(value)}
-          css={{
-            flex: 1,
-            border: 'none',
-            padding: spacing.moderate,
-            borderTopLeftRadius: constants.borderRadius.small,
-            borderBottomLeftRadius: constants.borderRadius.small,
-            color: colors.structure.pebble,
-            backgroundColor: colors.structure.coal,
-            '&:focus': {
-              color: colors.structure.coal,
-              backgroundColor: colors.structure.white,
-            },
-          }}
-        />
-        <button
-          type="submit"
-          aria-disabled={!searchString}
-          aria-label="Search"
-          onClick={() => {
-            if (searchString === '') return
-
-            setSearchString('')
-
-            dispatch({
-              action: ACTIONS.ADD_FILTER,
-              payload: {
-                projectId,
-                assetId,
-                filters,
-                filter: { search: searchString },
-              },
-            })
-          }}
-          css={{
-            width: BUTTON_SIZE,
-            borderTopRightRadius: constants.borderRadius.small,
-            borderBottomRightRadius: constants.borderRadius.small,
-            color: hasSearch ? colors.structure.white : colors.structure.black,
-            backgroundColor: hasSearch
-              ? colors.key.one
-              : colors.structure.steel,
-            margin: 0,
-            padding: 0,
-            border: 0,
-            cursor: searchString === '' ? 'not-allowed' : 'pointer',
-          }}
-        >
-          +
-        </button>
-      </div>
-    </form>
+      <SearchFilter projectId={projectId} assetId={assetId} filters={filters} />
+      <ul css={{ padding: 0 }}>
+        {filters.map((filter, index) => (
+          <li
+            // eslint-disable-next-line react/no-array-index-key
+            key={`${filter.type}-${index}`}
+            css={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            • {filter.value}
+            <button
+              type="button"
+              onClick={() =>
+                dispatch({
+                  action: ACTIONS.DELETE_FILTER,
+                  payload: {
+                    projectId,
+                    assetId,
+                    filters,
+                    filterIndex: index,
+                  },
+                })
+              }
+            >
+              delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
 
