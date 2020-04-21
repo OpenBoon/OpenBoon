@@ -1,10 +1,13 @@
-import tempfile
 import os
 import shutil
-
+import tempfile
+import unittest
 from unittest.mock import patch
+
+from zmlp.client import ZmlpClient
 from zmlp_core.util import media
-from zmlpsdk.testing import zorroa_test_data
+from zmlpsdk import file_storage
+from zmlpsdk.testing import zorroa_test_data, TestAsset
 
 IMAGE_EXR = zorroa_test_data('images/set06/SquaresSwirls.exr', False)
 IMAGE_PSD = zorroa_test_data('images/set06/psd_123.psd', False)
@@ -150,3 +153,96 @@ def test_ffprobe_mov():
     assert stream0["pix_fmt"] == "yuvj420p"
     assert probe["format"]["duration"] == "0.041667"
     assert probe["format"]["size"] == "73981"
+
+
+class ProxyFunctionTests(unittest.TestCase):
+    file_list = [
+        {
+            'id': "assets/123456/proxy/image_200x200.jpg",
+            'name': 'image_200x200.jpg',
+            'category': 'proxy',
+            'mimetype': 'image/jpeg',
+            'attrs': {
+                'width': 200,
+                'height': 200
+            }
+        },
+        {
+            'id': "assets/123456/proxy/image_400x400.jpg",
+            'name': 'image_400x400.jpg',
+            'category': 'proxy',
+            'mimetype': 'image/jpeg',
+            'attrs': {
+                'width': 400,
+                'height': 400
+            }
+        },
+        {
+            'id': "assets/123456/proxy/video_400x400.mp4",
+            'name': 'video_400x400.mp4',
+            'category': 'proxy',
+            'mimetype': 'video/mp4',
+            'attrs': {
+                'width': 400,
+                'height': 400
+            }
+        },
+        {
+            'id': "assets/123456/proxy/video_500x500.mp4",
+            'name': 'video_500x500.mp4',
+            'category': 'proxy',
+            'mimetype': 'video/mp4',
+            'attrs': {
+                'width': 500,
+                'height': 500
+            }
+        }
+    ]
+
+    @patch.object(ZmlpClient, 'upload_file')
+    def test_store_asset_proxy_unique(self, upload_patch):
+        asset = TestAsset(IMAGE_JPG)
+        upload_patch.return_value = {
+            'id': 'assets/123456/proxy/image_200x200.jpg',
+            'name': 'image_200x200.jpg',
+            'category': 'proxy',
+            'mimetype': 'image/jpeg',
+            'attrs': {
+                'width': 200,
+                'height': 200
+            }
+        }
+        # Should only be added to list once.
+        media.store_asset_proxy(asset, IMAGE_JPG, (200, 200))
+        media.store_asset_proxy(asset, IMAGE_JPG, (200, 200))
+
+        upload_patch.return_value = {
+            'id': 'assets/123456/proxy/image_200x200.mp4',
+            'name': 'image_200x200.mp4',
+            'category': 'proxy',
+            'mimetype': 'video/mp4',
+            'attrs': {
+                'width': 200,
+                'height': 200
+            }
+        }
+        media.store_asset_proxy(asset, VIDEO_MP4, (200, 200))
+        assert 2 == len(asset.get_files())
+
+    @patch.object(file_storage.assets, 'store_file')
+    @patch.object(ZmlpClient, 'upload_file')
+    def test_store_asset_proxy_with_attrs(self, upload_patch, store_file_patch):
+        upload_patch.return_value = {}
+
+        asset = TestAsset(IMAGE_JPG)
+        asset.set_attr('tmp.image_proxy_source_attrs', {'king': 'kong'})
+        media.store_asset_proxy(
+            asset, IMAGE_JPG, (200, 200), attrs={'foo': 'bar'})
+
+        # Merges args from both the proxy_source_attrs attr and
+        # args passed into store_proxy_media
+        args, kwargs = store_file_patch.call_args_list[0]
+        assert kwargs['attrs']['king'] == 'kong'
+        assert kwargs['attrs']['width'] == 200
+        assert kwargs['attrs']['height'] == 200
+        assert kwargs['attrs']['foo'] == 'bar'
