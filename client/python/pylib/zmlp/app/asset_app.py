@@ -4,7 +4,7 @@ from collections import namedtuple
 
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
-from ..util import as_collection
+from ..util import as_collection, as_id_collection
 
 
 class AssetApp(object):
@@ -450,6 +450,28 @@ class AssetApp(object):
             Asset: The Asset
         """
         return Asset(self.app.client.get("/api/v3/assets/{}".format(id)))
+
+    def update_dataset_labels(self, assets, add_labels=None, remove_labels=None):
+        """
+        Update the DataSet labels on the given array of assets.
+
+        Args:
+            assets (mixed): An Asset, asset ID, or a list of either type.
+            add_labels (list[DataSetLabel]): A DataSetLabel or list of DataSetLabels to add.
+            remove_labels (list[DataSetLabel]): A DataSetLabels or list of DataSetLabels to remove.
+        Returns:
+            dict: An request status dict
+
+        """
+        ids = as_id_collection(assets)
+        body = {}
+        if add_labels:
+            body['add'] = dict([(a, as_collection(add_labels)) for a in ids])
+        if remove_labels:
+            body['remove'] = dict([(a, as_collection(remove_labels)) for a in ids])
+        if not body:
+            raise ValueError("Must pass at least and add_labels or remove_labels argument")
+        return self.app.client.put("/api/v3/assets/_batch_update_labels", body)
 
     def download_file(self, stored_file, dst_file=None):
         """
