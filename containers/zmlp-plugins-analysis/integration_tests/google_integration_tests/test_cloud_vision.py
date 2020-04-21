@@ -9,7 +9,6 @@ from zmlp import ZmlpClient, StoredFile
 from zmlp_analysis.google.cloud_vision import *
 from zmlp_analysis.google.cloud_vision import file_storage
 from zmlpsdk import Frame
-from zmlpsdk.proxy import store_asset_proxy
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset, \
     get_prediction_labels, get_mock_stored_file
 
@@ -38,7 +37,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         analysis = frame.asset.get_attr('analysis.gcp-vision-image-text-detection')
         assert 'content' == analysis['type']
         assert 'Giants Franchise History' in analysis['content']
-        assert 41 == analysis['count']
+        assert 41 == analysis['words']
 
     @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
@@ -55,7 +54,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         analysis = frame.asset.get_attr('analysis.gcp-vision-doc-text-detection')
         assert 'HEY GIRL' in analysis['content']
         assert 'content' in analysis['type']
-        assert 12 == analysis['count']
+        assert 12 == analysis['words']
 
     @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
@@ -70,7 +69,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-landmark-detection')
-        assert 'landmarks' == analysis['type']
+        assert 'labels' == analysis['type']
         assert 'Eiffel Tower' in get_prediction_labels(analysis)
         assert 'Champ de Mars' in get_prediction_labels(analysis)
         assert 2 == analysis['count']
@@ -89,8 +88,8 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         processor.process(frame)
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-content-moderation')
-        assert 'moderation' == analysis['type']
-        assert False is analysis['safe']
+        assert 'labels' == analysis['type']
+        assert not analysis['explicit']
         assert 'spoof' in get_prediction_labels(analysis)
         assert 'violence' in get_prediction_labels(analysis)
         assert 3 == analysis['count']
@@ -110,7 +109,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
 
         analysis = frame.asset.get_attr('analysis.gcp-vision-face-detection')
         assert 1 == analysis['count']
-        assert 'faces' == analysis['type']
+        assert 'labels' == analysis['type']
 
     @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
@@ -127,7 +126,7 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         analysis = frame.asset.get_attr('analysis.gcp-vision-logo-detection')
         assert 'Visa Inc.' in get_prediction_labels(analysis)
         assert 7 == analysis['count']
-        assert 'objects' == analysis['type']
+        assert 'labels' == analysis['type']
 
     @patch('zmlp_analysis.google.cloud_vision.get_proxy_level')
     @patch.object(file_storage, 'localize_file')
@@ -161,4 +160,4 @@ class CloudVisionProcessorTestCase(PluginUnitTestCase):
         analysis = frame.asset.get_attr('analysis.gcp-vision-object-detection')
         assert 'Dog' in get_prediction_labels(analysis)
         assert 5 == analysis['count']
-        assert 'objects' == analysis['type']
+        assert 'labels' == analysis['type']

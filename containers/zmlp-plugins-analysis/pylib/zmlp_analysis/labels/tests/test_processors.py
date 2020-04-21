@@ -1,21 +1,18 @@
 from unittest.mock import patch
 
-from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, \
-    TestAsset, get_mock_stored_file, get_prediction_labels
-from zmlpsdk import Frame
-from zmlpsdk.proxy import store_asset_proxy
-from zmlp import ZmlpClient
 from zmlp_analysis.labels import ZviLabelDetectionProcessor
+from zmlpsdk import Frame
+from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
+    TestAsset, get_prediction_labels
 
 
 class ZviLabelDetectionProcessorTests(PluginUnitTestCase):
 
-    @patch.object(ZmlpClient, 'upload_file')
-    def test_process(self, upload_patch):
-        toucan_path = zorroa_test_data('images/set01/toucan.jpg')
+    @patch('zmlp_analysis.labels.processors.get_proxy_level_path')
+    def test_process(self, proxy_patch):
+        toucan_path = zorroa_test_path('images/set01/toucan.jpg')
+        proxy_patch.return_value = toucan_path
         frame = Frame(TestAsset(toucan_path))
-        upload_patch.return_value = get_mock_stored_file()._data
-        store_asset_proxy(frame.asset, toucan_path, (512, 512))
 
         processor = self.init_processor(ZviLabelDetectionProcessor())
         processor.process(frame)
