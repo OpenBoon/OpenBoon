@@ -1,15 +1,17 @@
 import { useState } from 'react'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 
 import { colors, spacing, constants } from '../Styles'
-import { formatUrl } from './helpers'
+
+import { dispatch, ACTIONS } from './helpers'
 
 const BUTTON_SIZE = 42
 
 const Filters = () => {
   const {
-    query: { projectId, id: assetId },
+    query: { projectId, id: assetId, filters: f = '[]' },
   } = useRouter()
+  const filters = JSON.parse(f)
 
   const [searchString, setSearchString] = useState('')
 
@@ -53,18 +55,15 @@ const Filters = () => {
           type="submit"
           onClick={() => {
             setSearchString('')
-            const filters = JSON.stringify([{ search: searchString }])
-            Router.push(
-              {
-                pathname: '/[projectId]/visualizer',
-                query: {
-                  projectId,
-                  id: assetId,
-                  filters,
-                },
+            dispatch({
+              action: ACTIONS.ADD_FILTER,
+              payload: {
+                projectId,
+                assetId,
+                filters,
+                filter: { search: searchString },
               },
-              `/${projectId}/visualizer${formatUrl({ id: assetId, filters })}`,
-            )
+            })
           }}
           css={{
             width: BUTTON_SIZE,
