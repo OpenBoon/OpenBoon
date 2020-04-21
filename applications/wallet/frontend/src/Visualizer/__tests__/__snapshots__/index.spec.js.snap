@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Visualizer /> should render properly 1`] = `
-.emotion-5 {
+.emotion-13 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
   margin-right: -32px;
   margin-bottom: -32px;
-  margin-top: 1px;
+  padding-top: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -20,7 +20,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-4 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -30,14 +30,94 @@ exports[`<Visualizer /> should render properly 1`] = `
 }
 
 .emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-right: 1px;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  padding: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: #252525;
+  margin-bottom: 1px;
+  color: #808080;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+  background-color: #2e2e2e;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #252525;
+}
+
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
-  overflow: scroll;
+  margin-bottom: -2px;
+  box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
 }
 
-.emotion-2 {
+.emotion-6 {
   position: absolute;
   bottom: 16px;
   right: 16px;
@@ -56,7 +136,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding-right: 8px;
 }
 
-.emotion-0 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -91,24 +171,24 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding: 8px;
 }
 
-.emotion-0:hover {
+.emotion-4:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-4:hover {
   color: #73b61c;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-1 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -143,31 +223,73 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding: 8px;
 }
 
-.emotion-1:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-1:hover {
+.emotion-5:hover {
   color: #73b61c;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #808080;
 }
 
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 1px;
+}
+
 <div
-  className="emotion-5"
+  className="emotion-13"
 >
   <div
-    className="emotion-4"
+    className="emotion-12"
   >
     <div
       className="emotion-3"
+    >
+      <div
+        className="emotion-2"
+      >
+        <button
+          aria-label="Filters"
+          className="emotion-0"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="accountDashboard.svg"
+            width={20}
+          />
+        </button>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-7"
     >
       <div
         style={
@@ -179,12 +301,12 @@ exports[`<Visualizer /> should render properly 1`] = `
         }
       />
       <div
-        className="emotion-2"
+        className="emotion-6"
       >
         <button
           aria-disabled={true}
           aria-label="Zoom Out"
-          className="emotion-0"
+          className="emotion-4"
           onClick={[Function]}
           type="button"
         >
@@ -195,7 +317,7 @@ exports[`<Visualizer /> should render properly 1`] = `
         </button>
         <button
           aria-label="Zoom In"
-          className="emotion-1"
+          className="emotion-5"
           onClick={[Function]}
           type="button"
         >
@@ -206,19 +328,41 @@ exports[`<Visualizer /> should render properly 1`] = `
         </button>
       </div>
     </div>
-    <Metadata />
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-10"
+      >
+        <button
+          aria-label="Asset Metadata"
+          className="emotion-0"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="information.svg"
+            width={20}
+          />
+        </button>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
   </div>
 </div>
 `;
 
 exports[`<Visualizer /> should render selected asset 1`] = `
-.emotion-5 {
+.emotion-13 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
   margin-right: -32px;
   margin-bottom: -32px;
-  margin-top: 1px;
+  padding-top: 1px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -231,7 +375,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   flex-direction: column;
 }
 
-.emotion-4 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -241,14 +385,94 @@ exports[`<Visualizer /> should render selected asset 1`] = `
 }
 
 .emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  box-shadow: 3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-right: 1px;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  padding: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: #252525;
+  margin-bottom: 1px;
+  color: #808080;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+  background-color: #2e2e2e;
+}
+
+.emotion-1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #252525;
+}
+
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative;
-  overflow: scroll;
+  margin-bottom: -2px;
+  box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.6);
 }
 
-.emotion-2 {
+.emotion-6 {
   position: absolute;
   bottom: 16px;
   right: 16px;
@@ -267,7 +491,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   padding-right: 8px;
 }
 
-.emotion-0 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -302,24 +526,24 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   padding: 8px;
 }
 
-.emotion-0:hover {
+.emotion-4:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-4:hover {
   color: #73b61c;
 }
 
-.emotion-0[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   color: #808080;
 }
 
-.emotion-1 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -354,31 +578,73 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   padding: 8px;
 }
 
-.emotion-1:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-1:hover {
+.emotion-5:hover {
   color: #73b61c;
 }
 
-.emotion-1[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #808080;
 }
 
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 1px;
+}
+
 <div
-  className="emotion-5"
+  className="emotion-13"
 >
   <div
-    className="emotion-4"
+    className="emotion-12"
   >
     <div
       className="emotion-3"
+    >
+      <div
+        className="emotion-2"
+      >
+        <button
+          aria-label="Filters"
+          className="emotion-0"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="accountDashboard.svg"
+            width={20}
+          />
+        </button>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-7"
     >
       <div
         style={
@@ -390,12 +656,12 @@ exports[`<Visualizer /> should render selected asset 1`] = `
         }
       />
       <div
-        className="emotion-2"
+        className="emotion-6"
       >
         <button
           aria-disabled={true}
           aria-label="Zoom Out"
-          className="emotion-0"
+          className="emotion-4"
           onClick={[Function]}
           type="button"
         >
@@ -406,7 +672,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
         </button>
         <button
           aria-label="Zoom In"
-          className="emotion-1"
+          className="emotion-5"
           onClick={[Function]}
           type="button"
         >
@@ -417,7 +683,29 @@ exports[`<Visualizer /> should render selected asset 1`] = `
         </button>
       </div>
     </div>
-    <Metadata />
+    <div
+      className="emotion-11"
+    >
+      <div
+        className="emotion-10"
+      >
+        <button
+          aria-label="Asset Metadata"
+          className="emotion-0"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            data-file-name="information.svg"
+            width={20}
+          />
+        </button>
+        <div
+          className="emotion-1"
+        />
+      </div>
+    </div>
   </div>
 </div>
 `;

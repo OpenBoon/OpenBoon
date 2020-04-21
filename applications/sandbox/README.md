@@ -2,7 +2,7 @@
 
 This is a Streamlit sandbox. Streamlit (https://www.streamlit.io/) is a framework that allows for quick development of data apps.
 
-By default, Sandbox creates a simple asset viewer that features a metadata spreadsheet and similarity search.
+A couple of different scripts are included.
 
 ## Getting Started
 
@@ -27,7 +27,10 @@ docker-compose -f docker-compose.yml -f applications/sandbox/docker-compose.yml 
 
 Then navigate to http://localhost:8501
 
-To change the Streamlit app, edit applications/sandbox/sandbox.sandbox.py. It is not necessary to restart the docker image when you edit the app, which makes it very easy to
+To add a new one, place the Python file in the sandbox/scripts directory. The entry point for Sandbox, sandbox.py, will detect scripts in that directory and allow
+the user to select which one to run.
+
+It is not necessary to restart the docker image when you edit an app, which makes it very easy to
 develop. Once you save a change to this file, the live Streamlit app will show a refresh button.
 
 !["Sandbox"](sandbox_pom.png "Sandbox")

@@ -1,7 +1,7 @@
 from clarifai.rest import ClarifaiApp
 
 import zmlp
-from zmlp.exception import ZmlpException
+from zmlp import ZmlpException
 from zmlpsdk import AssetProcessor, ZmlpEnv, ZmlpFatalProcessorException
 from zmlpsdk.proxy import get_proxy_level_path
 

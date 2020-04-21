@@ -2,7 +2,12 @@ import { colors, spacing, typography } from '../Styles'
 
 const MetadataSelect = () => {
   return (
-    <>
+    <div
+      css={{
+        backgroundColor: colors.structure.lead,
+        height: '100%',
+      }}
+    >
       <div css={{ padding: spacing.normal }}>
         <div
           css={{
@@ -13,15 +18,7 @@ const MetadataSelect = () => {
           Select an asset to view its metadata
         </div>
       </div>
-      <div
-        css={{
-          height: '100%',
-          overflow: 'auto',
-          backgroundColor: colors.structure.mattGrey,
-          padding: spacing.normal,
-        }}
-      />
-    </>
+    </div>
   )
 }
 

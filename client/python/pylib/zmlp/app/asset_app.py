@@ -2,10 +2,9 @@ import io
 import os
 from collections import namedtuple
 
-from ..asset import Asset, StoredFile, FileUpload, FileTypes
-from ..job import Job
+from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery
-from ..util import as_collection
+from ..util import as_collection, as_id_collection
 
 
 class AssetApp(object):
@@ -452,17 +451,43 @@ class AssetApp(object):
         """
         return Asset(self.app.client.get("/api/v3/assets/{}".format(id)))
 
-    def download_file(self, stored_file):
+    def update_dataset_labels(self, assets, add_labels=None, remove_labels=None):
         """
-        Download given file and store results in memory.  The stored_file ID
-        can be specified as either a string like "assets/<id>/proxy/image_450x360.jpg"
+        Update the DataSet labels on the given array of assets.
+
+        Args:
+            assets (mixed): An Asset, asset ID, or a list of either type.
+            add_labels (list[DataSetLabel]): A DataSetLabel or list of DataSetLabels to add.
+            remove_labels (list[DataSetLabel]): A DataSetLabels or list of DataSetLabels to remove.
+        Returns:
+            dict: An request status dict
+
+        """
+        ids = as_id_collection(assets)
+        body = {}
+        if add_labels:
+            body['add'] = dict([(a, as_collection(add_labels)) for a in ids])
+        if remove_labels:
+            body['remove'] = dict([(a, as_collection(remove_labels)) for a in ids])
+        if not body:
+            raise ValueError("Must pass at least and add_labels or remove_labels argument")
+        return self.app.client.put("/api/v3/assets/_batch_update_labels", body)
+
+    def download_file(self, stored_file, dst_file=None):
+        """
+        Download given file and store results in memory, or optionally
+        a destination file.  The stored_file ID can be specified as
+        either a string like "assets/<id>/proxy/image_450x360.jpg"
         or a StoredFile instance can be used.
 
         Args:
             stored_file (mixed): The StoredFile instance or its ID.
+            dst_file (str): An optional destination file path.
 
         Returns:
-            io.BytesIO instance containing the binary data.
+            io.BytesIO instance containing the binary data or if
+                a destination path was provided the size of the
+                file is returned.
 
         """
         if isinstance(stored_file, str):
@@ -473,33 +498,12 @@ class AssetApp(object):
             raise ValueError("stored_file must be a string or StoredFile instance")
 
         rsp = self.app.client.get("/api/v3/files/_stream/{}".format(path), is_json=False)
-        return io.BytesIO(rsp.content)
-
-    def download_file_to_file(self, stored_file, dst_path):
-        """
-        Download given file and store it in th destination path.
-        The stored_file ID can be specified as either a string like
-        "assets/<id>/proxy/image_450x360.jpg" or a StoredFile
-        instance like those from Asset.get_files can be used.
-
-        Args:
-            stored_file (mixed): The StoredFile instance or its ID.
-            dst_path (str): The path to the destination file.
-
-        Returns:
-            int: the file size in bytes
-        """
-        if isinstance(stored_file, str):
-            path = stored_file
-        elif isinstance(stored_file, StoredFile):
-            path = stored_file.id
+        if dst_file:
+            with open(dst_file, 'wb') as fp:
+                fp.write(rsp.content)
+            return os.path.getsize(dst_file)
         else:
-            raise ValueError("stored_file must be a string or StoredFile instance")
-
-        rsp = self.app.client.get("/api/v3/files/_stream/{}".format(path), is_json=False)
-        with open(dst_path, 'wb') as fp:
-            fp.write(rsp.content)
-        return len(rsp.content)
+            return io.BytesIO(rsp.content)
 
     def get_sim_hashes(self, images):
         """

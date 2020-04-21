@@ -2,8 +2,9 @@ package com.zorroa.archivist.storage
 
 import com.amazonaws.services.s3.model.AmazonS3Exception
 import com.zorroa.archivist.AbstractTest
-import com.zorroa.archivist.domain.AssetFileLocator
+import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageCategory
+import com.zorroa.archivist.domain.ProjectStorageEntity
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,7 +20,8 @@ class AwsProjectStorageServiceTests : AbstractTest() {
 
     @Test
     fun testStore() {
-        val loc = AssetFileLocator("1234", ProjectStorageCategory.SOURCE, "bob.jpg")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET,
+            "1234", ProjectStorageCategory.SOURCE, "bob.jpg")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
 
         val result = projectStorageService.store(spec)
@@ -28,15 +30,15 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         assertEquals(result.size, 4)
         assertEquals(result.mimetype, "image/jpeg")
         assertEquals(result.attrs, mapOf("cats" to 100))
-        projectStorageService.deleteAsset(loc.id)
+        projectStorageService.deleteAsset(loc.entityId)
     }
 
     @Test(expected = AmazonS3Exception::class)
     fun testDelete() {
-        val loc = AssetFileLocator("1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         val result = projectStorageService.store(spec)
-        projectStorageService.deleteAsset(loc.id)
+        projectStorageService.deleteAsset(loc.entityId)
 
         // Throws AmazonS3Exception
         projectStorageService.fetch(loc)
@@ -44,24 +46,24 @@ class AwsProjectStorageServiceTests : AbstractTest() {
 
     @Test
     fun testFetch() {
-        val loc = AssetFileLocator("1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
 
         val result = projectStorageService.store(spec)
         val bytes = projectStorageService.fetch(loc)
         assertEquals(result.size, bytes.size.toLong())
-        projectStorageService.deleteAsset(loc.id)
+        projectStorageService.deleteAsset(loc.entityId)
     }
 
     @Test
     fun testStream() {
-        val loc = AssetFileLocator("1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         val result = projectStorageService.store(spec)
 
         val entity = projectStorageService.stream(loc)
         val value = String(entity.body.inputStream.readBytes())
         assertEquals("test", value)
-        projectStorageService.deleteAsset(loc.id)
+        projectStorageService.deleteAsset(loc.entityId)
     }
 }

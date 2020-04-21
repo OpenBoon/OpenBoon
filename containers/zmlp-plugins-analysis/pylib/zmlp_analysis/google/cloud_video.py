@@ -6,7 +6,7 @@ from google.api_core.exceptions import ResourceExhausted
 from google.cloud import videointelligence
 
 from zmlpsdk import Argument, AssetProcessor, FileTypes, file_storage
-from zmlpsdk.schema import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
+from zmlpsdk.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis, Prediction
 from .gcp_client import initialize_gcp_client
 
 logger = logging.getLogger(__name__)
@@ -79,8 +79,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             return
 
         annotation_result = self._get_video_annotations(asset.get_attr('source.path'))
-        file_storage.assets.store_blob(asset,
-                                       annotation_result.SerializeToString(),
+        file_storage.assets.store_blob(annotation_result.SerializeToString(),
+                                       asset,
                                        'gcp',
                                        'video-intelligence.dat')
 
@@ -107,7 +107,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             asset (Asset): The asset.
             results (obj): The video intelligence result.
         """
-        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_logos'))
+        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_logos'),
+                                          collapse_labels=True)
         for annotation in results.logo_recognition_annotations:
             for track in annotation.tracks:
                 analysis.add_prediction(Prediction(
@@ -116,7 +117,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         asset.add_analysis('gcp-video-logo-detection', analysis)
 
     def handle_detect_objects(self, asset, annotation_result):
-        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_objects'))
+        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_objects'),
+                                          collapse_labels=True)
         for annotation in annotation_result.object_annotations:
             pred = Prediction(annotation.entity.description,
                               annotation.confidence)
@@ -144,7 +146,8 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                     for label in labels:
                         analysis.add_prediction(Prediction(label, segment.confidence))
 
-        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_labels'))
+        analysis = LabelDetectionAnalysis(min_score=self.arg_value('detect_labels'),
+                                          collapse_labels=True)
         process_label_annotations(results.segment_label_annotations)
         process_label_annotations(results.shot_label_annotations)
         asset.add_analysis('gcp-video-label-detection', analysis)
@@ -158,7 +161,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
             asset.add_analysis('gcp-video-text-detection', analysis)
 
     def handle_detect_explicit(self, asset, annotation_result):
-        analysis = LabelDetectionAnalysis()
+        analysis = LabelDetectionAnalysis(collapse_labels=True)
         analysis.set_attr('explicit', False)
 
         for frame in annotation_result.explicit_annotation.frames:
@@ -198,7 +201,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
         operation = self.video_intel_client.annotate_video(input_uri=uri, features=features)
         while not operation.done():
             logger.info("Waiting on Google Visual Intelligence {}".format(uri))
-            time.sleep(1)
+            time.sleep(0.5)
 
         res = operation.result()
         return res.annotation_results[0]

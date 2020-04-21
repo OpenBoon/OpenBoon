@@ -1,11 +1,11 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import asset from '../../Asset/__mocks__/asset'
 import mockUser from '../../User/__mocks__/user'
 
 import User from '../../User'
 
-import Metadata from '..'
+import Metadata, { noop } from '..'
 
 jest.mock('../../Resizeable', () => 'Resizeable')
 jest.mock('../../JsonDisplay', () => 'JsonDisplay')
@@ -42,5 +42,15 @@ describe('<Metadata />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root.findByProps({ children: 'raw json' }).props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('noop should do nothing', () => {
+    expect(noop()).toBe(undefined)
   })
 })

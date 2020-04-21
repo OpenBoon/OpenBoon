@@ -2,7 +2,7 @@ import base64
 import logging
 import os
 
-from . import AssetApp, DataSourceApp, ProjectApp
+from . import AssetApp, DataSourceApp, ProjectApp, DataSetApp, JobApp
 from ..client import ZmlpClient
 
 logger = logging.getLogger(__name__)
@@ -29,6 +29,8 @@ class ZmlpApp(object):
         self.assets = AssetApp(self)
         self.datasource = DataSourceApp(self)
         self.projects = ProjectApp(self)
+        self.datasets = DataSetApp(self)
+        self.jobs = JobApp(self)
 
 
 def app_from_env():

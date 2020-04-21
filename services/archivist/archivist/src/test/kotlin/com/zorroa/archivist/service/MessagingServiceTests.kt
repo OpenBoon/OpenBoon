@@ -23,18 +23,21 @@ class MessagingServiceTests : AbstractTest() {
     }
 
     @Test
-    @Ignore("This integration test publishes a real message to a pub/sub queue. To use this test you must be " +
-        "authenticated using the gcloud sdk and have your project set to a project that has an archivist-events-test " +
-        "topic. You can use the `gcloud auth application-default login` command to authenticate.")
+    @Ignore(
+        "This integration test publishes a real message to a pub/sub queue. To use this test you must be " +
+            "authenticated using the gcloud sdk and have your project set to a project that has an archivist-events-test " +
+            "topic. You can use the `gcloud auth application-default login` command to authenticate."
+    )
     fun testPubSubIntegrationTest() {
+        var pubSubMessagingService = PubSubMessagingService(properties)
+
         val data: Map<Any, Any> = mapOf("id" to 1)
-        val messageService = PubSubMessagingService("archivist-events-test")
         val message = PubSubMessagingService.getMessage(
             actionType = ActionType.AssetsDeleted,
             projectId = UUID.randomUUID(),
             data = data
         )
-        val future = messageService.publish(message)
+        val future = pubSubMessagingService.publish(message)
         val result = future.get()
         assertTrue(future.isDone)
     }

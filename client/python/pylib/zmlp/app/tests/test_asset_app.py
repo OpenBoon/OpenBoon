@@ -7,10 +7,8 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp import Asset
-from zmlp import ZmlpClient, app_from_env
-from zmlp.asset import FileImport, FileUpload, StoredFile
-from zmlp.exception import ZmlpException
+from zmlp import Asset, ZmlpClient, app_from_env, \
+    FileImport, FileUpload, StoredFile, ZmlpException, DataSet
 from .util import get_test_file
 
 
@@ -332,8 +330,8 @@ class AssetAppTests(unittest.TestCase):
         get_patch.return_value = mockresponse
 
         fd, path = tempfile.mkstemp(".jpg")
-        size = self.app.assets.download_file_to_file(
-            'assets/123/proxy/proxy123.jpg', path)
+        size = self.app.assets.download_file(
+            'assets/123/proxy/proxy123.jpg', dst_file=path)
         assert 9 == size
 
     @patch.object(ZmlpClient, 'get')
@@ -345,7 +343,7 @@ class AssetAppTests(unittest.TestCase):
 
         fd, path = tempfile.mkstemp(".jpg")
         sf = StoredFile({"id": "assets/123/proxy/foo.jpg"})
-        size = self.app.assets.download_file_to_file(sf, path)
+        size = self.app.assets.download_file(sf, path)
         assert 9 == size
 
     @patch.object(ZmlpClient, 'upload_files')
@@ -368,3 +366,16 @@ class AssetAppTests(unittest.TestCase):
         path = open(get_test_file('images/set01/toucan.jpg'), 'rb')
         b = self.app.assets.get_sim_query(path)
         assert b.hashes == ['ABC']
+
+    @patch.object(ZmlpClient, 'put')
+    def test_update_labels(self, put_patch):
+        put_patch.return_value = {
+            'type': 'asset',
+            'op': '_batch_update_labels',
+            'success': True
+        }
+        ds1 = DataSet({"id": "abc123"})
+        ds2 = DataSet({"id": "abc123"})
+        rsp = self.app.assets.update_dataset_labels(["12345"],
+                                                    add_labels=[ds1], remove_labels=[ds2])
+        assert put_patch.return_value == rsp

@@ -1,5 +1,4 @@
-from ..datasource import DataSource
-from ..job import Job
+from ..entity import DataSource, Job
 from ..util import is_valid_uuid, as_collection
 
 

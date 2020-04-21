@@ -2,18 +2,23 @@ import PropTypes from 'prop-types'
 
 import { colors, spacing, constants } from '../Styles'
 
-import Accordion from '../Accordion'
+import Accordion, { VARIANTS } from '../Accordion'
 import CheckboxTable from '../Checkbox/Table'
 
 const IMG_HEIGHT = 32
 
 const DataSourcesEditProvider = ({
   provider: { name, logo, description, categories },
+  initialModules,
   modules,
   onClick,
 }) => {
   return (
-    <Accordion title={<img src={logo} alt={name} height={IMG_HEIGHT} />}>
+    <Accordion
+      variant={VARIANTS.PRIMARY}
+      title={<img src={logo} alt={name} height={IMG_HEIGHT} />}
+      isInitiallyOpen
+    >
       <>
         <p
           css={{
@@ -36,7 +41,8 @@ const DataSourcesEditProvider = ({
                   value: module.name,
                   label: module.description,
                   initialValue: !!modules[module.name],
-                  isDisabled: module.restricted,
+                  isDisabled:
+                    !!initialModules[module.name] || module.restricted,
                 }
               }),
             }}
@@ -60,6 +66,7 @@ DataSourcesEditProvider.propTypes = {
       }).isRequired,
     ).isRequired,
   }).isRequired,
+  initialModules: PropTypes.shape({}).isRequired,
   modules: PropTypes.shape({}).isRequired,
   onClick: PropTypes.func.isRequired,
 }

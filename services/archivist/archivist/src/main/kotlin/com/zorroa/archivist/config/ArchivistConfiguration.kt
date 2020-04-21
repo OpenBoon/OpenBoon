@@ -3,9 +3,6 @@ package com.zorroa.archivist.config
 import com.google.common.collect.ImmutableList
 import com.google.common.eventbus.EventBus
 import com.zorroa.archivist.service.EsClientCache
-import com.zorroa.archivist.service.MessagingService
-import com.zorroa.archivist.service.NullMessagingService
-import com.zorroa.archivist.service.PubSubMessagingService
 import com.zorroa.archivist.service.TransactionEventManager
 import com.zorroa.archivist.util.FileUtils
 import com.zorroa.zmlp.service.security.EncryptionService
@@ -13,12 +10,21 @@ import com.zorroa.zmlp.service.security.EncryptionServiceImpl
 import io.sentry.spring.SentryExceptionResolver
 import io.sentry.spring.SentryServletContextInitializer
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.Binding
+import org.springframework.amqp.core.BindingBuilder
+import org.springframework.amqp.core.Queue
+import org.springframework.amqp.core.TopicExchange
+import org.springframework.amqp.rabbit.connection.ConnectionFactory
+import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.info.InfoContributor
 import org.springframework.boot.actuate.info.InfoEndpoint
 import org.springframework.boot.web.servlet.ServletContextInitializer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
+import org.springframework.core.env.Environment
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.task.AsyncListenableTaskExecutor
 import org.springframework.http.converter.HttpMessageConverter
@@ -86,32 +92,6 @@ class ArchivistConfiguration {
     }
 
     @Bean
-    fun requestMappingHandlerAdapter(): RequestMappingHandlerAdapter {
-        val adapter = RequestMappingHandlerAdapter()
-        adapter.messageConverters = listOf<HttpMessageConverter<*>>(
-            MappingJackson2HttpMessageConverter()
-        )
-        return adapter
-    }
-
-    @Bean
-    fun messagingService(): MessagingService {
-        val props = properties()
-        val type = props.getString("archivist.messaging-service.type", "None")
-        return when (type) {
-            "pubsub" -> {
-                logger.info("Using Pub/Sub messaging service.")
-                PubSubMessagingService(
-                    topicId = props.getString("archivist.messaging-service.topicId", "archivist-events")
-                )
-            }
-            else -> {
-                NullMessagingService()
-            }
-        }
-    }
-
-    @Bean
     fun workQueue(): AsyncListenableTaskExecutor {
         val tpe = ThreadPoolTaskExecutor()
         tpe.corePoolSize = 8
@@ -143,5 +123,51 @@ class ArchivistConfiguration {
         private val logger = LoggerFactory.getLogger(ArchivistConfiguration::class.java)
 
         var unittest = false
+    }
+}
+
+@Configuration
+class MessageServiceConfiguration {
+
+    @Autowired
+    lateinit var env: Environment
+
+    @Bean
+    fun requestMappingHandlerAdapter(): RequestMappingHandlerAdapter {
+        val adapter = RequestMappingHandlerAdapter()
+        adapter.messageConverters = listOf<HttpMessageConverter<*>>(
+            MappingJackson2HttpMessageConverter()
+        )
+        return adapter
+    }
+
+    @Bean
+    fun queue(): Queue {
+        return Queue(env.getProperty("archivist.messaging-service.rabbitmq.queue"), false)
+    }
+
+    @Bean
+    fun exchange(): TopicExchange {
+        return TopicExchange(env.getProperty("archivist.messaging-service.rabbitmq.topicExchanger"))
+    }
+
+    @Bean
+    fun binding(queue: Queue?, exchange: TopicExchange): Binding {
+        return BindingBuilder
+            .bind(queue)
+            .to(exchange)
+            .with("archivist.messaging-service.rabbitmq.routingKey")
+    }
+
+    @Bean
+    fun amqpTemplate(connectionFactory: ConnectionFactory): RabbitTemplate {
+        val rabbitTemplate = RabbitTemplate(connectionFactory)
+        rabbitTemplate.messageConverter = messageConverter()
+        return rabbitTemplate
+    }
+
+    @Bean
+    fun messageConverter(): Jackson2JsonMessageConverter {
+        return Jackson2JsonMessageConverter()
     }
 }

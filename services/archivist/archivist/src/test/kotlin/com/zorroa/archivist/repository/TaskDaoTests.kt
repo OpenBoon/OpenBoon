@@ -2,15 +2,15 @@ package com.zorroa.archivist.repository
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.AssetCounters
-import com.zorroa.archivist.domain.JobType
-import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobId
 import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.Task
 import com.zorroa.archivist.domain.TaskFilter
 import com.zorroa.archivist.domain.TaskSpec
 import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.domain.emptyZpsScript
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -113,6 +113,18 @@ class TaskDaoTests : AbstractTest() {
         assertEquals(1, taskStateCount(job, TaskState.Running))
         assertFalse(taskDao.setState(task, TaskState.Running, TaskState.Waiting))
         assertFalse(taskDao.setState(task, TaskState.Skipped, TaskState.Waiting))
+    }
+
+    @Test
+    fun testCheckStartTime() {
+        assertEquals(1, taskStateCount(job, TaskState.Waiting))
+        assertTrue(taskDao.setState(task, TaskState.Running, null))
+        var task = taskDao.get(task.id)
+        assertTrue(task.timeStarted > 0)
+        assertTrue(taskDao.setState(task, TaskState.Waiting, null))
+        task = taskDao.get(task.id)
+        assertEquals(task.timeStarted, -1L)
+        assertEquals(task.timeStopped, -1L)
     }
 
     @Test(expected = DataIntegrityViolationException::class)

@@ -1,8 +1,7 @@
 import logging
 import unittest
 
-from zmlp import Asset, StoredFile
-from zmlp.asset import FileImport, Clip, FileTypes
+from zmlp import Asset, StoredFile, FileImport, Clip, FileTypes
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -19,8 +18,18 @@ class AssetTests(unittest.TestCase):
             "attrs": {
                 "width": 200,
                 "height": 200
-            }
-        }]
+                }
+            },
+            {
+                "id": "assets/123/proxy/proxy_400x400.jpg",
+                "category": "proxy",
+                "name": "proxy_400x400.jpg",
+                "mimetype": "image/jpeg",
+                "attrs": {
+                    "width": 400,
+                    "height": 400
+                }
+            }]
 
     def test_add_file(self):
         asset = Asset({"id": "123"})
@@ -41,25 +50,25 @@ class AssetTests(unittest.TestCase):
         asset = Asset({"id": "123"})
         asset.set_attr("files", self.test_files)
 
-        assert 1 == len(asset.get_files(category="proxy"))
-        assert 1 == len(asset.get_files(category=["proxy"]))
+        assert 2 == len(asset.get_files(category="proxy"))
+        assert 2 == len(asset.get_files(category=["proxy"]))
         assert 0 == len(asset.get_files(name="face"))
 
     def test_get_files_filter_mimetype(self):
         asset = Asset({"id": "123"})
         asset.set_attr("files", self.test_files)
 
-        assert 1 == len(asset.get_files(mimetype="image/jpeg"))
-        assert 1 == len(asset.get_files(mimetype=["image/", "video/mp4"]))
+        assert 2 == len(asset.get_files(mimetype="image/jpeg"))
+        assert 2 == len(asset.get_files(mimetype=["image/", "video/mp4"]))
         assert 0 == len(asset.get_files(mimetype="video/mp4"))
 
     def test_get_files_by_extension(self):
         asset = Asset({"id": "123"})
         asset.set_attr("files", self.test_files)
 
-        assert 1 == len(asset.get_files(extension="jpg"))
+        assert 2 == len(asset.get_files(extension="jpg"))
         assert 0 == len(asset.get_files(extension="png"))
-        assert 1 == len(asset.get_files(extension=["png", "jpg"]))
+        assert 2 == len(asset.get_files(extension=["png", "jpg"]))
 
     def test_get_files_by_attrs(self):
         asset = Asset({"id": "123"})
@@ -72,8 +81,8 @@ class AssetTests(unittest.TestCase):
         asset = Asset({"id": "123"})
         asset.set_attr("files", self.test_files)
 
-        assert 1 == len(asset.get_files(attr_keys=["width"]))
-        assert 1 == len(asset.get_files(attr_keys="width"))
+        assert 2 == len(asset.get_files(attr_keys=["width"]))
+        assert 2 == len(asset.get_files(attr_keys="width"))
         assert 0 == len(asset.get_files(attr_keys=["kirk"]))
 
     def test_get_files_sort_func(self):
@@ -123,6 +132,19 @@ class AssetTests(unittest.TestCase):
         asset = Asset({"id": "123"})
         asset["foo.bar.bing"] = "123"
         assert asset["foo.bar.bing"] == "123"
+
+    def test_get_thumbnail(self):
+        asset = Asset({"id": "123"})
+        asset.set_attr("files", self.test_files)
+
+        f = asset.get_thumbnail(0)
+        assert "assets/123/proxy/proxy_200x200.jpg" == f.id
+
+        f = asset.get_thumbnail(1)
+        assert "assets/123/proxy/proxy_400x400.jpg" == f.id
+
+        f = asset.get_thumbnail(100)
+        assert "assets/123/proxy/proxy_400x400.jpg" == f.id
 
 
 class FileImportTests(unittest.TestCase):

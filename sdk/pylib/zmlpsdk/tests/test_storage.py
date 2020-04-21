@@ -8,8 +8,7 @@ import urllib3
 from minio.api import Minio
 
 import zmlp
-from zmlp.asset import StoredFile
-from zmlp.client import ZmlpClient
+from zmlp import StoredFile, DataSet, ZmlpClient
 from zmlpsdk import storage
 from zmlpsdk.testing import zorroa_test_data, TestAsset
 
@@ -78,6 +77,19 @@ class FileCacheTests(TestCase):
         with pytest.raises(FileNotFoundError):
             self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
 
+    @patch.object(ZmlpClient, 'stream')
+    def test_precache_file(self, post_patch):
+        pfile = StoredFile({
+            'name': 'cat.jpg',
+            'category': 'proxy',
+            'attrs': {},
+            'id': 'assets/123456/proxy/cat.jpg'
+        })
+        post_patch.return_value = '/tmp/toucan.jpg'
+        bird = zorroa_test_data('images/set01/toucan.jpg', uri=False)
+        path = self.lfc.precache_file(pfile, bird)
+        assert os.path.getsize(path) == os.path.getsize(bird)
+
 
 class FileStorageTests(TestCase):
 
@@ -145,7 +157,7 @@ class TestAssetStorage(TestCase):
         }
         asset = TestAsset(id='123456')
         result = self.fs.assets.store_file(
-            asset, zorroa_test_data('images/set01/toucan.jpg', uri=False), 'test')
+            zorroa_test_data('images/set01/toucan.jpg', uri=False), asset, 'test')
         assert 'cat.jpg' == result.name
         assert 'proxy' == result.category
 
@@ -159,7 +171,7 @@ class TestAssetStorage(TestCase):
         }
         asset = TestAsset(id='123456')
         result = self.fs.assets.store_blob(
-            asset, b'{"jo": "boo"}', 'google', 'vid-int-moderation.json')
+            b'{"jo": "boo"}', asset, 'google', 'vid-int-moderation.json')
         assert 'google' == result.category
         assert 'vid-int-moderation.json' == result.name
 
@@ -175,43 +187,6 @@ class TestAssetStorage(TestCase):
         with pytest.raises(ValueError):
             self.fs.assets.store_blob(
                 asset, '{"jo": "boo"}', 'google', 'vid-int-moderation')
-
-    @patch.object(ZmlpClient, 'stream')
-    def test_localize_file_with_copy(self, post_patch):
-        pfile = StoredFile({
-            'name': 'cat.jpg',
-            'category': 'proxy',
-            'attrs': {},
-            'id': 'assets/123456/proxy/cat.jpg'
-        })
-        post_patch.return_value = '/tmp/toucan.jpg'
-        bird = zorroa_test_data('images/set01/toucan.jpg', uri=False)
-        path = self.fs.assets.localize_file(pfile, bird)
-        assert os.path.getsize(path) == os.path.getsize(bird)
-
-    @patch.object(ZmlpClient, 'stream')
-    def test_localize_file(self, post_patch):
-        post_patch.return_value = '/tmp/toucan.jpg'
-        pfile = StoredFile({
-            'name': 'cat.jpg',
-            'category': 'proxy',
-            'attrs': {},
-            'id': 'assets/123456/proxy/cat.jpg'
-        })
-        path = self.fs.assets.localize_file(pfile)
-        assert path.endswith('b9430537beae3fe8e6ba2e11667f0ccc9be82a28.jpg')
-
-    @patch.object(ZmlpClient, 'stream')
-    def test_localize_asset_file_with_asset_override(self, post_patch):
-        pfile = StoredFile({
-            'name': 'cat.jpg',
-            'category': 'proxy',
-            'attrs': {},
-            'id': 'assets/123456/proxy/cat.jpg'
-        })
-        post_patch.return_value = '/tmp/cat.jpg'
-        self.fs.assets.localize_file(pfile)
-        assert 'assets/123456/proxy/cat.jpg' in post_patch.call_args_list[0][0][0]
 
     @patch.object(ZmlpClient, 'get')
     def test_get_native_uri(self, get_patch):
@@ -238,22 +213,51 @@ class TestProjectStorage(TestCase):
     @patch.object(ZmlpClient, 'upload_file')
     def test_store_file_with_rename(self, upload_patch):
         upload_patch.return_value = {
+            'id': 'datasets/12345/face_model/celebs.dat',
             'name': 'celebs.dat',
             'category': 'face_model',
-            'entity': 'model'
+            'entity': 'assets'
         }
         path = os.path.dirname(__file__) + '/fake_model.dat'
-        result = self.fs.projects.store_file(path, 'model', 'face_model', 'celebs.dat')
-        assert 'celebs.dat' == result['name']
-        assert 'face_model' == result['category']
+        ds = DataSet({"id": "12345"})
+        result = self.fs.projects.store_file(
+            path, ds, 'face_model', rename='celebs.dat')
+        assert 'celebs.dat' == result.name
+        assert 'face_model' == result.category
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_store_file(self, upload_patch):
         upload_patch.return_value = {
+            'id': "asset/foo/fake/fake_model.dat",
             'name': 'fake_model.dat',
             'category': 'fake'
         }
+        ds = DataSet({"id": "12345"})
         path = os.path.dirname(__file__) + '/fake_model.dat'
-        result = self.fs.projects.store_file(path, 'model', 'fake', 'fake_model.dat')
-        assert 'fake_model.dat' == result['name']
-        assert 'fake' == result['category']
+        result = self.fs.projects.store_file(path, ds, 'model', 'fake_model.dat')
+        assert 'fake_model.dat' == result.name
+        assert 'fake' == result.category
+
+    @patch.object(ZmlpClient, 'stream')
+    def test_localize_file(self, post_patch):
+        post_patch.return_value = '/tmp/toucan.jpg'
+        pfile = StoredFile({
+            'name': 'cat.jpg',
+            'category': 'proxy',
+            'attrs': {},
+            'id': 'assets/123456/proxy/cat.jpg'
+        })
+        path = self.fs.localize_file(pfile)
+        assert path.endswith('b9430537beae3fe8e6ba2e11667f0ccc9be82a28.jpg')
+
+    @patch.object(ZmlpClient, 'stream')
+    def test_localize_asset_file_with_asset_override(self, post_patch):
+        pfile = StoredFile({
+            'name': 'cat.jpg',
+            'category': 'proxy',
+            'attrs': {},
+            'id': 'assets/123456/proxy/cat.jpg'
+        })
+        post_patch.return_value = '/tmp/cat.jpg'
+        self.fs.projects.localize_file(pfile)
+        assert 'assets/123456/proxy/cat.jpg' in post_patch.call_args_list[0][0][0]
