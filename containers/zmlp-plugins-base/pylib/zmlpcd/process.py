@@ -243,8 +243,6 @@ class ProcessorWrapper(object):
                                .format(self.ref))
 
         except ZmlpFatalProcessorException as upe:
-            # Set the asset to be skipped for further processing
-            # It will not be included in result
             self.increment_stat("unrecoverable_error_count")
             self.reactor.error(None, self["ref"]["className"],
                                upe, True, "execute", sys.exc_info()[2])
@@ -312,6 +310,7 @@ class ProcessorWrapper(object):
         except Exception as e:
             if self.instance.fatal_errors:
                 error = "fatal"
+                frame.skip = True
                 self.increment_stat("unrecoverable_error_count")
             else:
                 error = "warning"
