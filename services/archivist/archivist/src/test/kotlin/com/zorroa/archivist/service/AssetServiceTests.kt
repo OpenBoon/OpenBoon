@@ -244,8 +244,6 @@ class AssetServiceTests : AbstractTest() {
 
         val rsp = assetService.batchDelete(setOf(assetId))
         Thread.sleep(1000)
-
-        Json.prettyPrint(rsp)
     }
 
     @Test
