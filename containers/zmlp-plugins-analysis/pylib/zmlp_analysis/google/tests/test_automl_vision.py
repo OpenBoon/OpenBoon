@@ -2,7 +2,6 @@
 
 import os
 
-from zmlp_core.util.media import store_asset_proxy
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, TestAsset
 from ..automl import AutoMLVisionModelProcessor
@@ -16,8 +15,6 @@ class AutoMLVisionUnitTests(PluginUnitTestCase):
         toucan_fname = zorroa_test_data('images/set01/toucan.jpg')
         asset = TestAsset(toucan_fname)
         frame = Frame(asset)
-
-        store_asset_proxy(asset, toucan_fname, (512, 512))
 
         # Prep the processor
         # The model_id below corresponds to a pre-trained model in the zorroa-poc-dev project:
