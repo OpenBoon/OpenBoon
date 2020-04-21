@@ -104,7 +104,7 @@ describe('<Filters />', () => {
     )
   })
 
-  it('should render delete one filter', () => {
+  it('should delete one filter', () => {
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
@@ -142,7 +142,7 @@ describe('<Filters />', () => {
     )
   })
 
-  it('should render delete all filters', () => {
+  it('should delete all filters', () => {
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
