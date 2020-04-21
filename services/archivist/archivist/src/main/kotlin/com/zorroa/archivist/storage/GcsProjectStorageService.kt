@@ -6,9 +6,9 @@ import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageException
 import com.google.cloud.storage.StorageOptions
 import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectStorageLocator
 import com.zorroa.archivist.domain.ProjectStorageSpec
-import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.service.IndexRoutingService
 import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
@@ -84,12 +84,12 @@ class GcsProjectStorageService constructor(
         return "gs://${properties.bucket}/$path"
     }
 
-    override fun deleteAsset(id: String) {
-        val assetPath = "/projects/${getProjectId()}/$id"
-        gcs.list(assetPath).values.forEach {
+    override fun recursiveDelete(locator: ProjectDirLocator) {
+        val path = locator.getPath()
+        gcs.list(path).values.forEach {
             gcs.delete(it.blobId)
         }
-        logDeleteEvent(assetPath)
+        logDeleteEvent(path)
     }
 
     fun getBlobId(locator: ProjectStorageLocator): BlobId {

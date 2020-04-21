@@ -1,7 +1,7 @@
 package com.zorroa.archivist.storage
 
-import com.amazonaws.services.s3.model.AmazonS3Exception
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageEntity
@@ -30,17 +30,16 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         assertEquals(result.size, 4)
         assertEquals(result.mimetype, "image/jpeg")
         assertEquals(result.attrs, mapOf("cats" to 100))
-        projectStorageService.deleteAsset(loc.entityId)
     }
 
-    @Test(expected = AmazonS3Exception::class)
+    @Test(expected = ProjectStorageException::class)
     fun testDelete() {
         val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         val result = projectStorageService.store(spec)
-        projectStorageService.deleteAsset(loc.entityId)
-
-        // Throws AmazonS3Exception
+        projectStorageService.recursiveDelete(
+            ProjectDirLocator(ProjectStorageEntity.ASSET, loc.entityId))
+        // Throws ProjectStorageException
         projectStorageService.fetch(loc)
     }
 
@@ -52,7 +51,6 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         val result = projectStorageService.store(spec)
         val bytes = projectStorageService.fetch(loc)
         assertEquals(result.size, bytes.size.toLong())
-        projectStorageService.deleteAsset(loc.entityId)
     }
 
     @Test
@@ -64,6 +62,5 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         val entity = projectStorageService.stream(loc)
         val value = String(entity.body.inputStream.readBytes())
         assertEquals("test", value)
-        projectStorageService.deleteAsset(loc.entityId)
     }
 }

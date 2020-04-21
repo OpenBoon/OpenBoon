@@ -1,6 +1,8 @@
 package com.zorroa.archivist.storage
 
+import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.FileStorage
+import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.archivist.domain.ProjectStorageLocator
@@ -56,9 +58,9 @@ interface ProjectStorageService {
     fun getNativeUri(locator: ProjectStorageLocator): String
 
     /**
-     * Delete all associated Asset files from storage server
+     * Delete all associated files stored against a particular entity.
      */
-    fun deleteAsset(id: String)
+    fun recursiveDelete(locator: ProjectDirLocator)
 
     /**
      * Log the storage of a file.
@@ -77,11 +79,11 @@ interface ProjectStorageService {
     /**
      * Log the storage of a file.
      */
-    fun logDeleteEvent(assetPath: String) {
+    fun logDeleteEvent(path: String) {
         logger.event(
             LogObject.PROJECT_STORAGE, LogAction.DELETE,
             mapOf(
-                "assetPath" to assetPath
+                "path" to path
             )
         )
     }
@@ -90,3 +92,5 @@ interface ProjectStorageService {
         val logger = LoggerFactory.getLogger(ProjectStorageService::class.java)
     }
 }
+
+class ProjectStorageException(message: String, cause: Throwable) : ArchivistException(message, cause)

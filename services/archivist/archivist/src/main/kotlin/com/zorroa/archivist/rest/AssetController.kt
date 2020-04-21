@@ -3,6 +3,8 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
+import com.zorroa.archivist.domain.BatchDeleteAssetResponse
+import com.zorroa.archivist.domain.BatchDeleteAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
@@ -199,24 +201,17 @@ class AssetController @Autowired constructor(
     @PreAuthorize("hasAuthority('AssetsImport')")
     @DeleteMapping(value = ["/api/v3/assets/{id}"])
     @ResponseBody
-    fun delete(@PathVariable id: String): ResponseEntity<Resource> {
-        val rsp = assetService.delete(id)
-        val bytes = EntityUtils.toByteArray(rsp.entity)
-        return ResponseEntity.ok()
-            .contentLength(bytes.size.toLong())
-            .body(InputStreamResource(bytes.inputStream()))
+    fun delete(@PathVariable id: String): Any {
+        val rsp = assetService.batchDelete(setOf(id))
+        return HttpUtils.status("asset", "delete", id, rsp.deleted.contains(id))
     }
 
     @ApiOperation("Delete assets by query.")
     @PreAuthorize("hasAuthority('AssetsImport')")
-    @DeleteMapping(value = ["/api/v3/assets/_delete_by_query"])
+    @DeleteMapping(value = ["/api/v3/assets/_batch_delete"])
     @ResponseBody
-    fun deleteByQuery(@RequestBody req: Map<String, Any>): ResponseEntity<Resource> {
-        val rsp = assetService.deleteByQuery(req)
-        val content = Strings.toString(rsp)
-        return ResponseEntity.ok()
-            .contentLength(content.length.toLong())
-            .body(InputStreamResource(content.byteInputStream()))
+    fun batchDelete(@RequestBody req: BatchDeleteAssetsRequest): BatchDeleteAssetResponse {
+        return assetService.batchDelete(req.assetIds)
     }
 
     @ApiOperation("Delete assets by query.")

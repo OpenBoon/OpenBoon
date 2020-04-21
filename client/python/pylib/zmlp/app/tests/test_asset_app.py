@@ -281,25 +281,42 @@ class AssetAppTests(unittest.TestCase):
     @patch.object(ZmlpClient, 'delete')
     def test_delete_with_asset_object(self, del_patch):
         asset = Asset({'id': '123'})
-        self.app.assets.delete(asset)
+        del_patch.return_value = {'success': True}
+        res = self.app.assets.delete_asset(asset)
         args = del_patch.call_args_list
         uri = args[0][0][0]
+        assert res is True
         assert '/api/v3/assets/123' == uri
 
     @patch.object(ZmlpClient, 'delete')
     def test_delete_with_asset_id(self, del_patch):
-        self.app.assets.delete('123')
+        del_patch.return_value = {'success': True}
+        res = self.app.assets.delete_asset('123')
         args = del_patch.call_args_list
         uri = args[0][0][0]
+        assert res is True
         assert '/api/v3/assets/123' == uri
 
     @patch.object(ZmlpClient, 'delete')
-    def test_delete_by_query(self, del_patch):
-        q = {'query': {'match_all': {}}}
-        self.app.assets.delete_by_query(q)
+    def test_batch_delete_by_id(self, del_patch):
+        q = {'assetIds': ["12345"]}
+        del_patch.return_value = {
+            "deleted": ["12345"]
+        }
+        res = self.app.assets.batch_delete_assets(["12345"])
         args = del_patch.call_args_list
-        assert '/api/v3/assets/_delete_by_query' == args[0][0][0]
+        assert '/api/v3/assets/_batch_delete' == args[0][0][0]
         assert q == args[0][0][1]
+        assert "12345" in res['deleted']
+
+    @patch.object(ZmlpClient, 'delete')
+    def test_batch_delete_by_assets(self, del_patch):
+        assets = [Asset({'id': '12345'}), Asset({'id': '6789'})]
+        self.app.assets.batch_delete_assets(assets)
+        args = del_patch.call_args_list
+        assert '/api/v3/assets/_batch_delete' == args[0][0][0]
+        assert '12345' in args[0][0][1]['assetIds']
+        assert '6789' in args[0][0][1]['assetIds']
 
     @patch.object(ZmlpClient, 'get')
     def test_download_file(self, get_patch):

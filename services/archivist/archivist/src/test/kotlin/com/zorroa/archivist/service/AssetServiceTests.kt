@@ -4,7 +4,6 @@ import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.AssetMetrics
 import com.zorroa.archivist.domain.AssetSpec
-import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
@@ -16,12 +15,18 @@ import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.ProcessorMetric
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.ProjectFileLocator
+import com.zorroa.archivist.domain.ProjectStorageCategory
+import com.zorroa.archivist.domain.ProjectStorageEntity
+import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
+import com.zorroa.zmlp.util.Json
 import org.elasticsearch.client.ResponseException
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -50,6 +55,9 @@ class AssetServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var dataSetSetService: DataSetService
+
+    @Autowired
+    lateinit var projectStorageService: ProjectStorageService
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -225,28 +233,19 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testDeleteAsset() {
+    fun testBatchDelete() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
         val assetId = assetService.batchCreate(batchCreate).created[0]
-        val rsp = assetService.delete(assetId)
-        assertEquals(rsp.statusLine.statusCode, 200)
-    }
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, assetId, ProjectStorageCategory.SOURCE, "bob.txt")
+        val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
+        projectStorageService.store(spec)
 
-    @Test
-    fun testDeleteAssetsByQuery() {
-        val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(
-                AssetSpec("gs://cats/large-brown-cat.jpg"),
-                AssetSpec("gs://dogs/large-brown-dog.jpg")
-            ), state = AssetState.Analyzed)
+        val rsp = assetService.batchDelete(setOf(assetId))
+        Thread.sleep(1000)
 
-        assetService.batchCreate(batchCreate)
-        val rsp = assetService.deleteByQuery(
-            mapOf("query" to mapOf("match_all" to mapOf<String, Any>()))
-        )
-        assertEquals(2, rsp.deleted)
+        Json.prettyPrint(rsp)
     }
 
     @Test

@@ -10,6 +10,7 @@ import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.BatchCreateAssetsResponse
+import com.zorroa.archivist.domain.BatchDeleteAssetResponse
 import com.zorroa.archivist.domain.BatchUploadAssetsRequest
 import com.zorroa.archivist.domain.Clip
 import com.zorroa.archivist.domain.FileStorage
@@ -18,6 +19,7 @@ import com.zorroa.archivist.domain.InternalTask
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.ProcessorRef
+import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectStorageCategory
@@ -29,7 +31,9 @@ import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.repository.DataSetDao
+import com.zorroa.archivist.security.CoroutineAuthentication
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.archivist.storage.ProjectStorageException
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.ElasticSearchErrorTranslator
 import com.zorroa.archivist.util.FileUtils
@@ -38,6 +42,9 @@ import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
 import com.zorroa.zmlp.service.logging.warnEvent
 import com.zorroa.zmlp.util.Json
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.elasticsearch.action.DocWriteRequest
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.bulk.BulkResponse
@@ -47,7 +54,6 @@ import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.Response
 import org.elasticsearch.common.unit.TimeValue
 import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.index.reindex.BulkByScrollResponse
 import org.elasticsearch.index.reindex.DeleteByQueryRequest
 import org.elasticsearch.search.sort.FieldSortBuilder
 import org.elasticsearch.search.sort.SortOrder
@@ -55,6 +61,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -142,14 +149,9 @@ interface AssetService {
     fun update(assetId: String, req: UpdateAssetRequest): Response
 
     /**
-     * Delete the given asset id.
+     * Batch delete a Set of asset ids.
      */
-    fun delete(assetId: String): Response
-
-    /**
-     * Delete assets by query.
-     */
-    fun deleteByQuery(req: Map<String, Any>): BulkByScrollResponse
+    fun batchDelete(ids: Set<String>): BatchDeleteAssetResponse
 
     /**
      * Augment the newAsset with the clip definition found in the [AssetSpec] used
@@ -164,11 +166,6 @@ interface AssetService {
      * Return true of the given asset would need reprocessing with the given Pipeline.
      */
     fun assetNeedsReprocessing(asset: Asset, pipeline: List<ProcessorRef>): Boolean
-
-    /**
-     * Delete Assets associated files by asset Id
-     */
-    fun deleteAssociatedFilesByAssetId(id: String)
 
     /**
      * Create new child task to the given task.
@@ -414,39 +411,47 @@ class AssetServiceImpl : AssetService {
         return rsp
     }
 
-    override fun delete(id: String): Response {
+    override fun batchDelete(ids: Set<String>): BatchDeleteAssetResponse {
+
         val rest = indexRoutingService.getProjectRestClient()
-        val request = Request("DELETE", "/${rest.route.indexName}/_doc/$id")
-
-        deleteAssociatedFilesByAssetId(id)
-
-        logger.event(
-            LogObject.ASSET, LogAction.DELETE, mapOf("assetId" to id)
-        )
-
-        return rest.client.lowLevelClient.performRequest(request)
-    }
-
-    override fun deleteAssociatedFilesByAssetId(id: String) {
-        projectStorageService.deleteAsset(id)
-    }
-
-    override fun deleteByQuery(req: Map<String, Any>): BulkByScrollResponse {
-        val rest = indexRoutingService.getProjectRestClient()
-        val search = assetSearchService.search(req)
-
-        val deleteByQuery = rest.client.deleteByQuery(
+        val query = QueryBuilders.termsQuery("_id", ids)
+        val rsp = rest.client.deleteByQuery(
             DeleteByQueryRequest(rest.route.indexName)
-                .setQuery(
-                    assetSearchService.mapToSearchSourceBuilder(
-                        req
-                    ).query()
-                ), RequestOptions.DEFAULT
+                .setQuery(query), RequestOptions.DEFAULT
         )
 
-        search.hits.hits.forEach { projectStorageService.deleteAsset(it.id) }
+        val projectId = getProjectId()
+        val failures = rsp.bulkFailures.map { it.id }
+        val removed = ids.subtract(failures).toList()
 
-        return deleteByQuery
+        for (failure in rsp.bulkFailures) {
+            logger.warnEvent(
+                LogObject.ASSET, LogAction.DELETE, failure.message,
+                mapOf("assetId" to failure.id)
+            )
+        }
+
+        for (removed in removed) {
+            logger.event(
+                LogObject.ASSET, LogAction.DELETE, mapOf("assetId" to removed)
+            )
+        }
+
+        // Background removal of files into a co-routine.
+        GlobalScope.launch(Dispatchers.IO + CoroutineAuthentication(SecurityContextHolder.getContext())) {
+            logger.info("Removing files for ${removed.size} assets")
+            for (assetId in removed) {
+                try {
+                    projectStorageService.recursiveDelete(
+                        ProjectDirLocator(ProjectStorageEntity.ASSET, assetId, projectId)
+                    )
+                } catch (ex: ProjectStorageException) {
+                    logger.warn("Failed to delete files asset $assetId", ex)
+                }
+            }
+        }
+
+        return BatchDeleteAssetResponse(removed, failures)
     }
 
     /**
