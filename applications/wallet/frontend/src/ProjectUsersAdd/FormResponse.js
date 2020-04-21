@@ -23,9 +23,17 @@ const ProjectUsersAddFormResponse = ({
     <div>
       {failed.length > 0 && (
         <>
-          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-            Users Not Added
-          </FlashMessage>
+          <div
+            css={{
+              display: 'flex',
+              paddingTop: spacing.base,
+              paddingBottom: spacing.base,
+            }}
+          >
+            <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+              Users not added.
+            </FlashMessage>
+          </div>
           <SectionTitle>Users that Need an Account</SectionTitle>
           <div
             css={{
@@ -42,11 +50,18 @@ const ProjectUsersAddFormResponse = ({
       )}
 
       {succeeded.length > 0 && (
-        <div css={{ paddingTop: spacing.comfy }}>
-          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Users Added
-          </FlashMessage>
-
+        <>
+          <div
+            css={{
+              display: 'flex',
+              paddingTop: spacing.base,
+              paddingBottom: spacing.base,
+            }}
+          >
+            <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+              Users added.
+            </FlashMessage>
+          </div>
           <SectionTitle>Users Added</SectionTitle>
           <div
             css={{
@@ -74,7 +89,7 @@ const ProjectUsersAddFormResponse = ({
               <Button variant={BUTTON_VARIANTS.PRIMARY}>View All</Button>
             </Link>
           </ButtonGroup>
-        </div>
+        </>
       )}
     </div>
   )

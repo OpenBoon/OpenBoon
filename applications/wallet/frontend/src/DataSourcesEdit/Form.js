@@ -51,9 +51,17 @@ const DataSourcesEditForm = ({ initialState }) => {
   return (
     <>
       {errors.global && (
-        <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-          {errors.global}
-        </FlashMessage>
+        <div
+          css={{
+            display: 'flex',
+            paddingTop: spacing.base,
+            marginBottom: -spacing.base,
+          }}
+        >
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+            {errors.global}
+          </FlashMessage>
+        </div>
       )}
 
       <Form style={{ width: 'auto' }}>
