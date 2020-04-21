@@ -65,21 +65,21 @@ const AssetsThumbnail = ({
             overflow: 'hidden',
           }}
         >
-          {/* {srcUrl ? (
+          {srcUrl ? (
             <img
               css={{ [largestDimension]: '100%' }}
               srcSet={srcSet.join(', ')}
               src={srcUrl}
               alt={filename}
             />
-          ) : ( */}
-          <img
-            srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
-            alt={filename}
-            src="/icons/fallback.png"
-            css={{ width: '100%' }}
-          />
-          {/* )} */}
+          ) : (
+            <img
+              srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
+              alt={filename}
+              src="/icons/fallback.png"
+              css={{ width: '100%' }}
+            />
+          )}
         </Button>
       </Link>
     </div>

@@ -22,8 +22,6 @@ const MetadataContent = ({ projectId, assetId }) => {
     `/api/v1/projects/${projectId}/assets/${assetId}/`,
   )
 
-  console.log(asset)
-
   const {
     metadata: {
       source: { filename },

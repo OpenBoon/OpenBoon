@@ -38,6 +38,11 @@ const colors = {
     four: '#cdf6a8',
   },
 
+  selection: {
+    base: '#027aff',
+    background: '#027aff38',
+  },
+
   transparent: 'transparent',
 }
 
