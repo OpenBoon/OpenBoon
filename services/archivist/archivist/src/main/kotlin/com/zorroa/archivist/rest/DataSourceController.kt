@@ -66,9 +66,15 @@ class DataSourceController(
         return dataSourceJdbcDao.find(filter ?: DataSourceFilter())
     }
 
-    @ApiOperation("Get a DataSource by id.")
+    @ApiOperation("Find a single DataSet")
     @PostMapping("/api/v1/data-sources/_findOne")
-    fun findOne(@RequestBody(required = false) filter: DataSourceFilter?): DataSource {
+    fun findOneV1(@RequestBody(required = false) filter: DataSourceFilter?): DataSource {
+        return dataSourceJdbcDao.findOne(filter ?: DataSourceFilter())
+    }
+
+    @ApiOperation("Find a single DataSet")
+    @PostMapping("/api/v1/data-sources/_find_one")
+    fun findOneV3(@RequestBody(required = false) filter: DataSourceFilter?): DataSource {
         return dataSourceJdbcDao.findOne(filter ?: DataSourceFilter())
     }
 

@@ -1,23 +1,28 @@
 package com.zorroa.archivist.service
 
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
 import com.zorroa.archivist.domain.DataSet
+import com.zorroa.archivist.domain.DataSetFilter
 import com.zorroa.archivist.domain.DataSetSpec
 import com.zorroa.archivist.repository.DataSetDao
+import com.zorroa.archivist.repository.DataSetJdbcDao
+import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.UUIDGen
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.security.getZmlpActor
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.event
+import org.apache.lucene.search.join.ScoreMode
+import org.elasticsearch.client.RequestOptions
+import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.search.aggregations.AggregationBuilders
+import org.elasticsearch.search.aggregations.bucket.nested.Nested
+import org.elasticsearch.search.aggregations.bucket.terms.Terms
 import org.slf4j.LoggerFactory
-import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
-import java.util.concurrent.ExecutionException
-import java.util.concurrent.TimeUnit
 
 interface DataSetService {
 
@@ -35,25 +40,30 @@ interface DataSetService {
      * Get a DataSet by Id.
      */
     fun get(id: UUID): DataSet
+
+    /**
+     * Page,sort, and filter DataSets
+     */
+    fun find(filter: DataSetFilter): KPagedList<DataSet>
+
+    /**
+     * Find a single DataSet
+     */
+    fun findOne(filter: DataSetFilter): DataSet
+
+    /**
+     * Get a Map of all labels and label counts.
+     */
+    fun getLabelCounts(ds: DataSet): Map<String, Long>
 }
 
 @Service
 @Transactional
 class DataSetServiceImpl(
-    val dataSetDao: DataSetDao
+    val dataSetDao: DataSetDao,
+    val dataSetJdbcDao: DataSetJdbcDao,
+    val indexRoutingService: IndexRoutingService
 ) : DataSetService {
-
-    private val cache = CacheBuilder.newBuilder()
-        .maximumSize(100)
-        .initialCapacity(10)
-        .concurrencyLevel(2)
-        .expireAfterWrite(24, TimeUnit.HOURS)
-        .build(object : CacheLoader<UUID, DataSet>() {
-            @Throws(Exception::class)
-            override fun load(id: UUID): DataSet {
-                return dataSetDao.getOneByProjectIdAndId(getProjectId(), id)
-            }
-        })
 
     override fun create(spec: DataSetSpec): DataSet {
 
@@ -83,11 +93,36 @@ class DataSetServiceImpl(
 
     @Transactional(readOnly = true)
     override fun get(id: UUID): DataSet {
-        try {
-            return cache.get(id)
-        } catch (e: ExecutionException) {
-            throw e.cause ?: EmptyResultDataAccessException("DataSet Id not found", 1)
-        }
+        return dataSetDao.getOneByProjectIdAndId(getProjectId(), id)
+    }
+
+    @Transactional(readOnly = true)
+    override fun find(filter: DataSetFilter): KPagedList<DataSet> {
+        return dataSetJdbcDao.find(filter)
+    }
+
+    @Transactional(readOnly = true)
+    override fun findOne(filter: DataSetFilter): DataSet {
+        return dataSetJdbcDao.findOne(filter)
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    override fun getLabelCounts(ds: DataSet): Map<String, Long> {
+        val rest = indexRoutingService.getProjectRestClient()
+        val query = QueryBuilders.nestedQuery("labels",
+            QueryBuilders.termQuery("labels.dataSetId", ds.id.toString()), ScoreMode.None)
+        val agg = AggregationBuilders.nested("nested_labels", "labels")
+            .subAggregation(AggregationBuilders.terms("labels").field("labels.label"))
+
+        val req = rest.newSearchBuilder()
+        req.source.query(query)
+        req.source.aggregation(agg)
+        req.source.size(0)
+        req.source.fetchSource(false)
+
+        val rsp = rest.client.search(req.request, RequestOptions.DEFAULT)
+        val buckets = rsp.aggregations.get<Nested>("nested_labels").aggregations.get<Terms>("labels")
+        return buckets.buckets.map { it.keyAsString to it.docCount }.toMap()
     }
 
     companion object {

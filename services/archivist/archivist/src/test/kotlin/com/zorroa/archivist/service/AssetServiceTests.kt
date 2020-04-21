@@ -17,6 +17,7 @@ import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.ProcessorMetric
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.TaskState
+import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.domain.UpdateAssetRequest
 import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getProjectId
@@ -48,7 +49,7 @@ class AssetServiceTests : AbstractTest() {
     lateinit var dispatcherService: DispatcherService
 
     @Autowired
-    lateinit var dataSetSetSerice: DataSetService
+    lateinit var dataSetSetService: DataSetService
 
     override fun requiresElasticSearch(): Boolean {
         return true
@@ -186,7 +187,7 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testBatchCreateAssetsWithLabel() {
-        val ds = dataSetSetSerice.create(DataSetSpec("hobbits", DataSetType.LabelDetection))
+        val ds = dataSetSetService.create(DataSetSpec("hobbits", DataSetType.LabelDetection))
 
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.jpg",
@@ -200,8 +201,8 @@ class AssetServiceTests : AbstractTest() {
         val rsp = assetService.batchCreate(req)
         val asset = assetService.getAll(rsp.created)[0]
 
-        assertTrue(asset.attrExists("datasets"))
-        val datasetLabels = asset.getAttr("datasets", DataSetLabel.LIST_OF) ?: listOf<DataSetLabel>()
+        assertTrue(asset.attrExists("labels"))
+        val datasetLabels = asset.getAttr("labels", DataSetLabel.LIST_OF) ?: listOf<DataSetLabel>()
         assertEquals(1, datasetLabels.size)
         assertEquals("bilbo", datasetLabels[0].label)
         assertEquals(ds.id, datasetLabels[0].dataSetId)
@@ -555,5 +556,34 @@ class AssetServiceTests : AbstractTest() {
         val task1 = dispatcherService.getWaitingTasks(getProjectId(), 1)
         val newTask = assetService.createAnalysisTask(task1[0], rsp.created, listOf("abc123"))
         assertEquals("Expand with 1 assets, 0 processors.", newTask?.name)
+    }
+
+    @Test
+    fun testUpdateLabels() {
+        val ds = dataSetSetService.create(DataSetSpec("test", DataSetType.LabelDetection))
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
+        )
+        // Add a label.
+        var asset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
+        assetService.updateLabels(UpdateAssetLabelsRequest(
+            // Validate adding 2 identical labels only adds 1
+            mapOf(asset.id to listOf(DataSetLabel(ds.id, "cat"), DataSetLabel(ds.id, "cat")))
+        ))
+
+        asset = assetService.getAsset(asset.id)
+        var labels = asset.getAttr("labels", DataSetLabel.LIST_OF)
+        assertEquals(1, labels?.size)
+        assertEquals("cat", labels?.get(0)?.label)
+
+        // Remove a label
+        assetService.updateLabels(UpdateAssetLabelsRequest(
+            null,
+            mapOf(asset.id to listOf(DataSetLabel(ds.id, "cat")))
+        ))
+
+        asset = assetService.getAsset(asset.id)
+        labels = asset.getAttr("labels", DataSetLabel.LIST_OF) ?: listOf()
+        assert(labels.isNullOrEmpty())
     }
 }

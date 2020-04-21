@@ -4,7 +4,11 @@ import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.AssetSpec
 import com.zorroa.archivist.domain.AssetState
 import com.zorroa.archivist.domain.BatchCreateAssetsRequest
+import com.zorroa.archivist.domain.DataSetSpec
+import com.zorroa.archivist.domain.DataSetType
+import com.zorroa.archivist.domain.UpdateAssetLabelsRequest
 import com.zorroa.archivist.service.AssetSearchService
+import com.zorroa.archivist.service.DataSetService
 import com.zorroa.archivist.service.PipelineModService
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.zmlp.util.Json
@@ -28,6 +32,9 @@ class AssetControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var pipelineModService: PipelineModService
+
+    @Autowired
+    lateinit var dataSetSetService: DataSetService
 
     @Test
     fun testBatchCreate() {
@@ -239,6 +246,27 @@ class AssetControllerTests : MockMvcTest() {
                 .content(update)
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
+
+    @Test
+    fun testUpdateLabels() {
+        val ds = dataSetSetService.create(DataSetSpec("test", DataSetType.LabelDetection))
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+
+        val req = UpdateAssetLabelsRequest(
+            add = mapOf(created.created[0] to listOf(ds.getLabel("cat")))
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/assets/_batch_update_labels")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(req))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
             .andReturn()
     }
 

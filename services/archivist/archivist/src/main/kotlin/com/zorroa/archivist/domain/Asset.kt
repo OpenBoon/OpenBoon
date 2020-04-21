@@ -8,11 +8,18 @@ import com.zorroa.archivist.util.randomString
 import com.zorroa.zmlp.util.Json
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import org.elasticsearch.action.search.ClearScrollRequest
+import org.elasticsearch.action.search.SearchResponse
+import org.elasticsearch.action.search.SearchScrollRequest
+import org.elasticsearch.client.RequestOptions
+import org.elasticsearch.client.RestHighLevelClient
 import org.slf4j.LoggerFactory
 import java.nio.ByteBuffer
 import java.security.MessageDigest
 import java.util.Base64
+import java.util.Spliterator
 import java.util.UUID
+import java.util.function.Consumer
 import java.util.regex.Pattern
 
 @ApiModel("AssetState",
@@ -178,6 +185,28 @@ open class Asset(
         return attrExists("system.timeCreated") && getAttr<String>("system.state") == AssetState.Analyzed.name
     }
 
+    /**
+     * Adds the given labels to the asset's document.
+     */
+    fun addLabels(labels: Collection<DataSetLabel>) {
+        val allLabels = getAttr("labels", DataSetLabel.SET_OF) ?: mutableSetOf()
+        // Remove the labels first because if the label value
+        // changes then it won't get added.  This basically
+        // replaces a label for an existing tag.
+        allLabels.removeAll(labels)
+        allLabels.addAll(labels)
+        setAttr("labels", allLabels)
+    }
+
+    /**
+     * Adds the given labels to the asset's document.
+     */
+    fun removeLabels(labels: Collection<DataSetLabel>) {
+        val allLabels = getAttr("labels", DataSetLabel.SET_OF) ?: mutableSetOf()
+        allLabels.removeAll(labels)
+        setAttr("labels", allLabels)
+    }
+
     private fun getContainer(attr: String, forceExpand: Boolean): Any? {
         val parts = PATTERN_ATTR.split(attr)
 
@@ -327,5 +356,68 @@ class AssetIdBuilder(val spec: AssetSpec) {
         // also up it on shared indexes but probably not necessary.
         return Base64.getUrlEncoder()
             .encodeToString(digester.digest()).trim('=').substring(0, length)
+    }
+}
+
+class AssetIterator(
+    private val client: RestHighLevelClient,
+    private val rsp: SearchResponse,
+    private var maxResults: Long
+) : Iterable<Asset> {
+
+    override fun iterator(): Iterator<Asset> {
+        return object : Iterator<Asset> {
+
+            var hits = rsp.hits.hits
+            private var index = 0
+            private var count = 0
+
+            init {
+                if (maxResults == 0L) {
+                    maxResults = rsp.hits.totalHits.value
+                }
+            }
+
+            override fun hasNext(): Boolean {
+                if (index >= hits.size) {
+                    val sr = SearchScrollRequest()
+                    sr.scrollId(rsp.scrollId)
+                    sr.scroll("1m")
+                    hits = client.scroll(sr, RequestOptions.DEFAULT).hits.hits
+                    index = 0
+                }
+
+                val hasMore = index < hits.size && count < maxResults
+                if (!hasMore) {
+                    var csr = ClearScrollRequest()
+                    csr.addScrollId(rsp.scrollId)
+                    client.clearScroll(csr, RequestOptions.DEFAULT)
+                }
+                return hasMore
+            }
+
+            override fun next(): Asset {
+                val hit = hits[index++]
+                val asset = Asset(
+                    hit.id,
+                    hit.sourceAsMap
+                )
+
+                count++
+                return asset
+            }
+
+            override fun forEachRemaining(action: Consumer<in Asset>) {
+                throw UnsupportedOperationException()
+            }
+        }
+    }
+
+    override fun forEach(action: Consumer<in Asset>) {
+        throw UnsupportedOperationException()
+    }
+
+    override fun spliterator(): Spliterator<Asset> {
+        throw UnsupportedOperationException()
     }
 }

@@ -2,7 +2,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from zmlp import ZmlpClient, ZmlpApp, DataSetType
+from zmlp import ZmlpClient, ZmlpApp, DataSetType, DataSet
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -44,3 +44,40 @@ class ZmlpDataSetAppTests(unittest.TestCase):
         assert value['id'] == ds.id
         assert value['name'] == ds.name
         assert value['type'] == ds.type
+
+    @patch.object(ZmlpClient, 'post')
+    def test_find_one_dataset(self, post_patch):
+        value = {
+            'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
+            'name': 'test',
+            'type': 'LabelDetection'
+        }
+        post_patch.return_value = value
+        ds = self.app.datasets.find_one_dataset(id='A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80')
+        assert value['id'] == ds.id
+        assert value['name'] == ds.name
+        assert value['type'] == ds.type
+
+    @patch.object(ZmlpClient, 'post')
+    def test_find_datasets(self, post_patch):
+        value = {
+            'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
+            'name': 'test',
+            'type': 'LabelDetection'
+        }
+        post_patch.return_value = {"list": [value]}
+        ds = list(self.app.datasets.find_datasets(
+            id='A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80', limit=1))
+        assert value['id'] == ds[0].id
+        assert value['name'] == ds[0].name
+        assert value['type'] == ds[0].type
+
+    @patch.object(ZmlpClient, 'get')
+    def test_get_label_counts(self, get_patch):
+        value = {
+            "dog": 1,
+            "cat": 2
+        }
+        get_patch.return_value = value
+        rsp = self.app.datasets.get_label_counts(DataSet({"id": "foo"}))
+        assert value == rsp

@@ -1,7 +1,9 @@
 package com.zorroa.archivist.rest
 
 import com.zorroa.archivist.domain.DataSet
+import com.zorroa.archivist.domain.DataSetFilter
 import com.zorroa.archivist.domain.DataSetSpec
+import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.DataSetService
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
@@ -25,7 +27,25 @@ class DataSetController(
 
     @ApiOperation("Get a DataSet")
     @GetMapping("/api/v1/data-sets/{id}")
-    fun get(@ApiParam("Get a dataset by ID") @PathVariable id: UUID): DataSet {
+    fun get(@ApiParam("DataSet ID") @PathVariable id: UUID): DataSet {
         return datasetService.get(id)
+    }
+
+    @ApiOperation("Search for DataSets.")
+    @PostMapping("/api/v3/data-sets/_search")
+    fun find(@RequestBody(required = false) filter: DataSetFilter?): KPagedList<DataSet> {
+        return datasetService.find(filter ?: DataSetFilter())
+    }
+
+    @ApiOperation("Find a single DataSet")
+    @PostMapping("/api/v3/data-sets/_find_one")
+    fun findOne(@RequestBody(required = false) filter: DataSetFilter?): DataSet {
+        return datasetService.findOne(filter ?: DataSetFilter())
+    }
+
+    @ApiOperation("Find a single DataSet")
+    @GetMapping("/api/v3/data-sets/{id}/_label_counts")
+    fun getLabelCounts(@ApiParam("DataSet ID") @PathVariable id: UUID): Map<String, Long> {
+        return datasetService.getLabelCounts(datasetService.get(id))
     }
 }
