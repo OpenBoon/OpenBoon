@@ -8,7 +8,13 @@ const ProjectUsageBar = ({ limit, usage, legend }) => {
   const available = limit - usage
   return (
     <div>
-      <div css={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div
+        css={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          fontFamily: 'Roboto Condensed',
+        }}
+      >
         {usage > 0 && (
           <div
             css={{
