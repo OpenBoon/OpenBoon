@@ -1,16 +1,13 @@
+import collections
+import logging
 import subprocess
 import tempfile
-import logging
-import collections
-
-from PIL import Image
 from pathlib import Path
 
-from zmlpsdk import AssetProcessor, Argument
-from zmlpsdk.storage import file_storage
-from zmlpsdk.proxy import store_asset_proxy, get_proxy_level_path
 from zmlp_core.util.media import get_output_dimension, media_size
-
+from zmlpsdk import AssetProcessor, Argument
+from zmlpsdk.proxy import store_asset_proxy
+from zmlpsdk.storage import file_storage
 
 logger = logging.getLogger(__file__)
 
@@ -63,7 +60,6 @@ class ImageProxyProcessor(AssetProcessor):
         proxy_paths = self._create_proxy_images(asset)
         for proxy in proxy_paths:
             store_asset_proxy(asset, proxy[2], (proxy[0], proxy[1]))
-        set_tiny_proxy_colors(asset)
 
     def _create_proxy_images(self, asset):
         """
@@ -214,49 +210,6 @@ class ImageProxyProcessor(AssetProcessor):
         if not valid_sizes:
             valid_sizes.append(longest_edge)
         return valid_sizes
-
-
-def set_tiny_proxy_colors(asset):
-    """Select the smallest available image proxy and create a tiny proxy.
-
-    Args:
-        asset (Asset): Asset to set the tiny proxy colors on.
-
-    """
-    if not asset.get_attr('tmp.proxies.tinyProxyGenerated'):
-        smallest_proxy = get_proxy_level_path(asset, 0)
-        if smallest_proxy:
-            logger.info('Creating tiny proxy colors for %s.' % smallest_proxy)
-            asset.set_attr('analysis.zvi.tinyProxy',
-                           get_tiny_proxy_colors(smallest_proxy) or None)
-
-            # Mark that the tiny proxy was generated so we don't do this multiple times
-            # if the customer has multiple proxy importers.
-            asset.set_attr('tmp.proxies.tinyProxyGenerated', True)
-
-
-def get_tiny_proxy_colors(image_path):
-    """Takes a sampling of 9 evenly spaced pixels from a proxy image to represent it's
-    general colors. To get these pixel values the images is downres'd to an 11x11
-    image. The outer row of pixels is ignored and the remaining pixels are divided
-    into 3x3 squares. The hex pixel color of the center of each 3x3 square is
-    returned.
-
-    Args:
-        image_path: Path to an image to extract a tiny proxy from.
-
-    Returns:
-        list(str): List of 9 hex color values that represent the image.
-
-    """
-    colors = []
-    image = Image.open(image_path).resize((11, 11)).convert('RGB')
-    coordinates = [(3, 3), (6, 3), (9, 3), (3, 6), (6, 6), (9, 6), (3, 9), (6, 9), (9, 9)]
-    for coordinate in coordinates:
-        rgb = image.getpixel(coordinate)
-        color = '#%02x%02x%02x' % rgb
-        colors.append(color)
-    return colors
 
 
 ProxySelection = collections.namedtuple('name', '')
