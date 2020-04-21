@@ -1,13 +1,13 @@
 import collections
 import logging
+import os
 import subprocess
 import tempfile
 from pathlib import Path
 
-from zmlp_core.util.media import get_output_dimension, media_size
 from zmlpsdk import AssetProcessor, Argument
-from zmlpsdk.proxy import store_asset_proxy
 from zmlpsdk.storage import file_storage
+from ..util.media import get_output_dimension, media_size, store_asset_proxy
 
 logger = logging.getLogger(__file__)
 
@@ -58,8 +58,12 @@ class ImageProxyProcessor(AssetProcessor):
         self.logger.info('Creating %s proxies for %s.' % (self.arg_value('file_type'),
                                                           source_path))
         proxy_paths = self._create_proxy_images(asset)
-        for proxy in proxy_paths:
-            store_asset_proxy(asset, proxy[2], (proxy[0], proxy[1]))
+        for width, height, path in proxy_paths:
+            store_asset_proxy(asset, path, (width, height))
+
+        # Make web optimized
+        width, height, path = proxy_paths[0]
+        self.make_web_optimized_proxy(asset, path, (width, height))
 
     def _create_proxy_images(self, asset):
         """
@@ -107,8 +111,7 @@ class ImageProxyProcessor(AssetProcessor):
         # Crete the base of the oiiotool shell command.
         oiiotool_command = ['oiiotool', '-q', '-native', '-wildcardoff', source_path,
                             '--threads', '--cache 100', '--clear-keywords',
-                            '--nosoftwareattrib', '--eraseattrib', 'thumbnail_image',
-                            '--eraseattrib', 'Exif:.*', '--eraseattrib', 'IPTC:.*']
+                            '--nosoftwareattrib', '--eraseattrib', '.*']
         if asset.get_attr('media.clip.type') == 'image':
             start = asset.get_attr('media.clip.start')
             if start:
@@ -123,7 +126,6 @@ class ImageProxyProcessor(AssetProcessor):
             ])
             oiiotool_command.extend(self.arg_value('output_args'))
             oiiotool_command.extend(['-o', str(output_path)])
-
         return oiiotool_command
 
     def _get_proxy_descriptors(self, asset):
@@ -209,7 +211,45 @@ class ImageProxyProcessor(AssetProcessor):
 
         if not valid_sizes:
             valid_sizes.append(longest_edge)
-        return valid_sizes
+        return sorted(valid_sizes, reverse=True)
+
+    def make_web_optimized_proxy(self, asset, src_path, size):
+        """
+        Make a web optimized proxy the same size as the largest proxy.
+
+        References:
+            https://developers.google.com/speed/docs/insights/OptimizeImages
+
+        Args:
+            asset (Asset): The asset to use
+        """
+        tmp_dir = tempfile.mkdtemp()
+        output_path = os.path.join(tmp_dir, "web-optimized-proxy.jpg")
+
+        cmd = [
+            "convert",
+            str(src_path),
+            "-sampling-factor",
+            "4:2:0",
+            "-define",
+            "jpeg:dct-method=float",
+            "-strip",
+            "-quality",
+            "85",
+            "-interlace",
+            "JPEG",
+            "-colorspace",
+            "RGB",
+            str(output_path)
+        ]
+
+        logger.info("Running cmd: {}".format(" ".join(cmd)))
+        subprocess.check_call(cmd, shell=False)
+        attrs = {"width": size[0], "height": size[1]}
+        prx = file_storage.assets.store_file(output_path, asset, "web-proxy",
+                                             "web-proxy-{width}x{height}".format(**attrs),
+                                             attrs)
+        return prx
 
 
 ProxySelection = collections.namedtuple('name', '')
