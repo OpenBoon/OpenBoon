@@ -1662,15 +1662,6 @@ Array [
   background-color: #808080;
 }
 
-.emotion-2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
 .emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1690,18 +1681,23 @@ Array [
   -ms-flex: 1;
   flex: 1;
   padding-left: 12px;
-  color: #000000;
+  color: #191919;
   font-weight: 500;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 .emotion-4 {
   padding-top: 12px;
   padding-bottom: 12px;
   color: #808080;
-}
-
-.emotion-22 {
-  padding-top: 24px;
 }
 
 .emotion-12 {
@@ -1802,7 +1798,7 @@ Array [
           className="emotion-0"
           role="alert"
         >
-          Users Not Added
+          Users not added.
         </div>
       </div>
     </div>
@@ -1849,70 +1845,66 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-22"
+      className="emotion-2"
     >
       <div
-        className="emotion-2"
+        className="emotion-12"
       >
+        <svg
+          color="#4ac565"
+          data-file-name="checkmark.svg"
+          height={20}
+        />
         <div
-          className="emotion-12"
+          className="emotion-0"
+          role="alert"
         >
-          <svg
-            color="#4ac565"
-            data-file-name="checkmark.svg"
-            height={20}
-          />
-          <div
-            className="emotion-0"
-            role="alert"
-          >
-            Users Added
-          </div>
+          Users added.
         </div>
       </div>
-      <h3
-        className="emotion-3"
+    </div>
+    <h3
+      className="emotion-3"
+    >
+      Users Added
+    </h3>
+    <div
+      className="emotion-15"
+    >
+      tester@fake.com
+    </div>
+    <h3
+      className="emotion-3"
+    >
+      Roles
+    </h3>
+    <ul
+      className="emotion-18"
+    >
+      <li
+        className="emotion-17"
       >
-        Users Added
-      </h3>
-      <div
-        className="emotion-15"
+        ML Tools
+      </li>
+    </ul>
+    <div
+      className="emotion-21"
+    >
+      <button
+        className="emotion-19"
+        onClick={[Function]}
+        type="button"
       >
-        tester@fake.com
-      </div>
-      <h3
-        className="emotion-3"
+        Add Another User
+      </button>
+      <a
+        className="emotion-20"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
       >
-        Roles
-      </h3>
-      <ul
-        className="emotion-18"
-      >
-        <li
-          className="emotion-17"
-        >
-          ML Tools
-        </li>
-      </ul>
-      <div
-        className="emotion-21"
-      >
-        <button
-          className="emotion-19"
-          onClick={[Function]}
-          type="button"
-        >
-          Add Another User
-        </button>
-        <a
-          className="emotion-20"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          View All
-        </a>
-      </div>
+        View All
+      </a>
     </div>
   </div>,
 ]

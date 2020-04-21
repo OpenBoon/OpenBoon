@@ -25,9 +25,17 @@ const ApiKeysAddFormSuccess = ({
 
   return (
     <div>
-      <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-        Key Generated &amp; Copied to Clipboard
-      </FlashMessage>
+      <div
+        css={{
+          display: 'flex',
+          paddingTop: spacing.base,
+          paddingBottom: spacing.base,
+        }}
+      >
+        <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+          Key generated &amp; copied to clipboard.
+        </FlashMessage>
+      </div>
 
       <SectionTitle>Scope</SectionTitle>
 

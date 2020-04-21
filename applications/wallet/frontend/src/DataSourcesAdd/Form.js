@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
 
-import { colors, constants, typography } from '../Styles'
+import { colors, constants, typography, spacing } from '../Styles'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
@@ -60,9 +60,17 @@ const DataSourcesAddForm = () => {
   return (
     <>
       {errors.global && (
-        <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-          {errors.global}
-        </FlashMessage>
+        <div
+          css={{
+            display: 'flex',
+            paddingTop: spacing.base,
+            marginBottom: -spacing.base,
+          }}
+        >
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+            {errors.global}
+          </FlashMessage>
+        </div>
       )}
 
       <Form style={{ width: 'auto' }}>

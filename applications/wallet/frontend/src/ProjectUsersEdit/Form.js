@@ -10,6 +10,7 @@ import { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import CheckboxGroup from '../Checkbox/Group'
 import Button, { VARIANTS } from '../Button'
 import ButtonGroup from '../Button/Group'
+import { spacing } from '../Styles'
 
 import { onSubmit } from './helpers'
 
@@ -31,46 +32,55 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
   })
 
   return (
-    <Form>
-      <SectionTitle>Email: {user.email}</SectionTitle>
-
+    <>
       {!!state.error && (
-        <FlashMessage variant={FLASH_VARIANTS.ERROR}>
-          {state.error}
-        </FlashMessage>
+        <div
+          css={{
+            display: 'flex',
+            paddingTop: spacing.base,
+          }}
+        >
+          <FlashMessage variant={FLASH_VARIANTS.ERROR}>
+            {state.error}
+          </FlashMessage>
+        </div>
       )}
 
-      <CheckboxGroup
-        legend="Edit Roles"
-        description=""
-        onClick={(role) => dispatch({ roles: { ...state.roles, ...role } })}
-        options={roles.map(({ name, description }) => ({
-          value: name,
-          label: name.replace('_', ' '),
-          icon: '',
-          legend: description,
-          initialValue: !!user.roles.includes(name),
-          isDisabled: false,
-        }))}
-        variant={CHECKBOX_VARIANTS.PRIMARY}
-      />
+      <Form>
+        <SectionTitle>Email: {user.email}</SectionTitle>
 
-      <ButtonGroup>
-        <Link href="/[projectId]/users" as={`/${projectId}/users`} passHref>
-          <Button variant={VARIANTS.SECONDARY}>Cancel</Button>
-        </Link>
-        <Button
-          type="submit"
-          variant={VARIANTS.PRIMARY}
-          onClick={() =>
-            onSubmit({ dispatch, projectId, userId: user.id, state })
-          }
-          isDisabled={false}
-        >
-          Save
-        </Button>
-      </ButtonGroup>
-    </Form>
+        <CheckboxGroup
+          legend="Edit Roles"
+          description=""
+          onClick={(role) => dispatch({ roles: { ...state.roles, ...role } })}
+          options={roles.map(({ name, description }) => ({
+            value: name,
+            label: name.replace('_', ' '),
+            icon: '',
+            legend: description,
+            initialValue: !!user.roles.includes(name),
+            isDisabled: false,
+          }))}
+          variant={CHECKBOX_VARIANTS.PRIMARY}
+        />
+
+        <ButtonGroup>
+          <Link href="/[projectId]/users" as={`/${projectId}/users`} passHref>
+            <Button variant={VARIANTS.SECONDARY}>Cancel</Button>
+          </Link>
+          <Button
+            type="submit"
+            variant={VARIANTS.PRIMARY}
+            onClick={() =>
+              onSubmit({ dispatch, projectId, userId: user.id, state })
+            }
+            isDisabled={false}
+          >
+            Save
+          </Button>
+        </ButtonGroup>
+      </Form>
+    </>
   )
 }
 

@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { colors, constants, spacing } from '../Styles'
+import { constants, spacing } from '../Styles'
 
 import Navbar from '../Navbar'
 import PageTitle from '../PageTitle'
@@ -67,22 +67,25 @@ const CreateAccount = () => {
 
         <Form>
           {!!state.error && (
-            <FlashMessage variant={VARIANTS.ERROR}>{state.error}</FlashMessage>
+            <div css={{ display: 'flex', paddingBottom: spacing.base }}>
+              <FlashMessage variant={VARIANTS.ERROR}>
+                {state.error}
+              </FlashMessage>
+            </div>
           )}
 
           {action === 'account-activation-expired' && (
             <>
-              <FlashMessage variant={VARIANTS.ERROR}>
-                Confirmation Link Expired
-              </FlashMessage>
               <div
                 css={{
-                  width: 'max-content',
-                  color: colors.signal.warning.base,
+                  display: 'flex',
+                  paddingBottom: spacing.base,
                 }}
               >
-                Confirmation links expire after three days. Please create a new
-                account.
+                <FlashMessage variant={VARIANTS.ERROR}>
+                  Confirmation link expired. Links expire after three days.
+                  Please create a new account.
+                </FlashMessage>
               </div>
             </>
           )}

@@ -5,8 +5,7 @@ import { colors, constants, typography, spacing } from '../Styles'
 import CheckmarkSvg from '../Icons/checkmark.svg'
 import WarningSvg from '../Icons/warning.svg'
 
-const PADDING_OUTER = spacing.base
-const PADDING_INNER = spacing.moderate
+const PADDING = spacing.moderate
 const ICON_HEIGHT = 20
 
 const STYLES = {
@@ -36,32 +35,24 @@ const FlashMessage = ({ variant, children }) => {
     <div
       css={{
         display: 'flex',
-        paddingTop: PADDING_OUTER,
-        paddingBottom: PADDING_OUTER,
+        alignItems: 'flex-start',
+        backgroundColor: STYLES[variant].backgroundColor,
+        borderRadius: constants.borderRadius.small,
+        padding: PADDING,
       }}
     >
+      {STYLES[variant].icon}
+
       <div
+        role="alert"
         css={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          backgroundColor: STYLES[variant].backgroundColor,
-          borderRadius: constants.borderRadius.small,
-          padding: PADDING_INNER,
+          flex: 1,
+          paddingLeft: PADDING,
+          color: colors.structure.coal,
+          fontWeight: typography.weight.medium,
         }}
       >
-        {STYLES[variant].icon}
-
-        <div
-          role="alert"
-          css={{
-            flex: 1,
-            paddingLeft: PADDING_INNER,
-            color: colors.structure.black,
-            fontWeight: typography.weight.medium,
-          }}
-        >
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   )

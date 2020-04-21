@@ -647,13 +647,13 @@ exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
 `;
 
 exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
-.emotion-32 {
+.emotion-31 {
   padding-right: 32px;
   padding-bottom: 32px;
   width: 470px;
 }
 
-.emotion-31 {
+.emotion-30 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -683,16 +683,16 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   margin-right: 8px;
 }
 
-.emotion-30 {
+.emotion-29 {
   padding: 32px;
 }
 
-.emotion-13 {
+.emotion-12 {
   border-bottom: 1px solid #4a4a4a;
   padding-bottom: 16px;
 }
 
-.emotion-6 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -703,11 +703,11 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   align-items: center;
 }
 
-.emotion-6 img {
+.emotion-5 img {
   margin-right: 12px;
 }
 
-.emotion-9 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -718,63 +718,53 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   justify-content: space-between;
 }
 
-.emotion-8 {
+.emotion-7 {
   padding-top: 16px;
   padding-bottom: 8px;
   text-align: right;
   color: #b3b3b3;
 }
 
-.emotion-7 {
+.emotion-6 {
   font-weight: 700;
 }
 
-.emotion-12 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-21 {
+.emotion-20 {
   border-bottom: 1px solid #4a4a4a;
   padding-top: 16px;
   padding-bottom: 16px;
 }
 
-.emotion-22 {
+.emotion-21 {
   padding-bottom: 4px;
 }
 
-.emotion-27 {
+.emotion-26 {
   padding: 0;
   margin: 0;
   list-style: none;
 }
 
-.emotion-23 {
+.emotion-22 {
   font-family: Roboto Mono;
   color: #b3b3b3;
   padding-bottom: 2px;
 }
 
-.emotion-29 {
+.emotion-28 {
   padding-top: 16px;
   color: #b3b3b3;
 }
 
-.emotion-5 {
-  margin-top: -16px;
-  margin-bottom: 16px;
-}
-
 .emotion-4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 24px;
 }
 
 .emotion-3 {
@@ -796,7 +786,7 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   -ms-flex: 1;
   flex: 1;
   padding-left: 12px;
-  color: #000000;
+  color: #191919;
   font-weight: 500;
 }
 
@@ -804,7 +794,7 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   font-weight: 400;
 }
 
-.emotion-10 {
+.emotion-9 {
   -webkit-flex: 320;
   -ms-flex: 320;
   flex: 320;
@@ -814,7 +804,7 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-11 {
+.emotion-10 {
   -webkit-flex: -20;
   -ms-flex: -20;
   flex: -20;
@@ -824,7 +814,7 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   border-bottom-right-radius: 2px;
 }
 
-.emotion-18 {
+.emotion-17 {
   -webkit-flex: 30040;
   -ms-flex: 30040;
   flex: 30040;
@@ -834,7 +824,7 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   border-bottom-left-radius: 2px;
 }
 
-.emotion-19 {
+.emotion-18 {
   -webkit-flex: -40;
   -ms-flex: -40;
   flex: -40;
@@ -845,10 +835,10 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
 }
 
 <div
-  className="emotion-32"
+  className="emotion-31"
 >
   <div
-    className="emotion-31"
+    className="emotion-30"
   >
     <h3
       className="emotion-0"
@@ -856,53 +846,49 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
       Project Usage Plan
     </h3>
     <div
-      className="emotion-30"
+      className="emotion-29"
     >
       <div
-        className="emotion-5"
+        className="emotion-4"
       >
         <div
-          className="emotion-4"
+          className="emotion-3"
         >
+          <svg
+            color="#c92300"
+            data-file-name="warning.svg"
+            height={20}
+          />
           <div
-            className="emotion-3"
+            className="emotion-2"
+            role="alert"
           >
-            <svg
-              color="#c92300"
-              data-file-name="warning.svg"
-              height={20}
-            />
             <div
-              className="emotion-2"
-              role="alert"
+              className="emotion-1"
             >
-              <div
-                className="emotion-1"
-              >
-                You are
-                 
-                <strong>
-                  20
-                   hours over
-                </strong>
-                 your video plan
-                 and 
-                <strong>
-                  40
-                   assets over
-                </strong>
-                 your image & documents plan
-                . Contact your Account Manager to add more resources.
-              </div>
+              You are
+               
+              <strong>
+                20
+                 hours over
+              </strong>
+               your video plan
+               and 
+              <strong>
+                40
+                 assets over
+              </strong>
+               your image & documents plan
+              . Contact your Account Manager to add more resources.
             </div>
           </div>
         </div>
       </div>
       <div
-        className="emotion-13"
+        className="emotion-12"
       >
         <h4
-          className="emotion-6"
+          className="emotion-5"
         >
           <img
             alt=""
@@ -916,15 +902,15 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
         </h4>
         <div>
           <div
-            className="emotion-9"
+            className="emotion-8"
           >
             <div
-              className="emotion-8"
+              className="emotion-7"
             >
               Used:
                
               <span
-                className="emotion-7"
+                className="emotion-6"
               >
                 320
                 /hrs
@@ -933,22 +919,22 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
             <div />
           </div>
           <div
-            className="emotion-12"
+            className="emotion-11"
           >
             <div
-              className="emotion-10"
+              className="emotion-9"
             />
             <div
-              className="emotion-11"
+              className="emotion-10"
             />
           </div>
         </div>
       </div>
       <div
-        className="emotion-21"
+        className="emotion-20"
       >
         <h4
-          className="emotion-6"
+          className="emotion-5"
         >
           <img
             alt=""
@@ -960,15 +946,15 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
         </h4>
         <div>
           <div
-            className="emotion-9"
+            className="emotion-8"
           >
             <div
-              className="emotion-8"
+              className="emotion-7"
             >
               Used:
                
               <span
-                className="emotion-7"
+                className="emotion-6"
               >
                 30,040
                 
@@ -977,52 +963,52 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
             <div />
           </div>
           <div
-            className="emotion-12"
+            className="emotion-11"
           >
             <div
-              className="emotion-18"
+              className="emotion-17"
             />
             <div
-              className="emotion-19"
+              className="emotion-18"
             />
           </div>
         </div>
       </div>
       <div
-        className="emotion-21"
+        className="emotion-20"
       >
         <h4
-          className="emotion-22"
+          className="emotion-21"
         >
           Additional Modules:
         </h4>
         <ul
-          className="emotion-27"
+          className="emotion-26"
         >
           <li
-            className="emotion-23"
+            className="emotion-22"
           >
             zmlp-classification
           </li>
           <li
-            className="emotion-23"
+            className="emotion-22"
           >
             zmlp-face-recognition
           </li>
           <li
-            className="emotion-23"
+            className="emotion-22"
           >
             shot-detection
           </li>
           <li
-            className="emotion-23"
+            className="emotion-22"
           >
             gcp-vision-text-detection
           </li>
         </ul>
       </div>
       <div
-        className="emotion-29"
+        className="emotion-28"
       >
         Contact your Account Manager to add additional modules and resources to your plan.
       </div>
