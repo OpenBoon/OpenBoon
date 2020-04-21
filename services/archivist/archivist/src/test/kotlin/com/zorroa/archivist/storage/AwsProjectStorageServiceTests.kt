@@ -1,6 +1,7 @@
 package com.zorroa.archivist.storage
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageCategory
 import com.zorroa.archivist.domain.ProjectStorageEntity
@@ -31,6 +32,17 @@ class AwsProjectStorageServiceTests : AbstractTest() {
         assertEquals(result.attrs, mapOf("cats" to 100))
     }
 
+    @Test(expected = ProjectStorageException::class)
+    fun testDelete() {
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
+        val result = projectStorageService.store(spec)
+        projectStorageService.recursiveDelete(
+            ProjectDirLocator(ProjectStorageEntity.ASSET, loc.entityId))
+        // Throws ProjectStorageException
+        projectStorageService.fetch(loc)
+    }
+
     @Test
     fun testFetch() {
         val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
@@ -45,6 +57,7 @@ class AwsProjectStorageServiceTests : AbstractTest() {
     fun testStream() {
         val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
+        val result = projectStorageService.store(spec)
 
         val entity = projectStorageService.stream(loc)
         val value = String(entity.body.inputStream.readBytes())
