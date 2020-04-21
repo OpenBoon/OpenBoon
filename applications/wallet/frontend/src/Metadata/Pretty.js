@@ -1,18 +1,21 @@
 import assetShape from '../Asset/shape'
 
 import MetadataSection from './Section'
+import { formatDisplayName } from './helpers'
 
-const MetadataPretty = ({
-  asset: {
-    metadata: { system, source, media, clip },
-  },
-}) => {
+const MetadataPretty = ({ asset: { metadata } }) => {
   return (
     <div css={{ overflow: 'auto' }}>
-      <MetadataSection title="System" metadata={system} />
-      <MetadataSection title="Source" metadata={source} />
-      <MetadataSection title="Media" metadata={media} />
-      <MetadataSection title="Clip" metadata={clip} />
+      {Object.keys(metadata).map((section) => {
+        return (
+          <MetadataSection
+            key={section}
+            title={formatDisplayName({ name: section })}
+          >
+            {metadata[section]}
+          </MetadataSection>
+        )
+      })}
     </div>
   )
 }

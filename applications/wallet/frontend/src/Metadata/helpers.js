@@ -1,17 +1,22 @@
-export const UNIQUE_DISPLAY_NAMES = {
-  // System
-  jobId: 'Job ID',
-  dataSourceId: 'Data Source ID',
-  timeCreated: 'Time Created',
-  projectId: 'Project ID',
-  timeModified: 'Time Modified',
-  taskId: 'Task ID',
+export const formatDisplayName = ({ name }) =>
+  name
+    // insert a space before all caps
+    .replace(/([A-Z])/g, ' $1')
+    .split(' ')
+    .flatMap((word) => {
+      if (word.toLowerCase() === 'url') return 'URL'
 
-  // Source
-  filename: 'File Name',
-  filesize: 'File Size',
-  url: 'URL',
+      if (word.toLowerCase() === 'id') return 'ID'
 
-  // Clip
-  sourceAssetId: 'Source Asset ID',
-}
+      if (
+        word.toLowerCase().includes('file') &&
+        word.toLowerCase() !== 'files'
+      ) {
+        // Separate and capitalize word after File
+        return ['File', word.charAt(4).toUpperCase() + word.substring(5)]
+      }
+
+      // Capitalize first letter
+      return word.charAt(0).toUpperCase() + word.substring(1)
+    })
+    .join(' ')

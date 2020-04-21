@@ -4,9 +4,9 @@ import { colors, constants, spacing } from '../Styles'
 
 import Accordion, { VARIANTS } from '../Accordion'
 
-import { UNIQUE_DISPLAY_NAMES } from './helpers'
+import { formatDisplayName } from './helpers'
 
-const MetadataSection = ({ title, metadata }) => {
+const MetadataSection = ({ title, children }) => {
   return (
     <Accordion variant={VARIANTS.PANEL} title={title} isInitiallyOpen>
       <table
@@ -16,43 +16,45 @@ const MetadataSection = ({ title, metadata }) => {
         }}
       >
         <tbody>
-          {Object.entries(metadata).map(([key, value], index) => (
-            <tr
-              key={key}
-              css={{
-                borderTop: index !== 0 ? constants.borders.divider : '',
-                ':hover': {
-                  backgroundColor: colors.selection.background,
-                },
-              }}
-            >
-              <td
-                valign="top"
+          {Object.entries(children).map(([key, value], index) => {
+            if (typeof value === 'object') return null
+
+            return (
+              <tr
+                key={key}
                 css={{
-                  fontFamily: 'Roboto Condensed',
-                  color: colors.structure.steel,
-                  padding: spacing.normal,
+                  borderTop: index !== 0 ? constants.borders.divider : '',
+                  ':hover': {
+                    backgroundColor: colors.selection.background,
+                  },
                 }}
               >
-                <span title={`${title.toLowerCase()}.${key}`}>
-                  {UNIQUE_DISPLAY_NAMES[key] ||
-                    // Capitalize first letter
-                    key.replace(/^\w/, (c) => c.toUpperCase())}
-                </span>
-              </td>
-              <td
-                valign="top"
-                css={{
-                  fontFamily: 'Roboto Mono',
-                  color: colors.structure.pebble,
-                  padding: spacing.normal,
-                  wordBreak: 'break-word',
-                }}
-              >
-                {value}
-              </td>
-            </tr>
-          ))}
+                <td
+                  valign="top"
+                  css={{
+                    fontFamily: 'Roboto Condensed',
+                    color: colors.structure.steel,
+                    padding: spacing.normal,
+                  }}
+                >
+                  <span title={`${title.toLowerCase()}.${key}`}>
+                    {formatDisplayName({ name: key })}
+                  </span>
+                </td>
+                <td
+                  valign="top"
+                  css={{
+                    fontFamily: 'Roboto Mono',
+                    color: colors.structure.pebble,
+                    padding: spacing.normal,
+                    wordBreak: 'break-all',
+                  }}
+                >
+                  {value}
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </Accordion>
@@ -61,7 +63,10 @@ const MetadataSection = ({ title, metadata }) => {
 
 MetadataSection.propTypes = {
   title: PropTypes.string.isRequired,
-  metadata: PropTypes.shape({}).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.shape({}),
+    PropTypes.arrayOf(PropTypes.shape({})),
+  ]).isRequired,
 }
 
 export default MetadataSection
