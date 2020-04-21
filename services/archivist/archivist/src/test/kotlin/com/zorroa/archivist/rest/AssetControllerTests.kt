@@ -260,14 +260,13 @@ class AssetControllerTests : MockMvcTest() {
         )
 
         mvc.perform(
-            MockMvcRequestBuilders.put("/api/v3/assets/_update_labels")
+            MockMvcRequestBuilders.put("/api/v3/assets/_batch_update_labels")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Json.serialize(req))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.errors", CoreMatchers.equalTo(false)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.items.length()", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
             .andReturn()
     }
 

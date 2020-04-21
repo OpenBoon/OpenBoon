@@ -12,6 +12,7 @@ import com.zorroa.archivist.domain.UpdateAssetsByQueryRequest
 import com.zorroa.archivist.service.AssetSearchService
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.JobLaunchService
+import com.zorroa.archivist.util.HttpUtils
 import com.zorroa.archivist.util.RawByteArrayOutputStream
 import io.micrometer.core.annotation.Timed
 import io.swagger.annotations.Api
@@ -220,14 +221,11 @@ class AssetController @Autowired constructor(
 
     @ApiOperation("Delete assets by query.")
     @PreAuthorize("hasAuthority('AssetsImport')")
-    @PutMapping(value = ["/api/v3/assets/_update_labels"])
+    @PutMapping(value = ["/api/v3/assets/_batch_update_labels"])
     @ResponseBody
-    fun updateLabels(@RequestBody req: UpdateAssetLabelsRequest): ResponseEntity<Resource> {
+    fun updateLabels(@RequestBody req: UpdateAssetLabelsRequest): Any {
         val rsp = assetService.updateLabels(req)
-        val content = Strings.toString(rsp)
-        return ResponseEntity.ok()
-            .contentLength(content.length.toLong())
-            .body(InputStreamResource(content.byteInputStream()))
+        return HttpUtils.status("asset", "_batch_update_labels", !rsp.hasFailures())
     }
 
     companion object {

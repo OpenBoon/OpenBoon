@@ -41,7 +41,7 @@ class DataSet(BaseEntity):
         Returns:
             DataSetLabel: The new label.
         """
-        return DataSetLabel(self,label, bbox)
+        return DataSetLabel(self, label, bbox)
 
 
 class DataSetLabel:
