@@ -247,8 +247,7 @@ class ImageProxyProcessor(AssetProcessor):
         subprocess.check_call(cmd, shell=False)
         attrs = {"width": size[0], "height": size[1]}
         prx = file_storage.assets.store_file(output_path, asset, "web-proxy",
-                                             "web-proxy-{width}x{height}".format(**attrs),
-                                             attrs)
+                                             "web-proxy.jpg", attrs)
         return prx
 
 
