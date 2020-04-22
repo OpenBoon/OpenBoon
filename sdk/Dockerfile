@@ -15,6 +15,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y i
     openimageio-tools \
     xz-utils \
     libglib2.0-0 \
+    imagemagick \
      --no-install-recommends
 
 RUN mkdir /build
