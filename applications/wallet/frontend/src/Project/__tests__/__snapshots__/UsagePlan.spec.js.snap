@@ -72,6 +72,7 @@ exports[`<ProjectUsagePlan /> should render properly 1`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
+  font-family: Roboto Condensed;
 }
 
 .emotion-3 {
@@ -407,6 +408,7 @@ exports[`<ProjectUsagePlan /> should render properly with no modules 1`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
+  font-family: Roboto Condensed;
 }
 
 .emotion-3 {
@@ -716,6 +718,7 @@ exports[`<ProjectUsagePlan /> should render properly with over usage 1`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
+  font-family: Roboto Condensed;
 }
 
 .emotion-7 {

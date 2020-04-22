@@ -4,9 +4,9 @@ import { useRouter } from 'next/router'
 import { colors, spacing, constants, typography } from '../Styles'
 
 import Card from '../Card'
+import FlashMessage, { VARIANTS } from '../FlashMessage'
 
 import ProjectUsageBar from './UsageBar'
-import FlashMessage, { VARIANTS } from '../FlashMessage'
 
 const IMG_WIDTH = 32
 
