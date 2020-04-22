@@ -381,9 +381,11 @@ class AssetApp(object):
 
         Args:
             search (dict): The ElasticSearch search to execute
-            timeout (str): The scroll timeout.
+            timeout (str): The scroll timeout.  Defaults to 1 minute.
         Returns:
-            AssetSearchScroll - an AssetSearch instance.
+            AssetSearchScroll - an AssetSearchScroller instance which is a generator
+                by nature.
+
         """
         return AssetSearchScroller(self.app, search, timeout)
 
@@ -441,7 +443,7 @@ class AssetApp(object):
         """
         return Asset(self.app.client.get("/api/v3/assets/{}".format(id)))
 
-    def update_dataset_labels(self, assets, add_labels=None, remove_labels=None):
+    def update_labels(self, assets, add_labels=None, remove_labels=None):
         """
         Update the DataSet labels on the given array of assets.
 
