@@ -123,7 +123,7 @@ class FileStorageTests(TestCase):
     @patch.object(Minio, 'get_object')
     def test_localize_internal_uri(self, get_object_patch):
         http = urllib3.PoolManager()
-        r = http.request('GET', 'http://i.imgur.com/WkomVeG.jpg', preload_content=False)
+        r = http.request('GET', 'https://i.imgur.com/WkomVeG.jpg', preload_content=False)
 
         get_object_patch.return_value = r
         path = self.fs.localize_file('zmlp://internal/officer/pdf/proxy.1.jpg')
