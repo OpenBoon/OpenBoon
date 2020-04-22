@@ -37,6 +37,7 @@ const Filters = () => {
           assetId={assetId}
           filters={filters}
           fields={fields}
+          setIsMenuOpen={setIsMenuOpen}
         />
       ) : (
         <FiltersContent
