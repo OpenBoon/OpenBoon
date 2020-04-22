@@ -123,7 +123,8 @@ class FileStorageTests(TestCase):
     @patch.object(Minio, 'get_object')
     def test_localize_internal_uri(self, get_object_patch):
         http = urllib3.PoolManager()
-        url = 'https://images.pexels.com/photos/12064/pexels-photo-12064.jpeg?cs=tinysrgb&dpr=2&h=750&w=1260'
+        url = 'https://images.pexels.com/photos/12064/' \
+              'pexels-photo-12064.jpeg?cs=tinysrgb&dpr=2&h=750&w=1260'
         r = http.request('GET', url, preload_content=False)
 
         get_object_patch.return_value = r
