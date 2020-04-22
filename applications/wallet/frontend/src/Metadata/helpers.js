@@ -1,3 +1,6 @@
+import { bytesToSize } from '../Bytes/helpers'
+import { formatPrettyDate } from '../Date/helpers'
+
 export const formatDisplayName = ({ name }) =>
   name
     // insert a space before all caps
@@ -20,3 +23,15 @@ export const formatDisplayName = ({ name }) =>
       return word.charAt(0).toUpperCase() + word.substring(1)
     })
     .join(' ')
+
+export const formatDisplayValue = ({ key, value }) => {
+  if (key === 'filesize') {
+    return bytesToSize({ bytes: value })
+  }
+
+  if (key.toLowerCase().includes('time')) {
+    return formatPrettyDate({ timestamp: value })
+  }
+
+  return value
+}

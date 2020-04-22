@@ -4,7 +4,7 @@ import { colors, constants, spacing } from '../Styles'
 
 import Accordion, { VARIANTS } from '../Accordion'
 
-import { formatDisplayName } from './helpers'
+import { formatDisplayName, formatDisplayValue } from './helpers'
 
 const MetadataPretty = ({ asset: { metadata } }) => {
   return (
@@ -63,7 +63,7 @@ const MetadataPretty = ({ asset: { metadata } }) => {
                             wordBreak: 'break-all',
                           }}
                         >
-                          {value}
+                          {formatDisplayValue({ key, value })}
                         </td>
                       </tr>
                     )
