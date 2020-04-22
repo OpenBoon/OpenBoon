@@ -31,7 +31,7 @@ exports[`<Metadata /> should render properly 1`] = `
 `;
 
 exports[`<Metadata /> should render selected asset 1`] = `
-.emotion-152 {
+.emotion-128 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -179,7 +179,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
   color: #ffffff;
 }
 
-.emotion-151 {
+.emotion-127 {
   overflow: auto;
 }
 
@@ -302,7 +302,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
 }
 
 <div
-  className="emotion-152"
+  className="emotion-128"
 >
   <div
     className="emotion-1"
@@ -336,7 +336,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
     </div>
   </div>
   <div
-    className="emotion-151"
+    className="emotion-127"
   >
     <div
       className="emotion-34"
@@ -723,45 +723,6 @@ exports[`<Metadata /> should render selected asset 1`] = `
           <h4
             className="emotion-8"
           >
-            Metrics
-          </h4>
-        </div>
-        <div
-          className="emotion-32"
-        >
-          <table
-            className="emotion-31"
-          >
-            <tbody />
-          </table>
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-34"
-    >
-      <div
-        className="emotion-33"
-      >
-        <div
-          className="emotion-9"
-        >
-          <button
-            aria-label="Collapse Section"
-            className="emotion-7"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              className="emotion-6"
-              color="#808080"
-              data-file-name="chevron.svg"
-              width={20}
-            />
-          </button>
-          <h4
-            className="emotion-8"
-          >
             Media
           </h4>
         </div>
@@ -1053,84 +1014,6 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
               </tr>
             </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-34"
-    >
-      <div
-        className="emotion-33"
-      >
-        <div
-          className="emotion-9"
-        >
-          <button
-            aria-label="Collapse Section"
-            className="emotion-7"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              className="emotion-6"
-              color="#808080"
-              data-file-name="chevron.svg"
-              width={20}
-            />
-          </button>
-          <h4
-            className="emotion-8"
-          >
-            Files
-          </h4>
-        </div>
-        <div
-          className="emotion-32"
-        >
-          <table
-            className="emotion-31"
-          >
-            <tbody />
-          </table>
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-34"
-    >
-      <div
-        className="emotion-33"
-      >
-        <div
-          className="emotion-9"
-        >
-          <button
-            aria-label="Collapse Section"
-            className="emotion-7"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              className="emotion-6"
-              color="#808080"
-              data-file-name="chevron.svg"
-              width={20}
-            />
-          </button>
-          <h4
-            className="emotion-8"
-          >
-            Analysis
-          </h4>
-        </div>
-        <div
-          className="emotion-32"
-        >
-          <table
-            className="emotion-31"
-          >
-            <tbody />
           </table>
         </div>
       </div>

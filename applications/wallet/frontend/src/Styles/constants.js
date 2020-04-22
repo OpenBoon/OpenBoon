@@ -20,7 +20,7 @@ const borders = {
   pill: `2px solid ${colors.structure.steel}`,
   assetInactive: `4px solid ${colors.transparent}`,
   assetHover: `4px solid ${colors.structure.white}`,
-  assetSelected: `4px solid ${colors.selection.base}`,
+  assetSelected: `4px solid ${colors.signal.electricBlue.base}`,
 }
 
 const opacity = {

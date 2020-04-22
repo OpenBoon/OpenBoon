@@ -29,6 +29,10 @@ const colors = {
       base: '#4ac565',
       background: '#d7f2de',
     },
+    electricBlue: {
+      base: '#027aff',
+      background: '#027aff38',
+    },
   },
 
   key: {
@@ -36,11 +40,6 @@ const colors = {
     two: '#96c955',
     three: '#5c8f1b',
     four: '#cdf6a8',
-  },
-
-  selection: {
-    base: '#027aff',
-    background: '#027aff38',
   },
 
   transparent: 'transparent',
