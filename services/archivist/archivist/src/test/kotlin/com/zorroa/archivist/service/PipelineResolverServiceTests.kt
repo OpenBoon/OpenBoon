@@ -46,7 +46,7 @@ class PipelineResolverServiceTests : AbstractTest() {
 
         val resolved = pipelineResolverService.resolve(pipeline.name, null)
         val last = resolved.last()
-        assertEquals(last.className, "zmlp_core.clipify.ShotDetectionVideoClipifier")
+        assertEquals(last.className, "zmlp_core.zvi.clipify.ShotDetectionVideoClipifier")
         assertEquals(last.image, "zmlp/plugins-core")
     }
 
@@ -59,11 +59,11 @@ class PipelineResolverServiceTests : AbstractTest() {
 
         val resolved = pipelineResolverService.resolve(pipeline.name, listOf("zvi-label-detection"))
         val last = resolved.last()
-        assertEquals(last.className, "zmlp_analysis.labels.ZviLabelDetectionProcessor")
+        assertEquals(last.className, "zmlp_analysis.zvi.ZviLabelDetectionProcessor")
         assertEquals(last.image, "zmlp/plugins-analysis")
 
         val beforeLast = resolved[resolved.size - 2]
-        assertEquals(beforeLast.className, "zmlp_core.clipify.ShotDetectionVideoClipifier")
+        assertEquals(beforeLast.className, "zmlp_core.zvi.clipify.ShotDetectionVideoClipifier")
         assertEquals(beforeLast.image, "zmlp/plugins-core")
     }
 
@@ -77,7 +77,7 @@ class PipelineResolverServiceTests : AbstractTest() {
         val resolved = pipelineResolverService.resolve(pipeline.name, listOf("-zvi-video-shot-clips"))
         val last = resolved.last()
 
-        assertEquals(last.className, "zmlp_analysis.similarity.ZviSimilarityProcessor")
+        assertEquals(last.className, "zmlp_analysis.zvi.ZviSimilarityProcessor")
         assertEquals(last.image, "zmlp/plugins-analysis")
     }
 

@@ -6,7 +6,8 @@ from zmlp import Clip
 from zmlpsdk.storage import file_storage
 from zmlpsdk.base import AssetProcessor, ZmlpProcessorException, FileTypes, \
     ZmlpFatalProcessorException
-from ..util.media import get_video_metadata, create_video_thumbnail, set_resolution_attrs
+import zmlpsdk.video as video
+from ..util.media import get_video_metadata, set_resolution_attrs
 
 
 class VideoImporter(AssetProcessor):
@@ -87,7 +88,7 @@ class VideoImporter(AssetProcessor):
         final_error = None
         for try_seconds in [seconds, 0]:
             try:
-                create_video_thumbnail(source_path, destination_path, try_seconds)
+                video.extract_thumbnail_from_video(source_path, destination_path, try_seconds)
                 break
             except IOError as e:
                 final_error = e

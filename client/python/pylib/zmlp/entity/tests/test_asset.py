@@ -1,7 +1,9 @@
+import json
 import logging
 import unittest
 
-from zmlp import Asset, StoredFile, FileImport, Clip, FileTypes
+from zmlp import Asset, StoredFile, FileImport, FileUpload, Clip, FileTypes, DataSetLabel
+from zmlp.client import to_json
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -153,6 +155,36 @@ class FileImportTests(unittest.TestCase):
         imp = FileImport("gs://zorroa-dev-data/image/pluto.png")
         imp["foo"] = "bar"
         assert imp["foo"] == "bar"
+
+    def test_for_json(self):
+        imp = FileImport('gs://zorroa-dev-data/image/pluto.png',
+                         clip=Clip("page", 1, 10, "page"),
+                         label=DataSetLabel("12345", "dog"))
+
+        d = json.loads(to_json(imp))
+        assert 'gs://zorroa-dev-data/image/pluto.png' == d['uri']
+        assert {} == d['attrs']
+        assert 'page' == d['clip']['type']
+        assert 1.0 == d['clip']['start']
+        assert 10.0 == d['clip']['stop']
+        assert '12345' == d['label']['dataSetId']
+        assert 'dog' == d['label']['label']
+
+
+class FileUploadTests(unittest.TestCase):
+
+    def test_for_json(self):
+        imp = FileUpload(__file__,
+                         clip=Clip("page", 1, 10, "page"),
+                         label=DataSetLabel("12345", "dog"))
+
+        d = json.loads(to_json(imp))
+        assert __file__ == d['uri']
+        assert 'page' == d['clip']['type']
+        assert 1.0 == d['clip']['start']
+        assert 10.0 == d['clip']['stop']
+        assert '12345' == d['label']['dataSetId']
+        assert 'dog' == d['label']['label']
 
 
 class ClipTests(unittest.TestCase):

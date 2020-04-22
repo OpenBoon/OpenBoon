@@ -6,7 +6,7 @@ from zmlpsdk.proxy import get_proxy_level_path, calculate_normalized_bbox
 from zmlpsdk.analysis import LabelDetectionAnalysis
 
 
-class ZmlpObjectDetectionProcessor(AssetProcessor):
+class ZviObjectDetectionProcessor(AssetProcessor):
 
     namespace = "zvi-object-detection"
 

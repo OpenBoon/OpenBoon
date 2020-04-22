@@ -14,7 +14,7 @@ object Category {
     const val AWS_REK = "Amazon Rekognition"
     const val ZORROA_TL = "Zorroa Timeline Extraction"
     const val ZORROA_STD = "Zorroa Visual Intelligence"
-    const val CLARIFAI_STD = "Clarifai Standard"
+    const val CLARIFAI_STD = "Clarifai Public"
 }
 
 object Provider {
@@ -86,7 +86,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_core.clipify.ShotDetectionVideoClipifier",
+                        ProcessorRef("zmlp_core.zvi.clipify.ShotDetectionVideoClipifier",
                             StandardContainers.CORE)
                     )
                 )
@@ -105,7 +105,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.detect.ZmlpObjectDetectionProcessor",
+                        ProcessorRef("zmlp_analysis.zvi.ZviObjectDetectionProcessor",
                             StandardContainers.ANALYSIS)
                     )
                 )
@@ -124,7 +124,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.labels.ZviLabelDetectionProcessor",
+                        ProcessorRef("zmlp_analysis.zvi.ZviLabelDetectionProcessor",
                             StandardContainers.ANALYSIS)
                     )
                 )
@@ -143,7 +143,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.ocr.processors.OcrProcessor",
+                        ProcessorRef("zmlp_analysis.zvi.ZviOcrProcessor",
                             StandardContainers.ANALYSIS)
                     )
                 )
@@ -152,18 +152,59 @@ fun getStandardModules(): List<PipelineModSpec> {
             standard = true
         ),
         PipelineModSpec(
-            "clarifai-predict-general",
-            "Clarifai prediction API with general model.",
+            "clarifai-general-model",
+            "Clarifai prediction API with the general model.",
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Images, SupportedMedia.Documents),
             listOf(
                 ModOp(
-                    ModOpType.APPEND,
+                    ModOpType.APPEND_MERGE,
                     listOf(
-                        ProcessorRef("zmlp_analysis.clarifai.ClarifaiPredictGeneralProcessor",
-                            StandardContainers.ANALYSIS)
+                        ProcessorRef("zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
+                            StandardContainers.ANALYSIS,
+                            mapOf("general-model" to true))
+                    )
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
+            "clarifai-food-model",
+            "Clarifai prediction API with the food model.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModType.LABEL_DETECTION,
+            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef("zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
+                            StandardContainers.ANALYSIS,
+                            mapOf("food-model" to true))
+                    )
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
+            "clarifai-apparel-model",
+            "Clarifai prediction API with the apparel model.",
+            Provider.CLARIFAI,
+            Category.CLARIFAI_STD,
+            ModType.LABEL_DETECTION,
+            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND_MERGE,
+                    listOf(
+                        ProcessorRef("zmlp_analysis.clarifai.ClarifaiLabelDetectionProcessor",
+                            StandardContainers.ANALYSIS,
+                            mapOf("apparel-model" to true))
                     )
                 )
             ),

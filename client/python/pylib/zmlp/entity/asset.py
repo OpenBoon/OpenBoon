@@ -200,7 +200,8 @@ class FileImport(object):
         return {
             "uri": self.uri,
             "attrs": self.attrs,
-            "clip": self.clip
+            "clip": self.clip,
+            "label": self.label
         }
 
     def __setitem__(self, field, value):
@@ -244,7 +245,8 @@ class FileUpload(FileImport):
         """
         return {
             "uri": self.uri,
-            "clip": self.clip
+            "clip": self.clip,
+            "label": self.label
         }
 
 

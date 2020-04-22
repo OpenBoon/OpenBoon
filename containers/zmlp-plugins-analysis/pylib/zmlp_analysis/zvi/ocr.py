@@ -4,7 +4,7 @@ from zmlpsdk.base import AssetProcessor, FileTypes
 from zmlpsdk.proxy import get_proxy_level_path
 
 
-class OcrProcessor(AssetProcessor):
+class ZviOcrProcessor(AssetProcessor):
     """
     Makes a proxy video for a full video file.  Clip assets will reference
     this video file.
@@ -14,7 +14,7 @@ class OcrProcessor(AssetProcessor):
     namespace = "zvi-text-detection"
 
     def __init__(self):
-        super(OcrProcessor, self).__init__()
+        super(ZviOcrProcessor, self).__init__()
 
     def process(self, frame):
         p_path = get_proxy_level_path(frame.asset, 0)

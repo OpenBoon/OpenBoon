@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, TestAsset
-from ..processors import ZviSimilarityProcessor
+from zmlp_analysis.zvi.similarity import ZviSimilarityProcessor
 
 
 class MxUnitTests(PluginUnitTestCase):
@@ -19,7 +19,7 @@ class MxUnitTests(PluginUnitTestCase):
             ZviSimilarityProcessor.model_path = os.path.normpath(
                 os.path.dirname(__file__)) + path
 
-    @patch('zmlp_analysis.similarity.processors.get_proxy_level_path')
+    @patch('zmlp_analysis.zvi.similarity.get_proxy_level_path')
     def test_ResNetSimilarity_defaults(self, proxy_patch):
         proxy_patch.return_value = self.toucan_path
         processor = ZviSimilarityProcessor()

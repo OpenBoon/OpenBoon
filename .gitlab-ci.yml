@@ -140,6 +140,9 @@ sdk-unit-tests:
     - python setup.py install
     - pytest
     - cd ../../sdk
+    - tar -xJf ffmpeg-4.2.1-amd64-static.tar.xz
+    - cp ffmpeg-4.2.1-amd64-static/ffmpeg /usr/bin
+    - cp ffmpeg-4.2.1-amd64-static/ffprobe /usr/bin
     - python setup.py install
     - pytest
     - cd ../containers/zmlp-plugins-base
