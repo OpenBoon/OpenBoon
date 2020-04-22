@@ -31,6 +31,17 @@ class AssetSearchScrollerTests(unittest.TestCase):
 
     @patch.object(ZmlpClient, 'delete')
     @patch.object(ZmlpClient, 'post')
+    def test_iterate_batch(self, post_patch, del_patch):
+        post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
+        del_patch.return_value = {}
+
+        scroller = AssetSearchScroller(self.app,
+                                       {"query": {"term": {"source.filename": "dog.jpg"}}})
+        results = list(scroller.batches_of(2))
+        assert 1 == len(results)
+
+    @patch.object(ZmlpClient, 'delete')
+    @patch.object(ZmlpClient, 'post')
     def test_iterate_raw_response(self, post_patch, del_patch):
         post_patch.side_effect = [self.mock_search_result, {"hits": {"hits": []}}]
         del_patch.return_value = {}

@@ -39,6 +39,28 @@ class AssetSearchScroller(object):
         self.timeout = timeout
         self.raw_response = raw_response
 
+    def batches_of(self, batch_size=50):
+        """
+        A generator function capable of efficiently scrolling through
+        large numbers of assets, returning them in batches of
+        the given batch size.
+
+        Args:
+            batch_size (int): The size of the batch.
+
+        Returns:
+            generator: A generator that yields batches of Assets.
+
+        """
+        batch = []
+        for asset in self.scroll():
+            batch.append(asset)
+            if len(batch) >= batch_size:
+                yield batch
+                batch = []
+        if batch:
+            yield batch
+
     def scroll(self):
         """
         A generator function capable of efficiently scrolling through large
