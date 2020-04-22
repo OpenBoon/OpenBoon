@@ -2,10 +2,10 @@ import logging
 from unittest.mock import patch
 
 from zmlp import ZmlpClient
-from zmlpsdk import Frame
-from zmlpsdk.proxy import store_asset_proxy
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_data
 from zmlp_core.clipify.time_clipify import TimeBasedVideoClipifier
+from zmlp_core.util.media import store_asset_proxy
+from zmlpsdk import Frame
+from zmlpsdk.testing import PluginUnitTestCase, TestAsset, zorroa_test_data
 
 logging.basicConfig(level=logging.DEBUG)
 

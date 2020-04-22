@@ -8,6 +8,7 @@ import xmltodict
 from pathlib import Path
 
 from zmlpsdk.base import FileTypes
+from zmlpsdk import file_storage
 
 logger = logging.getLogger(__name__)
 
@@ -268,3 +269,30 @@ def set_resolution_attrs(asset, width, height):
     else:
         orientation = 'landscape'
     asset.set_attr('media.orientation', orientation)
+
+
+def store_asset_proxy(asset, path, size, type="image", attrs=None):
+    """
+    A convenience function that adds a proxy file to the Asset and
+    uploads the file to ZMLP storage.
+
+    Args:
+        asset (Asset): The purpose of the file, ex proxy.
+        path (str): The local path to the file.
+        size (tuple of int): a tuple of width, height
+        type (str): The media type
+        attrs (dict): Additional media attrs
+    Returns:
+        dict: a ZMLP file storage dict.
+    """
+    _, ext = os.path.splitext(path)
+    if not ext:
+        raise ValueError('The path to the proxy file has no extension, but one is required.')
+    name = '{}_{}x{}{}'.format(type, size[0], size[1], ext)
+    proxy_attrs = asset.get_attr('tmp.{}_proxy_source_attrs'.format(type)) or {}
+    proxy_attrs['width'] = size[0]
+    proxy_attrs['height'] = size[1]
+    if attrs:
+        proxy_attrs.update(attrs)
+
+    return file_storage.assets.store_file(path, asset, 'proxy', rename=name, attrs=proxy_attrs)
