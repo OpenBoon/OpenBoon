@@ -135,7 +135,6 @@ sdk-unit-tests:
   stage: test
   allow_failure: true
   script:
-    - apt-get install ffmpeg
     - python -m pip install pipenv pytest
     - cd client/python
     - python setup.py install
