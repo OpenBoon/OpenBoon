@@ -18,7 +18,7 @@ describe('<JobErrorsMenu />', () => {
         projectId={PROJECT_ID}
         jobId={JOB_ID}
         status="InProgress"
-        refreshKeys={['endpoint']}
+        refreshKeys={['/api/v1/me/']}
         revalidate={mockFn}
       />,
     )
