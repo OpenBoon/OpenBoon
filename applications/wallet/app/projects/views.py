@@ -258,6 +258,7 @@ class BaseProjectViewSet(ViewSet):
         Args:
             request (Request): Request the view method was given.
             pk (str): Primary key of the object to return in the response.
+            return_data: If True the data is returned instead of a Response.
 
         Returns:
             Response: DRF Response that can be used directly by viewset action method.
