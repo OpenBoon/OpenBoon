@@ -15,12 +15,20 @@ const STYLES = {
     backgroundColor: colors.structure.smoke,
     boxShadow: constants.boxShadows.default,
     verticalPadding: spacing.normal,
+    childrenWrapper: {
+      padding: spacing.spacious,
+      paddingTop: spacing.normal,
+    },
   },
   PANEL: {
     wrapper: {},
     backgroundColor: colors.structure.lead,
     titleWeight: typography.weight.regular,
     verticalPadding: spacing.moderate,
+    childrenWrapper: {
+      width: '100%',
+      backgroundColor: colors.structure.coal,
+    },
   },
 }
 
@@ -79,16 +87,7 @@ const Accordion = ({ variant, title, children, isInitiallyOpen }) => {
             {title}
           </h4>
         </div>
-        {isOpen && (
-          <div
-            css={{
-              padding: spacing.spacious,
-              paddingTop: spacing.normal,
-            }}
-          >
-            {children}
-          </div>
-        )}
+        {isOpen && <div css={STYLES[variant].childrenWrapper}>{children}</div>}
       </div>
     </div>
   )
