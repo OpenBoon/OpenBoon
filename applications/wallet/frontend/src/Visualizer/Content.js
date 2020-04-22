@@ -2,6 +2,7 @@ import { colors, spacing } from '../Styles'
 
 import Panel from '../Panel'
 import Assets from '../Assets'
+import Filters from '../Filters'
 import Metadata from '../Metadata'
 
 import AccountDashboardSvg from '../Icons/accountDashboard.svg'
@@ -30,7 +31,7 @@ const VisualizerContent = () => {
             filters: {
               title: 'Filters',
               icon: <AccountDashboardSvg width={ICON_WIDTH} aria-hidden />,
-              content: '',
+              content: <Filters />,
             },
           }}
         </Panel>

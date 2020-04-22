@@ -17,7 +17,7 @@ const AssetsThumbnail = ({
   },
 }) => {
   const {
-    query: { projectId, id: selectedId },
+    query: { projectId, id: selectedId, filters },
   } = useRouter()
 
   const { url: srcUrl, attrs: { width, height } = {} } =
@@ -30,8 +30,15 @@ const AssetsThumbnail = ({
   const largestDimension = width > height ? 'width' : 'height'
 
   const isSelected = id === selectedId
-  const queryString = isSelected ? '' : `id=${id}`
-  const queryParams = queryString ? `?${queryString}` : ''
+
+  const queryParams = Object.entries({
+    ...(isSelected ? {} : { id }),
+    ...(filters ? { filters } : {}),
+  })
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&')
+
+  const queryString = queryParams ? `?${queryParams}` : ''
 
   return (
     <div
@@ -49,8 +56,8 @@ const AssetsThumbnail = ({
       }}
     >
       <Link
-        href={`/[projectId]/visualizer${queryParams}`}
-        as={`/${projectId}/visualizer${queryParams}`}
+        href={`/[projectId]/visualizer${queryString}`}
+        as={`/${projectId}/visualizer${queryString}`}
         passHref
       >
         <Button
