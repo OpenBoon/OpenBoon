@@ -13,6 +13,7 @@ const AccountUsage = ({ usage, limit, legend }) => {
         display: 'flex',
         flexDirection: 'column',
         paddingLeft: IMG_SPACING,
+        fontFamily: 'Roboto Condensed',
       }}
     >
       <div

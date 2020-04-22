@@ -6,7 +6,7 @@ import { colors, spacing, typography } from '../Styles'
 
 import FlashMessage, { VARIANTS } from '../FlashMessage'
 
-import OverviewUsage from './Usage'
+import AccountUsage from './Usage'
 
 const IMG_WIDTH = 32
 
@@ -66,7 +66,7 @@ const AccountUsagePlan = ({ subscriptions }) => {
           <img src="/icons/videos.png" alt="" width={IMG_WIDTH} /> Video:{' '}
           {videoLimit.toLocaleString()} hours
         </h4>
-        <OverviewUsage limit={videoLimit} usage={videoUsage} legend="/hrs" />
+        <AccountUsage limit={videoLimit} usage={videoUsage} legend="/hrs" />
       </div>
       <div
         css={{
@@ -86,7 +86,7 @@ const AccountUsagePlan = ({ subscriptions }) => {
           <img src="/icons/images.png" alt="" width={IMG_WIDTH} /> Image /
           Documents: {imageLimit.toLocaleString()}
         </h4>
-        <OverviewUsage limit={imageLimit} usage={imageUsage} legend="" />
+        <AccountUsage limit={imageLimit} usage={imageUsage} legend="" />
       </div>
       <div
         css={{

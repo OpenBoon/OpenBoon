@@ -4,7 +4,7 @@ import { spacing } from '../Styles'
 
 import NoProject from '../NoProject'
 
-import AccountCards from './Card'
+import AccountCard from './Card'
 
 const AccountContent = () => {
   const {
@@ -22,7 +22,7 @@ const AccountContent = () => {
       </h3>
       <div css={{ display: 'flex', flexWrap: 'wrap' }}>
         {projects.map(({ id: projectId, name }) => (
-          <AccountCards key={projectId} projectId={projectId} name={name} />
+          <AccountCard key={projectId} projectId={projectId} name={name} />
         ))}
       </div>
     </>
