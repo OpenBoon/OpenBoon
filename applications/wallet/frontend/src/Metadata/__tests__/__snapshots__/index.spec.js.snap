@@ -31,7 +31,7 @@ exports[`<Metadata /> should render properly 1`] = `
 `;
 
 exports[`<Metadata /> should render selected asset 1`] = `
-.emotion-49 {
+.emotion-128 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -179,12 +179,11 @@ exports[`<Metadata /> should render selected asset 1`] = `
   color: #ffffff;
 }
 
-.emotion-48 {
-  height: 100%;
+.emotion-127 {
   overflow: auto;
 }
 
-.emotion-10 {
+.emotion-33 {
   background-color: #252525;
   border-radius: 2px;
 }
@@ -242,6 +241,12 @@ exports[`<Metadata /> should render selected asset 1`] = `
   color: #2e2e2e;
 }
 
+.emotion-6 {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
 .emotion-6:hover {
   color: #ffffff;
 }
@@ -261,8 +266,43 @@ exports[`<Metadata /> should render selected asset 1`] = `
   font-weight: 400;
 }
 
+.emotion-32 {
+  width: 100%;
+  background-color: #191919;
+}
+
+.emotion-31 {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.emotion-12:hover {
+  background-color: #027aff38;
+}
+
+.emotion-10 {
+  font-family: Roboto Condensed;
+  color: #808080;
+  padding: 16px;
+}
+
+.emotion-11 {
+  font-family: Roboto Mono;
+  color: #e0e0e0;
+  padding: 16px;
+  word-break: break-all;
+}
+
+.emotion-15 {
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-15:hover {
+  background-color: #027aff38;
+}
+
 <div
-  className="emotion-49"
+  className="emotion-128"
 >
   <div
     className="emotion-1"
@@ -296,19 +336,19 @@ exports[`<Metadata /> should render selected asset 1`] = `
     </div>
   </div>
   <div
-    className="emotion-48"
+    className="emotion-127"
   >
     <div
-      className="emotion-11"
+      className="emotion-34"
     >
       <div
-        className="emotion-10"
+        className="emotion-33"
       >
         <div
           className="emotion-9"
         >
           <button
-            aria-label="Expand Section"
+            aria-label="Collapse Section"
             className="emotion-7"
             onClick={[Function]}
             type="button"
@@ -326,19 +366,169 @@ exports[`<Metadata /> should render selected asset 1`] = `
             System
           </h4>
         </div>
+        <div
+          className="emotion-32"
+        >
+          <table
+            className="emotion-31"
+          >
+            <tbody>
+              <tr
+                className="emotion-12"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="system.jobId"
+                  >
+                    Job ID
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  106d4be1-5d95-11ea-baea-364023b135f5
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="system.dataSourceId"
+                  >
+                    Data Source ID
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  10509c20-5d95-11ea-baea-364023b135f5
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="system.timeCreated"
+                  >
+                    Time Created
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  2020-03-03T21:22:24.922700Z
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="system.state"
+                  >
+                    State
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  Analyzed
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="system.projectId"
+                  >
+                    Project ID
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  89382033-bcbb-4c8f-81a9-3d0883298a81
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="system.taskId"
+                  >
+                    Task ID
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  106e0f32-5d95-11ea-baea-364023b135f5
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="system.timeModified"
+                  >
+                    Time Modified
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  2020-03-03T21:22:47.575195Z
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <div
-      className="emotion-11"
+      className="emotion-34"
     >
       <div
-        className="emotion-10"
+        className="emotion-33"
       >
         <div
           className="emotion-9"
         >
           <button
-            aria-label="Expand Section"
+            aria-label="Collapse Section"
             className="emotion-7"
             onClick={[Function]}
             type="button"
@@ -356,79 +546,169 @@ exports[`<Metadata /> should render selected asset 1`] = `
             Source
           </h4>
         </div>
-      </div>
-    </div>
-    <div
-      className="emotion-11"
-    >
-      <div
-        className="emotion-10"
-      >
         <div
-          className="emotion-9"
+          className="emotion-32"
         >
-          <button
-            aria-label="Expand Section"
-            className="emotion-7"
-            onClick={[Function]}
-            type="button"
+          <table
+            className="emotion-31"
           >
-            <svg
-              className="emotion-6"
-              color="#808080"
-              data-file-name="chevron.svg"
-              width={20}
-            />
-          </button>
-          <h4
-            className="emotion-8"
-          >
-            Files
-          </h4>
+            <tbody>
+              <tr
+                className="emotion-12"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="source.path"
+                  >
+                    Path
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  gs://zorroa-dev-data/image/TIFF_1MB.tiff
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="source.extension"
+                  >
+                    Extension
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  tiff
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="source.filename"
+                  >
+                    File Name
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  TIFF_1MB.tiff
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="source.mimetype"
+                  >
+                    Mimetype
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  image/tiff
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="source.filesize"
+                  >
+                    File Size
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  1131930
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="source.checksum"
+                  >
+                    Checksum
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  1867533868
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="source.url"
+                  >
+                    URL
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
     <div
-      className="emotion-11"
+      className="emotion-34"
     >
       <div
-        className="emotion-10"
+        className="emotion-33"
       >
         <div
           className="emotion-9"
         >
           <button
-            aria-label="Expand Section"
-            className="emotion-7"
-            onClick={[Function]}
-            type="button"
-          >
-            <svg
-              className="emotion-6"
-              color="#808080"
-              data-file-name="chevron.svg"
-              width={20}
-            />
-          </button>
-          <h4
-            className="emotion-8"
-          >
-            Metrics
-          </h4>
-        </div>
-      </div>
-    </div>
-    <div
-      className="emotion-11"
-    >
-      <div
-        className="emotion-10"
-      >
-        <div
-          className="emotion-9"
-        >
-          <button
-            aria-label="Expand Section"
+            aria-label="Collapse Section"
             className="emotion-7"
             onClick={[Function]}
             type="button"
@@ -446,49 +726,149 @@ exports[`<Metadata /> should render selected asset 1`] = `
             Media
           </h4>
         </div>
-      </div>
-    </div>
-    <div
-      className="emotion-11"
-    >
-      <div
-        className="emotion-10"
-      >
         <div
-          className="emotion-9"
+          className="emotion-32"
         >
-          <button
-            aria-label="Expand Section"
-            className="emotion-7"
-            onClick={[Function]}
-            type="button"
+          <table
+            className="emotion-31"
           >
-            <svg
-              className="emotion-6"
-              color="#808080"
-              data-file-name="chevron.svg"
-              width={20}
-            />
-          </button>
-          <h4
-            className="emotion-8"
-          >
-            Analysis
-          </h4>
+            <tbody>
+              <tr
+                className="emotion-12"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="media.width"
+                  >
+                    Width
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  650
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="media.height"
+                  >
+                    Height
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  434
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="media.aspect"
+                  >
+                    Aspect
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  1.5
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="media.orientation"
+                  >
+                    Orientation
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  landscape
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="media.type"
+                  >
+                    Type
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  image
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="media.length"
+                  >
+                    Length
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  1
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
     <div
-      className="emotion-11"
+      className="emotion-34"
     >
       <div
-        className="emotion-10"
+        className="emotion-33"
       >
         <div
           className="emotion-9"
         >
           <button
-            aria-label="Expand Section"
+            aria-label="Collapse Section"
             className="emotion-7"
             onClick={[Function]}
             type="button"
@@ -505,6 +885,196 @@ exports[`<Metadata /> should render selected asset 1`] = `
           >
             Clip
           </h4>
+        </div>
+        <div
+          className="emotion-32"
+        >
+          <table
+            className="emotion-31"
+          >
+            <tbody>
+              <tr
+                className="emotion-12"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="clip.type"
+                  >
+                    Type
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  page
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="clip.start"
+                  >
+                    Start
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  1
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="clip.stop"
+                  >
+                    Stop
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  1
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="clip.length"
+                  >
+                    Length
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  1
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="clip.pile"
+                  >
+                    Pile
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  pUn6wBxUN7x9JxOxLkvruOyNdYA
+                </td>
+              </tr>
+              <tr
+                className="emotion-15"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="clip.sourceAssetId"
+                  >
+                    Source Asset ID
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-34"
+    >
+      <div
+        className="emotion-33"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Collapse Section"
+            className="emotion-7"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-6"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-8"
+          >
+            Similarity
+          </h4>
+        </div>
+        <div
+          className="emotion-32"
+        >
+          <table
+            className="emotion-31"
+          >
+            <tbody>
+              <tr
+                className="emotion-12"
+              >
+                <td
+                  className="emotion-10"
+                  valign="top"
+                >
+                  <span
+                    title="similarity.simhash"
+                  >
+                    Simhash
+                  </span>
+                </td>
+                <td
+                  className="emotion-11"
+                  valign="top"
+                >
+                  NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
