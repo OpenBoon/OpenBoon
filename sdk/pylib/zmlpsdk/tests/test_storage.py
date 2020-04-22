@@ -4,7 +4,6 @@ from unittest import TestCase
 from unittest.mock import patch
 
 import pytest
-import urllib3
 from minio.api import Minio
 
 import zmlp
@@ -122,14 +121,15 @@ class FileStorageTests(TestCase):
 
     @patch.object(Minio, 'get_object')
     def test_localize_internal_uri(self, get_object_patch):
-        http = urllib3.PoolManager()
-        r = http.request('GET', 'http://i.imgur.com/WkomVeG.jpg', preload_content=False)
+        class MockStream:
+            def stream(self, _):
+                return [b'ninja turles']
 
-        get_object_patch.return_value = r
+        get_object_patch.return_value = MockStream()
         path = self.fs.localize_file('zmlp://internal/officer/pdf/proxy.1.jpg')
 
         assert os.path.exists(path)
-        assert os.path.getsize(path) == 267493
+        assert os.path.getsize(path) == 12
 
 
 class TestAssetStorage(TestCase):
