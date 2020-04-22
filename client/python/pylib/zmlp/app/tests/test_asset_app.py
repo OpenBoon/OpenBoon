@@ -393,6 +393,5 @@ class AssetAppTests(unittest.TestCase):
         }
         ds1 = DataSet({"id": "abc123"})
         ds2 = DataSet({"id": "abc123"})
-        rsp = self.app.assets.update_dataset_labels(["12345"],
-                                                    add_labels=[ds1], remove_labels=[ds2])
+        rsp = self.app.assets.update_labels(["12345"], add_labels=[ds1], remove_labels=[ds2])
         assert put_patch.return_value == rsp

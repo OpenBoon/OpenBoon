@@ -17,7 +17,7 @@ def main():
 
     assets = app.assets.search({"query": {"term": {"source.path": args.path}}}).assets
     dataset = app.datasets.find_one_dataset(name=args.dataset)
-    app.assets.update_dataset_labels(assets, dataset.make_label(args.label))
+    app.assets.update_labels(assets, dataset.make_label(args.label))
 
     print("Labels")
     print("---------------------------------------------------")
