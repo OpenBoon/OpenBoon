@@ -86,10 +86,14 @@ class GcsProjectStorageService constructor(
 
     override fun recursiveDelete(locator: ProjectDirLocator) {
         val path = locator.getPath()
-        gcs.list(path).values.forEach {
-            gcs.delete(it.blobId)
+        val bucket = gcs.get(properties.bucket)
+        val blobs = bucket.list(Storage.BlobListOption.prefix(path),
+            Storage.BlobListOption.pageSize(100))
+
+        for (blob in blobs.iterateAll()) {
+            gcs.delete(blob.blobId)
+            logDeleteEvent(blob.name)
         }
-        logDeleteEvent(path)
     }
 
     fun getBlobId(locator: ProjectStorageLocator): BlobId {
