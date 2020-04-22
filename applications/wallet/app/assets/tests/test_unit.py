@@ -4,7 +4,7 @@ import pytest
 from requests import Response
 from zmlp import Asset
 
-from assets.utils import AssetBoxImager, _is_rectangle
+from assets.utils import AssetBoxImager
 
 
 @pytest.fixture
@@ -104,25 +104,3 @@ class TestAssetBoxImager:
         for prediction in predictions:
             assert 'b64_image' in prediction
             assert prediction['b64_image'] == 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAoAAAAICAIAAABPmPnhAAAAI0lEQVQIHXXBAQEAAAABIP6PzgJV5CvyFfmKfEW+Il+Rr8g33SQX8fv7NasAAAAASUVORK5CYII='  # noqa
-
-
-def test_is_rectangle():
-    assert _is_rectangle([
-        (.1, .9),
-        (.9, .1),
-        (.9, .9),
-        (.9, .1),
-    ])
-    assert not _is_rectangle([
-        (.1, .9),
-        (.9, .1),
-        (.9, .9),
-        (.9, .1),
-        (.8, .1),
-    ])
-    assert not _is_rectangle([
-        (.1, .9),
-        (.9, .1),
-        (.7, .9),
-        (.9, .1),
-    ])
