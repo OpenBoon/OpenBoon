@@ -224,9 +224,9 @@ class TestFieldsAction:
         monkeypatch.setattr(ZmlpClient, 'get', mock_response)
         response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
         content = check_response(response)
-        assert content['analysis']['zvi']['tinyProxy'] == ['facet', 'text', 'exists']
+        assert content['analysis']['zvi']['tinyProxy'] == ['facet', 'exists']
         assert content['clip']['start'] == ['range', 'exists']
-        assert content['media']['type'] == ['facet', 'text', 'exists']
+        assert content['media']['type'] == ['facet', 'exists']
         assert content['aux'] == ['exists']
         assert content['tmp'] == ['exists']
 
@@ -243,7 +243,7 @@ class TestFieldsAction:
 class BaseFiltersTestCase(object):
 
     @pytest.fixture
-    def range_load(self):
+    def range_agg(self):
         return {
             'type': 'range',
             'attribute': 'source.filesize',
@@ -251,20 +251,67 @@ class BaseFiltersTestCase(object):
         }
 
     @pytest.fixture
-    def range_load_qs(self, range_load):
-        return convert_json_to_base64(range_load)
+    def range_agg_qs(self, range_agg):
+        return convert_json_to_base64(range_agg)
+
+    @pytest.fixture
+    def facet_query(self):
+        return {
+            'type': 'facet',
+            'attribute': 'source.extension',
+            'values': {
+                'facets': ['tiff']
+            }
+        }
+
+    @pytest.fixture
+    def facet_query_qs(self, facet_query):
+        return convert_json_to_base64([facet_query])
 
 
-class TestQueryFilters(BaseFiltersTestCase):
+class TestQuery(BaseFiltersTestCase):
 
-    def test_get(self, login, api_client, project):
+    @pytest.fixture
+    def mock_response(self):
+        return {"took":6,"timed_out":False,"_shards":{"total":2,"successful":2,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":0.0,"hits":[{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U","_score":0.0,"_source":{"files":[{"size":119497,"name":"image_744x1024.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_744x1024.jpg","category":"proxy","attrs":{"width":744,"height":1024}},{"size":43062,"name":"image_372x512.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_372x512.jpg","category":"proxy","attrs":{"width":372,"height":512}},{"size":21318,"name":"image_232x320.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_232x320.jpg","category":"proxy","attrs":{"width":232,"height":320}}],"source":{"path":"gs://zorroa-dev-data/image/singlepage.tiff","extension":"tiff","filename":"singlepage.tiff","checksum":754419346,"mimetype":"image/tiff","filesize":11082}}},{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C","_score":0.0,"_source":{"files":[{"size":89643,"name":"image_650x434.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_650x434.jpg","category":"proxy","attrs":{"width":650,"height":434}},{"size":60713,"name":"image_512x341.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_512x341.jpg","category":"proxy","attrs":{"width":512,"height":341}},{"size":30882,"name":"image_320x213.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_320x213.jpg","category":"proxy","attrs":{"width":320,"height":213}}],"source":{"path":"gs://zorroa-dev-data/image/TIFF_1MB.tiff","extension":"tiff","filename":"TIFF_1MB.tiff","checksum":1867533868,"mimetype":"image/tiff","filesize":1131930}}}]}}  # noqa
+
+    def test_get(self, login, api_client, project, monkeypatch, facet_query_qs, mock_response):
+        def _response(*args, **kwargs):
+            return mock_response
+
+        monkeypatch.setattr(ZmlpClient, 'post', _response)
+        response = api_client.get(reverse('search-query', kwargs={'project_pk': project.id}),
+                                  {'query': facet_query_qs})
+
+        content = check_response(response, status=status.HTTP_200_OK)
+        assert content['count'] == 2
+        assert 'next' in content
+        assert 'previous' in content
+        # Should only be the requested fields on this request
+        assert list(content['results'][0]['metadata']) == ['files', 'source']
+
+    def test_get_empty_query(self, login, api_client, project, monkeypatch, mock_response):
+        def _response(*args, **kwargs):
+            return mock_response
+
+        monkeypatch.setattr(ZmlpClient, 'post', _response)
         response = api_client.get(reverse('search-query', kwargs={'project_pk': project.id}))
-        check_response(response, status=status.HTTP_501_NOT_IMPLEMENTED)
+
+        content = check_response(response, status=status.HTTP_200_OK)
+        assert content['count'] == 2
+        assert list(content['results'][0]['metadata']) == ['files', 'source']
+
+    def test_get_bad_querystring_encoding(self, login, api_client, project, facet_query_qs):
+        facet_query_qs = 'thisisnolongerencodedright' + facet_query_qs.decode('utf-8')
+        response = api_client.get(reverse('search-query', kwargs={'project_pk': project.id}),
+                                  {'query': facet_query_qs})
+        content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
+        assert content['detail'] == 'Unable to decode `query` querystring.'
 
 
-class TestLoadFilter(BaseFiltersTestCase):
+class TestAggregate(BaseFiltersTestCase):
 
-    def test_get(self, login, api_client, project, range_load_qs, monkeypatch):
+    def test_get(self, login, api_client, project, range_agg_qs, monkeypatch):
         def mock_response(*args, **kwargs):
             return {'took': 34,
                     'timed_out': False,
@@ -289,35 +336,35 @@ class TestLoadFilter(BaseFiltersTestCase):
         monkeypatch.setattr(ZmlpClient, 'post', mock_response)
         monkeypatch.setattr(BaseFilter, '__init__', mock_init)
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
-                                  {'filter': range_load_qs})
+                                  {'filter': range_agg_qs})
         content = check_response(response, status=status.HTTP_200_OK)
         assert content['count'] == 24
         assert content['results']['min'] == 7555.0
         assert content['results']['max'] == 64657027.0
 
-    def test_get_missing_querystring(self, login, api_client, project, range_load_qs):
+    def test_get_missing_querystring(self, login, api_client, project, range_agg_qs):
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}))
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
         assert content['detail'] == 'No `filter` querystring included.'
 
-    def test_get_bad_querystring_encoding(self, login, api_client, project, range_load_qs):
-        range_load_qs = 'thisisnolongerencodedright' + range_load_qs.decode('utf-8')
+    def test_get_bad_querystring_encoding(self, login, api_client, project, range_agg_qs):
+        range_agg_qs = 'thisisnolongerencodedright' + range_agg_qs.decode('utf-8')
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
-                                  {'filter': range_load_qs})
+                                  {'filter': range_agg_qs})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
         assert content['detail'] == 'Unable to decode `filter` querystring.'
 
-    def test_get_missing_filter_type(self, login, api_client, project, range_load):
-        del(range_load['type'])
-        encoded_filter = convert_json_to_base64(range_load)
+    def test_get_missing_filter_type(self, login, api_client, project, range_agg):
+        del(range_agg['type'])
+        encoded_filter = convert_json_to_base64(range_agg)
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
                                   {'filter': encoded_filter})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
         assert content['detail'] == 'Filter description is missing a `type`.'
 
-    def test_get_missing_filter_type(self, login, api_client, project, range_load):
-        range_load['type'] = 'fake_type'
-        encoded_filter = convert_json_to_base64(range_load)
+    def test_get_missing_filter_type(self, login, api_client, project, range_agg):
+        range_agg['type'] = 'fake_type'
+        encoded_filter = convert_json_to_base64(range_agg)
         response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
                                   {'filter': encoded_filter})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)

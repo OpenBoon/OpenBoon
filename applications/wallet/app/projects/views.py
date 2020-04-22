@@ -29,7 +29,7 @@ User = get_user_model()
 ES_SEARCH_TERMS = ['query', 'from', 'size', 'timeout',
                    'post_filter', 'minscore', 'suggest',
                    'highlight', 'collapse', '_source',
-                   'slice', 'aggs', 'aggregations', 'sort']
+                   'slice', 'aggs', 'aggregations', 'sort', 'filter']
 
 
 class BaseProjectViewSet(ViewSet):
@@ -189,7 +189,8 @@ class BaseProjectViewSet(ViewSet):
         paginator.prep_pagination_for_api_response(content, request)
         return paginator.get_paginated_response(content['list'])
 
-    def _zmlp_list_from_es(self, request, item_modifier=None):
+    def _zmlp_list_from_es(self, request, item_modifier=None, search_filter=None,
+                           serializer_class=None, base_url=None, pagination_class=None):
         """The result of this method can be returned for the list method of a concrete
         viewset if it just needs to proxy the results of a ZMLP search endpoints that
         return raw elasticsearch data.
@@ -204,6 +205,7 @@ class BaseProjectViewSet(ViewSet):
             Response: DRF Response that can be used directly by viewset action method.
 
         """
+        base_url = base_url or self.zmlp_root_api_path
         # Check for pagination query params first, and then check the post body
         payload = {'from': request.query_params.get('from', request.data.get('from', 0)),
                    'size': request.query_params.get('size', request.data.get('size', self.pagination_class.default_limit))}  # noqa
@@ -213,8 +215,10 @@ class BaseProjectViewSet(ViewSet):
             value = request.data.get(term)
             if value:
                 payload[term] = value
+            if search_filter and term in search_filter:
+                payload[term] = search_filter[term]
 
-        path = os.path.join(self.zmlp_root_api_path, '_search')
+        path = os.path.join(base_url, '_search')
         response = request.client.post(path, payload)
         content = self._get_content(response)
 
@@ -222,14 +226,22 @@ class BaseProjectViewSet(ViewSet):
         for item in items:
             if item_modifier:
                 item_modifier(request, item)
-        serializer = self.get_serializer(data=items, many=True)
+
+        if serializer_class:
+            serializer = serializer_class(data=items, many=True)
+        else:
+            serializer = self.get_serializer(data=items, many=True)
+
         if not serializer.is_valid():
             return Response({'detail': serializer.errors}, status=500)
         results = {'list': serializer.validated_data,
                    'page': {'from': payload['from'],
                             'size': payload['size'],
                             'totalCount': content['hits']['total']['value']}}
-        paginator = self.pagination_class()
+        if pagination_class:
+            paginator = pagination_class()
+        else:
+            paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(results, request)
         return paginator.get_paginated_response(results['list'])
 

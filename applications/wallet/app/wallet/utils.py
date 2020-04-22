@@ -83,7 +83,7 @@ def convert_json_to_base64(json_obj):
     encoded_str = None
     if not json_obj:
         return encoded_str
-    elif isinstance(json_obj, dict):
+    elif isinstance(json_obj, (dict, list)):
         try:
             encoded_str = base64.b64encode(json.dumps(json_obj).encode('utf-8'))
         except binascii.Error:

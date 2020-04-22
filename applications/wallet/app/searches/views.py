@@ -6,12 +6,15 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from assets.serializers import AssetSerializer
+from assets.views import asset_modifier
 from projects.views import BaseProjectViewSet
 from searches.models import Search
 from searches.serializers import SearchSerializer
+from wallet.exceptions import InvalidRequestError
 from wallet.mixins import ConvertCamelToSnakeViewSetMixin
-from wallet.paginators import FromSizePagination
-from .services import FieldService, FilterService
+from wallet.paginators import FromSizePagination, ZMLPFromSizePagination
+from .utils import FieldUtility, FilterBoy
 
 
 class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
@@ -26,7 +29,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
     zmlp_only = True
     pagination_class = FromSizePagination
     serializer_class = SearchSerializer
-    field_service = FieldService()
+    field_utility = FieldUtility()
 
     def get_object(self):
         try:
@@ -56,7 +59,7 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
         index = indexes[0]
         mappings = content[index]['mappings']
-        fields = self.field_service.get_fields_from_mappings(mappings)
+        fields = self.field_utility.get_fields_from_mappings(mappings)
 
         return Response(status=status.HTTP_200_OK, data=fields)
 
@@ -103,12 +106,35 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
                 "type": "facet",
                 "attribute": "$metadata_attribute_dot_path",
                 "values": {
-                    "facets": [$attibute_values_to_filter]
+                    "facets": [$attribute_values_to_filter]
                 }
             }
         """
-        # always serialize these as their stripped down thumbnail reps
-        return Response(status=status.HTTP_501_NOT_IMPLEMENTED, data={})
+        path = 'api/v3/assets'
+        fields = ['id',
+                  'source*',
+                  'files*']
+        filter_service = FilterBoy()
+        _filters = None
+
+        try:
+            _filters = filter_service.get_filters_from_request(request)
+        except InvalidRequestError:
+            # Return the blank query if there's no querystring
+            query = {}
+
+        if _filters:
+            for _filter in _filters:
+                _filter.is_valid(query=True, raise_exception=True)
+            query = filter_service.reduce_filters_to_query(_filters)
+
+        # Only returns the specified fields in the metadata
+        query['_source'] = fields
+
+        return self._zmlp_list_from_es(request, search_filter=query, base_url=path,
+                                       serializer_class=AssetSerializer,
+                                       item_modifier=asset_modifier,
+                                       pagination_class=ZMLPFromSizePagination)
 
     @action(detail=False, methods=['get'])
     def aggregate(self, request, project_pk):
@@ -145,10 +171,12 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
 
             "minimum_count": $integer
         """
-        filter_service = FilterService()
-        filter = filter_service.get_filter_from_request(request)
-        filter.is_valid(raise_exception=True)
+        path = 'api/v3/assets/_search'
 
-        response = request.client.post('api/v3/assets/_search', filter.get_es_agg())
+        filter_service = FilterBoy()
+        _filter = filter_service.get_filter_from_request(request)
+        _filter.is_valid(raise_exception=True)
 
-        return Response(status=status.HTTP_200_OK, data=filter.serialize_agg_response(response))
+        response = request.client.post(path, _filter.get_es_agg())
+
+        return Response(status=status.HTTP_200_OK, data=_filter.serialize_agg_response(response))

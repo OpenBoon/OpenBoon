@@ -9,9 +9,22 @@ class BaseFilter(object):
     Class Variables:
         type: Identifier for the Filter
         required_agg_keys: The minimum key names that should exist to run an aggregation.
-        required_query_keys: The additional key names needed to generate an ES query.
+        required_query_keys: The additional key names needed to generate an ES query. These
+            keys all need to live under a `values` key.
         optional_keys: Additional keys that may or may not be included. Purely informational.
         agg_prefix: The prefix ES adds to the aggregation name response keys.
+
+        Example JSON Rep:
+
+            {
+                'type': 'foo',
+                'required_agg_key_1': '$value',
+                'required_agg_key_2': '$value,
+                'values': {
+                    'required_query_key_1': $value,
+                    'required_query_key_2': $value
+                }
+            }
     """
 
     type = None
@@ -24,6 +37,11 @@ class BaseFilter(object):
         self.data = data
         self.name = str(uuid.uuid4())
 
+    def __eq__(self, other):
+        if type(self) == type(other) and self.data == other.data:
+            return True
+        return False
+
     def is_valid(self, query=False, raise_exception=False):
         """Confirms the required keys for this filter have been given in the data.
 
@@ -34,13 +52,17 @@ class BaseFilter(object):
             bool: Whether all the required data was given
         """
         errors = []
-        required_keys = self.required_agg_keys
-        if query:
-            required_keys.extend(self.required_query_keys)
 
-        for key in required_keys:
+        for key in self.required_agg_keys:
             if key not in self.data:
                 errors.append({key: 'This value is required.'})
+
+        if query:
+            if 'values' not in self.data:
+                errors.append({'values': 'This value is required.'})
+            for key in self.required_query_keys:
+                if key not in self.data['values']:
+                    errors.append({key: 'This value is required.'})
 
         if errors:
             if raise_exception:
@@ -55,8 +77,34 @@ class BaseFilter(object):
         raise NotImplementedError()
 
     def get_es_query(self):
-        """Gives the Elasticsearch query for the current Filter values."""
+        """Gives the Elasticsearch query for the current Filter values.
+
+        All queries are assumed to be written as ES `bool` queries, but all supported
+        `bool` clauses can be used.
+        """
         raise NotImplementedError()
+
+    def add_to_query(self, query):
+        """Adds the given filters information to a pre-existing query.
+
+        Adds this query to a prebuilt query. Every clause will be appended to the list
+        of existing `bool` clauses if they exist, in an additive manner.
+        """
+        this_query = self.get_es_query()
+        bool_clauses = this_query['query']['bool']
+
+        if 'query' not in query:
+            query.update(this_query)
+        elif 'bool' not in query['query']:
+            query['query']['bool'] = this_query['query']['bool']
+        else:
+            for clause in bool_clauses:
+                if clause not in query['query']['bool']:
+                    query['query']['bool'][clause] = this_query['query']['bool'][clause]
+                else:
+                    query['query']['bool'][clause].extend(this_query['query']['bool'][clause])
+
+        return query
 
     def serialize_agg_response(self, response):
         """Serializes an aggregation query's response from ZMLP."""
@@ -75,8 +123,53 @@ class ExistsFilter(BaseFilter):
     # No agg needed to load the UI for this filter
 
     def get_es_query(self):
-        action = 'exists' if self.data['exists'] else 'missing'
-        return {'filter': {action: [self.data['attribute']]}}
+        clause = self._get_query_clause()
+        attribute = self.data['attribute']
+        return {
+            'query': {
+                'bool': {
+                    clause: [{'exists': {'field': attribute}}]
+                }
+            }
+        }
+
+    def _get_query_clause(self):
+        return 'filter' if self.data['values']['exists'] else 'must_not'
+
+
+class RangeFilter(BaseFilter):
+
+    type = 'range'
+    required_agg_keys = ['attribute']
+    required_query_keys = ['min', 'max']
+    agg_prefix = 'stats'
+
+    def get_es_agg(self):
+        attribute = self.data['attribute']
+        return {
+            'size': 0,
+            'aggs': {
+                self.name: {
+                    'stats': {
+                        'field': attribute
+                    }
+                }
+            }
+        }
+
+    def get_es_query(self):
+        attribute = self.data['attribute']
+        min = self.data['values']['min']
+        max = self.data['values']['max']
+        return {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'range': {attribute: {'gte': min, 'lte': max}}}
+                    ]
+                }
+            }
+        }
 
 
 class FacetFilter(BaseFilter):
@@ -108,42 +201,14 @@ class FacetFilter(BaseFilter):
         return agg
 
     def get_es_query(self):
-        return {
-            'filter': {
-                'terms': self.data['facets']
-            }
-        }
-
-
-class RangeFilter(BaseFilter):
-
-    type = 'range'
-    required_agg_keys = ['attribute']
-    required_query_keys = ['min', 'max']
-    agg_prefix = 'stats'
-
-    def get_es_agg(self):
         attribute = self.data['attribute']
+        facets = self.data['values']['facets']
         return {
-            'size': 0,
-            'aggs': {
-                self.name: {
-                    'stats': {
-                        'field': attribute
-                    }
-                }
-            }
-        }
-
-    def get_es_query(self):
-        attribute = self.data['attribute']
-        return {
-            'filter': {
-                'range': {
-                    attribute: {
-                        'gte': self.data['min'],
-                        'lte': self.data['max']
-                    }
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'terms': {attribute: facets}}
+                    ]
                 }
             }
         }
