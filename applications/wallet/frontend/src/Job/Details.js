@@ -17,9 +17,9 @@ const JobDetails = () => {
   const parsedPage = parseInt(page, 10)
   const from = parsedPage * SIZE - SIZE
 
-  const { data: job, revalidate } = useSWR(
-    `/api/v1/projects/${projectId}/jobs/${jobId}`,
-  )
+  const JOB_API_BASE = `/api/v1/projects/${projectId}/jobs/${jobId}`
+
+  const { data: job, revalidate } = useSWR(JOB_API_BASE)
 
   const { name, state, paused, priority, taskCounts: tC } = job
 
@@ -48,8 +48,8 @@ const JobDetails = () => {
           status={status}
           revalidate={revalidate}
           refreshKeys={[
-            `/api/v1/projects/${projectId}/jobs/${jobId}/errors?from=${from}&size=${SIZE}`,
-            `/api/v1/projects/${projectId}/jobs/${jobId}/tasks?from=${from}&size=${SIZE}`,
+            `${JOB_API_BASE}/errors?from=${from}&size=${SIZE}`,
+            `${JOB_API_BASE}/tasks?from=${from}&size=${SIZE}`,
           ]}
         />
 
