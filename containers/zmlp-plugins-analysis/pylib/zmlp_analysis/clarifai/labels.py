@@ -26,7 +26,6 @@ class ClarifaiLabelDetectionProcessor(AssetProcessor):
         self.clarifai = get_clarifai_app()
 
     def process(self, frame):
-        import pprint
         asset = frame.asset
         p_path = get_proxy_level_path(asset, 1)
 

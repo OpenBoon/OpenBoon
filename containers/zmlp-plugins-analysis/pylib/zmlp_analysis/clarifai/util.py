@@ -11,4 +11,3 @@ def get_clarifai_app():
         ClarifaiApp: The configured ClarifaiApp
     """
     return ClarifaiApp(api_key=os.environ.get('CLARIFAI_KEY'))
-
