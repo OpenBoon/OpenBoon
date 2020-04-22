@@ -15,6 +15,7 @@ const JobTasks = () => {
       role={ROLES.ML_Tools}
       legend="Tasks"
       url={`/api/v1/projects/${projectId}/jobs/${jobId}/tasks`}
+      refreshKeys={[`/api/v1/projects/${projectId}/jobs/${jobId}`]}
       columns={[
         'Task State',
         'Task ID',

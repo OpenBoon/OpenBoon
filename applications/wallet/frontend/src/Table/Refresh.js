@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { keyframes } from '@emotion/core'
+import { mutate } from 'swr'
 
 import RefreshSvg from '../Icons/refresh.svg'
 
@@ -13,7 +14,7 @@ const rotate = keyframes`
   to { transform:rotate(360deg); }
 `
 
-const TableRefresh = ({ onClick, legend }) => {
+const TableRefresh = ({ onClick, legend, refreshKeys }) => {
   const [clicked, setClicked] = useState(false)
 
   return (
@@ -24,6 +25,7 @@ const TableRefresh = ({ onClick, legend }) => {
 
         setClicked(true)
         onClick()
+        refreshKeys.forEach((key) => mutate(key))
         setTimeout(() => setClicked(false), 2000)
       }}
     >
@@ -47,6 +49,7 @@ const TableRefresh = ({ onClick, legend }) => {
 TableRefresh.propTypes = {
   onClick: PropTypes.func.isRequired,
   legend: PropTypes.string.isRequired,
+  refreshKeys: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 }
 
 export default TableRefresh

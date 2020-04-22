@@ -46,6 +46,7 @@ const ProjectUsers = () => {
         role={ROLES.User_Admin}
         legend="Users"
         url={`/api/v1/projects/${projectId}/users/`}
+        refreshKeys={[]}
         columns={['Email', 'Roles', '#Actions#']}
         expandColumn={2}
         renderEmpty="No users"

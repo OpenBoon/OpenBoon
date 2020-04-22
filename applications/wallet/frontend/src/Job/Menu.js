@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { mutate } from 'swr'
 
 import { spacing } from '../Styles'
 
@@ -10,7 +11,7 @@ import Button, { VARIANTS } from '../Button'
 
 import { ACTIONS } from './helpers'
 
-const JobMenu = ({ projectId, jobId, status, revalidate }) => {
+const JobMenu = ({ projectId, jobId, status, revalidate, refreshKeys }) => {
   if (!ACTIONS[status].length) return null
 
   return (
@@ -44,6 +45,10 @@ const JobMenu = ({ projectId, jobId, status, revalidate }) => {
                       )
 
                       revalidate()
+
+                      refreshKeys.forEach((key) => {
+                        mutate(key)
+                      })
                     }}
                     isDisabled={false}
                   >
@@ -64,6 +69,7 @@ JobMenu.propTypes = {
   jobId: PropTypes.string.isRequired,
   status: PropTypes.oneOf(Object.keys(ACTIONS)).isRequired,
   revalidate: PropTypes.func.isRequired,
+  refreshKeys: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 }
 
 export default JobMenu
