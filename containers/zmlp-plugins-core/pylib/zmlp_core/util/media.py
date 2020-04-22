@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import re
-from subprocess import check_output, check_call, CalledProcessError, DEVNULL
+from subprocess import check_output, CalledProcessError, DEVNULL
 
 import xmltodict
 from pathlib import Path
@@ -203,45 +203,6 @@ def get_video_metadata(src_path):
     result['title'] = props.get('format', {}).get('tags', {}).get('title')
     result['timeCreated'] = props.get('format', {}).get('tags', {}).get('creation_time')
     return result
-
-
-def create_video_thumbnail(source_path, destination_path, seconds):
-    """Creates a thumbnail image from the video at the specified seconds.
-
-    Args:
-        source_path (str or Path): Path to the source video.
-        destination_path (str or Path): Path where the thumbnail should be
-            created.
-        seconds (float): The time in the video where the thumbnail should be
-            taken from.
-
-    Raises:
-        (IOError): If the thumbnail could not be created.
-
-    """
-    cmd = ["ffmpeg",
-           "-v",
-           "1",
-           "-y",
-           "-ss",
-           str(seconds),
-           "-i",
-           str(source_path),
-           "-vframes",
-           "1",
-           str(destination_path)]
-
-    logger.info("running command: %s" % cmd)
-    try:
-        check_call(cmd, shell=False, stderr=DEVNULL)
-    except CalledProcessError:
-        # Don't let CalledProcessError bubble out
-        # we're only sending IOError
-        pass
-
-    if not os.path.exists(destination_path):
-        # Don't let the CalledProcessError impl detail leak out
-        raise IOError('FFMpeg failed to create a thumbnail, command failed: {}'.format(cmd))
 
 
 def set_resolution_attrs(asset, width, height):

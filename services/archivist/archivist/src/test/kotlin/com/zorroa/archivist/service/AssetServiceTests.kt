@@ -83,7 +83,7 @@ class AssetServiceTests : AbstractTest() {
 
         // Check the module was applied.
         assertEquals(
-            "zmlp_analysis.labels.ZviLabelDetectionProcessor",
+            "zmlp_analysis.zvi.ZviLabelDetectionProcessor",
             script.execute!!.last().className
         )
     }

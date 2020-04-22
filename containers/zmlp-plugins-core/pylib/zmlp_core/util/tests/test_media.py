@@ -1,4 +1,3 @@
-import os
 import shutil
 import tempfile
 import unittest
@@ -99,24 +98,6 @@ def test_get_output_dimension():
     width, height = media.get_output_dimension(256, 341, 512)
     assert width == 170
     assert height == 256
-
-
-def test_create_video_thumbnail():
-    dst = tempfile.gettempdir() + "/something.jpg"
-    media.create_video_thumbnail(VIDEO_MP4, tempfile.gettempdir() + "/something.jpg", 1)
-    assert os.path.exists(dst)
-    size = media.media_size(dst)
-    assert size[0] == 450
-    assert size[1] == 360
-
-
-def test_create_single_frame_video_thumbnail():
-    dst = tempfile.gettempdir() + "/something.jpg"
-    media.create_video_thumbnail(VIDEO_MOV, tempfile.gettempdir() + "/something.jpg", 0)
-    assert os.path.exists(dst)
-    size = media.media_size(dst)
-    assert size[0] == 1024
-    assert size[1] == 767
 
 
 def test_ffprobe_mp4():

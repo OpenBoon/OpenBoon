@@ -39,4 +39,4 @@ class TimeBasedVideoClipifierTests(PluginUnitTestCase):
         processor = self.init_processor(TimeBasedVideoClipifier(), {})
         processor.process(frame)
 
-        assert expand_patch.call_count == 20
+        assert expand_patch.call_count == 4

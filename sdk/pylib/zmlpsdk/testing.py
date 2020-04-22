@@ -361,7 +361,7 @@ def get_prediction_map(analysis):
     return dict([(p["label"], p['score']) for p in analysis['predictions']])
 
 
-def get_mock_stored_file(category="proxy"):
+def get_mock_stored_file(category="proxy", mimetype="image/jpeg"):
     """
     A convenience methods for returning mock stored file with a
     random name.  This ensures the the local file cache is always
@@ -380,7 +380,7 @@ def get_mock_stored_file(category="proxy"):
             'width': 100,
             'height': 100
         },
-        'mimetype': 'image/jpeg',
+        'mimetype': mimetype,
         'size': 1000,
         "category": 'proxy'
     })
