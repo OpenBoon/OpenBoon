@@ -26,10 +26,11 @@ markdown = "*"
 google-auth = "*"
 djangorestframework-camel-case = "*"
 django-rest-auth = "*"
-zmlp = {path = "./../../client/python"}
 backoff = "*"
 django-multiselectfield = "*"
 stringcase = "*"
+zmlp = {path = "./../../client/python"}
+opencv-python = "*"
 
 [requires]
 python_version = "3.7"
