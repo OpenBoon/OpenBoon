@@ -143,6 +143,7 @@ sdk-unit-tests:
     - python setup.py install
     - pytest
     - cd ../containers/zmlp-plugins-base
+    - apt-get install ffmpeg
     - pip install -r requirements.txt
     - pytest
   only:
