@@ -250,7 +250,7 @@ class BaseProjectViewSet(ViewSet):
             return Response({'detail': serializer.errors}, status=500)
         return Response({'results': serializer.data})
 
-    def _zmlp_retrieve(self, request, pk, item_modifier=None, return_data=False):
+    def _zmlp_retrieve(self, request, pk, item_modifier=None):
         """The result of this method can be returned for the retrieve method of a concrete
         viewset. if it just needs to proxy the results of a standard ZMLP endpoint for a single
         object.
@@ -271,10 +271,7 @@ class BaseProjectViewSet(ViewSet):
         serializer = self.get_serializer(data=content)
         if not serializer.is_valid():
             return Response({'detail': serializer.errors}, status=500)
-        if return_data:
-            return serializer.data
-        else:
-            return Response(serializer.data)
+        return Response(serializer.data)
 
     def _zmlp_destroy(self, request, pk):
         """The result of this method can be returned for the destroy method of a concrete

@@ -97,7 +97,7 @@ Metadata:
 
 Querystring:
 
-    ?attr=analysis.zvi-object-detection
+    ?attr=analysis.zvi-object-detection&width=128
 
 """
         asset = request.app.assets.get_asset(pk)

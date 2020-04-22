@@ -21,6 +21,10 @@ class AssetBoxImager(object):
 
     @property
     def image(self):
+        """Lazily downloads a proxy image of the Asset. The image is returned as a numpy
+        array readable by open-cv as an image.
+
+        """
         if self._image is not None:
             return self._image
         proxy = self.asset.get_thumbnail(3)
@@ -106,7 +110,7 @@ def crop_image_poly(image, poly, width=256, color=(255, 0, 0), thickness=3):
     yr = image.shape[0]
     xr = image.shape[1]
     # If poly is four numbers, assume it's a bounding box. Otherwise it's a polygon
-    if len(poly) == 4:
+    if _is_rectangle(poly):
         x1 = int(poly[0] * xr)
         y1 = int(poly[1] * yr)
         x2 = int(poly[2] * xr)
@@ -133,3 +137,17 @@ def crop_image_poly(image, poly, width=256, color=(255, 0, 0), thickness=3):
     scale = width / xrc
     resized = cv2.resize(cropped_image, (0, 0), fx=scale, fy=scale)
     return resized
+
+
+def _is_rectangle(poly):
+    """Takes a list of coordinates representing a polygon and returns True if it is a
+    rectangle.
+
+    """
+    if len(poly) != 4:
+        return False
+    xs = {i[0] for i in poly}
+    ys = {i[1] for i in poly}
+    if len(xs) == 2 and len(ys) == 2:
+        return True
+    return False
