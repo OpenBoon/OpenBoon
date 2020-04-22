@@ -86,7 +86,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_core.clipify.ShotDetectionVideoClipifier",
+                        ProcessorRef("zmlp_core.zvi.clipify.ShotDetectionVideoClipifier",
                             StandardContainers.CORE)
                     )
                 )
@@ -105,7 +105,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.detect.ZmlpObjectDetectionProcessor",
+                        ProcessorRef("zmlp_analysis.zvi.ZviObjectDetectionProcessor",
                             StandardContainers.ANALYSIS)
                     )
                 )
@@ -124,7 +124,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.labels.ZviLabelDetectionProcessor",
+                        ProcessorRef("zmlp_analysis.zvi.ZviLabelDetectionProcessor",
                             StandardContainers.ANALYSIS)
                     )
                 )
@@ -143,7 +143,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                 ModOp(
                     ModOpType.APPEND,
                     listOf(
-                        ProcessorRef("zmlp_analysis.ocr.processors.OcrProcessor",
+                        ProcessorRef("zmlp_analysis.zvi.ZviOcrProcessor",
                             StandardContainers.ANALYSIS)
                     )
                 )

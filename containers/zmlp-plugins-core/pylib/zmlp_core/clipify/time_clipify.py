@@ -1,5 +1,6 @@
 from zmlpsdk import AssetProcessor, Argument
-from .util import check_video_clip_preconditions, make_video_clip_file_import
+import zmlpsdk.video as video
+from zmlpsdk.proxy import get_proxy_level_path
 
 
 class TimeBasedVideoClipifier(AssetProcessor):
@@ -11,25 +12,17 @@ class TimeBasedVideoClipifier(AssetProcessor):
     def process(self, frame):
         asset = frame.asset
         # Bail out if we fail preconditions
-        if not check_video_clip_preconditions(asset):
+        if not video.check_video_clip_preconditions(asset):
             return -1
-
         self._generate_clips(frame)
 
     def _generate_clips(self, frame):
         asset = frame.asset
-        duration = asset.get_attr('clip.stop')
-        length = self.arg_value('clip_length')
 
-        scrubber = 0
-        while scrubber < duration:
-            cut_in = scrubber
-            cut_out = min(scrubber + length, duration)
-            scrubber = cut_out
+        video_proxy = get_proxy_level_path(asset, 0, "video/")
+        clip_gen = video.TimeBasedClipGenerator(video_proxy, self.arg_value('clip_length'))
 
-            self.logger.info("Creating scene clip {}/{} from asset {}".format(
-                cut_in, cut_out, frame.asset.id))
-
-            scene_clip = make_video_clip_file_import(
-                asset, cut_in, cut_out, 'time{}'.format(length))
+        for clip in clip_gen:
+            scene_clip = video.make_video_clip_expand_frame(
+                asset, clip.time_in, clip.time_out, 'time{}'.format(clip.length))
             self.expand(frame, scene_clip)

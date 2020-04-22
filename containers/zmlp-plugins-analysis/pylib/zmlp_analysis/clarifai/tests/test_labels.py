@@ -1,7 +1,7 @@
 import os
 from unittest.mock import patch
 
-from zmlp_analysis.clarifai.processors import ClarifaiPredictGeneralProcessor
+from zmlp_analysis.clarifai.labels import ClarifaiPredictGeneralProcessor
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_data, \
     TestAsset, get_prediction_labels
@@ -32,7 +32,7 @@ class ClarifaiPredictGeneralProcessorTests(PluginUnitTestCase):
         self.frame = Frame(TestAsset(self.image_path))
 
     @patch('zmlpsdk.proxy.get_proxy_level_path')
-    @patch('zmlp_analysis.clarifai.processors.get_clarifai_app')
+    @patch('zmlp_analysis.clarifai.labels.get_clarifai_app')
     def test_process(self, get_app_patch, proxy_path_patch):
         get_app_patch.return_value = MockClarifaiApp()
         proxy_path_patch.return_value = self.image_path

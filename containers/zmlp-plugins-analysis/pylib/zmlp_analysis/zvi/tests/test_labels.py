@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from zmlp_analysis.labels import ZviLabelDetectionProcessor
+from zmlp_analysis.zvi.labels import ZviLabelDetectionProcessor
 from zmlpsdk import Frame
 from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
     TestAsset, get_prediction_labels
@@ -8,7 +8,7 @@ from zmlpsdk.testing import PluginUnitTestCase, zorroa_test_path, \
 
 class ZviLabelDetectionProcessorTests(PluginUnitTestCase):
 
-    @patch('zmlp_analysis.labels.processors.get_proxy_level_path')
+    @patch('zmlp_analysis.zvi.labels.get_proxy_level_path')
     def test_process(self, proxy_patch):
         toucan_path = zorroa_test_path('images/set01/toucan.jpg')
         proxy_patch.return_value = toucan_path
