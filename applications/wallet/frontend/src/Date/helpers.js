@@ -24,6 +24,32 @@ export const formatFullDate = ({ timestamp }) => {
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`
 }
 
+export const formatPrettyDate = ({ timestamp }) => {
+  const formatOptions = {
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric',
+    hour: 'numeric',
+    hour12: true,
+    minute: '2-digit',
+    timeZoneName: 'short',
+  }
+
+  const partsIndex = new Intl.DateTimeFormat('en-US', formatOptions)
+    .formatToParts(new Date(timestamp))
+    .reduce((accumulator, part) => {
+      const { type, value } = part
+      if (type !== 'literal') {
+        accumulator[type] = value
+      }
+      return accumulator
+    }, {})
+
+  const { year, month, day, hour, minute, timeZoneName } = partsIndex
+
+  return `${year}-${month}-${day} ${hour}:${minute} ${timeZoneName}`
+}
+
 export const formatDuration = ({ seconds }) => {
   const date = new Date(0)
   date.setSeconds(seconds)
