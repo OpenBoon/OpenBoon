@@ -285,8 +285,7 @@ class ProcessorWrapper(object):
 
             if self.instance.file_types:
                 if not is_file_type_allowed(frame.asset, self.instance.file_types):
-                    logger.warning(
-                        "The asset {} has an invalid file type".format(frame.asset.id))
+                    # No need to log, this is normal.
                     return
 
             self.instance.logger.info("started processor")
