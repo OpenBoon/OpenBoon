@@ -19,8 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from rest_auth.views import PasswordResetView, PasswordResetConfirmView, \
-    PasswordChangeView
+from rest_auth.views import PasswordResetView, PasswordResetConfirmView
 from rest_framework import routers
 from rest_framework_nested.routers import NestedSimpleRouter
 
@@ -33,10 +32,11 @@ from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet, JobTaskViewSet
 from modules.views import ModuleViewSet, ProviderViewSet
 from permissions.views import PermissionViewSet
 from projects.views import ProjectViewSet, ProjectUserViewSet
-from registration.views import UserRegistrationView, UserConfirmationView
+from registration.views import UserRegistrationView, UserConfirmationView, \
+    ApiPasswordChangeView
 from roles.views import RolesViewSet
-from subscriptions.views import SubscriptionViewSet
 from searches.views import SearchViewSet
+from subscriptions.views import SubscriptionViewSet
 from wallet import views as wallet_views
 from wallet.views import MeView
 from wallet.views import WalletAPIRootView, LoginView, LogoutView
@@ -79,7 +79,7 @@ jobs_router.register('tasks', JobTaskViewSet, basename='job-detail-task')
 # Use this variable to add standalone views to the urlspatterns and have them accessible
 # from the root DRF browsable API. The tuples are in the form (LABEL, path()).
 BROWSABLE_API_URLS = [
-    ('password-change', path('api/v1/password/change/', PasswordChangeView.as_view(),
+    ('password-change', path('api/v1/password/change/', ApiPasswordChangeView.as_view(),
                              name='api-password-change')),
     ('password-reset', path('api/v1/password/reset/', PasswordResetView.as_view(),
                             name='api-password-reset')),
