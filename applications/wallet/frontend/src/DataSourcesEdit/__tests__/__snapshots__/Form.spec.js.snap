@@ -194,60 +194,6 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-39 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  cursor: not-allowed;
-  padding-bottom: 16px;
-  padding-left: 16px;
-}
-
-.emotion-31 {
-  margin: 0;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: none;
-  border-radius: 2px;
-  cursor: not-allowed;
-}
-
-.emotion-33 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  cursor: not-allowed;
-}
-
-.emotion-32 path {
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
-  opacity: 100;
-  fill: #73b61c;
-}
-
 .emotion-42 {
   margin: 0;
   padding-top: 8px;
@@ -491,6 +437,46 @@ Array [
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
+}
+
+.emotion-59 {
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: none;
+  border-radius: 2px;
+  cursor: not-allowed;
+}
+
+.emotion-61 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: not-allowed;
+}
+
+.emotion-60 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 100;
+  fill: #73b61c;
 }
 
 .emotion-70 {
@@ -797,23 +783,23 @@ Array [
         </div>
       </label>
       <label
-        className="emotion-39"
+        className="emotion-21"
       >
         <div
           className="emotion-16"
         >
           <input
-            className="emotion-31"
-            defaultChecked={true}
+            className="emotion-13"
+            defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="video"
+            value="videos"
           />
           <div
-            className="emotion-33"
+            className="emotion-15"
           >
             <svg
-              className="emotion-32"
+              className="emotion-14"
               data-file-name="checkmark.svg"
               width={20}
             />
@@ -1014,17 +1000,17 @@ Array [
                         className="emotion-16"
                       >
                         <input
-                          className="emotion-31"
+                          className="emotion-59"
                           defaultChecked={true}
                           onClick={[Function]}
                           type="checkbox"
                           value="gcp-label-detection"
                         />
                         <div
-                          className="emotion-33"
+                          className="emotion-61"
                         >
                           <svg
-                            className="emotion-32"
+                            className="emotion-60"
                             data-file-name="checkmark.svg"
                             width={20}
                           />

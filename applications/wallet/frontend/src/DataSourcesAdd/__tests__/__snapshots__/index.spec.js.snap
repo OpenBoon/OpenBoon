@@ -867,13 +867,13 @@ Array [
         >
           <select
             className="emotion-14"
+            defaultValue=""
             id="source-selection"
             name="sources"
             onChange={[Function]}
           >
             <option
               disabled={true}
-              selected={true}
               value=""
             >
               Select source
@@ -1028,7 +1028,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="video"
+            value="videos"
           />
           <div
             className="emotion-24"
@@ -2536,13 +2536,13 @@ Array [
         >
           <select
             className="emotion-14"
+            defaultValue=""
             id="source-selection"
             name="sources"
             onChange={[Function]}
           >
             <option
               disabled={true}
-              selected={true}
               value=""
             >
               Select source
@@ -2795,7 +2795,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="video"
+            value="videos"
           />
           <div
             className="emotion-42"
@@ -4303,13 +4303,13 @@ Array [
         >
           <select
             className="emotion-14"
+            defaultValue=""
             id="source-selection"
             name="sources"
             onChange={[Function]}
           >
             <option
               disabled={true}
-              selected={true}
               value=""
             >
               Select source
@@ -4529,7 +4529,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="video"
+            value="videos"
           />
           <div
             className="emotion-36"
@@ -6037,13 +6037,13 @@ Array [
         >
           <select
             className="emotion-14"
+            defaultValue=""
             id="source-selection"
             name="sources"
             onChange={[Function]}
           >
             <option
               disabled={true}
-              selected={true}
               value=""
             >
               Select source
@@ -6258,7 +6258,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="video"
+            value="videos"
           />
           <div
             className="emotion-35"
