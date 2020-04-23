@@ -104,12 +104,11 @@ class FilterBoy(object):
 
         Raises:
             ParseError: If the querystring is undecodeable
-            InvalidRequestError: If no `query` argument is included in the querystring.
         """
         try:
             encoded_query = request.query_params['query']
         except KeyError:
-            raise InvalidRequestError(detail='No `query` querystring included.')
+            return []
 
         try:
             converted_query = convert_base64_to_json(encoded_query)

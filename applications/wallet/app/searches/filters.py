@@ -94,10 +94,15 @@ class BaseFilter(object):
         bool_clauses = this_query['query']['bool']
 
         if 'query' not in query:
+            # If the query key doesn't exist at all, add this filters whole query to it
             query.update(this_query)
         elif 'bool' not in query['query']:
+            # If this query is not setup as a bool, then add this filters bool section to it
             query['query']['bool'] = this_query['query']['bool']
         else:
+            # Check that every clause (ex. 'filter', 'must_not', 'should', etc) in
+            # this filter's query gets added if it's missing, or extends what is
+            # already existing
             for clause in bool_clauses:
                 if clause not in query['query']['bool']:
                     query['query']['bool'][clause] = this_query['query']['bool'][clause]

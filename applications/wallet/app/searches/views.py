@@ -11,7 +11,6 @@ from assets.views import asset_modifier
 from projects.views import BaseProjectViewSet
 from searches.models import Search
 from searches.serializers import SearchSerializer
-from wallet.exceptions import InvalidRequestError
 from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.paginators import FromSizePagination, ZMLPFromSizePagination
 from .utils import FieldUtility, FilterBoy
@@ -114,19 +113,12 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
         fields = ['id',
                   'source*',
                   'files*']
-        filter_service = FilterBoy()
-        _filters = None
+        filter_boy = FilterBoy()
 
-        try:
-            _filters = filter_service.get_filters_from_request(request)
-        except InvalidRequestError:
-            # Return the blank query if there's no querystring
-            query = {}
-
-        if _filters:
-            for _filter in _filters:
-                _filter.is_valid(query=True, raise_exception=True)
-            query = filter_service.reduce_filters_to_query(_filters)
+        _filters = filter_boy.get_filters_from_request(request)
+        for _filter in _filters:
+            _filter.is_valid(query=True, raise_exception=True)
+        query = filter_boy.reduce_filters_to_query(_filters)
 
         # Only returns the specified fields in the metadata
         query['_source'] = fields

@@ -97,15 +97,6 @@ class TestFilterBoy:
         filters = filter_boy.get_filters_from_request(request)
         assert filters == expected
 
-    def test_get_filters_from_request_raises_invalid_request(self, filter_boy):
-        request = Mock()
-        request.query_params = {}
-
-        with pytest.raises(InvalidRequestError) as e:
-            filter_boy.get_filters_from_request(request)
-
-        assert str(e.value.detail) == 'No `query` querystring included.'
-
     def test_get_filters_from_request_raises_parse_error(self, filter_boy):
         _filters = [{'type': 'range', 'attribute': 'source.filesize'},
                     {'type': 'facet', 'attribute': 'source.extension'}]
