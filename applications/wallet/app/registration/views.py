@@ -9,6 +9,7 @@ from django.db import transaction
 from django.http import Http404
 from django.template.loader import render_to_string
 from django.utils.timezone import now
+from rest_auth.views import PasswordChangeView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -149,3 +150,7 @@ Response Codes:
             user.save()
             token.delete()
         return Response(data={'detail': 'Success. User has been activated.'})
+
+
+class ApiPasswordChangeView(ConvertCamelToSnakeViewSetMixin, PasswordChangeView):
+    pass

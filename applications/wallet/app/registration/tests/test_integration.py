@@ -145,9 +145,9 @@ def test_confirm_missing_params(api_client):
 def test_password_change(api_client, user):
     api_client.force_login(user)
     response = api_client.post(reverse('api-password-change'),
-                               {'old_password': 'letmein',
-                                'new_password1': '7BMQv5Pb(KpdS+!z',
-                                'new_password2': '7BMQv5Pb(KpdS+!z'})
+                               {'oldPassword': 'letmein',
+                                'newPassword1': '7BMQv5Pb(KpdS+!z',
+                                'newPassword2': '7BMQv5Pb(KpdS+!z'})
     assert response.status_code == 200
     user = User.objects.get(username=user.username)
     assert user.check_password('7BMQv5Pb(KpdS+!z')
