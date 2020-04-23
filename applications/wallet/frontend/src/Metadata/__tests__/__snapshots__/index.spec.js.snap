@@ -31,7 +31,7 @@ exports[`<Metadata /> should render properly 1`] = `
 `;
 
 exports[`<Metadata /> should render selected asset 1`] = `
-.emotion-128 {
+.emotion-209 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -179,11 +179,11 @@ exports[`<Metadata /> should render selected asset 1`] = `
   color: #ffffff;
 }
 
-.emotion-127 {
+.emotion-208 {
   overflow: auto;
 }
 
-.emotion-33 {
+.emotion-54 {
   background-color: #252525;
   border-radius: 2px;
 }
@@ -266,18 +266,26 @@ exports[`<Metadata /> should render selected asset 1`] = `
   font-weight: 400;
 }
 
-.emotion-32 {
+.emotion-53 {
   width: 100%;
   background-color: #191919;
 }
 
-.emotion-31 {
+.emotion-52 {
   border-collapse: collapse;
   width: 100%;
 }
 
-.emotion-12:hover {
+.emotion-15:hover {
   background-color: #027aff38;
+}
+
+.emotion-15:hover td {
+  color: #ffffff;
+}
+
+.emotion-15:hover td svg {
+  display: inline-block;
 }
 
 .emotion-10 {
@@ -293,16 +301,38 @@ exports[`<Metadata /> should render selected asset 1`] = `
   word-break: break-all;
 }
 
-.emotion-15 {
+.emotion-14 {
+  width: 36px;
+  padding-top: 16px;
+  padding-right: 16px;
+}
+
+.emotion-12 {
+  display: none;
+}
+
+.emotion-12:hover {
+  color: #ffffff;
+}
+
+.emotion-21 {
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-15:hover {
+.emotion-21:hover {
   background-color: #027aff38;
 }
 
+.emotion-21:hover td {
+  color: #ffffff;
+}
+
+.emotion-21:hover td svg {
+  display: inline-block;
+}
+
 <div
-  className="emotion-128"
+  className="emotion-209"
 >
   <div
     className="emotion-1"
@@ -336,13 +366,13 @@ exports[`<Metadata /> should render selected asset 1`] = `
     </div>
   </div>
   <div
-    className="emotion-127"
+    className="emotion-208"
   >
     <div
-      className="emotion-34"
+      className="emotion-55"
     >
       <div
-        className="emotion-33"
+        className="emotion-54"
       >
         <div
           className="emotion-9"
@@ -367,14 +397,14 @@ exports[`<Metadata /> should render selected asset 1`] = `
           </h4>
         </div>
         <div
-          className="emotion-32"
+          className="emotion-53"
         >
           <table
-            className="emotion-31"
+            className="emotion-52"
           >
             <tbody>
               <tr
-                className="emotion-12"
+                className="emotion-15"
               >
                 <td
                   className="emotion-10"
@@ -388,13 +418,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   106d4be1-5d95-11ea-baea-364023b135f5
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -408,13 +457,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   10509c20-5d95-11ea-baea-364023b135f5
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -428,13 +496,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   2020-03-03 9:22 UTC
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -448,13 +535,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   Analyzed
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -468,13 +574,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   89382033-bcbb-4c8f-81a9-3d0883298a81
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -488,13 +613,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   106e0f32-5d95-11ea-baea-364023b135f5
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -508,9 +652,28 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   2020-03-03 9:22 UTC
+                </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -519,10 +682,10 @@ exports[`<Metadata /> should render selected asset 1`] = `
       </div>
     </div>
     <div
-      className="emotion-34"
+      className="emotion-55"
     >
       <div
-        className="emotion-33"
+        className="emotion-54"
       >
         <div
           className="emotion-9"
@@ -547,14 +710,14 @@ exports[`<Metadata /> should render selected asset 1`] = `
           </h4>
         </div>
         <div
-          className="emotion-32"
+          className="emotion-53"
         >
           <table
-            className="emotion-31"
+            className="emotion-52"
           >
             <tbody>
               <tr
-                className="emotion-12"
+                className="emotion-15"
               >
                 <td
                   className="emotion-10"
@@ -568,13 +731,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   gs://zorroa-dev-data/image/TIFF_1MB.tiff
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -588,13 +770,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   tiff
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -608,13 +809,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   TIFF_1MB.tiff
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -628,13 +848,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   image/tiff
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -648,13 +887,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   1.1 MB
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -668,13 +926,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   1867533868
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -688,9 +965,28 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff
+                </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -699,10 +995,10 @@ exports[`<Metadata /> should render selected asset 1`] = `
       </div>
     </div>
     <div
-      className="emotion-34"
+      className="emotion-55"
     >
       <div
-        className="emotion-33"
+        className="emotion-54"
       >
         <div
           className="emotion-9"
@@ -727,14 +1023,14 @@ exports[`<Metadata /> should render selected asset 1`] = `
           </h4>
         </div>
         <div
-          className="emotion-32"
+          className="emotion-53"
         >
           <table
-            className="emotion-31"
+            className="emotion-52"
           >
             <tbody>
               <tr
-                className="emotion-12"
+                className="emotion-15"
               >
                 <td
                   className="emotion-10"
@@ -748,13 +1044,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   650
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -768,13 +1083,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   434
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -788,13 +1122,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   1.5
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -808,13 +1161,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   landscape
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -828,13 +1200,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   image
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -848,9 +1239,28 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   1
+                </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -859,10 +1269,10 @@ exports[`<Metadata /> should render selected asset 1`] = `
       </div>
     </div>
     <div
-      className="emotion-34"
+      className="emotion-55"
     >
       <div
-        className="emotion-33"
+        className="emotion-54"
       >
         <div
           className="emotion-9"
@@ -887,14 +1297,14 @@ exports[`<Metadata /> should render selected asset 1`] = `
           </h4>
         </div>
         <div
-          className="emotion-32"
+          className="emotion-53"
         >
           <table
-            className="emotion-31"
+            className="emotion-52"
           >
             <tbody>
               <tr
-                className="emotion-12"
+                className="emotion-15"
               >
                 <td
                   className="emotion-10"
@@ -908,13 +1318,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   page
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -928,13 +1357,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   1
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -948,13 +1396,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   1
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -968,13 +1435,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   1
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -988,13 +1474,32 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   pUn6wBxUN7x9JxOxLkvruOyNdYA
                 </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
+                </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-21"
               >
                 <td
                   className="emotion-10"
@@ -1008,9 +1513,28 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title=""
                   valign="top"
                 >
                   vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C
+                </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -1019,10 +1543,10 @@ exports[`<Metadata /> should render selected asset 1`] = `
       </div>
     </div>
     <div
-      className="emotion-34"
+      className="emotion-55"
     >
       <div
-        className="emotion-33"
+        className="emotion-54"
       >
         <div
           className="emotion-9"
@@ -1047,14 +1571,14 @@ exports[`<Metadata /> should render selected asset 1`] = `
           </h4>
         </div>
         <div
-          className="emotion-32"
+          className="emotion-53"
         >
           <table
-            className="emotion-31"
+            className="emotion-52"
           >
             <tbody>
               <tr
-                className="emotion-12"
+                className="emotion-15"
               >
                 <td
                   className="emotion-10"
@@ -1068,9 +1592,28 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
+                  title="NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP"
                   valign="top"
                 >
-                  NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP
+                  NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAM...
+                </td>
+                <td
+                  className="emotion-14"
+                  valign="top"
+                >
+                  <button
+                    className="emotion-7"
+                    onClick={[Function]}
+                    title="Copy to Clipboard"
+                    type="button"
+                  >
+                    <svg
+                      className="emotion-12"
+                      color="#808080"
+                      data-file-name="copy.svg"
+                      width={20}
+                    />
+                  </button>
                 </td>
               </tr>
             </tbody>

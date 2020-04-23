@@ -33,5 +33,9 @@ export const formatDisplayValue = ({ key, value }) => {
     return formatPrettyDate({ timestamp: value })
   }
 
+  if (value.length > 300) {
+    return `${value.slice(0, 300)}...`
+  }
+
   return value
 }

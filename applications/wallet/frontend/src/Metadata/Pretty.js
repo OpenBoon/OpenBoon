@@ -2,9 +2,14 @@ import assetShape from '../Asset/shape'
 
 import { colors, constants, spacing } from '../Styles'
 
-import Accordion, { VARIANTS } from '../Accordion'
+import CopySvg from '../Icons/copy.svg'
+
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 
 import { formatDisplayName, formatDisplayValue } from './helpers'
+
+const COPY_WIDTH = 20
 
 const MetadataPretty = ({ asset: { metadata } }) => {
   return (
@@ -17,7 +22,7 @@ const MetadataPretty = ({ asset: { metadata } }) => {
         return (
           <Accordion
             key={section}
-            variant={VARIANTS.PANEL}
+            variant={ACCORDION_VARIANTS.PANEL}
             title={title}
             isInitiallyOpen
           >
@@ -39,6 +44,12 @@ const MetadataPretty = ({ asset: { metadata } }) => {
                           ':hover': {
                             backgroundColor:
                               colors.signal.electricBlue.background,
+                            td: {
+                              color: colors.structure.white,
+                              svg: {
+                                display: 'inline-block',
+                              },
+                            },
                           },
                         }}
                       >
@@ -56,6 +67,7 @@ const MetadataPretty = ({ asset: { metadata } }) => {
                         </td>
                         <td
                           valign="top"
+                          title={value.length > 300 ? value : ''}
                           css={{
                             fontFamily: 'Roboto Mono',
                             color: colors.structure.pebble,
@@ -64,6 +76,38 @@ const MetadataPretty = ({ asset: { metadata } }) => {
                           }}
                         >
                           {formatDisplayValue({ key, value })}
+                        </td>
+                        <td
+                          valign="top"
+                          css={{
+                            width: COPY_WIDTH + spacing.normal,
+                            paddingTop: spacing.normal,
+                            paddingRight: spacing.normal,
+                          }}
+                        >
+                          <Button
+                            title="Copy to Clipboard"
+                            variant={BUTTON_VARIANTS.NEUTRAL}
+                            onClick={() => {
+                              const dummy = document.createElement('textarea')
+                              document.body.appendChild(dummy)
+                              dummy.value = value
+                              dummy.select()
+                              document.execCommand('copy')
+                              document.body.removeChild(dummy)
+                            }}
+                          >
+                            <CopySvg
+                              width={COPY_WIDTH}
+                              color={colors.structure.steel}
+                              css={{
+                                display: 'none',
+                                ':hover': {
+                                  color: colors.structure.white,
+                                },
+                              }}
+                            />
+                          </Button>
                         </td>
                       </tr>
                     )
