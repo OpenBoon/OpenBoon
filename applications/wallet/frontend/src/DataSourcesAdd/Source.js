@@ -65,6 +65,7 @@ const DataSourcesAddSource = ({
         <select
           name="sources"
           id="source-selection"
+          defaultValue=""
           onChange={({ target: { value } }) => {
             const requiredCredentials = SOURCES[value].credentials.reduce(
               (acc, cred) => {
@@ -103,7 +104,7 @@ const DataSourcesAddSource = ({
             backgroundSize: CHEVRON_HEIGHT,
           }}
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Select source
           </option>
           {Object.keys(SOURCES).map((option) => {
