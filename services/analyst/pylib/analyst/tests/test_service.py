@@ -32,7 +32,12 @@ def test_task(event_type=None, attrs=None, sleep=1):
             "assets": [
                 {
                     "id": "71C54046-6452-4669-BD71-719E9D5C2BBF",
-                    "document": {"foo": "bar"}
+                    "document": {
+                        "foo": "bar",
+                        "source": {
+                            "path": "/something/something/bilbo.jpg"
+                        }
+                    }
                 }
             ],
             "execute": [
@@ -148,7 +153,7 @@ class TestExecutor(unittest.TestCase):
         event_patch.return_value = {}
         api = self.api
         result = api.executor.run_task(test_task("error"))
-        assert (result["exit_status"] == 0)
+        assert (result["exit_status"] == 8)
         assert (result["error_events"] == 1)
         assert (api.executor.current_task is None)
 

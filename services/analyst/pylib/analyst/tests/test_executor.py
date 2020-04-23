@@ -51,6 +51,9 @@ class TestZpsExecutor(unittest.TestCase):
                 "CAT": "DOG"
             },
             "script": {
+                "settings": {
+                    "fileTypes": ["jpg"]
+                },
                 "generate": [
                     {
                         "className": "zmlpsdk.testing.TestGenerator",
@@ -133,7 +136,9 @@ class TestDockerContainerWrapper(unittest.TestCase):
         self.client = MockClusterClient()
         task = test_task()
         wrapper = ZpsExecutor(task, self.client)
-        self.container = DockerContainerWrapper(wrapper, task, "zmlp/plugins-base:latest")
+        self.container = DockerContainerWrapper(
+            wrapper, task, "zmlp/plugins-base:latest",
+            os.path.realpath(tempfile.mkdtemp()))
 
     def tearDown(self):
         self.container.stop()

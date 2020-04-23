@@ -2,6 +2,8 @@ import json
 import logging
 import os
 import threading
+import tempfile
+import shutil
 
 import docker
 import zmq
@@ -52,6 +54,8 @@ class ZpsExecutor(object):
         # A roll up of event counts from the various containers
         # that are spawned during processing.
         self.event_counts = {}
+        self.workdir = os.path.realpath(
+            tempfile.mkdtemp(prefix="zvi", suffix=self.task['id']))
 
     def run(self):
         """
@@ -73,7 +77,12 @@ class ZpsExecutor(object):
             logger.warning("Failed to execute ZPS script, {}".format(e))
             self.exit_status = EXIT_STATUS_HARD_FAIL
         finally:
-            # Emit a task stopped to the archivist.
+            try:
+                shutil.rmtree(self.workdir)
+            except Exception as e:
+                logger.warning("Failed to to delete task work dir: {}".format(e))
+
+            # Emit a task stopped to the archivist
             exit_status = self.get_exit_status()
             self.client.emit_event(self.task, "stopped", {
                 "exitStatus": exit_status,
@@ -106,7 +115,8 @@ class ZpsExecutor(object):
 
                 # Run containerized generator
                 if not self.container:
-                    self.container = DockerContainerWrapper(self.client, self.task, proc["image"])
+                    self.container = DockerContainerWrapper(
+                        self.client, self.task, proc["image"], self.workdir)
                     self.container.wait_for_container()
 
                 self.container.execute_generator(proc, settings)
@@ -196,7 +206,8 @@ class ZpsExecutor(object):
         """
         results = []
         if not self.container:
-            self.container = DockerContainerWrapper(self.client, self.task, ref["image"])
+            self.container = DockerContainerWrapper(
+                self.client, self.task, ref["image"], self.workdir)
             self.container.wait_for_container()
 
         if assets:
@@ -273,7 +284,7 @@ class DockerContainerWrapper(object):
 
     """
 
-    def __init__(self, client, task, image):
+    def __init__(self, client, task, image, workdir):
         """
         Create a new DockerContainerWrapper which manages the container process life cycle.
 
@@ -285,6 +296,7 @@ class DockerContainerWrapper(object):
         self.task = task
         self.image = image
         self.client = client
+        self.workdir = workdir
         self.docker_client = docker.from_env()
         self.event_counts = {}
         self.killed = False
@@ -356,7 +368,7 @@ class DockerContainerWrapper(object):
         image = self._pull_image()
 
         volumes = {
-            '/tmp': {'bind': '/tmp', 'mode': 'rw'}
+            self.workdir: {'bind': '/tmp', 'mode': 'rw'}
         }
 
         network = self.get_network_id()
