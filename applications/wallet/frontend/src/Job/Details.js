@@ -14,7 +14,7 @@ const JobDetails = () => {
   } = useRouter()
 
   const { data: job, revalidate } = useSWR(
-    `/api/v1/projects/${projectId}/jobs/${jobId}`,
+    `/api/v1/projects/${projectId}/jobs/${jobId}/`,
   )
 
   const { name, state, paused, priority, taskCounts: tC } = job
