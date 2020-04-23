@@ -14,7 +14,7 @@ const JobErrors = () => {
     <Table
       role={ROLES.ML_Tools}
       legend="Errors"
-      url={`/api/v1/projects/${projectId}/jobs/${jobId}/errors`}
+      url={`/api/v1/projects/${projectId}/jobs/${jobId}/errors/`}
       refreshKeys={[`/api/v1/projects/${projectId}/jobs/${jobId}`]}
       columns={[
         'Error Type',
