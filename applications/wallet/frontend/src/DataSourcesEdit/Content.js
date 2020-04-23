@@ -1,6 +1,8 @@
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
+import { FILE_TYPES } from '../DataSourcesAdd/helpers'
+
 import DataSourcesEditForm from './Form'
 
 const DataSourcesEditContent = () => {
@@ -12,12 +14,23 @@ const DataSourcesEditContent = () => {
     data: { name, uri, fileTypes, modules },
   } = useSWR(`/api/v1/projects/${projectId}/data_sources/${dataSourceId}/`)
 
+  const groupedFileTypes = FILE_TYPES.reduce(
+    (accumulator, { value, identifier }) => {
+      const matchFileType = fileTypes.includes(identifier)
+
+      if (matchFileType) {
+        accumulator[value] = true
+      }
+
+      return accumulator
+    },
+    {},
+  )
+
   const initialState = {
     name,
     uri,
-    fileTypes: fileTypes.reduce((accumulator, value) => {
-      return { ...accumulator, [value]: true }
-    }, {}),
+    fileTypes: groupedFileTypes,
     modules,
     errors: { global: '' },
   }
