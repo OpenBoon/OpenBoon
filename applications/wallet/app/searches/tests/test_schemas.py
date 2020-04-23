@@ -123,7 +123,7 @@ class TestSimilarityAnalysisSchema:
 
     def test_get_representation(self, schema):
         rep = schema.get_representation()
-        assert rep == {'zvi-image-similarity': {'simhash': ['similarity', 'exists']}}
+        assert rep == {'zvi-image-similarity': {'simhash': ['exists']}}
 
 
 class TestContentAnalysisSchema:
@@ -141,7 +141,7 @@ class TestContentAnalysisSchema:
 
     def test_get_represention(self, schema):
         rep = schema.get_representation()
-        assert rep == {'zvi-text-detection': {'content': ['facet', 'text', 'exists'],
+        assert rep == {'zvi-text-detection': {'content': ['facet', 'exists'],
                                               'count': ['range', 'exists']}}
 
 
