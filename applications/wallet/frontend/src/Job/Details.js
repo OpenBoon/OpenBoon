@@ -5,21 +5,17 @@ import { spacing, typography } from '../Styles'
 
 import Value, { VARIANTS } from '../Value'
 import ProgressBar from '../ProgressBar'
-import { SIZE } from '../Table/Content'
 
 import JobMenu from './Menu'
 
 const JobDetails = () => {
   const {
-    query: { projectId, jobId, page = 1 },
+    query: { projectId, jobId },
   } = useRouter()
 
-  const parsedPage = parseInt(page, 10)
-  const from = parsedPage * SIZE - SIZE
-
-  const JOB_API_BASE = `/api/v1/projects/${projectId}/jobs/${jobId}`
-
-  const { data: job, revalidate } = useSWR(JOB_API_BASE)
+  const { data: job, revalidate } = useSWR(
+    `/api/v1/projects/${projectId}/jobs/${jobId}`,
+  )
 
   const { name, state, paused, priority, taskCounts: tC } = job
 
@@ -47,10 +43,6 @@ const JobDetails = () => {
           jobId={jobId}
           status={status}
           revalidate={revalidate}
-          refreshKeys={[
-            `${JOB_API_BASE}/errors?from=${from}&size=${SIZE}`,
-            `${JOB_API_BASE}/tasks?from=${from}&size=${SIZE}`,
-          ]}
         />
 
         <Value legend="Job Status" variant={VARIANTS.PRIMARY}>

@@ -11,7 +11,7 @@ import JobErrors from '../JobErrors'
 import JobDetails from './Details'
 
 const Job = () => {
-  const { pathname } = useRouter()
+  const { pathname, query } = useRouter()
 
   return (
     <>
@@ -27,7 +27,7 @@ const Job = () => {
       />
 
       <SuspenseBoundary role={ROLES.ML_Tools}>
-        <JobDetails />
+        <JobDetails key={pathname} />
 
         <Tabs
           tabs={[
@@ -36,9 +36,13 @@ const Job = () => {
           ]}
         />
 
-        {pathname === '/[projectId]/jobs/[jobId]' && <JobTasks />}
+        {pathname === '/[projectId]/jobs/[jobId]' && (
+          <JobTasks key={query.refreshParam} />
+        )}
 
-        {pathname === '/[projectId]/jobs/[jobId]/errors' && <JobErrors />}
+        {pathname === '/[projectId]/jobs/[jobId]/errors' && (
+          <JobErrors key={query.refreshParam} />
+        )}
       </SuspenseBoundary>
     </>
   )

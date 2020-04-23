@@ -10,7 +10,7 @@ import GearSvg from '../Icons/gear.svg'
 import TableException from './Exception'
 import TableRefresh from './Refresh'
 
-export const SIZE = 20
+const SIZE = 20
 
 const TableContent = ({
   url,

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { mutate } from 'swr'
+import Router from 'next/router'
 
 import { spacing } from '../Styles'
 
@@ -11,7 +11,7 @@ import Button, { VARIANTS } from '../Button'
 
 import { ACTIONS } from './helpers'
 
-const JobMenu = ({ projectId, jobId, status, revalidate, refreshKeys }) => {
+const JobMenu = ({ projectId, jobId, status, revalidate }) => {
   if (!ACTIONS[status].length) return null
 
   return (
@@ -46,9 +46,17 @@ const JobMenu = ({ projectId, jobId, status, revalidate, refreshKeys }) => {
 
                       revalidate()
 
-                      refreshKeys.forEach((key) => {
-                        mutate(key)
-                      })
+                      Router.push(
+                        {
+                          pathname: '/[projectId]/jobs/[jobId]',
+                          query: {
+                            projectId,
+                            jobId,
+                            refreshParam: Math.random(),
+                          },
+                        },
+                        `/${projectId}/jobs/${jobId}`,
+                      )
                     }}
                     isDisabled={false}
                   >
@@ -69,7 +77,6 @@ JobMenu.propTypes = {
   jobId: PropTypes.string.isRequired,
   status: PropTypes.oneOf(Object.keys(ACTIONS)).isRequired,
   revalidate: PropTypes.func.isRequired,
-  refreshKeys: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 }
 
 export default JobMenu
