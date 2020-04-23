@@ -4,4 +4,4 @@ import zmlp
 import sys
 
 app = zmlp.app_from_env()
-print(app.client.upload_files("/ml/v1/sim-hash", [sys.argv[1]], body=None))
+print(app.assets.get_sim_hashes(sys.argv[1]))

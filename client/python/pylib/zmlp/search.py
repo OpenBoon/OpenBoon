@@ -87,7 +87,9 @@ class AssetSearchScroller(object):
                     yield result
                 else:
                     for hit in hits['hits']:
-                        yield Asset({'id': hit['_id'], 'document': hit['_source']})
+                        yield Asset({'id': hit['_id'],
+                                     'document': hit['_source'],
+                                     'score': hit['_score']})
 
                 scroll_id = result.get("_scroll_id")
                 if not scroll_id:
@@ -139,7 +141,9 @@ class AssetSearchResult(object):
         hits = self.result.get("hits")
         if not hits:
             return []
-        return [Asset({'id': hit['_id'], 'document': hit['_source']}) for hit in hits['hits']]
+        return [Asset({'id': hit['_id'],
+                       'score': hit['_score'],
+                       'document': hit['_source']}) for hit in hits['hits']]
 
     def aggregation(self, name):
         """
@@ -312,9 +316,11 @@ class SimilarityQuery:
             }
         }
     """
-    def __init__(self, hashes, min_score=0.75, field="analysis.zvi-image-similarity.simhash"):
+    def __init__(self, hashes, min_score=0.75, boost=1.0,
+                 field="analysis.zvi-image-similarity.simhash"):
         self.hashes = as_collection(hashes) or []
         self.min_score = min_score
+        self.boost = boost
         self.field = field
 
     def add_hash(self, simhash):
@@ -345,26 +351,20 @@ class SimilarityQuery:
 
     def for_json(self):
         return {
-            "function_score": {
-                "functions": [
-                    {
-                        "script_score": {
-                            "script": {
-                                "source": "similarity",
-                                "lang": "zorroa-similarity",
-                                "params": {
-                                    "minScore": self.min_score,
-                                    "field": self.field,
-                                    "hashes":  self.hashes
-                                }
-                            }
-                        }
+            "script_score": {
+                "query": {
+                    "match_all": {}
+                },
+                "script": {
+                    "source": "similarity",
+                    "lang": "zorroa-similarity",
+                    "params": {
+                        "minScore": self.min_score,
+                        "field": self.field,
+                        "hashes":  self.hashes
                     }
-                ],
-                "score_mode": "multiply",
-                "boost_mode": "replace",
-                "max_boost": 1000,
-                "min_score": self.min_score,
-                "boost": 1.0
+                },
+                "boost": self.boost,
+                "min_score": self.min_score
             }
         }
