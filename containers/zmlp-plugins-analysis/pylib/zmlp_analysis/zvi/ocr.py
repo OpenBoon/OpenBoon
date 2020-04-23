@@ -4,6 +4,7 @@ from zmlpsdk.base import AssetProcessor, FileTypes
 from zmlpsdk.proxy import get_proxy_level_path
 from zmlpsdk.analysis import ContentDetectionAnalysis
 
+
 class ZviOcrProcessor(AssetProcessor):
     """
     Makes a proxy video for a full video file.  Clip assets will reference
