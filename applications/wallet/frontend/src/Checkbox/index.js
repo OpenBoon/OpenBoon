@@ -63,7 +63,7 @@ const STYLES = {
     icon: { size: 16 },
     main: {
       width: 'max-content',
-      paddingLeft: spacing.normal,
+      paddingLeft: spacing.base,
     },
     value: {
       color: colors.structure.zinc,

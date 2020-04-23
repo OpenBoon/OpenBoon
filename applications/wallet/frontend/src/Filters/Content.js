@@ -9,7 +9,7 @@ import { dispatch, ACTIONS } from './helpers'
 
 const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
   return (
-    <>
+    <div css={{ padding: spacing.small }}>
       <Button
         variant={VARIANTS.PRIMARY}
         onClick={() => setIsMenuOpen((isMenuOpen) => !isMenuOpen)}
@@ -49,7 +49,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   )
 }
 

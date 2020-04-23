@@ -1,15 +1,11 @@
 import PropTypes from 'prop-types'
 
-import { spacing, typography, colors, constants } from '../Styles'
+import { spacing, typography, constants } from '../Styles'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
-import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import Button, { VARIANTS } from '../Button'
 
-const ICON_SIZE = 16
-const BOX_PADDING = spacing.moderate
-const LABEL_LEFT_PADDING = spacing.normal
-const OFFSET = ICON_SIZE + BOX_PADDING + LABEL_LEFT_PADDING
+import FiltersMenuOption from './MenuOption'
 
 const FiltersMenu = ({
   // projectId,
@@ -37,33 +33,32 @@ const FiltersMenu = ({
               title={key}
               isInitiallyOpen={false}
             >
-              {Object.entries(value).map(([subKey, subValue], index) => (
-                <div
-                  key={subKey}
-                  css={{
-                    padding: spacing.moderate,
-                    borderTop:
-                      index !== 0 && !Array.isArray(subValue)
-                        ? constants.borders.divider
-                        : '',
-                  }}
-                >
-                  {Array.isArray(subValue) ? (
-                    <div css={{ color: colors.structure.zinc }}>
-                      <Checkbox
-                        key={subKey}
-                        variant={CHECKBOX_VARIANTS.SMALL}
-                        option={{
-                          value: subKey,
-                          label: subKey,
-                          initialValue: false,
-                          isDisabled: false,
-                        }}
-                        onClick={console.warn}
-                      />
-                    </div>
+              <div
+                css={{
+                  padding: spacing.normal,
+                  paddingTop: spacing.base,
+                  paddingBottom: spacing.base,
+                }}
+              >
+                {Object.entries(value).map(([subKey, subValue], index, arr) =>
+                  Array.isArray(subValue) ? (
+                    <FiltersMenuOption key={subKey} option={subKey} />
                   ) : (
-                    <div>
+                    <div
+                      key={subKey}
+                      css={{
+                        marginLeft: -spacing.normal,
+                        marginRight: -spacing.normal,
+                        padding: spacing.moderate,
+                        paddingTop: index === 0 ? 0 : spacing.base,
+                        paddingBottom:
+                          index === arr.length - 1 ? 0 : spacing.base,
+                        borderTop:
+                          index !== 0 && !Array.isArray(subValue)
+                            ? constants.borders.largeDivider
+                            : '',
+                      }}
+                    >
                       <h4
                         css={{
                           fontFamily: 'Roboto Mono',
@@ -72,39 +67,13 @@ const FiltersMenu = ({
                       >
                         {subKey}
                       </h4>
-                      {Object.entries(subValue).map(([subSubKey], i) => (
-                        <div
-                          key={subSubKey}
-                          css={{
-                            marginLeft: OFFSET,
-                            borderTop: i !== 0 ? constants.borders.divider : '',
-                          }}
-                        >
-                          <div
-                            css={{
-                              padding: BOX_PADDING,
-                              color: colors.structure.zinc,
-                              marginLeft: -OFFSET,
-                            }}
-                          >
-                            <Checkbox
-                              key={subSubKey}
-                              variant={CHECKBOX_VARIANTS.SMALL}
-                              option={{
-                                value: subSubKey,
-                                label: subSubKey,
-                                initialValue: false,
-                                isDisabled: false,
-                              }}
-                              onClick={console.warn}
-                            />
-                          </div>
-                        </div>
+                      {Object.entries(subValue).map(([subSubKey]) => (
+                        <FiltersMenuOption key={subSubKey} option={subSubKey} />
                       ))}
                     </div>
-                  )}
-                </div>
-              ))}
+                  ),
+                )}
+              </div>
             </Accordion>
           ),
         )}

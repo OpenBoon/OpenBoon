@@ -2,7 +2,7 @@ import { useState } from 'react'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
-import { colors, spacing } from '../Styles'
+import { colors } from '../Styles'
 
 import FiltersContent from './Content'
 import FiltersMenu from './Menu'
@@ -28,7 +28,6 @@ const Filters = () => {
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
-        padding: spacing.small,
       }}
     >
       {isMenuOpen ? (
