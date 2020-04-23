@@ -283,8 +283,10 @@ class ProcessorWrapper(object):
                 logger.debug("The asset {} is already processed".format(frame.asset.id))
                 return
 
-            if not is_file_type_allowed(frame.asset, self.instance.file_types):
-                return
+            if self.instance.file_types:
+                if not is_file_type_allowed(frame.asset, self.instance.file_types):
+                    # No need to log, this is normal.
+                    return
 
             self.instance.logger.info("started processor")
 
