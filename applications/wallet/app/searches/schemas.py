@@ -1,7 +1,7 @@
 # Applicable filter sets for an ES Field type
 NUMBER_FILTERS = ['range', 'exists']
-STRING_FILTERS = ['facet', 'text', 'exists']
-SIMILARITY_FILTERS = ['similarity', 'exists']
+STRING_FILTERS = ['facet', 'exists']
+SIMILARITY_FILTERS = ['exists']
 BOOLEAN_FILTERS = ['boolean', 'exists']
 DEFAULT_FILTERS = ['exists']
 
@@ -50,7 +50,7 @@ class SimilarityAnalysisSchema(AbstractAnalysisSchema):
     required_properties = ['type', 'simhash']
 
     def get_representation(self):
-        return {f'{self.property_name}': {'simhash': SIMILARITY_FILTERS}}
+        return {f'{self.property_name}': {'simhash': DEFAULT_FILTERS}}
 
 
 class ContentAnalysisSchema(AbstractAnalysisSchema):
