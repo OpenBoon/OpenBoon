@@ -26,6 +26,10 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
 
     private class SimilarityEngine : ScriptEngine {
 
+        override fun getSupportedContexts(): Set<ScriptContext<*>> {
+            return setOf(ScoreScript.CONTEXT)
+        }
+
         override fun getType(): String {
             return "zorroa-similarity"
         }
@@ -134,9 +138,7 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
                 }
 
                 fun normalize(score: Double): Double {
-                    var score = score
-                    score /= singleScore
-                    return score
+                    return score / singleScore
                 }
 
                 fun hammingDistance(lhs: CharArray, rhs: String): Double {

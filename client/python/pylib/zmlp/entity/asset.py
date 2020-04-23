@@ -265,6 +265,7 @@ class Asset(DocumentMixin):
             raise ValueError("Error creating Asset instance, Assets must have an id.")
         self.id = data.get("id")
         self.document = data.get("document", {})
+        self.score = data.get("score", 0)
 
     @property
     def uri(self):
