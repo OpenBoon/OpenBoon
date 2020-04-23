@@ -52,7 +52,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
     def test_process(self, post_patch):
         post_patch.side_effect = [self.storage_patch1, self.storage_patch2, self.storage_patch3]
         self.processor.process(self.frame)
-        assert len(self.frame.asset.get_attr('files')) == 3
+        assert len(self.frame.asset.get_attr('files')) == 2
 
     @patch.object(ImageProxyProcessor, '_create_proxy_images')
     def test_no_process(self, proxy_patch):
@@ -62,7 +62,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
     def test_create_proxy_images(self):
         self.maxDiff = None
         proxies = self.processor._create_proxy_images(self.frame.asset)
-        assert len(proxies) == 2
+        assert len(proxies) == 1
 
     def test_get_source_path(self):
         # Test correct field is in metadata.
@@ -96,7 +96,7 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         self.frame.asset.set_attr('media', {})
         self.processor.process(self.frame)
 
-        assert len(self.frame.asset.get_attr('files')) == 3
+        assert len(self.frame.asset.get_attr('files')) == 2
 
     @patch.object(ZmlpClient, 'upload_file')
     def test_create_web_optimized_proxy(self, post_patch):
@@ -106,5 +106,5 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         assert StoredFile(self.storage_patch1) == prx
 
     def test_get_valid_sizes(self):
-        assert self.processor._get_valid_sizes(800, 600) == [800, 512, 320]
+        assert self.processor._get_valid_sizes(800, 600) == [800, 512]
         assert self.processor._get_valid_sizes(100, 50) == [100]

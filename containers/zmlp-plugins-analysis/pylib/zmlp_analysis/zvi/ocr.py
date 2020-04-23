@@ -17,7 +17,7 @@ class ZviOcrProcessor(AssetProcessor):
         super(ZviOcrProcessor, self).__init__()
 
     def process(self, frame):
-        p_path = get_proxy_level_path(frame.asset, 0)
+        p_path = get_proxy_level_path(frame.asset, 3)
         data = pytesseract.image_to_string(p_path)
         data = data.replace('\r', '').replace('\n', '')
         frame.asset.add_analysis(self.namespace, {
