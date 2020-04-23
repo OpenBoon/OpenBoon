@@ -237,6 +237,7 @@ class ContentDetectionAnalysis:
             val (str): The string containing the content.
 
         """
+        val = val.replace('\r', ' ').replace('\n', ' ')
         self.content.append(val)
 
     def for_json(self):
