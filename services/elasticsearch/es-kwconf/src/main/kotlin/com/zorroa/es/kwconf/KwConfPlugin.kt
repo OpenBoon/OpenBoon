@@ -127,6 +127,5 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
         override fun getSupportedContexts(): Set<ScriptContext<*>> {
             return setOf(ScoreScript.CONTEXT)
         }
-
     }
 }
