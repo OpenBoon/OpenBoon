@@ -24,6 +24,7 @@ const Jobs = () => {
         role={ROLES.ML_Tools}
         legend="Jobs"
         url={`/api/v1/projects/${projectId}/jobs/`}
+        refreshKeys={[]}
         columns={[
           'Status',
           'Job Name',

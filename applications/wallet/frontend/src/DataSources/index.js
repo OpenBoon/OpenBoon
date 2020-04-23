@@ -49,6 +49,7 @@ const DataSources = () => {
         role={ROLES.ML_Tools}
         legend="Sources"
         url={`/api/v1/projects/${projectId}/data_sources/`}
+        refreshKeys={[]}
         columns={[
           'Name',
           'Source Type',

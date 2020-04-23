@@ -19,6 +19,7 @@ const TableContent = ({
   renderEmpty,
   renderRow,
   legend,
+  refreshKeys,
 }) => {
   const {
     query: { page = 1 },
@@ -52,7 +53,11 @@ const TableContent = ({
         >
           Number of {legend}: {count}
         </h3>
-        <TableRefresh onClick={revalidate} legend={legend} />
+        <TableRefresh
+          onClick={revalidate}
+          refreshKeys={refreshKeys}
+          legend={legend}
+        />
       </div>
       <table
         css={{
@@ -169,6 +174,7 @@ TableContent.propTypes = {
   renderEmpty: PropTypes.node.isRequired,
   renderRow: PropTypes.func.isRequired,
   legend: PropTypes.string.isRequired,
+  refreshKeys: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 }
 
 export default TableContent

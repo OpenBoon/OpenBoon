@@ -9,17 +9,16 @@ const JOB_ID = '82d5308b-67c2-1433-8fef-0a580a000955'
 
 describe('<JobErrorsMenu />', () => {
   it('should render properly', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/api-keys',
+      query: { projectId: PROJECT_ID, jobId: JOB_ID },
+    })
     const mockFn = jest.fn()
 
     fetch.mockResponseOnce('{}')
 
     const component = TestRenderer.create(
-      <JobMenu
-        projectId={PROJECT_ID}
-        jobId={JOB_ID}
-        status="InProgress"
-        revalidate={mockFn}
-      />,
+      <JobMenu status="InProgress" revalidate={mockFn} />,
     )
 
     act(() => {
