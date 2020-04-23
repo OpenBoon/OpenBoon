@@ -9,7 +9,7 @@ describe('<Refresh />', () => {
     const mockFn = jest.fn()
 
     const component = TestRenderer.create(
-      <Refresh onClick={mockFn} legend="Stuff" />,
+      <Refresh onClick={mockFn} refreshKeys={['/api/v1/me/']} legend="Stuff" />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
