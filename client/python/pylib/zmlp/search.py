@@ -1,8 +1,7 @@
 import copy
 
-from .util import as_collection
 from .entity import Asset, ZmlpException
-
+from .util import as_collection
 
 __all__ = [
     'AssetSearchScroller',
@@ -247,55 +246,39 @@ class LabelConfidenceQuery(object):
         ]
     """
 
-    def __init__(self, field, labels, min_score, max_score=1.0):
+    def __init__(self, namespace, labels, min_score, max_score=1.0):
         """
         Create a new LabelConfidenceScoreQuery.
 
         Args:
-            field (str): The predictions field.
+            namespace (str): The analysis namespace with predications. (zvi-label-detection)
             labels (list): A list of labels to filter.
             min_score (float): The minimum label score.
             max_score (float): The maximum score, defaults to 1.0 which is highest
         """
-        self.field = field
+        self.namespace = namespace
+        self.field = "analysis.{}.predictions".format(namespace)
         self.labels = as_collection(labels)
         self.score = [min_score, max_score]
 
     def for_json(self):
         return {
-            "bool": {
-                "must": [
-                    {
-                        "function_score": {
-                            "functions": [
-                                {
-                                    "script_score": {
-                                        "script": {
-                                            "source": "kwconf",
-                                            "lang": "zorroa-kwconf",
-                                            "params": {
-                                                "field": self.field,
-                                                "labels": self.labels,
-                                                "range": self.score
-                                            }
-                                        }
-                                    }
-                                }
-                            ],
-                            "score_mode": "multiply",
-                            "max_boost": 1000,
-                            "min_score": 0.001,
-                            "boost": 1.0
-                        }
+            "script_score": {
+                "query": {
+                    "terms": {
+                        self.field + ".label": self.labels
                     }
-                ],
-                "filter": [
-                    {
-                        "terms": {
-                            self.field + ".labels.label": self.labels
-                        }
+                },
+                "script": {
+                    "source": "kwconf",
+                    "lang": "zorroa-kwconf",
+                    "params": {
+                        "field": self.field,
+                        "labels": self.labels,
+                        "range": self.score
                     }
-                ]
+                },
+                "min_score": self.score[0]
             }
         }
 

@@ -370,6 +370,7 @@ class DockerContainerWrapper(object):
             'ZMLP_SERVER': os.environ.get("ZMLP_SERVER"),
             'OFFICER_URL': os.environ.get('OFFICER_URL'),
             "CLARIFAI_KEY":  os.environ.get('CLARIFAI_KEY'),
+            "ANALYST_THREADS": os.environ.get('ANALYST_THREADS')
         })
 
         logger.info("starting container {}".format(self.image))
