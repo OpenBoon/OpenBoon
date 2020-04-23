@@ -3,46 +3,64 @@ import PropTypes from 'prop-types'
 import { spacing, typography, colors, constants } from '../Styles'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
+import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 import Button, { VARIANTS } from '../Button'
 
+const ICON_SIZE = 16
+const BOX_PADDING = spacing.moderate
+const LABEL_LEFT_PADDING = spacing.normal
+const OFFSET = ICON_SIZE + BOX_PADDING + LABEL_LEFT_PADDING
+
 const FiltersMenu = ({
-  projectId,
-  assetId,
-  filters,
+  // projectId,
+  // assetId,
+  // filters,
   fields,
   setIsMenuOpen,
 }) => {
   return (
-    <div css={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+    <div
+      css={{
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        flex: 1,
+      }}
+    >
       <div css={{ overflowX: 'auto' }}>
-        {Object.entries(fields).map(([key, value]) => (
-          <Accordion
-            key={key}
-            variant={ACCORDION_VARIANTS.PANEL}
-            title={key}
-            isInitiallyOpen
-          >
-            {Array.isArray(value) ? (
-              <div
-                css={{
-                  padding: spacing.moderate,
-                  color: colors.structure.zinc,
-                }}
-              >
-                &amp; {key}
-              </div>
-            ) : (
-              Object.entries(value).map(([subKey, subValue], index) => (
+        {Object.entries(fields).map(([key, value]) =>
+          Array.isArray(value) ? null : (
+            <Accordion
+              key={key}
+              variant={ACCORDION_VARIANTS.PANEL}
+              title={key}
+              isInitiallyOpen={false}
+            >
+              {Object.entries(value).map(([subKey, subValue], index) => (
                 <div
                   key={subKey}
                   css={{
                     padding: spacing.moderate,
-                    borderTop: index !== 0 ? constants.borders.divider : '',
+                    borderTop:
+                      index !== 0 && !Array.isArray(subValue)
+                        ? constants.borders.divider
+                        : '',
                   }}
                 >
                   {Array.isArray(subValue) ? (
                     <div css={{ color: colors.structure.zinc }}>
-                      &amp; {subKey}
+                      <Checkbox
+                        key={subKey}
+                        variant={CHECKBOX_VARIANTS.SMALL}
+                        option={{
+                          value: subKey,
+                          label: subKey,
+                          initialValue: false,
+                          isDisabled: false,
+                        }}
+                        onClick={console.warn}
+                      />
                     </div>
                   ) : (
                     <div>
@@ -50,7 +68,6 @@ const FiltersMenu = ({
                         css={{
                           fontFamily: 'Roboto Mono',
                           fontWeight: typography.weight.regular,
-                          paddingTop: spacing.moderate,
                         }}
                       >
                         {subKey}
@@ -59,22 +76,38 @@ const FiltersMenu = ({
                         <div
                           key={subSubKey}
                           css={{
-                            padding: spacing.moderate,
-                            color: colors.structure.zinc,
-                            borderBottom:
-                              i !== 0 ? constants.borders.divider : '',
+                            marginLeft: OFFSET,
+                            borderTop: i !== 0 ? constants.borders.divider : '',
                           }}
                         >
-                          &amp; {subSubKey}
+                          <div
+                            css={{
+                              padding: BOX_PADDING,
+                              color: colors.structure.zinc,
+                              marginLeft: -OFFSET,
+                            }}
+                          >
+                            <Checkbox
+                              key={subSubKey}
+                              variant={CHECKBOX_VARIANTS.SMALL}
+                              option={{
+                                value: subSubKey,
+                                label: subSubKey,
+                                initialValue: false,
+                                isDisabled: false,
+                              }}
+                              onClick={console.warn}
+                            />
+                          </div>
                         </div>
                       ))}
                     </div>
                   )}
                 </div>
-              ))
-            )}
-          </Accordion>
-        ))}
+              ))}
+            </Accordion>
+          ),
+        )}
       </div>
       <div css={{ padding: spacing.base, display: 'flex' }}>
         <Button
@@ -98,15 +131,15 @@ const FiltersMenu = ({
 }
 
 FiltersMenu.propTypes = {
-  projectId: PropTypes.string.isRequired,
-  assetId: PropTypes.string.isRequired,
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-        .isRequired,
-    }).isRequired,
-  ).isRequired,
+  // projectId: PropTypes.string.isRequired,
+  // assetId: PropTypes.string.isRequired,
+  // filters: PropTypes.arrayOf(
+  //   PropTypes.shape({
+  //     type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
+  //     value: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+  //       .isRequired,
+  //   }).isRequired,
+  // ).isRequired,
   fields: PropTypes.objectOf(PropTypes.objectOf).isRequired,
   setIsMenuOpen: PropTypes.func.isRequired,
 }

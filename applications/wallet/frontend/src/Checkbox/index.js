@@ -9,30 +9,70 @@ import { colors, spacing, typography } from '../Styles'
 import CheckboxIcon from './Icon'
 
 const STYLES = {
-  PRIMARY: {
-    main: {
-      display: 'flex',
-      flexDirection: 'column',
-    },
+  MULTILINE: {
     label: {
       alignItems: 'flex-start',
       paddingLeft: 0,
+      paddingBottom: spacing.normal,
+    },
+    icon: { size: 20 },
+    main: {
+      display: 'flex',
+      flexDirection: 'column',
+      paddingLeft: spacing.moderate,
+    },
+    value: {
+      color: colors.structure.white,
+      fontSize: typography.size.regular,
+      lineHeight: typography.height.regular,
+      fontWeight: typography.weight.bold,
     },
     legend: {
       paddingLeft: 0,
+      color: colors.structure.zinc,
     },
   },
-  SECONDARY: {
+  INLINE: {
+    label: {
+      alignItems: 'center',
+      paddingLeft: spacing.normal,
+      paddingBottom: spacing.normal,
+    },
+    icon: { size: 20 },
     main: {
       width: 'max-content',
       paddingLeft: spacing.normal,
     },
-    label: {
-      paddingLeft: spacing.normal,
-      alignItems: 'center',
+    value: {
+      color: colors.structure.white,
+      fontSize: typography.size.regular,
+      lineHeight: typography.height.regular,
+      fontWeight: typography.weight.bold,
     },
     legend: {
       paddingLeft: spacing.moderate,
+      color: colors.structure.zinc,
+    },
+  },
+  SMALL: {
+    label: {
+      alignItems: 'center',
+      paddingLeft: 0,
+      paddingBottom: 0,
+    },
+    icon: { size: 16 },
+    main: {
+      width: 'max-content',
+      paddingLeft: spacing.normal,
+    },
+    value: {
+      color: colors.structure.zinc,
+      fontSize: typography.size.regular,
+      lineHeight: typography.height.regular,
+    },
+    legend: {
+      paddingLeft: spacing.moderate,
+      color: colors.structure.zinc,
     },
   },
 }
@@ -53,14 +93,15 @@ const Checkbox = ({
     <label
       css={{
         display: 'flex',
-        alignItems: legend ? STYLES[variant].label.alignItems : 'center',
         color: colors.white,
         cursor: isDisabled ? 'not-allowed' : 'pointer',
-        paddingBottom: spacing.normal,
+        paddingBottom: STYLES[variant].label.paddingBottom,
         paddingLeft: STYLES[variant].label.paddingLeft,
+        alignItems: legend ? STYLES[variant].label.alignItems : 'center',
       }}
     >
       <CheckboxIcon
+        size={STYLES[variant].icon.size}
         value={value}
         isChecked={isChecked}
         isDisabled={isDisabled}
@@ -81,29 +122,9 @@ const Checkbox = ({
           {icon}
         </div>
       )}
-      <div css={[{ paddingLeft: spacing.moderate }, STYLES[variant].main]}>
-        <span
-          css={{
-            color: colors.structure.white,
-            fontSize: typography.size.regular,
-            lineHeight: typography.height.regular,
-            fontWeight: typography.weight.bold,
-          }}
-        >
-          {label}
-        </span>
-        {!!legend && (
-          <span
-            css={[
-              {
-                color: colors.structure.zinc,
-              },
-              STYLES[variant].legend,
-            ]}
-          >
-            {legend}
-          </span>
-        )}
+      <div css={STYLES[variant].main}>
+        <span css={STYLES[variant].value}>{label}</span>
+        {!!legend && <span css={STYLES[variant].legend}>{legend}</span>}
       </div>
     </label>
   )

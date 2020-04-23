@@ -25,7 +25,7 @@ import asset from './src/Asset/__mocks__/asset'
 import providers from './src/Providers/__mocks__/providers'
 import subscriptions from './src/Subscriptions/__mocks__/subscriptions'
 import roles from './src/Roles/__mocks__/roles'
-import fields from './src/Filters/__mocks__/fields
+import fields from './src/Filters/__mocks__/fields'
 
 const { STAGING, SLOW, MOCKED } = process.env
 

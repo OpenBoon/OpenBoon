@@ -5,8 +5,6 @@ import { colors, constants } from '../Styles'
 
 import CheckmarkSvg from '../Icons/checkmark.svg'
 
-const SIZE = 20
-
 const getBorder = ({ isChecked, isDisabled }) => {
   if (isDisabled && isChecked) return 'none'
 
@@ -17,7 +15,7 @@ const getBorder = ({ isChecked, isDisabled }) => {
   return `2px solid ${colors.structure.steel}`
 }
 
-const CheckboxIcon = ({ value, isChecked, isDisabled, onClick }) => (
+const CheckboxIcon = ({ size, value, isChecked, isDisabled, onClick }) => (
   <div css={{ display: 'flex', position: 'relative' }}>
     <input
       type="checkbox"
@@ -27,8 +25,8 @@ const CheckboxIcon = ({ value, isChecked, isDisabled, onClick }) => (
       css={{
         margin: 0,
         padding: 0,
-        width: SIZE,
-        height: SIZE,
+        width: size,
+        height: size,
         WebkitAppearance: 'none',
         backgroundColor:
           isChecked && !isDisabled ? colors.key.one : colors.transparent,
@@ -43,7 +41,7 @@ const CheckboxIcon = ({ value, isChecked, isDisabled, onClick }) => (
         top: 0,
         left: 0,
         bottom: 0,
-        width: SIZE,
+        width: size,
         alignItems: 'center',
         justifyContent: 'center',
         display: 'flex',
@@ -65,6 +63,7 @@ const CheckboxIcon = ({ value, isChecked, isDisabled, onClick }) => (
 )
 
 CheckboxIcon.propTypes = {
+  size: PropTypes.number.isRequired,
   value: PropTypes.string.isRequired,
   isChecked: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool.isRequired,

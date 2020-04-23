@@ -1,5 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import fields from '../__mocks__/fields'
+
 import Filters from '..'
 
 const noop = () => () => {}
@@ -17,6 +19,8 @@ describe('<Filters />', () => {
       pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID, filters: '' },
     })
+
+    require('swr').__setMockUseSWRResponse({ data: fields })
 
     const component = TestRenderer.create(<Filters />)
 
@@ -73,6 +77,8 @@ describe('<Filters />', () => {
       },
     })
 
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
     const component = TestRenderer.create(<Filters />)
 
     // type search input
@@ -120,6 +126,8 @@ describe('<Filters />', () => {
       },
     })
 
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
     const component = TestRenderer.create(<Filters />)
 
     // delete Dog
@@ -155,6 +163,8 @@ describe('<Filters />', () => {
       },
     })
 
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
     const component = TestRenderer.create(<Filters />)
 
     // delete Cat
@@ -179,6 +189,8 @@ describe('<Filters />', () => {
 
   it('should not POST the form', () => {
     const mockFn = jest.fn()
+
+    require('swr').__setMockUseSWRResponse({ data: fields })
 
     const component = TestRenderer.create(<Filters />)
 
