@@ -14,5 +14,4 @@ class OcrProcessorTests(PluginUnitTestCase):
         frame = Frame(TestAsset(image_path))
         processor = self.init_processor(ZviOcrProcessor(), {})
         processor.process(frame)
-
         assert 'NVIDIA' in frame.asset.get_attr('analysis.zvi-text-detection.content')

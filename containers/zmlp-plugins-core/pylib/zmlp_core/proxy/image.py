@@ -25,7 +25,7 @@ class ImageProxyProcessor(AssetProcessor):
     def __init__(self):
         super(ImageProxyProcessor, self).__init__()
         self.created_proxy_count = 0
-        self.add_arg(Argument('sizes', 'list[int]', default=[1024, 512, 320],
+        self.add_arg(Argument('sizes', 'list[int]', default=[1024, 512],
                               toolTip=self.toolTips['sizes']))
         self.add_arg(Argument('file_type', 'str', default='jpg',
                               toolTip=self.toolTips['file_type']))
