@@ -16,7 +16,9 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
       >
         + Add Metadata Filters
       </Button>
+
       <div css={{ height: spacing.small }} />
+
       <SearchFilter projectId={projectId} assetId={assetId} filters={filters} />
 
       <ul css={{ padding: 0 }}>
