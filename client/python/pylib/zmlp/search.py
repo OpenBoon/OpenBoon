@@ -1,8 +1,7 @@
 import copy
 
-from .util import as_collection
 from .entity import Asset, ZmlpException
-
+from .util import as_collection
 
 __all__ = [
     'AssetSearchScroller',
@@ -87,7 +86,9 @@ class AssetSearchScroller(object):
                     yield result
                 else:
                     for hit in hits['hits']:
-                        yield Asset({'id': hit['_id'], 'document': hit['_source']})
+                        yield Asset({'id': hit['_id'],
+                                     'document': hit['_source'],
+                                     'score': hit['_score']})
 
                 scroll_id = result.get("_scroll_id")
                 if not scroll_id:
@@ -139,7 +140,9 @@ class AssetSearchResult(object):
         hits = self.result.get("hits")
         if not hits:
             return []
-        return [Asset({'id': hit['_id'], 'document': hit['_source']}) for hit in hits['hits']]
+        return [Asset({'id': hit['_id'],
+                       'score': hit['_score'],
+                       'document': hit['_source']}) for hit in hits['hits']]
 
     def aggregation(self, name):
         """
@@ -243,55 +246,39 @@ class LabelConfidenceQuery(object):
         ]
     """
 
-    def __init__(self, field, labels, min_score, max_score=1.0):
+    def __init__(self, namespace, labels, min_score, max_score=1.0):
         """
         Create a new LabelConfidenceScoreQuery.
 
         Args:
-            field (str): The predictions field.
+            namespace (str): The analysis namespace with predications. (zvi-label-detection)
             labels (list): A list of labels to filter.
             min_score (float): The minimum label score.
             max_score (float): The maximum score, defaults to 1.0 which is highest
         """
-        self.field = field
+        self.namespace = namespace
+        self.field = "analysis.{}.predictions".format(namespace)
         self.labels = as_collection(labels)
         self.score = [min_score, max_score]
 
     def for_json(self):
         return {
-            "bool": {
-                "must": [
-                    {
-                        "function_score": {
-                            "functions": [
-                                {
-                                    "script_score": {
-                                        "script": {
-                                            "source": "kwconf",
-                                            "lang": "zorroa-kwconf",
-                                            "params": {
-                                                "field": self.field,
-                                                "labels": self.labels,
-                                                "range": self.score
-                                            }
-                                        }
-                                    }
-                                }
-                            ],
-                            "score_mode": "multiply",
-                            "max_boost": 1000,
-                            "min_score": 0.001,
-                            "boost": 1.0
-                        }
+            "script_score": {
+                "query": {
+                    "terms": {
+                        self.field + ".label": self.labels
                     }
-                ],
-                "filter": [
-                    {
-                        "terms": {
-                            self.field + ".labels.label": self.labels
-                        }
+                },
+                "script": {
+                    "source": "kwconf",
+                    "lang": "zorroa-kwconf",
+                    "params": {
+                        "field": self.field,
+                        "labels": self.labels,
+                        "range": self.score
                     }
-                ]
+                },
+                "min_score": self.score[0]
             }
         }
 
@@ -312,9 +299,11 @@ class SimilarityQuery:
             }
         }
     """
-    def __init__(self, hashes, min_score=0.75, field="analysis.zvi-image-similarity.simhash"):
+    def __init__(self, hashes, min_score=0.75, boost=1.0,
+                 field="analysis.zvi-image-similarity.simhash"):
         self.hashes = as_collection(hashes) or []
         self.min_score = min_score
+        self.boost = boost
         self.field = field
 
     def add_hash(self, simhash):
@@ -345,26 +334,20 @@ class SimilarityQuery:
 
     def for_json(self):
         return {
-            "function_score": {
-                "functions": [
-                    {
-                        "script_score": {
-                            "script": {
-                                "source": "similarity",
-                                "lang": "zorroa-similarity",
-                                "params": {
-                                    "minScore": self.min_score,
-                                    "field": self.field,
-                                    "hashes":  self.hashes
-                                }
-                            }
-                        }
+            "script_score": {
+                "query": {
+                    "match_all": {}
+                },
+                "script": {
+                    "source": "similarity",
+                    "lang": "zorroa-similarity",
+                    "params": {
+                        "minScore": self.min_score,
+                        "field": self.field,
+                        "hashes":  self.hashes
                     }
-                ],
-                "score_mode": "multiply",
-                "boost_mode": "replace",
-                "max_boost": 1000,
-                "min_score": self.min_score,
-                "boost": 1.0
+                },
+                "boost": self.boost,
+                "min_score": self.min_score
             }
         }

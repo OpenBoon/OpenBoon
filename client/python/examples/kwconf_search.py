@@ -4,7 +4,7 @@ import zmlp
 from zmlp import app_from_env
 
 q = {
-    "query": zmlp.search.LabelConfidenceQuery("analysis.zvi.label-detection", "toucan", 0.5)
+    "query": zmlp.search.LabelConfidenceQuery("zvi-label-detection", "lakeside", 0.5)
 }
 
 

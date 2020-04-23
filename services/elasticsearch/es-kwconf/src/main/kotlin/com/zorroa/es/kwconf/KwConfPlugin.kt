@@ -123,5 +123,9 @@ class KwConfPlugin : Plugin(), ScriptPlugin {
 
             throw IllegalArgumentException("Unknown script name $code")
         }
+
+        override fun getSupportedContexts(): Set<ScriptContext<*>> {
+            return setOf(ScoreScript.CONTEXT)
+        }
     }
 }

@@ -127,19 +127,18 @@ class TestLabelConfidenceQuery(unittest.TestCase):
         s = LabelConfidenceQuery("foo", "dog", 0.5)
         qjson = s.for_json()
 
-        params = qjson["bool"]["must"][0][
-            "function_score"]["functions"][0]["script_score"]["script"]["params"]
-        assert "foo" == params["field"]
+        params = qjson["script_score"]["script"]["params"]
+        assert "analysis.foo.predictions" == params["field"]
         assert ["dog"] == params["labels"]
         assert [0.5, 1.0] == params["range"]
 
 
 class TestImageSimilarityQuery(unittest.TestCase):
     def test_for_json(self):
-        s = SimilarityQuery("ABC123", 0.50, "foo.vector")
+        s = SimilarityQuery("ABC123", 0.50, boost=5.0, field="foo.vector")
         qjson = s.for_json()
 
-        params = qjson["function_score"]["functions"][0]["script_score"]["script"]["params"]
+        params = qjson["script_score"]["script"]["params"]
         assert 0.50 == params["minScore"]
         assert "foo.vector" == params["field"]
         assert "ABC123" in params["hashes"]
@@ -148,12 +147,12 @@ class TestImageSimilarityQuery(unittest.TestCase):
         asset = Asset({"id": "123"})
         asset.set_attr("foo.vector", "OVER9000")
 
-        s = SimilarityQuery(None, 0.50, "foo.vector")
+        s = SimilarityQuery(None, 0.50, field="foo.vector")
         s.add_asset(asset)
         assert ['OVER9000'] == s.hashes
 
     def test_add_hash(self):
-        s = SimilarityQuery(None, 0.50, "foo.vector")
+        s = SimilarityQuery(None, 0.50, field="foo.vector")
         s.add_hash("OVER9000")
         assert ['OVER9000'] == s.hashes
         assert "foo.vector" == s.field
