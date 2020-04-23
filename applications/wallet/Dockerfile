@@ -1,5 +1,6 @@
-FROM nginx:alpine
-RUN apk update && apk upgrade && apk add --no-cache postgresql postgresql-dev gcc python3-dev musl-dev python3 py3-gunicorn libffi-dev g++ nodejs-current npm
+FROM nginx:mainline
+RUN apt-get -y update && apt-get -y upgrade && apt-get -y install python3 python3-pip npm postgresql libsm6 libxrender-dev libxext6
+
 
 # Copy Wallet
 COPY applications/wallet /applications/wallet
