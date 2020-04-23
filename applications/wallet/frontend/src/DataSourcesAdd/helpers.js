@@ -16,7 +16,7 @@ export const FILE_TYPES = [
     icon: '/icons/documents.png',
   },
   {
-    value: 'video',
+    value: 'videos',
     label: 'Video Files',
     legend: 'MP4, M4V, MOV, MPG, MPEG, OGG',
     icon: '/icons/videos.png',
