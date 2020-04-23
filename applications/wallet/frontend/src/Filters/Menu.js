@@ -14,6 +14,7 @@ const FiltersMenu = ({
   fields,
   setIsMenuOpen,
 }) => {
+  const closeMenu = () => setIsMenuOpen(false)
   return (
     <div
       css={{
@@ -81,7 +82,7 @@ const FiltersMenu = ({
       <div css={{ padding: spacing.base, display: 'flex' }}>
         <Button
           variant={VARIANTS.SECONDARY}
-          onClick={() => setIsMenuOpen(false)}
+          onClick={closeMenu}
           style={{ flex: 1 }}
         >
           x Cancel
@@ -89,7 +90,7 @@ const FiltersMenu = ({
         <div css={{ width: spacing.base }} />
         <Button
           variant={VARIANTS.PRIMARY}
-          onClick={() => setIsMenuOpen(false)}
+          onClick={closeMenu}
           style={{ flex: 1 }}
         >
           + Add Selected Filters

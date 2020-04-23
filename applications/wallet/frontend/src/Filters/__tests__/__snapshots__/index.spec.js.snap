@@ -1,5 +1,833 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Filters /> should open the menu 1`] = `
+.emotion-92 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #252525;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.emotion-91 {
+  overflow: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-86 {
+  overflow-x: auto;
+}
+
+.emotion-48 {
+  background-color: #252525;
+  border-radius: 2px;
+}
+
+.emotion-3 {
+  border-bottom: 1px solid #4a4a4a;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-50:hover {
+  color: #ffffff;
+}
+
+.emotion-2 {
+  font-size: 17px;
+  line-height: 20px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-weight: 400;
+}
+
+.emotion-90 {
+  padding: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-87 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-87:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-87[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-87,
+.emotion-87:hover,
+.emotion-87:visited {
+  background-color: #808080;
+}
+
+.emotion-87:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-87[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-88 {
+  width: 8px;
+}
+
+.emotion-89 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-89:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-89[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-89,
+.emotion-89:hover,
+.emotion-89:visited {
+  background-color: #73b61c;
+}
+
+.emotion-89:hover {
+  background-color: #96c955;
+}
+
+.emotion-89[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-0 {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+}
+
+.emotion-47 {
+  width: 100%;
+  background-color: #191919;
+}
+
+.emotion-46 {
+  padding: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-14 {
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 12px;
+  padding-top: 0;
+  padding-bottom: 8px;
+}
+
+.emotion-4 {
+  font-family: Roboto Mono;
+  font-weight: 400;
+}
+
+.emotion-13 {
+  margin-left: 32px;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-13:first-of-type {
+  border-top: none;
+}
+
+.emotion-12 {
+  padding: 8px;
+  color: #b3b3b3;
+  margin-left: -32px;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  padding-bottom: 0;
+  padding-left: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.emotion-5 {
+  margin: 0;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #808080;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.emotion-7 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 16px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+}
+
+.emotion-6 path {
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  opacity: 0;
+}
+
+.emotion-10 {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding-left: 8px;
+}
+
+.emotion-9 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-25 {
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-top: 4px solid #3b3b3b;
+}
+
+.emotion-45 {
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 12px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-top: 4px solid #3b3b3b;
+}
+
+<div
+  className="emotion-92"
+>
+  <div
+    className="emotion-91"
+  >
+    <div
+      className="emotion-86"
+    >
+      <div
+        className="emotion-49"
+      >
+        <div
+          className="emotion-48"
+        >
+          <div
+            className="emotion-3"
+          >
+            <button
+              aria-label="Collapse Section"
+              className="emotion-1"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                className="emotion-0"
+                color="#808080"
+                data-file-name="chevron.svg"
+                width={20}
+              />
+            </button>
+            <h4
+              className="emotion-2"
+            >
+              analysis
+            </h4>
+          </div>
+          <div
+            className="emotion-47"
+          >
+            <div
+              className="emotion-46"
+            >
+              <div
+                className="emotion-14"
+              >
+                <h4
+                  className="emotion-4"
+                >
+                  zvi
+                </h4>
+                <div
+                  className="emotion-13"
+                >
+                  <div
+                    className="emotion-12"
+                  >
+                    <label
+                      className="emotion-11"
+                    >
+                      <div
+                        className="emotion-8"
+                      >
+                        <input
+                          className="emotion-5"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="tinyProxy"
+                        />
+                        <div
+                          className="emotion-7"
+                        >
+                          <svg
+                            className="emotion-6"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="emotion-10"
+                      >
+                        <span
+                          className="emotion-9"
+                        >
+                          tinyProxy
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="emotion-25"
+              >
+                <h4
+                  className="emotion-4"
+                >
+                  zvi-image-similarity
+                </h4>
+                <div
+                  className="emotion-13"
+                >
+                  <div
+                    className="emotion-12"
+                  >
+                    <label
+                      className="emotion-11"
+                    >
+                      <div
+                        className="emotion-8"
+                      >
+                        <input
+                          className="emotion-5"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="simhash"
+                        />
+                        <div
+                          className="emotion-7"
+                        >
+                          <svg
+                            className="emotion-6"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="emotion-10"
+                      >
+                        <span
+                          className="emotion-9"
+                        >
+                          simhash
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="emotion-45"
+              >
+                <h4
+                  className="emotion-4"
+                >
+                  zvi-object-detection
+                </h4>
+                <div
+                  className="emotion-13"
+                >
+                  <div
+                    className="emotion-12"
+                  >
+                    <label
+                      className="emotion-11"
+                    >
+                      <div
+                        className="emotion-8"
+                      >
+                        <input
+                          className="emotion-5"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="predictions"
+                        />
+                        <div
+                          className="emotion-7"
+                        >
+                          <svg
+                            className="emotion-6"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="emotion-10"
+                      >
+                        <span
+                          className="emotion-9"
+                        >
+                          predictions
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  className="emotion-13"
+                >
+                  <div
+                    className="emotion-12"
+                  >
+                    <label
+                      className="emotion-11"
+                    >
+                      <div
+                        className="emotion-8"
+                      >
+                        <input
+                          className="emotion-5"
+                          defaultChecked={false}
+                          onClick={[Function]}
+                          type="checkbox"
+                          value="count"
+                        />
+                        <div
+                          className="emotion-7"
+                        >
+                          <svg
+                            className="emotion-6"
+                            data-file-name="checkmark.svg"
+                            width={20}
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="emotion-10"
+                      >
+                        <span
+                          className="emotion-9"
+                        >
+                          count
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-49"
+      >
+        <div
+          className="emotion-48"
+        >
+          <div
+            className="emotion-3"
+          >
+            <button
+              aria-label="Expand Section"
+              className="emotion-1"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                className="emotion-50"
+                color="#808080"
+                data-file-name="chevron.svg"
+                width={20}
+              />
+            </button>
+            <h4
+              className="emotion-2"
+            >
+              clip
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-49"
+      >
+        <div
+          className="emotion-48"
+        >
+          <div
+            className="emotion-3"
+          >
+            <button
+              aria-label="Expand Section"
+              className="emotion-1"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                className="emotion-50"
+                color="#808080"
+                data-file-name="chevron.svg"
+                width={20}
+              />
+            </button>
+            <h4
+              className="emotion-2"
+            >
+              location
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-49"
+      >
+        <div
+          className="emotion-48"
+        >
+          <div
+            className="emotion-3"
+          >
+            <button
+              aria-label="Expand Section"
+              className="emotion-1"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                className="emotion-50"
+                color="#808080"
+                data-file-name="chevron.svg"
+                width={20}
+              />
+            </button>
+            <h4
+              className="emotion-2"
+            >
+              media
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-49"
+      >
+        <div
+          className="emotion-48"
+        >
+          <div
+            className="emotion-3"
+          >
+            <button
+              aria-label="Expand Section"
+              className="emotion-1"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                className="emotion-50"
+                color="#808080"
+                data-file-name="chevron.svg"
+                width={20}
+              />
+            </button>
+            <h4
+              className="emotion-2"
+            >
+              metrics
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-49"
+      >
+        <div
+          className="emotion-48"
+        >
+          <div
+            className="emotion-3"
+          >
+            <button
+              aria-label="Expand Section"
+              className="emotion-1"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                className="emotion-50"
+                color="#808080"
+                data-file-name="chevron.svg"
+                width={20}
+              />
+            </button>
+            <h4
+              className="emotion-2"
+            >
+              source
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div
+        className="emotion-49"
+      >
+        <div
+          className="emotion-48"
+        >
+          <div
+            className="emotion-3"
+          >
+            <button
+              aria-label="Expand Section"
+              className="emotion-1"
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                className="emotion-50"
+                color="#808080"
+                data-file-name="chevron.svg"
+                width={20}
+              />
+            </button>
+            <h4
+              className="emotion-2"
+            >
+              system
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-90"
+    >
+      <button
+        className="emotion-87"
+        onClick={[Function]}
+        type="button"
+      >
+        x Cancel
+      </button>
+      <div
+        className="emotion-88"
+      />
+      <button
+        className="emotion-89"
+        onClick={[Function]}
+        type="button"
+      >
+        + Add Selected Filters
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<Filters /> should render properly 1`] = `
 .emotion-7 {
   -webkit-flex: 1;

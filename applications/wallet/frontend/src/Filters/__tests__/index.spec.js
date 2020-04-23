@@ -187,6 +187,41 @@ describe('<Filters />', () => {
     )
   })
 
+  it('should open the menu', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: {
+        projectId: PROJECT_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
+    const component = TestRenderer.create(<Filters />)
+
+    // open the menu
+    act(() => {
+      component.root
+        .findByProps({ children: '+ Add Metadata Filters' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    act(() => {
+      component.root
+        .findAllByProps({ 'aria-label': 'Expand Section' })[0]
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // close the menu
+    act(() => {
+      component.root
+        .findByProps({ children: 'x Cancel' })
+        .props.onClick({ preventDefault: noop })
+    })
+  })
+
   it('should not POST the form', () => {
     const mockFn = jest.fn()
 
