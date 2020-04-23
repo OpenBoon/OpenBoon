@@ -55,7 +55,7 @@ class ZpsExecutor(object):
         # that are spawned during processing.
         self.event_counts = {}
         self.workdir = os.path.realpath(
-            tempfile.mkdtemp(prefix="zvi", suffix=self.task['id']))
+            tempfile.mkdtemp(prefix="zvi-", suffix="-" + self.task['id']))
 
     def run(self):
         """
