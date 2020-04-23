@@ -78,6 +78,7 @@ class ZpsExecutor(object):
             self.exit_status = EXIT_STATUS_HARD_FAIL
         finally:
             try:
+                logger.info("Cleaning up workdir {}".format(self.workdir))
                 shutil.rmtree(self.workdir)
             except Exception as e:
                 logger.warning("Failed to to delete task work dir: {}".format(e))
@@ -395,6 +396,7 @@ class DockerContainerWrapper(object):
 
         logger.info("started container {} tags: {}".format(
             self.container.image.id, self.container.image.tags))
+        logger.info("container work dir: {}".format(self.workdir))
         # Sets up a thread which iterates the container logs.
         self.log_thread = threading.Thread(target=self.__tail_container_logs)
         self.log_thread.daemon = True
