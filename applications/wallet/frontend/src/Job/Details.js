@@ -38,12 +38,7 @@ const JobDetails = () => {
       </h3>
 
       <div css={{ display: 'flex', alignItems: 'center' }}>
-        <JobMenu
-          projectId={projectId}
-          jobId={jobId}
-          status={status}
-          revalidate={revalidate}
-        />
+        <JobMenu status={status} revalidate={revalidate} />
 
         <Value legend="Job Status" variant={VARIANTS.PRIMARY}>
           {status}

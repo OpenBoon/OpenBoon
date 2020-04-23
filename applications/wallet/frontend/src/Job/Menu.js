@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 
 import { spacing } from '../Styles'
 
@@ -11,7 +11,13 @@ import Button, { VARIANTS } from '../Button'
 
 import { ACTIONS } from './helpers'
 
-const JobMenu = ({ projectId, jobId, status, revalidate }) => {
+const JobMenu = ({ status, revalidate }) => {
+  const {
+    pathname,
+    asPath,
+    query: { projectId, jobId },
+  } = useRouter()
+
   if (!ACTIONS[status].length) return null
 
   return (
@@ -48,14 +54,14 @@ const JobMenu = ({ projectId, jobId, status, revalidate }) => {
 
                       Router.push(
                         {
-                          pathname: '/[projectId]/jobs/[jobId]',
+                          pathname,
                           query: {
                             projectId,
                             jobId,
                             refreshParam: Math.random(),
                           },
                         },
-                        `/${projectId}/jobs/${jobId}`,
+                        asPath,
                       )
                     }}
                     isDisabled={false}
@@ -73,8 +79,6 @@ const JobMenu = ({ projectId, jobId, status, revalidate }) => {
 }
 
 JobMenu.propTypes = {
-  projectId: PropTypes.string.isRequired,
-  jobId: PropTypes.string.isRequired,
   status: PropTypes.oneOf(Object.keys(ACTIONS)).isRequired,
   revalidate: PropTypes.func.isRequired,
 }
