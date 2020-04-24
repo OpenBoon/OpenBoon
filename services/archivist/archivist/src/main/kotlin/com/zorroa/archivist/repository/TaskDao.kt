@@ -146,8 +146,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 }
                 in START_STATES -> {
                     jdbc.update(
-                        "UPDATE task SET time_started=?, int_run_count=int_run_count+1, " +
-                            "time_stopped=-1 WHERE pk_task=?", time, task.taskId
+                        "UPDATE task SET time_ping=?, time_started=?, int_run_count=int_run_count+1, " +
+                            "time_stopped=-1,int_ping_count=1 WHERE pk_task=?", time, time, task.taskId
                     )
                 }
                 in STOP_STATES -> {
@@ -293,6 +293,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             "UPDATE " +
                 "task " +
                 "SET " +
+                "int_ping_count=int_ping_count+1,"+
                 "time_ping=? " +
                 "WHERE " +
                 "pk_task=? " +
