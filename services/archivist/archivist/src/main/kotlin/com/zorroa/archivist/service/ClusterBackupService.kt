@@ -46,12 +46,11 @@ interface ClusterBackupService {
         maximumSnapshotCount: Int
     )
 
-    fun executeClusterPolicy(cluster: IndexCluster, policyId: String):String
-
-    }
+    fun executeClusterPolicy(cluster: IndexCluster, policyId: String): String
+}
 
 /**
- * Log the storage of a file.
+ * Log the storage of a snapshot.
  */
 fun logCreateSnapshot(snapshotRequest: CreateSnapshotRequest) {
     ProjectStorageService.logger.event(
@@ -83,7 +82,7 @@ class GcsClusterBackupService(
         val client = indexClusterService.getRestHighLevelClient(cluster)
         var repository: VerifyRepositoryResponse?
         try {
-            //sync
+            // sync
             repository =
                 client.snapshot()
                     .verifyRepository(VerifyRepositoryRequest(getRepositoryName(cluster)), RequestOptions.DEFAULT)
@@ -113,7 +112,7 @@ class GcsClusterBackupService(
             .settings(settings)
             .verify(true)
 
-        //async
+        // async
         client.snapshot().createRepository(putRepositoryRequest, RequestOptions.DEFAULT)
     }
 
@@ -138,7 +137,7 @@ class GcsClusterBackupService(
             }
         }
 
-        //async
+        // async
         client.snapshot().createAsync(request, RequestOptions.DEFAULT, listener)
     }
 
@@ -178,7 +177,7 @@ class GcsClusterBackupService(
     /**
      * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-ilm-slm-execute-snapshot-lifecycle-policy.html
      */
-    override fun executeClusterPolicy(cluster: IndexCluster, policyId: String):String {
+    override fun executeClusterPolicy(cluster: IndexCluster, policyId: String): String {
         val client = indexClusterService.getRestHighLevelClient(cluster)
         val executeRequest = ExecuteSnapshotLifecyclePolicyRequest(policyId)
 
@@ -187,5 +186,4 @@ class GcsClusterBackupService(
 
         return executeSnapshotLifecyclePolicy.snapshotName
     }
-
 }
