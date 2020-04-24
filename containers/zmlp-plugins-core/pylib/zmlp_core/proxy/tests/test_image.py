@@ -49,7 +49,16 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         assert '"butts" is not a valid type' in error.value.args[0]
 
     @patch.object(ZmlpClient, 'upload_file')
-    def test_process(self, post_patch):
+    def test_process_large(self, post_patch):
+        self.frame.asset.set_attr("source.path", BEER)
+        self.frame.asset.set_attr('media.width', 3264)
+        self.frame.asset.set_attr('media.height', 2448)
+        post_patch.side_effect = [self.storage_patch1, self.storage_patch2, self.storage_patch3]
+        self.processor.process(self.frame)
+        assert len(self.frame.asset.get_attr('files')) == 3
+
+    @patch.object(ZmlpClient, 'upload_file')
+    def test_process_small(self, post_patch):
         post_patch.side_effect = [self.storage_patch1, self.storage_patch2, self.storage_patch3]
         self.processor.process(self.frame)
         assert len(self.frame.asset.get_attr('files')) == 2

@@ -1,6 +1,7 @@
 import collections
 import logging
 import os
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -57,6 +58,7 @@ class ImageProxyProcessor(AssetProcessor):
 
         self.logger.info('Creating %s proxies for %s.' % (self.arg_value('file_type'),
                                                           source_path))
+
         proxy_paths = self._create_proxy_images(asset)
         for width, height, path in proxy_paths:
             store_asset_proxy(asset, path, (width, height))
@@ -83,14 +85,23 @@ class ImageProxyProcessor(AssetProcessor):
             if not output_path.parent.exists():
                 output_path.parent.mkdir(parents=True)
 
-        # If we had outputs then we need to actually shell out to oiiotool.
-        if proxy_descriptors:
+        # If we detect only 1 proxy and the original file is a JPG, our newly made proxy
+        # is usually going to be bigger than the source, so we just copy it.
+        if len(proxy_descriptors) == 1 and asset.get_attr("source.extension").lower() == "jpg":
+            output_path = str(proxy_descriptors[0][2])
+            shutil.copy(file_storage.localize_file(asset), output_path)
+        elif proxy_descriptors:
             self.logger.info('oiiotool command to create proxies: %s' % oiiotool_command)
             subprocess.check_call(oiiotool_command,
                                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             self.created_proxy_count += len(proxy_descriptors)
         else:
             self.logger.info('All proxies already exist. No proxies will be created.')
+
+        # Strip specific exif tags
+        for (_, _, output_path) in proxy_descriptors:
+            self.strip_tags(output_path)
+
         return proxy_descriptors
 
     def _get_oiio_command_line(self, asset, proxy_descriptors):
@@ -111,7 +122,7 @@ class ImageProxyProcessor(AssetProcessor):
         # Crete the base of the oiiotool shell command.
         oiiotool_command = ['oiiotool', '-q', '-native', '-wildcardoff', source_path,
                             '--threads', '--cache 100', '--clear-keywords',
-                            '--nosoftwareattrib', '--eraseattrib', '.*']
+                            '--nosoftwareattrib', '--eraseattrib', 'thumbnail_image']
         if asset.get_attr('media.clip.type') == 'image':
             start = asset.get_attr('media.clip.start')
             if start:
@@ -143,7 +154,7 @@ class ImageProxyProcessor(AssetProcessor):
         """
         self.logger.info("Existing proxies: %s" % asset.get_files())
         source_width, source_height = self._get_source_dimensions(asset)
-        tmp_dir = Path(tempfile.gettempdir())
+        tmp_dir = Path(tempfile.mkdtemp(prefix="proxy-"))
         # Determine list of (width, height) for proxies to be made.
         proxy_sizes = []
         for size in self._get_valid_sizes(source_width, source_height):
@@ -249,6 +260,28 @@ class ImageProxyProcessor(AssetProcessor):
         prx = file_storage.assets.store_file(output_path, asset, "web-proxy",
                                              "web-proxy.jpg", attrs)
         return prx
+
+    def strip_tags(self, path):
+        """
+        Use exiftool to strip all unnecessary image tags.  Keep
+        the color profile and orientation.
+        Args:
+            path:
+
+        Returns:
+
+        """
+        cmd = ["exiftool",
+               "-all=",
+               "-overwrite_original",
+               "-TagsFromFile",
+               "@",
+               "-ColorSpaceTags",
+               "-Orientation",
+               str(path)]
+
+        logger.info("Stripping Tags: {}".format(cmd))
+        subprocess.check_call(cmd, shell=False)
 
 
 ProxySelection = collections.namedtuple('name', '')
