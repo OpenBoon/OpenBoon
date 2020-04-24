@@ -48,14 +48,13 @@ const FiltersMenuSection = ({ path, attribute, value, onClick }) => {
         {attribute}
       </h4>
 
-      {Object.entries(value).map(([subSubKey, subSubValue]) => (
-        <FiltersMenuOption
-          key={subSubKey}
-          option={subSubKey}
-          onClick={onClick({
-            type: subSubValue[0],
-            attribute: `${path}.${attribute}.${subSubKey}`,
-          })}
+      {Object.entries(value).map(([subKey, subValue]) => (
+        <FiltersMenuSection
+          key={subKey}
+          path={`${path}.${attribute}`}
+          attribute={subKey}
+          value={subValue}
+          onClick={onClick}
         />
       ))}
     </div>
