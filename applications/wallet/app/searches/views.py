@@ -1,10 +1,13 @@
 from django.http import Http404
+from djangorestframework_camel_case.render import CamelCaseBrowsableAPIRenderer
+from flatten_dict import flatten
 from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
                                    CreateModelMixin, UpdateModelMixin, DestroyModelMixin)
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework_csv.renderers import CSVRenderer
 
 from assets.serializers import AssetSerializer
 from assets.views import asset_modifier
@@ -172,3 +175,44 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
         response = request.client.post(path, _filter.get_es_agg())
 
         return Response(status=status.HTTP_200_OK, data=_filter.serialize_agg_response(response))
+
+
+class MetadataExportViewSet(BaseProjectViewSet):
+    """Exports asset metadata as CSV file."""
+    renderer_classes = [CSVRenderer, CamelCaseBrowsableAPIRenderer]
+
+    def _search_for_assets(self, request):
+        """Testing seam that returns the results of an asset search."""
+        path = 'api/v3/assets'
+        filter_boy = FilterBoy()
+
+        _filters = filter_boy.get_filters_from_request(request)
+        for _filter in _filters:
+            _filter.is_valid(query=True, raise_exception=True)
+        query = filter_boy.reduce_filters_to_query(_filters)
+
+        content = self._zmlp_get_content_from_es_search(request, base_url=path,
+                                                        search_filter=query)
+        items = self._get_modified_items_from_content(request, content,
+                                                      item_modifier=asset_modifier)
+
+        return items
+
+    def list(self, request, project_pk):
+        def dot_reducer(k1, k2):
+            """Reducer function used by the flatten method to combine nested dict keys with dots."""
+            if k1 is None:
+                return k2
+            else:
+                return k1 + "." + k2
+
+        # Create a list of flat dictionaries that represent the metadata for each asset.
+        assets = self._search_for_assets(request)
+        flat_assets = []
+        for asset in assets:
+            flat_asset = flatten(asset['metadata'], reducer=dot_reducer)
+            flat_asset['id'] = asset['id']
+            flat_assets.append(flat_asset)
+
+        # Return the CSV file to the client.
+        return Response(flat_assets)

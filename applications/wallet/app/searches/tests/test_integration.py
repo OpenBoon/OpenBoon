@@ -5,6 +5,7 @@ from rest_framework import status
 
 from searches.models import Search
 from searches.filters import BaseFilter
+from searches.views import MetadataExportViewSet
 from zmlp import ZmlpClient
 from wallet.tests.utils import check_response
 from wallet.utils import convert_json_to_base64
@@ -369,3 +370,22 @@ class TestAggregate(BaseFiltersTestCase):
                                   {'filter': encoded_filter})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
         assert content['detail'] == 'Unsupported filter `fake_type` given.'
+
+
+class TestMetadataExportView:
+
+    def test_get(self, login, api_client, monkeypatch, project):
+
+        def mock_search_for_assets(*args, **kwargs):
+            return [
+                {'id': '1', 'metadata': {'resolution': {'width': 10, 'height': 10}}},
+                {'id': '2', 'metadata': {'resolution': {'width': 20, 'height': 20}}},
+                {'id': '4', 'metadata': {'resolution': {'width': 30, 'height': 30}, 'extra_field': True}},  # noqa
+            ]
+
+        monkeypatch.setattr(MetadataExportViewSet, '_search_for_assets', mock_search_for_assets)
+        result = api_client.get(reverse('export-list', kwargs={'project_pk': project.id}), {})
+        assert result.status_code == 200
+        assert result.accepted_media_type == 'text/csv'
+        assert result.content == b'extra_field,id,resolution.height,resolution.width\r\n,1,10,10\r\n,2,20,20\r\nTrue,4,30,30\r\n'  # noqa
+        assert result.charset == 'utf-8'

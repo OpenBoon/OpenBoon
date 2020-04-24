@@ -31,6 +31,8 @@ django-multiselectfield = "*"
 stringcase = "*"
 zmlp = {path = "./../../client/python"}
 opencv-python = "*"
+flatten-dict = "*"
+djangorestframework-csv = "*"
 
 [requires]
 python_version = "3.7"
