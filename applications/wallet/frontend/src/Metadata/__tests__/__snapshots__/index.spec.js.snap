@@ -31,7 +31,7 @@ exports[`<Metadata /> should render properly 1`] = `
 `;
 
 exports[`<Metadata /> should render selected asset 1`] = `
-.emotion-209 {
+.emotion-216 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -179,7 +179,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
   color: #ffffff;
 }
 
-.emotion-208 {
+.emotion-215 {
   overflow: auto;
 }
 
@@ -332,7 +332,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
 }
 
 <div
-  className="emotion-209"
+  className="emotion-216"
 >
   <div
     className="emotion-1"
@@ -366,7 +366,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
     </div>
   </div>
   <div
-    className="emotion-208"
+    className="emotion-215"
   >
     <div
       className="emotion-55"
@@ -1539,6 +1539,43 @@ exports[`<Metadata /> should render selected asset 1`] = `
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-55"
+    >
+      <div
+        className="emotion-54"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Collapse Section"
+            className="emotion-7"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-6"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-8"
+          >
+            Analysis
+          </h4>
+        </div>
+        <div
+          className="emotion-53"
+        >
+          <div>
+            analysis
+          </div>
         </div>
       </div>
     </div>

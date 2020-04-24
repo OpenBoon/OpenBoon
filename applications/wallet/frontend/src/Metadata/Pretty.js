@@ -2,6 +2,7 @@ import assetShape from '../Asset/shape'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 
+import MetadataAnalysis from './Analysis'
 import MetadataPrettyRow from './PrettyRow'
 import { formatDisplayName } from './helpers'
 
@@ -11,8 +12,7 @@ const MetadataPretty = ({ asset: { metadata } }) => {
       {Object.keys(metadata).map((section) => {
         const title = formatDisplayName({ name: section })
 
-        if (['files', 'metrics', 'analysis', 'location'].includes(section))
-          return null
+        if (['files', 'metrics', 'location'].includes(section)) return null
 
         return (
           <Accordion
@@ -21,26 +21,30 @@ const MetadataPretty = ({ asset: { metadata } }) => {
             title={title}
             isInitiallyOpen
           >
-            <table
-              css={{
-                borderCollapse: 'collapse',
-                width: '100%',
-              }}
-            >
-              <tbody>
-                {Object.entries(metadata[section]).map(
-                  ([key, value], index) => (
-                    <MetadataPrettyRow
-                      key={key}
-                      name={key}
-                      value={value}
-                      title={title}
-                      index={index}
-                    />
-                  ),
-                )}
-              </tbody>
-            </table>
+            {section === 'analysis' ? (
+              <MetadataAnalysis />
+            ) : (
+              <table
+                css={{
+                  borderCollapse: 'collapse',
+                  width: '100%',
+                }}
+              >
+                <tbody>
+                  {Object.entries(metadata[section]).map(
+                    ([key, value], index) => (
+                      <MetadataPrettyRow
+                        key={key}
+                        name={key}
+                        value={value}
+                        title={title}
+                        index={index}
+                      />
+                    ),
+                  )}
+                </tbody>
+              </table>
+            )}
           </Accordion>
         )
       })}
