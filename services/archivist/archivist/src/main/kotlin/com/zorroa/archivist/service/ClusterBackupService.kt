@@ -148,7 +148,7 @@ class GcsClusterBackupService(
     override fun createClusterPolicy(
         cluster: IndexCluster,
         policyName: String,
-        schedule: String, //cron syntax
+        schedule: String, // cron syntax
         indices: List<String>,
         maxRetentionDays: Long,
         minimumSnapshotCount: Int,
@@ -170,7 +170,7 @@ class GcsClusterBackupService(
         )
         val policyRequest = PutSnapshotLifecyclePolicyRequest(policy)
 
-        //sync
+        // sync
         client.indexLifecycle().putSnapshotLifecyclePolicy(policyRequest, RequestOptions.DEFAULT)
     }
 
