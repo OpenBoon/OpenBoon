@@ -118,6 +118,7 @@
     "react-aria-modal": "4.0.0",
     "react-dom": "16.13.1",
     "react-json-pretty": "2.2.0",
+    "react-use-clipboard": "1.0.0",
     "react-virtualized-auto-sizer": "1.0.2",
     "react-window": "1.8.5",
     "react-window-infinite-loader": "1.0.5",

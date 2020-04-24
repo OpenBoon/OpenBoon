@@ -418,7 +418,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="106d4be1-5d95-11ea-baea-364023b135f5"
                   valign="top"
                 >
                   106d4be1-5d95-11ea-baea-364023b135f5
@@ -457,7 +457,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="10509c20-5d95-11ea-baea-364023b135f5"
                   valign="top"
                 >
                   10509c20-5d95-11ea-baea-364023b135f5
@@ -496,7 +496,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="2020-03-03T21:22:24.922700Z"
                   valign="top"
                 >
                   2020-03-03 9:22 UTC
@@ -535,7 +535,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="Analyzed"
                   valign="top"
                 >
                   Analyzed
@@ -574,7 +574,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="89382033-bcbb-4c8f-81a9-3d0883298a81"
                   valign="top"
                 >
                   89382033-bcbb-4c8f-81a9-3d0883298a81
@@ -613,7 +613,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="106e0f32-5d95-11ea-baea-364023b135f5"
                   valign="top"
                 >
                   106e0f32-5d95-11ea-baea-364023b135f5
@@ -652,7 +652,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="2020-03-03T21:22:47.575195Z"
                   valign="top"
                 >
                   2020-03-03 9:22 UTC
@@ -731,7 +731,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="gs://zorroa-dev-data/image/TIFF_1MB.tiff"
                   valign="top"
                 >
                   gs://zorroa-dev-data/image/TIFF_1MB.tiff
@@ -770,7 +770,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="tiff"
                   valign="top"
                 >
                   tiff
@@ -809,7 +809,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="TIFF_1MB.tiff"
                   valign="top"
                 >
                   TIFF_1MB.tiff
@@ -848,7 +848,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="image/tiff"
                   valign="top"
                 >
                   image/tiff
@@ -887,7 +887,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title={1131930}
                   valign="top"
                 >
                   1.1 MB
@@ -926,7 +926,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title={1867533868}
                   valign="top"
                 >
                   1867533868
@@ -965,7 +965,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff"
                   valign="top"
                 >
                   https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff
@@ -1044,7 +1044,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title={650}
                   valign="top"
                 >
                   650
@@ -1083,7 +1083,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title={434}
                   valign="top"
                 >
                   434
@@ -1122,7 +1122,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title={1.5}
                   valign="top"
                 >
                   1.5
@@ -1161,7 +1161,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="landscape"
                   valign="top"
                 >
                   landscape
@@ -1200,7 +1200,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="image"
                   valign="top"
                 >
                   image
@@ -1239,7 +1239,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title={1}
                   valign="top"
                 >
                   1
@@ -1318,7 +1318,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="page"
                   valign="top"
                 >
                   page
@@ -1357,7 +1357,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title={1}
                   valign="top"
                 >
                   1
@@ -1396,7 +1396,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title={1}
                   valign="top"
                 >
                   1
@@ -1435,7 +1435,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title={1}
                   valign="top"
                 >
                   1
@@ -1474,7 +1474,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="pUn6wBxUN7x9JxOxLkvruOyNdYA"
                   valign="top"
                 >
                   pUn6wBxUN7x9JxOxLkvruOyNdYA
@@ -1513,7 +1513,7 @@ exports[`<Metadata /> should render selected asset 1`] = `
                 </td>
                 <td
                   className="emotion-11"
-                  title=""
+                  title="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
                   valign="top"
                 >
                   vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C

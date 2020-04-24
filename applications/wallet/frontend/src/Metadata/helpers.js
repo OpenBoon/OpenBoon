@@ -24,12 +24,12 @@ export const formatDisplayName = ({ name }) =>
     })
     .join(' ')
 
-export const formatDisplayValue = ({ key, value }) => {
-  if (key === 'filesize') {
+export const formatDisplayValue = ({ name, value }) => {
+  if (name === 'filesize') {
     return bytesToSize({ bytes: value })
   }
 
-  if (key.toLowerCase().includes('time')) {
+  if (name.toLowerCase().includes('time')) {
     return formatPrettyDate({ timestamp: value })
   }
 
