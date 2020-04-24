@@ -17,7 +17,7 @@ const MetadataPrettyRow = ({ name, value, title, index }) => {
   return (
     <tr
       css={{
-        borderTop: index !== 0 ? constants.borders.divider : '',
+        borderTop: index !== 0 ? constants.borders.largeDivider : '',
         ':hover': {
           backgroundColor: colors.signal.electricBlue.background,
           td: {

@@ -40,7 +40,10 @@ const MetadataContent = ({ projectId, assetId }) => {
       </div>
 
       <div
-        css={{ padding: spacing.base, borderBottom: constants.borders.divider }}
+        css={{
+          padding: spacing.base,
+          borderBottom: constants.borders.divider,
+        }}
       >
         <div
           css={{

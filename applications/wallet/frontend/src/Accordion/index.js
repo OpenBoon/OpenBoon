@@ -19,6 +19,7 @@ const STYLES = {
       padding: spacing.spacious,
       paddingTop: spacing.normal,
     },
+    borderBottom: constants.borders.tabs,
   },
   PANEL: {
     wrapper: {},
@@ -29,6 +30,7 @@ const STYLES = {
       width: '100%',
       backgroundColor: colors.structure.coal,
     },
+    borderBottom: constants.borders.largeDivider,
   },
 }
 
@@ -51,7 +53,7 @@ const Accordion = ({ variant, title, children, isInitiallyOpen }) => {
       >
         <div
           css={{
-            borderBottom: constants.borders.tabs,
+            borderBottom: STYLES[variant].borderBottom,
             paddingTop: STYLES[variant].verticalPadding,
             paddingBottom: STYLES[variant].verticalPadding,
             paddingLeft: spacing.moderate,

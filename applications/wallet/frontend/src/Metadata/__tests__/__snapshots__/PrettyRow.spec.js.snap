@@ -2,7 +2,7 @@
 
 exports[`<MetadataPrettyRow /> should render documents 1`] = `
 .emotion-5 {
-  border-top: 1px solid #3b3b3b;
+  border-top: 4px solid #3b3b3b;
 }
 
 .emotion-5:hover {

@@ -87,7 +87,7 @@ exports[`<Filters /> should open the menu 1`] = `
 }
 
 .emotion-3 {
-  border-bottom: 1px solid #4a4a4a;
+  border-bottom: 4px solid #3b3b3b;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;

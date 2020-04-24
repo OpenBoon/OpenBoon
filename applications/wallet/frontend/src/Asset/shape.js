@@ -24,7 +24,7 @@ const assetShape = PropTypes.shape({
         size: PropTypes.number,
         name: PropTypes.string,
         mimetype: PropTypes.string,
-        category: PropTypes.oneOf(['proxy', 'source']),
+        category: PropTypes.oneOf(['proxy', 'source', 'web-proxy']),
         attrs: PropTypes.shape({
           width: PropTypes.number,
           height: PropTypes.number,
