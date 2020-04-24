@@ -113,8 +113,8 @@ FiltersMenu.propTypes = {
   filters: PropTypes.arrayOf(
     PropTypes.shape({
       type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-        .isRequired,
+      attribute: PropTypes.string,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     }).isRequired,
   ).isRequired,
   fields: PropTypes.objectOf(PropTypes.objectOf).isRequired,

@@ -896,7 +896,7 @@ exports[`<Filters /> should render properly 1`] = `
   line-height: 19px;
   font-weight: 500;
   border: none;
-  cursor: pointer;
+  cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
   -webkit-flex: 1;
@@ -991,6 +991,7 @@ exports[`<Filters /> should render properly 1`] = `
         className="emotion-1"
       />
       <button
+        aria-disabled={true}
         className="emotion-2"
         onClick={[Function]}
         type="button"

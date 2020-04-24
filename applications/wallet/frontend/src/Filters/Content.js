@@ -24,6 +24,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
         <Button
           variant={VARIANTS.SECONDARY}
           style={{ flex: 1 }}
+          isDisabled={filters.length === 0}
           onClick={() => {
             dispatch({
               action: ACTIONS.CLEAR_FILTERS,
