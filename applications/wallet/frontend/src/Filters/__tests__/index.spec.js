@@ -1,5 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import fields from '../__mocks__/fields'
+
 import Filters from '..'
 
 const noop = () => () => {}
@@ -17,6 +19,8 @@ describe('<Filters />', () => {
       pathname: '/[projectId]/visualizer',
       query: { projectId: PROJECT_ID, filters: '' },
     })
+
+    require('swr').__setMockUseSWRResponse({ data: fields })
 
     const component = TestRenderer.create(<Filters />)
 
@@ -73,6 +77,8 @@ describe('<Filters />', () => {
       },
     })
 
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
     const component = TestRenderer.create(<Filters />)
 
     // type search input
@@ -120,6 +126,8 @@ describe('<Filters />', () => {
       },
     })
 
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
     const component = TestRenderer.create(<Filters />)
 
     // delete Dog
@@ -155,6 +163,8 @@ describe('<Filters />', () => {
       },
     })
 
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
     const component = TestRenderer.create(<Filters />)
 
     // delete Cat
@@ -177,8 +187,45 @@ describe('<Filters />', () => {
     )
   })
 
+  it('should open the menu', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: {
+        projectId: PROJECT_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
+    const component = TestRenderer.create(<Filters />)
+
+    // open the menu
+    act(() => {
+      component.root
+        .findByProps({ children: '+ Add Metadata Filters' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    act(() => {
+      component.root
+        .findAllByProps({ 'aria-label': 'Expand Section' })[0]
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // close the menu
+    act(() => {
+      component.root
+        .findByProps({ children: 'x Cancel' })
+        .props.onClick({ preventDefault: noop })
+    })
+  })
+
   it('should not POST the form', () => {
     const mockFn = jest.fn()
+
+    require('swr').__setMockUseSWRResponse({ data: fields })
 
     const component = TestRenderer.create(<Filters />)
 
