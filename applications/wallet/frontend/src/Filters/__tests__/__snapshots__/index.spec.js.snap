@@ -444,7 +444,7 @@ exports[`<Filters /> should open the menu 1`] = `
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="tinyProxy"
+                          value="analysis.zvi.tinyProxy"
                         />
                         <div
                           className="emotion-7"
@@ -494,7 +494,7 @@ exports[`<Filters /> should open the menu 1`] = `
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="simhash"
+                          value="analysis.zvi-image-similarity.simhash"
                         />
                         <div
                           className="emotion-7"
@@ -544,7 +544,7 @@ exports[`<Filters /> should open the menu 1`] = `
                           defaultChecked={false}
                           onClick={[Function]}
                           type="checkbox"
-                          value="count"
+                          value="analysis.zvi-object-detection.count"
                         />
                         <div
                           className="emotion-7"

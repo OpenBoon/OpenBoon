@@ -5,16 +5,19 @@ import { spacing, typography, constants } from '../Styles'
 import FiltersMenuOption from './MenuOption'
 
 const FiltersMenuSection = ({ path, attribute, value, onClick }) => {
+  const fullPath = `${path}.${attribute}`
+
   if (Array.isArray(value) && value.length === 0) return null
 
   if (Array.isArray(value)) {
     return (
       <FiltersMenuOption
-        key={attribute}
-        option={attribute}
+        key={fullPath}
+        option={fullPath}
+        label={attribute}
         onClick={onClick({
           type: value[0],
-          attribute: `${path}.${attribute}`,
+          attribute: fullPath,
         })}
       />
     )
@@ -22,7 +25,7 @@ const FiltersMenuSection = ({ path, attribute, value, onClick }) => {
 
   return (
     <div
-      key={attribute}
+      key={fullPath}
       css={{
         marginLeft: -spacing.normal,
         marginRight: -spacing.normal,
@@ -51,7 +54,7 @@ const FiltersMenuSection = ({ path, attribute, value, onClick }) => {
       {Object.entries(value).map(([subKey, subValue]) => (
         <FiltersMenuSection
           key={subKey}
-          path={`${path}.${attribute}`}
+          path={fullPath}
           attribute={subKey}
           value={subValue}
           onClick={onClick}

@@ -259,6 +259,76 @@ describe('<Filters />', () => {
     })
   })
 
+  it('should add new filters', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: {
+        projectId: PROJECT_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
+    const component = TestRenderer.create(<Filters />)
+
+    // open the menu
+    act(() => {
+      component.root
+        .findByProps({ children: '+ Add Metadata Filters' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // Expand Analysis Section
+    act(() => {
+      component.root
+        .findAllByProps({ 'aria-label': 'Expand Section' })[0]
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // enable first checkbox
+    act(() => {
+      component.root
+        .findByProps({ value: 'analysis.zvi.tinyProxy' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // enable then disable second checkbox
+    act(() => {
+      component.root
+        .findByProps({ value: 'analysis.zvi-image-similarity.simhash' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    act(() => {
+      component.root
+        .findByProps({ value: 'analysis.zvi-image-similarity.simhash' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // submit
+    act(() => {
+      component.root
+        .findByProps({ children: '+ Add Selected Filters' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      {
+        pathname: '/[projectId]/visualizer',
+        query: {
+          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
+          id: '',
+          filters: '[{"type":"facet","attribute":"analysis.zvi.tinyProxy"}]',
+        },
+      },
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?filters=[{"type":"facet","attribute":"analysis.zvi.tinyProxy"}]',
+    )
+  })
+
   it('should not POST the form', () => {
     const mockFn = jest.fn()
 
