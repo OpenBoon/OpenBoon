@@ -19,8 +19,6 @@ const FiltersMenu = ({
 }) => {
   const [newFilters, setNewFilters] = useState({})
 
-  console.table(newFilters)
-
   const onClick = ({ type, attribute }) => (value) => {
     if (value) {
       setNewFilters((nF) => ({ ...nF, [attribute]: { type, attribute } }))
@@ -49,7 +47,7 @@ const FiltersMenu = ({
               key={key}
               variant={ACCORDION_VARIANTS.PANEL}
               title={key}
-              isInitiallyOpen
+              isInitiallyOpen={false}
             >
               <div
                 css={{

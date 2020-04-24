@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Filters /> should open the menu 1`] = `
-.emotion-92 {
+.emotion-83 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -16,7 +16,65 @@ exports[`<Filters /> should open the menu 1`] = `
   overflow: hidden;
 }
 
-.emotion-91 {
+.emotion-78 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-78:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-78[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-78,
+.emotion-78:hover,
+.emotion-78:visited {
+  background-color: #808080;
+}
+
+.emotion-78:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-78[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-82 {
   overflow: hidden;
   display: -webkit-box;
   display: -webkit-flex;
@@ -34,11 +92,11 @@ exports[`<Filters /> should open the menu 1`] = `
   flex: 1;
 }
 
-.emotion-86 {
+.emotion-77 {
   overflow-x: auto;
 }
 
-.emotion-48 {
+.emotion-39 {
   background-color: #252525;
   border-radius: 2px;
 }
@@ -96,7 +154,7 @@ exports[`<Filters /> should open the menu 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-50:hover {
+.emotion-41:hover {
   color: #ffffff;
 }
 
@@ -115,7 +173,7 @@ exports[`<Filters /> should open the menu 1`] = `
   font-weight: 400;
 }
 
-.emotion-90 {
+.emotion-81 {
   padding: 8px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -123,69 +181,11 @@ exports[`<Filters /> should open the menu 1`] = `
   display: flex;
 }
 
-.emotion-87 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-87:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-87[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-87,
-.emotion-87:hover,
-.emotion-87:visited {
-  background-color: #808080;
-}
-
-.emotion-87:hover {
-  background-color: #b3b3b3;
-}
-
-.emotion-87[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-88 {
+.emotion-79 {
   width: 8px;
 }
 
-.emotion-89 {
+.emotion-80 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -212,7 +212,7 @@ exports[`<Filters /> should open the menu 1`] = `
   line-height: 19px;
   font-weight: 500;
   border: none;
-  cursor: pointer;
+  cursor: not-allowed;
   color: #ffffff;
   background-color: transparent;
   -webkit-flex: 1;
@@ -220,26 +220,26 @@ exports[`<Filters /> should open the menu 1`] = `
   flex: 1;
 }
 
-.emotion-89:hover {
+.emotion-80:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-89[aria-disabled=true] {
+.emotion-80[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-89,
-.emotion-89:hover,
-.emotion-89:visited {
+.emotion-80,
+.emotion-80:hover,
+.emotion-80:visited {
   background-color: #73b61c;
 }
 
-.emotion-89:hover {
+.emotion-80:hover {
   background-color: #96c955;
 }
 
-.emotion-89[aria-disabled=true] {
+.emotion-80[aria-disabled=true] {
   background-color: #808080;
 }
 
@@ -253,12 +253,12 @@ exports[`<Filters /> should open the menu 1`] = `
   color: #ffffff;
 }
 
-.emotion-47 {
+.emotion-38 {
   width: 100%;
   background-color: #191919;
 }
 
-.emotion-46 {
+.emotion-37 {
   padding: 16px;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -268,8 +268,18 @@ exports[`<Filters /> should open the menu 1`] = `
   margin-left: -16px;
   margin-right: -16px;
   padding: 12px;
-  padding-top: 0;
+  padding-top: 8px;
   padding-bottom: 8px;
+  border-top: 4px solid #3b3b3b;
+}
+
+.emotion-14:first-of-type {
+  padding-top: 0;
+  border-top: none;
+}
+
+.emotion-14:last-of-type {
+  padding-bottom: 0;
 }
 
 .emotion-4 {
@@ -366,38 +376,20 @@ exports[`<Filters /> should open the menu 1`] = `
   line-height: 19px;
 }
 
-.emotion-25 {
-  margin-left: -16px;
-  margin-right: -16px;
-  padding: 12px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  border-top: 4px solid #3b3b3b;
-}
-
-.emotion-45 {
-  margin-left: -16px;
-  margin-right: -16px;
-  padding: 12px;
-  padding-top: 8px;
-  padding-bottom: 0;
-  border-top: 4px solid #3b3b3b;
-}
-
 <div
-  className="emotion-92"
+  className="emotion-83"
 >
   <div
-    className="emotion-91"
+    className="emotion-82"
   >
     <div
-      className="emotion-86"
+      className="emotion-77"
     >
       <div
-        className="emotion-49"
+        className="emotion-40"
       >
         <div
-          className="emotion-48"
+          className="emotion-39"
         >
           <div
             className="emotion-3"
@@ -422,10 +414,10 @@ exports[`<Filters /> should open the menu 1`] = `
             </h4>
           </div>
           <div
-            className="emotion-47"
+            className="emotion-38"
           >
             <div
-              className="emotion-46"
+              className="emotion-37"
             >
               <div
                 className="emotion-14"
@@ -478,7 +470,7 @@ exports[`<Filters /> should open the menu 1`] = `
                 </div>
               </div>
               <div
-                className="emotion-25"
+                className="emotion-14"
               >
                 <h4
                   className="emotion-4"
@@ -528,54 +520,13 @@ exports[`<Filters /> should open the menu 1`] = `
                 </div>
               </div>
               <div
-                className="emotion-45"
+                className="emotion-14"
               >
                 <h4
                   className="emotion-4"
                 >
                   zvi-object-detection
                 </h4>
-                <div
-                  className="emotion-13"
-                >
-                  <div
-                    className="emotion-12"
-                  >
-                    <label
-                      className="emotion-11"
-                    >
-                      <div
-                        className="emotion-8"
-                      >
-                        <input
-                          className="emotion-5"
-                          defaultChecked={false}
-                          onClick={[Function]}
-                          type="checkbox"
-                          value="predictions"
-                        />
-                        <div
-                          className="emotion-7"
-                        >
-                          <svg
-                            className="emotion-6"
-                            data-file-name="checkmark.svg"
-                            width={20}
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="emotion-10"
-                      >
-                        <span
-                          className="emotion-9"
-                        >
-                          predictions
-                        </span>
-                      </div>
-                    </label>
-                  </div>
-                </div>
                 <div
                   className="emotion-13"
                 >
@@ -623,10 +574,10 @@ exports[`<Filters /> should open the menu 1`] = `
         </div>
       </div>
       <div
-        className="emotion-49"
+        className="emotion-40"
       >
         <div
-          className="emotion-48"
+          className="emotion-39"
         >
           <div
             className="emotion-3"
@@ -638,7 +589,7 @@ exports[`<Filters /> should open the menu 1`] = `
               type="button"
             >
               <svg
-                className="emotion-50"
+                className="emotion-41"
                 color="#808080"
                 data-file-name="chevron.svg"
                 width={20}
@@ -653,10 +604,10 @@ exports[`<Filters /> should open the menu 1`] = `
         </div>
       </div>
       <div
-        className="emotion-49"
+        className="emotion-40"
       >
         <div
-          className="emotion-48"
+          className="emotion-39"
         >
           <div
             className="emotion-3"
@@ -668,7 +619,7 @@ exports[`<Filters /> should open the menu 1`] = `
               type="button"
             >
               <svg
-                className="emotion-50"
+                className="emotion-41"
                 color="#808080"
                 data-file-name="chevron.svg"
                 width={20}
@@ -683,10 +634,10 @@ exports[`<Filters /> should open the menu 1`] = `
         </div>
       </div>
       <div
-        className="emotion-49"
+        className="emotion-40"
       >
         <div
-          className="emotion-48"
+          className="emotion-39"
         >
           <div
             className="emotion-3"
@@ -698,7 +649,7 @@ exports[`<Filters /> should open the menu 1`] = `
               type="button"
             >
               <svg
-                className="emotion-50"
+                className="emotion-41"
                 color="#808080"
                 data-file-name="chevron.svg"
                 width={20}
@@ -713,10 +664,10 @@ exports[`<Filters /> should open the menu 1`] = `
         </div>
       </div>
       <div
-        className="emotion-49"
+        className="emotion-40"
       >
         <div
-          className="emotion-48"
+          className="emotion-39"
         >
           <div
             className="emotion-3"
@@ -728,7 +679,7 @@ exports[`<Filters /> should open the menu 1`] = `
               type="button"
             >
               <svg
-                className="emotion-50"
+                className="emotion-41"
                 color="#808080"
                 data-file-name="chevron.svg"
                 width={20}
@@ -743,10 +694,10 @@ exports[`<Filters /> should open the menu 1`] = `
         </div>
       </div>
       <div
-        className="emotion-49"
+        className="emotion-40"
       >
         <div
-          className="emotion-48"
+          className="emotion-39"
         >
           <div
             className="emotion-3"
@@ -758,7 +709,7 @@ exports[`<Filters /> should open the menu 1`] = `
               type="button"
             >
               <svg
-                className="emotion-50"
+                className="emotion-41"
                 color="#808080"
                 data-file-name="chevron.svg"
                 width={20}
@@ -773,10 +724,10 @@ exports[`<Filters /> should open the menu 1`] = `
         </div>
       </div>
       <div
-        className="emotion-49"
+        className="emotion-40"
       >
         <div
-          className="emotion-48"
+          className="emotion-39"
         >
           <div
             className="emotion-3"
@@ -788,7 +739,7 @@ exports[`<Filters /> should open the menu 1`] = `
               type="button"
             >
               <svg
-                className="emotion-50"
+                className="emotion-41"
                 color="#808080"
                 data-file-name="chevron.svg"
                 width={20}
@@ -804,20 +755,21 @@ exports[`<Filters /> should open the menu 1`] = `
       </div>
     </div>
     <div
-      className="emotion-90"
+      className="emotion-81"
     >
       <button
-        className="emotion-87"
+        className="emotion-78"
         onClick={[Function]}
         type="button"
       >
         x Cancel
       </button>
       <div
-        className="emotion-88"
+        className="emotion-79"
       />
       <button
-        className="emotion-89"
+        aria-disabled={true}
+        className="emotion-80"
         onClick={[Function]}
         type="button"
       >
@@ -829,7 +781,7 @@ exports[`<Filters /> should open the menu 1`] = `
 `;
 
 exports[`<Filters /> should render properly 1`] = `
-.emotion-7 {
+.emotion-10 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -844,8 +796,15 @@ exports[`<Filters /> should render properly 1`] = `
   overflow: hidden;
 }
 
-.emotion-6 {
+.emotion-9 {
   padding: 4px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .emotion-0 {
@@ -878,6 +837,9 @@ exports[`<Filters /> should render properly 1`] = `
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-0:hover {
@@ -904,17 +866,79 @@ exports[`<Filters /> should render properly 1`] = `
 }
 
 .emotion-1 {
-  height: 4px;
+  width: 8px;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  background-color: #808080;
+}
+
+.emotion-2:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-2[aria-disabled=true] {
+  background-color: #808080;
 }
 
 .emotion-4 {
+  height: 4px;
+}
+
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-2 {
+.emotion-5 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -926,12 +950,12 @@ exports[`<Filters /> should render properly 1`] = `
   background-color: #191919;
 }
 
-.emotion-2:focus {
+.emotion-5:focus {
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-3 {
+.emotion-6 {
   width: 42px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
@@ -943,25 +967,39 @@ exports[`<Filters /> should render properly 1`] = `
   cursor: not-allowed;
 }
 
-.emotion-5 {
+.emotion-8 {
   padding: 0;
 }
 
 <div
-  className="emotion-7"
+  className="emotion-10"
 >
   <div
-    className="emotion-6"
+    className="emotion-9"
   >
-    <button
-      className="emotion-0"
-      onClick={[Function]}
-      type="button"
-    >
-      + Add Metadata Filters
-    </button>
     <div
-      className="emotion-1"
+      className="emotion-3"
+    >
+      <button
+        className="emotion-0"
+        onClick={[Function]}
+        type="button"
+      >
+        + Add Metadata Filters
+      </button>
+      <div
+        className="emotion-1"
+      />
+      <button
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        Clear All Filters
+      </button>
+    </div>
+    <div
+      className="emotion-4"
     />
     <form
       action=""
@@ -969,10 +1007,10 @@ exports[`<Filters /> should render properly 1`] = `
       onSubmit={[Function]}
     >
       <div
-        className="emotion-4"
+        className="emotion-7"
       >
         <input
-          className="emotion-2"
+          className="emotion-5"
           onChange={[Function]}
           placeholder="Create text filter (search name or field value)"
           type="text"
@@ -981,7 +1019,7 @@ exports[`<Filters /> should render properly 1`] = `
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-3"
+          className="emotion-6"
           onClick={[Function]}
           type="submit"
         >
@@ -990,7 +1028,7 @@ exports[`<Filters /> should render properly 1`] = `
       </div>
     </form>
     <ul
-      className="emotion-5"
+      className="emotion-8"
     />
   </div>
 </div>
