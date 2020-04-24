@@ -270,13 +270,13 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
 }
 
 .emotion-25 {
@@ -339,7 +339,6 @@ Array [
 }
 
 .emotion-29 {
-  padding-left: 12px;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -354,8 +353,8 @@ Array [
 }
 
 .emotion-28 {
-  color: #b3b3b3;
   padding-left: 12px;
+  color: #b3b3b3;
 }
 
 .emotion-51 {
@@ -1939,13 +1938,13 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
 }
 
 .emotion-43 {
@@ -2008,7 +2007,6 @@ Array [
 }
 
 .emotion-47 {
-  padding-left: 12px;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -2023,8 +2021,8 @@ Array [
 }
 
 .emotion-46 {
-  color: #b3b3b3;
   padding-left: 12px;
+  color: #b3b3b3;
 }
 
 .emotion-69 {
@@ -3706,13 +3704,13 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
 }
 
 .emotion-37 {
@@ -3775,7 +3773,6 @@ Array [
 }
 
 .emotion-41 {
-  padding-left: 12px;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -3790,8 +3787,8 @@ Array [
 }
 
 .emotion-40 {
-  color: #b3b3b3;
   padding-left: 12px;
+  color: #b3b3b3;
 }
 
 .emotion-63 {
@@ -5440,13 +5437,13 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 16px;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 16px;
 }
 
 .emotion-36 {
@@ -5509,7 +5506,6 @@ Array [
 }
 
 .emotion-40 {
-  padding-left: 12px;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -5524,8 +5520,8 @@ Array [
 }
 
 .emotion-39 {
-  color: #b3b3b3;
   padding-left: 12px;
+  color: #b3b3b3;
 }
 
 .emotion-62 {
