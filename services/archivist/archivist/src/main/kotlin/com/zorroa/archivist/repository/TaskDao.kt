@@ -293,7 +293,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             "UPDATE " +
                 "task " +
                 "SET " +
-                "int_ping_count=int_ping_count+1,"+
+                "int_ping_count=int_ping_count+1," +
                 "time_ping=? " +
                 "WHERE " +
                 "pk_task=? " +
