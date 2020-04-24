@@ -41,33 +41,18 @@ const MetadataPrettyRow = ({ name, value, title, index }) => {
           {formatDisplayName({ name })}
         </span>
       </td>
-      {name === 'content' ? (
-        <td
-          valign="top"
-          title={value}
-          css={{
-            fontFamily: 'Roboto Mono',
-            color: colors.structure.pebble,
-            padding: spacing.normal,
-            wordBreak: 'break-word',
-          }}
-        >
-          {formatDisplayValue({ name, value })}
-        </td>
-      ) : (
-        <td
-          valign="top"
-          title={value}
-          css={{
-            fontFamily: 'Roboto Mono',
-            color: colors.structure.pebble,
-            padding: spacing.normal,
-            wordBreak: 'break-all',
-          }}
-        >
-          {formatDisplayValue({ name, value })}
-        </td>
-      )}
+      <td
+        valign="top"
+        title={value}
+        css={{
+          fontFamily: 'Roboto Mono',
+          color: colors.structure.pebble,
+          padding: spacing.normal,
+          wordBreak: name === 'content' ? 'break-word' : 'break-all',
+        }}
+      >
+        {formatDisplayValue({ name, value })}
+      </td>
       <td
         valign="top"
         css={{
