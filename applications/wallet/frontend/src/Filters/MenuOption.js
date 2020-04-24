@@ -6,7 +6,7 @@ import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 
 const OFFSET = 32
 
-const FiltersMenuOption = ({ option }) => {
+const FiltersMenuOption = ({ option, onClick }) => {
   return (
     <div
       key={option}
@@ -34,7 +34,7 @@ const FiltersMenuOption = ({ option }) => {
             initialValue: false,
             isDisabled: false,
           }}
-          onClick={console.warn}
+          onClick={onClick}
         />
       </div>
     </div>
@@ -43,6 +43,7 @@ const FiltersMenuOption = ({ option }) => {
 
 FiltersMenuOption.propTypes = {
   option: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 export default FiltersMenuOption
