@@ -133,7 +133,7 @@ const DataSourcesAddForm = () => {
             initialValue: false,
             isDisabled: false,
           }))}
-          variant={CHECKBOX_VARIANTS.SECONDARY}
+          variant={CHECKBOX_VARIANTS.INLINE}
         />
 
         <SectionTitle>Select Analysis</SectionTitle>

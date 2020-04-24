@@ -104,7 +104,7 @@ const DataSourcesEditForm = ({ initialState }) => {
             initialValue: !!fileTypes[value],
             isDisabled: !!initialState.fileTypes[value],
           }))}
-          variant={CHECKBOX_VARIANTS.SECONDARY}
+          variant={CHECKBOX_VARIANTS.INLINE}
         />
 
         <SectionTitle>Select Analysis</SectionTitle>

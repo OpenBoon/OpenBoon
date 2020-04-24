@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import Checkbox, { VARIANTS } from '..'
+import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '..'
 
 describe('<Checkbox />', () => {
   it('should render properly', () => {
@@ -8,7 +8,7 @@ describe('<Checkbox />', () => {
 
     const component = TestRenderer.create(
       <Checkbox
-        variant={VARIANTS.PRIMARY}
+        variant={CHECKBOX_VARIANTS.MULTILINE}
         option={{
           value: 'checkbox',
           label: 'Checkbox',
@@ -37,7 +37,7 @@ describe('<Checkbox />', () => {
 
     const component = TestRenderer.create(
       <Checkbox
-        variant={VARIANTS.PRIMARY}
+        variant={CHECKBOX_VARIANTS.MULTILINE}
         option={{
           value: 'checkbox',
           label: 'Checkbox',
@@ -64,7 +64,7 @@ describe('<Checkbox />', () => {
 
     const component = TestRenderer.create(
       <Checkbox
-        variant={VARIANTS.PRIMARY}
+        variant={CHECKBOX_VARIANTS.MULTILINE}
         option={{
           value: 'checkbox',
           label: 'Checkbox',
