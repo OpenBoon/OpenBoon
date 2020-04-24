@@ -14,6 +14,19 @@ const MetadataPretty = ({ asset: { metadata } }) => {
 
         if (['files', 'metrics', 'location'].includes(section)) return null
 
+        if (section === 'analysis') {
+          return (
+            <Accordion
+              key={section}
+              variant={ACCORDION_VARIANTS.PANEL}
+              title={title}
+              isInitiallyOpen
+            >
+              <MetadataAnalysis />
+            </Accordion>
+          )
+        }
+
         return (
           <Accordion
             key={section}
@@ -21,30 +34,26 @@ const MetadataPretty = ({ asset: { metadata } }) => {
             title={title}
             isInitiallyOpen
           >
-            {section === 'analysis' ? (
-              <MetadataAnalysis />
-            ) : (
-              <table
-                css={{
-                  borderCollapse: 'collapse',
-                  width: '100%',
-                }}
-              >
-                <tbody>
-                  {Object.entries(metadata[section]).map(
-                    ([key, value], index) => (
-                      <MetadataPrettyRow
-                        key={key}
-                        name={key}
-                        value={value}
-                        title={title}
-                        index={index}
-                      />
-                    ),
-                  )}
-                </tbody>
-              </table>
-            )}
+            <table
+              css={{
+                borderCollapse: 'collapse',
+                width: '100%',
+              }}
+            >
+              <tbody>
+                {Object.entries(metadata[section]).map(
+                  ([key, value], index) => (
+                    <MetadataPrettyRow
+                      key={key}
+                      name={key}
+                      value={value}
+                      title={title}
+                      index={index}
+                    />
+                  ),
+                )}
+              </tbody>
+            </table>
           </Accordion>
         )
       })}
