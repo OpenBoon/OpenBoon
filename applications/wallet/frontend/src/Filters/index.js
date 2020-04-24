@@ -8,7 +8,7 @@ import FiltersContent from './Content'
 import FiltersMenu from './Menu'
 
 const Filters = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(true)
 
   const {
     query: { projectId, id: assetId = '', filters: f = '[]' },

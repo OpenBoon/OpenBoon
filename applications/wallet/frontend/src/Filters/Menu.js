@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { spacing, typography, constants } from '../Styles'
+import { spacing } from '../Styles'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import Button, { VARIANTS } from '../Button'
 
 import { dispatch, ACTIONS } from './helpers'
 
-import FiltersMenuOption from './MenuOption'
+import FiltersMenuSection from './MenuSection'
 
 const FiltersMenu = ({
   projectId,
@@ -18,6 +18,8 @@ const FiltersMenu = ({
   setIsMenuOpen,
 }) => {
   const [newFilters, setNewFilters] = useState({})
+
+  console.table(newFilters)
 
   const onClick = ({ type, attribute }) => (value) => {
     if (value) {
@@ -56,56 +58,15 @@ const FiltersMenu = ({
                   paddingBottom: spacing.base,
                 }}
               >
-                {Object.entries(value).map(([subKey, subValue], index, arr) =>
-                  Array.isArray(subValue) ? (
-                    <FiltersMenuOption
-                      key={subKey}
-                      option={subKey}
-                      onClick={onClick({
-                        type: subValue[0],
-                        attribute: `${key}.${subKey}`,
-                      })}
-                    />
-                  ) : (
-                    <div
-                      key={subKey}
-                      css={{
-                        marginLeft: -spacing.normal,
-                        marginRight: -spacing.normal,
-                        padding: spacing.moderate,
-                        paddingTop: index === 0 ? 0 : spacing.base,
-                        paddingBottom:
-                          index === arr.length - 1 ? 0 : spacing.base,
-                        borderTop:
-                          index !== 0 && !Array.isArray(subValue)
-                            ? constants.borders.largeDivider
-                            : '',
-                      }}
-                    >
-                      <h4
-                        css={{
-                          fontFamily: 'Roboto Mono',
-                          fontWeight: typography.weight.regular,
-                        }}
-                      >
-                        {subKey}
-                      </h4>
-
-                      {Object.entries(subValue).map(
-                        ([subSubKey, subSubValue]) => (
-                          <FiltersMenuOption
-                            key={subSubKey}
-                            option={subSubKey}
-                            onClick={onClick({
-                              type: subSubValue[0],
-                              attribute: `${key}.${subKey}.${subSubKey}`,
-                            })}
-                          />
-                        ),
-                      )}
-                    </div>
-                  ),
-                )}
+                {Object.entries(value).map(([subKey, subValue]) => (
+                  <FiltersMenuSection
+                    key={subKey}
+                    path={key}
+                    attribute={subKey}
+                    value={subValue}
+                    onClick={onClick}
+                  />
+                ))}
               </div>
             </Accordion>
           ),
