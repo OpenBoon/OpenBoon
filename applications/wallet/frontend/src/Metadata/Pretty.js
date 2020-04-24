@@ -1,10 +1,9 @@
 import assetShape from '../Asset/shape'
 
-import { colors, constants, spacing } from '../Styles'
+import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 
-import Accordion, { VARIANTS } from '../Accordion'
-
-import { formatDisplayName, formatDisplayValue } from './helpers'
+import MetadataPrettyRow from './PrettyRow'
+import { formatDisplayName } from './helpers'
 
 const MetadataPretty = ({ asset: { metadata } }) => {
   return (
@@ -12,12 +11,13 @@ const MetadataPretty = ({ asset: { metadata } }) => {
       {Object.keys(metadata).map((section) => {
         const title = formatDisplayName({ name: section })
 
-        if (['files', 'metrics', 'analysis'].includes(section)) return null
+        if (['files', 'metrics', 'analysis', 'location'].includes(section))
+          return null
 
         return (
           <Accordion
             key={section}
-            variant={VARIANTS.PANEL}
+            variant={ACCORDION_VARIANTS.PANEL}
             title={title}
             isInitiallyOpen
           >
@@ -29,45 +29,15 @@ const MetadataPretty = ({ asset: { metadata } }) => {
             >
               <tbody>
                 {Object.entries(metadata[section]).map(
-                  ([key, value], index) => {
-                    return (
-                      <tr
-                        key={key}
-                        css={{
-                          borderTop:
-                            index !== 0 ? constants.borders.divider : '',
-                          ':hover': {
-                            backgroundColor:
-                              colors.signal.electricBlue.background,
-                          },
-                        }}
-                      >
-                        <td
-                          valign="top"
-                          css={{
-                            fontFamily: 'Roboto Condensed',
-                            color: colors.structure.steel,
-                            padding: spacing.normal,
-                          }}
-                        >
-                          <span title={`${title.toLowerCase()}.${key}`}>
-                            {formatDisplayName({ name: key })}
-                          </span>
-                        </td>
-                        <td
-                          valign="top"
-                          css={{
-                            fontFamily: 'Roboto Mono',
-                            color: colors.structure.pebble,
-                            padding: spacing.normal,
-                            wordBreak: 'break-all',
-                          }}
-                        >
-                          {formatDisplayValue({ key, value })}
-                        </td>
-                      </tr>
-                    )
-                  },
+                  ([key, value], index) => (
+                    <MetadataPrettyRow
+                      key={key}
+                      name={key}
+                      value={value}
+                      title={title}
+                      index={index}
+                    />
+                  ),
                 )}
               </tbody>
             </table>

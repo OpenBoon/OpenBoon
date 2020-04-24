@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MetadataPrettyRow /> should render documents 1`] = `
+.emotion-5 {
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-5:hover {
+  background-color: #027aff38;
+}
+
+.emotion-5:hover td {
+  color: #ffffff;
+}
+
+.emotion-5:hover td svg {
+  display: inline-block;
+}
+
+.emotion-0 {
+  font-family: Roboto Condensed;
+  color: #808080;
+  padding: 16px;
+}
+
+.emotion-1 {
+  font-family: Roboto Mono;
+  color: #e0e0e0;
+  padding: 16px;
+  word-break: break-word;
+}
+
+.emotion-4 {
+  width: 36px;
+  padding-top: 16px;
+  padding-right: 16px;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2 {
+  display: none;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+}
+
+<tr
+  className="emotion-5"
+>
+  <td
+    className="emotion-0"
+    valign="top"
+  >
+    <span
+      title="media.content"
+    >
+      Content
+    </span>
+  </td>
+  <td
+    className="emotion-1"
+    title=" Chapter 23 the little prince encounters a merchant \\"Good morning,\\" said the little prince. \\"Good morning,\\" said the merchant. This was a merchant who sold pills that had been invented to quench thirst. You need only swallow one pill a week, and you would feel no need of anything to drink. \\"Why are you selling those?\\" asked the little prince. \\"Because they save a tremendous amount of time,\\" said the merchant. \\"Computations have been made by experts. With these pills, you save fifty-three minutes in every week.\\" \\"And what do I do with those fifty-three minutes?\\" \\"Anything you like...\\" \\"As for me,\\" said the little prince to himself, \\"if I had fifty-three minutes to spend as I liked, I should walk at my leisure toward a spring of fresh water.\\" 68 "
+    valign="top"
+  >
+     Chapter 23 the little prince encounters a merchant "Good morning," said the little prince. "Good morning," said the merchant. This was a merchant who sold pills that had been invented to quench thirst. You need only swallow one pill a week, and you would feel no need of anything to drink. "Why are ...
+  </td>
+  <td
+    className="emotion-4"
+    valign="top"
+  >
+    <button
+      className="emotion-3"
+      onClick={[Function]}
+      title="Copy to Clipboard"
+      type="button"
+    >
+      <svg
+        className="emotion-2"
+        color="#808080"
+        data-file-name="copy.svg"
+        width={20}
+      />
+    </button>
+  </td>
+</tr>
+`;
