@@ -27,10 +27,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
           onClick={() => {
             dispatch({
               action: ACTIONS.CLEAR_FILTERS,
-              payload: {
-                projectId,
-                assetId,
-              },
+              payload: { projectId, assetId },
             })
           }}
         >

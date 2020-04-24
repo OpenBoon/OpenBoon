@@ -74,11 +74,7 @@ const FiltersMenu = ({
       <div css={{ padding: spacing.base, display: 'flex' }}>
         <Button
           variant={VARIANTS.SECONDARY}
-          onClick={() => {
-            setIsMenuOpen(false)
-
-            setNewFilters({})
-          }}
+          onClick={() => setIsMenuOpen(false)}
           style={{ flex: 1 }}
         >
           x Cancel
