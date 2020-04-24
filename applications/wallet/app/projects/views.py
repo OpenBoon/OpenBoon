@@ -197,35 +197,29 @@ class BaseProjectViewSet(ViewSet):
 
         Args:
             request (Request): Request the view method was given.
+
+        Keyword Args:
             item_modifier (function): Each item dictionary returned by the API will be
               passed to this function along with the request. The function is expected to
               modify the item in place. The arguments are passed as (request, item).
+            base_url (str): The base ZMLP endpoint (minus the _search).
+            search_filter (dict<varies>): The json query to search for.
+            serializer_class (Serializer): An override to the default serializer for the response.
+            pagination_class (Paginator): An override to the default paginator for the response.
 
         Returns:
             Response: DRF Response that can be used directly by viewset action method.
 
         """
-        base_url = base_url or self.zmlp_root_api_path
         # Check for pagination query params first, and then check the post body
         payload = {'from': request.query_params.get('from', request.data.get('from', 0)),
-                   'size': request.query_params.get('size', request.data.get('size', self.pagination_class.default_limit))}  # noqa
+                   'size': request.query_params.get('size', request.data.get('size',
+                                                                             self.pagination_class.default_limit))}  # noqa
+        content = self._zmlp_get_content_from_es_search(request, base_url=base_url,
+                                                        search_filter=search_filter,
+                                                        payload=payload)
 
-        # Whitelist any of the ES specific query related terms
-        for term in ES_SEARCH_TERMS:
-            value = request.data.get(term)
-            if value:
-                payload[term] = value
-            if search_filter and term in search_filter:
-                payload[term] = search_filter[term]
-
-        path = os.path.join(base_url, '_search')
-        response = request.client.post(path, payload)
-        content = self._get_content(response)
-
-        items = content['hits']['hits']
-        for item in items:
-            if item_modifier:
-                item_modifier(request, item)
+        items = self._get_modified_items_from_content(request, content, item_modifier=item_modifier)
 
         if serializer_class:
             serializer = serializer_class(data=items, many=True)
@@ -244,6 +238,56 @@ class BaseProjectViewSet(ViewSet):
             paginator = self.pagination_class()
         paginator.prep_pagination_for_api_response(results, request)
         return paginator.get_paginated_response(results['list'])
+
+    def _zmlp_get_content_from_es_search(self, request, base_url=None, search_filter=None,
+                                         payload=None):
+        """Generates and runs the search query against a ZMLP ES endpoint from a request.
+
+        Args:
+            request (Request): Request the view method was given.
+
+        Keyword Args:
+            base_url (str): The base ZMLP endpoint (minus the _search).
+            search_filter (dict<varies>): The json query to search for.
+            payload (dict): Optional payload to include with the request
+
+        Returns:
+            (dict<varies>): The dict of results from the ES endpoint.
+        """
+        base_url = base_url or self.zmlp_root_api_path
+        payload = payload or {}
+
+        # Whitelist any of the ES specific query related terms
+        for term in ES_SEARCH_TERMS:
+            value = request.data.get(term)
+            if value:
+                payload[term] = value
+            if search_filter and term in search_filter:
+                payload[term] = search_filter[term]
+
+        path = os.path.join(base_url, '_search')
+        response = request.client.post(path, payload)
+        return self._get_content(response)
+
+    def _get_modified_items_from_content(self, request, content, item_modifier=None):
+        """Modifies the structure of each item with the given item modifier and returns them.
+
+        Args:
+            request (Request): Request the view method was given.
+            content (list): The raw dict items from an ES search endpoint.
+
+        Keyword Args:
+            item_modifier (function): The function to run over each individual item.
+
+        Returns:
+            (list): The modified items
+        """
+        items = content['hits']['hits']
+        for item in items:
+            if item_modifier:
+                item_modifier(request, item)
+
+        return items
 
     def _zmlp_list_from_root(self, request):
         """The result of this method can be returned for the list method of a concrete

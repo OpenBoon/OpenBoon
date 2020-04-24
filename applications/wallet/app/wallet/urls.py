@@ -35,7 +35,7 @@ from projects.views import ProjectViewSet, ProjectUserViewSet
 from registration.views import UserRegistrationView, UserConfirmationView, \
     ApiPasswordChangeView
 from roles.views import RolesViewSet
-from searches.views import SearchViewSet
+from searches.views import SearchViewSet, MetadataExportViewSet
 from subscriptions.views import SubscriptionViewSet
 from wallet import views as wallet_views
 from wallet.views import MeView
@@ -63,7 +63,9 @@ projects_router.register('data_sources', DataSourceViewSet, basename='datasource
 projects_router.register('subscriptions', SubscriptionViewSet, basename='subscription')
 projects_router.register('modules', ModuleViewSet, basename='module')
 projects_router.register('providers', ProviderViewSet, basename='provider')
+projects_router.register('searches/export', MetadataExportViewSet, basename='export')
 projects_router.register('searches', SearchViewSet, basename='search')
+
 
 assets_files_router = NestedSimpleRouter(projects_router, 'assets', lookup='asset')
 assets_files_router.register('files/category', FileCategoryViewSet, basename='category')
