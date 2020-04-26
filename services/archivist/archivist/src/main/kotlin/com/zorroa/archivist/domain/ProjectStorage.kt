@@ -80,7 +80,12 @@ class ProjectStorageRequest(
 
     @ApiModelProperty("Arbitrary attrs associated with file.")
     var attrs: Map<String, Any> = mapOf()
-)
+) {
+
+    fun getLocator(): ProjectFileLocator {
+        return ProjectFileLocator(entity, entityId, category, name)
+    }
+}
 
 /**
  * The ProjectStorageLocator Interface defines the based properties needed
@@ -90,7 +95,7 @@ class ProjectStorageRequest(
 interface ProjectStorageLocator {
 
     /**
-     * The category is the final directory before the file.
+     * The category of file, which is the dir the file lives in.
      */
     val category: String
 

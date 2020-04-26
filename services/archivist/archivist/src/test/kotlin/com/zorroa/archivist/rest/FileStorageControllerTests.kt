@@ -55,6 +55,96 @@ class FileStorageControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testGetSignedUploadUri() {
+
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val rsp = assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                assets = listOf(spec)
+            )
+        )
+        val id = rsp.created[0]
+        val payload = """
+            {
+                "entityId": "$id",
+                "entity": "asset",
+                "category": "image",
+                "name": "toucan.jpg",
+                "attrs": {
+                    "foo": "bar"
+                }
+            }
+        """.trimIndent()
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/files/_signed_upload_uri")
+                .content(payload)
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(job())
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.uri", CoreMatchers.anything()))
+            .andReturn()
+    }
+
+    @Test
+    fun testSetAttrs() {
+
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val rsp = assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                assets = listOf(spec)
+            )
+        )
+        val id = rsp.created[0]
+        val file = MockMultipartFile(
+            "file", "toucan.jpg", "image/jpeg",
+            File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
+        )
+
+        val payload = """
+            {
+                "entityId": "$id",
+                "entity": "asset",
+                "category": "image",
+                "name": "toucan.jpg",
+                "attrs": {
+                    "foo": "bar"
+                }
+            }
+        """.trimIndent()
+
+        val body = MockMultipartFile(
+            "body", "",
+            "application/json",
+            payload.toByteArray()
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.multipart("/api/v3/files/_upload")
+                .file(body)
+                .file(file)
+                .headers(job())
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.category", CoreMatchers.equalTo("image")))
+            .andExpect(jsonPath("$.name", CoreMatchers.equalTo("toucan.jpg")))
+            .andExpect(jsonPath("$.size", CoreMatchers.equalTo(97221)))
+            .andReturn()
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/files/_attrs")
+                .content(payload)
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(job())
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.category", CoreMatchers.equalTo("image")))
+            .andExpect(jsonPath("$.name", CoreMatchers.equalTo("toucan.jpg")))
+            .andExpect(jsonPath("$.size", CoreMatchers.equalTo(97221)))
+            .andReturn()
+    }
+
+    @Test
     fun testUploadFileToAsset() {
 
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")

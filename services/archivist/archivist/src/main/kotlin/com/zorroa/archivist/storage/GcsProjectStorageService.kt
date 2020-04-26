@@ -2,6 +2,7 @@ package com.zorroa.archivist.storage
 
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
+import com.google.cloud.storage.HttpMethod
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageException
 import com.google.cloud.storage.StorageOptions
@@ -10,6 +11,7 @@ import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectStorageLocator
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.IndexRoutingService
+import com.zorroa.archivist.util.FileUtils
 import com.zorroa.zmlp.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
@@ -51,7 +53,7 @@ class GcsProjectStorageService constructor(
         return FileStorage(
             spec.locator.getFileId(),
             spec.locator.name,
-            spec.locator.category.toLowerCase(),
+            spec.locator.category,
             spec.mimetype,
             spec.data.size.toLong(),
             spec.attrs
@@ -82,6 +84,43 @@ class GcsProjectStorageService constructor(
     override fun getNativeUri(locator: ProjectStorageLocator): String {
         val path = locator.getPath()
         return "gs://${properties.bucket}/$path"
+    }
+
+    override fun getSignedUrl(
+        locator: ProjectStorageLocator,
+        forWrite: Boolean,
+        duration: Long,
+        unit: TimeUnit
+    ): String {
+        val path = locator.getPath()
+        val contentType = FileUtils.getMediaType(path)
+
+        val info = BlobInfo.newBuilder(properties.bucket, path).setContentType(contentType).build()
+        val opts = if (forWrite) {
+            arrayOf(Storage.SignUrlOption.withContentType(),
+                Storage.SignUrlOption.httpMethod(HttpMethod.PUT))
+        } else {
+            arrayOf(Storage.SignUrlOption.httpMethod(HttpMethod.GET))
+        }
+
+        logSignEvent(path, forWrite)
+        return gcs.signUrl(info, duration, unit, *opts).toString()
+    }
+
+    override fun setAttrs(locator: ProjectStorageLocator, attrs: Map<String, Any>): FileStorage {
+        val path = locator.getPath()
+        val info = BlobInfo.newBuilder(properties.bucket, path)
+            .setMetadata(mapOf("attrs" to Json.serializeToString(attrs)))
+            .build()
+
+        return FileStorage(
+            locator.getFileId(),
+            locator.name,
+            locator.category,
+            info.contentType,
+            info.size,
+            attrs
+        )
     }
 
     override fun recursiveDelete(locator: ProjectDirLocator) {
