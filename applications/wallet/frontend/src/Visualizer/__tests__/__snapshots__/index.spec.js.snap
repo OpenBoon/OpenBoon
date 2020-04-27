@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Visualizer /> should render properly 1`] = `
-.emotion-13 {
+.emotion-15 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -20,7 +20,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   flex-direction: column;
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -240,7 +240,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   color: #808080;
 }
 
-.emotion-11 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -248,7 +248,7 @@ exports[`<Visualizer /> should render properly 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -259,11 +259,17 @@ exports[`<Visualizer /> should render properly 1`] = `
   padding-left: 1px;
 }
 
+.emotion-9 {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
 <div
-  className="emotion-13"
+  className="emotion-15"
 >
   <div
-    className="emotion-12"
+    className="emotion-14"
   >
     <div
       className="emotion-3"
@@ -279,7 +285,7 @@ exports[`<Visualizer /> should render properly 1`] = `
         >
           <svg
             aria-hidden={true}
-            data-file-name="accountDashboard.svg"
+            data-file-name="filter.svg"
             width={20}
           />
         </button>
@@ -329,10 +335,10 @@ exports[`<Visualizer /> should render properly 1`] = `
       </div>
     </div>
     <div
-      className="emotion-11"
+      className="emotion-13"
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <button
           aria-label="Asset Metadata"
@@ -343,6 +349,19 @@ exports[`<Visualizer /> should render properly 1`] = `
           <svg
             aria-hidden={true}
             data-file-name="information.svg"
+            width={20}
+          />
+        </button>
+        <button
+          aria-label="Export"
+          className="emotion-0"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            className="emotion-9"
+            data-file-name="upload.svg"
             width={20}
           />
         </button>
@@ -356,7 +375,7 @@ exports[`<Visualizer /> should render properly 1`] = `
 `;
 
 exports[`<Visualizer /> should render selected asset 1`] = `
-.emotion-13 {
+.emotion-15 {
   height: 100%;
   background-color: #191919;
   margin-left: -32px;
@@ -375,7 +394,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   flex-direction: column;
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -595,7 +614,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   color: #808080;
 }
 
-.emotion-11 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -603,7 +622,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-10 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -614,11 +633,17 @@ exports[`<Visualizer /> should render selected asset 1`] = `
   padding-left: 1px;
 }
 
+.emotion-9 {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
 <div
-  className="emotion-13"
+  className="emotion-15"
 >
   <div
-    className="emotion-12"
+    className="emotion-14"
   >
     <div
       className="emotion-3"
@@ -634,7 +659,7 @@ exports[`<Visualizer /> should render selected asset 1`] = `
         >
           <svg
             aria-hidden={true}
-            data-file-name="accountDashboard.svg"
+            data-file-name="filter.svg"
             width={20}
           />
         </button>
@@ -684,10 +709,10 @@ exports[`<Visualizer /> should render selected asset 1`] = `
       </div>
     </div>
     <div
-      className="emotion-11"
+      className="emotion-13"
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <button
           aria-label="Asset Metadata"
@@ -698,6 +723,19 @@ exports[`<Visualizer /> should render selected asset 1`] = `
           <svg
             aria-hidden={true}
             data-file-name="information.svg"
+            width={20}
+          />
+        </button>
+        <button
+          aria-label="Export"
+          className="emotion-0"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            aria-hidden={true}
+            className="emotion-9"
+            data-file-name="upload.svg"
             width={20}
           />
         </button>
