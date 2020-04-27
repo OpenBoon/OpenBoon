@@ -10,7 +10,7 @@ const BBOX_SIZE = 56
 const MODULES = {
   'zvi-object-detection': {
     columns: ['bbox', 'label', 'score'],
-    labels: { bbox: 'bbox', label: 'label', score: 'confidence Score' },
+    labels: { bbox: 'bbox', label: 'label', score: 'confidence score' },
   },
   'zvi-label-detection': {
     columns: ['label', 'score'],
@@ -19,7 +19,7 @@ const MODULES = {
 }
 
 const MetadataAnalysisClassification = ({ moduleName, moduleIndex }) => {
-  const attr = `analysis.${moduleName}&width=56`
+  const attr = `analysis.${moduleName}&width=${BBOX_SIZE}`
 
   const {
     query: { projectId, id: assetId },
@@ -58,18 +58,18 @@ const MetadataAnalysisClassification = ({ moduleName, moduleIndex }) => {
       </div>
       <table
         css={{
+          fontFamily: 'Roboto Mono',
+          color: colors.structure.white,
           width: '100%',
           td: {
             paddingRight: spacing.base,
           },
-          fontFamily: 'Roboto Mono',
-          color: colors.structure.white,
         }}
       >
         <thead>
           <tr>
             {columns.map((column, index) => {
-              const shouldFillWidth = index === columns.length - 2
+              const shouldExpand = index === columns.length - 2
 
               return (
                 <td
@@ -78,7 +78,7 @@ const MetadataAnalysisClassification = ({ moduleName, moduleIndex }) => {
                     fontFamily: 'Roboto Condensed',
                     textTransform: 'uppercase',
                     color: colors.structure.steel,
-                    width: shouldFillWidth ? '100%' : '',
+                    width: shouldExpand ? '100%' : '',
                     paddingBottom: spacing.normal,
                     '&:last-child': {
                       textAlign: 'right',
@@ -114,7 +114,6 @@ const MetadataAnalysisClassification = ({ moduleName, moduleIndex }) => {
                             height: BBOX_SIZE,
                             width: BBOX_SIZE,
                             objectFit: 'contain',
-                            overflow: 'hidden',
                           }}
                           alt={prediction.bbox}
                           title={prediction.bbox}
