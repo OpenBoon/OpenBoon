@@ -190,7 +190,7 @@ Array [
       </button>
     </div>
   </div>,
-  .emotion-353 {
+  .emotion-355 {
   overflow: auto;
 }
 
@@ -372,8 +372,31 @@ Array [
   padding-right: 16px;
 }
 
+.emotion-338 {
+  font-family: Roboto Mono;
+  color: #ffffff;
+  padding: 16px;
+}
+
+.emotion-338:hover {
+  background-color: #027aff38;
+}
+
+.emotion-338:hover td {
+  color: #ffffff;
+}
+
+.emotion-338:hover td svg {
+  display: inline-block;
+}
+
+.emotion-339 {
+  padding: 16px;
+  word-wrap: break-word;
+}
+
 <div
-    className="emotion-353"
+    className="emotion-355"
   >
     <div
       className="emotion-48"
@@ -2365,7 +2388,16 @@ Array [
         className="emotion-47"
       >
         <div>
-          analysis
+          <div
+            className="emotion-338"
+          >
+            zvi
+          </div>
+          <div
+            className="emotion-339"
+          >
+            {"tinyProxy":["#f3dfc3","#f4efd8","#c18f46","#ebdfbd","#ccd3c0","#e7d4bb","#beae8e","#cabf9e","#d2c09c"]}
+          </div>
         </div>
       </div>
     </div>
