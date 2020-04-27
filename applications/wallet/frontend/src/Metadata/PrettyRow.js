@@ -11,19 +11,17 @@ import { formatDisplayName, formatDisplayValue } from './helpers'
 
 const COPY_WIDTH = 20
 
-const MetadataPrettyRow = ({ name, value, title, index, indentation }) => {
+const MetadataPrettyRow = ({ name, value, title, index }) => {
   const [isCopied, setCopied] = useClipboard(value, { successDuration: 1000 })
 
   if (typeof value === 'object') {
     return (
       <>
-        <tr
+        <div
           css={{
-            borderTop: index !== 0 ? constants.borders.divider : '',
+            borderTop: constants.borders.divider,
             ':hover': {
-              backgroundColor: colors.signal.electricBlue.background,
-              td: {
-                color: colors.structure.white,
+              div: {
                 svg: {
                   display: 'inline-block',
                 },
@@ -31,43 +29,47 @@ const MetadataPrettyRow = ({ name, value, title, index, indentation }) => {
             },
           }}
         >
-          <td
-            valign="top"
+          <div
             css={{
               fontFamily: 'Roboto Condensed',
               color: colors.structure.steel,
               padding: spacing.normal,
+              paddingBottom: 0,
+              width: '20%',
             }}
           >
             <span title={`${title.toLowerCase()}.${name}`}>
               {formatDisplayName({ name })}
             </span>
-          </td>
-          <td />
-          <td />
-        </tr>
+          </div>
+          <div />
+        </div>
 
-        {Object.entries(value).map(([k, v], i) => (
-          <MetadataPrettyRow
-            key={k}
-            name={k}
-            value={v}
-            title={title}
-            index={i}
-            indentation={indentation + 1}
-          />
-        ))}
+        <div
+          css={{ paddingLeft: spacing.normal, paddingRight: spacing.normal }}
+        >
+          {Object.entries(value).map(([k, v], i) => (
+            <MetadataPrettyRow
+              key={k}
+              name={k}
+              value={v}
+              title={title}
+              index={i}
+            />
+          ))}
+        </div>
       </>
     )
   }
 
   return (
-    <tr
+    <div
       css={{
+        display: 'flex',
         borderTop: index !== 0 ? constants.borders.divider : '',
         ':hover': {
           backgroundColor: colors.signal.electricBlue.background,
-          td: {
+          div: {
             color: colors.structure.white,
             svg: {
               display: 'inline-block',
@@ -76,23 +78,22 @@ const MetadataPrettyRow = ({ name, value, title, index, indentation }) => {
         },
       }}
     >
-      <td
-        valign="top"
+      <div
         css={{
-          paddingLeft: indentation * spacing.normal,
           fontFamily: 'Roboto Condensed',
           color: colors.structure.steel,
           padding: spacing.normal,
+          width: '20%',
         }}
       >
         <span title={`${title.toLowerCase()}.${name}`}>
           {formatDisplayName({ name })}
         </span>
-      </td>
-      <td
-        valign="top"
+      </div>
+      <div
         title={value}
         css={{
+          flex: 1,
           fontFamily: 'Roboto Mono',
           color: colors.structure.pebble,
           padding: spacing.normal,
@@ -100,9 +101,8 @@ const MetadataPrettyRow = ({ name, value, title, index, indentation }) => {
         }}
       >
         {formatDisplayValue({ name, value })}
-      </td>
-      <td
-        valign="top"
+      </div>
+      <div
         css={{
           width: COPY_WIDTH + spacing.normal,
           paddingTop: spacing.normal,
@@ -126,17 +126,20 @@ const MetadataPrettyRow = ({ name, value, title, index, indentation }) => {
             }}
           />
         </Button>
-      </td>
-    </tr>
+      </div>
+    </div>
   )
 }
 
 MetadataPrettyRow.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.shape({}),
+  ]).isRequired,
   title: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
-  indentation: PropTypes.number.isRequired,
 }
 
 export default MetadataPrettyRow

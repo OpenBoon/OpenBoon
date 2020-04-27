@@ -5,26 +5,22 @@ import MetadataPrettyRow from './PrettyRow'
 import { constants } from '../Styles'
 
 const MetadataPretty = ({ metadata, title, section }) => {
-  if (['metrics', 'analysis', 'location'].includes(section)) return null
-
-  if (['files', 'metrics', 'location'].includes(section)) return null
+  if (['metrics'].includes(section)) return null
 
   if (section === 'analysis') {
     return <MetadataAnalysis />
   }
+
   if (Array.isArray(metadata[section])) {
     return metadata[section].map((file, index) => (
-      <table
+      <div
+        // eslint-disable-next-line react/no-array-index-key
+        key={`${section}${index}`}
         css={{
-          border: `1px solid white`,
-          'td, th': {
-            border: `1px solid white`,
-          },
-          borderCollapse: 'collapse',
           width: '100%',
         }}
       >
-        <tbody
+        <div
           css={{
             borderTop: index !== 0 ? constants.borders.prettyMetadata : '',
           }}
@@ -39,23 +35,18 @@ const MetadataPretty = ({ metadata, title, section }) => {
               indentation={0}
             />
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     ))
   }
 
   return (
-    <table
+    <div
       css={{
-        border: `1px solid white`,
-        'td, th': {
-          border: `1px solid white`,
-        },
-        borderCollapse: 'collapse',
         width: '100%',
       }}
     >
-      <tbody>
+      <div>
         {Object.entries(metadata[section]).map(([key, value], index) => {
           return (
             <MetadataPrettyRow
@@ -68,8 +59,8 @@ const MetadataPretty = ({ metadata, title, section }) => {
             />
           )
         })}
-      </tbody>
-    </table>
+      </div>
+    </div>
   )
 }
 

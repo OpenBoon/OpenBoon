@@ -25,7 +25,7 @@ export const formatDisplayName = ({ name }) =>
     .join(' ')
 
 export const formatDisplayValue = ({ name, value }) => {
-  if (name === 'filesize') {
+  if (name.includes('size')) {
     return bytesToSize({ bytes: value })
   }
 
