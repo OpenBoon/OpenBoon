@@ -26,7 +26,7 @@ from rest_framework_nested.routers import NestedSimpleRouter
 from agreements.views import AgreementViewSet
 from apikeys.views import ApikeyViewSet
 from assets.views import (AssetViewSet, FileCategoryViewSet,
-                          FileNameViewSet, SourceFileViewSet)
+                          FileNameViewSet)
 from datasources.views import DataSourceViewSet
 from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet, JobTaskViewSet
 from modules.views import ModuleViewSet, ProviderViewSet
@@ -69,7 +69,6 @@ projects_router.register('searches', SearchViewSet, basename='search')
 
 assets_files_router = NestedSimpleRouter(projects_router, 'assets', lookup='asset')
 assets_files_router.register('files/category', FileCategoryViewSet, basename='category')
-assets_files_router.register('files/source', SourceFileViewSet, basename='source')
 
 assets_file_names_router = NestedSimpleRouter(assets_files_router, 'files/category', lookup='category')  # noqa
 assets_file_names_router.register('name', FileNameViewSet, basename='file_name')
