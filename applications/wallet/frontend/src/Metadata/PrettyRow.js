@@ -11,8 +11,55 @@ import { formatDisplayName, formatDisplayValue } from './helpers'
 
 const COPY_WIDTH = 20
 
-const MetadataPrettyRow = ({ name, value, title, index }) => {
+const MetadataPrettyRow = ({ name, value, title, index, indentation }) => {
   const [isCopied, setCopied] = useClipboard(value, { successDuration: 1000 })
+
+  if (typeof value === 'object') {
+    return (
+      <>
+        <tr
+          css={{
+            borderTop: index !== 0 ? constants.borders.divider : '',
+            ':hover': {
+              backgroundColor: colors.signal.electricBlue.background,
+              td: {
+                color: colors.structure.white,
+                svg: {
+                  display: 'inline-block',
+                },
+              },
+            },
+          }}
+        >
+          <td
+            valign="top"
+            css={{
+              fontFamily: 'Roboto Condensed',
+              color: colors.structure.steel,
+              padding: spacing.normal,
+            }}
+          >
+            <span title={`${title.toLowerCase()}.${name}`}>
+              {formatDisplayName({ name })}
+            </span>
+          </td>
+          <td />
+          <td />
+        </tr>
+
+        {Object.entries(value).map(([k, v], i) => (
+          <MetadataPrettyRow
+            key={k}
+            name={k}
+            value={v}
+            title={title}
+            index={i}
+            indentation={indentation + 1}
+          />
+        ))}
+      </>
+    )
+  }
 
   return (
     <tr
@@ -32,6 +79,7 @@ const MetadataPrettyRow = ({ name, value, title, index }) => {
       <td
         valign="top"
         css={{
+          paddingLeft: indentation * spacing.normal,
           fontFamily: 'Roboto Condensed',
           color: colors.structure.steel,
           padding: spacing.normal,
@@ -88,6 +136,7 @@ MetadataPrettyRow.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   title: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
+  indentation: PropTypes.number.isRequired,
 }
 
 export default MetadataPrettyRow

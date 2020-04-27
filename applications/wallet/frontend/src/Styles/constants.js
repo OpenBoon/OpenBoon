@@ -23,6 +23,7 @@ const borders = {
   assetInactive: `4px solid ${colors.transparent}`,
   assetHover: `4px solid ${colors.structure.white}`,
   assetSelected: `4px solid ${colors.signal.electricBlue.base}`,
+  prettyMetadata: `4px solid ${colors.structure.iron}`,
 }
 
 const opacity = {
