@@ -213,8 +213,8 @@ class GcsClusterBackupService(
 }
 
 @Service
-@Profile ("test", "none")
-class nullClusterBackupService(): ClusterBackupService{
+@Profile("test", "none")
+class NullClusterBackupService() : ClusterBackupService {
     override fun createClusterRepository(cluster: IndexCluster) {
         TODO("Not yet implemented")
     }
