@@ -152,7 +152,7 @@ const bboxAsset = {
   },
 }
 
-export const boxImages = {
+export const boxImagesResponse = {
   'zvi-object-detection': {
     count: 2,
     type: 'labels',
