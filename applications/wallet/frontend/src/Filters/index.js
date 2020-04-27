@@ -2,8 +2,6 @@ import { useState } from 'react'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
-import { colors } from '../Styles'
-
 import FiltersContent from './Content'
 import FiltersMenu from './Menu'
 
@@ -20,33 +18,21 @@ const Filters = () => {
 
   const filters = JSON.parse(f || '[]')
 
-  return (
-    <div
-      css={{
-        flex: 1,
-        backgroundColor: colors.structure.lead,
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-      }}
-    >
-      {isMenuOpen ? (
-        <FiltersMenu
-          projectId={projectId}
-          assetId={assetId}
-          filters={filters}
-          fields={fields}
-          setIsMenuOpen={setIsMenuOpen}
-        />
-      ) : (
-        <FiltersContent
-          projectId={projectId}
-          assetId={assetId}
-          filters={filters}
-          setIsMenuOpen={setIsMenuOpen}
-        />
-      )}
-    </div>
+  return isMenuOpen ? (
+    <FiltersMenu
+      projectId={projectId}
+      assetId={assetId}
+      filters={filters}
+      fields={fields}
+      setIsMenuOpen={setIsMenuOpen}
+    />
+  ) : (
+    <FiltersContent
+      projectId={projectId}
+      assetId={assetId}
+      filters={filters}
+      setIsMenuOpen={setIsMenuOpen}
+    />
   )
 }
 

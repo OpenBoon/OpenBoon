@@ -1,21 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Filters /> should open the menu 1`] = `
-.emotion-83 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  background-color: #252525;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  overflow: hidden;
-}
-
 .emotion-78 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -377,425 +362,406 @@ exports[`<Filters /> should open the menu 1`] = `
 }
 
 <div
-  className="emotion-83"
+  className="emotion-82"
 >
   <div
-    className="emotion-82"
+    className="emotion-77"
   >
     <div
-      className="emotion-77"
+      className="emotion-40"
     >
       <div
-        className="emotion-40"
+        className="emotion-39"
       >
         <div
-          className="emotion-39"
+          className="emotion-3"
+        >
+          <button
+            aria-label="Collapse Section"
+            className="emotion-1"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-0"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-2"
+          >
+            analysis
+          </h4>
+        </div>
+        <div
+          className="emotion-38"
         >
           <div
-            className="emotion-3"
-          >
-            <button
-              aria-label="Collapse Section"
-              className="emotion-1"
-              onClick={[Function]}
-              type="button"
-            >
-              <svg
-                className="emotion-0"
-                color="#808080"
-                data-file-name="chevron.svg"
-                width={20}
-              />
-            </button>
-            <h4
-              className="emotion-2"
-            >
-              analysis
-            </h4>
-          </div>
-          <div
-            className="emotion-38"
+            className="emotion-37"
           >
             <div
-              className="emotion-37"
+              className="emotion-14"
             >
-              <div
-                className="emotion-14"
+              <h4
+                className="emotion-4"
               >
-                <h4
-                  className="emotion-4"
-                >
-                  zvi
-                </h4>
+                zvi
+              </h4>
+              <div
+                className="emotion-13"
+              >
                 <div
-                  className="emotion-13"
+                  className="emotion-12"
                 >
-                  <div
-                    className="emotion-12"
+                  <label
+                    className="emotion-11"
                   >
-                    <label
-                      className="emotion-11"
+                    <div
+                      className="emotion-8"
                     >
+                      <input
+                        className="emotion-5"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="analysis.zvi.tinyProxy"
+                      />
                       <div
-                        className="emotion-8"
+                        className="emotion-7"
                       >
-                        <input
-                          className="emotion-5"
-                          defaultChecked={false}
-                          onClick={[Function]}
-                          type="checkbox"
-                          value="analysis.zvi.tinyProxy"
+                        <svg
+                          className="emotion-6"
+                          data-file-name="checkmark.svg"
+                          width={20}
                         />
-                        <div
-                          className="emotion-7"
-                        >
-                          <svg
-                            className="emotion-6"
-                            data-file-name="checkmark.svg"
-                            width={20}
-                          />
-                        </div>
                       </div>
-                      <div
-                        className="emotion-10"
+                    </div>
+                    <div
+                      className="emotion-10"
+                    >
+                      <span
+                        className="emotion-9"
                       >
-                        <span
-                          className="emotion-9"
-                        >
-                          tinyProxy
-                        </span>
-                      </div>
-                    </label>
-                  </div>
+                        tinyProxy
+                      </span>
+                    </div>
+                  </label>
                 </div>
               </div>
-              <div
-                className="emotion-14"
+            </div>
+            <div
+              className="emotion-14"
+            >
+              <h4
+                className="emotion-4"
               >
-                <h4
-                  className="emotion-4"
-                >
-                  zvi-image-similarity
-                </h4>
+                zvi-image-similarity
+              </h4>
+              <div
+                className="emotion-13"
+              >
                 <div
-                  className="emotion-13"
+                  className="emotion-12"
                 >
-                  <div
-                    className="emotion-12"
+                  <label
+                    className="emotion-11"
                   >
-                    <label
-                      className="emotion-11"
+                    <div
+                      className="emotion-8"
                     >
+                      <input
+                        className="emotion-5"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="analysis.zvi-image-similarity.simhash"
+                      />
                       <div
-                        className="emotion-8"
+                        className="emotion-7"
                       >
-                        <input
-                          className="emotion-5"
-                          defaultChecked={false}
-                          onClick={[Function]}
-                          type="checkbox"
-                          value="analysis.zvi-image-similarity.simhash"
+                        <svg
+                          className="emotion-6"
+                          data-file-name="checkmark.svg"
+                          width={20}
                         />
-                        <div
-                          className="emotion-7"
-                        >
-                          <svg
-                            className="emotion-6"
-                            data-file-name="checkmark.svg"
-                            width={20}
-                          />
-                        </div>
                       </div>
-                      <div
-                        className="emotion-10"
+                    </div>
+                    <div
+                      className="emotion-10"
+                    >
+                      <span
+                        className="emotion-9"
                       >
-                        <span
-                          className="emotion-9"
-                        >
-                          simhash
-                        </span>
-                      </div>
-                    </label>
-                  </div>
+                        simhash
+                      </span>
+                    </div>
+                  </label>
                 </div>
               </div>
-              <div
-                className="emotion-14"
+            </div>
+            <div
+              className="emotion-14"
+            >
+              <h4
+                className="emotion-4"
               >
-                <h4
-                  className="emotion-4"
-                >
-                  zvi-object-detection
-                </h4>
+                zvi-object-detection
+              </h4>
+              <div
+                className="emotion-13"
+              >
                 <div
-                  className="emotion-13"
+                  className="emotion-12"
                 >
-                  <div
-                    className="emotion-12"
+                  <label
+                    className="emotion-11"
                   >
-                    <label
-                      className="emotion-11"
+                    <div
+                      className="emotion-8"
                     >
+                      <input
+                        className="emotion-5"
+                        defaultChecked={false}
+                        onClick={[Function]}
+                        type="checkbox"
+                        value="analysis.zvi-object-detection.count"
+                      />
                       <div
-                        className="emotion-8"
+                        className="emotion-7"
                       >
-                        <input
-                          className="emotion-5"
-                          defaultChecked={false}
-                          onClick={[Function]}
-                          type="checkbox"
-                          value="analysis.zvi-object-detection.count"
+                        <svg
+                          className="emotion-6"
+                          data-file-name="checkmark.svg"
+                          width={20}
                         />
-                        <div
-                          className="emotion-7"
-                        >
-                          <svg
-                            className="emotion-6"
-                            data-file-name="checkmark.svg"
-                            width={20}
-                          />
-                        </div>
                       </div>
-                      <div
-                        className="emotion-10"
+                    </div>
+                    <div
+                      className="emotion-10"
+                    >
+                      <span
+                        className="emotion-9"
                       >
-                        <span
-                          className="emotion-9"
-                        >
-                          count
-                        </span>
-                      </div>
-                    </label>
-                  </div>
+                        count
+                      </span>
+                    </div>
+                  </label>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div
+      className="emotion-40"
+    >
       <div
-        className="emotion-40"
+        className="emotion-39"
       >
         <div
-          className="emotion-39"
+          className="emotion-3"
         >
-          <div
-            className="emotion-3"
+          <button
+            aria-label="Expand Section"
+            className="emotion-1"
+            onClick={[Function]}
+            type="button"
           >
-            <button
-              aria-label="Expand Section"
-              className="emotion-1"
-              onClick={[Function]}
-              type="button"
-            >
-              <svg
-                className="emotion-41"
-                color="#808080"
-                data-file-name="chevron.svg"
-                width={20}
-              />
-            </button>
-            <h4
-              className="emotion-2"
-            >
-              clip
-            </h4>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-40"
-      >
-        <div
-          className="emotion-39"
-        >
-          <div
-            className="emotion-3"
+            <svg
+              className="emotion-41"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-2"
           >
-            <button
-              aria-label="Expand Section"
-              className="emotion-1"
-              onClick={[Function]}
-              type="button"
-            >
-              <svg
-                className="emotion-41"
-                color="#808080"
-                data-file-name="chevron.svg"
-                width={20}
-              />
-            </button>
-            <h4
-              className="emotion-2"
-            >
-              location
-            </h4>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-40"
-      >
-        <div
-          className="emotion-39"
-        >
-          <div
-            className="emotion-3"
-          >
-            <button
-              aria-label="Expand Section"
-              className="emotion-1"
-              onClick={[Function]}
-              type="button"
-            >
-              <svg
-                className="emotion-41"
-                color="#808080"
-                data-file-name="chevron.svg"
-                width={20}
-              />
-            </button>
-            <h4
-              className="emotion-2"
-            >
-              media
-            </h4>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-40"
-      >
-        <div
-          className="emotion-39"
-        >
-          <div
-            className="emotion-3"
-          >
-            <button
-              aria-label="Expand Section"
-              className="emotion-1"
-              onClick={[Function]}
-              type="button"
-            >
-              <svg
-                className="emotion-41"
-                color="#808080"
-                data-file-name="chevron.svg"
-                width={20}
-              />
-            </button>
-            <h4
-              className="emotion-2"
-            >
-              metrics
-            </h4>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-40"
-      >
-        <div
-          className="emotion-39"
-        >
-          <div
-            className="emotion-3"
-          >
-            <button
-              aria-label="Expand Section"
-              className="emotion-1"
-              onClick={[Function]}
-              type="button"
-            >
-              <svg
-                className="emotion-41"
-                color="#808080"
-                data-file-name="chevron.svg"
-                width={20}
-              />
-            </button>
-            <h4
-              className="emotion-2"
-            >
-              source
-            </h4>
-          </div>
-        </div>
-      </div>
-      <div
-        className="emotion-40"
-      >
-        <div
-          className="emotion-39"
-        >
-          <div
-            className="emotion-3"
-          >
-            <button
-              aria-label="Expand Section"
-              className="emotion-1"
-              onClick={[Function]}
-              type="button"
-            >
-              <svg
-                className="emotion-41"
-                color="#808080"
-                data-file-name="chevron.svg"
-                width={20}
-              />
-            </button>
-            <h4
-              className="emotion-2"
-            >
-              system
-            </h4>
-          </div>
+            clip
+          </h4>
         </div>
       </div>
     </div>
     <div
-      className="emotion-81"
+      className="emotion-40"
     >
-      <button
-        className="emotion-78"
-        onClick={[Function]}
-        type="button"
-      >
-        x Cancel
-      </button>
       <div
-        className="emotion-79"
-      />
-      <button
-        aria-disabled={true}
-        className="emotion-80"
-        onClick={[Function]}
-        type="button"
+        className="emotion-39"
       >
-        + Add Selected Filters
-      </button>
+        <div
+          className="emotion-3"
+        >
+          <button
+            aria-label="Expand Section"
+            className="emotion-1"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-41"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-2"
+          >
+            location
+          </h4>
+        </div>
+      </div>
     </div>
+    <div
+      className="emotion-40"
+    >
+      <div
+        className="emotion-39"
+      >
+        <div
+          className="emotion-3"
+        >
+          <button
+            aria-label="Expand Section"
+            className="emotion-1"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-41"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-2"
+          >
+            media
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-40"
+    >
+      <div
+        className="emotion-39"
+      >
+        <div
+          className="emotion-3"
+        >
+          <button
+            aria-label="Expand Section"
+            className="emotion-1"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-41"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-2"
+          >
+            metrics
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-40"
+    >
+      <div
+        className="emotion-39"
+      >
+        <div
+          className="emotion-3"
+        >
+          <button
+            aria-label="Expand Section"
+            className="emotion-1"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-41"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-2"
+          >
+            source
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-40"
+    >
+      <div
+        className="emotion-39"
+      >
+        <div
+          className="emotion-3"
+        >
+          <button
+            aria-label="Expand Section"
+            className="emotion-1"
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="emotion-41"
+              color="#808080"
+              data-file-name="chevron.svg"
+              width={20}
+            />
+          </button>
+          <h4
+            className="emotion-2"
+          >
+            system
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-81"
+  >
+    <button
+      className="emotion-78"
+      onClick={[Function]}
+      type="button"
+    >
+      x Cancel
+    </button>
+    <div
+      className="emotion-79"
+    />
+    <button
+      aria-disabled={true}
+      className="emotion-80"
+      onClick={[Function]}
+      type="button"
+    >
+      + Add Selected Filters
+    </button>
   </div>
 </div>
 `;
 
 exports[`<Filters /> should render properly 1`] = `
-.emotion-10 {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  background-color: #252525;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  overflow: hidden;
-}
-
 .emotion-9 {
   padding: 4px;
 }
@@ -972,65 +938,61 @@ exports[`<Filters /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-10"
+  className="emotion-9"
 >
   <div
-    className="emotion-9"
+    className="emotion-3"
+  >
+    <button
+      className="emotion-0"
+      onClick={[Function]}
+      type="button"
+    >
+      + Add Metadata Filters
+    </button>
+    <div
+      className="emotion-1"
+    />
+    <button
+      aria-disabled={true}
+      className="emotion-2"
+      onClick={[Function]}
+      type="button"
+    >
+      Clear All Filters
+    </button>
+  </div>
+  <div
+    className="emotion-4"
+  />
+  <form
+    action=""
+    method="post"
+    onSubmit={[Function]}
   >
     <div
-      className="emotion-3"
+      className="emotion-7"
     >
-      <button
-        className="emotion-0"
-        onClick={[Function]}
-        type="button"
-      >
-        + Add Metadata Filters
-      </button>
-      <div
-        className="emotion-1"
+      <input
+        className="emotion-5"
+        onChange={[Function]}
+        placeholder="Create text filter (search name or field value)"
+        type="text"
+        value=""
       />
       <button
         aria-disabled={true}
-        className="emotion-2"
+        aria-label="Search"
+        className="emotion-6"
         onClick={[Function]}
-        type="button"
+        type="submit"
       >
-        Clear All Filters
+        +
       </button>
     </div>
-    <div
-      className="emotion-4"
-    />
-    <form
-      action=""
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-7"
-      >
-        <input
-          className="emotion-5"
-          onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
-          type="text"
-          value=""
-        />
-        <button
-          aria-disabled={true}
-          aria-label="Search"
-          className="emotion-6"
-          onClick={[Function]}
-          type="submit"
-        >
-          +
-        </button>
-      </div>
-    </form>
-    <ul
-      className="emotion-8"
-    />
-  </div>
+  </form>
+  <ul
+    className="emotion-8"
+  />
 </div>
 `;
