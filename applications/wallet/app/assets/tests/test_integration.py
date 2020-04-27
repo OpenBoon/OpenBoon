@@ -54,9 +54,6 @@ class TestAssetViewSet:
         content = response.json()
         assert content['id'] == id
         assert 'metadata' in content
-        assert 'url' in content
-        assert content['url'] == 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/'  # noqa
-        assert content['metadata']['files'][0]['url'] == 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg'  # noqa
 
     def test_list_and_detail_resources_match(self, project, zvi_project_user, api_client,
                                              monkeypatch, detail_api_return, list_api_return):
@@ -159,25 +156,6 @@ class TestAssetSearch:
         }
         response = api_client.post(reverse('asset-search', kwargs={'project_pk': project.id}), body)
         assert response.status_code == status.HTTP_200_OK
-
-
-class TestSourceFileViewSet:
-
-    def test_get_source(self, project, zvi_project_user, api_client, monkeypatch):
-
-        def mock_streamer(*args, **kwargs):
-            for x in range(0, 1024):
-                yield x
-
-        monkeypatch.setattr(requests, 'get', mock_streamer)
-        api_client.force_authenticate(zvi_project_user)
-        api_client.force_login(zvi_project_user)
-        asset_id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
-        filename = 'TIFF_1MB.tiff'
-        response = api_client.get(reverse('source-detail', kwargs={'project_pk': project.id,
-                                                                   'asset_pk': asset_id,
-                                                                   'pk': filename}))
-        assert isinstance(response, StreamingHttpResponse)
 
 
 class TestFileNameViewSet:
