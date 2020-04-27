@@ -1,5 +1,16 @@
+import logging
+import os
+
+
 from ..entity import DataSet
 from ..util import as_collection, as_id
+
+logger = logging.getLogger(__name__)
+
+__all__ = [
+    'DataSetApp',
+    'DataSetDownloader'
+]
 
 
 class DataSetApp:
@@ -91,3 +102,146 @@ class DataSetApp:
 
         """
         return self.app.client.get('/api/v3/data-sets/{}/_label_counts'.format(as_id(dataset)))
+
+    def train_model(self, dataset, model_type):
+        body = {
+            "modelType": model_type
+        }
+        return self.app.client.post(
+            '/api/v3/data-sets/{}/_train_model'.format(as_id(dataset)), body)
+
+
+class DataSetDownloader:
+    """
+    The DataSetDownloader class handles writing out the images in a
+    DataSet to local disk for model training purposes.
+    """
+
+    def __init__(self, app, dataset, dst_dir, train_test_ratio=4):
+        """
+        Create a new DataSetDownloader.
+
+        Args:
+            app: (ZmlpApp): A ZmlpApp instance.
+            dataset: (DataSet): A DataSet or unique DataSet ID.
+            dst_dir (str): A destination directory to write the files into.
+            train_test_ratio (int): The number of images in the training
+                set for every image in the test set.
+        """
+        self.app = app
+        self.dataset_id = as_id(dataset)
+        self.dst_dir = dst_dir
+        self.train_test_ratio = train_test_ratio
+
+        self.labels = {}
+        self.label_distrib = {}
+
+    def download(self, pool=None):
+        """
+        Downloads the files in the DataSet to local disk.
+
+        Args:
+            pool (multiprocessing.Pool): An optional Pool instance which can be used
+                to download files in parallel.
+
+        """
+        self._setup()
+
+        query = {
+            'size': 32,
+            '_source': ['labels', 'files'],
+            'query': {
+                'nested': {
+                    'path': 'labels',
+                    'query': {
+                        'term': {'labels.dataSetId': self.dataset_id}
+                    }
+                }
+            }
+        }
+
+        for num, asset in enumerate(self.app.assets.scroll_search(query, timeout='5m')):
+            prx = asset.get_thumbnail(0)
+            if not prx:
+                logger.warn('{} did not have a suitable thumbnail'.format(asset))
+                continue
+
+            ds_label = self._get_dataset_label(asset)
+            label = ds_label.get('label')
+            if not label:
+                continue
+
+            dir_name = self._get_image_set_type(label)
+            dst_path = os.path.join(self.dst_dir, dir_name, label, prx.cache_id)
+            os.makedirs(os.path.dirname(dst_path), exist_ok=True)
+
+            logger.info("Downloading to {}".format(dst_path))
+            if pool:
+                pool.apply_async(self.app.assets.download_file, args=(prx, dst_path))
+            else:
+                self.app.assets.download_file(prx, dst_path)
+
+    def _setup(self):
+        """
+        Sets up a directory structure for storing the files in the DataSet.
+
+        The structure is basically:
+
+            set_train/images/<img file>
+
+        With an optional parallel labels in the case of faces/objects.
+
+            set_train/labels/<label>/<text file>
+
+        """
+        label_counts = self.app.datasets.get_label_counts(self.dataset_id)
+
+        # Prebuild entire directory structure
+        os.makedirs(self.dst_dir, exist_ok=True)
+        dirs = ('set_train', 'set_test')
+        for set_name in dirs:
+            os.makedirs('{}/{}'.format(self.dst_dir, set_name), exist_ok=True)
+            for label in label_counts.keys():
+                os.makedirs(os.path.join(self.dst_dir, set_name, "images", label), exist_ok=True)
+                os.makedirs(os.path.join(self.dst_dir, set_name, "labels", label), exist_ok=True)
+
+        self.labels = label_counts
+        logger.info("DataSetDownloader setup, using {} labels".format(len(self.labels)))
+
+    def _get_image_set_type(self, label):
+        """
+        Using the train_ratio property, determine if the current label
+        would be in the training set or test set.
+
+        Args:
+            label (str): The label name.
+
+        Returns:
+            str: Either set_test or set_test, depending on the train_test_ratio property.
+
+        """
+        value = self.label_distrib.get(label, -1) + 1
+        self.label_distrib[label] = value
+        if value % self.train_test_ratio == 0:
+            return 'set_test'
+        else:
+            return 'set_train'
+
+    def _get_dataset_label(self, asset):
+        """
+        Get the current dataset label for the given asset.
+
+        Args:
+            asset (Asset): The asset to check.
+
+        Returns:
+            dict: The label dict
+
+        """
+        ds_labels = asset.get_attr('labels')
+        if not ds_labels:
+            return None
+        for ds_label in ds_labels:
+            if ds_label.get('dataSetId') == self.dataset_id:
+                return ds_label
+        return None
