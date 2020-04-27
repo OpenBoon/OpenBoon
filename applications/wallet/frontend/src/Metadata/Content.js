@@ -29,14 +29,7 @@ const MetadataContent = ({ projectId, assetId }) => {
   } = asset
 
   return (
-    <div
-      css={{
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: colors.structure.lead,
-        overflow: 'hidden',
-      }}
-    >
+    <>
       <div
         css={{
           padding: spacing.normal,
@@ -105,7 +98,7 @@ const MetadataContent = ({ projectId, assetId }) => {
           <JsonDisplay json={asset} />
         </div>
       )}
-    </div>
+    </>
   )
 }
 
