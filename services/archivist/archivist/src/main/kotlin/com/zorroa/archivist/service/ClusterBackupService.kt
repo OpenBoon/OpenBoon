@@ -27,15 +27,40 @@ import java.util.Base64
 import java.util.Date
 import java.util.HashMap
 
+/**
+ * Used to store snapshot and set up snapshot policy to backup Cluster data
+ */
 @Service
 interface ClusterBackupService {
 
+    /**
+     * Create a repository where the snapshots will be stored
+     * @param cluster: [IndexCluster] Cluster reference
+     */
     fun createClusterRepository(cluster: IndexCluster)
 
+    /**
+     * Create a instant Snapshot
+     * @param cluster: [IndexCluster] Cluster reference
+     */
     fun createClusterSnapshot(cluster: IndexCluster)
 
+    /**
+     * Check if a Cluster already has a repository
+     * @param cluster: [IndexCluster] Cluster reference
+     */
     fun hasRepository(cluster: IndexCluster): Boolean
 
+    /**
+     * Create a Snapshot Lifecycle Policy
+     * @param cluster: [IndexCluster] Cluster reference
+     * @param policyName: [String] Policy Name
+     * @param schedule: [String] Schedule String in Cron Syntax
+     * @param indices: [List] List of indices that will be considered to Back up
+     * @param maxRetentionDays: [Long] Maximum Amount of Days that the Snapshots will be stored before being discarded
+     * @param minimumSnapshotCount: [Int] Minimum Amount of Snapshot that will be keeped even if [maxRetentionDays] is achieved
+     * @param maximumSnapshotCount: [Int] Maximum Amount of Snapshot that will be keeped even if [maxRetentionDays] is not achieved
+     */
     fun createClusterPolicy(
         cluster: IndexCluster,
         policyName: String,
@@ -65,8 +90,7 @@ fun logCreateSnapshot(snapshotRequest: CreateSnapshotRequest) {
 @Service
 @Profile("gcsClusterBackup")
 class GcsClusterBackupService(
-    val indexClusterService: IndexClusterService,
-    val esClientCache: EsClientCache
+    val indexClusterService: IndexClusterService
 ) : ClusterBackupService {
 
     @Value("\${archivist.es.backup.gcs.bucket}")
@@ -112,7 +136,7 @@ class GcsClusterBackupService(
             .settings(settings)
             .verify(true)
 
-        // async
+        // Sync
         client.snapshot().createRepository(putRepositoryRequest, RequestOptions.DEFAULT)
     }
 
@@ -137,7 +161,7 @@ class GcsClusterBackupService(
             }
         }
 
-        // async
+        // Async
         client.snapshot().createAsync(request, RequestOptions.DEFAULT, listener)
     }
 
@@ -170,7 +194,7 @@ class GcsClusterBackupService(
         )
         val policyRequest = PutSnapshotLifecyclePolicyRequest(policy)
 
-        // sync
+        // Sync
         client.indexLifecycle().putSnapshotLifecyclePolicy(policyRequest, RequestOptions.DEFAULT)
     }
 
@@ -185,5 +209,37 @@ class GcsClusterBackupService(
             client.indexLifecycle().executeSnapshotLifecyclePolicy(executeRequest, RequestOptions.DEFAULT)
 
         return executeSnapshotLifecyclePolicy.snapshotName
+    }
+}
+
+@Service
+@Profile ("test", "none")
+class nullClusterBackupService(): ClusterBackupService{
+    override fun createClusterRepository(cluster: IndexCluster) {
+        TODO("Not yet implemented")
+    }
+
+    override fun createClusterSnapshot(cluster: IndexCluster) {
+        TODO("Not yet implemented")
+    }
+
+    override fun hasRepository(cluster: IndexCluster): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun createClusterPolicy(
+        cluster: IndexCluster,
+        policyName: String,
+        schedule: String,
+        indices: List<String>,
+        maxRetentionDays: Long,
+        minimumSnapshotCount: Int,
+        maximumSnapshotCount: Int
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun executeClusterPolicy(cluster: IndexCluster, policyId: String): String {
+        TODO("Not yet implemented")
     }
 }
