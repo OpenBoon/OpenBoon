@@ -210,6 +210,10 @@ Array [
   display: flex;
 }
 
+.emotion-3 h4 {
+  font-weight: 400;
+}
+
 .emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -270,11 +274,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-weight: 400;
 }
 
 .emotion-47 {

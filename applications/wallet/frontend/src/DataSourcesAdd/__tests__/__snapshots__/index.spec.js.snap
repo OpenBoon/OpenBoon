@@ -384,6 +384,10 @@ Array [
   display: flex;
 }
 
+.emotion-55 h4 {
+  font-weight: 700;
+}
+
 .emotion-53 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -444,11 +448,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-weight: 700;
 }
 
 .emotion-58 {
@@ -2057,6 +2056,10 @@ Array [
   display: flex;
 }
 
+.emotion-73 h4 {
+  font-weight: 700;
+}
+
 .emotion-71 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -2117,11 +2120,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-weight: 700;
 }
 
 .emotion-76 {
@@ -3828,6 +3826,10 @@ Array [
   display: flex;
 }
 
+.emotion-67 h4 {
+  font-weight: 700;
+}
+
 .emotion-65 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -3888,11 +3890,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-weight: 700;
 }
 
 .emotion-70 {
@@ -5566,6 +5563,10 @@ Array [
   display: flex;
 }
 
+.emotion-66 h4 {
+  font-weight: 700;
+}
+
 .emotion-64 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -5626,11 +5627,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-weight: 700;
 }
 
 .emotion-69 {

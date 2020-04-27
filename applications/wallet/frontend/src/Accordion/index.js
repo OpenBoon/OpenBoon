@@ -22,8 +22,10 @@ const STYLES = {
       paddingBottom: spacing.normal,
       paddingLeft: spacing.moderate,
       display: 'flex',
+      h4: {
+        fontWeight: typography.weight.bold,
+      },
     },
-    titleWeight: typography.weight.bold,
     content: {
       padding: spacing.spacious,
       paddingTop: spacing.normal,
@@ -40,8 +42,10 @@ const STYLES = {
       paddingBottom: spacing.moderate,
       paddingLeft: spacing.moderate,
       display: 'flex',
+      h4: {
+        fontWeight: typography.weight.regular,
+      },
     },
-    titleWeight: typography.weight.regular,
     content: {
       width: '100%',
       backgroundColor: colors.structure.coal,
@@ -80,8 +84,6 @@ const Accordion = ({ variant, title, children, isInitiallyOpen }) => {
             lineHeight: typography.height.medium,
             paddingLeft: spacing.moderate,
             display: 'flex',
-            alignItems: 'center',
-            fontWeight: STYLES[variant].titleWeight,
           }}
         >
           {title}

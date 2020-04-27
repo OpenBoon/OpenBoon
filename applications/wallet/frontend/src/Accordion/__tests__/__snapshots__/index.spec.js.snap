@@ -47,6 +47,16 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
   color: #ffffff;
 }
 
+.emotion-2 {
+  font-size: 17px;
+  line-height: 20px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-4 {
   background-color: #252525;
   border-radius: 2px;
@@ -63,18 +73,7 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
   display: flex;
 }
 
-.emotion-2 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+.emotion-3 h4 {
   font-weight: 400;
 }
 
@@ -122,6 +121,10 @@ exports[`<Accordion /> should render properly for PRIMARY 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.emotion-3 h4 {
+  font-weight: 700;
 }
 
 .emotion-1 {
@@ -178,11 +181,6 @@ exports[`<Accordion /> should render properly for PRIMARY 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-weight: 700;
 }
 
 <div
