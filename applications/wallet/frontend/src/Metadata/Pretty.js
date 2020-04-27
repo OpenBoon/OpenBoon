@@ -2,6 +2,7 @@ import assetShape from '../Asset/shape'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 
+import MetadataAnalysis from './Analysis'
 import MetadataPrettyRow from './PrettyRow'
 import { formatDisplayName } from './helpers'
 
@@ -11,8 +12,20 @@ const MetadataPretty = ({ asset: { metadata } }) => {
       {Object.keys(metadata).map((section) => {
         const title = formatDisplayName({ name: section })
 
-        if (['files', 'metrics', 'analysis', 'location'].includes(section))
-          return null
+        if (['files', 'metrics', 'location'].includes(section)) return null
+
+        if (section === 'analysis') {
+          return (
+            <Accordion
+              key={section}
+              variant={ACCORDION_VARIANTS.PANEL}
+              title={title}
+              isInitiallyOpen
+            >
+              <MetadataAnalysis />
+            </Accordion>
+          )
+        }
 
         return (
           <Accordion
