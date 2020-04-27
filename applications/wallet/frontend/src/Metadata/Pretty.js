@@ -14,6 +14,8 @@ const MetadataPretty = ({ asset: { metadata } }) => {
 
         if (['files', 'metrics', 'location'].includes(section)) return null
 
+        console.log(section)
+
         if (section === 'analysis') {
           return (
             <Accordion

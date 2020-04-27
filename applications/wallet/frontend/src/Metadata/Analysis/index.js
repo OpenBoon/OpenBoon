@@ -1,14 +1,9 @@
-// import PropTypes from 'prop-types'
-
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing } from '../../Styles'
 
-const MODULES = {
-  'zvi-object-detection': { columns: ['bbox', 'label', 'score'] },
-  'zvi-label-detection': { columns: ['label', 'score'] },
-}
+import MetadataAnalysisClassification from './Classification'
 
 const MetadataAnalysis = () => {
   const {
@@ -21,7 +16,21 @@ const MetadataAnalysis = () => {
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
+  const {
+    data: { analysis },
+  } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/box_images`)
+
   return Object.keys(modules).map((moduleName, index) => {
+    const { type } = analysis[moduleName]
+    if (type === 'labels') {
+      return (
+        <MetadataAnalysisClassification
+          moduleName={moduleName}
+          moduleIndex={index}
+        />
+      )
+    }
+
     return (
       <>
         <div
@@ -44,25 +53,12 @@ const MetadataAnalysis = () => {
         >
           {moduleName}
         </div>
-        {modules[moduleName].predictions ? (
-          <div css={{ display: 'flex', padding: spacing.normal }}>
-            {MODULES[moduleName].columns.map((column) => {
-              return <div>{column}</div>
-            })}
-            {/* {JSON.stringify(modules[moduleName].predictions)} */}
-          </div>
-        ) : (
-          <div css={{ padding: spacing.normal }}>
-            {JSON.stringify(modules[moduleName])}
-          </div>
-        )}
+        <div css={{ padding: spacing.normal, wordWrap: 'break-word' }}>
+          {JSON.stringify(modules[moduleName])}
+        </div>
       </>
     )
   })
 }
-
-// MetadataAnalysis.propTypes = {
-//   analysis: PropTypes.shape({}).isRequired,
-// }
 
 export default MetadataAnalysis
