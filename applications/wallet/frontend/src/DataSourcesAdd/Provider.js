@@ -12,40 +12,42 @@ const DataSourcesAddProvider = ({
   onClick,
 }) => {
   return (
-    <Accordion
-      variant={VARIANTS.PRIMARY}
-      title={<img src={logo} alt={name} height={IMG_HEIGHT} />}
-      isInitiallyOpen
-    >
-      <>
-        <p
-          css={{
-            color: colors.structure.zinc,
-            margin: 0,
-            paddingTop: spacing.base,
-            paddingBottom: spacing.normal,
-            maxWidth: constants.paragraph.maxWidth,
-          }}
-        >
-          {description}
-        </p>
-        {categories.map((category) => (
-          <CheckboxTable
-            key={category.name}
-            category={{
-              name: category.name,
-              options: category.modules.map((module) => ({
-                value: module.name,
-                label: module.description,
-                initialValue: false,
-                isDisabled: module.restricted,
-              })),
+    <div css={{ paddingTop: spacing.normal }}>
+      <Accordion
+        variant={VARIANTS.PRIMARY}
+        title={<img src={logo} alt={name} height={IMG_HEIGHT} />}
+        isInitiallyOpen
+      >
+        <>
+          <p
+            css={{
+              color: colors.structure.zinc,
+              margin: 0,
+              paddingTop: spacing.base,
+              paddingBottom: spacing.normal,
+              maxWidth: constants.paragraph.maxWidth,
             }}
-            onClick={onClick}
-          />
-        ))}
-      </>
-    </Accordion>
+          >
+            {description}
+          </p>
+          {categories.map((category) => (
+            <CheckboxTable
+              key={category.name}
+              category={{
+                name: category.name,
+                options: category.modules.map((module) => ({
+                  value: module.name,
+                  label: module.description,
+                  initialValue: false,
+                  isDisabled: module.restricted,
+                })),
+              }}
+              onClick={onClick}
+            />
+          ))}
+        </>
+      </Accordion>
+    </div>
   )
 }
 

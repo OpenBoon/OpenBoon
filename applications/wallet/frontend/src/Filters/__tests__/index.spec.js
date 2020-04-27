@@ -322,10 +322,11 @@ describe('<Filters />', () => {
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
           id: '',
-          filters: '[{"type":"facet","attribute":"analysis.zvi.tinyProxy"}]',
+          filters:
+            '[{"type":"facet","attribute":"analysis.zvi.tinyProxy","values":{}}]',
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?filters=[{"type":"facet","attribute":"analysis.zvi.tinyProxy"}]',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?filters=[{"type":"facet","attribute":"analysis.zvi.tinyProxy","values":{}}]',
     )
   })
 

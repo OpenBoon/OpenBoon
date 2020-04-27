@@ -284,6 +284,7 @@ Array [
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  font-weight: 700;
 }
 
 .emotion-49 {
@@ -333,6 +334,10 @@ Array [
 .emotion-48 span {
   font-weight: 700;
   color: #ffffff;
+}
+
+.emotion-119 {
+  padding-top: 16px;
 }
 
 .emotion-56 {
@@ -919,7 +924,7 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-51"
+      className="emotion-119"
     >
       <div
         className="emotion-50"

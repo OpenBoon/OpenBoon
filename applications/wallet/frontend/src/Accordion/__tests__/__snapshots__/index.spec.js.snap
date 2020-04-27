@@ -79,42 +79,34 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
 }
 
 <div
-  className="emotion-5"
+  className="emotion-4"
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
-    <div
-      className="emotion-3"
+    <button
+      aria-label="Expand Section"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
     >
-      <button
-        aria-label="Expand Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          color="#808080"
-          data-file-name="chevron.svg"
-          width={20}
-        />
-      </button>
-      <h4
-        className="emotion-2"
-      >
-        Hi
-      </h4>
-    </div>
+      <svg
+        className="emotion-0"
+        color="#808080"
+        data-file-name="chevron.svg"
+        width={20}
+      />
+    </button>
+    <h4
+      className="emotion-2"
+    >
+      Hi
+    </h4>
   </div>
 </div>
 `;
 
 exports[`<Accordion /> should render properly for PRIMARY 1`] = `
-.emotion-5 {
-  padding-top: 16px;
-}
-
 .emotion-4 {
   background-color: #3b3b3b;
   border-radius: 2px;
@@ -190,36 +182,33 @@ exports[`<Accordion /> should render properly for PRIMARY 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  font-weight: 700;
 }
 
 <div
-  className="emotion-5"
+  className="emotion-4"
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
-    <div
-      className="emotion-3"
+    <button
+      aria-label="Expand Section"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
     >
-      <button
-        aria-label="Expand Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          color="#808080"
-          data-file-name="chevron.svg"
-          width={20}
-        />
-      </button>
-      <h4
-        className="emotion-2"
-      >
-        Hi
-      </h4>
-    </div>
+      <svg
+        className="emotion-0"
+        color="#808080"
+        data-file-name="chevron.svg"
+        width={20}
+      />
+    </button>
+    <h4
+      className="emotion-2"
+    >
+      Hi
+    </h4>
   </div>
 </div>
 `;
