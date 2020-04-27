@@ -1,20 +1,35 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { spacing, typography, constants } from '../Styles'
+import { spacing } from '../Styles'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import Button, { VARIANTS } from '../Button'
 
-import FiltersMenuOption from './MenuOption'
+import { dispatch, ACTIONS } from './helpers'
+
+import FiltersMenuSection from './MenuSection'
 
 const FiltersMenu = ({
-  // projectId,
-  // assetId,
-  // filters,
+  projectId,
+  assetId,
+  filters,
   fields,
   setIsMenuOpen,
 }) => {
-  const closeMenu = () => setIsMenuOpen(false)
+  const [newFilters, setNewFilters] = useState({})
+
+  const onClick = ({ type, attribute }) => (value) => {
+    if (value) {
+      setNewFilters((nF) => ({ ...nF, [attribute]: { type, attribute } }))
+    } else {
+      setNewFilters((nF) => {
+        const { [attribute]: filterToRemove, ...rest } = nF
+        return rest
+      })
+    }
+  }
+
   return (
     <div
       css={{
@@ -41,57 +56,49 @@ const FiltersMenu = ({
                   paddingBottom: spacing.base,
                 }}
               >
-                {Object.entries(value).map(([subKey, subValue], index, arr) =>
-                  Array.isArray(subValue) ? (
-                    <FiltersMenuOption key={subKey} option={subKey} />
-                  ) : (
-                    <div
-                      key={subKey}
-                      css={{
-                        marginLeft: -spacing.normal,
-                        marginRight: -spacing.normal,
-                        padding: spacing.moderate,
-                        paddingTop: index === 0 ? 0 : spacing.base,
-                        paddingBottom:
-                          index === arr.length - 1 ? 0 : spacing.base,
-                        borderTop:
-                          index !== 0 && !Array.isArray(subValue)
-                            ? constants.borders.largeDivider
-                            : '',
-                      }}
-                    >
-                      <h4
-                        css={{
-                          fontFamily: 'Roboto Mono',
-                          fontWeight: typography.weight.regular,
-                        }}
-                      >
-                        {subKey}
-                      </h4>
-                      {Object.entries(subValue).map(([subSubKey]) => (
-                        <FiltersMenuOption key={subSubKey} option={subSubKey} />
-                      ))}
-                    </div>
-                  ),
-                )}
+                {Object.entries(value).map(([subKey, subValue]) => (
+                  <FiltersMenuSection
+                    key={subKey}
+                    path={key}
+                    attribute={subKey}
+                    value={subValue}
+                    onClick={onClick}
+                  />
+                ))}
               </div>
             </Accordion>
           ),
         )}
       </div>
+
       <div css={{ padding: spacing.base, display: 'flex' }}>
         <Button
           variant={VARIANTS.SECONDARY}
-          onClick={closeMenu}
+          onClick={() => setIsMenuOpen(false)}
           style={{ flex: 1 }}
         >
           x Cancel
         </Button>
+
         <div css={{ width: spacing.base }} />
+
         <Button
           variant={VARIANTS.PRIMARY}
-          onClick={closeMenu}
+          onClick={() => {
+            dispatch({
+              action: ACTIONS.ADD_FILTERS,
+              payload: {
+                projectId,
+                assetId,
+                filters,
+                newFilters: Object.values(newFilters),
+              },
+            })
+
+            setIsMenuOpen(false)
+          }}
           style={{ flex: 1 }}
+          isDisabled={Object.keys(newFilters).length === 0}
         >
           + Add Selected Filters
         </Button>
@@ -101,15 +108,15 @@ const FiltersMenu = ({
 }
 
 FiltersMenu.propTypes = {
-  // projectId: PropTypes.string.isRequired,
-  // assetId: PropTypes.string.isRequired,
-  // filters: PropTypes.arrayOf(
-  //   PropTypes.shape({
-  //     type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-  //     value: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-  //       .isRequired,
-  //   }).isRequired,
-  // ).isRequired,
+  projectId: PropTypes.string.isRequired,
+  assetId: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
+      attribute: PropTypes.string,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    }).isRequired,
+  ).isRequired,
   fields: PropTypes.objectOf(PropTypes.objectOf).isRequired,
   setIsMenuOpen: PropTypes.func.isRequired,
 }

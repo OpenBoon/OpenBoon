@@ -10,12 +10,31 @@ import { dispatch, ACTIONS } from './helpers'
 const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
   return (
     <div css={{ padding: spacing.small }}>
-      <Button
-        variant={VARIANTS.PRIMARY}
-        onClick={() => setIsMenuOpen((isMenuOpen) => !isMenuOpen)}
-      >
-        + Add Metadata Filters
-      </Button>
+      <div css={{ display: 'flex' }}>
+        <Button
+          variant={VARIANTS.PRIMARY}
+          style={{ flex: 1 }}
+          onClick={() => setIsMenuOpen((isMenuOpen) => !isMenuOpen)}
+        >
+          + Add Metadata Filters
+        </Button>
+
+        <div css={{ width: spacing.base }} />
+
+        <Button
+          variant={VARIANTS.SECONDARY}
+          style={{ flex: 1 }}
+          isDisabled={filters.length === 0}
+          onClick={() => {
+            dispatch({
+              action: ACTIONS.CLEAR_FILTERS,
+              payload: { projectId, assetId },
+            })
+          }}
+        >
+          Clear All Filters
+        </Button>
+      </div>
 
       <div css={{ height: spacing.small }} />
 
@@ -31,7 +50,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
               justifyContent: 'space-between',
             }}
           >
-            • {filter.value}
+            • {filter.type}: {filter.attribute || filter.value}
             <button
               type="button"
               onClick={() =>
@@ -61,8 +80,8 @@ FiltersContent.propTypes = {
   filters: PropTypes.arrayOf(
     PropTypes.shape({
       type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-        .isRequired,
+      attribute: PropTypes.string,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     }).isRequired,
   ).isRequired,
   setIsMenuOpen: PropTypes.func.isRequired,
