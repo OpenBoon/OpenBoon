@@ -1,11 +1,45 @@
 import PropTypes from 'prop-types'
 
-import { constants } from '../Styles'
+import { constants, spacing } from '../Styles'
 
 import MetadataPrettyRow from './PrettyRow'
 
-const MetadataPretty = ({ metadata, title, section }) => {
-  if (['metrics'].includes(section)) return null
+const MetadataPretty = ({ metadata, section }) => {
+  if (section === 'metrics') {
+    return metadata.metrics.pipeline.map((pipeline, index) => {
+      const { processor, ...filteredPipeline } = pipeline
+
+      return (
+        <div
+          // eslint-disable-next-line react/no-array-index-key
+          key={`${section}${index}`}
+          css={{
+            width: '100%',
+            '&:not(:first-of-type)': {
+              borderTop: constants.borders.prettyMetadata,
+            },
+          }}
+        >
+          <div
+            css={{ fontFamily: 'Roboto Condensed', padding: spacing.normal }}
+          >
+            PROCESSOR
+            <div css={{ paddingTop: spacing.base, fontFamily: 'Roboto Mono' }}>
+              {processor}
+            </div>
+          </div>
+          {Object.entries(filteredPipeline).map(([key, value]) => (
+            <MetadataPrettyRow
+              key={key}
+              name={key}
+              value={value}
+              path="metrics.pipeline"
+            />
+          ))}
+        </div>
+      )
+    })
+  }
 
   if (Array.isArray(metadata[section])) {
     return metadata[section].map((file, index) => (
@@ -20,7 +54,12 @@ const MetadataPretty = ({ metadata, title, section }) => {
         }}
       >
         {Object.entries(file).map(([key, value]) => (
-          <MetadataPrettyRow key={key} name={key} value={value} path={title} />
+          <MetadataPrettyRow
+            key={key}
+            name={key}
+            value={value}
+            path={section}
+          />
         ))}
       </div>
     ))
@@ -35,7 +74,7 @@ const MetadataPretty = ({ metadata, title, section }) => {
               key={key}
               name={key}
               value={value}
-              path={title}
+              path={section}
             />
           )
         })}
@@ -73,8 +112,10 @@ MetadataPretty.propTypes = {
         }),
       }),
     ),
+    metrics: PropTypes.shape({
+      pipeline: PropTypes.arrayOf(PropTypes.shape({})),
+    }),
   }).isRequired,
-  title: PropTypes.string.isRequired,
   section: PropTypes.string.isRequired,
 }
 
