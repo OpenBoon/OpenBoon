@@ -1,15 +1,16 @@
 # Applicable filter sets for an ES Field type
 NUMBER_FILTERS = ['range', 'exists']
-STRING_FILTERS = ['facet', 'exists']
+KEYWORD_FILTERS = ['facet', 'exists']
 SIMILARITY_FILTERS = ['exists']
 BOOLEAN_FILTERS = ['boolean', 'exists']
 DEFAULT_FILTERS = ['exists']
+TEXT_FILTERS = ['exists']
 
 
 TYPE_FIELD_MAPPING = {
     'integer': NUMBER_FILTERS,
-    'keyword': STRING_FILTERS,
-    'text': STRING_FILTERS,
+    'keyword': KEYWORD_FILTERS,
+    'text': TEXT_FILTERS,
     'object': DEFAULT_FILTERS,
     'double': NUMBER_FILTERS,
     'geo_point': DEFAULT_FILTERS,
@@ -58,7 +59,7 @@ class ContentAnalysisSchema(AbstractAnalysisSchema):
     required_properties = ['type', 'count', 'content']
 
     def get_representation(self):
-        return {f'{self.property_name}': {'content': STRING_FILTERS,
+        return {f'{self.property_name}': {'content': KEYWORD_FILTERS,
                                           'count': NUMBER_FILTERS}}
 
 
