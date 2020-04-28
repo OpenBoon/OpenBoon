@@ -128,6 +128,10 @@ const bboxAsset = {
             score: 0.96,
             label: 'tailed_frog',
           },
+          {
+            score: 0.86,
+            label: 'banana',
+          },
         ],
       },
       'zvi-text-detection': {

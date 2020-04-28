@@ -1,49 +1,21 @@
 import PropTypes from 'prop-types'
 
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
-
 import { colors, constants, spacing } from '../Styles'
 
-const BBOX_SIZE = 56
+const COLUMNS = ['label', 'score']
 
-const MODULES = {
-  'zvi-object-detection': {
-    columns: ['bbox', 'label', 'score'],
-    labels: { bbox: 'bbox', label: 'label', score: 'confidence score' },
-  },
-  'zvi-label-detection': {
-    columns: ['label', 'score'],
-    labels: { label: 'label', score: 'confidence score' },
-  },
-}
-
-const AnalysisClassification = ({ moduleName, moduleIndex }) => {
-  const attr = `analysis.${moduleName}&width=${BBOX_SIZE}`
-
-  const {
-    query: { projectId, id: assetId },
-  } = useRouter()
-
-  const {
-    data: {
-      [moduleName]: { predictions },
-    },
-  } = useSWR(
-    `/api/v1/projects/${projectId}/assets/${assetId}/box_images/?attr=${attr}`,
-  )
-
+const MetadataLabelDetection = ({ name, predictions }) => {
   const predictionColumns = Object.keys(predictions[0])
 
-  // filter from MODULES which holds the module column names in the correct order
-  const columns = MODULES[moduleName].columns.filter((column) => {
+  // filter from COLUMNS which holds the module column names in the correct order
+  const columns = COLUMNS.filter((column) => {
     return predictionColumns.includes(column)
   })
 
   return (
     <div
       css={{
-        borderTop: moduleIndex !== 0 ? constants.borders.largeDivider : '',
+        '&:not(:first-of-type)': { borderTop: constants.borders.largeDivider },
         padding: spacing.normal,
       }}
     >
@@ -54,7 +26,7 @@ const AnalysisClassification = ({ moduleName, moduleIndex }) => {
           paddingBottom: spacing.normal,
         }}
       >
-        {moduleName}
+        {name}
       </div>
       <table
         css={{
@@ -87,7 +59,7 @@ const AnalysisClassification = ({ moduleName, moduleIndex }) => {
                     },
                   }}
                 >
-                  {MODULES[moduleName].labels[column]}
+                  {column === 'score' ? 'confidence score' : column}
                 </td>
               )
             })}
@@ -100,29 +72,6 @@ const AnalysisClassification = ({ moduleName, moduleIndex }) => {
             return (
               <tr key={prediction.score} css={{ verticalAlign: 'bottom' }}>
                 {columns.map((column) => {
-                  if (column === 'bbox') {
-                    return (
-                      <td
-                        key={column}
-                        css={{
-                          display: 'flex',
-                          paddingBottom: isLastRow ? 0 : spacing.normal,
-                        }}
-                      >
-                        <img
-                          css={{
-                            maxHeight: BBOX_SIZE,
-                            width: BBOX_SIZE,
-                            objectFit: 'contain',
-                          }}
-                          alt={prediction.bbox}
-                          title={prediction.bbox}
-                          src={prediction.b64_image}
-                        />
-                      </td>
-                    )
-                  }
-
                   return (
                     <td
                       key={column}
@@ -148,9 +97,9 @@ const AnalysisClassification = ({ moduleName, moduleIndex }) => {
   )
 }
 
-AnalysisClassification.propTypes = {
-  moduleName: PropTypes.string.isRequired,
-  moduleIndex: PropTypes.number.isRequired,
+MetadataLabelDetection.propTypes = {
+  name: PropTypes.string.isRequired,
+  predictions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 }
 
-export default AnalysisClassification
+export default MetadataLabelDetection
