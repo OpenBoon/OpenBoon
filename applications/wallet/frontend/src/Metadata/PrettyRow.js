@@ -7,6 +7,9 @@ import CopySvg from '../Icons/copy.svg'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
+import MetadataObjectDetection from './ObjectDetection'
+import MetadataLabelDetection from './LabelDetection'
+
 import { formatDisplayName, formatDisplayValue } from './helpers'
 
 const COPY_WIDTH = 20
@@ -15,6 +18,16 @@ const MetadataPrettyRow = ({ name, value, path }) => {
   const [isCopied, setCopied] = useClipboard(value, { successDuration: 1000 })
 
   if (typeof value === 'object') {
+    if (name === 'zvi-object-detection') {
+      return <MetadataObjectDetection />
+    }
+
+    if (name === 'zvi-label-detection') {
+      return (
+        <MetadataLabelDetection name={name} predictions={value.predictions} />
+      )
+    }
+
     return (
       <>
         <div

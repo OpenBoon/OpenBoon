@@ -9,6 +9,7 @@ import Metadata, { noop } from '..'
 
 jest.mock('../../Resizeable', () => 'Resizeable')
 jest.mock('../../JsonDisplay', () => 'JsonDisplay')
+jest.mock('../PrettyRow', () => 'MetadataPrettyRow')
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = asset.id
