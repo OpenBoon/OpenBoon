@@ -374,7 +374,7 @@ class GcsClusterBackupService(
 }
 
 @Service
-@Profile("test", "awsClusterBackup")
+@Profile("test", "none", "awsClusterBackup")
 class S3ClusterBackupService(
     val indexClusterService: IndexClusterService
 ) : ClusterBackupService {
