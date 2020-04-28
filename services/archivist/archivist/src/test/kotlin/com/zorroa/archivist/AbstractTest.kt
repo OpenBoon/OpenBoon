@@ -14,6 +14,7 @@ import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.security.AnalystAuthentication
 import com.zorroa.archivist.security.getAuthentication
 import com.zorroa.archivist.service.AssetService
+import com.zorroa.archivist.service.ClusterBackupService
 import com.zorroa.archivist.service.EsClientCache
 import com.zorroa.archivist.service.IndexClusterService
 import com.zorroa.archivist.service.IndexRoutingService
@@ -83,6 +84,9 @@ abstract class AbstractTest {
 
     @Autowired
     internal lateinit var transactionEventManager: TransactionEventManager
+
+    @Autowired
+    internal lateinit var clusterBackupService: ClusterBackupService
 
     @MockBean
     lateinit var authServerClient: AuthServerClient
