@@ -70,7 +70,7 @@ const DataSourcesEditForm = ({ initialState }) => {
         <div
           css={{
             width: constants.form.maxWidth,
-            paddingBottom: spacing.normal,
+            paddingBottom: spacing.comfy,
           }}
         >
           <SectionTitle>Data Source Name </SectionTitle>
@@ -96,27 +96,29 @@ const DataSourcesEditForm = ({ initialState }) => {
           <SectionTitle>{`Storage Address: ${uri}`}</SectionTitle>
         </div>
 
-        <CheckboxGroup
-          legend="Add Additional File Types"
-          description={
-            <div>
-              Additional file types can be added to this data source. Previous
-              selections cannot be removed.
-            </div>
-          }
-          onClick={(fileType) =>
-            dispatch({ fileTypes: { ...fileTypes, ...fileType } })
-          }
-          options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
-            value,
-            label,
-            icon: <img src={icon} alt={label} width="40px" />,
-            legend,
-            initialValue: !!fileTypes[value],
-            isDisabled: !!initialState.fileTypes[value],
-          }))}
-          variant={CHECKBOX_VARIANTS.INLINE}
-        />
+        <div css={{ paddingBottom: spacing.base }}>
+          <CheckboxGroup
+            legend="Add Additional File Types"
+            description={
+              <div>
+                Additional file types can be added to this data source. Previous
+                selections cannot be removed.
+              </div>
+            }
+            onClick={(fileType) =>
+              dispatch({ fileTypes: { ...fileTypes, ...fileType } })
+            }
+            options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
+              value,
+              label,
+              icon: <img src={icon} alt={label} width="40px" />,
+              legend,
+              initialValue: !!fileTypes[value],
+              isDisabled: !!initialState.fileTypes[value],
+            }))}
+            variant={CHECKBOX_VARIANTS.INLINE}
+          />
+        </div>
 
         <SectionTitle>Add Additional Analysis</SectionTitle>
 
