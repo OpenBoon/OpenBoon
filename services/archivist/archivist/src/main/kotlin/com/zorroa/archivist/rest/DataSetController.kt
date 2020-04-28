@@ -3,6 +3,8 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.domain.DataSet
 import com.zorroa.archivist.domain.DataSetFilter
 import com.zorroa.archivist.domain.DataSetSpec
+import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.DataSetService
 import io.swagger.annotations.ApiOperation
@@ -47,5 +49,14 @@ class DataSetController(
     @GetMapping("/api/v3/data-sets/{id}/_label_counts")
     fun getLabelCounts(@ApiParam("DataSet ID") @PathVariable id: UUID): Map<String, Long> {
         return datasetService.getLabelCounts(datasetService.get(id))
+    }
+
+    @ApiOperation("Find a single DataSet")
+    @PostMapping("/api/v3/data-sets/{id}/_train_model")
+    fun trainModel(
+        @ApiParam("DataSet ID") @PathVariable id: UUID,
+        @RequestBody(required = true) spec: ModelSpec
+    ): Job {
+        return datasetService.trainModel(datasetService.get(id), spec)
     }
 }

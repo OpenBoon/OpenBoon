@@ -4,6 +4,7 @@ import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.Job
 import com.zorroa.archivist.domain.JobSpec
+import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ReprocessAssetSearchRequest
 import com.zorroa.archivist.domain.ReprocessAssetSearchResponse
@@ -44,6 +45,15 @@ interface JobLaunchService {
         pipeline: List<ProcessorRef>,
         settings: Map<String, Any>? = null,
         creds: Set<String>? = null
+    ): Job
+
+    /**
+     * Launch a job with an array of assets.
+     */
+    fun launchTrainingJob(
+        name: String,
+        processor: ProcessorRef,
+        settings: Map<String, Any>? = null
     ): Job
 }
 
@@ -132,11 +142,29 @@ class JobLaunchServiceImpl(
         return launchJob(spec)
     }
 
+    override fun launchTrainingJob(name: String, processor: ProcessorRef, settings: Map<String, Any>?): Job {
+        val mergedSettings = getDefaultJobSettings()
+        settings?.let { mergedSettings.putAll(it) }
+
+        val script = ZpsScript(name, null, listOf(Asset()),
+            listOf(processor), settings = mergedSettings)
+        val spec = JobSpec(name, script)
+        return launchJob(spec, JobType.Batch)
+    }
+
     /**
      * Launch a [JobSpec] and return a [Job] suitable for client side use.
      */
     fun launchJob(spec: JobSpec): Job {
         val job = jobService.create(spec)
+        return jobService.get(job.id, forClient = true)
+    }
+
+    /**
+     * Launch a [JobSpec] and return a [Job] suitable for client side use.
+     */
+    fun launchJob(spec: JobSpec, type: JobType): Job {
+        val job = jobService.create(spec, type)
         return jobService.get(job.id, forClient = true)
     }
 
