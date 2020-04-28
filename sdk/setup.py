@@ -32,8 +32,7 @@ setup(
     license='Copyright ' + str(datetime.now().year) + ' Zorroa Corp. All Rights Reserved.',
     package_dir={'': 'pylib'},
     packages=['zmlpsdk'],
-    scripts=[],
-
+    scripts=['bin/dataset-dl.py'],
     classifiers=[
         "Programming Language :: Python :: 3",
         # "License :: OSI Approved :: MIT License",  # TODO Add license type
