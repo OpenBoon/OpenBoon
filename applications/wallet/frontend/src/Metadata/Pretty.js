@@ -1,68 +1,58 @@
-import assetShape from '../Asset/shape'
+import PropTypes from 'prop-types'
 
-import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
+import { constants } from '../Styles'
 
 import MetadataAnalysis from './Analysis'
 import MetadataPrettyRow from './PrettyRow'
-import { formatDisplayName } from './helpers'
 
-const MetadataPretty = ({ asset: { metadata } }) => {
+const MetadataPretty = ({ metadata, title, section }) => {
+  if (['metrics'].includes(section)) return null
+
+  if (section === 'analysis') {
+    return <MetadataAnalysis />
+  }
+
+  if (Array.isArray(metadata[section])) {
+    return metadata[section].map((file, index) => (
+      <div
+        // eslint-disable-next-line react/no-array-index-key
+        key={`${section}${index}`}
+        css={{
+          width: '100%',
+          '&:not(:first-of-type)': {
+            borderTop: constants.borders.prettyMetadata,
+          },
+        }}
+      >
+        {Object.entries(file).map(([key, value]) => (
+          <MetadataPrettyRow key={key} name={key} value={value} title={title} />
+        ))}
+      </div>
+    ))
+  }
+
   return (
-    <div css={{ overflow: 'auto' }}>
-      {Object.keys(metadata).map((section) => {
-        const title = formatDisplayName({ name: section })
-
-        if (['files', 'metrics', 'location'].includes(section)) return null
-
-        if (section === 'analysis') {
+    <div css={{ width: '100%' }}>
+      <div>
+        {Object.entries(metadata[section]).map(([key, value]) => {
           return (
-            <Accordion
-              key={section}
-              variant={ACCORDION_VARIANTS.PANEL}
+            <MetadataPrettyRow
+              key={key}
+              name={key}
+              value={value}
               title={title}
-              isInitiallyOpen
-            >
-              <MetadataAnalysis />
-            </Accordion>
+            />
           )
-        }
-
-        return (
-          <Accordion
-            key={section}
-            variant={ACCORDION_VARIANTS.PANEL}
-            title={title}
-            isInitiallyOpen
-          >
-            <table
-              css={{
-                borderCollapse: 'collapse',
-                width: '100%',
-              }}
-            >
-              <tbody>
-                {Object.entries(metadata[section]).map(
-                  ([key, value], index) => (
-                    <MetadataPrettyRow
-                      key={key}
-                      name={key}
-                      value={value}
-                      title={title}
-                      index={index}
-                    />
-                  ),
-                )}
-              </tbody>
-            </table>
-          </Accordion>
-        )
-      })}
+        })}
+      </div>
     </div>
   )
 }
 
 MetadataPretty.propTypes = {
-  asset: assetShape.isRequired,
+  metadata: PropTypes.shape({}).isRequired,
+  title: PropTypes.string.isRequired,
+  section: PropTypes.string.isRequired,
 }
 
 export default MetadataPretty

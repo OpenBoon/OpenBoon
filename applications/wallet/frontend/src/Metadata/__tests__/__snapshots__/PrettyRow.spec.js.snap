@@ -2,6 +2,13 @@
 
 exports[`<MetadataPrettyRow /> should render documents 1`] = `
 .emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5:not(:first-of-type) {
   border-top: 1px solid #3b3b3b;
 }
 
@@ -9,11 +16,11 @@ exports[`<MetadataPrettyRow /> should render documents 1`] = `
   background-color: #027aff38;
 }
 
-.emotion-5:hover td {
+.emotion-5:hover div {
   color: #ffffff;
 }
 
-.emotion-5:hover td svg {
+.emotion-5:hover div svg {
   display: inline-block;
 }
 
@@ -21,9 +28,15 @@ exports[`<MetadataPrettyRow /> should render documents 1`] = `
   font-family: Roboto Condensed;
   color: #808080;
   padding: 16px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-1 {
+  -webkit-flex: 4;
+  -ms-flex: 4;
+  flex: 4;
   font-family: Roboto Mono;
   color: #e0e0e0;
   padding: 16px;
@@ -86,29 +99,26 @@ exports[`<MetadataPrettyRow /> should render documents 1`] = `
   color: #ffffff;
 }
 
-<tr
+<div
   className="emotion-5"
 >
-  <td
+  <div
     className="emotion-0"
-    valign="top"
   >
     <span
       title="media.content"
     >
       Content
     </span>
-  </td>
-  <td
+  </div>
+  <div
     className="emotion-1"
     title=" Chapter 23 the little prince encounters a merchant \\"Good morning,\\" said the little prince. \\"Good morning,\\" said the merchant. This was a merchant who sold pills that had been invented to quench thirst. You need only swallow one pill a week, and you would feel no need of anything to drink. \\"Why are you selling those?\\" asked the little prince. \\"Because they save a tremendous amount of time,\\" said the merchant. \\"Computations have been made by experts. With these pills, you save fifty-three minutes in every week.\\" \\"And what do I do with those fifty-three minutes?\\" \\"Anything you like...\\" \\"As for me,\\" said the little prince to himself, \\"if I had fifty-three minutes to spend as I liked, I should walk at my leisure toward a spring of fresh water.\\" 68 "
-    valign="top"
   >
      Chapter 23 the little prince encounters a merchant "Good morning," said the little prince. "Good morning," said the merchant. This was a merchant who sold pills that had been invented to quench thirst. You need only swallow one pill a week, and you would feel no need of anything to drink. "Why are ...
-  </td>
-  <td
+  </div>
+  <div
     className="emotion-4"
-    valign="top"
   >
     <button
       className="emotion-3"
@@ -123,6 +133,6 @@ exports[`<MetadataPrettyRow /> should render documents 1`] = `
         width={20}
       />
     </button>
-  </td>
-</tr>
+  </div>
+</div>
 `;
