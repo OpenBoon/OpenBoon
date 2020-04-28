@@ -7,7 +7,6 @@ import MetadataPrettyRow from '../PrettyRow'
 
 describe('<MetadataPrettyRow />', () => {
   it('should render documents', () => {
-    require('swr').__setMockUseSWRResponse({ data: pdfAsset })
     const pdfContent = pdfAsset.metadata.media.content
 
     const component = TestRenderer.create(
@@ -17,9 +16,9 @@ describe('<MetadataPrettyRow />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render object detection', () => {
+  it('should render object detection predictions', () => {
     require('swr').__setMockUseSWRResponse({
-      data: { ...bboxAsset, ...boxImagesResponse },
+      data: boxImagesResponse,
     })
     const objectDetectionPredictions =
       bboxAsset.metadata.analysis['zvi-object-detection']
@@ -36,10 +35,7 @@ describe('<MetadataPrettyRow />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render label detection', () => {
-    require('swr').__setMockUseSWRResponse({
-      data: { ...bboxAsset, ...boxImagesResponse },
-    })
+  it('should render label detection predictions', () => {
     const labelDetectionPredictions =
       bboxAsset.metadata.analysis['zvi-label-detection']
 
@@ -55,10 +51,7 @@ describe('<MetadataPrettyRow />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render analysis with object value', () => {
-    require('swr').__setMockUseSWRResponse({
-      data: bboxAsset,
-    })
+  it('should render when value is of type object', () => {
     const textDetectionPredictions =
       bboxAsset.metadata.analysis['zvi-text-detection']
 
