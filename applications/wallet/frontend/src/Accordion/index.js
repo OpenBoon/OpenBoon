@@ -14,7 +14,6 @@ const STYLES = {
     container: {
       backgroundColor: colors.structure.smoke,
       borderRadius: constants.borderRadius.small,
-      boxShadow: constants.boxShadows.default,
     },
     title: {
       borderBottom: constants.borders.tabs,
