@@ -4,6 +4,8 @@ import CheckmarkSvg from '../Icons/checkmark.svg'
 
 import Accordion, { VARIANTS } from '../Accordion'
 
+const WIDTH = 20
+
 const DataSourcesAddAutomaticAnalysis = () => {
   return (
     <div css={{ paddingTop: spacing.normal }}>
@@ -40,8 +42,8 @@ const DataSourcesAddAutomaticAnalysis = () => {
               svg: {
                 color: colors.key.one,
                 marginRight: spacing.normal,
-                minWidth: '20px',
-                maxWidth: '20px',
+                minWidth: WIDTH,
+                maxWidth: WIDTH,
               },
               span: {
                 fontWeight: typography.weight.bold,
