@@ -77,10 +77,6 @@ Array [
   font-style: italic;
 }
 
-.emotion-41 {
-  padding-bottom: 8px;
-}
-
 .emotion-40 {
   border: none;
   padding: 0;
@@ -197,6 +193,10 @@ Array [
 .emotion-19 {
   padding-left: 12px;
   color: #b3b3b3;
+}
+
+.emotion-41 {
+  height: 8px;
 }
 
 .emotion-43 {
@@ -674,170 +674,169 @@ Array [
         Storage Address: gs://zorroa-dev-data/images
       </h3>
     </div>
-    <div
-      className="emotion-41"
+    <fieldset
+      className="emotion-40"
     >
-      <fieldset
-        className="emotion-40"
+      <legend
+        className="emotion-10"
       >
-        <legend
-          className="emotion-10"
-        >
-          Add Additional File Types
-        </legend>
+        Add Additional File Types
+      </legend>
+      <div
+        className="emotion-11"
+      >
+        <div>
+          Additional file types can be added to this data source. Previous selections cannot be removed.
+        </div>
+      </div>
+      <div
+        className="emotion-12"
+      />
+      <label
+        className="emotion-21"
+      >
         <div
-          className="emotion-11"
+          className="emotion-16"
         >
-          <div>
-            Additional file types can be added to this data source. Previous selections cannot be removed.
+          <input
+            className="emotion-13"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="images"
+          />
+          <div
+            className="emotion-15"
+          >
+            <svg
+              className="emotion-14"
+              data-file-name="checkmark.svg"
+              width={20}
+            />
           </div>
         </div>
         <div
-          className="emotion-12"
-        />
-        <label
-          className="emotion-21"
+          className="emotion-17"
         >
-          <div
-            className="emotion-16"
-          >
-            <input
-              className="emotion-13"
-              defaultChecked={false}
-              onClick={[Function]}
-              type="checkbox"
-              value="images"
-            />
-            <div
-              className="emotion-15"
-            >
-              <svg
-                className="emotion-14"
-                data-file-name="checkmark.svg"
-                width={20}
-              />
-            </div>
-          </div>
-          <div
-            className="emotion-17"
-          >
-            <img
-              alt="Image Files"
-              src="/icons/images.png"
-              width="40px"
-            />
-          </div>
-          <div
-            className="emotion-20"
-          >
-            <span
-              className="emotion-18"
-            >
-              Image Files
-            </span>
-            <span
-              className="emotion-19"
-            >
-              GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
-            </span>
-          </div>
-        </label>
-        <label
-          className="emotion-21"
+          <img
+            alt="Image Files"
+            src="/icons/images.png"
+            width="40px"
+          />
+        </div>
+        <div
+          className="emotion-20"
         >
-          <div
-            className="emotion-16"
+          <span
+            className="emotion-18"
           >
-            <input
-              className="emotion-13"
-              defaultChecked={false}
-              onClick={[Function]}
-              type="checkbox"
-              value="documents"
-            />
-            <div
-              className="emotion-15"
-            >
-              <svg
-                className="emotion-14"
-                data-file-name="checkmark.svg"
-                width={20}
-              />
-            </div>
-          </div>
-          <div
-            className="emotion-17"
+            Image Files
+          </span>
+          <span
+            className="emotion-19"
           >
-            <img
-              alt="Documents (PDF & MS Office)"
-              src="/icons/documents.png"
-              width="40px"
-            />
-          </div>
-          <div
-            className="emotion-20"
-          >
-            <span
-              className="emotion-18"
-            >
-              Documents (PDF & MS Office)
-            </span>
-            <span
-              className="emotion-19"
-            >
-              PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
-            </span>
-          </div>
-        </label>
-        <label
-          className="emotion-21"
+            GIF, PNG, JPG, JPEG, TIF, TIFF, PSD
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-21"
+      >
+        <div
+          className="emotion-16"
         >
+          <input
+            className="emotion-13"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="documents"
+          />
           <div
-            className="emotion-16"
+            className="emotion-15"
           >
-            <input
-              className="emotion-13"
-              defaultChecked={false}
-              onClick={[Function]}
-              type="checkbox"
-              value="videos"
-            />
-            <div
-              className="emotion-15"
-            >
-              <svg
-                className="emotion-14"
-                data-file-name="checkmark.svg"
-                width={20}
-              />
-            </div>
-          </div>
-          <div
-            className="emotion-17"
-          >
-            <img
-              alt="Video Files"
-              src="/icons/videos.png"
-              width="40px"
+            <svg
+              className="emotion-14"
+              data-file-name="checkmark.svg"
+              width={20}
             />
           </div>
-          <div
-            className="emotion-20"
+        </div>
+        <div
+          className="emotion-17"
+        >
+          <img
+            alt="Documents (PDF & MS Office)"
+            src="/icons/documents.png"
+            width="40px"
+          />
+        </div>
+        <div
+          className="emotion-20"
+        >
+          <span
+            className="emotion-18"
           >
-            <span
-              className="emotion-18"
-            >
-              Video Files
-            </span>
-            <span
-              className="emotion-19"
-            >
-              MP4, M4V, MOV, MPG, MPEG, OGG
-            </span>
+            Documents (PDF & MS Office)
+          </span>
+          <span
+            className="emotion-19"
+          >
+            PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-21"
+      >
+        <div
+          className="emotion-16"
+        >
+          <input
+            className="emotion-13"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="videos"
+          />
+          <div
+            className="emotion-15"
+          >
+            <svg
+              className="emotion-14"
+              data-file-name="checkmark.svg"
+              width={20}
+            />
           </div>
-        </label>
-      </fieldset>
-    </div>
+        </div>
+        <div
+          className="emotion-17"
+        >
+          <img
+            alt="Video Files"
+            src="/icons/videos.png"
+            width="40px"
+          />
+        </div>
+        <div
+          className="emotion-20"
+        >
+          <span
+            className="emotion-18"
+          >
+            Video Files
+          </span>
+          <span
+            className="emotion-19"
+          >
+            MP4, M4V, MOV, MPG, MPEG, OGG
+          </span>
+        </div>
+      </label>
+    </fieldset>
+    <div
+      className="emotion-41"
+    />
     <h3
       className="emotion-1"
     >

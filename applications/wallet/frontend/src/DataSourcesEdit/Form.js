@@ -96,29 +96,28 @@ const DataSourcesEditForm = ({ initialState }) => {
           <SectionTitle>{`Storage Address: ${uri}`}</SectionTitle>
         </div>
 
-        <div css={{ paddingBottom: spacing.base }}>
-          <CheckboxGroup
-            legend="Add Additional File Types"
-            description={
-              <div>
-                Additional file types can be added to this data source. Previous
-                selections cannot be removed.
-              </div>
-            }
-            onClick={(fileType) =>
-              dispatch({ fileTypes: { ...fileTypes, ...fileType } })
-            }
-            options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
-              value,
-              label,
-              icon: <img src={icon} alt={label} width="40px" />,
-              legend,
-              initialValue: !!fileTypes[value],
-              isDisabled: !!initialState.fileTypes[value],
-            }))}
-            variant={CHECKBOX_VARIANTS.INLINE}
-          />
-        </div>
+        <CheckboxGroup
+          legend="Add Additional File Types"
+          description={
+            <div>
+              Additional file types can be added to this data source. Previous
+              selections cannot be removed.
+            </div>
+          }
+          onClick={(fileType) =>
+            dispatch({ fileTypes: { ...fileTypes, ...fileType } })
+          }
+          options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
+            value,
+            label,
+            icon: <img src={icon} alt={label} width="40px" />,
+            legend,
+            initialValue: !!fileTypes[value],
+            isDisabled: !!initialState.fileTypes[value],
+          }))}
+          variant={CHECKBOX_VARIANTS.INLINE}
+        />
+        <div css={{ height: spacing.base }} />
 
         <SectionTitle>Add Additional Analysis</SectionTitle>
 

@@ -75,6 +75,7 @@ const DataSourcesAddForm = () => {
 
       <Form style={{ width: 'auto' }}>
         <DataSourcesAddCopy />
+
         <div css={{ width: constants.form.maxWidth }}>
           <span
             css={{
@@ -113,34 +114,35 @@ const DataSourcesAddForm = () => {
           <DataSourcesAddSource dispatch={dispatch} state={state} />
         </div>
 
-        <div css={{ paddingBottom: spacing.base }}>
-          <CheckboxGroup
-            legend="Select File Types to Import"
-            description={
-              <div>
-                A minimum of one file type must be selected{' '}
-                <span css={{ color: colors.signal.warning.base }}>*</span>
-              </div>
-            }
-            onClick={(fileType) =>
-              dispatch({ fileTypes: { ...fileTypes, ...fileType } })
-            }
-            options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
-              value,
-              label,
-              icon: <img src={icon} alt={label} width="40px" />,
-              legend,
-              initialValue: false,
-              isDisabled: false,
-            }))}
-            variant={CHECKBOX_VARIANTS.INLINE}
-          />
-        </div>
+        <CheckboxGroup
+          legend="Select File Types to Import"
+          description={
+            <div>
+              A minimum of one file type must be selected{' '}
+              <span css={{ color: colors.signal.warning.base }}>*</span>
+            </div>
+          }
+          onClick={(fileType) =>
+            dispatch({ fileTypes: { ...fileTypes, ...fileType } })
+          }
+          options={FILE_TYPES.map(({ value, label, legend, icon }) => ({
+            value,
+            label,
+            icon: <img src={icon} alt={label} width="40px" />,
+            legend,
+            initialValue: false,
+            isDisabled: false,
+          }))}
+          variant={CHECKBOX_VARIANTS.INLINE}
+        />
+        <div css={{ height: spacing.base }} />
 
         <SectionTitle>Select Analysis</SectionTitle>
+
         <SectionSubTitle>
           Choose the type of analysis you would like performed on your data set:
         </SectionSubTitle>
+
         <DataSourcesAddAutomaticAnalysis />
         {providers.map((provider) => (
           <DataSourcesAddProvider
@@ -151,6 +153,7 @@ const DataSourcesAddForm = () => {
             }
           />
         ))}
+
         <ButtonGroup>
           <Link
             href="/[projectId]/data-sources"
