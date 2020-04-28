@@ -101,7 +101,7 @@ const DataSourcesEditForm = ({ initialState }) => {
           description={
             <div>
               Additional file types can be added to this data source. Previous
-              selections can not be removed
+              selections cannot be removed.
             </div>
           }
           onClick={(fileType) =>
@@ -122,7 +122,7 @@ const DataSourcesEditForm = ({ initialState }) => {
 
         <SectionSubTitle>
           Additional analysis can be added to this data source. Previous
-          selections can not be removed
+          selections cannot be removed.
         </SectionSubTitle>
 
         <DataSourcesAddAutomaticAnalysis />

@@ -620,7 +620,7 @@ Array [
     <p
       className="emotion-0"
     >
-      Additional file types or analysis modules can be added to this data source. All previous selections will remain constant and can not be modified.
+      Additional file types or analysis modules can be added to this data source. All previous selections will remain constant and cannot be modified.
     </p>
     <div
       className="emotion-9"
@@ -682,7 +682,7 @@ Array [
         className="emotion-11"
       >
         <div>
-          Additional file types can be added to this data source. Previous selections can not be removed
+          Additional file types can be added to this data source. Previous selections cannot be removed.
         </div>
       </div>
       <div
@@ -838,7 +838,7 @@ Array [
     <p
       className="emotion-42"
     >
-      Additional analysis can be added to this data source. Previous selections can not be removed
+      Additional analysis can be added to this data source. Previous selections cannot be removed.
     </p>
     <div
       className="emotion-51"
