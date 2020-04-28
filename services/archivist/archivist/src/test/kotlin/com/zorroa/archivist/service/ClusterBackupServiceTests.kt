@@ -27,13 +27,11 @@ class ClusterBackupServiceTests : AbstractTest() {
     @Test
     fun createSnapshot() {
         var snapshots = clusterBackupService.getSnapshots(cluster)
-
         clusterBackupService.createClusterSnapshot(cluster, "test")
 
         var snapshotTest = clusterBackupService
             .getSnapshots(cluster)
             .snapshots.find { it.snapshotId().name == "test" }
-
 
         assertEquals("test", snapshotTest?.snapshotId()?.name)
 

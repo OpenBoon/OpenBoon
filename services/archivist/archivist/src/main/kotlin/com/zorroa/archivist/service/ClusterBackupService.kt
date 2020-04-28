@@ -18,9 +18,6 @@ import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.client.core.AcknowledgedResponse
-import org.elasticsearch.client.indexlifecycle.DeleteLifecyclePolicyRequest
-import org.elasticsearch.client.indexlifecycle.GetLifecyclePolicyRequest
-import org.elasticsearch.client.indexlifecycle.GetLifecyclePolicyResponse
 import org.elasticsearch.client.slm.DeleteSnapshotLifecyclePolicyRequest
 import org.elasticsearch.client.slm.ExecuteSnapshotLifecyclePolicyRequest
 import org.elasticsearch.client.slm.ExecuteSnapshotLifecyclePolicyResponse
@@ -28,7 +25,6 @@ import org.elasticsearch.client.slm.GetSnapshotLifecyclePolicyRequest
 import org.elasticsearch.client.slm.GetSnapshotLifecyclePolicyResponse
 import org.elasticsearch.client.slm.PutSnapshotLifecyclePolicyRequest
 import org.elasticsearch.client.slm.SnapshotLifecyclePolicy
-import org.elasticsearch.client.slm.SnapshotLifecyclePolicyMetadata
 import org.elasticsearch.client.slm.SnapshotRetentionConfiguration
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.unit.TimeValue
@@ -460,8 +456,6 @@ class S3ClusterBackupService(
 
     @Value("\${archivist.es.backup.aws.backup-location}")
     lateinit var backupLocation: String
-
-
 
     override fun createClusterRepository(cluster: IndexCluster) {
         val client = indexClusterService.getRestHighLevelClient(cluster)
