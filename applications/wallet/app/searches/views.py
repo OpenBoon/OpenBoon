@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.urls import reverse
 from djangorestframework_camel_case.render import CamelCaseBrowsableAPIRenderer
 from flatten_dict import flatten
 from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
@@ -9,14 +10,33 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_csv.renderers import CSVRenderer
 
-from assets.serializers import AssetSerializer
 from assets.views import asset_modifier
 from projects.views import BaseProjectViewSet
 from searches.models import Search
-from searches.serializers import SearchSerializer
+from searches.serializers import SearchSerializer, SearchAssetSerializer
 from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.paginators import FromSizePagination, ZMLPFromSizePagination
 from .utils import FieldUtility, FilterBoy
+
+
+def search_asset_modifier(request, item):
+    asset_modifier(request, item)
+    # Default relative url in case a thumbnail is not found
+    thumbnail_url = '/icons/fallback_3x.png'
+    project_id = request.parser_context['view'].kwargs['project_pk']
+    asset_id = item['id']
+    for _file in item['metadata']['files']:
+        category = 'web-proxy'
+        if _file['category'] == category:
+            name = _file['name']
+            # If a web-proxy is found, build the file serving url for it
+            thumbnail_url = reverse('file_name-detail', kwargs={'project_pk': project_id,
+                                                                'asset_pk': asset_id,
+                                                                'category_pk': category,
+                                                                'pk': name})
+    # Regardless of the url being used, make it absolute
+    item['thumbnail_url'] = request.build_absolute_uri(thumbnail_url)
+    del(item['metadata']['files'])
 
 
 class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
@@ -127,8 +147,8 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
         query['_source'] = fields
 
         return self._zmlp_list_from_es(request, search_filter=query, base_url=path,
-                                       serializer_class=AssetSerializer,
-                                       item_modifier=asset_modifier,
+                                       serializer_class=SearchAssetSerializer,
+                                       item_modifier=search_asset_modifier,
                                        pagination_class=ZMLPFromSizePagination)
 
     @action(detail=False, methods=['get'])
@@ -194,7 +214,7 @@ class MetadataExportViewSet(BaseProjectViewSet):
         content = self._zmlp_get_content_from_es_search(request, base_url=path,
                                                         search_filter=query)
         items = self._get_modified_items_from_content(request, content,
-                                                      item_modifier=asset_modifier)
+                                                      item_modifier=search_asset_modifier)
 
         return items
 
