@@ -1,0 +1,2764 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Metadata /> should render properly 1`] = `
+.emotion-1 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  color: #73b61c;
+  font-style: italic;
+}
+
+<div
+  className="emotion-1"
+>
+  <div
+    className="emotion-0"
+  >
+    Select an asset to view its metadata
+  </div>
+</div>
+`;
+
+exports[`<Metadata /> should render selected asset 1`] = `
+Array [
+  .emotion-1 {
+  padding: 16px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-0 {
+  color: #4a90e2;
+}
+
+<div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-0"
+    >
+      TIFF_1MB.tiff
+    </div>
+  </div>,
+  .emotion-3 {
+  padding: 8px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border: 1px solid #808080;
+  border-radius: 2px;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: 1px solid transparent;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: #808080;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: 1px solid transparent;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: transparent;
+  color: #808080;
+  text-transform: uppercase;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1:hover {
+  color: #ffffff;
+}
+
+<div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-2"
+    >
+      <button
+        className="emotion-0"
+        onClick={[Function]}
+        type="button"
+      >
+        pretty
+      </button>
+      <button
+        className="emotion-1"
+        onClick={[Function]}
+        type="button"
+      >
+        raw json
+      </button>
+    </div>
+  </div>,
+  .emotion-353 {
+  overflow: auto;
+}
+
+.emotion-48 {
+  background-color: #252525;
+  border-radius: 2px;
+}
+
+.emotion-3 {
+  border-bottom: 1px solid #4a4a4a;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 h4 {
+  font-weight: 400;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0 {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+}
+
+.emotion-2 {
+  font-size: 17px;
+  line-height: 20px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-47 {
+  width: 100%;
+  background-color: #191919;
+}
+
+.emotion-46 {
+  width: 100%;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-9:not(:first-of-type) {
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-9:hover {
+  background-color: #027aff38;
+}
+
+.emotion-9:hover div {
+  color: #ffffff;
+}
+
+.emotion-9:hover div svg {
+  display: inline-block;
+}
+
+.emotion-4 {
+  font-family: Roboto Condensed;
+  color: #808080;
+  padding: 16px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5 {
+  -webkit-flex: 4;
+  -ms-flex: 4;
+  flex: 4;
+  font-family: Roboto Mono;
+  color: #e0e0e0;
+  padding: 16px;
+  word-break: break-all;
+}
+
+.emotion-8 {
+  width: 36px;
+  padding-top: 16px;
+  padding-right: 16px;
+}
+
+.emotion-6 {
+  display: none;
+}
+
+.emotion-6:hover {
+  color: #ffffff;
+}
+
+.emotion-239 {
+  width: 100%;
+}
+
+.emotion-239:not(:first-of-type) {
+  border-top: 4px solid #4a4a4a;
+}
+
+.emotion-219 {
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-219:hover div svg {
+  display: inline-block;
+}
+
+.emotion-218 {
+  font-family: Roboto Condensed;
+  color: #808080;
+  padding: 16px;
+  padding-bottom: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-232 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+<div
+    className="emotion-353"
+  >
+    <div
+      className="emotion-48"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          System
+        </h4>
+      </div>
+      <div
+        className="emotion-47"
+      >
+        <div
+          className="emotion-46"
+        >
+          <div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="system.jobId"
+                >
+                  Job ID
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="106d4be1-5d95-11ea-baea-364023b135f5"
+              >
+                106d4be1-5d95-11ea-baea-364023b135f5
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="system.dataSourceId"
+                >
+                  Data Source ID
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="10509c20-5d95-11ea-baea-364023b135f5"
+              >
+                10509c20-5d95-11ea-baea-364023b135f5
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="system.timeCreated"
+                >
+                  Time Created
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="2020-03-03T21:22:24.922700Z"
+              >
+                2020-03-03 9:22 UTC
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="system.state"
+                >
+                  State
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="Analyzed"
+              >
+                Analyzed
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="system.projectId"
+                >
+                  Project ID
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="89382033-bcbb-4c8f-81a9-3d0883298a81"
+              >
+                89382033-bcbb-4c8f-81a9-3d0883298a81
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="system.taskId"
+                >
+                  Task ID
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="106e0f32-5d95-11ea-baea-364023b135f5"
+              >
+                106e0f32-5d95-11ea-baea-364023b135f5
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="system.timeModified"
+                >
+                  Time Modified
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="2020-03-03T21:22:47.575195Z"
+              >
+                2020-03-03 9:22 UTC
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-48"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Source
+        </h4>
+      </div>
+      <div
+        className="emotion-47"
+      >
+        <div
+          className="emotion-46"
+        >
+          <div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="source.path"
+                >
+                  Path
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="gs://zorroa-dev-data/image/TIFF_1MB.tiff"
+              >
+                gs://zorroa-dev-data/image/TIFF_1MB.tiff
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="source.extension"
+                >
+                  Extension
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="tiff"
+              >
+                tiff
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="source.filename"
+                >
+                  File Name
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="TIFF_1MB.tiff"
+              >
+                TIFF_1MB.tiff
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="source.mimetype"
+                >
+                  Mimetype
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="image/tiff"
+              >
+                image/tiff
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="source.filesize"
+                >
+                  File Size
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={1131930}
+              >
+                1.1 MB
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="source.checksum"
+                >
+                  Checksum
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={1867533868}
+              >
+                1867533868
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="source.url"
+                >
+                  URL
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff"
+              >
+                https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-48"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Metrics
+        </h4>
+      </div>
+      <div
+        className="emotion-47"
+      />
+    </div>
+    <div
+      className="emotion-48"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Media
+        </h4>
+      </div>
+      <div
+        className="emotion-47"
+      >
+        <div
+          className="emotion-46"
+        >
+          <div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="media.width"
+                >
+                  Width
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={650}
+              >
+                650
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="media.height"
+                >
+                  Height
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={434}
+              >
+                434
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="media.aspect"
+                >
+                  Aspect
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={1.5}
+              >
+                1.5
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="media.orientation"
+                >
+                  Orientation
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="landscape"
+              >
+                landscape
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="media.type"
+                >
+                  Type
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="image"
+              >
+                image
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="media.length"
+                >
+                  Length
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={1}
+              >
+                1
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-48"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Clip
+        </h4>
+      </div>
+      <div
+        className="emotion-47"
+      >
+        <div
+          className="emotion-46"
+        >
+          <div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="clip.type"
+                >
+                  Type
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="page"
+              >
+                page
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="clip.start"
+                >
+                  Start
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={1}
+              >
+                1
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="clip.stop"
+                >
+                  Stop
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={1}
+              >
+                1
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="clip.length"
+                >
+                  Length
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={1}
+              >
+                1
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="clip.pile"
+                >
+                  Pile
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="pUn6wBxUN7x9JxOxLkvruOyNdYA"
+              >
+                pUn6wBxUN7x9JxOxLkvruOyNdYA
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="clip.sourceAssetId"
+                >
+                  Source Asset ID
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+              >
+                vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-48"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Files
+        </h4>
+      </div>
+      <div
+        className="emotion-47"
+      >
+        <div
+          className="emotion-239"
+        >
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.name"
+              >
+                Name
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title="image_650x434.jpg"
+            >
+              image_650x434.jpg
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.category"
+              >
+                Category
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title="proxy"
+            >
+              proxy
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.mimetype"
+              >
+                Mimetype
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title="image/jpeg"
+            >
+              image/jpeg
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.size"
+              >
+                Size
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title={89643}
+            >
+              87.5 KB
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-219"
+          >
+            <div
+              className="emotion-218"
+            >
+              <span
+                title="files.attrs"
+              >
+                Attrs
+              </span>
+            </div>
+            <div />
+          </div>
+          <div
+            className="emotion-232"
+          >
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="files.width"
+                >
+                  Width
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={650}
+              >
+                650
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="files.height"
+                >
+                  Height
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={434}
+              >
+                434
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.url"
+              >
+                URL
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg"
+            >
+              https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-239"
+        >
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.name"
+              >
+                Name
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title="image_512x341.jpg"
+            >
+              image_512x341.jpg
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.category"
+              >
+                Category
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title="proxy"
+            >
+              proxy
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.mimetype"
+              >
+                Mimetype
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title="image/jpeg"
+            >
+              image/jpeg
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.size"
+              >
+                Size
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title={60713}
+            >
+              59.3 KB
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-219"
+          >
+            <div
+              className="emotion-218"
+            >
+              <span
+                title="files.attrs"
+              >
+                Attrs
+              </span>
+            </div>
+            <div />
+          </div>
+          <div
+            className="emotion-232"
+          >
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="files.width"
+                >
+                  Width
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={512}
+              >
+                512
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="files.height"
+                >
+                  Height
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={341}
+              >
+                341
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.url"
+              >
+                URL
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg"
+            >
+              https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-239"
+        >
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.name"
+              >
+                Name
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title="image_320x213.jpg"
+            >
+              image_320x213.jpg
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.category"
+              >
+                Category
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title="proxy"
+            >
+              proxy
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.mimetype"
+              >
+                Mimetype
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title="image/jpeg"
+            >
+              image/jpeg
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.size"
+              >
+                Size
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title={30882}
+            >
+              30.2 KB
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            className="emotion-219"
+          >
+            <div
+              className="emotion-218"
+            >
+              <span
+                title="files.attrs"
+              >
+                Attrs
+              </span>
+            </div>
+            <div />
+          </div>
+          <div
+            className="emotion-232"
+          >
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="files.width"
+                >
+                  Width
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={320}
+              >
+                320
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="files.height"
+                >
+                  Height
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title={213}
+              >
+                213
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-4"
+            >
+              <span
+                title="files.url"
+              >
+                URL
+              </span>
+            </div>
+            <div
+              className="emotion-5"
+              title="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg"
+            >
+              https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg
+            </div>
+            <div
+              className="emotion-8"
+            >
+              <button
+                className="emotion-1"
+                onClick={[Function]}
+                title="Copy to Clipboard"
+                type="button"
+              >
+                <svg
+                  className="emotion-6"
+                  color="#808080"
+                  data-file-name="copy.svg"
+                  width={20}
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-48"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Analysis
+        </h4>
+      </div>
+      <div
+        className="emotion-47"
+      >
+        <div>
+          analysis
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-48"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Similarity
+        </h4>
+      </div>
+      <div
+        className="emotion-47"
+      >
+        <div
+          className="emotion-46"
+        >
+          <div>
+            <div
+              className="emotion-9"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span
+                  title="similarity.simhash"
+                >
+                  Simhash
+                </span>
+              </div>
+              <div
+                className="emotion-5"
+                title="NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP"
+              >
+                NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAM...
+              </div>
+              <div
+                className="emotion-8"
+              >
+                <button
+                  className="emotion-1"
+                  onClick={[Function]}
+                  title="Copy to Clipboard"
+                  type="button"
+                >
+                  <svg
+                    className="emotion-6"
+                    color="#808080"
+                    data-file-name="copy.svg"
+                    width={20}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<Metadata /> should render selected asset 2`] = `
+Array [
+  .emotion-1 {
+  padding: 16px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-0 {
+  color: #4a90e2;
+}
+
+<div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-0"
+    >
+      TIFF_1MB.tiff
+    </div>
+  </div>,
+  .emotion-3 {
+  padding: 8px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border: 1px solid #808080;
+  border-radius: 2px;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: 1px solid transparent;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: #808080;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1:hover {
+  color: #ffffff;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: 1px solid transparent;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: transparent;
+  color: #808080;
+  text-transform: uppercase;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+}
+
+<div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-2"
+    >
+      <button
+        className="emotion-0"
+        onClick={[Function]}
+        type="button"
+      >
+        pretty
+      </button>
+      <button
+        className="emotion-1"
+        onClick={[Function]}
+        type="button"
+      >
+        raw json
+      </button>
+    </div>
+  </div>,
+  .emotion-0 {
+  height: 100%;
+  overflow: auto;
+  background-color: #191919;
+}
+
+.emotion-0 pre {
+  padding: 16px;
+}
+
+<div
+    className="emotion-0"
+  >
+    <JsonDisplay
+      json={
+        Object {
+          "id": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+          "metadata": Object {
+            "analysis": Object {
+              "zvi": Object {
+                "tinyProxy": Array [
+                  "#f3dfc3",
+                  "#f4efd8",
+                  "#c18f46",
+                  "#ebdfbd",
+                  "#ccd3c0",
+                  "#e7d4bb",
+                  "#beae8e",
+                  "#cabf9e",
+                  "#d2c09c",
+                ],
+              },
+            },
+            "clip": Object {
+              "length": 1,
+              "pile": "pUn6wBxUN7x9JxOxLkvruOyNdYA",
+              "sourceAssetId": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+              "start": 1,
+              "stop": 1,
+              "type": "page",
+            },
+            "files": Array [
+              Object {
+                "attrs": Object {
+                  "height": 434,
+                  "width": 650,
+                },
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "name": "image_650x434.jpg",
+                "size": 89643,
+                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg",
+              },
+              Object {
+                "attrs": Object {
+                  "height": 341,
+                  "width": 512,
+                },
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "name": "image_512x341.jpg",
+                "size": 60713,
+                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg",
+              },
+              Object {
+                "attrs": Object {
+                  "height": 213,
+                  "width": 320,
+                },
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "name": "image_320x213.jpg",
+                "size": 30882,
+                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg",
+              },
+            ],
+            "media": Object {
+              "aspect": 1.5,
+              "height": 434,
+              "length": 1,
+              "orientation": "landscape",
+              "type": "image",
+              "width": 650,
+            },
+            "metrics": Object {
+              "pipeline": Array [
+                Object {
+                  "checksum": 1621235190,
+                  "executionDate": "2020-03-03T21:22:27.694149",
+                  "executionTime": 0.11,
+                  "module": "standard",
+                  "processor": "zmlp_core.core.processors.PreCacheSourceFileProcessor",
+                },
+                Object {
+                  "checksum": 1426657387,
+                  "executionDate": "2020-03-03T21:22:28.215069",
+                  "executionTime": 0.26,
+                  "module": "standard",
+                  "processor": "zmlp_core.image.importers.ImageImporter",
+                },
+                Object {
+                  "checksum": 2001473853,
+                  "module": "standard",
+                  "processor": "zmlp_core.office.importers.OfficeImporter",
+                },
+                Object {
+                  "checksum": 3310423168,
+                  "module": "standard",
+                  "processor": "zmlp_core.video.VideoImporter",
+                },
+                Object {
+                  "checksum": 1841569083,
+                  "executionDate": "2020-03-03T21:22:29.654215",
+                  "executionTime": 0,
+                  "module": "standard",
+                  "processor": "zmlp_core.core.processors.AssertAttributesProcessor",
+                },
+              ],
+            },
+            "similarity": Object {
+              "simhash": "NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP",
+            },
+            "source": Object {
+              "checksum": 1867533868,
+              "extension": "tiff",
+              "filename": "TIFF_1MB.tiff",
+              "filesize": 1131930,
+              "mimetype": "image/tiff",
+              "path": "gs://zorroa-dev-data/image/TIFF_1MB.tiff",
+              "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff",
+            },
+            "system": Object {
+              "dataSourceId": "10509c20-5d95-11ea-baea-364023b135f5",
+              "jobId": "106d4be1-5d95-11ea-baea-364023b135f5",
+              "projectId": "89382033-bcbb-4c8f-81a9-3d0883298a81",
+              "state": "Analyzed",
+              "taskId": "106e0f32-5d95-11ea-baea-364023b135f5",
+              "timeCreated": "2020-03-03T21:22:24.922700Z",
+              "timeModified": "2020-03-03T21:22:47.575195Z",
+            },
+          },
+          "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/",
+        }
+      }
+    />
+  </div>,
+]
+`;
