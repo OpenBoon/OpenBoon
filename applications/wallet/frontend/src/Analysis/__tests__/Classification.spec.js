@@ -2,12 +2,12 @@ import TestRenderer from 'react-test-renderer'
 
 import bboxAsset, { boxImagesResponse } from '../../Asset/__mocks__/bboxAsset'
 
-import MetadataAnalysisClassification from '../Classification'
+import AnalysisClassification from '../Classification'
 
 const PROJECT_ID = '00000000-0000-0000-0000-000000000000'
 const ASSET_ID = bboxAsset.id
 
-describe('<MetadataAnalysisClassification />', () => {
+describe('<AnalysisClassification />', () => {
   it('should render properly when it is the first item', () => {
     require('next/router').__setUseRouter({
       query: { id: ASSET_ID, projectId: PROJECT_ID },
@@ -16,7 +16,7 @@ describe('<MetadataAnalysisClassification />', () => {
     require('swr').__setMockUseSWRResponse({ data: boxImagesResponse })
 
     const component = TestRenderer.create(
-      <MetadataAnalysisClassification
+      <AnalysisClassification
         moduleName="zvi-object-detection"
         moduleIndex={0}
       />,
@@ -33,7 +33,7 @@ describe('<MetadataAnalysisClassification />', () => {
     require('swr').__setMockUseSWRResponse({ data: boxImagesResponse })
 
     const component = TestRenderer.create(
-      <MetadataAnalysisClassification
+      <AnalysisClassification
         moduleName="zvi-object-detection"
         moduleIndex={1}
       />,

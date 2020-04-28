@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<MetadataAnalysis /> should render properly 1`] = `
+exports[`<Analysis /> should render properly 1`] = `
 Array [
-  <MetadataAnalysisClassification
+  <AnalysisClassification
     moduleIndex={0}
     moduleName="zvi-object-detection"
   />,
-  <MetadataAnalysisClassification
+  <AnalysisClassification
     moduleIndex={1}
     moduleName="zvi-label-detection"
   />,

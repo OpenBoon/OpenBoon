@@ -18,7 +18,7 @@ const MODULES = {
   },
 }
 
-const MetadataAnalysisClassification = ({ moduleName, moduleIndex }) => {
+const AnalysisClassification = ({ moduleName, moduleIndex }) => {
   const attr = `analysis.${moduleName}&width=${BBOX_SIZE}`
 
   const {
@@ -148,9 +148,9 @@ const MetadataAnalysisClassification = ({ moduleName, moduleIndex }) => {
   )
 }
 
-MetadataAnalysisClassification.propTypes = {
+AnalysisClassification.propTypes = {
   moduleName: PropTypes.string.isRequired,
   moduleIndex: PropTypes.number.isRequired,
 }
 
-export default MetadataAnalysisClassification
+export default AnalysisClassification

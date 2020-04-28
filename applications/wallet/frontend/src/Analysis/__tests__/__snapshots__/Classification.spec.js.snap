@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<MetadataAnalysisClassification /> should render properly when it is not the first item 1`] = `
+exports[`<AnalysisClassification /> should render properly when it is not the first item 1`] = `
 .emotion-0 {
   font-family: Roboto Mono;
   color: #ffffff;
@@ -207,7 +207,7 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is no
 </div>
 `;
 
-exports[`<MetadataAnalysisClassification /> should render properly when it is the first item 1`] = `
+exports[`<AnalysisClassification /> should render properly when it is the first item 1`] = `
 .emotion-15 {
   padding: 16px;
 }
