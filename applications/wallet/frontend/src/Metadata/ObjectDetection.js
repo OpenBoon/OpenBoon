@@ -50,6 +50,7 @@ const MetadataObjectDetection = () => {
           fontFamily: 'Roboto Mono',
           color: colors.structure.white,
           width: '100%',
+          borderSpacing: 0,
           td: {
             paddingRight: spacing.base,
           },
@@ -85,6 +86,7 @@ const MetadataObjectDetection = () => {
         </thead>
         <tbody>
           {predictions.map((prediction, index) => {
+            const isFirstRow = index === 0
             const isLastRow = index === predictions.length - 1
 
             return (
@@ -96,7 +98,11 @@ const MetadataObjectDetection = () => {
                         key={column}
                         css={{
                           display: 'flex',
-                          paddingBottom: isLastRow ? 0 : spacing.normal,
+                          paddingTop: isFirstRow ? 0 : spacing.base,
+                          paddingBottom: isLastRow ? 0 : spacing.base,
+                          borderBottom: isLastRow
+                            ? ''
+                            : constants.borders.divider,
                         }}
                       >
                         <img
@@ -117,12 +123,16 @@ const MetadataObjectDetection = () => {
                     <td
                       key={column}
                       css={{
-                        '&:last-child': {
+                        '&:last-of-type': {
                           textAlign: 'right',
                           paddingRight: 0,
                         },
                         paddingRight: spacing.base,
-                        paddingBottom: isLastRow ? 0 : spacing.normal,
+                        paddingTop: isFirstRow ? 0 : spacing.base,
+                        paddingBottom: isLastRow ? 0 : spacing.base,
+                        borderBottom: isLastRow
+                          ? ''
+                          : constants.borders.divider,
                       }}
                     >
                       {prediction[column]}

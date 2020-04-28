@@ -33,6 +33,7 @@ const MetadataLabelDetection = ({ name, predictions }) => {
           fontFamily: 'Roboto Mono',
           color: colors.structure.white,
           width: '100%',
+          borderSpacing: 0,
           td: {
             paddingRight: spacing.base,
           },
@@ -68,6 +69,7 @@ const MetadataLabelDetection = ({ name, predictions }) => {
         </thead>
         <tbody>
           {predictions.map((prediction, index) => {
+            const isFirstRow = index === 0
             const isLastRow = index === predictions.length - 1
 
             return (
@@ -82,7 +84,11 @@ const MetadataLabelDetection = ({ name, predictions }) => {
                           paddingRight: 0,
                         },
                         paddingRight: spacing.base,
-                        paddingBottom: isLastRow ? 0 : spacing.normal,
+                        paddingTop: isFirstRow ? 0 : spacing.base,
+                        paddingBottom: isLastRow ? 0 : spacing.base,
+                        borderBottom: isLastRow
+                          ? ''
+                          : constants.borders.divider,
                       }}
                     >
                       {prediction[column]}

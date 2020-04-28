@@ -294,6 +294,7 @@ exports[`<MetadataPrettyRow /> should render label detection predictions 1`] = `
   font-family: Roboto Mono;
   color: #ffffff;
   width: 100%;
+  border-spacing: 0;
 }
 
 .emotion-9 td {
@@ -333,7 +334,9 @@ exports[`<MetadataPrettyRow /> should render label detection predictions 1`] = `
 
 .emotion-3 {
   padding-right: 8px;
-  padding-bottom: 16px;
+  padding-top: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #3b3b3b;
 }
 
 .emotion-3:last-child {
@@ -343,6 +346,7 @@ exports[`<MetadataPrettyRow /> should render label detection predictions 1`] = `
 
 .emotion-6 {
   padding-right: 8px;
+  padding-top: 8px;
   padding-bottom: 0;
 }
 
@@ -429,6 +433,7 @@ exports[`<MetadataPrettyRow /> should render object detection predictions 1`] = 
   font-family: Roboto Mono;
   color: #ffffff;
   width: 100%;
+  border-spacing: 0;
 }
 
 .emotion-14 td {
@@ -471,7 +476,9 @@ exports[`<MetadataPrettyRow /> should render object detection predictions 1`] = 
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-bottom: 16px;
+  padding-top: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #3b3b3b;
 }
 
 .emotion-4 {
@@ -482,10 +489,12 @@ exports[`<MetadataPrettyRow /> should render object detection predictions 1`] = 
 
 .emotion-6 {
   padding-right: 8px;
-  padding-bottom: 16px;
+  padding-top: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #3b3b3b;
 }
 
-.emotion-6:last-child {
+.emotion-6:last-of-type {
   text-align: right;
   padding-right: 0;
 }
@@ -495,15 +504,17 @@ exports[`<MetadataPrettyRow /> should render object detection predictions 1`] = 
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding-top: 8px;
   padding-bottom: 0;
 }
 
 .emotion-11 {
   padding-right: 8px;
+  padding-top: 8px;
   padding-bottom: 0;
 }
 
-.emotion-11:last-child {
+.emotion-11:last-of-type {
   text-align: right;
   padding-right: 0;
 }
