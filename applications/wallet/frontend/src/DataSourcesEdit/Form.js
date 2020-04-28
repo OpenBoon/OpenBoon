@@ -19,9 +19,9 @@ import CheckboxGroup from '../Checkbox/Group'
 import { FILE_TYPES } from '../DataSourcesAdd/helpers'
 
 import DataSourcesAddAutomaticAnalysis from '../DataSourcesAdd/AutomaticAnalysis'
-import DataSourcesAddCopy from '../DataSourcesAdd/Copy'
 
 import DataSourcesEditProvider from './Provider'
+import DataSourcesEditCopy from './Copy'
 
 import { getInitialModules, onSubmit } from './helpers'
 
@@ -65,7 +65,7 @@ const DataSourcesEditForm = ({ initialState }) => {
       )}
 
       <Form style={{ width: 'auto' }}>
-        <DataSourcesAddCopy />
+        <DataSourcesEditCopy />
 
         <div
           css={{
@@ -82,17 +82,28 @@ const DataSourcesEditForm = ({ initialState }) => {
             label="Name"
             type="text"
             value={name}
-            onChange={({ target: { value } }) => dispatch({ name: value })}
-            hasError={errors.name !== undefined}
-            errorMessage={errors.name}
+            onChange={({ target: { value } }) =>
+              dispatch({
+                name: value,
+              })
+            }
+            hasError={!errors.name || !name}
+            errorMessage={
+              errors.name || !name ? 'Data Source Name is required' : ''
+            }
           />
 
           <SectionTitle>{`Storage Address: ${uri}`}</SectionTitle>
         </div>
 
         <CheckboxGroup
-          legend="Select File Types to Import"
-          description={<div>A minimum of one file type must be selected </div>}
+          legend="Add Additional File Types"
+          description={
+            <div>
+              Additional file types can be added to this data source. Previous
+              selections cannot be removed.
+            </div>
+          }
           onClick={(fileType) =>
             dispatch({ fileTypes: { ...fileTypes, ...fileType } })
           }
@@ -107,10 +118,11 @@ const DataSourcesEditForm = ({ initialState }) => {
           variant={CHECKBOX_VARIANTS.INLINE}
         />
 
-        <SectionTitle>Select Analysis</SectionTitle>
+        <SectionTitle>Add Additional Analysis</SectionTitle>
 
         <SectionSubTitle>
-          Choose the type of analysis you would like performed on your data set:
+          Additional analysis can be added to this data source. Previous
+          selections cannot be removed.
         </SectionSubTitle>
 
         <DataSourcesAddAutomaticAnalysis />

@@ -18,13 +18,9 @@ Array [
   width: auto;
 }
 
-.emotion-1 {
+.emotion-0 {
   max-width: 600px;
   color: #b3b3b3;
-}
-
-.emotion-0 {
-  color: #73b61c;
 }
 
 .emotion-9 {
@@ -32,7 +28,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   font-size: 17px;
   line-height: 20px;
   font-weight: 500;
@@ -43,17 +39,17 @@ Array [
   padding-top: 8px;
 }
 
-.emotion-3 {
+.emotion-2 {
   display: block;
   padding-bottom: 8px;
   color: #b3b3b3;
 }
 
-.emotion-5 {
+.emotion-4 {
   position: relative;
 }
 
-.emotion-4 {
+.emotion-3 {
   outline-offset: 0;
   padding: 10px 12px;
   border-radius: 2px;
@@ -61,18 +57,23 @@ Array [
   width: 100%;
   color: #ffffff;
   background-color: #3b3b3b;
-  border: 1px solid transparent;
+  border: 2px solid #c92300;
   border-width: 2px;
 }
 
-.emotion-4:focus {
+.emotion-3:focus {
   border: 2px solid #73b61c;
   outline: #73b61c;
 }
 
-.emotion-4:focus {
+.emotion-3:focus {
   color: #000000;
   background-color: #ffffff;
+}
+
+.emotion-5 {
+  color: #c92300;
+  font-style: italic;
 }
 
 .emotion-40 {
@@ -93,7 +94,7 @@ Array [
 
 .emotion-11 {
   clear: both;
-  padding-bottom: 8px;
+  padding-bottom: 16px;
   color: #b3b3b3;
 }
 
@@ -617,24 +618,15 @@ Array [
     onSubmit={[Function]}
   >
     <p
-      className="emotion-1"
+      className="emotion-0"
     >
-      A data source is the location where your assets are stored. Add your data source credentials below to connect and ingest the files into the Zorroa system. Zorroa will automatically run a basic analysis on your assets and you may add additional modules.
-       
-      <a
-        className="emotion-0"
-        href="https://app.gitbook.com/@zorroa/s/zmlp/client/assets/importing-assets/asset-datasource"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Learn more about data sources.
-      </a>
+      Additional file types or analysis modules can be added to this data source. All previous selections will remain constant and cannot be modified.
     </p>
     <div
       className="emotion-9"
     >
       <h3
-        className="emotion-2"
+        className="emotion-1"
       >
         Data Source Name 
       </h3>
@@ -642,17 +634,17 @@ Array [
         className="emotion-6"
       >
         <label
-          className="emotion-3"
+          className="emotion-2"
           htmlFor="name"
         >
           Name
         </label>
         <div
-          className="emotion-5"
+          className="emotion-4"
         >
           <input
             autoFocus={true}
-            className="emotion-4"
+            className="emotion-3"
             disabled={false}
             id="name"
             name="name"
@@ -664,11 +656,16 @@ Array [
         <div
           className="emotion-6"
         >
+          <span
+            className="emotion-5"
+          >
+            
+          </span>
            
         </div>
       </div>
       <h3
-        className="emotion-2"
+        className="emotion-1"
       >
         Storage Address: gs://zorroa-dev-data/images
       </h3>
@@ -679,13 +676,13 @@ Array [
       <legend
         className="emotion-10"
       >
-        Select File Types to Import
+        Add Additional File Types
       </legend>
       <div
         className="emotion-11"
       >
         <div>
-          A minimum of one file type must be selected 
+          Additional file types can be added to this data source. Previous selections cannot be removed.
         </div>
       </div>
       <div
@@ -834,14 +831,14 @@ Array [
       </label>
     </fieldset>
     <h3
-      className="emotion-2"
+      className="emotion-1"
     >
-      Select Analysis
+      Add Additional Analysis
     </h3>
     <p
       className="emotion-42"
     >
-      Choose the type of analysis you would like performed on your data set:
+      Additional analysis can be added to this data source. Previous selections cannot be removed.
     </p>
     <div
       className="emotion-51"
