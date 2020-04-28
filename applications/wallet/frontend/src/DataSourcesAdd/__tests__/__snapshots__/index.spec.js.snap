@@ -384,6 +384,10 @@ Array [
   display: flex;
 }
 
+.emotion-55 h4 {
+  font-weight: 700;
+}
+
 .emotion-53 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -444,10 +448,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
 }
 
 .emotion-58 {
@@ -497,6 +497,10 @@ Array [
 .emotion-57 span {
   font-weight: 700;
   color: #ffffff;
+}
+
+.emotion-128 {
+  padding-top: 16px;
 }
 
 .emotion-65 {
@@ -1154,7 +1158,7 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-60"
+      className="emotion-128"
     >
       <div
         className="emotion-59"
@@ -2052,6 +2056,10 @@ Array [
   display: flex;
 }
 
+.emotion-73 h4 {
+  font-weight: 700;
+}
+
 .emotion-71 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -2112,10 +2120,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
 }
 
 .emotion-76 {
@@ -2165,6 +2169,10 @@ Array [
 .emotion-75 span {
   font-weight: 700;
   color: #ffffff;
+}
+
+.emotion-146 {
+  padding-top: 16px;
 }
 
 .emotion-83 {
@@ -2920,7 +2928,7 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-78"
+      className="emotion-146"
     >
       <div
         className="emotion-77"
@@ -3818,6 +3826,10 @@ Array [
   display: flex;
 }
 
+.emotion-67 h4 {
+  font-weight: 700;
+}
+
 .emotion-65 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -3878,10 +3890,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
 }
 
 .emotion-70 {
@@ -3931,6 +3939,10 @@ Array [
 .emotion-69 span {
   font-weight: 700;
   color: #ffffff;
+}
+
+.emotion-140 {
+  padding-top: 16px;
 }
 
 .emotion-77 {
@@ -4653,7 +4665,7 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-72"
+      className="emotion-140"
     >
       <div
         className="emotion-71"
@@ -5551,6 +5563,10 @@ Array [
   display: flex;
 }
 
+.emotion-66 h4 {
+  font-weight: 700;
+}
+
 .emotion-64 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -5611,10 +5627,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
 }
 
 .emotion-69 {
@@ -5664,6 +5676,10 @@ Array [
 .emotion-68 span {
   font-weight: 700;
   color: #ffffff;
+}
+
+.emotion-139 {
+  padding-top: 16px;
 }
 
 .emotion-76 {
@@ -6381,7 +6397,7 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-71"
+      className="emotion-139"
     >
       <div
         className="emotion-70"

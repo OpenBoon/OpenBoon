@@ -220,6 +220,10 @@ Array [
   display: flex;
 }
 
+.emotion-46 h4 {
+  font-weight: 700;
+}
+
 .emotion-44 {
   -webkit-flex: 0;
   -ms-flex: 0;
@@ -280,10 +284,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
 }
 
 .emotion-49 {
@@ -333,6 +333,10 @@ Array [
 .emotion-48 span {
   font-weight: 700;
   color: #ffffff;
+}
+
+.emotion-119 {
+  padding-top: 16px;
 }
 
 .emotion-56 {
@@ -919,7 +923,7 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-51"
+      className="emotion-119"
     >
       <div
         className="emotion-50"
