@@ -41,6 +41,7 @@ const MetadataLabelDetection = ({ name, predictions }) => {
         <thead>
           <tr>
             {columns.map((column, index) => {
+              // make second to last column expand to push last column to the end
               const shouldExpand = index === columns.length - 2
 
               return (

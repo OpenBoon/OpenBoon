@@ -639,7 +639,7 @@ Array [
         className="emotion-0"
       >
         <span
-          title="analysis.count"
+          title="analysis.zvi-text-detection.count"
         >
           Count
         </span>
@@ -675,7 +675,7 @@ Array [
         className="emotion-0"
       >
         <span
-          title="analysis.type"
+          title="analysis.zvi-text-detection.type"
         >
           Type
         </span>
@@ -711,7 +711,7 @@ Array [
         className="emotion-0"
       >
         <span
-          title="analysis.content"
+          title="analysis.zvi-text-detection.content"
         >
           Content
         </span>

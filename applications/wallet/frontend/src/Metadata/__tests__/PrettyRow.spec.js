@@ -27,7 +27,7 @@ describe('<MetadataPrettyRow />', () => {
       <MetadataPrettyRow
         name="zvi-object-detection"
         value={objectDetectionPredictions}
-        title="analysis"
+        path="analysis"
         index={1}
       />,
     )
@@ -43,7 +43,7 @@ describe('<MetadataPrettyRow />', () => {
       <MetadataPrettyRow
         name="zvi-label-detection"
         value={labelDetectionPredictions}
-        title="analysis"
+        path="analysis"
         index={1}
       />,
     )
@@ -59,7 +59,7 @@ describe('<MetadataPrettyRow />', () => {
       <MetadataPrettyRow
         name="zvi-text-detection"
         value={textDetectionPredictions}
-        title="analysis"
+        path="analysis"
         index={1}
       />,
     )
