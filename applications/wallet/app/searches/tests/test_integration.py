@@ -225,7 +225,7 @@ class TestFieldsAction:
         monkeypatch.setattr(ZmlpClient, 'get', mock_response)
         response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
         content = check_response(response)
-        assert content['analysis']['zvi']['tinyProxy'] == ['facet', 'exists']
+        assert content['analysis']['zvi']['tinyProxy'] == ['exists']
         assert content['clip']['start'] == ['range', 'exists']
         assert content['media']['type'] == ['facet', 'exists']
         assert content['aux'] == ['exists']
