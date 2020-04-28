@@ -4,12 +4,11 @@ RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y i
     tesseract-ocr \
     libtesseract-dev
 
-COPY pylib /zvi/pylib
-
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 RUN rm requirements.txt
 
+COPY pylib /zvi/pylib
 USER zorroa
 
 

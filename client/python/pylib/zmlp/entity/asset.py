@@ -102,7 +102,7 @@ class DocumentMixin(object):
             doc = doc.get(k)
         return parts[-1] in doc
 
-    def add_analysis(self, id, val):
+    def add_analysis(self, name, val):
         """Add an analysis structure to the document.
 
         Args:
@@ -110,10 +110,23 @@ class DocumentMixin(object):
             val (mixed): the value/result of the analysis.
 
         """
-        if not id or not val:
+        if not name or not val:
             raise ValueError("Analysis requires a unique ID and value")
-        attr = "analysis.%s" % id
+        attr = "analysis.%s" % name
         self.set_attr(attr, json.loads(to_json(val)))
+
+    def get_analysis(self, name):
+        """
+        Return the the given analysis data under the the given name.
+
+        Args:
+            name (str): The pipeline module name that generated the data.
+
+        Returns:
+            dict: An arbitrary dictionary containing predictions, content, etc.
+
+        """
+        return self.get_attr("analysis.{}".format(name))
 
     def extend_list_attr(self, attr, items):
         """
