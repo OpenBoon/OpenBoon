@@ -330,6 +330,111 @@ describe('<Filters />', () => {
     )
   })
 
+  it('should add a new "Exists" filter', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: {
+        projectId: PROJECT_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
+    const component = TestRenderer.create(<Filters />)
+
+    // open the menu
+    act(() => {
+      component.root
+        .findByProps({ children: '+ Add Metadata Filters' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // Expand Location Section
+    act(() => {
+      component.root
+        .findAllByProps({ 'aria-label': 'Expand Section' })[6]
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // enable last checkbox
+    act(() => {
+      component.root
+        .findByProps({ value: 'location.point' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // submit
+    act(() => {
+      component.root
+        .findByProps({ children: '+ Add Selected Filters' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      {
+        pathname: '/[projectId]/visualizer',
+        query: {
+          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
+          id: '',
+          filters:
+            '[{"type":"exists","attribute":"location.point","values":{"exists":true}}]',
+        },
+      },
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?filters=[{"type":"exists","attribute":"location.point","values":{"exists":true}}]',
+    )
+  })
+
+  it('should update the "Exists" filter', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: {
+        projectId: PROJECT_ID,
+        filters: JSON.stringify([
+          {
+            attribute: 'location.point',
+            type: 'exists',
+          },
+        ]),
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
+    const component = TestRenderer.create(<Filters />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // click "Missing"
+    act(() => {
+      component.root
+        .findByProps({ children: 'Missing' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      {
+        pathname: '/[projectId]/visualizer',
+        query: {
+          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
+          id: '',
+          filters:
+            '[{"attribute":"location.point","type":"exists","values":{"exists":false}}]',
+        },
+      },
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?filters=[{"attribute":"location.point","type":"exists","values":{"exists":false}}]',
+    )
+  })
+
   it('should not POST the form', () => {
     const mockFn = jest.fn()
 

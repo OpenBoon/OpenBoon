@@ -12,7 +12,7 @@ const FilterExists = ({
   assetId,
   filters,
   filter,
-  filter: { attribute, values: { exists = true } = {} } = {},
+  filter: { attribute, values: { exists = true } = {} },
   filterIndex,
 }) => {
   return (
