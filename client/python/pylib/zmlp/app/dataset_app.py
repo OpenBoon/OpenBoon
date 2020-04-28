@@ -31,10 +31,10 @@ class DataSetApp:
             DataSet: The new DataSet
         """
         req = {
-            "name": name,
-            "type": type
+            'name': name,
+            'type': type
         }
-        return DataSet(self.app.client.post("/api/v1/data-sets", req))
+        return DataSet(self.app.client.post('/api/v1/data-sets', req))
 
     def get_dataset(self, id):
         """
@@ -62,9 +62,9 @@ class DataSetApp:
 
         """
         body = {
-            "names": as_collection(name),
-            "ids": as_collection(id),
-            "types": as_collection(type),
+            'names': as_collection(name),
+            'ids': as_collection(id),
+            'types': as_collection(type),
         }
         return DataSet(self.app.client.post('/api/v3/data-sets/_find_one', body))
 
@@ -84,9 +84,10 @@ class DataSetApp:
 
         """
         body = {
-            "names": as_collection(name),
-            "ids": as_collection(id),
-            "types": as_collection(type),
+            'names': as_collection(name),
+            'ids': as_collection(id),
+            'types': as_collection(type),
+            'sort': sort
         }
         return self.app.client.iter_paged_results('/api/v1/data-sets/_search', body, limit, DataSet)
 
@@ -105,7 +106,7 @@ class DataSetApp:
 
     def train_model(self, dataset, model_type):
         body = {
-            "modelType": model_type
+            'modelType': model_type
         }
         return self.app.client.post(
             '/api/v3/data-sets/{}/_train_model'.format(as_id(dataset)), body)
@@ -115,6 +116,21 @@ class DataSetDownloader:
     """
     The DataSetDownloader class handles writing out the images in a
     DataSet to local disk for model training purposes.
+
+    Multiple directory layouts are supported.
+
+    Layout #1 is used for simple label classification with Tensorflow
+    Layout #2 is used writing images and objects into darknet format.
+
+    Examples:
+
+        # Single Label
+        base_dir/flowers/set_train/daisy
+        base_dir/flowers/set_train/rose
+        base_dir/flowers/set_test/daisy
+        base_dir/flowers/set_test/rose
+
+
     """
 
     def __init__(self, app, dataset, dst_dir, train_test_ratio=4):
@@ -163,7 +179,7 @@ class DataSetDownloader:
         for num, asset in enumerate(self.app.assets.scroll_search(query, timeout='5m')):
             prx = asset.get_thumbnail(0)
             if not prx:
-                logger.warn('{} did not have a suitable thumbnail'.format(asset))
+                logger.warning('{} did not have a suitable thumbnail'.format(asset))
                 continue
 
             ds_label = self._get_dataset_label(asset)
@@ -175,7 +191,7 @@ class DataSetDownloader:
             dst_path = os.path.join(self.dst_dir, dir_name, label, prx.cache_id)
             os.makedirs(os.path.dirname(dst_path), exist_ok=True)
 
-            logger.info("Downloading to {}".format(dst_path))
+            logger.info('Downloading to {}'.format(dst_path))
             if pool:
                 pool.apply_async(self.app.assets.download_file, args=(prx, dst_path))
             else:
@@ -186,27 +202,22 @@ class DataSetDownloader:
         Sets up a directory structure for storing the files in the DataSet.
 
         The structure is basically:
-
-            set_train/images/<img file>
-
-        With an optional parallel labels in the case of faces/objects.
-
-            set_train/labels/<label>/<text file>
-
+            set_train/<label>/<img file>
+            set_test/<label>/<img file>
         """
-        label_counts = self.app.datasets.get_label_counts(self.dataset_id)
+        self.labels = self.app.datasets.get_label_counts(self.dataset_id)
 
         # Prebuild entire directory structure
         os.makedirs(self.dst_dir, exist_ok=True)
+
+        # This is layout #1, we need to add darknet layout for object detection.
         dirs = ('set_train', 'set_test')
         for set_name in dirs:
             os.makedirs('{}/{}'.format(self.dst_dir, set_name), exist_ok=True)
-            for label in label_counts.keys():
-                os.makedirs(os.path.join(self.dst_dir, set_name, "images", label), exist_ok=True)
-                os.makedirs(os.path.join(self.dst_dir, set_name, "labels", label), exist_ok=True)
+            for label in self.labels.keys():
+                os.makedirs(os.path.join(self.dst_dir, set_name, label), exist_ok=True)
 
-        self.labels = label_counts
-        logger.info("DataSetDownloader setup, using {} labels".format(len(self.labels)))
+        logger.info('DataSetDownloader setup, using {} labels'.format(len(self.labels)))
 
     def _get_image_set_type(self, label):
         """

@@ -18,6 +18,7 @@ key_dict = {
     'secretKey': 'test123test135'
 }
 
+
 class ZmlpDataSetAppTests(unittest.TestCase):
 
     def setUp(self):
@@ -86,6 +87,7 @@ class ZmlpDataSetAppTests(unittest.TestCase):
         rsp = self.app.datasets.get_label_counts(DataSet({"id": "foo"}))
         assert value == rsp
 
+
 class ZmlpDataSetDownloader(unittest.TestCase):
 
     def setUp(self):
@@ -107,11 +109,11 @@ class ZmlpDataSetDownloader(unittest.TestCase):
         assert 'set_train' in dirs
         assert 'set_test' in dirs
 
-        labels1 = os.listdir(d + "/set_train/images")
+        labels1 = os.listdir(d + "/set_train")
         assert 4 == len(labels1)
         assert ["dwarfs", "goats", "hobbits", "wizards"] == sorted(labels1)
 
-        labels2 = os.listdir(d + "/set_test/images")
+        labels2 = os.listdir(d + "/set_test")
         assert 4 == len(labels2)
         assert ["dwarfs", "goats", "hobbits", "wizards"] == sorted(labels2)
 
