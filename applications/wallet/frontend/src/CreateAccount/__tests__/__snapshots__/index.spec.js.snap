@@ -176,13 +176,13 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
 }
 
 .emotion-38 {
@@ -233,7 +233,6 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
 }
 
 .emotion-40 {
-  padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -241,6 +240,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  padding-left: 12px;
 }
 
 .emotion-39 {
@@ -815,13 +815,13 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
 }
 
 .emotion-35 {
@@ -872,7 +872,6 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
 }
 
 .emotion-37 {
-  padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -880,6 +879,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  padding-left: 12px;
 }
 
 .emotion-36 {

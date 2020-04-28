@@ -30,6 +30,7 @@ const PanelContent = ({
           flexDirection: 'column',
           height: '100%',
           overflow: 'hidden',
+          backgroundColor: colors.structure.lead,
         }}
       >
         <div
@@ -37,7 +38,6 @@ const PanelContent = ({
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: colors.structure.lead,
             padding: spacing.base,
             borderBottom: constants.borders.divider,
           }}
@@ -71,7 +71,15 @@ const PanelContent = ({
             />
           </Button>
         </div>
-        {content}
+        <div
+          css={{
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+          }}
+        >
+          {content}
+        </div>
       </div>
     </Resizeable>
   )

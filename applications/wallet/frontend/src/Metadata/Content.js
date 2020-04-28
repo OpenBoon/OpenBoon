@@ -6,9 +6,11 @@ import { colors, constants, spacing } from '../Styles'
 import useLocalStorage from '../LocalStorage'
 
 import Button, { VARIANTS } from '../Button'
+import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import JsonDisplay from '../JsonDisplay'
 
 import MetadataPretty from './Pretty'
+import { formatDisplayName } from './helpers'
 
 const DISPLAY_OPTIONS = ['pretty', 'raw json']
 
@@ -23,20 +25,14 @@ const MetadataContent = ({ projectId, assetId }) => {
   )
 
   const {
+    metadata,
     metadata: {
       source: { filename },
     },
   } = asset
 
   return (
-    <div
-      css={{
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: colors.structure.lead,
-        overflow: 'hidden',
-      }}
-    >
+    <>
       <div
         css={{
           padding: spacing.normal,
@@ -89,7 +85,28 @@ const MetadataContent = ({ projectId, assetId }) => {
         </div>
       </div>
 
-      {displayOption === 'pretty' && <MetadataPretty asset={asset} />}
+      {displayOption === 'pretty' && (
+        <div css={{ overflow: 'auto' }}>
+          {Object.keys(metadata).map((section) => {
+            const title = formatDisplayName({ name: section })
+
+            return (
+              <Accordion
+                key={section}
+                variant={ACCORDION_VARIANTS.PANEL}
+                title={title}
+                isInitiallyOpen
+              >
+                <MetadataPretty
+                  metadata={metadata}
+                  title={title}
+                  section={section}
+                />
+              </Accordion>
+            )
+          })}
+        </div>
+      )}
 
       {displayOption === 'raw json' && (
         <div
@@ -105,7 +122,7 @@ const MetadataContent = ({ projectId, assetId }) => {
           <JsonDisplay json={asset} />
         </div>
       )}
-    </div>
+    </>
   )
 }
 

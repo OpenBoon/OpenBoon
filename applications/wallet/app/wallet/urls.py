@@ -26,7 +26,7 @@ from rest_framework_nested.routers import NestedSimpleRouter
 from agreements.views import AgreementViewSet
 from apikeys.views import ApikeyViewSet
 from assets.views import (AssetViewSet, FileCategoryViewSet,
-                          FileNameViewSet, SourceFileViewSet)
+                          FileNameViewSet)
 from datasources.views import DataSourceViewSet
 from jobs.views import JobViewSet, TaskViewSet, TaskErrorViewSet, JobTaskViewSet
 from modules.views import ModuleViewSet, ProviderViewSet
@@ -35,7 +35,7 @@ from projects.views import ProjectViewSet, ProjectUserViewSet
 from registration.views import UserRegistrationView, UserConfirmationView, \
     ApiPasswordChangeView
 from roles.views import RolesViewSet
-from searches.views import SearchViewSet
+from searches.views import SearchViewSet, MetadataExportViewSet
 from subscriptions.views import SubscriptionViewSet
 from wallet import views as wallet_views
 from wallet.views import MeView
@@ -63,11 +63,12 @@ projects_router.register('data_sources', DataSourceViewSet, basename='datasource
 projects_router.register('subscriptions', SubscriptionViewSet, basename='subscription')
 projects_router.register('modules', ModuleViewSet, basename='module')
 projects_router.register('providers', ProviderViewSet, basename='provider')
+projects_router.register('searches/export', MetadataExportViewSet, basename='export')
 projects_router.register('searches', SearchViewSet, basename='search')
+
 
 assets_files_router = NestedSimpleRouter(projects_router, 'assets', lookup='asset')
 assets_files_router.register('files/category', FileCategoryViewSet, basename='category')
-assets_files_router.register('files/source', SourceFileViewSet, basename='source')
 
 assets_file_names_router = NestedSimpleRouter(assets_files_router, 'files/category', lookup='category')  # noqa
 assets_file_names_router.register('name', FileNameViewSet, basename='file_name')

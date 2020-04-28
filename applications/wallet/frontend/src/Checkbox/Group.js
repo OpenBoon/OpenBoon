@@ -32,7 +32,7 @@ const CheckboxGroup = ({ legend, description, variant, options, onClick }) => {
         <div
           css={{
             clear: 'both',
-            paddingBottom: spacing.base,
+            paddingBottom: spacing.normal,
             color: colors.structure.zinc,
           }}
         >

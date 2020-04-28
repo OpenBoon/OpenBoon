@@ -1,85 +1,53 @@
-import assetShape from '../Asset/shape'
+import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import { constants } from '../Styles'
 
-import Accordion, { VARIANTS } from '../Accordion'
+import MetadataPrettyRow from './PrettyRow'
 
-import { formatDisplayName, formatDisplayValue } from './helpers'
+const MetadataPretty = ({ metadata, title, section }) => {
+  if (['metrics'].includes(section)) return null
 
-const MetadataPretty = ({ asset: { metadata } }) => {
+  if (Array.isArray(metadata[section])) {
+    return metadata[section].map((file, index) => (
+      <div
+        // eslint-disable-next-line react/no-array-index-key
+        key={`${section}${index}`}
+        css={{
+          width: '100%',
+          '&:not(:first-of-type)': {
+            borderTop: constants.borders.prettyMetadata,
+          },
+        }}
+      >
+        {Object.entries(file).map(([key, value]) => (
+          <MetadataPrettyRow key={key} name={key} value={value} path={title} />
+        ))}
+      </div>
+    ))
+  }
+
   return (
-    <div css={{ overflow: 'auto' }}>
-      {Object.keys(metadata).map((section) => {
-        const title = formatDisplayName({ name: section })
-
-        if (['files', 'metrics', 'analysis'].includes(section)) return null
-
-        return (
-          <Accordion
-            key={section}
-            variant={VARIANTS.PANEL}
-            title={title}
-            isInitiallyOpen
-          >
-            <table
-              css={{
-                borderCollapse: 'collapse',
-                width: '100%',
-              }}
-            >
-              <tbody>
-                {Object.entries(metadata[section]).map(
-                  ([key, value], index) => {
-                    return (
-                      <tr
-                        key={key}
-                        css={{
-                          borderTop:
-                            index !== 0 ? constants.borders.divider : '',
-                          ':hover': {
-                            backgroundColor:
-                              colors.signal.electricBlue.background,
-                          },
-                        }}
-                      >
-                        <td
-                          valign="top"
-                          css={{
-                            fontFamily: 'Roboto Condensed',
-                            color: colors.structure.steel,
-                            padding: spacing.normal,
-                          }}
-                        >
-                          <span title={`${title.toLowerCase()}.${key}`}>
-                            {formatDisplayName({ name: key })}
-                          </span>
-                        </td>
-                        <td
-                          valign="top"
-                          css={{
-                            fontFamily: 'Roboto Mono',
-                            color: colors.structure.pebble,
-                            padding: spacing.normal,
-                            wordBreak: 'break-all',
-                          }}
-                        >
-                          {formatDisplayValue({ key, value })}
-                        </td>
-                      </tr>
-                    )
-                  },
-                )}
-              </tbody>
-            </table>
-          </Accordion>
-        )
-      })}
+    <div css={{ width: '100%' }}>
+      <div>
+        {Object.entries(metadata[section]).map(([key, value]) => {
+          return (
+            <MetadataPrettyRow
+              key={key}
+              name={key}
+              value={value}
+              path={title}
+            />
+          )
+        })}
+      </div>
     </div>
   )
 }
 
 MetadataPretty.propTypes = {
-  asset: assetShape.isRequired,
+  metadata: PropTypes.shape({}).isRequired,
+  title: PropTypes.string.isRequired,
+  section: PropTypes.string.isRequired,
 }
 
 export default MetadataPretty

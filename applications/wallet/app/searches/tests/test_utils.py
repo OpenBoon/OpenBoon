@@ -57,6 +57,16 @@ class TestFilterBoy:
     def test_is_it_a_good_boy(self, filter_boy):
         assert True
 
+    def test_encoded_querystring(self, api_factory, filter_boy):
+        encoded = 'eyJ0eXBlIjoiZmFjZXQiLCJhdHRyaWJ1dGUiOiJhbmFseXNpcy56dmkudGlueVByb3h5In0='
+        request = Mock()
+        request.query_params = {'filter': encoded}
+
+        response_filter = filter_boy.get_filter_from_request(request)
+        assert FacetFilter({"type": "facet",
+                            "attribute": "analysis.zvi.tinyProxy"
+                            }) == response_filter
+
     def test_get_filter_from_request_flow(self, api_factory, filter_boy):
         _filter = {'type': 'range', 'attribute': 'source.filesize'}
         encoded_qs = convert_json_to_base64(_filter)

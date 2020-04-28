@@ -9,7 +9,7 @@ exports[`<Icons /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-65 {
+.emotion-71 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -55,7 +55,7 @@ exports[`<Icons /> should render properly 1`] = `
     Icons
   </h2>
   <div
-    className="emotion-65"
+    className="emotion-71"
   >
     <div
       className="emotion-2"
@@ -116,6 +116,22 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="clock.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./copy.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="copy.svg"
           height="100%"
           width="100%"
         />
@@ -260,6 +276,22 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="fallback.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./filter.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="filter.svg"
           height="100%"
           width="100%"
         />
@@ -500,6 +532,22 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="squareSquareSquare.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./upload.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="upload.svg"
           height="100%"
           width="100%"
         />

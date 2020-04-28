@@ -10,16 +10,44 @@ export const formatUrl = (params = {}) => {
 }
 
 export const ACTIONS = {
-  ADD_FILTER: 'ADD_FILTER',
+  ADD_FILTERS: 'ADD_FILTERS',
+  UPDATE_FILTER: 'UPDATE_FILTER',
   DELETE_FILTER: 'DELETE_FILTER',
+  CLEAR_FILTERS: 'CLEAR_FILTERS',
 }
 
 export const dispatch = ({ action, payload }) => {
   switch (action) {
-    case ACTIONS.ADD_FILTER: {
-      const { projectId, assetId, filters: f, filter } = payload
+    case ACTIONS.ADD_FILTERS: {
+      const { projectId, assetId, filters: f, newFilters } = payload
 
-      const filters = JSON.stringify([...f, filter])
+      const filters = JSON.stringify([...f, ...newFilters])
+
+      Router.push(
+        {
+          pathname: '/[projectId]/visualizer',
+          query: { projectId, id: assetId, filters },
+        },
+        `/${projectId}/visualizer${formatUrl({ id: assetId, filters })}`,
+      )
+
+      break
+    }
+
+    case ACTIONS.UPDATE_FILTER: {
+      const {
+        projectId,
+        assetId,
+        filters: f,
+        updatedFilter,
+        filterIndex,
+      } = payload
+
+      const filters = JSON.stringify([
+        ...f.slice(0, filterIndex),
+        updatedFilter,
+        ...f.slice(filterIndex + 1),
+      ])
 
       Router.push(
         {
@@ -48,6 +76,20 @@ export const dispatch = ({ action, payload }) => {
           query: { projectId, id: assetId, filters },
         },
         `/${projectId}/visualizer${formatUrl({ id: assetId, filters })}`,
+      )
+
+      break
+    }
+
+    case ACTIONS.CLEAR_FILTERS: {
+      const { projectId, assetId } = payload
+
+      Router.push(
+        {
+          pathname: '/[projectId]/visualizer',
+          query: { projectId, id: assetId },
+        },
+        `/${projectId}/visualizer${formatUrl({ id: assetId })}`,
       )
 
       break

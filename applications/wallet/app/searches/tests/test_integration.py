@@ -5,6 +5,7 @@ from rest_framework import status
 
 from searches.models import Search
 from searches.filters import BaseFilter
+from searches.views import MetadataExportViewSet
 from zmlp import ZmlpClient
 from wallet.tests.utils import check_response
 from wallet.utils import convert_json_to_base64
@@ -224,7 +225,7 @@ class TestFieldsAction:
         monkeypatch.setattr(ZmlpClient, 'get', mock_response)
         response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
         content = check_response(response)
-        assert content['analysis']['zvi']['tinyProxy'] == ['facet', 'exists']
+        assert content['analysis']['zvi']['tinyProxy'] == ['exists']
         assert content['clip']['start'] == ['range', 'exists']
         assert content['media']['type'] == ['facet', 'exists']
         assert content['aux'] == ['exists']
@@ -273,7 +274,7 @@ class TestQuery(BaseFiltersTestCase):
 
     @pytest.fixture
     def mock_response(self):
-        return {"took":6,"timed_out":False,"_shards":{"total":2,"successful":2,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":0.0,"hits":[{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U","_score":0.0,"_source":{"files":[{"size":119497,"name":"image_744x1024.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_744x1024.jpg","category":"proxy","attrs":{"width":744,"height":1024}},{"size":43062,"name":"image_372x512.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_372x512.jpg","category":"proxy","attrs":{"width":372,"height":512}},{"size":21318,"name":"image_232x320.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_232x320.jpg","category":"proxy","attrs":{"width":232,"height":320}}],"source":{"path":"gs://zorroa-dev-data/image/singlepage.tiff","extension":"tiff","filename":"singlepage.tiff","checksum":754419346,"mimetype":"image/tiff","filesize":11082}}},{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C","_score":0.0,"_source":{"files":[{"size":89643,"name":"image_650x434.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_650x434.jpg","category":"proxy","attrs":{"width":650,"height":434}},{"size":60713,"name":"image_512x341.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_512x341.jpg","category":"proxy","attrs":{"width":512,"height":341}},{"size":30882,"name":"image_320x213.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_320x213.jpg","category":"proxy","attrs":{"width":320,"height":213}}],"source":{"path":"gs://zorroa-dev-data/image/TIFF_1MB.tiff","extension":"tiff","filename":"TIFF_1MB.tiff","checksum":1867533868,"mimetype":"image/tiff","filesize":1131930}}}]}}  # noqa
+        return {"took":6,"timed_out":False,"_shards":{"total":2,"successful":2,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":0.0,"hits":[{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U","_score":0.0,"_source":{"files":[{"size":119497,"name":"image_744x1024.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_744x1024.jpg","category":"proxy","attrs":{"width":744,"height":1024}},{"size":119497,"name":"web-proxy.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/web-proxy/web-proxy.jpg","category":"web-proxy","attrs":{"width":744,"height":1024}},{"size":43062,"name":"image_372x512.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_372x512.jpg","category":"proxy","attrs":{"width":372,"height":512}},{"size":21318,"name":"image_232x320.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_232x320.jpg","category":"proxy","attrs":{"width":232,"height":320}}],"source":{"path":"gs://zorroa-dev-data/image/singlepage.tiff","extension":"tiff","filename":"singlepage.tiff","checksum":754419346,"mimetype":"image/tiff","filesize":11082}}},{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C","_score":0.0,"_source":{"files":[{"size":89643,"name":"image_650x434.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_650x434.jpg","category":"proxy","attrs":{"width":650,"height":434}},{"size":60713,"name":"image_512x341.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_512x341.jpg","category":"proxy","attrs":{"width":512,"height":341}},{"size":30882,"name":"image_320x213.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_320x213.jpg","category":"proxy","attrs":{"width":320,"height":213}}],"source":{"path":"gs://zorroa-dev-data/image/TIFF_1MB.tiff","extension":"tiff","filename":"TIFF_1MB.tiff","checksum":1867533868,"mimetype":"image/tiff","filesize":1131930}}}]}}  # noqa
 
     def test_get(self, login, api_client, project, monkeypatch, facet_query_qs, mock_response):
         def _response(*args, **kwargs):
@@ -288,7 +289,7 @@ class TestQuery(BaseFiltersTestCase):
         assert 'next' in content
         assert 'previous' in content
         # Should only be the requested fields on this request
-        assert list(content['results'][0]['metadata']) == ['files', 'source']
+        assert list(content['results'][0]['metadata']) == ['source']
 
     def test_get_empty_query(self, login, api_client, project, monkeypatch, mock_response):
         def _response(*args, **kwargs):
@@ -299,7 +300,9 @@ class TestQuery(BaseFiltersTestCase):
 
         content = check_response(response, status=status.HTTP_200_OK)
         assert content['count'] == 2
-        assert list(content['results'][0]['metadata']) == ['files', 'source']
+        assert list(content['results'][0]['metadata']) == ['source']
+        assert content['results'][0]['thumbnailUrl'] == 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/files/category/web-proxy/name/web-proxy.jpg/'  # noqa
+        assert content['results'][1]['thumbnailUrl'] == 'http://testserver/icons/fallback_3x.png'
 
     def test_get_bad_querystring_encoding(self, login, api_client, project, facet_query_qs):
         facet_query_qs = 'thisisnolongerencodedright' + facet_query_qs.decode('utf-8')
@@ -369,3 +372,22 @@ class TestAggregate(BaseFiltersTestCase):
                                   {'filter': encoded_filter})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
         assert content['detail'] == 'Unsupported filter `fake_type` given.'
+
+
+class TestMetadataExportView:
+
+    def test_get(self, login, api_client, monkeypatch, project):
+
+        def mock_search_for_assets(*args, **kwargs):
+            return [
+                {'id': '1', 'metadata': {'resolution': {'width': 10, 'height': 10}}},
+                {'id': '2', 'metadata': {'resolution': {'width': 20, 'height': 20}}},
+                {'id': '4', 'metadata': {'resolution': {'width': 30, 'height': 30}, 'extra_field': True}},  # noqa
+            ]
+
+        monkeypatch.setattr(MetadataExportViewSet, '_search_for_assets', mock_search_for_assets)
+        result = api_client.get(reverse('export-list', kwargs={'project_pk': project.id}), {})
+        assert result.status_code == 200
+        assert result.accepted_media_type == 'text/csv'
+        assert result.content == b'extra_field,id,resolution.height,resolution.width\r\n,1,10,10\r\n,2,20,20\r\nTrue,4,30,30\r\n'  # noqa
+        assert result.charset == 'utf-8'
