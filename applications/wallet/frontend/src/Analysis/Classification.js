@@ -98,7 +98,7 @@ const MetadataAnalysisClassification = ({ moduleName, moduleIndex }) => {
             const isLastRow = index === predictions.length - 1
 
             return (
-              <tr key={prediction.score}>
+              <tr key={prediction.score} css={{ verticalAlign: 'bottom' }}>
                 {columns.map((column) => {
                   if (column === 'bbox') {
                     return (

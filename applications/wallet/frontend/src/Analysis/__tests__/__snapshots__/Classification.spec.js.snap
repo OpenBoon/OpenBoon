@@ -7,13 +7,13 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is no
   padding-bottom: 16px;
 }
 
-.emotion-12 {
+.emotion-14 {
   font-family: Roboto Mono;
   color: #ffffff;
   width: 100%;
 }
 
-.emotion-12 td {
+.emotion-14 td {
   padding-right: 8px;
 }
 
@@ -44,6 +44,10 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is no
   padding-right: 0;
 }
 
+.emotion-8 {
+  vertical-align: bottom;
+}
+
 .emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -68,7 +72,7 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is no
   padding-right: 0;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -76,23 +80,23 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is no
   padding-bottom: 0;
 }
 
-.emotion-10 {
+.emotion-11 {
   padding-right: 8px;
   padding-bottom: 0;
 }
 
-.emotion-10:last-child {
+.emotion-11:last-child {
   text-align: right;
   padding-right: 0;
 }
 
-.emotion-13 {
+.emotion-15 {
   border-top: 4px solid #3b3b3b;
   padding: 16px;
 }
 
 <div
-  className="emotion-13"
+  className="emotion-15"
 >
   <div
     className="emotion-0"
@@ -100,7 +104,7 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is no
     zvi-object-detection
   </div>
   <table
-    className="emotion-12"
+    className="emotion-14"
   >
     <thead>
       <tr>
@@ -122,7 +126,9 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is no
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr
+        className="emotion-8"
+      >
         <td
           className="emotion-5"
         >
@@ -158,9 +164,11 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is no
           0.824
         </td>
       </tr>
-      <tr>
+      <tr
+        className="emotion-8"
+      >
         <td
-          className="emotion-9"
+          className="emotion-10"
         >
           <img
             alt={
@@ -184,12 +192,12 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is no
           />
         </td>
         <td
-          className="emotion-10"
+          className="emotion-11"
         >
           frog
         </td>
         <td
-          className="emotion-10"
+          className="emotion-11"
         >
           0.924
         </td>
@@ -200,7 +208,7 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is no
 `;
 
 exports[`<MetadataAnalysisClassification /> should render properly when it is the first item 1`] = `
-.emotion-13 {
+.emotion-15 {
   padding: 16px;
 }
 
@@ -210,13 +218,13 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is th
   padding-bottom: 16px;
 }
 
-.emotion-12 {
+.emotion-14 {
   font-family: Roboto Mono;
   color: #ffffff;
   width: 100%;
 }
 
-.emotion-12 td {
+.emotion-14 td {
   padding-right: 8px;
 }
 
@@ -247,6 +255,10 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is th
   padding-right: 0;
 }
 
+.emotion-8 {
+  vertical-align: bottom;
+}
+
 .emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -271,7 +283,7 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is th
   padding-right: 0;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -279,18 +291,18 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is th
   padding-bottom: 0;
 }
 
-.emotion-10 {
+.emotion-11 {
   padding-right: 8px;
   padding-bottom: 0;
 }
 
-.emotion-10:last-child {
+.emotion-11:last-child {
   text-align: right;
   padding-right: 0;
 }
 
 <div
-  className="emotion-13"
+  className="emotion-15"
 >
   <div
     className="emotion-0"
@@ -298,7 +310,7 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is th
     zvi-object-detection
   </div>
   <table
-    className="emotion-12"
+    className="emotion-14"
   >
     <thead>
       <tr>
@@ -320,7 +332,9 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is th
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr
+        className="emotion-8"
+      >
         <td
           className="emotion-5"
         >
@@ -356,9 +370,11 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is th
           0.824
         </td>
       </tr>
-      <tr>
+      <tr
+        className="emotion-8"
+      >
         <td
-          className="emotion-9"
+          className="emotion-10"
         >
           <img
             alt={
@@ -382,12 +398,12 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is th
           />
         </td>
         <td
-          className="emotion-10"
+          className="emotion-11"
         >
           frog
         </td>
         <td
-          className="emotion-10"
+          className="emotion-11"
         >
           0.924
         </td>
