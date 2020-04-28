@@ -223,6 +223,14 @@ services:
       context: containers/zmlp-plugins-models
     command: echo
 
+  zmlp-plugins-train:
+    image: zmlp/plugins-train:latest
+    depends_on:
+      - zmlp-plugins-models
+    build:
+      context: containers/zmlp-plugins-train
+    command: echo
+
   zmlp-plugins-analysis:
     image: zmlp/plugins-analysis:latest
     depends_on:
