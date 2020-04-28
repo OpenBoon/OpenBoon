@@ -274,7 +274,7 @@ class TestQuery(BaseFiltersTestCase):
 
     @pytest.fixture
     def mock_response(self):
-        return {"took":6,"timed_out":False,"_shards":{"total":2,"successful":2,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":0.0,"hits":[{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U","_score":0.0,"_source":{"files":[{"size":119497,"name":"image_744x1024.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_744x1024.jpg","category":"proxy","attrs":{"width":744,"height":1024}},{"size":43062,"name":"image_372x512.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_372x512.jpg","category":"proxy","attrs":{"width":372,"height":512}},{"size":21318,"name":"image_232x320.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_232x320.jpg","category":"proxy","attrs":{"width":232,"height":320}}],"source":{"path":"gs://zorroa-dev-data/image/singlepage.tiff","extension":"tiff","filename":"singlepage.tiff","checksum":754419346,"mimetype":"image/tiff","filesize":11082}}},{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C","_score":0.0,"_source":{"files":[{"size":89643,"name":"image_650x434.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_650x434.jpg","category":"proxy","attrs":{"width":650,"height":434}},{"size":60713,"name":"image_512x341.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_512x341.jpg","category":"proxy","attrs":{"width":512,"height":341}},{"size":30882,"name":"image_320x213.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_320x213.jpg","category":"proxy","attrs":{"width":320,"height":213}}],"source":{"path":"gs://zorroa-dev-data/image/TIFF_1MB.tiff","extension":"tiff","filename":"TIFF_1MB.tiff","checksum":1867533868,"mimetype":"image/tiff","filesize":1131930}}}]}}  # noqa
+        return {"took":6,"timed_out":False,"_shards":{"total":2,"successful":2,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":0.0,"hits":[{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U","_score":0.0,"_source":{"files":[{"size":119497,"name":"image_744x1024.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_744x1024.jpg","category":"proxy","attrs":{"width":744,"height":1024}},{"size":119497,"name":"web-proxy.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/web-proxy/web-proxy.jpg","category":"web-proxy","attrs":{"width":744,"height":1024}},{"size":43062,"name":"image_372x512.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_372x512.jpg","category":"proxy","attrs":{"width":372,"height":512}},{"size":21318,"name":"image_232x320.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_232x320.jpg","category":"proxy","attrs":{"width":232,"height":320}}],"source":{"path":"gs://zorroa-dev-data/image/singlepage.tiff","extension":"tiff","filename":"singlepage.tiff","checksum":754419346,"mimetype":"image/tiff","filesize":11082}}},{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C","_score":0.0,"_source":{"files":[{"size":89643,"name":"image_650x434.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_650x434.jpg","category":"proxy","attrs":{"width":650,"height":434}},{"size":60713,"name":"image_512x341.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_512x341.jpg","category":"proxy","attrs":{"width":512,"height":341}},{"size":30882,"name":"image_320x213.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_320x213.jpg","category":"proxy","attrs":{"width":320,"height":213}}],"source":{"path":"gs://zorroa-dev-data/image/TIFF_1MB.tiff","extension":"tiff","filename":"TIFF_1MB.tiff","checksum":1867533868,"mimetype":"image/tiff","filesize":1131930}}}]}}  # noqa
 
     def test_get(self, login, api_client, project, monkeypatch, facet_query_qs, mock_response):
         def _response(*args, **kwargs):
@@ -289,7 +289,7 @@ class TestQuery(BaseFiltersTestCase):
         assert 'next' in content
         assert 'previous' in content
         # Should only be the requested fields on this request
-        assert list(content['results'][0]['metadata']) == ['files', 'source']
+        assert list(content['results'][0]['metadata']) == ['source']
 
     def test_get_empty_query(self, login, api_client, project, monkeypatch, mock_response):
         def _response(*args, **kwargs):
@@ -300,7 +300,9 @@ class TestQuery(BaseFiltersTestCase):
 
         content = check_response(response, status=status.HTTP_200_OK)
         assert content['count'] == 2
-        assert list(content['results'][0]['metadata']) == ['files', 'source']
+        assert list(content['results'][0]['metadata']) == ['source']
+        assert content['results'][0]['thumbnailUrl'] == 'http://testserver/api/v1/projects/6abc33f0-4acf-4196-95ff-4cbb7f640a06/assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/files/category/web-proxy/name/web-proxy.jpg/'  # noqa
+        assert content['results'][1]['thumbnailUrl'] == 'http://testserver/icons/fallback_3x.png'
 
     def test_get_bad_querystring_encoding(self, login, api_client, project, facet_query_qs):
         facet_query_qs = 'thisisnolongerencodedright' + facet_query_qs.decode('utf-8')
