@@ -1,13 +1,13 @@
 import { colors, constants, spacing } from '../Styles'
 
-import MetadataAnalysisClassification from './Classification'
+import AnalysisClassification from './Classification'
 
-const MetadataAnalysis = ({ analysis }) => {
+const Analysis = ({ analysis }) => {
   return Object.keys(analysis).map((moduleName, index) => {
     const { type } = analysis[moduleName]
     if (type === 'labels') {
       return (
-        <MetadataAnalysisClassification
+        <AnalysisClassification
           key={moduleName}
           moduleName={moduleName}
           moduleIndex={index}
@@ -44,4 +44,4 @@ const MetadataAnalysis = ({ analysis }) => {
   })
 }
 
-export default MetadataAnalysis
+export default Analysis
