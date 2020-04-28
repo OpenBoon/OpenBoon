@@ -1,22 +1,9 @@
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
-
-import { colors, constants, spacing } from '../../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 import MetadataAnalysisClassification from './Classification'
 
-const MetadataAnalysis = () => {
-  const {
-    query: { projectId, id: assetId },
-  } = useRouter()
-
-  const {
-    data: {
-      metadata: { analysis, analysis: modules },
-    },
-  } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
-
-  return Object.keys(modules).map((moduleName, index) => {
+const MetadataAnalysis = ({ analysis }) => {
+  return Object.keys(analysis).map((moduleName, index) => {
     const { type } = analysis[moduleName]
     if (type === 'labels') {
       return (
@@ -50,7 +37,7 @@ const MetadataAnalysis = () => {
           {moduleName}
         </div>
         <div css={{ padding: spacing.normal, wordWrap: 'break-word' }}>
-          {JSON.stringify(modules[moduleName])}
+          {JSON.stringify(analysis[moduleName])}
         </div>
       </div>
     )

@@ -2,7 +2,7 @@ import TestRenderer from 'react-test-renderer'
 
 import bboxAsset, { boxImagesResponse } from '../../Asset/__mocks__/bboxAsset'
 
-import MetadataAnalysisClassification from '../Analysis/Classification'
+import MetadataAnalysisClassification from '../Classification'
 
 const PROJECT_ID = '00000000-0000-0000-0000-000000000000'
 const ASSET_ID = bboxAsset.id

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { colors, constants, spacing } from '../../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 const BBOX_SIZE = 56
 
@@ -111,7 +111,7 @@ const MetadataAnalysisClassification = ({ moduleName, moduleIndex }) => {
                       >
                         <img
                           css={{
-                            height: BBOX_SIZE,
+                            maxHeight: BBOX_SIZE,
                             width: BBOX_SIZE,
                             objectFit: 'contain',
                           }}

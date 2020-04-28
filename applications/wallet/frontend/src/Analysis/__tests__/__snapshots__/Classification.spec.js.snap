@@ -53,7 +53,7 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is no
 }
 
 .emotion-4 {
-  height: 56px;
+  max-height: 56px;
   width: 56px;
   object-fit: contain;
 }
@@ -256,7 +256,7 @@ exports[`<MetadataAnalysisClassification /> should render properly when it is th
 }
 
 .emotion-4 {
-  height: 56px;
+  max-height: 56px;
   width: 56px;
   object-fit: contain;
 }
