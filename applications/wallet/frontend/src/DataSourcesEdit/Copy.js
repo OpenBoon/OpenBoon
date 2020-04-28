@@ -4,6 +4,7 @@ const DataSourcesEditCopy = () => {
   return (
     <p
       css={{
+        marginTop: 0,
         maxWidth: constants.paragraph.maxWidth,
         color: colors.structure.zinc,
       }}

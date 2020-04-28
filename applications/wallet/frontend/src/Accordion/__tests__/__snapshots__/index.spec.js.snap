@@ -109,7 +109,6 @@ exports[`<Accordion /> should render properly for PRIMARY 1`] = `
 .emotion-4 {
   background-color: #3b3b3b;
   border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
 
 .emotion-3 {
