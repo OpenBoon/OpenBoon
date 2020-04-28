@@ -21,7 +21,12 @@ const FiltersMenu = ({
 
   const onClick = ({ type, attribute }) => (value) => {
     if (value) {
-      setNewFilters((nF) => ({ ...nF, [attribute]: { type, attribute } }))
+      const values = type === 'exists' ? { exists: true } : {}
+
+      setNewFilters((nF) => ({
+        ...nF,
+        [attribute]: { type, attribute, values },
+      }))
     } else {
       setNewFilters((nF) => {
         const { [attribute]: filterToRemove, ...rest } = nF
@@ -114,7 +119,7 @@ FiltersMenu.propTypes = {
     PropTypes.shape({
       type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
       attribute: PropTypes.string,
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+      values: PropTypes.shape({}),
     }).isRequired,
   ).isRequired,
   fields: PropTypes.objectOf(PropTypes.objectOf).isRequired,
