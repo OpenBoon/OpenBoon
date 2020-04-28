@@ -6,6 +6,9 @@ exports[`<MetadataPrettyRow /> should render documents 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.emotion-5:not(:first-of-type) {
   border-top: 1px solid #3b3b3b;
 }
 
@@ -25,13 +28,15 @@ exports[`<MetadataPrettyRow /> should render documents 1`] = `
   font-family: Roboto Condensed;
   color: #808080;
   padding: 16px;
-  width: 20%;
-}
-
-.emotion-1 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+}
+
+.emotion-1 {
+  -webkit-flex: 4;
+  -ms-flex: 4;
+  flex: 4;
   font-family: Roboto Mono;
   color: #e0e0e0;
   padding: 16px;

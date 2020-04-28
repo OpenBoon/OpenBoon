@@ -11,7 +11,7 @@ import { formatDisplayName, formatDisplayValue } from './helpers'
 
 const COPY_WIDTH = 20
 
-const MetadataPrettyRow = ({ name, value, title, index }) => {
+const MetadataPrettyRow = ({ name, value, title }) => {
   const [isCopied, setCopied] = useClipboard(value, { successDuration: 1000 })
 
   if (typeof value === 'object') {
@@ -35,7 +35,7 @@ const MetadataPrettyRow = ({ name, value, title, index }) => {
               color: colors.structure.steel,
               padding: spacing.normal,
               paddingBottom: 0,
-              width: '20%',
+              flex: 1,
             }}
           >
             <span title={`${title.toLowerCase()}.${name}`}>
@@ -66,7 +66,9 @@ const MetadataPrettyRow = ({ name, value, title, index }) => {
     <div
       css={{
         display: 'flex',
-        borderTop: index !== 0 ? constants.borders.divider : '',
+        '&:not(:first-of-type)': {
+          borderTop: constants.borders.divider,
+        },
         ':hover': {
           backgroundColor: colors.signal.electricBlue.background,
           div: {
@@ -83,7 +85,7 @@ const MetadataPrettyRow = ({ name, value, title, index }) => {
           fontFamily: 'Roboto Condensed',
           color: colors.structure.steel,
           padding: spacing.normal,
-          width: '20%',
+          flex: 1,
         }}
       >
         <span title={`${title.toLowerCase()}.${name}`}>
@@ -93,7 +95,7 @@ const MetadataPrettyRow = ({ name, value, title, index }) => {
       <div
         title={value}
         css={{
-          flex: 1,
+          flex: 4,
           fontFamily: 'Roboto Mono',
           color: colors.structure.pebble,
           padding: spacing.normal,
@@ -139,7 +141,6 @@ MetadataPrettyRow.propTypes = {
     PropTypes.shape({}),
   ]).isRequired,
   title: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
 }
 
 export default MetadataPrettyRow

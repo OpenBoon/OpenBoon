@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 
+import { constants } from '../Styles'
+
 import MetadataAnalysis from './Analysis'
 import MetadataPrettyRow from './PrettyRow'
-import { constants } from '../Styles'
 
 const MetadataPretty = ({ metadata, title, section }) => {
   if (['metrics'].includes(section)) return null
@@ -18,44 +19,28 @@ const MetadataPretty = ({ metadata, title, section }) => {
         key={`${section}${index}`}
         css={{
           width: '100%',
+          '&:not(:first-of-type)': {
+            borderTop: constants.borders.prettyMetadata,
+          },
         }}
       >
-        <div
-          css={{
-            borderTop: index !== 0 ? constants.borders.prettyMetadata : '',
-          }}
-        >
-          {Object.entries(file).map(([key, value], i) => (
-            <MetadataPrettyRow
-              key={key}
-              name={key}
-              value={value}
-              title={title}
-              index={i}
-              indentation={0}
-            />
-          ))}
-        </div>
+        {Object.entries(file).map(([key, value]) => (
+          <MetadataPrettyRow key={key} name={key} value={value} title={title} />
+        ))}
       </div>
     ))
   }
 
   return (
-    <div
-      css={{
-        width: '100%',
-      }}
-    >
+    <div css={{ width: '100%' }}>
       <div>
-        {Object.entries(metadata[section]).map(([key, value], index) => {
+        {Object.entries(metadata[section]).map(([key, value]) => {
           return (
             <MetadataPrettyRow
               key={key}
               name={key}
               value={value}
               title={title}
-              index={index}
-              indentation={0}
             />
           )
         })}
