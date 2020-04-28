@@ -99,7 +99,7 @@
     {
       "//": "all pages and chunks",
       "path": ".next/static/**/!(framework|commons|_app|_error|main|polyfill|webpack)*.js",
-      "maxSize": "19 kB"
+      "maxSize": "22 kB"
     }
   ],
   "dependencies": {
