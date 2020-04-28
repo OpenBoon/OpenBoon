@@ -245,3 +245,11 @@ ROLES = [
      'description': 'Provides access to User Administration for a Project.',
      'permissions': ['ProjectManage']},
 ]
+
+
+# Google Marketplace Integration
+GOOGLE_MARKETPLACE_ENABLED = True
+GOOGLE_MARKETPLACE_PROJECT = 'zorroa-marketplace'
+GOOGLE_MARKETPLACE_SUBSCRIPTION = 'codelab'
+
+

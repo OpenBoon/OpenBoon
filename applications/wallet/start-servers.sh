@@ -12,8 +12,21 @@ done
 cd applications/wallet
 python3 ./app/manage.py migrate --no-input
 
-# Start the server.
+# Start django server.
 gunicorn -b :8080 wallet.wsgi &
+
+# Start GCP Marketplace Handler
+if [ $MARKETPLACE_ENABLED -eq "true" ];
+then
+    echo "Starting GCP Marketplace Handler."
+    python3 gcp_marketplace_handler/bin/marketplacehandler.py &
+fi
+
+# Start node server.
 cd frontend
 npm start &
+
+
+
+# Start nginx gateway server
 nginx -g "daemon off;"

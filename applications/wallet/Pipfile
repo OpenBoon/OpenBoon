@@ -29,8 +29,11 @@ django-rest-auth = "*"
 backoff = "*"
 django-multiselectfield = "*"
 stringcase = "*"
-zmlp = {path = "./../../client/python"}
 opencv-python = "*"
+google-api-python-client = "*"
+google-cloud = "*"
+google-cloud-pubsub = "*"
+zmlp = {path = "./../../client/python"}
 
 [requires]
 python_version = "3.7"
