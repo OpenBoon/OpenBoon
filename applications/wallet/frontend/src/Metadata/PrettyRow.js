@@ -11,7 +11,7 @@ import { formatDisplayName, formatDisplayValue } from './helpers'
 
 const COPY_WIDTH = 20
 
-const MetadataPrettyRow = ({ name, value, title }) => {
+const MetadataPrettyRow = ({ name, value, path }) => {
   const [isCopied, setCopied] = useClipboard(value, { successDuration: 1000 })
 
   if (typeof value === 'object') {
@@ -38,7 +38,7 @@ const MetadataPrettyRow = ({ name, value, title }) => {
               flex: 1,
             }}
           >
-            <span title={`${title.toLowerCase()}.${name}`}>
+            <span title={`${path.toLowerCase()}.${name}`}>
               {formatDisplayName({ name })}
             </span>
           </div>
@@ -53,7 +53,7 @@ const MetadataPrettyRow = ({ name, value, title }) => {
               key={k}
               name={k}
               value={v}
-              title={title}
+              path={`${path.toLowerCase()}.${name}`}
               index={i}
             />
           ))}
@@ -88,7 +88,7 @@ const MetadataPrettyRow = ({ name, value, title }) => {
           flex: 1,
         }}
       >
-        <span title={`${title.toLowerCase()}.${name}`}>
+        <span title={`${path.toLowerCase()}.${name}`}>
           {formatDisplayName({ name })}
         </span>
       </div>
@@ -140,7 +140,7 @@ MetadataPrettyRow.propTypes = {
     PropTypes.number,
     PropTypes.shape({}),
   ]).isRequired,
-  title: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
 }
 
 export default MetadataPrettyRow

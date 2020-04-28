@@ -25,7 +25,7 @@ const MetadataPretty = ({ metadata, title, section }) => {
         }}
       >
         {Object.entries(file).map(([key, value]) => (
-          <MetadataPrettyRow key={key} name={key} value={value} title={title} />
+          <MetadataPrettyRow key={key} name={key} value={value} path={title} />
         ))}
       </div>
     ))
@@ -40,7 +40,7 @@ const MetadataPretty = ({ metadata, title, section }) => {
               key={key}
               name={key}
               value={value}
-              title={title}
+              path={title}
             />
           )
         })}
