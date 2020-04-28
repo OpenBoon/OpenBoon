@@ -257,7 +257,7 @@ Array [
 
 .emotion-20 {
   clear: both;
-  padding-bottom: 8px;
+  padding-bottom: 16px;
   color: #b3b3b3;
 }
 
@@ -1929,7 +1929,7 @@ Array [
 
 .emotion-38 {
   clear: both;
-  padding-bottom: 8px;
+  padding-bottom: 16px;
   color: #b3b3b3;
 }
 
@@ -3699,7 +3699,7 @@ Array [
 
 .emotion-32 {
   clear: both;
-  padding-bottom: 8px;
+  padding-bottom: 16px;
   color: #b3b3b3;
 }
 
@@ -5436,7 +5436,7 @@ Array [
 
 .emotion-31 {
   clear: both;
-  padding-bottom: 8px;
+  padding-bottom: 16px;
   color: #b3b3b3;
 }
 
