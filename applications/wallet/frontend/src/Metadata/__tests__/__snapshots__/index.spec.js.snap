@@ -1683,7 +1683,7 @@ Array [
                 className="emotion-4"
               >
                 <span
-                  title="files.width"
+                  title="files.attrs.width"
                 >
                   Width
                 </span>
@@ -1719,7 +1719,7 @@ Array [
                 className="emotion-4"
               >
                 <span
-                  title="files.height"
+                  title="files.attrs.height"
                 >
                   Height
                 </span>
@@ -1957,7 +1957,7 @@ Array [
                 className="emotion-4"
               >
                 <span
-                  title="files.width"
+                  title="files.attrs.width"
                 >
                   Width
                 </span>
@@ -1993,7 +1993,7 @@ Array [
                 className="emotion-4"
               >
                 <span
-                  title="files.height"
+                  title="files.attrs.height"
                 >
                   Height
                 </span>
@@ -2231,7 +2231,7 @@ Array [
                 className="emotion-4"
               >
                 <span
-                  title="files.width"
+                  title="files.attrs.width"
                 >
                   Width
                 </span>
@@ -2267,7 +2267,7 @@ Array [
                 className="emotion-4"
               >
                 <span
-                  title="files.height"
+                  title="files.attrs.height"
                 >
                   Height
                 </span>

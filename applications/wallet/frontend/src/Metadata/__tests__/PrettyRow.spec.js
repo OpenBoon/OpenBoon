@@ -11,12 +11,7 @@ describe('<MetadataPrettyRow />', () => {
     require('swr').__setMockUseSWRResponse({ data: pdfAsset })
 
     const component = TestRenderer.create(
-      <MetadataPrettyRow
-        name="content"
-        value={pdfContent}
-        title="media"
-        index={1}
-      />,
+      <MetadataPrettyRow name="content" value={pdfContent} path="media" />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
