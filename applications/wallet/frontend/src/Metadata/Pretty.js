@@ -2,15 +2,10 @@ import PropTypes from 'prop-types'
 
 import { constants } from '../Styles'
 
-import MetadataAnalysis from './Analysis'
 import MetadataPrettyRow from './PrettyRow'
 
 const MetadataPretty = ({ metadata, title, section }) => {
   if (['metrics'].includes(section)) return null
-
-  if (section === 'analysis') {
-    return <MetadataAnalysis />
-  }
 
   if (Array.isArray(metadata[section])) {
     return metadata[section].map((file, index) => (
