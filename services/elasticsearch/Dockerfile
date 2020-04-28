@@ -40,5 +40,12 @@ RUN yum remove -y unzip wget
 RUN yes | elasticsearch-plugin install repository-gcs -s
 RUN yes | elasticsearch-plugin install repository-s3 -s
 
-
 WORKDIR /usr/share/elasticsearch
+
+# Add credentials for backup snapshot bucket
+#COPY service-account-test.json service-account-test.json
+#RUN ./bin/elasticsearch-keystore add-file --force gcs.client.default.credentials_file service-account-test.json
+#RUN rm ./service-account-test.json
+
+# Setup for local snapshot repository
+RUN echo "path.repo: ./config/backup" >> ./config/elasticsearch.yml

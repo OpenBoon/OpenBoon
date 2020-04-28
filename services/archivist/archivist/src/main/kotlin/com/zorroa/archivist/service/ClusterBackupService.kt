@@ -18,10 +18,17 @@ import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.client.core.AcknowledgedResponse
+import org.elasticsearch.client.indexlifecycle.DeleteLifecyclePolicyRequest
+import org.elasticsearch.client.indexlifecycle.GetLifecyclePolicyRequest
+import org.elasticsearch.client.indexlifecycle.GetLifecyclePolicyResponse
+import org.elasticsearch.client.slm.DeleteSnapshotLifecyclePolicyRequest
 import org.elasticsearch.client.slm.ExecuteSnapshotLifecyclePolicyRequest
 import org.elasticsearch.client.slm.ExecuteSnapshotLifecyclePolicyResponse
+import org.elasticsearch.client.slm.GetSnapshotLifecyclePolicyRequest
+import org.elasticsearch.client.slm.GetSnapshotLifecyclePolicyResponse
 import org.elasticsearch.client.slm.PutSnapshotLifecyclePolicyRequest
 import org.elasticsearch.client.slm.SnapshotLifecyclePolicy
+import org.elasticsearch.client.slm.SnapshotLifecyclePolicyMetadata
 import org.elasticsearch.client.slm.SnapshotRetentionConfiguration
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.unit.TimeValue
@@ -67,7 +74,7 @@ interface ClusterBackupService {
      * @param minimumSnapshotCount: [Int] Minimum Amount of Snapshot that will be keeped even if [maxRetentionDays] is achieved
      * @param maximumSnapshotCount: [Int] Maximum Amount of Snapshot that will be keeped even if [maxRetentionDays] is not achieved
      */
-    fun createClusterPolicy(
+    fun createClusterSnapshotPolicy(
         cluster: IndexCluster,
         policyId: String,
         schedule: String,
@@ -87,7 +94,7 @@ interface ClusterBackupService {
      * @param minimumSnapshotCount: [Int] Minimum Amount of Snapshot that will be keeped even if [maxRetentionDays] is achieved
      * @param maximumSnapshotCount: [Int] Maximum Amount of Snapshot that will be keeped even if [maxRetentionDays] is not achieved
      */
-    fun createClusterPolicyAsync(
+    fun createClusterSnaphotPolicyAsync(
         cluster: IndexCluster,
         policyId: String,
         schedule: String,
@@ -100,9 +107,23 @@ interface ClusterBackupService {
     /**
      * Execute a snapshot using specified policy
      * @param cluster: [IndexCluster] Cluster reference
-     *
+     * @param policyId: [String] Policy ID
      */
-    fun executeClusterPolicy(cluster: IndexCluster, policyId: String): ExecuteSnapshotLifecyclePolicyResponse
+    fun executeClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): ExecuteSnapshotLifecyclePolicyResponse
+
+    /**
+     * Retrieve a Policy by ID
+     * @param cluster: [IndexCluster] Cluster reference
+     * @param policyId: [String] Policy ID
+     */
+    fun getClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): GetSnapshotLifecyclePolicyResponse
+
+    /**
+     * Delete cluster policy by ID
+     * @param cluster: [IndexCluster] Cluster reference
+     * @param policyId: [String] Policy ID
+     */
+    fun deleteClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): AcknowledgedResponse
 
     /**
      * Generate a Repository Based on IndexCluster name
@@ -119,7 +140,14 @@ interface ClusterBackupService {
      */
     fun deleteSnapshot(cluster: IndexCluster, snapshotName: String)
 
+    /**
+     * Create a Instant Snapshot of a Cluster
+     */
     fun createClusterSnapshot(cluster: IndexCluster, name: String?)
+
+    /**
+     * Asynchronously Create a Instant Snapshot of a Cluster
+     */
 
     fun createClusterSnapshotAsync(cluster: IndexCluster, name: String?)
 
@@ -174,6 +202,17 @@ fun logCreateSnapshot(cluster: IndexCluster, request: CreateSnapshotRequest) {
     )
 }
 
+fun logDeleteSnapshot(cluster: IndexCluster, request: DeleteSnapshotRequest) {
+    ProjectStorageService.logger.event(
+        LogObject.CLUSTER_SNAPSHOT, LogAction.DELETE,
+        mapOf(
+            "clusterId" to cluster.id,
+            "repository" to request.repository(),
+            "snapshot" to request.snapshot()
+        )
+    )
+}
+
 fun logCreateSnapshotPolicy(cluster: IndexCluster, request: PutSnapshotLifecyclePolicyRequest) {
     ProjectStorageService.logger.event(
         LogObject.CLUSTER_SNAPSHOT_POLICY, LogAction.CREATE,
@@ -181,6 +220,16 @@ fun logCreateSnapshotPolicy(cluster: IndexCluster, request: PutSnapshotLifecycle
             "clusterId" to cluster.id,
             "repository" to request.policy.repository,
             "policyName" to request.policy.name
+        )
+    )
+}
+
+fun logDeleteSnapshotPolicy(cluster: IndexCluster, request: DeleteSnapshotLifecyclePolicyRequest) {
+    ProjectStorageService.logger.event(
+        LogObject.CLUSTER_SNAPSHOT_POLICY, LogAction.CREATE,
+        mapOf(
+            "clusterId" to cluster.id,
+            "policyId" to request.policyId
         )
     )
 }
@@ -265,6 +314,7 @@ class GcsClusterBackupService(
 
         var request = getSnapshotPutRequest(name, cluster)
         client.snapshot().create(request, RequestOptions.DEFAULT)
+        logCreateSnapshot(cluster, request)
     }
 
     /**
@@ -292,7 +342,7 @@ class GcsClusterBackupService(
      * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-ilm-slm-put-snapshot-lifecycle-policy.html
      */
 
-    override fun createClusterPolicy(
+    override fun createClusterSnapshotPolicy(
         cluster: IndexCluster,
         policyId: String,
         schedule: String, // cron syntax
@@ -314,9 +364,10 @@ class GcsClusterBackupService(
         )
 
         client.indexLifecycle().putSnapshotLifecyclePolicy(policyRequest, RequestOptions.DEFAULT)
+        logCreateSnapshotPolicy(cluster, policyRequest)
     }
 
-    override fun createClusterPolicyAsync(
+    override fun createClusterSnaphotPolicyAsync(
         cluster: IndexCluster,
         policyId: String,
         schedule: String,
@@ -354,11 +405,31 @@ class GcsClusterBackupService(
     /**
      * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-ilm-slm-execute-snapshot-lifecycle-policy.html
      */
-    override fun executeClusterPolicy(cluster: IndexCluster, policyId: String): ExecuteSnapshotLifecyclePolicyResponse {
+    override fun executeClusterSnapshotPolicy(
+        cluster: IndexCluster,
+        policyId: String
+    ): ExecuteSnapshotLifecyclePolicyResponse {
         val client = indexClusterService.getRestHighLevelClient(cluster)
         val executeRequest = ExecuteSnapshotLifecyclePolicyRequest(policyId)
 
         return client.indexLifecycle().executeSnapshotLifecyclePolicy(executeRequest, RequestOptions.DEFAULT)
+    }
+
+    override fun getClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): GetSnapshotLifecyclePolicyResponse {
+        val client = indexClusterService.getRestHighLevelClient(cluster)
+        return client.indexLifecycle()
+            .getSnapshotLifecyclePolicy(GetSnapshotLifecyclePolicyRequest(policyId), RequestOptions.DEFAULT)
+    }
+
+    override fun deleteClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): AcknowledgedResponse {
+        val client = indexClusterService.getRestHighLevelClient(cluster)
+        val deleteSnapshotLifecyclePolicyRequest = DeleteSnapshotLifecyclePolicyRequest(policyId)
+        val deleteSnapshotLifecyclePolicy = client.indexLifecycle()
+            .deleteSnapshotLifecyclePolicy(deleteSnapshotLifecyclePolicyRequest, RequestOptions.DEFAULT)
+
+        logDeleteSnapshotPolicy(cluster, deleteSnapshotLifecyclePolicyRequest)
+
+        return deleteSnapshotLifecyclePolicy
     }
 
     override fun getSnapshots(cluster: IndexCluster): GetSnapshotsResponse {
@@ -368,8 +439,10 @@ class GcsClusterBackupService(
 
     override fun deleteSnapshot(cluster: IndexCluster, snapshotName: String) {
         val client = indexClusterService.getRestHighLevelClient(cluster)
+        val deleteSnapshotRequest = DeleteSnapshotRequest(getRepositoryName(cluster), snapshotName)
         client.snapshot()
-            .delete(DeleteSnapshotRequest(getRepositoryName(cluster), snapshotName), RequestOptions.DEFAULT)
+            .delete(deleteSnapshotRequest, RequestOptions.DEFAULT)
+        logDeleteSnapshot(cluster, deleteSnapshotRequest)
     }
 }
 
@@ -385,6 +458,11 @@ class S3ClusterBackupService(
     @Value("\${archivist.es.backup.aws.base-path}")
     lateinit var basePath: String
 
+    @Value("\${archivist.es.backup.aws.backup-location}")
+    lateinit var backupLocation: String
+
+
+
     override fun createClusterRepository(cluster: IndexCluster) {
         val client = indexClusterService.getRestHighLevelClient(cluster)
 
@@ -393,7 +471,7 @@ class S3ClusterBackupService(
                 .builder()
                 .put("bucket", bucket)
                 .put("base_path", basePath)
-                .put(FsRepository.LOCATION_SETTING.key, "./config/backups")
+                .put(FsRepository.LOCATION_SETTING.key, backupLocation)
                 .put(FsRepository.COMPRESS_SETTING.key, true)
 
         val putRepositoryRequest = PutRepositoryRequest()
@@ -402,8 +480,8 @@ class S3ClusterBackupService(
             .settings(settings)
             .verify(true)
 
-        // Sync
         client.snapshot().createRepository(putRepositoryRequest, RequestOptions.DEFAULT)
+        logCreateClusterRepository(cluster, putRepositoryRequest)
     }
 
     override fun createClusterRepositoryAsync(cluster: IndexCluster) {
@@ -441,6 +519,7 @@ class S3ClusterBackupService(
 
         var request = getSnapshotPutRequest(name, cluster)
         client.snapshot().create(request, RequestOptions.DEFAULT)
+        logCreateSnapshot(cluster, request)
     }
 
     override fun createClusterSnapshotAsync(cluster: IndexCluster, name: String?) {
@@ -465,7 +544,7 @@ class S3ClusterBackupService(
         return client.snapshot().getRepository(GetRepositoriesRequest(), RequestOptions.DEFAULT)
     }
 
-    override fun createClusterPolicy(
+    override fun createClusterSnapshotPolicy(
         cluster: IndexCluster,
         policyId: String,
         schedule: String, // cron syntax
@@ -489,7 +568,7 @@ class S3ClusterBackupService(
         client.indexLifecycle().putSnapshotLifecyclePolicy(snapshotPolicyPutRequest, RequestOptions.DEFAULT)
     }
 
-    override fun createClusterPolicyAsync(
+    override fun createClusterSnaphotPolicyAsync(
         cluster: IndexCluster,
         policyId: String,
         schedule: String,
@@ -523,11 +602,30 @@ class S3ClusterBackupService(
         client.indexLifecycle().putSnapshotLifecyclePolicyAsync(policyRequest, RequestOptions.DEFAULT, listener)
     }
 
-    override fun executeClusterPolicy(cluster: IndexCluster, policyId: String): ExecuteSnapshotLifecyclePolicyResponse {
+    override fun executeClusterSnapshotPolicy(
+        cluster: IndexCluster,
+        policyId: String
+    ): ExecuteSnapshotLifecyclePolicyResponse {
         val client = indexClusterService.getRestHighLevelClient(cluster)
         val executeRequest = ExecuteSnapshotLifecyclePolicyRequest(policyId)
 
         return client.indexLifecycle().executeSnapshotLifecyclePolicy(executeRequest, RequestOptions.DEFAULT)
+    }
+
+    override fun getClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): GetSnapshotLifecyclePolicyResponse {
+        val client = indexClusterService.getRestHighLevelClient(cluster)
+        return client.indexLifecycle()
+            .getSnapshotLifecyclePolicy(GetSnapshotLifecyclePolicyRequest(policyId), RequestOptions.DEFAULT)
+    }
+
+    override fun deleteClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): AcknowledgedResponse {
+        val client = indexClusterService.getRestHighLevelClient(cluster)
+        val deleteSnapshotLifecyclePolicyRequest = DeleteSnapshotLifecyclePolicyRequest(policyId)
+        val deleteSnapshotLifecyclePolicy = client.indexLifecycle()
+            .deleteSnapshotLifecyclePolicy(deleteSnapshotLifecyclePolicyRequest, RequestOptions.DEFAULT)
+
+        logDeleteSnapshotPolicy(cluster, deleteSnapshotLifecyclePolicyRequest)
+        return deleteSnapshotLifecyclePolicy
     }
 
     override fun getSnapshots(cluster: IndexCluster): GetSnapshotsResponse {
@@ -537,7 +635,8 @@ class S3ClusterBackupService(
 
     override fun deleteSnapshot(cluster: IndexCluster, snapshotName: String) {
         val client = indexClusterService.getRestHighLevelClient(cluster)
-        client.snapshot()
-            .delete(DeleteSnapshotRequest(getRepositoryName(cluster), snapshotName), RequestOptions.DEFAULT)
+        val deleteSnapshotRequest = DeleteSnapshotRequest(getRepositoryName(cluster), snapshotName)
+        client.snapshot().delete(deleteSnapshotRequest, RequestOptions.DEFAULT)
+        logDeleteSnapshot(cluster, deleteSnapshotRequest)
     }
 }
