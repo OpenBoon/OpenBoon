@@ -106,14 +106,17 @@ class DocumentMixin(object):
         """Add an analysis structure to the document.
 
         Args:
-            id (str): The name of the analysis
+            name (str): The name of the analysis
             val (mixed): the value/result of the analysis.
 
         """
-        if not name or not val:
-            raise ValueError("Analysis requires a unique ID and value")
+        if not name:
+            raise ValueError("Analysis requires a unique name")
         attr = "analysis.%s" % name
-        self.set_attr(attr, json.loads(to_json(val)))
+        if val is None:
+            self.set_attr(attr, None)
+        else:
+            self.set_attr(attr, json.loads(to_json(val)))
 
     def get_analysis(self, name):
         """
