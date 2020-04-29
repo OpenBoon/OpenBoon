@@ -29,7 +29,10 @@ export const formatDisplayValue = ({ name, value }) => {
     return bytesToSize({ bytes: value })
   }
 
-  if (name.toLowerCase().includes('time')) {
+  if (
+    name.toLowerCase().slice(0, 4) === 'time' ||
+    name.toLowerCase().includes('date')
+  ) {
     return formatPrettyDate({ timestamp: value })
   }
 

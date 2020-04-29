@@ -190,7 +190,7 @@ Array [
       </button>
     </div>
   </div>,
-  .emotion-57 {
+  .emotion-72 {
   overflow: auto;
 }
 
@@ -285,16 +285,26 @@ Array [
   width: 100%;
 }
 
-.emotion-38 {
+.emotion-20 {
   width: 100%;
 }
 
-.emotion-38:not(:first-of-type) {
+.emotion-20:not(:first-of-type) {
   border-top: 4px solid #4a4a4a;
 }
 
+.emotion-19 {
+  font-family: Roboto Condensed;
+  padding: 16px;
+}
+
+.emotion-18 {
+  padding-top: 8px;
+  font-family: Roboto Mono;
+}
+
 <div
-    className="emotion-57"
+    className="emotion-72"
   >
     <div
       className="emotion-6"
@@ -330,37 +340,37 @@ Array [
           <div>
             <MetadataPrettyRow
               name="jobId"
-              path="System"
+              path="system"
               value="106d4be1-5d95-11ea-baea-364023b135f5"
             />
             <MetadataPrettyRow
               name="dataSourceId"
-              path="System"
+              path="system"
               value="10509c20-5d95-11ea-baea-364023b135f5"
             />
             <MetadataPrettyRow
               name="timeCreated"
-              path="System"
+              path="system"
               value="2020-03-03T21:22:24.922700Z"
             />
             <MetadataPrettyRow
               name="state"
-              path="System"
+              path="system"
               value="Analyzed"
             />
             <MetadataPrettyRow
               name="projectId"
-              path="System"
+              path="system"
               value="89382033-bcbb-4c8f-81a9-3d0883298a81"
             />
             <MetadataPrettyRow
               name="taskId"
-              path="System"
+              path="system"
               value="106e0f32-5d95-11ea-baea-364023b135f5"
             />
             <MetadataPrettyRow
               name="timeModified"
-              path="System"
+              path="system"
               value="2020-03-03T21:22:47.575195Z"
             />
           </div>
@@ -401,37 +411,37 @@ Array [
           <div>
             <MetadataPrettyRow
               name="path"
-              path="Source"
+              path="source"
               value="gs://zorroa-dev-data/image/TIFF_1MB.tiff"
             />
             <MetadataPrettyRow
               name="extension"
-              path="Source"
+              path="source"
               value="tiff"
             />
             <MetadataPrettyRow
               name="filename"
-              path="Source"
+              path="source"
               value="TIFF_1MB.tiff"
             />
             <MetadataPrettyRow
               name="mimetype"
-              path="Source"
+              path="source"
               value="image/tiff"
             />
             <MetadataPrettyRow
               name="filesize"
-              path="Source"
+              path="source"
               value={1131930}
             />
             <MetadataPrettyRow
               name="checksum"
-              path="Source"
+              path="source"
               value={1867533868}
             />
             <MetadataPrettyRow
               name="url"
-              path="Source"
+              path="source"
               value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff"
             />
           </div>
@@ -465,7 +475,158 @@ Array [
       </div>
       <div
         className="emotion-5"
-      />
+      >
+        <div
+          className="emotion-20"
+        >
+          <div
+            className="emotion-19"
+          >
+            PROCESSOR
+            <div
+              className="emotion-18"
+            >
+              zmlp_core.core.processors.PreCacheSourceFileProcessor
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={1621235190}
+          />
+          <MetadataPrettyRow
+            name="executionTime"
+            path="metrics.pipeline"
+            value={0.11}
+          />
+          <MetadataPrettyRow
+            name="executionDate"
+            path="metrics.pipeline"
+            value="2020-03-03T21:22:27.694149"
+          />
+        </div>
+        <div
+          className="emotion-20"
+        >
+          <div
+            className="emotion-19"
+          >
+            PROCESSOR
+            <div
+              className="emotion-18"
+            >
+              zmlp_core.image.importers.ImageImporter
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={1426657387}
+          />
+          <MetadataPrettyRow
+            name="executionTime"
+            path="metrics.pipeline"
+            value={0.26}
+          />
+          <MetadataPrettyRow
+            name="executionDate"
+            path="metrics.pipeline"
+            value="2020-03-03T21:22:28.215069"
+          />
+        </div>
+        <div
+          className="emotion-20"
+        >
+          <div
+            className="emotion-19"
+          >
+            PROCESSOR
+            <div
+              className="emotion-18"
+            >
+              zmlp_core.office.importers.OfficeImporter
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={2001473853}
+          />
+        </div>
+        <div
+          className="emotion-20"
+        >
+          <div
+            className="emotion-19"
+          >
+            PROCESSOR
+            <div
+              className="emotion-18"
+            >
+              zmlp_core.video.VideoImporter
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={3310423168}
+          />
+        </div>
+        <div
+          className="emotion-20"
+        >
+          <div
+            className="emotion-19"
+          >
+            PROCESSOR
+            <div
+              className="emotion-18"
+            >
+              zmlp_core.core.processors.AssertAttributesProcessor
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={1841569083}
+          />
+          <MetadataPrettyRow
+            name="executionTime"
+            path="metrics.pipeline"
+            value={0}
+          />
+          <MetadataPrettyRow
+            name="executionDate"
+            path="metrics.pipeline"
+            value="2020-03-03T21:22:29.654215"
+          />
+        </div>
+      </div>
     </div>
     <div
       className="emotion-6"
@@ -501,32 +662,32 @@ Array [
           <div>
             <MetadataPrettyRow
               name="width"
-              path="Media"
+              path="media"
               value={650}
             />
             <MetadataPrettyRow
               name="height"
-              path="Media"
+              path="media"
               value={434}
             />
             <MetadataPrettyRow
               name="aspect"
-              path="Media"
+              path="media"
               value={1.5}
             />
             <MetadataPrettyRow
               name="orientation"
-              path="Media"
+              path="media"
               value="landscape"
             />
             <MetadataPrettyRow
               name="type"
-              path="Media"
+              path="media"
               value="image"
             />
             <MetadataPrettyRow
               name="length"
-              path="Media"
+              path="media"
               value={1}
             />
           </div>
@@ -567,32 +728,32 @@ Array [
           <div>
             <MetadataPrettyRow
               name="type"
-              path="Clip"
+              path="clip"
               value="page"
             />
             <MetadataPrettyRow
               name="start"
-              path="Clip"
+              path="clip"
               value={1}
             />
             <MetadataPrettyRow
               name="stop"
-              path="Clip"
+              path="clip"
               value={1}
             />
             <MetadataPrettyRow
               name="length"
-              path="Clip"
+              path="clip"
               value={1}
             />
             <MetadataPrettyRow
               name="pile"
-              path="Clip"
+              path="clip"
               value="pUn6wBxUN7x9JxOxLkvruOyNdYA"
             />
             <MetadataPrettyRow
               name="sourceAssetId"
-              path="Clip"
+              path="clip"
               value="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
             />
           </div>
@@ -628,31 +789,31 @@ Array [
         className="emotion-5"
       >
         <div
-          className="emotion-38"
+          className="emotion-20"
         >
           <MetadataPrettyRow
             name="name"
-            path="Files"
+            path="files"
             value="image_650x434.jpg"
           />
           <MetadataPrettyRow
             name="category"
-            path="Files"
+            path="files"
             value="proxy"
           />
           <MetadataPrettyRow
             name="mimetype"
-            path="Files"
+            path="files"
             value="image/jpeg"
           />
           <MetadataPrettyRow
             name="size"
-            path="Files"
+            path="files"
             value={89643}
           />
           <MetadataPrettyRow
             name="attrs"
-            path="Files"
+            path="files"
             value={
               Object {
                 "height": 434,
@@ -662,36 +823,36 @@ Array [
           />
           <MetadataPrettyRow
             name="url"
-            path="Files"
+            path="files"
             value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg"
           />
         </div>
         <div
-          className="emotion-38"
+          className="emotion-20"
         >
           <MetadataPrettyRow
             name="name"
-            path="Files"
+            path="files"
             value="image_512x341.jpg"
           />
           <MetadataPrettyRow
             name="category"
-            path="Files"
+            path="files"
             value="proxy"
           />
           <MetadataPrettyRow
             name="mimetype"
-            path="Files"
+            path="files"
             value="image/jpeg"
           />
           <MetadataPrettyRow
             name="size"
-            path="Files"
+            path="files"
             value={60713}
           />
           <MetadataPrettyRow
             name="attrs"
-            path="Files"
+            path="files"
             value={
               Object {
                 "height": 341,
@@ -701,36 +862,36 @@ Array [
           />
           <MetadataPrettyRow
             name="url"
-            path="Files"
+            path="files"
             value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg"
           />
         </div>
         <div
-          className="emotion-38"
+          className="emotion-20"
         >
           <MetadataPrettyRow
             name="name"
-            path="Files"
+            path="files"
             value="image_320x213.jpg"
           />
           <MetadataPrettyRow
             name="category"
-            path="Files"
+            path="files"
             value="proxy"
           />
           <MetadataPrettyRow
             name="mimetype"
-            path="Files"
+            path="files"
             value="image/jpeg"
           />
           <MetadataPrettyRow
             name="size"
-            path="Files"
+            path="files"
             value={30882}
           />
           <MetadataPrettyRow
             name="attrs"
-            path="Files"
+            path="files"
             value={
               Object {
                 "height": 213,
@@ -740,7 +901,7 @@ Array [
           />
           <MetadataPrettyRow
             name="url"
-            path="Files"
+            path="files"
             value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg"
           />
         </div>
@@ -780,7 +941,7 @@ Array [
           <div>
             <MetadataPrettyRow
               name="zvi"
-              path="Analysis"
+              path="analysis"
               value={
                 Object {
                   "tinyProxy": Array [
@@ -835,7 +996,7 @@ Array [
           <div>
             <MetadataPrettyRow
               name="simhash"
-              path="Similarity"
+              path="similarity"
               value="NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP"
             />
           </div>
