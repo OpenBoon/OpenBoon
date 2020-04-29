@@ -40,7 +40,7 @@ describe('<FiltersContent />', () => {
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
           id: '',
-          filters: btoa(
+          query: btoa(
             JSON.stringify([
               {
                 attribute: 'location.point',
@@ -51,7 +51,7 @@ describe('<FiltersContent />', () => {
           ),
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?filters=W3siYXR0cmlidXRlIjoibG9jYXRpb24ucG9pbnQiLCJ0eXBlIjoiZXhpc3RzIiwidmFsdWVzIjp7ImV4aXN0cyI6ZmFsc2V9fV0=',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3siYXR0cmlidXRlIjoibG9jYXRpb24ucG9pbnQiLCJ0eXBlIjoiZXhpc3RzIiwidmFsdWVzIjp7ImV4aXN0cyI6ZmFsc2V9fV0=',
     )
   })
 

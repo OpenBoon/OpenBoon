@@ -17,7 +17,7 @@ describe('<Filters />', () => {
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/visualizer',
-      query: { projectId: PROJECT_ID, filters: '' },
+      query: { projectId: PROJECT_ID, query: '' },
     })
 
     require('swr').__setMockUseSWRResponse({ data: fields })
@@ -55,12 +55,12 @@ describe('<Filters />', () => {
       {
         pathname: '/[projectId]/visualizer',
         query: {
-          filters: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
+          query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
           id: '',
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?filters=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d',
     )
   })
 
@@ -101,12 +101,12 @@ describe('<Filters />', () => {
       {
         pathname: '/[projectId]/visualizer',
         query: {
-          filters: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
+          query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
           id: 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C',
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C&filters=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C&query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d',
     )
   })
 
@@ -119,7 +119,7 @@ describe('<Filters />', () => {
       pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
-        filters: btoa(
+        query: btoa(
           JSON.stringify([
             { type: 'search', value: 'Cat' },
             { type: 'search', value: 'Dog' },
@@ -143,12 +143,12 @@ describe('<Filters />', () => {
       {
         pathname: '/[projectId]/visualizer',
         query: {
-          filters: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
+          query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
           id: '',
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?filters=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d',
     )
   })
 
@@ -161,7 +161,7 @@ describe('<Filters />', () => {
       pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
-        filters: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
+        query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
       },
     })
 
@@ -182,7 +182,7 @@ describe('<Filters />', () => {
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
           id: '',
-          filters: '',
+          query: '',
         },
       },
       '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer',
@@ -198,7 +198,7 @@ describe('<Filters />', () => {
       pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
-        filters: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
+        query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
       },
     })
 
@@ -324,7 +324,7 @@ describe('<Filters />', () => {
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
           id: '',
-          filters: btoa(
+          query: btoa(
             JSON.stringify([
               {
                 type: 'facet',
@@ -335,7 +335,7 @@ describe('<Filters />', () => {
           ),
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?filters=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoiYW5hbHlzaXMuenZpLnRpbnlQcm94eSIsInZhbHVlcyI6e319XQ==',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoiYW5hbHlzaXMuenZpLnRpbnlQcm94eSIsInZhbHVlcyI6e319XQ==',
     )
   })
 
@@ -391,7 +391,7 @@ describe('<Filters />', () => {
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
           id: '',
-          filters: btoa(
+          query: btoa(
             JSON.stringify([
               {
                 type: 'exists',
@@ -402,7 +402,7 @@ describe('<Filters />', () => {
           ),
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?filters=W3sidHlwZSI6ImV4aXN0cyIsImF0dHJpYnV0ZSI6ImxvY2F0aW9uLnBvaW50IiwidmFsdWVzIjp7ImV4aXN0cyI6dHJ1ZX19XQ==',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImV4aXN0cyIsImF0dHJpYnV0ZSI6ImxvY2F0aW9uLnBvaW50IiwidmFsdWVzIjp7ImV4aXN0cyI6dHJ1ZX19XQ==',
     )
   })
 
