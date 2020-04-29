@@ -30,7 +30,7 @@ export const decode = ({ query }) => {
 
 export const cleanup = ({ query }) => {
   const filters = decode({ query }).filter(
-    (filter) => Object.keys(filter.values).length > 0,
+    ({ values = {} }) => Object.keys(values).length > 0,
   )
 
   return encode({ filters })

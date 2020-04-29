@@ -39,7 +39,7 @@ FilterRange.propTypes = {
   //     }).isRequired,
   //   ).isRequired,
   filter: PropTypes.shape({
-    type: PropTypes.oneOf(['facet']).isRequired,
+    type: PropTypes.oneOf(['range']).isRequired,
     attribute: PropTypes.string.isRequired,
     values: PropTypes.shape({ exists: PropTypes.bool }),
   }).isRequired,
