@@ -45,7 +45,7 @@ def mock_response():
                             },
                             "zvi-text-detection": {
                                 "properties": {
-                                    "count": {
+                                    "words": {
                                         "type": "long",
                                     },
                                     "type": {
@@ -155,8 +155,8 @@ class TestContentAnalysisSchema:
 
     def test_get_represention(self, schema):
         rep = schema.get_representation()
-        assert rep == {'zvi-text-detection': {'content': ['facet', 'exists'],
-                                              'count': ['range', 'exists']}}
+        assert rep == {'zvi-text-detection': {'content': ['exists'],
+                                              'words': ['range', 'exists']}}
 
 
 class TestLabelsAnalysisSchema:
@@ -185,8 +185,8 @@ class TestLabelsAnalysisSchema:
 
     def test_get_represention_with_count(self, count_schema):
         rep = count_schema.get_representation()
-        assert rep == {'zvi-label-detection': ['labelConf']}
+        assert rep == {'zvi-label-detection': ['labelConfidence']}
 
     def test_get_representation_with_safe(self, safe_schema):
         rep = safe_schema.get_representation()
-        assert rep == {'zvi-label-detection': ['labelConf']}
+        assert rep == {'zvi-content-moderation': ['labelConfidence']}

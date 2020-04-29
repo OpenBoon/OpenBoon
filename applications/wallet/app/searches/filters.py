@@ -248,7 +248,7 @@ class LabelConfidenceFilter(BaseFilter):
         return {
             'query': {
                 'bool': {
-                    'must': [{
+                    'filter': [{
                         'script_score': {
                             'query': {
                                 'terms': {f'{attribute}.predictions.label': labels}
@@ -268,49 +268,3 @@ class LabelConfidenceFilter(BaseFilter):
                 }
             }
         }
-        # return {
-        #     'query': {
-        #         'script_score': {
-        #             'query': {
-        #                 'terms': {f'{attribute}.predictions.label': labels}
-        #             },
-        #             'script': {
-        #                 'source': 'kwconf',
-        #                 'lang': 'zorroa-kwconf',
-        #                 'params': {
-        #                     'field': f'{attribute}.predictions',
-        #                     'labels': labels,
-        #                     'range': [min, max]
-        #                 }
-        #             },
-        #             'min_score': min
-        #         }
-        #     }
-        # }
-
-    # def add_to_query(self, query):
-    #     """Adds the given filters information to a pre-existing query.
-    #
-    #     Adds this query to a prebuilt query. Every clause will be appended to the list
-    #     of existing `bool` clauses if they exist, in an additive manner.
-    #     """
-    #     this_query = self.get_es_query()
-    #
-    #     if 'query' not in query:
-    #         # If the query key doesn't exist at all, add this filters whole query to it
-    #         query.update(this_query)
-    #     elif 'script_score' not in query['query']:
-    #         # If this query is not setup as a bool, then add this filters bool section to it
-    #         query['query']['script_score'] = this_query['query']['script_score']
-    #     else:
-    #         # Check that every clause (ex. 'filter', 'must_not', 'should', etc) in
-    #         # this filter's query gets added if it's missing, or extends what is
-    #         # already existing
-    #         bool_clauses = this_query['query']['bool']
-    #         for clause in bool_clauses:
-    #             if clause not in query['query']['bool']:
-    #                 query['query']['bool'][clause] = this_query['query']['bool'][clause]
-    #             else:
-    #                 query['query']['bool'][clause].extend(this_query['query']['bool'][clause])
-    #
-    #     return query
