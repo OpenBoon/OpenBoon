@@ -54,7 +54,7 @@ const MetadataLabelDetection = ({ name, predictions }) => {
                     color: colors.structure.steel,
                     width: shouldExpand ? '100%' : '',
                     paddingBottom: spacing.normal,
-                    '&:last-child': {
+                    '&:last-of-type': {
                       textAlign: 'right',
                       whiteSpace: 'nowrap',
                       paddingRight: 0,
@@ -68,27 +68,39 @@ const MetadataLabelDetection = ({ name, predictions }) => {
           </tr>
         </thead>
         <tbody>
-          {predictions.map((prediction, index) => {
-            const isFirstRow = index === 0
-            const isLastRow = index === predictions.length - 1
-
+          {predictions.map((prediction) => {
             return (
-              <tr key={prediction.score} css={{ verticalAlign: 'bottom' }}>
+              <tr
+                key={prediction.score}
+                css={{
+                  verticalAlign: 'bottom',
+                  td: {
+                    paddingTop: spacing.base,
+                    paddingBottom: spacing.base,
+                    paddingRight: spacing.base,
+                  },
+                  '&:first-of-type': { td: { paddingTop: 0 } },
+                  '&:last-of-type': {
+                    td: {
+                      paddingBottom: 0,
+                    },
+                  },
+                  '&:not(:first-of-type)': {
+                    td: {
+                      borderTop: constants.borders.divider,
+                    },
+                  },
+                }}
+              >
                 {columns.map((column) => {
                   return (
                     <td
                       key={column}
                       css={{
-                        '&:last-child': {
+                        '&:last-of-type': {
                           textAlign: 'right',
                           paddingRight: 0,
                         },
-                        paddingRight: spacing.base,
-                        paddingTop: isFirstRow ? 0 : spacing.base,
-                        paddingBottom: isLastRow ? 0 : spacing.base,
-                        borderBottom: isLastRow
-                          ? ''
-                          : constants.borders.divider,
                       }}
                     >
                       {prediction[column]}
