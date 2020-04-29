@@ -10,6 +10,7 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import MetadataObjectDetection from './ObjectDetection'
 import MetadataLabelDetection from './LabelDetection'
 import MetadataImageSimilarity from './ImageSimilarity'
+import MetadataTextDetection from './TextDetection'
 
 import { formatDisplayName, formatDisplayValue } from './helpers'
 
@@ -31,6 +32,10 @@ const MetadataPrettyRow = ({ name, value, path }) => {
 
     if (name === 'zvi-image-similarity') {
       return <MetadataImageSimilarity name={name} simhash={value.simhash} />
+    }
+
+    if (name === 'zvi-text-detection') {
+      return <MetadataTextDetection name={name} content={value.content} />
     }
 
     return (
