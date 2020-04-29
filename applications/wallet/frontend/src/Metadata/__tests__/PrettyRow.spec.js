@@ -51,6 +51,21 @@ describe('<MetadataPrettyRow />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render image similarity', () => {
+    const imageSimilarity = bboxAsset.metadata.analysis['zvi-image-similarity']
+
+    const component = TestRenderer.create(
+      <MetadataPrettyRow
+        name="zvi-image-similarity"
+        value={imageSimilarity}
+        path="analysis"
+        index={1}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render when value is of type object', () => {
     const textDetectionPredictions =
       bboxAsset.metadata.analysis['zvi-text-detection']
