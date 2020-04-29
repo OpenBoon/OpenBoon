@@ -5,6 +5,7 @@ import { spacing, constants } from '../Styles'
 import SearchFilter from '../SearchFilter'
 import Button, { VARIANTS } from '../Button'
 import FilterExists from '../FilterExists'
+import FilterFacet from '../FilterFacet'
 
 import { dispatch, ACTIONS } from './helpers'
 
@@ -53,6 +54,20 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
         if (filter.type === 'exists') {
           return (
             <FilterExists
+              // eslint-disable-next-line react/no-array-index-key
+              key={`${filter.type}-${index}`}
+              projectId={projectId}
+              assetId={assetId}
+              filters={filters}
+              filter={filter}
+              filterIndex={index}
+            />
+          )
+        }
+
+        if (filter.type === 'facet') {
+          return (
+            <FilterFacet
               // eslint-disable-next-line react/no-array-index-key
               key={`${filter.type}-${index}`}
               projectId={projectId}
