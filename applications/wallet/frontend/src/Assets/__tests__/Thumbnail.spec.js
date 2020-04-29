@@ -12,7 +12,7 @@ describe('<AssetsThumbnail />', () => {
     require('next/router').__setUseRouter({
       query: {
         projectId: PROJECT_ID,
-        filters: '[{"type":"search","value":"Cat"}]',
+        query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
       },
     })
 

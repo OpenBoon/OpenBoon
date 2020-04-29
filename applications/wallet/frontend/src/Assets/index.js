@@ -19,7 +19,7 @@ const PADDING_SIZE = spacing.small
 /* istanbul ignore next */
 const Assets = () => {
   const {
-    query: { projectId },
+    query: { projectId, query = 'W10=' },
   } = useRouter()
 
   const innerRef = useRef()
@@ -38,7 +38,7 @@ const Assets = () => {
       const { data: { results } = {} } = withSWR(
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useSWR(
-          `/api/v1/projects/${projectId}/searches/query/?from=${from}&size=${SIZE}`,
+          `/api/v1/projects/${projectId}/searches/query/?query=${query}&from=${from}&size=${SIZE}`,
           { suspense: false },
         ),
       )
@@ -63,7 +63,7 @@ const Assets = () => {
     },
 
     // deps of the page component
-    [],
+    [query],
   )
 
   const items = Array.isArray(pageSWRs)

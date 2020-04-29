@@ -16,14 +16,14 @@ const AssetsThumbnail = ({
   },
 }) => {
   const {
-    query: { projectId, id: selectedId, filters },
+    query: { projectId, id: selectedId, query },
   } = useRouter()
 
   const isSelected = id === selectedId
 
   const queryParams = Object.entries({
     ...(isSelected ? {} : { id }),
-    ...(filters ? { filters } : {}),
+    ...(query ? { query } : {}),
   })
     .map(([key, value]) => `${key}=${value}`)
     .join('&')
