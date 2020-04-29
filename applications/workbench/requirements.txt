@@ -28,3 +28,4 @@ tqdm
 MulticoreTSNE
 cvlib
 nltk
+facenet-pytorch
