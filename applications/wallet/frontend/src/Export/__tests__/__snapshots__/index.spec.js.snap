@@ -40,6 +40,9 @@ exports[`<Export /> should render properly 1`] = `
   color: #ffffff;
   background-color: transparent;
   padding: 8px 16px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 .emotion-1:hover {
@@ -68,16 +71,17 @@ exports[`<Export /> should render properly 1`] = `
 <div
   className="emotion-2"
 >
-  Export the metadata for all assets in the current search as CSV. File will download automatically.
+  <div>
+    Export the metadata for all assets in the current search as CSV. File will download automatically.
+  </div>
   <div
     className="emotion-0"
   />
-  <button
+  <a
     className="emotion-1"
-    onClick={[Function]}
-    type="button"
+    href="/api/v1/projects/76917058-b147-4556-987a-0a0f11e46d9b/searches/export/?query=W10=&format=csv"
   >
     Export CSV
-  </button>
+  </a>
 </div>
 `;

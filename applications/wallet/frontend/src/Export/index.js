@@ -1,14 +1,28 @@
+import { useRouter } from 'next/router'
+
 import { spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
 const Export = () => {
+  const {
+    query: { projectId, query = 'W10=' },
+  } = useRouter()
+
   return (
     <div css={{ padding: spacing.base }}>
-      Export the metadata for all assets in the current search as CSV. File will
-      download automatically.
+      <div>
+        Export the metadata for all assets in the current search as CSV. File
+        will download automatically.
+      </div>
+
       <div css={{ height: spacing.base }} />
-      <Button variant={VARIANTS.PRIMARY_SMALL} onClick={console.warn}>
+
+      <Button
+        variant={VARIANTS.PRIMARY_SMALL}
+        href={`/api/v1/projects/${projectId}/searches/export/?query=${query}&format=csv`}
+        style={{ width: 'fit-content' }}
+      >
         Export CSV
       </Button>
     </div>
