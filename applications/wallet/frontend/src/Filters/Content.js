@@ -6,12 +6,13 @@ import SearchFilter from '../SearchFilter'
 import Button, { VARIANTS } from '../Button'
 import FilterExists from '../FilterExists'
 import FilterFacet from '../FilterFacet'
+import FilterRange from '../FilterRange'
 
 import { dispatch, ACTIONS } from './helpers'
 
 const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
   return (
-    <div>
+    <>
       <div
         css={{ padding: spacing.small, borderBottom: constants.borders.spacer }}
       >
@@ -50,65 +51,81 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
         />
       </div>
 
-      {filters.map((filter, index) => {
-        if (filter.type === 'exists') {
+      <div css={{ overflow: 'auto' }}>
+        {filters.map((filter, index) => {
+          if (filter.type === 'exists') {
+            return (
+              <FilterExists
+                // eslint-disable-next-line react/no-array-index-key
+                key={`${filter.type}-${index}`}
+                projectId={projectId}
+                assetId={assetId}
+                filters={filters}
+                filter={filter}
+                filterIndex={index}
+              />
+            )
+          }
+
+          if (filter.type === 'facet') {
+            return (
+              <FilterFacet
+                // eslint-disable-next-line react/no-array-index-key
+                key={`${filter.type}-${index}`}
+                projectId={projectId}
+                assetId={assetId}
+                filters={filters}
+                filter={filter}
+                filterIndex={index}
+              />
+            )
+          }
+
+          if (filter.type === 'range') {
+            return (
+              <FilterRange
+                // eslint-disable-next-line react/no-array-index-key
+                key={`${filter.type}-${index}`}
+                projectId={projectId}
+                assetId={assetId}
+                filters={filters}
+                filter={filter}
+                filterIndex={index}
+              />
+            )
+          }
+
           return (
-            <FilterExists
+            <li
               // eslint-disable-next-line react/no-array-index-key
               key={`${filter.type}-${index}`}
-              projectId={projectId}
-              assetId={assetId}
-              filters={filters}
-              filter={filter}
-              filterIndex={index}
-            />
-          )
-        }
-
-        if (filter.type === 'facet') {
-          return (
-            <FilterFacet
-              // eslint-disable-next-line react/no-array-index-key
-              key={`${filter.type}-${index}`}
-              projectId={projectId}
-              assetId={assetId}
-              filters={filters}
-              filter={filter}
-              filterIndex={index}
-            />
-          )
-        }
-
-        return (
-          <li
-            // eslint-disable-next-line react/no-array-index-key
-            key={`${filter.type}-${index}`}
-            css={{
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
-          >
-            • {filter.type}: {filter.attribute || filter.value}
-            <button
-              type="button"
-              onClick={() =>
-                dispatch({
-                  action: ACTIONS.DELETE_FILTER,
-                  payload: {
-                    projectId,
-                    assetId,
-                    filters,
-                    filterIndex: index,
-                  },
-                })
-              }
+              css={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
             >
-              delete
-            </button>
-          </li>
-        )
-      })}
-    </div>
+              • {filter.type}: {filter.attribute || filter.value}
+              <button
+                type="button"
+                onClick={() =>
+                  dispatch({
+                    action: ACTIONS.DELETE_FILTER,
+                    payload: {
+                      projectId,
+                      assetId,
+                      filters,
+                      filterIndex: index,
+                    },
+                  })
+                }
+              >
+                delete
+              </button>
+            </li>
+          )
+        })}
+      </div>
+    </>
   )
 }
 

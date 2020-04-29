@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FiltersContent /> should render the "Exists" filter 1`] = `
-.emotion-8 {
+Array [
+  .emotion-8 {
   padding: 4px;
   border-bottom: 1px solid #191919;
 }
@@ -173,12 +174,70 @@ exports[`<FiltersContent /> should render the "Exists" filter 1`] = `
   cursor: not-allowed;
 }
 
-.emotion-19 {
+<div
+    className="emotion-8"
+  >
+    <div
+      className="emotion-3"
+    >
+      <button
+        className="emotion-0"
+        onClick={[Function]}
+        type="button"
+      >
+        + Add Metadata Filters
+      </button>
+      <div
+        className="emotion-1"
+      />
+      <button
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        Clear All Filters
+      </button>
+    </div>
+    <div
+      className="emotion-4"
+    />
+    <form
+      action=""
+      method="post"
+      onSubmit={[Function]}
+    >
+      <div
+        className="emotion-7"
+      >
+        <input
+          className="emotion-5"
+          onChange={[Function]}
+          placeholder="Create text filter (search name or field value)"
+          type="text"
+          value=""
+        />
+        <button
+          aria-disabled={true}
+          aria-label="Search"
+          className="emotion-6"
+          onClick={[Function]}
+          type="submit"
+        >
+          +
+        </button>
+      </div>
+    </form>
+  </div>,
+  .emotion-11 {
+  overflow: auto;
+}
+
+.emotion-10 {
   background-color: #252525;
   border-radius: 2px;
 }
 
-.emotion-12 {
+.emotion-3 {
   border-bottom: 1px solid #4a4a4a;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -189,11 +248,11 @@ exports[`<FiltersContent /> should render the "Exists" filter 1`] = `
   display: flex;
 }
 
-.emotion-12 h4 {
+.emotion-3 h4 {
   font-weight: 400;
 }
 
-.emotion-10 {
+.emotion-1 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -226,26 +285,26 @@ exports[`<FiltersContent /> should render the "Exists" filter 1`] = `
   padding: 0;
 }
 
-.emotion-10:hover {
+.emotion-1:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-10[aria-disabled=true] {
+.emotion-1[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-9 {
+.emotion-0 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-9:hover {
+.emotion-0:hover {
   color: #ffffff;
 }
 
-.emotion-11 {
+.emotion-2 {
   font-size: 17px;
   line-height: 20px;
   padding-left: 12px;
@@ -255,18 +314,18 @@ exports[`<FiltersContent /> should render the "Exists" filter 1`] = `
   display: flex;
 }
 
-.emotion-18 {
+.emotion-9 {
   width: 100%;
   background-color: #191919;
 }
 
-.emotion-17 {
+.emotion-8 {
   padding: 16px;
   padding-left: 12px;
   padding-right: 12px;
 }
 
-.emotion-15 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -275,7 +334,7 @@ exports[`<FiltersContent /> should render the "Exists" filter 1`] = `
   border-radius: 2px;
 }
 
-.emotion-13 {
+.emotion-4 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -315,20 +374,20 @@ exports[`<FiltersContent /> should render the "Exists" filter 1`] = `
   color: #ffffff;
 }
 
-.emotion-13:hover {
+.emotion-4:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-13[aria-disabled=true] {
+.emotion-4[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-13:hover {
+.emotion-4:hover {
   color: #ffffff;
 }
 
-.emotion-14 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -368,146 +427,96 @@ exports[`<FiltersContent /> should render the "Exists" filter 1`] = `
   color: #808080;
 }
 
-.emotion-14:hover {
+.emotion-5:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-14[aria-disabled=true] {
+.emotion-5[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-14:hover {
+.emotion-5:hover {
   color: #ffffff;
 }
 
-.emotion-16 {
+.emotion-7 {
   color: #808080;
   text-align: center;
   padding: 8px;
 }
 
-<div>
-  <div
-    className="emotion-8"
+<div
+    className="emotion-11"
   >
     <div
-      className="emotion-3"
-    >
-      <button
-        className="emotion-0"
-        onClick={[Function]}
-        type="button"
-      >
-        + Add Metadata Filters
-      </button>
-      <div
-        className="emotion-1"
-      />
-      <button
-        className="emotion-2"
-        onClick={[Function]}
-        type="button"
-      >
-        Clear All Filters
-      </button>
-    </div>
-    <div
-      className="emotion-4"
-    />
-    <form
-      action=""
-      method="post"
-      onSubmit={[Function]}
+      className="emotion-10"
     >
       <div
-        className="emotion-7"
+        className="emotion-3"
       >
-        <input
-          className="emotion-5"
-          onChange={[Function]}
-          placeholder="Create text filter (search name or field value)"
-          type="text"
-          value=""
-        />
         <button
-          aria-disabled={true}
-          aria-label="Search"
-          className="emotion-6"
+          aria-label="Collapse Section"
+          className="emotion-1"
           onClick={[Function]}
-          type="submit"
+          type="button"
         >
-          +
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
         </button>
+        <h4
+          className="emotion-2"
+        >
+          location.point
+        </h4>
       </div>
-    </form>
-  </div>
-  <div
-    className="emotion-19"
-  >
-    <div
-      className="emotion-12"
-    >
-      <button
-        aria-label="Collapse Section"
-        className="emotion-10"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-9"
-          color="#808080"
-          data-file-name="chevron.svg"
-          width={20}
-        />
-      </button>
-      <h4
-        className="emotion-11"
-      >
-        location.point
-      </h4>
-    </div>
-    <div
-      className="emotion-18"
-    >
       <div
-        className="emotion-17"
+        className="emotion-9"
       >
         <div
-          className="emotion-15"
+          className="emotion-8"
         >
-          <button
-            className="emotion-13"
-            onClick={[Function]}
-            type="button"
+          <div
+            className="emotion-6"
           >
-            Exists
-          </button>
-          <button
-            className="emotion-14"
-            onClick={[Function]}
-            type="button"
+            <button
+              className="emotion-4"
+              onClick={[Function]}
+              type="button"
+            >
+              Exists
+            </button>
+            <button
+              className="emotion-5"
+              onClick={[Function]}
+              type="button"
+            >
+              Missing
+            </button>
+          </div>
+          <div
+            className="emotion-7"
           >
-            Missing
-          </button>
-        </div>
-        <div
-          className="emotion-16"
-        >
-          <span>
-            Show assets with the field "
-            location.point
-            "
-          </span>
+            <span>
+              Show assets with the field "
+              location.point
+              "
+            </span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
 
 exports[`<FiltersContent /> should render the "Facet" filter 1`] = `
-.emotion-8 {
+Array [
+  .emotion-8 {
   padding: 4px;
   border-bottom: 1px solid #191919;
 }
@@ -679,110 +688,7 @@ exports[`<FiltersContent /> should render the "Facet" filter 1`] = `
   cursor: not-allowed;
 }
 
-.emotion-16 {
-  background-color: #252525;
-  border-radius: 2px;
-}
-
-.emotion-12 {
-  border-bottom: 1px solid #4a4a4a;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-left: 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-12 h4 {
-  font-weight: 400;
-}
-
-.emotion-10 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-}
-
-.emotion-10:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-10[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-9 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-9:hover {
-  color: #ffffff;
-}
-
-.emotion-11 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-15 {
-  width: 100%;
-  background-color: #191919;
-}
-
-.emotion-14 {
-  padding: 16px;
-  padding-left: 12px;
-  padding-right: 12px;
-}
-
-.emotion-14 div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-13 {
-  margin: 0;
-}
-
-<div>
-  <div
+<div
     className="emotion-8"
   >
     <div
@@ -835,79 +741,189 @@ exports[`<FiltersContent /> should render the "Facet" filter 1`] = `
         </button>
       </div>
     </form>
-  </div>
-  <div
-    className="emotion-16"
+  </div>,
+  .emotion-8 {
+  overflow: auto;
+}
+
+.emotion-7 {
+  background-color: #252525;
+  border-radius: 2px;
+}
+
+.emotion-3 {
+  border-bottom: 1px solid #4a4a4a;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 h4 {
+  font-weight: 400;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0 {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+}
+
+.emotion-2 {
+  font-size: 17px;
+  line-height: 20px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-6 {
+  width: 100%;
+  background-color: #191919;
+}
+
+.emotion-5 {
+  padding: 16px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.emotion-5 div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-4 {
+  margin: 0;
+}
+
+<div
+    className="emotion-8"
   >
     <div
-      className="emotion-12"
-    >
-      <button
-        aria-label="Collapse Section"
-        className="emotion-10"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-9"
-          color="#808080"
-          data-file-name="chevron.svg"
-          width={20}
-        />
-      </button>
-      <h4
-        className="emotion-11"
-      >
-        location.city
-      </h4>
-    </div>
-    <div
-      className="emotion-15"
+      className="emotion-7"
     >
       <div
-        className="emotion-14"
+        className="emotion-3"
       >
-        <ul
-          className="emotion-13"
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
         >
-          <li>
-            Tyngsboro
-            : 
-            3
-          </li>
-          <li>
-            Brooklyn
-            : 
-            2
-          </li>
-          <li>
-            Cát Bà
-            : 
-            1
-          </li>
-          <li>
-            La Habana Vieja
-            : 
-            1
-          </li>
-          <li>
-            North Glendale
-            : 
-            1
-          </li>
-          <li>
-            Saalfelden am Steinernen Meer
-            : 
-            1
-          </li>
-          <li>
-            Zermatt
-            : 
-            1
-          </li>
-        </ul>
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          location.city
+        </h4>
+      </div>
+      <div
+        className="emotion-6"
+      >
+        <div
+          className="emotion-5"
+        >
+          <ul
+            className="emotion-4"
+          >
+            <li>
+              Tyngsboro
+              : 
+              3
+            </li>
+            <li>
+              Brooklyn
+              : 
+              2
+            </li>
+            <li>
+              Cát Bà
+              : 
+              1
+            </li>
+            <li>
+              La Habana Vieja
+              : 
+              1
+            </li>
+            <li>
+              North Glendale
+              : 
+              1
+            </li>
+            <li>
+              Saalfelden am Steinernen Meer
+              : 
+              1
+            </li>
+            <li>
+              Zermatt
+              : 
+              1
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
