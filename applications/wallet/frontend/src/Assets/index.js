@@ -38,7 +38,7 @@ const Assets = () => {
       const { data: { results } = {} } = withSWR(
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useSWR(
-          `/api/v1/projects/${projectId}/assets/?from=${from}&size=${SIZE}`,
+          `/api/v1/projects/${projectId}/searches/query/?from=${from}&size=${SIZE}`,
           { suspense: false },
         ),
       )
@@ -93,7 +93,7 @@ const Assets = () => {
             loadMoreItems={loadMore}
           >
             {({ onItemsRendered, ref }) => {
-              const parentElement = (innerRef && innerRef.current) || {}
+              const { parentElement } = (innerRef && innerRef.current) || {}
               const { offsetWidth = 0, clientWidth = 0 } = parentElement || {}
               const adjustedWidth = width - PADDING_SIZE * 2
               const scrollbarSize = offsetWidth - clientWidth
