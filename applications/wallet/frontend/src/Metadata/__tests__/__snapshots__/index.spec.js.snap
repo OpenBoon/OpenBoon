@@ -1,0 +1,1326 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Metadata /> should render properly 1`] = `
+.emotion-1 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  color: #73b61c;
+  font-style: italic;
+}
+
+<div
+  className="emotion-1"
+>
+  <div
+    className="emotion-0"
+  >
+    Select an asset to view its metadata
+  </div>
+</div>
+`;
+
+exports[`<Metadata /> should render selected asset 1`] = `
+Array [
+  .emotion-1 {
+  padding: 16px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-0 {
+  color: #4a90e2;
+}
+
+<div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-0"
+    >
+      TIFF_1MB.tiff
+    </div>
+  </div>,
+  .emotion-3 {
+  padding: 8px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border: 1px solid #808080;
+  border-radius: 2px;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: 1px solid transparent;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: #808080;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: 1px solid transparent;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: transparent;
+  color: #808080;
+  text-transform: uppercase;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1:hover {
+  color: #ffffff;
+}
+
+<div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-2"
+    >
+      <button
+        className="emotion-0"
+        onClick={[Function]}
+        type="button"
+      >
+        pretty
+      </button>
+      <button
+        className="emotion-1"
+        onClick={[Function]}
+        type="button"
+      >
+        raw json
+      </button>
+    </div>
+  </div>,
+  .emotion-72 {
+  overflow: auto;
+}
+
+.emotion-6 {
+  background-color: #252525;
+  border-radius: 2px;
+}
+
+.emotion-3 {
+  border-bottom: 1px solid #4a4a4a;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 h4 {
+  font-weight: 400;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0 {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+}
+
+.emotion-2 {
+  font-size: 17px;
+  line-height: 20px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5 {
+  width: 100%;
+  background-color: #191919;
+}
+
+.emotion-4 {
+  width: 100%;
+}
+
+.emotion-20 {
+  width: 100%;
+}
+
+.emotion-20:not(:first-of-type) {
+  border-top: 4px solid #4a4a4a;
+}
+
+.emotion-19 {
+  font-family: Roboto Condensed;
+  padding: 16px;
+}
+
+.emotion-18 {
+  padding-top: 8px;
+  font-family: Roboto Mono;
+}
+
+<div
+    className="emotion-72"
+  >
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          System
+        </h4>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div>
+            <MetadataPrettyRow
+              name="jobId"
+              path="system"
+              value="106d4be1-5d95-11ea-baea-364023b135f5"
+            />
+            <MetadataPrettyRow
+              name="dataSourceId"
+              path="system"
+              value="10509c20-5d95-11ea-baea-364023b135f5"
+            />
+            <MetadataPrettyRow
+              name="timeCreated"
+              path="system"
+              value="2020-03-03T21:22:24.922700Z"
+            />
+            <MetadataPrettyRow
+              name="state"
+              path="system"
+              value="Analyzed"
+            />
+            <MetadataPrettyRow
+              name="projectId"
+              path="system"
+              value="89382033-bcbb-4c8f-81a9-3d0883298a81"
+            />
+            <MetadataPrettyRow
+              name="taskId"
+              path="system"
+              value="106e0f32-5d95-11ea-baea-364023b135f5"
+            />
+            <MetadataPrettyRow
+              name="timeModified"
+              path="system"
+              value="2020-03-03T21:22:47.575195Z"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Source
+        </h4>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div>
+            <MetadataPrettyRow
+              name="path"
+              path="source"
+              value="gs://zorroa-dev-data/image/TIFF_1MB.tiff"
+            />
+            <MetadataPrettyRow
+              name="extension"
+              path="source"
+              value="tiff"
+            />
+            <MetadataPrettyRow
+              name="filename"
+              path="source"
+              value="TIFF_1MB.tiff"
+            />
+            <MetadataPrettyRow
+              name="mimetype"
+              path="source"
+              value="image/tiff"
+            />
+            <MetadataPrettyRow
+              name="filesize"
+              path="source"
+              value={1131930}
+            />
+            <MetadataPrettyRow
+              name="checksum"
+              path="source"
+              value={1867533868}
+            />
+            <MetadataPrettyRow
+              name="url"
+              path="source"
+              value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Metrics
+        </h4>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-20"
+        >
+          <div
+            className="emotion-19"
+          >
+            PROCESSOR
+            <div
+              className="emotion-18"
+            >
+              zmlp_core.core.processors.PreCacheSourceFileProcessor
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={1621235190}
+          />
+          <MetadataPrettyRow
+            name="executionTime"
+            path="metrics.pipeline"
+            value={0.11}
+          />
+          <MetadataPrettyRow
+            name="executionDate"
+            path="metrics.pipeline"
+            value="2020-03-03T21:22:27.694149"
+          />
+        </div>
+        <div
+          className="emotion-20"
+        >
+          <div
+            className="emotion-19"
+          >
+            PROCESSOR
+            <div
+              className="emotion-18"
+            >
+              zmlp_core.image.importers.ImageImporter
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={1426657387}
+          />
+          <MetadataPrettyRow
+            name="executionTime"
+            path="metrics.pipeline"
+            value={0.26}
+          />
+          <MetadataPrettyRow
+            name="executionDate"
+            path="metrics.pipeline"
+            value="2020-03-03T21:22:28.215069"
+          />
+        </div>
+        <div
+          className="emotion-20"
+        >
+          <div
+            className="emotion-19"
+          >
+            PROCESSOR
+            <div
+              className="emotion-18"
+            >
+              zmlp_core.office.importers.OfficeImporter
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={2001473853}
+          />
+        </div>
+        <div
+          className="emotion-20"
+        >
+          <div
+            className="emotion-19"
+          >
+            PROCESSOR
+            <div
+              className="emotion-18"
+            >
+              zmlp_core.video.VideoImporter
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={3310423168}
+          />
+        </div>
+        <div
+          className="emotion-20"
+        >
+          <div
+            className="emotion-19"
+          >
+            PROCESSOR
+            <div
+              className="emotion-18"
+            >
+              zmlp_core.core.processors.AssertAttributesProcessor
+            </div>
+          </div>
+          <MetadataPrettyRow
+            name="module"
+            path="metrics.pipeline"
+            value="standard"
+          />
+          <MetadataPrettyRow
+            name="checksum"
+            path="metrics.pipeline"
+            value={1841569083}
+          />
+          <MetadataPrettyRow
+            name="executionTime"
+            path="metrics.pipeline"
+            value={0}
+          />
+          <MetadataPrettyRow
+            name="executionDate"
+            path="metrics.pipeline"
+            value="2020-03-03T21:22:29.654215"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Media
+        </h4>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div>
+            <MetadataPrettyRow
+              name="width"
+              path="media"
+              value={650}
+            />
+            <MetadataPrettyRow
+              name="height"
+              path="media"
+              value={434}
+            />
+            <MetadataPrettyRow
+              name="aspect"
+              path="media"
+              value={1.5}
+            />
+            <MetadataPrettyRow
+              name="orientation"
+              path="media"
+              value="landscape"
+            />
+            <MetadataPrettyRow
+              name="type"
+              path="media"
+              value="image"
+            />
+            <MetadataPrettyRow
+              name="length"
+              path="media"
+              value={1}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Clip
+        </h4>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div>
+            <MetadataPrettyRow
+              name="type"
+              path="clip"
+              value="page"
+            />
+            <MetadataPrettyRow
+              name="start"
+              path="clip"
+              value={1}
+            />
+            <MetadataPrettyRow
+              name="stop"
+              path="clip"
+              value={1}
+            />
+            <MetadataPrettyRow
+              name="length"
+              path="clip"
+              value={1}
+            />
+            <MetadataPrettyRow
+              name="pile"
+              path="clip"
+              value="pUn6wBxUN7x9JxOxLkvruOyNdYA"
+            />
+            <MetadataPrettyRow
+              name="sourceAssetId"
+              path="clip"
+              value="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Files
+        </h4>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-20"
+        >
+          <MetadataPrettyRow
+            name="name"
+            path="files"
+            value="image_650x434.jpg"
+          />
+          <MetadataPrettyRow
+            name="category"
+            path="files"
+            value="proxy"
+          />
+          <MetadataPrettyRow
+            name="mimetype"
+            path="files"
+            value="image/jpeg"
+          />
+          <MetadataPrettyRow
+            name="size"
+            path="files"
+            value={89643}
+          />
+          <MetadataPrettyRow
+            name="attrs"
+            path="files"
+            value={
+              Object {
+                "height": 434,
+                "width": 650,
+              }
+            }
+          />
+          <MetadataPrettyRow
+            name="url"
+            path="files"
+            value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg"
+          />
+        </div>
+        <div
+          className="emotion-20"
+        >
+          <MetadataPrettyRow
+            name="name"
+            path="files"
+            value="image_512x341.jpg"
+          />
+          <MetadataPrettyRow
+            name="category"
+            path="files"
+            value="proxy"
+          />
+          <MetadataPrettyRow
+            name="mimetype"
+            path="files"
+            value="image/jpeg"
+          />
+          <MetadataPrettyRow
+            name="size"
+            path="files"
+            value={60713}
+          />
+          <MetadataPrettyRow
+            name="attrs"
+            path="files"
+            value={
+              Object {
+                "height": 341,
+                "width": 512,
+              }
+            }
+          />
+          <MetadataPrettyRow
+            name="url"
+            path="files"
+            value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg"
+          />
+        </div>
+        <div
+          className="emotion-20"
+        >
+          <MetadataPrettyRow
+            name="name"
+            path="files"
+            value="image_320x213.jpg"
+          />
+          <MetadataPrettyRow
+            name="category"
+            path="files"
+            value="proxy"
+          />
+          <MetadataPrettyRow
+            name="mimetype"
+            path="files"
+            value="image/jpeg"
+          />
+          <MetadataPrettyRow
+            name="size"
+            path="files"
+            value={30882}
+          />
+          <MetadataPrettyRow
+            name="attrs"
+            path="files"
+            value={
+              Object {
+                "height": 213,
+                "width": 320,
+              }
+            }
+          />
+          <MetadataPrettyRow
+            name="url"
+            path="files"
+            value="https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Analysis
+        </h4>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div>
+            <MetadataPrettyRow
+              name="zvi"
+              path="analysis"
+              value={
+                Object {
+                  "tinyProxy": Array [
+                    "#f3dfc3",
+                    "#f4efd8",
+                    "#c18f46",
+                    "#ebdfbd",
+                    "#ccd3c0",
+                    "#e7d4bb",
+                    "#beae8e",
+                    "#cabf9e",
+                    "#d2c09c",
+                  ],
+                }
+              }
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          Similarity
+        </h4>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div>
+            <MetadataPrettyRow
+              name="simhash"
+              path="similarity"
+              value="NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<Metadata /> should render selected asset 2`] = `
+Array [
+  .emotion-1 {
+  padding: 16px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-0 {
+  color: #4a90e2;
+}
+
+<div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-0"
+    >
+      TIFF_1MB.tiff
+    </div>
+  </div>,
+  .emotion-3 {
+  padding: 8px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border: 1px solid #808080;
+  border-radius: 2px;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: 1px solid transparent;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: #808080;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1:hover {
+  color: #ffffff;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: 1px solid transparent;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: transparent;
+  color: #808080;
+  text-transform: uppercase;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+}
+
+<div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-2"
+    >
+      <button
+        className="emotion-0"
+        onClick={[Function]}
+        type="button"
+      >
+        pretty
+      </button>
+      <button
+        className="emotion-1"
+        onClick={[Function]}
+        type="button"
+      >
+        raw json
+      </button>
+    </div>
+  </div>,
+  .emotion-0 {
+  height: 100%;
+  overflow: auto;
+  background-color: #191919;
+}
+
+.emotion-0 pre {
+  padding: 16px;
+}
+
+<div
+    className="emotion-0"
+  >
+    <JsonDisplay
+      json={
+        Object {
+          "id": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+          "metadata": Object {
+            "analysis": Object {
+              "zvi": Object {
+                "tinyProxy": Array [
+                  "#f3dfc3",
+                  "#f4efd8",
+                  "#c18f46",
+                  "#ebdfbd",
+                  "#ccd3c0",
+                  "#e7d4bb",
+                  "#beae8e",
+                  "#cabf9e",
+                  "#d2c09c",
+                ],
+              },
+            },
+            "clip": Object {
+              "length": 1,
+              "pile": "pUn6wBxUN7x9JxOxLkvruOyNdYA",
+              "sourceAssetId": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+              "start": 1,
+              "stop": 1,
+              "type": "page",
+            },
+            "files": Array [
+              Object {
+                "attrs": Object {
+                  "height": 434,
+                  "width": 650,
+                },
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "name": "image_650x434.jpg",
+                "size": 89643,
+                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg",
+              },
+              Object {
+                "attrs": Object {
+                  "height": 341,
+                  "width": 512,
+                },
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "name": "image_512x341.jpg",
+                "size": 60713,
+                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg",
+              },
+              Object {
+                "attrs": Object {
+                  "height": 213,
+                  "width": 320,
+                },
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "name": "image_320x213.jpg",
+                "size": 30882,
+                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg",
+              },
+            ],
+            "media": Object {
+              "aspect": 1.5,
+              "height": 434,
+              "length": 1,
+              "orientation": "landscape",
+              "type": "image",
+              "width": 650,
+            },
+            "metrics": Object {
+              "pipeline": Array [
+                Object {
+                  "checksum": 1621235190,
+                  "executionDate": "2020-03-03T21:22:27.694149",
+                  "executionTime": 0.11,
+                  "module": "standard",
+                  "processor": "zmlp_core.core.processors.PreCacheSourceFileProcessor",
+                },
+                Object {
+                  "checksum": 1426657387,
+                  "executionDate": "2020-03-03T21:22:28.215069",
+                  "executionTime": 0.26,
+                  "module": "standard",
+                  "processor": "zmlp_core.image.importers.ImageImporter",
+                },
+                Object {
+                  "checksum": 2001473853,
+                  "module": "standard",
+                  "processor": "zmlp_core.office.importers.OfficeImporter",
+                },
+                Object {
+                  "checksum": 3310423168,
+                  "module": "standard",
+                  "processor": "zmlp_core.video.VideoImporter",
+                },
+                Object {
+                  "checksum": 1841569083,
+                  "executionDate": "2020-03-03T21:22:29.654215",
+                  "executionTime": 0,
+                  "module": "standard",
+                  "processor": "zmlp_core.core.processors.AssertAttributesProcessor",
+                },
+              ],
+            },
+            "similarity": Object {
+              "simhash": "NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP",
+            },
+            "source": Object {
+              "checksum": 1867533868,
+              "extension": "tiff",
+              "filename": "TIFF_1MB.tiff",
+              "filesize": 1131930,
+              "mimetype": "image/tiff",
+              "path": "gs://zorroa-dev-data/image/TIFF_1MB.tiff",
+              "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff",
+            },
+            "system": Object {
+              "dataSourceId": "10509c20-5d95-11ea-baea-364023b135f5",
+              "jobId": "106d4be1-5d95-11ea-baea-364023b135f5",
+              "projectId": "89382033-bcbb-4c8f-81a9-3d0883298a81",
+              "state": "Analyzed",
+              "taskId": "106e0f32-5d95-11ea-baea-364023b135f5",
+              "timeCreated": "2020-03-03T21:22:24.922700Z",
+              "timeModified": "2020-03-03T21:22:47.575195Z",
+            },
+          },
+          "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/",
+        }
+      }
+    />
+  </div>,
+]
+`;
