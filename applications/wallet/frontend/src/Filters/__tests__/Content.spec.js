@@ -1,6 +1,7 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import aggregate from '../../FilterFacet/__mocks__/aggregate'
+import facetAggregate from '../../FilterFacet/__mocks__/aggregate'
+import rangeAggregate from '../../FilterRange/__mocks__/aggregate'
 
 import FiltersContent from '../Content'
 
@@ -58,7 +59,24 @@ describe('<FiltersContent />', () => {
   it('should render the "Facet" filter', () => {
     const filters = [{ attribute: 'location.city', type: 'facet' }]
 
-    require('swr').__setMockUseSWRResponse({ data: aggregate })
+    require('swr').__setMockUseSWRResponse({ data: facetAggregate })
+
+    const component = TestRenderer.create(
+      <FiltersContent
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={filters}
+        setIsMenuOpen={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render the "Range" filter', () => {
+    const filters = [{ attribute: 'clip.length', type: 'range' }]
+
+    require('swr').__setMockUseSWRResponse({ data: rangeAggregate })
 
     const component = TestRenderer.create(
       <FiltersContent
