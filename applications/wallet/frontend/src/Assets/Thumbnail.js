@@ -30,7 +30,7 @@ const AssetsThumbnail = ({
 
   const queryString = queryParams ? `?${queryParams}` : ''
 
-  const { pathname: src } = new URL(thumbnailUrl) || {}
+  const { pathname: src } = new URL(thumbnailUrl)
 
   return (
     <div
