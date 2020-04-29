@@ -40,11 +40,18 @@ describe('<FiltersContent />', () => {
         query: {
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
           id: '',
-          filters:
-            '[{"attribute":"location.point","type":"exists","values":{"exists":false}}]',
+          filters: btoa(
+            JSON.stringify([
+              {
+                attribute: 'location.point',
+                type: 'exists',
+                values: { exists: false },
+              },
+            ]),
+          ),
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?filters=[{"attribute":"location.point","type":"exists","values":{"exists":false}}]',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?filters=W3siYXR0cmlidXRlIjoibG9jYXRpb24ucG9pbnQiLCJ0eXBlIjoiZXhpc3RzIiwidmFsdWVzIjp7ImV4aXN0cyI6ZmFsc2V9fV0=',
     )
   })
 

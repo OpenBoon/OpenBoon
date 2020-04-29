@@ -16,12 +16,24 @@ export const ACTIONS = {
   CLEAR_FILTERS: 'CLEAR_FILTERS',
 }
 
+export const encode = ({ filters }) => {
+  return btoa(JSON.stringify(filters))
+}
+
+export const decode = ({ filters }) => {
+  try {
+    return JSON.parse(atob(filters))
+  } catch (error) {
+    return []
+  }
+}
+
 export const dispatch = ({ action, payload }) => {
   switch (action) {
     case ACTIONS.ADD_FILTERS: {
       const { projectId, assetId, filters: f, newFilters } = payload
 
-      const filters = JSON.stringify([...f, ...newFilters])
+      const filters = encode({ filters: [...f, ...newFilters] })
 
       Router.push(
         {
@@ -43,11 +55,13 @@ export const dispatch = ({ action, payload }) => {
         filterIndex,
       } = payload
 
-      const filters = JSON.stringify([
-        ...f.slice(0, filterIndex),
-        updatedFilter,
-        ...f.slice(filterIndex + 1),
-      ])
+      const filters = encode({
+        filters: [
+          ...f.slice(0, filterIndex),
+          updatedFilter,
+          ...f.slice(filterIndex + 1),
+        ],
+      })
 
       Router.push(
         {
@@ -68,7 +82,8 @@ export const dispatch = ({ action, payload }) => {
         ...f.slice(filterIndex + 1),
       ]
 
-      const filters = newFilters.length > 0 ? JSON.stringify(newFilters) : ''
+      const filters =
+        newFilters.length > 0 ? encode({ filters: newFilters }) : ''
 
       Router.push(
         {
