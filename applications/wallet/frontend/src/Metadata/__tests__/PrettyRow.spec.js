@@ -28,7 +28,6 @@ describe('<MetadataPrettyRow />', () => {
         name="zvi-object-detection"
         value={objectDetectionPredictions}
         path="analysis"
-        index={1}
       />,
     )
 
@@ -44,7 +43,6 @@ describe('<MetadataPrettyRow />', () => {
         name="zvi-label-detection"
         value={labelDetectionPredictions}
         path="analysis"
-        index={1}
       />,
     )
 
@@ -60,7 +58,6 @@ describe('<MetadataPrettyRow />', () => {
         name="zvi-text-detection"
         value={textDetectionPredictions}
         path="analysis"
-        index={1}
       />,
     )
 
