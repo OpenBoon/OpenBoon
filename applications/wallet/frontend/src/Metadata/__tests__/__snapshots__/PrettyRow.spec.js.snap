@@ -620,31 +620,398 @@ exports[`<MetadataPrettyRow /> should render object detection predictions 1`] = 
 </div>
 `;
 
-exports[`<MetadataPrettyRow /> should render when value is of type object 1`] = `
-.emotion-1 {
+exports[`<MetadataPrettyRow /> should render text detection with no results 1`] = `
+Array [
+  .emotion-0 {
   padding: 16px;
+  padding-bottom: 8px;
+  font-family: Roboto Mono;
+  color: #ffffff;
 }
 
-.emotion-1:not(:first-of-type) {
+.emotion-0:not(:first-of-type) {
   border-top: 4px solid #3b3b3b;
 }
 
-.emotion-0 {
-  font-family: Roboto Mono;
-  color: #ffffff;
-  padding-bottom: 16px;
-}
-
 <div
-  className="emotion-1"
->
-  <div
     className="emotion-0"
   >
     zvi-text-detection
-  </div>
-  <div>
+  </div>,
+  .emotion-1 {
+  padding: 16px;
+  padding-top: 8px;
+}
+
+.emotion-0 {
+  word-break: break-word;
+  color: #b3b3b3;
+  font-style: italic;
+}
+
+<div
+    className="emotion-1"
+  >
     
-  </div>
-</div>
+    <div
+      className="emotion-0"
+    >
+      No Results
+    </div>
+  </div>,
+]
+`;
+
+exports[`<MetadataPrettyRow /> should render text detection with results 1`] = `
+Array [
+  .emotion-0 {
+  padding: 16px;
+  padding-bottom: 8px;
+  font-family: Roboto Mono;
+  color: #ffffff;
+}
+
+.emotion-0:not(:first-of-type) {
+  border-top: 4px solid #3b3b3b;
+}
+
+<div
+    className="emotion-0"
+  >
+    zvi-text-detection
+  </div>,
+  .emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5 {
+  padding: 16px;
+  padding-top: 8px;
+}
+
+.emotion-5:hover {
+  background-color: #027aff38;
+}
+
+.emotion-5:hover div svg {
+  display: inline-block;
+}
+
+.emotion-3 {
+  font-family: Roboto Mono;
+  color: #ffffff;
+  padding-bottom: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  min-height: 20px;
+  width: 100%;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  color: #808080;
+}
+
+.emotion-1 {
+  display: none;
+}
+
+.emotion-1:hover {
+  color: #ffffff;
+}
+
+.emotion-4 {
+  word-break: break-word;
+  color: #b3b3b3;
+}
+
+<div
+    className="emotion-5"
+  >
+    <div
+      className="emotion-3"
+    >
+      <div
+        className="emotion-0"
+      >
+        content
+      </div>
+      <button
+        className="emotion-2"
+        onClick={[Function]}
+        title="Copy to Clipboard"
+        type="button"
+      >
+        <svg
+          className="emotion-1"
+          color="#808080"
+          data-file-name="copy.svg"
+          width={20}
+        />
+      </button>
+    </div>
+    <div
+      className="emotion-4"
+    >
+      Some results
+    </div>
+  </div>,
+]
+`;
+
+exports[`<MetadataPrettyRow /> should render when value is of type object 1`] = `
+Array [
+  .emotion-1 {
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-1:hover div svg {
+  display: inline-block;
+}
+
+.emotion-0 {
+  font-family: Roboto Condensed;
+  color: #808080;
+  padding: 16px;
+  padding-bottom: 0;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+<div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span
+        title="analysis.files"
+      >
+        Files
+      </span>
+    </div>
+    <div />
+  </div>,
+  .emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5:not(:first-of-type) {
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-5:hover {
+  background-color: #027aff38;
+}
+
+.emotion-5:hover div {
+  color: #ffffff;
+}
+
+.emotion-5:hover div svg {
+  display: inline-block;
+}
+
+.emotion-0 {
+  font-family: Roboto Condensed;
+  color: #808080;
+  padding: 16px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-4 {
+  width: 36px;
+  padding-top: 16px;
+  padding-right: 16px;
+}
+
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-3[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2 {
+  display: none;
+}
+
+.emotion-2:hover {
+  color: #ffffff;
+}
+
+.emotion-12 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-1 {
+  -webkit-flex: 4;
+  -ms-flex: 4;
+  flex: 4;
+  font-family: Roboto Mono;
+  color: #e0e0e0;
+  padding: 16px;
+  word-break: break-all;
+}
+
+<div
+    className="emotion-12"
+  >
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-0"
+      >
+        <span
+          title="analysis.files.width"
+        >
+          Width
+        </span>
+      </div>
+      <div
+        className="emotion-1"
+        title={283}
+      >
+        283
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <button
+          className="emotion-3"
+          onClick={[Function]}
+          title="Copy to Clipboard"
+          type="button"
+        >
+          <svg
+            className="emotion-2"
+            color="#808080"
+            data-file-name="copy.svg"
+            width={20}
+          />
+        </button>
+      </div>
+    </div>
+    <div
+      className="emotion-5"
+    >
+      <div
+        className="emotion-0"
+      >
+        <span
+          title="analysis.files.height"
+        >
+          Height
+        </span>
+      </div>
+      <div
+        className="emotion-1"
+        title={178}
+      >
+        178
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <button
+          className="emotion-3"
+          onClick={[Function]}
+          title="Copy to Clipboard"
+          type="button"
+        >
+          <svg
+            className="emotion-2"
+            color="#808080"
+            data-file-name="copy.svg"
+            width={20}
+          />
+        </button>
+      </div>
+    </div>
+  </div>,
+]
 `;

@@ -30,12 +30,12 @@ const MetadataPrettyRow = ({ name, value, path }) => {
       )
     }
 
-    if (name === 'zvi-image-similarity') {
-      return <MetadataImageSimilarity name={name} simhash={value.simhash} />
-    }
-
     if (name === 'zvi-text-detection') {
       return <MetadataTextDetection name={name} content={value.content} />
+    }
+
+    if (name === 'zvi-image-similarity') {
+      return <MetadataImageSimilarity name={name} simhash={value.simhash} />
     }
 
     return (

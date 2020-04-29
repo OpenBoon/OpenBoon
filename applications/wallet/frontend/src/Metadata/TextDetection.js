@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import useClipboard from 'react-use-clipboard'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import CopySvg from '../Icons/copy.svg'
 
@@ -31,53 +31,64 @@ const MetadataTextDetection = ({ name, content }) => {
         css={{
           padding: spacing.normal,
           paddingTop: spacing.base,
-          ':hover': {
-            backgroundColor: colors.signal.electricBlue.background,
-            div: {
-              svg: {
-                display: 'inline-block',
-              },
-            },
-          },
+          ':hover': content
+            ? {
+                backgroundColor: colors.signal.electricBlue.background,
+                div: {
+                  svg: {
+                    display: 'inline-block',
+                  },
+                },
+              }
+            : {},
         }}
       >
-        <div
-          css={{
-            fontFamily: 'Roboto Mono',
-            color: colors.structure.white,
-            paddingBottom: spacing.base,
-            display: 'flex',
-          }}
-        >
+        {content && (
           <div
             css={{
-              minHeight: COPY_SIZE,
-              width: '100%',
-              fontFamily: 'Roboto Condensed',
-              textTransform: 'uppercase',
-              color: colors.structure.steel,
+              fontFamily: 'Roboto Mono',
+              color: colors.structure.white,
+              paddingBottom: spacing.base,
+              display: 'flex',
             }}
           >
-            simhash
-          </div>
-          <Button
-            title="Copy to Clipboard"
-            variant={BUTTON_VARIANTS.NEUTRAL}
-            onClick={setCopied}
-            isDisabled={isCopied}
-          >
-            <CopySvg
-              width={COPY_SIZE}
-              color={colors.structure.steel}
+            <div
               css={{
-                display: 'none',
-                ':hover': { color: colors.structure.white },
+                minHeight: COPY_SIZE,
+                width: '100%',
+                fontFamily: 'Roboto Condensed',
+                textTransform: 'uppercase',
+                color: colors.structure.steel,
               }}
-            />
-          </Button>
-        </div>
-        <div css={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {content}
+            >
+              content
+            </div>
+
+            <Button
+              title="Copy to Clipboard"
+              variant={BUTTON_VARIANTS.NEUTRAL}
+              onClick={setCopied}
+              isDisabled={isCopied}
+            >
+              <CopySvg
+                width={COPY_SIZE}
+                color={colors.structure.steel}
+                css={{
+                  display: 'none',
+                  ':hover': { color: colors.structure.white },
+                }}
+              />
+            </Button>
+          </div>
+        )}
+        <div
+          css={{
+            wordBreak: 'break-word',
+            color: colors.structure.zinc,
+            fontStyle: content ? '' : typography.style.italic,
+          }}
+        >
+          {content || 'No Results'}
         </div>
       </div>
     </>
