@@ -109,6 +109,10 @@ def crop_image_poly(image, poly, width=256, color=(255, 0, 0), thickness=3):
     """
     yr = image.shape[0]
     xr = image.shape[1]
+
+    # Ensure poly points are within (0,1)
+    poly = [min(max(i, 0), 1) for i in poly]
+
     # If poly is four numbers, assume it's a bounding box. Otherwise it's a polygon
     if len(poly) == 4:
         x1 = int(poly[0] * xr)
