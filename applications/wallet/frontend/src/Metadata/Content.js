@@ -97,11 +97,7 @@ const MetadataContent = ({ projectId, assetId }) => {
                 title={title}
                 isInitiallyOpen
               >
-                <MetadataPretty
-                  metadata={metadata}
-                  title={title}
-                  section={section}
-                />
+                <MetadataPretty metadata={metadata} section={section} />
               </Accordion>
             )
           })}

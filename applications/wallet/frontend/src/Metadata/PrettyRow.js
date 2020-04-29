@@ -66,13 +66,12 @@ const MetadataPrettyRow = ({ name, value, path }) => {
         <div
           css={{ paddingLeft: spacing.normal, paddingRight: spacing.normal }}
         >
-          {Object.entries(value).map(([k, v], i) => (
+          {Object.entries(value).map(([k, v]) => (
             <MetadataPrettyRow
               key={k}
               name={k}
               value={v}
               path={`${path.toLowerCase()}.${name}`}
-              index={i}
             />
           ))}
         </div>
