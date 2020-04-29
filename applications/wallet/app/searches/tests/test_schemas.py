@@ -76,9 +76,16 @@ def mock_response():
                                             }
                                         }
                                     },
-                                    "predictions": {
-                                        "type": "nested",
-                                    }
+                                    'predictions': {
+                                        'properties': {
+                                            'label': {
+                                                'type': 'keyword',
+                                                'fields': {
+                                                    'fulltext': {
+                                                        'type': 'text'}}},
+                                            'score': {
+                                                'type': 'float',
+                                                'coerce': True}}}
                                 }
                             },
                             "zvi-content-moderation": {
@@ -95,9 +102,16 @@ def mock_response():
                                             }
                                         }
                                     },
-                                    "predictions": {
-                                        "type": "nested",
-                                    }
+                                    'predictions': {
+                                         'properties': {
+                                             'label': {
+                                                 'type': 'keyword',
+                                                 'fields': {
+                                                     'fulltext': {
+                                                         'type': 'text'}}},
+                                             'score': {
+                                                 'type': 'float',
+                                                 'coerce': True}}}
                                 }
                             }
                         }
@@ -171,8 +185,8 @@ class TestLabelsAnalysisSchema:
 
     def test_get_represention_with_count(self, count_schema):
         rep = count_schema.get_representation()
-        assert rep == {'zvi-label-detection': {'predictions': [], 'count': ['range', 'exists']}}
+        assert rep == {'zvi-label-detection': ['labelConf']}
 
     def test_get_representation_with_safe(self, safe_schema):
         rep = safe_schema.get_representation()
-        assert rep == {'zvi-content-moderation': {'predictions': [], 'safe': ['boolean', 'exists']}}
+        assert rep == {'zvi-label-detection': ['labelConf']}

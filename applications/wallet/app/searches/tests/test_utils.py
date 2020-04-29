@@ -47,6 +47,84 @@ class TestFieldUtility:
         result = self.field_service.get_fields_from_mappings(properties['analysis'])
         assert result['zvi-image-similarity'] == {'simhash': ['exists']}
 
+    @pytest.fixture
+    def analysis_mappings(self):
+        return {'mappings': {'properties': {'analysis': {'dynamic': 'true',
+                                                         'properties': {
+                                                             'zvi-image-similarity': {
+                                                                 'properties': {
+                                                                     'simhash': {
+                                                                         'type': 'keyword',
+                                                                         'index': False},
+                                                                     'type': {
+                                                                         'type': 'text',
+                                                                         'fields': {
+                                                                             'keyword': {
+                                                                                 'type': 'keyword',
+                                                                                 'ignore_above': 256}}}}},
+                                                             'zvi-label-detection': {
+                                                                 'properties': {
+                                                                     'count': {
+                                                                         'type': 'long'},
+                                                                     'predictions': {
+                                                                         'properties': {
+                                                                             'label': {
+                                                                                 'type': 'keyword',
+                                                                                 'fields': {
+                                                                                     'fulltext': {
+                                                                                         'type': 'text'}}},
+                                                                             'score': {
+                                                                                 'type': 'float',
+                                                                                 'coerce': True}}},
+                                                                     'type': {
+                                                                         'type': 'text',
+                                                                         'fields': {
+                                                                             'keyword': {
+                                                                                 'type': 'keyword',
+                                                                                 'ignore_above': 256}}}}},
+                                                             'zvi-object-detection': {
+                                                                 'properties': {
+                                                                     'count': {
+                                                                         'type': 'long'},
+                                                                     'predictions': {
+                                                                         'properties': {
+                                                                             'bbox': {
+                                                                                 'type': 'float'},
+                                                                             'label': {
+                                                                                 'type': 'keyword',
+                                                                                 'fields': {
+                                                                                     'fulltext': {
+                                                                                         'type': 'text'}}},
+                                                                             'score': {
+                                                                                 'type': 'float',
+                                                                                 'coerce': True}}},
+                                                                     'type': {
+                                                                         'type': 'text',
+                                                                         'fields': {
+                                                                             'keyword': {
+                                                                                 'type': 'keyword',
+                                                                                 'ignore_above': 256}}}}},
+                                                             'zvi-text-detection': {
+                                                                 'properties': {
+                                                                     'content': {
+                                                                         'type': 'text'},
+                                                                     'type': {
+                                                                         'type': 'text',
+                                                                         'fields': {
+                                                                             'keyword': {
+                                                                                 'type': 'keyword',
+                                                                                 'ignore_above': 256}}},
+                                                                     'words': {
+                                                                         'type': 'long'}}}}},
+                                            }},
+                }
+
+    def test_zvi_label_detection(self, analysis_mappings):
+        properties = analysis_mappings['mappings']['properties']
+        result = self.field_service.get_fields_from_mappings(properties['analysis'])
+        assert result['zvi-label-detection'] == ['labelConf']
+
+
 
 class TestFilterBoy:
 

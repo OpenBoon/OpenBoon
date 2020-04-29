@@ -2,7 +2,8 @@ import pytest
 
 from rest_framework.exceptions import ValidationError
 
-from searches.filters import BaseFilter, RangeFilter, ExistsFilter, FacetFilter
+from searches.filters import (BaseFilter, RangeFilter, ExistsFilter, FacetFilter,
+                              LabelConfidenceFilter)
 
 
 class MockFilter(BaseFilter):
@@ -347,3 +348,54 @@ class TestFacetFilter:
         query = _filter.add_to_query(query)
         assert query == {'query': {'bool': {'filter': [{'range': {'my_attr': {'gte': 1, 'lte': 100}}},  # noqa
                                                        {'terms': {'my_attr': ['value1', 'value2']}}]}}}  # noqa
+
+
+class TestFacetFilter:
+
+    @pytest.fixture
+    def mock_data(self):
+        return {'type': 'labelConfidence',
+                'attribute': 'analysis.zvi-label-detection'}
+
+    @pytest.fixture
+    def mock_query_data(self, mock_data):
+        data = mock_data
+        data['values'] = {'labels': ['value1', 'value2'],
+                          'min': 50, 'max': 80}
+        return data
+
+    def test_is_valid(self, mock_data):
+        _filter = (mock_data)
+        assert _filter.is_valid()
+
+    def test_is_valid_for_query(self, mock_query_data):
+        _filter = LabelConfidenceFilter(mock_query_data)
+        assert _filter.is_valid(query=True)
+
+    def test_get_es_agg(self, mock_data):
+        _filter = LabelConfidenceFilter(mock_data)
+        agg = _filter.get_es_agg()
+        name = list(agg['aggs'].keys())[0]
+        assert agg == {
+            'size': 0,
+            'aggs': {
+                name: {
+                    'terms': {
+                        'field': 'analysis.zvi-label-detection .predictions.label',
+                        'size': 1000
+                    }
+                }
+            }
+        }
+
+    def test_get_es_query(self, mock_query_data):
+        _filter = LabelConfidenceFilter(mock_query_data)
+        query = _filter.get_es_query()
+        assert query == {
+            'query': {
+                'bool': {
+                    ''
+                }
+            }
+        }
+
