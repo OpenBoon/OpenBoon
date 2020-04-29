@@ -5,13 +5,16 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import InfiniteLoader from 'react-window-infinite-loader'
 import { FixedSizeGrid } from 'react-window'
 
+import { spacing, constants } from '../Styles'
+
+import { cleanup } from '../Filters/helpers'
+
 import Loading from '../Loading'
+
+import { reducer, INITIAL_STATE } from './reducer'
 
 import AssetsResize from './Resize'
 import AssetsThumbnail from './Thumbnail'
-
-import { reducer, INITIAL_STATE } from './reducer'
-import { spacing, constants } from '../Styles'
 
 const SIZE = 100
 const PADDING_SIZE = spacing.small
@@ -19,7 +22,7 @@ const PADDING_SIZE = spacing.small
 /* istanbul ignore next */
 const Assets = () => {
   const {
-    query: { projectId, query = 'W10=' },
+    query: { projectId, query },
   } = useRouter()
 
   const innerRef = useRef()
@@ -35,10 +38,13 @@ const Assets = () => {
     // page component
     ({ offset, withSWR }) => {
       const from = offset * SIZE
+
+      const q = cleanup({ query })
+
       const { data: { results } = {} } = withSWR(
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useSWR(
-          `/api/v1/projects/${projectId}/searches/query/?query=${query}&from=${from}&size=${SIZE}`,
+          `/api/v1/projects/${projectId}/searches/query/?query=${q}&from=${from}&size=${SIZE}`,
           { suspense: false },
         ),
       )
