@@ -3,11 +3,7 @@ import useClipboard from 'react-use-clipboard'
 
 import { colors, constants, spacing } from '../Styles'
 
-import CopySvg from '../Icons/copy.svg'
-
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-
-const COPY_SIZE = 20
+import MetadataCopy, { COPY_SIZE } from './Copy'
 
 const MetadataImageSimilarity = ({ name, simhash }) => {
   const [isCopied, setCopied] = useClipboard(simhash, { successDuration: 1000 })
@@ -59,21 +55,7 @@ const MetadataImageSimilarity = ({ name, simhash }) => {
           >
             simhash
           </div>
-          <Button
-            title="Copy to Clipboard"
-            variant={BUTTON_VARIANTS.NEUTRAL}
-            onClick={setCopied}
-            isDisabled={isCopied}
-          >
-            <CopySvg
-              width={COPY_SIZE}
-              color={colors.structure.steel}
-              css={{
-                display: 'none',
-                ':hover': { color: colors.structure.white },
-              }}
-            />
-          </Button>
+          <MetadataCopy isCopied={isCopied} setCopied={setCopied} />
         </div>
         <div css={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {simhash}
