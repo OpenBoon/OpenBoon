@@ -131,6 +131,19 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
                     "facets": [$attribute_values_to_filter]
                 }
             }
+
+        LabelConfidence:
+
+            {
+                "type": "labelConfidence",
+                "attribute": "analysis.zvi-label-detection",
+                "values": {
+                    "labels": ["label1", "label2"],
+                    "min": 0.0,  # Allowed minimum is 0.0
+                    "max": 1.0,  # Allowed maximum is 1.0
+                }
+            }
+
         """
         path = 'api/v3/assets'
         fields = ['id',
@@ -185,6 +198,14 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
             "order": "asc" OR "desc"
 
             "minimum_count": $integer
+
+        LabelConfidence:
+
+            {
+                "type": "labelConfidence",
+                "attribute": "analysis.zvi-label-detection",
+            }
+
         """
         path = 'api/v3/assets/_search'
 

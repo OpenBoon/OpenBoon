@@ -217,3 +217,54 @@ class FacetFilter(BaseFilter):
                 }
             }
         }
+
+
+class LabelConfidenceFilter(BaseFilter):
+
+    type = 'labelConfidence'
+    required_agg_keys = ['attribute']
+    required_query_keys = ['labels', 'min', 'max']
+    agg_prefix = 'sterms'
+
+    def get_es_agg(self):
+        attribute = self.data['attribute']
+        agg = {
+            'size': 0,
+            'aggs': {
+                self.name: {
+                    'terms': {
+                        'field': f'{attribute}.predictions.label',
+                        'size': 1000
+                    }
+                }
+            }}
+        return agg
+
+    def get_es_query(self):
+        attribute = self.data['attribute']
+        labels = self.data['values']['labels']
+        min = self.data['values']['min']
+        max = self.data['values']['max']
+        return {
+            'query': {
+                'bool': {
+                    'filter': [{
+                        'script_score': {
+                            'query': {
+                                'terms': {f'{attribute}.predictions.label': labels}
+                            },
+                            'script': {
+                                'source': 'kwconf',
+                                'lang': 'zorroa-kwconf',
+                                'params': {
+                                    'field': f'{attribute}.predictions',
+                                    'labels': labels,
+                                    'range': [min, max]
+                                }
+                            },
+                            'min_score': min
+                        }
+                    }]
+                }
+            }
+        }
