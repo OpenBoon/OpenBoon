@@ -260,6 +260,26 @@ class TestProjectStorage(TestCase):
         assert 'fake_model.dat' == result.name
         assert 'fake' == result.category
 
+    @patch.object(ZmlpClient, 'put')
+    @patch('requests.put')
+    @patch.object(ZmlpClient, 'post')
+    def test_store_file_by_id(self, post_patch, req_put_patch, put_patch):
+        post_patch.return_value = {
+            'uri': "http://localhost:9999/foo/bar/signed",
+            'mediaType': "image/jpeg"
+        }
+        req_put_patch.return_value = MockResponse()
+        put_patch.return_value = {
+            'id': "asset/foo/fake/fake_model.dat",
+            'name': 'fake_model.dat',
+            'category': 'fake'
+        }
+        path = os.path.dirname(__file__) + '/fake_model.dat'
+        fid = "dataset/12345/model/fake_model.dat"
+        result = self.fs.projects.store_file_by_id(path, fid, attrs={'foo': 'bar'})
+        assert 'fake_model.dat' == result.name
+        assert 'fake' == result.category
+
     @patch.object(ZmlpClient, 'stream')
     def test_localize_file(self, post_patch):
         post_patch.return_value = '/tmp/toucan.jpg'
