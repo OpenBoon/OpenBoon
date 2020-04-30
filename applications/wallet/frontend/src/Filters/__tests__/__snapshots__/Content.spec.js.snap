@@ -839,7 +839,7 @@ Array [
   padding-right: 12px;
 }
 
-.emotion-5 div {
+.emotion-5 > div {
   background-color: transparent;
   box-shadow: none;
 }
@@ -1156,11 +1156,11 @@ Array [
       </div>
     </form>
   </div>,
-  .emotion-8 {
+  .emotion-12 {
   overflow: auto;
 }
 
-.emotion-7 {
+.emotion-11 {
   background-color: #252525;
   border-radius: 2px;
 }
@@ -1242,31 +1242,68 @@ Array [
   display: flex;
 }
 
-.emotion-6 {
+.emotion-10 {
   width: 100%;
   background-color: #191919;
 }
 
-.emotion-5 {
+.emotion-9 {
   padding: 16px;
   padding-left: 12px;
   padding-right: 12px;
 }
 
-.emotion-5 div {
+.emotion-9 > div {
   background-color: transparent;
   box-shadow: none;
 }
 
+.emotion-8 {
+  padding: 32px;
+}
+
 .emotion-4 {
-  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.emotion-7 {
+  padding: 4px;
+}
+
+.emotion-5 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  cursor: pointer;
+}
+
+.emotion-6 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  pointer-events: none;
+  background-color: #4a4a4a;
 }
 
 <div
-    className="emotion-8"
+    className="emotion-12"
   >
     <div
-      className="emotion-7"
+      className="emotion-11"
     >
       <div
         className="emotion-3"
@@ -1291,40 +1328,116 @@ Array [
         </h4>
       </div>
       <div
-        className="emotion-6"
+        className="emotion-10"
       >
         <div
-          className="emotion-5"
+          className="emotion-9"
         >
-          <ul
-            className="emotion-4"
-          >
-            <li>
-              count
-              : 
-              580
-            </li>
-            <li>
-              min
-              : 
-              180
-            </li>
-            <li>
-              max
-              : 
-              8525
-            </li>
-            <li>
-              avg
-              : 
-              899.5689655172414
-            </li>
-            <li>
-              sum
-              : 
-              521750
-            </li>
-          </ul>
+          <div>
+            <div
+              className="emotion-8"
+            >
+              <div
+                className="emotion-4"
+              >
+                <span>
+                  180
+                </span>
+                <span>
+                  8525
+                </span>
+              </div>
+              <div
+                className="emotion-7"
+              >
+                <div
+                  style={
+                    Object {
+                      "position": "relative",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  <div
+                    className="emotion-5"
+                    onMouseDown={[Function]}
+                    onTouchStart={[Function]}
+                  />
+                  <div
+                    className="emotion-6"
+                  />
+                  <div>
+                    <button
+                      aria-valuenow={180}
+                      onKeyDown={[Function]}
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      role="slider"
+                      style={
+                        Object {
+                          "backgroundColor": "#808080",
+                          "border": "none",
+                          "borderRadius": 1,
+                          "cursor": "pointer",
+                          "height": 24,
+                          "left": "0%",
+                          "margin": 0,
+                          "padding": 0,
+                          "position": "absolute",
+                          "transform": "translate(-50%, -50%)",
+                          "width": 8,
+                          "zIndex": 2,
+                        }
+                      }
+                      type="button"
+                    />
+                    <button
+                      aria-valuenow={8525}
+                      onKeyDown={[Function]}
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      role="slider"
+                      style={
+                        Object {
+                          "backgroundColor": "#808080",
+                          "border": "none",
+                          "borderRadius": 1,
+                          "cursor": "pointer",
+                          "height": 24,
+                          "left": "100%",
+                          "margin": 0,
+                          "padding": 0,
+                          "position": "absolute",
+                          "transform": "translate(-50%, -50%)",
+                          "width": 8,
+                          "zIndex": 2,
+                        }
+                      }
+                      type="button"
+                    />
+                  </div>
+                  <div>
+                    <div
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      style={
+                        Object {
+                          "backgroundColor": "#73b61c",
+                          "cursor": "pointer",
+                          "height": 4,
+                          "left": "0%",
+                          "position": "absolute",
+                          "transform": "translate(0%, -50%)",
+                          "width": "100%",
+                          "zIndex": 1,
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
