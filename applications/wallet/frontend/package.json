@@ -99,7 +99,7 @@
     {
       "//": "all pages and chunks",
       "path": ".next/static/**/!(framework|commons|_app|_error|main|polyfill|webpack)*.js",
-      "maxSize": "22 kB"
+      "maxSize": "28 kB"
     }
   ],
   "dependencies": {
@@ -116,6 +116,7 @@
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-aria-modal": "4.0.0",
+    "react-compound-slider": "2.5.0",
     "react-dom": "16.13.1",
     "react-json-pretty": "2.2.0",
     "react-use-clipboard": "1.0.0",
