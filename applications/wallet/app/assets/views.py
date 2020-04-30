@@ -2,6 +2,7 @@ import mimetypes
 
 import requests
 from django.http import StreamingHttpResponse
+from django.utils.cache import patch_response_headers, patch_cache_control
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -107,4 +108,7 @@ class FileNameViewSet(BaseProjectViewSet):
     def retrieve(self, request, project_pk, asset_pk, category_pk, pk):
         path = f'{self.zmlp_root_api_path}/assets/{asset_pk}/{category_pk}/{pk}'
         content_type, encoding = mimetypes.guess_type(pk)
-        return StreamingHttpResponse(stream(request, path), content_type=content_type)
+        response = StreamingHttpResponse(stream(request, path), content_type=content_type)
+        patch_response_headers(response, cache_timeout=86400)
+        patch_cache_control(response, private=True)
+        return response
