@@ -1,23 +1,16 @@
 import PropTypes from 'prop-types'
-import useClipboard from 'react-use-clipboard'
 
 import { colors, constants, spacing } from '../Styles'
 
-import CopySvg from '../Icons/copy.svg'
-
-import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-
+import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 import MetadataObjectDetection from './ObjectDetection'
 import MetadataLabelDetection from './LabelDetection'
 import MetadataImageSimilarity from './ImageSimilarity'
+import MetadataTextDetection from './TextDetection'
 
 import { formatDisplayName, formatDisplayValue } from './helpers'
 
-const COPY_WIDTH = 20
-
 const MetadataPrettyRow = ({ name, value, path }) => {
-  const [isCopied, setCopied] = useClipboard(value, { successDuration: 1000 })
-
   if (typeof value === 'object') {
     if (name === 'zvi-object-detection') {
       return <MetadataObjectDetection />
@@ -27,6 +20,10 @@ const MetadataPrettyRow = ({ name, value, path }) => {
       return (
         <MetadataLabelDetection name={name} predictions={value.predictions} />
       )
+    }
+
+    if (name === 'zvi-text-detection') {
+      return <MetadataTextDetection name={name} content={value.content} />
     }
 
     if (name === 'zvi-image-similarity') {
@@ -123,28 +120,12 @@ const MetadataPrettyRow = ({ name, value, path }) => {
       </div>
       <div
         css={{
-          width: COPY_WIDTH + spacing.normal,
+          width: COPY_SIZE + spacing.normal,
           paddingTop: spacing.normal,
           paddingRight: spacing.normal,
         }}
       >
-        <Button
-          title="Copy to Clipboard"
-          variant={BUTTON_VARIANTS.NEUTRAL}
-          onClick={setCopied}
-          isDisabled={isCopied}
-        >
-          <CopySvg
-            width={COPY_WIDTH}
-            color={colors.structure.steel}
-            css={{
-              display: 'none',
-              ':hover': {
-                color: colors.structure.white,
-              },
-            }}
-          />
-        </Button>
+        <ButtonCopy value={value} />
       </div>
     </div>
   )
