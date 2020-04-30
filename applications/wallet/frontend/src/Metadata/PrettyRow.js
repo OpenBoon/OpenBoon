@@ -9,6 +9,7 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import MetadataObjectDetection from './ObjectDetection'
 import MetadataLabelDetection from './LabelDetection'
+import MetadataImageSimilarity from './ImageSimilarity'
 
 import { formatDisplayName, formatDisplayValue } from './helpers'
 
@@ -26,6 +27,10 @@ const MetadataPrettyRow = ({ name, value, path }) => {
       return (
         <MetadataLabelDetection name={name} predictions={value.predictions} />
       )
+    }
+
+    if (name === 'zvi-image-similarity') {
+      return <MetadataImageSimilarity name={name} simhash={value.simhash} />
     }
 
     return (
@@ -61,13 +66,12 @@ const MetadataPrettyRow = ({ name, value, path }) => {
         <div
           css={{ paddingLeft: spacing.normal, paddingRight: spacing.normal }}
         >
-          {Object.entries(value).map(([k, v], i) => (
+          {Object.entries(value).map(([k, v]) => (
             <MetadataPrettyRow
               key={k}
               name={k}
               value={v}
               path={`${path.toLowerCase()}.${name}`}
-              index={i}
             />
           ))}
         </div>

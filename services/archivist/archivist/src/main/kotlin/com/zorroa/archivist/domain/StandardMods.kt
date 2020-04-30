@@ -114,6 +114,25 @@ fun getStandardModules(): List<PipelineModSpec> {
             standard = true
         ),
         PipelineModSpec(
+            "zvi-face-detection",
+            "Detect faces in images, video, and documents.",
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.FACE_RECOGNITION,
+            listOf(SupportedMedia.Images, SupportedMedia.Documents),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef("zmlp_analysis.zvi.ZviFaceDetectionProcessor",
+                            StandardContainers.ANALYSIS)
+                    )
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
             "zvi-label-detection",
             "Generate keyword labels for image, video, and documents.",
             Provider.ZORROA,

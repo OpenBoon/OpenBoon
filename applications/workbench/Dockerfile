@@ -15,6 +15,7 @@ RUN apt-get install -y --no-install-recommends build-essential libjpeg-dev libpn
 
 COPY requirements.txt .
 ENV PATH=$PATH:~/.local/bin
+RUN pip3 install torch==1.4.0+cpu torchvision==0.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 RUN pip3 install --ignore-installed -r requirements.txt
 
 COPY jupyter_notebook_config.py /home/zorroa/.jupyter/jupyter_notebook_config.py

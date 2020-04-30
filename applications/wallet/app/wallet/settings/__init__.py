@@ -246,8 +246,5 @@ ROLES = [
      'permissions': ['ProjectManage']},
 ]
 
-
-# Google Marketplace Integration
-GOOGLE_MARKETPLACE_ENABLED = True
-GOOGLE_MARKETPLACE_PROJECT = 'zorroa-marketplace'
-GOOGLE_MARKETPLACE_SUBSCRIPTION = 'codelab'
+# The registered email address of the superuser for this instance.
+SUPERUSER_EMAIL = 'software@zorroa.com'

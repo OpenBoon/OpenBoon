@@ -16,19 +16,39 @@ export const ACTIONS = {
   CLEAR_FILTERS: 'CLEAR_FILTERS',
 }
 
+export const encode = ({ filters }) => {
+  return btoa(JSON.stringify(filters))
+}
+
+export const decode = ({ query }) => {
+  try {
+    return JSON.parse(atob(query))
+  } catch (error) {
+    return []
+  }
+}
+
+export const cleanup = ({ query }) => {
+  const filters = decode({ query }).filter(
+    ({ values = {} }) => Object.keys(values).length > 0,
+  )
+
+  return encode({ filters })
+}
+
 export const dispatch = ({ action, payload }) => {
   switch (action) {
     case ACTIONS.ADD_FILTERS: {
-      const { projectId, assetId, filters: f, newFilters } = payload
+      const { projectId, assetId, filters, newFilters } = payload
 
-      const filters = JSON.stringify([...f, ...newFilters])
+      const query = encode({ filters: [...filters, ...newFilters] })
 
       Router.push(
         {
           pathname: '/[projectId]/visualizer',
-          query: { projectId, id: assetId, filters },
+          query: { projectId, id: assetId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: assetId, filters })}`,
+        `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
       )
 
       break
@@ -38,44 +58,46 @@ export const dispatch = ({ action, payload }) => {
       const {
         projectId,
         assetId,
-        filters: f,
+        filters,
         updatedFilter,
         filterIndex,
       } = payload
 
-      const filters = JSON.stringify([
-        ...f.slice(0, filterIndex),
-        updatedFilter,
-        ...f.slice(filterIndex + 1),
-      ])
+      const query = encode({
+        filters: [
+          ...filters.slice(0, filterIndex),
+          updatedFilter,
+          ...filters.slice(filterIndex + 1),
+        ],
+      })
 
       Router.push(
         {
           pathname: '/[projectId]/visualizer',
-          query: { projectId, id: assetId, filters },
+          query: { projectId, id: assetId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: assetId, filters })}`,
+        `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
       )
 
       break
     }
 
     case ACTIONS.DELETE_FILTER: {
-      const { projectId, assetId, filters: f, filterIndex } = payload
+      const { projectId, assetId, filters, filterIndex } = payload
 
       const newFilters = [
-        ...f.slice(0, filterIndex),
-        ...f.slice(filterIndex + 1),
+        ...filters.slice(0, filterIndex),
+        ...filters.slice(filterIndex + 1),
       ]
 
-      const filters = newFilters.length > 0 ? JSON.stringify(newFilters) : ''
+      const query = newFilters.length > 0 ? encode({ filters: newFilters }) : ''
 
       Router.push(
         {
           pathname: '/[projectId]/visualizer',
-          query: { projectId, id: assetId, filters },
+          query: { projectId, id: assetId, query },
         },
-        `/${projectId}/visualizer${formatUrl({ id: assetId, filters })}`,
+        `/${projectId}/visualizer${formatUrl({ id: assetId, query })}`,
       )
 
       break

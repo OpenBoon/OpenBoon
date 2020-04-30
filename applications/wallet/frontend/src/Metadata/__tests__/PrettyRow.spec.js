@@ -28,7 +28,6 @@ describe('<MetadataPrettyRow />', () => {
         name="zvi-object-detection"
         value={objectDetectionPredictions}
         path="analysis"
-        index={1}
       />,
     )
 
@@ -43,6 +42,20 @@ describe('<MetadataPrettyRow />', () => {
       <MetadataPrettyRow
         name="zvi-label-detection"
         value={labelDetectionPredictions}
+        path="analysis"
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render image similarity', () => {
+    const imageSimilarity = bboxAsset.metadata.analysis['zvi-image-similarity']
+
+    const component = TestRenderer.create(
+      <MetadataPrettyRow
+        name="zvi-image-similarity"
+        value={imageSimilarity}
         path="analysis"
         index={1}
       />,
@@ -60,7 +73,6 @@ describe('<MetadataPrettyRow />', () => {
         name="zvi-text-detection"
         value={textDetectionPredictions}
         path="analysis"
-        index={1}
       />,
     )
 
