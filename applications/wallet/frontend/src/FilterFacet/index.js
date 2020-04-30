@@ -19,7 +19,7 @@ const FilterFacet = ({ projectId, assetId, filters, filter, filterIndex }) => {
           padding: spacing.normal,
           paddingLeft: spacing.moderate,
           paddingRight: spacing.moderate,
-          div: {
+          '> div': {
             backgroundColor: 'transparent',
             boxShadow: 'none',
           },
