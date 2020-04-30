@@ -70,6 +70,12 @@ describe('<FiltersContent />', () => {
       />,
     )
 
+    act(() => {
+      component.root
+        .findAllByProps({ variant: 'NEUTRAL' })[1]
+        .props.onClick({ preventDefault: noop })
+    })
+
     expect(component.toJSON()).toMatchSnapshot()
   })
 
@@ -86,12 +92,6 @@ describe('<FiltersContent />', () => {
         setIsMenuOpen={noop}
       />,
     )
-
-    act(() => {
-      component.root
-        .findAllByProps({ variant: 'NEUTRAL' })[1]
-        .props.onClick({ preventDefault: noop })
-    })
 
     expect(component.toJSON()).toMatchSnapshot()
   })
