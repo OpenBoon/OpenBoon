@@ -132,6 +132,15 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user):
         project.sync_with_zmlp(project_zero_user)
 
 
+def test_project_managers(project):
+    assert Project.objects.all().count() == 1
+    assert str(project.id) == str(Project.objects.first().id)
+    project.is_active = False
+    project.save()
+    assert Project.objects.all().count() == 0
+    assert Project.all_objects.all().count() == 1
+
+
 class TestProjectViewSet:
 
     @pytest.fixture

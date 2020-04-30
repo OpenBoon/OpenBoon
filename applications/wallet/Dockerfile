@@ -1,7 +1,6 @@
 FROM nginx:mainline
 RUN apt-get -y update && apt-get -y upgrade && apt-get -y install python3 python3-pip npm postgresql libsm6 libxrender-dev libxext6
 
-
 # Copy Wallet
 COPY applications/wallet /applications/wallet
 

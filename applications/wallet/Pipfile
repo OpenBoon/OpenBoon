@@ -33,6 +33,9 @@ zmlp = {path = "./../../client/python"}
 opencv-python = "*"
 flatten-dict = "*"
 djangorestframework-csv = "*"
+google-api-python-client = "*"
+google-cloud = "*"
+google-cloud-pubsub = "*"
 
 [requires]
 python_version = "3.7"
