@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
+import { colors, constants, spacing } from '../Styles'
+
+import Button, { VARIANTS } from '../Button'
+
 const FilterFacet = ({
   projectId,
   //   assetId,
@@ -19,14 +23,73 @@ const FilterFacet = ({
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
   )
 
+  const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key)
+
   return (
-    <ul css={{ margin: 0 }}>
-      {buckets.map(({ key, docCount }) => (
-        <li key={key}>
-          {key}: {docCount}
-        </li>
-      ))}
-    </ul>
+    <>
+      <div
+        css={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          paddingTop: spacing.base,
+          paddingBottom: spacing.base,
+          fontFamily: 'Roboto Condensed',
+          color: colors.structure.zinc,
+        }}
+      >
+        <div>KEYWORD</div>
+        <div>COUNT</div>
+      </div>
+      <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
+        {buckets.map(({ key, docCount }) => {
+          const offset = Math.ceil((docCount * 100) / largestCount)
+
+          return (
+            <li key={key}>
+              <Button
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  ':hover': {
+                    backgroundColor: colors.signal.electricBlue.background,
+                  },
+                }}
+                variant={VARIANTS.NEUTRAL}
+                onClick={() => {}}
+              >
+                <div css={{ width: '100%' }}>
+                  <div css={{ display: 'flex' }}>
+                    <div
+                      css={{
+                        width: `${offset}%`,
+                        borderTop: constants.borders.facet,
+                      }}
+                    />
+                    <div
+                      css={{
+                        height: 4,
+                        width: `${100 - offset}%`,
+                        borderTop: constants.borders.divider,
+                      }}
+                    />
+                  </div>
+                  <div
+                    css={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      padding: spacing.base,
+                    }}
+                  >
+                    <div>{key}</div>
+                    <div>{docCount}</div>
+                  </div>
+                </div>
+              </Button>
+            </li>
+          )
+        })}
+      </ul>
+    </>
   )
 }
 
