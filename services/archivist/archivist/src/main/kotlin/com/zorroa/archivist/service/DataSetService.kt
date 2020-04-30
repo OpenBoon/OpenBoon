@@ -3,9 +3,6 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.domain.DataSet
 import com.zorroa.archivist.domain.DataSetFilter
 import com.zorroa.archivist.domain.DataSetSpec
-import com.zorroa.archivist.domain.Job
-import com.zorroa.archivist.domain.ModelSpec
-import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.repository.DataSetDao
 import com.zorroa.archivist.repository.DataSetJdbcDao
 import com.zorroa.archivist.repository.KPagedList
@@ -58,8 +55,6 @@ interface DataSetService {
      * Get a Map of all labels and label counts.
      */
     fun getLabelCounts(ds: DataSet): Map<String, Long>
-
-    fun trainModel(ds: DataSet, spec: ModelSpec): Job
 }
 
 @Service
@@ -67,8 +62,7 @@ interface DataSetService {
 class DataSetServiceImpl(
     val dataSetDao: DataSetDao,
     val dataSetJdbcDao: DataSetJdbcDao,
-    val indexRoutingService: IndexRoutingService,
-    val jobLaunchService: JobLaunchService
+    val indexRoutingService: IndexRoutingService
 ) : DataSetService {
 
     override fun create(spec: DataSetSpec): DataSet {
@@ -129,19 +123,6 @@ class DataSetServiceImpl(
         val rsp = rest.client.search(req.request, RequestOptions.DEFAULT)
         val buckets = rsp.aggregations.get<Nested>("nested_labels").aggregations.get<Terms>("labels")
         return buckets.buckets.map { it.keyAsString to it.docCount }.toMap()
-    }
-
-    override fun trainModel(ds: DataSet, spec: ModelSpec): Job {
-        val moduleName = "custom-${ds.name}-label-detection"
-        val processor = ProcessorRef(
-            spec.type.processor, "zmlp/plugins-train",
-            mutableMapOf(
-                "dataset_id" to ds.id.toString(),
-                "model_name" to moduleName
-            )
-        )
-        return jobLaunchService.launchTrainingJob("Train $moduleName", processor,
-            mapOf("index" to false))
     }
 
     companion object {

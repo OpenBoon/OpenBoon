@@ -25,14 +25,14 @@ class CredentialsController constructor(
 ) {
 
     @PreAuthorize("hasAuthority('ProjectManage')")
-    @ApiOperation("Created new credentials")
+    @ApiOperation("Creat new  Credentials")
     @PostMapping(value = ["/api/v1/credentials"])
     fun create(@RequestBody spec: CredentialsSpec): Credentials {
         return credentialsService.create(spec)
     }
 
     @PreAuthorize("hasAuthority('AssetsImport')")
-    @ApiOperation("Created new credentials")
+    @ApiOperation("Get Credentials by ID.")
     @GetMapping(value = ["/api/v1/credentials/{id}"])
     fun get(@PathVariable id: UUID): Credentials {
         return credentialsService.get(id)
@@ -40,14 +40,14 @@ class CredentialsController constructor(
 
     @PreAuthorize("hasAuthority('ProjectManage')")
     @DeleteMapping(value = ["/api/v1/credentials/{id}"])
-    @ApiOperation("Created new credentials")
+    @ApiOperation("Delete Credentials by ID.")
     fun delete(@PathVariable id: UUID): Any {
         credentialsService.delete(id)
         return HttpUtils.deleted("credentials", id, true)
     }
 
     @PreAuthorize("hasAuthority('ProjectManage')")
-    @ApiOperation("Created new credentials")
+    @ApiOperation("Update Credentials")
     @PutMapping(value = ["/api/v1/credentials/{id}"])
     fun update(@PathVariable id: UUID, @RequestBody update: CredentialsUpdate): Credentials {
         return credentialsService.update(id, update)
