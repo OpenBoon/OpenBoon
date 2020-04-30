@@ -1,6 +1,4 @@
 import logging
-import os
-
 
 from ..entity import Model, Job
 from ..util import as_collection, as_id, as_id_collection
@@ -81,4 +79,3 @@ class ModelApp:
         model_id = as_id(model)
         body = dict(kwargs)
         return Job(self.app.client.post('/api/v3/models/{}/_train'.format(model_id), body))
-
