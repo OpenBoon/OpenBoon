@@ -48,7 +48,7 @@ class Project(models.Model):
         try:
             client.post('/api/v1/projects', body)
         except ZmlpDuplicateException:
-            logger.info('Project Zero already exists in ZMLP')
+            logger.info(f'Project {self.id} already exists in ZMLP')
 
 
 class Membership(models.Model):

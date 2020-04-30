@@ -9,7 +9,7 @@ from wallet.utils import get_zmlp_superuser_client
 
 
 class Command(BaseCommand):
-    help = 'Creates a project with a subscription.'
+    help = 'Creates a project with a subscription and an admin user.'
 
     def add_arguments(self, parser):
         parser.add_argument('id', type=str)
@@ -20,12 +20,19 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         superuser = User.objects.get(email='software@zorroa.com')
-        print('hello world')
-        project = Project.objects.get_or_create(id=options['id'], name=options['name'])[0]
+        project = Project.all_objects.get_or_create(id=options['id'], name=options['name'])[0]
+        if not project.is_active:
+            project.is_active = True
+            project.save()
         project.sync_with_zmlp(superuser)
-        Subscription.objects.get_or_create(project=project,
-                                           video_hours_limit=options['video_hours_limit'],
-                                           image_count_limit=options['image_count_limit'])
+        try:
+            subscription = Subscription.objects.get(project=project)
+            subscription.video_hours_limit = options['video_hours_limit']
+            subscription.image_count_limit = options['image_count_limit']
+        except Subscription.DoesNotExist:
+            Subscription.objects.get_or_create(project=project,
+                                               video_hours_limit=options['video_hours_limit'],
+                                               image_count_limit=options['image_count_limit'])
         user = User.objects.get_or_create(username=options['admin_user'])[0]
         permissions = []
         for role in settings.ROLES:

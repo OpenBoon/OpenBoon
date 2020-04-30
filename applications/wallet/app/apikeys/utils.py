@@ -1,4 +1,7 @@
 import uuid
+
+from zmlp.client import ZmlpRequestException
+
 from wallet.utils import convert_json_to_base64
 
 
@@ -20,7 +23,10 @@ def create_zmlp_api_key(client, name, permissions, encode_b64=True, internal=Fal
     if internal:
         name = f'Admin Console Generated Key - {uuid.uuid4()} - {name}'
     body = {'name': name, 'permissions': permissions}
-    apikey = client.post('/auth/v1/apikey', body)
+    try:
+        apikey = client.post('/auth/v1/apikey', body)
+    except ZmlpRequestException:
+        apikey = client.post('/auth/v1/apikey/_findOne', {'names': [name]})
     apikey.update(client.get(f'/auth/v1/apikey/{apikey["id"]}/_download'))
     if encode_b64:
         apikey = convert_json_to_base64(apikey).decode('utf-8')

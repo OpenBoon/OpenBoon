@@ -17,3 +17,4 @@ class Command(BaseCommand):
             return
         project.is_active = False
         project.save()
+        # TODO: Disable the project on the zmlp side as well.

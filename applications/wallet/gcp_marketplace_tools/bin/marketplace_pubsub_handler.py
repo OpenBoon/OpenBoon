@@ -2,34 +2,39 @@
 
 import json
 import os
+import pathlib
 import pprint
 import subprocess
 from time import sleep
 
+import sentry_sdk
 from google.cloud import pubsub_v1
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+
+sentry_sdk.init(dsn='https://5c1ab0d8be954c35b92283c1290e9924@o280392.ingest.sentry.io/5218609')
 
 PROJECT_ID = os.environ['GOOGLE_CLOUD_PROJECT']
 PUBSUB_SUBSCRIPTION = os.environ['MARKETPLACE_SUBSCRIPTION']
 PROCUREMENT_API = 'cloudcommerceprocurement'
-DJANGO_SETTINGS_FILE = os.environ.get('MARKETPLACE_DJANGO_SETTINGS',
+DJANGO_SETTINGS_MODULE = os.environ.get('DJANGO_SETTINGS_MODULE',
                                       'wallet.settings')
+PYTHON = os.environ.get('PYTHON', 'python3')
 
 
 class MessageHandler(object):
 
-    def __init__(self, message):
+    def __init__(self, message, credentials):
         self.message = message
         self.payload = json.loads(message.data)
         self.event_type = self.payload['eventType']
-        self.service = build(PROCUREMENT_API, 'v1', cache_discovery=False)
+        self.service = build(PROCUREMENT_API, 'v1', cache_discovery=False, credentials=credentials)
 
     def handle(self):
         print('Received message:')
         pprint.pprint(self.payload)
 
-        # Step 1. User has requested to purchase a subscription.
         if self.event_type == 'ENTITLEMENT_CREATION_REQUESTED':
             self._handle_entitlement_creation_requested()
 
@@ -45,16 +50,19 @@ class MessageHandler(object):
         self.message.ack()
 
     def _handle_entitlement_cancelled(self):
+        """Handles the ENTITLEMENT_CANCELLED event from google marketplace."""
         entitlement_id = self.payload['entitlement']['id']
         self._django_command('deactivateproject', entitlement_id)
 
     def _handle_entitlement_active(self):
+        """Handles the ENTITLEMENT_ACTIVE event from google marketplace."""
         entitlement_id = self.payload['entitlement']['id']
         entitlement = self._get_entitlement(entitlement_id)
         self._django_command('createproject', entitlement_id, f'marketplace-{entitlement_id}',
                              '100', '10000', entitlement['account'])
 
     def _handle_entitlement_creation_requested(self):
+        """Handles the ENTITLEMENT_CREATION_REQUESTED event from google marketplace."""
         entitlement_id = self.payload['entitlement']['id']
         entitlement = self._get_entitlement(entitlement_id)
         self._approve_account(entitlement['account'])  # TODO: remove
@@ -72,9 +80,21 @@ class MessageHandler(object):
                     self._approve_account(entitlement['account'])
                     request.execute()
 
+    def _handle_account_activate(self):
+        """Handles the ACCOUNT_ACTIVE event from google marketplace."""
+        name = self._get_account_name(self.payload['account']['id'])
+        self._django_command('createuser', name)
+
 
     def _get_entitlement(self, entitlement_id):
-        """Gets an entitlement from the Procurement Service."""
+        """Gets an entitlement from the Procurement Service.
+
+        Args:
+            entitlement_id(str): UUID of the entitlement to retrieve.
+
+        Returns(dict): Dictionary representing an entitlement.
+
+        """
         name = self._get_entitlement_name(entitlement_id)
         request = self.service.providers().entitlements().get(name=name)
         try:
@@ -85,56 +105,78 @@ class MessageHandler(object):
                 return None
 
     def _get_entitlement_name(self, entitlement_id):
+        """Returns the full name of an entitlement.
+
+        Args:
+            entitlement_id(str): UUID of the entitlement to retrieve.
+
+        Returns(dict): Name of the entitlement.
+
+        """
         return 'providers/DEMO-{}/entitlements/{}'.format(PROJECT_ID, entitlement_id)
 
-    def _approve_account(self, name):
-        self._django_command('createuser', name)
+    def _approve_account(self, account_name):
+        """Creates an approval on a marketplace account. And creates the a corresponding
+        account in the Wallet db.
+
+        TODO: Need to move the account creation to a signup flow.
+
+        Args:
+            account_name(str): Full account name of the marketplace account.
+
+        """
+        self._django_command('createuser', account_name)
         request = self.service.providers().accounts().approve(
-            name=name, body={'approvalName': 'signup'})
+            name=account_name, body={'approvalName': 'signup'})
         request.execute()
 
-    def _handle_account_activate(self):
-        name = self._get_account_name(self.payload['account']['id'])
-        self._django_command('createuser', name)
-
     def _get_account_name(self, account_id):
-        return 'providers/DEMO-{}/accounts/{}'.format(PROJECT_ID,
-                                                      account_id)
+        """Returns the full name of a marketplace account.
 
-    def _get_account(self, name):
-        request = self.service.providers().accounts().get(name=name)
-        try:
-            response = request.execute()
-            return response
-        except HttpError as err:
-            if err.resp.status == 404:
-                return None
+        Args:
+            account_id(str): UUID of the account to retrieve.
+
+        Returns(dict): Name of the account.
+
+        """
+        return 'providers/DEMO-{}/accounts/{}'.format(PROJECT_ID, account_id)
 
     def _django_command(self, command, *args):
-        subprocess.check_call(['python', '../../app/manage.py', command, f'--settings={DJANGO_SETTINGS_FILE}',
-                               *args])
+        """Shells out to a django management command.
+
+        Args:
+            command(str): Django command to run.
+            args(str): Any additional arguments to pass to the Django command.
+        """
+        manage_path = pathlib.Path(__file__).parent.joinpath('../../app/manage.py').absolute()
+        command = [PYTHON, manage_path, command,
+                   f'--settings={DJANGO_SETTINGS_MODULE}', *args]
+        try:
+            subprocess.run(command, capture_output=True, check=True)
+        except Exception as exception:
+            pprint.pprint(exception.stderr)
+            raise exception
 
 
 def main():
-    """Main entrypoint to the integration with the Procurement Service."""
+    """Main entrypoint runs a google marketplace watcher. This script listens to and
+    handles google marketplace pub/sub events."""
+    credentials = service_account.Credentials.from_service_account_info(
+        json.loads(os.environ['GOOGLE_CREDENTIALS']))
 
     def callback(message):
         """Callback for handling Cloud Pub/Sub messages."""
-        MessageHandler(message).handle()
+        MessageHandler(message, credentials).handle()
 
-    subscriber = pubsub_v1.SubscriberClient()
+    subscriber = pubsub_v1.SubscriberClient(credentials=credentials)
     subscription_path = subscriber.subscription_path(PROJECT_ID,
                                                      PUBSUB_SUBSCRIPTION)
     subscription = subscriber.subscribe(subscription_path, callback=callback)
     print('Listening for messages on {}'.format(subscription_path))
     print('Exit with Ctrl-\\')
     while True:
-        try:
-            subscription.result()
-            sleep(5)
-        except Exception as exception:
-            print('Listening for messages on {} threw an Exception: {}.'.format(
-                subscription_path, exception))
+        subscription.result()
+        sleep(5)
 
 
 if __name__ == '__main__':
