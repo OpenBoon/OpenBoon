@@ -19,7 +19,7 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
 
 .emotion-1 {
   clear: both;
-  padding-bottom: 8px;
+  padding-bottom: 16px;
   color: #b3b3b3;
 }
 
@@ -32,13 +32,13 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 0;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
 }
 
 .emotion-6 {
@@ -89,7 +89,6 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
 }
 
 .emotion-9 {
-  padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -97,6 +96,7 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  padding-left: 12px;
 }
 
 .emotion-7 {
@@ -107,8 +107,8 @@ exports[`<CheckboxGroup /> should render properly 1`] = `
 }
 
 .emotion-8 {
-  color: #b3b3b3;
   padding-left: 0;
+  color: #b3b3b3;
 }
 
 <fieldset
@@ -187,7 +187,7 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
 
 .emotion-1 {
   clear: both;
-  padding-bottom: 8px;
+  padding-bottom: 16px;
   color: #b3b3b3;
 }
 
@@ -200,13 +200,13 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 0;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
 }
 
 .emotion-6 {
@@ -239,7 +239,6 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
 }
 
 .emotion-9 {
-  padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -247,6 +246,7 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  padding-left: 12px;
 }
 
 .emotion-7 {
@@ -257,8 +257,8 @@ exports[`<CheckboxGroup /> should render properly 2`] = `
 }
 
 .emotion-8 {
-  color: #b3b3b3;
   padding-left: 0;
+  color: #b3b3b3;
 }
 
 .emotion-3 {

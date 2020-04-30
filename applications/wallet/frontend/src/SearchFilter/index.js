@@ -44,12 +44,12 @@ const SearchFilter = ({ projectId, assetId, filters }) => {
             setSearchString('')
 
             dispatch({
-              action: ACTIONS.ADD_FILTER,
+              action: ACTIONS.ADD_FILTERS,
               payload: {
                 projectId,
                 assetId,
                 filters,
-                filter: { type: 'search', value: searchString },
+                newFilters: [{ type: 'search', value: searchString }],
               },
             })
           }}

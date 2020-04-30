@@ -14,7 +14,7 @@ const Panel = ({ openToThe, children }) => {
     initialValue: '',
   })
 
-  const panel = children[openPanel]
+  const panel = children[openPanel] || {}
 
   return (
     <div
@@ -25,7 +25,7 @@ const Panel = ({ openToThe, children }) => {
         }`,
       }}
     >
-      {!!openPanel && openToThe === 'left' && (
+      {!!panel.title && openToThe === 'left' && (
         <PanelContent
           openToThe={openToThe}
           panel={panel}
@@ -74,7 +74,7 @@ const Panel = ({ openToThe, children }) => {
           }}
         />
       </div>
-      {!!openPanel && openToThe === 'right' && (
+      {!!panel.title && openToThe === 'right' && (
         <PanelContent
           openToThe={openToThe}
           panel={panel}

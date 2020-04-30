@@ -39,7 +39,7 @@ const PoliciesForm = ({ dispatch }) => {
 
       <div css={{ paddingTop: spacing.normal }}>
         <Checkbox
-          variant={CHECKBOX_VARIANTS.PRIMARY}
+          variant={CHECKBOX_VARIANTS.MULTILINE}
           option={{
             value: 'isChecked',
             label: 'Accept',

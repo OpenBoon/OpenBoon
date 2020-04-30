@@ -307,13 +307,13 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 0;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
 }
 
 .emotion-17 {
@@ -364,7 +364,6 @@ Array [
 }
 
 .emotion-20 {
-  padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -372,6 +371,7 @@ Array [
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  padding-left: 12px;
 }
 
 .emotion-18 {
@@ -382,8 +382,8 @@ Array [
 }
 
 .emotion-19 {
-  color: #b3b3b3;
   padding-left: 0;
+  color: #b3b3b3;
 }
 
 .emotion-40 {
@@ -979,13 +979,13 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 0;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
 }
 
 .emotion-17 {
@@ -1036,7 +1036,6 @@ Array [
 }
 
 .emotion-20 {
-  padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1044,6 +1043,7 @@ Array [
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  padding-left: 12px;
 }
 
 .emotion-18 {
@@ -1054,8 +1054,8 @@ Array [
 }
 
 .emotion-19 {
-  color: #b3b3b3;
   padding-left: 0;
+  color: #b3b3b3;
 }
 
 .emotion-40 {
@@ -2217,13 +2217,13 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 0;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
 }
 
 .emotion-17 {
@@ -2274,7 +2274,6 @@ Array [
 }
 
 .emotion-20 {
-  padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2282,6 +2281,7 @@ Array [
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  padding-left: 12px;
 }
 
 .emotion-18 {
@@ -2292,8 +2292,8 @@ Array [
 }
 
 .emotion-19 {
-  color: #b3b3b3;
   padding-left: 0;
+  color: #b3b3b3;
 }
 
 .emotion-40 {

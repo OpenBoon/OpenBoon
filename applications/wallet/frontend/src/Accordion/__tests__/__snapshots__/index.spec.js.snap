@@ -47,6 +47,16 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
   color: #ffffff;
 }
 
+.emotion-2 {
+  font-size: 17px;
+  line-height: 20px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .emotion-4 {
   background-color: #252525;
   border-radius: 2px;
@@ -63,62 +73,42 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
   display: flex;
 }
 
-.emotion-2 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+.emotion-3 h4 {
   font-weight: 400;
 }
 
 <div
-  className="emotion-5"
+  className="emotion-4"
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
-    <div
-      className="emotion-3"
+    <button
+      aria-label="Expand Section"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
     >
-      <button
-        aria-label="Expand Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          color="#808080"
-          data-file-name="chevron.svg"
-          width={20}
-        />
-      </button>
-      <h4
-        className="emotion-2"
-      >
-        Hi
-      </h4>
-    </div>
+      <svg
+        className="emotion-0"
+        color="#808080"
+        data-file-name="chevron.svg"
+        width={20}
+      />
+    </button>
+    <h4
+      className="emotion-2"
+    >
+      Hi
+    </h4>
   </div>
 </div>
 `;
 
 exports[`<Accordion /> should render properly for PRIMARY 1`] = `
-.emotion-5 {
-  padding-top: 16px;
-}
-
 .emotion-4 {
   background-color: #3b3b3b;
   border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
 }
 
 .emotion-3 {
@@ -130,6 +120,10 @@ exports[`<Accordion /> should render properly for PRIMARY 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.emotion-3 h4 {
+  font-weight: 700;
 }
 
 .emotion-1 {
@@ -186,40 +180,32 @@ exports[`<Accordion /> should render properly for PRIMARY 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
 }
 
 <div
-  className="emotion-5"
+  className="emotion-4"
 >
   <div
-    className="emotion-4"
+    className="emotion-3"
   >
-    <div
-      className="emotion-3"
+    <button
+      aria-label="Expand Section"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
     >
-      <button
-        aria-label="Expand Section"
-        className="emotion-1"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="emotion-0"
-          color="#808080"
-          data-file-name="chevron.svg"
-          width={20}
-        />
-      </button>
-      <h4
-        className="emotion-2"
-      >
-        Hi
-      </h4>
-    </div>
+      <svg
+        className="emotion-0"
+        color="#808080"
+        data-file-name="chevron.svg"
+        width={20}
+      />
+    </button>
+    <h4
+      className="emotion-2"
+    >
+      Hi
+    </h4>
   </div>
 </div>
 `;

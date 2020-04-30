@@ -55,10 +55,11 @@ const Input = ({
   after,
   isRequired,
   isDisabled,
+  style,
   ...props
 }) => {
   return (
-    <div css={{ paddingTop: PADDING }}>
+    <div css={[{ paddingTop: PADDING }, style]}>
       <label
         htmlFor={id}
         css={{
@@ -126,6 +127,7 @@ Input.defaultProps = {
   errorMessage: '',
   isRequired: false,
   isDisabled: false,
+  style: {},
 }
 
 Input.propTypes = {
@@ -140,6 +142,7 @@ Input.propTypes = {
   after: PropTypes.node,
   isRequired: PropTypes.bool,
   isDisabled: PropTypes.bool,
+  style: PropTypes.shape({ name: PropTypes.string, styles: PropTypes.string }),
 }
 
 export default Input

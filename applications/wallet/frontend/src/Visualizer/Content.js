@@ -4,9 +4,11 @@ import Panel from '../Panel'
 import Assets from '../Assets'
 import Filters from '../Filters'
 import Metadata from '../Metadata'
+import Export from '../Export'
 
-import AccountDashboardSvg from '../Icons/accountDashboard.svg'
+import FilterSvg from '../Icons/filter.svg'
 import InformationSvg from '../Icons/information.svg'
+import UploadSvg from '../Icons/upload.svg'
 
 const ICON_WIDTH = 20
 
@@ -30,7 +32,7 @@ const VisualizerContent = () => {
           {{
             filters: {
               title: 'Filters',
-              icon: <AccountDashboardSvg width={ICON_WIDTH} aria-hidden />,
+              icon: <FilterSvg width={ICON_WIDTH} aria-hidden />,
               content: <Filters />,
             },
           }}
@@ -42,6 +44,17 @@ const VisualizerContent = () => {
               title: 'Asset Metadata',
               icon: <InformationSvg width={ICON_WIDTH} aria-hidden />,
               content: <Metadata />,
+            },
+            export: {
+              title: 'Export',
+              icon: (
+                <UploadSvg
+                  width={ICON_WIDTH}
+                  css={{ transform: `rotate(180deg)` }}
+                  aria-hidden
+                />
+              ),
+              content: <Export />,
             },
           }}
         </Panel>

@@ -5,13 +5,14 @@ import AssetsThumbnail from '../Thumbnail'
 import assets from '../__mocks__/assets'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
+const ASSET_ID = assets.results[0].id
 
 describe('<AssetsThumbnail />', () => {
   it('should render properly a valid asset', () => {
     require('next/router').__setUseRouter({
       query: {
         projectId: PROJECT_ID,
-        filters: '[{"type":"search","value":"Cat"}]',
+        query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
       },
     })
 
@@ -24,7 +25,7 @@ describe('<AssetsThumbnail />', () => {
 
   it('should render properly a valid selected asset', () => {
     require('next/router').__setUseRouter({
-      query: { projectId: PROJECT_ID, id: assets.results[0].id },
+      query: { projectId: PROJECT_ID, id: ASSET_ID },
     })
 
     const component = TestRenderer.create(

@@ -34,6 +34,7 @@ const CheckboxTableRow = ({
           }}
         >
           <CheckboxIcon
+            size={20}
             value={value}
             isChecked={isChecked}
             isDisabled={isDisabled}
