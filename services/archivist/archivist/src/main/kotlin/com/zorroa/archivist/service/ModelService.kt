@@ -44,7 +44,7 @@ class ModelServiceImpl(
         val ds = dataSetDao.getOneByProjectIdAndId(getProjectId(), spec.dataSetId)
         val name = String.format(spec.type.moduleName, ds.name)
         val locator = ProjectFileLocator(
-            ProjectStorageEntity.DATASET, ds.id.toString(), "model", "$name.zip"
+            ProjectStorageEntity.MODELS, id.toString(), spec.type.name.toLowerCase(), "$name.zip"
         )
 
         val model = Model(

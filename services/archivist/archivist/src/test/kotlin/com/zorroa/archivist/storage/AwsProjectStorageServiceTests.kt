@@ -22,7 +22,7 @@ class AwsProjectStorageServiceTests : AbstractTest() {
 
     @Test
     fun testStore() {
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET,
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS,
             "1234", ProjectStorageCategory.SOURCE, "bob.jpg")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
 
@@ -36,18 +36,18 @@ class AwsProjectStorageServiceTests : AbstractTest() {
 
     @Test(expected = ProjectStorageException::class)
     fun testDelete() {
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         val result = projectStorageService.store(spec)
         projectStorageService.recursiveDelete(
-            ProjectDirLocator(ProjectStorageEntity.ASSET, loc.entityId))
+            ProjectDirLocator(ProjectStorageEntity.ASSETS, loc.entityId))
         // Throws ProjectStorageException
         projectStorageService.fetch(loc)
     }
 
     @Test
     fun testFetch() {
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
 
         val result = projectStorageService.store(spec)
@@ -57,7 +57,7 @@ class AwsProjectStorageServiceTests : AbstractTest() {
 
     @Test
     fun testStream() {
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         val result = projectStorageService.store(spec)
 
@@ -68,7 +68,7 @@ class AwsProjectStorageServiceTests : AbstractTest() {
 
     @Test
     fun testGetSignedUrl() {
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, "1234", ProjectStorageCategory.SOURCE, "bob.txt")
         val rsp = projectStorageService.getSignedUrl(loc, true, 60, TimeUnit.MINUTES)
         Json.prettyPrint(rsp)
     }
