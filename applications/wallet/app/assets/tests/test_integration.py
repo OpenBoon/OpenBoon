@@ -176,6 +176,8 @@ class TestFileNameViewSet:
                                                                       'category_pk': 'proxy',
                                                                       'pk': filename}))
         assert isinstance(response, StreamingHttpResponse)
+        assert response._headers['cache-control'] == ('Cache-Control', 'max-age=86400, private')
+        assert 'expires' in response._headers
 
 
 class TestBoxImagesAction:
