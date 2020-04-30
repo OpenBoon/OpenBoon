@@ -44,7 +44,7 @@ const FilterRange = ({
             domain={domain}
             values={values}
             setValues={setValues}
-            onChange={() => {}}
+            onChange={console.warn}
           />
         </div>
       </div>
