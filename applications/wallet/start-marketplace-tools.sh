@@ -5,9 +5,5 @@ until pg_isready -h $PG_HOST; do
   sleep 1
 done
 
-echo "Starting crontab for GCP Marketplace usage reporting."
-
-
 echo "Starting GCP Marketplace Handler."
-python3 /applications/wallet/gcp_marketplace_tools/bin/marketplace_pubsub_handler.py
-
+python3 -u /applications/wallet/gcp_marketplace_tools/bin/marketplace_pubsub_handler.py

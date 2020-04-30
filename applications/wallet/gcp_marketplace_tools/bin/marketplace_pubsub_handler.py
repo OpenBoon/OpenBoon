@@ -24,6 +24,13 @@ PYTHON = os.environ.get('PYTHON', 'python3')
 
 
 class MessageHandler(object):
+    """Handles pub sub messages from the gcp marketplace.
+
+    Args:
+        message(pubsub_v1.subscriber.message.Message): Message to handle.
+        credentials(service_account.Credentials): GCP credentials object to use for auth.
+
+    """
 
     def __init__(self, message, credentials):
         self.message = message
@@ -32,42 +39,29 @@ class MessageHandler(object):
         self.service = build(PROCUREMENT_API, 'v1', cache_discovery=False, credentials=credentials)
 
     def handle(self):
-        print('Received message:')
-        pprint.pprint(self.payload)
+        """Handle a pub/sub message send by the gcp marketplace."""
 
-        if self.event_type == 'ENTITLEMENT_CREATION_REQUESTED':
-            self._handle_entitlement_creation_requested()
+        # For information on what these events mean view the gcp marketplace docs.
+        # https://cloud.google.com/marketplace/docs/partners/integrated-saas/backend-integration#eventtypes  # noqa
+        event_map = {'ENTITLEMENT_CREATION_REQUESTED': self._handle_entitlement_creation_requested,
+                     'ACCOUNT_ACTIVE': self._handle_account_activate,
+                     'ENTITLEMENT_ACTIVE': self._handle_entitlement_active,
+                     'ENTITLEMENT_CANCELLED': self._handle_entitlement_cancelled}
 
-        elif self.event_type == 'ACCOUNT_ACTIVE':
-            self._handle_account_activate()
-
-        elif self.event_type == 'ENTITLEMENT_ACTIVE':
-            self._handle_entitlement_active()
-
-        elif self.event_type == 'ENTITLEMENT_CANCELLED':
-            self._handle_entitlement_cancelled()
-
+        if self.event_type in event_map:
+            event_map[self.event_type]()
+        else:
+            print(f'Ignoring unknown event type {self.event_type}: {self.payload}.')
         self.message.ack()
-
-    def _handle_entitlement_cancelled(self):
-        """Handles the ENTITLEMENT_CANCELLED event from google marketplace."""
-        entitlement_id = self.payload['entitlement']['id']
-        self._django_command('deactivateproject', entitlement_id)
-
-    def _handle_entitlement_active(self):
-        """Handles the ENTITLEMENT_ACTIVE event from google marketplace."""
-        entitlement_id = self.payload['entitlement']['id']
-        entitlement = self._get_entitlement(entitlement_id)
-        self._django_command('createproject', entitlement_id, f'marketplace-{entitlement_id}',
-                             '100', '10000', entitlement['account'])
 
     def _handle_entitlement_creation_requested(self):
         """Handles the ENTITLEMENT_CREATION_REQUESTED event from google marketplace."""
+        self._print_handling_message()
         entitlement_id = self.payload['entitlement']['id']
         entitlement = self._get_entitlement(entitlement_id)
         self._approve_account(entitlement['account'])  # TODO: remove
         if not entitlement:
-            print('No entitlement found. Could handle entitlement creation request.')
+            print('No entitlement found. Could not handle entitlement creation request.')
             return
         if entitlement['state'] == 'ENTITLEMENT_ACTIVATION_REQUESTED':
             name = self._get_entitlement_name(entitlement_id)
@@ -79,12 +73,35 @@ class MessageHandler(object):
                 if err.resp.status == 400:
                     self._approve_account(entitlement['account'])
                     request.execute()
+            print(f'Approved entitlement {entitlement_id}.')
 
     def _handle_account_activate(self):
         """Handles the ACCOUNT_ACTIVE event from google marketplace."""
+        self._print_handling_message()
         name = self._get_account_name(self.payload['account']['id'])
         self._django_command('createuser', name)
+        print(f'User created for account: {name}')
 
+    def _handle_entitlement_active(self):
+        """Handles the ENTITLEMENT_ACTIVE event from google marketplace."""
+        self._print_handling_message()
+        entitlement_id = self.payload['entitlement']['id']
+        entitlement = self._get_entitlement(entitlement_id)
+        project_name = f'marketplace-{entitlement_id}'
+        self._django_command('createproject', entitlement_id, project_name,
+                             '100', '10000', entitlement['account'])
+        print(f'Project {entitlement_id} created.')
+
+    def _handle_entitlement_cancelled(self):
+        """Handles the ENTITLEMENT_CANCELLED event from google marketplace."""
+        self._print_handling_message()
+        entitlement_id = self.payload['entitlement']['id']
+        self._django_command('deactivateproject', entitlement_id)
+        print(f'Deactivated project {entitlement_id}.')
+
+    def _print_handling_message(self):
+        """Prints out information about the message being handled."""
+        print(f'Handling {self.event_type} Event: {self.payload}')
 
     def _get_entitlement(self, entitlement_id):
         """Gets an entitlement from the Procurement Service.
