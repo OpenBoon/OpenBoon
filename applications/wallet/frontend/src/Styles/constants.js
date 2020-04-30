@@ -24,6 +24,7 @@ const borders = {
   assetHover: `4px solid ${colors.structure.white}`,
   assetSelected: `4px solid ${colors.signal.electricBlue.base}`,
   prettyMetadata: `4px solid ${colors.structure.iron}`,
+  facet: `4px solid ${colors.key.one}`,
 }
 
 const opacity = {
