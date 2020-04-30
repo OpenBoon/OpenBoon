@@ -147,6 +147,13 @@ interface ClusterBackupService {
 
     fun createClusterSnapshotAsync(cluster: IndexCluster, name: String?)
 
+    /**
+     *
+     */
+    fun getBasePath(indexCluster: IndexCluster, basePath: String): String {
+        return "${indexCluster.id}/$basePath"
+    }
+
     fun getSnapshotPutRequest(
         name: String?,
         cluster: IndexCluster
@@ -267,7 +274,7 @@ class GcsClusterBackupService(
             Settings
                 .builder()
                 .put("bucket", bucket)
-                .put("base_path", basePath)
+                .put("base_path", getBasePath(cluster, basePath))
         return PutRepositoryRequest()
             .type("gcs")
             .name(getRepositoryName(cluster))
@@ -454,9 +461,6 @@ class S3ClusterBackupService(
     @Value("\${archivist.es.backup.aws.base-path}")
     lateinit var basePath: String
 
-    @Value("\${archivist.es.backup.aws.backup-location}")
-    lateinit var backupLocation: String
-
     override fun createClusterRepository(cluster: IndexCluster) {
         val client = indexClusterService.getRestHighLevelClient(cluster)
 
@@ -464,12 +468,11 @@ class S3ClusterBackupService(
             Settings
                 .builder()
                 .put("bucket", bucket)
-                .put("base_path", basePath)
-                .put(FsRepository.LOCATION_SETTING.key, backupLocation)
-                .put(FsRepository.COMPRESS_SETTING.key, true)
+                .put("base_path",getBasePath(cluster, basePath))
+                .put("compress", true)
 
         val putRepositoryRequest = PutRepositoryRequest()
-            .type(FsRepository.TYPE)
+            .type("s3")
             .name(getRepositoryName(cluster))
             .settings(settings)
             .verify(true)

@@ -47,5 +47,15 @@ WORKDIR /usr/share/elasticsearch
 #RUN ./bin/elasticsearch-keystore add-file --force gcs.client.default.credentials_file service-account-test.json
 #RUN rm ./service-account-test.json
 
-# Setup for local snapshot repository
-RUN echo "path.repo: ./config/backup" >> ./config/elasticsearch.yml
+# Setup for AWS Minio backup repository
+ARG MINIO_ACCESS_KEY
+ARG MINIO_SECRET_KEY
+ARG MINIO_URL
+ARG MINIO_DEFAULT_PROTOCOL
+
+RUN echo "s3.client.default.endpoint: $MINIO_URL" >> ./config/elasticsearch.yml
+RUN echo "s3.client.default.protocol: $MINIO_DEFAULT_PROTOCOL" >> ./config/elasticsearch.yml
+RUN echo "s3.client.default.path_style_access: true"  >> ./config/elasticsearch.yml
+RUN echo $MINIO_ACCESS_KEY | ./bin/elasticsearch-keystore add --stdin --force s3.client.default.access_key
+RUN echo $MINIO_SECRET_KEY | ./bin/elasticsearch-keystore add --stdin --force s3.client.default.secret_key
+
