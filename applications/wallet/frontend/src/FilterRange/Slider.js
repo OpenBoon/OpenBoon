@@ -25,7 +25,6 @@ const FilterRangeSlider = ({ domain, values, setValues, onChange }) => {
                 width: '100%',
                 height: 2,
                 transform: 'translate(0%, -50%)',
-                borderRadius: 7,
                 cursor: 'pointer',
               }}
               {...getRailProps()}
@@ -36,7 +35,6 @@ const FilterRangeSlider = ({ domain, values, setValues, onChange }) => {
                 width: '100%',
                 height: 2,
                 transform: 'translate(0%, -50%)',
-                borderRadius: 7,
                 pointerEvents: 'none',
                 backgroundColor: colors.structure.iron,
               }}

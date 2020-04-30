@@ -1285,7 +1285,6 @@ Array [
   -webkit-transform: translate(0%,-50%);
   -ms-transform: translate(0%,-50%);
   transform: translate(0%,-50%);
-  border-radius: 7px;
   cursor: pointer;
 }
 
@@ -1296,7 +1295,6 @@ Array [
   -webkit-transform: translate(0%,-50%);
   -ms-transform: translate(0%,-50%);
   transform: translate(0%,-50%);
-  border-radius: 7px;
   pointer-events: none;
   background-color: #4a4a4a;
 }
