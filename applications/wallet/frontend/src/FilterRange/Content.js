@@ -1,5 +1,10 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
+
+import { spacing } from '../Styles'
+
+import FilterRangeSlider from './Slider'
 
 const FilterRange = ({
   projectId,
@@ -17,14 +22,33 @@ const FilterRange = ({
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
   )
 
+  const domain = [results.min, results.max]
+
+  const [values, setValues] = useState(domain)
+
   return (
-    <ul css={{ margin: 0 }}>
-      {Object.entries(results).map(([key, value]) => (
-        <li key={key}>
-          {key}: {value}
-        </li>
-      ))}
-    </ul>
+    <div>
+      <div css={{ padding: spacing.spacious }}>
+        <div
+          css={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            paddingBottom: spacing.moderate,
+          }}
+        >
+          <span>{results.min}</span>
+          <span>{results.max}</span>
+        </div>
+        <div css={{ padding: spacing.small }}>
+          <FilterRangeSlider
+            domain={domain}
+            values={values}
+            setValues={setValues}
+            onChange={console.warn}
+          />
+        </div>
+      </div>
+    </div>
   )
 }
 
