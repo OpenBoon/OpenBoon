@@ -38,3 +38,6 @@ health_check_storage_test/
 .terraform
 docker-compose.override.yml*
 .coverage
+*search.pickle
+*.ipynb_checkpoints/
+applications/workbench/data/notebooks/tmp/
