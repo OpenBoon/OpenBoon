@@ -2,6 +2,7 @@ import pytest
 
 from django.urls import reverse
 from rest_framework import status
+from unittest.mock import patch
 
 from searches.models import Search
 from searches.filters import BaseFilter
@@ -391,3 +392,42 @@ class TestMetadataExportView:
         assert result.accepted_media_type == 'text/csv'
         assert result.content == b'extra_field,id,resolution.height,resolution.width\r\n,1,10,10\r\n,2,20,20\r\nTrue,4,30,30\r\n'  # noqa
         assert result.charset == 'utf-8'
+
+    def test_get_large_export(self, login, api_client, monkeypatch, project):
+        asset_response = {
+            "hits": {
+                "total": {
+                    "value": 10,
+                    "relation": "eq"
+                },
+                "max_score": 0.0,
+                "hits": [
+                    {"_index": "vlzfewar8odudgor", "_type": "_doc",
+                     "_id": "uQn0t9KSq0g_ZD6wYoh4wtF2cL7Fm7X2", "_score": 0.0, "_source": {
+                        "system": {"jobId": "a9a5e832-4136-1d6d-9830-0242ac15000a",
+                                   "dataSourceId": "a9a5e831-4136-1d6d-9830-0242ac15000a",
+                                   "timeCreated": "2020-04-29T23:11:34.684209Z",
+                                   "state": "Analyzed",
+                                   "projectId": "b8da81b2-49f4-4776-bb39-496f2ca525b5",
+                                   "taskId": "a9a5e833-4136-1d6d-9830-0242ac15000a",
+                                   "timeModified": "2020-04-29T23:13:08.318558Z"}, "source": {
+                            "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/00000901_004.jpg",  # noqa
+                            "extension": "jpg", "filename": "00000901_004.jpg",
+                            "mimetype": "image/jpeg", "filesize": 60767, "checksum": 458805194},
+                        "media": {"width": 450, "height": 338, "aspect": 1.33,
+                                  "orientation": "landscape", "type": "image", "length": 1}}}
+                ]
+            }
+        }
+        # For some reason this reverse totally breaks when inside the patched context manager...
+        path = reverse('export-list', kwargs={'project_pk': project.id})
+        with patch.object(MetadataExportViewSet, '_zmlp_get_content_from_es_search') as mock_search:
+            mock_search.return_value = asset_response
+            result = api_client.get(path, {})
+
+        assert result.status_code == 200
+        assert result.accepted_media_type == 'text/csv'
+        # 10 items, 1 header and 1 extra line from the split
+        assert len(result.content.decode('utf-8').split('\r\n')) == 12
+        # Make sure the query was made 10 times
+        assert mock_search.call_count == 10

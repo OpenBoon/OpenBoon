@@ -232,12 +232,43 @@ class MetadataExportViewSet(BaseProjectViewSet):
             _filter.is_valid(query=True, raise_exception=True)
         query = filter_boy.reduce_filters_to_query(_filters)
 
-        content = self._zmlp_get_content_from_es_search(request, base_url=path,
-                                                        search_filter=query)
-        items = self._get_modified_items_from_content(request, content,
-                                                      item_modifier=search_asset_modifier)
+        return self._get_all_items_from_es(request, base_url=path, search_filter=query)
 
-        return items
+    def _get_all_items_from_es(self, request, base_url=None, search_filter={}):
+        """Helper to get all results from paginated responses from ZMLP.
+
+        Given the search in `search_filter`, will return the results from ZMLP, making
+        repeated paginated requests until all results are returned. Returned items will
+        be run through an item_modifier to correctly update them.
+
+        Args:
+            request: The original DRF request
+
+        Keyword Args:
+            base_url (str): The base URL to use for the ZMLP Request. Defaults to None (which uses
+                the views default.
+            search_filter (dict): An optional filter to use on the ZMLP request.
+
+        Returns:
+            (dict): All assets for the matching query
+        """
+        _from = 0
+        _size = 100
+        all_modified_items = []
+        while True:
+            search_filter['from'] = _from
+            search_filter['size'] = _size
+            content = self._zmlp_get_content_from_es_search(request, base_url=base_url,
+                                                            search_filter=search_filter)
+            items = self._get_modified_items_from_content(request, content,
+                                                          item_modifier=search_asset_modifier)
+            all_modified_items.extend(items)
+            if len(all_modified_items) < content['hits']['total']['value']:
+                _from += _size
+            else:
+                break
+
+        return all_modified_items
 
     def list(self, request, project_pk):
         def dot_reducer(k1, k2):
