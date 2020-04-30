@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types'
-import useClipboard from 'react-use-clipboard'
 
 import { colors, constants, spacing } from '../Styles'
 
-import MetadataCopy, { COPY_SIZE } from './Copy'
+import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 
 const MetadataImageSimilarity = ({ name, simhash }) => {
-  const [isCopied, setCopied] = useClipboard(simhash, { successDuration: 1000 })
   return (
     <>
       <div
@@ -55,7 +53,7 @@ const MetadataImageSimilarity = ({ name, simhash }) => {
           >
             simhash
           </div>
-          <MetadataCopy isCopied={isCopied} setCopied={setCopied} />
+          <ButtonCopy value={simhash} />
         </div>
         <div css={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {simhash}

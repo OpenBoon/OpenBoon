@@ -1,13 +1,10 @@
 import PropTypes from 'prop-types'
-import useClipboard from 'react-use-clipboard'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import MetadataCopy, { COPY_SIZE } from './Copy'
+import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 
 const MetadataTextDetection = ({ name, content }) => {
-  const [isCopied, setCopied] = useClipboard(content, { successDuration: 1000 })
-
   return (
     <>
       <div
@@ -59,7 +56,7 @@ const MetadataTextDetection = ({ name, content }) => {
             >
               content
             </div>
-            <MetadataCopy isCopied={isCopied} setCopied={setCopied} />
+            <ButtonCopy value={content} />
           </div>
         )}
         <div

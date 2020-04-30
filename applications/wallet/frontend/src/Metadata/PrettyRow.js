@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types'
-import useClipboard from 'react-use-clipboard'
 
 import { colors, constants, spacing } from '../Styles'
 
-import MetadataCopy, { COPY_SIZE } from './Copy'
+import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 import MetadataObjectDetection from './ObjectDetection'
 import MetadataLabelDetection from './LabelDetection'
 import MetadataImageSimilarity from './ImageSimilarity'
@@ -12,8 +11,6 @@ import MetadataTextDetection from './TextDetection'
 import { formatDisplayName, formatDisplayValue } from './helpers'
 
 const MetadataPrettyRow = ({ name, value, path }) => {
-  const [isCopied, setCopied] = useClipboard(value, { successDuration: 1000 })
-
   if (typeof value === 'object') {
     if (name === 'zvi-object-detection') {
       return <MetadataObjectDetection />
@@ -128,7 +125,7 @@ const MetadataPrettyRow = ({ name, value, path }) => {
           paddingRight: spacing.normal,
         }}
       >
-        <MetadataCopy isCopied={isCopied} setCopied={setCopied} />
+        <ButtonCopy value={value} />
       </div>
     </div>
   )
