@@ -41,40 +41,53 @@ const FilterFacet = ({
         <div>COUNT</div>
       </div>
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
-        {buckets.map(({ key, docCount }) => (
-          <li key={key}>
-            <Button
-              style={{
-                width: '100%',
-                flexDirection: 'row',
-                ':hover': {
-                  backgroundColor: colors.signal.electricBlue.background,
-                },
-              }}
-              variant={VARIANTS.NEUTRAL}
-              onClick={() => {}}
-            >
-              <div css={{ width: '100%' }}>
-                <div
-                  css={{
-                    width: `${Math.max(1, (docCount * 100) / largestCount)}%`,
-                    borderTop: constants.borders.facet,
-                  }}
-                />
-                <div
-                  css={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    padding: spacing.base,
-                  }}
-                >
-                  <div>{key}</div>
-                  <div>{docCount}</div>
+        {buckets.map(({ key, docCount }) => {
+          const offset = Math.max(1, (docCount * 100) / largestCount)
+
+          return (
+            <li key={key}>
+              <Button
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  ':hover': {
+                    backgroundColor: colors.signal.electricBlue.background,
+                  },
+                }}
+                variant={VARIANTS.NEUTRAL}
+                onClick={() => {}}
+              >
+                <div css={{ width: '100%' }}>
+                  <div css={{ display: 'flex' }}>
+                    <div
+                      css={{
+                        width: `${offset}%`,
+                        borderTop: constants.borders.facet,
+                      }}
+                    />
+                    <div
+                      css={{
+                        height: 4,
+                        width: `${100 - offset}%`,
+                        borderTop: constants.borders.divider,
+                      }}
+                    />
+                  </div>
+                  <div
+                    css={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      padding: spacing.base,
+                    }}
+                  >
+                    <div>{key}</div>
+                    <div>{docCount}</div>
+                  </div>
                 </div>
-              </div>
-            </Button>
-          </li>
-        ))}
+              </Button>
+            </li>
+          )
+        })}
       </ul>
     </>
   )
