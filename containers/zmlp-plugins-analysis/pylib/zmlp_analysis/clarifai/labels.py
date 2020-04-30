@@ -42,4 +42,4 @@ class ClarifaiLabelDetectionProcessor(AssetProcessor):
                 for label in labels:
                     analysis.add_label_and_score(label['name'], label['value'])
 
-                asset.add_analysis("-".join([self.namespace,model_name]), analysis)
+                asset.add_analysis("-".join([self.namespace, model_name]), analysis)

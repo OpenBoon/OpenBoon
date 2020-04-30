@@ -19,12 +19,21 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
     def __init__(self):
         super(TensorflowTransferLearningTrainer, self).__init__()
+
+        # These are the base args
         self.add_arg(Argument("dataset_id", "str", required=True,
                               toolTip="The dataset Id"))
-        self.add_arg(Argument("base_model", "str", required=True,
+        self.add_arg(Argument("model_type", "str", required=True,
                               toolTip="The the base model type."))
-        self.add_arg(Argument("module_name", "str", required=True,
-                              toolTip="The module name to publish"))
+        self.add_arg(Argument("name", "str", required=True,
+                              toolTip="The name of the model, which is the pipeline mod name."))
+        self.add_arg(Argument("file_id", "str", required=True,
+                              toolTip="The file_id where the model should be stored"))
+
+        self.add_arg(Argument("publish", "bool", required=False,
+                              toolTip="True if the pipeline module should be created/updated"))
+
+        # These can be set optionally.
         self.add_arg(Argument("epochs", "int", required=True, default=10,
                               toolTip="The number of training epochs"))
         self.add_arg(Argument("min_concepts", "int", required=True, default=2,
@@ -73,7 +82,7 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
         """
         self.logger.info('publishing model')
-        model_dir = tempfile.mkdtemp() + '/v1'
+        model_dir = tempfile.mkdtemp() + '/' + self.arg_value('name')
         os.makedirs(model_dir)
 
         self.logger.info('saving model : {}'.format(model_dir))
@@ -85,10 +94,9 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         # Upload the zipped model to project storage.
         self.logger.info('uploading model')
 
-        stored_file = upload_model_directory(model_dir, self.ds,
-                                             self.arg_value("module_name"))
+        stored_file = upload_model_directory(model_dir, self.arg_value("file_id"))
 
-        self.logger.info("Uploaded model: {}", stored_file)
+        self.logger.info("Uploaded model: {}".format(stored_file.id))
 
         # TODO:
         # Currently we don't have project specific modules, need to add them
@@ -192,16 +200,16 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             ZmlpFatalProcessorException: If the model is not fouond/
 
         """
-        model = self.arg_value('base_model')
-        if model == 'mobilenet_v2':
+        model = self.arg_value('model_type')
+        if model == 'TF2_XFER_MOBILENET2':
             return mobilenet_v2.MobileNetV2(weights='imagenet',
                                             include_top=False,
                                             input_shape=(224, 224, 3))
-        elif model == 'resnet_v2':
+        elif model == 'TF2_XFER_RESNET152':
             return resnet_v2.ResNet152V2(weights='imagenet',
                                          include_top=False,
                                          input_shape=(224, 224, 3))
-        elif model == 'vgg16':
+        elif model == 'TF2_XFER_VGG16':
             return vgg16.VGG16(weights='imagenet',
                                include_top=False,
                                input_shape=(224, 224, 3))

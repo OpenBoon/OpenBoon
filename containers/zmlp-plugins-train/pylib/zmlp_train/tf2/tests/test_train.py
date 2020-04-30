@@ -94,10 +94,13 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
         }
         upload_patch.return_value = {}
 
+        name = 'custom-flowers-label-detection-tf2-xfer-mobilenet2'
         args = {
             'dataset_id': self.ds_id,
+            'model_type': 'TF2_XFER_MOBILENET2',
+            'name': name,
+            'file_id': 'dataset/12345/models/{}.2.zip'.format(name),
             'min_examples': 6,
-            'base_model': "resnet_v2",
             'epochs': 5
         }
 
