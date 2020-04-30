@@ -1,7 +1,5 @@
 import uuid
 
-from zmlp.client import ZmlpRequestException
-
 from wallet.utils import convert_json_to_base64
 
 
