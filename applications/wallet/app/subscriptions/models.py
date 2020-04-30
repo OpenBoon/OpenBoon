@@ -1,11 +1,13 @@
 import uuid
-import random
 
 from django.db import models
+from django.contrib.auth import get_user_model
 from multiselectfield import MultiSelectField
 
 from projects.models import Project
+from wallet.utils import get_zmlp_superuser_client
 
+User = get_user_model()
 
 MODULES = (('zmlp-classification', 'Label Detection'),
            ('zmlp-objects', 'Object Detection'),
@@ -40,5 +42,9 @@ class Subscription(models.Model):
                 'image_count': self.image_count_limit}
 
     def usage(self):
-        return {'video_hours': random.randrange(1, self.video_hours_limit, 1),
-                'image_count': random.randrange(1, self.image_count_limit, 1)}
+        user = User.objects.get(email='software@zorroa.com')
+        client = get_zmlp_superuser_client(user, project_id=str(self.project.id))
+        quotas = client.get(f'api/v1/project/_quotas')
+        video_hours = quotas['videoSecondsCount'] * 60 * 60
+        image_count = quotas['pageCount']
+        return {'video_hours': video_hours, 'image_count': image_count}
