@@ -5,6 +5,11 @@ import { Slider, Rail, Handles, Tracks } from 'react-compound-slider'
 
 import { colors } from '../Styles'
 
+const RAIL_HEIGHT = 2
+const TRACK_HEIGHT = 4
+const HANDLE_WIDTH = 8
+const HANDLE_HEIGHT = 24
+
 const FilterRangeSlider = ({ domain, values, setValues, onChange }) => {
   return (
     <Slider
@@ -23,7 +28,7 @@ const FilterRangeSlider = ({ domain, values, setValues, onChange }) => {
               css={{
                 position: 'absolute',
                 width: '100%',
-                height: 2,
+                height: RAIL_HEIGHT,
                 transform: 'translate(0%, -50%)',
                 cursor: 'pointer',
               }}
@@ -33,7 +38,7 @@ const FilterRangeSlider = ({ domain, values, setValues, onChange }) => {
               css={{
                 position: 'absolute',
                 width: '100%',
-                height: 2,
+                height: RAIL_HEIGHT,
                 transform: 'translate(0%, -50%)',
                 pointerEvents: 'none',
                 backgroundColor: colors.structure.iron,
@@ -61,8 +66,8 @@ const FilterRangeSlider = ({ domain, values, setValues, onChange }) => {
                   position: 'absolute',
                   transform: 'translate(-50%, -50%)',
                   zIndex: 2,
-                  width: 8,
-                  height: 24,
+                  width: HANDLE_WIDTH,
+                  height: HANDLE_HEIGHT,
                   backgroundColor: colors.structure.steel,
                   borderRadius: 1,
                   cursor: 'pointer',
@@ -82,7 +87,7 @@ const FilterRangeSlider = ({ domain, values, setValues, onChange }) => {
                 style={{
                   position: 'absolute',
                   transform: 'translate(0%, -50%)',
-                  height: 4,
+                  height: TRACK_HEIGHT,
                   zIndex: 1,
                   backgroundColor: colors.key.one,
                   cursor: 'pointer',
