@@ -49,6 +49,40 @@ describe('<MetadataPrettyRow />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render text detection with results', () => {
+    const textDetectionContent = {
+      ...bboxAsset.metadata.analysis['zvi-text-detection'],
+      content: 'Some results',
+    }
+
+    const component = TestRenderer.create(
+      <MetadataPrettyRow
+        name="zvi-text-detection"
+        value={textDetectionContent}
+        path="analysis"
+        index={1}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render text detection with no results', () => {
+    const textDetectionContent =
+      bboxAsset.metadata.analysis['zvi-text-detection']
+
+    const component = TestRenderer.create(
+      <MetadataPrettyRow
+        name="zvi-text-detection"
+        value={textDetectionContent}
+        path="analysis"
+        index={1}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render image similarity', () => {
     const imageSimilarity = bboxAsset.metadata.analysis['zvi-image-similarity']
 
@@ -65,13 +99,12 @@ describe('<MetadataPrettyRow />', () => {
   })
 
   it('should render when value is of type object', () => {
-    const textDetectionPredictions =
-      bboxAsset.metadata.analysis['zvi-text-detection']
+    const objectValue = bboxAsset.metadata.files[0].attrs
 
     const component = TestRenderer.create(
       <MetadataPrettyRow
-        name="zvi-text-detection"
-        value={textDetectionPredictions}
+        name="files"
+        value={objectValue}
         path="analysis"
       />,
     )
