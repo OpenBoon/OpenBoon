@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from multiselectfield import MultiSelectField
 
@@ -42,7 +43,7 @@ class Subscription(models.Model):
                 'image_count': self.image_count_limit}
 
     def usage(self):
-        user = User.objects.get(email='software@zorroa.com')
+        user = User.objects.get(email=settings.SUPERUSER_EMAIL)
         client = get_zmlp_superuser_client(user, project_id=str(self.project.id))
         quotas = client.get(f'api/v1/project/_quotas')
         video_hours = quotas['videoSecondsCount'] * 60 * 60

@@ -245,3 +245,6 @@ ROLES = [
      'description': 'Provides access to User Administration for a Project.',
      'permissions': ['ProjectManage']},
 ]
+
+# The registered email address of the superuser for this instance.
+SUPERUSER_EMAIL = 'software@zorroa.com'
