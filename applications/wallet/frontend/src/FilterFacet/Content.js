@@ -23,7 +23,7 @@ const FilterFacet = ({
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
   )
 
-  const { docCount: largestCount } = buckets[0]
+  const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key)
 
   return (
     <>
@@ -42,7 +42,7 @@ const FilterFacet = ({
       </div>
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
         {buckets.map(({ key, docCount }) => {
-          const offset = Math.max(1, (docCount * 100) / largestCount)
+          const offset = Math.ceil((docCount * 100) / largestCount)
 
           return (
             <li key={key}>
