@@ -48,10 +48,10 @@ WORKDIR /usr/share/elasticsearch
 #RUN rm ./service-account-test.json
 
 # Setup for AWS Minio backup repository
-ARG MINIO_ACCESS_KEY
-ARG MINIO_SECRET_KEY
-ARG MINIO_URL
-ARG MINIO_DEFAULT_PROTOCOL
+ARG MINIO_ACCESS_KEY=qwerty123
+ARG MINIO_SECRET_KEY=123qwerty
+ARG MINIO_URL=http://minio:9000
+ARG MINIO_DEFAULT_PROTOCOL=http
 
 RUN echo "s3.client.default.endpoint: $MINIO_URL" >> ./config/elasticsearch.yml
 RUN echo "s3.client.default.protocol: $MINIO_DEFAULT_PROTOCOL" >> ./config/elasticsearch.yml
