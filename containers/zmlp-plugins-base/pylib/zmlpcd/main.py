@@ -1,9 +1,11 @@
+# flake8: noqa
 import argparse
 
 from .logs import setup_logging
-from .daemon import ZmlpContainerDaemon
-
+# Have to do this before anything.
 setup_logging()
+
+from .daemon import ZmlpContainerDaemon
 
 
 def main():

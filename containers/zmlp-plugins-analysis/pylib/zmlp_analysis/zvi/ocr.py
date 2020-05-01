@@ -25,5 +25,4 @@ class ZviOcrProcessor(AssetProcessor):
         analysis = ContentDetectionAnalysis()
         analysis.add_content(data)
 
-        if analysis:
-            frame.asset.add_analysis(self.namespace, analysis)
+        frame.asset.add_analysis(self.namespace, analysis)

@@ -40,6 +40,17 @@ class AssetTests(unittest.TestCase):
         assert 1 == len(asset.get_files(name=["proxy_200x200.jpg"]))
         assert 0 == len(asset.get_files(name="spock"))
 
+    def test_add_and_get_analysis(self):
+        class Labels:
+            def for_json(self):
+                return {"predictions": [{"cat": 12345}]}
+
+        asset = Asset({"id": "123"})
+        asset.add_analysis("zvi-foo", Labels())
+        analysis = asset.get_analysis("zvi-foo")
+        assert len(analysis['predictions']) == 1
+        assert analysis['predictions'][0]['cat'] == 12345
+
     def test_get_files_filter_name(self):
         asset = Asset({"id": "123"})
         asset.set_attr("files", self.test_files)

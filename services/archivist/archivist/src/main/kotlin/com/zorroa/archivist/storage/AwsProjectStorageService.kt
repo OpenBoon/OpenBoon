@@ -1,6 +1,7 @@
 package com.zorroa.archivist.storage
 
 import com.amazonaws.ClientConfiguration
+import com.amazonaws.HttpMethod
 import com.amazonaws.auth.AWSCredentials
 import com.amazonaws.auth.AWSStaticCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials
@@ -9,6 +10,7 @@ import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.amazonaws.services.s3.model.AmazonS3Exception
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
 import com.amazonaws.services.s3.model.GetObjectRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
@@ -22,8 +24,6 @@ import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.warnEvent
 import com.zorroa.zmlp.util.Json
-import java.util.concurrent.TimeUnit
-import javax.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -34,6 +34,9 @@ import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import java.util.Date
+import java.util.concurrent.TimeUnit
+import javax.annotation.PostConstruct
 
 @Configuration
 @Profile("aws")
@@ -135,6 +138,47 @@ class AwsProjectStorageService constructor(
 
     override fun getNativeUri(locator: ProjectStorageLocator): String {
         return "s3://${properties.bucket}/${locator.getPath()}"
+    }
+
+    override fun getSignedUrl(
+        locator: ProjectStorageLocator,
+        forWrite: Boolean,
+        duration: Long,
+        unit: TimeUnit
+    ): String {
+        val path = locator.getPath()
+        val expireTime = Date(System.currentTimeMillis() + unit.toMillis(duration))
+        val method = if (forWrite) {
+            HttpMethod.PUT
+        } else {
+            HttpMethod.GET
+        }
+
+        val req: GeneratePresignedUrlRequest =
+            GeneratePresignedUrlRequest(properties.bucket, path)
+                .withMethod(method)
+                .withExpiration(expireTime)
+
+        logSignEvent(path, forWrite)
+        return s3Client.generatePresignedUrl(req).toString()
+    }
+
+    override fun setAttrs(locator: ProjectStorageLocator, attrs: Map<String, Any>): FileStorage {
+
+        val path = locator.getPath()
+        val metadata = ObjectMetadata()
+        metadata.userMetadata = mapOf("attrs" to Json.serializeToString(attrs))
+
+        val obj = s3Client.getObject(properties.bucket, path)
+
+        return FileStorage(
+            locator.getFileId(),
+            locator.name,
+            locator.category,
+            obj.objectMetadata.contentType,
+            obj.objectMetadata.contentLength,
+            attrs
+        )
     }
 
     override fun recursiveDelete(locator: ProjectDirLocator) {

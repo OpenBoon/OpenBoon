@@ -237,7 +237,7 @@ class AssetServiceTests : AbstractTest() {
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
         val assetId = assetService.batchCreate(batchCreate).created[0]
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET, assetId, ProjectStorageCategory.SOURCE, "bob.txt")
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS, assetId, ProjectStorageCategory.SOURCE, "bob.txt")
         val spec = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         projectStorageService.store(spec)
 
