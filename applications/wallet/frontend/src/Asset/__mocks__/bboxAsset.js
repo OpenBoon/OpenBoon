@@ -127,6 +127,7 @@ const bboxAsset = {
           {
             score: 0.96,
             label: 'tailed_frog',
+            tags: ['frog', 'banana'],
           },
           {
             score: 0.86,

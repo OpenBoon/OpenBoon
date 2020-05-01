@@ -276,12 +276,17 @@ Array [
 `;
 
 exports[`<MetadataPrettyRow /> should render label detection predictions 1`] = `
-.emotion-10 {
+Array [
+  .emotion-10 {
   padding: 16px;
 }
 
 .emotion-10:not(:first-of-type) {
   border-top: 4px solid #3b3b3b;
+}
+
+.emotion-10:not(last-of-type) {
+  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -299,6 +304,7 @@ exports[`<MetadataPrettyRow /> should render label detection predictions 1`] = `
 
 .emotion-9 td {
   padding-right: 8px;
+  padding-left: 0;
 }
 
 .emotion-1 {
@@ -307,6 +313,7 @@ exports[`<MetadataPrettyRow /> should render label detection predictions 1`] = `
   color: #808080;
   width: 100%;
   padding-bottom: 16px;
+  padding-left: 0;
 }
 
 .emotion-1:last-of-type {
@@ -320,6 +327,7 @@ exports[`<MetadataPrettyRow /> should render label detection predictions 1`] = `
   text-transform: uppercase;
   color: #808080;
   padding-bottom: 16px;
+  padding-left: 0;
 }
 
 .emotion-2:last-of-type {
@@ -356,62 +364,194 @@ exports[`<MetadataPrettyRow /> should render label detection predictions 1`] = `
 }
 
 <div
-  className="emotion-10"
->
-  <div
-    className="emotion-0"
+    className="emotion-10"
   >
-    zvi-label-detection
-  </div>
-  <table
-    className="emotion-9"
+    <div
+      className="emotion-0"
+    >
+      zvi-label-detection
+    </div>
+    <table
+      className="emotion-9"
+    >
+      <thead>
+        <tr>
+          <td
+            className="emotion-1"
+          >
+            label
+          </td>
+          <td
+            className="emotion-2"
+          >
+            confidence score
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="emotion-5"
+        >
+          <td
+            className="emotion-3"
+          >
+            tailed_frog
+          </td>
+          <td
+            className="emotion-3"
+          >
+            0.96
+          </td>
+        </tr>
+        <tr
+          className="emotion-5"
+        >
+          <td
+            className="emotion-3"
+          >
+            banana
+          </td>
+          <td
+            className="emotion-3"
+          >
+            0.86
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>,
+  .emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-1 {
+  display: none;
+}
+
+.emotion-1:hover {
+  color: #ffffff;
+}
+
+.emotion-6 {
+  padding: 16px;
+  padding-top: 0;
+}
+
+.emotion-6:hover {
+  background-color: #027aff38;
+}
+
+.emotion-6:hover div svg {
+  display: inline-block;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  min-height: 20px;
+  width: 100%;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  color: #808080;
+  border-top: 1px solid #3b3b3b;
+  padding-top: 16px;
+  padding-bottom: 8px;
+}
+
+.emotion-4 {
+  display: inline-block;
+  color: #191919;
+  background-color: #b3b3b3;
+  padding: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-right: 8px;
+  border-radius: 14px;
+  font-family: Roboto Condensed;
+}
+
+<div
+    className="emotion-6"
   >
-    <thead>
-      <tr>
-        <td
+    <div
+      className="emotion-3"
+    >
+      <div
+        className="emotion-0"
+      >
+        tags
+      </div>
+      <button
+        className="emotion-2"
+        onClick={[Function]}
+        title="Copy to Clipboard"
+        type="button"
+      >
+        <svg
           className="emotion-1"
-        >
-          label
-        </td>
-        <td
-          className="emotion-2"
-        >
-          confidence score
-        </td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        className="emotion-5"
+          color="#808080"
+          data-file-name="copy.svg"
+          width={20}
+        />
+      </button>
+    </div>
+    <div>
+      <span
+        className="emotion-4"
       >
-        <td
-          className="emotion-3"
-        >
-          tailed_frog
-        </td>
-        <td
-          className="emotion-3"
-        >
-          0.96
-        </td>
-      </tr>
-      <tr
-        className="emotion-5"
+        frog
+      </span>
+      <span
+        className="emotion-4"
       >
-        <td
-          className="emotion-3"
-        >
-          banana
-        </td>
-        <td
-          className="emotion-3"
-        >
-          0.86
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+        banana
+      </span>
+    </div>
+  </div>,
+]
 `;
 
 exports[`<MetadataPrettyRow /> should render object detection predictions 1`] = `
