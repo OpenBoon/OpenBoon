@@ -1,5 +1,6 @@
 import cv2
-from facenet_pytorch import MTCNN
+import numpy as np
+from facenet_pytorch import MTCNN, InceptionResnetV1
 
 from zmlpsdk import AssetProcessor
 from zmlpsdk.proxy import get_proxy_level_path, calculate_normalized_bbox
@@ -18,6 +19,7 @@ class ZviFaceDetectionProcessor(AssetProcessor):
 
     def init(self):
         self.mtcnn = MTCNN(image_size=160, margin=20, keep_all=True)
+        self.resnet = InceptionResnetV1(pretrained='vggface2').eval()
 
     def process(self, frame):
         asset = frame.asset
@@ -26,13 +28,20 @@ class ZviFaceDetectionProcessor(AssetProcessor):
 
         rects, confidences = self.mtcnn.detect(img)
 
-        if rects == []:
+        if confidences[0] is None:
             return
 
+        img_cropped = self.mtcnn(img)
         analysis = LabelDetectionAnalysis()
 
         for i, elem in enumerate(zip(rects, confidences)):
+            # Calculate a face similarity hash
+            img_embedding = self.resnet(img_cropped[i].unsqueeze(0))
+            v_hash = np.clip(img_embedding.detach().numpy() + .25, 0, .5) * 50
+            v_hash = v_hash.astype(int) + 65
+            f_hash = "".join([chr(item) for item in v_hash[0]])
+
             rect = calculate_normalized_bbox(img.shape[1], img.shape[0], elem[0])
-            analysis.add_label_and_score('face' + str(i), elem[1], bbox=rect)
+            analysis.add_label_and_score('face' + str(i), elem[1], bbox=rect, simhash=f_hash)
 
         asset.add_analysis(self.namespace, analysis)
