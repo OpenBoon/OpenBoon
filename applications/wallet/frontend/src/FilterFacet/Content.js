@@ -4,17 +4,16 @@ import useSWR from 'swr'
 import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
+import { dispatch, ACTIONS } from '../Filters/helpers'
 
 const FilterFacet = ({
   projectId,
-  //   assetId,
-  //   filters,
-  //   filter,
-  filter: { type, attribute },
-  //   filterIndex,
+  assetId,
+  filters,
+  filter: { type, attribute, values },
+  filterIndex,
 }) => {
   const encodedFilter = btoa(JSON.stringify({ type, attribute }))
-
   const {
     data: {
       results: { buckets },
@@ -24,6 +23,8 @@ const FilterFacet = ({
   )
 
   const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key)
+
+  const hasSelections = Object.keys(values).find((facet) => values[facet])
 
   return (
     <>
@@ -41,8 +42,9 @@ const FilterFacet = ({
         <div>COUNT</div>
       </div>
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
-        {buckets.map(({ key, docCount }) => {
+        {buckets.map(({ key, docCount = 0 }) => {
           const offset = Math.ceil((docCount * 100) / largestCount)
+          const isSelected = values[key]
 
           return (
             <li key={key}>
@@ -50,19 +52,44 @@ const FilterFacet = ({
                 style={{
                   width: '100%',
                   flexDirection: 'row',
+                  backgroundColor: isSelected
+                    ? colors.signal.electricBlue.background
+                    : '',
+                  color: hasSelections
+                    ? colors.structure.zinc
+                    : colors.structure.white,
                   ':hover': {
                     backgroundColor: colors.signal.electricBlue.background,
+                    color: colors.structure.white,
                   },
                 }}
                 variant={VARIANTS.NEUTRAL}
-                onClick={() => {}}
+                onClick={() =>
+                  dispatch({
+                    action: ACTIONS.UPDATE_FILTER,
+                    payload: {
+                      projectId,
+                      assetId,
+                      filters,
+                      updatedFilter: {
+                        type,
+                        attribute,
+                        values: { ...values, [key]: !values[key] },
+                      },
+                      filterIndex,
+                    },
+                  })
+                }
               >
                 <div css={{ width: '100%' }}>
                   <div css={{ display: 'flex' }}>
                     <div
                       css={{
                         width: `${offset}%`,
-                        borderTop: constants.borders.facet,
+                        borderTop:
+                          !isSelected && hasSelections
+                            ? constants.borders.unselectedFacet
+                            : constants.borders.facet,
                       }}
                     />
                     <div
@@ -95,20 +122,20 @@ const FilterFacet = ({
 
 FilterFacet.propTypes = {
   projectId: PropTypes.string.isRequired,
-  //   assetId: PropTypes.string.isRequired,
-  //   filters: PropTypes.arrayOf(
-  //     PropTypes.shape({
-  //       type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-  //       attribute: PropTypes.string,
-  //       values: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  //     }).isRequired,
-  //   ).isRequired,
+  assetId: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
+      attribute: PropTypes.string,
+      values: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    }).isRequired,
+  ).isRequired,
   filter: PropTypes.shape({
     type: PropTypes.oneOf(['facet']).isRequired,
     attribute: PropTypes.string.isRequired,
     values: PropTypes.shape({ exists: PropTypes.bool }),
   }).isRequired,
-  //   filterIndex: PropTypes.number.isRequired,
+  filterIndex: PropTypes.number.isRequired,
 }
 
 export default FilterFacet
