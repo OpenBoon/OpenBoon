@@ -2,7 +2,7 @@ import pytest
 
 from django.urls import reverse
 from rest_framework import status
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from searches.models import Search
 from searches.filters import BaseFilter
@@ -396,24 +396,35 @@ class TestMetadataExportView:
     def test_get_large_export(self, login, api_client, monkeypatch, project):
         def yield_response(*args, **kwargs):
             for x in range(0, 10):
-                yield {
-                    "id": "00n-Vs_Lb3299-v9EdxdO3dr2DJp2jzz",
-                    "metadata": {
-                        "source": {
-                            "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/00001292_017.jpg",  # noqa
-                            "extension": "jpg",
-                            "filename": "00001292_017.jpg",
-                            "mimetype": "image/jpeg",
-                            "filesize": 103955,
-                            "checksum": 618508013
-                        }
+                m = Mock()
+                m.id = "00n-Vs_Lb3299-v9EdxdO3dr2DJp2jzz"
+                m.document = {
+                    "source": {
+                        "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/00001292_017.jpg",  # noqa
+                        "extension": "jpg",
+                        "filename": "00001292_017.jpg",
+                        "mimetype": "image/jpeg",
+                        "filesize": 103955,
+                        "checksum": 618508013
                     },
-                    "thumbnail_url": "http://localhost:8000/api/v1/projects/00000000-0000-0000-0000-000000000000/assets/00n-Vs_Lb3299-v9EdxdO3dr2DJp2jzz/files/category/web-proxy/name/web-proxy.jpg/"  # noqa
+                    "files": [
+                        {
+                            "id": "assets/00n-Vs_Lb3299-v9EdxdO3dr2DJp2jzz/web-proxy/web-proxy.jpg",
+                            "name": "web-proxy.jpg",
+                            "category": "web-proxy",
+                            "mimetype": "image/jpeg",
+                            "size": 37616,
+                            "attrs": {
+                                "width": 500,
+                                "height": 400
+                            }
+                        }
+                    ],
                 }
+                yield m
 
-        # For some reason this reverse totally breaks when inside the patched context manager...
         path = reverse('export-list', kwargs={'project_pk': project.id})
-        with patch.object(MetadataExportViewSet, '_yield_all_items_from_es', yield_response):
+        with patch('searches.views.AssetSearchScroller.scroll', yield_response):
             result = api_client.get(path, {})
 
         assert result.status_code == 200
