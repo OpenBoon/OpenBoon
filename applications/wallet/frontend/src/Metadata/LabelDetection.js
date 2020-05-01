@@ -55,10 +55,7 @@ const MetadataLabelDetection = ({ name, predictions }) => {
         >
           <thead>
             <tr>
-              {columns.map((column, index) => {
-                // make second to last column expand to push last column to the end
-                const shouldExpand = index === columns.length - 2
-
+              {columns.map((column) => {
                 return (
                   <td
                     key={column}
@@ -66,7 +63,6 @@ const MetadataLabelDetection = ({ name, predictions }) => {
                       fontFamily: 'Roboto Condensed',
                       textTransform: 'uppercase',
                       color: colors.structure.steel,
-                      width: shouldExpand ? '100%' : '',
                       paddingBottom: spacing.normal,
                       paddingLeft: 0,
                       '&:last-of-type': {
@@ -74,6 +70,7 @@ const MetadataLabelDetection = ({ name, predictions }) => {
                         whiteSpace: 'nowrap',
                         paddingRight: 0,
                       },
+                      '&:nth-last-of-type(2)': { width: '100%' },
                     }}
                   >
                     {column === 'score' ? 'confidence score' : column}

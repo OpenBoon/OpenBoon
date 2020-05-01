@@ -311,7 +311,6 @@ Array [
   font-family: Roboto Condensed;
   text-transform: uppercase;
   color: #808080;
-  width: 100%;
   padding-bottom: 16px;
   padding-left: 0;
 }
@@ -322,18 +321,8 @@ Array [
   padding-right: 0;
 }
 
-.emotion-2 {
-  font-family: Roboto Condensed;
-  text-transform: uppercase;
-  color: #808080;
-  padding-bottom: 16px;
-  padding-left: 0;
-}
-
-.emotion-2:last-of-type {
-  text-align: right;
-  white-space: nowrap;
-  padding-right: 0;
+.emotion-1:nth-last-of-type(2) {
+  width: 100%;
 }
 
 .emotion-5 {
@@ -382,7 +371,7 @@ Array [
             label
           </td>
           <td
-            className="emotion-2"
+            className="emotion-1"
           >
             confidence score
           </td>
@@ -593,18 +582,8 @@ exports[`<MetadataPrettyRow /> should render object detection predictions 1`] = 
   padding-right: 0;
 }
 
-.emotion-2 {
-  font-family: Roboto Condensed;
-  text-transform: uppercase;
-  color: #808080;
+.emotion-1:nth-last-of-type(2) {
   width: 100%;
-  padding-bottom: 16px;
-}
-
-.emotion-2:last-of-type {
-  text-align: right;
-  white-space: nowrap;
-  padding-right: 0;
 }
 
 .emotion-8 {
@@ -670,7 +649,7 @@ exports[`<MetadataPrettyRow /> should render object detection predictions 1`] = 
           bbox
         </td>
         <td
-          className="emotion-2"
+          className="emotion-1"
         >
           label
         </td>

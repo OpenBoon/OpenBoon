@@ -58,10 +58,7 @@ const MetadataObjectDetection = () => {
       >
         <thead>
           <tr>
-            {columns.map((column, index) => {
-              // make second to last column expand to push last column to the end
-              const shouldExpand = index === columns.length - 2
-
+            {columns.map((column) => {
               return (
                 <td
                   key={column}
@@ -69,13 +66,13 @@ const MetadataObjectDetection = () => {
                     fontFamily: 'Roboto Condensed',
                     textTransform: 'uppercase',
                     color: colors.structure.steel,
-                    width: shouldExpand ? '100%' : '',
                     paddingBottom: spacing.normal,
                     '&:last-of-type': {
                       textAlign: 'right',
                       whiteSpace: 'nowrap',
                       paddingRight: 0,
                     },
+                    '&:nth-last-of-type(2)': { width: '100%' },
                   }}
                 >
                   {column === 'score' ? 'confidence score' : column}
