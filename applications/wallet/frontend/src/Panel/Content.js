@@ -76,6 +76,7 @@ const PanelContent = ({
             display: 'flex',
             flexDirection: 'column',
             overflow: 'hidden',
+            flex: 1,
           }}
         >
           {content}
