@@ -21,3 +21,21 @@ class ZviFaceDetectionProcessorTests(PluginUnitTestCase):
         grouped = get_prediction_labels(analysis)
         assert 'face0' in grouped
         assert 'labels' == analysis['type']
+        assert analysis['predictions'][0]['simhash'] == 'JJJLMIOLPMONNKKOLLNOLMNLMLKGIP' \
+                                                        'KLINOPNKKSLMKNJNNQNOPNJPNLMLIL' \
+                                                        'OOOKPMMJOLNNLILNPJOOJLNKLNOLPM' \
+                                                        'PNLLKMOLKPMHOMJOOPNNMJPOKJLOKO' \
+                                                        'LIOPNLFOJNMHMKLPKOOONNMPNOOPLP' \
+                                                        'LLMOJJTPLONKHMPNMLNIOLOPMLMKJN' \
+                                                        'JNNNJPOLIKKJNNJKQPMOKLJMOKQLLN' \
+                                                        'LKMJJMMNQNMIQKPOJIMMPQLOPOJLIM' \
+                                                        'NJMNOPLPRJNNLMMKLILMNMMLKQKLHM' \
+                                                        'KLHLLNNJKMPKNOJIJMKQMLNKLNJLLO' \
+                                                        'LPNOMKMPKMNMNHNOMLLKNPPNLPONNR' \
+                                                        'POMPOMMQONOMKLNNLMLHJMOJLMOJNM' \
+                                                        'NQKMNLOMKMJONNHLLMMLPONKNOKLJQ' \
+                                                        'OKJLMJLJMLOLKOLMNKKKIKNLKLNMMO' \
+                                                        'MMMORONPNMNKPMJJPNGQJJNTOLMJLM' \
+                                                        'NPLMLJLLLNNLLNJMPOMINRNOLNHKMK' \
+                                                        'INSONRLMILOOMOOQNOOLNMMNQNKNKM' \
+                                                        'ML'
