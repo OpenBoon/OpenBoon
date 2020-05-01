@@ -347,7 +347,7 @@ class GcsClusterBackupService(
         client.snapshot().createAsync(request, RequestOptions.DEFAULT, listener)
     }
 
-    override fun restoreSnapshot(cluster: IndexCluster, snapshotName: String): RestoreSnapshotResponse{
+    override fun restoreSnapshot(cluster: IndexCluster, snapshotName: String): RestoreSnapshotResponse {
         val client = indexClusterService.getRestHighLevelClient(cluster)
         var repositoryName = getRepositoryName(cluster)
 
@@ -543,7 +543,7 @@ class S3ClusterBackupService(
         client.snapshot().createAsync(request, RequestOptions.DEFAULT, listener)
     }
 
-    override fun restoreSnapshot(cluster: IndexCluster, snapshotName: String): RestoreSnapshotResponse{
+    override fun restoreSnapshot(cluster: IndexCluster, snapshotName: String): RestoreSnapshotResponse {
         val client = indexClusterService.getRestHighLevelClient(cluster)
         var repositoryName = getRepositoryName(cluster)
 
