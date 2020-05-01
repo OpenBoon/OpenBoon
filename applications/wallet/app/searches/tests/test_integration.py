@@ -2,6 +2,7 @@ import pytest
 
 from django.urls import reverse
 from rest_framework import status
+from unittest.mock import patch, Mock
 
 from searches.models import Search
 from searches.filters import BaseFilter
@@ -391,3 +392,42 @@ class TestMetadataExportView:
         assert result.accepted_media_type == 'text/csv'
         assert result.content == b'extra_field,id,resolution.height,resolution.width\r\n,1,10,10\r\n,2,20,20\r\nTrue,4,30,30\r\n'  # noqa
         assert result.charset == 'utf-8'
+
+    def test_get_large_export(self, login, api_client, monkeypatch, project):
+        def yield_response(*args, **kwargs):
+            for x in range(0, 10):
+                m = Mock()
+                m.id = "00n-Vs_Lb3299-v9EdxdO3dr2DJp2jzz"
+                m.document = {
+                    "source": {
+                        "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/00001292_017.jpg",  # noqa
+                        "extension": "jpg",
+                        "filename": "00001292_017.jpg",
+                        "mimetype": "image/jpeg",
+                        "filesize": 103955,
+                        "checksum": 618508013
+                    },
+                    "files": [
+                        {
+                            "id": "assets/00n-Vs_Lb3299-v9EdxdO3dr2DJp2jzz/web-proxy/web-proxy.jpg",
+                            "name": "web-proxy.jpg",
+                            "category": "web-proxy",
+                            "mimetype": "image/jpeg",
+                            "size": 37616,
+                            "attrs": {
+                                "width": 500,
+                                "height": 400
+                            }
+                        }
+                    ],
+                }
+                yield m
+
+        path = reverse('export-list', kwargs={'project_pk': project.id})
+        with patch('searches.views.AssetSearchScroller.scroll', yield_response):
+            result = api_client.get(path, {})
+
+        assert result.status_code == 200
+        assert result.accepted_media_type == 'text/csv'
+        # 10 items, 1 header and 1 extra line from the split
+        assert len(result.content.decode('utf-8').split('\r\n')) == 12
