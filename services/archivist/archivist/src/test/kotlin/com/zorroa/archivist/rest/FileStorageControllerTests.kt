@@ -67,7 +67,7 @@ class FileStorageControllerTests : MockMvcTest() {
         val payload = """
             {
                 "entityId": "$id",
-                "entity": "asset",
+                "entity": "assets",
                 "category": "image",
                 "name": "toucan.jpg",
                 "attrs": {
@@ -104,7 +104,7 @@ class FileStorageControllerTests : MockMvcTest() {
         val payload = """
             {
                 "entityId": "$id",
-                "entity": "asset",
+                "entity": "assets",
                 "category": "image",
                 "name": "toucan.jpg",
                 "attrs": {
@@ -162,7 +162,7 @@ class FileStorageControllerTests : MockMvcTest() {
         val payload = """
             {
                 "entityId": "$id",
-                "entity": "asset",
+                "entity": "assets",
                 "category": "image",
                 "name": "toucan.jpg",
                 "attrs": {
@@ -202,7 +202,7 @@ class FileStorageControllerTests : MockMvcTest() {
         val payload = """
             {
                 "entityId": "${ds.id}",
-                "entity": "dataset",
+                "entity": "datasets",
                 "category": "image",
                 "name": "toucan.jpg",
                 "attrs": {
