@@ -468,7 +468,7 @@ class S3ClusterBackupService(
             Settings
                 .builder()
                 .put("bucket", bucket)
-                .put("base_path",getBasePath(cluster, basePath))
+                .put("base_path", getBasePath(cluster, basePath))
                 .put("compress", true)
 
         val putRepositoryRequest = PutRepositoryRequest()
