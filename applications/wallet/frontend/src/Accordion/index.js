@@ -11,21 +11,41 @@ const CHEVRON_WIDTH = 20
 
 const STYLES = {
   PRIMARY: {
-    wrapper: { paddingTop: spacing.normal },
-    backgroundColor: colors.structure.smoke,
-    boxShadow: constants.boxShadows.default,
-    verticalPadding: spacing.normal,
-    childrenWrapper: {
+    container: {
+      backgroundColor: colors.structure.smoke,
+      borderRadius: constants.borderRadius.small,
+    },
+    title: {
+      borderBottom: constants.borders.tabs,
+      paddingTop: spacing.normal,
+      paddingBottom: spacing.normal,
+      paddingLeft: spacing.moderate,
+      display: 'flex',
+      h4: {
+        fontWeight: typography.weight.bold,
+      },
+    },
+    content: {
       padding: spacing.spacious,
       paddingTop: spacing.normal,
     },
   },
   PANEL: {
-    wrapper: {},
-    backgroundColor: colors.structure.lead,
-    titleWeight: typography.weight.regular,
-    verticalPadding: spacing.moderate,
-    childrenWrapper: {
+    container: {
+      backgroundColor: colors.structure.lead,
+      borderRadius: constants.borderRadius.small,
+    },
+    title: {
+      borderBottom: constants.borders.tabs,
+      paddingTop: spacing.moderate,
+      paddingBottom: spacing.moderate,
+      paddingLeft: spacing.moderate,
+      display: 'flex',
+      h4: {
+        fontWeight: typography.weight.regular,
+      },
+    },
+    content: {
       width: '100%',
       backgroundColor: colors.structure.coal,
     },
@@ -41,54 +61,34 @@ const Accordion = ({ variant, title, children, isInitiallyOpen }) => {
   const [isOpen, setOpen] = useState(isInitiallyOpen)
 
   return (
-    <div css={STYLES[variant].wrapper}>
-      <div
-        css={{
-          backgroundColor: STYLES[variant].backgroundColor,
-          borderRadius: constants.borderRadius.small,
-          boxShadow: STYLES[variant].boxShadow,
-        }}
-      >
-        <div
+    <div css={STYLES[variant].container}>
+      <div css={STYLES[variant].title}>
+        <Button
+          aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
+          variant={BUTTON_VARIANTS.NEUTRAL}
+          onClick={() => setOpen(!isOpen)}
+        >
+          <ChevronSvg
+            width={CHEVRON_WIDTH}
+            color={colors.structure.steel}
+            css={{
+              transform: isOpen ? 'rotate(-180deg)' : '',
+              ':hover': { color: colors.structure.white },
+            }}
+          />
+        </Button>
+        <h4
           css={{
-            borderBottom: constants.borders.tabs,
-            paddingTop: STYLES[variant].verticalPadding,
-            paddingBottom: STYLES[variant].verticalPadding,
+            fontSize: typography.size.medium,
+            lineHeight: typography.height.medium,
             paddingLeft: spacing.moderate,
             display: 'flex',
           }}
         >
-          <Button
-            aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
-            variant={BUTTON_VARIANTS.NEUTRAL}
-            onClick={() => setOpen(!isOpen)}
-          >
-            <ChevronSvg
-              width={CHEVRON_WIDTH}
-              color={colors.structure.steel}
-              css={{
-                transform: isOpen ? 'rotate(-180deg)' : '',
-                ':hover': {
-                  color: colors.structure.white,
-                },
-              }}
-            />
-          </Button>
-          <h4
-            css={{
-              fontSize: typography.size.medium,
-              lineHeight: typography.height.medium,
-              paddingLeft: spacing.moderate,
-              display: 'flex',
-              alignItems: 'center',
-              fontWeight: STYLES[variant].titleWeight,
-            }}
-          >
-            {title}
-          </h4>
-        </div>
-        {isOpen && <div css={STYLES[variant].childrenWrapper}>{children}</div>}
+          {title}
+        </h4>
       </div>
+      {isOpen && <div css={STYLES[variant].content}>{children}</div>}
     </div>
   )
 }

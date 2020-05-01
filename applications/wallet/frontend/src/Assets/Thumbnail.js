@@ -1,7 +1,6 @@
+import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-
-import assetShape from '../Asset/shape'
 
 import { colors, constants } from '../Styles'
 
@@ -11,34 +10,27 @@ const AssetsThumbnail = ({
   asset: {
     id,
     metadata: {
-      files,
       source: { filename },
     },
+    thumbnailUrl,
   },
 }) => {
   const {
-    query: { projectId, id: selectedId, filters },
+    query: { projectId, id: selectedId, query },
   } = useRouter()
-
-  const { url: srcUrl, attrs: { width, height } = {} } =
-    files.find(({ mimetype }) => mimetype === 'image/jpeg') || {}
-
-  const srcSet = files
-    .filter(({ mimetype }) => mimetype === 'image/jpeg')
-    .map(({ url, attrs: { width: srcWidth } }) => `${url} ${srcWidth}w`)
-
-  const largestDimension = width > height ? 'width' : 'height'
 
   const isSelected = id === selectedId
 
   const queryParams = Object.entries({
     ...(isSelected ? {} : { id }),
-    ...(filters ? { filters } : {}),
+    ...(query ? { query } : {}),
   })
     .map(([key, value]) => `${key}=${value}`)
     .join('&')
 
   const queryString = queryParams ? `?${queryParams}` : ''
+
+  const { pathname: src } = new URL(thumbnailUrl)
 
   return (
     <div
@@ -72,21 +64,11 @@ const AssetsThumbnail = ({
             overflow: 'hidden',
           }}
         >
-          {srcUrl ? (
-            <img
-              css={{ [largestDimension]: '100%' }}
-              srcSet={srcSet.join(', ')}
-              src={srcUrl}
-              alt={filename}
-            />
-          ) : (
-            <img
-              srcSet="/icons/fallback.png 256w, /icons/fallback_2x.png 512w, /icons/fallback_3x.png 1024w"
-              alt={filename}
-              src="/icons/fallback.png"
-              css={{ width: '100%' }}
-            />
-          )}
+          <img
+            css={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            src={src}
+            alt={filename}
+          />
         </Button>
       </Link>
     </div>
@@ -94,7 +76,18 @@ const AssetsThumbnail = ({
 }
 
 AssetsThumbnail.propTypes = {
-  asset: assetShape.isRequired,
+  asset: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    metadata: PropTypes.shape({
+      source: PropTypes.shape({
+        path: PropTypes.string,
+        filename: PropTypes.string,
+        extension: PropTypes.string,
+        mimetype: PropTypes.string,
+      }),
+    }),
+    thumbnailUrl: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default AssetsThumbnail

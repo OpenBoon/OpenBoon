@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User
 from django.db import migrations
+from django.conf import settings
 
 
 def forwards(apps, schema_editor):
-    User.objects.create_superuser(username='software@zorroa.com', email='software@zorroa.com',
+    User.objects.create_superuser(username=settings.SUPERUSER_EMAIL, email=settings.SUPERUSER_EMAIL,
                                   password='admin', first_name='Admin', last_name='Adminson')
 
 

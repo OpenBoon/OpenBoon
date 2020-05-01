@@ -1,4 +1,5 @@
 import uuid
+
 from wallet.utils import convert_json_to_base64
 
 

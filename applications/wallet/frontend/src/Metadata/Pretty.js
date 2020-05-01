@@ -1,85 +1,122 @@
-import assetShape from '../Asset/shape'
+import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import { constants, spacing } from '../Styles'
 
-import Accordion, { VARIANTS } from '../Accordion'
+import MetadataPrettyRow from './PrettyRow'
 
-import { formatDisplayName, formatDisplayValue } from './helpers'
+const MetadataPretty = ({ metadata, section }) => {
+  if (section === 'metrics') {
+    return metadata.metrics.pipeline.map((pipeline, index) => {
+      const { processor, ...filteredPipeline } = pipeline
 
-const MetadataPretty = ({ asset: { metadata } }) => {
-  return (
-    <div css={{ overflow: 'auto' }}>
-      {Object.keys(metadata).map((section) => {
-        const title = formatDisplayName({ name: section })
-
-        if (['files', 'metrics', 'analysis'].includes(section)) return null
-
-        return (
-          <Accordion
-            key={section}
-            variant={VARIANTS.PANEL}
-            title={title}
-            isInitiallyOpen
+      return (
+        <div
+          // eslint-disable-next-line react/no-array-index-key
+          key={`${section}${index}`}
+          css={{
+            width: '100%',
+            '&:not(:first-of-type)': {
+              borderTop: constants.borders.prettyMetadata,
+            },
+          }}
+        >
+          <div
+            css={{ fontFamily: 'Roboto Condensed', padding: spacing.normal }}
           >
-            <table
-              css={{
-                borderCollapse: 'collapse',
-                width: '100%',
-              }}
-            >
-              <tbody>
-                {Object.entries(metadata[section]).map(
-                  ([key, value], index) => {
-                    return (
-                      <tr
-                        key={key}
-                        css={{
-                          borderTop:
-                            index !== 0 ? constants.borders.divider : '',
-                          ':hover': {
-                            backgroundColor:
-                              colors.signal.electricBlue.background,
-                          },
-                        }}
-                      >
-                        <td
-                          valign="top"
-                          css={{
-                            fontFamily: 'Roboto Condensed',
-                            color: colors.structure.steel,
-                            padding: spacing.normal,
-                          }}
-                        >
-                          <span title={`${title.toLowerCase()}.${key}`}>
-                            {formatDisplayName({ name: key })}
-                          </span>
-                        </td>
-                        <td
-                          valign="top"
-                          css={{
-                            fontFamily: 'Roboto Mono',
-                            color: colors.structure.pebble,
-                            padding: spacing.normal,
-                            wordBreak: 'break-all',
-                          }}
-                        >
-                          {formatDisplayValue({ key, value })}
-                        </td>
-                      </tr>
-                    )
-                  },
-                )}
-              </tbody>
-            </table>
-          </Accordion>
-        )
-      })}
+            PROCESSOR
+            <div css={{ paddingTop: spacing.base, fontFamily: 'Roboto Mono' }}>
+              {processor}
+            </div>
+          </div>
+          {Object.entries(filteredPipeline).map(([key, value]) => (
+            <MetadataPrettyRow
+              key={key}
+              name={key}
+              value={value}
+              path="metrics.pipeline"
+            />
+          ))}
+        </div>
+      )
+    })
+  }
+
+  if (Array.isArray(metadata[section])) {
+    return metadata[section].map((file, index) => (
+      <div
+        // eslint-disable-next-line react/no-array-index-key
+        key={`${section}${index}`}
+        css={{
+          width: '100%',
+          '&:not(:first-of-type)': {
+            borderTop: constants.borders.prettyMetadata,
+          },
+        }}
+      >
+        {Object.entries(file).map(([key, value]) => (
+          <MetadataPrettyRow
+            key={key}
+            name={key}
+            value={value}
+            path={section}
+          />
+        ))}
+      </div>
+    ))
+  }
+
+  return (
+    <div css={{ width: '100%' }}>
+      <div>
+        {Object.entries(metadata[section]).map(([key, value]) => {
+          return (
+            <MetadataPrettyRow
+              key={key}
+              name={key}
+              value={value}
+              path={section}
+            />
+          )
+        })}
+      </div>
     </div>
   )
 }
 
 MetadataPretty.propTypes = {
-  asset: assetShape.isRequired,
+  metadata: PropTypes.shape({
+    source: PropTypes.shape({
+      path: PropTypes.string,
+      filename: PropTypes.string,
+      extension: PropTypes.string,
+      mimetype: PropTypes.string,
+    }),
+    system: PropTypes.shape({
+      projectId: PropTypes.string,
+      dataSourceId: PropTypes.string,
+      jobId: PropTypes.string,
+      taskId: PropTypes.string,
+      timeCreated: PropTypes.string,
+      state: PropTypes.string,
+    }),
+    files: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string,
+        size: PropTypes.number,
+        name: PropTypes.string,
+        mimetype: PropTypes.string,
+        category: PropTypes.oneOf(['proxy', 'source', 'web-proxy']),
+        attrs: PropTypes.shape({
+          width: PropTypes.number,
+          height: PropTypes.number,
+        }),
+      }),
+    ),
+    metrics: PropTypes.shape({
+      pipeline: PropTypes.arrayOf(PropTypes.shape({})),
+    }),
+  }).isRequired,
+  section: PropTypes.string.isRequired,
 }
 
 export default MetadataPretty

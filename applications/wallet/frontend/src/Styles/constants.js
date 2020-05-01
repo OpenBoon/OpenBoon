@@ -11,16 +11,20 @@ const borders = {
   default: `1px solid ${colors.structure.mattGrey}`,
   transparent: `1px solid transparent`,
   separator: `1px solid ${colors.structure.zinc}`,
+  spacer: `1px solid ${colors.structure.coal}`,
   tabs: `1px solid ${colors.structure.iron}`,
   error: `2px solid ${colors.signal.warning.base}`,
   success: `1px solid ${colors.signal.grass.base}`,
   tableRow: `1px solid ${colors.structure.steel}`,
   input: `2px solid ${colors.key.one}`,
   divider: `1px solid ${colors.structure.smoke}`,
+  largeDivider: `4px solid ${colors.structure.smoke}`,
   pill: `2px solid ${colors.structure.steel}`,
   assetInactive: `4px solid ${colors.transparent}`,
   assetHover: `4px solid ${colors.structure.white}`,
   assetSelected: `4px solid ${colors.signal.electricBlue.base}`,
+  prettyMetadata: `4px solid ${colors.structure.iron}`,
+  facet: `4px solid ${colors.key.one}`,
 }
 
 const opacity = {

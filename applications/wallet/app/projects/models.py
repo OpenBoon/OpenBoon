@@ -14,12 +14,22 @@ logger = logging.getLogger(__name__)
 ROLES = [(role['name'], role['name'].replace('_', ' ')) for role in settings.ROLES]
 
 
+class ActiveProjectManager(models.Manager):
+    """Model manager that only returns projects that are active."""
+    def get_queryset(self):
+        return super(ActiveProjectManager, self).get_queryset().filter(is_active=True)
+
+
 class Project(models.Model):
     """Represents a ZMLP project."""
+    all_objects = models.Manager()
+    objects = ActiveProjectManager()
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=144)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='projects.Membership',
                                    related_name='projects')
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -38,7 +48,7 @@ class Project(models.Model):
         try:
             client.post('/api/v1/projects', body)
         except ZmlpDuplicateException:
-            logger.info('Project Zero already exists in ZMLP')
+            logger.info(f'Project {self.id} already exists in ZMLP')
 
 
 class Membership(models.Model):

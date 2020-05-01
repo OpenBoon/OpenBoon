@@ -22,4 +22,5 @@ cvlib
 matplotlib
 clarifai
 pytesseract
+facenet-pytorch
 

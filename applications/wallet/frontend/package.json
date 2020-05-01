@@ -99,13 +99,13 @@
     {
       "//": "all pages and chunks",
       "path": ".next/static/**/!(framework|commons|_app|_error|main|polyfill|webpack)*.js",
-      "maxSize": "17 kB"
+      "maxSize": "28 kB"
     }
   ],
   "dependencies": {
     "@emotion/babel-preset-css-prop": "10.0.27",
     "@emotion/core": "10.0.28",
-    "@sentry/browser": "5.15.4",
+    "@sentry/browser": "5.15.5",
     "@svgr/webpack": "5.3.1",
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "body-scroll-lock": "3.0.1",
@@ -116,8 +116,10 @@
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-aria-modal": "4.0.0",
+    "react-compound-slider": "2.5.0",
     "react-dom": "16.13.1",
     "react-json-pretty": "2.2.0",
+    "react-use-clipboard": "1.0.0",
     "react-virtualized-auto-sizer": "1.0.2",
     "react-window": "1.8.5",
     "react-window-infinite-loader": "1.0.5",
@@ -125,12 +127,12 @@
   },
   "devDependencies": {
     "babel-eslint": "10.1.0",
-    "babel-jest": "25.3.0",
+    "babel-jest": "25.4.0",
     "babel-plugin-macros": "2.8.0",
     "bundlesize": "0.18.0",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.1.0",
-    "eslint-config-prettier": "6.10.1",
+    "eslint-config-prettier": "6.11.0",
     "eslint-plugin-emotion": "10.0.27",
     "eslint-plugin-import": "2.20.2",
     "eslint-plugin-jsx-a11y": "6.2.3",
@@ -141,12 +143,12 @@
     "http-proxy-middleware": "1.0.3",
     "husky": "4.2.5",
     "import-all.macro": "3.0.0",
-    "jest": "25.3.0",
+    "jest": "25.4.0",
     "jest-emotion": "10.0.32",
     "jest-fetch-mock": "3.0.3",
-    "lint-staged": "10.1.6",
+    "lint-staged": "10.1.7",
     "morgan": "1.10.0",
-    "prettier": "2.0.4",
+    "prettier": "2.0.5",
     "react-test-renderer": "16.13.1",
     "webpack-bundle-analyzer": "3.7.0"
   }

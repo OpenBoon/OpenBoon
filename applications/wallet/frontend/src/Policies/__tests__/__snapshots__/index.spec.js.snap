@@ -82,13 +82,13 @@ exports[`<Policies /> should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  cursor: pointer;
+  padding-bottom: 16px;
+  padding-left: 0;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  cursor: pointer;
-  padding-bottom: 16px;
-  padding-left: 0;
 }
 
 .emotion-9 {
@@ -121,7 +121,6 @@ exports[`<Policies /> should render properly 1`] = `
 }
 
 .emotion-11 {
-  padding-left: 12px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -129,6 +128,7 @@ exports[`<Policies /> should render properly 1`] = `
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  padding-left: 12px;
 }
 
 .emotion-10 {

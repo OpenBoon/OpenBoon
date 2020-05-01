@@ -1,61 +1,40 @@
+import { useState } from 'react'
+import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
-import { colors, spacing } from '../Styles'
+import { decode } from './helpers'
 
-import { dispatch, ACTIONS } from './helpers'
-
-import SearchFilter from '../SearchFilter'
+import FiltersContent from './Content'
+import FiltersMenu from './Menu'
 
 const Filters = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   const {
-    query: { projectId, id: assetId = '', filters: f = '[]' },
+    query: { projectId, id: assetId = '', query },
   } = useRouter()
 
-  const filters = JSON.parse(f || '[]')
+  const { data: fields } = useSWR(
+    `/api/v1/projects/${projectId}/searches/fields/`,
+  )
 
-  return (
-    <div
-      css={{
-        flex: 1,
-        backgroundColor: colors.structure.lead,
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-        padding: spacing.small,
-      }}
-    >
-      <SearchFilter projectId={projectId} assetId={assetId} filters={filters} />
-      <ul css={{ padding: 0 }}>
-        {filters.map((filter, index) => (
-          <li
-            // eslint-disable-next-line react/no-array-index-key
-            key={`${filter.type}-${index}`}
-            css={{
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
-          >
-            • {filter.value}
-            <button
-              type="button"
-              onClick={() =>
-                dispatch({
-                  action: ACTIONS.DELETE_FILTER,
-                  payload: {
-                    projectId,
-                    assetId,
-                    filters,
-                    filterIndex: index,
-                  },
-                })
-              }
-            >
-              delete
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+  const filters = decode({ query })
+
+  return isMenuOpen ? (
+    <FiltersMenu
+      projectId={projectId}
+      assetId={assetId}
+      filters={filters}
+      fields={fields}
+      setIsMenuOpen={setIsMenuOpen}
+    />
+  ) : (
+    <FiltersContent
+      projectId={projectId}
+      assetId={assetId}
+      filters={filters}
+      setIsMenuOpen={setIsMenuOpen}
+    />
   )
 }
 

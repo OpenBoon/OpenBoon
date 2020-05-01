@@ -9,7 +9,7 @@ describe('<CheckboxGroup />', () => {
 
     const component = TestRenderer.create(
       <CheckboxGroup
-        variant={CHECKBOX_VARIANTS.PRIMARY}
+        variant={CHECKBOX_VARIANTS.MULTILINE}
         description="Tele Tele Scope"
         legend="Permissions"
         options={[

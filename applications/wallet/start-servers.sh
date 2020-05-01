@@ -12,8 +12,12 @@ done
 cd applications/wallet
 python3 ./app/manage.py migrate --no-input
 
-# Start the server.
+# Start django server.
 gunicorn -b :8080 wallet.wsgi &
+
+# Start node server.
 cd frontend
 npm start &
+
+# Start nginx gateway server
 nginx -g "daemon off;"
