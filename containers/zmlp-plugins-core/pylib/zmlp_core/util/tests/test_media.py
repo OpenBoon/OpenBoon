@@ -5,7 +5,8 @@ from unittest.mock import patch
 
 from zmlp.client import ZmlpClient
 from zmlp_core.util import media
-from zmlpsdk import file_storage
+from zmlpsdk import file_storage, StoredFile
+from zmlpsdk.storage import ProjectStorage
 from zmlpsdk.testing import zorroa_test_data, TestAsset
 
 IMAGE_EXR = zorroa_test_data('images/set06/SquaresSwirls.exr', False)
@@ -180,10 +181,10 @@ class ProxyFunctionTests(unittest.TestCase):
         }
     ]
 
-    @patch.object(ZmlpClient, 'upload_file')
-    def test_store_asset_proxy_unique(self, upload_patch):
+    @patch.object(ProjectStorage, 'store_file')
+    def test_store_asset_proxy_unique(self, store_patch):
         asset = TestAsset(IMAGE_JPG)
-        upload_patch.return_value = {
+        store_patch.return_value = StoredFile({
             'id': 'assets/123456/proxy/image_200x200.jpg',
             'name': 'image_200x200.jpg',
             'category': 'proxy',
@@ -192,12 +193,13 @@ class ProxyFunctionTests(unittest.TestCase):
                 'width': 200,
                 'height': 200
             }
-        }
+        })
+
         # Should only be added to list once.
         media.store_asset_proxy(asset, IMAGE_JPG, (200, 200))
         media.store_asset_proxy(asset, IMAGE_JPG, (200, 200))
 
-        upload_patch.return_value = {
+        store_patch.return_value = StoredFile({
             'id': 'assets/123456/proxy/image_200x200.mp4',
             'name': 'image_200x200.mp4',
             'category': 'proxy',
@@ -206,7 +208,8 @@ class ProxyFunctionTests(unittest.TestCase):
                 'width': 200,
                 'height': 200
             }
-        }
+        })
+
         media.store_asset_proxy(asset, VIDEO_MP4, (200, 200))
         assert 2 == len(asset.get_files())
 

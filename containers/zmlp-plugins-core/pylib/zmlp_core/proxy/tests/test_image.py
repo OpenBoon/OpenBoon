@@ -3,9 +3,10 @@ from unittest.mock import patch
 
 import pytest
 
-from zmlp import ZmlpClient, StoredFile
+from zmlp import StoredFile
 from zmlp_core.proxy.image import ImageProxyProcessor
 from zmlpsdk import Frame
+from zmlpsdk.storage import ProjectStorage
 from zmlpsdk.testing import TestAsset, PluginUnitTestCase, zorroa_test_data
 
 TOUCAN_PATH = zorroa_test_data("images/set01/toucan.jpg", uri=False)
@@ -48,18 +49,23 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
             self.init_processor(ImageProxyProcessor(), {'file_type': 'butts'})
         assert '"butts" is not a valid type' in error.value.args[0]
 
-    @patch.object(ZmlpClient, 'upload_file')
-    def test_process_large(self, post_patch):
+    @patch.object(ProjectStorage, 'store_file')
+    def test_process_large(self, store_patch):
         self.frame.asset.set_attr("source.path", BEER)
         self.frame.asset.set_attr('media.width', 3264)
         self.frame.asset.set_attr('media.height', 2448)
-        post_patch.side_effect = [self.storage_patch1, self.storage_patch2, self.storage_patch3]
+        store_patch.side_effect = [StoredFile(self.storage_patch1),
+                                   StoredFile(self.storage_patch2),
+                                   StoredFile(self.storage_patch3)]
         self.processor.process(self.frame)
         assert len(self.frame.asset.get_attr('files')) == 3
 
-    @patch.object(ZmlpClient, 'upload_file')
+    @patch.object(ProjectStorage, 'store_file')
     def test_process_small(self, post_patch):
-        post_patch.side_effect = [self.storage_patch1, self.storage_patch2, self.storage_patch3]
+        post_patch.side_effect = [
+            StoredFile(self.storage_patch1),
+            StoredFile(self.storage_patch2),
+            StoredFile(self.storage_patch3)]
         self.processor.process(self.frame)
         assert len(self.frame.asset.get_attr('files')) == 2
 
@@ -99,19 +105,22 @@ class ProxyIngestorUnitTestCase(PluginUnitTestCase):
         self.processor.process(frame)
         assert not frame.asset.get_attr("files")
 
-    @patch.object(ZmlpClient, 'upload_file')
+    @patch.object(ProjectStorage, 'store_file')
     def test_process_asset_without_media_namespace(self, post_patch):
-        post_patch.side_effect = [self.storage_patch1, self.storage_patch2, self.storage_patch3]
+        post_patch.side_effect = [StoredFile(self.storage_patch1),
+                                  StoredFile(self.storage_patch2),
+                                  StoredFile(self.storage_patch3)]
         self.frame.asset.set_attr('media', {})
         self.processor.process(self.frame)
 
         assert len(self.frame.asset.get_attr('files')) == 2
 
-    @patch.object(ZmlpClient, 'upload_file')
-    def test_create_web_optimized_proxy(self, post_patch):
-        post_patch.return_value = self.storage_patch1
+    @patch.object(ProjectStorage, 'store_file')
+    def test_create_web_optimized_proxy(self, store_patch):
+        store_patch.return_value = StoredFile(self.storage_patch1)
         prx = self.processor.make_web_optimized_proxy(self.frame.asset,
                                                       TOUCAN_PATH, (100, 100))
+
         assert StoredFile(self.storage_patch1) == prx
 
     def test_get_valid_sizes(self):

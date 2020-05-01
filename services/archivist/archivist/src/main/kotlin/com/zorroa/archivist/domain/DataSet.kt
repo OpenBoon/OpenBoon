@@ -52,7 +52,7 @@ class DataSet(
     val type: DataSetType,
 
     @Column(name = "time_created")
-    @ApiModelProperty("The time the DataSource was created.")
+    @ApiModelProperty("The time the DataSet was created.")
     val timeCreated: Long,
 
     @Column(name = "time_modified")
