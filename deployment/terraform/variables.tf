@@ -42,6 +42,10 @@ variable "google-oauth-client-id" {
   description = "Client ID to enable Google OAuth based login."
 }
 
+variable "marketplace-credentials" {
+  description = "GCP Service Account JSON key to use with the GCP Procurement API."
+}
+
 ## Generated Variables
 locals {
   region = "${var.country}-${var.region}"
