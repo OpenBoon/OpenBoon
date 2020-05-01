@@ -259,6 +259,9 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   overflow: hidden;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-9 {
@@ -633,6 +636,9 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   overflow: hidden;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 <div
