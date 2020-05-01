@@ -8,7 +8,7 @@ const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
 describe('<FilterFacetContent />', () => {
   it('should render selected', () => {
-    const filters = {
+    const filter = {
       attribute: 'location.city',
       type: 'facet',
       values: { Tyngsboro: true },
@@ -32,8 +32,8 @@ describe('<FilterFacetContent />', () => {
       <FilterFacetContent
         projectId={PROJECT_ID}
         assetId=""
-        filters={[filters]}
-        filter={filters}
+        filters={[filter]}
+        filter={filter}
         filterIndex={0}
       />,
     )
@@ -42,7 +42,7 @@ describe('<FilterFacetContent />', () => {
   })
 
   it('should render with no docCount', () => {
-    const filters = { attribute: 'location.city', type: 'facet', values: {} }
+    const filter = { attribute: 'location.city', type: 'facet', values: {} }
 
     require('swr').__setMockUseSWRResponse({
       data: {
@@ -62,8 +62,8 @@ describe('<FilterFacetContent />', () => {
       <FilterFacetContent
         projectId={PROJECT_ID}
         assetId=""
-        filters={[filters]}
-        filter={filters}
+        filters={[filter]}
+        filter={filter}
         filterIndex={0}
       />,
     )
