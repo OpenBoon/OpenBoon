@@ -13,6 +13,9 @@ variable "marketplace-project" {
 variable "marketplace-subscription" {
 }
 
+variable "marketplace-credentials" {
+}
+
 variable "sql-instance-name" {
 }
 

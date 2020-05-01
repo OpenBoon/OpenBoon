@@ -200,6 +200,7 @@ module "gcp-marketplace-integration" {
   google-oauth-client-id   = var.google-oauth-client-id
   marketplace-project      = "zorroa-marketplace"
   marketplace-subscription = "codelab"
+  marketplace-credentials  = var.marketplace-credentials
   fqdn                     = "https://wallet.zmlp.zorroa.com"
   environment              = "staging"
   inception-key-b64        = base64encode(local.inception-key)
