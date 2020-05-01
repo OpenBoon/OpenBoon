@@ -36,7 +36,7 @@ class ZviFaceDetectionProcessor(AssetProcessor):
 
         for i, elem in enumerate(zip(rects, confidences)):
             # Calculate a face similarity hash
-            img_embedding = self.resnet(img_cropped[0].unsqueeze(0))
+            img_embedding = self.resnet(img_cropped[i].unsqueeze(0))
             v_hash = np.clip(img_embedding.detach().numpy() + .25, 0, .5) * 50
             v_hash = v_hash.astype(int) + 65
             f_hash = "".join([chr(item) for item in v_hash[0]])
