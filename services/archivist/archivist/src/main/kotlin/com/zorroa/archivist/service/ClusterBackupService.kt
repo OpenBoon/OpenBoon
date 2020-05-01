@@ -15,6 +15,8 @@ import org.elasticsearch.action.admin.cluster.snapshots.create.CreateSnapshotRes
 import org.elasticsearch.action.admin.cluster.snapshots.delete.DeleteSnapshotRequest
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequest
 import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse
+import org.elasticsearch.action.admin.cluster.snapshots.restore.RestoreSnapshotRequest
+import org.elasticsearch.action.admin.cluster.snapshots.restore.RestoreSnapshotResponse
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.client.core.AcknowledgedResponse
@@ -44,24 +46,28 @@ interface ClusterBackupService {
 
     /**
      * Create a repository where the snapshots will be stored
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-repository.html
      * @param cluster: [IndexCluster] Cluster reference
      */
     fun createClusterRepository(cluster: IndexCluster)
 
     /**
      * Asynchronously Create a repository where the snapshots will be stored
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-repository.html
      * @param cluster: [IndexCluster] Cluster reference
      */
     fun createClusterRepositoryAsync(cluster: IndexCluster)
 
     /**
      * Get Cluster Repository
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-verify-repository.html
      * @param cluster: [IndexCluster] Cluster reference
      */
     fun getRepository(cluster: IndexCluster): GetRepositoriesResponse
 
     /**
      * Create a Snapshot Lifecycle Policy
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-ilm-slm-put-snapshot-lifecycle-policy.html
      * @param cluster: [IndexCluster] Cluster reference
      * @param policyId: [String] Policy Name
      * @param schedule: [String] Schedule String in Cron Syntax
@@ -82,6 +88,7 @@ interface ClusterBackupService {
 
     /**
      * Asynchronously Create a Snapshot Lifecycle Policy
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-ilm-slm-put-snapshot-lifecycle-policy.html
      * @param cluster: [IndexCluster] Cluster reference
      * @param policyId: [String] Policy Name
      * @param schedule: [String] Schedule String in Cron Syntax
@@ -102,6 +109,7 @@ interface ClusterBackupService {
 
     /**
      * Execute a snapshot using specified policy
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-ilm-slm-execute-snapshot-lifecycle-policy.html
      * @param cluster: [IndexCluster] Cluster reference
      * @param policyId: [String] Policy ID
      */
@@ -123,11 +131,14 @@ interface ClusterBackupService {
 
     /**
      * Generate a Repository Based on IndexCluster name
+     * @param cluster: Cluster which name will be generated
      */
     fun getRepositoryName(cluster: IndexCluster) = Base64.getEncoder().encodeToString(cluster.url.toByteArray())
 
     /**
-     * Get All Snapshots
+     * Get All Snapshots from a cluster
+     * @param cluster: [IndexCluster] Cluster
+     *
      */
     fun getSnapshots(cluster: IndexCluster): GetSnapshotsResponse
 
@@ -138,17 +149,24 @@ interface ClusterBackupService {
 
     /**
      * Create a Instant Snapshot of a Cluster
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-snapshot.html
      */
     fun createClusterSnapshot(cluster: IndexCluster, name: String?)
 
     /**
      * Asynchronously Create a Instant Snapshot of a Cluster
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-snapshot.html
      */
 
     fun createClusterSnapshotAsync(cluster: IndexCluster, name: String?)
 
     /**
-     *
+     * Restore Cluster State from a backup Snapshot
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-restore-snapshot.html
+     */
+    fun restoreSnapshot(cluster: IndexCluster, snapshotName: String): RestoreSnapshotResponse
+    /**
+     * Create a base path pattern. This path will contain the backup at the Bucket
      */
     fun getBasePath(indexCluster: IndexCluster, basePath: String): String {
         return "${indexCluster.id}/$basePath"
@@ -260,9 +278,6 @@ class GcsClusterBackupService(
     @Value("\${archivist.es.backup.gcs.base-path}")
     lateinit var basePath: String
 
-    /**
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-verify-repository.html
-     */
     override fun getRepository(cluster: IndexCluster): GetRepositoriesResponse {
         val client = indexClusterService.getRestHighLevelClient(cluster)
         return client.snapshot().getRepository(GetRepositoriesRequest(), RequestOptions.DEFAULT)
@@ -282,9 +297,6 @@ class GcsClusterBackupService(
             .verify(true)
     }
 
-    /**
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-repository.html
-     */
     override fun createClusterRepository(cluster: IndexCluster) {
         val client = indexClusterService.getRestHighLevelClient(cluster)
         val putRepositoryRequest = getCreateRepositoryRequest(client, cluster)
@@ -309,9 +321,6 @@ class GcsClusterBackupService(
         client.snapshot().createRepositoryAsync(putRepositoryRequest, RequestOptions.DEFAULT, listener)
     }
 
-    /**
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-snapshot.html
-     */
     override fun createClusterSnapshot(cluster: IndexCluster, name: String?) {
         val client = indexClusterService.getRestHighLevelClient(cluster)
 
@@ -320,9 +329,6 @@ class GcsClusterBackupService(
         logCreateSnapshot(cluster, request)
     }
 
-    /**
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-snapshot.html
-     */
     override fun createClusterSnapshotAsync(cluster: IndexCluster, name: String?) {
 
         val client = indexClusterService.getRestHighLevelClient(cluster)
@@ -341,9 +347,13 @@ class GcsClusterBackupService(
         client.snapshot().createAsync(request, RequestOptions.DEFAULT, listener)
     }
 
-    /**
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-ilm-slm-put-snapshot-lifecycle-policy.html
-     */
+    override fun restoreSnapshot(cluster: IndexCluster, snapshotName: String): RestoreSnapshotResponse{
+        val client = indexClusterService.getRestHighLevelClient(cluster)
+        var repositoryName = getRepositoryName(cluster)
+
+        val request = RestoreSnapshotRequest(repositoryName, snapshotName)
+        return client.snapshot().restore(request, RequestOptions.DEFAULT)
+    }
 
     override fun createClusterSnapshotPolicy(
         cluster: IndexCluster,
@@ -405,9 +415,6 @@ class GcsClusterBackupService(
         client.indexLifecycle().putSnapshotLifecyclePolicyAsync(policyRequest, RequestOptions.DEFAULT, listener)
     }
 
-    /**
-     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-ilm-slm-execute-snapshot-lifecycle-policy.html
-     */
     override fun executeClusterSnapshotPolicy(
         cluster: IndexCluster,
         policyId: String
@@ -534,6 +541,14 @@ class S3ClusterBackupService(
         }
 
         client.snapshot().createAsync(request, RequestOptions.DEFAULT, listener)
+    }
+
+    override fun restoreSnapshot(cluster: IndexCluster, snapshotName: String): RestoreSnapshotResponse{
+        val client = indexClusterService.getRestHighLevelClient(cluster)
+        var repositoryName = getRepositoryName(cluster)
+
+        val request = RestoreSnapshotRequest(repositoryName, snapshotName)
+        return client.snapshot().restore(request, RequestOptions.DEFAULT)
     }
 
     override fun getRepository(cluster: IndexCluster): GetRepositoriesResponse {
