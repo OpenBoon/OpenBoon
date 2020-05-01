@@ -16,6 +16,9 @@ def asset_modifier(request, item):
     if '_source' in item:
         item['id'] = item['_id']
         item['metadata'] = item['_source']
+        # We don't need to be passing around the data we just duplicated
+        del(item['_id'])
+        del(item['_source'])
     else:
         item['metadata'] = item['document']
 
