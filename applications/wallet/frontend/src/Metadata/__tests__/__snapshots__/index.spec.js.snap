@@ -256,16 +256,6 @@ Array [
   color: #2e2e2e;
 }
 
-.emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-0:hover {
-  color: #ffffff;
-}
-
 .emotion-2 {
   font-size: 17px;
   line-height: 20px;
@@ -274,6 +264,16 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.emotion-0 {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-0:hover {
+  color: #ffffff;
 }
 
 .emotion-5 {
