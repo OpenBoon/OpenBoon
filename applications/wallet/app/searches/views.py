@@ -9,6 +9,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_csv.renderers import CSVRenderer
+from zmlp.search import AssetSearchScroller
 
 from assets.views import asset_modifier
 from projects.views import BaseProjectViewSet
@@ -232,9 +233,9 @@ class MetadataExportViewSet(BaseProjectViewSet):
             _filter.is_valid(query=True, raise_exception=True)
         query = filter_boy.reduce_filters_to_query(_filters)
 
-        return self._get_all_items_from_es(request, base_url=path, search_filter=query)
+        return self._yield_all_items_from_es(request, base_url=path, search_filter=query)
 
-    def _get_all_items_from_es(self, request, base_url=None, search_filter={}):
+    def _yield_all_items_from_es(self, request, base_url=None, search_filter={}):
         """Helper to get all results from paginated responses from ZMLP.
 
         Given the search in `search_filter`, will return the results from ZMLP, making
@@ -249,26 +250,16 @@ class MetadataExportViewSet(BaseProjectViewSet):
                 the views default.
             search_filter (dict): An optional filter to use on the ZMLP request.
 
-        Returns:
-            (dict): All assets for the matching query
+        Yields:
+            (dict): All assets for the matching query, as a generator
         """
-        _from = 0
-        _size = 100
-        all_modified_items = []
-        while True:
-            search_filter['from'] = _from
-            search_filter['size'] = _size
-            content = self._zmlp_get_content_from_es_search(request, base_url=base_url,
-                                                            search_filter=search_filter)
-            items = self._get_modified_items_from_content(request, content,
-                                                          item_modifier=search_asset_modifier)
-            all_modified_items.extend(items)
-            if len(all_modified_items) < content['hits']['total']['value']:
-                _from += _size
-            else:
-                break
+        scroller = AssetSearchScroller(request.app, search_filter)
 
-        return all_modified_items
+        for item in scroller:
+            # Coerce the Asset into the form our item_modifiers expect
+            _data = {'_id': item.id, '_source': item.document}
+            search_asset_modifier(request, _data)
+            yield _data
 
     def list(self, request, project_pk):
         def dot_reducer(k1, k2):
@@ -279,9 +270,8 @@ class MetadataExportViewSet(BaseProjectViewSet):
                 return k1 + "." + k2
 
         # Create a list of flat dictionaries that represent the metadata for each asset.
-        assets = self._search_for_assets(request)
         flat_assets = []
-        for asset in assets:
+        for asset in self._search_for_assets(request):
             flat_asset = flatten(asset['metadata'], reducer=dot_reducer)
             flat_asset['id'] = asset['id']
             flat_assets.append(flat_asset)

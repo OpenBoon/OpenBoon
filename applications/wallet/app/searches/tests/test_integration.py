@@ -394,40 +394,29 @@ class TestMetadataExportView:
         assert result.charset == 'utf-8'
 
     def test_get_large_export(self, login, api_client, monkeypatch, project):
-        asset_response = {
-            "hits": {
-                "total": {
-                    "value": 10,
-                    "relation": "eq"
-                },
-                "max_score": 0.0,
-                "hits": [
-                    {"_index": "vlzfewar8odudgor", "_type": "_doc",
-                     "_id": "uQn0t9KSq0g_ZD6wYoh4wtF2cL7Fm7X2", "_score": 0.0, "_source": {
-                        "system": {"jobId": "a9a5e832-4136-1d6d-9830-0242ac15000a",
-                                   "dataSourceId": "a9a5e831-4136-1d6d-9830-0242ac15000a",
-                                   "timeCreated": "2020-04-29T23:11:34.684209Z",
-                                   "state": "Analyzed",
-                                   "projectId": "b8da81b2-49f4-4776-bb39-496f2ca525b5",
-                                   "taskId": "a9a5e833-4136-1d6d-9830-0242ac15000a",
-                                   "timeModified": "2020-04-29T23:13:08.318558Z"}, "source": {
-                            "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/00000901_004.jpg",  # noqa
-                            "extension": "jpg", "filename": "00000901_004.jpg",
-                            "mimetype": "image/jpeg", "filesize": 60767, "checksum": 458805194},
-                        "media": {"width": 450, "height": 338, "aspect": 1.33,
-                                  "orientation": "landscape", "type": "image", "length": 1}}}
-                ]
-            }
-        }
+        def yield_response(*args, **kwargs):
+            for x in range(0, 10):
+                yield {
+                    "id": "00n-Vs_Lb3299-v9EdxdO3dr2DJp2jzz",
+                    "metadata": {
+                        "source": {
+                            "path": "gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/cats/00001292_017.jpg",  # noqa
+                            "extension": "jpg",
+                            "filename": "00001292_017.jpg",
+                            "mimetype": "image/jpeg",
+                            "filesize": 103955,
+                            "checksum": 618508013
+                        }
+                    },
+                    "thumbnail_url": "http://localhost:8000/api/v1/projects/00000000-0000-0000-0000-000000000000/assets/00n-Vs_Lb3299-v9EdxdO3dr2DJp2jzz/files/category/web-proxy/name/web-proxy.jpg/"  # noqa
+                }
+
         # For some reason this reverse totally breaks when inside the patched context manager...
         path = reverse('export-list', kwargs={'project_pk': project.id})
-        with patch.object(MetadataExportViewSet, '_zmlp_get_content_from_es_search') as mock_search:
-            mock_search.return_value = asset_response
+        with patch.object(MetadataExportViewSet, '_yield_all_items_from_es', yield_response):
             result = api_client.get(path, {})
 
         assert result.status_code == 200
         assert result.accepted_media_type == 'text/csv'
         # 10 items, 1 header and 1 extra line from the split
         assert len(result.content.decode('utf-8').split('\r\n')) == 12
-        # Make sure the query was made 10 times
-        assert mock_search.call_count == 10
