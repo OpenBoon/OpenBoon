@@ -186,3 +186,23 @@ module "ml-bbq" {
   image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
   auth-server-url        = "http://${module.auth-server.ip-address}"
 }
+
+module "gcp-marketplace-integration" {
+  source = "./modules/gcp-marketplace-integration"
+  project                  = var.project
+  image-pull-secret        = kubernetes_secret.dockerhub.metadata[0].name
+  pg_host                  = module.postgres.ip-address
+  sql-instance-name        = module.postgres.instance-name
+  sql-service-account-key  = module.postgres.sql-service-account-key
+  sql-connection-name      = module.postgres.connection-name
+  zmlp-api-url             = "http://${module.api-gateway.ip-address}"
+  smtp-password            = var.smtp-password
+  google-oauth-client-id   = var.google-oauth-client-id
+  marketplace-project      = "zorroa-marketplace"
+  marketplace-subscription = "codelab"
+  marketplace-credentials  = var.marketplace-credentials
+  fqdn                     = "https://wallet.zmlp.zorroa.com"
+  environment              = "staging"
+  inception-key-b64        = base64encode(local.inception-key)
+  pg_password              = module.wallet.pg_password
+}
