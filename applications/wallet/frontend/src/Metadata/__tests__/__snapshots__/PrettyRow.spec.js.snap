@@ -219,13 +219,11 @@ Array [
 }
 
 .emotion-3 {
-  font-family: Roboto Mono;
-  color: #ffffff;
-  padding-bottom: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding-bottom: 8px;
 }
 
 .emotion-0 {
@@ -237,6 +235,8 @@ Array [
 }
 
 .emotion-4 {
+  font-family: Roboto Mono;
+  color: #ffffff;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -866,13 +866,11 @@ Array [
 }
 
 .emotion-3 {
-  font-family: Roboto Mono;
-  color: #ffffff;
-  padding-bottom: 8px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  padding-bottom: 8px;
 }
 
 .emotion-0 {

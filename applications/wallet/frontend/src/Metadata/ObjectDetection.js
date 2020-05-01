@@ -109,12 +109,7 @@ const MetadataObjectDetection = () => {
                 {columns.map((column) => {
                   if (column === 'bbox') {
                     return (
-                      <td
-                        key={column}
-                        css={{
-                          display: 'flex',
-                        }}
-                      >
+                      <td key={column} css={{ display: 'flex' }}>
                         <img
                           css={{
                             maxHeight: BBOX_SIZE,
