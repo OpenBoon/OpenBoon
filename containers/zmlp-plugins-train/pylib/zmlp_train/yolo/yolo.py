@@ -13,7 +13,7 @@ from keras.layers import (
     UpSampling2D,
 )
 from keras.layers.merge import add, concatenate
-from keras.models import Model
+from keras.models import Model, load_model
 import struct
 import cv2
 
@@ -949,11 +949,18 @@ def _main_(args):
     ]
 
     # make the yolov3 model to predict 80 classes on COCO
-    yolov3 = make_yolov3_model()
+    basepath = os.path.dirname(__file__)
+    path_model = f"{basepath}/data/yolo_model.h5"
+    try:
+        yolov3 = load_model(path_model)
+    except OSError:
+        yolov3 = make_yolov3_model()
 
-    # load the weights trained on COCO into the model
-    weight_reader = WeightReader(weights_path)
-    weight_reader.load_weights(yolov3)
+        # load the weights trained on COCO into the model
+        weight_reader = WeightReader(weights_path)
+        weight_reader.load_weights(yolov3)
+
+        yolov3.save(path_model)
 
     # preprocess the image
     image = cv2.imread(image_path)
