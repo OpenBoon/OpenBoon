@@ -55,6 +55,7 @@ const MetadataImageSimilarity = ({ name, simhash }) => {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
           }}
+          title={simhash}
         >
           {simhash}
         </div>
