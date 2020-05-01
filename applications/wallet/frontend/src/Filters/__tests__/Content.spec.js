@@ -57,7 +57,7 @@ describe('<FiltersContent />', () => {
   })
 
   it('should render the "Facet" filter', () => {
-    const filters = [{ attribute: 'location.city', type: 'facet' }]
+    const filters = [{ attribute: 'location.city', type: 'facet', values: {} }]
 
     require('swr').__setMockUseSWRResponse({ data: facetAggregate })
 
