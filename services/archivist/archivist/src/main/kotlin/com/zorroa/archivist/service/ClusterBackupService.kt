@@ -133,7 +133,7 @@ interface ClusterBackupService {
      * Generate a Repository Based on IndexCluster name
      * @param cluster: Cluster which name will be generated
      */
-    fun getRepositoryName(cluster: IndexCluster) = Base64.getEncoder().encodeToString(cluster.url.toByteArray())
+    fun getRepositoryName(cluster: IndexCluster) = cluster.id.toString()
 
     /**
      * Get All Snapshots from a cluster
