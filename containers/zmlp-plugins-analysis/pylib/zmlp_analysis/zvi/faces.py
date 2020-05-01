@@ -28,7 +28,7 @@ class ZviFaceDetectionProcessor(AssetProcessor):
 
         rects, confidences = self.mtcnn.detect(img)
 
-        if rects == []:
+        if confidences[0] is None:
             return
 
         img_cropped = self.mtcnn(img)
