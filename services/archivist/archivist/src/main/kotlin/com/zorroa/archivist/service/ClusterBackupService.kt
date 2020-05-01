@@ -34,7 +34,6 @@ import org.elasticsearch.repositories.fs.FsRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
-import java.util.Base64
 import java.util.Date
 import java.util.HashMap
 
