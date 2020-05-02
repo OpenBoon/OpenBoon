@@ -11,7 +11,7 @@ Workbench is a Jupyter notebook server that runs concurrently with the rest of Z
 ### Build the docker container
 
 ```
-docker buildx bake -f docker-compose.yml
+docker build . -t 'zmlp/workbench'
 ```
 
 ### Run
