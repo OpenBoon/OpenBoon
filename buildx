@@ -13,7 +13,9 @@ def main():
     parser.add_argument('--core', '-c', action='store_true',
                         help='Build zmlp-plugins-core and SDK requirements')
     parser.add_argument('--jvm', '-j', action='store_true',
-                        help='Build JVM services')
+                        help='Build Python services')
+    parser.add_argument('--plugins', '-p', action='store_true',
+                        help='Build full plugins stack')
     parser.add_argument('--analysis', '-a', action='store_true',
                         help='Build zmlp-plugins-analysis and SDK requirements')
     parser.add_argument('--list', '-l', action='store_true',
@@ -24,6 +26,15 @@ def main():
         containers = set(args.containers)
     else:
         containers = set()
+
+    if args.plugins:
+        containers.update(['zmlp-py3-client',
+                           'zmlp-py3-sdk',
+                           'zmlp-plugins-base',
+                           'zmlp-plugins-core',
+                           'zmlp-plugins-models',
+                           'zmlp-plugins-analysis',
+                           'zmlp-plugins-train'])
 
     if args.core:
         containers.update(['zmlp-py3-client',
