@@ -52,7 +52,6 @@ def crop_image_poly(image, poly, width=256, color=(255, 0, 0), thickness=3):
 
     poly = [(i > 0) * i for i in poly]
 
-    st.sidebar.text(poly)
     # If poly is four numbers, assume it's a bounding box. Otherwise it's a polygon
     if len(poly) == 4:
         x1 = int(poly[0] * xr)
@@ -89,39 +88,6 @@ def crop_image_poly(image, poly, width=256, color=(255, 0, 0), thickness=3):
     return resized
 
 
-def do_similarity(f):
-
-    app = app_from_env()
-
-    if len(f) == 2048:
-        sim_hash = f
-    else:
-        sim_hash = app.client.upload_files("/ml/v1/sim-hash", [f], body=None)
-
-    q = {
-        "size": 16,
-        "query": {
-            "bool": {
-                "must": [
-                    SimilarityQuery(sim_hash, min_score=0.1)
-                ]
-            }
-        }
-    }
-
-    sim_search = app.assets.search(q)
-
-    paths = []
-    images = []
-    for a in sim_search.assets:
-        name = 'tmp/' + str(a.id) + '.jpg'
-        paths.append(name)
-        im = download_proxy(a, 0)
-        im = cv2.resize(im, None, fx=.5, fy=.5)
-        images.append(im)
-
-    st.image(images)
-
 app = app_from_env()
 
 query = {"size": 10000, "query": {"exists": {"field": "analysis.zvi-face-detection.type"}}}
@@ -130,7 +96,7 @@ count = len(search.assets)
 
 
 
-saved = []
+saved = [0, 832, 281, 619, 732, 842, 913]
 
 
 saved_search = st.sidebar.selectbox('Saved Assets', saved)
@@ -138,8 +104,7 @@ saved_search = st.sidebar.selectbox('Saved Assets', saved)
 
 image_index = st.slider('Image', 0, count-1, saved_search)
 draw_boxes = st.sidebar.checkbox('Draw Boxes')
-random_boxes = st.sidebar.checkbox('Random Boxes')
-#min_conf = st.sidebar.slider('Min Confidence', 0., 1., .01)
+conf_thresh = st.sidebar.slider('Min Confidence', 0., 1., .01)
 #max_conf = st.sidebar.slider('Max Confidence', 0., 1., 1.)
 
 min_conf = 0
@@ -156,26 +121,6 @@ yr = img.shape[0]
 xr = img.shape[1]
 
 
-if random_boxes:
-    # Overwrite the detections
-    detections = {}
-    detections['predictions'] = []
-    n_boxes = 10
-    random.seed(image_index)
-    for i in range(0, n_boxes):
-        x1 = random.random() * .85
-        y1 = random.random() * .85
-        x2 = x1 + random.random() * .35 + .1
-        y2 = y1 + random.random() * .35 + .1
-        if x2 > 1: x2 = 1
-        if y2 > 1: y2 = 1
-
-        det = {}
-        det['bbox'] = (x1, y1, x2, y2)
-        det['score'] = 1
-        det['label'] = ' '
-        detections['predictions'].append(det)
-
 if draw_boxes:
     for pred in detections['predictions']:
         if pred['score'] >= min_conf and pred['score'] <= max_conf:
@@ -183,14 +128,13 @@ if draw_boxes:
             y1 = int(pred['bbox'][1] * yr)
             x2 = int(pred['bbox'][2] * xr)
             y2 = int(pred['bbox'][3] * yr)
-            cv2.rectangle(img_draw, (x1, y1), (x2, y2), (255,0,0), 2)
-            cv2.putText(img_draw, pred['label'], (x1, y1-10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,0), 2)
+            color = (0, 255, 0)
+            if pred['score'] < conf_thresh:
+                color = (0, 0, 255)
+            cv2.rectangle(img_draw, (x1, y1), (x2, y2), color, 2)
+            cv2.putText(img_draw, pred['label'], (x1, y1-10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
 
 st.image(img_draw)
-
-if st.sidebar.button('Similarity Search'):
-    sim_hash = asset.document['analysis']['zvi-image-similarity']['simhash']
-    do_similarity(sim_hash)
 
 st.sidebar.markdown('---')
 
@@ -201,8 +145,6 @@ for i, pred in enumerate(detections['predictions']):
     cv2.imwrite(crop_name, crop)
 
     st.sidebar.image(crop)
-    st.sidebar.text(pred['label'])
-    if st.sidebar.button('Search', key='sim'+str(i)):
-        do_similarity(crop_name)
+    st.sidebar.text(pred['score'])
     st.sidebar.markdown('---')
 
