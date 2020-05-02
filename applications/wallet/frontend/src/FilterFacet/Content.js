@@ -31,6 +31,44 @@ const FilterFacet = ({
       <div
         css={{
           display: 'flex',
+          paddingTop: spacing.base,
+          paddingBottom: spacing.base,
+        }}
+      >
+        <div css={{ flex: 1 }} />
+        <Button
+          style={{
+            width: '100%',
+            color: colors.structure.zinc,
+            fontFamily: 'Roboto Condensed',
+            ':hover': {
+              color: colors.structure.white,
+            },
+          }}
+          variant={VARIANTS.NEUTRAL}
+          onClick={() =>
+            dispatch({
+              action: ACTIONS.UPDATE_FILTER,
+              payload: {
+                projectId,
+                assetId,
+                filters,
+                updatedFilter: {
+                  type,
+                  attribute,
+                  values: {},
+                },
+                filterIndex,
+              },
+            })
+          }
+        >
+          RESET
+        </Button>
+      </div>
+      <div
+        css={{
+          display: 'flex',
           justifyContent: 'space-between',
           paddingTop: spacing.base,
           paddingBottom: spacing.base,
