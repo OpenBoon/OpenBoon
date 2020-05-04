@@ -74,6 +74,17 @@ describe('<FiltersContent />', () => {
       component.root
         .findAllByProps({ variant: 'NEUTRAL' })[1]
         .props.onClick({ preventDefault: noop })
+      component.root
+        .findAllByProps({ variant: 'NEUTRAL' })[2]
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ children: 'RESET' })
+        .props.onClick({ preventDefault: noop })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
