@@ -25,6 +25,7 @@ import asset from './src/Asset/__mocks__/asset'
 import providers from './src/Providers/__mocks__/providers'
 import subscriptions from './src/Subscriptions/__mocks__/subscriptions'
 import roles from './src/Roles/__mocks__/roles'
+import fields from './src/Filters/__mocks__/fields'
 
 const { STAGING, SLOW, MOCKED } = process.env
 
@@ -56,10 +57,6 @@ app.prepare().then(() => {
     server.get(
       '/api/v1/projects/:projectId/task_errors/:errorId/',
       mock(jobErrorNonFatal),
-    )
-    server.get(
-      '/api/v1/projects/:projectId/assets/:assetId/',
-      mock(assets.results[0]),
     )
 
     const userpatch = { ...user, firstName: 'David', lastName: 'Smith' }
@@ -93,12 +90,13 @@ app.prepare().then(() => {
     server.patch(`${PID_API_BASE}/users/:userId/`, mock(projectUser))
     server.post(`${PID_API_BASE}/users/`, mock(projectUsersAdd))
 
-    server.get(`${PID_API_BASE}/assets/`, mock(assets))
+    server.get(`${PID_API_BASE}/searches/query/`, mock(assets))
     server.get(`${PID_API_BASE}/assets/:assetId/`, mock(asset))
 
     server.get(`${PID_API_BASE}/providers/`, mock(providers))
     server.get(`${PID_API_BASE}/subscriptions/`, mock(subscriptions))
     server.get(`${PID_API_BASE}/roles/`, mock(roles))
+    server.get(`${PID_API_BASE}/searches/fields/`, mock(fields))
   }
 
   // Proxy API calls

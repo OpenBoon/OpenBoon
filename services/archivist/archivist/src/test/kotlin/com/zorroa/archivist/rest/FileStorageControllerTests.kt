@@ -39,7 +39,7 @@ class FileStorageControllerTests : MockMvcTest() {
             )
         )
         val id = rsp.created[0]
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET,
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS,
             id, ProjectStorageCategory.PROXY, "bob.jpg")
         val storage = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         projectStorageService.store(storage)
@@ -51,6 +51,96 @@ class FileStorageControllerTests : MockMvcTest() {
         )
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE))
+            .andReturn()
+    }
+
+    @Test
+    fun testGetSignedUploadUri() {
+
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val rsp = assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                assets = listOf(spec)
+            )
+        )
+        val id = rsp.created[0]
+        val payload = """
+            {
+                "entityId": "$id",
+                "entity": "assets",
+                "category": "image",
+                "name": "toucan.jpg",
+                "attrs": {
+                    "foo": "bar"
+                }
+            }
+        """.trimIndent()
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/files/_signed_upload_uri")
+                .content(payload)
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(job())
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.uri", CoreMatchers.anything()))
+            .andReturn()
+    }
+
+    @Test
+    fun testSetAttrs() {
+
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val rsp = assetService.batchCreate(
+            BatchCreateAssetsRequest(
+                assets = listOf(spec)
+            )
+        )
+        val id = rsp.created[0]
+        val file = MockMultipartFile(
+            "file", "toucan.jpg", "image/jpeg",
+            File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
+        )
+
+        val payload = """
+            {
+                "entityId": "$id",
+                "entity": "assets",
+                "category": "image",
+                "name": "toucan.jpg",
+                "attrs": {
+                    "foo": "bar"
+                }
+            }
+        """.trimIndent()
+
+        val body = MockMultipartFile(
+            "body", "",
+            "application/json",
+            payload.toByteArray()
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.multipart("/api/v3/files/_upload")
+                .file(body)
+                .file(file)
+                .headers(job())
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.category", CoreMatchers.equalTo("image")))
+            .andExpect(jsonPath("$.name", CoreMatchers.equalTo("toucan.jpg")))
+            .andExpect(jsonPath("$.size", CoreMatchers.equalTo(97221)))
+            .andReturn()
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/files/_attrs")
+                .content(payload)
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(job())
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.category", CoreMatchers.equalTo("image")))
+            .andExpect(jsonPath("$.name", CoreMatchers.equalTo("toucan.jpg")))
+            .andExpect(jsonPath("$.size", CoreMatchers.equalTo(97221)))
             .andReturn()
     }
 
@@ -72,7 +162,7 @@ class FileStorageControllerTests : MockMvcTest() {
         val payload = """
             {
                 "entityId": "$id",
-                "entity": "asset",
+                "entity": "assets",
                 "category": "image",
                 "name": "toucan.jpg",
                 "attrs": {
@@ -112,7 +202,7 @@ class FileStorageControllerTests : MockMvcTest() {
         val payload = """
             {
                 "entityId": "${ds.id}",
-                "entity": "dataset",
+                "entity": "datasets",
                 "category": "image",
                 "name": "toucan.jpg",
                 "attrs": {

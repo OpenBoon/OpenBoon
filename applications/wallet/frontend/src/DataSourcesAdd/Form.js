@@ -133,8 +133,9 @@ const DataSourcesAddForm = () => {
             initialValue: false,
             isDisabled: false,
           }))}
-          variant={CHECKBOX_VARIANTS.SECONDARY}
+          variant={CHECKBOX_VARIANTS.INLINE}
         />
+        <div css={{ height: spacing.base }} />
 
         <SectionTitle>Select Analysis</SectionTitle>
 
@@ -143,7 +144,6 @@ const DataSourcesAddForm = () => {
         </SectionSubTitle>
 
         <DataSourcesAddAutomaticAnalysis />
-
         {providers.map((provider) => (
           <DataSourcesAddProvider
             key={provider.name}

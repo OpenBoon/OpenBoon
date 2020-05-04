@@ -124,6 +124,7 @@ services:
     depends_on:
       - zmlp-jvm-common
       - minio
+      - redis
     build:
       context: services/officer
     ports:
@@ -132,6 +133,7 @@ services:
       ZMLP_STORAGE_PIPELINE_URL: http://minio:9000
       ZMLP_STORAGE_PIPELINE_ACCESSKEY: qwerty123
       ZMLP_STORAGE_PIPELINE_SECRETKEY: 123qwerty
+      REDIS_HOST: redis:6379
 
   analyst:
     image: zmlp/analyst:latest
@@ -148,7 +150,7 @@ services:
       ANALYST_DOCKER_PULL: "false"
       ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
       ZMLP_SERVER: http://archivist:8080
-      OFFICER_URL: http://localhost
+      OFFICER_URL: http://officer:7078
 
   # Console web application.
   wallet:
@@ -225,6 +227,14 @@ services:
       - zmlp-plugins-base
     build:
       context: containers/zmlp-plugins-models
+    command: echo
+
+  zmlp-plugins-train:
+    image: zmlp/plugins-train:latest
+    depends_on:
+      - zmlp-plugins-models
+    build:
+      context: containers/zmlp-plugins-train
     command: echo
 
   zmlp-plugins-analysis:

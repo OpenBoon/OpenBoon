@@ -147,14 +147,21 @@ class TestAssetStorage(TestCase):
     def tearDown(self):
         self.fs.cache.clear()
 
-    @patch.object(ZmlpClient, 'upload_file')
-    def test_store_file(self, upload_patch):
-        upload_patch.return_value = {
-            'name': 'cat.jpg',
-            'category': 'proxy',
-            'attrs': {},
-            'id': 'assets/123456/proxy/cat.jpg'
+    @patch.object(ZmlpClient, 'put')
+    @patch('requests.put')
+    @patch.object(ZmlpClient, 'post')
+    def test_store_file(self, post_patch, req_put_patch, put_patch):
+        post_patch.return_value = {
+            'uri': "http://localhost:9999/foo/bar/signed",
+            'mediaType': "image/jpeg"
         }
+        req_put_patch.return_value = MockResponse()
+        put_patch.return_value = {
+            "id": "12345",
+            "name": "cat.jpg",
+            "category": "proxy"
+        }
+
         asset = TestAsset(id='123456')
         result = self.fs.assets.store_file(
             zorroa_test_data('images/set01/toucan.jpg', uri=False), asset, 'test')
@@ -210,14 +217,22 @@ class TestProjectStorage(TestCase):
     def tearDown(self):
         self.fs.cache.clear()
 
-    @patch.object(ZmlpClient, 'upload_file')
-    def test_store_file_with_rename(self, upload_patch):
-        upload_patch.return_value = {
+    @patch.object(ZmlpClient, 'put')
+    @patch('requests.put')
+    @patch.object(ZmlpClient, 'post')
+    def test_store_file_with_rename(self, post_patch, req_put_patch, put_patch):
+        post_patch.return_value = {
+            'uri': "http://localhost:9999/foo/bar/signed",
+            'mediaType': "image/jpeg"
+        }
+        req_put_patch.return_value = MockResponse()
+        put_patch.return_value = {
             'id': 'datasets/12345/face_model/celebs.dat',
             'name': 'celebs.dat',
             'category': 'face_model',
             'entity': 'assets'
         }
+
         path = os.path.dirname(__file__) + '/fake_model.dat'
         ds = DataSet({"id": "12345"})
         result = self.fs.projects.store_file(
@@ -225,9 +240,16 @@ class TestProjectStorage(TestCase):
         assert 'celebs.dat' == result.name
         assert 'face_model' == result.category
 
-    @patch.object(ZmlpClient, 'upload_file')
-    def test_store_file(self, upload_patch):
-        upload_patch.return_value = {
+    @patch.object(ZmlpClient, 'put')
+    @patch('requests.put')
+    @patch.object(ZmlpClient, 'post')
+    def test_store_file(self, post_patch, req_put_patch, put_patch):
+        post_patch.return_value = {
+            'uri': "http://localhost:9999/foo/bar/signed",
+            'mediaType': "image/jpeg"
+        }
+        req_put_patch.return_value = MockResponse()
+        put_patch.return_value = {
             'id': "asset/foo/fake/fake_model.dat",
             'name': 'fake_model.dat',
             'category': 'fake'
@@ -235,6 +257,26 @@ class TestProjectStorage(TestCase):
         ds = DataSet({"id": "12345"})
         path = os.path.dirname(__file__) + '/fake_model.dat'
         result = self.fs.projects.store_file(path, ds, 'model', 'fake_model.dat')
+        assert 'fake_model.dat' == result.name
+        assert 'fake' == result.category
+
+    @patch.object(ZmlpClient, 'put')
+    @patch('requests.put')
+    @patch.object(ZmlpClient, 'post')
+    def test_store_file_by_id(self, post_patch, req_put_patch, put_patch):
+        post_patch.return_value = {
+            'uri': "http://localhost:9999/foo/bar/signed",
+            'mediaType': "image/jpeg"
+        }
+        req_put_patch.return_value = MockResponse()
+        put_patch.return_value = {
+            'id': "asset/foo/fake/fake_model.dat",
+            'name': 'fake_model.dat',
+            'category': 'fake'
+        }
+        path = os.path.dirname(__file__) + '/fake_model.dat'
+        fid = "dataset/12345/model/fake_model.dat"
+        result = self.fs.projects.store_file_by_id(path, fid, attrs={'foo': 'bar'})
         assert 'fake_model.dat' == result.name
         assert 'fake' == result.category
 
@@ -261,3 +303,11 @@ class TestProjectStorage(TestCase):
         post_patch.return_value = '/tmp/cat.jpg'
         self.fs.projects.localize_file(pfile)
         assert 'assets/123456/proxy/cat.jpg' in post_patch.call_args_list[0][0][0]
+
+
+class MockResponse:
+    """
+    A mock requests response.
+    """
+    def raise_for_status(self):
+        pass

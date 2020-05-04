@@ -106,14 +106,14 @@ exports[`<Panel /> should render properly opening to the left 1`] = `
 `;
 
 exports[`<Panel /> should render properly opening to the left 2`] = `
-.emotion-6 {
+.emotion-7 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
   background-color: #252525;
 }
 
-.emotion-5 {
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -152,21 +152,21 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   color: #73b61c;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-5[aria-disabled=true] {
+.emotion-6[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-5:hover {
+.emotion-6:hover {
   color: #ffffff;
   background-color: #2e2e2e;
 }
 
-.emotion-4 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -176,6 +176,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  background-color: #252525;
 }
 
 .emotion-3 {
@@ -191,7 +192,6 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background-color: #252525;
   padding: 8px;
   border-bottom: 1px solid #3b3b3b;
 }
@@ -250,7 +250,21 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   color: #ffffff;
 }
 
-.emotion-8 {
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -258,7 +272,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
   box-shadow: -3px 0 3px 0px rgba(0,0,0,0.3);
 }
 
-.emotion-7 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -276,7 +290,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
 }
 
 <div
-  className="emotion-8"
+  className="emotion-9"
 >
   <Resizeable
     minWidth={400}
@@ -285,7 +299,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
     storageName="leftOpeningPanelWidth"
   >
     <div
-      className="emotion-4"
+      className="emotion-5"
     >
       <div
         className="emotion-3"
@@ -309,15 +323,19 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
           />
         </button>
       </div>
-      
+      <div
+        className="emotion-4"
+      >
+        
+      </div>
     </div>
   </Resizeable>
   <div
-    className="emotion-7"
+    className="emotion-8"
   >
     <button
       aria-label="Metadata"
-      className="emotion-5"
+      className="emotion-6"
       onClick={[Function]}
       type="button"
     >
@@ -328,7 +346,7 @@ exports[`<Panel /> should render properly opening to the left 2`] = `
       />
     </button>
     <div
-      className="emotion-6"
+      className="emotion-7"
     />
   </div>
 </div>
@@ -440,7 +458,7 @@ exports[`<Panel /> should render properly opening to the right 1`] = `
 `;
 
 exports[`<Panel /> should render properly opening to the right 2`] = `
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -519,7 +537,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-7 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -529,6 +547,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  background-color: #252525;
 }
 
 .emotion-6 {
@@ -544,7 +563,6 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background-color: #252525;
   padding: 8px;
   border-bottom: 1px solid #3b3b3b;
 }
@@ -609,8 +627,22 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
   transform: rotate(180deg);
 }
 
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
 <div
-  className="emotion-8"
+  className="emotion-9"
 >
   <div
     className="emotion-2"
@@ -638,7 +670,7 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
     storageName="rightOpeningPanelWidth"
   >
     <div
-      className="emotion-7"
+      className="emotion-8"
     >
       <div
         className="emotion-6"
@@ -662,7 +694,11 @@ exports[`<Panel /> should render properly opening to the right 2`] = `
           />
         </button>
       </div>
-      
+      <div
+        className="emotion-7"
+      >
+        
+      </div>
     </div>
   </Resizeable>
 </div>

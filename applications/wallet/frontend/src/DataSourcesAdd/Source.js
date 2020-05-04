@@ -61,7 +61,7 @@ const DataSourcesAddSource = ({
       >
         Source type <span css={{ color: colors.signal.warning.base }}>*</span>
       </label>
-      <div css={{ paddingTop: spacing.small }}>
+      <div css={{ paddingTop: spacing.base, paddingBottom: spacing.base }}>
         <select
           name="sources"
           id="source-selection"
@@ -153,6 +153,7 @@ const DataSourcesAddSource = ({
                 label={label}
                 type="text"
                 value={credentials[source][key].value}
+                style={{ paddingTop: 0 }}
                 onChange={({ target: { value } }) => {
                   const errorMessage =
                     isRequired && value === ''

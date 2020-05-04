@@ -2,6 +2,7 @@ import mimetypes
 
 import requests
 from django.http import StreamingHttpResponse
+from django.utils.cache import patch_response_headers, patch_cache_control
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -12,27 +13,17 @@ from wallet.paginators import ZMLPFromSizePagination
 
 
 def asset_modifier(request, item):
-    current_url = request.build_absolute_uri(request.path)
     if '_source' in item:
         item['id'] = item['_id']
         item['metadata'] = item['_source']
+        # We don't need to be passing around the data we just duplicated
+        del(item['_id'])
+        del(item['_source'])
     else:
-        # Normalize the current URL
-        current_url = current_url.replace(f'{item["id"]}/', '')
         item['metadata'] = item['document']
 
-    # Now add the asset id
-    current_url = f'{current_url}{item["id"]}/'
-    item['url'] = current_url
-
-    # Add urls to the proxy files
     if 'files' not in item['metadata']:
         item['metadata']['files'] = []
-    for entry in item['metadata']['files']:
-        entry['url'] = f'{current_url}files/category/{entry["category"]}/name/{entry["name"]}'
-
-    # Add url for the source file
-    item['metadata']['source']['url'] = f'{current_url}files/source/{item["metadata"]["source"]["filename"]}'  # noqa
 
 
 def stream(request, path):
@@ -108,17 +99,6 @@ Querystring:
         return Response(response_data)
 
 
-class SourceFileViewSet(BaseProjectViewSet):
-    zmlp_only = True
-    zmlp_root_api_path = 'api/v3/assets'
-    lookup_value_regex = '[^/]+'
-
-    def retrieve(self, request, project_pk, asset_pk, pk):
-        path = f'{self.zmlp_root_api_path}/{asset_pk}/_stream'
-        content_type, encoding = mimetypes.guess_type(pk)
-        return StreamingHttpResponse(stream(request, path), content_type=content_type)
-
-
 class FileCategoryViewSet(BaseProjectViewSet):
     zmlp_only = True
 
@@ -131,4 +111,7 @@ class FileNameViewSet(BaseProjectViewSet):
     def retrieve(self, request, project_pk, asset_pk, category_pk, pk):
         path = f'{self.zmlp_root_api_path}/assets/{asset_pk}/{category_pk}/{pk}'
         content_type, encoding = mimetypes.guess_type(pk)
-        return StreamingHttpResponse(stream(request, path), content_type=content_type)
+        response = StreamingHttpResponse(stream(request, path), content_type=content_type)
+        patch_response_headers(response, cache_timeout=86400)
+        patch_cache_control(response, private=True)
+        return response

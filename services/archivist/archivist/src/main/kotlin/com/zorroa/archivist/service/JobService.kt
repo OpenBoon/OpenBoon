@@ -141,6 +141,9 @@ class JobServiceImpl @Autowired constructor(
 
         spec.script?.let { script ->
             // Execute may be empty
+            if (type == JobType.Import) {
+                script.setSettting("index", true)
+            }
             script.execute = pipelineResolverService.resolveCustom(script.execute)
             taskDao.create(job, TaskSpec(zpsTaskName(script), script))
         }

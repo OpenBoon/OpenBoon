@@ -1,17 +1,13 @@
 import TestRenderer from 'react-test-renderer'
 
 import JobErrorAsset from '../index'
-import assets from '../../Assets/__mocks__/assets'
+import asset from '../../Asset/__mocks__/asset'
 
-const ASSET = assets.results[0]
+const ASSET_ID = asset.id
 
 describe('<JobErrorAsset />', () => {
   it('should render properly when asset has proxies', () => {
-    require('swr').__setMockUseSWRResponse({
-      data: ASSET,
-    })
-
-    const ASSET_ID = ASSET.id
+    require('swr').__setMockUseSWRResponse({ data: asset })
 
     const component = TestRenderer.create(<JobErrorAsset assetId={ASSET_ID} />)
 
@@ -20,10 +16,8 @@ describe('<JobErrorAsset />', () => {
 
   it('should render properly when asset has no proxies', () => {
     require('swr').__setMockUseSWRResponse({
-      data: { ...ASSET, metadata: { ...ASSET.metadata, files: [] } },
+      data: { ...asset, metadata: { ...asset.metadata, files: [] } },
     })
-
-    const ASSET_ID = ASSET.id
 
     const component = TestRenderer.create(<JobErrorAsset assetId={ASSET_ID} />)
 

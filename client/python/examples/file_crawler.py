@@ -20,7 +20,7 @@ def main():
     parser.add_argument('paths', metavar='N', nargs='+', help='A file path to import')
     parser.add_argument('-m', '--module', action='append', help='Module to apply to the upload')
     parser.add_argument('-b', '--batch-size', type=int,
-                        default=10, help='The number of assets to upload per batch')
+                        default=50, help='The number of assets to upload per batch')
     parser.add_argument('-t', '--file-types', action='append',
                         help='The file types to filter by, default all supported types')
 

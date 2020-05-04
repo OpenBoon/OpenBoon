@@ -49,8 +49,8 @@ class AnalystServicImpl @Autowired constructor(
 
     override fun upsert(spec: AnalystSpec): Analyst {
         val analyst = getAnalyst()
-        spec.taskId?.let {
-            taskDao.updatePingTime(it, analyst.endpoint)
+        if (spec.taskId != null) {
+            taskDao.updatePingTime(spec.taskId, analyst.endpoint)
         }
 
         return if (analystDao.update(spec)) {

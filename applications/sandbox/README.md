@@ -13,7 +13,7 @@ A couple of different scripts are included.
 ### Build the docker container
 
 ```
-docker buildx bake -f docker-compose.yml
+docker build . -t 'zmlp/sandbox'
 ```
 
 ### Run

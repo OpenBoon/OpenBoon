@@ -5,6 +5,7 @@ export const formatDisplayName = ({ name }) =>
   name
     // insert a space before all caps
     .replace(/([A-Z])/g, ' $1')
+    .replace('_', ' ')
     .split(' ')
     .flatMap((word) => {
       if (word.toLowerCase() === 'url') return 'URL'
@@ -24,13 +25,21 @@ export const formatDisplayName = ({ name }) =>
     })
     .join(' ')
 
-export const formatDisplayValue = ({ key, value }) => {
-  if (key === 'filesize') {
+export const formatDisplayValue = ({ name, value }) => {
+  if (name.includes('size')) {
     return bytesToSize({ bytes: value })
   }
 
-  if (key.toLowerCase().includes('time')) {
+  // https://regex101.com/r/JrKX84/1
+  // Will match "2020-04-30T01:48:20" and more but no less
+  const ISO_8601 = /^\d{4}(-\d\d(-\d\d(T\d\d:\d\d(:\d\d)(\.\d+)?(([+-]\d\d:\d\d)|Z)?)))$/i
+
+  if (value.toString().match(ISO_8601)) {
     return formatPrettyDate({ timestamp: value })
+  }
+
+  if (value.length > 300) {
+    return `${value.slice(0, 300)}...`
   }
 
   return value

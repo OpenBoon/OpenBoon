@@ -91,8 +91,7 @@ backend-py-lint:
   allow_failure: false
   script:
     - python -m pip install flake8
-    - flake8 --config .flake8.cfg sdk client/python containers/zmlp-py3-base services/analyst
-    - flake8 --config .flake8.cfg containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis
+    - flake8 --config .flake8.cfg sdk client/python containers/zmlp-py3-base services/analyst containers/zmlp-plugins-base containers/zmlp-plugins-core containers/zmlp-plugins-analysis containers/zmlp-plugins-train
   only:
     refs:
       - merge_requests
@@ -171,9 +170,10 @@ plugin-container-tests:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
-    - ./buildx analyst zmlp-py3-base zmlp-py3-client zmlp-py3-sdk zmlp-plugins-base zmlp-plugins-models zmlp-plugins-core zmlp-plugins-analysis
+    - ./buildx --plugins
     - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-core:latest pytest -s /zvi/pylib
     - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-analysis:latest pytest -s /zvi/pylib
+    - docker run -v ${PWD}/test-data:/test-data zmlp/plugins-train:latest pytest -s /zvi/pylib
   only:
     refs:
       - merge_requests
@@ -236,6 +236,7 @@ docker_hub_build_push:
     - docker push zmlp/analyst:latest
     - docker push zmlp/jvm-common:latest
     - docker push zmlp/ml-bbq:latest
+    - docker push zmlp/plugins-train:latest
   only:
     - development
 

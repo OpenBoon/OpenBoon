@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.urls import reverse
 from djangorestframework_camel_case.render import CamelCaseBrowsableAPIRenderer
 from flatten_dict import flatten
 from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
@@ -8,15 +9,35 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_csv.renderers import CSVRenderer
+from zmlp.search import AssetSearchScroller
 
-from assets.serializers import AssetSerializer
 from assets.views import asset_modifier
 from projects.views import BaseProjectViewSet
 from searches.models import Search
-from searches.serializers import SearchSerializer
+from searches.serializers import SearchSerializer, SearchAssetSerializer
 from wallet.mixins import ConvertCamelToSnakeViewSetMixin
 from wallet.paginators import FromSizePagination, ZMLPFromSizePagination
 from .utils import FieldUtility, FilterBoy
+
+
+def search_asset_modifier(request, item):
+    asset_modifier(request, item)
+    # Default relative url in case a thumbnail is not found
+    thumbnail_url = '/icons/fallback_3x.png'
+    project_id = request.parser_context['view'].kwargs['project_pk']
+    asset_id = item['id']
+    for _file in item['metadata']['files']:
+        category = 'web-proxy'
+        if _file['category'] == category:
+            name = _file['name']
+            # If a web-proxy is found, build the file serving url for it
+            thumbnail_url = reverse('file_name-detail', kwargs={'project_pk': project_id,
+                                                                'asset_pk': asset_id,
+                                                                'category_pk': category,
+                                                                'pk': name})
+    # Regardless of the url being used, make it absolute
+    item['thumbnail_url'] = request.build_absolute_uri(thumbnail_url)
+    del(item['metadata']['files'])
 
 
 class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
@@ -111,6 +132,19 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
                     "facets": [$attribute_values_to_filter]
                 }
             }
+
+        LabelConfidence:
+
+            {
+                "type": "labelConfidence",
+                "attribute": "analysis.zvi-label-detection",
+                "values": {
+                    "labels": ["label1", "label2"],
+                    "min": 0.0,  # Allowed minimum is 0.0
+                    "max": 1.0,  # Allowed maximum is 1.0
+                }
+            }
+
         """
         path = 'api/v3/assets'
         fields = ['id',
@@ -127,8 +161,8 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
         query['_source'] = fields
 
         return self._zmlp_list_from_es(request, search_filter=query, base_url=path,
-                                       serializer_class=AssetSerializer,
-                                       item_modifier=asset_modifier,
+                                       serializer_class=SearchAssetSerializer,
+                                       item_modifier=search_asset_modifier,
                                        pagination_class=ZMLPFromSizePagination)
 
     @action(detail=False, methods=['get'])
@@ -165,6 +199,14 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
             "order": "asc" OR "desc"
 
             "minimum_count": $integer
+
+        LabelConfidence:
+
+            {
+                "type": "labelConfidence",
+                "attribute": "analysis.zvi-label-detection",
+            }
+
         """
         path = 'api/v3/assets/_search'
 
@@ -191,12 +233,33 @@ class MetadataExportViewSet(BaseProjectViewSet):
             _filter.is_valid(query=True, raise_exception=True)
         query = filter_boy.reduce_filters_to_query(_filters)
 
-        content = self._zmlp_get_content_from_es_search(request, base_url=path,
-                                                        search_filter=query)
-        items = self._get_modified_items_from_content(request, content,
-                                                      item_modifier=asset_modifier)
+        return self._yield_all_items_from_es(request, base_url=path, search_filter=query)
 
-        return items
+    def _yield_all_items_from_es(self, request, base_url=None, search_filter={}):
+        """Helper to get all results from paginated responses from ZMLP.
+
+        Given the search in `search_filter`, will return the results from ZMLP, making
+        repeated paginated requests until all results are returned. Returned items will
+        be run through an item_modifier to correctly update them.
+
+        Args:
+            request: The original DRF request
+
+        Keyword Args:
+            base_url (str): The base URL to use for the ZMLP Request. Defaults to None (which uses
+                the views default.
+            search_filter (dict): An optional filter to use on the ZMLP request.
+
+        Yields:
+            (dict): All assets for the matching query, as a generator
+        """
+        scroller = AssetSearchScroller(request.app, search_filter)
+
+        for item in scroller:
+            # Coerce the Asset into the form our item_modifiers expect
+            _data = {'_id': item.id, '_source': item.document}
+            search_asset_modifier(request, _data)
+            yield _data
 
     def list(self, request, project_pk):
         def dot_reducer(k1, k2):
@@ -207,9 +270,8 @@ class MetadataExportViewSet(BaseProjectViewSet):
                 return k1 + "." + k2
 
         # Create a list of flat dictionaries that represent the metadata for each asset.
-        assets = self._search_for_assets(request)
         flat_assets = []
-        for asset in assets:
+        for asset in self._search_for_assets(request):
             flat_asset = flatten(asset['metadata'], reducer=dot_reducer)
             flat_asset['id'] = asset['id']
             flat_assets.append(flat_asset)

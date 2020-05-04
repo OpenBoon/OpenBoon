@@ -1,8 +1,7 @@
 # Creates a container that runs a Jupyter notebook server with all the necessary
 # Zorroa libraries installed.
-FROM zmlp/py3-sdk:latest
+FROM zmlp/plugins-analysis:latest
 USER root
-#RUN ls
 
 # apt install a bunch of binary packages
 ENV DEBIAN_FRONTEND=noninteractive
@@ -15,6 +14,7 @@ RUN apt-get install -y --no-install-recommends build-essential libjpeg-dev libpn
 
 COPY requirements.txt .
 ENV PATH=$PATH:~/.local/bin
+RUN pip3 install torch==1.4.0+cpu torchvision==0.5.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 RUN pip3 install --ignore-installed -r requirements.txt
 
 COPY jupyter_notebook_config.py /home/zorroa/.jupyter/jupyter_notebook_config.py

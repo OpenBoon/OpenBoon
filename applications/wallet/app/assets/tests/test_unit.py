@@ -4,7 +4,7 @@ import pytest
 from requests import Response
 from zmlp import Asset
 
-from assets.utils import AssetBoxImager
+from assets.utils import AssetBoxImager, crop_image_poly
 
 
 @pytest.fixture
@@ -104,3 +104,12 @@ class TestAssetBoxImager:
         for prediction in predictions:
             assert 'b64_image' in prediction
             assert prediction['b64_image'] == 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAoAAAAICAIAAABPmPnhAAAAI0lEQVQIHXXBAQEAAAABIP6PzgJV5CvyFfmKfEW+Il+Rr8g33SQX8fv7NasAAAAASUVORK5CYII='  # noqa
+
+
+class TestCropImagePoly:
+    def test_crop_image_poly(self):
+
+        blank_image = np.zeros((100, 100, 3), np.uint8)
+        cropped_image = crop_image_poly(blank_image, [-.1, 0, .5, .7], width=50)
+
+        assert cropped_image.shape == (70, 50, 3)

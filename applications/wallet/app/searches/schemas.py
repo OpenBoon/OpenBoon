@@ -1,15 +1,16 @@
 # Applicable filter sets for an ES Field type
 NUMBER_FILTERS = ['range', 'exists']
-STRING_FILTERS = ['facet', 'exists']
+KEYWORD_FILTERS = ['facet', 'exists']
 SIMILARITY_FILTERS = ['exists']
 BOOLEAN_FILTERS = ['boolean', 'exists']
 DEFAULT_FILTERS = ['exists']
+TEXT_FILTERS = ['exists']
 
 
 TYPE_FIELD_MAPPING = {
     'integer': NUMBER_FILTERS,
-    'keyword': STRING_FILTERS,
-    'text': STRING_FILTERS,
+    'keyword': KEYWORD_FILTERS,
+    'text': TEXT_FILTERS,
     'object': DEFAULT_FILTERS,
     'double': NUMBER_FILTERS,
     'geo_point': DEFAULT_FILTERS,
@@ -34,10 +35,20 @@ class AbstractAnalysisSchema(object):
         self.child_properties = child_properties
 
     def is_valid(self):
-        """Identifies whether this schema is valid for the given structure."""
+        """Identifies whether this schema is valid for the given structure.
+
+        Supports dot-path notation for checking for nested attributes in the mapping.
+        """
         for key in self.required_properties:
-            if key not in self.child_properties:
-                return False
+            # Convert dot path key names to their actual mapping dot path, if exist
+            real_dot_path = '.properties.'.join(key.split('.'))
+            current = self.child_properties
+            for step in real_dot_path.split('.'):
+                if step in current:
+                    current = current[step]
+                else:
+                    return False
+
         return True
 
     def get_representation(self):
@@ -55,22 +66,16 @@ class SimilarityAnalysisSchema(AbstractAnalysisSchema):
 
 class ContentAnalysisSchema(AbstractAnalysisSchema):
 
-    required_properties = ['type', 'count', 'content']
+    required_properties = ['type', 'words', 'content']
 
     def get_representation(self):
-        return {f'{self.property_name}': {'content': STRING_FILTERS,
-                                          'count': NUMBER_FILTERS}}
+        return {f'{self.property_name}': {'content': TEXT_FILTERS,
+                                          'words': NUMBER_FILTERS}}
 
 
 class LabelsAnalysisSchema(AbstractAnalysisSchema):
 
-    required_properties = ['type', 'predictions']
+    required_properties = ['type', 'predictions.label', 'predictions.score']
 
     def get_representation(self):
-        # Not sure how to filter predictions yet, so return the empty string for now
-        repr = {f'{self.property_name}': {'predictions': []}}
-        if 'count' in self.child_properties:
-            repr[f'{self.property_name}']['count'] = NUMBER_FILTERS
-        if 'safe' in self.child_properties:
-            repr[f'{self.property_name}']['safe'] = BOOLEAN_FILTERS
-        return repr
+        return {f'{self.property_name}': ['labelConfidence']}

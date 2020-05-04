@@ -25,7 +25,7 @@ def user(django_user_model, api_client):
 
 @pytest.fixture
 def superuser(django_user_model, api_client):
-    user = django_user_model.objects.create_superuser('superuser', 'superuser@fake.com', 'letmein')
+    user = django_user_model.objects.create_superuser('superuser', 'software@zorroa.com', 'letmein')
     return user
 
 

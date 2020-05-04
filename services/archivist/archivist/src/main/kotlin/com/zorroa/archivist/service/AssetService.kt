@@ -275,7 +275,7 @@ class AssetServiceImpl : AssetService {
             asset.setAttr("source.checksum", idgen.checksum)
 
             val locator = ProjectFileLocator(
-                ProjectStorageEntity.ASSET, id, ProjectStorageCategory.SOURCE, mpfile.originalFilename
+                ProjectStorageEntity.ASSETS, id, ProjectStorageCategory.SOURCE, mpfile.originalFilename
             )
 
             val file = projectStorageService.store(
@@ -443,7 +443,7 @@ class AssetServiceImpl : AssetService {
             for (assetId in removed) {
                 try {
                     projectStorageService.recursiveDelete(
-                        ProjectDirLocator(ProjectStorageEntity.ASSET, assetId, projectId)
+                        ProjectDirLocator(ProjectStorageEntity.ASSETS, assetId, projectId)
                     )
                 } catch (ex: ProjectStorageException) {
                     logger.warn("Failed to delete files asset $assetId", ex)

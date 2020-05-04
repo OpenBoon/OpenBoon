@@ -61,13 +61,14 @@ class ZpsExecutor(object):
         """
         Execute the full ZPS script.
         """
+        settings = self.script.get("settings", {})
         self.client.emit_event(self.task, "started", {})
         try:
             if self.script.get("generate"):
                 self.generate()
             if self.script.get("assets"):
                 assets = self.process()
-                if assets and self.exit_status == 0:
+                if settings.get("index", False) and assets and self.exit_status == 0:
                     # Batch indexing expects map<id, document
                     payload = dict([(asset["id"], asset["document"]) for asset in assets])
                     self.client.emit_event(
