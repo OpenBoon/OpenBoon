@@ -1,12 +1,5 @@
--Xms512m
 -XX:+UseG1GC
 -XX:MaxGCPauseMillis=200
--XX:InitiatingHeapOccupancyPercent=40
--XX:MaxRAMPercentage=60
+-XX:InitiatingHeapOccupancyPercent=70
 -XX:+DisableExplicitGC
 -XX:+AlwaysPreTouch
--XX:ParallelGCThreads=20
--XX:ConcGCThreads=5
-#-Xlog:gc
--Djava.awt.headless=true
--Djava.security.egd=file:/dev/./urandom
