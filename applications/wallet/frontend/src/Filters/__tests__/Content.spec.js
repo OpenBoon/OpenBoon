@@ -91,6 +91,10 @@ describe('<FiltersContent />', () => {
   })
 
   it('should render the "Range" filter', () => {
+    const {
+      results: { max },
+    } = rangeAggregate
+
     const filters = [{ attribute: 'clip.length', type: 'range' }]
 
     require('swr').__setMockUseSWRResponse({ data: rangeAggregate })
@@ -103,6 +107,19 @@ describe('<FiltersContent />', () => {
         setIsMenuOpen={noop}
       />,
     )
+
+    act(() => {
+      component.root.findByProps({ mode: 2 }).props.onUpdate([200, max])
+      component.root.findByProps({ mode: 2 }).props.onChange([200, max])
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root
+        .findByProps({ children: 'RESET' })
+        .props.onClick({ preventDefault: noop })
+    })
 
     expect(component.toJSON()).toMatchSnapshot()
   })

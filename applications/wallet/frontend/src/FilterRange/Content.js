@@ -1,18 +1,21 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
+import { bytesToSize } from '../Bytes/helpers'
 
-import { spacing } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
+
+import { dispatch, ACTIONS } from '../Filters/helpers'
+import FiltersReset from '../Filters/Reset'
 
 import FilterRangeSlider from './Slider'
 
 const FilterRange = ({
   projectId,
-  //   assetId,
-  //   filters,
-  //   filter,
+  assetId,
+  filters,
   filter: { type, attribute },
-  //   filterIndex,
+  filterIndex,
 }) => {
   const encodedFilter = btoa(JSON.stringify({ type, attribute }))
 
@@ -28,7 +31,21 @@ const FilterRange = ({
 
   return (
     <div>
-      <div css={{ padding: spacing.spacious }}>
+      <FiltersReset
+        payload={{
+          projectId,
+          assetId,
+          filters,
+          updatedFilter: {
+            type,
+            attribute,
+            values: {},
+          },
+          filterIndex,
+        }}
+        onReset={() => setValues(domain)}
+      />
+      <div css={{ padding: spacing.normal }}>
         <div
           css={{
             display: 'flex',
@@ -36,16 +53,70 @@ const FilterRange = ({
             paddingBottom: spacing.moderate,
           }}
         >
-          <span>{results.min}</span>
-          <span>{results.max}</span>
+          <span>{bytesToSize({ bytes: results.min })}</span>
+          <span>{bytesToSize({ bytes: results.max })}</span>
         </div>
         <div css={{ padding: spacing.small }}>
           <FilterRangeSlider
             domain={domain}
             values={values}
-            setValues={setValues}
-            onChange={console.warn}
+            setValues={(value) => setValues(value)}
+            onChange={(value) =>
+              dispatch({
+                action: ACTIONS.UPDATE_FILTER,
+                payload: {
+                  projectId,
+                  assetId,
+                  filters,
+                  updatedFilter: {
+                    type,
+                    attribute,
+                    values: value,
+                  },
+                  filterIndex,
+                },
+              })
+            }
           />
+        </div>
+        <div
+          css={{
+            paddingTop: spacing.comfy,
+            color: colors.structure.zinc,
+            display: 'flex',
+            justifyContent: 'space-around',
+          }}
+        >
+          <div css={{ display: 'flex', alignItems: 'center' }}>
+            MIN &nbsp;
+            <div
+              css={{
+                backgroundColor: colors.structure.lead,
+                paddingTop: spacing.normal,
+                paddingBottom: spacing.normal,
+                width: 76,
+                textAlign: 'center',
+                borderRadius: constants.borderRadius.small,
+              }}
+            >
+              {bytesToSize({ bytes: values[0] })}
+            </div>
+          </div>
+          <div css={{ display: 'flex', alignItems: 'center' }}>
+            MAX &nbsp;
+            <div
+              css={{
+                backgroundColor: colors.structure.lead,
+                paddingTop: spacing.normal,
+                paddingBottom: spacing.normal,
+                width: 76,
+                textAlign: 'center',
+                borderRadius: constants.borderRadius.small,
+              }}
+            >
+              {bytesToSize({ bytes: values[1] })}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -54,20 +125,20 @@ const FilterRange = ({
 
 FilterRange.propTypes = {
   projectId: PropTypes.string.isRequired,
-  //   assetId: PropTypes.string.isRequired,
-  //   filters: PropTypes.arrayOf(
-  //     PropTypes.shape({
-  //       type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-  //       attribute: PropTypes.string,
-  //       values: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  //     }).isRequired,
-  //   ).isRequired,
+  assetId: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
+      attribute: PropTypes.string,
+      values: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    }).isRequired,
+  ).isRequired,
   filter: PropTypes.shape({
     type: PropTypes.oneOf(['range']).isRequired,
     attribute: PropTypes.string.isRequired,
     values: PropTypes.shape({ exists: PropTypes.bool }),
   }).isRequired,
-  //   filterIndex: PropTypes.number.isRequired,
+  filterIndex: PropTypes.number.isRequired,
 }
 
 export default FilterRange

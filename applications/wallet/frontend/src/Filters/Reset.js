@@ -5,13 +5,7 @@ import { colors, spacing } from '../Styles'
 import Button, { VARIANTS } from '../Button'
 import { dispatch, ACTIONS } from './helpers'
 
-const FiltersReset = ({
-  projectId,
-  assetId,
-  filters,
-  updatedFilter,
-  filterIndex,
-}) => {
+const FiltersReset = ({ payload, onReset }) => {
   return (
     <div
       css={{
@@ -31,18 +25,13 @@ const FiltersReset = ({
           },
         }}
         variant={VARIANTS.NEUTRAL}
-        onClick={() =>
+        onClick={() => {
+          onReset()
           dispatch({
             action: ACTIONS.UPDATE_FILTER,
-            payload: {
-              projectId,
-              assetId,
-              filters,
-              updatedFilter: { ...updatedFilter, values: {} },
-              filterIndex,
-            },
+            payload,
           })
-        }
+        }}
       >
         RESET
       </Button>
@@ -51,20 +40,24 @@ const FiltersReset = ({
 }
 
 FiltersReset.propTypes = {
-  projectId: PropTypes.string.isRequired,
-  assetId: PropTypes.string.isRequired,
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      attribute: PropTypes.string,
-      values: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  payload: PropTypes.shape({
+    projectId: PropTypes.string.isRequired,
+    assetId: PropTypes.string.isRequired,
+    filters: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.oneOf(['search', 'facet', 'range', 'exists'])
+          .isRequired,
+        attribute: PropTypes.string,
+        values: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+      }).isRequired,
+    ).isRequired,
+    updatedFilter: PropTypes.shape({
+      type: PropTypes.string.isRequired,
+      attribute: PropTypes.string.isRequired,
     }).isRequired,
-  ).isRequired,
-  updatedFilter: PropTypes.shape({
-    type: PropTypes.string.isRequired,
-    attribute: PropTypes.string.isRequired,
+    filterIndex: PropTypes.number.isRequired,
   }).isRequired,
-  filterIndex: PropTypes.number.isRequired,
+  onReset: PropTypes.func.isRequired,
 }
 
 export default FiltersReset
