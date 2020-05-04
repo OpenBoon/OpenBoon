@@ -5,6 +5,7 @@ import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 import { dispatch, ACTIONS } from '../Filters/helpers'
+import FiltersReset from '../Filters/Reset'
 
 const FilterFacet = ({
   projectId,
@@ -28,6 +29,13 @@ const FilterFacet = ({
 
   return (
     <>
+      <FiltersReset
+        projectId={projectId}
+        assetId={assetId}
+        filters={filters}
+        updatedFilter={{ type, attribute }}
+        filterIndex={filterIndex}
+      />
       <div
         css={{
           display: 'flex',
