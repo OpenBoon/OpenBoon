@@ -366,16 +366,16 @@ Array [
     >
       <thead>
         <tr>
-          <td
+          <th
             className="emotion-1"
           >
             label
-          </td>
-          <td
+          </th>
+          <th
             className="emotion-1"
           >
             confidence score
-          </td>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -644,21 +644,21 @@ exports[`<MetadataPrettyRow /> should render object detection predictions 1`] = 
   >
     <thead>
       <tr>
-        <td
+        <th
           className="emotion-1"
         >
           bbox
-        </td>
-        <td
+        </th>
+        <th
           className="emotion-1"
         >
           label
-        </td>
-        <td
+        </th>
+        <th
           className="emotion-1"
         >
           confidence score
-        </td>
+        </th>
       </tr>
     </thead>
     <tbody>

@@ -60,7 +60,7 @@ const MetadataObjectDetection = () => {
           <tr>
             {columns.map((column) => {
               return (
-                <td
+                <th
                   key={column}
                   css={{
                     fontFamily: 'Roboto Condensed',
@@ -76,7 +76,7 @@ const MetadataObjectDetection = () => {
                   }}
                 >
                   {column === 'score' ? 'confidence score' : column}
-                </td>
+                </th>
               )
             })}
           </tr>
@@ -85,7 +85,7 @@ const MetadataObjectDetection = () => {
           {predictions.map((prediction) => {
             return (
               <tr
-                key={prediction.score}
+                key={prediction.label}
                 css={{
                   verticalAlign: 'bottom',
                   td: {

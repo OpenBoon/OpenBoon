@@ -57,7 +57,7 @@ const MetadataLabelDetection = ({ name, predictions }) => {
             <tr>
               {columns.map((column) => {
                 return (
-                  <td
+                  <th
                     key={column}
                     css={{
                       fontFamily: 'Roboto Condensed',
@@ -74,7 +74,7 @@ const MetadataLabelDetection = ({ name, predictions }) => {
                     }}
                   >
                     {column === 'score' ? 'confidence score' : column}
-                  </td>
+                  </th>
                 )
               })}
             </tr>
