@@ -67,6 +67,7 @@ const MetadataObjectDetection = () => {
                     textTransform: 'uppercase',
                     color: colors.structure.steel,
                     paddingBottom: spacing.normal,
+                    textAlign: 'left',
                     '&:last-of-type': {
                       textAlign: 'right',
                       whiteSpace: 'nowrap',
@@ -82,10 +83,11 @@ const MetadataObjectDetection = () => {
           </tr>
         </thead>
         <tbody>
-          {predictions.map((prediction) => {
+          {predictions.map((prediction, index) => {
             return (
               <tr
-                key={prediction.label}
+                // eslint-disable-next-line react/no-array-index-key
+                key={`${prediction.label}-${index}`}
                 css={{
                   verticalAlign: 'bottom',
                   td: {

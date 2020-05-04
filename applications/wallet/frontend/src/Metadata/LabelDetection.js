@@ -65,6 +65,7 @@ const MetadataLabelDetection = ({ name, predictions }) => {
                       color: colors.structure.steel,
                       paddingBottom: spacing.normal,
                       paddingLeft: 0,
+                      textAlign: 'left',
                       '&:last-of-type': {
                         textAlign: 'right',
                         whiteSpace: 'nowrap',
@@ -80,10 +81,11 @@ const MetadataLabelDetection = ({ name, predictions }) => {
             </tr>
           </thead>
           <tbody>
-            {predictions.map((prediction) => {
+            {predictions.map((prediction, index) => {
               return (
                 <tr
-                  key={prediction.score}
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={`${prediction.label}-${index}`}
                   css={{
                     verticalAlign: 'bottom',
                     td: {

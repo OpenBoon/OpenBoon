@@ -314,6 +314,7 @@ Array [
   color: #808080;
   padding-bottom: 16px;
   padding-left: 0;
+  text-align: left;
 }
 
 .emotion-1:last-of-type {
@@ -575,6 +576,7 @@ exports[`<MetadataPrettyRow /> should render object detection predictions 1`] = 
   text-transform: uppercase;
   color: #808080;
   padding-bottom: 16px;
+  text-align: left;
 }
 
 .emotion-1:last-of-type {
