@@ -105,8 +105,12 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
                         return noScore
                     }
 
-                    val score = charHashesComparison(strings.value)
-                    return if (score >= minScore) score else noScore
+                    var highScore = 0.0
+                    for (value in strings) {
+                        highScore = highScore.coerceAtLeast(charHashesComparison(value))
+                    }
+
+                    return if (highScore >= minScore) highScore else noScore
                 }
 
                 fun charHashesComparison(fieldValue: String?): Double {
@@ -153,8 +157,6 @@ class SimilarityPlugin : Plugin(), ScriptPlugin {
     }
 
     companion object {
-
-        private const val normFactor = 100.0
 
         private const val noScore = 0.0
 
