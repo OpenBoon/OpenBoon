@@ -4,7 +4,7 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 
-const MetadataTextDetection = ({ name, content }) => {
+const MetadataContentDetection = ({ name, content }) => {
   return (
     <>
       <div
@@ -71,9 +71,9 @@ const MetadataTextDetection = ({ name, content }) => {
   )
 }
 
-MetadataTextDetection.propTypes = {
+MetadataContentDetection.propTypes = {
   name: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
 }
 
-export default MetadataTextDetection
+export default MetadataContentDetection

@@ -44,6 +44,15 @@ describe('<Metadata />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Open all Accordions
+    act(() => {
+      component.root
+        .findAllByProps({ 'aria-label': 'Expand Section' })
+        .forEach((section) => section.props.onClick())
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
     act(() => {
       component.root.findByProps({ children: 'raw json' }).props.onClick()
     })

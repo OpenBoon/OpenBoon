@@ -5,7 +5,9 @@ import { colors, constants, spacing } from '../Styles'
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 import Pills from '../Pills'
 
-const COLUMNS = ['label', 'score']
+export const BBOX_SIZE = 56
+
+const COLUMNS = ['bbox', 'label', 'score']
 
 const MetadataLabelDetection = ({ name, predictions }) => {
   const predictionColumns = Object.keys(predictions[0])
@@ -26,9 +28,6 @@ const MetadataLabelDetection = ({ name, predictions }) => {
           padding: spacing.normal,
           '&:not(:first-of-type)': {
             borderTop: constants.borders.largeDivider,
-          },
-          '&:not(last-of-type)': {
-            paddingBottom: spacing.base,
           },
         }}
       >
@@ -107,6 +106,23 @@ const MetadataLabelDetection = ({ name, predictions }) => {
                   }}
                 >
                   {columns.map((column) => {
+                    if (column === 'bbox') {
+                      return (
+                        <td key={column} css={{ display: 'flex' }}>
+                          <img
+                            css={{
+                              maxHeight: BBOX_SIZE,
+                              width: BBOX_SIZE,
+                              objectFit: 'contain',
+                            }}
+                            alt={prediction.bbox}
+                            title={prediction.bbox}
+                            src={prediction.b64_image}
+                          />
+                        </td>
+                      )
+                    }
+
                     return (
                       <td
                         key={column}

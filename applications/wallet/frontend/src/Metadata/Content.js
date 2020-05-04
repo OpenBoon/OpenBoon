@@ -3,6 +3,7 @@ import useSWR from 'swr'
 
 import { colors, constants, spacing } from '../Styles'
 
+import SuspenseBoundary from '../SuspenseBoundary'
 import useLocalStorage from '../LocalStorage'
 
 import Button, { VARIANTS } from '../Button'
@@ -97,9 +98,11 @@ const MetadataContent = ({ projectId, assetId }) => {
                   key={section}
                   variant={ACCORDION_VARIANTS.PANEL}
                   title={title}
-                  isInitiallyOpen
+                  isInitiallyOpen={false}
                 >
-                  <MetadataPretty metadata={metadata} section={section} />
+                  <SuspenseBoundary>
+                    <MetadataPretty metadata={metadata} section={section} />
+                  </SuspenseBoundary>
                 </Accordion>
               )
             })}

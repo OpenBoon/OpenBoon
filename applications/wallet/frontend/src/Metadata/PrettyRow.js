@@ -3,31 +3,30 @@ import PropTypes from 'prop-types'
 import { colors, constants, spacing } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
-import MetadataObjectDetection from './ObjectDetection'
+import MetadataBbox from './Bbox'
 import MetadataLabelDetection from './LabelDetection'
-import MetadataImageSimilarity from './ImageSimilarity'
-import MetadataTextDetection from './TextDetection'
+import MetadataContentDetection from './ContentDetection'
+import MetadataSimilarityDetection from './SimilarityDetection'
 
 import { formatDisplayName, formatDisplayValue } from './helpers'
 
 const MetadataPrettyRow = ({ name, value, path }) => {
   if (typeof value === 'object') {
-    if (name === 'zvi-object-detection') {
-      return <MetadataObjectDetection />
-    }
-
-    if (name === 'zvi-label-detection') {
+    if (value.type === 'labels') {
+      if (Object.keys(value.predictions[0]).includes('bbox')) {
+        return <MetadataBbox name={name} />
+      }
       return (
         <MetadataLabelDetection name={name} predictions={value.predictions} />
       )
     }
 
-    if (name === 'zvi-text-detection') {
-      return <MetadataTextDetection name={name} content={value.content} />
+    if (value.type === 'content') {
+      return <MetadataContentDetection name={name} content={value.content} />
     }
 
-    if (name === 'zvi-image-similarity') {
-      return <MetadataImageSimilarity name={name} simhash={value.simhash} />
+    if (value.type === 'similarity') {
+      return <MetadataSimilarityDetection name={name} simhash={value.simhash} />
     }
 
     return (
