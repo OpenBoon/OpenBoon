@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 
+import SuspenseBoundary from '../SuspenseBoundary'
 import { colors, constants, spacing } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
@@ -15,7 +16,9 @@ const MetadataPrettyRow = ({ name, value, path }) => {
     switch (value.type) {
       case 'labels':
         return Object.keys(value.predictions[0]).includes('bbox') ? (
-          <MetadataBbox name={name} />
+          <SuspenseBoundary>
+            <MetadataBbox name={name} />
+          </SuspenseBoundary>
         ) : (
           <MetadataLabelDetection name={name} predictions={value.predictions} />
         )

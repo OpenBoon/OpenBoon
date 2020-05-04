@@ -3,7 +3,6 @@ import useSWR from 'swr'
 
 import { colors, constants, spacing } from '../Styles'
 
-import SuspenseBoundary from '../SuspenseBoundary'
 import useLocalStorage from '../LocalStorage'
 
 import Button, { VARIANTS } from '../Button'
@@ -100,9 +99,7 @@ const MetadataContent = ({ projectId, assetId }) => {
                   title={title}
                   isInitiallyOpen={false}
                 >
-                  <SuspenseBoundary>
-                    <MetadataPretty metadata={metadata} section={section} />
-                  </SuspenseBoundary>
+                  <MetadataPretty metadata={metadata} section={section} />
                 </Accordion>
               )
             })}
