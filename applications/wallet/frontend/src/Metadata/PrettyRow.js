@@ -19,12 +19,6 @@ const MetadataPrettyRow = ({ name, value, path }) => {
         ) : (
           <MetadataLabelDetection name={name} predictions={value.predictions} />
         )
-      // if (Object.keys(value.predictions[0]).includes('bbox')) {
-      //   return <MetadataBbox name={name} />
-      // }
-      // return (
-      //   <MetadataLabelDetection name={name} predictions={value.predictions} />
-      // )
       case 'content':
         return <MetadataContentDetection name={name} content={value.content} />
       case 'similarity':
