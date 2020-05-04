@@ -5,6 +5,7 @@ import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 import { dispatch, ACTIONS } from '../Filters/helpers'
+import FiltersReset from '../Filters/Reset'
 
 const FilterFacet = ({
   projectId,
@@ -28,44 +29,13 @@ const FilterFacet = ({
 
   return (
     <>
-      <div
-        css={{
-          display: 'flex',
-          paddingTop: spacing.base,
-          paddingBottom: spacing.base,
-        }}
-      >
-        <div css={{ flex: 1 }} />
-        <Button
-          style={{
-            width: '100%',
-            color: colors.structure.zinc,
-            fontFamily: 'Roboto Condensed',
-            ':hover': {
-              color: colors.structure.white,
-            },
-          }}
-          variant={VARIANTS.NEUTRAL}
-          onClick={() =>
-            dispatch({
-              action: ACTIONS.UPDATE_FILTER,
-              payload: {
-                projectId,
-                assetId,
-                filters,
-                updatedFilter: {
-                  type,
-                  attribute,
-                  values: {},
-                },
-                filterIndex,
-              },
-            })
-          }
-        >
-          RESET
-        </Button>
-      </div>
+      <FiltersReset
+        projectId={projectId}
+        assetId={assetId}
+        filters={filters}
+        updatedFilter={{ type, attribute }}
+        filterIndex={filterIndex}
+      />
       <div
         css={{
           display: 'flex',
