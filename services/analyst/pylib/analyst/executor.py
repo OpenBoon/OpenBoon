@@ -56,6 +56,8 @@ class ZpsExecutor(object):
         self.event_counts = {}
         self.workdir = os.path.realpath(
             tempfile.mkdtemp(prefix="zvi-", suffix="-" + self.task['id']))
+        # The tmp dir has to allow access to everyone.
+        os.chmod(self.workdir, 0o777)
 
     def run(self):
         """
