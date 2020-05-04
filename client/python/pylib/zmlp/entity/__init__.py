@@ -5,4 +5,5 @@ from .datasource import *
 from .exception import *
 from .job import *
 from .project import *
+from .model import *
 

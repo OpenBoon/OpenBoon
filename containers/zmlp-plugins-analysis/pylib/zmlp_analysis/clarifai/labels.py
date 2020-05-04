@@ -1,4 +1,5 @@
 from zmlpsdk import AssetProcessor, Argument
+from zmlpsdk.analysis import LabelDetectionAnalysis
 from zmlpsdk.proxy import get_proxy_level_path
 
 from .util import get_clarifai_app
@@ -13,7 +14,7 @@ models = [
 
 
 class ClarifaiLabelDetectionProcessor(AssetProcessor):
-    namespace = 'clarifai-'
+    namespace = 'clarifai'
 
     def __init_(self):
         super(ClarifaiLabelDetectionProcessor, self).__init__()
@@ -37,12 +38,8 @@ class ClarifaiLabelDetectionProcessor(AssetProcessor):
                 if not labels:
                     continue
 
-                result = [
-                    {'label': label['name'],
-                     'score': round(label['value'], 3)} for label in labels]
+                analysis = LabelDetectionAnalysis()
+                for label in labels:
+                    analysis.add_label_and_score(label['name'], label['value'])
 
-                asset.add_analysis(self.namespace + model_name, {
-                    'predictions': result,
-                    'count': len(result),
-                    'type': 'labels'
-                })
+                asset.add_analysis("-".join([self.namespace, model_name]), analysis)

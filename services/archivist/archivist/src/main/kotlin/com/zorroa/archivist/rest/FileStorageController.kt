@@ -136,10 +136,10 @@ class FileStorageController(
 
         try {
             when (locator.entity) {
-                ProjectStorageEntity.ASSET -> {
+                ProjectStorageEntity.ASSETS -> {
                     assetService.getAsset(locator.entityId)
                 }
-                ProjectStorageEntity.DATASET -> {
+                ProjectStorageEntity.DATASETS -> {
                     dataSetService.get(UUID.fromString(locator.entityId))
                 }
             }

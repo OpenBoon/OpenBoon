@@ -74,28 +74,24 @@ def publish_pipeline_module(name,
         logger.info("The pipeline module {} already exists".format(name))
 
 
-def upload_model_directory(src_dir, ds, label):
+def upload_model_directory(src_dir, file_id):
     """
     Upload a directory containing model files to cloud storage.  The model
     file will be associated with the datasource it was created with.
 
     Args:
         src_dir (str): The source directory.
-        ds (DataSet): A DataSet instance.
-        label (str): A model name or label that can uniquely identify it.
+        file_id (str): A project file ID, this is provided in the processor args.
 
     Returns:
         StoredFile A stored file instance.
     """
 
     zip_file_path = zip_directory(src_dir, tempfile.mkstemp(".zip")[1])
-    logger.info("Uploading zip: {}".format(zip_file_path))
-    logger.info("Size: {}", os.path.getsize(zip_file_path))
-    return file_storage.projects.store_file(zip_file_path, ds, "models",
-                                            "{}_v1.zip".format(label))
+    return file_storage.projects.store_file_by_id(zip_file_path, file_id)
 
 
-def zip_directory(src_dir, dst_file):
+def zip_directory(src_dir, dst_file, zip_root_name=None):
     """
     Zip the given directory a file.
 
@@ -108,13 +104,15 @@ def zip_directory(src_dir, dst_file):
 
     """
 
-    def zipdir(path, ziph):
+    def zipdir(path, ziph, root_name):
         for root, dirs, files in os.walk(path):
             for file in files:
-                print("writing file :{}".format(file))
-                ziph.write(os.path.join(root, file))
+                ziph.write(os.path.join(root, file),
+                           os.path.join(root_name, root.replace(path, ""), file))
 
+    src_dir = os.path.abspath(src_dir)
+    zip_root_name = zip_root_name or os.path.splitext(os.path.basename(dst_file))[0]
     zipf = zipfile.ZipFile(dst_file, 'w', zipfile.ZIP_DEFLATED)
-    zipdir(src_dir + "/", zipf)
+    zipdir(src_dir + "/", zipf, zip_root_name)
     zipf.close()
     return dst_file

@@ -39,7 +39,7 @@ class FileStorageControllerTests : MockMvcTest() {
             )
         )
         val id = rsp.created[0]
-        val loc = ProjectFileLocator(ProjectStorageEntity.ASSET,
+        val loc = ProjectFileLocator(ProjectStorageEntity.ASSETS,
             id, ProjectStorageCategory.PROXY, "bob.jpg")
         val storage = ProjectStorageSpec(loc, mapOf("cats" to 100), "test".toByteArray())
         projectStorageService.store(storage)
@@ -67,7 +67,7 @@ class FileStorageControllerTests : MockMvcTest() {
         val payload = """
             {
                 "entityId": "$id",
-                "entity": "asset",
+                "entity": "assets",
                 "category": "image",
                 "name": "toucan.jpg",
                 "attrs": {
@@ -104,7 +104,7 @@ class FileStorageControllerTests : MockMvcTest() {
         val payload = """
             {
                 "entityId": "$id",
-                "entity": "asset",
+                "entity": "assets",
                 "category": "image",
                 "name": "toucan.jpg",
                 "attrs": {
@@ -162,7 +162,7 @@ class FileStorageControllerTests : MockMvcTest() {
         val payload = """
             {
                 "entityId": "$id",
-                "entity": "asset",
+                "entity": "assets",
                 "category": "image",
                 "name": "toucan.jpg",
                 "attrs": {
@@ -202,7 +202,7 @@ class FileStorageControllerTests : MockMvcTest() {
         val payload = """
             {
                 "entityId": "${ds.id}",
-                "entity": "dataset",
+                "entity": "datasets",
                 "category": "image",
                 "name": "toucan.jpg",
                 "attrs": {

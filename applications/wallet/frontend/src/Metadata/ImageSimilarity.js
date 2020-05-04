@@ -34,14 +34,7 @@ const MetadataImageSimilarity = ({ name, simhash }) => {
           },
         }}
       >
-        <div
-          css={{
-            fontFamily: 'Roboto Mono',
-            color: colors.structure.white,
-            paddingBottom: spacing.base,
-            display: 'flex',
-          }}
-        >
+        <div css={{ display: 'flex', paddingBottom: spacing.base }}>
           <div
             css={{
               minHeight: COPY_SIZE,
@@ -55,7 +48,15 @@ const MetadataImageSimilarity = ({ name, simhash }) => {
           </div>
           <ButtonCopy value={simhash} />
         </div>
-        <div css={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <div
+          css={{
+            fontFamily: 'Roboto Mono',
+            color: colors.structure.white,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+          title={simhash}
+        >
           {simhash}
         </div>
       </div>

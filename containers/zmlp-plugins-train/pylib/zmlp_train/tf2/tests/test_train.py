@@ -4,7 +4,7 @@ import shutil
 from unittest.mock import patch
 
 from zmlp.app import DataSetApp
-from zmlp.entity.dataset import DataSet
+from zmlp.entity import DataSet, StoredFile
 from zmlp_train.tf2 import TensorflowTransferLearningTrainer
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset
@@ -92,12 +92,15 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
             "roses": 6,
             "daisy": 6
         }
-        upload_patch.return_value = {}
+        upload_patch.return_value = StoredFile({"id": "12345"})
 
+        name = 'custom-flowers-label-detection-tf2-xfer-mobilenet2'
         args = {
             'dataset_id': self.ds_id,
+            'model_type': 'TF2_XFER_MOBILENET2',
+            'name': name,
+            'file_id': 'dataset/12345/models/{}.2.zip'.format(name),
             'min_examples': 6,
-            'base_model': "resnet_v2",
             'epochs': 5
         }
 

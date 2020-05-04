@@ -104,26 +104,27 @@ class ProjectStorage(object):
         self.app = app
         self.cache = cache
 
-    def store_file(self, src_path, entity, category, rename=None, attrs=None):
+    def store_file_by_id(self, src_path, file_id, attrs=None):
         """
-        Store an arbitrary file against the project.
+        Store a file using its unique file id.
 
         Args:
-            src_path (str): The src path to the file.
-            entity (mixed): The instance of the entity to store a file against.
-            category (str): The general category for the file. (proxy, model, etc)
-            rename (str): An optional file name if it should not be based on the src_path name.
-            attrs (dict): A dict of arbitrary attrs.
+            src_path (str): The path to the source file.
+            file_id (str): The ID of the file.
+            attrs (dict): Any additional attrs to be attached to the file.
+
         Returns:
             StoredFile: A record for the stored file.
 
         """
+        entity, entity_id, category, name = file_id.split("/", 3)
+
         spec = {
-            "entity": entity.__class__.__name__,
-            "entityId": entity.id,
+            "entity": entity,
+            "entityId": entity_id,
             "category": category,
-            "name": rename or Path(src_path).name,
-            "attrs": attrs
+            "name": name,
+            "attrs": attrs or {}
         }
 
         # To upload a file into project storage, first we get a signed upload URI.
@@ -145,6 +146,29 @@ class ProjectStorage(object):
         path = urlparse(str(src_path)).path
         self.cache.precache_file(result, path)
         return result
+
+    def store_file(self, src_path, entity, category, rename=None, attrs=None):
+        """
+        Store an arbitrary file against the project.
+
+        Args:
+            src_path (str): The src path to the file.
+            entity (mixed): The instance of the entity to store a file against.
+            category (str): The general category for the file. (proxy, model, etc)
+            rename (str): An optional file name if it should not be based on the src_path name.
+            attrs (dict): A dict of arbitrary attrs.
+
+        Returns:
+            StoredFile: A record for the stored file.
+
+        """
+        fid = "/".join((
+            entity.__class__.__name__.upper() + "S",
+            entity.id,
+            category,
+            rename or Path(src_path).name
+        ))
+        return self.store_file_by_id(src_path, fid, attrs)
 
     def store_blob(self, src_blob, entity, category, name, attrs=None):
         """
@@ -179,7 +203,7 @@ class ProjectStorage(object):
             "entityId": entity.id,
             "category": category,
             "name": name,
-            "attrs": attrs
+            "attrs": attrs or {}
         }
 
         result = StoredFile(self.app.client.upload_file(

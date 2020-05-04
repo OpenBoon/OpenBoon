@@ -3,6 +3,7 @@ package com.zorroa.archivist.service
 import com.zorroa.archivist.domain.Asset
 import com.zorroa.archivist.domain.DataSource
 import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.JobPriority
 import com.zorroa.archivist.domain.JobSpec
 import com.zorroa.archivist.domain.JobType
 import com.zorroa.archivist.domain.ProcessorRef
@@ -148,7 +149,7 @@ class JobLaunchServiceImpl(
 
         val script = ZpsScript(name, null, listOf(Asset()),
             listOf(processor), settings = mergedSettings)
-        val spec = JobSpec(name, script)
+        val spec = JobSpec(name, script, replace = true, priority = JobPriority.Interactive)
         return launchJob(spec, JobType.Batch)
     }
 
