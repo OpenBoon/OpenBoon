@@ -58,37 +58,36 @@ const MetadataObjectDetection = () => {
       >
         <thead>
           <tr>
-            {columns.map((column, index) => {
-              // make second to last column expand to push last column to the end
-              const shouldExpand = index === columns.length - 2
-
+            {columns.map((column) => {
               return (
-                <td
+                <th
                   key={column}
                   css={{
                     fontFamily: 'Roboto Condensed',
                     textTransform: 'uppercase',
                     color: colors.structure.steel,
-                    width: shouldExpand ? '100%' : '',
                     paddingBottom: spacing.normal,
+                    textAlign: 'left',
                     '&:last-of-type': {
                       textAlign: 'right',
                       whiteSpace: 'nowrap',
                       paddingRight: 0,
                     },
+                    '&:nth-last-of-type(2)': { width: '100%' },
                   }}
                 >
                   {column === 'score' ? 'confidence score' : column}
-                </td>
+                </th>
               )
             })}
           </tr>
         </thead>
         <tbody>
-          {predictions.map((prediction) => {
+          {predictions.map((prediction, index) => {
             return (
               <tr
-                key={prediction.score}
+                // eslint-disable-next-line react/no-array-index-key
+                key={`${prediction.label}-${index}`}
                 css={{
                   verticalAlign: 'bottom',
                   td: {
@@ -112,12 +111,7 @@ const MetadataObjectDetection = () => {
                 {columns.map((column) => {
                   if (column === 'bbox') {
                     return (
-                      <td
-                        key={column}
-                        css={{
-                          display: 'flex',
-                        }}
-                      >
+                      <td key={column} css={{ display: 'flex' }}>
                         <img
                           css={{
                             maxHeight: BBOX_SIZE,

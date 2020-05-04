@@ -39,10 +39,8 @@ const MetadataTextDetection = ({ name, content }) => {
         {content && (
           <div
             css={{
-              fontFamily: 'Roboto Mono',
-              color: colors.structure.white,
-              paddingBottom: spacing.base,
               display: 'flex',
+              paddingBottom: spacing.base,
             }}
           >
             <div
