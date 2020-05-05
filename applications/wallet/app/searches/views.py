@@ -158,6 +158,18 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
             *NOTE* The "attribute" field on TextContent can also be left off, and the query will
             be matched against all available fields.
 
+        Similarity:
+
+            {
+                "type": "similarity",
+                "attribute": "analysis.zvi-image-similarity",
+                "values": {
+                    "hashes": ["Simhashes to match"],
+                    "minScore": 0.75,   # Optional
+                    "boost": 1.0        # Optional
+                }
+            }
+
         """
         path = 'api/v3/assets'
         fields = ['id',
