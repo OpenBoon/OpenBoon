@@ -3,6 +3,7 @@ package com.zorroa.archivist.repository
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.security.getProjectId
+import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.math.BigDecimal
@@ -75,8 +76,8 @@ class ProjectQuotasDaoTests : AbstractTest() {
     @Test
     fun testGetTimeSeriesCounters() {
 
-        val date1 = Date(1584624690000)
-        val date2 = Date(date1.time + 3600000)
+        val date1 = Date(System.currentTimeMillis())
+        val date2 = Date(date1.time + (3601000 * 2))
 
         val counters = ProjectQuotaCounters()
         counters.videoClipCount = 1
@@ -91,6 +92,7 @@ class ProjectQuotasDaoTests : AbstractTest() {
         projectQuotasDao.incrementTimeSeriesCounters(date2, counters)
 
         val result = projectQuotasDao.getTimeSeriesCounters(getProjectId(), date1, (date2))
-        assertEquals(2, result.size)
+        Json.prettyPrint(result)
+        assertEquals(3, result.size)
     }
 }
