@@ -95,7 +95,9 @@ describe('<FiltersContent />', () => {
       results: { max },
     } = rangeAggregate
 
-    const filters = [{ attribute: 'clip.length', type: 'range' }]
+    const filters = [
+      { attribute: 'clip.length', type: 'range', values: { min: 190, max } },
+    ]
 
     require('swr').__setMockUseSWRResponse({ data: rangeAggregate })
 
@@ -125,7 +127,9 @@ describe('<FiltersContent />', () => {
   })
 
   it('should render the "Range" filter with file sizes', () => {
-    const filters = [{ attribute: 'source.filesize', type: 'range' }]
+    const filters = [
+      { attribute: 'source.filesize', type: 'range', values: {} },
+    ]
 
     require('swr').__setMockUseSWRResponse({ data: rangeAggregate })
 

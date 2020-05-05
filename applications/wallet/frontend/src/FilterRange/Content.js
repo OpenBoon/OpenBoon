@@ -5,7 +5,7 @@ import { bytesToSize } from '../Bytes/helpers'
 
 import { colors, constants, spacing } from '../Styles'
 
-import { dispatch, ACTIONS } from '../Filters/helpers'
+import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 import FiltersReset from '../Filters/Reset'
 
 import FilterRangeSlider from './Slider'
@@ -24,20 +24,21 @@ const FilterRange = ({
   projectId,
   assetId,
   filters,
-  filter: { type, attribute },
+  filter: { type, attribute, values },
   filterIndex,
 }) => {
-  const encodedFilter = btoa(JSON.stringify({ type, attribute }))
-
   const {
     data: { results },
   } = useSWR(
-    `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
+    `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encode({
+      filters: { type, attribute, values },
+    })}`,
   )
 
   const domain = [results.min, results.max]
+  const cachedRange = values.min ? [values.min, values.max] : domain
 
-  const [values, setValues] = useState(domain)
+  const [rangeValues, setRangeValues] = useState(cachedRange)
 
   return (
     <div>
@@ -47,7 +48,7 @@ const FilterRange = ({
         filters={filters}
         updatedFilter={{ type, attribute }}
         filterIndex={filterIndex}
-        onReset={() => setValues(domain)}
+        onReset={() => setRangeValues(domain)}
       />
       <div css={{ padding: spacing.normal }}>
         <div
@@ -63,8 +64,8 @@ const FilterRange = ({
         <div css={{ padding: spacing.small }}>
           <FilterRangeSlider
             domain={domain}
-            values={values}
-            setValues={(value) => setValues(value)}
+            values={rangeValues}
+            setValues={(value) => setRangeValues(value)}
             onChange={(value) =>
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
@@ -105,7 +106,7 @@ const FilterRange = ({
                 borderRadius: constants.borderRadius.small,
               }}
             >
-              {formatValue({ attribute, value: values[0] })}
+              {formatValue({ attribute, value: rangeValues[0] })}
             </div>
           </div>
           <div css={{ display: 'flex', alignItems: 'center' }}>
@@ -122,7 +123,7 @@ const FilterRange = ({
                 borderRadius: constants.borderRadius.small,
               }}
             >
-              {formatValue({ attribute, value: values[1] })}
+              {formatValue({ attribute, value: rangeValues[1] })}
             </div>
           </div>
         </div>
@@ -144,7 +145,7 @@ FilterRange.propTypes = {
   filter: PropTypes.shape({
     type: PropTypes.oneOf(['range']).isRequired,
     attribute: PropTypes.string.isRequired,
-    values: PropTypes.shape({ exists: PropTypes.bool }),
+    values: PropTypes.shape({ min: PropTypes.number, max: PropTypes.number }),
   }).isRequired,
   filterIndex: PropTypes.number.isRequired,
 }
