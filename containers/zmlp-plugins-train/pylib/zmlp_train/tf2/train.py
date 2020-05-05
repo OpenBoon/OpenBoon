@@ -21,27 +21,82 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         super(TensorflowTransferLearningTrainer, self).__init__()
 
         # These are the base args
-        self.add_arg(Argument("dataset_id", "str", required=True,
-                              toolTip="The dataset Id"))
-        self.add_arg(Argument("model_type", "str", required=True,
-                              toolTip="The the base model type."))
-        self.add_arg(Argument("name", "str", required=True,
-                              toolTip="The name of the model, which is the pipeline mod name."))
-        self.add_arg(Argument("file_id", "str", required=True,
-                              toolTip="The file_id where the model should be stored"))
+        self.add_arg(
+            Argument(
+                "dataset_id", "str", required=True, toolTip="The dataset Id"
+            )
+        )
+        self.add_arg(
+            Argument(
+                "model_type",
+                "str",
+                required=True,
+                toolTip="The the base model type.",
+            )
+        )
+        self.add_arg(
+            Argument(
+                "name",
+                "str",
+                required=True,
+                toolTip="The name of the model, which is the pipeline mod name.",
+            )
+        )
+        self.add_arg(
+            Argument(
+                "file_id",
+                "str",
+                required=True,
+                toolTip="The file_id where the model should be stored",
+            )
+        )
 
-        self.add_arg(Argument("publish", "bool", required=False,
-                              toolTip="True if the pipeline module should be created/updated"))
+        self.add_arg(
+            Argument(
+                "publish",
+                "bool",
+                required=False,
+                toolTip="True if the pipeline module should be created/updated",
+            )
+        )
 
         # These can be set optionally.
-        self.add_arg(Argument("epochs", "int", required=True, default=10,
-                              toolTip="The number of training epochs"))
-        self.add_arg(Argument("min_concepts", "int", required=True, default=2,
-                              toolTip="The min number of concepts needed to train."))
-        self.add_arg(Argument("min_examples", "int", required=True, default=10,
-                              toolTip="The min number of examples needed to train"))
-        self.add_arg(Argument("train-test-ratio", "int", required=True, default=3,
-                              toolTip="The number of training images vs test images"))
+        self.add_arg(
+            Argument(
+                "epochs",
+                "int",
+                required=True,
+                default=10,
+                toolTip="The number of training epochs",
+            )
+        )
+        self.add_arg(
+            Argument(
+                "min_concepts",
+                "int",
+                required=True,
+                default=2,
+                toolTip="The min number of concepts needed to train.",
+            )
+        )
+        self.add_arg(
+            Argument(
+                "min_examples",
+                "int",
+                required=True,
+                default=10,
+                toolTip="The min number of examples needed to train",
+            )
+        )
+        self.add_arg(
+            Argument(
+                "train-test-ratio",
+                "int",
+                required=True,
+                default=3,
+                toolTip="The number of training images vs test images",
+            )
+        )
         self.app = zmlp.app_from_env()
 
         self.ds = None
@@ -50,20 +105,22 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         self.base_dir = None
 
     def init(self):
-        self.ds = self.app.datasets.get_dataset(self.arg_value('dataset_id'))
+        self.ds = self.app.datasets.get_dataset(self.arg_value("dataset_id"))
         self.labels = self.app.datasets.get_label_counts(self.ds)
-        self.base_dir = tempfile.mkdtemp('tf2-xfer-learning')
+        self.base_dir = tempfile.mkdtemp("tf2-xfer-learning")
         self.check_labels()
 
     def process(self, frame):
-        download_dataset(self.ds.id, self.base_dir, self.arg_value('train-test-ratio'))
+        download_dataset(
+            self.ds.id, self.base_dir, self.arg_value("train-test-ratio")
+        )
         self.build_model()
 
         train_gen, test_gen = self.build_generators()
         self.model.fit_generator(
             train_gen,
             validation_data=test_gen,
-            epochs=self.arg_value('epochs')
+            epochs=self.arg_value("epochs"),
         )
 
         # Build the label list
@@ -81,20 +138,22 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             labels (list): An array of labels in the correct order.
 
         """
-        self.logger.info('publishing model')
-        model_dir = tempfile.mkdtemp() + '/' + self.arg_value('name')
+        self.logger.info("publishing model")
+        model_dir = tempfile.mkdtemp() + "/" + self.arg_value("name")
         os.makedirs(model_dir)
 
-        self.logger.info('saving model : {}'.format(model_dir))
+        self.logger.info("saving model : {}".format(model_dir))
         self.model.save(model_dir)
-        with open(model_dir + '/labels.txt', 'w') as fp:
+        with open(model_dir + "/labels.txt", "w") as fp:
             for label in labels:
-                fp.write('{}\n'.format(label))
+                fp.write("{}\n".format(label))
 
         # Upload the zipped model to project storage.
-        self.logger.info('uploading model')
+        self.logger.info("uploading model")
 
-        stored_file = upload_model_directory(model_dir, self.arg_value("file_id"))
+        stored_file = upload_model_directory(
+            model_dir, self.arg_value("file_id")
+        )
 
         self.logger.info("Uploaded model: {}".format(stored_file.id))
 
@@ -107,16 +166,18 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         Check the dataset labels to ensure we have enough labels and example images.
 
         """
-        min_concepts = self.arg_value('min_concepts')
-        min_examples = self.arg_value('min_examples')
+        min_concepts = self.arg_value("min_concepts")
+        min_examples = self.arg_value("min_examples")
 
         # Do some checks here.
         if len(self.labels) < min_concepts:
-            raise ValueError('You need at least {} labels to train.'.format(min_concepts))
+            raise ValueError(
+                "You need at least {} labels to train.".format(min_concepts)
+            )
 
         for name, count in self.labels.items():
             if count < min_examples:
-                msg = 'You need at least {} examples to train, {} has  {}'
+                msg = "You need at least {} examples to train, {} has  {}"
                 raise ValueError(msg.format(min_examples, name, count))
 
     def build_model(self):
@@ -129,27 +190,25 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         for layer in base_model.layers:
             layer.trainable = False
 
-        self.model = tf.keras.models.Sequential([
-            base_model,
-
-            Flatten(),
-            Dense(512, activation='relu'),
-            BatchNormalization(),
-            Dropout(0.5),
-
-            Dense(64, activation='relu'),
-            BatchNormalization(),
-            Dropout(0.5),
-            Dense(len(self.labels), activation='softmax')
-        ])
+        self.model = tf.keras.models.Sequential(
+            [
+                base_model,
+                Flatten(),
+                Dense(512, activation="relu"),
+                BatchNormalization(),
+                Dropout(0.5),
+                Dense(64, activation="relu"),
+                BatchNormalization(),
+                Dropout(0.5),
+                Dense(len(self.labels), activation="softmax"),
+            ]
+        )
 
         self.model.summary()
-        self.logger.info('Compiling...')
+        self.logger.info("Compiling...")
 
         self.model.compile(
-            optimizer='adam',
-            loss='categorical_crossentropy',
-            metrics=['acc']
+            optimizer="adam", loss="categorical_crossentropy", metrics=["acc"]
         )
 
     def build_generators(self):
@@ -161,30 +220,30 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             tuple: a tuple of ImageDataGenerators, 1st one is train, other is tet.
         """
         train_datagen = ImageDataGenerator(
-            rescale=1. / 255,
+            rescale=1.0 / 255,
             rotation_range=40,
             width_shift_range=0.2,
             height_shift_range=0.2,
             shear_range=0.2,
             zoom_range=0.2,
             horizontal_flip=True,
-            fill_mode='nearest'
+            fill_mode="nearest",
         )
 
-        test_datagen = ImageDataGenerator(rescale=1. / 255.)
+        test_datagen = ImageDataGenerator(rescale=1.0 / 255.0)
 
         train_generator = train_datagen.flow_from_directory(
-            '{}/set_train/'.format(self.base_dir),
+            "{}/set_train/".format(self.base_dir),
             batch_size=128,
-            class_mode='categorical',
-            target_size=self.img_size
+            class_mode="categorical",
+            target_size=self.img_size,
         )
 
         test_generator = test_datagen.flow_from_directory(
-            '{}/set_test/'.format(self.base_dir),
+            "{}/set_test/".format(self.base_dir),
             batch_size=128,
-            class_mode='categorical',
-            target_size=self.img_size
+            class_mode="categorical",
+            target_size=self.img_size,
         )
 
         return train_generator, test_generator
@@ -200,18 +259,26 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             ZmlpFatalProcessorException: If the model is not fouond/
 
         """
-        model = self.arg_value('model_type')
-        if model == 'TF2_XFER_MOBILENET2':
-            return mobilenet_v2.MobileNetV2(weights='imagenet',
-                                            include_top=False,
-                                            input_shape=(224, 224, 3))
-        elif model == 'TF2_XFER_RESNET152':
-            return resnet_v2.ResNet152V2(weights='imagenet',
-                                         include_top=False,
-                                         input_shape=(224, 224, 3))
-        elif model == 'TF2_XFER_VGG16':
-            return vgg16.VGG16(weights='imagenet',
-                               include_top=False,
-                               input_shape=(224, 224, 3))
+        model = self.arg_value("model_type")
+        if model == "TF2_XFER_MOBILENET2":
+            return mobilenet_v2.MobileNetV2(
+                weights="imagenet",
+                include_top=False,
+                input_shape=(224, 224, 3),
+            )
+        elif model == "TF2_XFER_RESNET152":
+            return resnet_v2.ResNet152V2(
+                weights="imagenet",
+                include_top=False,
+                input_shape=(224, 224, 3),
+            )
+        elif model == "TF2_XFER_VGG16":
+            return vgg16.VGG16(
+                weights="imagenet",
+                include_top=False,
+                input_shape=(224, 224, 3),
+            )
         else:
-            raise ZmlpFatalProcessorException('Invalid model: {}'.format(model))
+            raise ZmlpFatalProcessorException(
+                "Invalid model: {}".format(model)
+            )

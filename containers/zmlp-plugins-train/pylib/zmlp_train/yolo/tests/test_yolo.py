@@ -3,13 +3,9 @@ import sys
 import os
 import shutil
 import urllib
-from unittest.mock import patch
+from argparse import Namespace
 
-from zmlp.app import DataSetApp
-from zmlp.entity.dataset import DataSet
-from zmlp_train.tf2 import TensorflowTransferLearningTrainer
-from zmlpsdk.base import Frame
-from zmlpsdk.testing import PluginUnitTestCase, TestAsset
+from zmlp_train.yolo import main
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
@@ -34,13 +30,17 @@ def load_weights():
     logging.info("Weights loaded.")
 
 
-load_weights()
-stream = os.popen(
-    f"python3 {path_yolo}/yolo.py "
-    f"-w {weights_filepath} "
-    f"-i {path_yolo}/data/{example_img}"
-)
-output = stream.read()
-logging.info(output)
+def test_main():
+    args = Namespace(
+        weights=weights_filepath,
+        image="{}/data/{}".format(path_yolo, example_img),
+    )
 
-assert os.path.exists(f"{path_yolo}/data/dog_detected.jpg")
+    load_weights()
+    main(args)
+
+    assert os.path.exists(f"{path_yolo}/data/dog_detected.jpg")
+    os.remove(f"{path_yolo}/data/dog_detected.jpg")
+
+
+test_main()

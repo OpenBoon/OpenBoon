@@ -4,7 +4,7 @@ import sys
 import argparse
 import os
 import numpy as np
-from keras.layers import (
+from tensorflow.keras.layers import (
     Conv2D,
     Input,
     BatchNormalization,
@@ -12,8 +12,10 @@ from keras.layers import (
     ZeroPadding2D,
     UpSampling2D,
 )
-from keras.layers.merge import add, concatenate
-from keras.models import Model, load_model
+from tensorflow.keras.layers import add, concatenate
+
+# from keras.layers.merge import add, concatenate
+from tensorflow.keras.models import Model, load_model
 import struct
 import cv2
 
@@ -57,7 +59,7 @@ class WeightReader:
         for i in range(106):
             try:
                 conv_layer = model.get_layer("conv_" + str(i))
-                print("loading weights of convolution #" + str(i))
+                # print("loading weights of convolution #" + str(i))
 
                 if i not in [81, 93, 105]:
                     norm_layer = model.get_layer("bnorm_" + str(i))
@@ -94,7 +96,8 @@ class WeightReader:
                     kernel = kernel.transpose([2, 3, 1, 0])
                     conv_layer.set_weights([kernel])
             except ValueError:
-                print("no convolution #" + str(i))
+                # print("no convolution #" + str(i))
+                continue
 
     def reset(self):
         self.offset = 0
@@ -853,7 +856,7 @@ def draw_boxes(image, boxes, labels, obj_thresh):
     return image
 
 
-def _main_(args):
+def main(args):
     weights_path = args.weights
     image_path = args.image
 
@@ -995,4 +998,4 @@ def _main_(args):
 
 if __name__ == "__main__":
     args = argparser.parse_args()
-    _main_(args)
+    main(args)
