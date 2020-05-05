@@ -42,7 +42,7 @@ class ZmlpDataSetAppTests(unittest.TestCase):
         assert value['id'] == ds.id
         assert value['name'] == ds.name
         assert value['type'] == ds.type
-        
+
     @patch.object(ZmlpClient, 'get')
     def test_get_dataset(self, get_patch):
         value = {
