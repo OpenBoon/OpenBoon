@@ -1,5 +1,6 @@
 package com.zorroa.archivist.storage
 
+import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.HttpMethod
@@ -21,6 +22,7 @@ import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import java.io.IOException
 import java.nio.channels.Channels
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
@@ -33,11 +35,20 @@ class GcsProjectStorageService constructor(
 
 ) : ProjectStorageService {
 
-    val gcs: Storage = StorageOptions.getDefaultInstance().service
+    val options: StorageOptions = StorageOptions.getDefaultInstance()
+    val gcs: Storage = options.service
 
     @PostConstruct
     fun initialize() {
-        logger.info("Initializing GCS Storage Backend (bucket='${properties.bucket}')")
+        logger.info(
+            "Initializing GCS Storage Backend (bucket='${properties.bucket}')"
+        )
+        try {
+            val creds = GoogleCredentials.getApplicationDefault()
+            logger.info("GCS credentials token ${creds.accessToken.tokenValue}")
+        } catch (e: IOException) {
+            logger.warn("Unable to fetch GCS cre")
+        }
     }
 
     override fun store(spec: ProjectStorageSpec): FileStorage {
@@ -94,13 +105,18 @@ class GcsProjectStorageService constructor(
     ): String {
         val path = locator.getPath()
         val contentType = FileUtils.getMediaType(path)
+        val headers = mapOf("Content-Type" to contentType)
 
         val info = BlobInfo.newBuilder(properties.bucket, path).setContentType(contentType).build()
         val opts = if (forWrite) {
-            arrayOf(Storage.SignUrlOption.withContentType(),
-                Storage.SignUrlOption.httpMethod(HttpMethod.PUT))
+            arrayOf(
+                Storage.SignUrlOption.withExtHeaders(headers),
+                Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
+                Storage.SignUrlOption.withV4Signature())
         } else {
-            arrayOf(Storage.SignUrlOption.httpMethod(HttpMethod.GET))
+            arrayOf(
+                Storage.SignUrlOption.httpMethod(HttpMethod.GET),
+                Storage.SignUrlOption.withV4Signature())
         }
 
         logSignEvent(path, forWrite)
