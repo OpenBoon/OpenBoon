@@ -10,6 +10,16 @@ import FiltersReset from '../Filters/Reset'
 
 import FilterRangeSlider from './Slider'
 
+const MIN_WIDTH = 76
+
+const formatValue = ({ attribute, value }) => {
+  if (attribute.includes('size')) {
+    return bytesToSize({ bytes: value })
+  }
+
+  return Math.ceil(value)
+}
+
 const FilterRange = ({
   projectId,
   assetId,
@@ -32,17 +42,11 @@ const FilterRange = ({
   return (
     <div>
       <FiltersReset
-        payload={{
-          projectId,
-          assetId,
-          filters,
-          updatedFilter: {
-            type,
-            attribute,
-            values: {},
-          },
-          filterIndex,
-        }}
+        projectId={projectId}
+        assetId={assetId}
+        filters={filters}
+        updatedFilter={{ type, attribute }}
+        filterIndex={filterIndex}
         onReset={() => setValues(domain)}
       />
       <div css={{ padding: spacing.normal }}>
@@ -53,8 +57,8 @@ const FilterRange = ({
             paddingBottom: spacing.moderate,
           }}
         >
-          <span>{bytesToSize({ bytes: results.min })}</span>
-          <span>{bytesToSize({ bytes: results.max })}</span>
+          <span>{formatValue({ attribute, value: results.min })}</span>
+          <span>{formatValue({ attribute, value: results.max })}</span>
         </div>
         <div css={{ padding: spacing.small }}>
           <FilterRangeSlider
@@ -91,30 +95,34 @@ const FilterRange = ({
             MIN &nbsp;
             <div
               css={{
+                minWidth: MIN_WIDTH,
                 backgroundColor: colors.structure.lead,
+                paddingLeft: spacing.moderate,
+                paddingRight: spacing.moderate,
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.normal,
-                width: 76,
                 textAlign: 'center',
                 borderRadius: constants.borderRadius.small,
               }}
             >
-              {bytesToSize({ bytes: values[0] })}
+              {formatValue({ attribute, value: values[0] })}
             </div>
           </div>
           <div css={{ display: 'flex', alignItems: 'center' }}>
             MAX &nbsp;
             <div
               css={{
+                minWidth: MIN_WIDTH,
                 backgroundColor: colors.structure.lead,
+                paddingLeft: spacing.moderate,
+                paddingRight: spacing.moderate,
                 paddingTop: spacing.normal,
                 paddingBottom: spacing.normal,
-                width: 76,
                 textAlign: 'center',
                 borderRadius: constants.borderRadius.small,
               }}
             >
-              {bytesToSize({ bytes: values[1] })}
+              {formatValue({ attribute, value: values[1] })}
             </div>
           </div>
         </div>

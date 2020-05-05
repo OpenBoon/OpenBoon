@@ -30,17 +30,11 @@ const FilterFacet = ({
   return (
     <>
       <FiltersReset
-        payload={{
-          projectId,
-          assetId,
-          filters,
-          updatedFilter: {
-            type,
-            attribute,
-            values: {},
-          },
-          filterIndex,
-        }}
+        projectId={projectId}
+        assetId={assetId}
+        filters={filters}
+        updatedFilter={{ type, attribute }}
+        filterIndex={filterIndex}
         onReset={() => {}}
       />
       <div

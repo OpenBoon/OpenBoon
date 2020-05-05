@@ -123,4 +123,21 @@ describe('<FiltersContent />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render the "Range" filter with file sizes', () => {
+    const filters = [{ attribute: 'source.filesize', type: 'range' }]
+
+    require('swr').__setMockUseSWRResponse({ data: rangeAggregate })
+
+    const component = TestRenderer.create(
+      <FiltersContent
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={filters}
+        setIsMenuOpen={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })
