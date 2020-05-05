@@ -37,6 +37,12 @@ class ZmlpDataSetAppTests(unittest.TestCase):
         assert value['name'] == ds.name
         assert value['type'] == ds.type
 
+        # Now try to create the same dataset again
+        ds = self.app.datasets.create_dataset('test', DataSetType.LabelDetection)
+        assert value['id'] == ds.id
+        assert value['name'] == ds.name
+        assert value['type'] == ds.type
+        
     @patch.object(ZmlpClient, 'get')
     def test_get_dataset(self, get_patch):
         value = {
@@ -59,9 +65,16 @@ class ZmlpDataSetAppTests(unittest.TestCase):
         }
         post_patch.return_value = value
         ds = self.app.datasets.find_one_dataset(id='A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80')
+        print('\n')
+        print(ds)
+        print('\n')
         assert value['id'] == ds.id
         assert value['name'] == ds.name
         assert value['type'] == ds.type
+
+        # Try getting one that doesn't exist
+        ds = self.app.datasets.find_one_dataset(name='this one does not exist')
+        assert ds is None
 
     @patch.object(ZmlpClient, 'post')
     def test_find_datasets(self, post_patch):
