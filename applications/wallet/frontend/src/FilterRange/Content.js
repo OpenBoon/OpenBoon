@@ -17,7 +17,7 @@ const formatValue = ({ attribute, value }) => {
     return bytesToSize({ bytes: value })
   }
 
-  if (value % 1 !== 0) {
+  if (value > 0 && value < 1) {
     return value.toFixed(1)
   }
 
@@ -40,9 +40,11 @@ const FilterRange = ({
   )
 
   const domain = [results.min, results.max]
-  const cachedRange = values.min ? [values.min, values.max] : domain
 
-  const [rangeValues, setRangeValues] = useState(cachedRange)
+  const [rangeValues, setRangeValues] = useState([
+    values.min || results.min,
+    values.max || results.max,
+  ])
 
   return (
     <div>
@@ -70,7 +72,7 @@ const FilterRange = ({
             domain={domain}
             values={rangeValues}
             setValues={(value) => setRangeValues(value)}
-            onChange={(value) =>
+            onChange={([min, max]) =>
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
                 payload: {
@@ -80,7 +82,7 @@ const FilterRange = ({
                   updatedFilter: {
                     type,
                     attribute,
-                    values: { min: value[0], max: value[1] },
+                    values: { min, max },
                   },
                   filterIndex,
                 },

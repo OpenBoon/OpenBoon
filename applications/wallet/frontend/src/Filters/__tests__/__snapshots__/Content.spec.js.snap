@@ -2672,7 +2672,7 @@ Array [
                 className="emotion-7"
               >
                 <span>
-                  180
+                  0.1
                 </span>
                 <span>
                   8525
@@ -2699,7 +2699,7 @@ Array [
                   />
                   <div>
                     <button
-                      aria-valuenow={200.3}
+                      aria-valuenow={0.30000000000000004}
                       onKeyDown={[Function]}
                       onMouseDown={[Function]}
                       onTouchStart={[Function]}
@@ -2711,7 +2711,7 @@ Array [
                           "borderRadius": 1,
                           "cursor": "pointer",
                           "height": 24,
-                          "left": "0.24325943678849624%",
+                          "left": "0.002346068575584465%",
                           "margin": 0,
                           "padding": 0,
                           "position": "absolute",
@@ -2756,10 +2756,10 @@ Array [
                           "backgroundColor": "#73b61c",
                           "cursor": "pointer",
                           "height": 4,
-                          "left": "0.24325943678849624%",
+                          "left": "0.002346068575584465%",
                           "position": "absolute",
                           "transform": "translate(0%, -50%)",
-                          "width": "99.75674056321151%",
+                          "width": "99.99765393142441%",
                           "zIndex": 1,
                         }
                       }
@@ -2777,7 +2777,7 @@ Array [
                   <div
                     className="emotion-11"
                   >
-                    200.3
+                    0.3
                   </div>
                 </div>
                 <div
@@ -3326,7 +3326,7 @@ Array [
                 className="emotion-7"
               >
                 <span>
-                  180
+                  0.1
                 </span>
                 <span>
                   8525
@@ -3353,7 +3353,7 @@ Array [
                   />
                   <div>
                     <button
-                      aria-valuenow={180}
+                      aria-valuenow={0.1}
                       onKeyDown={[Function]}
                       onMouseDown={[Function]}
                       onTouchStart={[Function]}
@@ -3431,7 +3431,7 @@ Array [
                   <div
                     className="emotion-11"
                   >
-                    180
+                    0.1
                   </div>
                 </div>
                 <div

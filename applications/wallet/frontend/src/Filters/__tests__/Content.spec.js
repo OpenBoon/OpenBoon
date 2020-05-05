@@ -96,10 +96,15 @@ describe('<FiltersContent />', () => {
     } = rangeAggregate
 
     const filters = [
-      { attribute: 'clip.length', type: 'range', values: { min: 190, max } },
+      { attribute: 'clip.length', type: 'range', values: { min: 0.1, max } },
     ]
 
-    require('swr').__setMockUseSWRResponse({ data: rangeAggregate })
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...rangeAggregate,
+        results: { ...rangeAggregate.results, min: 0.1 },
+      },
+    })
 
     const component = TestRenderer.create(
       <FiltersContent
@@ -111,8 +116,8 @@ describe('<FiltersContent />', () => {
     )
 
     act(() => {
-      component.root.findByProps({ mode: 2 }).props.onUpdate([200.255, max])
-      component.root.findByProps({ mode: 2 }).props.onChange([200.255, max])
+      component.root.findByProps({ mode: 2 }).props.onUpdate([0.255, max])
+      component.root.findByProps({ mode: 2 }).props.onChange([0.255, max])
     })
 
     expect(component.toJSON()).toMatchSnapshot()
