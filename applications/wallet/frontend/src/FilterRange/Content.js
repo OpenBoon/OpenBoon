@@ -71,7 +71,7 @@ const FilterRange = ({
                   updatedFilter: {
                     type,
                     attribute,
-                    values: value,
+                    values: { min: value[0], max: value[1] },
                   },
                   filterIndex,
                 },
