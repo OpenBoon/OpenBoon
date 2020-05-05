@@ -143,7 +143,7 @@ class ProcessorRef(
      * Return a arg checksum for the configuration of the processor.
      */
     fun getChecksum(): Long {
-        val checksum: Checksum = Adler32()
+        val checksum = Adler32()
         checksum.update(className.toByteArray())
         checksum.update(Json.serialize(args ?: mapOf<String, Any>()))
         return checksum.value

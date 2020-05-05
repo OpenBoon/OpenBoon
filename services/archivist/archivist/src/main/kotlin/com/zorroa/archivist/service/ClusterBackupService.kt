@@ -36,6 +36,7 @@ import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 import java.util.Date
 import java.util.HashMap
+import java.util.UUID
 
 /**
  * Used to store snapshot and set up snapshot policy to backup Cluster data
@@ -129,10 +130,16 @@ interface ClusterBackupService {
     fun deleteClusterSnapshotPolicy(cluster: IndexCluster, policyId: String): AcknowledgedResponse
 
     /**
-     * Generate a Repository Based on IndexCluster name
+     * Generate a Repository Based on IndexCluster ID
      * @param cluster: Cluster which name will be generated
      */
     fun getRepositoryName(cluster: IndexCluster) = cluster.id.toString()
+
+    /**
+     * Generate a Repository Based on IndexCluster ID
+     * @param clusterId: Cluster Id
+     */
+    fun getRepositoryName(clusterId: UUID) = clusterId.toString()
 
     /**
      * Get All Snapshots from a cluster
@@ -143,32 +150,53 @@ interface ClusterBackupService {
 
     /**
      * Delete Snapshot by Name
+     * @param cluster: [IndexCluster] Cluster
+     * @param snapshotName: [String] Snapshot name
      */
     fun deleteSnapshot(cluster: IndexCluster, snapshotName: String)
 
     /**
      * Create a Instant Snapshot of a Cluster
      * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-snapshot.html
+     * @param cluster: [IndexCluster] Cluster
+     * @param name: [String] Snapshot name
      */
     fun createClusterSnapshot(cluster: IndexCluster, name: String?)
 
     /**
      * Asynchronously Create a Instant Snapshot of a Cluster
      * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-create-snapshot.html
+     * @param cluster: [IndexCluster] Cluster
+     * @param name: [String] Snapshot Name
      */
-
     fun createClusterSnapshotAsync(cluster: IndexCluster, name: String?)
 
     /**
-     * Restore Cluster State from a backup Snapshot
+     * Restore Cluster State from Another Cluster
      * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high-snapshot-restore-snapshot.html
+     * https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshots-restore-snapshot.html#_restoring_to_a_different_cluster
+     * @param cluster: [IndexCluster] Brand new Cluster
+     * @param snapshotName: [String] Name of the snapshot that will be restored
+     * @param oldClusterId: [IndexCluster] Cluster that contains the snapshot at its repository
      */
-    fun restoreSnapshot(cluster: IndexCluster, snapshotName: String): RestoreSnapshotResponse
+    fun restoreSnapshot(cluster: IndexCluster, snapshotName: String, oldClusterId: UUID): RestoreSnapshotResponse
+
+    /**
+     * Assign a repository located in another cluster Repository Path to a new Cluster.
+     * @param cluster: [IndexCluster] New Cluster
+     * @param oldClusterId: [UUID] Old Cluster ID
+     */
+    fun assignExistingRepositoryToCluster(cluster: IndexCluster, oldClusterId: UUID)
+
     /**
      * Create a base path pattern. This path will contain the backup at the Bucket
      */
     fun getBasePath(indexCluster: IndexCluster, basePath: String): String {
         return "${indexCluster.id}/$basePath"
+    }
+
+    fun getBasePath(clusterId: UUID, basePath: String): String {
+        return "${clusterId}/$basePath"
     }
 
     fun getSnapshotPutRequest(
@@ -271,10 +299,10 @@ class GcsClusterBackupService(
     val indexClusterService: IndexClusterService
 ) : ClusterBackupService {
 
-    @Value("\${archivist.es.backup.gcs.bucket}")
+    @Value("\${archivist.es.backup.bucket.name}")
     lateinit var bucket: String
 
-    @Value("\${archivist.es.backup.gcs.base-path}")
+    @Value("\${archivist.es.backup.bucket.base-path}")
     lateinit var basePath: String
 
     override fun getRepository(cluster: IndexCluster): GetRepositoriesResponse {
@@ -299,6 +327,28 @@ class GcsClusterBackupService(
     override fun createClusterRepository(cluster: IndexCluster) {
         val client = indexClusterService.getRestHighLevelClient(cluster)
         val putRepositoryRequest = getCreateRepositoryRequest(client, cluster)
+
+        client.snapshot().createRepository(putRepositoryRequest, RequestOptions.DEFAULT)
+    }
+
+    override fun assignExistingRepositoryToCluster(cluster: IndexCluster, oldClusterId: UUID) {
+
+        val client = indexClusterService.getRestHighLevelClient(cluster)
+        var repositoryLocation = getBasePath(oldClusterId, basePath)
+        var repositoryName = getRepositoryName(oldClusterId)
+
+        var settings =
+            Settings
+                .builder()
+                .put("bucket", bucket)
+                .put("base_path", repositoryLocation)
+                .put("compress", true)
+
+        val putRepositoryRequest = PutRepositoryRequest()
+            .type("s3")
+            .name(repositoryName)
+            .settings(settings)
+            .verify(true)
 
         client.snapshot().createRepository(putRepositoryRequest, RequestOptions.DEFAULT)
     }
@@ -346,10 +396,20 @@ class GcsClusterBackupService(
         client.snapshot().createAsync(request, RequestOptions.DEFAULT, listener)
     }
 
-    override fun restoreSnapshot(cluster: IndexCluster, snapshotName: String): RestoreSnapshotResponse {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        var repositoryName = getRepositoryName(cluster)
+    override fun restoreSnapshot(
+        cluster: IndexCluster,
+        snapshotName: String,
+        oldClusterId: UUID
+    ): RestoreSnapshotResponse {
 
+        val client = indexClusterService.getRestHighLevelClient(cluster)
+
+        // Get repository name on old cluster
+        var repositoryName = getRepositoryName(oldClusterId)
+        // Assign Repository on old Cluster to new Cluster
+        assignExistingRepositoryToCluster(cluster, oldClusterId)
+
+        // Restore Snapshot
         val request = RestoreSnapshotRequest(repositoryName, snapshotName)
         return client.snapshot().restore(request, RequestOptions.DEFAULT)
     }
@@ -461,10 +521,10 @@ class S3ClusterBackupService(
     val indexClusterService: IndexClusterService
 ) : ClusterBackupService {
 
-    @Value("\${archivist.es.backup.aws.bucket}")
+    @Value("\${archivist.es.backup.bucket.name}")
     lateinit var bucket: String
 
-    @Value("\${archivist.es.backup.aws.base-path}")
+    @Value("\${archivist.es.backup.bucket.base-path}")
     lateinit var basePath: String
 
     override fun createClusterRepository(cluster: IndexCluster) {
@@ -483,8 +543,30 @@ class S3ClusterBackupService(
             .settings(settings)
             .verify(true)
 
-        client.snapshot().createRepository(putRepositoryRequest, RequestOptions.DEFAULT)
+        val createRepository = client.snapshot().createRepository(putRepositoryRequest, RequestOptions.DEFAULT)
         logCreateClusterRepository(cluster, putRepositoryRequest)
+    }
+
+    override fun assignExistingRepositoryToCluster(cluster: IndexCluster, oldClusterId: UUID) {
+
+        val client = indexClusterService.getRestHighLevelClient(cluster)
+        var repositoryLocation = getBasePath(oldClusterId, basePath)
+        var repositoryName = getRepositoryName(oldClusterId)
+
+        var settings =
+            Settings
+                .builder()
+                .put("bucket", bucket)
+                .put("base_path", repositoryLocation)
+                .put("compress", true)
+
+        val putRepositoryRequest = PutRepositoryRequest()
+            .type("s3")
+            .name(repositoryName)
+            .settings(settings)
+            .verify(true)
+
+        client.snapshot().createRepository(putRepositoryRequest, RequestOptions.DEFAULT)
     }
 
     override fun createClusterRepositoryAsync(cluster: IndexCluster) {
@@ -542,10 +624,20 @@ class S3ClusterBackupService(
         client.snapshot().createAsync(request, RequestOptions.DEFAULT, listener)
     }
 
-    override fun restoreSnapshot(cluster: IndexCluster, snapshotName: String): RestoreSnapshotResponse {
-        val client = indexClusterService.getRestHighLevelClient(cluster)
-        var repositoryName = getRepositoryName(cluster)
+    override fun restoreSnapshot(
+        cluster: IndexCluster,
+        snapshotName: String,
+        oldClusterId: UUID
+    ): RestoreSnapshotResponse {
 
+        val client = indexClusterService.getRestHighLevelClient(cluster)
+
+        // Get repository name on old cluster
+        var repositoryName = getRepositoryName(oldClusterId)
+        // Assign Repository on old Cluster to new Cluster
+        assignExistingRepositoryToCluster(cluster, oldClusterId)
+
+        // Restore Snapshot
         val request = RestoreSnapshotRequest(repositoryName, snapshotName)
         return client.snapshot().restore(request, RequestOptions.DEFAULT)
     }

@@ -1,9 +1,15 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
+import com.zorroa.archivist.domain.AssetSpec
+import com.zorroa.archivist.domain.BatchCreateAssetsRequest
 import com.zorroa.archivist.domain.IndexCluster
+import com.zorroa.archivist.domain.IndexClusterSpec
 import org.elasticsearch.ElasticsearchStatusException
+import org.elasticsearch.action.get.GetRequest
+import org.elasticsearch.client.RequestOptions
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -104,5 +110,45 @@ class ClusterBackupServiceTests : AbstractTest() {
 
         clusterBackupService.deleteClusterSnapshotPolicy(cluster, policyId)
         clusterBackupService.getClusterSnapshotPolicy(cluster, policyId)
+    }
+
+    @Test
+    @Ignore
+    //docker run -d --name elasticsearch-test  -p 9201:9200 -p 9301:9300 -e "discovery.type=single-node" -e "MINIO_URL={yourlocalip}:9000" -e "network.host=0.0.0.0" zmlp/elasticsearch:latest
+    fun restoreBackupIntoNewCluster() {
+        val newCluster =
+            indexClusterService.createIndexCluster(IndexClusterSpec("http://localhost:9201", false))
+
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
+        )
+
+        // Add a label
+        val assetId = assetService.batchCreate(batchCreate).created[0]
+        var asset = assetService.getAsset(assetId)
+
+        //Create a snapshot on Old Repository
+        val snapshotName = "test-snapshot"
+        clusterBackupService.createClusterSnapshot(cluster, snapshotName)
+
+        //Restore snapshot on new Repository
+        clusterBackupService.restoreSnapshot(newCluster, snapshotName, cluster.id)
+        Thread.sleep(1000)
+
+        val rest = indexRoutingService.getProjectRestClient()
+
+        // Get asset from new Cluster
+        val assetOnNewCluster =
+            indexClusterService.getRestHighLevelClient(newCluster)
+                .get(GetRequest(rest.route.indexName).id(assetId), RequestOptions.DEFAULT)
+        // Get asset from old Cluster
+        val assetOnOldCluster =
+            indexClusterService.getRestHighLevelClient(cluster)
+                .get(GetRequest(rest.route.indexName).id(assetId), RequestOptions.DEFAULT)
+
+        //Evaluate
+        assertEquals(assetOnOldCluster.id, assetOnNewCluster.id)
+        assertEquals(assetOnOldCluster, assetOnNewCluster)
+
     }
 }
