@@ -23,7 +23,7 @@ const FilterFacet = ({
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
   )
 
-  const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key)
+  const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
 
   const hasSelections = Object.keys(values).find((facet) => values[facet])
 
