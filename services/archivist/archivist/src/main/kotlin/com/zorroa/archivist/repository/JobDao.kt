@@ -1,6 +1,5 @@
 package com.zorroa.archivist.repository
 
-import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.Credentials
 import com.zorroa.archivist.domain.CredentialsType
