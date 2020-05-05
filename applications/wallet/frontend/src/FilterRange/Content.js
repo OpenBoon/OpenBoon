@@ -17,7 +17,11 @@ const formatValue = ({ attribute, value }) => {
     return bytesToSize({ bytes: value })
   }
 
-  return Math.ceil(value)
+  if (value % 1 !== 0) {
+    return value.toFixed(1)
+  }
+
+  return value
 }
 
 const FilterRange = ({

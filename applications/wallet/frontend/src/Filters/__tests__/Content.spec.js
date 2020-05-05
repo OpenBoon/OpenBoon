@@ -111,8 +111,8 @@ describe('<FiltersContent />', () => {
     )
 
     act(() => {
-      component.root.findByProps({ mode: 2 }).props.onUpdate([200, max])
-      component.root.findByProps({ mode: 2 }).props.onChange([200, max])
+      component.root.findByProps({ mode: 2 }).props.onUpdate([200.255, max])
+      component.root.findByProps({ mode: 2 }).props.onChange([200.255, max])
     })
 
     expect(component.toJSON()).toMatchSnapshot()
