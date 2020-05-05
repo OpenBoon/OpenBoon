@@ -155,8 +155,7 @@ class TestContentAnalysisSchema:
 
     def test_get_represention(self, schema):
         rep = schema.get_representation()
-        assert rep == {'zvi-text-detection': {'content': ['exists'],
-                                              'words': ['range', 'exists']}}
+        assert rep == {'zvi-text-detection': ['textContent']}
 
 
 class TestLabelsAnalysisSchema:
