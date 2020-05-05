@@ -130,12 +130,7 @@ open class Task(
     val timePing: Long,
 
     @ApiModelProperty("Counters for the total number of assets created, updated, etc.")
-    val assetCounts: Map<String, Int>,
-
-    @ApiModelProperty("")
-    val progress: Short = 0,
-
-    val status: String? = null
+    val assetCounts: Map<String, Int>
 
 ) : InternalTask(id, jobId, projectId, dataSourceId, name, state)
 
