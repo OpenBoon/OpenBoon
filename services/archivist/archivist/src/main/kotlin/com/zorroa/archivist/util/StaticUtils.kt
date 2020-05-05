@@ -43,13 +43,13 @@ fun randomString(length: Int = 16): String {
 /**
  * Return the given Date with minutes and seconds zeroed out.
  */
-fun toHourlyDate(date: Date?): Date {
+fun toHourlyDate(date: Date?): Long {
     val time: Calendar = Calendar.getInstance()
     time.timeInMillis = date?.time ?: Date().time
     time.set(Calendar.MINUTE, 0)
     time.set(Calendar.SECOND, 0)
     time.set(Calendar.MILLISECOND, 0)
-    return Date(time.toInstant().toEpochMilli())
+    return time.timeInMillis
 }
 
 /**
