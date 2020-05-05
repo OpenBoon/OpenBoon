@@ -29,7 +29,7 @@ class ProjectQuotasDaoTests : AbstractTest() {
 
         projectQuotasDao.incrementTimeSeriesCounters(date, counters)
 
-        var row1 = jdbc.queryForMap("SELECT * FROM project_quota_time_series WHERE time is not NULL LIMIT 1")
+        var row1 = jdbc.queryForMap("SELECT * FROM project_quota_time_series WHERE int_video_file_count > 0")
         assertEquals(1L, row1["int_video_file_count"])
         assertEquals(1L, row1["int_document_file_count"])
         assertEquals(1L, row1["int_image_file_count"])
@@ -38,7 +38,7 @@ class ProjectQuotasDaoTests : AbstractTest() {
         assertEquals(1L, row1["int_video_clip_count"])
 
         projectQuotasDao.incrementTimeSeriesCounters(date, counters)
-        val row2 = jdbc.queryForMap("SELECT * FROM project_quota_time_series WHERE time is not NULL LIMIT 1")
+        val row2 = jdbc.queryForMap("SELECT * FROM project_quota_time_series WHERE int_video_file_count > 0")
         assertEquals(2L, row2["int_video_file_count"])
         assertEquals(2L, row2["int_document_file_count"])
         assertEquals(2L, row2["int_image_file_count"])
@@ -63,8 +63,13 @@ class ProjectQuotasDaoTests : AbstractTest() {
 
         projectQuotasDao.incrementTimeSeriesCounters(date1, counters)
         projectQuotasDao.incrementTimeSeriesCounters(date2, counters)
-        val row = jdbc.queryForMap("SELECT COUNT(1) AS c FROM project_quota_time_series WHERE time IS NOT NULL")
-        assertEquals(2L, row["c"])
+        val row = jdbc.queryForMap(
+            "SELECT SUM(int_video_file_count) AS c FROM project_quota_time_series")
+        assertEquals(BigDecimal(2), row["c"])
+
+        val row2 = jdbc.queryForMap(
+            "SELECT COUNT(1) AS c FROM project_quota_time_series WHERE int_video_file_count > 0")
+        assertEquals(BigDecimal(2), row["c"])
     }
 
     @Test

@@ -35,19 +35,23 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
     }
 
     override fun createIngestTimeSeriesEntries(projectId: UUID) {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        cal.set(Calendar.DAY_OF_YEAR, 1)
+        cal.set(Calendar.HOUR_OF_DAY, 1)
 
         val update = BatchSqlUpdate(
             jdbc.dataSource,
-            "INSERT INTO project_quota_time_series VALUES (?, ?)",
-            intArrayOf(Types.OTHER, Types.INTEGER), 250
+            "INSERT INTO project_quota_time_series VALUES (?, ?, ?)",
+            intArrayOf(Types.OTHER, Types.INTEGER, Types.TIMESTAMP_WITH_TIMEZONE), 250
         )
 
         for (i in 1..8760) {
-            update.update(projectId, i)
+            val date = OffsetDateTime.ofInstant(cal.toInstant(), ZoneId.of("UTC"))
+            update.update(projectId, i, date)
+            cal.add(Calendar.HOUR, 1)
         }
         update.flush()
     }
