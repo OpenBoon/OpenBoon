@@ -1,3 +1,4 @@
+import math
 import uuid
 
 from django.db import models
@@ -42,10 +43,23 @@ class Subscription(models.Model):
         return {'video_hours': self.video_hours_limit,
                 'image_count': self.image_count_limit}
 
-    def usage(self):
-        user = User.objects.get(email=settings.SUPERUSER_EMAIL)
-        client = get_zmlp_superuser_client(user, project_id=str(self.project.id))
+    def usage_all_time(self):
+        """Returns the all time usage information for the project."""
+        client = self.project.get_zmlp_super_client()
         quotas = client.get(f'api/v1/project/_quotas')
-        video_hours = quotas['videoSecondsCount'] * 60 * 60
+        video_hours = self._get_usage_hours_from_seconds(quotas['videoSecondsCount'])
         image_count = quotas['pageCount']
         return {'video_hours': video_hours, 'image_count': image_count}
+
+    def usage_last_hour(self):
+        """Returns usage information from the last hour for the project."""
+        client = self.project.get_zmlp_super_client()
+        usage = client.get('/api/v1/project/_quotas_time_series')[-1]
+
+        return {'end_time': usage['timestamp']/1000,
+                'video_hours': self._get_usage_hours_from_seconds(usage['videoSecondsCount']),
+                'image_count': usage['pageCount']}
+
+    def _get_usage_hours_from_seconds(self, seconds):
+        """Converts seconds to hours and always rounds up."""
+        return math.ceil(seconds/60/60)

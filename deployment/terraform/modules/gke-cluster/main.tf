@@ -53,7 +53,7 @@ resource "google_container_cluster" "primary" {
   ]
 }
 
-resource "google_container_node_pool" "curator" {
+resource "google_container_node_pool" "default" {
   name               = "default"
   cluster            = google_container_cluster.primary.name
   initial_node_count = 1
@@ -76,6 +76,7 @@ resource "google_container_node_pool" "curator" {
       "https://www.googleapis.com/auth/devstorage.read_only",
       "https://www.googleapis.com/auth/monitoring",
       "https://www.googleapis.com/auth/sqlservice.admin",
+      "https://www.googleapis.com/auth/cloud-platform"
     ]
     labels = {
       type = "default"

@@ -22,6 +22,42 @@ def subscription(project):
     return sub
 
 
+class TestSubscriptionModel:
+    def test_usage_last_hour(self, subscription, project_zero_membership, monkeypatch):
+        def mock_get_return(*args, **kwargs):
+            return [{
+                "timestamp": 1588694400000,
+                "videoSecondsCount": 10.00,
+                "pageCount": 1,
+                "videoFileCount": 1,
+                "documentFileCount": 1,
+                "imageFileCount": 1,
+                "videoClipCount": 1
+            }, {
+                "timestamp": 1588698000000,
+                "videoSecondsCount": 0.00,
+                "pageCount": 0,
+                "videoFileCount": 0,
+                "documentFileCount": 0,
+                "imageFileCount": 0,
+                "videoClipCount": 0
+            }, {
+                "timestamp": 1588701600000,
+                "videoSecondsCount": 20.00,
+                "pageCount": 2,
+                "videoFileCount": 2,
+                "documentFileCount": 2,
+                "imageFileCount": 2,
+                "videoClipCount": 2
+            }]
+
+        monkeypatch.setattr(ZmlpClient, 'get', mock_get_return)
+        expected = {'end_time': 1588701600000,
+                    'video_hours': 1,
+                    'image_count': 2}
+        assert subscription.usage_last_hour() == expected
+
+
 class TestSubscriptionViewSet:
 
     def test_empty_list(self, zmlp_project_membership, api_client, login):

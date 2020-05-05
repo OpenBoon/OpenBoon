@@ -1,6 +1,7 @@
 from base64 import b64encode
 
 import pytest
+from django.conf import settings
 from rest_framework.test import APIClient, APIRequestFactory
 
 
@@ -25,7 +26,8 @@ def user(django_user_model, api_client):
 
 @pytest.fixture
 def superuser(django_user_model, api_client):
-    user = django_user_model.objects.create_superuser('superuser', 'software@zorroa.com', 'letmein')
+    user = django_user_model.objects.create_superuser('superuser', settings.SUPERUSER_EMAIL,
+                                                      'letmein')
     return user
 
 
