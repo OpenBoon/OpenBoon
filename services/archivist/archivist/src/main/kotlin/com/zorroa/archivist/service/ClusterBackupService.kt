@@ -196,7 +196,7 @@ interface ClusterBackupService {
     }
 
     fun getBasePath(clusterId: UUID, basePath: String): String {
-        return "${clusterId}/$basePath"
+        return "$clusterId/$basePath"
     }
 
     fun getSnapshotPutRequest(

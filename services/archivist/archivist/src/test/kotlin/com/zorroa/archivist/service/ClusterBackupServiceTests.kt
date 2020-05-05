@@ -114,7 +114,7 @@ class ClusterBackupServiceTests : AbstractTest() {
 
     @Test
     @Ignore
-    //docker run -d --name elasticsearch-test  -p 9201:9200 -p 9301:9300 -e "discovery.type=single-node" -e "MINIO_URL={yourlocalip}:9000" -e "network.host=0.0.0.0" zmlp/elasticsearch:latest
+    // docker run -d --name elasticsearch-test  -p 9201:9200 -p 9301:9300 -e "discovery.type=single-node" -e "MINIO_URL={yourlocalip}:9000" -e "network.host=0.0.0.0" zmlp/elasticsearch:latest
     fun restoreBackupIntoNewCluster() {
         val newCluster =
             indexClusterService.createIndexCluster(IndexClusterSpec("http://localhost:9201", false))
@@ -127,11 +127,11 @@ class ClusterBackupServiceTests : AbstractTest() {
         val assetId = assetService.batchCreate(batchCreate).created[0]
         var asset = assetService.getAsset(assetId)
 
-        //Create a snapshot on Old Repository
+        // Create a snapshot on Old Repository
         val snapshotName = "test-snapshot"
         clusterBackupService.createClusterSnapshot(cluster, snapshotName)
 
-        //Restore snapshot on new Repository
+        // Restore snapshot on new Repository
         clusterBackupService.restoreSnapshot(newCluster, snapshotName, cluster.id)
         Thread.sleep(1000)
 
@@ -146,9 +146,7 @@ class ClusterBackupServiceTests : AbstractTest() {
             indexClusterService.getRestHighLevelClient(cluster)
                 .get(GetRequest(rest.route.indexName).id(assetId), RequestOptions.DEFAULT)
 
-        //Evaluate
         assertEquals(assetOnOldCluster.id, assetOnNewCluster.id)
         assertEquals(assetOnOldCluster, assetOnNewCluster)
-
     }
 }
