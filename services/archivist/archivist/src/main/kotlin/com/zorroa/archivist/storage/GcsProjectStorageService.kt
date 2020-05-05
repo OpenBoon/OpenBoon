@@ -1,5 +1,6 @@
 package com.zorroa.archivist.storage
 
+import com.google.auth.ServiceAccountSigner
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
@@ -35,20 +36,17 @@ class GcsProjectStorageService constructor(
 
 ) : ProjectStorageService {
 
-    val options: StorageOptions = StorageOptions.getDefaultInstance()
+    val options: StorageOptions = StorageOptions.newBuilder()
+        .setCredentials(GoogleCredentials.getApplicationDefault()).build()
     val gcs: Storage = options.service
+
 
     @PostConstruct
     fun initialize() {
+        StorageOptions.getDefaultInstance()
         logger.info(
             "Initializing GCS Storage Backend (bucket='${properties.bucket}')"
         )
-        try {
-            val creds = GoogleCredentials.getApplicationDefault()
-            logger.info("GCS credentials token ${creds.accessToken.tokenValue}")
-        } catch (e: IOException) {
-            logger.warn("Unable to fetch GCS cre")
-        }
     }
 
     override fun store(spec: ProjectStorageSpec): FileStorage {
