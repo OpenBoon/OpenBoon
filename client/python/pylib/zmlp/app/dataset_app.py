@@ -38,7 +38,7 @@ class DataSetApp:
                 'type': type
             }
 
-            dataset =  DataSet(self.app.client.post('/api/v1/data-sets', req))
+            dataset = DataSet(self.app.client.post('/api/v1/data-sets', req))
 
         return dataset
 
