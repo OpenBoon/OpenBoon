@@ -145,6 +145,19 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
                 }
             }
 
+        TextContent:
+
+            {
+                "type": "textContent",
+                "attribute": "analysis.zvi-text-detection",
+                "values": {
+                    "query": "Text or ES Simple Query String Pattern to match"
+                }
+            }
+
+            *NOTE* The "attribute" field on TextContent can also be left off, and the query will
+            be matched against all available fields.
+
         """
         path = 'api/v3/assets'
         fields = ['id',
