@@ -11,6 +11,7 @@ const FiltersReset = ({
   filters,
   updatedFilter,
   filterIndex,
+  onReset,
 }) => {
   return (
     <div
@@ -31,7 +32,8 @@ const FiltersReset = ({
           },
         }}
         variant={VARIANTS.NEUTRAL}
-        onClick={() =>
+        onClick={() => {
+          onReset()
           dispatch({
             action: ACTIONS.UPDATE_FILTER,
             payload: {
@@ -42,7 +44,7 @@ const FiltersReset = ({
               filterIndex,
             },
           })
-        }
+        }}
       >
         RESET
       </Button>
@@ -65,6 +67,7 @@ FiltersReset.propTypes = {
     attribute: PropTypes.string.isRequired,
   }).isRequired,
   filterIndex: PropTypes.number.isRequired,
+  onReset: PropTypes.func.isRequired,
 }
 
 export default FiltersReset

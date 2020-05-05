@@ -2374,11 +2374,11 @@ Array [
       </div>
     </form>
   </div>,
-  .emotion-12 {
+  .emotion-20 {
   overflow: auto;
 }
 
-.emotion-11 {
+.emotion-19 {
   background-color: #252525;
   border-radius: 2px;
 }
@@ -2460,27 +2460,91 @@ Array [
   display: flex;
 }
 
-.emotion-10 {
+.emotion-18 {
   width: 100%;
   background-color: #191919;
 }
 
-.emotion-9 {
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5:hover {
+  color: #ffffff;
+}
+
+.emotion-17 {
   padding: 16px;
   padding-left: 12px;
   padding-right: 12px;
 }
 
-.emotion-9 > div {
+.emotion-17 > div {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-8 {
-  padding: 32px;
+.emotion-16 {
+  padding: 16px;
 }
 
-.emotion-4 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2492,11 +2556,11 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-7 {
+.emotion-10 {
   padding: 4px;
 }
 
-.emotion-5 {
+.emotion-8 {
   position: absolute;
   width: 100%;
   height: 2px;
@@ -2506,7 +2570,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-6 {
+.emotion-9 {
   position: absolute;
   width: 100%;
   height: 2px;
@@ -2517,11 +2581,46 @@ Array [
   background-color: #4a4a4a;
 }
 
+.emotion-15 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-11 {
+  min-width: 76px;
+  background-color: #252525;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  text-align: center;
+  border-radius: 2px;
+}
+
 <div
-    className="emotion-12"
+    className="emotion-20"
   >
     <div
-      className="emotion-11"
+      className="emotion-19"
     >
       <div
         className="emotion-3"
@@ -2546,27 +2645,41 @@ Array [
         </h4>
       </div>
       <div
-        className="emotion-10"
+        className="emotion-18"
       >
         <div
-          className="emotion-9"
+          className="emotion-17"
         >
           <div>
             <div
-              className="emotion-8"
+              className="emotion-6"
             >
               <div
                 className="emotion-4"
+              />
+              <button
+                className="emotion-5"
+                onClick={[Function]}
+                type="button"
+              >
+                RESET
+              </button>
+            </div>
+            <div
+              className="emotion-16"
+            >
+              <div
+                className="emotion-7"
               >
                 <span>
-                  180
+                  0.1
                 </span>
                 <span>
                   8525
                 </span>
               </div>
               <div
-                className="emotion-7"
+                className="emotion-10"
               >
                 <div
                   style={
@@ -2577,12 +2690,1320 @@ Array [
                   }
                 >
                   <div
-                    className="emotion-5"
+                    className="emotion-8"
                     onMouseDown={[Function]}
                     onTouchStart={[Function]}
                   />
                   <div
-                    className="emotion-6"
+                    className="emotion-9"
+                  />
+                  <div>
+                    <button
+                      aria-valuenow={0.30000000000000004}
+                      onKeyDown={[Function]}
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      role="slider"
+                      style={
+                        Object {
+                          "backgroundColor": "#808080",
+                          "border": "none",
+                          "borderRadius": 1,
+                          "cursor": "pointer",
+                          "height": 24,
+                          "left": "0.002346068575584465%",
+                          "margin": 0,
+                          "padding": 0,
+                          "position": "absolute",
+                          "transform": "translate(-50%, -50%)",
+                          "width": 8,
+                          "zIndex": 2,
+                        }
+                      }
+                      type="button"
+                    />
+                    <button
+                      aria-valuenow={8525}
+                      onKeyDown={[Function]}
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      role="slider"
+                      style={
+                        Object {
+                          "backgroundColor": "#808080",
+                          "border": "none",
+                          "borderRadius": 1,
+                          "cursor": "pointer",
+                          "height": 24,
+                          "left": "100%",
+                          "margin": 0,
+                          "padding": 0,
+                          "position": "absolute",
+                          "transform": "translate(-50%, -50%)",
+                          "width": 8,
+                          "zIndex": 2,
+                        }
+                      }
+                      type="button"
+                    />
+                  </div>
+                  <div>
+                    <div
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      style={
+                        Object {
+                          "backgroundColor": "#73b61c",
+                          "cursor": "pointer",
+                          "height": 4,
+                          "left": "0.002346068575584465%",
+                          "position": "absolute",
+                          "transform": "translate(0%, -50%)",
+                          "width": "99.99765393142441%",
+                          "zIndex": 1,
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="emotion-15"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  MIN  
+                  <div
+                    className="emotion-11"
+                  >
+                    0.3
+                  </div>
+                </div>
+                <div
+                  className="emotion-12"
+                >
+                  MAX  
+                  <div
+                    className="emotion-11"
+                  >
+                    8525
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<FiltersContent /> should render the "Range" filter 2`] = `
+Array [
+  .emotion-8 {
+  padding: 4px;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #73b61c;
+}
+
+.emotion-0:hover {
+  background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-1 {
+  width: 8px;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  background-color: #808080;
+}
+
+.emotion-2:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-2[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-4 {
+  height: 4px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  border: none;
+  padding: 12px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  color: #e0e0e0;
+  background-color: #191919;
+}
+
+.emotion-5:focus {
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-6 {
+  width: 42px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  color: #000000;
+  background-color: #808080;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  cursor: not-allowed;
+}
+
+<div
+    className="emotion-8"
+  >
+    <div
+      className="emotion-3"
+    >
+      <button
+        className="emotion-0"
+        onClick={[Function]}
+        type="button"
+      >
+        + Add Metadata Filters
+      </button>
+      <div
+        className="emotion-1"
+      />
+      <button
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        Clear All Filters
+      </button>
+    </div>
+    <div
+      className="emotion-4"
+    />
+    <form
+      action=""
+      method="post"
+      onSubmit={[Function]}
+    >
+      <div
+        className="emotion-7"
+      >
+        <input
+          className="emotion-5"
+          onChange={[Function]}
+          placeholder="Create text filter (search name or field value)"
+          type="text"
+          value=""
+        />
+        <button
+          aria-disabled={true}
+          aria-label="Search"
+          className="emotion-6"
+          onClick={[Function]}
+          type="submit"
+        >
+          +
+        </button>
+      </div>
+    </form>
+  </div>,
+  .emotion-20 {
+  overflow: auto;
+}
+
+.emotion-19 {
+  background-color: #252525;
+  border-radius: 2px;
+}
+
+.emotion-3 {
+  border-bottom: 1px solid #4a4a4a;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 h4 {
+  font-weight: 400;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0 {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+}
+
+.emotion-2 {
+  font-size: 17px;
+  line-height: 20px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-18 {
+  width: 100%;
+  background-color: #191919;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5:hover {
+  color: #ffffff;
+}
+
+.emotion-17 {
+  padding: 16px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.emotion-17 > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-16 {
+  padding: 16px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.emotion-10 {
+  padding: 4px;
+}
+
+.emotion-8 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  cursor: pointer;
+}
+
+.emotion-9 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  pointer-events: none;
+  background-color: #4a4a4a;
+}
+
+.emotion-15 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-11 {
+  min-width: 76px;
+  background-color: #252525;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+<div
+    className="emotion-20"
+  >
+    <div
+      className="emotion-19"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          clip.length
+        </h4>
+      </div>
+      <div
+        className="emotion-18"
+      >
+        <div
+          className="emotion-17"
+        >
+          <div>
+            <div
+              className="emotion-6"
+            >
+              <div
+                className="emotion-4"
+              />
+              <button
+                className="emotion-5"
+                onClick={[Function]}
+                type="button"
+              >
+                RESET
+              </button>
+            </div>
+            <div
+              className="emotion-16"
+            >
+              <div
+                className="emotion-7"
+              >
+                <span>
+                  0.1
+                </span>
+                <span>
+                  8525
+                </span>
+              </div>
+              <div
+                className="emotion-10"
+              >
+                <div
+                  style={
+                    Object {
+                      "position": "relative",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  <div
+                    className="emotion-8"
+                    onMouseDown={[Function]}
+                    onTouchStart={[Function]}
+                  />
+                  <div
+                    className="emotion-9"
+                  />
+                  <div>
+                    <button
+                      aria-valuenow={0.1}
+                      onKeyDown={[Function]}
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      role="slider"
+                      style={
+                        Object {
+                          "backgroundColor": "#808080",
+                          "border": "none",
+                          "borderRadius": 1,
+                          "cursor": "pointer",
+                          "height": 24,
+                          "left": "0%",
+                          "margin": 0,
+                          "padding": 0,
+                          "position": "absolute",
+                          "transform": "translate(-50%, -50%)",
+                          "width": 8,
+                          "zIndex": 2,
+                        }
+                      }
+                      type="button"
+                    />
+                    <button
+                      aria-valuenow={8525}
+                      onKeyDown={[Function]}
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      role="slider"
+                      style={
+                        Object {
+                          "backgroundColor": "#808080",
+                          "border": "none",
+                          "borderRadius": 1,
+                          "cursor": "pointer",
+                          "height": 24,
+                          "left": "100%",
+                          "margin": 0,
+                          "padding": 0,
+                          "position": "absolute",
+                          "transform": "translate(-50%, -50%)",
+                          "width": 8,
+                          "zIndex": 2,
+                        }
+                      }
+                      type="button"
+                    />
+                  </div>
+                  <div>
+                    <div
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      style={
+                        Object {
+                          "backgroundColor": "#73b61c",
+                          "cursor": "pointer",
+                          "height": 4,
+                          "left": "0%",
+                          "position": "absolute",
+                          "transform": "translate(0%, -50%)",
+                          "width": "100%",
+                          "zIndex": 1,
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="emotion-15"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  MIN  
+                  <div
+                    className="emotion-11"
+                  >
+                    0.1
+                  </div>
+                </div>
+                <div
+                  className="emotion-12"
+                >
+                  MAX  
+                  <div
+                    className="emotion-11"
+                  >
+                    8525
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<FiltersContent /> should render the "Range" filter with file sizes 1`] = `
+Array [
+  .emotion-8 {
+  padding: 4px;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-0[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0,
+.emotion-0:hover,
+.emotion-0:visited {
+  background-color: #73b61c;
+}
+
+.emotion-0:hover {
+  background-color: #96c955;
+}
+
+.emotion-0[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-1 {
+  width: 8px;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  background-color: #808080;
+}
+
+.emotion-2:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-2[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-4 {
+  height: 4px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-5 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  border: none;
+  padding: 12px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  color: #e0e0e0;
+  background-color: #191919;
+}
+
+.emotion-5:focus {
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-6 {
+  width: 42px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  color: #000000;
+  background-color: #808080;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  cursor: not-allowed;
+}
+
+<div
+    className="emotion-8"
+  >
+    <div
+      className="emotion-3"
+    >
+      <button
+        className="emotion-0"
+        onClick={[Function]}
+        type="button"
+      >
+        + Add Metadata Filters
+      </button>
+      <div
+        className="emotion-1"
+      />
+      <button
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        Clear All Filters
+      </button>
+    </div>
+    <div
+      className="emotion-4"
+    />
+    <form
+      action=""
+      method="post"
+      onSubmit={[Function]}
+    >
+      <div
+        className="emotion-7"
+      >
+        <input
+          className="emotion-5"
+          onChange={[Function]}
+          placeholder="Create text filter (search name or field value)"
+          type="text"
+          value=""
+        />
+        <button
+          aria-disabled={true}
+          aria-label="Search"
+          className="emotion-6"
+          onClick={[Function]}
+          type="submit"
+        >
+          +
+        </button>
+      </div>
+    </form>
+  </div>,
+  .emotion-20 {
+  overflow: auto;
+}
+
+.emotion-19 {
+  background-color: #252525;
+  border-radius: 2px;
+}
+
+.emotion-3 {
+  border-bottom: 1px solid #4a4a4a;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 h4 {
+  font-weight: 400;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0 {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+}
+
+.emotion-2 {
+  font-size: 17px;
+  line-height: 20px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-18 {
+  width: 100%;
+  background-color: #191919;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5:hover {
+  color: #ffffff;
+}
+
+.emotion-17 {
+  padding: 16px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.emotion-17 > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-16 {
+  padding: 16px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.emotion-10 {
+  padding: 4px;
+}
+
+.emotion-8 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  cursor: pointer;
+}
+
+.emotion-9 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  pointer-events: none;
+  background-color: #4a4a4a;
+}
+
+.emotion-15 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-11 {
+  min-width: 76px;
+  background-color: #252525;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+<div
+    className="emotion-20"
+  >
+    <div
+      className="emotion-19"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          aria-label="Collapse Section"
+          className="emotion-1"
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="emotion-0"
+            color="#808080"
+            data-file-name="chevron.svg"
+            width={20}
+          />
+        </button>
+        <h4
+          className="emotion-2"
+        >
+          source.filesize
+        </h4>
+      </div>
+      <div
+        className="emotion-18"
+      >
+        <div
+          className="emotion-17"
+        >
+          <div>
+            <div
+              className="emotion-6"
+            >
+              <div
+                className="emotion-4"
+              />
+              <button
+                className="emotion-5"
+                onClick={[Function]}
+                type="button"
+              >
+                RESET
+              </button>
+            </div>
+            <div
+              className="emotion-16"
+            >
+              <div
+                className="emotion-7"
+              >
+                <span>
+                  180 Bytes
+                </span>
+                <span>
+                  8.3 KB
+                </span>
+              </div>
+              <div
+                className="emotion-10"
+              >
+                <div
+                  style={
+                    Object {
+                      "position": "relative",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  <div
+                    className="emotion-8"
+                    onMouseDown={[Function]}
+                    onTouchStart={[Function]}
+                  />
+                  <div
+                    className="emotion-9"
                   />
                   <div>
                     <button
@@ -2651,6 +4072,30 @@ Array [
                         }
                       }
                     />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="emotion-15"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  MIN  
+                  <div
+                    className="emotion-11"
+                  >
+                    180 Bytes
+                  </div>
+                </div>
+                <div
+                  className="emotion-12"
+                >
+                  MAX  
+                  <div
+                    className="emotion-11"
+                  >
+                    8.3 KB
                   </div>
                 </div>
               </div>
