@@ -81,7 +81,6 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
         cal.set(Calendar.SECOND, 0)
         cal.set(Calendar.MILLISECOND, 0)
 
-
         val entry = ((cal.get(Calendar.DAY_OF_YEAR) - 1) * 24) + cal.get(Calendar.HOUR_OF_DAY)
         logger.info("Updating TimeSeriesCounters $entry ${cal.timeInMillis}")
         jdbc.update(
