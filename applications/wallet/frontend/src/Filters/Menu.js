@@ -6,6 +6,8 @@ import { spacing } from '../Styles'
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import Button, { VARIANTS } from '../Button'
 
+import { formatDisplayName } from '../Metadata/helpers'
+
 import { dispatch, ACTIONS } from './helpers'
 
 import FiltersMenuSection from './MenuSection'
@@ -51,7 +53,7 @@ const FiltersMenu = ({
             <Accordion
               key={key}
               variant={ACCORDION_VARIANTS.PANEL}
-              title={key}
+              title={formatDisplayName({ name: key })}
               isInitiallyOpen={false}
             >
               <div
