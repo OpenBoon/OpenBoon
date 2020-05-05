@@ -14,12 +14,9 @@ import java.util.Date
 import java.util.UUID
 
 interface ProjectQuotasDao {
-
     fun createQuotasEntry(projectId: UUID)
     fun getQuotas(projectId: UUID): ProjectQuotas
-
     fun createIngestTimeSeriesEntries(projectId: UUID)
-
     fun incrementQuotas(counts: ProjectQuotaCounters)
     fun incrementTimeSeriesCounters(date: Date, counts: ProjectQuotaCounters)
     fun getTimeSeriesCounters(projectId: UUID, start: Date, end: Date?): List<ProjectQuotasTimeSeriesEntry>
@@ -74,7 +71,6 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
     }
 
     override fun incrementTimeSeriesCounters(date: Date, counts: ProjectQuotaCounters) {
-
         val cal: Calendar = Calendar.getInstance()
         cal.timeInMillis = date.time
         cal.set(Calendar.MINUTE, 0)
