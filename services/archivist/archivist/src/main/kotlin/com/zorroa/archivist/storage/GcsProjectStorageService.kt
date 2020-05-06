@@ -1,6 +1,6 @@
 package com.zorroa.archivist.storage
 
-import com.google.auth.oauth2.GoogleCredentials
+import com.google.auth.oauth2.ComputeEngineCredentials
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.HttpMethod
@@ -35,7 +35,7 @@ class GcsProjectStorageService constructor(
 ) : ProjectStorageService {
 
     val options: StorageOptions = StorageOptions.newBuilder()
-        .setCredentials(GoogleCredentials.getApplicationDefault()).build()
+        .setCredentials(ComputeEngineCredentials.create()).build()
     val gcs: Storage = options.service
 
     @PostConstruct
