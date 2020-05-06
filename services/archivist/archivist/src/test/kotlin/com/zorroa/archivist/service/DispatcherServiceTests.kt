@@ -14,8 +14,10 @@ import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectSpec
 import com.zorroa.archivist.domain.TaskErrorFilter
 import com.zorroa.archivist.domain.TaskExpandEvent
+import com.zorroa.archivist.domain.TaskProgressUpdateEvent
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStatsEvent
+import com.zorroa.archivist.domain.TaskStatusUpdateEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.domain.ZpsScript
 import com.zorroa.archivist.domain.emptyZpsScript
@@ -483,6 +485,32 @@ class DispatcherServiceTests : AbstractTest() {
         }
     }
 
+    @Test
+    fun testUpdateProgress(){
+        launchJob(JobPriority.Standard)
+        authenticateAsAnalyst()
+        val task = dispatchQueueManager.getNext()
+
+        dispatcherService.handleProgressUpdateEvent(task!!, TaskProgressUpdateEvent(75))
+        val get = taskDao.get(task.id)
+
+        assertEquals(task.id, get.id)
+        assertEquals(75, get.progress)
+    }
+
+    @Test
+    fun testUpdateStatus(){
+        launchJob(JobPriority.Standard)
+        authenticateAsAnalyst()
+        val task = dispatchQueueManager.getNext()
+
+        dispatcherService.handleStatusUpdateEvent(task!!, TaskStatusUpdateEvent("testingStatus"))
+        val get = taskDao.get(task.id)
+
+        assertEquals(task.id, get.id)
+        assertEquals("testingStatus", get.status)
+    }
+
     fun launchJob(priority: Int): Job {
         val spec1 = JobSpec(
             "test_job_p$priority",
@@ -491,4 +519,5 @@ class DispatcherServiceTests : AbstractTest() {
         )
         return jobService.create(spec1)
     }
+
 }
