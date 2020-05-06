@@ -1,7 +1,6 @@
 import TestRenderer from 'react-test-renderer'
 
 import pdfAsset from '../../Asset/__mocks__/pdfAsset'
-import bboxAsset from '../../Asset/__mocks__/bboxAsset'
 
 import MetadataPrettyRow from '../PrettyRow'
 
@@ -17,7 +16,7 @@ describe('<MetadataPrettyRow />', () => {
   })
 
   it('should render when value is of type object', () => {
-    const objectValue = bboxAsset.metadata.files[0].attrs
+    const objectValue = pdfAsset.metadata.files[0].attrs
 
     const component = TestRenderer.create(
       <MetadataPrettyRow name="files" value={objectValue} path="files" />,
