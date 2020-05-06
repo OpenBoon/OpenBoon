@@ -14,6 +14,12 @@ Workbench is a Jupyter notebook server that runs concurrently with the rest of Z
 docker build . -t 'zmlp/workbench'
 ```
 
+or two run the server, Workbench and Sandbox all at once, run
+
+```
+docker-compose -f docker-compose.yml -f applications/workbench/docker-compose.yml -f applications/sandbox/docker-compose.yml up --force-recreate -d
+```
+
 ### Run
 
 From the main zmlp repo folder:
@@ -24,3 +30,10 @@ docker-compose -f docker-compose.yml -f applications/workbench/docker-compose.ym
 ```
 
 Then navigate to http://localhost:8888/ . Use the password "admin" to log in.
+
+### Shut down
+
+From the main zmlp repo folder:
+```
+docker-compose -f docker-compose.yml -f applications/workbench/docker-compose.yml down
+```

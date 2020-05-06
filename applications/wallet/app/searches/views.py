@@ -145,6 +145,31 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
                 }
             }
 
+        TextContent:
+
+            {
+                "type": "textContent",
+                "attribute": "analysis.zvi-text-detection",
+                "values": {
+                    "query": "Text or ES Simple Query String Pattern to match"
+                }
+            }
+
+            *NOTE* The "attribute" field on TextContent can also be left off, and the query will
+            be matched against all available fields.
+
+        Similarity:
+
+            {
+                "type": "similarity",
+                "attribute": "analysis.zvi-image-similarity",
+                "values": {
+                    "hashes": ["Simhashes to match"],
+                    "minScore": 0.75,   # Optional
+                    "boost": 1.0        # Optional
+                }
+            }
+
         """
         path = 'api/v3/assets'
         fields = ['id',
@@ -156,6 +181,11 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
         for _filter in _filters:
             _filter.is_valid(query=True, raise_exception=True)
         query = filter_boy.reduce_filters_to_query(_filters)
+
+        # If there's no specific query at this point, let's sort by the created date
+        # to make the visual display in Visualizer more useful
+        if not query:
+            query['sort'] = {'system.timeCreated': {'order': 'desc'}}
 
         # Only returns the specified fields in the metadata
         query['_source'] = fields

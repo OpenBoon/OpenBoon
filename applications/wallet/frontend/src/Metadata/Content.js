@@ -97,7 +97,7 @@ const MetadataContent = ({ projectId, assetId }) => {
                   key={section}
                   variant={ACCORDION_VARIANTS.PANEL}
                   title={title}
-                  isInitiallyOpen
+                  isInitiallyOpen={false}
                 >
                   <MetadataPretty metadata={metadata} section={section} />
                 </Accordion>
