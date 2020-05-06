@@ -1,10 +1,11 @@
 from searches.filters import (RangeFilter, ExistsFilter, FacetFilter,
-                              LabelConfidenceFilter, TextContentFilter)
+                              LabelConfidenceFilter, TextContentFilter,
+                              SimilarityFilter)
 
 # Applicable filter sets for an ES Field type
 NUMBER_FILTERS = [RangeFilter.type, ExistsFilter.type]
 KEYWORD_FILTERS = [FacetFilter.type, ExistsFilter.type]
-SIMILARITY_FILTERS = [ExistsFilter.type]
+SIMILARITY_FILTERS = [SimilarityFilter.type]
 BOOLEAN_FILTERS = [ExistsFilter.type]
 DEFAULT_FILTERS = [ExistsFilter.type]
 TEXT_FILTERS = [ExistsFilter.type]
@@ -66,7 +67,7 @@ class SimilarityAnalysisSchema(AbstractAnalysisSchema):
     required_properties = ['type', 'simhash']
 
     def get_representation(self):
-        return {f'{self.property_name}': {'simhash': DEFAULT_FILTERS}}
+        return {f'{self.property_name}': SIMILARITY_FILTERS}
 
 
 class ContentAnalysisSchema(AbstractAnalysisSchema):

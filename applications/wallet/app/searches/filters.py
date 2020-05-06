@@ -2,6 +2,8 @@ import uuid
 
 from rest_framework.exceptions import ValidationError
 
+from zmlp.search import SimilarityQuery
+
 
 class BaseFilter(object):
     """Abstract Filter object all concrete Filters should inherit from.
@@ -304,6 +306,33 @@ class TextContentFilter(BaseFilter):
                 'bool': {
                     'filter': [
                         simple_query_string
+                    ]
+                }
+            }
+        }
+
+
+class SimilarityFilter(BaseFilter):
+
+    type = 'similarity'
+    required_agg_keys = ['attribute']
+    required_query_keys = ['hashes']
+    optional_keys = ['values.minScore', 'values.boost']
+
+    # No Aggregations needed for this
+
+    def get_es_query(self):
+        hashes = self.data['values']['hashes']
+        min_score = self.data['values'].get('minScore', 0.75)
+        boost = self.data['values'].get('boost', 1.0)
+        attribute = f'''{self.data['attribute']}.simhash'''
+        query = SimilarityQuery(hashes, min_score=min_score, boost=boost,
+                                field=attribute)
+        return {
+            'query': {
+                'bool': {
+                    'filter': [
+                        query.for_json()
                     ]
                 }
             }

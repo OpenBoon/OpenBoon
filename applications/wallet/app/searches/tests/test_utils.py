@@ -45,7 +45,7 @@ class TestFieldUtility:
     def test_converts_similarity_blob(self, similarity_mapping):
         properties = similarity_mapping['mappings']['properties']
         result = self.field_service.get_fields_from_mappings(properties['analysis'])
-        assert result['zvi-image-similarity'] == {'simhash': ['exists']}
+        assert result['zvi-image-similarity'] == ['similarity']
 
     @pytest.fixture
     def analysis_mappings(self):

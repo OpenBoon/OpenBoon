@@ -3,7 +3,8 @@ import pytest
 from rest_framework.exceptions import ValidationError
 
 from searches.filters import (BaseFilter, RangeFilter, ExistsFilter, FacetFilter,
-                              LabelConfidenceFilter, TextContentFilter)
+                              LabelConfidenceFilter, TextContentFilter,
+                              SimilarityFilter)
 
 
 class MockFilter(BaseFilter):
@@ -564,3 +565,65 @@ class TestTextContentFilter(FilterBaseTestCase):
                             'fields': ['one.two']
                         }}
                     ]}}}
+
+
+class TestSimilarityFilter(FilterBaseTestCase):
+
+    Filter = SimilarityFilter
+
+    @pytest.fixture
+    def mock_data(self):
+        return {'type': SimilarityFilter.type,
+                'attribute': 'analysis.zvi-image-similarity'}
+
+    @pytest.fixture
+    def mock_query_data(self, mock_data):
+        data = mock_data
+        data['values'] = {'hashes': ['abcd']}
+        return data
+
+    def test_get_es_query(self, mock_query_data):
+        _filter = self.Filter(mock_query_data)
+        query = _filter.get_es_query()
+        assert query == {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'script_score': {
+                            'query': {'match_all': {}},
+                            'script': {
+                                'source': 'similarity',
+                                'lang': 'zorroa-similarity',
+                                'params': {
+                                    'minScore': 0.75,
+                                    'field': 'analysis.zvi-image-similarity.simhash',
+                                    'hashes': ['abcd']}},
+                            'boost': 1.0,
+                            'min_score': 0.75}}]}}}
+
+    def test_get_query_with_optionals(self):
+        _filter = self.Filter({
+            'type': SimilarityFilter.type,
+            'attribute': 'analysis.zvi-image-similarity',
+            'values': {
+                'hashes': ['abcd', 'defg'],
+                'minScore': 0.50,
+                'boost': 0.8
+            }
+        })
+        query = _filter.get_es_query()
+        assert query == {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'script_score': {
+                            'query': {'match_all': {}},
+                            'script': {
+                                'source': 'similarity',
+                                'lang': 'zorroa-similarity',
+                                'params': {
+                                    'minScore': 0.5,
+                                    'field': 'analysis.zvi-image-similarity.simhash',
+                                    'hashes': ['abcd', 'defg']}},
+                            'boost': 0.8,
+                            'min_score': 0.5}}]}}}
