@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 
@@ -15,6 +15,8 @@ const MetadataAnalysisSimilarityDetection = ({ name, value: { simhash } }) => {
           padding: spacing.normal,
           paddingBottom: spacing.base,
           fontFamily: 'Roboto Mono',
+          fontSize: typography.size.small,
+          lineHeight: typography.height.small,
           color: colors.structure.white,
         }}
       >
@@ -24,6 +26,7 @@ const MetadataAnalysisSimilarityDetection = ({ name, value: { simhash } }) => {
         css={{
           padding: spacing.normal,
           paddingTop: spacing.base,
+          paddingBottom: spacing.comfy,
           ':hover': {
             backgroundColor: colors.signal.electricBlue.background,
             div: {
@@ -51,6 +54,8 @@ const MetadataAnalysisSimilarityDetection = ({ name, value: { simhash } }) => {
         <div
           css={{
             fontFamily: 'Roboto Mono',
+            fontSize: typography.size.small,
+            lineHeight: typography.height.small,
             color: colors.structure.white,
             overflow: 'hidden',
             textOverflow: 'ellipsis',

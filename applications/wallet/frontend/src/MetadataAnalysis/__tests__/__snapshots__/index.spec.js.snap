@@ -6,6 +6,8 @@ Array [
   padding: 16px;
   padding-bottom: 8px;
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   color: #ffffff;
 }
 
@@ -71,6 +73,7 @@ Array [
 .emotion-5 {
   padding: 16px;
   padding-top: 8px;
+  padding-bottom: 24px;
 }
 
 .emotion-5:hover {
@@ -142,6 +145,8 @@ Array [
   padding: 16px;
   padding-bottom: 8px;
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   color: #ffffff;
 }
 
@@ -157,6 +162,7 @@ Array [
   .emotion-1 {
   padding: 16px;
   padding-top: 8px;
+  padding-bottom: 24px;
 }
 
 .emotion-0 {
@@ -181,6 +187,7 @@ Array [
 exports[`<MetadataAnalysis /> should render label detection with box images properly 1`] = `
 .emotion-15 {
   padding: 16px;
+  padding-bottom: 24px;
 }
 
 .emotion-15:not(:first-of-type) {
@@ -189,12 +196,16 @@ exports[`<MetadataAnalysis /> should render label detection with box images prop
 
 .emotion-0 {
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   color: #ffffff;
   padding-bottom: 16px;
 }
 
 .emotion-14 {
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   color: #ffffff;
   width: 100%;
   border-spacing: 0;
@@ -207,6 +218,7 @@ exports[`<MetadataAnalysis /> should render label detection with box images prop
 
 .emotion-1 {
   font-family: Roboto Condensed;
+  font-weight: 400;
   text-transform: uppercase;
   color: #808080;
   padding-bottom: 16px;
@@ -380,6 +392,7 @@ exports[`<MetadataAnalysis /> should render label with no box images detection p
 Array [
   .emotion-10 {
   padding: 16px;
+  padding-bottom: 24px;
 }
 
 .emotion-10:not(:first-of-type) {
@@ -388,12 +401,16 @@ Array [
 
 .emotion-0 {
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   color: #ffffff;
   padding-bottom: 16px;
 }
 
 .emotion-9 {
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   color: #ffffff;
   width: 100%;
   border-spacing: 0;
@@ -406,6 +423,7 @@ Array [
 
 .emotion-1 {
   font-family: Roboto Condensed;
+  font-weight: 400;
   text-transform: uppercase;
   color: #808080;
   padding-bottom: 16px;
@@ -647,6 +665,8 @@ Array [
   padding: 16px;
   padding-bottom: 8px;
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   color: #ffffff;
 }
 
@@ -712,6 +732,7 @@ Array [
 .emotion-5 {
   padding: 16px;
   padding-top: 8px;
+  padding-bottom: 24px;
 }
 
 .emotion-5:hover {
@@ -740,6 +761,8 @@ Array [
 
 .emotion-4 {
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   color: #ffffff;
   overflow: hidden;
   text-overflow: ellipsis;

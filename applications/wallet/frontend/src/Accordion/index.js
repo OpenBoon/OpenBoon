@@ -34,14 +34,18 @@ const STYLES = {
     container: {
       backgroundColor: colors.structure.lead,
       borderRadius: constants.borderRadius.small,
+      ':last-of-type > div': {
+        borderBottom: constants.borders.tabs,
+      },
     },
     title: {
-      borderBottom: constants.borders.tabs,
+      borderTop: constants.borders.tabs,
       paddingTop: spacing.moderate,
       paddingBottom: spacing.moderate,
       paddingLeft: spacing.moderate,
       display: 'flex',
       h4: {
+        fontSize: typography.size.regular,
         fontWeight: typography.weight.regular,
       },
     },

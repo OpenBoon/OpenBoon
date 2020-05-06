@@ -62,8 +62,12 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
   border-radius: 2px;
 }
 
-.emotion-3 {
+.emotion-4:last-of-type > div {
   border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-3 {
+  border-top: 1px solid #4a4a4a;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;
@@ -74,6 +78,7 @@ exports[`<Accordion /> should render properly for PANEL 1`] = `
 }
 
 .emotion-3 h4 {
+  font-size: 15px;
   font-weight: 400;
 }
 

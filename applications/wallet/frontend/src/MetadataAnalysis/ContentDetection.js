@@ -15,6 +15,8 @@ const MetadataAnalysisContentDetection = ({ name, value: { content } }) => {
           padding: spacing.normal,
           paddingBottom: spacing.base,
           fontFamily: 'Roboto Mono',
+          fontSize: typography.size.small,
+          lineHeight: typography.height.small,
           color: colors.structure.white,
         }}
       >
@@ -24,6 +26,7 @@ const MetadataAnalysisContentDetection = ({ name, value: { content } }) => {
         css={{
           padding: spacing.normal,
           paddingTop: spacing.base,
+          paddingBottom: spacing.comfy,
           ':hover': content
             ? {
                 backgroundColor: colors.signal.electricBlue.background,

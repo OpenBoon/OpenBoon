@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 import Pills from '../Pills'
@@ -26,6 +26,7 @@ const MetadataAnalysisLabelDetection = ({ name, value: { predictions } }) => {
       <div
         css={{
           padding: spacing.normal,
+          paddingBottom: spacing.comfy,
           '&:not(:first-of-type)': {
             borderTop: constants.borders.largeDivider,
           },
@@ -34,6 +35,8 @@ const MetadataAnalysisLabelDetection = ({ name, value: { predictions } }) => {
         <div
           css={{
             fontFamily: 'Roboto Mono',
+            fontSize: typography.size.small,
+            lineHeight: typography.height.small,
             color: colors.structure.white,
             paddingBottom: spacing.normal,
           }}
@@ -43,6 +46,8 @@ const MetadataAnalysisLabelDetection = ({ name, value: { predictions } }) => {
         <table
           css={{
             fontFamily: 'Roboto Mono',
+            fontSize: typography.size.small,
+            lineHeight: typography.height.small,
             color: colors.structure.white,
             width: '100%',
             borderSpacing: 0,
@@ -60,6 +65,7 @@ const MetadataAnalysisLabelDetection = ({ name, value: { predictions } }) => {
                     key={column}
                     css={{
                       fontFamily: 'Roboto Condensed',
+                      fontWeight: typography.weight.regular,
                       textTransform: 'uppercase',
                       color: colors.structure.steel,
                       paddingBottom: spacing.normal,
