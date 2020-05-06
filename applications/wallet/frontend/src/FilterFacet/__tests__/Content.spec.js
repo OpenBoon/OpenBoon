@@ -46,14 +46,11 @@ describe('<FilterFacetContent />', () => {
 
     require('swr').__setMockUseSWRResponse({
       data: {
-        ...facetAggregate,
+        count: 596,
         results: {
-          ...facetAggregate.results,
-          buckets: [
-            { key: 'Tyngsboro' },
-            { key: 'Brooklyn' },
-            { key: 'Cát Bà' },
-          ],
+          docCountErrorUpperBound: 0,
+          sumOtherDocCount: 0,
+          buckets: [],
         },
       },
     })
