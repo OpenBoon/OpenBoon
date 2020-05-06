@@ -4,7 +4,7 @@ import { colors, constants, spacing } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 
-const MetadataAnalysisSimilarityDetection = ({ name, simhash }) => {
+const MetadataAnalysisSimilarityDetection = ({ name, value: { simhash } }) => {
   return (
     <>
       <div
@@ -66,7 +66,9 @@ const MetadataAnalysisSimilarityDetection = ({ name, simhash }) => {
 
 MetadataAnalysisSimilarityDetection.propTypes = {
   name: PropTypes.string.isRequired,
-  simhash: PropTypes.string.isRequired,
+  value: PropTypes.shape({
+    simhash: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default MetadataAnalysisSimilarityDetection

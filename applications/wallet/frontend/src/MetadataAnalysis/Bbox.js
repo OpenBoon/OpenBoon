@@ -12,17 +12,11 @@ const MetadataAnalysisBbox = ({ name }) => {
     query: { projectId, id: assetId },
   } = useRouter()
 
-  const {
-    data: {
-      [name]: { predictions },
-    },
-  } = useSWR(
+  const { data } = useSWR(
     `/api/v1/projects/${projectId}/assets/${assetId}/box_images/?attr=${attr}`,
   )
 
-  return (
-    <MetadataAnalysisLabelDetection name={name} predictions={predictions} />
-  )
+  return <MetadataAnalysisLabelDetection name={name} value={data[name]} />
 }
 
 MetadataAnalysisBbox.propTypes = {
