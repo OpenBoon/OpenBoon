@@ -5,7 +5,7 @@ import bboxAsset, { boxImagesResponse } from '../../Asset/__mocks__/bboxAsset'
 import MetadataAnalysis from '..'
 
 describe('<MetadataAnalysis />', () => {
-  it('should render label detection properly', () => {
+  it('should render label with no box images detection properly', () => {
     const value = bboxAsset.metadata.analysis['zvi-label-detection']
     const component = TestRenderer.create(
       <MetadataAnalysis name="zvi-label-detection" value={value} />,

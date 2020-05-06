@@ -164,7 +164,7 @@ Array [
       className="emotion-0"
     >
       <span
-        title="analysis.files"
+        title="files.files"
       >
         Files
       </span>
@@ -284,7 +284,7 @@ Array [
         className="emotion-0"
       >
         <span
-          title="analysis.files.width"
+          title="files.files.width"
         >
           Width
         </span>
@@ -320,7 +320,7 @@ Array [
         className="emotion-0"
       >
         <span
-          title="analysis.files.height"
+          title="files.files.height"
         >
           Height
         </span>

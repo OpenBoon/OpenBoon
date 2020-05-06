@@ -20,7 +20,7 @@ describe('<MetadataPrettyRow />', () => {
     const objectValue = bboxAsset.metadata.files[0].attrs
 
     const component = TestRenderer.create(
-      <MetadataPrettyRow name="files" value={objectValue} path="analysis" />,
+      <MetadataPrettyRow name="files" value={objectValue} path="files" />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
