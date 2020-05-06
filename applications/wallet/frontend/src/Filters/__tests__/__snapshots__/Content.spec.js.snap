@@ -1073,6 +1073,7 @@ Array [
           >
             <li>
               <button
+                aria-label="Tyngsboro"
                 className="emotion-10"
                 onClick={[Function]}
                 type="button"
@@ -1105,6 +1106,7 @@ Array [
             </li>
             <li>
               <button
+                aria-label="Brooklyn"
                 className="emotion-10"
                 onClick={[Function]}
                 type="button"
@@ -1137,6 +1139,7 @@ Array [
             </li>
             <li>
               <button
+                aria-label="Cát Bà"
                 className="emotion-10"
                 onClick={[Function]}
                 type="button"
@@ -1169,6 +1172,7 @@ Array [
             </li>
             <li>
               <button
+                aria-label="La Habana Vieja"
                 className="emotion-10"
                 onClick={[Function]}
                 type="button"
@@ -1201,6 +1205,7 @@ Array [
             </li>
             <li>
               <button
+                aria-label="North Glendale"
                 className="emotion-10"
                 onClick={[Function]}
                 type="button"
@@ -1233,6 +1238,7 @@ Array [
             </li>
             <li>
               <button
+                aria-label="Saalfelden am Steinernen Meer"
                 className="emotion-10"
                 onClick={[Function]}
                 type="button"
@@ -1265,6 +1271,7 @@ Array [
             </li>
             <li>
               <button
+                aria-label="Zermatt"
                 className="emotion-10"
                 onClick={[Function]}
                 type="button"
