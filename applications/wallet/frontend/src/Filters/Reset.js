@@ -21,7 +21,7 @@ const FiltersReset = ({
 
   const options = filter.attribute
     .split('.')
-    .reduce((p, c) => p && p[c], fields)
+    .reduce((acc, cur) => acc && acc[cur], fields)
 
   return (
     <div
@@ -33,8 +33,6 @@ const FiltersReset = ({
     >
       {options.length > 1 && (
         <select
-          name="sources"
-          id="source-selection"
           defaultValue={filter.type}
           onChange={({ target: { value } }) => {
             onReset()
