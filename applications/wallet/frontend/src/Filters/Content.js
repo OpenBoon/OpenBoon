@@ -2,7 +2,8 @@ import PropTypes from 'prop-types'
 
 import filterShape from '../Filter/shape'
 
-import { spacing, constants } from '../Styles'
+import { spacing, constants, colors } from '../Styles'
+import SearchSvg from '../Icons/search.svg'
 
 import SearchFilter from '../SearchFilter'
 import Button, { VARIANTS } from '../Button'
@@ -119,7 +120,34 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  • {filter.type}: {filter.attribute || filter.value}
+                  <div
+                    css={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      color: 'white',
+                      height: spacing.large,
+                      width: '100%',
+                      borderBottom: constants.borders.divider,
+                      paddingLeft: spacing.comfy,
+                      paddingRight: spacing.comfy,
+                    }}
+                  >
+                    <div
+                      css={{ display: 'flex', paddingRight: spacing.normal }}
+                    >
+                      <SearchSvg css={{ width: 14, color: colors.key.one }} />
+                    </div>
+                    <div
+                      title={filter.attribute || filter.value}
+                      css={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {filter.attribute || filter.value}
+                    </div>
+                  </div>
                   <button
                     type="button"
                     onClick={() =>
