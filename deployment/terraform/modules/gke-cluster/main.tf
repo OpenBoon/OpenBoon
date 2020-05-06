@@ -76,7 +76,8 @@ resource "google_container_node_pool" "default" {
       "https://www.googleapis.com/auth/devstorage.read_only",
       "https://www.googleapis.com/auth/monitoring",
       "https://www.googleapis.com/auth/sqlservice.admin",
-      "https://www.googleapis.com/auth/cloud-platform"
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/iam"
     ]
     labels = {
       type = "default"

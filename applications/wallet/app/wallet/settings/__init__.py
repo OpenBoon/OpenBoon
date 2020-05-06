@@ -49,13 +49,14 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'searches',
     'agreements',
-    'subscriptions',
+    'gcpmarketplace',
     'jobs',
     'modules',
     'projects',
     'registration',
+    'searches',
+    'subscriptions',
     'wallet',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -248,3 +249,9 @@ ROLES = [
 
 # The registered email address of the superuser for this instance.
 SUPERUSER_EMAIL = 'software@zorroa.com'
+
+# Google Marketplace Integration Settings
+MARKETPLACE_PROJECT_ID = os.environ.get('MARKETPLACE_PROJECT_ID')
+MARKETPLACE_PUBSUB_SUBSCRIPTION = os.environ.get('MARKETPLACE_PUBSUB_SUBSCRIPTION')
+MARKETPLACE_SERVICE_NAME = os.environ.get('MARKETPLACE_SERVICE_NAME')  #TODO: Remove demo service.
+MARKETPLACE_CREDENTIALS = os.environ.get('MARKETPLACE_CREDENTIALS')

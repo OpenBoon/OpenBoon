@@ -1,0 +1,8 @@
+{% extends "email/base-email.html" %}
+{% block content %}
+    <form action="/marketplace/signup/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
