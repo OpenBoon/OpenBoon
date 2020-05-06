@@ -170,6 +170,11 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
             _filter.is_valid(query=True, raise_exception=True)
         query = filter_boy.reduce_filters_to_query(_filters)
 
+        # If there's no specific query at this point, let's sort by the created date
+        # to make the visual display in Visualizer more useful
+        if not query:
+            query['sort'] = {'system.timeCreated': {'order': 'desc'}}
+
         # Only returns the specified fields in the metadata
         query['_source'] = fields
 
