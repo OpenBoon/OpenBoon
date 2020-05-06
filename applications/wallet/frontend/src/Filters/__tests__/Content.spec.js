@@ -9,6 +9,8 @@ const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
+jest.mock('../../Filters/Reset', () => 'FiltersReset')
+
 describe('<FiltersContent />', () => {
   it('should render the "Exists" filter', () => {
     const filters = [{ attribute: 'location.point', type: 'exists' }]
@@ -80,14 +82,6 @@ describe('<FiltersContent />', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
-
-    act(() => {
-      component.root
-        .findByProps({ children: 'RESET' })
-        .props.onClick({ preventDefault: noop })
-    })
-
-    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should render the "Range" filter', () => {
@@ -118,14 +112,6 @@ describe('<FiltersContent />', () => {
     act(() => {
       component.root.findByProps({ mode: 2 }).props.onUpdate([0.255, max])
       component.root.findByProps({ mode: 2 }).props.onChange([0.255, max])
-    })
-
-    expect(component.toJSON()).toMatchSnapshot()
-
-    act(() => {
-      component.root
-        .findByProps({ children: 'RESET' })
-        .props.onClick({ preventDefault: noop })
     })
 
     expect(component.toJSON()).toMatchSnapshot()

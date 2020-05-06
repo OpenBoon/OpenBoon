@@ -28,6 +28,7 @@ const FilterRange = ({
   projectId,
   assetId,
   filters,
+  filter,
   filter: { type, attribute, values },
   filterIndex,
 }) => {
@@ -52,7 +53,7 @@ const FilterRange = ({
         projectId={projectId}
         assetId={assetId}
         filters={filters}
-        updatedFilter={{ type, attribute }}
+        filter={filter}
         filterIndex={filterIndex}
         onReset={() => setRangeValues(domain)}
       />
