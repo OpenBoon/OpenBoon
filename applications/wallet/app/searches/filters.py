@@ -268,3 +268,43 @@ class LabelConfidenceFilter(BaseFilter):
                 }
             }
         }
+
+
+class TextContentFilter(BaseFilter):
+
+    type = 'textContent'
+    required_agg_keys = []
+    required_query_keys = ['query']
+
+    # No aggregations needed for this
+
+    def get_es_query(self):
+        # if no attribute, no fields
+        # if attribute that's only two levels without a content field, add content field
+        # if attribute use attribute
+        query = self.data['values']['query']
+        simple_query_string = {
+            'simple_query_string': {
+                'query': query
+            }
+        }
+        attr = self.data.get('attribute')
+        if attr:
+            # if this is coming from a TextContent Analysis Module
+            attr_split = attr.split('.')
+            if (len(attr_split) == 2
+                    and attr_split[0] == 'analysis'
+                    and not attr.endswith('content')):
+                # add the field to search over
+                attr = f'{attr}.content'
+            simple_query_string['simple_query_string']['fields'] = [attr]
+
+        return {
+            'query': {
+                'bool': {
+                    'filter': [
+                        simple_query_string
+                    ]
+                }
+            }
+        }

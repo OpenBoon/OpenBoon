@@ -3,7 +3,7 @@ import pytest
 from rest_framework.exceptions import ValidationError
 
 from searches.filters import (BaseFilter, RangeFilter, ExistsFilter, FacetFilter,
-                              LabelConfidenceFilter)
+                              LabelConfidenceFilter, TextContentFilter)
 
 
 class MockFilter(BaseFilter):
@@ -65,11 +65,38 @@ class TestBaseFilterClass:
             _filter.is_valid(query=True, raise_exception=True)
 
 
-class TestExistsFilter:
+class FilterBaseTestCase:
+    """Set the Filter on the inherited test case and it will run these tests automatically,
+    if you've setup the mock_data and mock_query_data fixtures correctly."""
+
+    Filter = None
 
     @pytest.fixture
     def mock_data(self):
-        return {'type': 'exists',
+        return {}
+
+    @pytest.fixture
+    def mock_query_data(self, mock_data):
+        return mock_data
+
+    def test_is_valid(self, mock_data):
+        if self.Filter:
+            _filter = self.Filter(mock_data)
+            assert _filter.is_valid()
+
+    def test_is_valid_for_query(self, mock_query_data):
+        if self.Filter:
+            _filter = self.Filter(mock_query_data)
+            assert _filter.is_valid(query=True)
+
+
+class TestExistsFilter(FilterBaseTestCase):
+
+    Filter = ExistsFilter
+
+    @pytest.fixture
+    def mock_data(self):
+        return {'type': ExistsFilter.type,
                 'attribute': 'name'}
 
     @pytest.fixture
@@ -77,14 +104,6 @@ class TestExistsFilter:
         data = mock_data
         data['values'] = {'exists': True}
         return data
-
-    def test_is_valid(self, mock_data):
-        _filter = ExistsFilter(mock_data)
-        assert _filter.is_valid()
-
-    def test_is_valid_for_query(self, mock_query_data):
-        _filter = ExistsFilter(mock_query_data)
-        assert _filter.is_valid(query=True)
 
     def test_get_es_agg(self, mock_data):
         _filter = ExistsFilter(mock_data)
@@ -156,11 +175,13 @@ class TestExistsFilter:
                                                        {'exists': {'field': 'name'}}]}}}
 
 
-class TestRangeFilter:
+class TestRangeFilter(FilterBaseTestCase):
+
+    Filter = RangeFilter
 
     @pytest.fixture
     def mock_data(self):
-        return {'type': 'range',
+        return {'type': RangeFilter.type,
                 'attribute': 'my_attr'}
 
     @pytest.fixture
@@ -168,14 +189,6 @@ class TestRangeFilter:
         data = mock_data
         data['values'] = {'min': 1, 'max': 100}
         return data
-
-    def test_is_valid(self, mock_data):
-        _filter = RangeFilter(mock_data)
-        assert _filter.is_valid()
-
-    def test_is_valid_for_query(self, mock_query_data):
-        _filter = RangeFilter(mock_query_data)
-        assert _filter.is_valid(query=True)
 
     def test_get_es_agg(self, mock_data):
         _filter = RangeFilter(mock_data)
@@ -244,11 +257,13 @@ class TestRangeFilter:
                                                                               'lte': 100}}}]}}}  # noqa
 
 
-class TestFacetFilter:
+class TestFacetFilter(FilterBaseTestCase):
+
+    Filter = FacetFilter
 
     @pytest.fixture
     def mock_data(self):
-        return {'type': 'facet',
+        return {'type': FacetFilter.type,
                 'attribute': 'my_attr'}
 
     @pytest.fixture
@@ -256,14 +271,6 @@ class TestFacetFilter:
         data = mock_data
         data['values'] = {'facets': ['value1', 'value2']}
         return data
-
-    def test_is_valid(self, mock_data):
-        _filter = FacetFilter(mock_data)
-        assert _filter.is_valid()
-
-    def test_is_valid_for_query(self, mock_query_data):
-        _filter = FacetFilter(mock_query_data)
-        assert _filter.is_valid(query=True)
 
     def test_get_es_agg(self, mock_data):
         _filter = FacetFilter(mock_data)
@@ -356,11 +363,13 @@ class TestFacetFilter:
                                           {'terms': {'my_attr': ['value1', 'value2']}}]}}}  # noqa
 
 
-class TestFacetFilter:
+class TestLabelConfidenceFilter(FilterBaseTestCase):
+
+    Filter = LabelConfidenceFilter
 
     @pytest.fixture
     def mock_data(self):
-        return {'type': 'labelConfidence',
+        return {'type': LabelConfidenceFilter.type,
                 'attribute': 'analysis.zvi-label-detection'}
 
     @pytest.fixture
@@ -369,14 +378,6 @@ class TestFacetFilter:
         data['values'] = {'labels': ['value1', 'value2'],
                           'min': .5, 'max': .8}
         return data
-
-    def test_is_valid(self, mock_data):
-        _filter = LabelConfidenceFilter(mock_data)
-        assert _filter.is_valid()
-
-    def test_is_valid_for_query(self, mock_query_data):
-        _filter = LabelConfidenceFilter(mock_query_data)
-        assert _filter.is_valid(query=True)
 
     def test_get_es_agg(self, mock_data):
         _filter = LabelConfidenceFilter(mock_data)
@@ -494,3 +495,72 @@ class TestFacetFilter:
                                     'labels': ['dog', 'cat'],
                                     'range': [0.2, 0.7]}},
                             'min_score': 0.2}}]}}}
+
+
+class TestTextContentFilter(FilterBaseTestCase):
+
+    Filter = TextContentFilter
+
+    @pytest.fixture
+    def mock_data(self):
+        return {'type': TextContentFilter.type,
+                'attribute': 'analysis.zvi-text-detection'}
+
+    @pytest.fixture
+    def mock_query_data(self, mock_data):
+        data = mock_data
+        data['values'] = {'query': 'possibility'}
+        return data
+
+    def test_is_valid_no_attr(self):
+        _filter = self.Filter({'type': self.Filter.type,
+                               'values': {'query': 'test'}})
+        assert _filter.is_valid()
+        assert _filter.is_valid(query=True)
+
+    def test_is_valid_non_analysis_attr(self):
+        _filter = self.Filter({'type': self.Filter.type,
+                               'attribute': 'one.two.three',
+                               'values': {'query': 'test'}})
+        assert _filter.is_valid()
+        assert _filter.is_valid(query=True)
+
+    # No ES Agg to check
+
+    def test_get_es_query(self, mock_query_data):
+        _filter = self.Filter(mock_query_data)
+        query = _filter.get_es_query()
+        assert query == {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'simple_query_string': {
+                            'query': 'possibility',
+                            'fields': ['analysis.zvi-text-detection.content']}}
+                        ]}}}
+
+    def test_get_es_query_no_attr(self):
+        _filter = self.Filter({'type': self.Filter.type,
+                               'values': {'query': 'test'}})
+        query = _filter.get_es_query()
+        assert query == {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'simple_query_string': {'query': 'test'}}
+                    ]}}}
+
+    def test_get_es_query_non_analysis_attr(self):
+        _filter = self.Filter({'type': self.Filter.type,
+                               'attribute': 'one.two',
+                               'values': {'query': 'test'}})
+        query = _filter.get_es_query()
+        assert query == {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'simple_query_string': {
+                            'query': 'test',
+                            'fields': ['one.two']
+                        }}
+                    ]}}}
