@@ -4,7 +4,7 @@ import { spacing, typography, constants } from '../Styles'
 
 import FiltersMenuOption from './MenuOption'
 
-const FiltersMenuSection = ({ path, attribute, value, onClick }) => {
+const FiltersMenuSection = ({ path, attribute, value, filters, onClick }) => {
   const fullPath = `${path}.${attribute}`
 
   if (Array.isArray(value) && value.length === 0) return null
@@ -15,6 +15,7 @@ const FiltersMenuSection = ({ path, attribute, value, onClick }) => {
         key={fullPath}
         option={fullPath}
         label={attribute}
+        filters={filters}
         onClick={onClick({
           type: value[0],
           attribute: fullPath,
@@ -57,6 +58,7 @@ const FiltersMenuSection = ({ path, attribute, value, onClick }) => {
           path={fullPath}
           attribute={subKey}
           value={subValue}
+          filters={filters}
           onClick={onClick}
         />
       ))}
@@ -68,6 +70,13 @@ FiltersMenuSection.propTypes = {
   path: PropTypes.string.isRequired,
   attribute: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+  filters: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
+      attribute: PropTypes.string,
+      values: PropTypes.shape({}),
+    }).isRequired,
+  ).isRequired,
   onClick: PropTypes.func.isRequired,
 }
 

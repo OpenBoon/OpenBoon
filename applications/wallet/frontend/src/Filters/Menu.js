@@ -69,6 +69,7 @@ const FiltersMenu = ({
                     path={key}
                     attribute={subKey}
                     value={subValue}
+                    filters={filters}
                     onClick={onClick}
                   />
                 ))}
