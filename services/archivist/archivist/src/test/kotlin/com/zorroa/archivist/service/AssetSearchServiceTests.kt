@@ -34,6 +34,7 @@ class AssetSearchServiceTests : AbstractTest() {
         val id = rsp.created[0]
         val asset = assetService.getAsset(id)
         asset.setAttr("analysis.zvi-image-similarity.simhash", "AABBCC00")
+        asset.setAttr("analysis.zvi-multi-similarity.simhash", listOf("AABBCC00", "CCCCCCCC", "AABBDDDD"))
         asset.setAttr("analysis.zvi-label-detection.predictions", labels)
         assetService.index(id, asset.document, true)
 
@@ -162,6 +163,65 @@ class AssetSearchServiceTests : AbstractTest() {
         val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
         assertEquals(1, rsp.hits.hits.size)
         assertTrue(rsp.hits.hits[0].score > 0.98)
+    }
+
+    @Test
+    fun testSimilaritySearchOnArray() {
+        val query = """
+            {
+            "query": {
+                "script_score": {
+                    "query": {
+                        "match_all": {}
+                    },
+                    "script": {
+                        "source": "similarity",
+                        "lang": "zorroa-similarity",
+                        "params": {
+                            "minScore": 1.0,
+                            "field": "analysis.zvi-multi-similarity.simhash",
+                            "hashes":  ["CCCCCCCC"]
+                        }
+                    },
+                    "boost": 1.0,
+                    "min_score": 1.0
+                }
+            }
+            }
+        """.trimIndent()
+
+        val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
+        assertEquals(1, rsp.hits.hits.size)
+        assertEquals(rsp.hits.hits[0].score, 1.0f)
+    }
+
+    @Test
+    fun testSimilaritySearchOnEmptyField() {
+        val query = """
+            {
+            "query": {
+                "script_score": {
+                    "query": {
+                        "match_all": {}
+                    },
+                    "script": {
+                        "source": "similarity",
+                        "lang": "zorroa-similarity",
+                        "params": {
+                            "minScore": 1.0,
+                            "field": "analysis.zvi-foo-similarity.simhash",
+                            "hashes":  ["CCCCCCCC"]
+                        }
+                    },
+                    "boost": 1.0,
+                    "min_score": 1.0
+                }
+            }
+            }
+        """.trimIndent()
+
+        val rsp = assetSearchService.search(Json.Mapper.readValue(query, Json.GENERIC_MAP))
+        assertEquals(0, rsp.hits.hits.size)
     }
 
     @Test

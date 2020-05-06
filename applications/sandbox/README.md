@@ -13,7 +13,7 @@ A couple of different scripts are included.
 ### Build the docker container
 
 ```
-docker buildx bake -f docker-compose.yml
+docker build . -t 'zmlp/sandbox'
 ```
 
 ### Run
@@ -25,7 +25,23 @@ docker-compose up -d
 docker-compose -f docker-compose.yml -f applications/sandbox/docker-compose.yml up sandbox
 ```
 
+or two run the server, Workbench and Sandbox all at once, run
+
+```
+docker-compose -f docker-compose.yml -f applications/workbench/docker-compose.yml -f applications/sandbox/docker-compose.yml up --force-recreate -d
+```
+
+
 Then navigate to http://localhost:8501
+
+### Shut down
+
+From the main zmlp repo folder:
+```
+docker-compose -f docker-compose.yml -f applications/sandbox/docker-compose.yml down
+```
+
+### Adding scripts in Sandbox
 
 To add a new one, place the Python file in the sandbox/scripts directory. The entry point for Sandbox, sandbox.py, will detect scripts in that directory and allow
 the user to select which one to run.

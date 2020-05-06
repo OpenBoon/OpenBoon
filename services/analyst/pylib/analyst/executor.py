@@ -4,6 +4,7 @@ import os
 import threading
 import tempfile
 import shutil
+from pwd import getpwnam
 
 import docker
 import zmq
@@ -54,20 +55,32 @@ class ZpsExecutor(object):
         # A roll up of event counts from the various containers
         # that are spawned during processing.
         self.event_counts = {}
-        self.workdir = os.path.realpath(
-            tempfile.mkdtemp(prefix="zvi-", suffix="-" + self.task['id']))
+        self.workdir = self.make_workdir()
+
+    def make_workdir(self):
+        path = os.path.join(tempfile.tempdir, "zvi-{}".format(self.task['jobId']))
+        os.makedirs(path, mode=0o777, exist_ok=True)
+        try:
+            zorroa_user = getpwnam("zorroa")
+            os.chown(path, zorroa_user.pw_uid, zorroa_user.pw_gid)
+            logger.info("Created workdir [owner=zorroa] {}".format(path))
+        except Exception:
+            os.chmod(path, 0o777)
+            logger.info("Created workdir {}".format(path))
+        return path
 
     def run(self):
         """
         Execute the full ZPS script.
         """
+        settings = self.script.get("settings", {})
         self.client.emit_event(self.task, "started", {})
         try:
             if self.script.get("generate"):
                 self.generate()
             if self.script.get("assets"):
                 assets = self.process()
-                if assets and self.exit_status == 0:
+                if settings.get("index", False) and assets and self.exit_status == 0:
                     # Batch indexing expects map<id, document
                     payload = dict([(asset["id"], asset["document"]) for asset in assets])
                     self.client.emit_event(
@@ -373,6 +386,8 @@ class DockerContainerWrapper(object):
         }
 
         network = self.get_network_id()
+        logger.info("Docker network ID: {}".format(network))
+
         if not network:
             ports = {'{}/tcp'.format(CONTAINER_PORT): CONTAINER_PORT}
         else:
@@ -386,7 +401,7 @@ class DockerContainerWrapper(object):
             "ANALYST_THREADS": os.environ.get('ANALYST_THREADS')
         })
 
-        logger.info("starting container {}".format(self.image))
+        logger.info("starting container {} vols={} network={}".format(self.image, volumes, network))
         self.container = self.docker_client.containers.run(image, detach=True,
                                                            environment=env, volumes=volumes,
                                                            entrypoint="/usr/local/bin/server",

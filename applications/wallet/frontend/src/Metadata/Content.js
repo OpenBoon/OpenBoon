@@ -87,20 +87,22 @@ const MetadataContent = ({ projectId, assetId }) => {
 
       {displayOption === 'pretty' && (
         <div css={{ overflow: 'auto' }}>
-          {Object.keys(metadata).map((section) => {
-            const title = formatDisplayName({ name: section })
+          {Object.keys(metadata)
+            .sort()
+            .map((section) => {
+              const title = formatDisplayName({ name: section })
 
-            return (
-              <Accordion
-                key={section}
-                variant={ACCORDION_VARIANTS.PANEL}
-                title={title}
-                isInitiallyOpen
-              >
-                <MetadataPretty metadata={metadata} section={section} />
-              </Accordion>
-            )
-          })}
+              return (
+                <Accordion
+                  key={section}
+                  variant={ACCORDION_VARIANTS.PANEL}
+                  title={title}
+                  isInitiallyOpen={false}
+                >
+                  <MetadataPretty metadata={metadata} section={section} />
+                </Accordion>
+              )
+            })}
         </div>
       )}
 

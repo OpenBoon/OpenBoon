@@ -4,14 +4,23 @@ import useSWR from 'swr'
 import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
+import FiltersReset from '../Filters/Reset'
+
+import { dispatch, ACTIONS } from '../Filters/helpers'
+
+export const noop = () => {}
 
 const FilterFacet = ({
   projectId,
-  //   assetId,
-  //   filters,
-  //   filter,
-  filter: { type, attribute },
-  //   filterIndex,
+  assetId,
+  filters,
+  filter,
+  filter: {
+    type,
+    attribute,
+    values: { facets = [] },
+  },
+  filterIndex,
 }) => {
   const encodedFilter = btoa(JSON.stringify({ type, attribute }))
 
@@ -23,10 +32,20 @@ const FilterFacet = ({
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
   )
 
-  const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key)
+  const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
+
+  const hasSelections = facets.length > 0
 
   return (
     <>
+      <FiltersReset
+        projectId={projectId}
+        assetId={assetId}
+        filters={filters}
+        filter={filter}
+        filterIndex={filterIndex}
+        onReset={noop}
+      />
       <div
         css={{
           display: 'flex',
@@ -41,28 +60,63 @@ const FilterFacet = ({
         <div>COUNT</div>
       </div>
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
-        {buckets.map(({ key, docCount }) => {
+        {buckets.map(({ key, docCount = 0 }) => {
           const offset = Math.ceil((docCount * 100) / largestCount)
+          const facetIndex = facets.findIndex((f) => f === key)
+          const isSelected = !!(facetIndex + 1)
 
           return (
             <li key={key}>
               <Button
+                aria-label={key}
                 style={{
                   width: '100%',
                   flexDirection: 'row',
+                  backgroundColor: isSelected
+                    ? colors.signal.electricBlue.background
+                    : '',
+                  color: hasSelections
+                    ? colors.structure.zinc
+                    : colors.structure.white,
                   ':hover': {
                     backgroundColor: colors.signal.electricBlue.background,
+                    color: colors.structure.white,
                   },
                 }}
                 variant={VARIANTS.NEUTRAL}
-                onClick={() => {}}
+                onClick={() => {
+                  const newFacets = isSelected
+                    ? [
+                        ...facets.slice(0, facetIndex),
+                        ...facets.slice(facetIndex + 1),
+                      ]
+                    : [...facets, key]
+
+                  dispatch({
+                    action: ACTIONS.UPDATE_FILTER,
+                    payload: {
+                      projectId,
+                      assetId,
+                      filters,
+                      updatedFilter: {
+                        type,
+                        attribute,
+                        values: { facets: newFacets },
+                      },
+                      filterIndex,
+                    },
+                  })
+                }}
               >
                 <div css={{ width: '100%' }}>
                   <div css={{ display: 'flex' }}>
                     <div
                       css={{
                         width: `${offset}%`,
-                        borderTop: constants.borders.facet,
+                        borderTop:
+                          !isSelected && hasSelections
+                            ? constants.borders.unselectedFacet
+                            : constants.borders.facet,
                       }}
                     />
                     <div
@@ -95,20 +149,20 @@ const FilterFacet = ({
 
 FilterFacet.propTypes = {
   projectId: PropTypes.string.isRequired,
-  //   assetId: PropTypes.string.isRequired,
-  //   filters: PropTypes.arrayOf(
-  //     PropTypes.shape({
-  //       type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-  //       attribute: PropTypes.string,
-  //       values: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  //     }).isRequired,
-  //   ).isRequired,
+  assetId: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
+      attribute: PropTypes.string,
+      values: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    }).isRequired,
+  ).isRequired,
   filter: PropTypes.shape({
     type: PropTypes.oneOf(['facet']).isRequired,
     attribute: PropTypes.string.isRequired,
-    values: PropTypes.shape({ exists: PropTypes.bool }),
+    values: PropTypes.shape({ facets: PropTypes.arrayOf(PropTypes.string) }),
   }).isRequired,
-  //   filterIndex: PropTypes.number.isRequired,
+  filterIndex: PropTypes.number.isRequired,
 }
 
 export default FilterFacet

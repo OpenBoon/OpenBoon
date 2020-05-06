@@ -1,6 +1,5 @@
 package com.zorroa.archivist.repository
 
-import com.google.common.base.Preconditions
 import com.zorroa.archivist.domain.AssetCounters
 import com.zorroa.archivist.domain.Credentials
 import com.zorroa.archivist.domain.CredentialsType
@@ -46,7 +45,9 @@ interface JobDao {
 class JobDaoImpl : AbstractDao(), JobDao {
 
     override fun create(spec: JobSpec, type: JobType): Job {
-        Preconditions.checkNotNull(spec.name)
+        if (spec.name == null) {
+            throw IllegalArgumentException("The job name cannot be null.")
+        }
 
         val id = uuid1.generate()
         val time = System.currentTimeMillis()

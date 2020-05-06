@@ -18,17 +18,22 @@ enum class ProjectStorageEntity {
     /**
      * The stored file is associated with an asset.
      */
-    ASSET,
+    ASSETS,
 
     /**
      * The stored file is associated with a dataset.
      */
-    DATASET;
+    DATASETS,
+
+    /**
+     * The stored file is associated with a dataset.
+     */
+    MODELS;
 
     /**
      * The name of the entity used in file paths or unique Ids.  Note the trailing 's'.
      */
-    fun pathName() = "${name.toLowerCase()}s"
+    fun pathName() = "${name.toLowerCase()}"
 
     companion object {
 
@@ -36,7 +41,7 @@ enum class ProjectStorageEntity {
          * Finds the ProjectStorageEntity using a name like 'assets'.
          */
         fun find(name: String): ProjectStorageEntity {
-            return valueOf(name.toUpperCase().trimEnd('S'))
+            return valueOf(name.toUpperCase())
         }
     }
 }
@@ -80,7 +85,12 @@ class ProjectStorageRequest(
 
     @ApiModelProperty("Arbitrary attrs associated with file.")
     var attrs: Map<String, Any> = mapOf()
-)
+) {
+
+    fun getLocator(): ProjectFileLocator {
+        return ProjectFileLocator(entity, entityId, category, name)
+    }
+}
 
 /**
  * The ProjectStorageLocator Interface defines the based properties needed
@@ -90,7 +100,7 @@ class ProjectStorageRequest(
 interface ProjectStorageLocator {
 
     /**
-     * The category is the final directory before the file.
+     * The category of file, which is the dir the file lives in.
      */
     val category: String
 

@@ -4,7 +4,7 @@ import { colors, constants, spacing } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 
-const MetadataImageSimilarity = ({ name, simhash }) => {
+const MetadataAnalysisSimilarityDetection = ({ name, value: { simhash } }) => {
   return (
     <>
       <div
@@ -34,14 +34,7 @@ const MetadataImageSimilarity = ({ name, simhash }) => {
           },
         }}
       >
-        <div
-          css={{
-            fontFamily: 'Roboto Mono',
-            color: colors.structure.white,
-            paddingBottom: spacing.base,
-            display: 'flex',
-          }}
-        >
+        <div css={{ display: 'flex', paddingBottom: spacing.base }}>
           <div
             css={{
               minHeight: COPY_SIZE,
@@ -55,7 +48,15 @@ const MetadataImageSimilarity = ({ name, simhash }) => {
           </div>
           <ButtonCopy value={simhash} />
         </div>
-        <div css={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <div
+          css={{
+            fontFamily: 'Roboto Mono',
+            color: colors.structure.white,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+          title={simhash}
+        >
           {simhash}
         </div>
       </div>
@@ -63,9 +64,11 @@ const MetadataImageSimilarity = ({ name, simhash }) => {
   )
 }
 
-MetadataImageSimilarity.propTypes = {
+MetadataAnalysisSimilarityDetection.propTypes = {
   name: PropTypes.string.isRequired,
-  simhash: PropTypes.string.isRequired,
+  value: PropTypes.shape({
+    simhash: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
-export default MetadataImageSimilarity
+export default MetadataAnalysisSimilarityDetection

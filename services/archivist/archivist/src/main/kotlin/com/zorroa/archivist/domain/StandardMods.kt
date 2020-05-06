@@ -11,6 +11,7 @@ object StandardContainers {
 object Category {
     const val GOOGLE_VIDEO = "Google Video Intelligence"
     const val GOOGLE_VISION = "Google Vision"
+    const val GOOGLE_S2TEXT = "Google Speech-To-Text"
     const val AWS_REK = "Amazon Rekognition"
     const val ZORROA_TL = "Zorroa Timeline Extraction"
     const val ZORROA_STD = "Zorroa Visual Intelligence"
@@ -33,6 +34,7 @@ object ModType {
     const val CLIPIFIER = "Asset Clipifier"
     const val EXPLICIT_DETECTION = "Explicit Detection"
     const val TEXT_DETECTION = "Text Detection (OCR)"
+    const val SPEECH_RECOGNITION = "Speech Recognition"
 }
 
 /**
@@ -416,6 +418,28 @@ fun getStandardModules(): List<PipelineModSpec> {
                             "zmlp_analysis.google.AsyncVideoIntelligenceProcessor",
                             StandardContainers.ANALYSIS,
                             mutableMapOf("detect_text" to true)
+                        )
+                    )
+                )
+            ),
+            restricted = false,
+            standard = true
+        ),
+        PipelineModSpec(
+            "gcp-speech-to-text",
+            "Convert audio to text by applying powerful neural network models. Support. for 120 languages.",
+            Provider.GOOGLE,
+            Category.GOOGLE_S2TEXT,
+            ModType.SPEECH_RECOGNITION,
+            listOf(SupportedMedia.Video),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            "zmlp_analysis.google.AsyncSpeechToTextProcessor",
+                            StandardContainers.ANALYSIS,
+                            mutableMapOf()
                         )
                     )
                 )

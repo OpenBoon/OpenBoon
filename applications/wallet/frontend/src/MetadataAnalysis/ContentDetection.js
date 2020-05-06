@@ -4,7 +4,7 @@ import { colors, constants, spacing, typography } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 
-const MetadataTextDetection = ({ name, content }) => {
+const MetadataAnalysisContentDetection = ({ name, value: { content } }) => {
   return (
     <>
       <div
@@ -39,10 +39,8 @@ const MetadataTextDetection = ({ name, content }) => {
         {content && (
           <div
             css={{
-              fontFamily: 'Roboto Mono',
-              color: colors.structure.white,
-              paddingBottom: spacing.base,
               display: 'flex',
+              paddingBottom: spacing.base,
             }}
           >
             <div
@@ -73,9 +71,11 @@ const MetadataTextDetection = ({ name, content }) => {
   )
 }
 
-MetadataTextDetection.propTypes = {
+MetadataAnalysisContentDetection.propTypes = {
   name: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  value: PropTypes.shape({
+    content: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
-export default MetadataTextDetection
+export default MetadataAnalysisContentDetection

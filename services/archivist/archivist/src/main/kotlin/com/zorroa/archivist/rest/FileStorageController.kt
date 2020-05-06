@@ -7,6 +7,7 @@ import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.AssetService
 import com.zorroa.archivist.service.DataSetService
 import com.zorroa.archivist.storage.ProjectStorageService
+import com.zorroa.archivist.util.FileUtils
 import io.swagger.annotations.ApiOperation
 import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
@@ -14,11 +15,14 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 @RestController
 class FileStorageController(
@@ -36,9 +40,7 @@ class FileStorageController(
         @RequestPart(value = "file") file: MultipartFile,
         @RequestPart(value = "body") req: ProjectStorageRequest
     ): Any {
-        val locator = ProjectFileLocator(req.entity, req.entityId, req.category, req.name)
-        validateEntity(locator)
-
+        val locator = getValidLocator(req)
         val spec = ProjectStorageSpec(locator, req.attrs, file.bytes)
         return projectStorageService.store(spec)
     }
@@ -53,9 +55,7 @@ class FileStorageController(
         @PathVariable category: String,
         @PathVariable name: String
     ): ResponseEntity<Resource> {
-        val locator = ProjectFileLocator(
-            ProjectStorageEntity.find(entityType), entityId, category, name
-        )
+        val locator = getValidLocator(entityType, entityId, category, name)
         return projectStorageService.stream(locator)
     }
 
@@ -70,24 +70,90 @@ class FileStorageController(
         @PathVariable category: String,
         @PathVariable name: String
     ): Any {
-        val locator = ProjectFileLocator(
-            ProjectStorageEntity.find(entityType), entityId, category, name
+        val locator = getValidLocator(entityType, entityId, category, name)
+        return mapOf(
+            "uri" to projectStorageService.getNativeUri(locator),
+            "mediaType" to FileUtils.getMediaType(name)
         )
-        return mapOf("uri" to projectStorageService.getNativeUri(locator))
     }
 
-    fun validateEntity(locator: ProjectFileLocator) {
+    @ApiOperation("Sign a storage entity for write.")
+    // Only job runner keys can get files.
+    @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
+    @PostMapping(value = ["/api/v3/files/_signed_upload_uri"])
+    @ResponseBody
+    fun getSignedUploadUri(
+        @RequestBody req: ProjectStorageRequest
+    ): Any {
+        val uri = projectStorageService.getSignedUrl(getValidLocator(req), true, 30, TimeUnit.MINUTES)
+        return mapOf(
+            "uri" to uri,
+            "mediaType" to FileUtils.getMediaType(req.name)
+        )
+    }
+
+    @ApiOperation("Store an additional file to an asset.")
+    // Only job runner keys can store files.
+    @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
+    @PutMapping(value = ["/api/v3/files/_attrs"])
+    @ResponseBody
+    fun setAttrs(@RequestBody req: ProjectStorageRequest): Any {
+        val locator = getValidLocator(req)
+        return projectStorageService.setAttrs(locator, req.attrs)
+    }
+
+    /**
+     * Get a [ProjectFileLocator] and validate the naming and existence of
+     * associated entity.
+     */
+    fun getValidLocator(req: ProjectStorageRequest): ProjectFileLocator {
+        return validateLocator(req.getLocator())
+    }
+
+    /**
+     * Get a [ProjectFileLocator] and validate the naming and existence of
+     * associated entity.
+     */
+    fun getValidLocator(entity: String, id: String, category: String, name: String): ProjectFileLocator {
+        val locator = ProjectFileLocator(
+            ProjectStorageEntity.find(entity), id, category.toLowerCase(), name
+        )
+        return validateLocator(locator)
+    }
+
+    /**
+     * Validate a [ProjectFileLocator]. This means the names are proper and
+     * the entity it references actually exists.
+     */
+    fun validateLocator(locator: ProjectFileLocator): ProjectFileLocator {
+        if (!REGEX_CATEGORY.matches(locator.category)) {
+            throw IllegalArgumentException("The category ${locator.category} must be alpha numeric")
+        }
+
+        if (!REGEX_NAME.matches(locator.name)) {
+            throw IllegalArgumentException("The name ${locator.name} must be alpha numeric")
+        }
+
         try {
             when (locator.entity) {
-                ProjectStorageEntity.ASSET -> {
+                ProjectStorageEntity.ASSETS -> {
                     assetService.getAsset(locator.entityId)
                 }
-                ProjectStorageEntity.DATASET -> {
+                ProjectStorageEntity.DATASETS -> {
                     dataSetService.get(UUID.fromString(locator.entityId))
                 }
             }
         } catch (e: Exception) {
             throw IllegalArgumentException("Invalid ID for type: ${locator.entity}")
         }
+
+        return locator
+    }
+
+    companion object {
+
+        val REGEX_CATEGORY = Regex("[a-z0-9\\-_]+", RegexOption.IGNORE_CASE)
+
+        val REGEX_NAME = Regex("[a-z0-9\\-_\\.]+", RegexOption.IGNORE_CASE)
     }
 }

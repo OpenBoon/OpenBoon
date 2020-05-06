@@ -9,6 +9,8 @@ const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
+jest.mock('../../Filters/Reset', () => 'FiltersReset')
+
 describe('<FiltersContent />', () => {
   it('should render the "Exists" filter', () => {
     const filters = [{ attribute: 'location.point', type: 'exists' }]
@@ -57,7 +59,7 @@ describe('<FiltersContent />', () => {
   })
 
   it('should render the "Facet" filter', () => {
-    const filters = [{ attribute: 'location.city', type: 'facet' }]
+    const filters = [{ attribute: 'location.city', type: 'facet', values: {} }]
 
     require('swr').__setMockUseSWRResponse({ data: facetAggregate })
 
@@ -74,13 +76,57 @@ describe('<FiltersContent />', () => {
       component.root
         .findAllByProps({ variant: 'NEUTRAL' })[1]
         .props.onClick({ preventDefault: noop })
+      component.root
+        .findAllByProps({ variant: 'NEUTRAL' })[2]
+        .props.onClick({ preventDefault: noop })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should render the "Range" filter', () => {
-    const filters = [{ attribute: 'clip.length', type: 'range' }]
+    const {
+      results: { max },
+    } = rangeAggregate
+
+    const filters = [
+      { attribute: 'clip.length', type: 'range', values: { min: 0.1, max } },
+    ]
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...rangeAggregate,
+        results: { ...rangeAggregate.results, min: 0.1 },
+      },
+    })
+
+    const component = TestRenderer.create(
+      <FiltersContent
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={filters}
+        setIsMenuOpen={noop}
+      />,
+    )
+
+    act(() => {
+      component.root.findByProps({ mode: 2 }).props.onUpdate([0.255, max])
+      component.root.findByProps({ mode: 2 }).props.onChange([0.255, max])
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root.findByType('FiltersReset').props.onReset()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render the "Range" filter with file sizes', () => {
+    const filters = [
+      { attribute: 'source.filesize', type: 'range', values: {} },
+    ]
 
     require('swr').__setMockUseSWRResponse({ data: rangeAggregate })
 

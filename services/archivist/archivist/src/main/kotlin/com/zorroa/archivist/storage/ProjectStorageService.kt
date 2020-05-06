@@ -13,6 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.Resource
 import org.springframework.http.ResponseEntity
+import java.util.concurrent.TimeUnit
 
 @Configuration
 @ConfigurationProperties("zmlp.storage.project")
@@ -58,6 +59,21 @@ interface ProjectStorageService {
     fun getNativeUri(locator: ProjectStorageLocator): String
 
     /**
+     * Get a signed URL for the given [ProjectStorageLocator].
+     */
+    fun getSignedUrl(
+        locator: ProjectStorageLocator,
+        forWrite: Boolean,
+        duration: Long,
+        unit: TimeUnit
+    ): String
+
+    /**
+     * Set a [Map] of arbitrary attrs for the given [ProjectStorageLocator].
+     */
+    fun setAttrs(locator: ProjectStorageLocator, attrs: Map<String, Any>): FileStorage
+
+    /**
      * Delete all associated files stored against a particular entity.
      */
     fun recursiveDelete(locator: ProjectDirLocator)
@@ -82,6 +98,24 @@ interface ProjectStorageService {
     fun logDeleteEvent(path: String) {
         logger.event(
             LogObject.PROJECT_STORAGE, LogAction.DELETE,
+            mapOf(
+                "path" to path
+            )
+        )
+    }
+
+    /**
+     * Log the signing of a cloud storage URL.
+     */
+    fun logSignEvent(path: String, forWrite: Boolean) {
+        val action = if (forWrite) {
+            LogAction.SIGN_FOR_WRITE
+        } else {
+            LogAction.SIGN_FOR_READ
+        }
+
+        logger.event(
+            LogObject.PROJECT_STORAGE, action,
             mapOf(
                 "path" to path
             )

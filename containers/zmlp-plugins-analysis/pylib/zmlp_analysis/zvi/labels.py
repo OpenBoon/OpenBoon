@@ -30,8 +30,7 @@ class ZviLabelDetectionProcessor(AssetProcessor):
         for label in predictions:
             analysis.add_label_and_score(label[1], label[2])
 
-        if analysis:
-            asset.add_analysis('zvi-label-detection', analysis)
+        asset.add_analysis('zvi-label-detection', analysis)
 
 
 class Resnet152ImageClassifier:
