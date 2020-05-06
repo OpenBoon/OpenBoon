@@ -35,6 +35,7 @@ const FilterFacet = ({
         filters={filters}
         updatedFilter={{ type, attribute }}
         filterIndex={filterIndex}
+        onReset={() => {}}
       />
       <div
         css={{
