@@ -18,9 +18,6 @@ RUN groupadd -r analyst && useradd --no-log-init -r -g analyst analyst
 # Need to run as root for now for docker.
 # USER analyst
 
-# Mount path for a shared directory for extensions hosted outside of the image such as
-# custom processsor modules.
-ARG EXT_MOUNT="/zorroa"
 ENV PYTHONPATH="/service/pylib"
 
 EXPOSE 5000
