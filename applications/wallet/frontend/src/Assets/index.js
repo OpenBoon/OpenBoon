@@ -45,7 +45,12 @@ const Assets = () => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useSWR(
           `/api/v1/projects/${projectId}/searches/query/?query=${q}&from=${from}&size=${SIZE}`,
-          { suspense: false },
+          {
+            suspense: false,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            shouldRetryOnError: false,
+          },
         ),
       )
 
@@ -72,14 +77,17 @@ const Assets = () => {
     [query],
   )
 
-  const items = Array.isArray(pageSWRs)
-    ? pageSWRs.flatMap((pageSWR) => {
-        const { data: { results } = {} } = pageSWR || {}
-        return results
-      })
-    : []
-
   const { data: { count: itemCount } = {} } = pageSWRs[0] || {}
+
+  const items = Array.isArray(pageSWRs)
+    ? pageSWRs
+        // hack while https://github.com/zeit/swr/issues/189 gets fixed
+        .slice(0, Math.ceil(itemCount / SIZE))
+        .flatMap((pageSWR) => {
+          const { data: { results } = {} } = pageSWR || {}
+          return results
+        })
+    : []
 
   return (
     <div
