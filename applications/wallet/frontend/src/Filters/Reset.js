@@ -35,14 +35,17 @@ const FiltersReset = ({
         <select
           defaultValue={filter.type}
           onChange={({ target: { value } }) => {
+            const values = value === 'exists' ? { exists: true } : {}
+
             onReset()
+
             dispatch({
               action: ACTIONS.UPDATE_FILTER,
               payload: {
                 projectId,
                 assetId,
                 filters,
-                updatedFilter: { ...filter, type: value, values: {} },
+                updatedFilter: { ...filter, type: value, values },
                 filterIndex,
               },
             })
@@ -94,6 +97,7 @@ const FiltersReset = ({
           variant={VARIANTS.NEUTRAL}
           onClick={() => {
             onReset()
+
             dispatch({
               action: ACTIONS.UPDATE_FILTER,
               payload: {

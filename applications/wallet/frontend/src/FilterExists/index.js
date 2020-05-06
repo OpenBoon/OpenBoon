@@ -8,6 +8,8 @@ import FiltersReset from '../Filters/Reset'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
 
+export const noop = () => {}
+
 const FilterExists = ({
   projectId,
   assetId,
@@ -35,7 +37,7 @@ const FilterExists = ({
           filters={filters}
           filter={filter}
           filterIndex={filterIndex}
-          onReset={() => {}}
+          onReset={noop}
         />
         <div css={{ paddingTop: spacing.base, paddingBottom: spacing.base }}>
           <div

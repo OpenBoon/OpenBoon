@@ -2,7 +2,7 @@ import TestRenderer from 'react-test-renderer'
 
 import facetAggregate from '../__mocks__/aggregate'
 
-import FilterFacetContent from '../Content'
+import FilterFacetContent, { noop } from '../Content'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
@@ -68,5 +68,9 @@ describe('<FilterFacetContent />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('noop should do nothing', () => {
+    expect(noop()).toBe(undefined)
   })
 })

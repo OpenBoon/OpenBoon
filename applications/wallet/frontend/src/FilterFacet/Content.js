@@ -8,6 +8,8 @@ import FiltersReset from '../Filters/Reset'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
 
+export const noop = () => {}
+
 const FilterFacet = ({
   projectId,
   assetId,
@@ -37,7 +39,7 @@ const FilterFacet = ({
         filters={filters}
         filter={filter}
         filterIndex={filterIndex}
-        onReset={() => {}}
+        onReset={noop}
       />
       <div
         css={{

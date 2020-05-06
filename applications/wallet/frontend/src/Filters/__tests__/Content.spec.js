@@ -115,6 +115,12 @@ describe('<FiltersContent />', () => {
     })
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    act(() => {
+      component.root.findByType('FiltersReset').props.onReset()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
   })
 
   it('should render the "Range" filter with file sizes', () => {
