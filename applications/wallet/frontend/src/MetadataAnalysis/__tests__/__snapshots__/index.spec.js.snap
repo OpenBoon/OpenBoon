@@ -244,18 +244,11 @@ exports[`<MetadataAnalysis /> should render label detection with box images prop
   padding-top: 8px;
   padding-bottom: 8px;
   padding-right: 8px;
+  border-bottom: 1px solid #3b3b3b;
 }
 
 .emotion-8:first-of-type td {
   padding-top: 0;
-}
-
-.emotion-8:last-of-type td {
-  padding-bottom: 0;
-}
-
-.emotion-8:not(:first-of-type) td {
-  border-top: 1px solid #3b3b3b;
 }
 
 .emotion-6:last-of-type {
@@ -449,18 +442,11 @@ Array [
   padding-top: 8px;
   padding-bottom: 8px;
   padding-right: 8px;
+  border-bottom: 1px solid #3b3b3b;
 }
 
 .emotion-5:first-of-type td {
   padding-top: 0;
-}
-
-.emotion-5:last-of-type td {
-  padding-bottom: 0;
-}
-
-.emotion-5:not(:first-of-type) td {
-  border-top: 1px solid #3b3b3b;
 }
 
 .emotion-3:last-of-type {

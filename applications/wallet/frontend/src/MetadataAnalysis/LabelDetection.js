@@ -97,18 +97,9 @@ const MetadataAnalysisLabelDetection = ({ name, value: { predictions } }) => {
                       paddingTop: spacing.base,
                       paddingBottom: spacing.base,
                       paddingRight: spacing.base,
+                      borderBottom: constants.borders.divider,
                     },
                     '&:first-of-type': { td: { paddingTop: 0 } },
-                    '&:last-of-type': {
-                      td: {
-                        paddingBottom: 0,
-                      },
-                    },
-                    '&:not(:first-of-type)': {
-                      td: {
-                        borderTop: constants.borders.divider,
-                      },
-                    },
                   }}
                 >
                   {columns.map((column) => {
