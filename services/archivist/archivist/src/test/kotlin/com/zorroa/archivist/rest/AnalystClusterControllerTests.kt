@@ -100,7 +100,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 TaskEventType.PROGRESS,
                 task.id,
                 job.id,
-                mapOf( "progress" to 100)
+                mapOf("progress" to 100)
             )
 
             val andReturn = mvc.perform(
@@ -130,7 +130,7 @@ class AnalystClusterControllerTests : MockMvcTest() {
                 TaskEventType.STATUS,
                 task.id,
                 job.id,
-                mapOf( "status" to "testingStatus")
+                mapOf("status" to "testingStatus")
             )
 
             val andReturn = mvc.perform(

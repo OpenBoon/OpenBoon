@@ -486,7 +486,7 @@ class DispatcherServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testUpdateProgress(){
+    fun testUpdateProgress() {
         launchJob(JobPriority.Standard)
         authenticateAsAnalyst()
         val task = dispatchQueueManager.getNext()
@@ -499,7 +499,7 @@ class DispatcherServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testUpdateStatus(){
+    fun testUpdateStatus() {
         launchJob(JobPriority.Standard)
         authenticateAsAnalyst()
         val task = dispatchQueueManager.getNext()
@@ -519,5 +519,4 @@ class DispatcherServiceTests : AbstractTest() {
         )
         return jobService.create(spec1)
     }
-
 }

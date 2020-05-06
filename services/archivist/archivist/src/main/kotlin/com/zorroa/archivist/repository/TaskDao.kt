@@ -181,7 +181,6 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     }
     override fun setProgress(task: TaskId, progress: Short) {
         jdbc.update("UPDATE task SET int_progress=? WHERE pk_task=?", progress, task.taskId)
-
     }
 
     override fun setStatus(task: TaskId, status: String) {
@@ -371,8 +370,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             "task.int_exit_status," +
             "task.str_host, " +
             "task.int_run_count, " +
-            "task.int_progress, "+
-            "task.str_status, "+
+            "task.int_progress, " +
+            "task.str_status, " +
             "task_stat.int_asset_total_count," +
             "task_stat.int_asset_create_count," +
             "task_stat.int_asset_replace_count," +
