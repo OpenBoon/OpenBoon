@@ -11,15 +11,13 @@ import org.springframework.stereotype.Repository
 import java.sql.Types
 import java.util.Calendar
 import java.util.Date
+import java.util.TimeZone
 import java.util.UUID
 
 interface ProjectQuotasDao {
-
     fun createQuotasEntry(projectId: UUID)
     fun getQuotas(projectId: UUID): ProjectQuotas
-
     fun createIngestTimeSeriesEntries(projectId: UUID)
-
     fun incrementQuotas(counts: ProjectQuotaCounters)
     fun incrementTimeSeriesCounters(date: Date, counts: ProjectQuotaCounters)
     fun getTimeSeriesCounters(projectId: UUID, start: Date, end: Date?): List<ProjectQuotasTimeSeriesEntry>
@@ -34,6 +32,7 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
 
     override fun createIngestTimeSeriesEntries(projectId: UUID) {
         val cal = Calendar.getInstance()
+        cal.timeZone = TimeZone.getTimeZone("UTC")
         cal.set(Calendar.MINUTE, 0)
         cal.set(Calendar.SECOND, 0)
         cal.set(Calendar.HOUR_OF_DAY, 0)
@@ -46,7 +45,8 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
             intArrayOf(Types.OTHER, Types.INTEGER, Types.BIGINT), 250
         )
 
-        for (i in 1..8760) {
+        for (i in 0..8759) {
+
             update.update(projectId, i, cal.timeInMillis)
             cal.add(Calendar.HOUR, 1)
         }
@@ -74,15 +74,15 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
     }
 
     override fun incrementTimeSeriesCounters(date: Date, counts: ProjectQuotaCounters) {
-
         val cal: Calendar = Calendar.getInstance()
-        cal.timeInMillis = date.time
+        cal.time = date
+        cal.timeZone = TimeZone.getTimeZone("UTC")
         cal.set(Calendar.MINUTE, 0)
         cal.set(Calendar.SECOND, 0)
         cal.set(Calendar.MILLISECOND, 0)
 
         val entry = ((cal.get(Calendar.DAY_OF_YEAR) - 1) * 24) + cal.get(Calendar.HOUR_OF_DAY)
-
+        logger.warn("Updating TimeSeriesCounters $entry ${cal.timeInMillis}")
         jdbc.update(
             UPDATE_TIMESCALE_COUNTERS,
             cal.timeInMillis,
