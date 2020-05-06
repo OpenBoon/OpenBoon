@@ -4,13 +4,17 @@ import useSWR from 'swr'
 import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
-import { dispatch, ACTIONS } from '../Filters/helpers'
 import FiltersReset from '../Filters/Reset'
+
+import { dispatch, ACTIONS } from '../Filters/helpers'
+
+export const noop = () => {}
 
 const FilterFacet = ({
   projectId,
   assetId,
   filters,
+  filter,
   filter: { type, attribute, values },
   filterIndex,
 }) => {
@@ -33,9 +37,9 @@ const FilterFacet = ({
         projectId={projectId}
         assetId={assetId}
         filters={filters}
-        updatedFilter={{ type, attribute }}
+        filter={filter}
         filterIndex={filterIndex}
-        onReset={() => {}}
+        onReset={noop}
       />
       <div
         css={{
