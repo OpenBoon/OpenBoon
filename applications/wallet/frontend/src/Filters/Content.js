@@ -53,76 +53,75 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
 
       <div css={{ overflow: 'auto' }}>
         {filters.map((filter, index) => {
-          if (filter.type === 'exists') {
-            return (
-              <FilterExists
-                // eslint-disable-next-line react/no-array-index-key
-                key={`${filter.type}-${index}`}
-                projectId={projectId}
-                assetId={assetId}
-                filters={filters}
-                filter={filter}
-                filterIndex={index}
-              />
-            )
-          }
+          switch (filter.type) {
+            case 'exists':
+              return (
+                <FilterExists
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={`${filter.type}-${index}`}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
 
-          if (filter.type === 'facet') {
-            return (
-              <FilterFacet
-                // eslint-disable-next-line react/no-array-index-key
-                key={`${filter.type}-${index}`}
-                projectId={projectId}
-                assetId={assetId}
-                filters={filters}
-                filter={filter}
-                filterIndex={index}
-              />
-            )
-          }
+            case 'facet':
+              return (
+                <FilterFacet
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={`${filter.type}-${index}`}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
 
-          if (filter.type === 'range') {
-            return (
-              <FilterRange
-                // eslint-disable-next-line react/no-array-index-key
-                key={`${filter.type}-${index}`}
-                projectId={projectId}
-                assetId={assetId}
-                filters={filters}
-                filter={filter}
-                filterIndex={index}
-              />
-            )
+            case 'range':
+              return (
+                <FilterRange
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={`${filter.type}-${index}`}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
+            default:
+              return (
+                <li
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={`${filter.type}-${index}`}
+                  css={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  • {filter.type}: {filter.attribute || filter.value}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      dispatch({
+                        action: ACTIONS.DELETE_FILTER,
+                        payload: {
+                          projectId,
+                          assetId,
+                          filters,
+                          filterIndex: index,
+                        },
+                      })
+                    }
+                  >
+                    delete
+                  </button>
+                </li>
+              )
           }
-
-          return (
-            <li
-              // eslint-disable-next-line react/no-array-index-key
-              key={`${filter.type}-${index}`}
-              css={{
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
-              • {filter.type}: {filter.attribute || filter.value}
-              <button
-                type="button"
-                onClick={() =>
-                  dispatch({
-                    action: ACTIONS.DELETE_FILTER,
-                    payload: {
-                      projectId,
-                      assetId,
-                      filters,
-                      filterIndex: index,
-                    },
-                  })
-                }
-              >
-                delete
-              </button>
-            </li>
-          )
         })}
       </div>
     </>

@@ -3,33 +3,11 @@ import PropTypes from 'prop-types'
 import { colors, constants, spacing } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
-import MetadataObjectDetection from './ObjectDetection'
-import MetadataLabelDetection from './LabelDetection'
-import MetadataImageSimilarity from './ImageSimilarity'
-import MetadataTextDetection from './TextDetection'
 
 import { formatDisplayName, formatDisplayValue } from './helpers'
 
 const MetadataPrettyRow = ({ name, value, path }) => {
   if (typeof value === 'object') {
-    if (name === 'zvi-object-detection') {
-      return <MetadataObjectDetection />
-    }
-
-    if (name === 'zvi-label-detection') {
-      return (
-        <MetadataLabelDetection name={name} predictions={value.predictions} />
-      )
-    }
-
-    if (name === 'zvi-text-detection') {
-      return <MetadataTextDetection name={name} content={value.content} />
-    }
-
-    if (name === 'zvi-image-similarity') {
-      return <MetadataImageSimilarity name={name} simhash={value.simhash} />
-    }
-
     return (
       <>
         <div
@@ -61,7 +39,10 @@ const MetadataPrettyRow = ({ name, value, path }) => {
         </div>
 
         <div
-          css={{ paddingLeft: spacing.normal, paddingRight: spacing.normal }}
+          css={{
+            paddingLeft: spacing.normal,
+            paddingRight: spacing.normal,
+          }}
         >
           {Object.entries(value).map(([k, v]) => (
             <MetadataPrettyRow
