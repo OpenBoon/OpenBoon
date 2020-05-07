@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+import filterShape from '../Filter/shape'
+
 import { spacing, constants } from '../Styles'
 
 import SearchFilter from '../SearchFilter'
@@ -7,6 +9,7 @@ import Button, { VARIANTS } from '../Button'
 import FilterExists from '../FilterExists'
 import FilterFacet from '../FilterFacet'
 import FilterRange from '../FilterRange'
+import FilterLabelConfidence from '../FilterLabelConfidence'
 
 import { dispatch, ACTIONS } from './helpers'
 
@@ -92,6 +95,20 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
                   filterIndex={index}
                 />
               )
+
+            case 'labelConfidence':
+              return (
+                <FilterLabelConfidence
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={`${filter.type}-${index}`}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
+
             default:
               return (
                 <li
@@ -131,13 +148,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
 FiltersContent.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      attribute: PropTypes.string,
-      values: PropTypes.shape({}),
-    }).isRequired,
-  ).isRequired,
+  filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
   setIsMenuOpen: PropTypes.func.isRequired,
 }
 

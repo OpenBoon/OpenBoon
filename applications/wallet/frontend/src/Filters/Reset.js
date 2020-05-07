@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
+import filterShape from '../Filter/shape'
+
 import { colors, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
@@ -120,18 +122,8 @@ const FiltersReset = ({
 FiltersReset.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      attribute: PropTypes.string,
-      values: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    }).isRequired,
-  ).isRequired,
-  filter: PropTypes.shape({
-    type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-    attribute: PropTypes.string.isRequired,
-    values: PropTypes.shape({ exists: PropTypes.bool }),
-  }).isRequired,
+  filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
+  filter: PropTypes.shape(filterShape).isRequired,
   filterIndex: PropTypes.number.isRequired,
   onReset: PropTypes.func.isRequired,
 }
