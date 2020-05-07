@@ -1,6 +1,7 @@
 package com.zorroa.archivist.storage
 
 import com.google.auth.oauth2.ComputeEngineCredentials
+import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.HttpMethod
@@ -22,7 +23,10 @@ import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import java.io.FileInputStream
 import java.nio.channels.Channels
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
@@ -35,7 +39,7 @@ class GcsProjectStorageService constructor(
 ) : ProjectStorageService {
 
     val options: StorageOptions = StorageOptions.newBuilder()
-        .setCredentials(ComputeEngineCredentials.create()).build()
+        .setCredentials(loadCredentials()).build()
     val gcs: Storage = options.service
 
     @PostConstruct
@@ -148,6 +152,18 @@ class GcsProjectStorageService constructor(
 
     fun getBlobId(locator: ProjectStorageLocator): BlobId {
         return BlobId.of(properties.bucket, locator.getPath())
+    }
+
+    private fun loadCredentials(): GoogleCredentials {
+        val credsFile = Paths.get("/secrets/gcs/credentials.json")
+
+        return if (Files.exists(credsFile)) {
+            logger.info("Loading credentials from: {}", credsFile)
+            GoogleCredentials.fromStream(FileInputStream(credsFile.toFile()))
+        } else {
+            logger.info("Using default ComputeEngineCredentials")
+            ComputeEngineCredentials.create()
+        }
     }
 
     companion object {
