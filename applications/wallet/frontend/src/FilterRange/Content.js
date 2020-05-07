@@ -17,11 +17,8 @@ const formatValue = ({ attribute, value }) => {
     return bytesToSize({ bytes: value })
   }
 
-  if (value > 0 && value < 1) {
-    return value.toFixed(1)
-  }
-
-  return value
+  // Will always return 2 decimals at most, only if necessary
+  return Math.round((value + Number.EPSILON) * 100) / 100
 }
 
 const FilterRange = ({
@@ -36,7 +33,7 @@ const FilterRange = ({
     data: { results },
   } = useSWR(
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encode({
-      filters: { type, attribute, values },
+      filters: { type, attribute },
     })}`,
   )
 
