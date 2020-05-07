@@ -100,7 +100,7 @@ class GcsProjectStorageService constructor(
         forWrite: Boolean,
         duration: Long,
         unit: TimeUnit
-    ): Map<String, String> {
+    ): Map<String, Any> {
         val path = locator.getPath()
         val mediaType = FileUtils.getMediaType(path)
 
@@ -123,16 +123,20 @@ class GcsProjectStorageService constructor(
 
     override fun setAttrs(locator: ProjectStorageLocator, attrs: Map<String, Any>): FileStorage {
         val path = locator.getPath()
+        val mediaType = FileUtils.getMediaType(path)
         val info = BlobInfo.newBuilder(properties.bucket, path)
+            .setContentType(mediaType)
             .setMetadata(mapOf("attrs" to Json.serializeToString(attrs)))
             .build()
+
+        val blob = gcs.update(info)
 
         return FileStorage(
             locator.getFileId(),
             locator.name,
             locator.category,
-            info.contentType,
-            info.size,
+            mediaType,
+            blob.size,
             attrs
         )
     }
