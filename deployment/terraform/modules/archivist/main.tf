@@ -65,10 +65,12 @@ resource "google_project_iam_member" "archivist" {
   project = var.project
   role    = google_project_iam_custom_role.archivist.id
   member  = "serviceAccount:${google_service_account.archivist.email}"
+  depends_on = [google_project_iam_custom_role.archivist, google_service_account.archivist]
 }
 
 resource "google_service_account_key" "archivist" {
   service_account_id = google_service_account.archivist.name
+  depends_on = [google_service_account.archivist]
 }
 
 resource "kubernetes_secret" "archivist-sa-key" {
