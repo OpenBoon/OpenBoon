@@ -53,7 +53,7 @@ resource "google_container_cluster" "primary" {
   ]
 }
 
-resource "google_container_node_pool" "curator" {
+resource "google_container_node_pool" "default" {
   name               = "default"
   cluster            = google_container_cluster.primary.name
   initial_node_count = 1
