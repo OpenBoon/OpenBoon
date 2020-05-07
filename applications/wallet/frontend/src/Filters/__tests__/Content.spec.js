@@ -2,6 +2,7 @@ import TestRenderer, { act } from 'react-test-renderer'
 
 import facetAggregate from '../../FilterFacet/__mocks__/aggregate'
 import rangeAggregate from '../../FilterRange/__mocks__/aggregate'
+import labelConfidenceAggregate from '../../FilterLabelConfidence/__mocks__/aggregate'
 
 import FiltersContent from '../Content'
 
@@ -72,15 +73,6 @@ describe('<FiltersContent />', () => {
       />,
     )
 
-    act(() => {
-      component.root
-        .findAllByProps({ variant: 'NEUTRAL' })[1]
-        .props.onClick({ preventDefault: noop })
-      component.root
-        .findAllByProps({ variant: 'NEUTRAL' })[2]
-        .props.onClick({ preventDefault: noop })
-    })
-
     expect(component.toJSON()).toMatchSnapshot()
   })
 
@@ -132,21 +124,7 @@ describe('<FiltersContent />', () => {
       },
     ]
 
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        count: 604,
-        results: {
-          docCountErrorUpperBound: 0,
-          sumOtherDocCount: 0,
-          buckets: [
-            { key: 'web_site', docCount: 134 },
-            { key: 'alp', docCount: 75 },
-            { key: 'sports_car', docCount: 56 },
-            { key: 'menu', docCount: 45 },
-          ],
-        },
-      },
-    })
+    require('swr').__setMockUseSWRResponse({ data: labelConfidenceAggregate })
 
     const component = TestRenderer.create(
       <FiltersContent
