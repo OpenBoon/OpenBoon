@@ -129,12 +129,14 @@ class GcsProjectStorageService constructor(
             .setMetadata(mapOf("attrs" to Json.serializeToString(attrs)))
             .build()
 
+        val blob = gcs.update(info)
+
         return FileStorage(
             locator.getFileId(),
             locator.name,
             locator.category,
             mediaType,
-            info.size,
+            blob.size,
             attrs
         )
     }
