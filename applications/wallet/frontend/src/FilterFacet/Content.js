@@ -4,13 +4,17 @@ import useSWR from 'swr'
 import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
-import { dispatch, ACTIONS } from '../Filters/helpers'
 import FiltersReset from '../Filters/Reset'
+
+import { dispatch, ACTIONS } from '../Filters/helpers'
+
+export const noop = () => {}
 
 const FilterFacet = ({
   projectId,
   assetId,
   filters,
+  filter,
   filter: { type, attribute, values },
   filterIndex,
 }) => {
@@ -23,7 +27,7 @@ const FilterFacet = ({
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
   )
 
-  const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key)
+  const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
 
   const hasSelections = Object.keys(values).find((facet) => values[facet])
 
@@ -33,8 +37,9 @@ const FilterFacet = ({
         projectId={projectId}
         assetId={assetId}
         filters={filters}
-        updatedFilter={{ type, attribute }}
+        filter={filter}
         filterIndex={filterIndex}
+        onReset={noop}
       />
       <div
         css={{
