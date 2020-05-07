@@ -100,14 +100,13 @@ class GcsProjectStorageService constructor(
         forWrite: Boolean,
         duration: Long,
         unit: TimeUnit
-    ): Map<String, String> {
+    ): Map<String, Any> {
         val path = locator.getPath()
         val mediaType = FileUtils.getMediaType(path)
 
         val info = BlobInfo.newBuilder(properties.bucket, path).setContentType(mediaType).build()
         val opts = if (forWrite) {
             arrayOf(
-                Storage.SignUrlOption.withContentType(),
                 Storage.SignUrlOption.httpMethod(HttpMethod.PUT))
         } else {
             arrayOf(

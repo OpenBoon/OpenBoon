@@ -66,7 +66,7 @@ interface ProjectStorageService {
         forWrite: Boolean,
         duration: Long,
         unit: TimeUnit
-    ): Map<String, String>
+    ): Map<String, Any>
 
     /**
      * Set a [Map] of arbitrary attrs for the given [ProjectStorageLocator].
@@ -87,7 +87,7 @@ interface ProjectStorageService {
             mapOf(
                 "newFilePath" to spec.locator.getPath(),
                 "size" to spec.data.size.toLong(),
-                "mimetype" to spec.mimetype
+                "mediaType" to spec.mimetype
             )
         )
     }

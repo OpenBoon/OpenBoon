@@ -86,7 +86,7 @@ class FileStorageController(
         @RequestBody req: ProjectStorageRequest
     ): Any {
         return projectStorageService.getSignedUrl(
-            getValidLocator(req), true, 10, TimeUnit.MINUTES)
+            getValidLocator(req), true, 20, TimeUnit.MINUTES)
     }
 
     @ApiOperation("Store an additional file to an asset.")
