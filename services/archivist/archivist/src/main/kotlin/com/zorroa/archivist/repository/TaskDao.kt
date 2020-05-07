@@ -40,6 +40,8 @@ interface TaskDao {
     fun getAll(tf: TaskFilter?): KPagedList<Task>
     fun getAll(job: UUID, state: TaskState): List<InternalTask>
     fun isAutoRetryable(task: TaskId): Boolean
+    fun setProgress(task: TaskId, progress: Short)
+    fun setStatus(task: TaskId, status: String)
 
     /**
      * Return the total number of pending tasks.
@@ -177,6 +179,13 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     override fun setExitStatus(task: TaskId, exitStatus: Int) {
         jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?", exitStatus, task.taskId)
     }
+    override fun setProgress(task: TaskId, progress: Short) {
+        jdbc.update("UPDATE task SET int_progress=? WHERE pk_task=?", progress, task.taskId)
+    }
+
+    override fun setStatus(task: TaskId, status: String) {
+        jdbc.update("UPDATE task SET str_status=? WHERE pk_task=?", status, task.taskId)
+    }
 
     override fun incrementAssetCounters(task: TaskId, counts: AssetCounters): Boolean {
         return jdbc.update(
@@ -275,7 +284,9 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 rs.getLong("time_stopped"),
                 rs.getLong("time_created"),
                 rs.getLong("time_ping"),
-                buildAssetCounts(rs)
+                buildAssetCounts(rs),
+                rs.getShort("int_progress"),
+                rs.getString("str_status")
             )
         }
 
@@ -359,6 +370,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             "task.int_exit_status," +
             "task.str_host, " +
             "task.int_run_count, " +
+            "task.int_progress, " +
+            "task.str_status, " +
             "task_stat.int_asset_total_count," +
             "task_stat.int_asset_create_count," +
             "task_stat.int_asset_replace_count," +
