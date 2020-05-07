@@ -229,7 +229,6 @@ Array [
 }
 
 .emotion-19 {
-  margin: 0 auto;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -247,20 +246,17 @@ Array [
   width: fit-content;
   min-width: 32px;
   height: 32px;
-  padding: 8px;
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 19px;
+  padding: 6px;
+  margin: -6px;
   border-radius: 32px;
   color: #c92300;
-  background-color: #191919;
 }
 
 .emotion-19:hover {
-  border: 2px solid #808080;
   -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
+  background-color: #191919;
 }
 
 .emotion-25 {
@@ -693,7 +689,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              !
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td
@@ -791,7 +791,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              !
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td
@@ -889,7 +893,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              !
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td
@@ -967,7 +975,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              !
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td
@@ -1039,7 +1051,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              !
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td
@@ -1128,7 +1144,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              !
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td
@@ -1469,7 +1489,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              !
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td
