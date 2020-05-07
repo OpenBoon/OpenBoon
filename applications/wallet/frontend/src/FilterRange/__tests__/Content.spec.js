@@ -1,8 +1,16 @@
+import { createElement as mockCreateElement } from 'react'
 import TestRenderer, { act } from 'react-test-renderer'
 
 import FilterRangeContent from '../Content'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
+
+jest.mock('react-compound-slider', () => ({
+  Slider: ({ children, ...rest }) => mockCreateElement('Slider', rest),
+  Rail: () => 'Rail',
+  Handles: () => 'Handles',
+  Tracks: () => 'Tracks',
+}))
 
 jest.mock('../../Filters/Reset', () => 'FiltersReset')
 
@@ -44,13 +52,13 @@ describe('<FilterRangeContent />', () => {
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
-      component.root.findByProps({ mode: 2 }).props.onUpdate([200, 8000])
+      component.root.findByType('Slider').props.onUpdate([200, 8000])
     })
 
     expect(component.toJSON()).toMatchSnapshot()
 
     act(() => {
-      component.root.findByProps({ mode: 2 }).props.onChange([300, 7000])
+      component.root.findByType('Slider').props.onChange([300, 7000])
     })
 
     expect(component.toJSON()).toMatchSnapshot()

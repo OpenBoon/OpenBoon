@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
-.emotion-9 {
+.emotion-7 {
   padding: 16px;
 }
 
@@ -17,32 +17,11 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
   padding-bottom: 12px;
 }
 
-.emotion-3 {
+.emotion-1 {
   padding: 4px;
 }
 
-.emotion-1 {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  -webkit-transform: translate(0%,-50%);
-  -ms-transform: translate(0%,-50%);
-  transform: translate(0%,-50%);
-  cursor: pointer;
-}
-
-.emotion-2 {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  -webkit-transform: translate(0%,-50%);
-  -ms-transform: translate(0%,-50%);
-  transform: translate(0%,-50%);
-  pointer-events: none;
-  background-color: #4a4a4a;
-}
-
-.emotion-8 {
+.emotion-6 {
   padding-top: 24px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -55,7 +34,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
   justify-content: space-around;
 }
 
-.emotion-5 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -66,7 +45,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
   align-items: center;
 }
 
-.emotion-4 {
+.emotion-2 {
   min-width: 76px;
   background-color: #252525;
   padding-left: 12px;
@@ -107,7 +86,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-9"
+    className="emotion-7"
   >
     <div
       className="emotion-0"
@@ -120,113 +99,52 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
       </span>
     </div>
     <div
-      className="emotion-3"
+      className="emotion-1"
     >
-      <div
-        style={
+      <Slider
+        domain={
+          Array [
+            180,
+            8525,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
           Object {
             "position": "relative",
             "width": "100%",
           }
         }
-      >
-        <div
-          className="emotion-1"
-          onMouseDown={[Function]}
-          onTouchStart={[Function]}
-        />
-        <div
-          className="emotion-2"
-        />
-        <div>
-          <button
-            aria-valuenow={200}
-            onKeyDown={[Function]}
-            onMouseDown={[Function]}
-            onTouchStart={[Function]}
-            role="slider"
-            style={
-              Object {
-                "backgroundColor": "#808080",
-                "border": "none",
-                "borderRadius": 1,
-                "cursor": "pointer",
-                "height": 24,
-                "left": "0.2396644697423607%",
-                "margin": 0,
-                "padding": 0,
-                "position": "absolute",
-                "transform": "translate(-50%, -50%)",
-                "width": 8,
-                "zIndex": 2,
-              }
-            }
-            type="button"
-          />
-          <button
-            aria-valuenow={8000}
-            onKeyDown={[Function]}
-            onMouseDown={[Function]}
-            onTouchStart={[Function]}
-            role="slider"
-            style={
-              Object {
-                "backgroundColor": "#808080",
-                "border": "none",
-                "borderRadius": 1,
-                "cursor": "pointer",
-                "height": 24,
-                "left": "93.70880766926302%",
-                "margin": 0,
-                "padding": 0,
-                "position": "absolute",
-                "transform": "translate(-50%, -50%)",
-                "width": 8,
-                "zIndex": 2,
-              }
-            }
-            type="button"
-          />
-        </div>
-        <div>
-          <div
-            onMouseDown={[Function]}
-            onTouchStart={[Function]}
-            style={
-              Object {
-                "backgroundColor": "#73b61c",
-                "cursor": "pointer",
-                "height": 4,
-                "left": "0.2396644697423607%",
-                "position": "absolute",
-                "transform": "translate(0%, -50%)",
-                "width": "93.46914319952066%",
-                "zIndex": 1,
-              }
-            }
-          />
-        </div>
-      </div>
+        step={0.1}
+        values={
+          Array [
+            200,
+            8000,
+          ]
+        }
+      />
     </div>
     <div
-      className="emotion-8"
+      className="emotion-6"
     >
       <div
-        className="emotion-5"
+        className="emotion-3"
       >
         MIN  
         <div
-          className="emotion-4"
+          className="emotion-2"
         >
           200 Bytes
         </div>
       </div>
       <div
-        className="emotion-5"
+        className="emotion-3"
       >
         MAX  
         <div
-          className="emotion-4"
+          className="emotion-2"
         >
           7.8 KB
         </div>
@@ -237,7 +155,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
 `;
 
 exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
-.emotion-9 {
+.emotion-7 {
   padding: 16px;
 }
 
@@ -253,32 +171,11 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
   padding-bottom: 12px;
 }
 
-.emotion-3 {
+.emotion-1 {
   padding: 4px;
 }
 
-.emotion-1 {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  -webkit-transform: translate(0%,-50%);
-  -ms-transform: translate(0%,-50%);
-  transform: translate(0%,-50%);
-  cursor: pointer;
-}
-
-.emotion-2 {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  -webkit-transform: translate(0%,-50%);
-  -ms-transform: translate(0%,-50%);
-  transform: translate(0%,-50%);
-  pointer-events: none;
-  background-color: #4a4a4a;
-}
-
-.emotion-8 {
+.emotion-6 {
   padding-top: 24px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -291,7 +188,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
   justify-content: space-around;
 }
 
-.emotion-5 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -302,7 +199,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
   align-items: center;
 }
 
-.emotion-4 {
+.emotion-2 {
   min-width: 76px;
   background-color: #252525;
   padding-left: 12px;
@@ -343,7 +240,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-9"
+    className="emotion-7"
   >
     <div
       className="emotion-0"
@@ -356,113 +253,52 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
       </span>
     </div>
     <div
-      className="emotion-3"
+      className="emotion-1"
     >
-      <div
-        style={
+      <Slider
+        domain={
+          Array [
+            180,
+            8525,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
           Object {
             "position": "relative",
             "width": "100%",
           }
         }
-      >
-        <div
-          className="emotion-1"
-          onMouseDown={[Function]}
-          onTouchStart={[Function]}
-        />
-        <div
-          className="emotion-2"
-        />
-        <div>
-          <button
-            aria-valuenow={200}
-            onKeyDown={[Function]}
-            onMouseDown={[Function]}
-            onTouchStart={[Function]}
-            role="slider"
-            style={
-              Object {
-                "backgroundColor": "#808080",
-                "border": "none",
-                "borderRadius": 1,
-                "cursor": "pointer",
-                "height": 24,
-                "left": "0.2396644697423607%",
-                "margin": 0,
-                "padding": 0,
-                "position": "absolute",
-                "transform": "translate(-50%, -50%)",
-                "width": 8,
-                "zIndex": 2,
-              }
-            }
-            type="button"
-          />
-          <button
-            aria-valuenow={8000}
-            onKeyDown={[Function]}
-            onMouseDown={[Function]}
-            onTouchStart={[Function]}
-            role="slider"
-            style={
-              Object {
-                "backgroundColor": "#808080",
-                "border": "none",
-                "borderRadius": 1,
-                "cursor": "pointer",
-                "height": 24,
-                "left": "93.70880766926302%",
-                "margin": 0,
-                "padding": 0,
-                "position": "absolute",
-                "transform": "translate(-50%, -50%)",
-                "width": 8,
-                "zIndex": 2,
-              }
-            }
-            type="button"
-          />
-        </div>
-        <div>
-          <div
-            onMouseDown={[Function]}
-            onTouchStart={[Function]}
-            style={
-              Object {
-                "backgroundColor": "#73b61c",
-                "cursor": "pointer",
-                "height": 4,
-                "left": "0.2396644697423607%",
-                "position": "absolute",
-                "transform": "translate(0%, -50%)",
-                "width": "93.46914319952066%",
-                "zIndex": 1,
-              }
-            }
-          />
-        </div>
-      </div>
+        step={0.1}
+        values={
+          Array [
+            200,
+            8000,
+          ]
+        }
+      />
     </div>
     <div
-      className="emotion-8"
+      className="emotion-6"
     >
       <div
-        className="emotion-5"
+        className="emotion-3"
       >
         MIN  
         <div
-          className="emotion-4"
+          className="emotion-2"
         >
           200 Bytes
         </div>
       </div>
       <div
-        className="emotion-5"
+        className="emotion-3"
       >
         MAX  
         <div
-          className="emotion-4"
+          className="emotion-2"
         >
           7.8 KB
         </div>
@@ -473,7 +309,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
 `;
 
 exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
-.emotion-9 {
+.emotion-7 {
   padding: 16px;
 }
 
@@ -489,32 +325,11 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
   padding-bottom: 12px;
 }
 
-.emotion-3 {
+.emotion-1 {
   padding: 4px;
 }
 
-.emotion-1 {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  -webkit-transform: translate(0%,-50%);
-  -ms-transform: translate(0%,-50%);
-  transform: translate(0%,-50%);
-  cursor: pointer;
-}
-
-.emotion-2 {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  -webkit-transform: translate(0%,-50%);
-  -ms-transform: translate(0%,-50%);
-  transform: translate(0%,-50%);
-  pointer-events: none;
-  background-color: #4a4a4a;
-}
-
-.emotion-8 {
+.emotion-6 {
   padding-top: 24px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -527,7 +342,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
   justify-content: space-around;
 }
 
-.emotion-5 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -538,7 +353,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
   align-items: center;
 }
 
-.emotion-4 {
+.emotion-2 {
   min-width: 76px;
   background-color: #252525;
   padding-left: 12px;
@@ -579,7 +394,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-9"
+    className="emotion-7"
   >
     <div
       className="emotion-0"
@@ -592,113 +407,52 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
       </span>
     </div>
     <div
-      className="emotion-3"
+      className="emotion-1"
     >
-      <div
-        style={
+      <Slider
+        domain={
+          Array [
+            180,
+            8525,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
           Object {
             "position": "relative",
             "width": "100%",
           }
         }
-      >
-        <div
-          className="emotion-1"
-          onMouseDown={[Function]}
-          onTouchStart={[Function]}
-        />
-        <div
-          className="emotion-2"
-        />
-        <div>
-          <button
-            aria-valuenow={200}
-            onKeyDown={[Function]}
-            onMouseDown={[Function]}
-            onTouchStart={[Function]}
-            role="slider"
-            style={
-              Object {
-                "backgroundColor": "#808080",
-                "border": "none",
-                "borderRadius": 1,
-                "cursor": "pointer",
-                "height": 24,
-                "left": "0.2396644697423607%",
-                "margin": 0,
-                "padding": 0,
-                "position": "absolute",
-                "transform": "translate(-50%, -50%)",
-                "width": 8,
-                "zIndex": 2,
-              }
-            }
-            type="button"
-          />
-          <button
-            aria-valuenow={8000}
-            onKeyDown={[Function]}
-            onMouseDown={[Function]}
-            onTouchStart={[Function]}
-            role="slider"
-            style={
-              Object {
-                "backgroundColor": "#808080",
-                "border": "none",
-                "borderRadius": 1,
-                "cursor": "pointer",
-                "height": 24,
-                "left": "93.70880766926302%",
-                "margin": 0,
-                "padding": 0,
-                "position": "absolute",
-                "transform": "translate(-50%, -50%)",
-                "width": 8,
-                "zIndex": 2,
-              }
-            }
-            type="button"
-          />
-        </div>
-        <div>
-          <div
-            onMouseDown={[Function]}
-            onTouchStart={[Function]}
-            style={
-              Object {
-                "backgroundColor": "#73b61c",
-                "cursor": "pointer",
-                "height": 4,
-                "left": "0.2396644697423607%",
-                "position": "absolute",
-                "transform": "translate(0%, -50%)",
-                "width": "93.46914319952066%",
-                "zIndex": 1,
-              }
-            }
-          />
-        </div>
-      </div>
+        step={0.1}
+        values={
+          Array [
+            200,
+            8000,
+          ]
+        }
+      />
     </div>
     <div
-      className="emotion-8"
+      className="emotion-6"
     >
       <div
-        className="emotion-5"
+        className="emotion-3"
       >
         MIN  
         <div
-          className="emotion-4"
+          className="emotion-2"
         >
           200 Bytes
         </div>
       </div>
       <div
-        className="emotion-5"
+        className="emotion-3"
       >
         MAX  
         <div
-          className="emotion-4"
+          className="emotion-2"
         >
           7.8 KB
         </div>
@@ -709,7 +463,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
 `;
 
 exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
-.emotion-9 {
+.emotion-7 {
   padding: 16px;
 }
 
@@ -725,32 +479,11 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
   padding-bottom: 12px;
 }
 
-.emotion-3 {
+.emotion-1 {
   padding: 4px;
 }
 
-.emotion-1 {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  -webkit-transform: translate(0%,-50%);
-  -ms-transform: translate(0%,-50%);
-  transform: translate(0%,-50%);
-  cursor: pointer;
-}
-
-.emotion-2 {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  -webkit-transform: translate(0%,-50%);
-  -ms-transform: translate(0%,-50%);
-  transform: translate(0%,-50%);
-  pointer-events: none;
-  background-color: #4a4a4a;
-}
-
-.emotion-8 {
+.emotion-6 {
   padding-top: 24px;
   color: #b3b3b3;
   display: -webkit-box;
@@ -763,7 +496,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
   justify-content: space-around;
 }
 
-.emotion-5 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -774,7 +507,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
   align-items: center;
 }
 
-.emotion-4 {
+.emotion-2 {
   min-width: 76px;
   background-color: #252525;
   padding-left: 12px;
@@ -815,7 +548,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />
   <div
-    className="emotion-9"
+    className="emotion-7"
   >
     <div
       className="emotion-0"
@@ -828,113 +561,52 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
       </span>
     </div>
     <div
-      className="emotion-3"
+      className="emotion-1"
     >
-      <div
-        style={
+      <Slider
+        domain={
+          Array [
+            180,
+            8525,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
           Object {
             "position": "relative",
             "width": "100%",
           }
         }
-      >
-        <div
-          className="emotion-1"
-          onMouseDown={[Function]}
-          onTouchStart={[Function]}
-        />
-        <div
-          className="emotion-2"
-        />
-        <div>
-          <button
-            aria-valuenow={180}
-            onKeyDown={[Function]}
-            onMouseDown={[Function]}
-            onTouchStart={[Function]}
-            role="slider"
-            style={
-              Object {
-                "backgroundColor": "#808080",
-                "border": "none",
-                "borderRadius": 1,
-                "cursor": "pointer",
-                "height": 24,
-                "left": "0%",
-                "margin": 0,
-                "padding": 0,
-                "position": "absolute",
-                "transform": "translate(-50%, -50%)",
-                "width": 8,
-                "zIndex": 2,
-              }
-            }
-            type="button"
-          />
-          <button
-            aria-valuenow={8525}
-            onKeyDown={[Function]}
-            onMouseDown={[Function]}
-            onTouchStart={[Function]}
-            role="slider"
-            style={
-              Object {
-                "backgroundColor": "#808080",
-                "border": "none",
-                "borderRadius": 1,
-                "cursor": "pointer",
-                "height": 24,
-                "left": "100%",
-                "margin": 0,
-                "padding": 0,
-                "position": "absolute",
-                "transform": "translate(-50%, -50%)",
-                "width": 8,
-                "zIndex": 2,
-              }
-            }
-            type="button"
-          />
-        </div>
-        <div>
-          <div
-            onMouseDown={[Function]}
-            onTouchStart={[Function]}
-            style={
-              Object {
-                "backgroundColor": "#73b61c",
-                "cursor": "pointer",
-                "height": 4,
-                "left": "0%",
-                "position": "absolute",
-                "transform": "translate(0%, -50%)",
-                "width": "100%",
-                "zIndex": 1,
-              }
-            }
-          />
-        </div>
-      </div>
+        step={0.1}
+        values={
+          Array [
+            180,
+            8525,
+          ]
+        }
+      />
     </div>
     <div
-      className="emotion-8"
+      className="emotion-6"
     >
       <div
-        className="emotion-5"
+        className="emotion-3"
       >
         MIN  
         <div
-          className="emotion-4"
+          className="emotion-2"
         >
           180 Bytes
         </div>
       </div>
       <div
-        className="emotion-5"
+        className="emotion-3"
       >
         MAX  
         <div
-          className="emotion-4"
+          className="emotion-2"
         >
           8.3 KB
         </div>
