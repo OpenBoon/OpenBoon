@@ -15,9 +15,12 @@ import FilterLabelConfidence from '../FilterLabelConfidence'
 
 import { dispatch, ACTIONS } from './helpers'
 
+const BUTTON_SIZE = 230
 const ICON_SIZE = 20
 
 const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
+  const hasFilters = filters.length > 0
+
   return (
     <>
       <div
@@ -27,7 +30,11 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
           <Button
             aria-label="Add Metadata Filters"
             variant={VARIANTS.PRIMARY}
-            style={{ flex: 1 }}
+            style={{
+              flex: 1,
+              minWidth: BUTTON_SIZE,
+              maxWidth: !hasFilters ? BUTTON_SIZE : '',
+            }}
             onClick={() => setIsMenuOpen((isMenuOpen) => !isMenuOpen)}
           >
             <div css={{ display: 'flex', alignItems: 'center' }}>
@@ -38,22 +45,24 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             </div>
           </Button>
 
-          <div css={{ width: spacing.base }} />
+          <div css={{ width: spacing.base, minWidth: spacing.base }} />
 
-          <Button
-            aria-label="Clear All Filters"
-            variant={VARIANTS.SECONDARY}
-            style={{ flex: 1 }}
-            isDisabled={filters.length === 0}
-            onClick={() => {
-              dispatch({
-                action: ACTIONS.CLEAR_FILTERS,
-                payload: { projectId, assetId },
-              })
-            }}
-          >
-            <div css={{ height: ICON_SIZE }}>Clear All Filters</div>
-          </Button>
+          {hasFilters && (
+            <Button
+              aria-label="Clear All Filters"
+              variant={VARIANTS.SECONDARY}
+              style={{ flex: 1, minWidth: BUTTON_SIZE }}
+              isDisabled={filters.length === 0}
+              onClick={() => {
+                dispatch({
+                  action: ACTIONS.CLEAR_FILTERS,
+                  payload: { projectId, assetId },
+                })
+              }}
+            >
+              <div css={{ height: ICON_SIZE }}>Clear All Filters</div>
+            </Button>
+          )}
         </div>
 
         <div css={{ height: spacing.small }} />

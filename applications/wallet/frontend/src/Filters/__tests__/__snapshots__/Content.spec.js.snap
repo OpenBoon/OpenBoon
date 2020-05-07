@@ -47,6 +47,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  min-width: 230px;
 }
 
 .emotion-2:hover {
@@ -93,6 +94,7 @@ Array [
 
 .emotion-3 {
   width: 8px;
+  min-width: 8px;
 }
 
 .emotion-5 {
@@ -128,6 +130,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  min-width: 230px;
 }
 
 .emotion-5:hover {
@@ -656,6 +659,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  min-width: 230px;
 }
 
 .emotion-2:hover {
@@ -702,6 +706,7 @@ Array [
 
 .emotion-3 {
   width: 8px;
+  min-width: 8px;
 }
 
 .emotion-5 {
@@ -737,6 +742,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  min-width: 230px;
 }
 
 .emotion-5:hover {
@@ -1489,6 +1495,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  min-width: 230px;
 }
 
 .emotion-2:hover {
@@ -1535,6 +1542,7 @@ Array [
 
 .emotion-3 {
   width: 8px;
+  min-width: 8px;
 }
 
 .emotion-5 {
@@ -1570,6 +1578,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  min-width: 230px;
 }
 
 .emotion-5:hover {
@@ -2151,6 +2160,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  min-width: 230px;
 }
 
 .emotion-2:hover {
@@ -2197,6 +2207,7 @@ Array [
 
 .emotion-3 {
   width: 8px;
+  min-width: 8px;
 }
 
 .emotion-5 {
@@ -2232,6 +2243,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  min-width: 230px;
 }
 
 .emotion-5:hover {
@@ -6165,6 +6177,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  min-width: 230px;
 }
 
 .emotion-2:hover {
@@ -6211,6 +6224,7 @@ Array [
 
 .emotion-3 {
   width: 8px;
+  min-width: 8px;
 }
 
 .emotion-5 {
@@ -6246,6 +6260,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  min-width: 230px;
 }
 
 .emotion-5:hover {
