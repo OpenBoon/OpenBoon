@@ -1,17 +1,17 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import FilterFacetContent, { noop } from '../Content'
+import FilterLabelConfidenceContent, { noop } from '../Content'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
 jest.mock('../../Filters/Reset', () => 'FiltersReset')
 
-describe('<FilterFacetContent />', () => {
-  it('should select a facet', () => {
+describe('<FilterLabelConfidenceContent />', () => {
+  it('should select a label', () => {
     const filter = {
-      attribute: 'location.city',
-      type: 'facet',
-      values: { facets: [] },
+      type: 'labelConfidence',
+      attribute: 'analysis.zvi-label-detection',
+      values: {},
     }
 
     const mockRouterPush = jest.fn()
@@ -22,16 +22,17 @@ describe('<FilterFacetContent />', () => {
       data: {
         results: {
           buckets: [
-            { key: 'Tyngsboro' },
-            { key: 'Brooklyn' },
-            { key: 'Cát Bà' },
+            { key: 'web_site', docCount: 134 },
+            { key: 'alp', docCount: 75 },
+            { key: 'sports_car', docCount: 56 },
+            { key: 'menu', docCount: 45 },
           ],
         },
       },
     })
 
     const component = TestRenderer.create(
-      <FilterFacetContent
+      <FilterLabelConfidenceContent
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -44,7 +45,7 @@ describe('<FilterFacetContent />', () => {
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Tyngsboro' })
+        .findByProps({ 'aria-label': 'web_site' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -57,23 +58,23 @@ describe('<FilterFacetContent />', () => {
           query: btoa(
             JSON.stringify([
               {
-                type: 'facet',
-                attribute: 'location.city',
-                values: { facets: ['Tyngsboro'] },
+                type: 'labelConfidence',
+                attribute: 'analysis.zvi-label-detection',
+                values: { labels: ['web_site'], min: 0, max: 1 },
               },
             ]),
           ),
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibG9jYXRpb24uY2l0eSIsInZhbHVlcyI6eyJmYWNldHMiOlsiVHluZ3Nib3JvIl19fV0=',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1sYWJlbC1kZXRlY3Rpb24iLCJ2YWx1ZXMiOnsibGFiZWxzIjpbIndlYl9zaXRlIl0sIm1pbiI6MCwibWF4IjoxfX1d',
     )
   })
 
-  it('should unselect a facet', () => {
+  it('should unselect a label', () => {
     const filter = {
-      attribute: 'location.city',
-      type: 'facet',
-      values: { facets: ['Tyngsboro'] },
+      type: 'labelConfidence',
+      attribute: 'analysis.zvi-label-detection',
+      values: { labels: ['web_site'], min: 0.0, max: 1.0 },
     }
 
     const mockRouterPush = jest.fn()
@@ -84,16 +85,17 @@ describe('<FilterFacetContent />', () => {
       data: {
         results: {
           buckets: [
-            { key: 'Tyngsboro' },
-            { key: 'Brooklyn' },
-            { key: 'Cát Bà' },
+            { key: 'web_site' },
+            { key: 'alp' },
+            { key: 'sports_car' },
+            { key: 'menu' },
           ],
         },
       },
     })
 
     const component = TestRenderer.create(
-      <FilterFacetContent
+      <FilterLabelConfidenceContent
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}
@@ -106,7 +108,7 @@ describe('<FilterFacetContent />', () => {
 
     act(() => {
       component.root
-        .findByProps({ 'aria-label': 'Tyngsboro' })
+        .findByProps({ 'aria-label': 'web_site' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -119,23 +121,23 @@ describe('<FilterFacetContent />', () => {
           query: btoa(
             JSON.stringify([
               {
-                type: 'facet',
-                attribute: 'location.city',
+                type: 'labelConfidence',
+                attribute: 'analysis.zvi-label-detection',
                 values: {},
               },
             ]),
           ),
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibG9jYXRpb24uY2l0eSIsInZhbHVlcyI6e319XQ==',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1sYWJlbC1kZXRlY3Rpb24iLCJ2YWx1ZXMiOnt9fV0=',
     )
   })
 
   it('should render with no buckets', () => {
     const filter = {
-      attribute: 'location.city',
-      type: 'facet',
-      values: {},
+      type: 'labelConfidence',
+      attribute: 'analysis.zvi-label-detection',
+      values: { labels: [], min: 0.0, max: 1.0 },
     }
 
     require('swr').__setMockUseSWRResponse({
@@ -147,7 +149,7 @@ describe('<FilterFacetContent />', () => {
     })
 
     const component = TestRenderer.create(
-      <FilterFacetContent
+      <FilterLabelConfidenceContent
         projectId={PROJECT_ID}
         assetId=""
         filters={[filter]}

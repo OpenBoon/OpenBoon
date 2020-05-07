@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+import filterShape from '../Filter/shape'
+
 import { spacing, typography, constants } from '../Styles'
 
 import FiltersMenuOption from './MenuOption'
@@ -70,13 +72,7 @@ FiltersMenuSection.propTypes = {
   path: PropTypes.string.isRequired,
   attribute: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      attribute: PropTypes.string,
-      values: PropTypes.shape({}),
-    }).isRequired,
-  ).isRequired,
+  filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
   onClick: PropTypes.func.isRequired,
 }
 

@@ -1,4 +1,5 @@
 import Router from 'next/router'
+import utf8 from 'utf8'
 
 export const formatUrl = (params = {}) => {
   const queryString = Object.keys(params)
@@ -17,12 +18,12 @@ export const ACTIONS = {
 }
 
 export const encode = ({ filters }) => {
-  return btoa(JSON.stringify(filters))
+  return btoa(utf8.encode(JSON.stringify(filters)))
 }
 
 export const decode = ({ query }) => {
   try {
-    return JSON.parse(atob(query))
+    return JSON.parse(utf8.decode(atob(query)))
   } catch (error) {
     return []
   }
