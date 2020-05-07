@@ -1,15 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FilterFacetContent /> should render with no buckets 1`] = `
+exports[`<FilterLabelConfidenceContent /> should render with no buckets 1`] = `
 Array [
   <FiltersReset
     assetId=""
     filter={
       Object {
-        "attribute": "location.city",
-        "type": "facet",
+        "attribute": "analysis.zvi-label-detection",
+        "type": "labelConfidence",
         "values": Object {
-          "facets": Array [],
+          "labels": Array [],
+          "max": 1,
+          "min": 0,
         },
       }
     }
@@ -17,10 +19,12 @@ Array [
     filters={
       Array [
         Object {
-          "attribute": "location.city",
-          "type": "facet",
+          "attribute": "analysis.zvi-label-detection",
+          "type": "labelConfidence",
           "values": Object {
-            "facets": Array [],
+            "labels": Array [],
+            "max": 1,
+            "min": 0,
           },
         },
       ]
@@ -65,16 +69,18 @@ Array [
 ]
 `;
 
-exports[`<FilterFacetContent /> should select a facet 1`] = `
+exports[`<FilterLabelConfidenceContent /> should select a label 1`] = `
 Array [
   <FiltersReset
     assetId=""
     filter={
       Object {
-        "attribute": "location.city",
-        "type": "facet",
+        "attribute": "analysis.zvi-label-detection",
+        "type": "labelConfidence",
         "values": Object {
-          "facets": Array [],
+          "labels": Array [],
+          "max": 1,
+          "min": 0,
         },
       }
     }
@@ -82,10 +88,12 @@ Array [
     filters={
       Array [
         Object {
-          "attribute": "location.city",
-          "type": "facet",
+          "attribute": "analysis.zvi-label-detection",
+          "type": "labelConfidence",
           "values": Object {
-            "facets": Array [],
+            "labels": Array [],
+            "max": 1,
+            "min": 0,
           },
         },
       ]
@@ -118,7 +126,7 @@ Array [
       COUNT
     </div>
   </div>,
-  .emotion-18 {
+  .emotion-24 {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -188,13 +196,13 @@ Array [
 }
 
 .emotion-0 {
-  width: 0%;
+  width: 100%;
   border-top: 4px solid #73b61c;
 }
 
 .emotion-1 {
   height: 4px;
-  width: 100%;
+  width: 0%;
   border-top: 1px solid #3b3b3b;
 }
 
@@ -210,12 +218,45 @@ Array [
   padding: 8px;
 }
 
+.emotion-6 {
+  width: 56%;
+  border-top: 4px solid #73b61c;
+}
+
+.emotion-7 {
+  height: 4px;
+  width: 44%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-12 {
+  width: 42%;
+  border-top: 4px solid #73b61c;
+}
+
+.emotion-13 {
+  height: 4px;
+  width: 58%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-18 {
+  width: 34%;
+  border-top: 4px solid #73b61c;
+}
+
+.emotion-19 {
+  height: 4px;
+  width: 66%;
+  border-top: 1px solid #3b3b3b;
+}
+
 <ul
-    className="emotion-18"
+    className="emotion-24"
   >
     <li>
       <button
-        aria-label="Tyngsboro"
+        aria-label="web_site"
         className="emotion-5"
         onClick={[Function]}
         type="button"
@@ -237,10 +278,10 @@ Array [
             className="emotion-3"
           >
             <div>
-              Tyngsboro
+              web_site
             </div>
             <div>
-              0
+              134
             </div>
           </div>
         </div>
@@ -248,7 +289,7 @@ Array [
     </li>
     <li>
       <button
-        aria-label="Brooklyn"
+        aria-label="alp"
         className="emotion-5"
         onClick={[Function]}
         type="button"
@@ -260,20 +301,20 @@ Array [
             className="emotion-2"
           >
             <div
-              className="emotion-0"
+              className="emotion-6"
             />
             <div
-              className="emotion-1"
+              className="emotion-7"
             />
           </div>
           <div
             className="emotion-3"
           >
             <div>
-              Brooklyn
+              alp
             </div>
             <div>
-              0
+              75
             </div>
           </div>
         </div>
@@ -281,7 +322,7 @@ Array [
     </li>
     <li>
       <button
-        aria-label="Cát Bà"
+        aria-label="sports_car"
         className="emotion-5"
         onClick={[Function]}
         type="button"
@@ -293,20 +334,53 @@ Array [
             className="emotion-2"
           >
             <div
-              className="emotion-0"
+              className="emotion-12"
             />
             <div
-              className="emotion-1"
+              className="emotion-13"
             />
           </div>
           <div
             className="emotion-3"
           >
             <div>
-              Cát Bà
+              sports_car
             </div>
             <div>
-              0
+              56
+            </div>
+          </div>
+        </div>
+      </button>
+    </li>
+    <li>
+      <button
+        aria-label="menu"
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-2"
+          >
+            <div
+              className="emotion-18"
+            />
+            <div
+              className="emotion-19"
+            />
+          </div>
+          <div
+            className="emotion-3"
+          >
+            <div>
+              menu
+            </div>
+            <div>
+              45
             </div>
           </div>
         </div>
@@ -316,18 +390,20 @@ Array [
 ]
 `;
 
-exports[`<FilterFacetContent /> should unselect a facet 1`] = `
+exports[`<FilterLabelConfidenceContent /> should unselect a label 1`] = `
 Array [
   <FiltersReset
     assetId=""
     filter={
       Object {
-        "attribute": "location.city",
-        "type": "facet",
+        "attribute": "analysis.zvi-label-detection",
+        "type": "labelConfidence",
         "values": Object {
-          "facets": Array [
-            "Tyngsboro",
+          "labels": Array [
+            "web_site",
           ],
+          "max": 1,
+          "min": 0,
         },
       }
     }
@@ -335,12 +411,14 @@ Array [
     filters={
       Array [
         Object {
-          "attribute": "location.city",
-          "type": "facet",
+          "attribute": "analysis.zvi-label-detection",
+          "type": "labelConfidence",
           "values": Object {
-            "facets": Array [
-              "Tyngsboro",
+            "labels": Array [
+              "web_site",
             ],
+            "max": 1,
+            "min": 0,
           },
         },
       ]
@@ -373,7 +451,7 @@ Array [
       COUNT
     </div>
   </div>,
-  .emotion-18 {
+  .emotion-24 {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -388,17 +466,6 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-0 {
-  width: 0%;
-  border-top: 4px solid #73b61c;
-}
-
-.emotion-1 {
-  height: 4px;
-  width: 100%;
-  border-top: 1px solid #3b3b3b;
 }
 
 .emotion-3 {
@@ -464,6 +531,17 @@ Array [
 .emotion-5:hover {
   background-color: #027aff38;
   color: #ffffff;
+}
+
+.emotion-0 {
+  width: 0%;
+  border-top: 4px solid #73b61c;
+}
+
+.emotion-1 {
+  height: 4px;
+  width: 100%;
+  border-top: 1px solid #3b3b3b;
 }
 
 .emotion-11 {
@@ -524,11 +602,11 @@ Array [
 }
 
 <ul
-    className="emotion-18"
+    className="emotion-24"
   >
     <li>
       <button
-        aria-label="Tyngsboro"
+        aria-label="web_site"
         className="emotion-5"
         onClick={[Function]}
         type="button"
@@ -550,7 +628,7 @@ Array [
             className="emotion-3"
           >
             <div>
-              Tyngsboro
+              web_site
             </div>
             <div>
               0
@@ -561,7 +639,7 @@ Array [
     </li>
     <li>
       <button
-        aria-label="Brooklyn"
+        aria-label="alp"
         className="emotion-11"
         onClick={[Function]}
         type="button"
@@ -583,7 +661,7 @@ Array [
             className="emotion-3"
           >
             <div>
-              Brooklyn
+              alp
             </div>
             <div>
               0
@@ -594,7 +672,7 @@ Array [
     </li>
     <li>
       <button
-        aria-label="Cát Bà"
+        aria-label="sports_car"
         className="emotion-11"
         onClick={[Function]}
         type="button"
@@ -616,7 +694,40 @@ Array [
             className="emotion-3"
           >
             <div>
-              Cát Bà
+              sports_car
+            </div>
+            <div>
+              0
+            </div>
+          </div>
+        </div>
+      </button>
+    </li>
+    <li>
+      <button
+        aria-label="menu"
+        className="emotion-11"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-2"
+          >
+            <div
+              className="emotion-6"
+            />
+            <div
+              className="emotion-1"
+            />
+          </div>
+          <div
+            className="emotion-3"
+          >
+            <div>
+              menu
             </div>
             <div>
               0

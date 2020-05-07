@@ -23,8 +23,10 @@ import com.zorroa.archivist.domain.TaskEventType
 import com.zorroa.archivist.domain.TaskExpandEvent
 import com.zorroa.archivist.domain.TaskId
 import com.zorroa.archivist.domain.TaskMessageEvent
+import com.zorroa.archivist.domain.TaskProgressUpdateEvent
 import com.zorroa.archivist.domain.TaskState
 import com.zorroa.archivist.domain.TaskStatsEvent
+import com.zorroa.archivist.domain.TaskStatusUpdateEvent
 import com.zorroa.archivist.domain.TaskStoppedEvent
 import com.zorroa.archivist.repository.AnalystDao
 import com.zorroa.archivist.repository.DispatchTaskDao
@@ -102,6 +104,16 @@ interface DispatcherService {
      * to the meterRegistry.
      */
     fun handleStatsEvent(stats: List<TaskStatsEvent>)
+
+    /**
+     * Update Task Progress
+     */
+    fun handleProgressUpdateEvent(taskId: TaskId, taskProgressUpdateEvent: TaskProgressUpdateEvent)
+
+    /**
+     * Update Task Status
+     */
+    fun handleStatusUpdateEvent(taskId: TaskId, taskStatusUpdateEvent: TaskStatusUpdateEvent)
 }
 
 /**
@@ -480,7 +492,25 @@ class DispatcherServiceImpl @Autowired constructor(
                 val index = Json.Mapper.convertValue<BatchIndexAssetsEvent>(event.payload)
                 handleIndexEvent(task, index)
             }
+            TaskEventType.PROGRESS -> {
+                val taskProgressUpdateEvent = Json.Mapper.convertValue<TaskProgressUpdateEvent>(event.payload)
+                handleProgressUpdateEvent(task, taskProgressUpdateEvent)
+                logger.info("Task ${task.taskId} Progress update: ${taskProgressUpdateEvent.progress}")
+            }
+            TaskEventType.STATUS -> {
+                val taskStatusUpdateEvent = Json.Mapper.convertValue<TaskStatusUpdateEvent>(event.payload)
+                handleStatusUpdateEvent(task, taskStatusUpdateEvent)
+                logger.info("Task ${task.taskId} Status update: ${taskStatusUpdateEvent.status}")
+            }
         }
+    }
+
+    override fun handleProgressUpdateEvent(taskId: TaskId, taskProgressUpdateEvent: TaskProgressUpdateEvent) {
+        taskDao.setProgress(taskId, taskProgressUpdateEvent.progress)
+    }
+
+    override fun handleStatusUpdateEvent(taskId: TaskId, taskStatusUpdateEvent: TaskStatusUpdateEvent) {
+        taskDao.setStatus(taskId, taskStatusUpdateEvent.status)
     }
 
     fun killRunningTaskOnAnalyst(task: TaskId, newState: TaskState, reason: String): Boolean {
