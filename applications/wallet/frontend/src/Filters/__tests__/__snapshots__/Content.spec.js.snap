@@ -212,7 +212,7 @@ Array [
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   color: #000000;
-  background-color: #808080;
+  background-color: #4a4a4a;
   margin: 0;
   padding: 0;
   border: 0;
@@ -226,6 +226,7 @@ Array [
       className="emotion-6"
     >
       <button
+        aria-label="Add Metadata Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -248,6 +249,7 @@ Array [
         className="emotion-3"
       />
       <button
+        aria-label="Clear All Filters"
         className="emotion-5"
         onClick={[Function]}
         type="button"
@@ -819,7 +821,7 @@ Array [
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   color: #000000;
-  background-color: #808080;
+  background-color: #4a4a4a;
   margin: 0;
   padding: 0;
   border: 0;
@@ -833,6 +835,7 @@ Array [
       className="emotion-6"
     >
       <button
+        aria-label="Add Metadata Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -855,6 +858,7 @@ Array [
         className="emotion-3"
       />
       <button
+        aria-label="Clear All Filters"
         className="emotion-5"
         onClick={[Function]}
         type="button"
@@ -1650,7 +1654,7 @@ Array [
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   color: #000000;
-  background-color: #808080;
+  background-color: #4a4a4a;
   margin: 0;
   padding: 0;
   border: 0;
@@ -1664,6 +1668,7 @@ Array [
       className="emotion-6"
     >
       <button
+        aria-label="Add Metadata Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -1686,6 +1691,7 @@ Array [
         className="emotion-3"
       />
       <button
+        aria-label="Clear All Filters"
         className="emotion-5"
         onClick={[Function]}
         type="button"
@@ -2310,7 +2316,7 @@ Array [
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   color: #000000;
-  background-color: #808080;
+  background-color: #4a4a4a;
   margin: 0;
   padding: 0;
   border: 0;
@@ -2324,6 +2330,7 @@ Array [
       className="emotion-6"
     >
       <button
+        aria-label="Add Metadata Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -2346,6 +2353,7 @@ Array [
         className="emotion-3"
       />
       <button
+        aria-label="Clear All Filters"
         className="emotion-5"
         onClick={[Function]}
         type="button"
@@ -6322,7 +6330,7 @@ Array [
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   color: #000000;
-  background-color: #808080;
+  background-color: #4a4a4a;
   margin: 0;
   padding: 0;
   border: 0;
@@ -6336,6 +6344,7 @@ Array [
       className="emotion-6"
     >
       <button
+        aria-label="Add Metadata Filters"
         className="emotion-2"
         onClick={[Function]}
         type="button"
@@ -6358,6 +6367,7 @@ Array [
         className="emotion-3"
       />
       <button
+        aria-label="Clear All Filters"
         className="emotion-5"
         onClick={[Function]}
         type="button"

@@ -25,6 +25,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
       >
         <div css={{ display: 'flex' }}>
           <Button
+            aria-label="Add Metadata Filters"
             variant={VARIANTS.PRIMARY}
             style={{ flex: 1 }}
             onClick={() => setIsMenuOpen((isMenuOpen) => !isMenuOpen)}
@@ -40,6 +41,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
           <div css={{ width: spacing.base }} />
 
           <Button
+            aria-label="Clear All Filters"
             variant={VARIANTS.SECONDARY}
             style={{ flex: 1 }}
             isDisabled={filters.length === 0}

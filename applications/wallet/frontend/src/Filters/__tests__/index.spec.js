@@ -215,7 +215,7 @@ describe('<Filters />', () => {
     // Clear All Filters
     act(() => {
       component.root
-        .findByProps({ children: 'Clear All Filters' })
+        .findByProps({ 'aria-label': 'Clear All Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -246,7 +246,7 @@ describe('<Filters />', () => {
     // open the menu
     act(() => {
       component.root
-        .findByProps({ children: '+ Add Metadata Filters' })
+        .findByProps({ 'aria-label': 'Add Metadata Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -286,7 +286,7 @@ describe('<Filters />', () => {
     // open the menu
     act(() => {
       component.root
-        .findByProps({ children: '+ Add Metadata Filters' })
+        .findByProps({ 'aria-label': 'Add Metadata Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -364,7 +364,7 @@ describe('<Filters />', () => {
     // open the menu
     act(() => {
       component.root
-        .findByProps({ children: '+ Add Metadata Filters' })
+        .findByProps({ 'aria-label': 'Add Metadata Filters' })
         .props.onClick({ preventDefault: noop })
     })
 

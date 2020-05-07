@@ -69,9 +69,7 @@ const SearchFilter = ({ projectId, assetId, filters }) => {
             borderTopRightRadius: constants.borderRadius.small,
             borderBottomRightRadius: constants.borderRadius.small,
             color: hasSearch ? colors.structure.white : colors.structure.black,
-            backgroundColor: hasSearch
-              ? colors.key.one
-              : colors.structure.steel,
+            backgroundColor: hasSearch ? colors.key.one : colors.structure.iron,
             margin: 0,
             padding: 0,
             border: 0,
