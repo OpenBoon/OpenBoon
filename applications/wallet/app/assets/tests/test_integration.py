@@ -6,6 +6,7 @@ from rest_framework import status
 from zmlp import ZmlpClient
 
 from assets.utils import AssetBoxImager
+from wallet.tests.utils import check_response
 
 pytestmark = pytest.mark.django_db
 
@@ -77,6 +78,35 @@ class TestAssetViewSet:
         detail_content = response.json()
 
         assert list_content['results'][0] == detail_content
+
+    def test_delete(self, login, project, api_client, monkeypatch):
+        id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
+
+        def mock_response(*args, **kwargs):
+            return {'type': 'asset',
+                    'id': 'delete',
+                    'op': id,
+                    'success': True}
+
+        monkeypatch.setattr(ZmlpClient, 'delete', mock_response)
+        response = api_client.delete(reverse('asset-detail', kwargs={'project_pk': project.id,
+                                                                     'pk': id}))
+        check_response(response, status.HTTP_204_NO_CONTENT)
+
+    def test_bad_delete(self, login, project, api_client, monkeypatch):
+        id = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
+
+        def mock_response(*args, **kwargs):
+            return {'type': 'asset',
+                    'id': 'delete',
+                    'op': id,
+                    'success': False}
+
+        monkeypatch.setattr(ZmlpClient, 'delete', mock_response)
+        response = api_client.delete(reverse('asset-detail', kwargs={'project_pk': project.id,
+                                                                     'pk': id}))
+        content = check_response(response, status.HTTP_500_INTERNAL_SERVER_ERROR)
+        assert content['detail'] == 'Unable to delete asset.'
 
 
 class TestAssetSearch:
