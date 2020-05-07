@@ -6,7 +6,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   border-radius: 2px;
 }
 
-.emotion-11:last-of-type > div {
+.emotion-11:last-of-type > div:last-of-type {
   border-bottom: 1px solid #4a4a4a;
 }
 

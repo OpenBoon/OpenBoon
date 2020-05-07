@@ -199,7 +199,7 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-4:last-of-type > div {
+.emotion-4:last-of-type > div:last-of-type {
   border-bottom: 1px solid #4a4a4a;
 }
 

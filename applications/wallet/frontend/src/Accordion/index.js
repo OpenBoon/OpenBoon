@@ -34,7 +34,7 @@ const STYLES = {
     container: {
       backgroundColor: colors.structure.lead,
       borderRadius: constants.borderRadius.small,
-      ':last-of-type > div': {
+      ':last-of-type > div:last-of-type': {
         borderBottom: constants.borders.tabs,
       },
     },
