@@ -85,7 +85,7 @@ const JobsRow = ({
                 },
               }}
             >
-              {assetCounts.assetErrorCount}
+              !
             </a>
           </Link>
         )}
