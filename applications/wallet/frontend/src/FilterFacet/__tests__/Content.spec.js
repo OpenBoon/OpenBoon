@@ -121,13 +121,13 @@ describe('<FilterFacetContent />', () => {
               {
                 type: 'facet',
                 attribute: 'location.city',
-                values: { facets: [] },
+                values: {},
               },
             ]),
           ),
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibG9jYXRpb24uY2l0eSIsInZhbHVlcyI6eyJmYWNldHMiOltdfX1d',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImZhY2V0IiwiYXR0cmlidXRlIjoibG9jYXRpb24uY2l0eSIsInZhbHVlcyI6e319XQ==',
     )
   })
 
@@ -135,7 +135,7 @@ describe('<FilterFacetContent />', () => {
     const filter = {
       attribute: 'location.city',
       type: 'facet',
-      values: { facets: [] },
+      values: {},
     }
 
     require('swr').__setMockUseSWRResponse({

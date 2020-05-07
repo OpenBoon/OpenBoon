@@ -8,9 +8,7 @@ Array [
       Object {
         "attribute": "location.city",
         "type": "facet",
-        "values": Object {
-          "facets": Array [],
-        },
+        "values": Object {},
       }
     }
     filterIndex={0}
@@ -19,9 +17,7 @@ Array [
         Object {
           "attribute": "location.city",
           "type": "facet",
-          "values": Object {
-            "facets": Array [],
-          },
+          "values": Object {},
         },
       ]
     }
