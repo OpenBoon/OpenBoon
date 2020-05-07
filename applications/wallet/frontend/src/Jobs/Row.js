@@ -54,9 +54,7 @@ const JobsRow = ({
       </td>
       <td css={{ textAlign: 'center' }}>{priority}</td>
       <td>{formatFullDate({ timestamp: timeCreated })}</td>
-      <td css={{ textAlign: 'center' }}>
-        {Object.values(assetCounts).reduce((total, count) => total + count)}
-      </td>
+      <td css={{ textAlign: 'center' }}>{assetCounts.assetTotalCount}</td>
       <td>
         {assetCounts.assetErrorCount > 0 && (
           <Link
@@ -124,6 +122,7 @@ JobsRow.propTypes = {
       assetReplacedCount: PropTypes.number.isRequired,
       assetWarningCount: PropTypes.number.isRequired,
       assetErrorCount: PropTypes.number.isRequired,
+      assetTotalCount: PropTypes.number.isRequired,
     }).isRequired,
     priority: PropTypes.number.isRequired,
     timeCreated: PropTypes.number.isRequired,

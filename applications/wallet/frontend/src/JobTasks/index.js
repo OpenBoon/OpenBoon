@@ -21,7 +21,6 @@ const JobTasks = () => {
         'Task ID',
         'Description',
         'Duration',
-        'Assets',
         'Started',
         'Errors',
       ]}
