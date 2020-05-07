@@ -670,8 +670,8 @@ class DockerContainerWrapper(object):
             str: The network Id.
         """
         try:
-            with open("/proc/self/cgroup") as fp:
-                return "container:{}".format(fp.readline().rstrip().split("/")[-1])
+            with open("/proc/self/cpuset") as fp:
+                return "container:{}".format(os.path.basename(fp.readline().rstrip()))
         except IOError:
             pass
         return None
