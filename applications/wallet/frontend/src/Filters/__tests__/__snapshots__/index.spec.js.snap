@@ -1457,7 +1457,7 @@ exports[`<Filters /> should open the menu 1`] = `
 
 exports[`<Filters /> should render properly 1`] = `
 Array [
-  .emotion-9 {
+  .emotion-10 {
   padding: 4px;
   border-bottom: 1px solid #191919;
 }
@@ -1557,7 +1557,7 @@ Array [
   height: 4px;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1603,20 +1603,24 @@ Array [
   font-style: italic;
 }
 
-.emotion-7 {
+.emotion-8 {
   width: 42px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   color: #000000;
-  background-color: #4a4a4a;
+  background-color: #808080;
   margin: 0;
   padding: 0;
   border: 0;
   cursor: not-allowed;
 }
 
+.emotion-7 {
+  color: #3b3b3b;
+}
+
 <div
-    className="emotion-9"
+    className="emotion-10"
   >
     <div
       className="emotion-4"
@@ -1654,7 +1658,7 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-8"
+        className="emotion-9"
       >
         <input
           className="emotion-6"
@@ -1666,11 +1670,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-7"
+          className="emotion-8"
           onClick={[Function]}
           type="submit"
         >
           <svg
+            className="emotion-7"
             data-file-name="plus.svg"
             width={20}
           />

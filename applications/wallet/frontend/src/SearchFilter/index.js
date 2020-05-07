@@ -69,14 +69,16 @@ const SearchFilter = ({ projectId, assetId, filters }) => {
             borderTopRightRadius: constants.borderRadius.small,
             borderBottomRightRadius: constants.borderRadius.small,
             color: hasSearch ? colors.structure.white : colors.structure.black,
-            backgroundColor: hasSearch ? colors.key.one : colors.structure.iron,
+            backgroundColor: hasSearch
+              ? colors.key.one
+              : colors.structure.steel,
             margin: 0,
             padding: 0,
             border: 0,
             cursor: searchString === '' ? 'not-allowed' : 'pointer',
           }}
         >
-          <PlusSvg width={ICON_SIZE} />
+          <PlusSvg width={ICON_SIZE} css={{ color: colors.structure.smoke }} />
         </button>
       </div>
     </form>
