@@ -44,7 +44,6 @@ class GcsProjectStorageService constructor(
 
     @PostConstruct
     fun initialize() {
-        StorageOptions.getDefaultInstance()
         logger.info(
             "Initializing GCS Storage Backend (bucket='${properties.bucket}')"
         )
