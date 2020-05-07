@@ -107,6 +107,7 @@ class GcsProjectStorageService constructor(
         val info = BlobInfo.newBuilder(properties.bucket, path).setContentType(mediaType).build()
         val opts = if (forWrite) {
             arrayOf(
+                Storage.SignUrlOption.withContentType(),
                 Storage.SignUrlOption.httpMethod(HttpMethod.PUT))
         } else {
             arrayOf(
@@ -122,7 +123,9 @@ class GcsProjectStorageService constructor(
 
     override fun setAttrs(locator: ProjectStorageLocator, attrs: Map<String, Any>): FileStorage {
         val path = locator.getPath()
+        val mediaType = FileUtils.getMediaType(path)
         val info = BlobInfo.newBuilder(properties.bucket, path)
+            .setContentType(mediaType)
             .setMetadata(mapOf("attrs" to Json.serializeToString(attrs)))
             .build()
 
@@ -130,7 +133,7 @@ class GcsProjectStorageService constructor(
             locator.getFileId(),
             locator.name,
             locator.category,
-            info.contentType,
+            mediaType,
             info.size,
             attrs
         )
