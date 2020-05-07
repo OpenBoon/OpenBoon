@@ -1,0 +1,945 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
+.emotion-9 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.emotion-3 {
+  padding: 4px;
+}
+
+.emotion-1 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  cursor: pointer;
+}
+
+.emotion-2 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  pointer-events: none;
+  background-color: #4a4a4a;
+}
+
+.emotion-8 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  min-width: 76px;
+  background-color: #252525;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+<div>
+  <FiltersReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "source.filesize",
+        "type": "range",
+        "values": Object {
+          "max": 8000,
+          "min": 200,
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "source.filesize",
+          "type": "range",
+          "values": Object {
+            "max": 8000,
+            "min": 200,
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-9"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        180 Bytes
+      </span>
+      <span>
+        8.3 KB
+      </span>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <div
+        style={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+      >
+        <div
+          className="emotion-1"
+          onMouseDown={[Function]}
+          onTouchStart={[Function]}
+        />
+        <div
+          className="emotion-2"
+        />
+        <div>
+          <button
+            aria-valuenow={200}
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+            role="slider"
+            style={
+              Object {
+                "backgroundColor": "#808080",
+                "border": "none",
+                "borderRadius": 1,
+                "cursor": "pointer",
+                "height": 24,
+                "left": "0.2396644697423607%",
+                "margin": 0,
+                "padding": 0,
+                "position": "absolute",
+                "transform": "translate(-50%, -50%)",
+                "width": 8,
+                "zIndex": 2,
+              }
+            }
+            type="button"
+          />
+          <button
+            aria-valuenow={8000}
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+            role="slider"
+            style={
+              Object {
+                "backgroundColor": "#808080",
+                "border": "none",
+                "borderRadius": 1,
+                "cursor": "pointer",
+                "height": 24,
+                "left": "93.70880766926302%",
+                "margin": 0,
+                "padding": 0,
+                "position": "absolute",
+                "transform": "translate(-50%, -50%)",
+                "width": 8,
+                "zIndex": 2,
+              }
+            }
+            type="button"
+          />
+        </div>
+        <div>
+          <div
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+            style={
+              Object {
+                "backgroundColor": "#73b61c",
+                "cursor": "pointer",
+                "height": 4,
+                "left": "0.2396644697423607%",
+                "position": "absolute",
+                "transform": "translate(0%, -50%)",
+                "width": "93.46914319952066%",
+                "zIndex": 1,
+              }
+            }
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-8"
+    >
+      <div
+        className="emotion-5"
+      >
+        MIN  
+        <div
+          className="emotion-4"
+        >
+          200 Bytes
+        </div>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        MAX  
+        <div
+          className="emotion-4"
+        >
+          7.8 KB
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
+.emotion-9 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.emotion-3 {
+  padding: 4px;
+}
+
+.emotion-1 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  cursor: pointer;
+}
+
+.emotion-2 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  pointer-events: none;
+  background-color: #4a4a4a;
+}
+
+.emotion-8 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  min-width: 76px;
+  background-color: #252525;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+<div>
+  <FiltersReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "source.filesize",
+        "type": "range",
+        "values": Object {
+          "max": 8000,
+          "min": 200,
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "source.filesize",
+          "type": "range",
+          "values": Object {
+            "max": 8000,
+            "min": 200,
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-9"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        180 Bytes
+      </span>
+      <span>
+        8.3 KB
+      </span>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <div
+        style={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+      >
+        <div
+          className="emotion-1"
+          onMouseDown={[Function]}
+          onTouchStart={[Function]}
+        />
+        <div
+          className="emotion-2"
+        />
+        <div>
+          <button
+            aria-valuenow={200}
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+            role="slider"
+            style={
+              Object {
+                "backgroundColor": "#808080",
+                "border": "none",
+                "borderRadius": 1,
+                "cursor": "pointer",
+                "height": 24,
+                "left": "0.2396644697423607%",
+                "margin": 0,
+                "padding": 0,
+                "position": "absolute",
+                "transform": "translate(-50%, -50%)",
+                "width": 8,
+                "zIndex": 2,
+              }
+            }
+            type="button"
+          />
+          <button
+            aria-valuenow={8000}
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+            role="slider"
+            style={
+              Object {
+                "backgroundColor": "#808080",
+                "border": "none",
+                "borderRadius": 1,
+                "cursor": "pointer",
+                "height": 24,
+                "left": "93.70880766926302%",
+                "margin": 0,
+                "padding": 0,
+                "position": "absolute",
+                "transform": "translate(-50%, -50%)",
+                "width": 8,
+                "zIndex": 2,
+              }
+            }
+            type="button"
+          />
+        </div>
+        <div>
+          <div
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+            style={
+              Object {
+                "backgroundColor": "#73b61c",
+                "cursor": "pointer",
+                "height": 4,
+                "left": "0.2396644697423607%",
+                "position": "absolute",
+                "transform": "translate(0%, -50%)",
+                "width": "93.46914319952066%",
+                "zIndex": 1,
+              }
+            }
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-8"
+    >
+      <div
+        className="emotion-5"
+      >
+        MIN  
+        <div
+          className="emotion-4"
+        >
+          200 Bytes
+        </div>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        MAX  
+        <div
+          className="emotion-4"
+        >
+          7.8 KB
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
+.emotion-9 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.emotion-3 {
+  padding: 4px;
+}
+
+.emotion-1 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  cursor: pointer;
+}
+
+.emotion-2 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  pointer-events: none;
+  background-color: #4a4a4a;
+}
+
+.emotion-8 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  min-width: 76px;
+  background-color: #252525;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+<div>
+  <FiltersReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "source.filesize",
+        "type": "range",
+        "values": Object {
+          "max": 8000,
+          "min": 200,
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "source.filesize",
+          "type": "range",
+          "values": Object {
+            "max": 8000,
+            "min": 200,
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-9"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        180 Bytes
+      </span>
+      <span>
+        8.3 KB
+      </span>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <div
+        style={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+      >
+        <div
+          className="emotion-1"
+          onMouseDown={[Function]}
+          onTouchStart={[Function]}
+        />
+        <div
+          className="emotion-2"
+        />
+        <div>
+          <button
+            aria-valuenow={200}
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+            role="slider"
+            style={
+              Object {
+                "backgroundColor": "#808080",
+                "border": "none",
+                "borderRadius": 1,
+                "cursor": "pointer",
+                "height": 24,
+                "left": "0.2396644697423607%",
+                "margin": 0,
+                "padding": 0,
+                "position": "absolute",
+                "transform": "translate(-50%, -50%)",
+                "width": 8,
+                "zIndex": 2,
+              }
+            }
+            type="button"
+          />
+          <button
+            aria-valuenow={8000}
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+            role="slider"
+            style={
+              Object {
+                "backgroundColor": "#808080",
+                "border": "none",
+                "borderRadius": 1,
+                "cursor": "pointer",
+                "height": 24,
+                "left": "93.70880766926302%",
+                "margin": 0,
+                "padding": 0,
+                "position": "absolute",
+                "transform": "translate(-50%, -50%)",
+                "width": 8,
+                "zIndex": 2,
+              }
+            }
+            type="button"
+          />
+        </div>
+        <div>
+          <div
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+            style={
+              Object {
+                "backgroundColor": "#73b61c",
+                "cursor": "pointer",
+                "height": 4,
+                "left": "0.2396644697423607%",
+                "position": "absolute",
+                "transform": "translate(0%, -50%)",
+                "width": "93.46914319952066%",
+                "zIndex": 1,
+              }
+            }
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-8"
+    >
+      <div
+        className="emotion-5"
+      >
+        MIN  
+        <div
+          className="emotion-4"
+        >
+          200 Bytes
+        </div>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        MAX  
+        <div
+          className="emotion-4"
+        >
+          7.8 KB
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
+.emotion-9 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.emotion-3 {
+  padding: 4px;
+}
+
+.emotion-1 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  cursor: pointer;
+}
+
+.emotion-2 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+  transform: translate(0%,-50%);
+  pointer-events: none;
+  background-color: #4a4a4a;
+}
+
+.emotion-8 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  min-width: 76px;
+  background-color: #252525;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+<div>
+  <FiltersReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "source.filesize",
+        "type": "range",
+        "values": Object {
+          "max": 8000,
+          "min": 200,
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "source.filesize",
+          "type": "range",
+          "values": Object {
+            "max": 8000,
+            "min": 200,
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-9"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        180 Bytes
+      </span>
+      <span>
+        8.3 KB
+      </span>
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <div
+        style={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+      >
+        <div
+          className="emotion-1"
+          onMouseDown={[Function]}
+          onTouchStart={[Function]}
+        />
+        <div
+          className="emotion-2"
+        />
+        <div>
+          <button
+            aria-valuenow={180}
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+            role="slider"
+            style={
+              Object {
+                "backgroundColor": "#808080",
+                "border": "none",
+                "borderRadius": 1,
+                "cursor": "pointer",
+                "height": 24,
+                "left": "0%",
+                "margin": 0,
+                "padding": 0,
+                "position": "absolute",
+                "transform": "translate(-50%, -50%)",
+                "width": 8,
+                "zIndex": 2,
+              }
+            }
+            type="button"
+          />
+          <button
+            aria-valuenow={8525}
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+            role="slider"
+            style={
+              Object {
+                "backgroundColor": "#808080",
+                "border": "none",
+                "borderRadius": 1,
+                "cursor": "pointer",
+                "height": 24,
+                "left": "100%",
+                "margin": 0,
+                "padding": 0,
+                "position": "absolute",
+                "transform": "translate(-50%, -50%)",
+                "width": 8,
+                "zIndex": 2,
+              }
+            }
+            type="button"
+          />
+        </div>
+        <div>
+          <div
+            onMouseDown={[Function]}
+            onTouchStart={[Function]}
+            style={
+              Object {
+                "backgroundColor": "#73b61c",
+                "cursor": "pointer",
+                "height": 4,
+                "left": "0%",
+                "position": "absolute",
+                "transform": "translate(0%, -50%)",
+                "width": "100%",
+                "zIndex": 1,
+              }
+            }
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-8"
+    >
+      <div
+        className="emotion-5"
+      >
+        MIN  
+        <div
+          className="emotion-4"
+        >
+          180 Bytes
+        </div>
+      </div>
+      <div
+        className="emotion-5"
+      >
+        MAX  
+        <div
+          className="emotion-4"
+        >
+          8.3 KB
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
