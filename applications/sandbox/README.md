@@ -34,6 +34,15 @@ docker-compose -f docker-compose.yml -f applications/workbench/docker-compose.ym
 
 Then navigate to http://localhost:8501
 
+### Shut down
+
+From the main zmlp repo folder:
+```
+docker-compose -f docker-compose.yml -f applications/sandbox/docker-compose.yml down
+```
+
+### Adding scripts in Sandbox
+
 To add a new one, place the Python file in the sandbox/scripts directory. The entry point for Sandbox, sandbox.py, will detect scripts in that directory and allow
 the user to select which one to run.
 

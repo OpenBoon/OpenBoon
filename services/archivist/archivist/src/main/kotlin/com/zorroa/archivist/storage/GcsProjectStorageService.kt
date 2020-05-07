@@ -100,15 +100,14 @@ class GcsProjectStorageService constructor(
         forWrite: Boolean,
         duration: Long,
         unit: TimeUnit
-    ): String {
+    ): Map<String, String> {
         val path = locator.getPath()
-        val contentType = FileUtils.getMediaType(path)
-        val headers = mapOf("Content-Type" to contentType)
+        val mediaType = FileUtils.getMediaType(path)
 
-        val info = BlobInfo.newBuilder(properties.bucket, path).setContentType(contentType).build()
+        val info = BlobInfo.newBuilder(properties.bucket, path).setContentType(mediaType).build()
         val opts = if (forWrite) {
             arrayOf(
-                Storage.SignUrlOption.withExtHeaders(headers),
+                Storage.SignUrlOption.withContentType(),
                 Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
                 Storage.SignUrlOption.withV4Signature())
         } else {
@@ -117,8 +116,11 @@ class GcsProjectStorageService constructor(
                 Storage.SignUrlOption.withV4Signature())
         }
 
-        logSignEvent(path, forWrite)
-        return gcs.signUrl(info, duration, unit, *opts).toString()
+        logSignEvent(path, mediaType, forWrite)
+        return mapOf(
+            "url" to gcs.signUrl(info, duration, unit, *opts).toString(),
+            "mediaType" to mediaType
+        )
     }
 
     override fun setAttrs(locator: ProjectStorageLocator, attrs: Map<String, Any>): FileStorage {

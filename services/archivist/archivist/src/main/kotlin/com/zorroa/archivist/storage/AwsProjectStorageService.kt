@@ -20,6 +20,7 @@ import com.zorroa.archivist.domain.ProjectDirLocator
 import com.zorroa.archivist.domain.ProjectStorageLocator
 import com.zorroa.archivist.domain.ProjectStorageSpec
 import com.zorroa.archivist.service.IndexRoutingService
+import com.zorroa.archivist.util.FileUtils
 import com.zorroa.zmlp.service.logging.LogAction
 import com.zorroa.zmlp.service.logging.LogObject
 import com.zorroa.zmlp.service.logging.warnEvent
@@ -145,8 +146,9 @@ class AwsProjectStorageService constructor(
         forWrite: Boolean,
         duration: Long,
         unit: TimeUnit
-    ): String {
+    ): Map<String, String> {
         val path = locator.getPath()
+        val mediaType = FileUtils.getMediaType(path)
         val expireTime = Date(System.currentTimeMillis() + unit.toMillis(duration))
         val method = if (forWrite) {
             HttpMethod.PUT
@@ -159,8 +161,10 @@ class AwsProjectStorageService constructor(
                 .withMethod(method)
                 .withExpiration(expireTime)
 
-        logSignEvent(path, forWrite)
-        return s3Client.generatePresignedUrl(req).toString()
+        logSignEvent(path, mediaType, forWrite)
+        return mapOf("uri" to
+            s3Client.generatePresignedUrl(req).toString(),
+            "mediaType" to mediaType)
     }
 
     override fun setAttrs(locator: ProjectStorageLocator, attrs: Map<String, Any>): FileStorage {

@@ -66,7 +66,7 @@ interface ProjectStorageService {
         forWrite: Boolean,
         duration: Long,
         unit: TimeUnit
-    ): String
+    ): Map<String, String>
 
     /**
      * Set a [Map] of arbitrary attrs for the given [ProjectStorageLocator].
@@ -107,7 +107,7 @@ interface ProjectStorageService {
     /**
      * Log the signing of a cloud storage URL.
      */
-    fun logSignEvent(path: String, forWrite: Boolean) {
+    fun logSignEvent(path: String, mediaType: String, forWrite: Boolean) {
         val action = if (forWrite) {
             LogAction.SIGN_FOR_WRITE
         } else {
@@ -117,6 +117,7 @@ interface ProjectStorageService {
         logger.event(
             LogObject.PROJECT_STORAGE, action,
             mapOf(
+                "mediaType" to mediaType,
                 "path" to path
             )
         )

@@ -37,6 +37,50 @@ resource "google_sql_user" "zorroa" {
   password = random_string.sql-password.result
 }
 
+## Service Account For Blob Signing
+resource "google_service_account" "archivist" {
+  project      = var.project
+  account_id   = "zmlp-archivist"
+  display_name = "ZMLP Archivist"
+}
+
+resource "google_project_iam_custom_role" "archivist" {
+  project = var.project
+  role_id     = "archivist"
+  title       = "ZMLP Archivist Role"
+  description = "Role assigned to the service account used by the Archivist."
+  permissions = [
+    "iam.serviceAccounts.signBlob",
+    "storage.buckets.create",
+    "storage.buckets.get",
+    "storage.buckets.update",
+    "storage.objects.create",
+    "storage.objects.delete",
+    "storage.objects.get",
+    "storage.objects.list"
+  ]
+}
+
+resource "google_project_iam_member" "archivist" {
+  project = var.project
+  role    = google_project_iam_custom_role.archivist.id
+  member  = "serviceAccount:${google_service_account.archivist.email}"
+}
+
+resource "google_service_account_key" "archivist" {
+  service_account_id = google_service_account.archivist.name
+}
+
+resource "kubernetes_secret" "archivist-sa-key" {
+  metadata {
+    name      = "archivist-sa-key"
+    namespace = var.namespace
+  }
+  data = {
+    "credentials.json" = base64decode(google_service_account_key.archivist.private_key)
+  }
+}
+
 ## K8S Deployment
 resource "kubernetes_deployment" "archivist" {
   provider = kubernetes
@@ -67,6 +111,12 @@ resource "kubernetes_deployment" "archivist" {
           name = "cloudsql-instance-credentials"
           secret {
             secret_name = "cloud-sql-sa-key"
+          }
+        }
+        volume {
+          name = "archivist-credentials"
+          secret {
+            secret_name = "archivist-sa-key"
           }
         }
         node_selector = {
@@ -104,6 +154,11 @@ resource "kubernetes_deployment" "archivist" {
           name              = "archivist"
           image             = "zmlp/archivist:${var.container-tag}"
           image_pull_policy = "Always"
+          volume_mount {
+            name       = "archivist-credentials"
+            mount_path = "/secrets/gcs"
+            read_only  = true
+          }
           resources {
             limits {
               memory = "2Gi"
