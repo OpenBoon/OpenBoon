@@ -24,45 +24,54 @@ const MetadataAnalysisSimilarityDetection = ({ name, value: { simhash } }) => {
       </div>
       <div
         css={{
-          padding: spacing.normal,
-          paddingTop: spacing.base,
-          paddingBottom: spacing.comfy,
-          ':hover': {
-            backgroundColor: colors.signal.electricBlue.background,
-            div: {
-              svg: {
-                display: 'inline-block',
-              },
-            },
-          },
+          padding: `${spacing.base}px ${spacing.normal}px`,
+          paddingBottom: 0,
+          minHeight: COPY_SIZE,
+          width: '100%',
+          fontFamily: 'Roboto Condensed',
+          textTransform: 'uppercase',
+          color: colors.structure.steel,
         }}
       >
-        <div css={{ display: 'flex', paddingBottom: spacing.base }}>
-          <div
-            css={{
-              minHeight: COPY_SIZE,
-              width: '100%',
-              fontFamily: 'Roboto Condensed',
-              textTransform: 'uppercase',
-              color: colors.structure.steel,
-            }}
-          >
-            simhash
-          </div>
-          <ButtonCopy value={simhash} />
-        </div>
+        simhash
+      </div>
+      <div css={{ paddingBottom: spacing.base }}>
         <div
           css={{
-            fontFamily: 'Roboto Mono',
-            fontSize: typography.size.small,
-            lineHeight: typography.height.small,
-            color: colors.structure.white,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
+            display: 'flex',
+            ':hover': {
+              backgroundColor: colors.signal.electricBlue.background,
+              div: {
+                svg: {
+                  display: 'inline-block',
+                },
+              },
+            },
           }}
-          title={simhash}
         >
-          {simhash}
+          <div
+            css={{
+              padding: `${spacing.moderate}px ${spacing.normal}px`,
+              fontFamily: 'Roboto Mono',
+              fontSize: typography.size.small,
+              lineHeight: typography.height.small,
+              color: colors.structure.white,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+            title={simhash}
+          >
+            {simhash}
+          </div>
+          <div
+            css={{
+              minWidth: COPY_SIZE + spacing.normal,
+              paddingTop: spacing.moderate,
+              paddingRight: spacing.normal,
+            }}
+          >
+            <ButtonCopy value={simhash} />
+          </div>
         </div>
       </div>
     </>
