@@ -146,7 +146,7 @@ class AwsProjectStorageService constructor(
         forWrite: Boolean,
         duration: Long,
         unit: TimeUnit
-    ): Map<String, String> {
+    ): Map<String, Any> {
         val path = locator.getPath()
         val mediaType = FileUtils.getMediaType(path)
         val expireTime = Date(System.currentTimeMillis() + unit.toMillis(duration))
