@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
-import filterShape from '../Filter/shape'
-
 import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 import FiltersReset from '../Filters/Reset'
 
+import filterShape from '../Filter/shape'
+
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 
 export const noop = () => {}
 
-const FilterFacet = ({
+const FilterLabelConfidence = ({
   projectId,
   assetId,
   filters,
@@ -20,7 +20,7 @@ const FilterFacet = ({
   filter: {
     type,
     attribute,
-    values: { facets = [] },
+    values: { labels = [], min = 0.0, max = 1.0 },
   },
   filterIndex,
 }) => {
@@ -36,7 +36,7 @@ const FilterFacet = ({
 
   const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
 
-  const hasSelections = facets.length > 0
+  const hasSelections = labels.length > 0
 
   return (
     <>
@@ -64,7 +64,7 @@ const FilterFacet = ({
       <ul css={{ margin: 0, padding: 0, listStyle: 'none' }}>
         {buckets.map(({ key, docCount = 0 }) => {
           const offset = Math.ceil((docCount * 100) / largestCount)
-          const facetIndex = facets.findIndex((f) => f === key)
+          const facetIndex = labels.findIndex((f) => f === key)
           const isSelected = !!(facetIndex + 1)
 
           return (
@@ -87,12 +87,12 @@ const FilterFacet = ({
                 }}
                 variant={VARIANTS.NEUTRAL}
                 onClick={() => {
-                  const newFacets = isSelected
+                  const newLabelConfidences = isSelected
                     ? [
-                        ...facets.slice(0, facetIndex),
-                        ...facets.slice(facetIndex + 1),
+                        ...labels.slice(0, facetIndex),
+                        ...labels.slice(facetIndex + 1),
                       ]
-                    : [...facets, key]
+                    : [...labels, key]
 
                   dispatch({
                     action: ACTIONS.UPDATE_FILTER,
@@ -103,7 +103,7 @@ const FilterFacet = ({
                       updatedFilter: {
                         type,
                         attribute,
-                        values: { facets: newFacets },
+                        values: { labels: newLabelConfidences, min, max },
                       },
                       filterIndex,
                     },
@@ -117,7 +117,7 @@ const FilterFacet = ({
                         width: `${offset}%`,
                         borderTop:
                           !isSelected && hasSelections
-                            ? constants.borders.unselectedFacet
+                            ? constants.borders.unselectedLabelConfidence
                             : constants.borders.facet,
                       }}
                     />
@@ -149,7 +149,7 @@ const FilterFacet = ({
   )
 }
 
-FilterFacet.propTypes = {
+FilterLabelConfidence.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
@@ -157,4 +157,4 @@ FilterFacet.propTypes = {
   filterIndex: PropTypes.number.isRequired,
 }
 
-export default FilterFacet
+export default FilterLabelConfidence

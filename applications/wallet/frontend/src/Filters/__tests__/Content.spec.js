@@ -123,6 +123,43 @@ describe('<FiltersContent />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render the "Label Confidence" filter', () => {
+    const filters = [
+      {
+        attribute: 'analysis.zvi-label-detection',
+        type: 'labelConfidence',
+        values: {},
+      },
+    ]
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        count: 604,
+        results: {
+          docCountErrorUpperBound: 0,
+          sumOtherDocCount: 0,
+          buckets: [
+            { key: 'web_site', docCount: 134 },
+            { key: 'alp', docCount: 75 },
+            { key: 'sports_car', docCount: 56 },
+            { key: 'menu', docCount: 45 },
+          ],
+        },
+      },
+    })
+
+    const component = TestRenderer.create(
+      <FiltersContent
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={filters}
+        setIsMenuOpen={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render the "Range" filter with file sizes', () => {
     const filters = [
       { attribute: 'source.filesize', type: 'range', values: {} },
