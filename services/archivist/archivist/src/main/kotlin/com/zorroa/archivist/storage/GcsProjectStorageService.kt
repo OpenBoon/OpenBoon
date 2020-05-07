@@ -118,7 +118,7 @@ class GcsProjectStorageService constructor(
 
         logSignEvent(path, mediaType, forWrite)
         return mapOf(
-            "url" to gcs.signUrl(info, duration, unit, *opts).toString(),
+            "uri" to gcs.signUrl(info, duration, unit, *opts).toString(),
             "mediaType" to mediaType
         )
     }
