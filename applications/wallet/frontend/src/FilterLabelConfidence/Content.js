@@ -117,7 +117,7 @@ const FilterLabelConfidence = ({
                         width: `${offset}%`,
                         borderTop:
                           !isSelected && hasSelections
-                            ? constants.borders.unselectedLabelConfidence
+                            ? constants.borders.unselectedFacet
                             : constants.borders.facet,
                       }}
                     />
