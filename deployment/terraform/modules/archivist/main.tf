@@ -44,7 +44,7 @@ resource "google_service_account" "archivist" {
   display_name = "ZMLP Archivist"
 }
 
-resource "google_project_iam_custom_role" "archivist-role" {
+resource "google_project_iam_custom_role" "archivist" {
   project = var.project
   role_id     = "archivist"
   title       = "ZMLP Archivist Role"
@@ -61,13 +61,13 @@ resource "google_project_iam_custom_role" "archivist-role" {
   ]
 }
 
-resource "google_project_iam_member" "archivist-iam" {
+resource "google_project_iam_member" "archivist" {
   project = var.project
-  role    = google_project_iam_custom_role.archivist-role.id
+  role    = google_project_iam_custom_role.archivist.id
   member  = "serviceAccount:${google_service_account.archivist.email}"
 }
 
-resource "google_service_account_key" "archivist-account-key" {
+resource "google_service_account_key" "archivist" {
   service_account_id = google_service_account.archivist.name
 }
 
@@ -77,7 +77,7 @@ resource "kubernetes_secret" "archivist-sa-key" {
     namespace = var.namespace
   }
   data = {
-    "credentials.json" = base64decode(google_service_account_key.archivist-account-key.private_key)
+    "credentials.json" = base64decode(google_service_account_key.archivist.private_key)
   }
 }
 
