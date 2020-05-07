@@ -197,7 +197,7 @@ class AssetController @Autowired constructor(
         return assetService.batchUpload(req)
     }
 
-    @ApiOperation("  an asset.")
+    @ApiOperation("Delete an asset.")
     @PreAuthorize("hasAuthority('AssetsImport')")
     @DeleteMapping(value = ["/api/v3/assets/{id}"])
     @ResponseBody
