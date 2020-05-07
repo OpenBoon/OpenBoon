@@ -2,78 +2,16 @@
 
 exports[`<FiltersContent /> should render the "Exists" filter 1`] = `
 Array [
-  .emotion-8 {
+  .emotion-11 {
   padding: 4px;
   border-bottom: 1px solid #191919;
 }
 
-.emotion-3 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
-  background-color: #73b61c;
-}
-
-.emotion-0:hover {
-  background-color: #96c955;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-1 {
-  width: 8px;
 }
 
 .emotion-2 {
@@ -123,29 +61,114 @@ Array [
 .emotion-2,
 .emotion-2:hover,
 .emotion-2:visited {
-  background-color: #808080;
+  background-color: #73b61c;
 }
 
 .emotion-2:hover {
-  background-color: #b3b3b3;
+  background-color: #96c955;
 }
 
 .emotion-2[aria-disabled=true] {
   background-color: #808080;
 }
 
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 4px;
+}
+
+.emotion-3 {
+  width: 8px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
+  background-color: #808080;
+}
+
+.emotion-5:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true] {
+  background-color: #808080;
+}
+
 .emotion-4 {
-  height: 4px;
+  height: 20px;
 }
 
 .emotion-7 {
+  height: 4px;
+}
+
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -162,29 +185,29 @@ Array [
   background-size: 20px;
 }
 
-.emotion-5:focus {
+.emotion-8:focus {
   color: #191919;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-5::-webkit-input-placeholder {
+.emotion-8::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-5::-moz-placeholder {
+.emotion-8::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-5:-ms-input-placeholder {
+.emotion-8:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-5::placeholder {
+.emotion-8::placeholder {
   font-style: italic;
 }
 
-.emotion-6 {
+.emotion-9 {
   width: 42px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
@@ -197,31 +220,47 @@ Array [
 }
 
 <div
-    className="emotion-8"
+    className="emotion-11"
   >
     <div
-      className="emotion-3"
+      className="emotion-6"
     >
-      <button
-        className="emotion-0"
-        onClick={[Function]}
-        type="button"
-      >
-        + Add Metadata Filters
-      </button>
-      <div
-        className="emotion-1"
-      />
       <button
         className="emotion-2"
         onClick={[Function]}
         type="button"
       >
-        Clear All Filters
+        <div
+          className="emotion-1"
+        >
+          <div
+            className="emotion-0"
+          >
+            <svg
+              data-file-name="plus.svg"
+              width={20}
+            />
+          </div>
+          Add Metadata Filters
+        </div>
+      </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          Clear All Filters
+        </div>
       </button>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-7"
     />
     <form
       action=""
@@ -229,10 +268,10 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-7"
+        className="emotion-10"
       >
         <input
-          className="emotion-5"
+          className="emotion-8"
           onChange={[Function]}
           placeholder="Create text filter (search name or field value)"
           type="text"
@@ -241,11 +280,14 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-6"
+          className="emotion-9"
           onClick={[Function]}
           type="submit"
         >
-          +
+          <svg
+            data-file-name="plus.svg"
+            width={20}
+          />
         </button>
       </div>
     </form>
@@ -567,78 +609,16 @@ Array [
 
 exports[`<FiltersContent /> should render the "Facet" filter 1`] = `
 Array [
-  .emotion-8 {
+  .emotion-11 {
   padding: 4px;
   border-bottom: 1px solid #191919;
 }
 
-.emotion-3 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
-  background-color: #73b61c;
-}
-
-.emotion-0:hover {
-  background-color: #96c955;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-1 {
-  width: 8px;
 }
 
 .emotion-2 {
@@ -688,29 +668,114 @@ Array [
 .emotion-2,
 .emotion-2:hover,
 .emotion-2:visited {
-  background-color: #808080;
+  background-color: #73b61c;
 }
 
 .emotion-2:hover {
-  background-color: #b3b3b3;
+  background-color: #96c955;
 }
 
 .emotion-2[aria-disabled=true] {
   background-color: #808080;
 }
 
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 4px;
+}
+
+.emotion-3 {
+  width: 8px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
+  background-color: #808080;
+}
+
+.emotion-5:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true] {
+  background-color: #808080;
+}
+
 .emotion-4 {
-  height: 4px;
+  height: 20px;
 }
 
 .emotion-7 {
+  height: 4px;
+}
+
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -727,29 +792,29 @@ Array [
   background-size: 20px;
 }
 
-.emotion-5:focus {
+.emotion-8:focus {
   color: #191919;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-5::-webkit-input-placeholder {
+.emotion-8::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-5::-moz-placeholder {
+.emotion-8::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-5:-ms-input-placeholder {
+.emotion-8:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-5::placeholder {
+.emotion-8::placeholder {
   font-style: italic;
 }
 
-.emotion-6 {
+.emotion-9 {
   width: 42px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
@@ -762,31 +827,47 @@ Array [
 }
 
 <div
-    className="emotion-8"
+    className="emotion-11"
   >
     <div
-      className="emotion-3"
+      className="emotion-6"
     >
-      <button
-        className="emotion-0"
-        onClick={[Function]}
-        type="button"
-      >
-        + Add Metadata Filters
-      </button>
-      <div
-        className="emotion-1"
-      />
       <button
         className="emotion-2"
         onClick={[Function]}
         type="button"
       >
-        Clear All Filters
+        <div
+          className="emotion-1"
+        >
+          <div
+            className="emotion-0"
+          >
+            <svg
+              data-file-name="plus.svg"
+              width={20}
+            />
+          </div>
+          Add Metadata Filters
+        </div>
+      </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          Clear All Filters
+        </div>
       </button>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-7"
     />
     <form
       action=""
@@ -794,10 +875,10 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-7"
+        className="emotion-10"
       >
         <input
-          className="emotion-5"
+          className="emotion-8"
           onChange={[Function]}
           placeholder="Create text filter (search name or field value)"
           type="text"
@@ -806,11 +887,14 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-6"
+          className="emotion-9"
           onClick={[Function]}
           type="submit"
         >
-          +
+          <svg
+            data-file-name="plus.svg"
+            width={20}
+          />
         </button>
       </div>
     </form>
@@ -1356,78 +1440,16 @@ Array [
 
 exports[`<FiltersContent /> should render the "Label Confidence" filter 1`] = `
 Array [
-  .emotion-8 {
+  .emotion-11 {
   padding: 4px;
   border-bottom: 1px solid #191919;
 }
 
-.emotion-3 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
-  background-color: #73b61c;
-}
-
-.emotion-0:hover {
-  background-color: #96c955;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-1 {
-  width: 8px;
 }
 
 .emotion-2 {
@@ -1477,29 +1499,114 @@ Array [
 .emotion-2,
 .emotion-2:hover,
 .emotion-2:visited {
-  background-color: #808080;
+  background-color: #73b61c;
 }
 
 .emotion-2:hover {
-  background-color: #b3b3b3;
+  background-color: #96c955;
 }
 
 .emotion-2[aria-disabled=true] {
   background-color: #808080;
 }
 
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 4px;
+}
+
+.emotion-3 {
+  width: 8px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
+  background-color: #808080;
+}
+
+.emotion-5:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true] {
+  background-color: #808080;
+}
+
 .emotion-4 {
-  height: 4px;
+  height: 20px;
 }
 
 .emotion-7 {
+  height: 4px;
+}
+
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -1516,29 +1623,29 @@ Array [
   background-size: 20px;
 }
 
-.emotion-5:focus {
+.emotion-8:focus {
   color: #191919;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-5::-webkit-input-placeholder {
+.emotion-8::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-5::-moz-placeholder {
+.emotion-8::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-5:-ms-input-placeholder {
+.emotion-8:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-5::placeholder {
+.emotion-8::placeholder {
   font-style: italic;
 }
 
-.emotion-6 {
+.emotion-9 {
   width: 42px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
@@ -1551,31 +1658,47 @@ Array [
 }
 
 <div
-    className="emotion-8"
+    className="emotion-11"
   >
     <div
-      className="emotion-3"
+      className="emotion-6"
     >
-      <button
-        className="emotion-0"
-        onClick={[Function]}
-        type="button"
-      >
-        + Add Metadata Filters
-      </button>
-      <div
-        className="emotion-1"
-      />
       <button
         className="emotion-2"
         onClick={[Function]}
         type="button"
       >
-        Clear All Filters
+        <div
+          className="emotion-1"
+        >
+          <div
+            className="emotion-0"
+          >
+            <svg
+              data-file-name="plus.svg"
+              width={20}
+            />
+          </div>
+          Add Metadata Filters
+        </div>
+      </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          Clear All Filters
+        </div>
       </button>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-7"
     />
     <form
       action=""
@@ -1583,10 +1706,10 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-7"
+        className="emotion-10"
       >
         <input
-          className="emotion-5"
+          className="emotion-8"
           onChange={[Function]}
           placeholder="Create text filter (search name or field value)"
           type="text"
@@ -1595,11 +1718,14 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-6"
+          className="emotion-9"
           onClick={[Function]}
           type="submit"
         >
-          +
+          <svg
+            data-file-name="plus.svg"
+            width={20}
+          />
         </button>
       </div>
     </form>
@@ -1829,6 +1955,7 @@ Array [
   border-top: 4px solid #73b61c;
 }
 
+<<<<<<< HEAD
 .emotion-18 {
   height: 4px;
   width: 58%;
@@ -1970,6 +2097,370 @@ Array [
 .emotion-113 {
   width: 7%;
   border-top: 4px solid #73b61c;
+=======
+exports[`<FiltersContent /> should render the "Range" filter 2`] = `
+Array [
+  .emotion-11 {
+  padding: 4px;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  background-color: #73b61c;
+}
+
+.emotion-2:hover {
+  background-color: #96c955;
+}
+
+.emotion-2[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 4px;
+}
+
+.emotion-3 {
+  width: 8px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
+  background-color: #808080;
+}
+
+.emotion-5:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-4 {
+  height: 20px;
+}
+
+.emotion-7 {
+  height: 4px;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  border: none;
+  padding: 12px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  color: #e0e0e0;
+  background-color: #191919;
+  padding-left: 32px;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
+}
+
+.emotion-8:focus {
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-8::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-8::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-8:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-8::placeholder {
+  font-style: italic;
+}
+
+.emotion-9 {
+  width: 42px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  color: #000000;
+  background-color: #808080;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  cursor: not-allowed;
+}
+
+<div
+    className="emotion-11"
+  >
+    <div
+      className="emotion-6"
+    >
+      <button
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-1"
+        >
+          <div
+            className="emotion-0"
+          >
+            <svg
+              data-file-name="plus.svg"
+              width={20}
+            />
+          </div>
+          Add Metadata Filters
+        </div>
+      </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          Clear All Filters
+        </div>
+      </button>
+    </div>
+    <div
+      className="emotion-7"
+    />
+    <form
+      action=""
+      method="post"
+      onSubmit={[Function]}
+    >
+      <div
+        className="emotion-10"
+      >
+        <input
+          className="emotion-8"
+          onChange={[Function]}
+          placeholder="Create text filter (search name or field value)"
+          type="text"
+          value=""
+        />
+        <button
+          aria-disabled={true}
+          aria-label="Search"
+          className="emotion-9"
+          onClick={[Function]}
+          type="submit"
+        >
+          <svg
+            data-file-name="plus.svg"
+            width={20}
+          />
+        </button>
+      </div>
+    </form>
+  </div>,
+  .emotion-17 {
+  overflow: auto;
+}
+
+.emotion-16 {
+  background-color: #252525;
+  border-radius: 2px;
+}
+
+.emotion-3 {
+  border-bottom: 1px solid #4a4a4a;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-3 h4 {
+  font-weight: 400;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0 {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+>>>>>>> checkpoint
 }
 
 .emotion-114 {
@@ -5621,78 +6112,16 @@ Array [
 
 exports[`<FiltersContent /> should render the "Range" filter 1`] = `
 Array [
-  .emotion-8 {
+  .emotion-11 {
   padding: 4px;
   border-bottom: 1px solid #191919;
 }
 
-.emotion-3 {
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.emotion-0 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.emotion-0:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-0[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
-.emotion-0,
-.emotion-0:hover,
-.emotion-0:visited {
-  background-color: #73b61c;
-}
-
-.emotion-0:hover {
-  background-color: #96c955;
-}
-
-.emotion-0[aria-disabled=true] {
-  background-color: #808080;
-}
-
-.emotion-1 {
-  width: 8px;
 }
 
 .emotion-2 {
@@ -5742,29 +6171,114 @@ Array [
 .emotion-2,
 .emotion-2:hover,
 .emotion-2:visited {
-  background-color: #808080;
+  background-color: #73b61c;
 }
 
 .emotion-2:hover {
-  background-color: #b3b3b3;
+  background-color: #96c955;
 }
 
 .emotion-2[aria-disabled=true] {
   background-color: #808080;
 }
 
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 4px;
+}
+
+.emotion-3 {
+  width: 8px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
+  background-color: #808080;
+}
+
+.emotion-5:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true] {
+  background-color: #808080;
+}
+
 .emotion-4 {
-  height: 4px;
+  height: 20px;
 }
 
 .emotion-7 {
+  height: 4px;
+}
+
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-5 {
+.emotion-8 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -5781,29 +6295,29 @@ Array [
   background-size: 20px;
 }
 
-.emotion-5:focus {
+.emotion-8:focus {
   color: #191919;
   background-color: #ffffff;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-5::-webkit-input-placeholder {
+.emotion-8::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-5::-moz-placeholder {
+.emotion-8::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-5:-ms-input-placeholder {
+.emotion-8:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-5::placeholder {
+.emotion-8::placeholder {
   font-style: italic;
 }
 
-.emotion-6 {
+.emotion-9 {
   width: 42px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
@@ -5816,31 +6330,47 @@ Array [
 }
 
 <div
-    className="emotion-8"
+    className="emotion-11"
   >
     <div
-      className="emotion-3"
+      className="emotion-6"
     >
-      <button
-        className="emotion-0"
-        onClick={[Function]}
-        type="button"
-      >
-        + Add Metadata Filters
-      </button>
-      <div
-        className="emotion-1"
-      />
       <button
         className="emotion-2"
         onClick={[Function]}
         type="button"
       >
-        Clear All Filters
+        <div
+          className="emotion-1"
+        >
+          <div
+            className="emotion-0"
+          >
+            <svg
+              data-file-name="plus.svg"
+              width={20}
+            />
+          </div>
+          Add Metadata Filters
+        </div>
+      </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          Clear All Filters
+        </div>
       </button>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-7"
     />
     <form
       action=""
@@ -5848,10 +6378,10 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-7"
+        className="emotion-10"
       >
         <input
-          className="emotion-5"
+          className="emotion-8"
           onChange={[Function]}
           placeholder="Create text filter (search name or field value)"
           type="text"
@@ -5860,11 +6390,14 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-6"
+          className="emotion-9"
           onClick={[Function]}
           type="submit"
         >
-          +
+          <svg
+            data-file-name="plus.svg"
+            width={20}
+          />
         </button>
       </div>
     </form>

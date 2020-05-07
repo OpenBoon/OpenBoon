@@ -4,6 +4,7 @@ import filterShape from '../Filter/shape'
 
 import { spacing, constants, colors } from '../Styles'
 import SearchSvg from '../Icons/search.svg'
+import PlusSvg from '../Icons/plus.svg'
 
 import SearchFilter from '../SearchFilter'
 import Button, { VARIANTS } from '../Button'
@@ -13,6 +14,8 @@ import FilterRange from '../FilterRange'
 import FilterLabelConfidence from '../FilterLabelConfidence'
 
 import { dispatch, ACTIONS } from './helpers'
+
+const ICON_SIZE = 20
 
 const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
   return (
@@ -26,7 +29,12 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             style={{ flex: 1 }}
             onClick={() => setIsMenuOpen((isMenuOpen) => !isMenuOpen)}
           >
-            + Add Metadata Filters
+            <div css={{ display: 'flex', alignItems: 'center' }}>
+              <div css={{ display: 'flex', paddingRight: spacing.small }}>
+                <PlusSvg width={ICON_SIZE} />
+              </div>
+              Add Metadata Filters
+            </div>
           </Button>
 
           <div css={{ width: spacing.base }} />
@@ -42,7 +50,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
               })
             }}
           >
-            Clear All Filters
+            <div css={{ height: ICON_SIZE }}>Clear All Filters</div>
           </Button>
         </div>
 
