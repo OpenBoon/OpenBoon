@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import useSWR from 'swr'
 import { bytesToSize } from '../Bytes/helpers'
 
+import filterShape from '../Filter/shape'
+
 import { colors, constants, spacing } from '../Styles'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
@@ -139,18 +141,8 @@ const FilterRange = ({
 FilterRange.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      attribute: PropTypes.string,
-      values: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    }).isRequired,
-  ).isRequired,
-  filter: PropTypes.shape({
-    type: PropTypes.oneOf(['range']).isRequired,
-    attribute: PropTypes.string.isRequired,
-    values: PropTypes.shape({ min: PropTypes.number, max: PropTypes.number }),
-  }).isRequired,
+  filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
+  filter: PropTypes.shape(filterShape).isRequired,
   filterIndex: PropTypes.number.isRequired,
 }
 

@@ -7,9 +7,15 @@ import { spacing } from '../Styles'
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import SuspenseBoundary from '../SuspenseBoundary'
 
-import FilterRangeContent from './Content'
+import FilterLabelConfidenceContent from './Content'
 
-const FilterRange = ({ projectId, assetId, filters, filter, filterIndex }) => {
+const FilterLabelConfidence = ({
+  projectId,
+  assetId,
+  filters,
+  filter,
+  filterIndex,
+}) => {
   return (
     <Accordion
       variant={ACCORDION_VARIANTS.PANEL}
@@ -28,7 +34,7 @@ const FilterRange = ({ projectId, assetId, filters, filter, filterIndex }) => {
         }}
       >
         <SuspenseBoundary>
-          <FilterRangeContent
+          <FilterLabelConfidenceContent
             projectId={projectId}
             assetId={assetId}
             filters={filters}
@@ -41,7 +47,7 @@ const FilterRange = ({ projectId, assetId, filters, filter, filterIndex }) => {
   )
 }
 
-FilterRange.propTypes = {
+FilterLabelConfidence.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
@@ -49,4 +55,4 @@ FilterRange.propTypes = {
   filterIndex: PropTypes.number.isRequired,
 }
 
-export default FilterRange
+export default FilterLabelConfidence

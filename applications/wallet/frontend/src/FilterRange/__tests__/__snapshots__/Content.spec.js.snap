@@ -1,0 +1,617 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
+.emotion-7 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-6 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  min-width: 76px;
+  background-color: #252525;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+<div>
+  <FiltersReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "source.filesize",
+        "type": "range",
+        "values": Object {
+          "max": 8000,
+          "min": 200,
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "source.filesize",
+          "type": "range",
+          "values": Object {
+            "max": 8000,
+            "min": 200,
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-7"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        180 Bytes
+      </span>
+      <span>
+        8.3 KB
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            180,
+            8525,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+        step={0.1}
+        values={
+          Array [
+            200,
+            8000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        MIN  
+        <div
+          className="emotion-2"
+        >
+          200 Bytes
+        </div>
+      </div>
+      <div
+        className="emotion-3"
+      >
+        MAX  
+        <div
+          className="emotion-2"
+        >
+          7.8 KB
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
+.emotion-7 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-6 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  min-width: 76px;
+  background-color: #252525;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+<div>
+  <FiltersReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "source.filesize",
+        "type": "range",
+        "values": Object {
+          "max": 8000,
+          "min": 200,
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "source.filesize",
+          "type": "range",
+          "values": Object {
+            "max": 8000,
+            "min": 200,
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-7"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        180 Bytes
+      </span>
+      <span>
+        8.3 KB
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            180,
+            8525,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+        step={0.1}
+        values={
+          Array [
+            200,
+            8000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        MIN  
+        <div
+          className="emotion-2"
+        >
+          200 Bytes
+        </div>
+      </div>
+      <div
+        className="emotion-3"
+      >
+        MAX  
+        <div
+          className="emotion-2"
+        >
+          7.8 KB
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
+.emotion-7 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-6 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  min-width: 76px;
+  background-color: #252525;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+<div>
+  <FiltersReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "source.filesize",
+        "type": "range",
+        "values": Object {
+          "max": 8000,
+          "min": 200,
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "source.filesize",
+          "type": "range",
+          "values": Object {
+            "max": 8000,
+            "min": 200,
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-7"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        180 Bytes
+      </span>
+      <span>
+        8.3 KB
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            180,
+            8525,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+        step={0.1}
+        values={
+          Array [
+            200,
+            8000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        MIN  
+        <div
+          className="emotion-2"
+        >
+          200 Bytes
+        </div>
+      </div>
+      <div
+        className="emotion-3"
+      >
+        MAX  
+        <div
+          className="emotion-2"
+        >
+          7.8 KB
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
+.emotion-7 {
+  padding: 16px;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.emotion-1 {
+  padding: 4px;
+}
+
+.emotion-6 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  min-width: 76px;
+  background-color: #252525;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  text-align: center;
+  border-radius: 2px;
+}
+
+<div>
+  <FiltersReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "source.filesize",
+        "type": "range",
+        "values": Object {
+          "max": 8000,
+          "min": 200,
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "source.filesize",
+          "type": "range",
+          "values": Object {
+            "max": 8000,
+            "min": 200,
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-7"
+  >
+    <div
+      className="emotion-0"
+    >
+      <span>
+        180 Bytes
+      </span>
+      <span>
+        8.3 KB
+      </span>
+    </div>
+    <div
+      className="emotion-1"
+    >
+      <Slider
+        domain={
+          Array [
+            180,
+            8525,
+          ]
+        }
+        mode={2}
+        onChange={[Function]}
+        onUpdate={[Function]}
+        rootStyle={
+          Object {
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+        step={0.1}
+        values={
+          Array [
+            180,
+            8525,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-3"
+      >
+        MIN  
+        <div
+          className="emotion-2"
+        >
+          180 Bytes
+        </div>
+      </div>
+      <div
+        className="emotion-3"
+      >
+        MAX  
+        <div
+          className="emotion-2"
+        >
+          8.3 KB
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

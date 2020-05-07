@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+import filterShape from '../Filter/shape'
+
 import { spacing, colors, constants } from '../Styles'
 
 import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
@@ -46,13 +48,7 @@ const FiltersMenuOption = ({ option, label, filters, onClick }) => {
 FiltersMenuOption.propTypes = {
   option: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      attribute: PropTypes.string,
-      values: PropTypes.shape({}),
-    }).isRequired,
-  ).isRequired,
+  filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
   onClick: PropTypes.func.isRequired,
 }
 

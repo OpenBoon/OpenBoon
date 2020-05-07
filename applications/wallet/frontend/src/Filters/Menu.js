@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
+import filterShape from '../Filter/shape'
+
 import { spacing } from '../Styles'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
@@ -118,13 +120,7 @@ const FiltersMenu = ({
 FiltersMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      attribute: PropTypes.string,
-      values: PropTypes.shape({}),
-    }).isRequired,
-  ).isRequired,
+  filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
   fields: PropTypes.objectOf(PropTypes.objectOf).isRequired,
   setIsMenuOpen: PropTypes.func.isRequired,
 }
