@@ -11,7 +11,7 @@ describe('<FilterLabelConfidenceContent />', () => {
     const filter = {
       type: 'labelConfidence',
       attribute: 'analysis.zvi-label-detection',
-      values: { labels: [], min: 0.0, max: 1.0 },
+      values: {},
     }
 
     const mockRouterPush = jest.fn()
@@ -123,13 +123,13 @@ describe('<FilterLabelConfidenceContent />', () => {
               {
                 type: 'labelConfidence',
                 attribute: 'analysis.zvi-label-detection',
-                values: { labels: [], min: 0, max: 1 },
+                values: {},
               },
             ]),
           ),
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1sYWJlbC1kZXRlY3Rpb24iLCJ2YWx1ZXMiOnsibGFiZWxzIjpbXSwibWluIjowLCJtYXgiOjF9fV0=',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLnp2aS1sYWJlbC1kZXRlY3Rpb24iLCJ2YWx1ZXMiOnt9fV0=',
     )
   })
 

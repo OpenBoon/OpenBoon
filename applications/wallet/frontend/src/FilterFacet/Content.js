@@ -94,6 +94,9 @@ const FilterFacet = ({
                       ]
                     : [...facets, key]
 
+                  const values =
+                    newFacets.length > 0 ? { facets: newFacets } : {}
+
                   dispatch({
                     action: ACTIONS.UPDATE_FILTER,
                     payload: {
@@ -103,7 +106,7 @@ const FilterFacet = ({
                       updatedFilter: {
                         type,
                         attribute,
-                        values: { facets: newFacets },
+                        values,
                       },
                       filterIndex,
                     },
