@@ -94,6 +94,11 @@ const FilterLabelConfidence = ({
                       ]
                     : [...labels, key]
 
+                  const values =
+                    newLabelConfidences.length > 0
+                      ? { labels: newLabelConfidences, min, max }
+                      : {}
+
                   dispatch({
                     action: ACTIONS.UPDATE_FILTER,
                     payload: {
@@ -103,7 +108,7 @@ const FilterLabelConfidence = ({
                       updatedFilter: {
                         type,
                         attribute,
-                        values: { labels: newLabelConfidences, min, max },
+                        values,
                       },
                       filterIndex,
                     },

@@ -77,11 +77,7 @@ Array [
       Object {
         "attribute": "analysis.zvi-label-detection",
         "type": "labelConfidence",
-        "values": Object {
-          "labels": Array [],
-          "max": 1,
-          "min": 0,
-        },
+        "values": Object {},
       }
     }
     filterIndex={0}
@@ -90,11 +86,7 @@ Array [
         Object {
           "attribute": "analysis.zvi-label-detection",
           "type": "labelConfidence",
-          "values": Object {
-            "labels": Array [],
-            "max": 1,
-            "min": 0,
-          },
+          "values": Object {},
         },
       ]
     }
