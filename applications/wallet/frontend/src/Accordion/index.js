@@ -54,6 +54,40 @@ const STYLES = {
       backgroundColor: colors.structure.coal,
     },
   },
+  FILTER: {
+    container: {
+      backgroundColor: colors.structure.lead,
+      borderRadius: constants.borderRadius.small,
+      padding: 1,
+      ':hover': {
+        border: constants.borders.tableRow,
+        padding: 0,
+        div: {
+          svg: {
+            display: 'inline-block',
+          },
+        },
+      },
+    },
+    title: {
+      borderBottom: constants.borders.tabs,
+      paddingTop: spacing.moderate,
+      paddingBottom: spacing.moderate,
+      paddingLeft: spacing.moderate,
+      display: 'flex',
+      h4: {
+        flex: 1,
+        minWidth: 0,
+        width: '100%',
+        fontWeight: typography.weight.regular,
+        paddingRight: spacing.moderate,
+      },
+    },
+    content: {
+      width: '100%',
+      backgroundColor: colors.structure.coal,
+    },
+  },
 }
 
 export const VARIANTS = Object.keys(STYLES).reduce(
