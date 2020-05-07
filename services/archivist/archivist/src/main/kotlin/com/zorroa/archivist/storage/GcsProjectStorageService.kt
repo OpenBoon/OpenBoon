@@ -108,12 +108,10 @@ class GcsProjectStorageService constructor(
         val opts = if (forWrite) {
             arrayOf(
                 Storage.SignUrlOption.withContentType(),
-                Storage.SignUrlOption.httpMethod(HttpMethod.PUT),
-                Storage.SignUrlOption.withV4Signature())
+                Storage.SignUrlOption.httpMethod(HttpMethod.PUT))
         } else {
             arrayOf(
-                Storage.SignUrlOption.httpMethod(HttpMethod.GET),
-                Storage.SignUrlOption.withV4Signature())
+                Storage.SignUrlOption.httpMethod(HttpMethod.GET))
         }
 
         logSignEvent(path, mediaType, forWrite)
