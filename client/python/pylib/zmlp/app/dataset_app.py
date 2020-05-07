@@ -1,7 +1,7 @@
 import logging
 import os
 
-
+from zmlp.client import ZmlpRequestException
 from ..entity import DataSet
 from ..util import as_collection, as_id
 
@@ -30,11 +30,17 @@ class DataSetApp:
         Returns:
             DataSet: The new DataSet
         """
-        req = {
-            'name': name,
-            'type': type
-        }
-        return DataSet(self.app.client.post('/api/v1/data-sets', req))
+
+        dataset = self.find_one_dataset(name=name)
+        if dataset is None:
+            req = {
+                'name': name,
+                'type': type
+            }
+
+            dataset = DataSet(self.app.client.post('/api/v1/data-sets', req))
+
+        return dataset
 
     def get_dataset(self, id):
         """
@@ -66,7 +72,13 @@ class DataSetApp:
             'ids': as_collection(id),
             'types': as_collection(type),
         }
-        return DataSet(self.app.client.post('/api/v3/data-sets/_find_one', body))
+
+        try:
+            dataset = self.app.client.post('/api/v3/data-sets/_find_one', body)
+        except ZmlpRequestException:
+            dataset = None
+
+        return dataset
 
     def find_datasets(self, id=None, name=None, type=None, limit=None, sort=None):
         """
