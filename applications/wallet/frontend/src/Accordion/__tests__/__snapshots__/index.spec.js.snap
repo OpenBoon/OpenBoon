@@ -61,15 +61,15 @@ exports[`<Accordion /> should render properly for FILTER 1`] = `
   background-color: #252525;
   border-radius: 2px;
   padding: 1px;
+  border: 1px solid transparent;
 }
 
 .emotion-4:hover {
   border: 1px solid #808080;
-  padding: 0;
 }
 
 .emotion-4:hover div svg {
-  display: inline-block;
+  visibility: visible;
 }
 
 .emotion-3 {

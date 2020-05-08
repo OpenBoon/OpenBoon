@@ -59,12 +59,12 @@ const STYLES = {
       backgroundColor: colors.structure.lead,
       borderRadius: constants.borderRadius.small,
       padding: 1,
+      border: constants.borders.transparent,
       ':hover': {
         border: constants.borders.tableRow,
-        padding: 0,
         div: {
           svg: {
-            display: 'inline-block',
+            visibility: 'visible',
           },
         },
       },

@@ -15,14 +15,12 @@ import HiddenSvg from '../Icons/hidden.svg'
 import CrossSvg from '../Icons/cross.svg'
 
 const SVG_SIZE = 20
-const OPTION_CONTAINER = 32
-
-const noop = () => {}
 
 const FiltersTitle = ({
   projectId,
   assetId,
-  filter: { attribute, type, values },
+  filter,
+  filter: { attribute, type, values, isDisabled },
   filters,
   filterIndex,
 }) => {
@@ -68,32 +66,45 @@ const FiltersTitle = ({
       <Button
         variant={VARIANTS.ICON}
         css={{
-          width: OPTION_CONTAINER,
-          height: OPTION_CONTAINER,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: constants.borderRadius.small,
           ':hover': {
             backgroundColor: colors.structure.smoke,
-            svg: { color: colors.structure.white },
+            svg: {
+              color: isDisabled
+                ? colors.signal.canary.strong
+                : colors.structure.white,
+            },
           },
         }}
-        onClick={noop}
+        onClick={() =>
+          dispatch({
+            action: ACTIONS.UPDATE_FILTER,
+            payload: {
+              projectId,
+              assetId,
+              filters,
+              updatedFilter: { ...filter, isDisabled: !isDisabled },
+              filterIndex,
+            },
+          })
+        }
       >
         <HiddenSvg
           width={SVG_SIZE}
-          color={colors.structure.steel}
+          color={
+            isDisabled ? colors.signal.canary.strong : colors.structure.steel
+          }
           css={{
-            display: 'none',
+            visibility: isDisabled ? '' : 'hidden',
           }}
         />
       </Button>
       <Button
         variant={VARIANTS.ICON}
         css={{
-          width: OPTION_CONTAINER,
-          height: OPTION_CONTAINER,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -119,7 +130,7 @@ const FiltersTitle = ({
           width={SVG_SIZE}
           color={colors.structure.steel}
           css={{
-            display: 'none',
+            visibility: 'hidden',
           }}
         />
       </Button>
