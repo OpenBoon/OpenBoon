@@ -7,8 +7,6 @@ import SuspenseBoundary from '../SuspenseBoundary'
 import MetadataAnalysisBbox from './Bbox'
 import MetadataAnalysisLabelDetection from './LabelDetection'
 
-const MIN_HEIGHT = 50
-
 const MetadataAnalysisLabels = ({ name, value: { predictions } }) => {
   if (Object.keys(predictions[0]).includes('bbox')) {
     return (
@@ -24,8 +22,7 @@ const MetadataAnalysisLabels = ({ name, value: { predictions } }) => {
               boxShadow: 'none',
             },
           },
-          'div.Loading': {
-            minHeight: MIN_HEIGHT,
+          '.Loading': {
             backgroundColor: 'transparent',
             boxShadow: 'none',
           },

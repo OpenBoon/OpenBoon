@@ -561,6 +561,7 @@ exports[`<Assets /> should render properly while loading 1`] = `
 }
 
 .emotion-1 {
+  min-height: 300px;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;

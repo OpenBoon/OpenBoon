@@ -16,6 +16,7 @@ exports[`<Loading /> should render properly 1`] = `
 }
 
 .emotion-1 {
+  min-height: 300px;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;

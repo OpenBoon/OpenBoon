@@ -1024,12 +1024,12 @@ Array [
   padding: 16px 12px;
 }
 
-.emotion-48 > div.ErrorBoundary > div {
+.emotion-48 .ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-48 > div.Loading {
+.emotion-48 .Loading {
   background-color: transparent;
   box-shadow: none;
 }
@@ -1925,12 +1925,12 @@ Array [
   padding: 16px 12px;
 }
 
-.emotion-642 > div.ErrorBoundary > div {
+.emotion-642 .ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
 }
 
-.emotion-642 > div.Loading {
+.emotion-642 .Loading {
   background-color: transparent;
   box-shadow: none;
 }
@@ -6198,7 +6198,12 @@ Array [
   padding: 16px 12px;
 }
 
-.emotion-14 > div.ErrorBoundary > div {
+.emotion-14 .ErrorBoundary > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-14 .Loading {
   background-color: transparent;
   box-shadow: none;
 }

@@ -25,11 +25,11 @@ const FilterLabelConfidence = ({
       <div
         css={{
           padding: `${spacing.normal}px ${spacing.moderate}px`,
-          '> div.ErrorBoundary > div': {
+          '.ErrorBoundary > div': {
             backgroundColor: 'transparent',
             boxShadow: 'none',
           },
-          '> div.Loading': {
+          '.Loading': {
             backgroundColor: 'transparent',
             boxShadow: 'none',
           },
