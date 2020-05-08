@@ -133,7 +133,7 @@ open class Task(
     val assetCounts: Map<String, Int>,
 
     @ApiModelProperty("Task Progress")
-    var progress: Short = 0,
+    var progress: Int = 0,
 
     @ApiModelProperty("Current Task Status")
     var status: String? = null

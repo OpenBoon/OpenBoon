@@ -234,6 +234,8 @@ class ProcessorWrapper(object):
                 raise ValueError("No file types were supplied in job settings property")
 
             if self.instance:
+                self.reactor.write_event("status",
+                                         {"status": "Running {}".format(self.ref["className"])})
                 self.instance.generate(consumer)
                 total_time = round(time.monotonic() - start_time, 2)
                 self.increment_stat("generate_count")
@@ -244,7 +246,7 @@ class ProcessorWrapper(object):
 
         except ZmlpFatalProcessorException as upe:
             self.increment_stat("unrecoverable_error_count")
-            self.reactor.error(None, self["ref"]["className"],
+            self.reactor.error(None, self.ref["className"],
                                upe, True, "execute", sys.exc_info()[2])
         except Exception as e:
             if self.instance.fatal_errors:
