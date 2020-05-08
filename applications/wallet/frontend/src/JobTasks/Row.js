@@ -13,7 +13,7 @@ const JobTasksRow = ({
     state,
     timeStarted,
     timeStopped,
-    assetCounts: { assetErrorCount, assetTotalCount },
+    assetCounts: { assetErrorCount },
   },
 }) => {
   const isStarted = timeStarted !== -1
@@ -42,7 +42,6 @@ const JobTasksRow = ({
           >{`${state}...`}</div>
         )}
       </td>
-      <td>{assetTotalCount}</td>
       <td>
         {isStarted ? (
           formatFullDate({ timestamp: timeStarted })

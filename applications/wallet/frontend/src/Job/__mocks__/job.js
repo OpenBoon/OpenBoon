@@ -9,6 +9,7 @@ const job = {
     assetReplacedCount: 0,
     assetWarningCount: 0,
     assetErrorCount: 6,
+    assetTotalCount: 4,
   },
   taskCounts: {
     tasksTotal: 3,
