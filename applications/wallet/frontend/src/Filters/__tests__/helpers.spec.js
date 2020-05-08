@@ -38,20 +38,20 @@ describe('<Filters /> helpers', () => {
               {
                 type: 'range',
                 attribute: 'clip.length',
-                value: {},
+                values: {},
                 isDisabled: true,
               },
               {
                 type: 'range',
                 attribute: 'system.filesize',
-                value: { min: 1, max: 100 },
+                values: { min: 1, max: 100 },
                 isDisabled: false,
               },
             ]),
           ),
         }),
       ).toEqual(
-        'W3sidHlwZSI6InJhbmdlIiwiYXR0cmlidXRlIjoiY2xpcC5sZW5ndGgiLCJ2YWx1ZSI6e30sImlzRGlzYWJsZWQiOnRydWV9LHsidHlwZSI6InJhbmdlIiwiYXR0cmlidXRlIjoic3lzdGVtLmZpbGVzaXplIiwidmFsdWUiOnt9LCJpc0Rpc2FibGVkIjpmYWxzZX1d',
+        'W3sidHlwZSI6InJhbmdlIiwiYXR0cmlidXRlIjoic3lzdGVtLmZpbGVzaXplIiwidmFsdWVzIjp7Im1pbiI6MSwibWF4IjoxMDB9LCJpc0Rpc2FibGVkIjpmYWxzZX1d',
       )
     })
   })
