@@ -52,6 +52,8 @@ class AwsStorageConfiguration(val properties: StorageProperties) {
 
         val clientConfiguration = ClientConfiguration()
         clientConfiguration.signerOverride = "AWSS3V4SignerType"
+        clientConfiguration.maxConnections = 100
+        clientConfiguration.connectionTimeout = 30 * 1000
 
         return AmazonS3ClientBuilder
             .standard()
@@ -119,7 +121,7 @@ class AwsProjectStorageService constructor(
         return try {
             ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(s3obj.objectMetadata.contentType))
-                .contentLength(s3obj.objectMetadata.contentLength)
+                .contentLength(s3obj.objectMetadata.instanceLength)
                 .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
                 .body(InputStreamResource(s3obj.objectContent))
         } catch (e: StorageException) {
@@ -129,9 +131,12 @@ class AwsProjectStorageService constructor(
 
     override fun fetch(locator: ProjectStorageLocator): ByteArray {
         val path = locator.getPath()
+
         try {
             val s3obj = s3Client.getObject(GetObjectRequest(properties.bucket, path))
-            return s3obj.objectContent.readBytes()
+            s3obj.use {
+                return it.objectContent.readBytes()
+            }
         } catch (ex: AmazonS3Exception) {
             throw ProjectStorageException("Failed to fetch $path", ex)
         }
@@ -168,19 +173,15 @@ class AwsProjectStorageService constructor(
     }
 
     override fun setAttrs(locator: ProjectStorageLocator, attrs: Map<String, Any>): FileStorage {
-
         val path = locator.getPath()
-        val metadata = ObjectMetadata()
-        metadata.userMetadata = mapOf("attrs" to Json.serializeToString(attrs))
-
-        val obj = s3Client.getObject(properties.bucket, path)
+        val metadata = s3Client.getObjectMetadata(properties.bucket, path)
 
         return FileStorage(
             locator.getFileId(),
             locator.name,
             locator.category,
-            obj.objectMetadata.contentType,
-            obj.objectMetadata.contentLength,
+            metadata.contentType,
+            metadata.contentLength,
             attrs
         )
     }
