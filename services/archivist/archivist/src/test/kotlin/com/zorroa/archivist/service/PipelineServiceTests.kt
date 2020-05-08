@@ -108,7 +108,9 @@ class PipelineServiceTests : AbstractTest() {
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
-            listOf(), false)
+            listOf(),
+            true
+        )
         val mod = pipelineModService.create(modSpec)
         entityManager.flush()
         return mod

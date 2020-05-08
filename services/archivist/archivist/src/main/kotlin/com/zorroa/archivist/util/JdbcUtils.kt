@@ -72,28 +72,20 @@ object JdbcUtils {
         return sb.toString()
     }
 
-    fun inClause(col: String, size: Int): String {
-        return when {
-            size <= 0 -> ""
-            size == 1 -> "$col = ?"
-            else -> {
-                val sb = StringBuilder(128)
-                sb.append("$col IN (")
-                sb.append(StringUtils.repeat("?", ",", size))
-                sb.append(") ")
-                sb.toString()
-            }
+    fun inClause(col: String, size: Int, cast: String?=null, comp : String="IN"): String {
+        val repeat = if (cast != null) {
+            "?::$cast"
         }
-    }
+        else {
+            "?"
+        }
 
-    fun inClause(col: String, size: Int, cast: String): String {
-        val repeat = "?::$cast"
         return when {
             size <= 0 -> ""
             size == 1 -> "$col = $repeat"
             else -> {
                 val sb = StringBuilder(128)
-                sb.append("$col IN (")
+                sb.append("$col $comp (")
                 sb.append(StringUtils.repeat(repeat, ",", size))
                 sb.append(") ")
                 return sb.toString()

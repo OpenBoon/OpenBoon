@@ -6,11 +6,14 @@ import com.zorroa.archivist.domain.DataSetSpec
 import com.zorroa.archivist.domain.DataSetType
 import com.zorroa.archivist.domain.JobState
 import com.zorroa.archivist.domain.JobType
+import com.zorroa.archivist.domain.ModOpType
 import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelFilter
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
 import com.zorroa.archivist.domain.ModelType
+import com.zorroa.archivist.security.getProjectId
+import com.zorroa.zmlp.util.Json
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
@@ -95,6 +98,20 @@ class ModelServiceTests : AbstractTest() {
         assertEquals(1, all.size())
         assertEquals(model1, all.list[0])
         assertModel(all.list[0])
+    }
+
+
+    @Test
+    fun testPublishModel() {
+        val model1 = create()
+        val mod = modelService.publishModel(model1)
+        Json.prettyPrint(mod)
+        assertEquals(getProjectId(), mod.projectId)
+        assertEquals(model1.name, mod.name)
+        assertEquals("Custom", mod.provider)
+        assertEquals("Custom Model", mod.category)
+        assertEquals("Label Detection", mod.type)
+        assertEquals(ModOpType.APPEND, mod.ops[0].type)
     }
 
     fun assertModel(model: Model) {

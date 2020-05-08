@@ -1,105 +1,56 @@
 package com.zorroa.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType
 import com.zorroa.archivist.repository.KDaoFilter
-import com.zorroa.archivist.security.getZmlpActor
+import com.zorroa.archivist.repository.PipelineModDaoImpl
+import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.JdbcUtils
-import com.zorroa.zmlp.service.jpa.StringListConverter
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
-import org.hibernate.annotations.Type
-import org.hibernate.annotations.TypeDef
 import java.util.UUID
-import javax.persistence.Column
-import javax.persistence.Convert
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
 
-@Entity
-@Table(name = "module")
 @ApiModel("PipelineMod", description = "A ZMLP Pipeline Modifier")
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType::class)
 class PipelineMod(
 
-    @Id
-    @Column(name = "pk_module")
     @ApiModelProperty("The Unique ID of the module")
     val id: UUID,
 
-    @Column(name = "str_name")
+    @ApiModelProperty("The project the module is associated with or Null for all projects")
+    val projectId: UUID?,
+
     @ApiModelProperty("A unique name of the module")
     val name: String,
 
-    @Column(name = "str_description")
     @ApiModelProperty("A description of what the module does")
     val description: String,
 
     @ApiModelProperty("The provider or maintainer of module.")
-    @Column(name = "str_provider")
     val provider: String,
 
     @ApiModelProperty("The service or type of ML, eg \"Google Vision\")")
-    @Column(name = "str_category")
     val category: String,
 
     @ApiModelProperty("The type of technology used in module")
-    @Column(name = "str_type")
     val type: String,
 
     @ApiModelProperty("The general types of media this module can handle.")
-    @Column(name = "str_supported_media")
-    @Convert(converter = StringListConverter::class)
     val supportedMedia: List<String>,
 
-    @Column(name = "bool_restricted")
-    @ApiModelProperty("This module is only available if granted to a project.")
-    val restricted: Boolean,
-
-    @Type(type = "jsonb")
-    @Column(name = "json_ops", columnDefinition = "JSON")
     @ApiModelProperty("A list of operations to apply to the pipeline")
     val ops: List<ModOp>,
 
-    @Column(name = "time_created", updatable = false)
     @ApiModelProperty("The time the Pipeline Mod was created..")
     val timeCreated: Long,
 
-    @Column(name = "time_modified")
     @ApiModelProperty("The last time the Pipeline Mod was modified.")
     val timeModified: Long,
 
-    @Column(name = "actor_created", updatable = false)
     @ApiModelProperty("The actor which created this Pipeline Mod")
     val actorCreated: String,
 
-    @Column(name = "actor_modified")
     @ApiModelProperty("The actor that last made the last modification the Pipeline Mod.")
-    val actorModified: String,
-
-    @Column(name = "bool_standard")
-    @ApiModelProperty("True if the module is maintained by Zorroa update cycle.")
-    val standard: Boolean
-
+    val actorModified: String
 ) {
-    @JsonIgnore
-    fun getUpdated(update: PipelineModUpdate): PipelineMod {
-        return PipelineMod(id,
-            update.name,
-            update.description,
-            update.provider,
-            update.category,
-            update.type,
-            update.supportedMedia.map { it.name },
-            update.restricted,
-            update.ops,
-            timeCreated,
-            System.currentTimeMillis(),
-            actorCreated,
-            getZmlpActor().toString(),
-            standard)
-    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -130,7 +81,7 @@ class PipelineModFilter(
     @ApiModelProperty("The categories type to match")
     val categories: List<String>? = null,
 
-    @ApiModelProperty("The providerss type to match")
+    @ApiModelProperty("The providers type to match")
     val providers: List<String>? = null
 
 ) : KDaoFilter() {
@@ -151,6 +102,10 @@ class PipelineModFilter(
         if (sort.isNullOrEmpty()) {
             sort = listOf("name:asc")
         }
+
+        // Filters by our project ID or standard.
+        addToWhere(PipelineModDaoImpl.PROJ_FILTER)
+        addToValues(getProjectId())
 
         ids?.let {
             addToWhere(JdbcUtils.inClause("module.pk_module", it.size))
@@ -191,7 +146,7 @@ class PipelineModUpdate(
     @ApiModelProperty("The provider or maintainer of module.")
     val provider: String,
 
-    @ApiModelProperty("The service or type of ML, eg \"Google Vision\")")
+    @ApiModelProperty("The provider's service or product used for the module, eg \"Google Vision\")")
     val category: String,
 
     @ApiModelProperty("The underlying technology type?")
@@ -199,9 +154,6 @@ class PipelineModUpdate(
 
     @ApiModelProperty("The types of media this module can handle.")
     val supportedMedia: List<SupportedMedia>,
-
-    @ApiModelProperty("This module is only available if granted to a project.")
-    val restricted: Boolean,
 
     @ApiModelProperty("A list of operations to apply to the pipeline")
     val ops: List<ModOp>
@@ -211,7 +163,7 @@ class PipelineModUpdate(
 class PipelineModSpec(
 
     @ApiModelProperty("A unique name of the module")
-    val name: String,
+    var name: String,
 
     @ApiModelProperty("A description of what the module does")
     val description: String,
@@ -231,11 +183,7 @@ class PipelineModSpec(
     @ApiModelProperty("A list of operations to apply to the pipeline")
     val ops: List<ModOp>,
 
-    @ApiModelProperty("This module is only available if granted to a project.")
-    val restricted: Boolean = false,
-
-    @JsonIgnore
-    @ApiModelProperty("This module is a standard module which may be updated or removed per release.", hidden = true)
+    @ApiModelProperty("Determines if this is a Standard or Project level mod.", hidden = true)
     val standard: Boolean = false
 )
 
