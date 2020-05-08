@@ -15,56 +15,64 @@ const MetadataAnalysisContentDetection = ({ name, value: { content } }) => {
           padding: spacing.normal,
           paddingBottom: spacing.base,
           fontFamily: 'Roboto Mono',
+          fontSize: typography.size.small,
+          lineHeight: typography.height.small,
           color: colors.structure.white,
         }}
       >
         {name}
       </div>
-      <div
-        css={{
-          padding: spacing.normal,
-          paddingTop: spacing.base,
-          ':hover': content
-            ? {
-                backgroundColor: colors.signal.electricBlue.background,
-                div: {
-                  svg: {
-                    display: 'inline-block',
-                  },
-                },
-              }
-            : {},
-        }}
-      >
-        {content && (
-          <div
-            css={{
-              display: 'flex',
-              paddingBottom: spacing.base,
-            }}
-          >
-            <div
-              css={{
-                minHeight: COPY_SIZE,
-                width: '100%',
-                fontFamily: 'Roboto Condensed',
-                textTransform: 'uppercase',
-                color: colors.structure.steel,
-              }}
-            >
-              content
-            </div>
-            <ButtonCopy value={content} />
-          </div>
-        )}
+      {content && (
         <div
           css={{
-            wordBreak: 'break-word',
-            color: colors.structure.zinc,
-            fontStyle: content ? '' : typography.style.italic,
+            padding: `${spacing.base}px ${spacing.normal}px`,
+            paddingBottom: 0,
+            minHeight: COPY_SIZE,
+            width: '100%',
+            fontFamily: 'Roboto Condensed',
+            textTransform: 'uppercase',
+            color: colors.structure.steel,
           }}
         >
-          {content || 'No Results'}
+          content
+        </div>
+      )}
+      <div css={{ paddingBottom: spacing.base }}>
+        <div
+          css={{
+            display: 'flex',
+            ':hover': content
+              ? {
+                  backgroundColor: colors.signal.electricBlue.background,
+                  div: {
+                    svg: {
+                      display: 'inline-block',
+                    },
+                  },
+                }
+              : {},
+          }}
+        >
+          <div
+            css={{
+              width: '100%',
+              padding: `${spacing.moderate}px ${spacing.normal}px`,
+              wordBreak: 'break-word',
+              color: colors.structure.zinc,
+              fontStyle: content ? '' : typography.style.italic,
+            }}
+          >
+            {content || 'No Results'}
+          </div>
+          <div
+            css={{
+              minWidth: COPY_SIZE + spacing.normal,
+              paddingTop: spacing.moderate,
+              paddingRight: spacing.normal,
+            }}
+          >
+            <ButtonCopy value={content} />
+          </div>
         </div>
       </div>
     </>

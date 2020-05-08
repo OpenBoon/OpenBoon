@@ -41,7 +41,7 @@ class ErrorBoundary extends Component {
 
     if (hasError) {
       return (
-        <div css={STYLES[variant]}>
+        <div className="ErrorBoundary" css={STYLES[variant]}>
           <div
             css={{
               height: '100%',

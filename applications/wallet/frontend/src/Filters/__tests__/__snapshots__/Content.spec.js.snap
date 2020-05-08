@@ -311,8 +311,12 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-3 {
+.emotion-11:last-of-type > div:last-of-type {
   border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-3 {
+  border-top: 1px solid #4a4a4a;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;
@@ -323,6 +327,7 @@ Array [
 }
 
 .emotion-3 h4 {
+  font-size: 15px;
   font-weight: 400;
 }
 
@@ -928,8 +933,12 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-3 {
+.emotion-50:last-of-type > div:last-of-type {
   border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-3 {
+  border-top: 1px solid #4a4a4a;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;
@@ -940,6 +949,7 @@ Array [
 }
 
 .emotion-3 h4 {
+  font-size: 15px;
   font-weight: 400;
 }
 
@@ -1011,12 +1021,15 @@ Array [
 }
 
 .emotion-48 {
-  padding: 16px;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding: 16px 12px;
 }
 
-.emotion-48 > div {
+.emotion-48 .ErrorBoundary > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-48 .Loading {
   background-color: transparent;
   box-shadow: none;
 }
@@ -1769,8 +1782,12 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-3 {
+.emotion-644:last-of-type > div:last-of-type {
   border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-3 {
+  border-top: 1px solid #4a4a4a;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;
@@ -1781,6 +1798,7 @@ Array [
 }
 
 .emotion-3 h4 {
+  font-size: 15px;
   font-weight: 400;
 }
 
@@ -1904,12 +1922,15 @@ Array [
 }
 
 .emotion-642 {
-  padding: 16px;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding: 16px 12px;
 }
 
-.emotion-642 > div {
+.emotion-642 .ErrorBoundary > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-642 .Loading {
   background-color: transparent;
   box-shadow: none;
 }
@@ -6086,8 +6107,12 @@ Array [
   border-radius: 2px;
 }
 
-.emotion-3 {
+.emotion-16:last-of-type > div:last-of-type {
   border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-3 {
+  border-top: 1px solid #4a4a4a;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;
@@ -6098,6 +6123,7 @@ Array [
 }
 
 .emotion-3 h4 {
+  font-size: 15px;
   font-weight: 400;
 }
 
@@ -6169,12 +6195,15 @@ Array [
 }
 
 .emotion-14 {
-  padding: 16px;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding: 16px 12px;
 }
 
-.emotion-14 > div {
+.emotion-14 .ErrorBoundary > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-14 .Loading {
   background-color: transparent;
   box-shadow: none;
 }
