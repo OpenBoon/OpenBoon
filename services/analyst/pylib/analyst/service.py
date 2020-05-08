@@ -32,8 +32,8 @@ class ServiceComponents(object):
 
     def __init__(self, args):
         shared_key = None
-        if args.google_credentials:
-            with open(args.google_credentials) as fp:
+        if args.credentials:
+            with open(args.credentials) as fp:
                 shared_key = fp.read()
 
         self.client = ClusterClient(args.archivist, shared_key, args.port)
