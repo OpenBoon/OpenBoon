@@ -42,4 +42,6 @@ docker-compose.override.yml*
 *.ipynb_checkpoints/
 applications/workbench/data/notebooks/tmp/
 
-install_*.sh
+*.sh
+
+yolo-coco-data/
