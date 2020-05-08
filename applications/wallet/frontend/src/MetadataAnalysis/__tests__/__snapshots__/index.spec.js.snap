@@ -358,13 +358,15 @@ exports[`<MetadataAnalysis /> should render label detection with box images prop
   display: flex;
 }
 
-.emotion-16 {
-  padding: 16px;
-  padding-left: 12px;
-  padding-right: 12px;
+.emotion-16:not(:first-of-type) {
+  border-top: 4px solid #3b3b3b;
 }
 
-.emotion-16 > div {
+.emotion-16 > div.ErrorBoundary {
+  padding: 16px 12px;
+}
+
+.emotion-16 > div.ErrorBoundary div {
   background-color: transparent;
   box-shadow: none;
 }

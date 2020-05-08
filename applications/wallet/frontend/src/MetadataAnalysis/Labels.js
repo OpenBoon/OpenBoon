@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { spacing } from '../Styles'
+import { constants, spacing } from '../Styles'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 
@@ -12,12 +12,15 @@ const MetadataAnalysisLabels = ({ name, value: { predictions } }) => {
     return (
       <div
         css={{
-          padding: spacing.normal,
-          paddingLeft: spacing.moderate,
-          paddingRight: spacing.moderate,
-          '> div': {
-            backgroundColor: 'transparent',
-            boxShadow: 'none',
+          '&:not(:first-of-type)': {
+            borderTop: constants.borders.largeDivider,
+          },
+          '> div.ErrorBoundary': {
+            padding: `${spacing.normal}px ${spacing.moderate}px`,
+            div: {
+              backgroundColor: 'transparent',
+              boxShadow: 'none',
+            },
           },
         }}
       >
