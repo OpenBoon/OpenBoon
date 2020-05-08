@@ -31,7 +31,7 @@ class TaskStoppedEvent(
 
 class TaskProgressUpdateEvent(
     val progress: Int,
-    val status: String?
+    val status: String? = null
 )
 
 class TaskStatusUpdateEvent(
