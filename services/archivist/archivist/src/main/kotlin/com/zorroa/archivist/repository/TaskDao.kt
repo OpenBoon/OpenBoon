@@ -183,14 +183,15 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
         jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?",
             exitStatus, task.taskId)
     }
+
     override fun setProgress(task: TaskId, progress: Int) {
-        jdbc.update("UPDATE task SET int_progress=? WHERE pk_task=? AND int_state=?",
-            progress, task.taskId, TaskState.Running.ordinal)
+        jdbc.update("UPDATE task SET int_progress=? WHERE pk_task=?",
+            progress, task.taskId)
     }
 
     override fun setStatus(task: TaskId, status: String) {
-        jdbc.update("UPDATE task SET str_status=? WHERE pk_task=? AND int_state=?",
-            status, task.taskId, TaskState.Running.ordinal)
+        jdbc.update("UPDATE task SET str_status=? WHERE pk_task=?",
+            status, task.taskId)
     }
 
     override fun incrementAssetCounters(task: TaskId, counts: AssetCounters): Boolean {
