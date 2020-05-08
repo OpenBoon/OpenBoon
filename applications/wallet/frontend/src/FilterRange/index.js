@@ -10,24 +10,16 @@ import SuspenseBoundary from '../SuspenseBoundary'
 
 import FilterRangeContent from './Content'
 
-const FilterRange = ({
-  projectId,
-  assetId,
-  filters,
-  filter,
-  filter: { attribute },
-  filterIndex,
-}) => {
+const FilterRange = ({ projectId, assetId, filters, filter, filterIndex }) => {
   return (
     <Accordion
       variant={ACCORDION_VARIANTS.FILTER}
       title={
         <FiltersTitle
-          type="range"
-          attribute={attribute}
           projectId={projectId}
           assetId={assetId}
           filters={filters}
+          filter={filter}
           filterIndex={filterIndex}
         />
       }

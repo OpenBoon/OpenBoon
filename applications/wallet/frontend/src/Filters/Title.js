@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+import filterShape from '../Filter/shape'
+
 import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
@@ -15,11 +17,12 @@ import CrossSvg from '../Icons/cross.svg'
 const SVG_SIZE = 20
 const OPTION_CONTAINER = 32
 
+const noop = () => {}
+
 const FiltersTitle = ({
-  type,
-  attribute,
   projectId,
   assetId,
+  filter: { attribute, type, values },
   filters,
   filterIndex,
 }) => {
@@ -31,14 +34,16 @@ const FiltersTitle = ({
         alignItems: 'center',
       }}
     >
-      {type === 'facet' && <FacetSvg width={SVG_SIZE} color={colors.key.one} />}
+      {(type === 'facet' || type === 'labelConfidence') && (
+        <FacetSvg width={SVG_SIZE} color={colors.key.one} />
+      )}
       {type === 'range' && <RangeSvg width={SVG_SIZE} color={colors.key.one} />}
-      {type === 'exists' && (
-        <ExistsSvg width={SVG_SIZE} color={colors.key.one} />
-      )}
-      {type === 'missing' && (
-        <MissingSvg width={SVG_SIZE} color={colors.key.one} />
-      )}
+      {type === 'exists' &&
+        (values && values.exists ? (
+          <ExistsSvg width={SVG_SIZE} color={colors.key.one} />
+        ) : (
+          <MissingSvg width={SVG_SIZE} color={colors.key.one} />
+        ))}
 
       <div
         css={{
@@ -74,6 +79,7 @@ const FiltersTitle = ({
             svg: { color: colors.structure.white },
           },
         }}
+        onClick={noop}
       >
         <HiddenSvg
           width={SVG_SIZE}
@@ -122,17 +128,10 @@ const FiltersTitle = ({
 }
 
 FiltersTitle.propTypes = {
-  type: PropTypes.oneOf(['facet', 'range']).isRequired,
-  attribute: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      attribute: PropTypes.string,
-      values: PropTypes.shape({}),
-    }).isRequired,
-  ).isRequired,
+  filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
+  filter: PropTypes.shape(filterShape).isRequired,
   filterIndex: PropTypes.number.isRequired,
 }
 

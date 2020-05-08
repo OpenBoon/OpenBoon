@@ -10,24 +10,16 @@ import SuspenseBoundary from '../SuspenseBoundary'
 
 import FilterFacetContent from './Content'
 
-const FilterFacet = ({
-  projectId,
-  assetId,
-  filters,
-  filter,
-  filter: { attribute },
-  filterIndex,
-}) => {
+const FilterFacet = ({ projectId, assetId, filters, filter, filterIndex }) => {
   return (
     <Accordion
       variant={ACCORDION_VARIANTS.FILTER}
       title={
         <FiltersTitle
-          type="facet"
-          attribute={attribute}
           projectId={projectId}
           assetId={assetId}
           filters={filters}
+          filter={filter}
           filterIndex={filterIndex}
         />
       }

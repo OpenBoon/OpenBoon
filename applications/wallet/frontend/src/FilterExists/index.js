@@ -26,11 +26,10 @@ const FilterExists = ({
       variant={ACCORDION_VARIANTS.FILTER}
       title={
         <FiltersTitle
-          type={exists ? 'exists' : 'missing'}
-          attribute={attribute}
           projectId={projectId}
           assetId={assetId}
           filters={filters}
+          filter={filter}
           filterIndex={filterIndex}
         />
       }
