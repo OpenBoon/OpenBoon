@@ -141,6 +141,9 @@ class FilterBoy(object):
             filter_type = raw_filter['type']
         except KeyError:
             raise ParseError(detail='Filter description is missing a `type`.')
+        except TypeError:
+            raise ParseError(detail='Filter format incorrect, did not receive a single '
+                                    'JSON object for the Filter.')
 
         Filter = None
         for _filter in self.filters:
