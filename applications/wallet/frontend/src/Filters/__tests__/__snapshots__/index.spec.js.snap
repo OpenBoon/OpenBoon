@@ -1512,8 +1512,8 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  min-width: 230px;
-  max-width: 230px;
+  min-width: 190px;
+  max-width: 190px;
 }
 
 .emotion-2:hover {

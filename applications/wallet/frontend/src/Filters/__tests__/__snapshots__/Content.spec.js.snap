@@ -47,7 +47,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  min-width: 230px;
+  min-width: 190px;
 }
 
 .emotion-2:hover {
@@ -130,7 +130,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  min-width: 230px;
+  min-width: 190px;
 }
 
 .emotion-5:hover {
@@ -831,7 +831,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  min-width: 230px;
+  min-width: 190px;
 }
 
 .emotion-2:hover {
@@ -914,7 +914,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  min-width: 230px;
+  min-width: 190px;
 }
 
 .emotion-5:hover {
@@ -1842,7 +1842,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  min-width: 230px;
+  min-width: 190px;
 }
 
 .emotion-2:hover {
@@ -1925,7 +1925,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  min-width: 230px;
+  min-width: 190px;
 }
 
 .emotion-5:hover {
@@ -6329,7 +6329,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  min-width: 230px;
+  min-width: 190px;
 }
 
 .emotion-2:hover {
@@ -6412,7 +6412,7 @@ Array [
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  min-width: 230px;
+  min-width: 190px;
 }
 
 .emotion-5:hover {
