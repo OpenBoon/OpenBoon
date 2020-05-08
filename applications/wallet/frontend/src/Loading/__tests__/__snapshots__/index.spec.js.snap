@@ -46,7 +46,7 @@ exports[`<Loading /> should render properly 1`] = `
 }
 
 <div
-  className="emotion-1"
+  className="Loading emotion-1"
 >
   <svg
     className="emotion-0"

@@ -12,6 +12,7 @@ const rotate = keyframes`
 const Loading = () => {
   return (
     <div
+      className="Loading"
       css={{
         flex: 1,
         display: 'flex',
