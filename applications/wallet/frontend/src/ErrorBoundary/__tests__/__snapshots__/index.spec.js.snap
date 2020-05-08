@@ -37,6 +37,7 @@ exports[`<ErrorBoundary /> should render generic when caught 1`] = `
 }
 
 <div
+  aria-label="Error Boundary"
   className="emotion-2"
 >
   <div

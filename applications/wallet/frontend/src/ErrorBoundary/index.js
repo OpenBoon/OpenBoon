@@ -41,7 +41,7 @@ class ErrorBoundary extends Component {
 
     if (hasError) {
       return (
-        <div css={STYLES[variant]}>
+        <div aria-label="Error Boundary" css={STYLES[variant]}>
           <div
             css={{
               height: '100%',
