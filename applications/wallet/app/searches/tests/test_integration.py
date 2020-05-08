@@ -388,6 +388,17 @@ class TestAggregate(BaseFiltersTestCase):
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
         assert content['detail'] == 'Unsupported filter `fake_type` given.'
 
+    def test_bad_querystring_data_format(self, login, api_client, project):
+        qs = [{'type': 'range',
+               'attribute': 'source.filesize',
+               'values': {'min': 4561, 'max': 2924820.9000000004}}]
+        encoded_filter = convert_json_to_base64(qs)
+        response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
+                                  {'filter': encoded_filter})
+        content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
+        assert content['detail'] == ('Filter format incorrect, did not receive a single JSON '
+                                     'object for the Filter.')
+
 
 class TestMetadataExportView:
 
