@@ -16,13 +16,23 @@ import javax.persistence.Table
  * Type of models that can be trained.
  */
 enum class ModelType(
-    val processor: String,
-    val args: Map<String, Any>,
-    val moduleName: String
+    val trainProcessor: String,
+    val trainArgs: Map<String, Any>,
+    val classifyProcessor: String,
+    val classifyArgs: Map<String, Any>,
+    val moduleName: String,
+    val description: String,
+    val modType: String
 ) {
-    FAST_CLASSIFICATON("zmlp_train.kmeans.KMeansTrainer",
+    KMEANS_CLASSIFIER(
+        "zmlp_train.kmeans.KMeansTrainer",
         mapOf(),
-        "custom-%s-fast-classification"),
+        "zmlp_train.kmeans.KMeansClassifier",
+        mapOf(),
+        "custom-%s-kmeans-classification",
+        "Fast classification using a KMeans algorithm",
+        ModType.LABEL_DETECTION
+    ),
     TF2_XFER_RESNET152(
         "zmlp_train.tf2.TensorflowTransferLearningTrainer",
         mapOf(
@@ -30,7 +40,11 @@ enum class ModelType(
             "min_examples" to 5,
             "train-test-ratio" to 3
         ),
-        "custom-%s-label-detection-resnet152"
+        "zmlp_train.tf2.TensorflowTransferLearningClassifier",
+        mapOf(),
+        "custom-%s-label-detection-resnet152",
+        "Classify images using a custom trained ResNet152 model.",
+        ModType.LABEL_DETECTION
     ),
     TF2_XFER_VGG16(
         "zmlp_train.tf2.TensorflowTransferLearningTrainer",
@@ -39,7 +53,11 @@ enum class ModelType(
             "min_examples" to 5,
             "train-test-ratio" to 3
         ),
-        "custom-%s-label-detection-vgg16"
+        "zmlp_train.tf2.TensorflowTransferLearningClassifier",
+        mapOf(),
+        "custom-%s-label-detection-vgg16",
+        "Classify images using a custom trained VGG16 model.",
+        ModType.LABEL_DETECTION
     ),
     TF2_XFER_MOBILENET2(
         "zmlp_train.tf2.TensorflowTransferLearningTrainer",
@@ -48,7 +66,11 @@ enum class ModelType(
             "min_examples" to 5,
             "train-test-ratio" to 3
         ),
-        "custom-%s-label-detection-mobilenet2"
+        "zmlp_train.tf2.TensorflowTransferLearningClassifier",
+        mapOf(),
+        "custom-%s-label-detection-mobilenet2",
+        "Classify images using a custom trained Mobilenet2 model.",
+        ModType.LABEL_DETECTION
     )
 }
 
@@ -181,3 +203,5 @@ class ModelFilter(
         }
     }
 }
+
+class PublishModelSpec()

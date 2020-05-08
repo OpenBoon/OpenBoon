@@ -1,13 +1,21 @@
 package com.zorroa.archivist.service
 
+import com.zorroa.archivist.domain.Category
 import com.zorroa.archivist.domain.Job
+import com.zorroa.archivist.domain.ModOp
+import com.zorroa.archivist.domain.ModOpType
 import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelFilter
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
+import com.zorroa.archivist.domain.PipelineMod
+import com.zorroa.archivist.domain.PipelineModSpec
 import com.zorroa.archivist.domain.ProcessorRef
 import com.zorroa.archivist.domain.ProjectFileLocator
 import com.zorroa.archivist.domain.ProjectStorageEntity
+import com.zorroa.archivist.domain.Provider
+import com.zorroa.archivist.domain.StandardContainers
+import com.zorroa.archivist.domain.SupportedMedia
 import com.zorroa.archivist.repository.DataSetDao
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.ModelDao
@@ -20,12 +28,12 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 interface ModelService {
-
     fun createModel(spec: ModelSpec): Model
     fun trainModel(model: Model, args: ModelTrainingArgs): Job
     fun getModel(id: UUID): Model
     fun find(filter: ModelFilter): KPagedList<Model>
     fun findOne(filter: ModelFilter): Model
+    fun publishModel(model: Model): PipelineMod
 }
 
 @Service
@@ -34,7 +42,8 @@ class ModelServiceImpl(
     val modelDao: ModelDao,
     val modelJdbcDao: ModelJdbcDao,
     val dataSetDao: DataSetDao,
-    val jobLaunchService: JobLaunchService
+    val jobLaunchService: JobLaunchService,
+    val pipelineModService: PipelineModService
 ) : ModelService {
 
     override fun createModel(spec: ModelSpec): Model {
@@ -82,8 +91,8 @@ class ModelServiceImpl(
 
     override fun trainModel(model: Model, args: ModelTrainingArgs): Job {
         val processor = ProcessorRef(
-            model.type.processor, "zmlp/plugins-train",
-            model.type.args.plus(
+            model.type.trainProcessor, "zmlp/plugins-train",
+            model.type.trainArgs.plus(
                 mutableMapOf(
                     "dataset_id" to model.dataSetId.toString(),
                     "model_type" to model.type.toString(),
@@ -97,5 +106,35 @@ class ModelServiceImpl(
             model.trainingJobName, processor,
             mapOf("index" to false)
         )
+    }
+
+    override fun publishModel(model: Model): PipelineMod {
+        val mod = pipelineModService.findByName(model.name, false)
+        if (mod != null) {
+            return mod
+        }
+
+        val modspec = PipelineModSpec(
+            model.name,
+            model.type.description,
+            Provider.CUSTOM,
+            Category.TRAINED,
+            model.type.modType,
+            listOf(SupportedMedia.Documents, SupportedMedia.Images),
+            listOf(
+                ModOp(
+                    ModOpType.APPEND,
+                    listOf(
+                        ProcessorRef(
+                            model.type.trainProcessor,
+                            StandardContainers.TRAIN,
+                            model.type.classifyArgs.plus(mapOf("model_file_id" to model.fileId)),
+                            module = model.name
+                        )
+                    )
+                )
+            )
+        )
+        return pipelineModService.create(modspec)
     }
 }
