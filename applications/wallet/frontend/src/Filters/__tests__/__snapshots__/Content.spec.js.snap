@@ -1021,12 +1021,15 @@ Array [
 }
 
 .emotion-48 {
-  padding: 16px;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding: 16px 12px;
 }
 
-.emotion-48 > div {
+.emotion-48 > div.ErrorBoundary > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-48 > div.Loading {
   background-color: transparent;
   box-shadow: none;
 }
@@ -1919,12 +1922,15 @@ Array [
 }
 
 .emotion-642 {
-  padding: 16px;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding: 16px 12px;
 }
 
-.emotion-642 > div {
+.emotion-642 > div.ErrorBoundary > div {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.emotion-642 > div.Loading {
   background-color: transparent;
   box-shadow: none;
 }
@@ -6189,12 +6195,10 @@ Array [
 }
 
 .emotion-14 {
-  padding: 16px;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding: 16px 12px;
 }
 
-.emotion-14 > div {
+.emotion-14 > div.ErrorBoundary > div {
   background-color: transparent;
   box-shadow: none;
 }

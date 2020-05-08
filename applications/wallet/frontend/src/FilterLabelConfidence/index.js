@@ -24,10 +24,12 @@ const FilterLabelConfidence = ({
     >
       <div
         css={{
-          padding: spacing.normal,
-          paddingLeft: spacing.moderate,
-          paddingRight: spacing.moderate,
-          '> div': {
+          padding: `${spacing.normal}px ${spacing.moderate}px`,
+          '> div.ErrorBoundary > div': {
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+          },
+          '> div.Loading': {
             backgroundColor: 'transparent',
             boxShadow: 'none',
           },

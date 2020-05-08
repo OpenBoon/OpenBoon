@@ -373,6 +373,8 @@ exports[`<MetadataAnalysis /> should render label detection with box images prop
 
 .emotion-16 div.Loading {
   min-height: 50px;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 .emotion-4 {

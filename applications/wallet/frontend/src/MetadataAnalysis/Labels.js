@@ -26,6 +26,8 @@ const MetadataAnalysisLabels = ({ name, value: { predictions } }) => {
           },
           'div.Loading': {
             minHeight: MIN_HEIGHT,
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
           },
         }}
       >
