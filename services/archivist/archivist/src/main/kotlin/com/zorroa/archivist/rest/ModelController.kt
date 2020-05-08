@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelFilter
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
+import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.ModelService
 import io.swagger.annotations.ApiOperation
@@ -28,7 +29,6 @@ class ModelController(
         return modelService.createModel(spec)
     }
 
-    @PreAuthorize("hasAuthority('AssetsImport')")
     @ApiOperation("Get a Model record")
     @GetMapping(value = ["/api/v3/models/{id}"])
     fun get(@PathVariable id: UUID): Model {
@@ -53,5 +53,13 @@ class ModelController(
     @PostMapping("/api/v3/models/_find_one")
     fun findOne(@RequestBody(required = false) filter: ModelFilter?): Model {
         return modelService.findOne(filter ?: ModelFilter())
+    }
+
+    @ApiOperation("Publish a model as a PipelineMod")
+    @PostMapping("/api/v3/models/{id}/_publish")
+    @PreAuthorize("hasAnyAuthority('SystemProjectDecrypt','SystemManage')")
+    fun publish(@PathVariable id: UUID): PipelineMod {
+        val model = modelService.getModel(id)
+        return modelService.publishModel(model)
     }
 }

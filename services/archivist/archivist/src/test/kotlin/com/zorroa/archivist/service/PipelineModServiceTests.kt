@@ -19,6 +19,7 @@ import com.zorroa.zmlp.util.Json
 import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.dao.DataRetrievalFailureException
 import java.util.UUID
 import javax.persistence.EntityManager
@@ -60,7 +61,7 @@ class PipelineModServiceTests : AbstractTest() {
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
-            listOf(op1, op2))
+            listOf(op1, op2), true)
         mod = pipelineModService.create(spec)
     }
 
@@ -69,9 +70,48 @@ class PipelineModServiceTests : AbstractTest() {
         assertTrue(mod.timeModified > 0)
         assertTrue(mod.timeCreated > 0)
         assertEquals(spec.name, mod.name)
-        assertEquals(spec.restricted, mod.restricted)
         assertEquals(spec.description, mod.description)
         assertEquals(Json.serializeToString(spec.ops), Json.serializeToString(mod.ops))
+    }
+
+    @Test(expected = DataIntegrityViolationException::class)
+    fun testCreateDuplicateProjectWithStandardName() {
+        val spec2 = PipelineModSpec("test", "A test module",
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
+            listOf(SupportedMedia.Documents),
+            listOf(), false)
+        pipelineModService.create(spec2)
+    }
+
+    @Test(expected = DataIntegrityViolationException::class)
+    fun testCreateDuplicateProject() {
+        val spec1 = PipelineModSpec("test1", "A test module",
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
+            listOf(SupportedMedia.Documents),
+            listOf(), false)
+        val spec2 = PipelineModSpec("test1", "A test module",
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
+            listOf(SupportedMedia.Documents),
+            listOf(), false)
+        pipelineModService.create(spec1)
+        pipelineModService.create(spec2)
+    }
+
+    @Test(expected = DataIntegrityViolationException::class)
+    fun testCreateDuplicateStandard() {
+        val spec2 = PipelineModSpec("test", "A test module",
+            Provider.ZORROA,
+            Category.ZORROA_STD,
+            ModType.LABEL_DETECTION,
+            listOf(SupportedMedia.Documents),
+            listOf(), true)
+        pipelineModService.create(spec2)
     }
 
     @Test
@@ -83,15 +123,13 @@ class PipelineModServiceTests : AbstractTest() {
             Category.ZORROA_STD,
             ModType.LABEL_DETECTION,
             listOf(SupportedMedia.Documents),
-            true,
             listOf(ModOp(ModOpType.PREPEND, listOf(ProcessorRef("foo", "zmlp-plugins-foo"))))
         )
+
         Thread.sleep(10)
         val updated = pipelineModService.update(mod.id, update)
-        assertEquals(update.name, updated.name)
-        assertEquals(update.restricted, updated.restricted)
         assertEquals(update.description, updated.description)
-        assertEquals(Json.serializeToString(update.ops ?: ""), Json.serializeToString(updated.ops))
+        assertEquals(update.ops[0].type, updated.ops[0].type)
         assertNotEquals(mod.timeModified, updated.timeModified)
 
         val ds2 = pipelineModService.get(mod.id)
@@ -103,9 +141,8 @@ class PipelineModServiceTests : AbstractTest() {
     fun testGet() {
         val module2 = pipelineModService.get(mod.id)
         assertEquals(mod.name, module2.name)
-        assertEquals(mod.restricted, module2.restricted)
         assertEquals(mod.description, module2.description)
-        assertEquals(Json.serializeToString(mod.ops), Json.serializeToString(module2.ops))
+        assertEquals(mod.ops[0].type, module2.ops[0].type)
     }
 
     @Test
@@ -132,30 +169,29 @@ class PipelineModServiceTests : AbstractTest() {
 
     @Test
     fun testGetByName() {
-        val module2 = pipelineModService.get(mod.name)
+        val module2 = pipelineModService.getByName(mod.name)
         assertEquals(mod.name, module2.name)
-        assertEquals(mod.restricted, module2.restricted)
         assertEquals(mod.description, module2.description)
-        assertEquals(Json.serializeToString(mod.ops), Json.serializeToString(module2.ops))
+        assertEquals(mod.ops[0].type, module2.ops[0].type)
     }
 
     @Test(expected = DataRetrievalFailureException::class)
     fun testGetByName_notFound() {
-        pipelineModService.get("kirk")
+        pipelineModService.getByName("kirk")
     }
 
     @Test(expected = DataRetrievalFailureException::class)
     fun testDelete() {
         pipelineModService.delete(mod.id)
         entityManager.flush()
-        pipelineModService.get(mod.name)
+        pipelineModService.getByName(mod.name)
     }
 
     @Test
     fun testUpdateStandardMods() {
-        val count = pipelineModDao.count()
+        val count = pipelineModDao.count(PipelineModFilter())
         pipelineModService.updateStandardMods()
-        assertTrue(pipelineModDao.count() > count)
+        assertTrue(pipelineModDao.count(PipelineModFilter()) > count)
     }
 
     @Test
@@ -176,7 +212,7 @@ class PipelineModServiceTests : AbstractTest() {
     @Test
     fun testGetByIds() {
         pipelineModService.updateStandardMods()
-        val mod = pipelineModService.get("zvi-label-detection")
+        val mod = pipelineModService.getByName("zvi-label-detection")
         pipelineModService.getByIds(listOf(mod.id))
     }
 
