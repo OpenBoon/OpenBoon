@@ -204,6 +204,4 @@ class ModelFilter(
     }
 }
 
-class PublishModelSpec(
-
-)
+class PublishModelSpec()

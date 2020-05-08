@@ -100,7 +100,6 @@ class ModelServiceTests : AbstractTest() {
         assertModel(all.list[0])
     }
 
-
     @Test
     fun testPublishModel() {
         val model1 = create()

@@ -6,7 +6,6 @@ import com.zorroa.archivist.domain.ModelFilter
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
 import com.zorroa.archivist.domain.PipelineMod
-import com.zorroa.archivist.domain.PublishModelSpec
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.ModelService
 import io.swagger.annotations.ApiOperation

@@ -74,7 +74,7 @@ class PipelineModServiceTests : AbstractTest() {
         assertEquals(Json.serializeToString(spec.ops), Json.serializeToString(mod.ops))
     }
 
-    @Test(expected=DataIntegrityViolationException::class)
+    @Test(expected = DataIntegrityViolationException::class)
     fun testCreateDuplicateProjectWithStandardName() {
         val spec2 = PipelineModSpec("test", "A test module",
             Provider.ZORROA,
@@ -85,7 +85,7 @@ class PipelineModServiceTests : AbstractTest() {
         pipelineModService.create(spec2)
     }
 
-    @Test(expected=DataIntegrityViolationException::class)
+    @Test(expected = DataIntegrityViolationException::class)
     fun testCreateDuplicateProject() {
         val spec1 = PipelineModSpec("test1", "A test module",
             Provider.ZORROA,
@@ -103,7 +103,7 @@ class PipelineModServiceTests : AbstractTest() {
         pipelineModService.create(spec2)
     }
 
-    @Test(expected=DataIntegrityViolationException::class)
+    @Test(expected = DataIntegrityViolationException::class)
     fun testCreateDuplicateStandard() {
         val spec2 = PipelineModSpec("test", "A test module",
             Provider.ZORROA,

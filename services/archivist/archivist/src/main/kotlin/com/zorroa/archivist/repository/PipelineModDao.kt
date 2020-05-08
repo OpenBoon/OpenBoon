@@ -101,8 +101,7 @@ class PipelineModDaoImpl : PipelineModDao, AbstractDao() {
                     "$GET WHERE str_name=? AND pk_project IS NULL LIMIT 1",
                     MAPPER, name
                 )
-            }
-            else {
+            } else {
                 jdbc.queryForObject(
                     "$GET WHERE str_name=? AND pk_project=? LIMIT 1",
                     MAPPER, name, getProjectId()
@@ -158,7 +157,7 @@ class PipelineModDaoImpl : PipelineModDao, AbstractDao() {
         val args = mutableListOf<Any>()
         args.addAll(ids)
 
-        val res =  jdbc.update("DELETE FROM module WHERE pk_project IS NULL AND $notInClause",
+        val res = jdbc.update("DELETE FROM module WHERE pk_project IS NULL AND $notInClause",
             *args.toTypedArray())
         logger.info("Removing $res standard modules, leftover= ${ids.size}")
         return res

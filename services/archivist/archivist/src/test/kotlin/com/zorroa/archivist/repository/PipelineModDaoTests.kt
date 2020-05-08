@@ -60,7 +60,7 @@ class PipelineModDaoTests : AbstractTest() {
         val mod2 = pipelineModDao.get(mod1.id)
         assertEquals(mod1.id, mod2.id)
     }
-    
+
     @Test
     fun testFindByIdIn() {
         assertTrue(pipelineModDao.findByIdIn(listOf(UUID.randomUUID())).isEmpty())

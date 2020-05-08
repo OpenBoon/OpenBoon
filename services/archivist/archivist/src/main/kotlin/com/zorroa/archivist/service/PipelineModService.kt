@@ -205,6 +205,5 @@ class PipelineModServiceImpl(
 
     companion object {
         private val logger = LoggerFactory.getLogger(PipelineModServiceImpl::class.java)
-
     }
 }

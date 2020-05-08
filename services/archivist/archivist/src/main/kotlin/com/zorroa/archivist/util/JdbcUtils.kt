@@ -72,11 +72,10 @@ object JdbcUtils {
         return sb.toString()
     }
 
-    fun inClause(col: String, size: Int, cast: String?=null, comp : String="IN"): String {
+    fun inClause(col: String, size: Int, cast: String? = null, comp: String = "IN"): String {
         val repeat = if (cast != null) {
             "?::$cast"
-        }
-        else {
+        } else {
             "?"
         }
 
