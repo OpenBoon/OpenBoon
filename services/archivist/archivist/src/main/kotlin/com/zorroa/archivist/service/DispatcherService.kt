@@ -507,6 +507,9 @@ class DispatcherServiceImpl @Autowired constructor(
 
     override fun handleProgressUpdateEvent(taskId: TaskId, taskProgressUpdateEvent: TaskProgressUpdateEvent) {
         taskDao.setProgress(taskId, taskProgressUpdateEvent.progress)
+        if (taskProgressUpdateEvent.status != null) {
+            taskDao.setStatus(taskId, taskProgressUpdateEvent.status)
+        }
     }
 
     override fun handleStatusUpdateEvent(taskId: TaskId, taskStatusUpdateEvent: TaskStatusUpdateEvent) {

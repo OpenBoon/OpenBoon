@@ -86,6 +86,9 @@ class ZpsExecutor(object):
                     self.client.emit_event(
                         self.task, "index", {
                             "assets": payload, "settings": self.script.get("settings", {})})
+                    self.client.emit_event(self.task, "status", {
+                        "status": "Indexing {} assets".format(len(assets))
+                    })
         except Exception as e:
             logger.warning("Failed to execute ZPS script, {}".format(e))
             self.exit_status = EXIT_STATUS_HARD_FAIL
@@ -157,6 +160,8 @@ class ZpsExecutor(object):
         logger.info("running {} processors in execute, {} objects"
                     .format(len(processors), len(assets)))
 
+        total_processors = len(processors)
+
         try:
             for idx, proc in enumerate(processors):
 
@@ -169,7 +174,15 @@ class ZpsExecutor(object):
 
                 # Runs all objects through the processor, returning
                 # objects in their new state.
+                self.client.emit_event(self.task, "status", {
+                    "status": "Running: {}".format(proc["className"])
+                })
+
                 assets = self.run_containerized_processor(proc, assets)
+
+                self.client.emit_event(self.task, "progress", {
+                    "progress": int((idx + 1) / float(total_processors) * 100)
+                })
 
                 # Tear down the processor, optionally keeping the container
                 # if its needed again.
@@ -516,8 +529,12 @@ class DockerContainerWrapper(object):
                 "settings": settings
             }
         }
-        self.socket.send_json(request)
 
+        self.client.emit_event(self.task, "status", {
+            "status": "Running generator: {}".format(ref["className"])
+        })
+
+        self.socket.send_json(request)
         while True:
             event = self.receive_event()
             event_type = event["type"]

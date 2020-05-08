@@ -135,7 +135,10 @@ class ProjectStorage(object):
         # Once we have that, we upload the file directly to the URI.
         with open(src_path, 'rb') as fp:
             response = requests.put(signed["uri"],
-                                    headers={"Content-Type": signed["mediaType"]},
+                                    headers={
+                                        "Content-Type": signed["mediaType"],
+                                        "Content-Length": str(os.path.getsize(src_path))
+                                    },
                                     data=fp)
             response.raise_for_status()
 
