@@ -13,16 +13,16 @@ class ModelType(Enum):
     Types of models that can be Trained.
     """
 
-    KMEANS_LABEL_DETECTION = 0
+    LABEL_DETECTION_KMEANS = 0
     """A kmeans fast classification model that works with just a single example."""
 
-    RESNET152_LABEL_DETECTION = 1
+    LABEL_DETECTION_RESNET152 = 1
     """Tensorflow2 and Resnet152 to transfer learning model."""
 
-    VGG16_LABEL_DETECTION = 2
+    LABEL_DETECTION_VGG16 = 2
     """Tensorflow2 and VGG16 to transfer learning model."""
 
-    MOBILENET2_LABEL_DETECTION = 3
+    LABEL_DETECTION_MOBILENET2 = 3
     """Tensorflow2 and Mobilenet2 to transfer learning model."""
 
 

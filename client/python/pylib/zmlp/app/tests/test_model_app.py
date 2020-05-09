@@ -19,7 +19,7 @@ class ModelAppTests(unittest.TestCase):
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'test',
             'dataSetId': 'abc123',
-            'type': 'MOBILENET2_LABEL_DETECTION',
+            'type': 'LABEL_DETECTION_MOBILENET2',
             'fileId': '/abc/123/345/foo.zip'
         }
 
@@ -45,7 +45,7 @@ class ModelAppTests(unittest.TestCase):
     def test_create_model(self, post_patch):
         post_patch.return_value = self.model_data
         ds = DataSet({"id": "12345"})
-        model = self.app.models.create_model(ds, ModelType.MOBILENET2_LABEL_DETECTION)
+        model = self.app.models.create_model(ds, ModelType.LABEL_DETECTION_MOBILENET2)
         self.assert_model(model)
 
     @patch.object(ZmlpClient, 'post')
