@@ -493,20 +493,21 @@ class DispatcherServiceImpl @Autowired constructor(
                 handleIndexEvent(task, index)
             }
             TaskEventType.PROGRESS -> {
-                val taskProgressUpdateEvent = Json.Mapper.convertValue<TaskProgressUpdateEvent>(event.payload)
-                handleProgressUpdateEvent(task, taskProgressUpdateEvent)
-                logger.info("Task ${task.taskId} Progress update: ${taskProgressUpdateEvent.progress}")
+                val progress = Json.Mapper.convertValue<TaskProgressUpdateEvent>(event.payload)
+                handleProgressUpdateEvent(task, progress)
             }
             TaskEventType.STATUS -> {
-                val taskStatusUpdateEvent = Json.Mapper.convertValue<TaskStatusUpdateEvent>(event.payload)
-                handleStatusUpdateEvent(task, taskStatusUpdateEvent)
-                logger.info("Task ${task.taskId} Status update: ${taskStatusUpdateEvent.status}")
+                val status = Json.Mapper.convertValue<TaskStatusUpdateEvent>(event.payload)
+                handleStatusUpdateEvent(task, status)
             }
         }
     }
 
     override fun handleProgressUpdateEvent(taskId: TaskId, taskProgressUpdateEvent: TaskProgressUpdateEvent) {
         taskDao.setProgress(taskId, taskProgressUpdateEvent.progress)
+        if (taskProgressUpdateEvent.status != null) {
+            taskDao.setStatus(taskId, taskProgressUpdateEvent.status)
+        }
     }
 
     override fun handleStatusUpdateEvent(taskId: TaskId, taskStatusUpdateEvent: TaskStatusUpdateEvent) {

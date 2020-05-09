@@ -130,4 +130,17 @@ class ModelControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(model.trainingJobName)))
             .andReturn()
     }
+
+    @Test
+    fun testPublish() {
+        val model = createTestModel()
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_publish")
+                .headers(job())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(model.name)))
+            .andReturn()
+    }
 }

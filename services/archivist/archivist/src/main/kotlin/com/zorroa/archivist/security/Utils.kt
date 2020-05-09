@@ -75,6 +75,19 @@ fun getAnalyst(): AnalystAuthentication {
     }
 }
 
+fun hasPermission(vararg perms: Permission): Boolean {
+    val strPerms = perms.map { it.name }
+    val auth = SecurityContextHolder.getContext().authentication
+    auth?.authorities?.let { authorities ->
+        for (g in authorities) {
+            if (strPerms.contains(g.authority)) {
+                return true
+            }
+        }
+    }
+    return false
+}
+
 fun hasPermission(perms: Collection<Permission>): Boolean {
     val strPerms = perms.map { it.name }
     val auth = SecurityContextHolder.getContext().authentication

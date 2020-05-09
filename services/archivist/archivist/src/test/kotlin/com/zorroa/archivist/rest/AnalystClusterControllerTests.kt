@@ -92,31 +92,28 @@ class AnalystClusterControllerTests : MockMvcTest() {
     @Test
     fun testUpdateEventProgress() {
         val job = launchJob()
+        val task = jobService.getTasks(job.jobId)[0]
+
         authenticateAsAnalyst()
-        val task = dispatchQueueManager.getNext()
 
-        if (task != null) {
-            val te = TaskEvent(
-                TaskEventType.PROGRESS,
-                task.id,
-                job.id,
-                mapOf("progress" to 100)
-            )
+        val te = TaskEvent(
+            TaskEventType.PROGRESS,
+            task.id,
+            job.id,
+            mapOf("progress" to 100)
+        )
 
-            val andReturn = mvc.perform(
-                MockMvcRequestBuilders.post("/cluster/_event")
-                    .headers(analyst())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .content(Json.serialize(te))
-            )
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andReturn()
+        mvc.perform(
+            MockMvcRequestBuilders.post("/cluster/_event")
+                .headers(analyst())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(te))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
-            val rtask = jobService.getTask(task.id)
-            assertEquals(100, rtask.progress)
-        } else {
-            assertNotNull(task)
-        }
+        val rtask = jobService.getTask(task.id)
+        assertEquals(100, rtask.progress)
     }
 
     @Test

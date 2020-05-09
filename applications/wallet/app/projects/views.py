@@ -436,6 +436,11 @@ class ProjectViewSet(ConvertCamelToSnakeViewSetMixin,
             except (KeyError, IndexError):
                 # If the errors didn't match what we were expecting let's also raise
                 serializer.is_valid(raise_exception=True)
+            except Project.DoesNotExist:
+                return Response(data={'detail': 'A project with this id and a different name '
+                                                'already exists in Wallet. Send the correct name '
+                                                'or edit the Project in the Django Admin.'},
+                                status=status.HTTP_400_BAD_REQUEST)
 
         # Create it in ZMLP now
         project.sync_with_zmlp(request.user)

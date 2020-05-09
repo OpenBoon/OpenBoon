@@ -58,8 +58,7 @@ class PipelineDaoTests : AbstractTest() {
                 ModType.LABEL_DETECTION,
                 listOf(),
                 listOf(),
-                restricted = false,
-                standard = true
+                true
             )
         )
         entityManager.flush()
