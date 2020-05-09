@@ -1,3 +1,5 @@
+from enum import Enum
+
 from .base import BaseEntity
 
 __all__ = [
@@ -6,14 +8,22 @@ __all__ = [
 ]
 
 
-class ModelType:
+class ModelType(Enum):
     """
     Types of models that can be Trained.
     """
-    FAST_CLASSIFICATON = 'FAST_CLASSIFICATON'
-    TF2_XFER_RESNET152 = 'TF2_XFER_RESNET152'
-    TF2_XFER_VGG16 = 'TF2_XFER_VGG16'
-    TF2_XFER_MOBILENET2 = 'TF2_XFER_MOBILENET2'
+
+    KMEANS_LABEL_DETECTION = 0
+    """A kmeans fast classification model that works with just a single example."""
+
+    RESNET152_LABEL_DETECTION = 1
+    """Tensorflow2 and Resnet152 to transfer learning model."""
+
+    VGG16_LABEL_DETECTION = 2
+    """Tensorflow2 and VGG16 to transfer learning model."""
+
+    MOBILENET2_LABEL_DETECTION = 3
+    """Tensorflow2 and Mobilenet2 to transfer learning model."""
 
 
 class Model(BaseEntity):
@@ -34,14 +44,9 @@ class Model(BaseEntity):
     @property
     def type(self):
         """The type of model"""
-        return self._data['type']
+        return ModelType[self._data['type']]
 
     @property
     def file_id(self):
         """The file ID of the trained model"""
         return self._data['fileId']
-
-    @property
-    def training_job_name(self):
-        """The name of the model training job, the job may or may not exist."""
-        return self._data['trainingJobName']
