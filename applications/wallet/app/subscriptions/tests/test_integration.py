@@ -52,7 +52,7 @@ class TestSubscriptionModel:
             }]
 
         monkeypatch.setattr(ZmlpClient, 'get', mock_get_return)
-        expected = {'end_time': 1588701600000,
+        expected = {'end_time': 1588701600.0,
                     'video_hours': 1,
                     'image_count': 2}
         assert subscription.usage_last_hour() == expected

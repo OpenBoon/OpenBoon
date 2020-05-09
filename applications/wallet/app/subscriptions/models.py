@@ -43,7 +43,7 @@ class Subscription(models.Model):
         return {'video_hours': self.video_hours_limit,
                 'image_count': self.image_count_limit}
 
-    def usage_all_time(self):
+    def usage(self):
         """Returns the all time usage information for the project."""
         client = self.project.get_zmlp_super_client()
         quotas = client.get(f'api/v1/project/_quotas')
