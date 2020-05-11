@@ -27,16 +27,40 @@ describe('<FiltersTitle />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
 
+    // Disable filter
+    act(() =>
+      component.root
+        .findByProps({ 'aria-label': 'Disable Filter' })
+        .props.onClick({ preventDefault: noop }),
+    )
+
+    const encodedDisable = btoa(
+      JSON.stringify([
+        { attribute: 'clip.length', type: 'range', isDisabled: true },
+      ]),
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      {
+        pathname: '/[projectId]/visualizer',
+        query: {
+          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
+          id: '',
+          query: encodedDisable,
+        },
+      },
+      `/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=${encodedDisable}`,
+    )
+
+    // Delete filter
     act(() => {
       component.root
-        .findAllByProps({ variant: 'ICON' })[1]
-        .props.onClick({ preventDefault: noop })
-
-      component.root
-        .findAllByProps({ variant: 'ICON' })[2]
+        .findByProps({ 'aria-label': 'Delete Filter' })
         .props.onClick({ preventDefault: noop })
     })
 
+    expect(component.toJSON()).toMatchSnapshot()
     expect(mockRouterPush).toHaveBeenCalledWith(
       {
         pathname: '/[projectId]/visualizer',

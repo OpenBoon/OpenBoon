@@ -51,7 +51,16 @@ describe('<Filters /> helpers', () => {
           ),
         }),
       ).toEqual(
-        'W3sidHlwZSI6InJhbmdlIiwiYXR0cmlidXRlIjoic3lzdGVtLmZpbGVzaXplIiwidmFsdWVzIjp7Im1pbiI6MSwibWF4IjoxMDB9LCJpc0Rpc2FibGVkIjpmYWxzZX1d',
+        btoa(
+          JSON.stringify([
+            {
+              type: 'range',
+              attribute: 'system.filesize',
+              values: { min: 1, max: 100 },
+              isDisabled: false,
+            },
+          ]),
+        ),
       )
     })
   })

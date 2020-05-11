@@ -386,6 +386,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
           </span>
         </div>
         <button
+          aria-label="Disable Filter"
           className="emotion-5"
           onClick={[Function]}
           type="button"
@@ -398,6 +399,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
           />
         </button>
         <button
+          aria-label="Delete Filter"
           className="emotion-5"
           onClick={[Function]}
           type="button"
@@ -870,6 +872,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
           </span>
         </div>
         <button
+          aria-label="Disable Filter"
           className="emotion-5"
           onClick={[Function]}
           type="button"
@@ -882,6 +885,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
           />
         </button>
         <button
+          aria-label="Delete Filter"
           className="emotion-5"
           onClick={[Function]}
           type="button"

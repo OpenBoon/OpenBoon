@@ -64,6 +64,7 @@ const FiltersTitle = ({
         </span>
       </div>
       <Button
+        aria-label={`${isDisabled ? 'Enable' : 'Disable'} Filter`}
         variant={VARIANTS.ICON}
         css={{
           display: 'flex',
@@ -103,6 +104,7 @@ const FiltersTitle = ({
         />
       </Button>
       <Button
+        aria-label="Delete Filter"
         variant={VARIANTS.ICON}
         css={{
           display: 'flex',
