@@ -20,17 +20,17 @@ enum class ModelType(
     val trainArgs: Map<String, Any>,
     val classifyProcessor: String,
     val classifyArgs: Map<String, Any>,
-    val moduleName: String,
+    val moduleName: String?,
     val description: String,
     val dataSetType: DataSetType
 ) {
-    LABEL_DETECTION_KMEANS(
-        "zmlp_train.kmeans.KMeansTrainer",
+    LABEL_DETECTION_KNN(
+        "zmlp_train.knn.KnnLabelDetectionTrainer",
         mapOf(),
-        "zmlp_train.kmeans.KMeansClassifier",
+        "zmlp_train.knn.KnnLabelDetectionClassifier",
         mapOf(),
-        "custom-%s-kmeans-classification",
-        "Fast classification using a KMeans algorithm",
+        "custom-%s-label-detection-knn",
+        "Fast classification using a KNN algorithm",
         DataSetType.LABEL_DETECTION
     ),
     LABEL_DETECTION_RESNET152(
@@ -71,9 +71,18 @@ enum class ModelType(
         "custom-%s-label-detection-mobilenet2",
         "Classify images using a custom trained Mobilenet2 model.",
         DataSetType.LABEL_DETECTION
+    ),
+    FACE_RECOGNITON_KNN(
+        "zmlp_train.knn.KnnFaceRecognitionTrainer",
+        mapOf(),
+        "zmlp_train.knn.KnnFaceRecognitionClassifier",
+        mapOf(),
+        "custom-%s-face-recognition-knn",
+        "Relabel existing ZMLP faces using a KNN Face Recognition model.",
+        DataSetType.FACE_RECOGNITION
     );
 
-    fun asMap(): Map<String, Any> {
+    fun asMap(): Map<String, Any?> {
         return mapOf("name" to name,
             "trainProcessor" to trainProcessor,
             "trainArgs" to trainArgs,

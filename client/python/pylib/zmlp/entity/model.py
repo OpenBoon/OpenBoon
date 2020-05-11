@@ -13,7 +13,7 @@ class ModelType(Enum):
     Types of models that can be Trained.
     """
 
-    LABEL_DETECTION_KMEANS = 0
+    LABEL_DETECTION_KNN = 0
     """A kmeans fast classification model that works with just a single example."""
 
     LABEL_DETECTION_RESNET152 = 1
@@ -24,6 +24,9 @@ class ModelType(Enum):
 
     LABEL_DETECTION_MOBILENET2 = 3
     """Tensorflow2 and Mobilenet2 to transfer learning model."""
+
+    FACE_RECOGNITION_KNN = 4
+    """Face Recognition model using a KNN classifier."""
 
 
 class Model(BaseEntity):
