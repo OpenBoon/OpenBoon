@@ -1,8 +1,7 @@
 import logging
 import os
 
-
-from ..entity import DataSet
+from ..entity import DataSet, DataSetType
 from ..util import as_collection, as_id
 
 logger = logging.getLogger(__name__)
@@ -25,14 +24,14 @@ class DataSetApp:
 
         Args:
             name (str): The name of the DataSet.
-            type (str):The type of DataSet.
+            type (DataSetType):The type of DataSet.
 
         Returns:
             DataSet: The new DataSet
         """
         req = {
             'name': name,
-            'type': type
+            'type': type.name
         }
         return DataSet(self.app.client.post('/api/v1/data-sets', req))
 
@@ -73,9 +72,9 @@ class DataSetApp:
         Search for datasets.
 
         Args:
-            id (mixed): An ID or collection of IDs to filter on.
-            name (mixed): A name or collection of names to filter on.
-            type: (mixed): A DataSet type or collection of types to filter on.
+            id (str): An ID or collection of IDs to filter on.
+            name (str): A name or collection of names to filter on.
+            type: (str): A DataSet type or collection of types to filter on.
             limit: (int) Limit the number of results.
             sort: (list): A sort array, example: ["time_created:desc"]
 
@@ -103,13 +102,6 @@ class DataSetApp:
 
         """
         return self.app.client.get('/api/v3/data-sets/{}/_label_counts'.format(as_id(dataset)))
-
-    def train_model(self, dataset, model_type):
-        body = {
-            'modelType': model_type
-        }
-        return self.app.client.post(
-            '/api/v3/data-sets/{}/_train_model'.format(as_id(dataset)), body)
 
 
 class DataSetDownloader:

@@ -35,7 +35,7 @@ class ZmlpDataSetAppTests(unittest.TestCase):
         ds = self.app.datasets.create_dataset('test', DataSetType.LabelDetection)
         assert value['id'] == ds.id
         assert value['name'] == ds.name
-        assert value['type'] == ds.type
+        assert DataSetType.LabelDetection == ds.type
 
     @patch.object(ZmlpClient, 'get')
     def test_get_dataset(self, get_patch):
@@ -48,7 +48,7 @@ class ZmlpDataSetAppTests(unittest.TestCase):
         ds = self.app.datasets.get_dataset('A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80')
         assert value['id'] == ds.id
         assert value['name'] == ds.name
-        assert value['type'] == ds.type
+        assert DataSetType.LabelDetection == ds.type
 
     @patch.object(ZmlpClient, 'post')
     def test_find_one_dataset(self, post_patch):
@@ -61,7 +61,7 @@ class ZmlpDataSetAppTests(unittest.TestCase):
         ds = self.app.datasets.find_one_dataset(id='A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80')
         assert value['id'] == ds.id
         assert value['name'] == ds.name
-        assert value['type'] == ds.type
+        assert DataSetType.LabelDetection == ds.type
 
     @patch.object(ZmlpClient, 'post')
     def test_find_datasets(self, post_patch):
@@ -75,7 +75,7 @@ class ZmlpDataSetAppTests(unittest.TestCase):
             id='A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80', limit=1))
         assert value['id'] == ds[0].id
         assert value['name'] == ds[0].name
-        assert value['type'] == ds[0].type
+        assert DataSetType.LabelDetection == ds[0].type
 
     @patch.object(ZmlpClient, 'get')
     def test_get_label_counts(self, get_patch):

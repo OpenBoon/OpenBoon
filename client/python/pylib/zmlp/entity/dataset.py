@@ -1,3 +1,5 @@
+from enum import Enum
+
 from .base import BaseEntity
 
 __all__ = [
@@ -27,7 +29,7 @@ class DataSet(BaseEntity):
     @property
     def type(self):
         """The type of DataSet"""
-        return self._data['type']
+        return DataSetType[self._data['type']]
 
     def make_label(self, label, bbox=None):
         """
@@ -70,16 +72,16 @@ class DataSetLabel:
         }
 
 
-class DataSetType:
+class DataSetType(Enum):
     """
     The various DataSet types.
     """
 
-    LabelDetection = "LabelDetection"
+    LabelDetection = 0
     """The DataSet contains labels useful for LabelDetection"""
 
-    ObjectDetection = "ObjectDetection"
+    ObjectDetection = 1
     """The DataSet labels are useful for ObjectDetection"""
 
-    FaceRecognition = "FaceRecognition"
+    FaceRecognition = 2
     """The DataSet labels useful for FaceRecognition"""
