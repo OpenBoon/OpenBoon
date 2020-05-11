@@ -51,7 +51,7 @@ class FileImportProcessor(AssetProcessor):
 
         if not frame.asset.get_attr("media.type"):
             raise ZmlpFatalProcessorException(
-                "The asset type '{}' is not supported".format(ext, asset.uri))
+                "The asset type '{}' is not supported {}".format(ext, asset.uri))
 
         if asset.attr_exists('location.point'):
             self.apply_reverse_geocode(asset)
