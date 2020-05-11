@@ -9,7 +9,7 @@ exports[`<Icons /> should render properly 1`] = `
   padding-bottom: 16px;
 }
 
-.emotion-75 {
+.emotion-83 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -55,7 +55,7 @@ exports[`<Icons /> should render properly 1`] = `
     Icons
   </h2>
   <div
-    className="emotion-75"
+    className="emotion-83"
   >
     <div
       className="emotion-2"
@@ -269,6 +269,38 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./exists.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="exists.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./facet.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="facet.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./fallback.svg
       </div>
       <div
@@ -445,6 +477,22 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./missing.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="missing.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./noJobs.svg
       </div>
       <div
@@ -516,6 +564,22 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="queue.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./range.svg
+      </div>
+      <div
+        className="emotion-1"
+      >
+        <svg
+          data-file-name="range.svg"
           height="100%"
           width="100%"
         />

@@ -7,6 +7,7 @@ import { spacing, constants, colors } from '../Styles'
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import Button, { VARIANTS } from '../Button'
 import FiltersReset from '../Filters/Reset'
+import FiltersTitle from '../Filters/Title'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
 
@@ -22,8 +23,16 @@ const FilterExists = ({
 }) => {
   return (
     <Accordion
-      variant={ACCORDION_VARIANTS.PANEL}
-      title={attribute}
+      variant={ACCORDION_VARIANTS.FILTER}
+      title={
+        <FiltersTitle
+          projectId={projectId}
+          assetId={assetId}
+          filters={filters}
+          filter={filter}
+          filterIndex={filterIndex}
+        />
+      }
       isInitiallyOpen
     >
       <div

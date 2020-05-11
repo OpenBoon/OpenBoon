@@ -5,6 +5,7 @@ import filterShape from '../Filter/shape'
 import { spacing } from '../Styles'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
+import FiltersTitle from '../Filters/Title'
 import SuspenseBoundary from '../SuspenseBoundary'
 
 import FilterLabelConfidenceContent from './Content'
@@ -18,8 +19,16 @@ const FilterLabelConfidence = ({
 }) => {
   return (
     <Accordion
-      variant={ACCORDION_VARIANTS.PANEL}
-      title={filter.attribute}
+      variant={ACCORDION_VARIANTS.FILTER}
+      title={
+        <FiltersTitle
+          projectId={projectId}
+          assetId={assetId}
+          filters={filters}
+          filter={filter}
+          filterIndex={filterIndex}
+        />
+      }
       isInitiallyOpen
     >
       <div
