@@ -23,6 +23,7 @@ const FilterRange = ({ projectId, assetId, filters, filter, filterIndex }) => {
           filterIndex={filterIndex}
         />
       }
+      cacheKey={`FilterRange.${filter.attribute}.${filterIndex}`}
       isInitiallyOpen
     >
       <div

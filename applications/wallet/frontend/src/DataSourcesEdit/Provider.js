@@ -18,6 +18,7 @@ const DataSourcesEditProvider = ({
       <Accordion
         variant={VARIANTS.PRIMARY}
         title={<img src={logo} alt={name} height={IMG_HEIGHT} />}
+        cacheKey={`DataSourcesEditProvider.${name}`}
         isInitiallyOpen
       >
         <>
