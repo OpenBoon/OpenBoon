@@ -38,7 +38,7 @@ class ZviSimilarityProcessor(AssetProcessor):
         self.mod.bind(for_training=False, data_shapes=[('data', (1, 3, 224, 224))])
         self.mod.set_params(self.arg_params, self.aux_params, allow_missing=True)
         with open(self.model_path + '/synset.txt', 'r') as f:
-            self.labels = [l.rstrip() for l in f]
+            self.labels = [l1.rstrip() for l1 in f]
 
     def process(self, frame):
         asset = frame.asset
