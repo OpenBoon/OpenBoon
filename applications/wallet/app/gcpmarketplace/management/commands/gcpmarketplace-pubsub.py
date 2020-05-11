@@ -46,7 +46,7 @@ class MessageHandler(object):
             'ENTITLEMENT_CREATION_REQUESTED': self._handle_entitlement_creation_requested,
             'ACCOUNT_ACTIVE': self._handle_account_activate,
             'ENTITLEMENT_ACTIVE': self._handle_entitlement_active,
-            'ENTITLEMENT_PLAN_CHANGE_REQUESTED': self._handle_entitlement_plan_changed_request,
+            'ENTITLEMENT_PLAN_CHANGE_REQUESTED': self._handle_entitlement_plan_changed_requested,
             'ENTITLEMENT_PLAN_CHANGED': self._handle_entitlement_plan_changed,
             'ENTITLEMENT_CANCELLED': self._handle_entitlement_cancelled}
 
@@ -76,6 +76,7 @@ class MessageHandler(object):
             sleep(10)
             user = User.objects.get(id=user.id)
 
+        # Approve the entitlement.
         if entitlement['state'] == 'ENTITLEMENT_ACTIVATION_REQUESTED':
             name = self._get_entitlement_name(entitlement_id)
             request = get_procurement_api().providers().entitlements().approve(
@@ -87,7 +88,8 @@ class MessageHandler(object):
         """Handles the ACCOUNT_ACTIVE event from google marketplace."""
 
         # Wait for account to exist.
-        account_name = (f'providers/DEMO-{settings.MARKETPLACE_PROJECT_ID}/accounts/'  # TODO: remove DEMO when this goes live.
+        # TODO: remove DEMO when this goes live.
+        account_name = (f'providers/DEMO-{settings.MARKETPLACE_PROJECT_ID}/accounts/'
                         f'{self.payload["account"]["id"]}')
         while not MarketplaceAccount.objects.filter(name=account_name).exists():
             print('Waiting for user account to be created. Sleeping for 10 seconds')
@@ -133,7 +135,8 @@ class MessageHandler(object):
 
         print(f'Project {project.id} created for entitlement {entitlement_name}.')
 
-    def _handle_entitlement_plan_changed_request(self):
+    def _handle_entitlement_plan_changed_requested(self):
+        """Handles the ENTITLEMENT_PLAN_CHANGED_REQUESTED event from google marketplace."""
         entitlement = self._get_entitlement(self.payload['entitlement']['id'])
         if entitlement['state'] == 'ENTITLEMENT_PENDING_PLAN_CHANGE_APPROVAL':
             body = {'pendingPlanName': entitlement['newPendingPlan']}
@@ -147,6 +150,7 @@ class MessageHandler(object):
                   f'ENTITLEMENT_PENDING_PLAN_CHANGE_APPROVAL so the event was ignored.')
 
     def _handle_entitlement_plan_changed(self):
+        """Handles the ENTITLEMENT_PLAN_CHANGED event from google marketplace."""
         plan_quota_map = {'free': (100, 1000),
                           'decent': (200, 2000),
                           'pretty-good': (300, 3000),
@@ -156,12 +160,11 @@ class MessageHandler(object):
         plan_name = entitlement_data['newPlan']
         video_quota, image_quota = plan_quota_map[plan_name]
         entitlement_name = self._get_entitlement_name(entitlement_data['id'])
-        subscription = MarketplaceEntitlement.objects.get(name=entitlement_name).project.subscription
+        subscription = MarketplaceEntitlement.objects.get(name=entitlement_name).project.subscription  # noqa
         subscription.video_hours_limit = video_quota
         subscription.image_count_limit = image_quota
         subscription.save()
         print(f'Plan changed to {plan_name} for entitlement {entitlement_name}')
-
 
     def _handle_entitlement_cancelled(self):
         """Handles the ENTITLEMENT_CANCELLED event from google marketplace."""
@@ -170,7 +173,6 @@ class MessageHandler(object):
         project.is_active = False
         project.save()
         print(f'Deactivated project {project.id} for entitlement {entitlement_name}.')
-
 
     def _get_entitlement(self, entitlement_id):
         """Gets an entitlement from the Procurement Service.
@@ -199,7 +201,8 @@ class MessageHandler(object):
         Returns(dict): Name of the entitlement.
 
         """
-        return f'providers/DEMO-{settings.MARKETPLACE_PROJECT_ID}/entitlements/{entitlement_id}'  #TODO: Remove DEMO- when this goes live.
+        # TODO: Remove DEMO- when this goes live.
+        return f'providers/DEMO-{settings.MARKETPLACE_PROJECT_ID}/entitlements/{entitlement_id}'
 
 
 class Command(BaseCommand):
