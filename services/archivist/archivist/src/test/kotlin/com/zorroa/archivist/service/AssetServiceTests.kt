@@ -26,7 +26,6 @@ import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
-import com.zorroa.zmlp.util.Json
 import org.elasticsearch.client.ResponseException
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
