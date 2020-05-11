@@ -23,6 +23,7 @@ const FilterFacet = ({ projectId, assetId, filters, filter, filterIndex }) => {
           filterIndex={filterIndex}
         />
       }
+      cacheKey={`FilterFacet.${filter.attribute}.${filterIndex}`}
       isInitiallyOpen
     >
       <div

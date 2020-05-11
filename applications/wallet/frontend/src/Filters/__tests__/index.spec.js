@@ -371,7 +371,7 @@ describe('<Filters />', () => {
     // Expand Location Section
     act(() => {
       component.root
-        .findAllByProps({ 'aria-label': 'Expand Section' })[6]
+        .findAllByProps({ 'aria-label': 'Expand Section' })[2]
         .props.onClick({ preventDefault: noop })
     })
 
