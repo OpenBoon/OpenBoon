@@ -109,7 +109,7 @@ class ModelServiceTests : AbstractTest() {
         assertEquals(model1.name, mod.name)
         assertEquals("Custom", mod.provider)
         assertEquals("Custom Model", mod.category)
-        assertEquals("LabelDetection", mod.type)
+        assertEquals("Label Detection", mod.type)
         assertEquals(ModOpType.APPEND, mod.ops[0].type)
     }
 
