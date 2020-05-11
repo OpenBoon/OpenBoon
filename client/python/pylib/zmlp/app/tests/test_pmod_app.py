@@ -2,7 +2,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from zmlp import ZmlpClient, DataSet, ModelType, Model
+from zmlp import ZmlpClient
 from .util import get_zmlp_app
 
 logging.basicConfig(level=logging.DEBUG)
@@ -45,4 +45,3 @@ class PipelineModAppTests(unittest.TestCase):
     def assert_pipeline_mod(self, mod):
         assert self.obj_data['id'] == mod.id
         assert self.obj_data['name'] == mod.name
-

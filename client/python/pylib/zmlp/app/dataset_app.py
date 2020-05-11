@@ -1,7 +1,7 @@
 import logging
 import os
 
-from ..entity import DataSet, DataSetType
+from ..entity import DataSet
 from ..util import as_collection, as_id
 
 logger = logging.getLogger(__name__)

@@ -73,7 +73,7 @@ enum class ModelType(
         DataSetType.LABEL_DETECTION
     );
 
-    fun asMap() : Map<String, Any> {
+    fun asMap(): Map<String, Any> {
         return mapOf("name" to name,
             "trainProcessor" to trainProcessor,
             "trainArgs" to trainArgs,
@@ -214,4 +214,3 @@ class ModelFilter(
         }
     }
 }
-

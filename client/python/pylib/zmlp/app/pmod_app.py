@@ -1,7 +1,7 @@
 import logging
 
 from ..entity import PipelineMod
-from ..util import as_collection, as_id, as_id_collection
+from ..util import as_collection, as_id
 
 logger = logging.getLogger(__name__)
 

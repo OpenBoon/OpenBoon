@@ -28,8 +28,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
-import javax.persistence.EntityManager
-import javax.persistence.PersistenceContext
 
 interface PipelineModService {
     fun create(spec: PipelineModSpec): PipelineMod

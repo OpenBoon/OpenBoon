@@ -49,7 +49,8 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         self.reactor.write_event("status", {
             "status": "Downloading files in DataSet"
         })
-        download_dataset(self.app_model.dataset_id, self.base_dir, self.arg_value('train-test-ratio'))
+        download_dataset(self.app_model.dataset_id, self.base_dir,
+                         self.arg_value('train-test-ratio'))
 
         self.reactor.write_event("status", {
             "status": "Training model{}".format(self.app_model.file_id)
