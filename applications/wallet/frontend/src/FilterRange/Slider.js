@@ -10,11 +10,11 @@ const TRACK_HEIGHT = 4
 const HANDLE_WIDTH = 8
 const HANDLE_HEIGHT = 24
 
-const FilterRangeSlider = ({ domain, values, setValues, onChange }) => {
+const FilterRangeSlider = ({ step, domain, values, setValues, onChange }) => {
   return (
     <Slider
       mode={2}
-      step={0.1}
+      step={step}
       domain={domain}
       rootStyle={{ position: 'relative', width: '100%' }}
       onUpdate={setValues}
@@ -105,6 +105,7 @@ const FilterRangeSlider = ({ domain, values, setValues, onChange }) => {
 }
 
 FilterRangeSlider.propTypes = {
+  step: PropTypes.number.isRequired,
   domain: PropTypes.arrayOf(PropTypes.number).isRequired,
   values: PropTypes.arrayOf(PropTypes.number).isRequired,
   setValues: PropTypes.func.isRequired,

@@ -39,7 +39,8 @@ Array [
 <div
     className="emotion-0"
   >
-    Label prediction confidence score: 
+    Label prediction confidence score:
+     
     All
   </div>,
   .emotion-2 {
@@ -96,7 +97,7 @@ Array [
             "width": "100%",
           }
         }
-        step={0.1}
+        step={0.01}
         values={
           Array [
             0,
@@ -174,7 +175,8 @@ Array [
 <div
     className="emotion-0"
   >
-    Label prediction confidence score: 
+    Label prediction confidence score:
+     
     All
   </div>,
   .emotion-2 {
@@ -231,7 +233,7 @@ Array [
             "width": "100%",
           }
         }
-        step={0.1}
+        step={0.01}
         values={
           Array [
             0,
@@ -573,7 +575,8 @@ Array [
 <div
     className="emotion-0"
   >
-    Label prediction confidence score: 
+    Label prediction confidence score:
+     
     All
   </div>,
   .emotion-2 {
@@ -630,7 +633,7 @@ Array [
             "width": "100%",
           }
         }
-        step={0.1}
+        step={0.01}
         values={
           Array [
             0,

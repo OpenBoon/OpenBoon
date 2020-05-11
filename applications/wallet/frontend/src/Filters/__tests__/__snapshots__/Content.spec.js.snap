@@ -2327,7 +2327,8 @@ Array [
           <div
             className="emotion-4"
           >
-            Label prediction confidence score: 
+            Label prediction confidence score:
+             
             All
           </div>
           <div

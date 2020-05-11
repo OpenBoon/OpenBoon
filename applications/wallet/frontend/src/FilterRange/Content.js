@@ -71,6 +71,7 @@ const FilterRange = ({
         </div>
         <div css={{ padding: spacing.small }}>
           <FilterRangeSlider
+            step={0.1}
             domain={domain}
             values={rangeValues}
             setValues={(values) => setRangeValues(values)}

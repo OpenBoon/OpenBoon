@@ -59,7 +59,8 @@ const FilterLabelConfidence = ({
         onReset={() => setRangeValues([0, 1])}
       />
       <div css={{ paddingBottom: spacing.moderate }}>
-        Label prediction confidence score: {formatRange({ min, max })}
+        Label prediction confidence score:{' '}
+        {formatRange({ min: rangeValues[0], max: rangeValues[1] })}
       </div>
       <div css={{ padding: spacing.normal, paddingBottom: spacing.spacious }}>
         <div
@@ -75,6 +76,7 @@ const FilterLabelConfidence = ({
         </div>
         <div css={{ padding: spacing.small }}>
           <FilterRangeSlider
+            step={0.01}
             domain={[0, 1]}
             values={rangeValues}
             setValues={(values) => setRangeValues(values)}
