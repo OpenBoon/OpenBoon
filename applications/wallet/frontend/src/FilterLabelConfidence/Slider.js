@@ -58,7 +58,7 @@ const FilterLabelConfidenceSlider = ({
             step={0.01}
             domain={[0, 1]}
             values={rangeValues}
-            setValues={(values) => setRangeValues(values)}
+            onUpdate={(values) => setRangeValues(values)}
             onChange={([newMin, newMax]) =>
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,

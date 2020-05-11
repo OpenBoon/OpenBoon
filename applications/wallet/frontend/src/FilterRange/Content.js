@@ -74,7 +74,7 @@ const FilterRange = ({
             step={0.1}
             domain={domain}
             values={rangeValues}
-            setValues={(values) => setRangeValues(values)}
+            onUpdate={(values) => setRangeValues(values)}
             onChange={([newMin, newMax]) =>
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
