@@ -115,7 +115,7 @@ class ModelServiceImpl(
             model.type.description,
             Provider.CUSTOM,
             Category.TRAINED,
-            model.type.dataSetType.name,
+            model.type.dataSetType.label,
             listOf(SupportedMedia.Documents, SupportedMedia.Images),
             listOf(
                 ModOp(
