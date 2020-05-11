@@ -26,6 +26,7 @@ import com.zorroa.archivist.domain.emptyZpsScript
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.storage.ProjectStorageService
 import com.zorroa.archivist.util.FileUtils
+import com.zorroa.zmlp.util.Json
 import org.elasticsearch.client.ResponseException
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -564,13 +565,16 @@ class AssetServiceTests : AbstractTest() {
         var asset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
         assetService.updateLabels(UpdateAssetLabelsRequest(
             // Validate adding 2 identical labels only adds 1
-            mapOf(asset.id to listOf(DataSetLabel(ds.id, "cat"), DataSetLabel(ds.id, "cat")))
+            mapOf(asset.id to listOf(
+                DataSetLabel(ds.id, "cat", simhash = "12345"),
+                DataSetLabel(ds.id, "cat", simhash = "12345")))
         ))
 
         asset = assetService.getAsset(asset.id)
         var labels = asset.getAttr("labels", DataSetLabel.LIST_OF)
         assertEquals(1, labels?.size)
         assertEquals("cat", labels?.get(0)?.label)
+        assertEquals("12345", labels?.get(0)?.simhash)
 
         // Remove a label
         assetService.updateLabels(UpdateAssetLabelsRequest(

@@ -1,6 +1,7 @@
 from enum import Enum
 
 from .base import BaseEntity
+from ..util import round_floats
 
 __all__ = [
     'DataSet',
@@ -31,7 +32,7 @@ class DataSet(BaseEntity):
         """The type of DataSet"""
         return DataSetType[self._data['type']]
 
-    def make_label(self, label, bbox=None):
+    def make_label(self, label, bbox=None, simhash=None):
         """
         Make an instance of a DataSetLabel which can be used
         to label assets.
@@ -39,11 +40,11 @@ class DataSet(BaseEntity):
         Args:
             label (str): The label name.
             bbox (list[float]): A open bounding box.
-
+            simhash (str): An associated simhash, if nay.
         Returns:
             DataSetLabel: The new label.
         """
-        return DataSetLabel(self, label, bbox)
+        return DataSetLabel(self, label, bbox, simhash)
 
 
 class DataSetLabel:
@@ -51,10 +52,12 @@ class DataSetLabel:
     A Label that can be added to an Asset either at import time
     or once the Asset has been imported.
     """
-    def __init__(self, dataset, label, bbox=None):
+
+    def __init__(self, dataset, label, bbox=None, simhash=None):
         self.dataset_id = getattr(dataset, 'id', dataset)
         self.label = label
         self.bbox = bbox
+        self.simhash = simhash
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
@@ -68,7 +71,8 @@ class DataSetLabel:
         return {
             "dataSetId": self.dataset_id,
             "label": self.label,
-            "bbox": self.bbox
+            "bbox": round_floats(self.bbox),
+            "simhash": self.simhash
         }
 
 

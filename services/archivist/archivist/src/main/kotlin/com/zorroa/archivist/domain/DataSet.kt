@@ -86,7 +86,10 @@ class DataSetLabel(
     @ApiModelProperty("The label for the DataSet")
     val label: String,
     @ApiModelProperty("An optional bounding box")
-    val bbox: List<Float>? = null
+    val bbox: List<Float>? = null,
+    @ApiModelProperty("An an optional simhash for the label")
+    val simhash: String? = null
+
 ) {
     companion object {
         val SET_OF: TypeReference<MutableSet<DataSetLabel>> = object :
