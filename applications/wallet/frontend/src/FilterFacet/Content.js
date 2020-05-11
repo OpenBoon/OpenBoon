@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
+import filterShape from '../Filter/shape'
+
 import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 import FiltersReset from '../Filters/Reset'
 
-import { dispatch, ACTIONS } from '../Filters/helpers'
+import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 
 export const noop = () => {}
 
@@ -22,7 +24,7 @@ const FilterFacet = ({
   },
   filterIndex,
 }) => {
-  const encodedFilter = btoa(JSON.stringify({ type, attribute }))
+  const encodedFilter = encode({ filters: { type, attribute } })
 
   const {
     data: {
@@ -92,6 +94,9 @@ const FilterFacet = ({
                       ]
                     : [...facets, key]
 
+                  const values =
+                    newFacets.length > 0 ? { facets: newFacets } : {}
+
                   dispatch({
                     action: ACTIONS.UPDATE_FILTER,
                     payload: {
@@ -101,7 +106,7 @@ const FilterFacet = ({
                       updatedFilter: {
                         type,
                         attribute,
-                        values: { facets: newFacets },
+                        values,
                       },
                       filterIndex,
                     },
@@ -150,18 +155,8 @@ const FilterFacet = ({
 FilterFacet.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      attribute: PropTypes.string,
-      values: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    }).isRequired,
-  ).isRequired,
-  filter: PropTypes.shape({
-    type: PropTypes.oneOf(['facet']).isRequired,
-    attribute: PropTypes.string.isRequired,
-    values: PropTypes.shape({ facets: PropTypes.arrayOf(PropTypes.string) }),
-  }).isRequired,
+  filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
+  filter: PropTypes.shape(filterShape).isRequired,
   filterIndex: PropTypes.number.isRequired,
 }
 

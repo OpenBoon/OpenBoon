@@ -15,6 +15,7 @@ from zmlp import ZmlpClient
 from zmlp.client import ZmlpDuplicateException, ZmlpInvalidRequestException
 
 from wallet.utils import convert_base64_to_json, convert_json_to_base64
+from wallet.tests.utils import check_response
 from projects.models import Project, Membership
 from projects.serializers import ProjectSerializer
 from projects.views import BaseProjectViewSet, ProjectUserViewSet
@@ -233,6 +234,19 @@ class TestProjectViewSet:
         assert response.status_code == 400
         assert response.json()['detail'][0] == ('A project with this id already '
                                                 'exists in Wallet and ZMLP.')
+
+    def test_post_create_already_in_wallet_diff_name(self, login, project_zero, project_zero_user,
+                                                     api_client):
+        Project.objects.create(id='af29eb00-9adc-45be-8be4-50589211d300',
+                               name='Test Project').save()
+        body = {'id': 'af29eb00-9adc-45be-8be4-50589211d300',
+                'name': 'Totally Different Name'}
+
+        response = api_client.post(reverse('project-list'), body)
+        content = check_response(response, status.HTTP_400_BAD_REQUEST)
+        assert content['detail'] == ('A project with this id and a different name '
+                                     'already exists in Wallet. Send the correct name '
+                                     'or edit the Project in the Django Admin.')
 
     def test_post_bad_id(self, project_zero, project_zero_user, api_client, monkeypatch):
 

@@ -11,7 +11,9 @@ enum class TaskEventType {
     EXPAND,
     MESSAGE,
     STATS,
-    INDEX
+    INDEX,
+    PROGRESS,
+    STATUS
 }
 
 open class TaskEvent(
@@ -25,6 +27,15 @@ class TaskStoppedEvent(
     val exitStatus: Int,
     val newState: TaskState? = null,
     val manualKill: Boolean = false
+)
+
+class TaskProgressUpdateEvent(
+    val progress: Int,
+    val status: String? = null
+)
+
+class TaskStatusUpdateEvent(
+    val status: String
 )
 
 /**

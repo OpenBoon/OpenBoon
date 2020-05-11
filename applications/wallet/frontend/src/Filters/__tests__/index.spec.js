@@ -121,8 +121,8 @@ describe('<Filters />', () => {
         projectId: PROJECT_ID,
         query: btoa(
           JSON.stringify([
-            { type: 'search', value: 'Cat' },
-            { type: 'search', value: 'Dog' },
+            { type: 'search', attribute: '', value: 'Cat' },
+            { type: 'search', attribute: '', value: 'Dog' },
           ]),
         ),
       },
@@ -143,12 +143,14 @@ describe('<Filters />', () => {
       {
         pathname: '/[projectId]/visualizer',
         query: {
-          query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
+          query: btoa(
+            JSON.stringify([{ type: 'search', attribute: '', value: 'Cat' }]),
+          ),
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
           id: '',
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InNlYXJjaCIsImF0dHJpYnV0ZSI6IiIsInZhbHVlIjoiQ2F0In1d',
     )
   })
 
@@ -161,7 +163,9 @@ describe('<Filters />', () => {
       pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
-        query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
+        query: btoa(
+          JSON.stringify([{ type: 'search', attribute: '', value: 'Cat' }]),
+        ),
       },
     })
 
@@ -198,7 +202,9 @@ describe('<Filters />', () => {
       pathname: '/[projectId]/visualizer',
       query: {
         projectId: PROJECT_ID,
-        query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
+        query: btoa(
+          JSON.stringify([{ type: 'search', attribute: '', value: 'Cat' }]),
+        ),
       },
     })
 
@@ -209,7 +215,7 @@ describe('<Filters />', () => {
     // Clear All Filters
     act(() => {
       component.root
-        .findByProps({ children: 'Clear All Filters' })
+        .findByProps({ 'aria-label': 'Clear All Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -240,7 +246,7 @@ describe('<Filters />', () => {
     // open the menu
     act(() => {
       component.root
-        .findByProps({ children: '+ Add Metadata Filters' })
+        .findByProps({ 'aria-label': 'Add Metadata Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -280,7 +286,7 @@ describe('<Filters />', () => {
     // open the menu
     act(() => {
       component.root
-        .findByProps({ children: '+ Add Metadata Filters' })
+        .findByProps({ 'aria-label': 'Add Metadata Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -358,7 +364,7 @@ describe('<Filters />', () => {
     // open the menu
     act(() => {
       component.root
-        .findByProps({ children: '+ Add Metadata Filters' })
+        .findByProps({ 'aria-label': 'Add Metadata Filters' })
         .props.onClick({ preventDefault: noop })
     })
 

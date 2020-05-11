@@ -3,6 +3,7 @@ import mimetypes
 import requests
 from django.http import StreamingHttpResponse
 from django.utils.cache import patch_response_headers, patch_cache_control
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -45,6 +46,17 @@ class AssetViewSet(BaseProjectViewSet):
     def retrieve(self, request, project_pk, pk):
         return self._zmlp_retrieve(request, pk, item_modifier=asset_modifier)
 
+    def destroy(self, request, project_pk, pk):
+        path = f'{self.zmlp_root_api_path}/{pk}'
+        response = request.client.delete(path)
+        if response.get('success'):
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            # This may never be used as it doesn't seem like the ZMLP endpoint ever
+            # returns a non-success response.
+            return Response(data={'detail': 'Unable to delete asset.'},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     @action(detail=False, methods=['post'])
     def search(self, request, project_pk):
         """Searches the assets for this project with whichever query is given.
@@ -65,32 +77,33 @@ class AssetViewSet(BaseProjectViewSet):
     @action(detail=True, methods=['get'])
     def box_images(self, request, project_pk, pk):
         """Special action that returns a portion of the Asset's metadata with base64 encoded
-images anywhere it finds a "bbox" key. When a bbox key is found an image that represents that
-box is generated and added to the metadata next to the "bbox" key as "b64_image". By default
-the entire "analysis" section is returned but the query param "attr" can be used to return
-only a specific section of the metadata.
+        images anywhere it finds a "bbox" key. When a bbox key is found an image that represents
+        that box is generated and added to the metadata next to the "bbox" key as "b64_image".
+        By default the entire "analysis" section is returned but the query param "attr" can be
+        used to return only a specific section of the metadata.
 
-Available Query Params:
+        Available Query Params:
 
-- *width* - Width of the images generated in pixels.
-- *attr* - Dot-notation path to the attr of the metadata to create box images for. Below
-is an example querystring for getting the "zvi-object-detection" section of the metadata shown.
+        - *width* - Width of the images generated in pixels.
+        - *attr* - Dot-notation path to the attr of the metadata to create box images for. Below
+        is an example querystring for getting the "zvi-object-detection" section of the metadata
+        shown.
 
-Metadata:
+        Metadata:
 
-    {
-      "analysis": {
-        "zvi-object-detection": {
-          ...
-        }
-      }
-    }
+            {
+              "analysis": {
+                "zvi-object-detection": {
+                  ...
+                }
+              }
+            }
 
-Querystring:
+        Querystring:
 
-    ?attr=analysis.zvi-object-detection&width=128
+            ?attr=analysis.zvi-object-detection&width=128
 
-"""
+        """
         asset = request.app.assets.get_asset(pk)
         imager = AssetBoxImager(asset, request.client)
         attr = request.query_params.get('attr', 'analysis')

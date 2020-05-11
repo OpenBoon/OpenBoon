@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import useSWR from 'swr'
 import { bytesToSize } from '../Bytes/helpers'
 
+import filterShape from '../Filter/shape'
+
 import { colors, constants, spacing } from '../Styles'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
@@ -17,11 +19,8 @@ const formatValue = ({ attribute, value }) => {
     return bytesToSize({ bytes: value })
   }
 
-  if (value > 0 && value < 1) {
-    return value.toFixed(1)
-  }
-
-  return value
+  // Will always return 2 decimals at most, only if necessary
+  return Math.round((value + Number.EPSILON) * 100) / 100
 }
 
 const FilterRange = ({
@@ -36,7 +35,7 @@ const FilterRange = ({
     data: { results },
   } = useSWR(
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encode({
-      filters: { type, attribute, values },
+      filters: { type, attribute },
     })}`,
   )
 
@@ -142,18 +141,8 @@ const FilterRange = ({
 FilterRange.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      attribute: PropTypes.string,
-      values: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    }).isRequired,
-  ).isRequired,
-  filter: PropTypes.shape({
-    type: PropTypes.oneOf(['range']).isRequired,
-    attribute: PropTypes.string.isRequired,
-    values: PropTypes.shape({ min: PropTypes.number, max: PropTypes.number }),
-  }).isRequired,
+  filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
+  filter: PropTypes.shape(filterShape).isRequired,
   filterIndex: PropTypes.number.isRequired,
 }
 

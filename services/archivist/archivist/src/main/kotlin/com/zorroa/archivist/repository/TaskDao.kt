@@ -40,6 +40,8 @@ interface TaskDao {
     fun getAll(tf: TaskFilter?): KPagedList<Task>
     fun getAll(job: UUID, state: TaskState): List<InternalTask>
     fun isAutoRetryable(task: TaskId): Boolean
+    fun setProgress(task: TaskId, progress: Int)
+    fun setStatus(task: TaskId, status: String)
 
     /**
      * Return the total number of pending tasks.
@@ -142,16 +144,19 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             when (newState) {
                 in RESET_STATES -> {
                     jdbc.update(
-                        "UPDATE task SET time_started=-1, time_stopped=-1 WHERE pk_task=?", task.taskId)
+                        "UPDATE task SET time_started=-1, time_stopped=-1, int_progress=0 WHERE pk_task=?",
+                        task.taskId)
                 }
                 in START_STATES -> {
                     jdbc.update(
                         "UPDATE task SET time_ping=?, time_started=?, int_run_count=int_run_count+1, " +
-                            "time_stopped=-1,int_ping_count=1 WHERE pk_task=?", time, time, task.taskId
+                            "time_stopped=-1,int_ping_count=1, int_progress=0 WHERE pk_task=?",
+                        time, time, task.taskId
                     )
                 }
                 in STOP_STATES -> {
-                    jdbc.update("UPDATE task SET time_stopped=? WHERE pk_task=?", time, task.taskId)
+                    jdbc.update("UPDATE task SET time_stopped=?, int_progress=100 WHERE pk_task=?",
+                        time, task.taskId)
                 }
             }
         }
@@ -175,7 +180,18 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
     }
 
     override fun setExitStatus(task: TaskId, exitStatus: Int) {
-        jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?", exitStatus, task.taskId)
+        jdbc.update("UPDATE task SET int_exit_status=? WHERE pk_task=?",
+            exitStatus, task.taskId)
+    }
+
+    override fun setProgress(task: TaskId, progress: Int) {
+        jdbc.update("UPDATE task SET int_progress=? WHERE pk_task=?",
+            progress, task.taskId)
+    }
+
+    override fun setStatus(task: TaskId, status: String) {
+        jdbc.update("UPDATE task SET str_status=? WHERE pk_task=?",
+            status, task.taskId)
     }
 
     override fun incrementAssetCounters(task: TaskId, counts: AssetCounters): Boolean {
@@ -275,7 +291,9 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 rs.getLong("time_stopped"),
                 rs.getLong("time_created"),
                 rs.getLong("time_ping"),
-                buildAssetCounts(rs)
+                buildAssetCounts(rs),
+                rs.getInt("int_progress"),
+                rs.getString("str_status")
             )
         }
 
@@ -359,6 +377,8 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
             "task.int_exit_status," +
             "task.str_host, " +
             "task.int_run_count, " +
+            "task.int_progress, " +
+            "task.str_status, " +
             "task_stat.int_asset_total_count," +
             "task_stat.int_asset_create_count," +
             "task_stat.int_asset_replace_count," +

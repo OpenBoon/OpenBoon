@@ -1,6 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FilterFacetContent /> should render selected 1`] = `
+exports[`<FilterFacetContent /> should render with no buckets 1`] = `
+Array [
+  <FiltersReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "location.city",
+        "type": "facet",
+        "values": Object {},
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "location.city",
+          "type": "facet",
+          "values": Object {},
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-family: Roboto Condensed;
+  color: #b3b3b3;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div>
+      KEYWORD
+    </div>
+    <div>
+      COUNT
+    </div>
+  </div>,
+  .emotion-0 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+<ul
+    className="emotion-0"
+  />,
+]
+`;
+
+exports[`<FilterFacetContent /> should select a facet 1`] = `
 Array [
   <FiltersReset
     assetId=""
@@ -9,9 +70,7 @@ Array [
         "attribute": "location.city",
         "type": "facet",
         "values": Object {
-          "facets": Array [
-            "Tyngsboro",
-          ],
+          "facets": Array [],
         },
       }
     }
@@ -22,9 +81,7 @@ Array [
           "attribute": "location.city",
           "type": "facet",
           "values": Object {
-            "facets": Array [
-              "Tyngsboro",
-            ],
+            "facets": Array [],
           },
         },
       ]
@@ -98,8 +155,7 @@ Array [
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  background-color: #027aff38;
-  color: #b3b3b3;
+  color: #ffffff;
 }
 
 .emotion-5:hover {
@@ -148,6 +204,262 @@ Array [
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 8px;
+}
+
+<ul
+    className="emotion-18"
+  >
+    <li>
+      <button
+        aria-label="Tyngsboro"
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-2"
+          >
+            <div
+              className="emotion-0"
+            />
+            <div
+              className="emotion-1"
+            />
+          </div>
+          <div
+            className="emotion-3"
+          >
+            <div>
+              Tyngsboro
+            </div>
+            <div>
+              0
+            </div>
+          </div>
+        </div>
+      </button>
+    </li>
+    <li>
+      <button
+        aria-label="Brooklyn"
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-2"
+          >
+            <div
+              className="emotion-0"
+            />
+            <div
+              className="emotion-1"
+            />
+          </div>
+          <div
+            className="emotion-3"
+          >
+            <div>
+              Brooklyn
+            </div>
+            <div>
+              0
+            </div>
+          </div>
+        </div>
+      </button>
+    </li>
+    <li>
+      <button
+        aria-label="Cát Bà"
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          <div
+            className="emotion-2"
+          >
+            <div
+              className="emotion-0"
+            />
+            <div
+              className="emotion-1"
+            />
+          </div>
+          <div
+            className="emotion-3"
+          >
+            <div>
+              Cát Bà
+            </div>
+            <div>
+              0
+            </div>
+          </div>
+        </div>
+      </button>
+    </li>
+  </ul>,
+]
+`;
+
+exports[`<FilterFacetContent /> should unselect a facet 1`] = `
+Array [
+  <FiltersReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "location.city",
+        "type": "facet",
+        "values": Object {
+          "facets": Array [
+            "Tyngsboro",
+          ],
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "location.city",
+          "type": "facet",
+          "values": Object {
+            "facets": Array [
+              "Tyngsboro",
+            ],
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-family: Roboto Condensed;
+  color: #b3b3b3;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div>
+      KEYWORD
+    </div>
+    <div>
+      COUNT
+    </div>
+  </div>,
+  .emotion-18 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.emotion-4 {
+  width: 100%;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 {
+  width: 0%;
+  border-top: 4px solid #73b61c;
+}
+
+.emotion-1 {
+  height: 4px;
+  width: 100%;
+  border-top: 1px solid #3b3b3b;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background-color: #027aff38;
+  color: #b3b3b3;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5:hover {
+  background-color: #027aff38;
+  color: #ffffff;
 }
 
 .emotion-11 {
@@ -310,66 +622,5 @@ Array [
       </button>
     </li>
   </ul>,
-]
-`;
-
-exports[`<FilterFacetContent /> should render with no docCount 1`] = `
-Array [
-  <FiltersReset
-    assetId=""
-    filter={
-      Object {
-        "attribute": "location.city",
-        "type": "facet",
-        "values": Object {},
-      }
-    }
-    filterIndex={0}
-    filters={
-      Array [
-        Object {
-          "attribute": "location.city",
-          "type": "facet",
-          "values": Object {},
-        },
-      ]
-    }
-    onReset={[Function]}
-    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
-  />,
-  .emotion-0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  font-family: Roboto Condensed;
-  color: #b3b3b3;
-}
-
-<div
-    className="emotion-0"
-  >
-    <div>
-      KEYWORD
-    </div>
-    <div>
-      COUNT
-    </div>
-  </div>,
-  .emotion-0 {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-<ul
-    className="emotion-0"
-  />,
 ]
 `;

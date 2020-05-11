@@ -6,6 +6,7 @@ package com.zorroa.archivist.domain
 object StandardContainers {
     const val CORE = "zmlp/plugins-core"
     const val ANALYSIS = "zmlp/plugins-analysis"
+    const val TRAIN = "zmlp/plugins-train"
 }
 
 object Category {
@@ -16,6 +17,7 @@ object Category {
     const val ZORROA_TL = "Zorroa Timeline Extraction"
     const val ZORROA_STD = "Zorroa Visual Intelligence"
     const val CLARIFAI_STD = "Clarifai Public"
+    const val TRAINED = "Custom Model"
 }
 
 object Provider {
@@ -23,6 +25,7 @@ object Provider {
     const val ZORROA = "Zorroa"
     const val GOOGLE = "Google"
     const val AMAZON = "Amazon"
+    const val CUSTOM = "Custom"
 }
 
 object ModType {
@@ -56,8 +59,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     OpFilter(OpFilterType.REGEX, ".*FileImportProcessor")
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "zvi-image-page-clips",
@@ -74,8 +76,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     OpFilter(OpFilterType.REGEX, ".*FileImportProcessor")
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "zvi-video-shot-clips",
@@ -93,8 +94,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "zvi-object-detection",
@@ -112,8 +112,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "zvi-face-detection",
@@ -131,8 +130,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "zvi-label-detection",
@@ -150,8 +148,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "zvi-text-detection",
@@ -169,8 +166,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "clarifai-general-model",
@@ -189,8 +185,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "clarifai-food-model",
@@ -209,8 +204,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "clarifai-apparel-model",
@@ -229,8 +223,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "gcp-label-detection",
@@ -249,8 +242,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "gcp-object-detection",
@@ -268,8 +260,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "gcp-logo-detection",
@@ -287,8 +278,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "gcp-landmark-detection",
@@ -308,8 +298,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "gcp-video-label-detection",
@@ -334,8 +323,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     OpFilter(OpFilterType.REGEX, ".*AsyncVideoIntelligenceProcessor")
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "gcp-video-logo-detection",
@@ -356,8 +344,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "gcp-video-object-detection",
@@ -378,8 +365,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "gcp-video-explicit-detection",
@@ -400,8 +386,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "gcp-video-text-detection",
@@ -422,8 +407,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         ),
         PipelineModSpec(
             "gcp-speech-to-text",
@@ -444,8 +428,7 @@ fun getStandardModules(): List<PipelineModSpec> {
                     )
                 )
             ),
-            restricted = false,
-            standard = true
+            true
         )
     )
 }
