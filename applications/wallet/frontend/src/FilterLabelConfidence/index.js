@@ -29,6 +29,7 @@ const FilterLabelConfidence = ({
           filterIndex={filterIndex}
         />
       }
+      cacheKey={`FilterLabelConfidence.${filter.attribute}.${filterIndex}`}
       isInitiallyOpen
     >
       <div
