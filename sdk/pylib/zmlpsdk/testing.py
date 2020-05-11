@@ -269,6 +269,9 @@ class TestReactor(object):
     def performance_report(self, *args):
         pass
 
+    def write_event(self, event, payload):
+        print("Event: {}  Payload: {}".format(event, payload))
+
 
 def zorroa_test_path(rel_path=""):
     """

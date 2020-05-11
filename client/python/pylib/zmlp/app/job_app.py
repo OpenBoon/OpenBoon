@@ -3,7 +3,10 @@ from ..util import as_collection, as_id_collection, as_id
 
 
 class JobApp:
-
+    """
+    An App instance for managing Jobs. Jobs are containers for async processes
+    such as data import or training.
+    """
     def __init__(self, app):
         self.app = app
 
@@ -11,12 +14,12 @@ class JobApp:
         """
         Get a Job by its unique Id.
         Args:
-            id (str): The Job id.
+            id (str): The Job id or Job object.
 
         Returns:
             Job: The Job
         """
-        return Job(self.app.client.get('/api/v1/jobs/{}'.format(id)))
+        return Job(self.app.client.get('/api/v1/jobs/{}'.format(as_id(id))))
 
     def refresh_job(self, job):
         """

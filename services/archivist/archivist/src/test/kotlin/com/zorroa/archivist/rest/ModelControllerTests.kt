@@ -3,10 +3,10 @@ package com.zorroa.archivist.rest
 import com.zorroa.archivist.MockMvcTest
 import com.zorroa.archivist.domain.DataSet
 import com.zorroa.archivist.domain.DataSetSpec
-import com.zorroa.archivist.domain.DataSetType
 import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelType
+import com.zorroa.archivist.domain.DataSetType
 import com.zorroa.archivist.service.DataSetService
 import com.zorroa.archivist.service.ModelService
 import com.zorroa.zmlp.util.Json
@@ -26,7 +26,7 @@ class ModelControllerTests : MockMvcTest() {
     @Autowired
     lateinit var modelService: ModelService
 
-    val dsSpec = DataSetSpec("dog-breeds", DataSetType.LabelDetection)
+    val dsSpec = DataSetSpec("dog-breeds", DataSetType.LABEL_DETECTION)
 
     lateinit var dataSet: DataSet
 
@@ -38,7 +38,7 @@ class ModelControllerTests : MockMvcTest() {
     fun createTestModel(): Model {
         val mspec = ModelSpec(
             dataSet.id,
-            ModelType.TF2_XFER_MOBILENET2
+            ModelType.LABEL_DETECTION_MOBILENET2
         )
         return modelService.createModel(mspec)
     }
@@ -48,7 +48,7 @@ class ModelControllerTests : MockMvcTest() {
 
         val mspec = ModelSpec(
             dataSet.id,
-            ModelType.TF2_XFER_MOBILENET2
+            ModelType.LABEL_DETECTION_MOBILENET2
         )
 
         mvc.perform(
@@ -141,6 +141,22 @@ class ModelControllerTests : MockMvcTest() {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo(model.name)))
+            .andReturn()
+    }
+
+    @Test
+    fun testTypeInfo() {
+        val type = ModelType.LABEL_DETECTION_RESNET152
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/models/_type/$type")
+                .headers(job())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name",
+                CoreMatchers.equalTo("LABEL_DETECTION_RESNET152")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.dataSetType",
+                CoreMatchers.equalTo("LABEL_DETECTION")))
             .andReturn()
     }
 }

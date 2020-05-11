@@ -29,53 +29,53 @@ class ZmlpDataSetAppTests(unittest.TestCase):
         value = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'test',
-            'type': 'LabelDetection'
+            'type': 'LABEL_DETECTION'
         }
         post_patch.return_value = value
-        ds = self.app.datasets.create_dataset('test', DataSetType.LabelDetection)
+        ds = self.app.datasets.create_dataset('test', DataSetType.LABEL_DETECTION)
         assert value['id'] == ds.id
         assert value['name'] == ds.name
-        assert value['type'] == ds.type
+        assert DataSetType.LABEL_DETECTION == ds.type
 
     @patch.object(ZmlpClient, 'get')
     def test_get_dataset(self, get_patch):
         value = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'test',
-            'type': 'LabelDetection'
+            'type': 'LABEL_DETECTION'
         }
         get_patch.return_value = value
         ds = self.app.datasets.get_dataset('A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80')
         assert value['id'] == ds.id
         assert value['name'] == ds.name
-        assert value['type'] == ds.type
+        assert DataSetType.LABEL_DETECTION == ds.type
 
     @patch.object(ZmlpClient, 'post')
     def test_find_one_dataset(self, post_patch):
         value = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'test',
-            'type': 'LabelDetection'
+            'type': 'LABEL_DETECTION'
         }
         post_patch.return_value = value
         ds = self.app.datasets.find_one_dataset(id='A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80')
         assert value['id'] == ds.id
         assert value['name'] == ds.name
-        assert value['type'] == ds.type
+        assert DataSetType.LABEL_DETECTION == ds.type
 
     @patch.object(ZmlpClient, 'post')
     def test_find_datasets(self, post_patch):
         value = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'test',
-            'type': 'LabelDetection'
+            'type': 'LABEL_DETECTION'
         }
         post_patch.return_value = {"list": [value]}
         ds = list(self.app.datasets.find_datasets(
             id='A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80', limit=1))
         assert value['id'] == ds[0].id
         assert value['name'] == ds[0].name
-        assert value['type'] == ds[0].type
+        assert DataSetType.LABEL_DETECTION == ds[0].type
 
     @patch.object(ZmlpClient, 'get')
     def test_get_label_counts(self, get_patch):

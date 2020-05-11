@@ -194,7 +194,7 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testBatchCreateAssetsWithLabel() {
-        val ds = dataSetSetService.create(DataSetSpec("hobbits", DataSetType.LabelDetection))
+        val ds = dataSetSetService.create(DataSetSpec("hobbits", DataSetType.LABEL_DETECTION))
 
         val spec = AssetSpec(
             "gs://cats/large-brown-cat.jpg",
@@ -556,7 +556,7 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testUpdateLabels() {
-        val ds = dataSetSetService.create(DataSetSpec("test", DataSetType.LabelDetection))
+        val ds = dataSetSetService.create(DataSetSpec("test", DataSetType.LABEL_DETECTION))
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
         )
