@@ -229,7 +229,6 @@ Array [
 }
 
 .emotion-19 {
-  margin: 0 auto;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -247,20 +246,17 @@ Array [
   width: fit-content;
   min-width: 32px;
   height: 32px;
-  padding: 8px;
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 19px;
+  padding: 6px;
+  margin: -6px;
   border-radius: 32px;
   color: #c92300;
-  background-color: #191919;
 }
 
 .emotion-19:hover {
-  border: 2px solid #808080;
   -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
+  background-color: #191919;
 }
 
 .emotion-25 {
@@ -693,7 +689,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              4
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td
@@ -782,7 +782,7 @@ Array [
           <td
             className="emotion-17"
           >
-            40
+            4
           </td>
           <td>
             <a
@@ -791,7 +791,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              40
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td
@@ -880,7 +884,7 @@ Array [
           <td
             className="emotion-17"
           >
-            400
+            4
           </td>
           <td>
             <a
@@ -889,7 +893,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              400
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td
@@ -958,7 +966,7 @@ Array [
           <td
             className="emotion-17"
           >
-            4000
+            4
           </td>
           <td>
             <a
@@ -967,7 +975,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              4000
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td
@@ -1030,7 +1042,7 @@ Array [
           <td
             className="emotion-17"
           >
-            40000
+            4
           </td>
           <td>
             <a
@@ -1039,7 +1051,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              40000
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td
@@ -1119,7 +1135,7 @@ Array [
           <td
             className="emotion-17"
           >
-            400000
+            4
           </td>
           <td>
             <a
@@ -1128,7 +1144,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              400000
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td
@@ -1208,7 +1228,7 @@ Array [
           <td
             className="emotion-17"
           >
-            0
+            4
           </td>
           <td />
           <td
@@ -1271,7 +1291,7 @@ Array [
           <td
             className="emotion-17"
           >
-            0
+            4
           </td>
           <td />
           <td
@@ -1334,7 +1354,7 @@ Array [
           <td
             className="emotion-17"
           >
-            0
+            4
           </td>
           <td />
           <td
@@ -1397,7 +1417,7 @@ Array [
           <td
             className="emotion-17"
           >
-            0
+            4
           </td>
           <td />
           <td
@@ -1460,7 +1480,7 @@ Array [
           <td
             className="emotion-17"
           >
-            49
+            4
           </td>
           <td>
             <a
@@ -1469,7 +1489,11 @@ Array [
               onClick={[Function]}
               onMouseEnter={[Function]}
             >
-              49
+              <svg
+                color="#c92300"
+                data-file-name="warning.svg"
+                height={20}
+              />
             </a>
           </td>
           <td

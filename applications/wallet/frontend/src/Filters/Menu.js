@@ -1,10 +1,14 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
+import filterShape from '../Filter/shape'
+
 import { spacing } from '../Styles'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import Button, { VARIANTS } from '../Button'
+
+import { formatDisplayName } from '../Metadata/helpers'
 
 import { dispatch, ACTIONS } from './helpers'
 
@@ -51,7 +55,7 @@ const FiltersMenu = ({
             <Accordion
               key={key}
               variant={ACCORDION_VARIANTS.PANEL}
-              title={key}
+              title={formatDisplayName({ name: key })}
               isInitiallyOpen={false}
             >
               <div
@@ -67,6 +71,7 @@ const FiltersMenu = ({
                     path={key}
                     attribute={subKey}
                     value={subValue}
+                    filters={filters}
                     onClick={onClick}
                   />
                 ))}
@@ -115,13 +120,7 @@ const FiltersMenu = ({
 FiltersMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.oneOf(['search', 'facet', 'range', 'exists']).isRequired,
-      attribute: PropTypes.string,
-      values: PropTypes.shape({}),
-    }).isRequired,
-  ).isRequired,
+  filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
   fields: PropTypes.objectOf(PropTypes.objectOf).isRequired,
   setIsMenuOpen: PropTypes.func.isRequired,
 }

@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiModelProperty
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 import java.math.BigDecimal
-import java.util.Date
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -149,21 +148,21 @@ class ProjectQuotas(
     val pageCount: Long
 )
 
-@ApiModel("ProjectQuotasTimeSeriesEntry", description = "Quotas and other counters rolled up to the hour.")
+@ApiModel("ProjectQuotasTimeSeriesEntry", description = "Quota gauges rolled up to the hour.")
 class ProjectQuotasTimeSeriesEntry(
     @ApiModelProperty("The date of this interval.")
-    val date: Date,
+    val timestamp: Long,
     @ApiModelProperty("The amount of video ingested during this interval.")
     val videoSecondsCount: BigDecimal,
     @ApiModelProperty("Th number of pages ingested during this interval.")
     val pageCount: Long,
-    @ApiModelProperty("The number of unique video files ingested")
+    @ApiModelProperty("The number of unique video files ingested during this interval.")
     val videoFileCount: Long,
-    @ApiModelProperty("The number of unique document files ingested")
+    @ApiModelProperty("The number of unique document files ingested during this interval.")
     val documentFileCount: Long,
-    @ApiModelProperty("The number of unique image files ingested")
-    val imageFilesCount: Long,
-    @ApiModelProperty("The number of unique video clips ingested")
+    @ApiModelProperty("The number of unique image files ingested during this interval.")
+    val imageFileCount: Long,
+    @ApiModelProperty("The number of unique video clips ingested during this interval.")
     val videoClipCount: Long
 )
 

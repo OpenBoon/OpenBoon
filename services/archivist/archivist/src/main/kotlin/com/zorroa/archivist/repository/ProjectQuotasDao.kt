@@ -1,27 +1,23 @@
 package com.zorroa.archivist.repository
 
-import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.domain.ProjectQuotaCounters
 import com.zorroa.archivist.domain.ProjectQuotas
+import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.security.getProjectId
 import com.zorroa.archivist.util.toHourlyDate
 import org.springframework.jdbc.`object`.BatchSqlUpdate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.Types
-import java.time.OffsetDateTime
-import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
+import java.util.TimeZone
 import java.util.UUID
 
 interface ProjectQuotasDao {
-
     fun createQuotasEntry(projectId: UUID)
     fun getQuotas(projectId: UUID): ProjectQuotas
-
     fun createIngestTimeSeriesEntries(projectId: UUID)
-
     fun incrementQuotas(counts: ProjectQuotaCounters)
     fun incrementTimeSeriesCounters(date: Date, counts: ProjectQuotaCounters)
     fun getTimeSeriesCounters(projectId: UUID, start: Date, end: Date?): List<ProjectQuotasTimeSeriesEntry>
@@ -35,19 +31,24 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
     }
 
     override fun createIngestTimeSeriesEntries(projectId: UUID) {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
+        val cal = Calendar.getInstance()
+        cal.timeZone = TimeZone.getTimeZone("UTC")
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        cal.set(Calendar.DAY_OF_YEAR, 1)
 
         val update = BatchSqlUpdate(
             jdbc.dataSource,
-            "INSERT INTO project_quota_time_series VALUES (?, ?)",
-            intArrayOf(Types.OTHER, Types.INTEGER), 250
+            "INSERT INTO project_quota_time_series VALUES (?, ?, ?)",
+            intArrayOf(Types.OTHER, Types.INTEGER, Types.BIGINT), 250
         )
 
-        for (i in 1..8760) {
-            update.update(projectId, i)
+        for (i in 0..8759) {
+
+            update.update(projectId, i, cal.timeInMillis)
+            cal.add(Calendar.HOUR, 1)
         }
         update.flush()
     }
@@ -68,24 +69,23 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
 
     override fun getTimeSeriesCounters(projectId: UUID, start: Date, end: Date?): List<ProjectQuotasTimeSeriesEntry> {
         return jdbc.query("SELECT * FROM project_quota_time_series WHERE " +
-            "pk_project=? AND time >=? AND time <=? ORDER BY int_entry ASC",
-            MAPPER_TIME_SERIES, projectId, toHourlyDate(start), toHourlyDate(end ?: Date()))
+            "time >=? AND time <=? AND pk_project=? ORDER BY time ASC",
+            MAPPER_TIME_SERIES, toHourlyDate(start), toHourlyDate(end), projectId)
     }
 
     override fun incrementTimeSeriesCounters(date: Date, counts: ProjectQuotaCounters) {
+        val cal: Calendar = Calendar.getInstance()
+        cal.time = date
+        cal.timeZone = TimeZone.getTimeZone("UTC")
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
 
-        val time: Calendar = Calendar.getInstance()
-        time.timeInMillis = date.time
-        time.set(Calendar.MINUTE, 0)
-        time.set(Calendar.SECOND, 0)
-        time.set(Calendar.MILLISECOND, 0)
-
-        val date = OffsetDateTime.ofInstant(time.toInstant(), ZoneId.of("UTC"))
-        val entry = time.get(Calendar.DAY_OF_YEAR) * (time.get(Calendar.HOUR_OF_DAY) + 1)
-
+        val entry = ((cal.get(Calendar.DAY_OF_YEAR) - 1) * 24) + cal.get(Calendar.HOUR_OF_DAY)
+        logger.warn("Updating TimeSeriesCounters $entry ${cal.timeInMillis}")
         jdbc.update(
             UPDATE_TIMESCALE_COUNTERS,
-            date,
+            cal.timeInMillis,
             counts.videoFileCount,
             counts.documentFileCount,
             counts.imageFileCount,
@@ -109,7 +109,7 @@ class ProjectQuotasDaoImpl : AbstractDao(), ProjectQuotasDao {
 
         private val MAPPER_TIME_SERIES = RowMapper { rs, _ ->
             ProjectQuotasTimeSeriesEntry(
-                rs.getTimestamp("time"),
+                rs.getLong("time"),
                 rs.getBigDecimal("float_video_seconds"),
                 rs.getLong("int_page_count"),
                 rs.getLong("int_video_file_count"),

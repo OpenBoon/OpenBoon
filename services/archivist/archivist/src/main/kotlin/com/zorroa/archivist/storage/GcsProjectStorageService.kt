@@ -1,5 +1,7 @@
 package com.zorroa.archivist.storage
 
+import com.google.auth.oauth2.ComputeEngineCredentials
+import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.HttpMethod
@@ -21,7 +23,10 @@ import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import java.io.FileInputStream
 import java.nio.channels.Channels
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
@@ -33,11 +38,15 @@ class GcsProjectStorageService constructor(
 
 ) : ProjectStorageService {
 
-    val gcs: Storage = StorageOptions.getDefaultInstance().service
+    val options: StorageOptions = StorageOptions.newBuilder()
+        .setCredentials(loadCredentials()).build()
+    val gcs: Storage = options.service
 
     @PostConstruct
     fun initialize() {
-        logger.info("Initializing GCS Storage Backend (bucket='${properties.bucket}')")
+        logger.info(
+            "Initializing GCS Storage Backend (bucket='${properties.bucket}')"
+        )
     }
 
     override fun store(spec: ProjectStorageSpec): FileStorage {
@@ -91,34 +100,43 @@ class GcsProjectStorageService constructor(
         forWrite: Boolean,
         duration: Long,
         unit: TimeUnit
-    ): String {
+    ): Map<String, Any> {
         val path = locator.getPath()
-        val contentType = FileUtils.getMediaType(path)
+        val mediaType = FileUtils.getMediaType(path)
 
-        val info = BlobInfo.newBuilder(properties.bucket, path).setContentType(contentType).build()
+        val info = BlobInfo.newBuilder(properties.bucket, path).setContentType(mediaType).build()
         val opts = if (forWrite) {
-            arrayOf(Storage.SignUrlOption.withContentType(),
+            arrayOf(
+                Storage.SignUrlOption.withContentType(),
                 Storage.SignUrlOption.httpMethod(HttpMethod.PUT))
         } else {
-            arrayOf(Storage.SignUrlOption.httpMethod(HttpMethod.GET))
+            arrayOf(
+                Storage.SignUrlOption.httpMethod(HttpMethod.GET))
         }
 
-        logSignEvent(path, forWrite)
-        return gcs.signUrl(info, duration, unit, *opts).toString()
+        logSignEvent(path, mediaType, forWrite)
+        return mapOf(
+            "uri" to gcs.signUrl(info, duration, unit, *opts).toString(),
+            "mediaType" to mediaType
+        )
     }
 
     override fun setAttrs(locator: ProjectStorageLocator, attrs: Map<String, Any>): FileStorage {
         val path = locator.getPath()
+        val mediaType = FileUtils.getMediaType(path)
         val info = BlobInfo.newBuilder(properties.bucket, path)
+            .setContentType(mediaType)
             .setMetadata(mapOf("attrs" to Json.serializeToString(attrs)))
             .build()
+
+        val blob = gcs.update(info)
 
         return FileStorage(
             locator.getFileId(),
             locator.name,
             locator.category,
-            info.contentType,
-            info.size,
+            mediaType,
+            blob.size,
             attrs
         )
     }
@@ -137,6 +155,18 @@ class GcsProjectStorageService constructor(
 
     fun getBlobId(locator: ProjectStorageLocator): BlobId {
         return BlobId.of(properties.bucket, locator.getPath())
+    }
+
+    private fun loadCredentials(): GoogleCredentials {
+        val credsFile = Paths.get("/secrets/gcs/credentials.json")
+
+        return if (Files.exists(credsFile)) {
+            logger.info("Loading credentials from: {}", credsFile)
+            GoogleCredentials.fromStream(FileInputStream(credsFile.toFile()))
+        } else {
+            logger.info("Using default ComputeEngineCredentials")
+            ComputeEngineCredentials.create()
+        }
     }
 
     companion object {

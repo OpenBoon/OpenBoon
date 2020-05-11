@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 import Pills from '../Pills'
 
-const COLUMNS = ['label', 'score']
+export const BBOX_SIZE = 56
 
-const MetadataLabelDetection = ({ name, predictions }) => {
+const COLUMNS = ['bbox', 'label', 'score']
+
+const MetadataAnalysisLabelDetection = ({ name, value: { predictions } }) => {
   const predictionColumns = Object.keys(predictions[0])
 
   // filter from COLUMNS which holds the module column names in the correct order
@@ -24,17 +26,17 @@ const MetadataLabelDetection = ({ name, predictions }) => {
       <div
         css={{
           padding: spacing.normal,
+          paddingBottom: spacing.comfy,
           '&:not(:first-of-type)': {
             borderTop: constants.borders.largeDivider,
-          },
-          '&:not(last-of-type)': {
-            paddingBottom: spacing.base,
           },
         }}
       >
         <div
           css={{
             fontFamily: 'Roboto Mono',
+            fontSize: typography.size.small,
+            lineHeight: typography.height.small,
             color: colors.structure.white,
             paddingBottom: spacing.normal,
           }}
@@ -44,6 +46,8 @@ const MetadataLabelDetection = ({ name, predictions }) => {
         <table
           css={{
             fontFamily: 'Roboto Mono',
+            fontSize: typography.size.small,
+            lineHeight: typography.height.small,
             color: colors.structure.white,
             width: '100%',
             borderSpacing: 0,
@@ -61,6 +65,7 @@ const MetadataLabelDetection = ({ name, predictions }) => {
                     key={column}
                     css={{
                       fontFamily: 'Roboto Condensed',
+                      fontWeight: typography.weight.regular,
                       textTransform: 'uppercase',
                       color: colors.structure.steel,
                       paddingBottom: spacing.normal,
@@ -92,21 +97,29 @@ const MetadataLabelDetection = ({ name, predictions }) => {
                       paddingTop: spacing.base,
                       paddingBottom: spacing.base,
                       paddingRight: spacing.base,
+                      borderBottom: constants.borders.divider,
                     },
                     '&:first-of-type': { td: { paddingTop: 0 } },
-                    '&:last-of-type': {
-                      td: {
-                        paddingBottom: 0,
-                      },
-                    },
-                    '&:not(:first-of-type)': {
-                      td: {
-                        borderTop: constants.borders.divider,
-                      },
-                    },
                   }}
                 >
                   {columns.map((column) => {
+                    if (column === 'bbox') {
+                      return (
+                        <td key={column} css={{ display: 'flex' }}>
+                          <img
+                            css={{
+                              maxHeight: BBOX_SIZE,
+                              width: BBOX_SIZE,
+                              objectFit: 'contain',
+                            }}
+                            alt={prediction.bbox}
+                            title={prediction.bbox}
+                            src={prediction.b64_image}
+                          />
+                        </td>
+                      )
+                    }
+
                     return (
                       <td
                         key={column}
@@ -168,9 +181,11 @@ const MetadataLabelDetection = ({ name, predictions }) => {
   )
 }
 
-MetadataLabelDetection.propTypes = {
+MetadataAnalysisLabelDetection.propTypes = {
   name: PropTypes.string.isRequired,
-  predictions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  value: PropTypes.shape({
+    predictions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  }).isRequired,
 }
 
-export default MetadataLabelDetection
+export default MetadataAnalysisLabelDetection

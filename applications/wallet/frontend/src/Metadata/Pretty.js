@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { constants, spacing } from '../Styles'
 
 import MetadataPrettyRow from './PrettyRow'
+import MetadataAnalysis from '../MetadataAnalysis'
 
 const MetadataPretty = ({ metadata, section }) => {
   if (section === 'metrics') {
@@ -39,6 +40,25 @@ const MetadataPretty = ({ metadata, section }) => {
         </div>
       )
     })
+  }
+
+  if (section === 'analysis') {
+    return (
+      <div css={{ width: '100%' }}>
+        <div>
+          {Object.entries(metadata[section]).map(([key, value]) => {
+            return (
+              <MetadataAnalysis
+                key={key}
+                name={key}
+                value={value}
+                path={section}
+              />
+            )
+          })}
+        </div>
+      </div>
+    )
   }
 
   if (Array.isArray(metadata[section])) {

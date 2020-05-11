@@ -369,7 +369,7 @@ class AssetServiceTests : AbstractTest() {
         assertEquals(BigDecimal("10.73"), counts["float_video_seconds"])
         assertEquals(2L, counts["int_page_count"])
 
-        val time = jdbc.queryForMap("SELECT * FROM project_quota_time_series WHERE time IS NOT NULL LIMIT 1")
+        val time = jdbc.queryForMap("SELECT * FROM project_quota_time_series WHERE int_video_file_count > 0 LIMIT 1")
         assertEquals(1L, time["int_video_file_count"])
         assertEquals(1L, time["int_document_file_count"])
         assertEquals(1L, time["int_image_file_count"])

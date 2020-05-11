@@ -85,11 +85,8 @@ class FileStorageController(
     fun getSignedUploadUri(
         @RequestBody req: ProjectStorageRequest
     ): Any {
-        val uri = projectStorageService.getSignedUrl(getValidLocator(req), true, 30, TimeUnit.MINUTES)
-        return mapOf(
-            "uri" to uri,
-            "mediaType" to FileUtils.getMediaType(req.name)
-        )
+        return projectStorageService.getSignedUrl(
+            getValidLocator(req), true, 20, TimeUnit.MINUTES)
     }
 
     @ApiOperation("Store an additional file to an asset.")

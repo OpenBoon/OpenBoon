@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<JobTasks /> should render properly with job tasks 1`] = `
-.emotion-28 {
+.emotion-27 {
   height: auto;
 }
 
@@ -99,7 +99,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   padding-left: 4px;
 }
 
-.emotion-27 {
+.emotion-26 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -107,39 +107,39 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   white-space: nowrap;
 }
 
-.emotion-27 tr {
+.emotion-26 tr {
   background-color: #252525;
 }
 
-.emotion-27 tr:nth-of-type(2n) {
+.emotion-26 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-27 tr:hover {
+.emotion-26 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-27 tr:hover .gear {
+.emotion-26 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-27 tr:hover td {
+.emotion-26 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-27 tr:hover td:first-of-type {
+.emotion-26 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-27 tr:hover td:last-of-type {
+.emotion-26 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-27 td {
-  max-width: calc(100vw / 6);
+.emotion-26 td {
+  max-width: calc(100vw / 5);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -150,11 +150,11 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   border-right: 0;
 }
 
-.emotion-27 td:first-of-type {
+.emotion-26 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-27 td:last-of-type {
+.emotion-26 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
@@ -178,23 +178,23 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-14 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-13 {
+.emotion-12 {
   padding-left: 16px;
 }
 
-.emotion-15 {
+.emotion-14 {
   font-style: italic;
 }
 
 <div
-  className="emotion-28"
+  className="emotion-27"
 >
   <div
     className="emotion-5"
@@ -231,7 +231,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
     </button>
   </div>
   <table
-    className="emotion-27"
+    className="emotion-26"
   >
     <thead>
       <tr>
@@ -258,11 +258,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
         <th
           className="emotion-6"
         >
-          Assets
-        </th>
-        <th
-          className="emotion-6"
-        >
           Started
         </th>
         <th
@@ -275,7 +270,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
     <tbody>
       <tr>
         <td
-          className="emotion-14"
+          className="emotion-13"
         >
           <svg
             color="#ffffff"
@@ -283,7 +278,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             width={20}
           />
           <span
-            className="emotion-13"
+            className="emotion-12"
           >
             Waiting
           </span>
@@ -300,17 +295,14 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
         </td>
         <td>
           <div
-            className="emotion-15"
+            className="emotion-14"
           >
             Waiting...
           </div>
         </td>
         <td>
-          20
-        </td>
-        <td>
           <div
-            className="emotion-15"
+            className="emotion-14"
           >
             Waiting...
           </div>
@@ -321,7 +313,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
       </tr>
       <tr>
         <td
-          className="emotion-14"
+          className="emotion-13"
         >
           <svg
             color="#ebb52e"
@@ -329,7 +321,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             width={20}
           />
           <span
-            className="emotion-13"
+            className="emotion-12"
           >
             Running
           </span>
@@ -348,9 +340,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           06h : 42m : 49s
         </td>
         <td>
-          0
-        </td>
-        <td>
           2020-03-05 23:41:02
         </td>
         <td>
@@ -359,7 +348,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
       </tr>
       <tr>
         <td
-          className="emotion-14"
+          className="emotion-13"
         >
           <svg
             color="#4ac565"
@@ -367,7 +356,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             width={20}
           />
           <span
-            className="emotion-13"
+            className="emotion-12"
           >
             Success
           </span>
@@ -386,9 +375,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           06h : 42m : 49s
         </td>
         <td>
-          15
-        </td>
-        <td>
           2020-03-05 23:41:55
         </td>
         <td>
@@ -397,7 +383,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
       </tr>
       <tr>
         <td
-          className="emotion-14"
+          className="emotion-13"
         >
           <svg
             color="#c92300"
@@ -405,7 +391,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             width={20}
           />
           <span
-            className="emotion-13"
+            className="emotion-12"
           >
             Failure
           </span>
@@ -424,9 +410,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           06h : 42m : 49s
         </td>
         <td>
-          20
-        </td>
-        <td>
           2020-03-05 23:41:06
         </td>
         <td>
@@ -435,7 +418,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
       </tr>
       <tr>
         <td
-          className="emotion-14"
+          className="emotion-13"
         >
           <svg
             color="#808080"
@@ -443,7 +426,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             width={20}
           />
           <span
-            className="emotion-13"
+            className="emotion-12"
           >
             Skipped
           </span>
@@ -462,9 +445,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
           06h : 42m : 49s
         </td>
         <td>
-          0
-        </td>
-        <td>
           2020-03-05 23:41:02
         </td>
         <td>
@@ -473,7 +453,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
       </tr>
       <tr>
         <td
-          className="emotion-14"
+          className="emotion-13"
         >
           <svg
             color="#4a90e2"
@@ -481,7 +461,7 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
             width={20}
           />
           <span
-            className="emotion-13"
+            className="emotion-12"
           >
             Queued
           </span>
@@ -498,9 +478,6 @@ exports[`<JobTasks /> should render properly with job tasks 1`] = `
         </td>
         <td>
           06h : 42m : 49s
-        </td>
-        <td>
-          15
         </td>
         <td>
           2020-03-05 23:41:55
@@ -634,11 +611,11 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-17 {
+.emotion-16 {
   height: 100%;
 }
 
-.emotion-16 {
+.emotion-15 {
   width: 100%;
   height: 100%;
   border-spacing: 0;
@@ -646,39 +623,39 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   white-space: nowrap;
 }
 
-.emotion-16 tr {
+.emotion-15 tr {
   background-color: #252525;
 }
 
-.emotion-16 tr:nth-of-type(2n) {
+.emotion-15 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-16 tr:hover {
+.emotion-15 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-16 tr:hover .gear {
+.emotion-15 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-16 tr:hover td {
+.emotion-15 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-16 tr:hover td:first-of-type {
+.emotion-15 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-16 tr:hover td:last-of-type {
+.emotion-15 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-16 td {
-  max-width: calc(100vw / 6);
+.emotion-15 td {
+  max-width: calc(100vw / 5);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -689,21 +666,21 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   border-right: 0;
 }
 
-.emotion-16 td:first-of-type {
+.emotion-15 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-16 td:last-of-type {
+.emotion-15 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-15 {
+.emotion-14 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-14 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -725,7 +702,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   line-height: 19px;
 }
 
-.emotion-13 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -742,7 +719,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
 }
 
 <div
-  className="emotion-17"
+  className="emotion-16"
 >
   <div
     className="emotion-5"
@@ -779,7 +756,7 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
     </button>
   </div>
   <table
-    className="emotion-16"
+    className="emotion-15"
   >
     <thead>
       <tr>
@@ -806,11 +783,6 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
         <th
           className="emotion-6"
         >
-          Assets
-        </th>
-        <th
-          className="emotion-6"
-        >
           Started
         </th>
         <th
@@ -822,16 +794,16 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
     </thead>
     <tbody>
       <tr
-        className="emotion-15"
+        className="emotion-14"
       >
         <td
-          colSpan={7}
+          colSpan={6}
         >
           <div
-            className="emotion-14"
+            className="emotion-13"
           >
             <div
-              className="emotion-13"
+              className="emotion-12"
             >
               <svg
                 data-file-name="noJobs.svg"

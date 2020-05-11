@@ -1,12 +1,16 @@
 import PropTypes from 'prop-types'
 
+import filterShape from '../Filter/shape'
+
 import { spacing, colors, constants } from '../Styles'
 
 import Checkbox, { VARIANTS as CHECKBOX_VARIANTS } from '../Checkbox'
 
 const OFFSET = 32
 
-const FiltersMenuOption = ({ option, label, onClick }) => {
+const FiltersMenuOption = ({ option, label, filters, onClick }) => {
+  const isEnabled = filters.find(({ attribute }) => attribute === option)
+
   return (
     <div
       key={option}
@@ -31,8 +35,8 @@ const FiltersMenuOption = ({ option, label, onClick }) => {
           option={{
             value: option,
             label,
-            initialValue: false,
-            isDisabled: false,
+            initialValue: !!isEnabled,
+            isDisabled: !!isEnabled,
           }}
           onClick={onClick}
         />
@@ -44,6 +48,7 @@ const FiltersMenuOption = ({ option, label, onClick }) => {
 FiltersMenuOption.propTypes = {
   option: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
   onClick: PropTypes.func.isRequired,
 }
 

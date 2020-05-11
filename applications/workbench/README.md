@@ -30,3 +30,10 @@ docker-compose -f docker-compose.yml -f applications/workbench/docker-compose.ym
 ```
 
 Then navigate to http://localhost:8888/ . Use the password "admin" to log in.
+
+### Shut down
+
+From the main zmlp repo folder:
+```
+docker-compose -f docker-compose.yml -f applications/workbench/docker-compose.yml down
+```

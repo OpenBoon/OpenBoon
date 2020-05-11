@@ -16,6 +16,7 @@ const jobs = {
         assetReplacedCount: 0,
         assetWarningCount: 0,
         assetErrorCount: 4,
+        assetTotalCount: 4,
       },
       taskCounts: {
         tasksTotal: 16,
@@ -48,6 +49,7 @@ const jobs = {
         assetReplacedCount: 0,
         assetWarningCount: 0,
         assetErrorCount: 40,
+        assetTotalCount: 4,
       },
       taskCounts: {
         tasksTotal: 16,
@@ -80,6 +82,7 @@ const jobs = {
         assetReplacedCount: 0,
         assetWarningCount: 0,
         assetErrorCount: 400,
+        assetTotalCount: 4,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -112,6 +115,7 @@ const jobs = {
         assetReplacedCount: 0,
         assetWarningCount: 0,
         assetErrorCount: 4000,
+        assetTotalCount: 4,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -144,6 +148,7 @@ const jobs = {
         assetReplacedCount: 0,
         assetWarningCount: 0,
         assetErrorCount: 40000,
+        assetTotalCount: 4,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -176,6 +181,7 @@ const jobs = {
         assetReplacedCount: 0,
         assetWarningCount: 0,
         assetErrorCount: 400000,
+        assetTotalCount: 4,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -208,6 +214,7 @@ const jobs = {
         assetReplacedCount: 0,
         assetWarningCount: 0,
         assetErrorCount: 0,
+        assetTotalCount: 4,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -240,6 +247,7 @@ const jobs = {
         assetReplacedCount: 0,
         assetWarningCount: 0,
         assetErrorCount: 0,
+        assetTotalCount: 4,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -272,6 +280,7 @@ const jobs = {
         assetReplacedCount: 0,
         assetWarningCount: 0,
         assetErrorCount: 0,
+        assetTotalCount: 4,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -304,6 +313,7 @@ const jobs = {
         assetReplacedCount: 0,
         assetWarningCount: 0,
         assetErrorCount: 0,
+        assetTotalCount: 4,
       },
       taskCounts: {
         tasksTotal: 1,
@@ -336,6 +346,7 @@ const jobs = {
         assetReplacedCount: 0,
         assetWarningCount: 0,
         assetErrorCount: 49,
+        assetTotalCount: 4,
       },
       taskCounts: {
         tasksTotal: 2,

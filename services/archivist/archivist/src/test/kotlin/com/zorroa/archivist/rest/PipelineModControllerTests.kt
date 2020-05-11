@@ -73,8 +73,7 @@ class PipelineModControllerTests : MockMvcTest() {
             provider = Provider.ZORROA,
             category = Category.ZORROA_STD,
             type = ModType.CLIPIFIER,
-            supportedMedia = listOf(),
-            restricted = true, ops = listOf(op))
+            supportedMedia = listOf(), ops = listOf(op))
 
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v1/pipeline-mods/${mod.id}")
@@ -85,7 +84,6 @@ class PipelineModControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.equalTo("cats")))
             .andExpect(MockMvcResultMatchers.jsonPath("$.description", CoreMatchers.equalTo("dogs")))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.restricted", CoreMatchers.equalTo(true)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.type", CoreMatchers.equalTo("Asset Clipifier")))
             .andExpect(MockMvcResultMatchers.jsonPath("$.ops[0].type", CoreMatchers.equalTo("APPEND")))
             .andReturn()

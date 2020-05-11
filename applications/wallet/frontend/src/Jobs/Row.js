@@ -2,13 +2,15 @@ import PropTypes from 'prop-types'
 import Router from 'next/router'
 import Link from 'next/link'
 
-import { colors, spacing, typography, constants } from '../Styles'
+import { colors, spacing } from '../Styles'
 
 import { formatFullDate } from '../Date/helpers'
 
-import JobsStatus from './Status'
+import WarningSvg from '../Icons/warning.svg'
+
 import ProgressBar, { CONTAINER_WIDTH } from '../ProgressBar'
 
+import JobsStatus from './Status'
 import JobsMenu from './Menu'
 
 const ERROR_COUNT_HEIGHT = 32
@@ -54,9 +56,7 @@ const JobsRow = ({
       </td>
       <td css={{ textAlign: 'center' }}>{priority}</td>
       <td>{formatFullDate({ timestamp: timeCreated })}</td>
-      <td css={{ textAlign: 'center' }}>
-        {Object.values(assetCounts).reduce((total, count) => total + count)}
-      </td>
+      <td css={{ textAlign: 'center' }}>{assetCounts.assetTotalCount}</td>
       <td>
         {assetCounts.assetErrorCount > 0 && (
           <Link
@@ -66,28 +66,24 @@ const JobsRow = ({
           >
             <a
               css={{
-                margin: '0 auto',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: 'fit-content',
                 minWidth: ERROR_COUNT_HEIGHT,
                 height: ERROR_COUNT_HEIGHT,
-                padding: spacing.base,
-                fontWeight: typography.weight.bold,
-                fontSize: typography.size.regular,
-                lineHeight: typography.height.regular,
+                padding: spacing.moderate / 2,
+                margin: -spacing.moderate / 2,
                 borderRadius: ERROR_COUNT_HEIGHT,
                 color: colors.signal.warning.base,
-                backgroundColor: colors.structure.coal,
                 '&:hover': {
-                  border: constants.borders.pill,
                   textDecoration: 'none',
                   cursor: 'pointer',
+                  backgroundColor: colors.structure.coal,
                 },
               }}
             >
-              {assetCounts.assetErrorCount}
+              <WarningSvg height={20} color={colors.signal.warning.base} />
             </a>
           </Link>
         )}
@@ -124,6 +120,7 @@ JobsRow.propTypes = {
       assetReplacedCount: PropTypes.number.isRequired,
       assetWarningCount: PropTypes.number.isRequired,
       assetErrorCount: PropTypes.number.isRequired,
+      assetTotalCount: PropTypes.number.isRequired,
     }).isRequired,
     priority: PropTypes.number.isRequired,
     timeCreated: PropTypes.number.isRequired,

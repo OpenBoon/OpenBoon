@@ -2,11 +2,12 @@ import pytest
 
 from django.urls import reverse
 from rest_framework import status
+from rest_framework.response import Response
 from unittest.mock import patch, Mock
 
 from searches.models import Search
 from searches.filters import BaseFilter
-from searches.views import MetadataExportViewSet
+from searches.views import MetadataExportViewSet, SearchViewSet
 from zmlp import ZmlpClient
 from wallet.tests.utils import check_response
 from wallet.utils import convert_json_to_base64
@@ -312,6 +313,19 @@ class TestQuery(BaseFiltersTestCase):
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
         assert content['detail'] == 'Unable to decode `query` querystring.'
 
+    def test_empty_query_sorts(self, login, api_client, project):
+        def mock_list(*args, **kwargs):
+            query = kwargs['search_filter']
+            assert query == {'sort': {'system.timeCreated': {'order': 'desc'}},
+                             '_source': ['id',
+                                         'source*',
+                                         'files*']}
+            return Response(status=status.HTTP_200_OK)
+
+        path = reverse('search-query', kwargs={'project_pk': project.id})
+        with patch.object(SearchViewSet, '_zmlp_list_from_es', mock_list):
+            api_client.get(path)
+
 
 class TestAggregate(BaseFiltersTestCase):
 
@@ -373,6 +387,17 @@ class TestAggregate(BaseFiltersTestCase):
                                   {'filter': encoded_filter})
         content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
         assert content['detail'] == 'Unsupported filter `fake_type` given.'
+
+    def test_bad_querystring_data_format(self, login, api_client, project):
+        qs = [{'type': 'range',
+               'attribute': 'source.filesize',
+               'values': {'min': 4561, 'max': 2924820.9000000004}}]
+        encoded_filter = convert_json_to_base64(qs)
+        response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
+                                  {'filter': encoded_filter})
+        content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
+        assert content['detail'] == ('Filter format incorrect, did not receive a single JSON '
+                                     'object for the Filter.')
 
 
 class TestMetadataExportView:

@@ -49,7 +49,7 @@ class PipelineModController(val pipelineModService: PipelineModService) {
     }
 
     @PreAuthorize("hasAuthority('SystemManage')")
-    @ApiOperation("Update a Pipeline Mpd")
+    @ApiOperation("Update a Pipeline Mod")
     @PutMapping("$URL/{id}")
     fun update(@PathVariable id: UUID, @RequestBody update: PipelineModUpdate): PipelineMod {
         return pipelineModService.update(id, update)
