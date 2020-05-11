@@ -20,7 +20,7 @@ enum class ModelType(
     val trainArgs: Map<String, Any>,
     val classifyProcessor: String,
     val classifyArgs: Map<String, Any>,
-    val moduleName: String?,
+    val moduleName: String,
     val description: String,
     val dataSetType: DataSetType
 ) {
@@ -82,7 +82,7 @@ enum class ModelType(
         DataSetType.FACE_RECOGNITION
     );
 
-    fun asMap(): Map<String, Any?> {
+    fun asMap(): Map<String, Any> {
         return mapOf("name" to name,
             "trainProcessor" to trainProcessor,
             "trainArgs" to trainArgs,
