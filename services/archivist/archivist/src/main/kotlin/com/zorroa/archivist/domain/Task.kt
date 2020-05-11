@@ -205,7 +205,7 @@ class TaskFilter(
     override fun build() {
 
         if (sort == null) {
-            sort = listOf("taskId:a")
+            sort = listOf("timeCreated:a")
         }
 
         addToWhere("job.pk_project=?")
