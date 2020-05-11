@@ -205,15 +205,15 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
         """
         modl_base = self.app_model.type
-        if modl_base == 'TF2_XFER_MOBILENET2':
+        if modl_base == zmlp.ModelType.LABEL_DETECTION_MOBILENET2:
             return mobilenet_v2.MobileNetV2(weights='imagenet',
                                             include_top=False,
                                             input_shape=(224, 224, 3))
-        elif modl_base == 'TF2_XFER_RESNET152':
+        elif modl_base == zmlp.ModelType.LABEL_DETECTION_RESNET152:
             return resnet_v2.ResNet152V2(weights='imagenet',
                                          include_top=False,
                                          input_shape=(224, 224, 3))
-        elif modl_base == 'TF2_XFER_VGG16':
+        elif modl_base == zmlp.ModelType.LABEL_DETECTION_VGG16:
             return vgg16.VGG16(weights='imagenet',
                                include_top=False,
                                input_shape=(224, 224, 3))
