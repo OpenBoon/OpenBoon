@@ -15,6 +15,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 1`] = `
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 12px;
+  font-family: Roboto Mono;
 }
 
 .emotion-1 {
@@ -169,6 +170,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 2`] = `
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 12px;
+  font-family: Roboto Mono;
 }
 
 .emotion-1 {
@@ -323,6 +325,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 3`] = `
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 12px;
+  font-family: Roboto Mono;
 }
 
 .emotion-1 {
@@ -477,6 +480,7 @@ exports[`<FilterRangeContent /> should render with file sizes and reset 4`] = `
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding-bottom: 12px;
+  font-family: Roboto Mono;
 }
 
 .emotion-1 {
