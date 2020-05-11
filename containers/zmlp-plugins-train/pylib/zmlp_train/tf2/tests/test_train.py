@@ -4,7 +4,7 @@ import shutil
 from unittest.mock import patch
 
 from zmlp.app import DataSetApp, ModelApp
-from zmlp.entity import Model, ModelType, StoredFile, PipelineMod
+from zmlp.entity import Model, StoredFile, PipelineMod
 from zmlp_train.tf2 import TensorflowTransferLearningTrainer
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset
