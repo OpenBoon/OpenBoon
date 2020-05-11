@@ -304,6 +304,12 @@ class TestProjectStorage(TestCase):
         self.fs.projects.localize_file(pfile)
         assert 'assets/123456/proxy/cat.jpg' in post_patch.call_args_list[0][0][0]
 
+    @patch.object(ZmlpClient, 'stream')
+    def test_localize_file_id(self, post_patch):
+        post_patch.return_value = '/tmp/cat.jpg'
+        self.fs.projects.localize_file('asset/foo/fake/fake_model.dat')
+        assert 'asset/foo/fake/fake_model.dat' in post_patch.call_args_list[0][0][0]
+
 
 class MockResponse:
     """
