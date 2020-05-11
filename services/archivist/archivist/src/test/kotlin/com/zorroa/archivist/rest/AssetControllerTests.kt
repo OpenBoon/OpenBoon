@@ -248,7 +248,7 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdateLabels() {
-        val ds = dataSetSetService.create(DataSetSpec("test", DataSetType.LabelDetection))
+        val ds = dataSetSetService.create(DataSetSpec("test", DataSetType.LABEL_DETECTION))
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
 

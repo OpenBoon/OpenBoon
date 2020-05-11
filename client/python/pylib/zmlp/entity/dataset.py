@@ -77,11 +77,11 @@ class DataSetType(Enum):
     The various DataSet types.
     """
 
-    LabelDetection = 0
-    """The DataSet contains labels useful for LabelDetection"""
+    LABEL_DETECTION = 0
+    """The DataSet contains labels useful for Label Detection"""
 
-    ObjectDetection = 1
-    """The DataSet labels are useful for ObjectDetection"""
+    OBJECT_DETECTION = 1
+    """The DataSet labels are useful for Object Detection"""
 
-    FaceRecognition = 2
-    """The DataSet labels useful for FaceRecognition"""
+    FACE_RECOGNITION = 2
+    """The DataSet labels useful for Face Recognition"""

@@ -94,7 +94,7 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
         model_patch.return_value = Model({
             'id': self.model_id,
             'dataSetId': self.ds_id,
-            'type': ModelType.TF2_XFER_MOBILENET2,
+            'type': ModelType.LABEL_DETECTION_RESNET152,
             'fileId': 'models/{}/foo/bar'.format(self.model_id),
             'name': name
         })

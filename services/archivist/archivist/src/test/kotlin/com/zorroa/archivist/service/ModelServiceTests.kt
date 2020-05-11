@@ -29,14 +29,14 @@ class ModelServiceTests : AbstractTest() {
     @Autowired
     lateinit var modelService: ModelService
 
-    val dsSpec = DataSetSpec("dog-breeds", DataSetType.LabelDetection)
+    val dsSpec = DataSetSpec("dog-breeds", DataSetType.LABEL_DETECTION)
     lateinit var dataSet: DataSet
 
     fun create(): Model {
         dataSet = dataSetService.create(dsSpec)
         val mspec = ModelSpec(
             dataSet.id,
-            ModelType.TF2_XFER_MOBILENET2
+            ModelType.LABEL_DETECTION_MOBILENET2
         )
         return modelService.createModel(mspec)
     }
@@ -109,12 +109,12 @@ class ModelServiceTests : AbstractTest() {
         assertEquals(model1.name, mod.name)
         assertEquals("Custom", mod.provider)
         assertEquals("Custom Model", mod.category)
-        assertEquals("Label Detection", mod.type)
+        assertEquals("LabelDetection", mod.type)
         assertEquals(ModOpType.APPEND, mod.ops[0].type)
     }
 
     fun assertModel(model: Model) {
-        assertEquals(ModelType.TF2_XFER_MOBILENET2, model.type)
+        assertEquals(ModelType.LABEL_DETECTION_MOBILENET2, model.type)
         assertEquals("custom-dog-breeds-label-detection-mobilenet2", model.name)
         assertTrue(model.fileId.endsWith("custom-dog-breeds-label-detection-mobilenet2.zip"))
         assertFalse(model.ready)

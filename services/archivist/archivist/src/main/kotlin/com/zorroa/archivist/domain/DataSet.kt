@@ -13,10 +13,17 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
+@ApiModel("DataSetType", description = "The overall objective of a dataset or model.")
 enum class DataSetType {
-    LabelDetection,
-    ObjectDetection,
-    FaceRecognition
+
+    @ApiModelProperty("Perform label detection.")
+    LABEL_DETECTION,
+
+    @ApiModelProperty("Perform object detection.")
+    OBJECT_DETECTION,
+
+    @ApiModelProperty("Perform face recognition.")
+    FACE_RECOGNITION
 }
 
 @ApiModel("Data Set", description = "Fields required to make a DataSet")
@@ -48,7 +55,7 @@ class DataSet(
     val name: String,
 
     @Column(name = "int_type")
-    @ApiModelProperty("The type of DataSet")
+    @ApiModelProperty("The obective or purpose of the DataSet")
     val type: DataSetType,
 
     @Column(name = "time_created")

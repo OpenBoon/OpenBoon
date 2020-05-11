@@ -22,7 +22,7 @@ class DataSetControllerTests : MockMvcTest() {
     @Autowired
     lateinit var dataSetService: DataSetService
 
-    val testSpec = DataSetSpec("test-1234", DataSetType.LabelDetection)
+    val testSpec = DataSetSpec("test-1234", DataSetType.LABEL_DETECTION)
 
     @Test
     fun testCreate() {

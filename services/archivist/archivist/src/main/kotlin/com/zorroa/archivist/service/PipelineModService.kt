@@ -51,9 +51,6 @@ class PipelineModServiceImpl(
     val pipelineModDao: PipelineModDao
 ) : PipelineModService {
 
-    @PersistenceContext
-    lateinit var entityManager: EntityManager
-
     @Transactional(readOnly = true)
     override fun get(id: UUID): PipelineMod = pipelineModDao.get(id)
 
