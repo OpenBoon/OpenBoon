@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
@@ -10,7 +11,9 @@ import filterShape from '../Filter/shape'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 
-export const noop = () => {}
+import FilterRangeSlider from '../FilterRange/Slider'
+
+import { formatRange } from './helpers'
 
 const FilterLabelConfidence = ({
   projectId,
@@ -32,7 +35,14 @@ const FilterLabelConfidence = ({
     },
   } = useSWR(
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      shouldRetryOnError: false,
+    },
   )
+
+  const [rangeValues, setRangeValues] = useState([min, max])
 
   const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
 
@@ -46,8 +56,47 @@ const FilterLabelConfidence = ({
         filters={filters}
         filter={filter}
         filterIndex={filterIndex}
-        onReset={noop}
+        onReset={() => setRangeValues([0, 1])}
       />
+      <div css={{ paddingBottom: spacing.moderate }}>
+        Label prediction confidence score: {formatRange({ min, max })}
+      </div>
+      <div css={{ padding: spacing.normal, paddingBottom: spacing.spacious }}>
+        <div
+          css={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            paddingBottom: spacing.moderate,
+            fontFamily: 'Roboto Mono',
+          }}
+        >
+          <span>0.00</span>
+          <span>1.00</span>
+        </div>
+        <div css={{ padding: spacing.small }}>
+          <FilterRangeSlider
+            domain={[0, 1]}
+            values={rangeValues}
+            setValues={(values) => setRangeValues(values)}
+            onChange={([newMin, newMax]) =>
+              dispatch({
+                action: ACTIONS.UPDATE_FILTER,
+                payload: {
+                  projectId,
+                  assetId,
+                  filters,
+                  updatedFilter: {
+                    type,
+                    attribute,
+                    values: { labels, min: newMin, max: newMax },
+                  },
+                  filterIndex,
+                },
+              })
+            }
+          />
+        </div>
+      </div>
       <div
         css={{
           display: 'flex',

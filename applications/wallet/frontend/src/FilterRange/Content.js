@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
-import { bytesToSize } from '../Bytes/helpers'
 
 import filterShape from '../Filter/shape'
 
@@ -10,25 +9,22 @@ import { colors, constants, spacing } from '../Styles'
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 import FiltersReset from '../Filters/Reset'
 
+import { formatValue } from './helpers'
+
 import FilterRangeSlider from './Slider'
 
 const MIN_WIDTH = 76
-
-const formatValue = ({ attribute, value }) => {
-  if (attribute.includes('size')) {
-    return bytesToSize({ bytes: value })
-  }
-
-  // Will always return 2 decimals at most, only if necessary
-  return Math.round((value + Number.EPSILON) * 100) / 100
-}
 
 const FilterRange = ({
   projectId,
   assetId,
   filters,
   filter,
-  filter: { type, attribute, values },
+  filter: {
+    type,
+    attribute,
+    values: { min, max },
+  },
   filterIndex,
 }) => {
   const {
@@ -37,13 +33,18 @@ const FilterRange = ({
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encode({
       filters: { type, attribute },
     })}`,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      shouldRetryOnError: false,
+    },
   )
 
   const domain = [results.min, results.max]
 
   const [rangeValues, setRangeValues] = useState([
-    values.min || results.min,
-    values.max || results.max,
+    min || results.min,
+    max || results.max,
   ])
 
   return (
@@ -62,6 +63,7 @@ const FilterRange = ({
             display: 'flex',
             justifyContent: 'space-between',
             paddingBottom: spacing.moderate,
+            fontFamily: 'Roboto Mono',
           }}
         >
           <span>{formatValue({ attribute, value: results.min })}</span>
@@ -71,8 +73,8 @@ const FilterRange = ({
           <FilterRangeSlider
             domain={domain}
             values={rangeValues}
-            setValues={(value) => setRangeValues(value)}
-            onChange={([min, max]) =>
+            setValues={(values) => setRangeValues(values)}
+            onChange={([newMin, newMax]) =>
               dispatch({
                 action: ACTIONS.UPDATE_FILTER,
                 payload: {
@@ -82,7 +84,7 @@ const FilterRange = ({
                   updatedFilter: {
                     type,
                     attribute,
-                    values: { min, max },
+                    values: { min: newMin, max: newMax },
                   },
                   filterIndex,
                 },
