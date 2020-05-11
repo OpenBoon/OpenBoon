@@ -519,7 +519,7 @@ def is_file_type_allowed(asset, file_types):
             ext = ext[1:].lower()
             return ext in file_types
         except Exception as e:
-            logger.warning('Failed to parse extension for file: {}'.format(asset.uri))
+            logger.warning('Failed to parse extension for file: {}. Unexpected: {}'.format(asset.uri, e))
             return False
     else:
         # Have to return true here for processors with no type filters.
