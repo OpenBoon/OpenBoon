@@ -1,21 +1,17 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
 import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
-import FiltersReset from '../Filters/Reset'
 
 import filterShape from '../Filter/shape'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 
-import FilterRangeSlider from '../FilterRange/Slider'
+import FilterLabelConfidenceSlider from './Slider'
 
-import { formatRange } from './helpers'
-
-const FilterLabelConfidence = ({
+const FilterLabelConfidenceContent = ({
   projectId,
   assetId,
   filters,
@@ -42,63 +38,19 @@ const FilterLabelConfidence = ({
     },
   )
 
-  const [rangeValues, setRangeValues] = useState([min, max])
-
   const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
 
   const hasSelections = labels.length > 0
 
   return (
     <>
-      <FiltersReset
+      <FilterLabelConfidenceSlider
         projectId={projectId}
         assetId={assetId}
         filters={filters}
         filter={filter}
         filterIndex={filterIndex}
-        onReset={() => setRangeValues([0, 1])}
       />
-      <div css={{ paddingBottom: spacing.moderate }}>
-        Label prediction confidence score:{' '}
-        {formatRange({ min: rangeValues[0], max: rangeValues[1] })}
-      </div>
-      <div css={{ padding: spacing.normal, paddingBottom: spacing.spacious }}>
-        <div
-          css={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            paddingBottom: spacing.moderate,
-            fontFamily: 'Roboto Mono',
-          }}
-        >
-          <span>0.00</span>
-          <span>1.00</span>
-        </div>
-        <div css={{ padding: spacing.small }}>
-          <FilterRangeSlider
-            step={0.01}
-            domain={[0, 1]}
-            values={rangeValues}
-            setValues={(values) => setRangeValues(values)}
-            onChange={([newMin, newMax]) =>
-              dispatch({
-                action: ACTIONS.UPDATE_FILTER,
-                payload: {
-                  projectId,
-                  assetId,
-                  filters,
-                  updatedFilter: {
-                    type,
-                    attribute,
-                    values: { labels, min: newMin, max: newMax },
-                  },
-                  filterIndex,
-                },
-              })
-            }
-          />
-        </div>
-      </div>
       <div
         css={{
           display: 'flex',
@@ -205,7 +157,7 @@ const FilterLabelConfidence = ({
   )
 }
 
-FilterLabelConfidence.propTypes = {
+FilterLabelConfidenceContent.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
@@ -213,4 +165,4 @@ FilterLabelConfidence.propTypes = {
   filterIndex: PropTypes.number.isRequired,
 }
 
-export default FilterLabelConfidence
+export default FilterLabelConfidenceContent
