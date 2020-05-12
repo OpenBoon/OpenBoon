@@ -19,6 +19,7 @@ const FilterTextDetection = ({
 }) => {
   return (
     <Accordion
+      cacheKey={filter.attribute}
       variant={ACCORDION_VARIANTS.FILTER}
       title={
         <FiltersTitle

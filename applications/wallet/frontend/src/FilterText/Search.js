@@ -14,7 +14,7 @@ import { dispatch, ACTIONS } from '../Filters/helpers'
 
 const SVG_SIZE = 20
 
-const FilterTextContentQuery = ({
+const FilterTextSearch = ({
   projectId,
   assetId,
   filters,
@@ -158,7 +158,7 @@ const FilterTextContentQuery = ({
   )
 }
 
-FilterTextContentQuery.propTypes = {
+FilterTextSearch.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
@@ -166,4 +166,4 @@ FilterTextContentQuery.propTypes = {
   filterIndex: PropTypes.number.isRequired,
 }
 
-export default FilterTextContentQuery
+export default FilterTextSearch

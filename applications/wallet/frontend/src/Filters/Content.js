@@ -10,12 +10,11 @@ import PlusSvg from '../Icons/plus.svg'
 
 import SearchFilter from '../SearchFilter'
 import Button, { VARIANTS } from '../Button'
-import FilterTextContent from '../FilterTextContent'
+import FilterText from '../FilterText'
 import FilterExists from '../FilterExists'
 import FilterFacet from '../FilterFacet'
 import FilterRange from '../FilterRange'
 import FilterLabelConfidence from '../FilterLabelConfidence'
-import FilterTextDetection from '../FilterTextDetection'
 
 import { dispatch, ACTIONS } from './helpers'
 
@@ -131,20 +130,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
 
             case 'textContent':
               return (
-                <FilterTextDetection
-                  key={`${filter.type}-${index}`}
-                  projectId={projectId}
-                  assetId={assetId}
-                  filters={filters}
-                  filter={filter}
-                  filterIndex={index}
-                />
-              )
-
-            case 'textContent':
-              return (
-                <FilterTextContent
-                  // eslint-disable-next-line react/no-array-index-key
+                <FilterText
                   key={`${filter.type}-${index}`}
                   projectId={projectId}
                   assetId={assetId}

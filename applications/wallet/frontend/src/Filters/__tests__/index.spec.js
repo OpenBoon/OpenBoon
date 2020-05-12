@@ -3,7 +3,7 @@ import TestRenderer, { act } from 'react-test-renderer'
 import fields from '../__mocks__/fields'
 
 import Filters from '..'
-import FilterTextContentQuery from '../../FilterTextContent/Query'
+import FilterTextSearch from '../../FilterText/Search'
 
 const noop = () => () => {}
 
@@ -249,7 +249,7 @@ describe('<Filters />', () => {
     // delete Dog
     act(() => {
       component.root
-        .findAllByType(FilterTextContentQuery)[1]
+        .findAllByType(FilterTextSearch)[1]
         .findByProps({ 'aria-label': 'Delete Filter' })
         .props.onClick({ preventDefault: noop })
     })
