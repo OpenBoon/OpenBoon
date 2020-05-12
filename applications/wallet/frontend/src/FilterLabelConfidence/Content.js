@@ -4,15 +4,14 @@ import useSWR from 'swr'
 import { colors, constants, spacing } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
-import FiltersReset from '../Filters/Reset'
 
 import filterShape from '../Filter/shape'
 
 import { dispatch, ACTIONS, encode } from '../Filters/helpers'
 
-export const noop = () => {}
+import FilterLabelConfidenceSlider from './Slider'
 
-const FilterLabelConfidence = ({
+const FilterLabelConfidenceContent = ({
   projectId,
   assetId,
   filters,
@@ -32,6 +31,11 @@ const FilterLabelConfidence = ({
     },
   } = useSWR(
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      shouldRetryOnError: false,
+    },
   )
 
   const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}
@@ -40,13 +44,12 @@ const FilterLabelConfidence = ({
 
   return (
     <>
-      <FiltersReset
+      <FilterLabelConfidenceSlider
         projectId={projectId}
         assetId={assetId}
         filters={filters}
         filter={filter}
         filterIndex={filterIndex}
-        onReset={noop}
       />
       <div
         css={{
@@ -154,7 +157,7 @@ const FilterLabelConfidence = ({
   )
 }
 
-FilterLabelConfidence.propTypes = {
+FilterLabelConfidenceContent.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
@@ -162,4 +165,4 @@ FilterLabelConfidence.propTypes = {
   filterIndex: PropTypes.number.isRequired,
 }
 
-export default FilterLabelConfidence
+export default FilterLabelConfidenceContent

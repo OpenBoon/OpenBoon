@@ -56,6 +56,7 @@ const FiltersMenu = ({
               key={key}
               variant={ACCORDION_VARIANTS.PANEL}
               title={formatDisplayName({ name: key })}
+              cacheKey={`FiltersMenu.${key}`}
               isInitiallyOpen={false}
             >
               <div

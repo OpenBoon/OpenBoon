@@ -16,6 +16,7 @@ const DataSourcesAddProvider = ({
       <Accordion
         variant={VARIANTS.PRIMARY}
         title={<img src={logo} alt={name} height={IMG_HEIGHT} />}
+        cacheKey={`DataSourcesAddProvider.${name}`}
         isInitiallyOpen
       >
         <>

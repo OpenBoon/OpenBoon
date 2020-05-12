@@ -32,6 +32,11 @@ const FilterFacet = ({
     },
   } = useSWR(
     `/api/v1/projects/${projectId}/searches/aggregate/?filter=${encodedFilter}`,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      shouldRetryOnError: false,
+    },
   )
 
   const { docCount: largestCount = 1 } = buckets.find(({ key }) => !!key) || {}

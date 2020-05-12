@@ -31,7 +31,8 @@ export const decode = ({ query }) => {
 
 export const cleanup = ({ query }) => {
   const filters = decode({ query }).filter(
-    ({ values = {} }) => Object.keys(values).length > 0,
+    ({ values = {}, isDisabled = false }) =>
+      Object.keys(values).length > 0 && !isDisabled,
   )
 
   return encode({ filters })

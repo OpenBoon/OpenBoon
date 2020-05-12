@@ -15,7 +15,7 @@ import FilterLabelConfidence from '../FilterLabelConfidence'
 
 import { dispatch, ACTIONS } from './helpers'
 
-const BUTTON_SIZE = 230
+const BUTTON_SIZE = 190
 const ICON_SIZE = 20
 
 const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
