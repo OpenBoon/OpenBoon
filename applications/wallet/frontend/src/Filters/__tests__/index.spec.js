@@ -118,7 +118,7 @@ describe('<Filters />', () => {
     )
   })
 
-  it('should mute one textContent query filter', () => {
+  it('should mute one filter', () => {
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
@@ -168,7 +168,7 @@ describe('<Filters />', () => {
     )
   })
 
-  it('should unmute one textContent query filter', () => {
+  it('should unmute one filter', () => {
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
@@ -223,7 +223,7 @@ describe('<Filters />', () => {
     )
   })
 
-  it('should delete one textContent query filter', () => {
+  it('should delete one filter', () => {
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
@@ -269,7 +269,7 @@ describe('<Filters />', () => {
     )
   })
 
-  it('should delete all textContent query filters', () => {
+  it('should delete only filter', () => {
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
@@ -310,7 +310,7 @@ describe('<Filters />', () => {
     )
   })
 
-  it('should clear all textContent query filters', () => {
+  it('should clear all filters', () => {
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
