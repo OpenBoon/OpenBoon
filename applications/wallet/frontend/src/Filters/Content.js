@@ -12,6 +12,7 @@ import FilterExists from '../FilterExists'
 import FilterFacet from '../FilterFacet'
 import FilterRange from '../FilterRange'
 import FilterLabelConfidence from '../FilterLabelConfidence'
+import FilterTextDetection from '../FilterTextDetection'
 
 import { dispatch, ACTIONS } from './helpers'
 
@@ -120,6 +121,18 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
               return (
                 <FilterLabelConfidence
                   // eslint-disable-next-line react/no-array-index-key
+                  key={`${filter.type}-${index}`}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
+
+            case 'textContent':
+              return (
+                <FilterTextDetection // eslint-disable-next-line react/no-array-index-key
                   key={`${filter.type}-${index}`}
                   projectId={projectId}
                   assetId={assetId}
