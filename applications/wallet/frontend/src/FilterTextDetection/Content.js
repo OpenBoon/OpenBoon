@@ -57,7 +57,6 @@ const FilterTextDetectionContent = ({
                 },
                 ':hover': {
                   border: constants.borders.tableRow,
-                  borderRight: 'none',
                 },
                 paddingLeft: spacing.moderate,
                 '::placeholder': {
