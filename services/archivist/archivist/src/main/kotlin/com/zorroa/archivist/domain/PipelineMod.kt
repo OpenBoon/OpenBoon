@@ -30,7 +30,7 @@ class PipelineMod(
     @ApiModelProperty("The service or type of ML, eg \"Google Vision\")")
     val category: String,
 
-    @ApiModelProperty("The type of technology used in module")
+    @ApiModelProperty("The objective of the module.")
     val type: String,
 
     @ApiModelProperty("The general types of media this module can handle.")

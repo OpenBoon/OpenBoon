@@ -244,7 +244,11 @@ class SearchViewSet(ConvertCamelToSnakeViewSetMixin,
         _filter = filter_service.get_filter_from_request(request)
         _filter.is_valid(raise_exception=True)
 
-        response = request.client.post(path, _filter.get_es_agg())
+        try:
+            response = request.client.post(path, _filter.get_es_agg())
+        except NotImplementedError:
+            return Response(status=status.HTTP_400_BAD_REQUEST,
+                            data={'detail': 'This Filter does not support aggregations.'})
 
         return Response(status=status.HTTP_200_OK, data=_filter.serialize_agg_response(response))
 
