@@ -7828,6 +7828,7 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  height: 42px;
   position: relative;
 }
 

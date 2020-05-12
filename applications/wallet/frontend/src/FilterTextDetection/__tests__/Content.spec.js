@@ -76,6 +76,32 @@ describe('<FilterTextDetection />', () => {
     )
   })
 
+  it('should edit a text detection', () => {
+    const filter = {
+      type: 'textContent',
+      attribute: 'analysis.zvi-text-content',
+      values: { query: ['cats'] },
+    }
+
+    const component = TestRenderer.create(
+      <FilterTextDetection
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={[filter]}
+        filter={filter}
+        filterIndex={0}
+      />,
+    )
+
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Edit Text Detection' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should clear a text detection', () => {
     const filter = {
       type: 'textContent',
