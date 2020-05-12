@@ -78,7 +78,6 @@ class ApiKeyServiceTests : AbstractTest() {
         assertEquals("test", keys.list[0].name)
     }
 
-
     @Test
     fun testSearchProjectIdFilter() {
         val pid = UUID.randomUUID()
