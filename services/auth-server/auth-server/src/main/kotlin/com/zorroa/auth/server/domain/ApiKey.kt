@@ -80,8 +80,11 @@ class ApiKey(
 
     @Column(name = "actor_modified", nullable = false)
     @ApiModelProperty("The actor that modified the key.")
-    val actorModified: String
+    val actorModified: String,
 
+    @Column
+    @ApiModelProperty("True if the Key is enabled")
+    val enabled: Boolean = true
 ) {
 
     @JsonIgnore

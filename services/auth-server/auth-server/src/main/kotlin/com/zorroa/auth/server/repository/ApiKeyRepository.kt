@@ -13,9 +13,11 @@ import javax.sql.DataSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
+import javax.transaction.Transactional
 
 @Repository("apiKeyRepository")
 interface ApiKeyRepository : JpaRepository<ApiKey, UUID> {
@@ -25,6 +27,13 @@ interface ApiKeyRepository : JpaRepository<ApiKey, UUID> {
     fun findByProjectIdAndId(id: UUID, projectId: UUID): ApiKey
 
     fun findByAccessKey(accesKey: String): ApiKey?
+
+    @Query("UPDATE ApiKey api SET api.enabled = ?1 WHERE api.id = ?2")
+    fun updateEnabledById(enabled: Boolean, id: UUID)
+
+    @Transactional
+    @Query("UPDATE ApiKey api SET api.enabled = ?1 WHERE api.projectId = ?2")
+    fun updateEnabledByProjectId(enabled: Boolean, projectId: UUID)
 }
 
 /**

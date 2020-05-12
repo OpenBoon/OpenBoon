@@ -39,6 +39,10 @@ interface ApiKeyService {
     fun search(filter: ApiKeyFilter): PagedList<ApiKey>
 
     fun delete(apiKey: ApiKey)
+
+    fun updateEnabled(apiKey: ApiKey, enabled: Boolean)
+
+    fun updateEnabledByProject(enabled: Boolean)
 }
 
 @Service
@@ -121,7 +125,7 @@ class ApiKeyServiceImpl constructor(
 
     @Transactional(readOnly = true)
     override fun get(id: UUID): ApiKey {
-            return apiKeyRepository.findByProjectIdAndId(getProjectId(), id)
+        return apiKeyRepository.findByProjectIdAndId(getProjectId(), id)
     }
 
     @Transactional(readOnly = true)
@@ -148,6 +152,28 @@ class ApiKeyServiceImpl constructor(
             )
         )
         apiKeyRepository.delete(apiKey)
+    }
+
+    override fun updateEnabled(apiKey: ApiKey, enabled: Boolean) {
+        logger.event(
+            LogObject.API_KEY, if (enabled) LogAction.ENABLE else LogAction.DISABLE,
+            mapOf(
+                "apiKeyId" to apiKey.id,
+                "apiKeyName" to apiKey.name
+            )
+        )
+        apiKeyRepository.updateEnabledById(enabled, apiKey.id)
+    }
+
+    override fun updateEnabledByProject(enabled: Boolean) {
+        val projectId = getProjectId()
+        logger.event(
+            LogObject.API_KEY, if (enabled) LogAction.ENABLE else LogAction.DISABLE,
+            mapOf(
+                "projectId" to projectId
+            )
+        )
+        apiKeyRepository.updateEnabledByProjectId(enabled, projectId)
     }
 
     fun validatePermissionsCanBeAssigned(perms: Set<Permission>) {
