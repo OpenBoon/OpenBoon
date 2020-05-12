@@ -123,7 +123,7 @@ class YOLOTransferLearningTrainerTests(PluginUnitTestCase):
         labels_patch.return_value = {"roses": 6, "daisy": 6}
         upload_patch.return_value = StoredFile({"id": "12345"})
 
-        name = "custom-flowers-label-detection-tf2-xfer-yolo"
+        name = "custom-flowers-label-detection-tf2-xfer-train_yolo"
         basepath = os.path.dirname(__file__)
         path_yolo = os.path.abspath(os.path.join(basepath, ".."))
         args = {
