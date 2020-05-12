@@ -55,5 +55,7 @@ export const logout = ({ googleAuth }) => async ({ redirectUrl }) => {
 
   cache.clear()
 
+  localStorage.clear()
+
   Router.push(redirectUrl)
 }
