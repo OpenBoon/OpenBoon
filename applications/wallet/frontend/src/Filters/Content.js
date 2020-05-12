@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import PropTypes from 'prop-types'
 
 import filterShape from '../Filter/shape'
@@ -81,7 +82,6 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             case 'exists':
               return (
                 <FilterExists
-                  // eslint-disable-next-line react/no-array-index-key
                   key={`${filter.type}-${index}`}
                   projectId={projectId}
                   assetId={assetId}
@@ -94,7 +94,6 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             case 'facet':
               return (
                 <FilterFacet
-                  // eslint-disable-next-line react/no-array-index-key
                   key={`${filter.type}-${index}`}
                   projectId={projectId}
                   assetId={assetId}
@@ -107,7 +106,6 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             case 'range':
               return (
                 <FilterRange
-                  // eslint-disable-next-line react/no-array-index-key
                   key={`${filter.type}-${index}`}
                   projectId={projectId}
                   assetId={assetId}
@@ -120,7 +118,6 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             case 'labelConfidence':
               return (
                 <FilterLabelConfidence
-                  // eslint-disable-next-line react/no-array-index-key
                   key={`${filter.type}-${index}`}
                   projectId={projectId}
                   assetId={assetId}
@@ -132,7 +129,7 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
 
             case 'textContent':
               return (
-                <FilterTextDetection // eslint-disable-next-line react/no-array-index-key
+                <FilterTextDetection
                   key={`${filter.type}-${index}`}
                   projectId={projectId}
                   assetId={assetId}
@@ -145,7 +142,6 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             default:
               return (
                 <li
-                  // eslint-disable-next-line react/no-array-index-key
                   key={`${filter.type}-${index}`}
                   css={{
                     display: 'flex',
