@@ -2,11 +2,11 @@ package com.zorroa.archivist.service
 
 import com.zorroa.archivist.AbstractTest
 import com.zorroa.archivist.domain.Category
-import com.zorroa.archivist.domain.OpFilter
-import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.ModOp
 import com.zorroa.archivist.domain.ModOpType
 import com.zorroa.archivist.domain.ModType
+import com.zorroa.archivist.domain.OpFilter
+import com.zorroa.archivist.domain.OpFilterType
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.domain.PipelineModFilter
 import com.zorroa.archivist.domain.PipelineModSpec
@@ -22,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.dao.DataRetrievalFailureException
 import java.util.UUID
-import javax.persistence.EntityManager
-import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
@@ -39,9 +37,6 @@ class PipelineModServiceTests : AbstractTest() {
     lateinit var mod: PipelineMod
 
     lateinit var spec: PipelineModSpec
-
-    @PersistenceContext
-    lateinit var entityManager: EntityManager
 
     @Before
     fun init() {
@@ -147,7 +142,6 @@ class PipelineModServiceTests : AbstractTest() {
 
     @Test
     fun testSearch() {
-        entityManager.flush()
         val filter = PipelineModFilter(names = listOf(mod.name), ids = listOf(mod.id))
         filter.sort = filter.sortMap.keys.map { "$it:a" }
         val paged = pipelineModService.search(filter)
@@ -156,7 +150,6 @@ class PipelineModServiceTests : AbstractTest() {
 
     @Test
     fun testFindOne() {
-        entityManager.flush()
         val filter = PipelineModFilter(ids = listOf(mod.id))
         val mod2 = pipelineModService.findOne(filter)
         assertEquals(mod.id, mod2.id)
@@ -183,7 +176,6 @@ class PipelineModServiceTests : AbstractTest() {
     @Test(expected = DataRetrievalFailureException::class)
     fun testDelete() {
         pipelineModService.delete(mod.id)
-        entityManager.flush()
         pipelineModService.getByName(mod.name)
     }
 

@@ -231,12 +231,17 @@ class ProjectStorage(object):
             str: a path to a location in the local file cache.
 
         """
-        _, suffix = os.path.splitext(sfile.name)
-        cache_path = self.cache.get_path(sfile.id, suffix)
+        if isinstance(sfile, str):
+            file_id = sfile
+        else:
+            file_id = sfile.id
+
+        _, suffix = os.path.splitext(file_id)
+        cache_path = self.cache.get_path(file_id, suffix)
 
         if not os.path.exists(cache_path):
-            logger.info("localizing file: {}".format(sfile.id))
-            self.app.client.stream('/api/v3/files/_stream/{}'.format(sfile.id), cache_path)
+            logger.info("localizing file: {}".format(file_id))
+            self.app.client.stream('/api/v3/files/_stream/{}'.format(file_id), cache_path)
         return cache_path
 
 

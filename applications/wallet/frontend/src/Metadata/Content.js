@@ -97,6 +97,7 @@ const MetadataContent = ({ projectId, assetId }) => {
                   key={section}
                   variant={ACCORDION_VARIANTS.PANEL}
                   title={title}
+                  cacheKey={`Metadata.${section}`}
                   isInitiallyOpen={false}
                 >
                   <MetadataPretty metadata={metadata} section={section} />

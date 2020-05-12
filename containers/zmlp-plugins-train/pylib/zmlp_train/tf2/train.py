@@ -21,17 +21,8 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         super(TensorflowTransferLearningTrainer, self).__init__()
 
         # These are the base args
-        self.add_arg(Argument("dataset_id", "str", required=True,
-                              toolTip="The dataset Id"))
-        self.add_arg(Argument("model_type", "str", required=True,
-                              toolTip="The the base model type."))
-        self.add_arg(Argument("name", "str", required=True,
-                              toolTip="The name of the model, which is the pipeline mod name."))
-        self.add_arg(Argument("file_id", "str", required=True,
-                              toolTip="The file_id where the model should be stored"))
-
-        self.add_arg(Argument("publish", "bool", required=False,
-                              toolTip="True if the pipeline module should be created/updated"))
+        self.add_arg(Argument("model_id", "str", required=True,
+                              toolTip="The model Id"))
 
         # These can be set optionally.
         self.add_arg(Argument("epochs", "int", required=True, default=10,
@@ -45,22 +36,28 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
                      toolTip="The number of training images vs test images"))
         self.app = zmlp.app_from_env()
 
-        self.ds = None
         self.model = None
         self.labels = None
         self.base_dir = None
 
     def init(self):
-        self.ds = self.app.datasets.get_dataset(self.arg_value('dataset_id'))
-        self.labels = self.app.datasets.get_label_counts(self.ds)
+        self.app_model = self.app.models.get_model(self.arg_value('model_id'))
+        self.labels = self.app.datasets.get_label_counts(
+            self.app_model.dataset_id)
         self.base_dir = tempfile.mkdtemp('tf2-xfer-learning')
         self.check_labels()
 
     def process(self, frame):
-        download_dataset(self.ds.id, self.base_dir,
+        self.reactor.write_event("status", {
+            "status": "Downloading files in DataSet"
+        })
+        download_dataset(self.app_model.dataset_id, self.base_dir,
                          self.arg_value('train-test-ratio'))
-        self.build_model()
 
+        self.reactor.write_event("status", {
+            "status": "Training model{}".format(self.app_model.file_id)
+        })
+        self.build_model()
         train_gen, test_gen = self.build_generators()
         self.model.fit_generator(
             train_gen,
@@ -84,7 +81,7 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
         """
         self.logger.info('publishing model')
-        model_dir = tempfile.mkdtemp() + '/' + self.arg_value('name')
+        model_dir = tempfile.mkdtemp() + '/' + self.app_model.name
         os.makedirs(model_dir)
 
         self.logger.info('saving model : {}'.format(model_dir))
@@ -96,127 +93,147 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         # Upload the zipped model to project storage.
         self.logger.info('uploading model')
 
-        stored_file = upload_model_directory(model_dir,
-                                             self.arg_value("file_id"))
+<< << << < HEAD
+stored_file = upload_model_directory(model_dir,
+                                     self.arg_value("file_id"))
+== == == =
+self.reactor.write_event("status", {
+    "status": "Uploading model{}".format(self.app_model.file_id)
+})
+>> >> >> > c381308b17d7834c486f415a2a5a59a906295ca7
 
-        self.logger.info("Uploaded model: {}".format(stored_file.id))
+upload_model_directory(model_dir, self.app_model.file_id)
 
-        # TODO:
-        # Currently we don't have project specific modules, need to add them
-        # before we can register a pipeline module.
+self.app.models.publish_model(self.app_model)
+self.reactor.write_event("status", {
+    "status": "Published model {}".format(self.app_model.file_id)
+})
 
-    def check_labels(self):
-        """
-        Check the dataset labels to ensure we have enough labels and example images.
 
-        """
-        min_concepts = self.arg_value('min_concepts')
-        min_examples = self.arg_value('min_examples')
+def check_labels(self):
+    """
+    Check the dataset labels to ensure we have enough labels and example images.
 
-        # Do some checks here.
-        if len(self.labels) < min_concepts:
-            raise ValueError(
-                'You need at least {} labels to train.'.format(min_concepts))
+    """
+    min_concepts = self.arg_value('min_concepts')
+    min_examples = self.arg_value('min_examples')
 
-        for name, count in self.labels.items():
-            if count < min_examples:
-                msg = 'You need at least {} examples to train, {} has  {}'
-                raise ValueError(msg.format(min_examples, name, count))
+    # Do some checks here.
+    if len(self.labels) < min_concepts:
+        raise ValueError(
+            'You need at least {} labels to train.'.format(min_concepts))
 
-    def build_model(self):
-        """
-        Build the Tensorflow model using the base model specified in the args.
-        """
-        base_model = self.get_base_model()
+    for name, count in self.labels.items():
+        if count < min_examples:
+            msg = 'You need at least {} examples to train, {} has  {}'
+            raise ValueError(msg.format(min_examples, name, count))
 
-        base_model.trainable = False
-        for layer in base_model.layers:
-            layer.trainable = False
 
-        self.model = tf.keras.models.Sequential([
-            base_model,
+def build_model(self):
+    """
+    Build the Tensorflow model using the base model specified in the args.
+    """
+    self.reactor.write_event("status", {
+        "status": "Building model{}".format(self.app_model.file_id)
+    })
 
-            Flatten(),
-            Dense(512, activation='relu'),
-            BatchNormalization(),
-            Dropout(0.5),
+    base_model = self.get_base_model()
 
-            Dense(64, activation='relu'),
-            BatchNormalization(),
-            Dropout(0.5),
-            Dense(len(self.labels), activation='softmax')
-        ])
+    base_model.trainable = False
+    for layer in base_model.layers:
+        layer.trainable = False
 
-        self.model.summary()
-        self.logger.info('Compiling...')
+    self.model = tf.keras.models.Sequential([
+        base_model,
 
-        self.model.compile(
-            optimizer='adam',
-            loss='categorical_crossentropy',
-            metrics=['acc']
-        )
+        Flatten(),
+        Dense(512, activation='relu'),
+        BatchNormalization(),
+        Dropout(0.5),
 
-    def build_generators(self):
-        """
-        Build the tensorflow ImageDataGenerators used to load in the the train
-        and test images.
+        Dense(64, activation='relu'),
+        BatchNormalization(),
+        Dropout(0.5),
+        Dense(len(self.labels), activation='softmax')
+    ])
 
-        Returns:
-            tuple: a tuple of ImageDataGenerators, 1st one is train, other is tet.
-        """
-        train_datagen = ImageDataGenerator(
-            rescale=1. / 255,
-            rotation_range=40,
-            width_shift_range=0.2,
-            height_shift_range=0.2,
-            shear_range=0.2,
-            zoom_range=0.2,
-            horizontal_flip=True,
-            fill_mode='nearest'
-        )
+    self.model.summary()
+    self.logger.info('Compiling...')
 
-        test_datagen = ImageDataGenerator(rescale=1. / 255.)
+    self.model.compile(
+        optimizer='adam',
+        loss='categorical_crossentropy',
+        metrics=['acc']
+    )
 
-        train_generator = train_datagen.flow_from_directory(
-            '{}/set_train/'.format(self.base_dir),
-            batch_size=128,
-            class_mode='categorical',
-            target_size=self.img_size
-        )
 
-        test_generator = test_datagen.flow_from_directory(
-            '{}/set_test/'.format(self.base_dir),
-            batch_size=128,
-            class_mode='categorical',
-            target_size=self.img_size
-        )
+def build_generators(self):
+    """
+    Build the tensorflow ImageDataGenerators used to load in the the train
+    and test images.
 
-        return train_generator, test_generator
+    Returns:
+        tuple: a tuple of ImageDataGenerators, 1st one is train, other is tet.
+    """
+    train_datagen = ImageDataGenerator(
+        rescale=1. / 255,
+        rotation_range=40,
+        width_shift_range=0.2,
+        height_shift_range=0.2,
+        shear_range=0.2,
+        zoom_range=0.2,
+        horizontal_flip=True,
+        fill_mode='nearest'
+    )
 
-    def get_base_model(self):
-        """
-        Using the 'base_model' arg, choose the base model for transfer learning/
+    test_datagen = ImageDataGenerator(rescale=1. / 255.)
 
-        Returns:
-            Model: A tensorflow model.
+    train_generator = train_datagen.flow_from_directory(
+        '{}/set_train/'.format(self.base_dir),
+        batch_size=128,
+        class_mode='categorical',
+        target_size=self.img_size
+    )
 
-        Raises:
-            ZmlpFatalProcessorException: If the model is not fouond/
+    test_generator = test_datagen.flow_from_directory(
+        '{}/set_test/'.format(self.base_dir),
+        batch_size=128,
+        class_mode='categorical',
+        target_size=self.img_size
+    )
 
-        """
-        model = self.arg_value('model_type')
-        if model == 'TF2_XFER_MOBILENET2':
-            return mobilenet_v2.MobileNetV2(weights='imagenet',
-                                            include_top=False,
-                                            input_shape=(224, 224, 3))
-        elif model == 'TF2_XFER_RESNET152':
-            return resnet_v2.ResNet152V2(weights='imagenet',
-                                         include_top=False,
-                                         input_shape=(224, 224, 3))
-        elif model == 'TF2_XFER_VGG16':
-            return vgg16.VGG16(weights='imagenet',
-                               include_top=False,
-                               input_shape=(224, 224, 3))
-        else:
-            raise ZmlpFatalProcessorException(
-                'Invalid model: {}'.format(model))
+    return train_generator, test_generator
+
+
+def get_base_model(self):
+    """
+    Using the 'base_model' arg, choose the base model for transfer learning/
+
+    Returns:
+        Model: A tensorflow model.
+
+    Raises:
+        ZmlpFatalProcessorException: If the model is not fouond/
+
+    """
+    modl_base = self.app_model.type
+    if modl_base == zmlp.ModelType.LABEL_DETECTION_MOBILENET2:
+        return mobilenet_v2.MobileNetV2(weights='imagenet',
+                                        include_top=False,
+                                        input_shape=(224, 224, 3))
+    elif modl_base == zmlp.ModelType.LABEL_DETECTION_RESNET152:
+        return resnet_v2.ResNet152V2(weights='imagenet',
+                                     include_top=False,
+                                     input_shape=(224, 224, 3))
+    elif modl_base == zmlp.ModelType.LABEL_DETECTION_VGG16:
+        return vgg16.VGG16(weights='imagenet',
+                           include_top=False,
+                           input_shape=(224, 224, 3))
+    else:
+
+<< << << < HEAD
+raise ZmlpFatalProcessorException(
+    'Invalid model: {}'.format(model))
+== == == =
+raise ZmlpFatalProcessorException('Invalid model: {}'.format(modl_base))
+>> >> >> > c381308b17d7834c486f415a2a5a59a906295ca7

@@ -136,6 +136,10 @@
           },
           "bbox": {
             "type": "float"
+          },
+          "simhash": {
+            "type": "keyword",
+            "index": false
           }
         }
       },

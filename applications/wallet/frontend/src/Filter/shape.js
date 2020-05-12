@@ -7,6 +7,7 @@ const filterShape = {
     'range',
     'exists',
     'labelConfidence',
+    'textContent',
   ]).isRequired,
   attribute: PropTypes.string.isRequired,
   values: PropTypes.shape({}),

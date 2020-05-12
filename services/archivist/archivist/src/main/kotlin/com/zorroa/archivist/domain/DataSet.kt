@@ -13,10 +13,17 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
-enum class DataSetType {
-    LabelDetection,
-    ObjectDetection,
-    FaceRecognition
+@ApiModel("DataSetType", description = "The overall objective of a dataset or model.")
+enum class DataSetType(val label: String) {
+
+    @ApiModelProperty("Perform label detection.")
+    LABEL_DETECTION("Label Detection"),
+
+    @ApiModelProperty("Perform object detection.")
+    OBJECT_DETECTION("Object Detection"),
+
+    @ApiModelProperty("Perform face recognition.")
+    FACE_RECOGNITION("Face Recognition")
 }
 
 @ApiModel("Data Set", description = "Fields required to make a DataSet")
@@ -48,7 +55,7 @@ class DataSet(
     val name: String,
 
     @Column(name = "int_type")
-    @ApiModelProperty("The type of DataSet")
+    @ApiModelProperty("The obective or purpose of the DataSet")
     val type: DataSetType,
 
     @Column(name = "time_created")
@@ -79,7 +86,10 @@ class DataSetLabel(
     @ApiModelProperty("The label for the DataSet")
     val label: String,
     @ApiModelProperty("An optional bounding box")
-    val bbox: List<Float>? = null
+    val bbox: List<Float>? = null,
+    @ApiModelProperty("An an optional simhash for the label")
+    val simhash: String? = null
+
 ) {
     companion object {
         val SET_OF: TypeReference<MutableSet<DataSetLabel>> = object :

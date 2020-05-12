@@ -94,11 +94,7 @@ class ModelServiceImpl(
             model.type.trainProcessor, "zmlp/plugins-train",
             model.type.trainArgs.plus(
                 mutableMapOf(
-                    "dataset_id" to model.dataSetId.toString(),
-                    "model_type" to model.type.toString(),
-                    "file_id" to model.fileId,
-                    "name" to model.name,
-                    "publish" to args.publish
+                    "model_id" to model.id.toString()
                 )
             )
         )
@@ -119,7 +115,7 @@ class ModelServiceImpl(
             model.type.description,
             Provider.CUSTOM,
             Category.TRAINED,
-            model.type.modType,
+            model.type.dataSetType.label,
             listOf(SupportedMedia.Documents, SupportedMedia.Images),
             listOf(
                 ModOp(

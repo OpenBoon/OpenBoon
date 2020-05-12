@@ -12,6 +12,7 @@ const DataSourcesAddAutomaticAnalysis = () => {
       <Accordion
         variant={VARIANTS.PRIMARY}
         title="Zorroa Automatic Analysis"
+        cacheKey="DataSourcesAddAutomaticAnalysis"
         isInitiallyOpen
       >
         <>
