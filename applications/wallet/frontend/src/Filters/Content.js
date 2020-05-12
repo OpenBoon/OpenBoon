@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import filterShape from '../Filter/shape'
 
 import { spacing, constants, colors } from '../Styles'
+
 import SearchSvg from '../Icons/search.svg'
 import PlusSvg from '../Icons/plus.svg'
 

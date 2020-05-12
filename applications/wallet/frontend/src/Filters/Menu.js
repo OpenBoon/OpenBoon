@@ -1,9 +1,13 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import useSWR from 'swr'
 
 import filterShape from '../Filter/shape'
 
 import { spacing } from '../Styles'
+
+import PlusSvg from '../Icons/plus.svg'
+import CrossSvg from '../Icons/crossSmall.svg'
 
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import Button, { VARIANTS } from '../Button'
@@ -14,13 +18,11 @@ import { dispatch, ACTIONS } from './helpers'
 
 import FiltersMenuSection from './MenuSection'
 
-const FiltersMenu = ({
-  projectId,
-  assetId,
-  filters,
-  fields,
-  setIsMenuOpen,
-}) => {
+const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
+  const { data: fields } = useSWR(
+    `/api/v1/projects/${projectId}/searches/fields/`,
+  )
+
   const [newFilters, setNewFilters] = useState({})
 
   const onClick = ({ type, attribute }) => (value) => {
@@ -56,7 +58,7 @@ const FiltersMenu = ({
               key={key}
               variant={ACCORDION_VARIANTS.PANEL}
               title={formatDisplayName({ name: key })}
-              cacheKey={`FiltersMenu.${key}`}
+              cacheKey={`Filters.${key}`}
               isInitiallyOpen={false}
             >
               <div
@@ -84,16 +86,25 @@ const FiltersMenu = ({
 
       <div css={{ padding: spacing.base, display: 'flex' }}>
         <Button
+          aria-label="Cancel"
           variant={VARIANTS.SECONDARY}
           onClick={() => setIsMenuOpen(false)}
-          style={{ flex: 1 }}
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexFlow: 'nowrap',
+            alignItems: 'end',
+            svg: { marginRight: spacing.base },
+          }}
         >
-          x Cancel
+          <CrossSvg width={18} />
+          Cancel
         </Button>
 
-        <div css={{ width: spacing.base }} />
+        <div css={{ width: spacing.base, minWidth: spacing.base }} />
 
         <Button
+          aria-label="Add Selected Filters"
           variant={VARIANTS.PRIMARY}
           onClick={() => {
             dispatch({
@@ -108,10 +119,17 @@ const FiltersMenu = ({
 
             setIsMenuOpen(false)
           }}
-          style={{ flex: 1 }}
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexFlow: 'nowrap',
+            alignItems: 'end',
+            svg: { marginRight: spacing.base },
+          }}
           isDisabled={Object.keys(newFilters).length === 0}
         >
-          + Add Selected Filters
+          <PlusSvg width={16} />
+          Add Selected Filters
         </Button>
       </div>
     </div>
@@ -122,7 +140,6 @@ FiltersMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape(filterShape)).isRequired,
-  fields: PropTypes.objectOf(PropTypes.objectOf).isRequired,
   setIsMenuOpen: PropTypes.func.isRequired,
 }
 

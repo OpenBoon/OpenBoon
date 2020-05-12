@@ -262,7 +262,7 @@ describe('<Filters />', () => {
     // close the menu
     act(() => {
       component.root
-        .findByProps({ children: 'x Cancel' })
+        .findByProps({ 'aria-label': 'Cancel' })
         .props.onClick({ preventDefault: noop })
     })
   })
@@ -320,7 +320,7 @@ describe('<Filters />', () => {
     // submit
     act(() => {
       component.root
-        .findByProps({ children: '+ Add Selected Filters' })
+        .findByProps({ 'aria-label': 'Add Selected Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -387,7 +387,7 @@ describe('<Filters />', () => {
     // submit
     act(() => {
       component.root
-        .findByProps({ children: '+ Add Selected Filters' })
+        .findByProps({ 'aria-label': 'Add Selected Filters' })
         .props.onClick({ preventDefault: noop })
     })
 
