@@ -3,8 +3,8 @@ import os
 import shutil
 from unittest.mock import patch
 
-from zmlp.app import DataSetApp
-from zmlp.entity import DataSet, StoredFile
+from zmlp.app import DataSetApp, ModelApp
+from zmlp.entity import Model, StoredFile, PipelineMod
 from zmlp_train.tf2 import TensorflowTransferLearningTrainer
 from zmlpsdk.base import Frame
 from zmlpsdk.testing import PluginUnitTestCase, TestAsset
@@ -53,6 +53,7 @@ def download_dataset(ds_id, dst_dir, ratio):
 
 class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
     ds_id = "ds-id-12345"
+    model_id = "model-id-12345"
 
     def prep_assets(self):
         for asset in assets:
@@ -78,15 +79,24 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
 
         return assets
 
-    @patch.object(DataSetApp, 'get_dataset')
+    @patch.object(ModelApp, 'publish_model')
+    @patch.object(ModelApp, 'get_model')
     @patch.object(DataSetApp, 'get_label_counts')
     @patch("zmlp_train.tf2.train.download_dataset", download_dataset)
     @patch("zmlp_train.tf2.train.upload_model_directory")
-    def test_process(self, upload_patch, labels_patch, dataset_patch):
+    def test_process(self, upload_patch, labels_patch, model_patch, pub_patch):
         self.prep_assets()
-        dataset_patch.return_value = DataSet({
-            "id": self.ds_id,
-            "name": "flowers"
+        name = 'custom-flowers-label-detection-tf2-xfer-mobilenet2'
+        pub_patch.return_value = PipelineMod({
+            'id': "12345",
+            'name': name
+        })
+        model_patch.return_value = Model({
+            'id': self.model_id,
+            'dataSetId': self.ds_id,
+            'type': "LABEL_DETECTION_MOBILENET2",
+            'fileId': 'models/{}/foo/bar'.format(self.model_id),
+            'name': name
         })
         labels_patch.return_value = {
             "roses": 6,
@@ -94,12 +104,8 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
         }
         upload_patch.return_value = StoredFile({"id": "12345"})
 
-        name = 'custom-flowers-label-detection-tf2-xfer-mobilenet2'
         args = {
-            'dataset_id': self.ds_id,
-            'model_type': 'TF2_XFER_MOBILENET2',
-            'name': name,
-            'file_id': 'dataset/12345/models/{}.2.zip'.format(name),
+            'model_id': self.model_id,
             'min_examples': 6,
             'epochs': 5
         }

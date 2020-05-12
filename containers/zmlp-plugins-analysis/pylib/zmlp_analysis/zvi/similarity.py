@@ -37,8 +37,8 @@ class ZviSimilarityProcessor(AssetProcessor):
         self.mod = mxnet.mod.Module(symbol=self.sym, context=mxnet.cpu(), label_names=None)
         self.mod.bind(for_training=False, data_shapes=[('data', (1, 3, 224, 224))])
         self.mod.set_params(self.arg_params, self.aux_params, allow_missing=True)
-        with open(self.model_path + '/synset.txt', 'r') as f:
-            self.labels = [l1.rstrip() for l1 in f]
+        with open(self.model_path + '/synset.txt', 'r') as fp:
+            self.labels = [lchar.rstrip() for lchar in fp]
 
     def process(self, frame):
         asset = frame.asset

@@ -193,7 +193,7 @@ class FileStorageControllerTests : MockMvcTest() {
     @Test
     fun testUploadFileToDataSet() {
 
-        val ds = dataSetService.create(DataSetSpec("foo", DataSetType.LabelDetection))
+        val ds = dataSetService.create(DataSetSpec("foo", DataSetType.LABEL_DETECTION))
         val file = MockMultipartFile(
             "file", "toucan.jpg", "image/jpeg",
             File("src/test/resources/test-data/toucan.jpg").inputStream().readBytes()
