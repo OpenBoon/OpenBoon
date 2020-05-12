@@ -68,16 +68,20 @@ const FiltersMenu = ({ projectId, assetId, filters, setIsMenuOpen }) => {
                   paddingBottom: spacing.base,
                 }}
               >
-                {Object.entries(value).map(([subKey, subValue]) => (
-                  <FiltersMenuSection
-                    key={subKey}
-                    path={key}
-                    attribute={subKey}
-                    value={subValue}
-                    filters={filters}
-                    onClick={onClick}
-                  />
-                ))}
+                {Object.entries(value)
+                  .filter((entry) => entry[1][0] !== 'similarity')
+                  .map(([subKey, subValue]) => {
+                    return (
+                      <FiltersMenuSection
+                        key={subKey}
+                        path={key}
+                        attribute={subKey}
+                        value={subValue}
+                        filters={filters}
+                        onClick={onClick}
+                      />
+                    )
+                  })}
               </div>
             </Accordion>
           ),
