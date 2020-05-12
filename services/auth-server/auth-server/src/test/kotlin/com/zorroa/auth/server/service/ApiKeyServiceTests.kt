@@ -3,6 +3,7 @@ package com.zorroa.auth.server.service
 import com.zorroa.auth.server.AbstractTest
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
+import com.zorroa.auth.server.domain.ProjectApiKeysEnabledSpec
 import com.zorroa.auth.server.security.getProjectId
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.apikey.ZmlpActor
@@ -41,6 +42,36 @@ class ApiKeyServiceTests : AbstractTest() {
         assertEquals(spec.name, key.name)
         assertEquals(getProjectId(), key.projectId)
         assertTrue(Permission.AssetsRead.name in key.permissions)
+    }
+
+    @Test
+    fun testApiKeyUpdateEnabled() {
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead),
+            true
+        )
+        var key = apiKeyService.create(spec)
+        assertEquals(true, key.enabled)
+        apiKeyService.updateEnabled(key, false)
+        val newKey = apiKeyService.get(key.id)
+        assertEquals(false, newKey.enabled)
+    }
+
+    @Test
+    fun testProjectApiKeysUpdateEnabled() {
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead),
+            true
+        )
+
+        var key = apiKeyService.create(spec)
+        apiKeyService.updateEnabledByProject(ProjectApiKeysEnabledSpec(false))
+
+        val findAll = apiKeyService.findAll()
+        assertEquals(false, findAll[0].enabled)
+        assertEquals(false, findAll[1].enabled)
     }
 
     @Test
@@ -103,9 +134,12 @@ class ApiKeyServiceTests : AbstractTest() {
         apiKeyService.create(ApiKeySpec("try2", setOf(Permission.AssetsRead)))
         apiKeyService.create(ApiKeySpec("try3", setOf(Permission.AssetsRead)))
 
-        val keys = apiKeyService.search(ApiKeyFilter(
-            namePrefixes = listOf("test"),
-            names = listOf("test1")))
+        val keys = apiKeyService.search(
+            ApiKeyFilter(
+                namePrefixes = listOf("test"),
+                names = listOf("test1")
+            )
+        )
 
         assertEquals(1, keys.list.size)
     }
@@ -116,9 +150,12 @@ class ApiKeyServiceTests : AbstractTest() {
         val create1 = apiKeyService.create(ApiKeySpec("test1", setOf(Permission.AssetsRead)))
         val create2 = apiKeyService.create(ApiKeySpec("try1", setOf(Permission.AssetsRead)))
 
-        val keys = apiKeyService.search(ApiKeyFilter(
-            ids = listOf(create1.id),
-            names = listOf(create2.name)))
+        val keys = apiKeyService.search(
+            ApiKeyFilter(
+                ids = listOf(create1.id),
+                names = listOf(create2.name)
+            )
+        )
 
         assertEquals(0, keys.list.size)
     }

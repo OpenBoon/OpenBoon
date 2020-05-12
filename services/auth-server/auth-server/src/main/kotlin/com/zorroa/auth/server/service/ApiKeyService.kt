@@ -3,6 +3,7 @@ package com.zorroa.auth.server.service
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
+import com.zorroa.auth.server.domain.ProjectApiKeysEnabledSpec
 import com.zorroa.auth.server.repository.ApiKeyCustomRepository
 import com.zorroa.auth.server.repository.ApiKeyRepository
 import com.zorroa.auth.server.repository.PagedList
@@ -42,7 +43,7 @@ interface ApiKeyService {
 
     fun updateEnabled(apiKey: ApiKey, enabled: Boolean)
 
-    fun updateEnabledByProject(enabled: Boolean)
+    fun updateEnabledByProject(apiKeysEnabledSpec: ProjectApiKeysEnabledSpec)
 }
 
 @Service
@@ -72,7 +73,8 @@ class ApiKeyServiceImpl constructor(
             spec.permissions.map { it.name }.toSet(),
             time, time,
             actor.toString(),
-            actor.toString()
+            actor.toString(),
+            spec.enabled
         )
 
         logger.event(
@@ -109,7 +111,8 @@ class ApiKeyServiceImpl constructor(
             spec.permissions.map { it.name }.toSet(),
             apiKey.timeCreated, time,
             apiKey.actorCreated,
-            actor.toString()
+            actor.toString(),
+            spec.enabled
         )
 
         logger.event(
@@ -165,15 +168,15 @@ class ApiKeyServiceImpl constructor(
         apiKeyRepository.updateEnabledById(enabled, apiKey.id)
     }
 
-    override fun updateEnabledByProject(enabled: Boolean) {
+    override fun updateEnabledByProject(apiKeysEnabledSpec: ProjectApiKeysEnabledSpec) {
         val projectId = getProjectId()
         logger.event(
-            LogObject.API_KEY, if (enabled) LogAction.ENABLE else LogAction.DISABLE,
+            LogObject.API_KEY, if (apiKeysEnabledSpec.enabled) LogAction.ENABLE else LogAction.DISABLE,
             mapOf(
                 "projectId" to projectId
             )
         )
-        apiKeyRepository.updateEnabledByProjectId(enabled, projectId)
+        apiKeyRepository.updateEnabledByProjectId(apiKeysEnabledSpec.enabled, projectId)
     }
 
     fun validatePermissionsCanBeAssigned(perms: Set<Permission>) {

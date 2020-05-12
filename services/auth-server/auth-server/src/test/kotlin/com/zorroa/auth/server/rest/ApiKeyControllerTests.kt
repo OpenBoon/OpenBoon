@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.zorroa.auth.server.MockMvcTest
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
+import com.zorroa.auth.server.domain.ProjectApiKeysEnabledSpec
 import com.zorroa.zmlp.apikey.Permission
 import org.hamcrest.CoreMatchers
 import org.junit.Test
@@ -244,6 +245,19 @@ class ApiKeyControllerTests : MockMvcTest() {
             MockMvcRequestBuilders.delete("/auth/v1/apikey/${mockKey.id}")
                 .headers(superAdmin(mockKey.projectId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+    }
+
+    @Test
+    fun testUpdateEnabledByProject() {
+        var projectApiKeysEnabledSpec = ProjectApiKeysEnabledSpec(false)
+        mvc.perform(
+            MockMvcRequestBuilders.patch("/auth/v1/projectkey/enabled")
+                .headers(superAdmin(mockKey.projectId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json.writeValueAsBytes(projectApiKeysEnabledSpec))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()

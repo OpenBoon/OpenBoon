@@ -3,6 +3,7 @@ package com.zorroa.auth.server.rest
 import com.zorroa.auth.server.domain.ApiKey
 import com.zorroa.auth.server.domain.ApiKeyFilter
 import com.zorroa.auth.server.domain.ApiKeySpec
+import com.zorroa.auth.server.domain.ProjectApiKeysEnabledSpec
 import com.zorroa.auth.server.repository.ApiKeyCustomRepository
 import com.zorroa.auth.server.repository.PagedList
 import com.zorroa.auth.server.service.ApiKeyService
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -104,4 +106,10 @@ class ApiKeyController(
     fun findAll(): List<ApiKey> {
         return apiKeyService.findAll()
     }
+
+    @PatchMapping("/auth/v1/projectkey/enabled")
+    fun updateEnabledByProject(@RequestBody projectApiKeysEnabledSpec: ProjectApiKeysEnabledSpec){
+        return apiKeyService.updateEnabledByProject(projectApiKeysEnabledSpec)
+    }
+
 }

@@ -31,7 +31,15 @@ class ApiKeySpec(
     val name: String,
 
     @ApiModelProperty("A list of permissions associated with key.")
-    val permissions: Set<Permission>
+    val permissions: Set<Permission>,
+
+    @ApiModelProperty("Key enabled status")
+    val enabled: Boolean = true
+)
+
+@ApiModel("Project Enabled Spec", description = "Spec for updating Enabled status of Project Api Keys")
+class ProjectApiKeysEnabledSpec(
+    val enabled: Boolean
 )
 
 @Entity
@@ -82,9 +90,9 @@ class ApiKey(
     @ApiModelProperty("The actor that modified the key.")
     val actorModified: String,
 
-    @Column
+    @Column(name = "enabled", nullable = false)
     @ApiModelProperty("True if the Key is enabled")
-    val enabled: Boolean = true
+    val enabled: Boolean
 ) {
 
     @JsonIgnore
