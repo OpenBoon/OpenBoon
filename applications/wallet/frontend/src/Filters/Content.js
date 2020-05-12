@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import PropTypes from 'prop-types'
 
 import filterShape from '../Filter/shape'
@@ -13,6 +14,7 @@ import FilterExists from '../FilterExists'
 import FilterFacet from '../FilterFacet'
 import FilterRange from '../FilterRange'
 import FilterLabelConfidence from '../FilterLabelConfidence'
+import FilterTextDetection from '../FilterTextDetection'
 
 import { dispatch, ACTIONS } from './helpers'
 
@@ -81,7 +83,6 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             case 'exists':
               return (
                 <FilterExists
-                  // eslint-disable-next-line react/no-array-index-key
                   key={`${filter.type}-${index}`}
                   projectId={projectId}
                   assetId={assetId}
@@ -94,7 +95,6 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             case 'facet':
               return (
                 <FilterFacet
-                  // eslint-disable-next-line react/no-array-index-key
                   key={`${filter.type}-${index}`}
                   projectId={projectId}
                   assetId={assetId}
@@ -107,7 +107,6 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             case 'range':
               return (
                 <FilterRange
-                  // eslint-disable-next-line react/no-array-index-key
                   key={`${filter.type}-${index}`}
                   projectId={projectId}
                   assetId={assetId}
@@ -120,7 +119,18 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             case 'labelConfidence':
               return (
                 <FilterLabelConfidence
-                  // eslint-disable-next-line react/no-array-index-key
+                  key={`${filter.type}-${index}`}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
+
+            case 'textContent':
+              return (
+                <FilterTextDetection
                   key={`${filter.type}-${index}`}
                   projectId={projectId}
                   assetId={assetId}
@@ -133,7 +143,6 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
             default:
               return (
                 <li
-                  // eslint-disable-next-line react/no-array-index-key
                   key={`${filter.type}-${index}`}
                   css={{
                     display: 'flex',
