@@ -55,12 +55,16 @@ describe('<Filters />', () => {
       {
         pathname: '/[projectId]/visualizer',
         query: {
-          query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
+          query: btoa(
+            JSON.stringify([
+              { type: 'textContent', attribute: '', values: { query: 'Cat' } },
+            ]),
+          ),
           id: '',
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In19XQ==',
     )
   })
 
@@ -101,16 +105,20 @@ describe('<Filters />', () => {
       {
         pathname: '/[projectId]/visualizer',
         query: {
-          query: btoa(JSON.stringify([{ type: 'search', value: 'Cat' }])),
+          query: btoa(
+            JSON.stringify([
+              { type: 'textContent', attribute: '', values: { query: 'Cat' } },
+            ]),
+          ),
           id: 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C',
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C&query=W3sidHlwZSI6InNlYXJjaCIsInZhbHVlIjoiQ2F0In1d',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?id=vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C&query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In19XQ==',
     )
   })
 
-  it('should delete one filter', () => {
+  it('should mute one textContent query filter', () => {
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
@@ -121,8 +129,113 @@ describe('<Filters />', () => {
         projectId: PROJECT_ID,
         query: btoa(
           JSON.stringify([
-            { type: 'search', attribute: '', value: 'Cat' },
-            { type: 'search', attribute: '', value: 'Dog' },
+            { type: 'textContent', attribute: '', values: { query: 'Cat' } },
+          ]),
+        ),
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
+    const component = TestRenderer.create(<Filters />)
+
+    // mute Cat
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Disable Filter' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      {
+        pathname: '/[projectId]/visualizer',
+        query: {
+          query: btoa(
+            JSON.stringify([
+              {
+                type: 'textContent',
+                attribute: '',
+                values: { query: 'Cat' },
+                isDisabled: true,
+              },
+            ]),
+          ),
+          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
+          id: '',
+        },
+      },
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In0sImlzRGlzYWJsZWQiOnRydWV9XQ==',
+    )
+  })
+
+  it('should unmute one textContent query filter', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: {
+        projectId: PROJECT_ID,
+        query: btoa(
+          JSON.stringify([
+            {
+              type: 'textContent',
+              attribute: '',
+              values: { query: 'Cat' },
+              isDisabled: true,
+            },
+          ]),
+        ),
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: fields })
+
+    const component = TestRenderer.create(<Filters />)
+
+    // unmute Cat
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Enable Filter' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      {
+        pathname: '/[projectId]/visualizer',
+        query: {
+          query: btoa(
+            JSON.stringify([
+              {
+                type: 'textContent',
+                attribute: '',
+                values: { query: 'Cat' },
+                isDisabled: false,
+              },
+            ]),
+          ),
+          projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
+          id: '',
+        },
+      },
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In0sImlzRGlzYWJsZWQiOmZhbHNlfV0=',
+    )
+  })
+
+  it('should delete one textContent query filter', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: {
+        projectId: PROJECT_ID,
+        query: btoa(
+          JSON.stringify([
+            { type: 'textContent', attribute: '', values: { query: 'Cat' } },
+            { type: 'textContent', attribute: '', values: { query: 'Dog' } },
           ]),
         ),
       },
@@ -135,7 +248,7 @@ describe('<Filters />', () => {
     // delete Dog
     act(() => {
       component.root
-        .findAllByProps({ children: 'delete' })[1]
+        .findAllByProps({ 'aria-label': 'Delete Filter' })[4]
         .props.onClick({ preventDefault: noop })
     })
 
@@ -144,17 +257,19 @@ describe('<Filters />', () => {
         pathname: '/[projectId]/visualizer',
         query: {
           query: btoa(
-            JSON.stringify([{ type: 'search', attribute: '', value: 'Cat' }]),
+            JSON.stringify([
+              { type: 'textContent', attribute: '', values: { query: 'Cat' } },
+            ]),
           ),
           projectId: '76917058-b147-4556-987a-0a0f11e46d9b',
           id: '',
         },
       },
-      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InNlYXJjaCIsImF0dHJpYnV0ZSI6IiIsInZhbHVlIjoiQ2F0In1d',
+      '/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6InRleHRDb250ZW50IiwiYXR0cmlidXRlIjoiIiwidmFsdWVzIjp7InF1ZXJ5IjoiQ2F0In19XQ==',
     )
   })
 
-  it('should delete all filters', () => {
+  it('should delete all textContent query filters', () => {
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
@@ -164,7 +279,9 @@ describe('<Filters />', () => {
       query: {
         projectId: PROJECT_ID,
         query: btoa(
-          JSON.stringify([{ type: 'search', attribute: '', value: 'Cat' }]),
+          JSON.stringify([
+            { type: 'textContent', attribute: '', values: { query: 'Cat' } },
+          ]),
         ),
       },
     })
@@ -176,7 +293,7 @@ describe('<Filters />', () => {
     // delete Cat
     act(() => {
       component.root
-        .findByProps({ children: 'delete' })
+        .findByProps({ 'aria-label': 'Delete Filter' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -193,7 +310,7 @@ describe('<Filters />', () => {
     )
   })
 
-  it('should clear all filters', () => {
+  it('should clear all textContent query filters', () => {
     const mockRouterPush = jest.fn()
 
     require('next/router').__setMockPushFunction(mockRouterPush)
@@ -203,7 +320,9 @@ describe('<Filters />', () => {
       query: {
         projectId: PROJECT_ID,
         query: btoa(
-          JSON.stringify([{ type: 'search', attribute: '', value: 'Cat' }]),
+          JSON.stringify([
+            { type: 'textContent', attribute: '', values: { query: 'Cat' } },
+          ]),
         ),
       },
     })

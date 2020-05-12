@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FiltersTextContent /> should render the "Text Content" filter 1`] = `
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: white;
+  height: 40px;
+  width: 100%;
+  border-bottom: 1px solid #3b3b3b;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 16px;
+}
+
+.emotion-0 {
+  width: 14px;
+  color: #73b61c;
+}
+
+.emotion-2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+<li
+  className="emotion-4"
+>
+  <div
+    className="emotion-3"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        className="emotion-0"
+        data-file-name="search.svg"
+      />
+    </div>
+    <div
+      className="emotion-2"
+      title="analysis.zvi-text-detection"
+    >
+      analysis.zvi-text-detection
+    </div>
+  </div>
+  <button
+    onClick={[Function]}
+    type="button"
+  >
+    delete
+  </button>
+</li>
+`;

@@ -1,6 +1,73 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Filters /> should add a new "Exists" filter 1`] = `
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0 {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+}
+
+.emotion-2 {
+  font-size: 17px;
+  line-height: 20px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-38 {
+  width: 100%;
+  background-color: #191919;
+}
+
 .emotion-178 {
   overflow: hidden;
   display: -webkit-box;
@@ -48,60 +115,8 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   font-weight: 400;
 }
 
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-153:hover {
   color: #ffffff;
-}
-
-.emotion-2 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
 }
 
 .emotion-177 {
@@ -261,21 +276,6 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
 
 .emotion-176 svg {
   margin-right: 8px;
-}
-
-.emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-0:hover {
-  color: #ffffff;
-}
-
-.emotion-38 {
-  width: 100%;
-  background-color: #191919;
 }
 
 .emotion-37 {
@@ -1246,6 +1246,73 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
 `;
 
 exports[`<Filters /> should open the menu 1`] = `
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding: 0;
+}
+
+.emotion-1:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-1[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-0 {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.emotion-0:hover {
+  color: #ffffff;
+}
+
+.emotion-2 {
+  font-size: 17px;
+  line-height: 20px;
+  padding-left: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-38 {
+  width: 100%;
+  background-color: #191919;
+}
+
 .emotion-75 {
   overflow: hidden;
   display: -webkit-box;
@@ -1293,60 +1360,8 @@ exports[`<Filters /> should open the menu 1`] = `
   font-weight: 400;
 }
 
-.emotion-1 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 2px;
-  margin: 0;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-  padding: 0;
-}
-
-.emotion-1:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.emotion-1[aria-disabled=true] {
-  color: #2e2e2e;
-}
-
 .emotion-40:hover {
   color: #ffffff;
-}
-
-.emotion-2 {
-  font-size: 17px;
-  line-height: 20px;
-  padding-left: 12px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
 }
 
 .emotion-74 {
@@ -1506,21 +1521,6 @@ exports[`<Filters /> should open the menu 1`] = `
 
 .emotion-73 svg {
   margin-right: 8px;
-}
-
-.emotion-0 {
-  -webkit-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
-}
-
-.emotion-0:hover {
-  color: #ffffff;
-}
-
-.emotion-38 {
-  width: 100%;
-  background-color: #191919;
 }
 
 .emotion-37 {

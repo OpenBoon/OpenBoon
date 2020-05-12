@@ -10,6 +10,7 @@ import PlusSvg from '../Icons/plus.svg'
 
 import SearchFilter from '../SearchFilter'
 import Button, { VARIANTS } from '../Button'
+import FilterTextContent from '../FilterTextContent'
 import FilterExists from '../FilterExists'
 import FilterFacet from '../FilterFacet'
 import FilterRange from '../FilterRange'
@@ -140,6 +141,19 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
                 />
               )
 
+            case 'textContent':
+              return (
+                <FilterTextContent
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={`${filter.type}-${index}`}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
+
             default:
               return (
                 <li
@@ -167,14 +181,14 @@ const FiltersContent = ({ projectId, assetId, filters, setIsMenuOpen }) => {
                       <SearchSvg css={{ width: 14, color: colors.key.one }} />
                     </div>
                     <div
-                      title={filter.attribute || filter.value}
+                      title={filter.attribute}
                       css={{
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {filter.attribute || filter.value}
+                      {filter.attribute}
                     </div>
                   </div>
                   <button

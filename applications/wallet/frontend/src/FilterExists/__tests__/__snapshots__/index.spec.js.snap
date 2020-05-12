@@ -4,8 +4,8 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 .emotion-18 {
   background-color: #252525;
   border-radius: 2px;
-  padding: 1px;
   border: 1px solid transparent;
+  border-bottom: 1px solid #4a4a4a;
 }
 
 .emotion-18:hover {
@@ -17,7 +17,6 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 }
 
 .emotion-10 {
-  border-bottom: 1px solid #4a4a4a;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;
@@ -128,6 +127,8 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 
 .emotion-2 {
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   padding-left: 8px;
   overflow: hidden;
   white-space: nowrap;
@@ -490,8 +491,8 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 .emotion-18 {
   background-color: #252525;
   border-radius: 2px;
-  padding: 1px;
   border: 1px solid transparent;
+  border-bottom: 1px solid #4a4a4a;
 }
 
 .emotion-18:hover {
@@ -503,7 +504,6 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 }
 
 .emotion-10 {
-  border-bottom: 1px solid #4a4a4a;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;
@@ -614,6 +614,8 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 
 .emotion-2 {
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   padding-left: 8px;
   overflow: hidden;
   white-space: nowrap;

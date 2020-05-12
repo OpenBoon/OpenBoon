@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import filterShape from '../Filter/shape'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS } from '../Button'
 
@@ -54,6 +54,8 @@ const FiltersTitle = ({
         <span
           css={{
             fontFamily: 'Roboto Mono',
+            fontSize: typography.size.small,
+            lineHeight: typography.height.small,
             paddingLeft: spacing.base,
             overflow: 'hidden',
             whiteSpace: 'nowrap',
