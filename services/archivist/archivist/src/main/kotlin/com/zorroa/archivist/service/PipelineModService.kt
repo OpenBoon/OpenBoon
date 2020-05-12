@@ -28,8 +28,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
-import javax.persistence.EntityManager
-import javax.persistence.PersistenceContext
 
 interface PipelineModService {
     fun create(spec: PipelineModSpec): PipelineMod
@@ -50,9 +48,6 @@ interface PipelineModService {
 class PipelineModServiceImpl(
     val pipelineModDao: PipelineModDao
 ) : PipelineModService {
-
-    @PersistenceContext
-    lateinit var entityManager: EntityManager
 
     @Transactional(readOnly = true)
     override fun get(id: UUID): PipelineMod = pipelineModDao.get(id)

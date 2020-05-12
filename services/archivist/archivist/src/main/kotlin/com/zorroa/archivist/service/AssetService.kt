@@ -822,7 +822,7 @@ class AssetServiceImpl : AssetService {
         }
         val result = rest.client.bulk(bulk, RequestOptions.DEFAULT)
         if (result.hasFailures()) {
-            logger.warn("Some failures occured during asset labeling operation {}")
+            logger.warn("Some failures occurred during asset labeling operation {}")
             for (f in result.items) {
                 if (f.isFailed) {
                     logger.warn("Asset ${f.id} failed to update label ${f.failureMessage}")

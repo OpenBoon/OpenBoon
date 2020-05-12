@@ -14,7 +14,7 @@ class DataSetServiceTests : AbstractTest() {
     @Autowired
     lateinit var dataSetService: DataSetService
 
-    val spec = DataSetSpec("dog-breeds", DataSetType.LabelDetection)
+    val spec = DataSetSpec("dog-breeds", DataSetType.LABEL_DETECTION)
 
     @Test
     fun testCreate() {

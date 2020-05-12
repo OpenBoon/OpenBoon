@@ -21,17 +21,8 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         super(TensorflowTransferLearningTrainer, self).__init__()
 
         # These are the base args
-        self.add_arg(Argument("dataset_id", "str", required=True,
-                              toolTip="The dataset Id"))
-        self.add_arg(Argument("model_type", "str", required=True,
-                              toolTip="The the base model type."))
-        self.add_arg(Argument("name", "str", required=True,
-                              toolTip="The name of the model, which is the pipeline mod name."))
-        self.add_arg(Argument("file_id", "str", required=True,
-                              toolTip="The file_id where the model should be stored"))
-
-        self.add_arg(Argument("publish", "bool", required=False,
-                              toolTip="True if the pipeline module should be created/updated"))
+        self.add_arg(Argument("model_id", "str", required=True,
+                              toolTip="The model Id"))
 
         # These can be set optionally.
         self.add_arg(Argument("epochs", "int", required=True, default=10,
@@ -44,21 +35,27 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
                               toolTip="The number of training images vs test images"))
         self.app = zmlp.app_from_env()
 
-        self.ds = None
         self.model = None
         self.labels = None
         self.base_dir = None
 
     def init(self):
-        self.ds = self.app.datasets.get_dataset(self.arg_value('dataset_id'))
-        self.labels = self.app.datasets.get_label_counts(self.ds)
+        self.app_model = self.app.models.get_model(self.arg_value('model_id'))
+        self.labels = self.app.datasets.get_label_counts(self.app_model.dataset_id)
         self.base_dir = tempfile.mkdtemp('tf2-xfer-learning')
         self.check_labels()
 
     def process(self, frame):
-        download_dataset(self.ds.id, self.base_dir, self.arg_value('train-test-ratio'))
-        self.build_model()
+        self.reactor.write_event("status", {
+            "status": "Downloading files in DataSet"
+        })
+        download_dataset(self.app_model.dataset_id, self.base_dir,
+                         self.arg_value('train-test-ratio'))
 
+        self.reactor.write_event("status", {
+            "status": "Training model{}".format(self.app_model.file_id)
+        })
+        self.build_model()
         train_gen, test_gen = self.build_generators()
         self.model.fit_generator(
             train_gen,
@@ -82,7 +79,7 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
 
         """
         self.logger.info('publishing model')
-        model_dir = tempfile.mkdtemp() + '/' + self.arg_value('name')
+        model_dir = tempfile.mkdtemp() + '/' + self.app_model.name
         os.makedirs(model_dir)
 
         self.logger.info('saving model : {}'.format(model_dir))
@@ -94,13 +91,16 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         # Upload the zipped model to project storage.
         self.logger.info('uploading model')
 
-        stored_file = upload_model_directory(model_dir, self.arg_value("file_id"))
+        self.reactor.write_event("status", {
+            "status": "Uploading model{}".format(self.app_model.file_id)
+        })
 
-        self.logger.info("Uploaded model: {}".format(stored_file.id))
+        upload_model_directory(model_dir, self.app_model.file_id)
 
-        # TODO:
-        # Currently we don't have project specific modules, need to add them
-        # before we can register a pipeline module.
+        self.app.models.publish_model(self.app_model)
+        self.reactor.write_event("status", {
+            "status": "Published model {}".format(self.app_model.file_id)
+        })
 
     def check_labels(self):
         """
@@ -123,6 +123,10 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
         """
         Build the Tensorflow model using the base model specified in the args.
         """
+        self.reactor.write_event("status", {
+            "status": "Building model{}".format(self.app_model.file_id)
+        })
+
         base_model = self.get_base_model()
 
         base_model.trainable = False
@@ -200,18 +204,18 @@ class TensorflowTransferLearningTrainer(AssetProcessor):
             ZmlpFatalProcessorException: If the model is not fouond/
 
         """
-        model = self.arg_value('model_type')
-        if model == 'TF2_XFER_MOBILENET2':
+        modl_base = self.app_model.type
+        if modl_base == zmlp.ModelType.LABEL_DETECTION_MOBILENET2:
             return mobilenet_v2.MobileNetV2(weights='imagenet',
                                             include_top=False,
                                             input_shape=(224, 224, 3))
-        elif model == 'TF2_XFER_RESNET152':
+        elif modl_base == zmlp.ModelType.LABEL_DETECTION_RESNET152:
             return resnet_v2.ResNet152V2(weights='imagenet',
                                          include_top=False,
                                          input_shape=(224, 224, 3))
-        elif model == 'TF2_XFER_VGG16':
+        elif modl_base == zmlp.ModelType.LABEL_DETECTION_VGG16:
             return vgg16.VGG16(weights='imagenet',
                                include_top=False,
                                input_shape=(224, 224, 3))
         else:
-            raise ZmlpFatalProcessorException('Invalid model: {}'.format(model))
+            raise ZmlpFatalProcessorException('Invalid model: {}'.format(modl_base))

@@ -1,4 +1,7 @@
+from enum import Enum
+
 from .base import BaseEntity
+from ..util import round_floats
 
 __all__ = [
     'DataSet',
@@ -27,9 +30,9 @@ class DataSet(BaseEntity):
     @property
     def type(self):
         """The type of DataSet"""
-        return self._data['type']
+        return DataSetType[self._data['type']]
 
-    def make_label(self, label, bbox=None):
+    def make_label(self, label, bbox=None, simhash=None):
         """
         Make an instance of a DataSetLabel which can be used
         to label assets.
@@ -37,11 +40,11 @@ class DataSet(BaseEntity):
         Args:
             label (str): The label name.
             bbox (list[float]): A open bounding box.
-
+            simhash (str): An associated simhash, if nay.
         Returns:
             DataSetLabel: The new label.
         """
-        return DataSetLabel(self, label, bbox)
+        return DataSetLabel(self, label, bbox, simhash)
 
 
 class DataSetLabel:
@@ -49,10 +52,12 @@ class DataSetLabel:
     A Label that can be added to an Asset either at import time
     or once the Asset has been imported.
     """
-    def __init__(self, dataset, label, bbox=None):
+
+    def __init__(self, dataset, label, bbox=None, simhash=None):
         self.dataset_id = getattr(dataset, 'id', dataset)
         self.label = label
         self.bbox = bbox
+        self.simhash = simhash
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
@@ -66,20 +71,21 @@ class DataSetLabel:
         return {
             "dataSetId": self.dataset_id,
             "label": self.label,
-            "bbox": self.bbox
+            "bbox": round_floats(self.bbox),
+            "simhash": self.simhash
         }
 
 
-class DataSetType:
+class DataSetType(Enum):
     """
     The various DataSet types.
     """
 
-    LabelDetection = "LabelDetection"
-    """The DataSet contains labels useful for LabelDetection"""
+    LABEL_DETECTION = 0
+    """The DataSet contains labels useful for Label Detection"""
 
-    ObjectDetection = "ObjectDetection"
-    """The DataSet labels are useful for ObjectDetection"""
+    OBJECT_DETECTION = 1
+    """The DataSet labels are useful for Object Detection"""
 
-    FaceRecognition = "FaceRecognition"
-    """The DataSet labels useful for FaceRecognition"""
+    FACE_RECOGNITION = 2
+    """The DataSet labels useful for Face Recognition"""
