@@ -20,7 +20,6 @@ const FilterTextSearch = ({
   filters,
   filter,
   filter: {
-    type,
     isDisabled,
     values: { query },
   },
@@ -28,8 +27,6 @@ const FilterTextSearch = ({
 }) => {
   return (
     <div
-      // eslint-disable-next-line react/no-array-index-key
-      key={`${type}-${filterIndex}`}
       css={{
         border: constants.borders.transparent,
         borderBottom: constants.borders.tabs,

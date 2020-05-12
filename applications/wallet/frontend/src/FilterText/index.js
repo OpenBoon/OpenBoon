@@ -1,23 +1,21 @@
-/* eslint-disable react/no-array-index-key */
 import PropTypes from 'prop-types'
 
 import filterShape from '../Filter/shape'
 
 import FilterTextSearch from './Search'
-import FilterTextDetection from '../FilterTextDetection'
+import FilterTextDetection from './Detection'
 
 const FilterText = ({
   projectId,
   assetId,
   filters,
   filter,
-  filter: { type, attribute },
+  filter: { attribute },
   filterIndex,
 }) => {
   if (attribute === '') {
     return (
       <FilterTextSearch
-        key={`${type}-${filterIndex}`}
         projectId={projectId}
         assetId={assetId}
         filters={filters}
@@ -26,9 +24,9 @@ const FilterText = ({
       />
     )
   }
+
   return (
     <FilterTextDetection
-      key={`${type}-${filterIndex}`}
       projectId={projectId}
       assetId={assetId}
       filters={filters}
