@@ -1,6 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import FilterTextDetection from '../Content'
+import FilterTextDetection from '../Detection'
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 
