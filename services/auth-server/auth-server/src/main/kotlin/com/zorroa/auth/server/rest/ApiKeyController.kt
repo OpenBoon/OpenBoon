@@ -108,8 +108,7 @@ class ApiKeyController(
     }
 
     @PatchMapping("/auth/v1/projectkey/enabled")
-    fun updateEnabledByProject(@RequestBody projectApiKeysEnabledSpec: ProjectApiKeysEnabledSpec){
+    fun updateEnabledByProject(@RequestBody projectApiKeysEnabledSpec: ProjectApiKeysEnabledSpec) {
         return apiKeyService.updateEnabledByProject(projectApiKeysEnabledSpec)
     }
-
 }
