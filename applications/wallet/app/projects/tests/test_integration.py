@@ -610,10 +610,11 @@ class TestProjectUserPost:
         ]}
         response = api_client.post(reverse('projectuser-list', kwargs={'project_pk': project.id}), body)  # noqa
         assert response.status_code == status.HTTP_207_MULTI_STATUS
-        # Verify at leaset one membership was created
+        # Verify at least one membership was created
         membership1 = Membership.objects.get(user=tester1, project=project)
         decoded_apikey = convert_base64_to_json(membership1.apikey)
-        assert decoded_apikey['permissions'] == ['AssetsRead']
+        assert decoded_apikey == {'accessKey': 'P1klR1U1RgT3YfdLYN4-AHPlnOhXZHeD',
+                                  'secretKey': '6Ti7kZZ7IcmWnR1bfdvCMUataoMh9Mbq9Kqvs'}
         # Verify Individual response objects
         content = response.json()['results']
         assert len(content['succeeded']) == 2
@@ -737,7 +738,7 @@ class TestProjectUserPut:
         assert response.status_code == status.HTTP_200_OK
         membership = Membership.objects.get(user=new_user, project=project)
         decoded_apikey = convert_base64_to_json(membership.apikey)
-        assert decoded_apikey['permissions'] == ['AssetsRead']
+        assert decoded_apikey == {'accessKey': 'access', 'secretKey': 'secret'}
         assert membership.roles == ['User_Admin']
 
     @override_settings(PLATFORM='zmlp')
