@@ -7596,22 +7596,22 @@ Array [
       </div>
     </form>
   </div>,
-  .emotion-18 {
+  .emotion-17 {
   overflow: auto;
 }
 
-.emotion-17 {
+.emotion-16 {
   background-color: #252525;
   border-radius: 2px;
   border: 1px solid transparent;
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-17:hover {
+.emotion-16:hover {
   border: 1px solid #808080;
 }
 
-.emotion-17:hover div svg {
+.emotion-16:hover div svg {
   visibility: visible;
 }
 
@@ -7809,23 +7809,9 @@ Array [
   visibility: hidden;
 }
 
-.emotion-16 {
+.emotion-15 {
   width: 100%;
   background-color: #191919;
-}
-
-.emotion-15 {
-  padding: 16px 12px;
-}
-
-.emotion-15 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-15 .Loading {
-  background-color: transparent;
-  box-shadow: none;
 }
 
 .emotion-14 {
@@ -7892,10 +7878,10 @@ Array [
 }
 
 <div
-    className="emotion-18"
+    className="emotion-17"
   >
     <div
-      className="emotion-17"
+      className="emotion-16"
     >
       <div
         className="emotion-10"
@@ -7958,42 +7944,38 @@ Array [
         </h4>
       </div>
       <div
-        className="emotion-16"
+        className="emotion-15"
       >
-        <div
-          className="emotion-15"
+        <form
+          action=""
+          method="post"
+          onSubmit={[Function]}
         >
-          <form
-            action=""
-            method="post"
-            onSubmit={[Function]}
+          <div
+            className="emotion-14"
           >
-            <div
-              className="emotion-14"
+            <input
+              className="emotion-11"
+              onChange={[Function]}
+              placeholder="Search text"
+              type="search"
+              value=""
+            />
+            <button
+              aria-disabled={true}
+              aria-label="Search"
+              className="emotion-13"
+              onClick={[Function]}
+              type="submit"
             >
-              <input
-                className="emotion-11"
-                onChange={[Function]}
-                placeholder="Search text"
-                type="search"
-                value=""
+              <svg
+                className="emotion-12"
+                data-file-name="search.svg"
+                width={20}
               />
-              <button
-                aria-disabled={true}
-                aria-label="Search"
-                className="emotion-13"
-                onClick={[Function]}
-                type="submit"
-              >
-                <svg
-                  className="emotion-12"
-                  data-file-name="search.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </form>
-        </div>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>,
