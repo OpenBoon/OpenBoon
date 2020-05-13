@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.PipelineSpec
 import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.domain.ProjectSpecEnabled
 import com.zorroa.archivist.security.getProjectId
 
 import org.junit.Test
@@ -100,5 +101,15 @@ class ProjectServiceTests : AbstractTest() {
     fun testGetCryptoKey() {
         val key = projectService.getCryptoKey()
         assertEquals(99, key.length)
+    }
+
+    @Test
+    fun testUpdateEnabled(){
+        val testSpec = ProjectSpec("project_test", enabled = false)
+        val project1 = projectService.create(testSpec)
+        val updateEnabledStatus = projectService.updateEnabledStatus(project1.id, ProjectSpecEnabled(true))
+        val updatedProject = projectService.get(project.id)
+
+        assertEquals(true, updatedProject.enabled)
     }
 }

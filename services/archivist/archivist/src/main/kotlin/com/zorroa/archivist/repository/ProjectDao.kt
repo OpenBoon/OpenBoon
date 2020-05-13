@@ -5,6 +5,8 @@ import com.zorroa.archivist.domain.ProjectFilter
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.util.JdbcUtils
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
+import org.springframework.data.jpa.repository.Query
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.util.UUID
@@ -12,6 +14,10 @@ import java.util.UUID
 @Repository
 interface ProjectDao : JpaRepository<Project, UUID> {
     fun getByName(name: String): Project
+
+    @Query("update Project p set p.enabled = ?1 where p.id = ?2")
+    @Modifying(clearAutomatically = true)
+    fun updateStatus(enabled: Boolean, projectId: UUID)
 }
 
 interface ProjectCustomDao {
@@ -88,7 +94,8 @@ class ProjectCustomDaoImpl : ProjectCustomDao, AbstractDao() {
                 rs.getLong("time_created"),
                 rs.getLong("time_modified"),
                 rs.getString("actor_created"),
-                rs.getString("actor_modified")
+                rs.getString("actor_modified"),
+                rs.getBoolean("enabled")
             )
         }
     }

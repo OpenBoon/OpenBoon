@@ -1,6 +1,7 @@
 package com.zorroa.archivist.service
 
 import com.zorroa.archivist.config.ApplicationProperties
+import com.zorroa.archivist.domain.ArchivistException
 import com.zorroa.archivist.domain.IndexRoute
 import com.zorroa.archivist.domain.IndexRouteSpec
 import com.zorroa.archivist.domain.IndexRouteState
@@ -14,6 +15,7 @@ import com.zorroa.archivist.domain.ProjectQuotas
 import com.zorroa.archivist.domain.ProjectQuotasTimeSeriesEntry
 import com.zorroa.archivist.domain.ProjectSettings
 import com.zorroa.archivist.domain.ProjectSpec
+import com.zorroa.archivist.domain.ProjectSpecEnabled
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.repository.ProjectCustomDao
 import com.zorroa.archivist.repository.ProjectDao
@@ -105,6 +107,11 @@ interface ProjectService {
      * Get project quota time series info.
      */
     fun getQuotasTimeSeries(projectId: UUID, start: Date, end: Date): List<ProjectQuotasTimeSeriesEntry>
+
+    /**
+     * Update Project Enabled attribute
+     */
+    fun updateEnabledStatus(id: UUID, projectSpecEnabled: ProjectSpecEnabled)
 }
 
 @Service
@@ -135,7 +142,8 @@ class ProjectServiceImpl constructor(
                 time,
                 time,
                 actor.toString(),
-                actor.toString()
+                actor.toString(),
+                spec.enabled
             )
         )
         withAuth(InternalThreadAuthentication(project.id, setOf())) {
@@ -280,6 +288,30 @@ class ProjectServiceImpl constructor(
         }
         systemStorageService.storeObject(
             "projects/${project.id}/keys.json", result.toList())
+    }
+
+    override fun updateEnabledStatus(id: UUID, projectSpecEnabled: ProjectSpecEnabled) {
+        val project = projectDao.findById(id).orElseThrow {
+            ArchivistException("Project not found")
+        }
+        projectDao.updateStatus(projectSpecEnabled.enabled, project.id)
+
+        var previousState = project.enabled
+        try {
+            authServerClient.updateApiKeyEnabledByProject(project.id, projectSpecEnabled.enabled)
+        } catch (ex: Exception) {
+            projectDao.updateStatus(previousState, project.id)
+            throw ArchivistException(ex)
+        }
+
+        logger.event(
+            LogObject.PROJECT, if(projectSpecEnabled.enabled) LogAction.ENABLE else LogAction.DISABLE,
+            mapOf(
+                "projectId" to project.id,
+                "projectName" to project.name
+            )
+        )
+
     }
 
     companion object {

@@ -25,6 +25,7 @@ interface AuthServerClient {
     fun createApiKey(project: UUID, name: String, perms: Collection<Permission>): ApiKey
     fun getApiKey(projectId: UUID, name: String): ApiKey
     fun getSigningKey(projectId: UUID, name: String): SigningKey
+    fun updateApiKeyEnabledByProject(projectId: UUID, enabled: Boolean)
 
     companion object {
 
@@ -103,6 +104,13 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
             "names" to listOf(name)
         )
         return post("auth/v1/apikey/_findOne", data, projectId)
+    }
+
+    override fun updateApiKeyEnabledByProject(projectId: UUID, enabled: Boolean){
+        val data = mapOf(
+            "enabled" to enabled
+        )
+        return post("/auth/v1/project/enabled", data, projectId)
     }
 
     override fun getSigningKey(projectId: UUID, name: String): SigningKey {

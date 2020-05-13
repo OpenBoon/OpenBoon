@@ -28,7 +28,10 @@ class ProjectSpec(
      * for REST clients.
      */
     @ApiModelProperty("An optional unique ID for the project.")
-    val id: UUID? = null
+    val id: UUID? = null,
+
+    @ApiModelProperty("Set if the project is enabled")
+    val enabled: Boolean = true
 )
 
 /**
@@ -61,7 +64,11 @@ class Project(
 
     @Column(name = "actor_modified")
     @ApiModelProperty("The actor that last made the last modification the project.")
-    val actorModified: String
+    val actorModified: String,
+
+    @Column(name = "enabled")
+    @ApiModelProperty("Set if the project is enabled")
+    val enabled: Boolean
 
 ) {
     override fun equals(other: Any?): Boolean {
@@ -88,6 +95,12 @@ class ProjectSettings(
 
     @ApiModelProperty("The default Index to use if no index is specified.")
     var defaultIndexRouteId: UUID
+)
+
+@ApiModel("Project Spec Enabled", description = "Project Enabled Property")
+class ProjectSpecEnabled(
+    @ApiModelProperty("Project Enabled Status")
+    var enabled: Boolean
 )
 
 @ApiModel("Project Filter", description = "Search filter for finding Projects")

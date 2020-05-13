@@ -221,4 +221,19 @@ class ProjectControllerTests : MockMvcTest() {
                 CoreMatchers.equalTo(settings.defaultIndexRouteId.toString())))
             .andReturn()
     }
+
+    @Test
+    fun updateProjectEnabledStatus() {
+        val pid = getProjectId()
+        val settings = projectService.getSettings(pid)
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/project/enabled")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(settings))
+        )
+            .andExpect(status().isOk)
+            .andReturn()
+    }
 }
