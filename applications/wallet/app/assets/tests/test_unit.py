@@ -114,6 +114,7 @@ class TestCropImagePoly:
         assert cropped_image.shape == (70, 50, 3)
 
         cropped_image = crop_image_poly(blank_image,
-                                        [0.0026, 0.2903, 0.099, 0.2903, 0.099, 0.4755, 0.0026, 0.4755],
+                                        [0.0026, 0.2903, 0.099, 0.2903,
+                                         0.099, 0.4755, 0.0026, 0.4755],
                                         width=50, draw=True)
         assert cropped_image.shape == (41, 50, 3)
