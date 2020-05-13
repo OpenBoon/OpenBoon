@@ -60,7 +60,7 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('clip.timeline', 'full')
         frame = Frame(asset)
         self.processor.process(frame)
-        assert 'dog' in asset.get_attr('analysis.gcp.speech-to-text.content')
+        assert 'dog' in asset.get_attr('analysis.gcp-speech-to-text.content')
 
     @patch.object(file_storage.assets, 'store_blob')
     @patch.object(file_storage.assets, 'store_file')
@@ -80,4 +80,4 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
 
         frame = Frame(asset)
         self.processor.process(frame)
-        assert 'dog' in asset.get_attr('analysis.gcp.speech-to-text.content')
+        assert 'dog' in asset.get_attr('analysis.gcp-speech-to-text.content')
