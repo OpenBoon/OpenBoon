@@ -59,33 +59,35 @@ const JobsRow = ({
       <td css={{ textAlign: 'center' }}>{assetCounts.assetTotalCount}</td>
       <td>
         {assetCounts.assetErrorCount > 0 && (
-          <Link
-            href="/[projectId]/jobs/[jobId]/errors"
-            as={`/${projectId}/jobs/${jobId}/errors`}
-            passHref
-          >
-            <a
-              css={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 'fit-content',
-                minWidth: ERROR_COUNT_HEIGHT,
-                height: ERROR_COUNT_HEIGHT,
-                padding: spacing.moderate / 2,
-                margin: -spacing.moderate / 2,
-                borderRadius: ERROR_COUNT_HEIGHT,
-                color: colors.signal.warning.base,
-                '&:hover': {
-                  textDecoration: 'none',
-                  cursor: 'pointer',
-                  backgroundColor: colors.structure.coal,
-                },
-              }}
+          <div css={{ display: 'flex', justifyContent: 'center' }}>
+            <Link
+              href="/[projectId]/jobs/[jobId]/errors"
+              as={`/${projectId}/jobs/${jobId}/errors`}
+              passHref
             >
-              <WarningSvg height={20} color={colors.signal.warning.base} />
-            </a>
-          </Link>
+              <a
+                css={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 'fit-content',
+                  minWidth: ERROR_COUNT_HEIGHT,
+                  height: ERROR_COUNT_HEIGHT,
+                  padding: spacing.moderate / 2,
+                  margin: -spacing.moderate / 2,
+                  borderRadius: ERROR_COUNT_HEIGHT,
+                  color: colors.signal.warning.base,
+                  '&:hover': {
+                    textDecoration: 'none',
+                    cursor: 'pointer',
+                    backgroundColor: colors.structure.coal,
+                  },
+                }}
+              >
+                <WarningSvg height={20} color={colors.signal.warning.base} />
+              </a>
+            </Link>
+          </div>
         )}
       </td>
       <td
