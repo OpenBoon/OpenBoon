@@ -135,11 +135,11 @@ Array [
   display: flex;
 }
 
-.emotion-128 {
+.emotion-135 {
   height: auto;
 }
 
-.emotion-127 {
+.emotion-134 {
   width: 100%;
   height: auto;
   border-spacing: 0;
@@ -147,38 +147,38 @@ Array [
   white-space: nowrap;
 }
 
-.emotion-127 tr {
+.emotion-134 tr {
   background-color: #252525;
 }
 
-.emotion-127 tr:nth-of-type(2n) {
+.emotion-134 tr:nth-of-type(2n) {
   background-color: #2e2e2e;
 }
 
-.emotion-127 tr:hover {
+.emotion-134 tr:hover {
   background-color: #4a4a4a;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.5);
 }
 
-.emotion-127 tr:hover .gear {
+.emotion-134 tr:hover .gear {
   color: #b3b3b3;
 }
 
-.emotion-127 tr:hover td {
+.emotion-134 tr:hover td {
   border: 1px solid #808080;
   border-left: 0;
   border-right: 0;
 }
 
-.emotion-127 tr:hover td:first-of-type {
+.emotion-134 tr:hover td:first-of-type {
   border-left: 1px solid #808080;
 }
 
-.emotion-127 tr:hover td:last-of-type {
+.emotion-134 tr:hover td:last-of-type {
   border-right: 1px solid #808080;
 }
 
-.emotion-127 td {
+.emotion-134 td {
   max-width: calc(100vw / 7);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -190,16 +190,16 @@ Array [
   border-right: 0;
 }
 
-.emotion-127 td:first-of-type {
+.emotion-134 td:first-of-type {
   border-left: 1px solid transparent;
 }
 
-.emotion-127 td:last-of-type {
+.emotion-134 td:last-of-type {
   border-right: 1px solid transparent;
   overflow: visible;
 }
 
-.emotion-28 {
+.emotion-29 {
   cursor: pointer;
 }
 
@@ -228,6 +228,17 @@ Array [
   text-align: center;
 }
 
+.emotion-20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
 .emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -241,6 +252,9 @@ Array [
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
   min-width: 32px;
   height: 32px;
   padding: 6px;
@@ -256,7 +270,7 @@ Array [
   background-color: #191919;
 }
 
-.emotion-25 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -266,7 +280,7 @@ Array [
   position: relative;
 }
 
-.emotion-24 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -274,30 +288,12 @@ Array [
   width: 100%;
 }
 
-.emotion-20 {
+.emotion-21 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
   flex: 1 0 auto;
   background-color: #c92300;
-}
-
-.emotion-20:first-of-type {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-
-.emotion-20:last-of-type {
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
-.emotion-21 {
-  height: 100%;
-  -webkit-flex: 5 0 auto;
-  -ms-flex: 5 0 auto;
-  flex: 5 0 auto;
-  background-color: #4ac565;
 }
 
 .emotion-21:first-of-type {
@@ -315,7 +311,7 @@ Array [
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
-  background-color: #ebb52e;
+  background-color: #4ac565;
 }
 
 .emotion-22:first-of-type {
@@ -333,7 +329,7 @@ Array [
   -webkit-flex: 5 0 auto;
   -ms-flex: 5 0 auto;
   flex: 5 0 auto;
-  background-color: #4a90e2;
+  background-color: #ebb52e;
 }
 
 .emotion-23:first-of-type {
@@ -346,11 +342,29 @@ Array [
   border-bottom-right-radius: 4px;
 }
 
-.emotion-27 {
+.emotion-24 {
+  height: 100%;
+  -webkit-flex: 5 0 auto;
+  -ms-flex: 5 0 auto;
+  flex: 5 0 auto;
+  background-color: #4a90e2;
+}
+
+.emotion-24:first-of-type {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.emotion-24:last-of-type {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.emotion-28 {
   position: relative;
 }
 
-.emotion-26 {
+.emotion-27 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -387,21 +401,21 @@ Array [
   border-radius: 32px;
 }
 
-.emotion-26:hover {
+.emotion-27:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-26[aria-disabled=true] {
+.emotion-27[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-26:hover {
+.emotion-27:hover {
   color: #ffffff !important;
   background-color: #808080;
 }
 
-.emotion-29 {
+.emotion-30 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -417,7 +431,7 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-37 {
+.emotion-39 {
   height: 100%;
   -webkit-flex: 14 0 auto;
   -ms-flex: 14 0 auto;
@@ -425,17 +439,17 @@ Array [
   background-color: #4a90e2;
 }
 
-.emotion-37:first-of-type {
+.emotion-39:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-37:last-of-type {
+.emotion-39:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-43 {
+.emotion-45 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -451,7 +465,7 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-49 {
+.emotion-52 {
   height: 100%;
   -webkit-flex: 8 0 auto;
   -ms-flex: 8 0 auto;
@@ -459,17 +473,17 @@ Array [
   background-color: #4ac565;
 }
 
-.emotion-49:first-of-type {
+.emotion-52:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-49:last-of-type {
+.emotion-52:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-50 {
+.emotion-53 {
   height: 100%;
   -webkit-flex: 4 0 auto;
   -ms-flex: 4 0 auto;
@@ -477,17 +491,17 @@ Array [
   background-color: #4a90e2;
 }
 
-.emotion-50:first-of-type {
+.emotion-53:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-50:last-of-type {
+.emotion-53:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
-.emotion-54 {
+.emotion-57 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -503,7 +517,7 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-63 {
+.emotion-67 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -519,7 +533,7 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-74 {
+.emotion-79 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -535,7 +549,7 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-89 {
+.emotion-95 {
   height: 100%;
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
@@ -543,18 +557,18 @@ Array [
   background-color: #4ac565;
 }
 
-.emotion-89:first-of-type {
+.emotion-95:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-89:last-of-type {
+.emotion-95:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
 <div
-    className="emotion-128"
+    className="emotion-135"
   >
     <div
       className="emotion-5"
@@ -591,7 +605,7 @@ Array [
       </button>
     </div>
     <table
-      className="emotion-127"
+      className="emotion-134"
     >
       <thead>
         <tr>
@@ -646,7 +660,7 @@ Array [
       </thead>
       <tbody>
         <tr
-          className="emotion-28"
+          className="emotion-29"
           onClick={[Function]}
         >
           <td>
@@ -680,18 +694,22 @@ Array [
             4
           </td>
           <td>
-            <a
-              className="emotion-19"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/errors"
-              onClick={[Function]}
-              onMouseEnter={[Function]}
+            <div
+              className="emotion-20"
             >
-              <svg
-                color="#c92300"
-                data-file-name="warning.svg"
-                height={20}
-              />
-            </a>
+              <a
+                className="emotion-19"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000956/errors"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+              >
+                <svg
+                  color="#c92300"
+                  data-file-name="warning.svg"
+                  height={20}
+                />
+              </a>
+            </div>
           </td>
           <td
             style={
@@ -703,7 +721,7 @@ Array [
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-25"
+              className="emotion-26"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -711,11 +729,8 @@ Array [
               tabIndex="0"
             >
               <div
-                className="emotion-24"
+                className="emotion-25"
               >
-                <div
-                  className="emotion-20"
-                />
                 <div
                   className="emotion-21"
                 />
@@ -725,16 +740,19 @@ Array [
                 <div
                   className="emotion-23"
                 />
+                <div
+                  className="emotion-24"
+                />
               </div>
             </div>
           </td>
           <td>
             <div
-              className="emotion-27"
+              className="emotion-28"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="gear emotion-26"
+                className="gear emotion-27"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -748,12 +766,12 @@ Array [
           </td>
         </tr>
         <tr
-          className="emotion-28"
+          className="emotion-29"
           onClick={[Function]}
         >
           <td>
             <div
-              className="emotion-29"
+              className="emotion-30"
             >
               Cancelled
             </div>
@@ -782,18 +800,22 @@ Array [
             4
           </td>
           <td>
-            <a
-              className="emotion-19"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000955/errors"
-              onClick={[Function]}
-              onMouseEnter={[Function]}
+            <div
+              className="emotion-20"
             >
-              <svg
-                color="#c92300"
-                data-file-name="warning.svg"
-                height={20}
-              />
-            </a>
+              <a
+                className="emotion-19"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308b-67c2-1433-8fef-0a580a000955/errors"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+              >
+                <svg
+                  color="#c92300"
+                  data-file-name="warning.svg"
+                  height={20}
+                />
+              </a>
+            </div>
           </td>
           <td
             style={
@@ -805,7 +827,7 @@ Array [
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-25"
+              className="emotion-26"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -813,11 +835,8 @@ Array [
               tabIndex="0"
             >
               <div
-                className="emotion-24"
+                className="emotion-25"
               >
-                <div
-                  className="emotion-20"
-                />
                 <div
                   className="emotion-21"
                 />
@@ -825,18 +844,21 @@ Array [
                   className="emotion-22"
                 />
                 <div
-                  className="emotion-37"
+                  className="emotion-23"
+                />
+                <div
+                  className="emotion-39"
                 />
               </div>
             </div>
           </td>
           <td>
             <div
-              className="emotion-27"
+              className="emotion-28"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="gear emotion-26"
+                className="gear emotion-27"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -850,12 +872,12 @@ Array [
           </td>
         </tr>
         <tr
-          className="emotion-28"
+          className="emotion-29"
           onClick={[Function]}
         >
           <td>
             <div
-              className="emotion-43"
+              className="emotion-45"
             >
               Success
             </div>
@@ -884,18 +906,22 @@ Array [
             4
           </td>
           <td>
-            <a
-              className="emotion-19"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308a-67c2-1433-8fef-0a580a000955/errors"
-              onClick={[Function]}
-              onMouseEnter={[Function]}
+            <div
+              className="emotion-20"
             >
-              <svg
-                color="#c92300"
-                data-file-name="warning.svg"
-                height={20}
-              />
-            </a>
+              <a
+                className="emotion-19"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d5308a-67c2-1433-8fef-0a580a000955/errors"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+              >
+                <svg
+                  color="#c92300"
+                  data-file-name="warning.svg"
+                  height={20}
+                />
+              </a>
+            </div>
           </td>
           <td
             style={
@@ -907,7 +933,7 @@ Array [
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-25"
+              className="emotion-26"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -915,16 +941,16 @@ Array [
               tabIndex="0"
             >
               <div
-                className="emotion-24"
+                className="emotion-25"
               >
                 <div
-                  className="emotion-20"
+                  className="emotion-21"
                 />
                 <div
-                  className="emotion-49"
+                  className="emotion-52"
                 />
                 <div
-                  className="emotion-50"
+                  className="emotion-53"
                 />
               </div>
             </div>
@@ -932,12 +958,12 @@ Array [
           <td />
         </tr>
         <tr
-          className="emotion-28"
+          className="emotion-29"
           onClick={[Function]}
         >
           <td>
             <div
-              className="emotion-54"
+              className="emotion-57"
             >
               Archived
             </div>
@@ -966,18 +992,22 @@ Array [
             4
           </td>
           <td>
-            <a
-              className="emotion-19"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d53089-67c2-1433-8fef-0a580a000955/errors"
-              onClick={[Function]}
-              onMouseEnter={[Function]}
+            <div
+              className="emotion-20"
             >
-              <svg
-                color="#c92300"
-                data-file-name="warning.svg"
-                height={20}
-              />
-            </a>
+              <a
+                className="emotion-19"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/82d53089-67c2-1433-8fef-0a580a000955/errors"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+              >
+                <svg
+                  color="#c92300"
+                  data-file-name="warning.svg"
+                  height={20}
+                />
+              </a>
+            </div>
           </td>
           <td
             style={
@@ -989,7 +1019,7 @@ Array [
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-25"
+              className="emotion-26"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -997,10 +1027,10 @@ Array [
               tabIndex="0"
             >
               <div
-                className="emotion-24"
+                className="emotion-25"
               >
                 <div
-                  className="emotion-20"
+                  className="emotion-21"
                 />
               </div>
             </div>
@@ -1008,12 +1038,12 @@ Array [
           <td />
         </tr>
         <tr
-          className="emotion-28"
+          className="emotion-29"
           onClick={[Function]}
         >
           <td>
             <div
-              className="emotion-63"
+              className="emotion-67"
             >
               Failure
             </div>
@@ -1042,18 +1072,22 @@ Array [
             4
           </td>
           <td>
-            <a
-              className="emotion-19"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c0975970-62ef-1f81-83f8-0a580a000954/errors"
-              onClick={[Function]}
-              onMouseEnter={[Function]}
+            <div
+              className="emotion-20"
             >
-              <svg
-                color="#c92300"
-                data-file-name="warning.svg"
-                height={20}
-              />
-            </a>
+              <a
+                className="emotion-19"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c0975970-62ef-1f81-83f8-0a580a000954/errors"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+              >
+                <svg
+                  color="#c92300"
+                  data-file-name="warning.svg"
+                  height={20}
+                />
+              </a>
+            </div>
           </td>
           <td
             style={
@@ -1065,7 +1099,7 @@ Array [
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-25"
+              className="emotion-26"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -1073,21 +1107,21 @@ Array [
               tabIndex="0"
             >
               <div
-                className="emotion-24"
+                className="emotion-25"
               >
                 <div
-                  className="emotion-20"
+                  className="emotion-21"
                 />
               </div>
             </div>
           </td>
           <td>
             <div
-              className="emotion-27"
+              className="emotion-28"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="gear emotion-26"
+                className="gear emotion-27"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -1101,12 +1135,12 @@ Array [
           </td>
         </tr>
         <tr
-          className="emotion-28"
+          className="emotion-29"
           onClick={[Function]}
         >
           <td>
             <div
-              className="emotion-74"
+              className="emotion-79"
             >
               Paused
             </div>
@@ -1135,18 +1169,22 @@ Array [
             4
           </td>
           <td>
-            <a
-              className="emotion-19"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors"
-              onClick={[Function]}
-              onMouseEnter={[Function]}
+            <div
+              className="emotion-20"
             >
-              <svg
-                color="#c92300"
-                data-file-name="warning.svg"
-                height={20}
-              />
-            </a>
+              <a
+                className="emotion-19"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/c097596f-62ef-1f81-83f8-0a580a000954/errors"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+              >
+                <svg
+                  color="#c92300"
+                  data-file-name="warning.svg"
+                  height={20}
+                />
+              </a>
+            </div>
           </td>
           <td
             style={
@@ -1158,7 +1196,7 @@ Array [
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-25"
+              className="emotion-26"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -1166,21 +1204,21 @@ Array [
               tabIndex="0"
             >
               <div
-                className="emotion-24"
+                className="emotion-25"
               >
                 <div
-                  className="emotion-20"
+                  className="emotion-21"
                 />
               </div>
             </div>
           </td>
           <td>
             <div
-              className="emotion-27"
+              className="emotion-28"
             >
               <button
                 aria-label="Toggle Actions Menu"
-                className="gear emotion-26"
+                className="gear emotion-27"
                 onBlur={[Function]}
                 onClick={[Function]}
                 type="button"
@@ -1194,12 +1232,12 @@ Array [
           </td>
         </tr>
         <tr
-          className="emotion-28"
+          className="emotion-29"
           onClick={[Function]}
         >
           <td>
             <div
-              className="emotion-43"
+              className="emotion-45"
             >
               Success
             </div>
@@ -1238,7 +1276,7 @@ Array [
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-25"
+              className="emotion-26"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -1246,10 +1284,10 @@ Array [
               tabIndex="0"
             >
               <div
-                className="emotion-24"
+                className="emotion-25"
               >
                 <div
-                  className="emotion-89"
+                  className="emotion-95"
                 />
               </div>
             </div>
@@ -1257,12 +1295,12 @@ Array [
           <td />
         </tr>
         <tr
-          className="emotion-28"
+          className="emotion-29"
           onClick={[Function]}
         >
           <td>
             <div
-              className="emotion-43"
+              className="emotion-45"
             >
               Success
             </div>
@@ -1301,7 +1339,7 @@ Array [
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-25"
+              className="emotion-26"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -1309,10 +1347,10 @@ Array [
               tabIndex="0"
             >
               <div
-                className="emotion-24"
+                className="emotion-25"
               >
                 <div
-                  className="emotion-20"
+                  className="emotion-21"
                 />
               </div>
             </div>
@@ -1320,12 +1358,12 @@ Array [
           <td />
         </tr>
         <tr
-          className="emotion-28"
+          className="emotion-29"
           onClick={[Function]}
         >
           <td>
             <div
-              className="emotion-43"
+              className="emotion-45"
             >
               Success
             </div>
@@ -1364,7 +1402,7 @@ Array [
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-25"
+              className="emotion-26"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -1372,10 +1410,10 @@ Array [
               tabIndex="0"
             >
               <div
-                className="emotion-24"
+                className="emotion-25"
               >
                 <div
-                  className="emotion-20"
+                  className="emotion-21"
                 />
               </div>
             </div>
@@ -1383,12 +1421,12 @@ Array [
           <td />
         </tr>
         <tr
-          className="emotion-28"
+          className="emotion-29"
           onClick={[Function]}
         >
           <td>
             <div
-              className="emotion-43"
+              className="emotion-45"
             >
               Success
             </div>
@@ -1427,7 +1465,7 @@ Array [
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-25"
+              className="emotion-26"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -1435,10 +1473,10 @@ Array [
               tabIndex="0"
             >
               <div
-                className="emotion-24"
+                className="emotion-25"
               >
                 <div
-                  className="emotion-20"
+                  className="emotion-21"
                 />
               </div>
             </div>
@@ -1446,12 +1484,12 @@ Array [
           <td />
         </tr>
         <tr
-          className="emotion-28"
+          className="emotion-29"
           onClick={[Function]}
         >
           <td>
             <div
-              className="emotion-43"
+              className="emotion-45"
             >
               Success
             </div>
@@ -1480,18 +1518,22 @@ Array [
             4
           </td>
           <td>
-            <a
-              className="emotion-19"
-              href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd9153f-08c1-199f-b899-0a580a00091e/errors"
-              onClick={[Function]}
-              onMouseEnter={[Function]}
+            <div
+              className="emotion-20"
             >
-              <svg
-                color="#c92300"
-                data-file-name="warning.svg"
-                height={20}
-              />
-            </a>
+              <a
+                className="emotion-19"
+                href="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/acd9153f-08c1-199f-b899-0a580a00091e/errors"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+              >
+                <svg
+                  color="#c92300"
+                  data-file-name="warning.svg"
+                  height={20}
+                />
+              </a>
+            </div>
           </td>
           <td
             style={
@@ -1503,7 +1545,7 @@ Array [
           >
             <div
               aria-label="Progress Bar"
-              className="emotion-25"
+              className="emotion-26"
               onKeyPress={[Function]}
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -1511,13 +1553,13 @@ Array [
               tabIndex="0"
             >
               <div
-                className="emotion-24"
+                className="emotion-25"
               >
                 <div
-                  className="emotion-20"
+                  className="emotion-21"
                 />
                 <div
-                  className="emotion-89"
+                  className="emotion-95"
                 />
               </div>
             </div>
