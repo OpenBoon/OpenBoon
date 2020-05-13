@@ -43,27 +43,29 @@ const MetadataPrettySwitch = ({ name, value, path }) => {
       default:
         return (
           <>
-            <div
-              css={{
-                borderTop: constants.borders.divider,
-                ':hover': { div: { svg: { display: 'inline-block' } } },
-              }}
-            >
+            {!!name && (
               <div
                 css={{
-                  fontFamily: 'Roboto Condensed',
-                  color: colors.structure.steel,
-                  padding: spacing.normal,
-                  paddingBottom: 0,
-                  flex: 1,
+                  borderTop: constants.borders.divider,
+                  ':hover': { div: { svg: { display: 'inline-block' } } },
                 }}
               >
-                <span title={`${path.toLowerCase()}.${name}`}>
-                  {formatDisplayName({ name })}
-                </span>
+                <div
+                  css={{
+                    fontFamily: 'Roboto Condensed',
+                    color: colors.structure.steel,
+                    padding: spacing.normal,
+                    paddingBottom: 0,
+                    flex: 1,
+                  }}
+                >
+                  <span title={`${path.toLowerCase()}.${name}`}>
+                    {formatDisplayName({ name })}
+                  </span>
+                </div>
+                <div />
               </div>
-              <div />
-            </div>
+            )}
 
             <div
               css={
