@@ -59,8 +59,8 @@ const STYLES = {
     container: {
       backgroundColor: colors.structure.lead,
       borderRadius: constants.borderRadius.small,
-      padding: 1,
       border: constants.borders.transparent,
+      borderBottom: constants.borders.tabs,
       ':hover': {
         border: constants.borders.tableRow,
         div: {
@@ -71,7 +71,6 @@ const STYLES = {
       },
     },
     title: {
-      borderBottom: constants.borders.tabs,
       paddingTop: spacing.moderate,
       paddingBottom: spacing.moderate,
       paddingLeft: spacing.moderate,

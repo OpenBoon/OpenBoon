@@ -309,8 +309,8 @@ Array [
 .emotion-18 {
   background-color: #252525;
   border-radius: 2px;
-  padding: 1px;
   border: 1px solid transparent;
+  border-bottom: 1px solid #4a4a4a;
 }
 
 .emotion-18:hover {
@@ -322,7 +322,6 @@ Array [
 }
 
 .emotion-10 {
-  border-bottom: 1px solid #4a4a4a;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;
@@ -433,6 +432,8 @@ Array [
 
 .emotion-2 {
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   padding-left: 8px;
   overflow: hidden;
   white-space: nowrap;
@@ -1095,8 +1096,8 @@ Array [
 .emotion-57 {
   background-color: #252525;
   border-radius: 2px;
-  padding: 1px;
   border: 1px solid transparent;
+  border-bottom: 1px solid #4a4a4a;
 }
 
 .emotion-57:hover {
@@ -1108,7 +1109,6 @@ Array [
 }
 
 .emotion-10 {
-  border-bottom: 1px solid #4a4a4a;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;
@@ -1219,6 +1219,8 @@ Array [
 
 .emotion-2 {
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   padding-left: 8px;
   overflow: hidden;
   white-space: nowrap;
@@ -2108,8 +2110,8 @@ Array [
 .emotion-657 {
   background-color: #252525;
   border-radius: 2px;
-  padding: 1px;
   border: 1px solid transparent;
+  border-bottom: 1px solid #4a4a4a;
 }
 
 .emotion-657:hover {
@@ -2121,7 +2123,6 @@ Array [
 }
 
 .emotion-10 {
-  border-bottom: 1px solid #4a4a4a;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;
@@ -2232,6 +2233,8 @@ Array [
 
 .emotion-2 {
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   padding-left: 8px;
   overflow: hidden;
   white-space: nowrap;
@@ -6754,8 +6757,8 @@ Array [
 .emotion-23 {
   background-color: #252525;
   border-radius: 2px;
-  padding: 1px;
   border: 1px solid transparent;
+  border-bottom: 1px solid #4a4a4a;
 }
 
 .emotion-23:hover {
@@ -6767,7 +6770,6 @@ Array [
 }
 
 .emotion-10 {
-  border-bottom: 1px solid #4a4a4a;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;
@@ -6878,6 +6880,8 @@ Array [
 
 .emotion-2 {
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   padding-left: 8px;
   overflow: hidden;
   white-space: nowrap;
@@ -7592,27 +7596,26 @@ Array [
       </div>
     </form>
   </div>,
-  .emotion-18 {
+  .emotion-17 {
   overflow: auto;
 }
 
-.emotion-17 {
+.emotion-16 {
   background-color: #252525;
   border-radius: 2px;
-  padding: 1px;
   border: 1px solid transparent;
+  border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-17:hover {
+.emotion-16:hover {
   border: 1px solid #808080;
 }
 
-.emotion-17:hover div svg {
+.emotion-16:hover div svg {
   visibility: visible;
 }
 
 .emotion-10 {
-  border-bottom: 1px solid #4a4a4a;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 12px;
@@ -7723,6 +7726,8 @@ Array [
 
 .emotion-2 {
   font-family: Roboto Mono;
+  font-size: 14px;
+  line-height: 18px;
   padding-left: 8px;
   overflow: hidden;
   white-space: nowrap;
@@ -7804,23 +7809,9 @@ Array [
   visibility: hidden;
 }
 
-.emotion-16 {
+.emotion-15 {
   width: 100%;
   background-color: #191919;
-}
-
-.emotion-15 {
-  padding: 16px 12px;
-}
-
-.emotion-15 .ErrorBoundary > div {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.emotion-15 .Loading {
-  background-color: transparent;
-  box-shadow: none;
 }
 
 .emotion-14 {
@@ -7887,10 +7878,10 @@ Array [
 }
 
 <div
-    className="emotion-18"
+    className="emotion-17"
   >
     <div
-      className="emotion-17"
+      className="emotion-16"
     >
       <div
         className="emotion-10"
@@ -7953,44 +7944,352 @@ Array [
         </h4>
       </div>
       <div
-        className="emotion-16"
+        className="emotion-15"
       >
-        <div
-          className="emotion-15"
+        <form
+          action=""
+          method="post"
+          onSubmit={[Function]}
         >
-          <form
-            action=""
-            method="post"
-            onSubmit={[Function]}
+          <div
+            className="emotion-14"
           >
-            <div
-              className="emotion-14"
+            <input
+              className="emotion-11"
+              onChange={[Function]}
+              placeholder="Search text"
+              type="search"
+              value=""
+            />
+            <button
+              aria-disabled={true}
+              aria-label="Search"
+              className="emotion-13"
+              onClick={[Function]}
+              type="submit"
             >
-              <input
-                className="emotion-11"
-                onChange={[Function]}
-                placeholder="Search text"
-                type="search"
-                value=""
+              <svg
+                className="emotion-12"
+                data-file-name="search.svg"
+                width={20}
               />
-              <button
-                aria-disabled={true}
-                aria-label="Search"
-                className="emotion-13"
-                onClick={[Function]}
-                type="submit"
-              >
-                <svg
-                  className="emotion-12"
-                  data-file-name="search.svg"
-                  width={20}
-                />
-              </button>
-            </div>
-          </form>
-        </div>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>,
+]
+`;
+
+exports[`<FiltersContent /> should render the default filter 1`] = `
+Array [
+  .emotion-12 {
+  padding: 4px;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  min-width: 190px;
+}
+
+.emotion-2:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-2[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited {
+  background-color: #73b61c;
+}
+
+.emotion-2:hover {
+  background-color: #96c955;
+}
+
+.emotion-2[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 4px;
+}
+
+.emotion-3 {
+  width: 8px;
+  min-width: 8px;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 0;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  min-width: 190px;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-5[aria-disabled=true] {
+  color: #2e2e2e;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited {
+  background-color: #808080;
+}
+
+.emotion-5:hover {
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true] {
+  background-color: #808080;
+}
+
+.emotion-4 {
+  height: 20px;
+}
+
+.emotion-7 {
+  height: 4px;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-8 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  border: none;
+  padding: 12px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  color: #e0e0e0;
+  background-color: #191919;
+  padding-left: 32px;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+  background-repeat: no-repeat,repeat;
+  background-position: left 8px top 50%;
+  background-size: 20px;
+}
+
+.emotion-8:focus {
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-8::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-8::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-8:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-8::placeholder {
+  font-style: italic;
+}
+
+.emotion-10 {
+  width: 42px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  color: #000000;
+  background-color: #808080;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  cursor: not-allowed;
+}
+
+.emotion-9 {
+  color: #3b3b3b;
+}
+
+<div
+    className="emotion-12"
+  >
+    <div
+      className="emotion-6"
+    >
+      <button
+        aria-label="Add Metadata Filters"
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-1"
+        >
+          <div
+            className="emotion-0"
+          >
+            <svg
+              data-file-name="plus.svg"
+              width={20}
+            />
+          </div>
+          Add Metadata Filters
+        </div>
+      </button>
+      <div
+        className="emotion-3"
+      />
+      <button
+        aria-label="Clear All Filters"
+        className="emotion-5"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-4"
+        >
+          Clear All Filters
+        </div>
+      </button>
+    </div>
+    <div
+      className="emotion-7"
+    />
+    <form
+      action=""
+      method="post"
+      onSubmit={[Function]}
+    >
+      <div
+        className="emotion-11"
+      >
+        <input
+          className="emotion-8"
+          onChange={[Function]}
+          placeholder="Create text filter (search name or field value)"
+          type="text"
+          value=""
+        />
+        <button
+          aria-disabled={true}
+          aria-label="Search"
+          className="emotion-10"
+          onClick={[Function]}
+          type="submit"
+        >
+          <svg
+            className="emotion-9"
+            data-file-name="plus.svg"
+            width={20}
+          />
+        </button>
+      </div>
+    </form>
+  </div>,
+  .emotion-0 {
+  overflow: auto;
+}
+
+<div
+    className="emotion-0"
+  />,
 ]
 `;

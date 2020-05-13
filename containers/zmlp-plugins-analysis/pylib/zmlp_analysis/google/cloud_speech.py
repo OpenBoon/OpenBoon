@@ -22,7 +22,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
             'A set of alternative languages that your audio data might contain.'
     }
 
-    namespace = 'gcp.speech-to-text'
+    namespace = 'gcp-speech-to-text'
 
     max_length_sec = 30 * 60
 
@@ -74,7 +74,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
                                        'gcp',
                                        'speech-to-text.dat')
 
-    @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=10 * 60)
+    @backoff.on_exception(backoff.expo, ResourceExhausted, max_tries=3, max_time=3600)
     def recognize_speech(self, audio_uri):
         """
         Call Google Speech2Text in Async mode and wait for the result.

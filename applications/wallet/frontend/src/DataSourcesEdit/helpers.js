@@ -25,7 +25,7 @@ export const onSubmit = async ({
   dispatch,
   projectId,
   dataSourceId,
-  state: { name, uri, credential, fileTypes, modules },
+  state: { name, uri, fileTypes, modules, credentials },
 }) => {
   try {
     await fetcher(
@@ -35,9 +35,9 @@ export const onSubmit = async ({
         body: JSON.stringify({
           name,
           uri,
-          credential,
           fileTypes: Object.keys(fileTypes).filter((f) => fileTypes[f]),
           modules: Object.keys(modules).filter((m) => modules[m]),
+          credentials,
         }),
       },
     )
