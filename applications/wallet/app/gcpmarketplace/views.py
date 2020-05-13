@@ -6,7 +6,6 @@ from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.utils.decorators import method_decorator
 from django.views import View
 from google.auth.transport import requests
 from google.oauth2 import id_token
@@ -52,8 +51,11 @@ class SignUpView(View):
         """Make sure the jwt was signed correctly and is not expired."""
         issuer = 'https://www.googleapis.com/robot/v1/metadata/x509/cloud-commerce-partner@system.gserviceaccount.com'  # noqa
         token = request.headers.get('x-gcp-marketplace-token').split()[1]
+
+        # TODO: Make audience configurable.
         idinfo = id_token.verify_token(token, requests.Request(), certs_url=issuer,
-                                       audience='zvi.zorroa.com')  # TODO: Make audience configurable..
+                                       audience='zvi.zorroa.com')
+
         if idinfo['iss'] != issuer:
             raise PermissionDenied('Wrong issuer.')
         if not idinfo.get('sub'):

@@ -7,6 +7,7 @@ import sentry_sdk
 from django.conf import settings
 from django.core.management import BaseCommand
 
+from gcpmarketplace.models import MarketplaceEntitlement
 from gcpmarketplace.utils import get_service_control_api, get_procurement_api
 
 sentry_sdk.init(
@@ -27,28 +28,25 @@ class UsageReporter():
 
     def _get_active_entitlements(self):
         """Returns a list of all active marketplace entitlements."""
+        # TODO: Remove DEMO- when this goes live.
         request = get_procurement_api().providers().entitlements().list(
-            parent=f'providers/DEMO-{settings.MARKETPLACE_PROJECT_ID}',  #TODO: Remove DEMO- when this goes live.
+            parent=f'providers/DEMO-{settings.MARKETPLACE_PROJECT_ID}',
             filter='state=active')
         return request.execute().get('entitlements')
 
     def _get_usage(self, entitlement):
         """Returns usage info for the project linked to the entitlement given."""
-
-        # TODO: Removed once the Zmlp API is updated.
-        return {'end_time': 1588701600,
-                'video_hours': 1,
-                'image_count': 2}
-
-        project_id = entitlement['name'].split('/')[-1]
-        usage = django_command('gethourlyusage', project_id)
-        return json.loads(usage)
+        entitlement = MarketplaceEntitlement.objects.get(name=entitlement['name'])
+        return entitlement.project.subscription.usage_last_hour()
 
     def _report_usage(self, entitlement):
         """Sends usage information to marketplace for the given entitlement."""
         ServiceControlApi = get_service_control_api()
         time_format = '%Y-%m-%dT%H:%M:%SZ'
         usage = self._get_usage(entitlement)
+        if not usage:
+            print(f'No usage data. Skipping report for entitlement {entitlement["name"]}.')
+            return
         end_time = datetime.datetime.fromtimestamp(usage['end_time'],
                                                    datetime.timezone.utc)
         start_time = end_time - datetime.timedelta(hours=1)
@@ -75,7 +73,7 @@ class UsageReporter():
             print('Errors for user %s with product %s:' % (entitlement['account'],
                                                            entitlement['product']))
             print(check['checkErrors'])
-            ### TODO: Temporarily turn off service for the user. ###
+            # TODO: Temporarily turn off service for the user.
             return
         print(f'Sending report:\n{pprint.pformat(operation)}')
         ServiceControlApi.services().report(

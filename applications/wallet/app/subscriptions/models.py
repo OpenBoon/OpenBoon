@@ -1,13 +1,11 @@
 import math
 import uuid
 
-from django.db import models
-from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.db import models
 from multiselectfield import MultiSelectField
 
 from projects.models import Project
-from wallet.utils import get_zmlp_superuser_client
 
 User = get_user_model()
 
@@ -54,8 +52,10 @@ class Subscription(models.Model):
     def usage_last_hour(self):
         """Returns usage information from the last hour for the project."""
         client = self.project.get_zmlp_super_client()
-        usage = client.get('/api/v1/project/_quotas_time_series')[-1]
-
+        all_usage = client.get('/api/v1/project/_quotas_time_series')
+        if not all_usage:
+            return None
+        usage = all_usage[-1]
         return {'end_time': usage['timestamp']/1000,
                 'video_hours': self._get_usage_hours_from_seconds(usage['videoSecondsCount']),
                 'image_count': usage['pageCount']}
