@@ -175,7 +175,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         asset.add_analysis('gcp-video-explicit-detection', analysis)
 
-    @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=5 * 60 * 60)
+    @backoff.on_exception(backoff.expo, ResourceExhausted, max_tries=3, max_time=3600)
     def _get_video_annotations(self, uri):
         """Uses the Google Video Intelligence API to get video annotations.
 
