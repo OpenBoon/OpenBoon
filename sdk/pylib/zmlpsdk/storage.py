@@ -203,7 +203,7 @@ class ProjectStorage(object):
             fp.write(src_blob)
 
         spec = {
-            "entity": entity.__class__.__name__,
+            "entity": entity.__class__.__name__.upper() + "S",
             "entityId": entity.id,
             "category": category,
             "name": name,
@@ -225,7 +225,7 @@ class ProjectStorage(object):
         like proxy images.
 
         Args:
-            sfile (StoredFile): a ZMLP StoredFile object.
+            sfile (StoredFile): a ZMLP StoredFile object or a StoredFile unique Id.
 
         Returns:
             str: a path to a location in the local file cache.

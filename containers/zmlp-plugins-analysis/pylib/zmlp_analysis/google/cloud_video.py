@@ -150,6 +150,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                                           collapse_labels=True)
         process_label_annotations(results.segment_label_annotations)
         process_label_annotations(results.shot_label_annotations)
+        process_label_annotations(results.frame_label_annotations)
         asset.add_analysis('gcp-video-label-detection', analysis)
 
     def handle_detect_text(self, asset, annotation_result):
@@ -175,7 +176,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
 
         asset.add_analysis('gcp-video-explicit-detection', analysis)
 
-    @backoff.on_exception(backoff.expo, ResourceExhausted, max_time=5 * 60 * 60)
+    @backoff.on_exception(backoff.expo, ResourceExhausted, max_tries=3, max_time=3600)
     def _get_video_annotations(self, uri):
         """Uses the Google Video Intelligence API to get video annotations.
 
