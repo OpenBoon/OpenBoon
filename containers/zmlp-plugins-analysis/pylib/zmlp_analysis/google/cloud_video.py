@@ -150,6 +150,7 @@ class AsyncVideoIntelligenceProcessor(AssetProcessor):
                                           collapse_labels=True)
         process_label_annotations(results.segment_label_annotations)
         process_label_annotations(results.shot_label_annotations)
+        process_label_annotations(results.frame_label_annotations)
         asset.add_analysis('gcp-video-label-detection', analysis)
 
     def handle_detect_text(self, asset, annotation_result):
