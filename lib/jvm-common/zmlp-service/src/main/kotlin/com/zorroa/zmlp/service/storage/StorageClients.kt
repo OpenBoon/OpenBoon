@@ -23,9 +23,9 @@ open class StorageProperties {
 }
 
 class SystemStorageException : RuntimeException {
-    constructor(message: String, ex: Exception?): super(message, ex) {}
-    constructor(message: String): super(message) {}
-    constructor(ex: Exception): super(ex) {}
+    constructor(message: String, ex: Exception?) : super(message, ex) {}
+    constructor(message: String) : super(message) {}
+    constructor(ex: Exception) : super(ex) {}
 }
 
 fun getS3Client(properties: StorageProperties): AmazonS3 {

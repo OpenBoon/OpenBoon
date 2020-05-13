@@ -47,7 +47,7 @@ class AwsSystemStorageService constructor(
                 )
             )
             logger.event(LogObject.SYSTEM_STORAGE, LogAction.CREATE, mapOf("path" to path))
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             throw SystemStorageException("failed to store object $path", e)
         }
     }
