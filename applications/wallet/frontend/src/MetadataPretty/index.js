@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { constants, spacing } from '../Styles'
 
-import MetadataPrettyRow from './PrettyRow'
+import MetadataPrettyRow from './Row'
 import MetadataAnalysis from '../MetadataAnalysis'
 
 const MetadataPretty = ({ metadata, section }) => {

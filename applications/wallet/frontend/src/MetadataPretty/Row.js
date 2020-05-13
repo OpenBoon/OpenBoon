@@ -4,7 +4,7 @@ import { colors, constants, spacing } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 
-import { formatDisplayName, formatDisplayValue } from './helpers'
+import { formatDisplayName, formatDisplayValue } from '../Metadata/helpers'
 
 const MetadataPrettyRow = ({ name, value, path }) => {
   if (typeof value === 'object') {
