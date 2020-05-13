@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants, spacing } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 
@@ -29,7 +29,9 @@ const MetadataPrettyRow = ({ name, value, path }) => {
         css={{
           fontFamily: 'Roboto Condensed',
           color: colors.structure.steel,
-          padding: spacing.normal,
+          padding: spacing.moderate,
+          paddingLeft: spacing.normal,
+          paddingRight: spacing.base,
           flex: 1,
         }}
       >
@@ -42,8 +44,10 @@ const MetadataPrettyRow = ({ name, value, path }) => {
         css={{
           flex: 4,
           fontFamily: 'Roboto Mono',
+          fontSize: typography.size.small,
+          lineHeight: typography.height.small,
           color: colors.structure.pebble,
-          padding: spacing.normal,
+          padding: spacing.moderate,
           wordBreak: name === 'content' ? 'break-word' : 'break-all',
         }}
       >
@@ -52,7 +56,8 @@ const MetadataPrettyRow = ({ name, value, path }) => {
       <div
         css={{
           width: COPY_SIZE + spacing.normal,
-          paddingTop: spacing.normal,
+          paddingTop: spacing.moderate,
+          paddingLeft: spacing.base,
           paddingRight: spacing.normal,
         }}
       >
