@@ -2,8 +2,6 @@ import PropTypes from 'prop-types'
 
 import filterShape from '../Filter/shape'
 
-import { spacing } from '../Styles'
-
 import Accordion, { VARIANTS as ACCORDION_VARIANTS } from '../Accordion'
 import FiltersTitle from '../Filters/Title'
 
@@ -32,7 +30,7 @@ const FilterText = ({
 
   return (
     <Accordion
-      cacheKey={`FilterTextDetection.${filter.attribute}.${filterIndex}`}
+      cacheKey={`FilterText.${attribute}.${filterIndex}`}
       variant={ACCORDION_VARIANTS.FILTER}
       title={
         <FiltersTitle
@@ -45,27 +43,13 @@ const FilterText = ({
       }
       isInitiallyOpen
     >
-      <div
-        css={{
-          padding: `${spacing.normal}px ${spacing.moderate}px`,
-          '.ErrorBoundary > div': {
-            backgroundColor: 'transparent',
-            boxShadow: 'none',
-          },
-          '.Loading': {
-            backgroundColor: 'transparent',
-            boxShadow: 'none',
-          },
-        }}
-      >
-        <FilterTextDetection
-          projectId={projectId}
-          assetId={assetId}
-          filters={filters}
-          filter={filter}
-          filterIndex={filterIndex}
-        />
-      </div>
+      <FilterTextDetection
+        projectId={projectId}
+        assetId={assetId}
+        filters={filters}
+        filter={filter}
+        filterIndex={filterIndex}
+      />
     </Accordion>
   )
 }
