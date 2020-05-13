@@ -79,6 +79,21 @@ class ApiKeyServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testSearchProjectIdFilter() {
+        val pid = UUID.randomUUID()
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead),
+            projectId = pid
+        )
+
+        apiKeyService.create(spec)
+        val keys = apiKeyService.search(ApiKeyFilter(names = listOf("test")))
+
+        // No keys should be found.
+        assertEquals(0, keys.list.size)
+    }
+    @Test
     fun testSearchByPrefix() {
 
         apiKeyService.create(ApiKeySpec("test1", setOf(Permission.AssetsRead)))
