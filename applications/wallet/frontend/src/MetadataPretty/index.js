@@ -2,8 +2,7 @@ import PropTypes from 'prop-types'
 
 import { constants, spacing } from '../Styles'
 
-import MetadataPrettyRow from './Row'
-import MetadataPrettyArray from './Array'
+import MetadataPrettySwitch from './Switch'
 
 const MetadataPretty = ({ metadata, section }) => {
   if (section === 'metrics') {
@@ -25,12 +24,20 @@ const MetadataPretty = ({ metadata, section }) => {
             css={{ fontFamily: 'Roboto Condensed', padding: spacing.normal }}
           >
             PROCESSOR
-            <div css={{ paddingTop: spacing.base, fontFamily: 'Roboto Mono' }}>
+            <div
+              title={processor}
+              css={{
+                paddingTop: spacing.base,
+                fontFamily: 'Roboto Mono',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
               {processor}
             </div>
           </div>
           {Object.entries(filteredPipeline).map(([key, value]) => (
-            <MetadataPrettyRow
+            <MetadataPrettySwitch
               key={key}
               name={key}
               value={value}
@@ -42,25 +49,8 @@ const MetadataPretty = ({ metadata, section }) => {
     })
   }
 
-  if (Array.isArray(metadata[section])) {
-    return <MetadataPrettyArray section={metadata[section]} path={section} />
-  }
-
   return (
-    <div css={{ width: '100%' }}>
-      <div>
-        {Object.entries(metadata[section]).map(([key, value]) => {
-          return (
-            <MetadataPrettyRow
-              key={key}
-              name={key}
-              value={value}
-              path={section}
-            />
-          )
-        })}
-      </div>
-    </div>
+    <MetadataPrettySwitch name="" value={metadata[section]} path={section} />
   )
 }
 

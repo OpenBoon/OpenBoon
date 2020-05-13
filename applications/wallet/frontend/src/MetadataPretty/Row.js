@@ -6,14 +6,7 @@ import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
 
 import { formatDisplayName, formatDisplayValue } from '../Metadata/helpers'
 
-// eslint-disable-next-line import/no-cycle
-import MetadataPrettyObject from './Object'
-
 const MetadataPrettyRow = ({ name, value, path }) => {
-  if (typeof value === 'object') {
-    return <MetadataPrettyObject name={name} value={value} path={path} />
-  }
-
   return (
     <div
       css={{
@@ -71,11 +64,7 @@ const MetadataPrettyRow = ({ name, value, path }) => {
 
 MetadataPrettyRow.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.shape({}),
-  ]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   path: PropTypes.string.isRequired,
 }
 
