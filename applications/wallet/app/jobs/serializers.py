@@ -58,7 +58,12 @@ class StackTraceSerializer(serializers.Serializer):
     file = serializers.CharField(required=True)
     lineNumber = serializers.IntegerField(required=True)
     className = serializers.CharField(required=True)
-    methodName = serializers.CharField(default='')
+    methodName = serializers.CharField(default='', allow_null=True)
+
+    def validate_methodName(self, value):
+        if value == None:
+            return ''
+        return value
 
 
 class TaskErrorSerializer(serializers.Serializer):
