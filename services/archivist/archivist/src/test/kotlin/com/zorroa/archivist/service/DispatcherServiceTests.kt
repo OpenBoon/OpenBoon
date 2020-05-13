@@ -531,7 +531,6 @@ class DispatcherServiceTests : AbstractTest() {
         assertEquals("bar", task!!.env["foo"])
     }
 
-
     fun launchJob(priority: Int): Job {
         val spec1 = JobSpec(
             "test_job_p$priority",
