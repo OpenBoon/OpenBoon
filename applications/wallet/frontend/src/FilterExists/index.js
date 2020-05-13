@@ -33,6 +33,7 @@ const FilterExists = ({
           filterIndex={filterIndex}
         />
       }
+      cacheKey={`FilterExists.${attribute}.${filterIndex}`}
       isInitiallyOpen
     >
       <div

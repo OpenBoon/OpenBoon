@@ -31,7 +31,11 @@ class ApiKeySpec(
     val name: String,
 
     @ApiModelProperty("A list of permissions associated with key.")
-    val permissions: Set<Permission>
+    val permissions: Set<Permission>,
+
+    @JsonIgnore
+    @ApiModelProperty("An optional project Id override, not available via REST.", hidden = true)
+    val projectId: UUID? = null
 )
 
 @Entity
@@ -212,7 +216,7 @@ class ApiKeyFilter(
     override fun buildWhereClause(root: Root<ApiKey>, cb: CriteriaBuilder): Array<Predicate> {
         val where = mutableListOf<Predicate>()
 
-        cb.equal(root.get<UUID>("projectId"), getProjectId())
+        where.add(cb.equal(root.get<UUID>("projectId"), getProjectId()))
 
         ids?.let {
             val ic: CriteriaBuilder.In<UUID> = cb.`in`(root.get("id"))

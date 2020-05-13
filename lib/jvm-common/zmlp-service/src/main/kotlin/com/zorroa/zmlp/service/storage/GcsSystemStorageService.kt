@@ -29,22 +29,34 @@ class GcsSystemStorageService constructor(
     }
 
     override fun storeObject(path: String, any: Any) {
-        val blobId = BlobId.of(properties.bucket, path.trimStart('/'))
-        val info = BlobInfo.newBuilder(blobId).setContentType("application/json").build()
-        gcs.create(info, Json.Mapper.writeValueAsBytes(any))
-        logger.event(LogObject.SYSTEM_STORAGE, LogAction.CREATE, mapOf("path" to path))
+        try {
+            val blobId = BlobId.of(properties.bucket, path.trimStart('/'))
+            val info = BlobInfo.newBuilder(blobId).setContentType("application/json").build()
+            gcs.create(info, Json.Mapper.writeValueAsBytes(any))
+            logger.event(LogObject.SYSTEM_STORAGE, LogAction.CREATE, mapOf("path" to path))
+        } catch (e: Exception) {
+            throw SystemStorageException("failed to store object $path", e)
+        }
     }
 
     override fun <T> fetchObject(path: String, valueType: Class<T>): T {
-        val blobId = BlobId.of(properties.bucket, path.trimStart('/'))
-        val blob = gcs.get(blobId)
-        return Json.Mapper.readValue(blob.getContent(), valueType)
+        try {
+            val blobId = BlobId.of(properties.bucket, path.trimStart('/'))
+            val blob = gcs.get(blobId)
+            return Json.Mapper.readValue(blob.getContent(), valueType)
+        } catch (e: Exception) {
+            throw SystemStorageException("failed to fetch object $path", e)
+        }
     }
 
     override fun <T> fetchObject(path: String, valueType: TypeReference<T>): T {
-        val blobId = BlobId.of(properties.bucket, path.trimStart('/'))
-        val blob = gcs.get(blobId)
-        return Json.Mapper.readValue(blob.getContent(), valueType)
+        try {
+            val blobId = BlobId.of(properties.bucket, path.trimStart('/'))
+            val blob = gcs.get(blobId)
+            return Json.Mapper.readValue(blob.getContent(), valueType)
+        } catch (e: Exception) {
+            throw SystemStorageException("failed to fetch object $path", e)
+        }
     }
 
     companion object {

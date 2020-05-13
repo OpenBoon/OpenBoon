@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Filters /> should add a new "Exists" filter 1`] = `
-.emotion-78 {
+.emotion-178 {
   overflow: hidden;
   display: -webkit-box;
   display: -webkit-flex;
@@ -19,16 +19,16 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   flex: 1;
 }
 
-.emotion-73 {
+.emotion-173 {
   overflow-x: auto;
 }
 
-.emotion-4 {
+.emotion-39 {
   background-color: #252525;
   border-radius: 2px;
 }
 
-.emotion-4:last-of-type > div:last-of-type {
+.emotion-39:last-of-type > div:last-of-type {
   border-bottom: 1px solid #4a4a4a;
 }
 
@@ -90,7 +90,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   color: #2e2e2e;
 }
 
-.emotion-0:hover {
+.emotion-153:hover {
   color: #ffffff;
 }
 
@@ -104,7 +104,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   display: flex;
 }
 
-.emotion-77 {
+.emotion-177 {
   padding: 8px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -112,7 +112,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   display: flex;
 }
 
-.emotion-74 {
+.emotion-174 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -145,36 +145,52 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: nowrap;
+  -ms-flex-flow: nowrap;
+  flex-flow: nowrap;
+  -webkit-align-items: end;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: end;
 }
 
-.emotion-74:hover {
+.emotion-174:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-74[aria-disabled=true] {
+.emotion-174[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-74,
-.emotion-74:hover,
-.emotion-74:visited {
+.emotion-174,
+.emotion-174:hover,
+.emotion-174:visited {
   background-color: #808080;
 }
 
-.emotion-74:hover {
+.emotion-174:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-74[aria-disabled=true] {
+.emotion-174[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-75 {
-  width: 8px;
+.emotion-174 svg {
+  margin-right: 8px;
 }
 
-.emotion-76 {
+.emotion-175 {
+  width: 8px;
+  min-width: 8px;
+}
+
+.emotion-176 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -207,68 +223,106 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: nowrap;
+  -ms-flex-flow: nowrap;
+  flex-flow: nowrap;
+  -webkit-align-items: end;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: end;
 }
 
-.emotion-76:hover {
+.emotion-176:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-76[aria-disabled=true] {
+.emotion-176[aria-disabled=true] {
   color: #2e2e2e;
 }
 
-.emotion-76,
-.emotion-76:hover,
-.emotion-76:visited {
+.emotion-176,
+.emotion-176:hover,
+.emotion-176:visited {
   background-color: #73b61c;
 }
 
-.emotion-76:hover {
+.emotion-176:hover {
   background-color: #96c955;
 }
 
-.emotion-76[aria-disabled=true] {
+.emotion-176[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-10 {
+.emotion-176 svg {
+  margin-right: 8px;
+}
+
+.emotion-0 {
   -webkit-transform: rotate(-180deg);
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 }
 
-.emotion-10:hover {
+.emotion-0:hover {
   color: #ffffff;
 }
 
-.emotion-51 {
+.emotion-38 {
   width: 100%;
   background-color: #191919;
 }
 
-.emotion-50 {
+.emotion-37 {
   padding: 16px;
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-22 {
+.emotion-14 {
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-top: 4px solid #3b3b3b;
+}
+
+.emotion-14:first-of-type {
+  padding-top: 0;
+  border-top: none;
+}
+
+.emotion-14:last-of-type {
+  padding-bottom: 0;
+}
+
+.emotion-4 {
+  font-family: Roboto Mono;
+  font-weight: 400;
+}
+
+.emotion-13 {
   margin-left: 32px;
   border-top: 1px solid #3b3b3b;
 }
 
-.emotion-22:first-of-type {
+.emotion-13:first-of-type {
   border-top: none;
 }
 
-.emotion-21 {
+.emotion-12 {
   padding: 8px;
   color: #b3b3b3;
   margin-left: -32px;
 }
 
-.emotion-20 {
+.emotion-11 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -282,7 +336,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   align-items: center;
 }
 
-.emotion-17 {
+.emotion-8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -290,7 +344,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   position: relative;
 }
 
-.emotion-14 {
+.emotion-5 {
   margin: 0;
   padding: 0;
   width: 16px;
@@ -302,7 +356,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   cursor: pointer;
 }
 
-.emotion-16 {
+.emotion-7 {
   position: absolute;
   top: 0;
   left: 0;
@@ -323,39 +377,39 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
   cursor: pointer;
 }
 
-.emotion-15 path {
+.emotion-6 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
 }
 
-.emotion-19 {
+.emotion-10 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   padding-left: 8px;
 }
 
-.emotion-18 {
+.emotion-9 {
   color: #b3b3b3;
   font-size: 15px;
   line-height: 19px;
 }
 
 <div
-  className="emotion-78"
+  className="emotion-178"
 >
   <div
-    className="emotion-73"
+    className="emotion-173"
   >
     <div
-      className="emotion-4"
+      className="emotion-39"
     >
       <div
         className="emotion-3"
       >
         <button
-          aria-label="Expand Section"
+          aria-label="Collapse Section"
           className="emotion-1"
           onClick={[Function]}
           type="button"
@@ -373,15 +427,173 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
           Analysis
         </h4>
       </div>
+      <div
+        className="emotion-38"
+      >
+        <div
+          className="emotion-37"
+        >
+          <div
+            className="emotion-14"
+          >
+            <h4
+              className="emotion-4"
+            >
+              zvi
+            </h4>
+            <div
+              className="emotion-13"
+            >
+              <div
+                className="emotion-12"
+              >
+                <label
+                  className="emotion-11"
+                >
+                  <div
+                    className="emotion-8"
+                  >
+                    <input
+                      className="emotion-5"
+                      defaultChecked={false}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="analysis.zvi.tinyProxy"
+                    />
+                    <div
+                      className="emotion-7"
+                    >
+                      <svg
+                        className="emotion-6"
+                        data-file-name="checkmark.svg"
+                        width={20}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className="emotion-10"
+                  >
+                    <span
+                      className="emotion-9"
+                    >
+                      tinyProxy
+                    </span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            className="emotion-14"
+          >
+            <h4
+              className="emotion-4"
+            >
+              zvi-image-similarity
+            </h4>
+            <div
+              className="emotion-13"
+            >
+              <div
+                className="emotion-12"
+              >
+                <label
+                  className="emotion-11"
+                >
+                  <div
+                    className="emotion-8"
+                  >
+                    <input
+                      className="emotion-5"
+                      defaultChecked={false}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="analysis.zvi-image-similarity.simhash"
+                    />
+                    <div
+                      className="emotion-7"
+                    >
+                      <svg
+                        className="emotion-6"
+                        data-file-name="checkmark.svg"
+                        width={20}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className="emotion-10"
+                  >
+                    <span
+                      className="emotion-9"
+                    >
+                      simhash
+                    </span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            className="emotion-14"
+          >
+            <h4
+              className="emotion-4"
+            >
+              zvi-object-detection
+            </h4>
+            <div
+              className="emotion-13"
+            >
+              <div
+                className="emotion-12"
+              >
+                <label
+                  className="emotion-11"
+                >
+                  <div
+                    className="emotion-8"
+                  >
+                    <input
+                      className="emotion-5"
+                      defaultChecked={false}
+                      onClick={[Function]}
+                      type="checkbox"
+                      value="analysis.zvi-object-detection.count"
+                    />
+                    <div
+                      className="emotion-7"
+                    >
+                      <svg
+                        className="emotion-6"
+                        data-file-name="checkmark.svg"
+                        width={20}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className="emotion-10"
+                  >
+                    <span
+                      className="emotion-9"
+                    >
+                      count
+                    </span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-39"
     >
       <div
         className="emotion-3"
       >
         <button
-          aria-label="Expand Section"
+          aria-label="Collapse Section"
           className="emotion-1"
           onClick={[Function]}
           type="button"
@@ -399,9 +611,304 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
           Clip
         </h4>
       </div>
+      <div
+        className="emotion-38"
+      >
+        <div
+          className="emotion-37"
+        >
+          <div
+            className="emotion-13"
+          >
+            <div
+              className="emotion-12"
+            >
+              <label
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <input
+                    className="emotion-5"
+                    defaultChecked={false}
+                    onClick={[Function]}
+                    type="checkbox"
+                    value="clip.length"
+                  />
+                  <div
+                    className="emotion-7"
+                  >
+                    <svg
+                      className="emotion-6"
+                      data-file-name="checkmark.svg"
+                      width={20}
+                    />
+                  </div>
+                </div>
+                <div
+                  className="emotion-10"
+                >
+                  <span
+                    className="emotion-9"
+                  >
+                    length
+                  </span>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            className="emotion-13"
+          >
+            <div
+              className="emotion-12"
+            >
+              <label
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <input
+                    className="emotion-5"
+                    defaultChecked={false}
+                    onClick={[Function]}
+                    type="checkbox"
+                    value="clip.pile"
+                  />
+                  <div
+                    className="emotion-7"
+                  >
+                    <svg
+                      className="emotion-6"
+                      data-file-name="checkmark.svg"
+                      width={20}
+                    />
+                  </div>
+                </div>
+                <div
+                  className="emotion-10"
+                >
+                  <span
+                    className="emotion-9"
+                  >
+                    pile
+                  </span>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            className="emotion-13"
+          >
+            <div
+              className="emotion-12"
+            >
+              <label
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <input
+                    className="emotion-5"
+                    defaultChecked={false}
+                    onClick={[Function]}
+                    type="checkbox"
+                    value="clip.sourceAssetId"
+                  />
+                  <div
+                    className="emotion-7"
+                  >
+                    <svg
+                      className="emotion-6"
+                      data-file-name="checkmark.svg"
+                      width={20}
+                    />
+                  </div>
+                </div>
+                <div
+                  className="emotion-10"
+                >
+                  <span
+                    className="emotion-9"
+                  >
+                    sourceAssetId
+                  </span>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            className="emotion-13"
+          >
+            <div
+              className="emotion-12"
+            >
+              <label
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <input
+                    className="emotion-5"
+                    defaultChecked={false}
+                    onClick={[Function]}
+                    type="checkbox"
+                    value="clip.start"
+                  />
+                  <div
+                    className="emotion-7"
+                  >
+                    <svg
+                      className="emotion-6"
+                      data-file-name="checkmark.svg"
+                      width={20}
+                    />
+                  </div>
+                </div>
+                <div
+                  className="emotion-10"
+                >
+                  <span
+                    className="emotion-9"
+                  >
+                    start
+                  </span>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            className="emotion-13"
+          >
+            <div
+              className="emotion-12"
+            >
+              <label
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <input
+                    className="emotion-5"
+                    defaultChecked={false}
+                    onClick={[Function]}
+                    type="checkbox"
+                    value="clip.stop"
+                  />
+                  <div
+                    className="emotion-7"
+                  >
+                    <svg
+                      className="emotion-6"
+                      data-file-name="checkmark.svg"
+                      width={20}
+                    />
+                  </div>
+                </div>
+                <div
+                  className="emotion-10"
+                >
+                  <span
+                    className="emotion-9"
+                  >
+                    stop
+                  </span>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            className="emotion-13"
+          >
+            <div
+              className="emotion-12"
+            >
+              <label
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <input
+                    className="emotion-5"
+                    defaultChecked={false}
+                    onClick={[Function]}
+                    type="checkbox"
+                    value="clip.timeline"
+                  />
+                  <div
+                    className="emotion-7"
+                  >
+                    <svg
+                      className="emotion-6"
+                      data-file-name="checkmark.svg"
+                      width={20}
+                    />
+                  </div>
+                </div>
+                <div
+                  className="emotion-10"
+                >
+                  <span
+                    className="emotion-9"
+                  >
+                    timeline
+                  </span>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            className="emotion-13"
+          >
+            <div
+              className="emotion-12"
+            >
+              <label
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-8"
+                >
+                  <input
+                    className="emotion-5"
+                    defaultChecked={false}
+                    onClick={[Function]}
+                    type="checkbox"
+                    value="clip.type"
+                  />
+                  <div
+                    className="emotion-7"
+                  >
+                    <svg
+                      className="emotion-6"
+                      data-file-name="checkmark.svg"
+                      width={20}
+                    />
+                  </div>
+                </div>
+                <div
+                  className="emotion-10"
+                >
+                  <span
+                    className="emotion-9"
+                  >
+                    type
+                  </span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-39"
     >
       <div
         className="emotion-3"
@@ -413,7 +920,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
           type="button"
         >
           <svg
-            className="emotion-10"
+            className="emotion-0"
             color="#808080"
             data-file-name="chevron.svg"
             width={20}
@@ -426,45 +933,45 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
         </h4>
       </div>
       <div
-        className="emotion-51"
+        className="emotion-38"
       >
         <div
-          className="emotion-50"
+          className="emotion-37"
         >
           <div
-            className="emotion-22"
+            className="emotion-13"
           >
             <div
-              className="emotion-21"
+              className="emotion-12"
             >
               <label
-                className="emotion-20"
+                className="emotion-11"
               >
                 <div
-                  className="emotion-17"
+                  className="emotion-8"
                 >
                   <input
-                    className="emotion-14"
+                    className="emotion-5"
                     defaultChecked={false}
                     onClick={[Function]}
                     type="checkbox"
                     value="location.city"
                   />
                   <div
-                    className="emotion-16"
+                    className="emotion-7"
                   >
                     <svg
-                      className="emotion-15"
+                      className="emotion-6"
                       data-file-name="checkmark.svg"
                       width={20}
                     />
                   </div>
                 </div>
                 <div
-                  className="emotion-19"
+                  className="emotion-10"
                 >
                   <span
-                    className="emotion-18"
+                    className="emotion-9"
                   >
                     city
                   </span>
@@ -473,39 +980,39 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
             </div>
           </div>
           <div
-            className="emotion-22"
+            className="emotion-13"
           >
             <div
-              className="emotion-21"
+              className="emotion-12"
             >
               <label
-                className="emotion-20"
+                className="emotion-11"
               >
                 <div
-                  className="emotion-17"
+                  className="emotion-8"
                 >
                   <input
-                    className="emotion-14"
+                    className="emotion-5"
                     defaultChecked={false}
                     onClick={[Function]}
                     type="checkbox"
                     value="location.code"
                   />
                   <div
-                    className="emotion-16"
+                    className="emotion-7"
                   >
                     <svg
-                      className="emotion-15"
+                      className="emotion-6"
                       data-file-name="checkmark.svg"
                       width={20}
                     />
                   </div>
                 </div>
                 <div
-                  className="emotion-19"
+                  className="emotion-10"
                 >
                   <span
-                    className="emotion-18"
+                    className="emotion-9"
                   >
                     code
                   </span>
@@ -514,39 +1021,39 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
             </div>
           </div>
           <div
-            className="emotion-22"
+            className="emotion-13"
           >
             <div
-              className="emotion-21"
+              className="emotion-12"
             >
               <label
-                className="emotion-20"
+                className="emotion-11"
               >
                 <div
-                  className="emotion-17"
+                  className="emotion-8"
                 >
                   <input
-                    className="emotion-14"
+                    className="emotion-5"
                     defaultChecked={false}
                     onClick={[Function]}
                     type="checkbox"
                     value="location.country"
                   />
                   <div
-                    className="emotion-16"
+                    className="emotion-7"
                   >
                     <svg
-                      className="emotion-15"
+                      className="emotion-6"
                       data-file-name="checkmark.svg"
                       width={20}
                     />
                   </div>
                 </div>
                 <div
-                  className="emotion-19"
+                  className="emotion-10"
                 >
                   <span
-                    className="emotion-18"
+                    className="emotion-9"
                   >
                     country
                   </span>
@@ -555,39 +1062,39 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
             </div>
           </div>
           <div
-            className="emotion-22"
+            className="emotion-13"
           >
             <div
-              className="emotion-21"
+              className="emotion-12"
             >
               <label
-                className="emotion-20"
+                className="emotion-11"
               >
                 <div
-                  className="emotion-17"
+                  className="emotion-8"
                 >
                   <input
-                    className="emotion-14"
+                    className="emotion-5"
                     defaultChecked={false}
                     onClick={[Function]}
                     type="checkbox"
                     value="location.point"
                   />
                   <div
-                    className="emotion-16"
+                    className="emotion-7"
                   >
                     <svg
-                      className="emotion-15"
+                      className="emotion-6"
                       data-file-name="checkmark.svg"
                       width={20}
                     />
                   </div>
                 </div>
                 <div
-                  className="emotion-19"
+                  className="emotion-10"
                 >
                   <span
-                    className="emotion-18"
+                    className="emotion-9"
                   >
                     point
                   </span>
@@ -599,7 +1106,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
       </div>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-39"
     >
       <div
         className="emotion-3"
@@ -611,7 +1118,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
           type="button"
         >
           <svg
-            className="emotion-0"
+            className="emotion-153"
             color="#808080"
             data-file-name="chevron.svg"
             width={20}
@@ -625,7 +1132,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
       </div>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-39"
     >
       <div
         className="emotion-3"
@@ -637,7 +1144,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
           type="button"
         >
           <svg
-            className="emotion-0"
+            className="emotion-153"
             color="#808080"
             data-file-name="chevron.svg"
             width={20}
@@ -651,7 +1158,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
       </div>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-39"
     >
       <div
         className="emotion-3"
@@ -663,7 +1170,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
           type="button"
         >
           <svg
-            className="emotion-0"
+            className="emotion-153"
             color="#808080"
             data-file-name="chevron.svg"
             width={20}
@@ -677,7 +1184,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
       </div>
     </div>
     <div
-      className="emotion-4"
+      className="emotion-39"
     >
       <div
         className="emotion-3"
@@ -689,7 +1196,7 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
           type="button"
         >
           <svg
-            className="emotion-0"
+            className="emotion-153"
             color="#808080"
             data-file-name="chevron.svg"
             width={20}
@@ -704,25 +1211,35 @@ exports[`<Filters /> should add a new "Exists" filter 1`] = `
     </div>
   </div>
   <div
-    className="emotion-77"
+    className="emotion-177"
   >
     <button
-      className="emotion-74"
+      aria-label="Cancel"
+      className="emotion-174"
       onClick={[Function]}
       type="button"
     >
-      x Cancel
+      <svg
+        data-file-name="crossSmall.svg"
+        width={18}
+      />
+      Cancel
     </button>
     <div
-      className="emotion-75"
+      className="emotion-175"
     />
     <button
       aria-disabled={true}
-      className="emotion-76"
+      aria-label="Add Selected Filters"
+      className="emotion-176"
       onClick={[Function]}
       type="button"
     >
-      + Add Selected Filters
+      <svg
+        data-file-name="plus.svg"
+        width={16}
+      />
+      Add Selected Filters
     </button>
   </div>
 </div>
@@ -873,6 +1390,17 @@ exports[`<Filters /> should open the menu 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: nowrap;
+  -ms-flex-flow: nowrap;
+  flex-flow: nowrap;
+  -webkit-align-items: end;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: end;
 }
 
 .emotion-71:hover {
@@ -898,8 +1426,13 @@ exports[`<Filters /> should open the menu 1`] = `
   background-color: #808080;
 }
 
+.emotion-71 svg {
+  margin-right: 8px;
+}
+
 .emotion-72 {
   width: 8px;
+  min-width: 8px;
 }
 
 .emotion-73 {
@@ -935,6 +1468,17 @@ exports[`<Filters /> should open the menu 1`] = `
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: nowrap;
+  -ms-flex-flow: nowrap;
+  flex-flow: nowrap;
+  -webkit-align-items: end;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: end;
 }
 
 .emotion-73:hover {
@@ -958,6 +1502,10 @@ exports[`<Filters /> should open the menu 1`] = `
 
 .emotion-73[aria-disabled=true] {
   background-color: #808080;
+}
+
+.emotion-73 svg {
+  margin-right: 8px;
 }
 
 .emotion-0 {
@@ -1444,22 +1992,32 @@ exports[`<Filters /> should open the menu 1`] = `
     className="emotion-74"
   >
     <button
+      aria-label="Cancel"
       className="emotion-71"
       onClick={[Function]}
       type="button"
     >
-      x Cancel
+      <svg
+        data-file-name="crossSmall.svg"
+        width={18}
+      />
+      Cancel
     </button>
     <div
       className="emotion-72"
     />
     <button
       aria-disabled={true}
+      aria-label="Add Selected Filters"
       className="emotion-73"
       onClick={[Function]}
       type="button"
     >
-      + Add Selected Filters
+      <svg
+        data-file-name="plus.svg"
+        width={16}
+      />
+      Add Selected Filters
     </button>
   </div>
 </div>

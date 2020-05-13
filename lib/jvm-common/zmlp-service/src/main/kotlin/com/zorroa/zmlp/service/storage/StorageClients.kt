@@ -22,6 +22,12 @@ open class StorageProperties {
     var url: String? = null
 }
 
+class SystemStorageException : RuntimeException {
+    constructor(message: String, ex: Exception?) : super(message, ex) {}
+    constructor(message: String) : super(message) {}
+    constructor(ex: Exception) : super(ex) {}
+}
+
 fun getS3Client(properties: StorageProperties): AmazonS3 {
 
     val credentials: AWSCredentials = BasicAWSCredentials(

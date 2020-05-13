@@ -117,9 +117,7 @@ class TestApikey:
         response = api_client.post(reverse('apikey-list', kwargs={'project_pk': project.id}), body)
         assert response.status_code == 201
         content = response.json()
-        assert content['id'] == 'b3a09695-b9fb-40bd-8ea8-bbe0c2cba33f'
-        assert content['secretKey'] == 'secret'
-        assert content['accessKey'] == 'access'
+        assert content == {'secretKey': 'secret', 'accessKey': 'access'}
 
     @override_settings(PLATFORM='zmlp')
     def test_post_create_bad_body(self, zmlp_project_user, project, api_client,

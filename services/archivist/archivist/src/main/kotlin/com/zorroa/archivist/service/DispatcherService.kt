@@ -43,6 +43,7 @@ import com.zorroa.zmlp.apikey.AuthServerClient
 import com.zorroa.zmlp.apikey.Permission
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder.getTags
 import com.zorroa.zmlp.service.logging.MeterRegistryHolder.meterRegistry
+import com.zorroa.zmlp.service.storage.SystemStorageService
 import com.zorroa.zmlp.util.Json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -126,7 +127,8 @@ class DispatchQueueManager @Autowired constructor(
     val properties: ApplicationProperties,
     val authServerClient: AuthServerClient,
     val pipelineStoragProperties: PipelineStorageConfiguration,
-    val jobService: JobService
+    val jobService: JobService,
+    val systemStorageService: SystemStorageService
 ) {
 
     /**
@@ -212,6 +214,10 @@ class DispatchQueueManager @Autowired constructor(
                 METRICS_KEY, "op", "tasks-queued"
             ).increment()
 
+            fetchTaskEnvironment()?.let {
+                task.env.putAll(it)
+            }
+
             task.env["ZMLP_TASK_ID"] = task.id.toString()
             task.env["ZMLP_JOB_ID"] = task.jobId.toString()
             task.env["ZMLP_PROJECT_ID"] = task.projectId.toString()
@@ -227,7 +233,6 @@ class DispatchQueueManager @Autowired constructor(
             task.env["ZMLP_STORAGE_PIPELINE_URL"] = pipelineStoragProperties.url
             task.env["ZMLP_STORAGE_PIPELINE_ACCESSKEY"] = pipelineStoragProperties.accessKey
             task.env["ZMLP_STORAGE_PIPELINE_SECRETKEY"] = pipelineStoragProperties.secretKey
-
             task.env["ZMLP_CREDENTIALS_TYPES"] = jobService.getCredentialsTypes(task).joinToString(",")
 
             return true
@@ -249,6 +254,17 @@ class DispatchQueueManager @Autowired constructor(
             dispatcherService.queueTask(task, analyst)
         } catch (e: DataIntegrityViolationException) {
             false
+        }
+    }
+
+    /**
+     * Fetches an external base task environment from system storage.
+     */
+    fun fetchTaskEnvironment(): Map<String, String>? {
+        return try {
+            systemStorageService.fetchObject("environments/task_env.json", Json.ENV_MAP)
+        } catch (e: Exception) {
+            null
         }
     }
 

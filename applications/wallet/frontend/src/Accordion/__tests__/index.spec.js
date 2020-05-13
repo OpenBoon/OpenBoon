@@ -8,7 +8,12 @@ describe('<Accordion />', () => {
   Object.keys(VARIANTS).forEach((variant) => {
     it(`should render properly for ${variant}`, () => {
       const component = TestRenderer.create(
-        <Accordion variant={variant} title="Hi" isInitiallyOpen={false}>
+        <Accordion
+          variant={variant}
+          title="Hi"
+          cacheKey={`cacheKey.${variant}`}
+          isInitiallyOpen={false}
+        >
           Hello
         </Accordion>,
       )

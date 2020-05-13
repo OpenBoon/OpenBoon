@@ -38,4 +38,10 @@ class BaseEntity:
         return self._data['id'] == getattr(other, 'id', None)
 
     def __str__(self):
-        return "<{} id={}>".format(self.__class__.__name__, self.id)
+        vals = [self.__class__.__name__, self.id]
+        name = self._data.get('name')
+        if name:
+            vals.append(name)
+            return "<{} id={} name={}>".format(*vals)
+        else:
+            return "<{} id={}>".format(*vals)

@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import useSWR from 'swr'
 import { useRouter } from 'next/router'
+
+import SuspenseBoundary from '../SuspenseBoundary'
 
 import { decode } from './helpers'
 
@@ -14,20 +15,17 @@ const Filters = () => {
     query: { projectId, id: assetId = '', query },
   } = useRouter()
 
-  const { data: fields } = useSWR(
-    `/api/v1/projects/${projectId}/searches/fields/`,
-  )
-
   const filters = decode({ query })
 
   return isMenuOpen ? (
-    <FiltersMenu
-      projectId={projectId}
-      assetId={assetId}
-      filters={filters}
-      fields={fields}
-      setIsMenuOpen={setIsMenuOpen}
-    />
+    <SuspenseBoundary key={assetId}>
+      <FiltersMenu
+        projectId={projectId}
+        assetId={assetId}
+        filters={filters}
+        setIsMenuOpen={setIsMenuOpen}
+      />
+    </SuspenseBoundary>
   ) : (
     <FiltersContent
       projectId={projectId}

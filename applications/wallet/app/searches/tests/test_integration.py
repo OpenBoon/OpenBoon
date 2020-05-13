@@ -399,6 +399,14 @@ class TestAggregate(BaseFiltersTestCase):
         assert content['detail'] == ('Filter format incorrect, did not receive a single JSON '
                                      'object for the Filter.')
 
+    def test_unsupported_filter(self, login, api_client, project):
+        qs = {'type': 'textContent', 'attribute': 'analysis.zvi-text-detection'}
+        encoded_filter = convert_json_to_base64(qs)
+        response = api_client.get(reverse('search-aggregate', kwargs={'project_pk': project.id}),
+                                  {'filter': encoded_filter})
+        content = check_response(response, status=status.HTTP_400_BAD_REQUEST)
+        assert content['detail'] == ('This Filter does not support aggregations.')
+
 
 class TestMetadataExportView:
 

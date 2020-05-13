@@ -5,6 +5,7 @@ import com.zorroa.archivist.domain.Model
 import com.zorroa.archivist.domain.ModelFilter
 import com.zorroa.archivist.domain.ModelSpec
 import com.zorroa.archivist.domain.ModelTrainingArgs
+import com.zorroa.archivist.domain.ModelType
 import com.zorroa.archivist.domain.PipelineMod
 import com.zorroa.archivist.repository.KPagedList
 import com.zorroa.archivist.service.ModelService
@@ -41,6 +42,12 @@ class ModelController(
     fun train(@PathVariable id: UUID, @RequestBody args: ModelTrainingArgs): Job {
         val model = modelService.getModel(id)
         return modelService.trainModel(model, args)
+    }
+
+    @ApiOperation("Get Information about a model type.")
+    @GetMapping(value = ["/api/v3/models/_type/{name}"])
+    fun getType(@PathVariable name: String): Map<String, Any> {
+        return ModelType.valueOf(name).asMap()
     }
 
     @ApiOperation("Search for Models.")

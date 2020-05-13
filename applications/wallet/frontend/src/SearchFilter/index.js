@@ -60,7 +60,13 @@ const SearchFilter = ({ projectId, assetId, filters }) => {
                 projectId,
                 assetId,
                 filters,
-                newFilters: [{ type: 'search', value: searchString }],
+                newFilters: [
+                  {
+                    type: 'textContent',
+                    attribute: '',
+                    values: { query: searchString },
+                  },
+                ],
               },
             })
           }}

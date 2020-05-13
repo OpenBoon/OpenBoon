@@ -1,5 +1,6 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
+
+import useLocalStorage from '../LocalStorage'
 
 import { typography, colors, spacing, constants } from '../Styles'
 
@@ -58,8 +59,8 @@ const STYLES = {
     container: {
       backgroundColor: colors.structure.lead,
       borderRadius: constants.borderRadius.small,
-      padding: 1,
       border: constants.borders.transparent,
+      borderBottom: constants.borders.tabs,
       ':hover': {
         border: constants.borders.tableRow,
         div: {
@@ -70,7 +71,6 @@ const STYLES = {
       },
     },
     title: {
-      borderBottom: constants.borders.tabs,
       paddingTop: spacing.moderate,
       paddingBottom: spacing.moderate,
       paddingLeft: spacing.moderate,
@@ -95,8 +95,11 @@ export const VARIANTS = Object.keys(STYLES).reduce(
   {},
 )
 
-const Accordion = ({ variant, title, children, isInitiallyOpen }) => {
-  const [isOpen, setOpen] = useState(isInitiallyOpen)
+const Accordion = ({ variant, title, cacheKey, children, isInitiallyOpen }) => {
+  const [isOpen, setOpen] = useLocalStorage({
+    key: cacheKey,
+    initialValue: isInitiallyOpen,
+  })
 
   return (
     <div css={STYLES[variant].container}>
@@ -104,7 +107,7 @@ const Accordion = ({ variant, title, children, isInitiallyOpen }) => {
         <Button
           aria-label={`${isOpen ? 'Collapse' : 'Expand'} Section`}
           variant={BUTTON_VARIANTS.NEUTRAL}
-          onClick={() => setOpen(!isOpen)}
+          onClick={() => setOpen({ value: !isOpen })}
         >
           <ChevronSvg
             width={CHEVRON_WIDTH}
@@ -134,6 +137,7 @@ const Accordion = ({ variant, title, children, isInitiallyOpen }) => {
 Accordion.propTypes = {
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
   title: PropTypes.node.isRequired,
+  cacheKey: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   isInitiallyOpen: PropTypes.bool.isRequired,
 }
