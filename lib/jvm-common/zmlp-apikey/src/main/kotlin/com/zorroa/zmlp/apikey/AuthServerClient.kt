@@ -106,7 +106,7 @@ open class AuthServerClientImpl(val baseUri: String, private val apiKey: String?
         return post("auth/v1/apikey/_findOne", data, projectId)
     }
 
-    override fun updateApiKeyEnabledByProject(projectId: UUID, enabled: Boolean){
+    override fun updateApiKeyEnabledByProject(projectId: UUID, enabled: Boolean) {
         val data = mapOf(
             "enabled" to enabled
         )

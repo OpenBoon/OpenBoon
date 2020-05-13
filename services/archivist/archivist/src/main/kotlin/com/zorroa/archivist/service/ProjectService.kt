@@ -305,13 +305,12 @@ class ProjectServiceImpl constructor(
         }
 
         logger.event(
-            LogObject.PROJECT, if(projectSpecEnabled.enabled) LogAction.ENABLE else LogAction.DISABLE,
+            LogObject.PROJECT, if (projectSpecEnabled.enabled) LogAction.ENABLE else LogAction.DISABLE,
             mapOf(
                 "projectId" to project.id,
                 "projectName" to project.name
             )
         )
-
     }
 
     companion object {
