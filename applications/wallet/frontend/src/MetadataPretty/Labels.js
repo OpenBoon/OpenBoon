@@ -4,10 +4,10 @@ import { constants, spacing } from '../Styles'
 
 import SuspenseBoundary from '../SuspenseBoundary'
 
-import MetadataAnalysisBbox from './Bbox'
-import MetadataAnalysisLabelDetection from './LabelDetection'
+import MetadataPrettyLabelsQuery from './LabelsQuery'
+import MetadataPrettyLabelsContent from './LabelsContent'
 
-const MetadataAnalysisLabels = ({ name, value: { predictions } }) => {
+const MetadataPrettyLabels = ({ name, value: { predictions } }) => {
   if (Object.keys(predictions[0]).includes('bbox')) {
     return (
       <div
@@ -29,19 +29,20 @@ const MetadataAnalysisLabels = ({ name, value: { predictions } }) => {
         }}
       >
         <SuspenseBoundary>
-          <MetadataAnalysisBbox name={name} />
+          <MetadataPrettyLabelsQuery name={name} />
         </SuspenseBoundary>
       </div>
     )
   }
-  return <MetadataAnalysisLabelDetection name={name} value={{ predictions }} />
+
+  return <MetadataPrettyLabelsContent name={name} value={{ predictions }} />
 }
 
-MetadataAnalysisLabels.propTypes = {
+MetadataPrettyLabels.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.shape({
     predictions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   }).isRequired,
 }
 
-export default MetadataAnalysisLabels
+export default MetadataPrettyLabels

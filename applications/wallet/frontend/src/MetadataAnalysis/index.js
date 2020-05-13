@@ -1,18 +1,22 @@
 import PropTypes from 'prop-types'
 
-import MetadataAnalysisLabels from './Labels'
-import MetadataAnalysisContentDetection from './ContentDetection'
-import MetadataAnalysisSimilarityDetection from './SimilarityDetection'
+import MetadataPrettyLabels from '../MetadataPretty/Labels'
+import MetadataPrettyContent from '../MetadataPretty/Content'
+import MetadataPrettySimilarity from '../MetadataPretty/Similarity'
 
 const MetadataAnalysis = ({ name, value }) => {
   switch (value.type) {
     case 'labels':
-      return <MetadataAnalysisLabels name={name} value={value} />
+      return <MetadataPrettyLabels name={name} value={value} />
+
     case 'content':
-      return <MetadataAnalysisContentDetection name={name} value={value} />
-    // set similarity detection to default
+      return <MetadataPrettyContent name={name} value={value} />
+
+    case 'similarity':
+      return <MetadataPrettySimilarity name={name} value={value} />
+
     default:
-      return <MetadataAnalysisSimilarityDetection name={name} value={value} />
+      return null
   }
 }
 

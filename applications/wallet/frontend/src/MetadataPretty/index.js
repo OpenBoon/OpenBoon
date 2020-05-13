@@ -2,8 +2,10 @@ import PropTypes from 'prop-types'
 
 import { constants, spacing } from '../Styles'
 
-import MetadataPrettyRow from './Row'
 import MetadataAnalysis from '../MetadataAnalysis'
+
+import MetadataPrettyRow from './Row'
+import MetadataPrettyArray from './Array'
 
 const MetadataPretty = ({ metadata, section }) => {
   if (section === 'metrics') {
@@ -62,27 +64,7 @@ const MetadataPretty = ({ metadata, section }) => {
   }
 
   if (Array.isArray(metadata[section])) {
-    return metadata[section].map((file, index) => (
-      <div
-        // eslint-disable-next-line react/no-array-index-key
-        key={`${section}${index}`}
-        css={{
-          width: '100%',
-          '&:not(:first-of-type)': {
-            borderTop: constants.borders.prettyMetadata,
-          },
-        }}
-      >
-        {Object.entries(file).map(([key, value]) => (
-          <MetadataPrettyRow
-            key={key}
-            name={key}
-            value={value}
-            path={section}
-          />
-        ))}
-      </div>
-    ))
+    return <MetadataPrettyArray section={metadata[section]} path={section} />
   }
 
   return (
