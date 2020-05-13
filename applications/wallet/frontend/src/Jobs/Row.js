@@ -69,7 +69,6 @@ const JobsRow = ({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: 'fit-content',
                 minWidth: ERROR_COUNT_HEIGHT,
                 height: ERROR_COUNT_HEIGHT,
                 padding: spacing.moderate / 2,

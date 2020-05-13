@@ -241,9 +241,6 @@ Array [
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
   min-width: 32px;
   height: 32px;
   padding: 6px;
