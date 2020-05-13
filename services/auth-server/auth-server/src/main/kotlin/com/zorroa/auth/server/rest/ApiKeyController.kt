@@ -107,7 +107,7 @@ class ApiKeyController(
         return apiKeyService.findAll()
     }
 
-    @PatchMapping("/auth/v1/projectkey/enabled")
+    @PostMapping("/auth/v1/project/enabled")
     fun updateEnabledByProject(@RequestBody projectApiKeysEnabledSpec: ProjectApiKeysEnabledSpec) {
         return apiKeyService.updateEnabledByProject(projectApiKeysEnabledSpec)
     }

@@ -254,7 +254,7 @@ class ApiKeyControllerTests : MockMvcTest() {
     fun testUpdateEnabledByProject() {
         var projectApiKeysEnabledSpec = ProjectApiKeysEnabledSpec(false)
         mvc.perform(
-            MockMvcRequestBuilders.patch("/auth/v1/projectkey/enabled")
+            MockMvcRequestBuilders.post("/auth/v1/project/enabled")
                 .headers(superAdmin(mockKey.projectId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(json.writeValueAsBytes(projectApiKeysEnabledSpec))
