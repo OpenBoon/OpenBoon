@@ -137,6 +137,6 @@ class ApiKeyCustomRepositoryImpl(
         const val GET_SIGNING_KEY = "SELECT access_key, secret_key FROM api_key"
         const val GET_VALIDATION_KEY =
             "SELECT pk_api_key, project_id, name, permissions, access_key, secret_key " +
-                "FROM api_key WHERE access_key=?"
+                "FROM api_key WHERE access_key=? and enabled = true"
     }
 }

@@ -1,9 +1,12 @@
 package com.zorroa.auth.server.repository
 
 import com.zorroa.auth.server.AbstractTest
-import kotlin.test.assertEquals
+import com.zorroa.auth.server.domain.ApiKeySpec
+import com.zorroa.zmlp.apikey.Permission
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataRetrievalFailureException
+import kotlin.test.assertEquals
 
 class ApiKeyCustomRepositoryTests : AbstractTest() {
 
@@ -33,5 +36,23 @@ class ApiKeyCustomRepositoryTests : AbstractTest() {
         assertEquals(mockKey.permissions, key.permissions)
         assertEquals(mockKey.projectId, key.projectId)
         assertEquals(mockKey.secretKey, key.secretKey)
+    }
+
+    @Test(expected = DataRetrievalFailureException::class)
+    fun testGetValidationKeyFail() {
+
+        val spec = ApiKeySpec(
+            "test",
+            setOf(Permission.AssetsRead),
+            true
+        )
+        val create = apiKeyService.create(spec)
+        val key = apiKeyCustomRepository.getValidationKey(create.accessKey)
+
+        assertEquals(create.id, key.id)
+
+        //Should fail when Enabled = false
+        apiKeyService.updateEnabled(create, false)
+        val keyException = apiKeyCustomRepository.getValidationKey(create.accessKey)
     }
 }
